@@ -133,22 +133,4 @@ document.addEventListener('DOMContentLoaded', () => {
         observerAnimate.observe(element);
     });
 
-    // --- Firebase Unique Visitor Tracking (Optional - can be removed if not needed) ---
-    /*
-    if (typeof firebase !== 'undefined' && typeof db !== 'undefined') {
-         if (!localStorage.getItem('visited')) { // Keep using localStorage for this specific Firebase action if desired
-            db.collection('visitors').add({
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                userAgent: navigator.userAgent,
-                pagePath: window.location.pathname
-            }).catch((error) => {
-                console.error("Error adding visitor: ", error);
-            });
-            localStorage.setItem('visited', 'true');
-        }
-    } else {
-        console.warn("Firebase not fully initialized for visitor tracking.");
-    }
-    */
-
 }); // End DOMContentLoaded
