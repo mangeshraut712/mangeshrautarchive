@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="images/profile icon.png">
+
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body class="antialiased">
 
@@ -327,7 +331,7 @@
                 </div>
             </div>
         </section>
-
+        <section id="database-fix" class="py-20 md:py-24 bg-gray-50 fade-in"></section>
         <footer class="bg-white text-gray-500 py-12 border-t border-gray-200">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-between items-center text-sm">
@@ -357,5 +361,24 @@
     </main>
 
     <script src="js/script.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
+        authDomain: "mangeshrautarchive.firebaseapp.com",
+        projectId: "mangeshrautarchive",
+        storageBucket: "mangeshrautarchive.appspot.com", // Corrected storage bucket domain
+        messagingSenderId: "560373560182",
+        appId: "1:560373560182:web:218658d0db3b1aa6c60057",
+        measurementId: "G-YX2XQWYSCQ"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore(); // Initialize Firestore
+    </script>
 </body>
 </html>
