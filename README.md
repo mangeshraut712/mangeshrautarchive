@@ -1,11 +1,6 @@
-<<<<<<< HEAD
+<<<<<<< Website to open and see >>>>>>>
 # [http-mangeshrautarchive.github.io-](https://mangeshraut712.github.io/mangeshrautarchive/)
-Portfolio
-=======
-<<<<<<< HEAD
-# [http-mangeshrautarchive.github.io-](https://mangeshraut712.github.io/mangeshrautarchive/)
-Portfolio
-=======
+
 README.md
 
 Mangesh Raut Portfolio Website
@@ -112,5 +107,3 @@ Email: mbr63drexel@gmail.com
 LinkedIn: linkedin.com/in/mangeshraut71298
 GitHub: github.com/mangeshraut
 Enjoy exploring the portfolio! 😊
->>>>>>> 8e31a48 (Initial upload of portfolio website)
->>>>>>> 27de775 (Initial commit for portfolio website)
