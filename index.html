@@ -356,34 +356,6 @@
         </footer>
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
-            authDomain: "mangeshrautarchive.firebaseapp.com",
-            projectId: "mangeshrautarchive",
-            storageBucket: "mangeshrautarchive.appspot.com",
-            messagingSenderId: "560373560182",
-            appId: "1:560373560182:web:218658d0db3b1aa6c60057",
-            measurementId: "G-YX2XQWYSCQ"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        if (!localStorage.getItem('visited')) {
-            db.collection('visitors').add({
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                userAgent: navigator.userAgent,
-                pagePath: window.location.pathname
-            }).catch((error) => {
-                console.error("Error adding visitor: ", error);
-            });
-            localStorage.setItem('visited', 'true');
-        }
-    </script>
-
     <script src="js/script.js"></script>
 </body>
 </html>
