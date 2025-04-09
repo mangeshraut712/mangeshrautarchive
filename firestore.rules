@@ -1,8 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Allow anyone to create, read, update, or delete messages for testing
+    match /messages/{messageId} {
+      allow write: if true; // Allows unauthenticated writes for testing
+      allow read: if true;  // Allows reads for testing if needed
+    }
+    // Keep other collections restricted
     match /{document=**} {
-      allow read, write: if true; // Temporary for testing
+      allow read, write: if false;
     }
   }
 }
