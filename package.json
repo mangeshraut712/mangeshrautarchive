@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@firebase/app-check": "^0.8.13",
+    "firebase": "^11.6.0"
+  }
+}

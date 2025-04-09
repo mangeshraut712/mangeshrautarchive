@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+    <title>Mangesh Raut - MSCS Student & Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 50%, #0085FF 100%);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skill-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e0e0e0;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #6B73FF 0%, #000DFF 100%);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #000DFF;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active-nav::after {
+            width: 100%;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            left: -8px;
+            top: 0;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold text-blue-600">Mangesh Raut</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link active-nav">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#skills" class="nav-link">Skills</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#education" class="nav-link">Education</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="menu-btn" class="text-gray-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white pb-4 px-4 shadow-lg">
+            <a href="#home" class="block py-2 nav-link">Home</a>
+            <a href="#about" class="block py-2 nav-link">About</a>
+            <a href="#skills" class="block py-2 nav-link">Skills</a>
+            <a href="#projects" class="block py-2 nav-link">Projects</a>
+            <a href="#education" class="block py-2 nav-link">Education</a>
+            <a href="#contact" class="block py-2 nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-16 md:pt-32 md:pb-24 gradient-bg text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Hi, I'm <span class="text-yellow-300">Mangesh Raut</span></h1>
+                    <h2 class="text-2xl md:text-3xl font-semibold mb-6">MSCS Student & Developer</h2>
+                    <p class="text-lg mb-8 max-w-lg">Passionate about software development, machine learning, and creating innovative solutions to real-world problems.</p>
+                    <div class="flex space-x-4">
+                        <a href="#contact" class="px-6 py-3 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100 transition duration-300">Contact Me</a>
+                        <a href="#projects" class="px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-blue-600 transition duration-300">View Projects</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
+                        <img src="https://media.licdn.com/dms/image/D5603AQF6JQK2JY2Z2g/profile-displayphoto-shrink_400_400/0/1683641251233?e=1718841600&v=beta&t=1Y9zJgVJvJ2Q1Lh4QZb6Zx3Y9Z3Q3Z3Q3Z3Q3Z3Q3Z3Q" alt="Mangesh Raut" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">About <span class="text-blue-600">Me</span></h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-8 md:mb-0 flex justify-center">
+                    <div class="w-64 h-64 rounded-lg overflow-hidden shadow-lg">
+                        <img src="https://media.licdn.com/dms/image/D5603AQF6JQK2JY2Z2g/profile-displayphoto-shrink_400_400/0/1683641251233?e=1718841600&v=beta&t=1Y9zJgVJvJ2Q1Lh4QZb6Zx3Y9Z3Q3Z3Q3Z3Q3Z3Q3Z3Q" alt="Mangesh Raut" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="md:w-2/3 md:pl-12">
+                    <h3 class="text-2xl font-semibold mb-4">Who am I?</h3>
+                    <p class="text-gray-600 mb-6">
+                        I'm a Master's student in Computer Science with a strong passion for software development and machine learning. 
+                        With a solid foundation in programming and problem-solving, I enjoy creating efficient and scalable solutions 
+                        to complex problems. My academic journey has equipped me with both theoretical knowledge and practical skills 
+                        to tackle real-world challenges in the tech industry.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium mb-2"><i class="fas fa-user text-blue-500 mr-2"></i> Name</h4>
+                            <p class="text-gray-600">Mangesh Raut</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2"><i class="fas fa-envelope text-blue-500 mr-2"></i> Email</h4>
+                            <p class="text-gray-600">mangeshraut71298@gmail.com</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2"><i class="fas fa-phone text-blue-500 mr-2"></i> Phone</h4>
+                            <p class="text-gray-600">+1 (123) 456-7890</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-2"><i class="fas fa-map-marker-alt text-blue-500 mr-2"></i> Location</h4>
+                            <p class="text-gray-600">United States</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex space-x-4">
+                        <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/mangeshraut" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-900 transition duration-300">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">My <span class="text-blue-600">Skills</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Technical Skills</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Python</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Java</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">C++</span>
+                                <span class="text-gray-600">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">JavaScript</span>
+                                <span class="text-gray-600">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Professional Skills</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Problem Solving</span>
+                                <span class="text-gray-600">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Teamwork</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Communication</span>
+                                <span class="text-gray-600">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Project Management</span>
+                                <span class="text-gray-600">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16">
+                <h3 class="text-xl font-semibold mb-8 text-center">Technologies & Tools</h3>
+                <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-python text-4xl text-blue-500 mb-2"></i>
+                        <span class="text-sm font-medium">Python</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-java text-4xl text-red-500 mb-2"></i>
+                        <span class="text-sm font-medium">Java</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-js text-4xl text-yellow-500 mb-2"></i>
+                        <span class="text-sm font-medium">JavaScript</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-react text-4xl text-blue-400 mb-2"></i>
+                        <span class="text-sm font-medium">React</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fas fa-database text-4xl text-blue-600 mb-2"></i>
+                        <span class="text-sm font-medium">SQL</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-git-alt text-4xl text-orange-500 mb-2"></i>
+                        <span class="text-sm font-medium">Git</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-aws text-4xl text-orange-400 mb-2"></i>
+                        <span class="text-sm font-medium">AWS</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fas fa-chart-line text-4xl text-green-500 mb-2"></i>
+                        <span class="text-sm font-medium">TensorFlow</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-docker text-4xl text-blue-300 mb-2"></i>
+                        <span class="text-sm font-medium">Docker</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-linux text-4xl text-black mb-2"></i>
+                        <span class="text-sm font-medium">Linux</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fab fa-node-js text-4xl text-green-600 mb-2"></i>
+                        <span class="text-sm font-medium">Node.js</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition duration-300">
+                        <i class="fas fa-cloud text-4xl text-blue-300 mb-2"></i>
+                        <span class="text-sm font-medium">Cloud</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">My <span class="text-blue-600">Projects</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card bg-gray-50 rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Machine Learning Model for Image Classification</h3>
+                        <p class="text-gray-600 mb-4">Developed a deep learning model using TensorFlow and Keras to classify images with 95% accuracy.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Python</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">TensorFlow</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">Keras</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-medium hover:text-blue-800 transition duration-300">View Project →</a>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card bg-gray-50 rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">E-commerce Website with React</h3>
+                        <p class="text-gray-600 mb-4">Built a full-stack e-commerce platform with React frontend and Node.js backend with MongoDB.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">React</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">Node.js</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">MongoDB</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-medium hover:text-blue-800 transition duration-300">View Project →</a>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card bg-gray-50 rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 3" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Cloud-Based Data Processing Pipeline</h3>
+                        <p class="text-gray-600 mb-4">Designed and implemented a scalable data processing pipeline using AWS services.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">AWS</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Python</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">Lambda</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-medium hover:text-blue-800 transition duration-300">View Project →</a>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card bg-gray-50 rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 4" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Android Mobile Application</h3>
+                        <p class="text-gray-600 mb-4">Created a fitness tracking app with personalized workout plans and progress analytics.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">Java</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Android</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">Firebase</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-medium hover:text-blue-800 transition duration-300">View Project →</a>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="project-card bg-gray-50 rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 5" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Data Visualization Dashboard</h3>
+                        <p class="text-gray-600 mb-4">Interactive dashboard for analyzing and visualizing large datasets with D3.js.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">JavaScript</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">D3.js</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">React</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-medium hover:text-blue-800 transition duration-300">View Project →</a>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card bg-gray-50 rounded-lg overflow-hidden shadow-md transition duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Project 6" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Natural Language Processing Tool</h3>
+                        <p class="text-gray-600 mb-4">NLP application for sentiment analysis and text classification using spaCy and NLTK.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">Python</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">NLTK</span>
+                            <span class="px-3 py-1 bg-pink-100 text-pink-800 text-xs font-medium rounded-full">spaCy</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-medium hover:text-blue-800 transition duration-300">View Project →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="#" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-300">View All Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">My <span class="text-blue-600">Education</span></h2>
+            <div class="relative pl-8 timeline">
+                <!-- Education 1 -->
+                <div class="relative mb-12 timeline-item">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <h3 class="text-xl font-semibold">Master of Science in Computer Science</h3>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">2022 - Present</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-blue-600 mb-2">University Name</h4>
+                        <p class="text-gray-600">
+                            Currently pursuing my Master's degree with a focus on Artificial Intelligence and Machine Learning. 
+                            Coursework includes Advanced Algorithms, Machine Learning, Cloud Computing, and Big Data Analytics.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Education 2 -->
+                <div class="relative mb-12 timeline-item">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <h3 class="text-xl font-semibold">Bachelor of Engineering in Computer Engineering</h3>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">2016 - 2020</span>
+                        </div>
+                        <h4 class="text-lg font-medium text-blue-600 mb-2">University Name</h4>
+                        <p class="text-gray-600">
+                            Graduated with honors in Computer Engineering. Focused on software development, database systems, 
+                            and computer networks. Completed several projects including a smart attendance system using facial recognition.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Education 3 -->
+                <div class="relative timeline-item">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <h3 class="text-xl font-semibold">Certifications</h3>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Ongoing</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-medium">AWS Certified Solutions Architect - Associate</h4>
+                                <p class="text-gray-600 text-sm">Amazon Web Services</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">TensorFlow Developer Certificate</h4>
+                                <p class="text-gray-600 text-sm">Google</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Oracle Certified Professional, Java SE 11 Developer</h4>
+                                <p class="text-gray-600 text-sm">Oracle</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Get In <span class="text-blue-600">Touch</span></h2>
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8">
+                    <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                    <p class="text-gray-600 mb-6">
+                        Feel free to reach out to me for any questions or opportunities. I'm always open to discussing 
+                        new projects, creative ideas or opportunities to be part of your vision.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-blue-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-600">mangeshraut71298@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-blue-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-600">+1 (123) 456-7890</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-medium">Location</h4>
+                                <p class="text-gray-600">United States</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="text-xl font-semibold mb-4">Follow Me</h3>
+                        <div class="flex space-x-4">
+                            <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/mangeshraut" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-900 transition duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition duration-300">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-blue-400 text-white flex items-center justify-center hover:bg-blue-500 transition duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" required></textarea>
+                        </div>
+                        <button type="submit" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-300 w-full">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-xl font-bold">Mangesh Raut</a>
+                    <p class="mt-2 text-gray-400">MSCS Student & Developer</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="https://github.com/mangeshraut" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
+                <p>&copy; 2023 Mangesh Raut. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active-nav');
+                });
+                this.classList.add('active-nav');
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active-nav');
+                }
+            });
+        });
+
+        // Form submission
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+                
+                // Here you would typically send the data to a server
+                // For this example, we'll just log it and show an alert
+                console.log({name, email, subject, message});
+                
+                alert('Thank you for your message! I will get back to you soon.');
+                form.reset();
+            });
+        }
+    </script>
+=======
+    <title>Mangesh Raut - Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="images/profile icon.png">
+</head>
+<body class="antialiased">
+
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+            <a href="#home" class="flex items-center">
+                <img src="images/profile icon.png" alt="Mangesh Raut Logo" class="h-8 w-auto">
+            </a>
+            <button id="menu-btn" class="menu-toggle-button" aria-label="Open Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div id="overlay-menu" class="overlay-menu">
+        <button id="menu-close" class="menu-close-button" aria-label="Close Menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <nav class="overlay-nav">
+            <a href="#home" class="overlay-nav-link">Home</a>
+            <a href="#about" class="overlay-nav-link">About</a>
+            <a href="#skills" class="overlay-nav-link">Skills</a>
+            <a href="#projects" class="overlay-nav-link">Projects</a>
+            <a href="#experience" class="overlay-nav-link">Experience</a>
+            <a href="#education" class="overlay-nav-link">Education</a>
+            <a href="#contact" class="overlay-nav-link">Contact</a>
+        </nav>
+    </div>
+
+    <main id="main-content">
+        <section id="home" class="pt-32 pb-24 md:pt-40 md:pb-32 bg-gray-50 text-black fade-in">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="mb-12">
+                    <div class="inline-block w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg mx-auto">
+                        <img src="images/profile.jpg" alt="Mangesh Raut" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Mangesh Raut</h1>
+                <h2 class="text-xl md:text-2xl text-gray-600 mb-8">Software Engineer</h2>
+                <p class="text-lg text-gray-700 mb-10 max-w-2xl mx-auto">
+                    Welcome! Explore my journey in crafting innovative software solutions.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="button-secondary">Download Resume</a>
+                </div>
+                <div class="mt-8 text-sm text-gray-500">
+                    Visitor #<span id="visitor-count" class="font-semibold">...</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 md:py-24 bg-white fade-in">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">About Me</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/3 flex justify-center">
+                        <div class="w-56 h-56 rounded-lg overflow-hidden shadow-md">
+                            <img src="images/graduation.jpg" alt="Mangesh Raut Graduation" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 text-lg text-gray-700 space-y-6">
+                        <p>
+                            Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker). Currently enhancing energy analytics tools at Customized Energy Solutions, achieving a 40% efficiency gain.
+                        </p>
+                        <p>
+                            Previously honed expertise in network engineering (35% latency reduction at Harshwardhan Enterprises) and Java development (20% code optimization at IoasiZ). Eager to leverage hands-on experience with scalable systems, CI/CD pipelines, and machine learning to drive innovation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-20 md:py-24 bg-gray-50 fade-in">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Skills & Technologies</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Languages</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>Java</li>
+                            <li>Python</li>
+                            <li>SQL</li>
+                            <li>JavaScript</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Frameworks</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>Spring Boot</li>
+                            <li>AngularJS</li>
+                            <li>TensorFlow</li>
+                            <li>scikit-learn</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Cloud, DevOps & Tools</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li>AWS</li>
+                            <li>Docker</li>
+                            <li>Jenkins</li>
+                            <li>Terraform</li>
+                            <li>PostgreSQL, MongoDB, MySQL</li>
+                            <li>Git, Jira, Tableau, Wireshark</li>
+                            <li>Cisco Networking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-20 md:py-24 bg-white fade-in">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="project-card">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold mb-2">Starlight Blogging Website</h3>
+                            <p class="text-gray-600 text-sm mb-4">Built a blogging website with user authentication and post-management features. Attracted 100+ users within three months.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag">Angular</span>
+                                <span class="tag">Flask</span>
+                                <span class="tag">SQLite</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold mb-2">Real-Time Face Emotion Recognition System</h3>
+                            <p class="text-gray-600 text-sm mb-4">Developed a real-time emotion recognition model with 95% accuracy using OpenCV and ML techniques.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag">Python</span>
+                                <span class="tag">OpenCV</span>
+                                <span class="tag">Machine Learning</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold mb-2">PC Crime Detector</h3>
+                            <p class="text-gray-600 text-sm mb-4">Implemented security automation using Java and database integration, reducing breaches by 80% in institutional deployments.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag">Java</span>
+                                <span class="tag">Database Integration</span>
+                                <span class="tag">Automation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="py-20 md:py-24 bg-white fade-in">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Work Experience</h2>
+                <div class="space-y-12">
+                    <div class="timeline-item">
+                        <div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                                <h3 class="text-xl font-semibold">Software Engineer</h3>
+                                <span class="date-badge">Aug 2024 – Present</span>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Customized Energy Solutions - Philadelphia, PA</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1 text-sm">
+                                <li>Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40%.</li>
+                                <li>Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines.</li>
+                                <li>Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                                <h3 class="text-xl font-semibold">Software Engineer</h3>
+                                <span class="date-badge">Jul 2023 – Jul 2024</span>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">IoasiZ - Piscataway, NJ</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1 text-sm">
+                                <li>Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20%.</li>
+                                <li>Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites.</li>
+                                <li>Integrated Redis caching for inventory APIs, achieving 30% faster response times.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                                <h3 class="text-xl font-semibold">Network Engineer</h3>
+                                <span class="date-badge">Jun 2020 – Jun 2021</span>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Harshwardhan Enterprises - Pune, India</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1 text-sm">
+                                <li>Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35%.</li>
+                                <li>Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance.</li>
+                                <li>Created Python-based monitoring tools, reducing manual diagnostics by 50%.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="py-20 md:py-24 bg-gray-50 fade-in">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Education & Certifications</h2>
+                <div class="space-y-12">
+                    <div class="timeline-item">
+                        <div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                                <h3 class="text-xl font-semibold">Master of Science in Computer Science</h3>
+                                <span class="date-badge">Sep 2021 – Jun 2023</span>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Drexel University - Philadelphia, PA</h4>
+                            <p class="text-gray-600 text-sm">GPA: 3.3</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div>
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                                <h3 class="text-xl font-semibold">Bachelor of Engineering in Computer Engineering</h3>
+                                <span class="date-badge">Jun 2017 – Jun 2020</span>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Pune University - Pune, India</h4>
+                            <p class="text-gray-600 text-sm">GPA: 3.6</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Certifications</h3>
+                            <div class="space-y-3 text-sm">
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Google</h4>
+                                    <p class="text-gray-600">Prompt Design in Vertex AI, Digital Marketing, Online Marketing Fundamentals</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">IBM</h4>
+                                    <p class="text-gray-600">Cybersecurity Fundamentals, Data Fundamentals (SQL/NoSQL), Explore Emerging Tech (AI), Fundamentals of Sustainability and Technology</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Cisco</h4>
+                                    <p class="text-gray-600">Networking Basics (OSPF/BGP), CCNP (Routing & Switching)</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Microsoft</h4>
+                                    <p class="text-gray-600">JavaScript Programming</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 md:py-24 bg-gray-50 fade-in">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Get In Touch</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <h3 class="text-xl font-semibold">Contact Information</h3>
+                        <p class="text-gray-600">Feel free to reach out via email or connect on social media.</p>
+                        <div>
+                            <h4 class="font-medium text-sm text-gray-500 uppercase tracking-wider">Email</h4>
+                            <p class="text-gray-800 mt-1"><a href="mailto:mbr63drexel@gmail.com" class="hover:underline">mbr63drexel@gmail.com</a></p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-sm text-gray-500 uppercase tracking-wider">Phone</h4>
+                            <p class="text-gray-800 mt-1">+1 (609) 505 3500</p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-sm text-gray-500 uppercase tracking-wider">Location</h4>
+                            <p class="text-gray-800 mt-1">Philadelphia, PA, USA</p>
+                        </div>
+                        <div class="pt-4">
+                            <h4 class="font-medium text-sm text-gray-500 uppercase tracking-wider mb-3">Follow Me</h4>
+                            <div class="flex space-x-5">
+                                <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
+                                    <i class="fab fa-linkedin-in text-xl"></i>
+                                </a>
+                                <a href="https://github.com/mangeshraut" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
+                                    <i class="fab fa-youtube text-xl"></i>
+                                </a>
+                                <a href="https://x.com/mrcommando712" target="_blank" class="text-gray-500 hover:text-black transition duration-300 inline-block w-5 h-5">
+                                    <img src="images/X_logo.jpg" alt="X Logo" class="w-full h-full object-contain filter invert brightness-75 hover:brightness-100">
+                                </a>
+                                <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="text-gray-500 hover:text-black transition duration-300" title="Wix Portfolio">
+                                    <i class="fas fa-globe text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Send a Message</h3>
+                        <form id="contact-form" class="space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label for="name" class="hidden">Your Name</label>
+                                    <input type="text" id="name" name="name" placeholder="Your Name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required>
+                                </div>
+                                <div>
+                                    <label for="email" class="hidden">Your Email</label>
+                                    <input type="email" id="email" name="email" placeholder="Your Email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="subject" class="hidden">Subject</label>
+                                <input type="text" id="subject" name="subject" placeholder="Subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required>
+                            </div>
+                            <div>
+                                <label for="message" class="hidden">Message</label>
+                                <textarea id="message" name="message" rows="5" placeholder="Message" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required></textarea>
+                            </div>
+                            <button type="submit" class="button-primary w-full">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-white text-gray-500 py-12 border-t border-gray-200">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-sm">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 Mangesh Raut.</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="hover:text-black transition duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/mangeshraut" target="_blank" class="hover:text-black transition duration-300">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="hover:text-black transition duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://x.com/mrcommando712" target="_blank" class="hover:text-black transition duration-300 inline-block w-4 h-4">
+                            <img src="images/X_logo.jpg" alt="X Logo" class="w-full h-full object-contain filter invert brightness-75 hover:brightness-100">
+                        </a>
+                        <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="hover:text-black transition duration-300">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
+            authDomain: "mangeshrautarchive.firebaseapp.com",
+            projectId: "mangeshrautarchive",
+            storageBucket: "mangeshrautarchive.appspot.com",
+            messagingSenderId: "560373560182",
+            appId: "1:560373560182:web:218658d0db3b1aa6c60057",
+            measurementId: "G-YX2XQWYSCQ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        if (!localStorage.getItem('visited')) {
+            db.collection('visitors').add({
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userAgent: navigator.userAgent,
+                pagePath: window.location.pathname
+            }).catch((error) => {
+                console.error("Error adding visitor: ", error);
+            });
+            localStorage.setItem('visited', 'true');
+        }
+    </script>
+
+    <script src="js/script.js"></script>
+>>>>>>> 27de775 (Initial commit for portfolio website)
+</body>
+</html>
