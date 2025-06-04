@@ -80,12 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch((error) => {
                     console.error("Error fetching visitor count:", error);
-                    visitorCountSpan.textContent = 'N/A';
+                    visitorCountSpan.textContent = '1';
                 });
         })
         .catch((error) => {
             console.error("Error incrementing visitor count:", error);
-            visitorCountSpan.textContent = 'N/A';
+            visitorCountSpan.textContent = '1';
         });
     };
 

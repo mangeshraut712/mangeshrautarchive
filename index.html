@@ -14,9 +14,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
-<body class="antialiased">
+<body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
 
-    <nav class="fixed w-full bg-white/80 dark:bg-[#18181b]/90 backdrop-blur-md border-b border-gray-200 dark:border-[#23272f] z-50">
+    <nav class="fixed w-full bg-white/80 dark:bg-[#18181b]/90 backdrop-blur-md border-b border-gray-200 dark:border-[#23272f] z-50 text-black dark:text-white">
         <div class="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
             <a href="#home" class="flex items-center">
                 <img src="images/profile icon.png" alt="Mangesh Raut Logo" class="h-8 w-auto">
@@ -25,8 +25,9 @@
                 <button id="menu-btn" class="menu-toggle-button" aria-label="Open Menu">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
-                <button id="theme-toggle" class="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 dark:bg-[#23272f] hover:bg-gray-300 dark:hover:bg-[#31313a] transition" aria-label="Toggle Theme">
-                    <i id="theme-toggle-icon" class="fas fa-moon text-gray-700 dark:text-yellow-300 text-lg"></i>
+                <!-- Improved theme toggle icon: larger, outlined, and more visible in both modes -->
+                <button id="theme-toggle" class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-300 dark:border-yellow-400 bg-gray-100 dark:bg-[#23272f] hover:bg-gray-200 dark:hover:bg-[#31313a] shadow transition" aria-label="Toggle Theme">
+                    <i id="theme-toggle-icon" class="fas fa-moon text-xl text-gray-700 dark:text-yellow-400"></i>
                 </button>
             </div>
         </div>
@@ -48,6 +49,7 @@
     </div>
 
     <main id="main-content">
+        <!-- Alternate dark backgrounds for each section for clear separation -->
         <section id="home" class="pt-32 pb-24 md:pt-40 md:pb-32 bg-gray-50 dark:bg-[#18181b] text-black dark:text-white fade-in">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="mb-12">
@@ -55,30 +57,29 @@
                         <img src="images/profile.jpg" alt="Mangesh Raut" class="w-full h-full object-cover">
                     </div>
                 </div>
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 text-black dark:text-white">Mangesh Raut</h1>
-                <h2 class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8">Software Engineer</h2>
-                <p class="text-lg text-gray-700 dark:text-gray-200 mb-10 max-w-2xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Mangesh Raut</h1>
+                <h2 class="text-xl md:text-2xl mb-8">Software Engineer</h2>
+                <p class="text-lg mb-10 max-w-2xl mx-auto">
                     Welcome! Explore my journey in crafting innovative software solutions.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="button-secondary">Download Resume</a>
                 </div>
-                <div class="mt-8 text-sm text-gray-500">
+                <div class="mt-8 text-sm">
                     Visitor #<span id="visitor-count" class="font-semibold">...</span>
                 </div>
             </div>
         </section>
-
         <section id="about" class="py-20 md:py-24 bg-white dark:bg-[#23272f] fade-in">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-black dark:text-white">About Me</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">About Me</h2>
                 <div class="flex flex-col md:flex-row items-center gap-12">
                     <div class="md:w-1/3 flex justify-center">
                         <div class="w-56 h-56 rounded-lg overflow-hidden shadow-md">
                             <img src="images/graduation.jpg" alt="Mangesh Raut Graduation" class="w-full h-full object-cover">
                         </div>
                     </div>
-                    <div class="md:w-2/3 text-lg text-gray-700 dark:text-gray-200 space-y-6">
+                    <div class="md:w-2/3 text-lg space-y-6">
                         <p>
                             Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker). Currently enhancing energy analytics tools at Customized Energy Solutions, achieving a 40% efficiency gain.
                         </p>
@@ -89,88 +90,87 @@
                 </div>
             </div>
         </section>
-
         <section id="skills" class="py-20 md:py-24 bg-gray-50 dark:bg-[#18181b] fade-in">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Skills & Technologies</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-6 text-black dark:text-white">Languages</h3>
-                        <ul class="space-y-2 text-gray-600 dark:text-gray-200">
-                            <li>Java</li>
-                            <li>Python</li>
-                            <li>SQL</li>
-                            <li>JavaScript</li>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-16">Skills & Technologies</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+                    <div class="rounded-2xl bg-white dark:bg-[#23272f] border-2 border-blue-200 dark:border-yellow-400 shadow-xl p-8 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                        <h3 class="text-xl font-bold mb-6">Languages</h3>
+                        <ul class="space-y-2 text-base font-medium">
+                            <li><i class="fas fa-code mr-2"></i>Java</li>
+                            <li><i class="fas fa-code mr-2"></i>Python</li>
+                            <li><i class="fas fa-database mr-2"></i>SQL</li>
+                            <li><i class="fab fa-js-square mr-2"></i>JavaScript</li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-6 text-black dark:text-white">Frameworks</h3>
-                        <ul class="space-y-2 text-gray-600 dark:text-gray-200">
-                            <li>Spring Boot</li>
-                            <li>AngularJS</li>
-                            <li>TensorFlow</li>
-                            <li>scikit-learn</li>
+                    <div class="rounded-2xl bg-white dark:bg-[#23272f] border-2 border-blue-200 dark:border-yellow-400 shadow-xl p-8 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                        <h3 class="text-xl font-bold mb-6">Frameworks</h3>
+                        <ul class="space-y-2 text-base font-medium">
+                            <li><i class="fab fa-java mr-2"></i>Spring Boot</li>
+                            <li><i class="fab fa-angular mr-2"></i>AngularJS</li>
+                            <li><i class="fas fa-brain mr-2"></i>TensorFlow</li>
+                            <li><i class="fas fa-robot mr-2"></i>scikit-learn</li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-6 text-black dark:text-white">Cloud, DevOps & Tools</h3>
-                        <ul class="space-y-2 text-gray-600 dark:text-gray-200">
-                            <li>AWS</li>
-                            <li>Docker</li>
-                            <li>Jenkins</li>
-                            <li>Terraform</li>
-                            <li>PostgreSQL, MongoDB, MySQL</li>
-                            <li>Git, Jira, Tableau, Wireshark</li>
-                            <li>Cisco Networking</li>
+                    <div class="rounded-2xl bg-white dark:bg-[#23272f] border-2 border-blue-200 dark:border-yellow-400 shadow-xl p-8 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                        <h3 class="text-xl font-bold mb-6">Cloud, DevOps & Tools</h3>
+                        <ul class="space-y-2 text-base font-medium">
+                            <li><i class="fab fa-aws mr-2"></i>AWS</li>
+                            <li><i class="fab fa-docker mr-2"></i>Docker</li>
+                            <li><i class="fas fa-cogs mr-2"></i>Jenkins</li>
+                            <li><i class="fas fa-code-branch mr-2"></i>Terraform</li>
+                            <li><i class="fas fa-database mr-2"></i>PostgreSQL, MongoDB, MySQL</li>
+                            <li><i class="fab fa-git-alt mr-2"></i>Git, Jira, Tableau, Wireshark</li>
+                            <li><i class="fas fa-network-wired mr-2"></i>Cisco Networking</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section id="projects" class="py-20 md:py-24 bg-white dark:bg-[#23272f] fade-in">
+        <!-- Projects: alternate to dark:bg-[#18181b] for contrast -->
+        <section id="projects" class="py-20 md:py-24 bg-white dark:bg-[#18181b] fade-in">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Projects</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="project-card dark:bg-[#18181b] dark:border-[#31313a] dark:text-gray-100">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-yellow-300 tracking-tight drop-shadow-lg">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div class="project-card dark:bg-[#23272f] dark:border-yellow-400 dark:text-yellow-100 bg-white border-2 border-blue-200 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 fade-in">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold mb-2 text-black dark:text-white">Starlight Blogging Website</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Built a blogging website with user authentication and post-management features. Attracted 100+ users within three months.</p>
+                            <h3 class="text-lg font-bold mb-2 text-blue-700 dark:text-yellow-200 tracking-wide">Starlight Blogging Website</h3>
+                            <p class="text-gray-600 dark:text-gray-200 text-base mb-4">Built a blogging website with user authentication and post-management features. Attracted 100+ users within three months.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="tag">Angular</span>
-                                <span class="tag">Flask</span>
-                                <span class="tag">SQLite</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Angular</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Flask</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">SQLite</span>
                             </div>
                         </div>
                     </div>
-                    <div class="project-card dark:bg-[#18181b] dark:border-[#31313a] dark:text-gray-100">
+                    <div class="project-card dark:bg-[#23272f] dark:border-yellow-400 dark:text-yellow-100 bg-white border-2 border-blue-200 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 fade-in">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold mb-2 text-black dark:text-white">Real-Time Face Emotion Recognition System</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Developed a real-time emotion recognition model with 95% accuracy using OpenCV and ML techniques.</p>
+                            <h3 class="text-lg font-bold mb-2 text-blue-700 dark:text-yellow-200 tracking-wide">Real-Time Face Emotion Recognition System</h3>
+                            <p class="text-gray-600 dark:text-gray-200 text-base mb-4">Developed a real-time emotion recognition model with 95% accuracy using OpenCV and ML techniques.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="tag">Python</span>
-                                <span class="tag">OpenCV</span>
-                                <span class="tag">Machine Learning</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Python</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">OpenCV</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Machine Learning</span>
                             </div>
                         </div>
                     </div>
-                    <div class="project-card dark:bg-[#18181b] dark:border-[#31313a] dark:text-gray-100">
+                    <div class="project-card dark:bg-[#23272f] dark:border-yellow-400 dark:text-yellow-100 bg-white border-2 border-blue-200 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 fade-in">
                         <div class="p-6">
-                            <h3 class="text-lg font-semibold mb-2 text-black dark:text-white">PC Crime Detector</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Implemented security automation using Java and database integration, reducing breaches by 80% in institutional deployments.</p>
+                            <h3 class="text-lg font-bold mb-2 text-blue-700 dark:text-yellow-200 tracking-wide">PC Crime Detector</h3>
+                            <p class="text-gray-600 dark:text-gray-200 text-base mb-4">Implemented security automation using Java and database integration, reducing breaches by 80% in institutional deployments.</p>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="tag">Java</span>
-                                <span class="tag">Database Integration</span>
-                                <span class="tag">Automation</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Java</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Database Integration</span>
+                                <span class="tag bg-blue-100 text-blue-700 dark:bg-yellow-900 dark:text-yellow-200 font-semibold px-3 py-1 rounded-full">Automation</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section id="experience" class="py-20 md:py-24 bg-white dark:bg-[#23272f] fade-in">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Experience: alternate to dark:bg-[#23272f] for contrast -->
+        <section id="experience" class="py-20 md:py-24 bg-gray-50 dark:bg-[#23272f] fade-in">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"></div>
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Work Experience</h2>
                 <div class="space-y-12">
                     <div class="timeline-item dark:bg-[#18181b] dark:border-[#31313a] dark:text-gray-100">
@@ -218,50 +218,50 @@
                 </div>
             </div>
         </section>
-
-        <section id="education" class="py-20 md:py-24 bg-gray-50 dark:bg-[#18181b] fade-in">
+        <!-- Education: alternate to dark:bg-[#18181b] for contrast -->
+        <section id="education" class="py-20 md:py-24 bg-white dark:bg-[#18181b] fade-in">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Education & Certifications</h2>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-16 tracking-tight drop-shadow-lg uppercase">Education & Certifications</h2>
                 <div class="space-y-12">
-                    <div class="timeline-item dark:bg-[#23272f] dark:border-[#31313a] dark:text-gray-100">
+                    <div class="timeline-item rounded-2xl bg-white dark:bg-[#23272f] border-2 border-blue-200 dark:border-yellow-400 shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300 fade-in p-8">
                         <div>
                             <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-semibold text-black dark:text-white">Master of Science in Computer Science</h3>
-                                <span class="date-badge">Sep 2021 – Jun 2023</span>
+                                <h3 class="text-xl font-bold text-blue-700 dark:text-yellow-200">Master of Science in Computer Science</h3>
+                                <span class="date-badge bg-blue-100 dark:bg-yellow-900 text-blue-700 dark:text-yellow-200 px-3 py-1 rounded-full font-semibold">Sep 2021 – Jun 2023</span>
                             </div>
                             <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Drexel University - Philadelphia, PA</h4>
                             <p class="text-gray-600 dark:text-gray-300 text-sm">GPA: 3.3</p>
                         </div>
                     </div>
-                    <div class="timeline-item dark:bg-[#23272f] dark:border-[#31313a] dark:text-gray-100">
+                    <div class="timeline-item rounded-2xl bg-white dark:bg-[#23272f] border-2 border-blue-200 dark:border-yellow-400 shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300 fade-in p-8">
                         <div>
                             <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-semibold text-black dark:text-white">Bachelor of Engineering in Computer Engineering</h3>
-                                <span class="date-badge">Jun 2017 – Jun 2020</span>
+                                <h3 class="text-xl font-bold text-blue-700 dark:text-yellow-200">Bachelor of Engineering in Computer Engineering</h3>
+                                <span class="date-badge bg-blue-100 dark:bg-yellow-900 text-blue-700 dark:text-yellow-200 px-3 py-1 rounded-full font-semibold">Jun 2017 – Jun 2020</span>
                             </div>
                             <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Pune University - Pune, India</h4>
                             <p class="text-gray-600 dark:text-gray-300 text-sm">GPA: 3.6</p>
                         </div>
                     </div>
-                    <div class="timeline-item">
+                    <div class="timeline-item rounded-2xl bg-white dark:bg-[#23272f] border-2 border-blue-200 dark:border-yellow-400 shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300 fade-in p-8">
                         <div>
-                            <h3 class="text-xl font-semibold mb-4">Certifications</h3>
-                            <div class="space-y-3 text-sm">
+                            <h3 class="text-xl font-bold mb-4 text-blue-700 dark:text-yellow-200">Certifications</h3>
+                            <div class="space-y-3 text-base">
                                 <div>
-                                    <h4 class="font-medium text-gray-800">Google</h4>
-                                    <p class="text-gray-600">Prompt Design in Vertex AI, Digital Marketing, Online Marketing Fundamentals</p>
+                                    <h4 class="font-semibold text-gray-800 dark:text-yellow-100">Google</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">Prompt Design in Vertex AI, Digital Marketing, Online Marketing Fundamentals</p>
                                 </div>
                                 <div>
-                                    <h4 class="font-medium text-gray-800">IBM</h4>
-                                    <p class="text-gray-600">Cybersecurity Fundamentals, Data Fundamentals (SQL/NoSQL), Explore Emerging Tech (AI), Fundamentals of Sustainability and Technology</p>
+                                    <h4 class="font-semibold text-gray-800 dark:text-yellow-100">IBM</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">Cybersecurity Fundamentals, Data Fundamentals (SQL/NoSQL), Explore Emerging Tech (AI), Fundamentals of Sustainability and Technology</p>
                                 </div>
                                 <div>
-                                    <h4 class="font-medium text-gray-800">Cisco</h4>
-                                    <p class="text-gray-600">Networking Basics (OSPF/BGP), CCNP (Routing & Switching)</p>
+                                    <h4 class="font-semibold text-gray-800 dark:text-yellow-100">Cisco</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">Networking Basics (OSPF/BGP), CCNP (Routing & Switching)</p>
                                 </div>
                                 <div>
-                                    <h4 class="font-medium text-gray-800">Microsoft</h4>
-                                    <p class="text-gray-600">JavaScript Programming</p>
+                                    <h4 class="font-semibold text-gray-800 dark:text-yellow-100">Microsoft</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">JavaScript Programming</p>
                                 </div>
                             </div>
                         </div>
@@ -269,8 +269,8 @@
                 </div>
             </div>
         </section>
-
-        <section id="contact" class="py-20 md:py-24 bg-gray-50 dark:bg-[#18181b] fade-in">
+        <!-- Contact: alternate to dark:bg-[#23272f] for contrast -->
+        <section id="contact" class="py-20 md:py-24 bg-gray-50 dark:bg-[#23272f] fade-in">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Get In Touch</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -353,7 +353,7 @@
                 </div>
             </div>
         </section>
-        <footer class="bg-white dark:bg-[#23272f] text-gray-500 dark:text-gray-300 py-12 border-t border-gray-200 dark:border-[#31313a]">
+        <footer class="bg-white/80 dark:bg-[#18181b]/90 text-black dark:text-white py-12 border-t border-gray-200 dark:border-[#23272f]">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-between items-center text-sm">
                     <div class="mb-4 md:mb-0">
@@ -446,13 +446,17 @@
             themeToggleIcon.classList.remove('fa-moon');
             themeToggleIcon.classList.add('fa-sun');
             themeToggleIcon.classList.remove('text-gray-700');
-            themeToggleIcon.classList.add('text-yellow-300');
+            themeToggleIcon.classList.add('text-yellow-400');
+            themeToggleIcon.classList.add('fa-solid');
+            themeToggleIcon.classList.remove('fa-regular');
         } else {
             htmlEl.classList.remove('dark');
             themeToggleIcon.classList.remove('fa-sun');
             themeToggleIcon.classList.add('fa-moon');
-            themeToggleIcon.classList.remove('text-yellow-300');
+            themeToggleIcon.classList.remove('text-yellow-400');
             themeToggleIcon.classList.add('text-gray-700');
+            themeToggleIcon.classList.add('fa-regular');
+            themeToggleIcon.classList.remove('fa-solid');
         }
     }
     setInitialTheme();
@@ -463,7 +467,9 @@
         themeToggleIcon.classList.toggle('fa-moon', !isDark);
         themeToggleIcon.classList.toggle('fa-sun', isDark);
         themeToggleIcon.classList.toggle('text-gray-700', !isDark);
-        themeToggleIcon.classList.toggle('text-yellow-300', isDark);
+        themeToggleIcon.classList.toggle('text-yellow-400', isDark);
+        themeToggleIcon.classList.toggle('fa-solid', isDark);
+        themeToggleIcon.classList.toggle('fa-regular', !isDark);
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
     });
     </script>
