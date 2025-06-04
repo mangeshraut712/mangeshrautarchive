@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuClose = document.getElementById('menu-close');
     const overlayMenu = document.getElementById('overlay-menu');
     const body = document.body;
-    const visitorCountSpan = document.getElementById('visitor-count'); // Get the span for count
 
     // --- Overlay Menu Toggle ---
     if (menuToggle && overlayMenu && menuClose) {
@@ -47,49 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // --- Firestore Visitor Counter ---
-    const updateFirestoreVisitorCount = () => {
-        if (!visitorCountSpan) return;
-        if (typeof firebase === 'undefined' || !firebase.firestore) {
-            console.warn("Firebase Firestore not available for visitor count.");
-            visitorCountSpan.textContent = 'N/A';
-            return;
-        }
-
-        const db = firebase.firestore();
-        const counterRef = db.collection('visitorCounts').doc('mainCounter');
-
-        // Atomically increment the count by 1 on every page load
-        counterRef.set({
-            count: firebase.firestore.FieldValue.increment(1)
-        }, { merge: true })
-        .then(() => {
-            // After increment, fetch the updated count
-            counterRef.get()
-                .then((doc) => {
-                    let currentCount = 1;
-                    if (doc.exists && typeof doc.data().count === 'number') {
-                        currentCount = doc.data().count;
-                    }
-                    visitorCountSpan.style.opacity = '0';
-                    setTimeout(() => {
-                        visitorCountSpan.textContent = currentCount < 1000 ? currentCount.toString() : currentCount.toLocaleString();
-                        visitorCountSpan.style.opacity = '1';
-                    }, 150);
-                })
-                .catch((error) => {
-                    console.error("Error fetching visitor count:", error);
-                    visitorCountSpan.textContent = '1';
-                });
-        })
-        .catch((error) => {
-            console.error("Error incrementing visitor count:", error);
-            visitorCountSpan.textContent = '1';
-        });
-    };
-
-    updateFirestoreVisitorCount(); // Call the new function
 
     // --- Form submission ---
     const form = document.getElementById('contact-form');
