@@ -1,12 +1,31 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow anyone to create, read, update, or delete messages for testing
+    // Rules for contact form messages
     match /messages/{messageId} {
-      allow write: if true; // Allows unauthenticated writes for testing
-      allow read: if true;  // Allows reads for testing if needed
+      allow create: if true; // Anyone can send a message
+      allow read: if false; // Default to false, or implement admin-only access
+      allow update: if false;
+      allow delete: if false;
     }
-    // Keep other collections restricted
+
+    // Rules for visitor counter
+    match /visitorCounts/mainCounter {
+      allow read: if true; // Anyone can read the visitor count
+      // Allow write only if the request is an increment of the 'count' field by 1,
+      // or if the document is being created for the first time.
+      // This provides some protection against arbitrary writes while still allowing client-side increment.
+      allow write: if request.resource.data.count == resource.data.count + 1 ||
+                      (request.resource.data.count == 1 && !exists(path));
+      // A more secure approach would be to use a Cloud Function to handle increments.
+      // For this portfolio, direct client write with this rule is a simpler setup.
+      // allow update: if request.resource.data.keys().hasOnly(['count']) && 
+      //                  request.resource.data.count == resource.data.count + 1;
+      // allow create: if request.resource.data.keys().hasOnly(['count']) &&
+      //                  request.resource.data.count == 1;
+    }
+
+    // Fallback for any other collections - deny all access
     match /{document=**} {
       allow read, write: if false;
     }

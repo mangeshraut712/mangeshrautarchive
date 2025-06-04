@@ -1,52 +1,58 @@
 /* filepath: /Users/mangeshraut/http-mangeshrautarchive.github.io-/css/style.css */
 /* Base & Typography */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #1d1d1f;
-    background-color: #ffffff;
-    font-size: 17px;
-    line-height: 1.6;
+    color: #222225; /* Slightly softer black */
+    background-color: #f9f9f9; /* Light gray background */
+    font-size: 18px; /* Slightly increased base font size */
+    line-height: 1.7; /* Increased line height for readability */
     overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    color: #1d1d1f;
-    line-height: 1.3;
+    font-weight: 700; /* Bolder headings */
+    color: #1a1a1c; /* Darker heading color */
+    line-height: 1.2; /* Adjusted line height */
     margin-bottom: 0.75em;
 }
 
-h1 { font-size: 3.5rem; letter-spacing: -0.02em; }
-h2 { font-size: 2.5rem; letter-spacing: -0.015em; margin-bottom: 2.5rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.1rem; font-weight: 500; }
+h1 { font-size: 3.8rem; letter-spacing: -0.025em; } /* Slightly larger h1 */
+h2 { font-size: 2.8rem; letter-spacing: -0.02em; margin-bottom: 2.8rem; } /* Slightly larger h2 */
+h3 { font-size: 1.7rem; } /* Slightly larger h3 */
+h4 { font-size: 1.2rem; font-weight: 600; } /* Slightly larger and bolder h4 */
 
 p {
-    color: #333336;
-    margin-bottom: 1.25em;
-    max-width: 65ch;
+    color: #444448; /* Softer paragraph text color */
+    margin-bottom: 1.3em;
+    max-width: 68ch; /* Slightly wider max-width */
 }
 
 a {
-    color: #0066cc;
+    color: #0071e3; /* Existing blue, good for primary action */
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease, background-color 0.2s ease; /* Faster transition */
 }
 a:hover {
-    color: #0077ed;
-    text-decoration: underline;
+    color: #005bb5; /* Darker blue on hover */
+    text-decoration: none; /* Remove underline on hover for a cleaner look */
 }
 
 .menu-toggle-button {
     background: none;
     border: none;
     cursor: pointer;
-    /* Ensure it's clickable */
+    padding: 0.5rem; /* Add some padding for easier clicking */
     z-index: 101; /* Above overlay */
+    color: #333;
+    transition: color 0.3s ease;
 }
+.menu-toggle-button:hover {
+    color: #0071e3;
+}
+
 
 /* Overlay Menu */
 .overlay-menu {
@@ -55,278 +61,421 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.95); /* Adjust transparency */
-    backdrop-filter: blur(10px);
-    z-index: 100; /* Below toggle button initially */
+    background-color: rgba(249, 249, 249, 0.9); /* Slightly more opaque with new bg color */
+    backdrop-filter: blur(12px); /* Increased blur */
+    z-index: 100;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0s linear 0.4s;
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0s linear 0.3s; /* Smoother transition */
+    overflow-y: auto;
 }
 
 body.menu-open .overlay-menu {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.4s ease, visibility 0s linear 0s;
+    transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0s linear 0s;
 }
 
-/* Prevent body scroll when menu is open */
 body.menu-open {
     overflow: hidden;
 }
 
-/* Close Button */
 .menu-close-button {
     position: absolute;
-    top: 20px; /* Align vertically */
-    right: 20px; /* Align horizontally */
-    font-size: 2rem; /* Adjust size */
-    font-weight: 400; /* Normal weight for better appearance */
-    color: #6e6e73; /* Neutral color */
-    background: none;
+    top: 25px;
+    right: 25px;
+    font-size: 2.2rem; /* Larger close icon */
+    font-weight: 300; /* Lighter weight for a modern feel */
+    color: #555558;
+    background: transparent; /* No background */
     border: none;
     cursor: pointer;
-    line-height: 1;
-    padding: 10px;
-    border-radius: 50%; /* Add a circular background for better visibility */
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 12px;
+    border-radius: 50%;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .menu-close-button:hover {
-    color: #1d1d1f; /* Darker color on hover */
-    background-color: rgba(0, 0, 0, 0.1); /* Subtle background on hover */
+    color: #1a1a1c;
+    transform: rotate(90deg); /* Add a subtle rotation on hover */
 }
 
 .overlay-nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem; /* Space between links */
-    padding: 2rem; /* Add padding */
+    gap: 1.8rem; /* Increased gap */
+    padding: 2rem;
 }
 
 .overlay-nav-link {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Match body font or use display font */
-    font-size: 1.8rem; /* Adjust link size */
-    font-weight: 500;
-    color: #1d1d1f;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 2rem; /* Larger font size for overlay links */
+    font-weight: 600; /* Bolder links */
+    color: #222225;
     text-decoration: none;
-    transition: color 0.3s ease;
-    padding: 0.5rem 0; /* Add vertical padding */
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0.6rem 0;
 }
 .overlay-nav-link:hover {
-    color: #0071e3; /* Apple blue hover */
+    color: #0071e3;
     text-decoration: none;
+    transform: translateX(5px); /* Slight move effect on hover */
 }
 
 /* Buttons */
 .button-primary {
     display: inline-block;
-    padding: 10px 22px;
+    padding: 12px 28px; /* Increased padding */
     background-color: #0071e3;
     color: #fff;
-    font-size: 15px;
-    font-weight: 400;
-    border-radius: 980px;
-    border: 1px solid #0071e3;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1rem; /* Relative font size */
+    font-weight: 500; /* Medium weight */
+    border-radius: 12px; /* Modern rounded corners */
+    border: 1px solid transparent; /* Transparent border initially */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
-    text-decoration: none; /* Ensure no underline */
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
 }
 .button-primary:hover {
-    background-color: #0077ed;
-    border-color: #0077ed;
+    background-color: #005bb5; /* Darker blue */
+    border-color: transparent;
     text-decoration: none;
     color: #fff;
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Enhanced shadow on hover */
+}
+.button-primary:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .button-secondary {
     display: inline-block;
-    padding: 10px 22px;
+    padding: 12px 28px; /* Increased padding */
     background-color: transparent;
     color: #0071e3;
-    font-size: 15px;
-    font-weight: 400;
-    border-radius: 980px;
-    border: 1px solid #d2d2d7;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-size: 1rem; /* Relative font size */
+    font-weight: 500; /* Medium weight */
+    border-radius: 12px; /* Modern rounded corners */
+    border: 1px solid #c0c0c5; /* Lighter border */
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
-    text-decoration: none; /* Ensure no underline */
-}
-.button-secondary:hover {
-    background-color: rgba(0, 113, 227, 0.08);
-    border-color: #0071e3;
-    color: #0071e3;
     text-decoration: none;
 }
+.button-secondary:hover {
+    background-color: rgba(0, 113, 227, 0.05); /* Lighter hover background */
+    border-color: #0071e3;
+    color: #005bb5; /* Darker blue on hover */
+    text-decoration: none;
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Subtle shadow on hover */
+}
+.button-secondary:active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+
 
 /* Sections & Layout */
 section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 6rem; /* Adjusted padding */
+    padding-bottom: 6rem;
 }
 @media (min-width: 768px) {
     section {
-        padding-top: 7rem;
-        padding-bottom: 7rem;
+        padding-top: 8rem; /* Adjusted padding */
+        padding-bottom: 8rem;
     }
 }
-section h2 { /* Style for section titles */
-    font-size: 2.5rem; /* Match h2 definition */
-    letter-spacing: -0.015em;
-    margin-bottom: 4rem; /* More space below section titles */
-    text-align: center; /* Center section titles */
+
+/* Chatbot UI Styles */
+#chat-toggle {
+    /* Tailwind classes handle most of this: fixed bottom-8 right-8 bg-blue-600 ... */
+    /* Ensure it's above other content if necessary, though fixed positioning usually does this */
+    z-index: 1000; /* High z-index for visibility */
+}
+
+#chat-widget {
+    /* Tailwind classes handle most of this: hidden fixed bottom-24 right-8 ... */
+    /* Using transform for open/close animation, so initial state might be slightly off-screen or scaled down if preferred */
+    font-family: "Inter", sans-serif; /* Ensure consistent font */
+    z-index: 1010; /* Higher than toggle */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transitions */
+}
+
+#chat-widget.visible {
+    display: flex; /* It's a flex container */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+#chat-widget .chat-header h3 {
+    font-weight: 600; /* Match website h3 if needed, or keep specific */
+    color: #333; /* Darker text for header */
+}
+
+#chat-messages {
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #0071e3 #e0e0e0; /* scroll thumb and track */
+}
+
+#chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background-color: #0071e3;
+    border-radius: 10px;
+    border: 2px solid #f0f0f0; /* Creates padding around thumb */
+}
+
+.message-bubble {
+    padding: 0.75rem 1rem; /* 12px 16px */
+    border-radius: 12px;
+    max-width: 75%;
+    line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.message-bubble.user {
+    background-color: #E5E7EB; /* Tailwind gray-200 */
+    color: #1F2937; /* Tailwind gray-800 */
+    margin-left: auto; /* Align to right */
+}
+
+.message-bubble.bot {
+    background-color: #0071e3; /* Primary blue */
+    color: #ffffff;
+    margin-right: auto; /* Align to left */
+}
+
+#chat-input {
+    /* Tailwind classes used for basic styling */
+    /* Custom focus style if needed, though Tailwind's focus:ring-blue-500 is good */
+    font-size: 0.95rem;
+}
+
+#chat-send {
+    /* Tailwind classes used for basic styling */
+    /* Add transition for hover effect if not covered by Tailwind */
+    transition: background-color 0.2s ease;
+}
+#chat-send:hover i {
+    transform: translateX(2px); /* Slight icon move on hover */
+    transition: transform 0.2s ease;
+}
+
+
+/* Responsive adjustments for chat widget */
+@media (max-width: 500px) { /* max-w-md is 32rem = 512px, so this is for smaller than typical "md" */
+    #chat-widget {
+        width: calc(100% - 2rem); /* Full width with some margin */
+        max-width: none;
+        right: 1rem;
+        bottom: 1rem; /* Adjust position for mobile */
+        max-width: calc(100vh - 2rem); /* Take more screen height on mobile */
+        height: calc(100vh - 80px); /* Adjust based on toggle button and some spacing */
+        border-radius: 12px; /* Slightly less rounded for full-width feel */
+    }
+
+    #chat-toggle {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    #chat-messages {
+        padding: 0.75rem; /* Slightly less padding on mobile */
+    }
+    .message-bubble {
+        max-width: 85%; /* Allow slightly wider bubbles on mobile */
+    }
+
+    #chat-input {
+        padding: 0.8rem 1rem; /* Adjust padding for touch targets */
+    }
+    #chat-send {
+        padding: 0.8rem;
+    }
+}
+section h2 {
+    font-size: 2.8rem; /* Matches h2 definition */
+    letter-spacing: -0.02em;
+    margin-bottom: 4.5rem; /* More space below section titles */
+    text-align: center;
 }
 
 /* Cards (Projects) */
 .project-card {
-    background-color: #f5f5f7;
-    border: none;
-    border-radius: 18px;
-    box-shadow: none;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    overflow: hidden; /* Ensure content respects border radius */
+    background-color: #ffffff; /* White background for cards */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    overflow: hidden;
 }
 .project-card:hover {
-    transform: translateY(-5px);
-    background-color: #ededef;
+    transform: translateY(-8px); /* More pronounced lift */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
+    border-color: #0071e3; /* Highlight border on hover */
 }
 .project-card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5em;
+    font-size: 1.4rem; /* Slightly larger card title */
+    margin-bottom: 0.6em;
+    color: #1a1a1c;
 }
 .project-card p {
-    font-size: 0.95rem;
-    color: #555;
+    font-size: 1rem; /* Standardized paragraph size */
+    color: #555558; /* Softer text color */
+    line-height: 1.6;
 }
 .project-card .tag {
-    display: inline-block; /* Ensure tags behave correctly */
-    background-color: #e8e8ed;
-    color: #555;
-    font-size: 0.75rem;
-    font-weight: 500; /* Slightly bolder tags */
-    padding: 4px 10px;
-    border-radius: 10px;
-    margin-right: 5px; /* Add spacing between tags */
-    margin-bottom: 5px; /* Allow wrapping */
+    display: inline-block;
+    background-color: #0071e31a; /* Light blue background for tags, with alpha */
+    color: #005bb5; /* Darker blue text for tags */
+    font-size: 0.8rem; /* Slightly smaller tag text */
+    font-weight: 600; /* Bolder tags */
+    padding: 6px 12px; /* Adjusted padding */
+    border-radius: 8px; /* Rounded tags */
+    margin-right: 6px;
+    margin-bottom: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
+.project-card .tag:hover {
+    background-color: #0071e3;
+    color: #fff;
+}
+
 
 /* Experience/Education Lists */
 .timeline-item {
-    position: relative; /* Needed for pseudo-elements if added later */
-    border-left: 2px solid #e8e8ed;
-    padding-left: 1.5rem;
-    /* margin-bottom: 3rem; */ /* Handled by space-y in HTML */
+    position: relative;
+    border-left: 3px solid #d0d0d5; /* Slightly thicker border */
+    padding-left: 2rem; /* Increased padding */
 }
-.timeline-item > div { /* The inner container */
-    background-color: #f5f5f7;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: none;
+.timeline-item > div {
+    background-color: #ffffff; /* White background for timeline items */
+    padding: 2rem; /* Increased padding */
+    border-radius: 16px; /* More rounded corners */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* Subtle shadow */
+    border: 1px solid #e0e0e0;
 }
 .timeline-item h3 {
-    font-size: 1.3rem;
+    font-size: 1.4rem; /* Standardized heading size */
+    color: #1a1a1c;
 }
 .timeline-item h4 {
-    font-size: 1rem;
+    font-size: 1.05rem; /* Standardized subheading size */
     color: #333336;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.8rem;
 }
 .timeline-item ul {
-    font-size: 0.9rem;
-    color: #555;
-    list-style-position: outside; /* Ensure bullets are outside */
-    padding-left: 1rem; /* Indent list items relative to padding */
+    font-size: 0.95rem; /* Standardized list text */
+    color: #555558;
+    list-style-position: outside;
+    padding-left: 1.2rem;
 }
 .timeline-item ul li {
-    margin-bottom: 0.25rem; /* Space between bullet points */
+    margin-bottom: 0.3rem;
 }
 .timeline-item .date-badge {
-    color: #6e6e73;
-    font-size: 0.85rem;
-    font-weight: 400; /* Normal weight for dates */
+    color: #555558; /* Softer date color */
+    font-size: 0.9rem; /* Standardized date size */
+    font-weight: 500; /* Medium weight */
+    background-color: #f0f0f0; /* Light badge background */
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
 }
 
 /* Contact Form */
-/* Simplified selectors */
-#contact input,
+#contact input, /* Removed attribute selectors for wider application if needed */
 #contact textarea {
-    background-color: #f5f5f7;
-    border: 1px solid #d2d2d7;
-    border-radius: 12px;
-    padding: 12px 16px;
+    background-color: #ffffff; /* White input fields */
+    border: 1px solid #c0c0c5; /* Lighter border */
+    border-radius: 10px; /* Modern rounded corners */
+    padding: 14px 18px; /* Increased padding */
     font-size: 1rem;
-    color: #1d1d1f;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    width: 100%; /* Ensure inputs take full width */
+    color: #222225;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
 }
 #contact input:focus,
 #contact textarea:focus {
     border-color: #0071e3;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); /* Softer focus ring */
     outline: none;
 }
 #contact textarea {
-    resize: vertical; /* Allow vertical resize */
+    resize: vertical;
+    min-height: 120px; /* Minimum height for textarea */
 }
 
 .contact-social-links {
-    margin-top: 2rem;
+    margin-top: 2.5rem; /* Increased margin */
     display: flex;
-    gap: 1.5rem;
+    gap: 1.8rem; /* Increased gap */
     align-items: center;
 }
 .contact-social-links a {
-    color: #6e6e73;
-    font-size: 1.25rem; /* Adjusted icon size */
-    transition: color 0.3s ease;
+    color: #555558; /* Softer icon color */
+    font-size: 1.4rem; /* Larger icons */
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 .contact-social-links a:hover {
-    color: #1d1d1f;
+    color: #0071e3; /* Primary blue on hover */
+    transform: scale(1.1); /* Slight scale effect */
 }
-.contact-social-links img { /* Style for image icons like X */
-    width: 20px;
-    height: 20px;
+.contact-social-links img {
+    width: 22px; /* Slightly larger image icons */
+    height: 22px;
     object-fit: contain;
-    filter: grayscale(50%) contrast(80%);
-    opacity: 0.7;
-    transition: filter 0.3s ease, opacity 0.3s ease;
-    vertical-align: middle; /* Align image nicely with icons */
+    filter: grayscale(30%) contrast(90%); /* Less aggressive filter */
+    opacity: 0.8;
+    transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+    vertical-align: middle;
 }
 .contact-social-links a:hover img {
     filter: grayscale(0%) contrast(100%);
     opacity: 1;
+    transform: scale(1.1); /* Slight scale effect */
 }
 
 
 /* Footer */
 footer {
-    background-color: #f5f5f7;
-    color: #6e6e73;
-    border-top: 1px solid #d2d2d7;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    background-color: #ffffff; /* White footer */
+    color: #555558; /* Softer footer text */
+    border-top: 1px solid #e0e0e0; /* Lighter border */
+    padding-top: 2.5rem; /* Increased padding */
+    padding-bottom: 2.5rem;
 }
 footer a {
-    color: #555;
-    transition: color 0.3s ease;
+    color: #444448; /* Softer link color */
+    transition: color 0.2s ease;
 }
 footer a:hover {
-    color: #000;
+    color: #0071e3; /* Primary blue on hover */
     text-decoration: none;
 }
-footer .fab, footer .fas { /* Target Font Awesome icons in footer */
-     font-size: 1.1rem; /* Adjust footer icon size */
+footer .fab, footer .fas {
+     font-size: 1.2rem; /* Slightly larger footer icons */
 }
-footer img { /* Ensure footer images inherit color changes */
-    filter: grayscale(50%) contrast(80%);
-    opacity: 0.7;
-    transition: filter 0.3s ease, opacity 0.3s ease;
-    vertical-align: middle; /* Align image nicely with icons */
+footer img {
+    filter: grayscale(30%) contrast(90%);
+    opacity: 0.8;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+    vertical-align: middle;
 }
  footer a:hover img {
     filter: grayscale(0%) contrast(100%);
@@ -337,11 +486,186 @@ footer img { /* Ensure footer images inherit color changes */
 /* Animation */
 .fade-in {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(25px); /* Slightly less translation */
+    transition: opacity 0.7s cubic-bezier(0.33, 1, 0.68, 1), transform 0.7s cubic-bezier(0.33, 1, 0.68, 1); /* Smoother ease-out cubic bezier */
 }
 
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Responsive adjustments for smaller screens if needed */
+@media (max-width: 768px) {
+    h1 { font-size: 2.8rem; }
+    h2 { font-size: 2.2rem; }
+    h3 { font-size: 1.5rem; }
+
+    .project-card h3 {
+        font-size: 1.25rem;
+    }
+    .project-card p {
+        font-size: 0.95rem;
+    }
+
+    .overlay-nav-link {
+        font-size: 1.8rem; /* Adjust for smaller screens */
+    }
+
+    #contact input,
+    #contact textarea {
+        padding: 12px 16px; /* Adjust padding for smaller screens */
+    }
+}
+
+/* --- Improved Dark Mode Styles --- */
+html.dark {
+    background-color: #18181b;
+}
+body.dark,
+html.dark body {
+    background-color: #18181b;
+    color: #f3f4f6;
+}
+
+/* Headings in dark mode */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+    color: #f3f4f6 !important;
+}
+
+/* Paragraphs in dark mode */
+.dark p,
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-black {
+    color: #d1d5db !important;
+}
+
+/* Section backgrounds */
+.dark .bg-white { background-color: #23272f !important; }
+.dark .bg-gray-50 { background-color: #18181b !important; }
+
+/* Project cards and timeline items */
+.dark .project-card,
+.dark .timeline-item > div {
+    background-color: #23272f !important;
+    border-color: #2d2d34 !important;
+    color: #f3f4f6 !important;
+}
+.dark .project-card h3,
+.dark .timeline-item h3,
+.dark .timeline-item h4 {
+    color: #f3f4f6 !important;
+}
+.dark .project-card p,
+.dark .timeline-item ul,
+.dark .timeline-item ul li {
+    color: #d1d5db !important;
+}
+.dark .project-card .tag {
+    background-color: #0071e340 !important;
+    color: #60a5fa !important;
+}
+.dark .project-card .tag:hover {
+    background-color: #0071e3 !important;
+    color: #fff !important;
+}
+
+/* Overlay menu */
+.dark .overlay-menu {
+    background-color: rgba(24, 24, 27, 0.95) !important;
+}
+.dark .overlay-nav-link {
+    color: #f3f4f6 !important;
+}
+.dark .overlay-nav-link:hover {
+    color: #60a5fa !important;
+}
+
+/* Footer */
+.dark footer {
+    background-color: #23272f !important;
+    color: #a1a1aa !important;
+}
+.dark footer a {
+    color: #d1d5db !important;
+}
+.dark footer a:hover {
+    color: #60a5fa !important;
+}
+.dark footer .fab, .dark footer .fas {
+    color: #d1d5db !important;
+}
+
+/* Chatbot */
+.dark #chat-widget,
+.dark #chat-toggle {
+    background-color: #23272f !important;
+    color: #f3f4f6 !important;
+}
+.dark #chat-widget .bg-blue-500 {
+    background-color: #2563eb !important;
+}
+.dark #chat-widget .bg-gray-200 {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+.dark #chat-widget .bg-white {
+    background-color: #23272f !important;
+}
+.dark #chat-messages {
+    background-color: #18181b !important;
+}
+.dark .message-bubble.user {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+}
+.dark .message-bubble.bot {
+    background-color: #2563eb !important;
+    color: #fff !important;
+}
+
+/* Inputs and forms */
+.dark #contact input,
+.dark #contact textarea {
+    background-color: #23272f !important;
+    color: #f3f4f6 !important;
+    border-color: #2d2d34 !important;
+}
+.dark #contact input:focus,
+.dark #contact textarea:focus {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15) !important;
+}
+
+/* Timeline badge */
+.dark .timeline-item .date-badge {
+    background-color: #23272f !important;
+    color: #a1a1aa !important;
+}
+
+/* Button styles */
+.dark .button-primary {
+    background-color: #2563eb !important;
+    color: #fff !important;
+}
+.dark .button-primary:hover {
+    background-color: #1d4ed8 !important;
+}
+.dark .button-secondary {
+    background-color: transparent !important;
+    color: #60a5fa !important;
+    border-color: #374151 !important;
+}
+.dark .button-secondary:hover {
+    background-color: #2563eb22 !important;
+    color: #fff !important;
+    border-color: #2563eb !important;
+}
+
+/* ...existing code... */
