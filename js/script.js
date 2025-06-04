@@ -1,4 +1,3 @@
-// filepath: /Users/mangeshraut/http-mangeshrautarchive.github.io-/js/script.js
 document.addEventListener('DOMContentLoaded', () => {
 
     const menuToggle = document.getElementById('menu-btn');
@@ -49,29 +48,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Simple Local Visitor Counter ---
-    const updateLocalVisitorCount = () => {
-        const visitedFlag = 'portfolioVisited';
-        const countKey = 'portfolioVisitorCount';
-        let currentCount = parseInt(localStorage.getItem(countKey) || '1', 10); // Start from 1 if no count exists
-
-        if (!sessionStorage.getItem(visitedFlag)) { // Use sessionStorage to count only once per session
-            sessionStorage.setItem(visitedFlag, 'true');
-            currentCount++; // Increment count only for new sessions
-            localStorage.setItem(countKey, currentCount.toString()); // Store the updated count
+    // --- Firestore Visitor Counter ---
+    const updateFirestoreVisitorCount = () => {
+        if (!visitorCountSpan) return;
+        if (typeof firebase === 'undefined' || !firebase.firestore) {
+            console.warn("Firebase Firestore not available for visitor count.");
+            visitorCountSpan.textContent = 'N/A';
+            return;
         }
 
-        if (visitorCountSpan) {
-            // Animate the count display slightly
-            visitorCountSpan.style.opacity = '0';
-            setTimeout(() => {
-                visitorCountSpan.textContent = currentCount < 1000 ? currentCount.toString() : currentCount.toLocaleString(); // Display the count
-                visitorCountSpan.style.opacity = '1';
-            }, 150);
-        }
+        const db = firebase.firestore();
+        const counterRef = db.collection('visitorCounts').doc('mainCounter');
+
+        // Atomically increment the count by 1 on every page load
+        counterRef.set({
+            count: firebase.firestore.FieldValue.increment(1)
+        }, { merge: true })
+        .then(() => {
+            // After increment, fetch the updated count
+            counterRef.get()
+                .then((doc) => {
+                    let currentCount = 1;
+                    if (doc.exists && typeof doc.data().count === 'number') {
+                        currentCount = doc.data().count;
+                    }
+                    visitorCountSpan.style.opacity = '0';
+                    setTimeout(() => {
+                        visitorCountSpan.textContent = currentCount < 1000 ? currentCount.toString() : currentCount.toLocaleString();
+                        visitorCountSpan.style.opacity = '1';
+                    }, 150);
+                })
+                .catch((error) => {
+                    console.error("Error fetching visitor count:", error);
+                    visitorCountSpan.textContent = 'N/A';
+                });
+        })
+        .catch((error) => {
+            console.error("Error incrementing visitor count:", error);
+            visitorCountSpan.textContent = 'N/A';
+        });
     };
 
-    updateLocalVisitorCount(); // Call the function to update and display the count
+    updateFirestoreVisitorCount(); // Call the new function
 
     // --- Form submission ---
     const form = document.getElementById('contact-form');
@@ -91,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Replace with actual form submission logic (e.g., Firebase)
             console.log('Form Data:', { name, email, subject, message });
 
-            if (typeof db !== 'undefined') { // Check if Firebase db is available
+            if (typeof firebase !== 'undefined' && firebase.firestore) { // Check if Firebase db is available
+                const db = firebase.firestore();
                 db.collection('messages').add({
                     name: name, email: email, subject: subject, message: message,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -132,5 +151,61 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeElements.forEach(element => {
         observerAnimate.observe(element);
     });
+
+    // --- Chatbot UI Logic ---
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWidget = document.getElementById('chat-widget');
+    const chatClose = document.getElementById('chat-close');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+
+    if (chatToggle && chatWidget && chatClose && chatMessages && chatInput && chatSend) {
+        chatToggle.addEventListener('click', () => {
+            chatWidget.classList.remove('hidden');
+            setTimeout(() => {
+                chatWidget.classList.remove('translate-y-8', 'opacity-0');
+                chatWidget.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWidget.classList.add('translate-y-8', 'opacity-0');
+            setTimeout(() => {
+                chatWidget.classList.add('hidden');
+            }, 300);
+        });
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function appendMessage(text, isUser) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isUser ? 'flex justify-end mb-3' : 'flex mb-3';
+            msgDiv.innerHTML = `<div class="${isUser ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'} p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            appendMessage(text, true);
+            chatInput.value = '';
+            appendMessage('...', false);
+
+            // Since backend/AI is removed, show a coming soon message
+            setTimeout(() => {
+                chatMessages.removeChild(chatMessages.lastChild);
+                appendMessage(
+                    "AI-powered chat is a coming soon feature! Stay tuned for smart answers about Mangesh's profile.",
+                    false
+                );
+            }, 600);
+        }
+    }
+    // --- End Chatbot UI Logic ---
 
 }); // End DOMContentLoaded
