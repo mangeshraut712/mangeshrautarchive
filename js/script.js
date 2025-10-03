@@ -326,29 +326,33 @@ function initScript() {
             }
         }
 
-        // --- Fallback: Try to solve as a math problem ---
-        try {
-            // Ensure math.js is loaded
-            if (typeof math === 'undefined') {
-                throw new Error("Math.js library not loaded.");
-            }
+        // --- Fallback: Try to solve as a math problem, otherwise general query ---
+    try {
+        // Ensure math.js is loaded
+        if (typeof math === 'undefined') {
+            throw new Error("Math.js library not loaded.");
+        }
 
-            const result = math.evaluate(command);
-            // Check if the result is something that can be displayed
-            if (result !== undefined && typeof result !== 'function') {
-                speakAndDisplay(math.format(result, { precision: 14 }));
-            } else {
-                throw new Error("Cannot evaluate expression.");
-            }
-        } catch (error) {
-            // If math evaluation fails, provide a fallback response
-            console.error("Math evaluation error:", error);
+        const result = math.evaluate(command);
+        // Check if the result is something that can be displayed
+        if (result !== undefined && typeof result !== 'function') {
+            speakAndDisplay(math.format(result, { precision: 14 }));
+        } else {
+            throw new Error("Cannot evaluate expression.");
+        }
+    } catch (mathError) {
+        // If math evaluation fails, try general question via DuckDuckGo
+        console.error("Math evaluation error:", mathError);
+        try {
+            await getImprovedAnswer(command);
+        } catch (generalError) {
             speakAndDisplay(`Sorry, I couldn't process that. Please ask me about Mangesh, or try a math calculation.`);
         }
     }
+    }
 
     // --- Initial greeting ---
-    addMessageToChat('assistant', 'Hello! I am AssistMe, an AI assistant for this portfolio. You can ask me about Mangesh or try a calculation.');
+    addMessageToChat('assistant', 'Greetings! Welcome to AssistMe, your intelligent AI assistant! Ask me about Mangesh, general knowledge, or perform calculations.');
 }
 
 // Run initScript when DOM is ready
