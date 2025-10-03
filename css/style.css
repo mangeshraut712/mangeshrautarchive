@@ -603,6 +603,15 @@ html.dark body {
 }
 
 /* Chatbot */
+.blinking {
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
 .dark #chat-widget,
 .dark #chat-toggle {
     background-color: #23272f !important;

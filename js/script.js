@@ -108,13 +108,30 @@ document.addEventListener('DOMContentLoaded', () => {
         observerAnimate.observe(element);
     });
 
-    // --- Chatbot UI Logic ---
+    // --- AssistMe Chatbot UI Logic ---
     const chatToggle = document.getElementById('chat-toggle');
     const chatWidget = document.getElementById('chat-widget');
     const chatClose = document.getElementById('chat-close');
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
+    const voiceToggle = document.createElement('input');
+    const stopVoiceBtn = document.createElement('button');
+
+    // Setup voice controls (append to chat header)
+    const chatHeader = document.querySelector('#chat-widget .chat-header h3');
+    if (chatHeader) {
+        voiceToggle.type = 'checkbox';
+        voiceToggle.id = 'voiceToggle';
+        voiceToggle.checked = true;
+        voiceToggle.style = 'margin-left: auto; accent-color: #2563eb;';
+        stopVoiceBtn.textContent = 'Stop Speaking';
+        stopVoiceBtn.id = 'stopVoiceBtn';
+        stopVoiceBtn.style = 'padding: 0.25rem 0.5rem; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; margin-left: 5px;';
+
+        chatHeader.appendChild(voiceToggle);
+        chatHeader.appendChild(stopVoiceBtn);
+    }
 
     if (chatToggle && chatWidget && chatClose && chatMessages && chatInput && chatSend) {
         chatToggle.addEventListener('click', () => {
@@ -132,36 +149,123 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 300);
         });
 
+        stopVoiceBtn.addEventListener('click', () => {
+            speechSynthesis.cancel();
+        });
+
         chatSend.addEventListener('click', sendMessage);
         chatInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
 
-        function appendMessage(text, isUser) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = isUser ? 'flex justify-end mb-3' : 'flex mb-3';
-            msgDiv.innerHTML = `<div class="${isUser ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'} p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
-            chatMessages.appendChild(msgDiv);
+        function addMessageToChat(sender, text, isThinking = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isThinking ? 'flex mb-3 blinking' : sender === 'user' ? 'flex justify-end mb-3' : 'flex mb-3';
+            if (!isThinking) {
+                messageDiv.innerHTML = `<div class="${sender === 'user' ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'} p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
+            } else {
+                messageDiv.innerHTML = `<div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
+            }
+            chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            return messageDiv;
+        }
+
+        function speakAndDisplay(text) {
+            const thinkingBubble = chatMessages.lastChild && chatMessages.lastChild.classList.contains('blinking');
+            if (thinkingBubble) {
+                chatMessages.removeChild(chatMessages.lastChild);
+            }
+            const msgDiv = addMessageToChat('AssistMe', text);
+            if (voiceToggle.checked) {
+                try {
+                    speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    speechSynthesis.speak(utterance);
+                } catch (error) {
+                    console.error('Error speaking:', error);
+                }
+            }
+        }
+
+        async function handleCommand(command) {
+            addMessageToChat('user', command);
+            chatInput.value = '';
+            await processCommand(command.toLowerCase().trim());
+        }
+
+        async function getImprovedAnswer(query) {
+            addMessageToChat('AssistMe', 'Thinking...', true);
+
+            let processedQuery = query.replace(/[.?!\s]+$/, '');
+
+            // Hardcoded knowledge for common queries
+            if (processedQuery.includes('who is mangesh') || processedQuery.includes('about mangesh')) {
+                speakAndDisplay('Mangesh Raut is a passionate Full Stack Developer and aspiring AI Engineer specializing in web development, machine learning, and innovative tech solutions. He has experience in React, Node.js, Firebase, and various AI tools. Check out his portfolio for more!');
+                return;
+            }
+            if (processedQuery.includes('what are your skills') || processedQuery.includes('skills')) {
+                speakAndDisplay('Mangesh specializes in full-stack development with expertise in React, JavaScript, Node.js, Firebase, machine learning, and AI technologies.');
+                return;
+            }
+            if (processedQuery.includes('who is steve jobs')) {
+                speakAndDisplay('Steve Jobs was an American entrepreneur, inventor, and industrial designer. He co-founded Apple Inc. and served as its CEO.');
+                return;
+            }
+            if (processedQuery.includes('ceo of apple')) {
+                speakAndDisplay('Tim Cook is the CEO of Apple Inc.');
+                return;
+            }
+            if (processedQuery.includes('contact') || processedQuery.includes('email')) {
+                speakAndDisplay('You can reach Mangesh via email at mangeshraut712@gmail.com or through the contact form on this website.');
+                return;
+            }
+
+            // Use Wikipedia for general knowledge
+            const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(processedQuery)}`;
+            try {
+                const response = await fetch(wikiUrl);
+                const data = await response.json();
+                if (data.extract && !data.extract.includes('may refer to') && data.extract.length > 10) {
+                    const sentences = data.extract.split('. ');
+                    speakAndDisplay(sentences[0] + (sentences[1] ? '. ' + sentences[1] + '.' : '.'));
+                    return;
+                }
+            } catch (error) {}
+
+            // Fallback
+            speakAndDisplay(`Sorry, I couldn't find information about "${query}". Feel free to ask about Mangesh's skills or experience!`);
+        }
+
+        async function processCommand(command) {
+            if (command === 'hello' || command === 'hi') {
+                speakAndDisplay("Hello! I'm AssistMe, Mangesh's personal assistant. How can I help you today?");
+            } else if (command === 'who are you') {
+                speakAndDisplay("I am AssistMe, Mangesh Raut's intelligent chatbot assistant. I can answer questions about Mangesh and general knowledge topics.");
+            } else if (command.includes('time')) {
+                const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+                speakAndDisplay(`The current time is ${time}.`);
+            } else if (command.includes('date')) {
+                const date = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                speakAndDisplay(`Today is ${date}.`);
+            } else if (command.includes('weather')) {
+                speakAndDisplay('Weather data requires an API. Focus on portfolio questions instead!');
+            } else if (command.includes('joke')) {
+                speakAndDisplay('Why did the developer go broke? Because he used up all his cache!');
+            } else {
+                await getImprovedAnswer(command);
+            }
         }
 
         async function sendMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
-            appendMessage(text, true);
-            chatInput.value = '';
-            appendMessage('...', false);
-
-            // Since backend/AI is removed, show a coming soon message
-            setTimeout(() => {
-                chatMessages.removeChild(chatMessages.lastChild);
-                appendMessage(
-                    "AI-powered chat is a coming soon feature! Stay tuned for smart answers about Mangesh's profile.",
-                    false
-                );
-            }, 600);
+            handleCommand(text);
         }
+
+        // Initialize
+        addMessageToChat('AssistMe', 'Hello! I am AssistMe, Mangesh Raut\'s personal AI assistant. Ask me about his skills, projects, or general knowledge!');
     }
-    // --- End Chatbot UI Logic ---
+    // --- End AssistMe Chatbot UI Logic ---
 
 }); // End DOMContentLoaded
