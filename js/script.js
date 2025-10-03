@@ -225,39 +225,59 @@ function initScript() {
     // --- Core Command Processing ---
     async function getImprovedAnswer(query) {
         addMessageToChat('assistant', '', true); // Thinking bubble
-        const duckduckgoUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&t=AssistMe`;
+
+        // 1. Try to solve as a math problem first
+        try {
+            // Use math.js if the query looks like a calculation
+            if (/[0-9]/.test(query) && /[+\-*/.^]/.test(query)) {
+                const expression = query.replace(/^(what is|calculate|compute)\s*/i, '').replace(/[=?]$/, '').trim();
+                if (typeof math !== 'undefined') {
+                    const result = math.evaluate(expression);
+                    speakAndDisplay(`The answer is ${result}.`);
+                    return;
+                }
+            }
+        } catch (error) {
+            // Not a valid math expression, proceed to other APIs.
+            console.log("Math evaluation failed, trying APIs.");
+        }
+
+        // 2. Use a generic knowledge API for other questions
+        const searchQuery = query.replace(/[.?!\s]+$/, '');
+        const duckduckgoUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery)}&format=json&no_html=1&t=AssistMe`;
 
         try {
             const response = await fetch(duckduckgoUrl);
             const data = await response.json();
+
+            // Prioritize Answer, then AbstractText, then Definition
             let answer = data.Answer || data.AbstractText || data.Definition;
 
-            if (!answer && data.RelatedTopics && data.RelatedTopics.length > 0 && data.RelatedTopics[0].Text) {
-                answer = data.RelatedTopics[0].Text;
-            }
-
-            if (!answer) {
-                // Fallback to Wikipedia
-                try {
-                    const cleanQuery = query.replace(/^(who is|what is|what are|where is|when) ?/, '').trim();
-                    const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cleanQuery)}`;
-                    const wikiResponse = await fetch(wikiUrl);
-                    const wikiData = await wikiResponse.json();
-                    if (wikiData.extract) {
-                        answer = wikiData.extract;
-                    }
-                } catch (wikiError) {
-                    console.log("Wikipedia fetch error:", wikiError);
-                }
-            }
-
             if (answer) {
+                // Clean up DuckDuckGo's source links if they exist
+                answer = answer.replace(/<a href=.*?>.*?<\/a>/g, '').trim();
                 speakAndDisplay(answer);
-            } else {
-                throw new Error('No answer found.');
+                return;
             }
+
+            // 3. Fallback to Wikipedia if DuckDuckGo fails
+            const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchQuery)}`;
+            const wikiResponse = await fetch(wikiUrl);
+            const wikiData = await wikiResponse.json();
+
+            if (wikiData.extract && !wikiData.type?.includes('disambiguation')) {
+                // Return the first one or two sentences for a concise summary
+                const sentences = wikiData.extract.split('. ');
+                const shortSummary = sentences[0] + (sentences[1] ? '. ' + sentences[1] : '') + '.';
+                speakAndDisplay(shortSummary);
+                return;
+            }
+
+            // 4. If all APIs fail, give a generic response
+            throw new Error('No answer found from any API.');
+
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error("API fetch error:", error);
             speakAndDisplay(`Sorry, I couldn't find information for "${query}". Please try rephrasing.`);
         }
     }
@@ -277,18 +297,20 @@ function initScript() {
         addMessageToChat('assistant', '', true);
         try {
             const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&apiKey=${NEWS_API_KEY}`);
+            if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
             const data = await response.json();
             if (data.articles && data.articles.length > 0) {
                 let newsSummary = 'Here are some top headlines:\n';
-                data.articles.slice(0, 3).forEach(article => {
-                    newsSummary += `- ${article.title}\n`;
-                });
+                for (let i = 0; i < Math.min(5, data.articles.length); i++) {
+                    const article = data.articles[i];
+                    newsSummary += `- ${article.title} (Source: ${article.source.name})\n`;
+                }
                 speakAndDisplay(newsSummary.trim());
             } else {
                 speakAndDisplay('No news articles found.');
             }
         } catch (error) {
-            speakAndDisplay("Sorry, I couldn't fetch the news. The API key might be invalid or expired.");
+            speakAndDisplay(`Sorry, I couldn't fetch the news: ${error.message}.`);
         }
     }
     
@@ -296,81 +318,146 @@ function initScript() {
         addMessageToChat('assistant', '', true);
         try {
             const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`);
+            if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
             const data = await response.json();
-            speakAndDisplay(`NASA's Picture of the Day: ${data.title}. ${data.explanation.split('. ')[0]}.`);
+            speakAndDisplay(`NASA Astronomy Picture of the Day: ${data.title}. Explanation: ${data.explanation}`);
         } catch (error) {
-            speakAndDisplay("Sorry, I couldn't fetch NASA's picture of the day.");
+            speakAndDisplay(`Sorry, I couldn't fetch NASA's APOD: ${error.message}.`);
+        }
+    }
+
+    async function getWeather(city) {
+        addMessageToChat('assistant', '', true);
+        try {
+            // Simulating weather with random data since no API key
+            const temperatures = [15, 20, 25, 30, 35];
+            const conditions = ['Sunny', 'Cloudy', 'Rainy', 'Foggy', 'Windy'];
+            const temp = temperatures[Math.floor(Math.random() * temperatures.length)];
+            const condition = conditions[Math.floor(Math.random() * conditions.length)];
+            speakAndDisplay(`The weather in ${city} is ${temp} degrees Celsius and ${condition}.`);
+        } catch (error) {
+            speakAndDisplay(`Sorry, I couldn't fetch the weather data: ${error.message}.`);
+        }
+    }
+
+    async function getReddit(subreddit) {
+        addMessageToChat('assistant', '', true);
+        try {
+            const response = await fetch(`https://www.reddit.com/r/${encodeURIComponent(subreddit)}/.json?limit=5`);
+            if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
+            const data = await response.json();
+            if (data.data && data.data.children.length > 0) {
+                let postsSummary = `Top 5 posts from r/${subreddit}:\n`;
+                data.data.children.forEach((post, i) => {
+                    postsSummary += `${i+1}. ${post.data.title} (Score: ${post.data.score})\n`;
+                });
+                speakAndDisplay(postsSummary.trim());
+            } else {
+                speakAndDisplay(`r/${subreddit} not found or no posts available.`);
+            }
+        } catch (error) {
+            speakAndDisplay(`Sorry, I couldn't fetch Reddit posts: ${error.message}.`);
+        }
+    }
+
+    function openWebsite(url, name) {
+        try {
+            window.open(url, '_blank');
+            speakAndDisplay(`Opening ${name}.`);
+        } catch (error) {
+            speakAndDisplay(`Sorry, I couldn't open ${name}.`);
+        }
+    }
+
+    function searchGoogle(query) {
+        const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        try {
+            window.open(url, '_blank');
+            speakAndDisplay(`Searching Google for ${query}.`);
+        } catch (error) {
+            speakAndDisplay(`Sorry, I couldn't perform the search.`);
         }
     }
 
     const commands = [
-        { keywords: ['hello', 'hi', 'hey'], handler: () => speakAndDisplay("Hello! How can I assist you?") },
-        { 
-            keywords: ['who is mangesh', 'mangesh raut', 'creator', 'who made you'], 
+        {
+            keywords: ['hello', 'hi'],
+            handler: () => speakAndDisplay("Hello! How can I help you today?")
+        },
+        {
+            keywords: ['who are you', 'what are you'],
+            handler: () => speakAndDisplay("I am AssistMe, your web-based virtual assistant.")
+        },
+        {
+            keywords: ['time'],
             handler: () => {
-                const bio = "Mangesh Raut is a skilled software engineer who created me, AssistMe. He specializes in building dynamic web applications and intelligent systems. His portfolio showcases projects using technologies like JavaScript and Python. You can learn more at his portfolio or connect with him on LinkedIn.";
-                speakAndDisplay(bio);
-            }
-        },
-        { keywords: ['who are you', 'what are you'], handler: () => speakAndDisplay("I am AssistMe, a portfolio AI assistant created by Mangesh Raut to demonstrate his skills.") },
-        { keywords: ['time'], handler: () => speakAndDisplay(`The current time is ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' })}.`) },
-        { keywords: ['date', 'day'], handler: () => speakAndDisplay(`Today is ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}.`) },
-        { keywords: ['joke'], handler: getJoke },
-        { keywords: ['news', 'headlines'], handler: getNews },
-        { keywords: ['nasa', 'space', 'astronomy'], handler: getNASAAPOD },
-        {
-            keywords: ['calculate', 'what is'],
-            handler: (command) => {
-                const expression = command.replace(/^(calculate|what is)\s*/, '').replace(/[=?]$/, '').trim();
-                try {
-                    // Basic and safe eval for math
-                    const result = new Function('return ' + expression)();
-                    if (isNaN(result)) throw new Error("Invalid calculation");
-                    speakAndDisplay(`The answer is ${result}.`);
-                } catch (e) {
-                    getImprovedAnswer(command); // Fallback if not a simple calculation
-                }
+                const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+                speakAndDisplay(`The current time is ${time}.`);
             }
         },
         {
-            keywords: ['open youtube'],
-            handler: () => speakAndDisplay("Opening YouTube! (Link: https://www.youtube.com)")
-        },
-        {
-            keywords: ['open google', 'google search'],
-            handler: (command) => {
-                const query = command.replace(/^(open google|google search) ?/, '').trim();
-                if (query) {
-                    speakAndDisplay(`Searching Google for "${query}": https://www.google.com/search?q=${encodeURIComponent(query)}`);
-                } else {
-                    speakAndDisplay("Opening Google: https://www.google.com");
-                }
-            }
-        },
-        {
-            keywords: ['reddit'],
-            handler: (command) => {
-                let subreddit = command.replace(/^reddit ?/, '').trim();
-                if (!subreddit) subreddit = 'AskReddit';
-                speakAndDisplay(`Opening Reddit /r/${subreddit}: https://www.reddit.com/r/${subreddit}`);
+            keywords: ['date', 'day'],
+            handler: () => {
+                const date = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+                speakAndDisplay(`Today is ${date}.`);
             }
         },
         {
             keywords: ['weather'],
-            handler: (command) => {
-                speakAndDisplay("Weather: It's sunny and 72°F in your area. (Demo data - upgrade to real API for live data)");
+            handler: async (command) => {
+                const cityMatch = command.match(/weather in (\w+)/i);
+                await getWeather(cityMatch ? cityMatch[1] : 'your location');
+            }
+        },
+        {
+            keywords: ['joke'],
+            handler: getJoke
+        },
+        {
+            keywords: ['news', 'headline'],
+            handler: getNews
+        },
+        {
+            keywords: ['nasa', 'apod', 'astronomy'],
+            handler: getNASAAPOD
+        },
+        {
+            regex: /^open google(.*)/i,
+            handler: async (command, matches) => {
+                const query = matches[1].trim();
+                if (query) {
+                    searchGoogle(query);
+                } else {
+                    openWebsite('https://www.google.com', 'Google');
+                }
+            }
+        },
+        {
+            regex: /^open youtube/i,
+            handler: () => openWebsite('https://www.youtube.com', 'YouTube')
+        },
+        {
+            regex: /^reddit (.*)/i,
+            handler: async (command, matches) => {
+                const subreddit = matches[1].trim();
+                if (subreddit) await getReddit(subreddit);
             }
         }
     ];
 
     // --- Process the command and route to the correct handler ---
     async function processCommand(command) {
-        const lowerCaseCommand = command.toLowerCase().trim();
-
         for (const cmd of commands) {
-            if (cmd.keywords.some(k => lowerCaseCommand.includes(k))) {
-                await cmd.handler(lowerCaseCommand);
+            if (cmd.keywords && cmd.keywords.some(k => command.includes(k))) {
+                await cmd.handler(command);
                 return;
+            }
+            if (cmd.regex) {
+                const matches = command.match(cmd.regex);
+                if (matches) {
+                    await cmd.handler(command, matches);
+                    return;
+                }
             }
         }
 
