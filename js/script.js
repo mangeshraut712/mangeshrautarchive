@@ -194,26 +194,93 @@ document.addEventListener('DOMContentLoaded', () => {
             await processCommand(command.toLowerCase().trim());
         }
 
+        async function getWikipediaSummary(query) {
+            const endpoint = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=true&explaintext=true&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=1&origin=*`;
+
+            try {
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
+                const data = await response.json();
+
+                const page = data.query?.pages ? Object.values(data.query.pages)[0] : null;
+                if (page && page.extract) {
+                    const firstSentence = page.extract.split('. ')[0] + '.';
+                    speakAndDisplay(firstSentence);
+                    return;
+                } else {
+                    throw new Error('No summary found on Wikipedia.');
+                }
+            } catch (error) {
+                speakAndDisplay(`Sorry, I ran into a problem: ${error.message}. Let me try a different approach.`);
+                // Simple Wikipedia REST API fallback
+                const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+                try {
+                    const response = await fetch(wikiUrl);
+                    const data = await response.json();
+                    if (data.extract) {
+                        const sentences = data.extract.split('. ');
+                        speakAndDisplay(sentences[0] + (sentences[1] ? '. ' + sentences[1] + '.' : '.'));
+                        return;
+                    }
+                } catch (error2) {}
+                speakAndDisplay(`Sorry, I couldn't find information about "${query}". Feel free to ask about Mangesh's skills or experience!`);
+            }
+        }
+
         async function getImprovedAnswer(query) {
             addMessageToChat('AssistMe', 'Thinking...', true);
 
             let processedQuery = query.replace(/[.?!\s]+$/, '');
 
             // Hardcoded knowledge for common queries
+            if (query.includes('when did the iphone released') || query.includes('released date of iphone')) {
+                speakAndDisplay('The first iPhone was released on June 29, 2007.');
+                return;
+            }
+            if (query.includes('who is steve jobs')) {
+                speakAndDisplay('Steve Jobs was an American entrepreneur, inventor, and industrial designer. He co-founded Apple Inc. and served as its CEO.');
+                return;
+            }
+            if (query.includes('who is president of usa') || query.includes('president of united states of america')) {
+                speakAndDisplay('Joe Biden is the current President of the United States.');
+                return;
+            }
+            if (query.includes('who is prime minister of india')) {
+                speakAndDisplay('Narendra Modi is the current Prime Minister of India.');
+                return;
+            }
+            if (query.includes('who is first president of india')) {
+                speakAndDisplay('Dr. Rajendra Prasad was the first President of India, serving from 1950 to 1962.');
+                return;
+            }
+            if (query.includes('who is ceo of apple')) {
+                speakAndDisplay('Tim Cook is the CEO of Apple Inc.');
+                return;
+            }
+            if (query.includes('which country has world most population') || query.includes('country with most population')) {
+                speakAndDisplay('India is the most populous country in the world, with approximately 1.42 billion people.');
+                return;
+            }
+            if (query.includes('what is tesla')) {
+                speakAndDisplay('Tesla, Inc. is an American electric vehicle and clean energy company based in Palo Alto, California.');
+                return;
+            }
+            if (query.includes('best selling car in the world')) {
+                speakAndDisplay('The Toyota Corolla is the best-selling car model in the world, with over 50 million sold.');
+                return;
+            }
+            if (query.includes('best electric car in the world')) {
+                speakAndDisplay('Tesla Model S is often considered one of the best electric cars in the world due to its performance and range.');
+                return;
+            }
+
+            // Portfolio-specific knowledge
             if (processedQuery.includes('who is mangesh') || processedQuery.includes('about mangesh')) {
                 speakAndDisplay('Mangesh Raut is a passionate Full Stack Developer and aspiring AI Engineer specializing in web development, machine learning, and innovative tech solutions. He has experience in React, Node.js, Firebase, and various AI tools. Check out his portfolio for more!');
                 return;
             }
             if (processedQuery.includes('what are your skills') || processedQuery.includes('skills')) {
                 speakAndDisplay('Mangesh specializes in full-stack development with expertise in React, JavaScript, Node.js, Firebase, machine learning, and AI technologies.');
-                return;
-            }
-            if (processedQuery.includes('who is steve jobs')) {
-                speakAndDisplay('Steve Jobs was an American entrepreneur, inventor, and industrial designer. He co-founded Apple Inc. and served as its CEO.');
-                return;
-            }
-            if (processedQuery.includes('ceo of apple')) {
-                speakAndDisplay('Tim Cook is the CEO of Apple Inc.');
                 return;
             }
             if (processedQuery.includes('contact') || processedQuery.includes('email')) {
@@ -225,20 +292,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Use Wikipedia for general knowledge
-            const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(processedQuery)}`;
-            try {
-                const response = await fetch(wikiUrl);
-                const data = await response.json();
-                if (data.extract && !data.extract.includes('may refer to') && data.extract.length > 10) {
-                    const sentences = data.extract.split('. ');
-                    speakAndDisplay(sentences[0] + (sentences[1] ? '. ' + sentences[1] + '.' : '.'));
-                    return;
-                }
-            } catch (error) {}
-
-            // Fallback
-            speakAndDisplay(`Sorry, I couldn't find information about "${query}". Feel free to ask about Mangesh's skills or experience!`);
+            // Default to Wikipedia search for general questions
+            await getWikipediaSummary(processedQuery);
         }
 
         async function processCommand(command) {
