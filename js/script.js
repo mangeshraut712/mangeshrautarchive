@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initScript() {
 
     const menuToggle = document.getElementById('menu-btn');
     const menuClose = document.getElementById('menu-close');
@@ -116,9 +116,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatCloseBtn = document.getElementById('chat-close');
     const speakButton = document.getElementById('speakButton');
 
+    // Voice elements
+    const voiceToggle = document.getElementById('voiceToggle');
+    const stopVoiceBtn = document.getElementById('stopVoiceBtn');
+
     if (!commandInput || !chatMessages) return;
 
-    // Voice controls appended in HTML
+    // Declare recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+    if (recognition) {
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.onend = () => speakButton.classList.remove('listening');
+        recognition.onerror = (event) => addMessageToChat('AssistMe', `Speech Error: ${event.error}. Please check microphone permissions.`);
+        recognition.onresult = (event) => handleCommand(event.results[0][0].transcript);
+    }
 
     chatToggleBtn.addEventListener('click', () => {
         const chatWidget = document.getElementById('chat-widget');
@@ -166,6 +180,36 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return;
         handleCommand(text);
     });
+
+    function addMessageToChat(sender, text, isThinking = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = isThinking ? 'flex mb-3 blinking' : sender === 'user' ? 'flex justify-end mb-3' : 'flex mb-3';
+        if (!isThinking) {
+            messageDiv.innerHTML = `<div class="${sender === 'user' ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'} p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
+        } else {
+            messageDiv.innerHTML = `<div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
+        }
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return messageDiv;
+    }
+
+    function speakAndDisplay(text) {
+        const thinkingBubble = chatMessages.lastChild && chatMessages.lastChild.classList.contains('blinking');
+        if (thinkingBubble) {
+            chatMessages.removeChild(chatMessages.lastChild);
+        }
+        const msgDiv = addMessageToChat('AssistMe', text);
+        if (voiceToggle && voiceToggle.checked) {
+            try {
+                speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                speechSynthesis.speak(utterance);
+            } catch (error) {
+                console.error('Error speaking:', error);
+            }
+        }
+    }
 
     async function getWikipediaSummary(query) {
         // Use Wikipedia REST API for reliable summaries
@@ -345,4 +389,11 @@ document.addEventListener('DOMContentLoaded', () => {
     addMessageToChat('AssistMe', "Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
     // --- End AssistMe Chatbot UI Logic ---
 
-}); // End DOMContentLoaded
+}
+
+// Run initScript when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScript);
+} else {
+    initScript();
+}
