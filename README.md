@@ -1,119 +1,68 @@
-<<<<<<< Website to open and see >>>>>>>
-# [http-mangeshrautarchive.github.io-](https://mangeshraut712.github.io/mangeshrautarchive/)
+# AssistMe-Virtual-Assistant
+AssistMe is a web-based virtual assistant developed using HTML, CSS, and JavaScript. It provides a range of features including voice commands, current time and date display, simulated weather updates, random jokes, website opening, and comprehensive question answering for general knowledge. The app uses free APIs (Wikipedia, DuckDuckGo, Official Joke API) for accurate information without requiring API keys. It's designed for ease of use, with an Apple-inspired UI, dark mode support, and full voice input/output capabilities.
 
-README.md
+The project demonstrates advanced front-end skills including asynchronous programming with fetch API, DOM manipulation, speech recognition and synthesis, local storage for preferences, and graceful error handling. It's fully self-contained and runs in any modern web browser.
 
-Mangesh Raut Portfolio Website
-Welcome to the source code for Mangesh Raut's Portfolio Website. This project showcases my professional journey, skills, projects, and contact information in a clean and responsive design.
+## Features
+- **Voice Command Support** (Web Speech API for speech-to-text and text-to-speech)
+- **Real-Time Information** (Current time, date, and formatted responses)
+- **Weather Information** (Simulated for demonstration; can be upgraded to real APIs)
+- **Entertainment** (Random jokes from free APIs)
+- **Web Integration** (Opens Google, YouTube, and performs Google searches)
+- **Intelligent Q&A** (Answers general knowledge questions using multiple free sources)
+- **News Headlines** (Latest headlines from NewsAPI)
+- **NASA Astronomy Picture** (Daily astronomy picture and explanation from NASA API)
+- **Reddit Integration** (Fetch top posts from subreddits)
+- **Mathematics** (Advanced arithmetic and calculations using MathJS library)
+- **Dark Mode Toggle** (Persistent theme preference with localStorage)
+- **Responsive Design** (Mobile-friendly interface)
+- **No Dependencies** (Pure HTML/CSS/JS, APIs with built-in keys)
 
-Features
+## Prerequisites
+- Modern web browser with Web Speech API support (Chrome, Safari, Firefox)
+- Internet connection for API calls (optional for offline features)
+- For full voice features: Serve files via HTTP (localhost) due to browser security policies
 
-Responsive Design: Fully responsive layout for all devices (desktop, tablet, and mobile).
-Smooth Navigation: Includes a toggleable menu with smooth scrolling to sections.
-Visitor Counter: Tracks unique visitors using localStorage and sessionStorage.
-Contact Form: Functional contact form for users to send messages.
-Modern UI: Built with Tailwind CSS and Font Awesome for a clean and modern look.
-Projects Section: Highlights key projects with descriptions and tags.
-Skills & Experience: Displays technical skills, work experience, and education details.
-Social Links: Easy access to LinkedIn, GitHub, YouTube, and other platforms.
-AI Chatbot AssistMe: Interactive chatbot with voice controls, answering questions about Mangesh and general knowledge.
+## Installation and Usage
+1. **Download the Files**: Ensure you have `index.html`, `style.css`, and `script.js` in the same directory.
+2. **Run the Application**:
+   - **Option 1 (Recommended for full features)**: Serve via local HTTP server to enable speech features.
+     - Using Python: Run `python3 -m http.server 8000` (or `python -m http.server` if using Python 2)
+     - Open `http://localhost:8000/index.html` in your browser.
+   - **Option 2 (Basic features only)**: Open `index.html` directly in browser (speech features may not work).
+3. **Interact with AssistMe**:
+   - Type commands in the input field or use the microphone button for voice input.
+   - Toggle voice output with the "Voice" checkbox.
+   - Use the dark mode button (moon/sun icon) to switch themes.
 
-Technologies Used
+## Command Examples
+- Basic Replies: "hello", "hi", "who are you", "what are you"
+- Time/Date: "time", "what time is it?", "date", "what date is today?", "which day is today?"
+- Information: "weather in [city]", "tell me a joke", "open youtube", "open google [query]"
+- News & Space: "news", "nasa apod", "astronomy picture", "reddit AskReddit"
+- Calculations: "what is 5 + 5?", "2 * (3 + 4)", "sqrt(16)"
+- General Knowledge: "who is [person]?", "what is [topic]?", "when was [event]?", etc.
+- Any general question not covered above will be answered using online knowledge bases.
 
-HTML5: Semantic and accessible markup.
-CSS3: Custom styles with Tailwind CSS for responsiveness.
-JavaScript: Interactive features like menu toggling, smooth scrolling, visitor counter, and AssistMe AI chatbot.
-Font Awesome: Icons for social links and navigation.
-Firebase (Optional): Used for visitor tracking (can be disabled).
-Wikipedia API: For general knowledge queries in the chatbot.
-Firebase (Optional): Used for visitor tracking (can be disabled).
+## Architecture
+- **index.html**: Main interface with chat layout and form elements
+- **style.css**: Apple-inspired CSS with CSS variables for light/dark themes
+- **script.js**: Main logic including command parsing, API integration, and speech handling
+  - Supports exact string matches and keyword includes for command recognition
+  - Prioritizes hardcoded answers for accuracy on common queries
+  - Falls back to Wikipedia/DuckDuckGo APIs for unknown questions
+  - Uses SpeechRecognition for voice input and SpeechSynthesis for output
 
-Chatbot Features
-The AssistMe chatbot includes:
-- Voice synthesis with enable/disable toggle and stop button
-- Portfolio knowledge base with answers about Mangesh's skills and experience
-- General knowledge from Wikipedia API
-- Responsive chat interface with animations
+## Supported Commands and Responses
+The app recognizes various phrasings of commands and provides accurate responses. For general questions, it leverages free APIs to ensure up-to-date and correct information.
 
-Project Structure
-.
-├── index.html          # Main HTML file
-├── css/
-│   └── style.css       # Custom CSS styles
-├── js/
-│   └── script.js       # JavaScript for interactivity and AssistMe chatbot
-├── images/             # Images used in the project
-│   ├── profile.jpg     # Profile picture
-│   ├── profile icon.png # Logo icon
-│   └── X_logo.jpg      # X (Twitter) logo
-└── files/
-    └── Mangesh_Raut_Resume.pdf # Resume download
+## Browser Compatibility
+- Tested on: Chrome (desktop/mobile), Safari, Firefox
+- Requires modern browser for Web Speech API
+- Mobile browsers may have limitations on speech features
 
-Setup Instructions
-Clone the Repository:
-git clone https://github.com/<your-username>/<repository-name>.git
-cd <repository-name>
+## Contributing
+This is an educational project. Feel free to enhance it by adding more features, improving AI responses, or integrating additional APIs. Pull requests are welcome!
 
-Open in Browser: Open index.html in your browser to view the website. No server setup required - fully client-side.
-
-Optional Firebase Setup:
-
-If you want to enable Firebase visitor tracking, update the Firebase configuration in the <script> section of index.html:
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
-};
-
-Replace the placeholders with your Firebase project details.
-
-Usage
-
-Navigation
-
-Click the menu button (☰) to open the overlay menu.
-Use the close button (×) to close the menu.
-Smooth scrolling is enabled for all navigation links.
-
-Visitor Counter
-
-The visitor counter increments only for unique visitors using localStorage and sessionStorage.
-
-Contact Form
-
-Fill out the form to send a message. The form currently logs data to the console or Firebase (if configured).
-
-Customization
-
-Update Profile Information
-
-Modify the content in the index.html file under the respective sections:
-About Me: Update the text in the #about section.
-Skills: Add or remove skills in the #skills section.
-Projects: Update project details in the #projects section.
-
-Change Images
-
-Replace the images in the images folder with your own. Ensure the file names match or update the paths in index.html.
-
-Update Resume
-
-Replace the Mangesh_Raut_Resume.pdf file in the files folder with your own resume.
-
-Contributing
-Contributions are welcome! If you have suggestions or improvements, feel free to fork the repository and submit a pull request.
-
-License
-This project is licensed under the MIT License.
-
-Contact
-If you have any questions or feedback, feel free to reach out:
-
-Email: mbr63drexel@gmail.com
-LinkedIn: linkedin.com/in/mangeshraut71298
-GitHub: github.com/mangeshraut
-Enjoy exploring the portfolio! 😊
+## License
+This project is open-source and available under the MIT License. No paid dependencies required.
