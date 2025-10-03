@@ -389,11 +389,38 @@ function initScript() {
             handler: () => speakAndDisplay("I am AssistMe, your web-based virtual assistant.")
         },
         {
+            keywords: ['who is mangesh', 'mangesh raut', 'creator', 'who made you'],
+            handler: () => {
+                const bio = "Mangesh Raut is a skilled software engineer who created me, AssistMe. He specializes in building dynamic web applications and intelligent systems. His portfolio showcases projects using technologies like JavaScript and Python. You can learn more at https://mangeshraut712.github.io/mangeshrautarchive/ or connect with him on LinkedIn at https://www.linkedin.com/in/mangeshraut71298/.";
+                speakAndDisplay(bio);
+            }
+        },
+        {
             keywords: ['time'],
             handler: () => {
                 const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
                 speakAndDisplay(`The current time is ${time}.`);
             }
+        },
+        {
+            keywords: ['mangesh skills', 'skills mangesh', 'what skills does mangesh have'],
+            handler: () => speakAndDisplay("Mangesh specializes in programming languages like Java, Python, SQL, and JavaScript. He is skilled in frameworks such as Spring Boot, AngularJS, TensorFlow, and scikit-learn. His cloud and DevOps expertise includes AWS, Docker, Jenkins, and Terraform. He also works with databases like PostgreSQL, MongoDB, and MySQL, and tools like Git, Jira, Wireshark, and networking technologies like Cisco.")
+        },
+        {
+            keywords: ['mangesh experience', 'experience mangesh', 'where has mangesh worked'],
+            handler: () => speakAndDisplay("Mangesh worked as a Software Engineer at Customized Energy Solutions (2024-present), improving energy analytics dashboards and reducing latency by 40%. Previously at IoasiZ (2023-2024), he refactored Java microservices and improved code efficiency by 20%. He also worked as a Network Engineer at Harshwardhan Enterprises (2020-2021), deploying Cisco routers and reducing latency by 35%.")
+        },
+        {
+            keywords: ['mangesh education', 'education mangesh', 'where did mangesh study'],
+            handler: () => speakAndDisplay("Mangesh has a Master of Science in Computer Science from Drexel University (GPA 3.3, 2021-2023) and a Bachelor of Engineering in Computer Engineering from Pune University (GPA 3.6, 2017-2020).")
+        },
+        {
+            keywords: ['mangesh projects', 'projects mangesh', 'what projects has mangesh done'],
+            handler: () => speakAndDisplay("Mangesh has developed a Starlight Blogging Website using Angular and Flask with attractive over 100 users. He also worked on Real-Time Face Emotion Recognition with 95% accuracy using Python and OpenCV. Additionally, he created a PC Crime Detector using Java for reduced security breaches.")
+        },
+        {
+            keywords: ['contact mangesh', 'how to contact mangesh', 'mangeshdex contact'],
+            handler: () => speakAndDisplay("You can connect with Mangesh on LinkedIn at https://www.linkedin.com/in/mangeshraut71298/ or visit his portfolio at https://mangeshraut712.github.io/mangeshrautarchive/. Email: mbr63drexel@gmail.com, Phone: +1 (609) 505-3500, Location: Philadelphia, PA.")
         },
         {
             keywords: ['date', 'day'],
