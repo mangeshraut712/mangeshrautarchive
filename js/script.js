@@ -260,17 +260,28 @@ function initScript() {
                 return;
             }
 
-            // 3. Fallback to Wikipedia if DuckDuckGo fails
-            const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchQuery)}`;
-            const wikiResponse = await fetch(wikiUrl);
-            const wikiData = await wikiResponse.json();
-
-            if (wikiData.extract && !wikiData.type?.includes('disambiguation')) {
-                // Return the first one or two sentences for a concise summary
-                const sentences = wikiData.extract.split('. ');
-                const shortSummary = sentences[0] + (sentences[1] ? '. ' + sentences[1] : '') + '.';
-                speakAndDisplay(shortSummary);
-                return;
+            // 3. Fallback to Wikipedia with search to verify accuracy
+            try {
+                // Wiki search to find the correct page
+                const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${encodeURIComponent(searchQuery)}&limit=1&origin=*`;
+                const searchResponse = await fetch(searchUrl);
+                const searchData = await searchResponse.json();
+                if (searchData.query && searchData.query.search.length > 0) {
+                    const title = searchData.query.search[0].title;
+                    // Now fetch summary for the searched title to verify/correct the information
+                    const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+                    const wikiResponse = await fetch(wikiUrl);
+                    const wikiData = await wikiResponse.json();
+                    if (wikiData.extract && !wikiData.type?.includes('disambiguation')) {
+                        // Return the first one or two sentences for a concise summary
+                        const sentences = wikiData.extract.split('. ');
+                        const shortSummary = sentences[0] + (sentences[1] ? '. ' + sentences[1] : '') + '.';
+                        speakAndDisplay(shortSummary);
+                        return;
+                    }
+                }
+            } catch (wikiError) {
+                console.error("Wikipedia search/fetch error:", wikiError);
             }
 
             // 4. If all APIs fail, give a generic response
