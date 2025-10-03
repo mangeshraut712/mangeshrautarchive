@@ -217,7 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (processedQuery.includes('contact') || processedQuery.includes('email')) {
-                speakAndDisplay('You can reach Mangesh via email at mangeshraut712@gmail.com or through the contact form on this website.');
+                speakAndDisplay('You can reach Mangesh via email at mangeshraut712@gmail.com, LinkedIn: https://www.linkedin.com/in/mangeshraut71298/, or through the contact form on this website.');
+                return;
+            }
+            if (processedQuery.includes('linkedin') || processedQuery.includes('social')) {
+                speakAndDisplay('You can connect with Mangesh Raut on LinkedIn at https://www.linkedin.com/in/mangeshraut71298/');
                 return;
             }
 
