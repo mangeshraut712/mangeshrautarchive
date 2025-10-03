@@ -236,13 +236,28 @@ function initScript() {
                 answer = data.RelatedTopics[0].Text;
             }
 
+            if (!answer) {
+                // Fallback to Wikipedia
+                try {
+                    const cleanQuery = query.replace(/^(who is|what is|what are|where is|when) ?/, '').trim();
+                    const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(cleanQuery)}`;
+                    const wikiResponse = await fetch(wikiUrl);
+                    const wikiData = await wikiResponse.json();
+                    if (wikiData.extract) {
+                        answer = wikiData.extract;
+                    }
+                } catch (wikiError) {
+                    console.log("Wikipedia fetch error:", wikiError);
+                }
+            }
+
             if (answer) {
                 speakAndDisplay(answer);
             } else {
-                throw new Error('No answer found from DuckDuckGo.');
+                throw new Error('No answer found.');
             }
         } catch (error) {
-            console.error("API fetch error:", error);
+            console.error("Fetch error:", error);
             speakAndDisplay(`Sorry, I couldn't find information for "${query}". Please try rephrasing.`);
         }
     }
@@ -315,6 +330,35 @@ function initScript() {
                 } catch (e) {
                     getImprovedAnswer(command); // Fallback if not a simple calculation
                 }
+            }
+        },
+        {
+            keywords: ['open youtube'],
+            handler: () => speakAndDisplay("Opening YouTube! (Link: https://www.youtube.com)")
+        },
+        {
+            keywords: ['open google', 'google search'],
+            handler: (command) => {
+                const query = command.replace(/^(open google|google search) ?/, '').trim();
+                if (query) {
+                    speakAndDisplay(`Searching Google for "${query}": https://www.google.com/search?q=${encodeURIComponent(query)}`);
+                } else {
+                    speakAndDisplay("Opening Google: https://www.google.com");
+                }
+            }
+        },
+        {
+            keywords: ['reddit'],
+            handler: (command) => {
+                let subreddit = command.replace(/^reddit ?/, '').trim();
+                if (!subreddit) subreddit = 'AskReddit';
+                speakAndDisplay(`Opening Reddit /r/${subreddit}: https://www.reddit.com/r/${subreddit}`);
+            }
+        },
+        {
+            keywords: ['weather'],
+            handler: (command) => {
+                speakAndDisplay("Weather: It's sunny and 72°F in your area. (Demo data - upgrade to real API for live data)");
             }
         }
     ];
