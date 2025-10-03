@@ -16,14 +16,24 @@ Modern UI: Built with Tailwind CSS and Font Awesome for a clean and modern look.
 Projects Section: Highlights key projects with descriptions and tags.
 Skills & Experience: Displays technical skills, work experience, and education details.
 Social Links: Easy access to LinkedIn, GitHub, YouTube, and other platforms.
+AI Chatbot AssistMe: Interactive chatbot with voice controls, answering questions about Mangesh and general knowledge.
 
 Technologies Used
 
 HTML5: Semantic and accessible markup.
 CSS3: Custom styles with Tailwind CSS for responsiveness.
-JavaScript: Interactive features like menu toggling, smooth scrolling, and visitor counter.
+JavaScript: Interactive features like menu toggling, smooth scrolling, visitor counter, and AssistMe AI chatbot.
 Font Awesome: Icons for social links and navigation.
 Firebase (Optional): Used for visitor tracking (can be disabled).
+Wikipedia API: For general knowledge queries in the chatbot.
+Firebase (Optional): Used for visitor tracking (can be disabled).
+
+Chatbot Features
+The AssistMe chatbot includes:
+- Voice synthesis with enable/disable toggle and stop button
+- Portfolio knowledge base with answers about Mangesh's skills and experience
+- General knowledge from Wikipedia API
+- Responsive chat interface with animations
 
 Project Structure
 .
@@ -31,7 +41,7 @@ Project Structure
 ├── css/
 │   └── style.css       # Custom CSS styles
 ├── js/
-│   └── script.js       # JavaScript for interactivity
+│   └── script.js       # JavaScript for interactivity and AssistMe chatbot
 ├── images/             # Images used in the project
 │   ├── profile.jpg     # Profile picture
 │   ├── profile icon.png # Logo icon
@@ -44,7 +54,7 @@ Clone the Repository:
 git clone https://github.com/<your-username>/<repository-name>.git
 cd <repository-name>
 
-Open in Browser: Open index.html in your browser to view the website.
+Open in Browser: Open index.html in your browser to view the website. No server setup required - fully client-side.
 
 Optional Firebase Setup:
 
