@@ -243,7 +243,9 @@ function initScript() {
         }
 
         // 2. Use a generic knowledge API for other questions
-        const searchQuery = query.replace(/[.?!\s]+$/, '');
+        let searchQuery = query.replace(/[.?!\s]+$/, '');
+        // For questions starting with who/what/when/where/how/why is, remove the prefix to get better results
+        searchQuery = searchQuery.replace(/^\s*(who|what|when|where|how|why)\s+is\s+/i, '').trim();
         const duckduckgoUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery)}&format=json&no_html=1&t=AssistMe`;
 
         try {
