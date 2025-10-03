@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.getElementById('chat-messages');
     const chatToggleBtn = document.getElementById('chat-toggle');
     const chatCloseBtn = document.getElementById('chat-close');
+    const speakButton = document.getElementById('speakButton');
 
     if (!commandInput || !chatMessages) return;
 
