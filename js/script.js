@@ -131,36 +131,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function getWikipediaSummary(query) {
-        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=true&explaintext=true&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=3&origin=*`;
+        // Use Wikipedia REST API for reliable summaries
+        const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+
+        try {
+            const response = await fetch(wikiUrl);
+            const data = await response.json();
+            if (data.extract && !data.extract.includes('may refer to')) {
+                // Take first sentence or two
+                const sentences = data.extract.split('.');
+                const firstSentence = sentences[0] + (sentences[1] ? '. ' + sentences[1] + '.' : '.');
+                speakAndDisplay(firstSentence);
+                return;
+            }
+        } catch (error) {}
+
+        // Fallback to search API
+        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=true&explaintext=true&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=1&origin=*`;
 
         try {
             const response = await fetch(endpoint);
-            if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
             const data = await response.json();
-
-            const pages = data.query?.pages ? Object.values(data.query.pages) : [];
-            let bestExtract = '';
-
-            // Look through results for the most relevant
-            for (const page of pages) {
-                if (page.extract && page.extract.includes('2007') && page.extract.includes('June')) {
-                    bestExtract = page.extract.split('. ')[0] + '.';
-                    break;
-                }
-            }
-
-            if (!bestExtract && pages.length > 0) {
-                bestExtract = pages[0].extract.split('. ')[0] + '.';
-            }
-
-            if (bestExtract) {
-                speakAndDisplay(bestExtract);
+            const page = data.query?.pages ? Object.values(data.query.pages)[0] : null;
+            if (page && page.extract) {
+                const firstSentence = page.extract.split('. ')[0] + '.';
+                speakAndDisplay(firstSentence);
             } else {
-                throw new Error('No summary found on Wikipedia.');
+                throw new Error('No summary found.');
             }
         } catch (error) {
-            speakAndDisplay(`Sorry, I ran into a problem: ${error.message}. Let me try searching Google for you.`);
-            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            speakAndDisplay(`Sorry, I couldn't find information about "${query}".`);
         }
     }
 
@@ -243,11 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Portfolio-specific knowledge for Mangesh Raut
-        if (processedQuery.includes('who is mangesh') || processedQuery.includes('about mangesh')) {
+        if (processedQuery.includes('who is mangesh') || processedQuery.includes('about mangesh') || processedQuery.includes('mangesh raut') || processedQuery.includes('who is manges raut')) {
             speakAndDisplay("Mangesh Raut is a passionate Full Stack Developer and aspiring AI Engineer specializing in web development, machine learning, and innovative tech solutions. He has experience with React, Node.js, Firebase, and various AI tools. Visit https://www.linkedin.com/in/mangeshraut71298/ for more.");
             return;
         }
-        if (processedQuery.includes('what are your skills') || processedQuery.includes('skills')) {
+        if (processedQuery.includes('your skills') || processedQuery.includes('skills')) {
             speakAndDisplay('Mangesh specializes in full-stack development with expertise in React, JavaScript, Node.js, Firebase, machine learning, and AI technologies.');
             return;
         }
@@ -270,9 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function processCommand(command) {
         if (command === 'hello' || command === 'hi') {
-            speakAndDisplay("Hi! I'm Mangesh's AI assistant. Ask me anything about his profile.");
+            speakAndDisplay("Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
         } else if (command === 'who are you') {
-            speakAndDisplay("I am AssistMe, your personal AI assistant. I can help with general knowledge, Mangesh's portfolio info, and more!");
+            speakAndDisplay("Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
         } else if (command.includes('time')) {
             const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
             speakAndDisplay(`The current time is ${time}.`);
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    addMessageToChat('AssistMe', "Hi! I'm Mangesh's AI assistant. Ask me anything about his profile.");
+    addMessageToChat('AssistMe', "Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
     // --- End AssistMe Chatbot UI Logic ---
 
 }); // End DOMContentLoaded
