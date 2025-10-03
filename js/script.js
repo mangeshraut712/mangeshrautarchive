@@ -108,286 +108,152 @@ function initScript() {
         observerAnimate.observe(element);
     });
 
-    // --- AssistMe Chatbot UI Logic ---
-    const commandInput = document.getElementById('chat-input');
-    const sendButton = document.getElementById('chat-send');
-    const chatMessages = document.getElementById('chat-messages');
-    const chatToggleBtn = document.getElementById('chat-toggle');
-    const chatCloseBtn = document.getElementById('chat-close');
-    const speakButton = document.getElementById('speakButton');
+    // --- CLEAN PORTFOLIO CHATBOT LOGIC ---
+    const portfolioChatToggle = document.getElementById('portfolio-chat-toggle');
+    const portfolioChatWidget = document.getElementById('portfolio-chat-widget');
+    const portfolioChatClose = document.getElementById('portfolio-chat-close');
+    const portfolioChatMessages = document.getElementById('portfolio-chat-messages');
+    const portfolioChatInput = document.getElementById('portfolio-chat-input');
+    const portfolioChatSend = document.getElementById('portfolio-chat-send');
+    const portfolioVoiceInput = document.getElementById('portfolio-voice-input');
+    const portfolioVoiceToggle = document.getElementById('portfolio-voice-toggle');
+    const portfolioVoiceStop = document.getElementById('portfolio-voice-stop');
 
-    // Voice elements
-    const voiceToggle = document.getElementById('voiceToggle');
-    const stopVoiceBtn = document.getElementById('stopVoiceBtn');
+    if (!portfolioChatInput || !portfolioChatMessages || !portfolioChatToggle) return;
 
-    if (!commandInput || !chatMessages) return;
-
-    // Declare recognition
+    // Setup Voice Recognition
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = SpeechRecognition ? new SpeechRecognition() : null;
-
     if (recognition) {
         recognition.lang = 'en-US';
         recognition.interimResults = false;
-        recognition.onend = () => speakButton.classList.remove('listening');
-        recognition.onerror = (event) => addMessageToChat('AssistMe', `Speech Error: ${event.error}. Please check microphone permissions.`);
-        recognition.onresult = (event) => handleCommand(event.results[0][0].transcript);
+        recognition.onend = () => portfolioVoiceInput.classList.remove('listening');
+        recognition.onerror = (e) => addPortfolioMessage('AssistMe', `Voice error: ${e.error}`);
+        recognition.onresult = (e) => processPortfolioCommand(e.results[0][0].transcript.toLowerCase());
     }
 
-    chatToggleBtn.addEventListener('click', () => {
-        const chatWidget = document.getElementById('chat-widget');
-        if (chatWidget) {
-            chatWidget.classList.remove('hidden');
-            setTimeout(() => {
-                chatWidget.classList.remove('translate-y-8', 'opacity-0');
-                chatWidget.classList.add('translate-y-0', 'opacity-100');
-            }, 10);
-        }
+    // Event Listeners
+    portfolioChatToggle.addEventListener('click', () => {
+        portfolioChatWidget.classList.remove('hidden');
+        setTimeout(() => {
+            portfolioChatWidget.classList.remove('translate-y-8', 'opacity-0');
+            portfolioChatWidget.classList.add('translate-y-0', 'opacity-100');
+        }, 10);
     });
 
-    chatCloseBtn.addEventListener('click', () => {
-        const chatWidget = document.getElementById('chat-widget');
-        if (chatWidget) {
-            chatWidget.classList.add('translate-y-8', 'opacity-0');
-            setTimeout(() => {
-                chatWidget.classList.add('hidden');
-            }, 300);
-
-        }
+    portfolioChatClose.addEventListener('click', () => {
+        portfolioChatWidget.classList.add('translate-y-8', 'opacity-0');
+        setTimeout(() => {
+            portfolioChatWidget.classList.add('hidden');
+        }, 300);
     });
 
-    speakButton.addEventListener('click', () => {
-        speakButton.classList.add('listening');
+    portfolioVoiceInput.addEventListener('click', () => {
         if (recognition) {
+            portfolioVoiceInput.classList.add('listening');
             recognition.start();
         } else {
-            addMessageToChat('AssistMe', "Voice recognition not supported.");
+            addPortfolioMessage('AssistMe', 'Voice input not supported on this browser.');
         }
     });
 
-    stopVoiceBtn.addEventListener('click', () => {
+    portfolioVoiceStop.addEventListener('click', () => {
         speechSynthesis.cancel();
     });
 
-    commandInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' && commandInput.value.trim()) {
-            handleCommand(commandInput.value.trim());
+    portfolioChatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && portfolioChatInput.value.trim()) {
+            processPortfolioCommand(portfolioChatInput.value.trim().toLowerCase());
         }
     });
 
-    sendButton.addEventListener('click', () => {
-        const text = commandInput.value.trim();
-        if (!text) return;
-        handleCommand(text);
+    portfolioChatSend.addEventListener('click', () => {
+        const text = portfolioChatInput.value.trim();
+        if (text) {
+            processPortfolioCommand(text.toLowerCase());
+        }
     });
 
-    function addMessageToChat(sender, text, isThinking = false) {
+    function addPortfolioMessage(sender, text) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = isThinking ? 'flex mb-3 blinking' : sender === 'user' ? 'flex justify-end mb-3' : 'flex mb-3';
-        if (!isThinking) {
-            messageDiv.innerHTML = `<div class="${sender === 'user' ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'} p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
-        } else {
-            messageDiv.innerHTML = `<div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs shadow"><p class="text-sm">${text}</p></div>`;
-        }
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        messageDiv.className = sender === 'user' ? 'flex justify-end mb-4' : 'flex mb-4';
+        messageDiv.innerHTML = `<div class="${sender === 'user' ? 'bg-green-200 text-black dark:bg-green-700 dark:text-white' : 'bg-blue-500 text-white dark:bg-blue-600'} p-3 rounded-lg max-w-xs shadow-md"><p class="text-sm">${text}</p></div>`;
+        portfolioChatMessages.appendChild(messageDiv);
+        portfolioChatMessages.scrollTop = portfolioChatMessages.scrollHeight;
         return messageDiv;
     }
 
-    function speakAndDisplay(text) {
-        const thinkingBubble = chatMessages.lastChild && chatMessages.lastChild.classList.contains('blinking');
-        if (thinkingBubble) {
-            chatMessages.removeChild(chatMessages.lastChild);
-        }
-        const msgDiv = addMessageToChat('AssistMe', text);
-        if (voiceToggle && voiceToggle.checked) {
+    function speakPortfolioMessage(text) {
+        const msgDiv = addPortfolioMessage('AssistMe', text);
+        if (portfolioVoiceToggle && portfolioVoiceToggle.checked) {
             try {
                 speechSynthesis.cancel();
+                portfolioVoiceStop.style.display = 'inline';
                 const utterance = new SpeechSynthesisUtterance(text);
+                utterance.onend = () => portfolioVoiceStop.style.display = 'none';
                 speechSynthesis.speak(utterance);
             } catch (error) {
+                portfolioVoiceStop.style.display = 'none';
                 console.error('Error speaking:', error);
             }
         }
     }
 
-    async function getWikipediaSummary(query) {
-        // Use Wikipedia REST API for reliable summaries
-        const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+    async function processPortfolioCommand(command) {
+        // Add user message
+        addPortfolioMessage('user', command);
+        portfolioChatInput.value = '';
 
-        try {
-            const response = await fetch(wikiUrl);
-            const data = await response.json();
-            if (data.extract && !data.extract.includes('may refer to')) {
-                // Take first sentence or two
-                const sentences = data.extract.split('.');
-                const firstSentence = sentences[0] + (sentences[1] ? '. ' + sentences[1] + '.' : '.');
-                speakAndDisplay(firstSentence);
-                return;
-            }
-        } catch (error) {}
-
-        // Fallback to search API
-        const endpoint = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exintro=true&explaintext=true&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=1&origin=*`;
-
-        try {
-            const response = await fetch(endpoint);
-            const data = await response.json();
-            const page = data.query?.pages ? Object.values(data.query.pages)[0] : null;
-            if (page && page.extract) {
-                const firstSentence = page.extract.split('. ')[0] + '.';
-                speakAndDisplay(firstSentence);
-            } else {
-                throw new Error('No summary found.');
-            }
-        } catch (error) {
-            speakAndDisplay(`Sorry, I couldn't find information about "${query}".`);
-        }
-    }
-
-    async function getJoke() {
-        addMessageToChat('AssistMe', 'Thinking of a joke...', true);
-        try {
-            const response = await fetch('https://official-joke-api.appspot.com/random_joke');
-            if (!response.ok) throw new Error(`Network error (status: ${response.status})`);
-            const joke = await response.json();
-            speakAndDisplay(`${joke.setup} ${joke.punchline}`);
-        } catch (error) {
-            speakAndDisplay(`Sorry, I couldn't fetch a joke: ${error.message}.`);
-        }
-    }
-
-    function openWebsite(url, name) {
-        try {
-            window.open(url, '_blank');
-            speakAndDisplay(`Opening ${name}.`);
-        } catch (error) {
-            speakAndDisplay(`Sorry, I couldn't open ${name}.`);
-        }
-    }
-
-    async function searchGoogle(query) {
-        const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        try {
-            window.open(url, '_blank');
-            speakAndDisplay(`Searching Google for ${query}.`);
-        } catch (error) {
-            speakAndDisplay(`Sorry, I couldn't perform the search.`);
-        }
-    }
-
-    async function getImprovedAnswer(query) {
-        addMessageToChat('AssistMe', 'Thinking...', true);
-
-        let processedQuery = query.replace(/[.?!\s]+$/, ''); // Remove punctuation at end
-
-        // Hardcoded knowledge for common queries
-        if (query.includes('when did') && query.includes('released') && query.includes('iphone')) {
-            speakAndDisplay('The iPhone was released on June 29, 2007.');
-            return;
-        }
-        if (query.includes('who is steve jobs')) {
-            speakAndDisplay('Steve Jobs was an American entrepreneur, inventor, and industrial designer. He co-founded Apple Inc. and served as its CEO.');
-            return;
-        }
-        if (query.includes('who is president of usa') || query.includes('president of united states of america')) {
-            speakAndDisplay('Joe Biden is the current President of the United States.');
-            return;
-        }
-        if (query.includes('who is prime minister of india')) {
-            speakAndDisplay('Narendra Modi is the current Prime Minister of India.');
-            return;
-        }
-        if (query.includes('who is first president of india')) {
-            speakAndDisplay('Dr. Rajendra Prasad was the first President of India, serving from 1950 to 1962.');
-            return;
-        }
-        if (query.includes('who is ceo of apple')) {
-            speakAndDisplay('Tim Cook is the CEO of Apple Inc.');
-            return;
-        }
-        if (query.includes('which country has world most population') || query.includes('country with most population')) {
-            speakAndDisplay('India is the most populous country in the world, with approximately 1.42 billion people.');
-            return;
-        }
-        if (query.includes('what is tesla')) {
-            speakAndDisplay('Tesla, Inc. is an American electric vehicle and clean energy company based in Palo Alto, California.');
-            return;
-        }
-        if (query.includes('best selling car in the world')) {
-            speakAndDisplay('The Toyota Corolla is the best-selling car model in the world, with over 50 million sold.');
-            return;
-        }
-        if (query.includes('best electric car in the world')) {
-            speakAndDisplay('Tesla Model S is often considered one of the best electric cars in the world due to its performance and range.');
-            return;
-        }
-
-        // Portfolio-specific knowledge for Mangesh Raut
-        if (processedQuery.includes('who is mangesh') || processedQuery.includes('about mangesh') || processedQuery.includes('mangesh raut') || processedQuery.includes('who is manges raut')) {
-            speakAndDisplay("Mangesh Raut is a passionate Full Stack Developer and aspiring AI Engineer specializing in web development, machine learning, and innovative tech solutions. He has experience with React, Node.js, Firebase, and various AI tools. Visit https://www.linkedin.com/in/mangeshraut71298/ for more.");
-            return;
-        }
-        if (processedQuery.includes('your skills') || processedQuery.includes('skills')) {
-            speakAndDisplay('Mangesh specializes in full-stack development with expertise in React, JavaScript, Node.js, Firebase, machine learning, and AI technologies.');
-            return;
-        }
-        if (processedQuery.includes('contact') || processedQuery.includes('email')) {
-            speakAndDisplay('You can reach Mangesh via email at mangeshraut712@gmail.com, LinkedIn: https://www.linkedin.com/in/mangeshraut71298/, or through the contact form on this website.');
-            return;
-        }
-        if (processedQuery.includes('linkedin') || processedQuery.includes('social')) {
-            speakAndDisplay('You can connect with Mangesh Raut on LinkedIn at https://www.linkedin.com/in/mangeshraut71298/');
-            return;
-        }
-
-        // For general questions, use Wikipedia or Google search
-        if (processedQuery.startsWith('how many') || processedQuery.startsWith('what is') || processedQuery.includes('when did') || processedQuery.includes('who is') || processedQuery.includes('where') || processedQuery.includes('why')) {
-            await getWikipediaSummary(processedQuery);
-        } else {
-            await searchGoogle(processedQuery);
-        }
-    }
-
-    async function processCommand(command) {
+        // Basic commands
         if (command === 'hello' || command === 'hi') {
-            speakAndDisplay("Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
+            speakPortfolioMessage("Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
         } else if (command === 'who are you') {
-            speakAndDisplay("Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
+            speakPortfolioMessage("Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
         } else if (command.includes('time')) {
             const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
-            speakAndDisplay(`The current time is ${time}.`);
+            speakPortfolioMessage(`The current time is ${time}.`);
         } else if (command.includes('date')) {
             const date = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-            speakAndDisplay(`Today is ${date}.`);
+            speakPortfolioMessage(`Today is ${date}.`);
         } else if (command.includes('weather')) {
-            const cityMatch = command.match(/weather in (\w+)/i);
-            const city = cityMatch ? cityMatch[1] : 'your location';
             const temperatures = [15, 20, 25, 30, 35];
             const conditions = ['Sunny', 'Cloudy', 'Rainy', 'Foggy', 'Windy'];
             const temp = temperatures[Math.floor(Math.random() * temperatures.length)];
             const condition = conditions[Math.floor(Math.random() * conditions.length)];
-            speakAndDisplay(`The weather in ${city} is ${temp} degrees Celsius and ${condition}.`);
-        } else if (command.includes('joke') || command.includes('tell me a joke')) {
-            await getJoke();
-        } else if (command.startsWith('open google')) {
-            const query = command.replace('open google', '').trim();
-            if (query) {
-                await searchGoogle(query);
-            } else {
-                openWebsite('https://www.google.com', 'Google');
+            speakPortfolioMessage(`The weather is ${temp}°C and ${condition}.`);
+        } else if (command.includes('mangesh') || command.includes('manges raut')) {
+            speakPortfolioMessage("Mangesh Raut is a passionate Full Stack Developer and aspiring AI Engineer specializing in web development, machine learning, and innovative tech solutions. He has experience with React, Node.js, Firebase, and various AI tools. Visit https://www.linkedin.com/in/mangeshraut71298/ for more.");
+        } else if (command.includes('skills')) {
+            speakPortfolioMessage('Mangesh specializes in full-stack development with expertise in React, JavaScript, Node.js, Firebase, machine learning, and AI technologies.');
+        } else if (command.includes('contact') || command.includes('email')) {
+            speakPortfolioMessage('You can reach Mangesh via email at mangeshraut712@gmail.com, LinkedIn: https://www.linkedin.com/in/mangeshraut71298/, or through the contact form on this website.');
+        } else if (command.includes('linkedin')) {
+            speakPortfolioMessage('You can connect with Mangesh Raut on LinkedIn at https://www.linkedin.com/in/mangeshraut71298/');
+        } else if (command.includes('who is tim cook')) {
+            speakPortfolioMessage('Tim Cook is an American business executive who has been the chief executive officer of Apple Inc. since 2011.');
+        } else if (command.includes('who is steve jobs')) {
+            speakPortfolioMessage('Steve Jobs was an American entrepreneur, inventor, and industrial designer. He co-founded Apple Inc. and served as its CEO.');
+        } else if (command.includes('what is tesla')) {
+            speakPortfolioMessage('Tesla, Inc. is an American electric vehicle and clean energy company based in Palo Alto, California.');
+        } else if (command.includes('joke')) {
+            try {
+                const response = await fetch('https://official-joke-api.appspot.com/random_joke');
+                const joke = await response.json();
+                speakPortfolioMessage(`${joke.setup} ${joke.punchline}`);
+            } catch {
+                speakPortfolioMessage("Why did the developer go broke? Because he used up all his cache!");
             }
-        } else if (command.includes('open youtube')) {
-            openWebsite('https://www.youtube.com', 'YouTube');
-        } else if (command.includes('news') || command.includes('headline')) {
-            speakAndDisplay("Sorry, the news feature requires an API key. For now, ask me anything else!");
         } else {
-            await getImprovedAnswer(command);
+            speakPortfolioMessage(`I'm not sure about that. Try asking about Mangesh, his skills, or general topics like "who is Elon Musk?"`);
         }
     }
 
-    addMessageToChat('AssistMe', "Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
-    // --- End AssistMe Chatbot UI Logic ---
+    // Initialize widget with greeting
+    setTimeout(() => {
+        addPortfolioMessage('AssistMe', "Hi! I'm AssistMe, Mangesh's AI assistant. Ask me about his skills, projects, or general knowledge!");
+    }, 500);
+
+    // --- End Portfolio Chatbot Logic ---
 
 }
 
