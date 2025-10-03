@@ -127,7 +127,7 @@ function initScript() {
         chatToggle.addEventListener('click', () => {
             chatWidget.classList.remove('hidden');
             if (chatMessages.children.length === 0) {
-                addMessageToChat('assistant', "Hello! I'm AssistMe, an AI assistant. How can I help you today?");
+                addMessageToChat('assistant', 'Greetings! Welcome to AssistMe, your intelligent AI assistant! Ask me about Mangesh, general knowledge, or perform calculations. (Answers sourced from DuckDuckGo and Wikipedia for accuracy.)');
             }
             chatInput.focus();
         });
