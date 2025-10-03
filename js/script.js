@@ -109,7 +109,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- AssistMe Chatbot UI Logic ---
-    if (!speakButton) return;
+    const commandInput = document.getElementById('chat-input');
+    const sendButton = document.getElementById('chat-send');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatToggleBtn = document.getElementById('chat-toggle');
+    const chatCloseBtn = document.getElementById('chat-close');
+
+    if (!commandInput || !chatMessages) return;
+
+    // Voice controls appended in HTML
+
+    chatToggleBtn.addEventListener('click', () => {
+        const chatWidget = document.getElementById('chat-widget');
+        if (chatWidget) {
+            chatWidget.classList.remove('hidden');
+            setTimeout(() => {
+                chatWidget.classList.remove('translate-y-8', 'opacity-0');
+                chatWidget.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        }
+    });
+
+    chatCloseBtn.addEventListener('click', () => {
+        const chatWidget = document.getElementById('chat-widget');
+        if (chatWidget) {
+            chatWidget.classList.add('translate-y-8', 'opacity-0');
+            setTimeout(() => {
+                chatWidget.classList.add('hidden');
+            }, 300);
+
+        }
+    });
 
     speakButton.addEventListener('click', () => {
         speakButton.classList.add('listening');
@@ -128,6 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Enter' && commandInput.value.trim()) {
             handleCommand(commandInput.value.trim());
         }
+    });
+
+    sendButton.addEventListener('click', () => {
+        const text = commandInput.value.trim();
+        if (!text) return;
+        handleCommand(text);
     });
 
     async function getWikipediaSummary(query) {
