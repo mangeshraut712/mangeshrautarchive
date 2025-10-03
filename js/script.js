@@ -232,6 +232,10 @@ function initScript() {
             const data = await response.json();
             let answer = data.Answer || data.AbstractText || data.Definition;
 
+            if (!answer && data.RelatedTopics && data.RelatedTopics.length > 0 && data.RelatedTopics[0].Text) {
+                answer = data.RelatedTopics[0].Text;
+            }
+
             if (answer) {
                 speakAndDisplay(answer);
             } else {
