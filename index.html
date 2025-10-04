@@ -22,36 +22,36 @@
   <body
     class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]"
   >
-    <nav>
-      <div class="nav-container">
-        <div class="nav-logo">
-          <a href="#home">
-            <img src="images/profile icon.png" alt="Mangesh Raut" />
-          </a>
-        </div>
-        <div class="nav-menu">
-          <div class="nav-links">
-            <a href="#home" class="nav-link">Home</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#experience" class="nav-link">Experience</a>
-            <a href="#education" class="nav-link">Education</a>
-            <a href="#publications" class="nav-link">Publications</a>
-            <a href="#awards" class="nav-link">Awards</a>
-            <a href="#certifications" class="nav-link">Certifications</a>
-            <a href="#contact" class="nav-link">Contact</a>
+    <nav class="nav-simple">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="#home">
+              <img src="images/profile icon.png" alt="Mangesh Raut" />
+            </a>
           </div>
-          <button
-            id="theme-toggle"
-            class="theme-toggle-nav"
-            aria-label="Toggle Theme"
-          >
-            <i id="theme-toggle-icon" class="fas fa-moon"></i>
-          </button>
+          <div class="nav-menu">
+            <div class="nav-links">
+              <a href="#home" class="nav-link">Home</a>
+              <a href="#about" class="nav-link">About</a>
+              <a href="#skills" class="nav-link">Skills</a>
+              <a href="#projects" class="nav-link">Projects</a>
+              <a href="#experience" class="nav-link">Experience</a>
+              <a href="#education" class="nav-link">Education</a>
+              <a href="#publications" class="nav-link">Publications</a>
+              <a href="#awards" class="nav-link">Awards</a>
+              <a href="#certifications" class="nav-link">Certifications</a>
+              <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button
+              id="theme-toggle"
+              class="theme-toggle-nav"
+              aria-label="Toggle Theme"
+            >
+              <i id="theme-toggle-icon" class="fas fa-moon"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
     <main id="main-content">
       <section id="home" class="fade-in">
         <div class="container-fluid">
@@ -134,7 +134,6 @@
                   <div class="flex-1">
                     <h3 class="text-xl font-semibold mb-3">Languages</h3>
                     <h5 class="text-lg font-medium mb-2 mt-6 text-accent">
-                      Programming Languages
                     </h5>
                     <ul class="list-none p-0 space-y-2">
                       <li><i class="fas fa-code mr-2 text-sm"></i>HTML</li>
@@ -608,7 +607,7 @@
               <h5 class="text-lg mb-4 text-accent font-semibold">
                 Drexel University - Philadelphia, PA
               </h5>
-              <p class="text-base leading-relaxed opacity-90">
+              <p class="text-base leading-relaxed">
                 As a dedicated volunteer and essential team member at Drexel
                 University, I played a crucial role in supporting the
                 university's COVID-19 vaccination efforts. My responsibilities
@@ -636,7 +635,7 @@
                     <p class="text-accent font-medium mb-4">
                       Drexel University
                     </p>
-                    <p class="text-sm opacity-75 mb-4">Philadelphia, PA</p>
+                    <p class="text-sm mb-4">Philadelphia, PA</p>
                   </div>
                   <div class="flex items-center justify-between">
                     <div class="text-sm opacity-60">Sep 2021 - Jun 2023</div>
@@ -659,7 +658,7 @@
                     <p class="text-accent font-medium mb-4">
                       JSPM's Rajarshi Shahu College of Engineering
                     </p>
-                    <p class="text-sm opacity-75 mb-4">Pune, India</p>
+                    <p class="text-sm mb-4">Pune, India</p>
                   </div>
                   <div class="flex items-center justify-between">
                     <div class="text-sm opacity-60">Jun 2017 - Jun 2020</div>
@@ -682,7 +681,7 @@
                     <p class="text-accent font-medium mb-4">
                       Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
                     </p>
-                    <p class="text-sm opacity-75 mb-4">Akurdi, Pune</p>
+                    <p class="text-sm mb-4">Akurdi, Pune</p>
                   </div>
                   <div class="flex items-center justify-between">
                     <div class="text-sm opacity-60">Jun 2014 - Jun 2017</div>
@@ -705,7 +704,7 @@
                     <p class="text-accent font-medium mb-4">
                       Modern High School
                     </p>
-                    <p class="text-sm opacity-75 mb-4">India</p>
+                    <p class="text-sm mb-4">India</p>
                   </div>
                   <div class="flex items-center justify-between">
                     <div class="text-sm opacity-60">Jun 2013 - Jun 2014</div>
@@ -727,19 +726,19 @@
           <div class="flex flex-col md:flex-row items-center gap-8">
             <div class="flex-shrink-0 w-56 text-center">
               <a href="files/RTFERS paper.pdf" target="_blank" class="block">
-                <div
-                  class="w-full h-56 bg-primary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
-                >
+              <div
+                class="w-full h-56 bg-secondary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
+              >
                   <div class="text-center">
                     <i class="fas fa-file-pdf text-4xl text-accent mb-2"></i>
-                    <p class="text-sm opacity-75">Click to View PDF</p>
+                    <p class="text-sm">Click to View PDF</p>
                   </div>
                 </div>
               </a>
             </div>
             <div class="flex-1">
               <h3 class="mb-4">"Real-Time Face Emotion Recognition System"</h3>
-              <p class="mb-6 text-sm opacity-75">
+              <p class="mb-6 text-sm">
                 Published in International Journal of Future Generation
                 Communication and Networking Vol. 13, No. 3, (2020), pp.
                 3306-3313, ISSN · Jun 15, 2020
@@ -776,7 +775,7 @@
                     <p class="text-accent font-medium mb-4">
                       Drexel University
                     </p>
-                    <p class="text-sm opacity-75 mb-4">
+                    <p class="text-sm mb-4">
                       Issued by Academic Advisor • March 2022
                     </p>
                     <p class="leading-relaxed">
@@ -802,7 +801,7 @@
                     <p class="text-accent font-medium mb-4">
                       Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
                     </p>
-                    <p class="text-sm opacity-75 mb-4">
+                    <p class="text-sm mb-4">
                       Issued by Head of Department • June 2015
                     </p>
                     <p class="leading-relaxed">
@@ -1328,44 +1327,9 @@
           document.getElementById("visit-number").textContent = count;
         });
 
-      // Simple search bar logic for section headings/anchors
-      document.addEventListener("DOMContentLoaded", () => {
-        const searchInput = document.getElementById("site-search");
-        if (searchInput) {
-          searchInput.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-              const query = searchInput.value.trim().toLowerCase();
-              if (!query) return;
-              // Try to match section by id or heading text
-              const sections = document.querySelectorAll("section[id]");
-              let found = false;
-              sections.forEach((section) => {
-                const id = section.id.toLowerCase();
-                const heading = section.querySelector("h2,h1,h3");
-                const headingText = heading
-                  ? heading.textContent.toLowerCase()
-                  : "";
-                if (id.includes(query) || headingText.includes(query)) {
-                  section.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                  found = true;
-                }
-              });
-              if (!found) {
-                // Optionally, show a not found message or shake the input
-                searchInput.classList.add("ring", "ring-red-400");
-                setTimeout(
-                  () => searchInput.classList.remove("ring", "ring-red-400"),
-                  700,
-                );
-              }
-            }
-          });
-        }
-      });
+
     </script>
+
 
     <script>
       // Your web app's Firebase configuration
