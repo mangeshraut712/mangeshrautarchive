@@ -187,8 +187,8 @@ html.dark {
 }
 
 html.dark .assistant-message {
-    background: #ffffff;
-    color: #000000;
+    background: #3a3a3c;
+    color: #f5f5f7;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
@@ -207,7 +207,7 @@ html.dark .assistant-message {
 }
 
 html.dark .assistant-message::before {
-    border-right-color: rgba(255, 255, 255, 0.05);
+    border-right-color: #3a3a3c;
 }
 
 @keyframes messageSlide {
@@ -423,8 +423,46 @@ p {
     font-size: 1.125rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
-    color: var(--text-secondary);
+    color: #6e6e73 !important; /* Consistent grey for all paragraphs */
     max-width: 68ch;
+}
+
+li {
+    color: #6e6e73 !important; /* Grey for list items */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #1d1d1f !important; /* Consistent black for all headings */
+}
+
+span, div, section {
+    color: #6e6e73 !important; /* Default grey for other text elements */
+}
+
+/* Override specific blue elements */
+.text-accent, .education-card h5 {
+    color: #0071e3 !important; /* Blue for accents and company names */
+}
+
+.education-card h3, .project-card h3, .project-card h3 a, .timeline-item h3, .timeline-item h4 {
+    color: #1d1d1f !important; /* Black for card headings */
+}
+
+.education-card p, .project-card p, .timeline-item p, .timeline-item ul, .timeline-item ul li {
+    color: #6e6e73 !important; /* Grey for all card content text */
+}
+
+.date-badge {
+    color: #6e6e73 !important; /* Grey for date badges */
+    background-color: #f5f5f7 !important;
+}
+
+.button-primary {
+    color: #ffffff !important;
+}
+
+.button-secondary {
+    color: #0071e3 !important;
 }
 
 strong, b {
@@ -816,7 +854,7 @@ section#company {
 }
 
 /* Navigation - Apple Style */
-nav {
+.nav-simple {
     position: fixed;
     top: 0;
     left: 0;
@@ -893,16 +931,35 @@ nav {
     color: var(--text-primary);
 }
 
-@media (max-width: 768px) {
-    .nav-menu {
-        gap: 16px;
+@media (max-width: 1024px) {
+    nav {
+        padding: 0 16px;
     }
     .nav-links {
         display: none;
     }
-    nav {
-        padding: 0 16px;
+    .menu-toggle-button {
+        display: block;
     }
+    .nav-menu {
+        gap: 12px;
+    }
+}
+
+.menu-toggle-button {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 101;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+    font-size: 18px;
+}
+
+.menu-toggle-button:hover {
+    color: var(--text-accent);
 }
 
 /* Chatbot UI Styles */
@@ -1016,14 +1073,22 @@ section h2 {
 }
 
 .project-card {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border-radius: 1rem;
     padding: 2rem;
     transition: transform 0.25s ease;
+    border: 1px solid var(--border-color);
+    color: #000000;
 }
 
 .project-card:hover {
     transform: translateY(-4px);
+}
+
+.education-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: #000000;
 }
 
 .project-card h3 {
@@ -1100,11 +1165,12 @@ html.dark .project-card p {
     padding-left: 2rem; /* Increased padding */
 }
 .timeline-item > div {
-    background-color: #ffffff; /* White background for timeline items */
+    background-color: var(--bg-secondary); /* Light gray background for timeline items */
     padding: 2rem; /* Increased padding */
     border-radius: 16px; /* More rounded corners */
     box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* Subtle shadow */
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
+    color: #000000;
 }
 .timeline-item h3 {
     font-size: 1.4rem; /* Standardized heading size */
@@ -1144,6 +1210,7 @@ html.dark .project-card p {
     color: #222225;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 #contact input:focus,
 #contact textarea:focus {
@@ -1292,34 +1359,10 @@ footer img {
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
-/* Subtle Gradient Background Animation for Home */
+/* Subtle Gradient Background for Home */
 #home {
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     background-attachment: fixed;
-    position: relative;
-    overflow: hidden;
-}
-
-#home::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.01) 25%, rgba(255,255,255,0.01) 50%, transparent 50%, transparent 75%, rgba(0,0,0,0.005) 75%);
-    background-size: 50px 50px;
-    animation: move 30s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes move {
-    0% {
-        transform: translateX(0) translateY(0);
-    }
-    100% {
-        transform: translateX(-50px) translateY(50px);
-    }
 }
 
 /* Responsive adjustments for smaller screens if needed */
@@ -1386,12 +1429,14 @@ html.dark body {
 .dark .bg-gray-50 { background-color: #000000 !important; }
 
 /* Project cards and timeline items */
+.dark .education-card,
 .dark .project-card,
 .dark .timeline-item > div {
     background-color: #111111 !important; /* Darker card background */
     border-color: #3a3a3c !important; /* Subtle border */
     color: #f5f5f7 !important;
 }
+.dark .education-card:hover,
 .dark .project-card:hover {
     border-color: #2997ff !important; /* Highlight with accent color */
 }
