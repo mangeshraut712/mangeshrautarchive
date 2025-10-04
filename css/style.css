@@ -375,7 +375,7 @@ html {
 
 /* Typography - Apple Style */
 h1 {
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.022em;
@@ -384,7 +384,7 @@ h1 {
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 700;
     line-height: 1.0416666667;
     letter-spacing: -0.021em;
@@ -630,6 +630,10 @@ body.menu-open {
 section {
     position: relative;
     background: var(--bg-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Section Padding - Apple Inspired */
@@ -637,6 +641,17 @@ section#home {
     padding-top: 160px;
     padding-bottom: 120px;
     background: var(--bg-primary);
+}
+
+/* Home Section Spacing */
+#home h2 {
+    margin-bottom: 2rem;
+}
+#home h1 {
+    margin-bottom: 1.5rem;
+}
+#home p {
+    margin-bottom: 2.5rem;
 }
 
 section#about {
@@ -664,6 +679,30 @@ section#experience {
 }
 
 section#education {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-secondary);
+}
+
+section#awards {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#certifications {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-secondary);
+}
+
+section#languages {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#publications {
     padding-top: 120px;
     padding-bottom: 120px;
     background: var(--bg-secondary);
@@ -954,17 +993,13 @@ section h2 {
 
 .project-card {
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
     border-radius: 1rem;
     padding: 2rem;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    box-shadow: var(--shadow-light);
+    transition: transform 0.25s ease;
 }
 
 .project-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    border-color: var(--text-accent);
 }
 
 .project-card h3 {
@@ -1171,6 +1206,98 @@ footer img {
     transform: translateY(0);
 }
 
+/* Home Page Special Animations */
+.home-element {
+    opacity: 0;
+    animation: slideIn 1.2s ease-out forwards;
+    animation-fill-mode: both;
+}
+
+#home .mb-12.home-element { animation-delay: 0.2s; }
+#home h2 { animation-delay: 1s; }
+#home h1 { animation-delay: 1.5s; }
+#home p { animation-delay: 2.5s; }
+#home .btn { animation-delay: 3.5s; }
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typewriter Effect for Software Engineer */
+.typewriter {
+    overflow: hidden;
+    border-right: 2px solid var(--text-primary);
+    white-space: nowrap;
+    animation: typing 3.5s steps(17, end) 1.5s both, blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: var(--text-primary);
+    }
+    50% {
+        border-color: transparent;
+    }
+}
+
+/* Profile Image Hover Effect */
+#home img {
+    filter: grayscale(10%) contrast(1.1);
+    transition: all 0.5s ease;
+}
+
+#home img:hover {
+    transform: scale(1.05);
+    filter: grayscale(0%) contrast(1.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Subtle Gradient Background Animation for Home */
+#home {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+}
+
+#home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.01) 25%, rgba(255,255,255,0.01) 50%, transparent 50%, transparent 75%, rgba(0,0,0,0.005) 75%);
+    background-size: 50px 50px;
+    animation: move 30s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes move {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    100% {
+        transform: translateX(-50px) translateY(50px);
+    }
+}
+
 /* Responsive adjustments for smaller screens if needed */
 @media (max-width: 768px) {
     h1 { font-size: 2.8rem; }
@@ -1368,7 +1495,4 @@ html.dark body {
     border-color: #2997ff !important;
 }
 
-.container {
-    padding: 20px;
-    border: 1px solid #ccc;
-}
+/* Cleaned unused styles */
