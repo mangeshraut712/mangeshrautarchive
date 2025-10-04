@@ -735,7 +735,7 @@ section#publications {
 section#contact {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
 }
 
 section#company {
