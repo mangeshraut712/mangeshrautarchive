@@ -723,7 +723,7 @@ section#languages {
 section#publications {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
 }
 
 section#contact {
