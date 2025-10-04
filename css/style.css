@@ -684,6 +684,24 @@ section#education {
     background: var(--bg-secondary);
 }
 
+section#publications {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#awards {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-secondary);
+}
+
+section#certifications {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
 section#awards {
     padding-top: 120px;
     padding-bottom: 120px;
