@@ -375,20 +375,20 @@ html {
 
 /* Typography - Apple Style */
 h1 {
-    font-size: 5rem;
+    font-size: 3rem;
     font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.022em;
+    line-height: 1.0416666667;
+    letter-spacing: -0.021em;
     margin-bottom: 1rem;
     color: var(--text-primary);
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 5rem;
     font-weight: 700;
-    line-height: 1.0416666667;
-    letter-spacing: -0.021em;
-    margin-bottom: 2.5rem;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    margin-bottom: 1rem;
     color: var(--text-primary);
 }
 
