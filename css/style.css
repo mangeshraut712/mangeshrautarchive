@@ -454,7 +454,7 @@ span, div, section {
 
 .date-badge {
     color: #6e6e73 !important; /* Grey for date badges */
-    background-color: #f5f5f7 !important;
+    /* background-color: #f5f5f7 !important; */ /* Removed background */
 }
 
 .button-primary {
@@ -1139,14 +1139,16 @@ section h2 {
     color: white;
 }
 
-/* Dark mode adjustments */
+/* Dark mode adjustments for project cards */
 html.dark .project-card {
-    background: var(--bg-primary);
-    border-color: var(--border-color);
+    background: #111111 !important; /* Dark background like experience section */
+    border-color: #3a3a3c;
+    color: #ffffff;
 }
 
+html.dark .project-card h3,
 html.dark .project-card h3 a {
-    color: var(--text-primary);
+    color: #ffffff !important;
 }
 
 html.dark .project-card h3 a:hover {
@@ -1154,7 +1156,7 @@ html.dark .project-card h3 a:hover {
 }
 
 html.dark .project-card p {
-    color: var(--text-secondary);
+    color: #ffffff !important;
 }
 
 
@@ -1405,7 +1407,7 @@ html.dark body {
 .dark h4,
 .dark h5,
 .dark h6 {
-    color: #f5f5f7 !important;
+    color: #ffffff !important;
 }
 
 /* Paragraphs & Links in dark mode */
@@ -1413,7 +1415,7 @@ html.dark body {
 .dark .text-gray-700,
 .dark .text-gray-600,
 .dark .text-black {
-    color: #a1a1a6 !important; /* Softer gray for body text */
+    color: #ffffff !important; /* White for body text in dark mode */
 }
 
 .dark a {
@@ -1443,16 +1445,16 @@ html.dark body {
 .dark .project-card h3,
 .dark .timeline-item h3,
 .dark .timeline-item h4 {
-    color: #f5f5f7 !important;
+    color: #ffffff !important;
 }
 .dark .project-card p,
 .dark .timeline-item ul,
 .dark .timeline-item ul li {
-    color: #a1a1a6 !important;
+    color: #ffffff !important;
 }
 .dark .project-card .tag {
     background-color: rgba(41, 151, 255, 0.15) !important;
-    color: #2997ff !important;
+    color: #ffffff !important;
 }
 .dark .project-card .tag:hover {
     background-color: #2997ff !important;
@@ -1539,10 +1541,10 @@ html.dark body {
 }
 
 /* Timeline badge */
-.dark .timeline-item .date-badge {
+/* .dark .timeline-item .date-badge {
     background-color: #3a3a3c !important;
     color: #a1a1a6 !important;
-}
+} */
 
 /* Button styles */
 .dark .button-primary {
