@@ -17,252 +17,292 @@
 </head>
 <body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
 
-    <nav class="fixed w-full bg-white/80 dark:bg-[#18181b]/90 backdrop-blur-md border-b border-gray-200 dark:border-[#23272f] z-50 text-black dark:text-white shadow-sm transition-all duration-300">
-        <div class="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
-            <a href="#home" class="flex items-center">
-                <img src="images/profile icon.png" alt="Mangesh Raut Logo" class="h-8 w-auto">
-            </a>
-            <!-- Apple-style simple horizontal menu bar -->
-            <div class="hidden md:flex items-center space-x-8 ml-8">
-                <a href="#home" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">Home</a>
-                <a href="#about" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">About</a>
-                <a href="#skills" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">Skills</a>
-                <a href="#projects" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">Projects</a>
-                <a href="#experience" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">Experience</a>
-                <a href="#education" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">Education</a>
-                <a href="#contact" class="font-medium hover:text-blue-600 dark:hover:text-yellow-300 transition">Contact</a>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">
+                    <img src="images/profile icon.png" alt="Mangesh Raut" />
+                </a>
             </div>
-            <div class="flex items-center space-x-2">
-                <!-- Search bar -->
-                <div class="hidden md:block">
-                    <input
-                        id="site-search"
-                        type="text"
-                        placeholder="Search…"
-                        class="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#23272f] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition w-44"
-                        aria-label="Search site"
-                    />
+            <div class="nav-menu">
+                <div class="nav-links">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#skills" class="nav-link">Skills</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#experience" class="nav-link">Experience</a>
+                    <a href="#education" class="nav-link">Education</a>
+                    <a href="#contact" class="nav-link">Contact</a>
                 </div>
-                <button id="theme-toggle" class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-300 dark:border-yellow-400 bg-gray-100 dark:bg-[#23272f] hover:bg-gray-200 dark:hover:bg-[#31313a] shadow transition" aria-label="Toggle Theme">
-                    <i id="theme-toggle-icon" class="fas fa-moon text-xl text-gray-700 dark:text-yellow-400"></i>
+                <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle Theme">
+                    <i id="theme-toggle-icon" class="fas fa-moon"></i>
                 </button>
             </div>
         </div>
     </nav>
     <!-- Removed overlay menu and menu button markup -->
     <main id="main-content">
-        <!-- Alternate dark backgrounds for each section for clear separation -->
-        <section id="home" class="pt-32 pb-24 md:pt-40 md:pb-32 bg-gray-50 dark:bg-[#18181b] fade-in">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div class="mb-12">
-                    <div class="inline-block w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg mx-auto">
-                        <img src="images/profile.jpg" alt="Mangesh Raut" class="w-full h-full object-cover">
-                    </div>
-                </div>
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 text-black dark:text-white">Mangesh Raut</h1>
-                <h2 class="text-xl md:text-2xl mb-8 text-gray-700 dark:text-gray-300">Software Engineer</h2>
-                <p class="text-lg mb-10 max-w-2xl mx-auto text-gray-600 dark:text-gray-400">
-                    Welcome! Explore my journey in crafting innovative software solutions.
-                </p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="button-secondary">Download Resume</a>
-                </div>
-            </div>
-        </section>
-        <section id="about" class="py-20 md:py-24 bg-white dark:bg-[#23272f] fade-in">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-black dark:text-white">About Me</h2>
-                <div class="p-8 rounded-2xl bg-white dark:bg-[#18181b] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <div class="flex flex-col md:flex-row items-center gap-12">
-                        <div class="md:w-1/3 flex justify-center">
-                            <div class="w-56 h-56 rounded-lg overflow-hidden shadow-md">
-                                <img src="images/graduation.jpg" alt="Mangesh Raut Graduation" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div class="md:w-2/3 text-lg space-y-6 text-gray-700 dark:text-gray-300">
-                            <p>
-                                Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker). Currently enhancing energy analytics tools at Customized Energy Solutions, achieving a 40% efficiency gain.
-                            </p>
-                            <p>
-                                Previously honed expertise in network engineering (35% latency reduction at Harshwardhan Enterprises) and Java development (20% code optimization at IoasiZ). Eager to leverage hands-on experience with scalable systems, CI/CD pipelines, and machine learning to drive innovation.
-                            </p>
+        <section id="home" class="fade-in">
+            <div class="container-fluid">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="mb-12">
+                        <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-light mx-auto mb-8">
+                            <img src="images/profile.jpg" alt="Mangesh Raut" class="w-full h-full object-cover">
                         </div>
                     </div>
+                    <h1>Mangesh Raut</h1>
+                    <h2>Software Engineer</h2>
+                    <p class="mx-auto mb-10 max-w-2xl">
+                        Welcome! Explore my journey in crafting innovative software solutions.
+                    </p>
+                    <a href="files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="btn btn-secondary">Download Resume</a>
                 </div>
             </div>
         </section>
-        <section id="skills" class="py-20 md:py-24 bg-gray-50 dark:bg-[#18181b] fade-in">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Skills & Technologies</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
-                    <div class="rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a] shadow-xl p-8 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
-                        <h3 class="text-xl font-bold mb-6 text-black dark:text-white">Languages</h3>
-                        <ul class="space-y-2 text-base font-medium text-gray-600 dark:text-gray-300">
-                            <li><i class="fas fa-code mr-2 text-blue-500"></i>Java</li>
-                            <li><i class="fas fa-code mr-2 text-blue-500"></i>Python</li>
-                            <li><i class="fas fa-database mr-2 text-blue-500"></i>SQL</li>
-                            <li><i class="fab fa-js-square mr-2 text-blue-500"></i>JavaScript</li>
-                        </ul>
-                    </div>
-                    <div class="rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a] shadow-xl p-8 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
-                        <h3 class="text-xl font-bold mb-6 text-black dark:text-white">Frameworks</h3>
-                        <ul class="space-y-2 text-base font-medium text-gray-600 dark:text-gray-300">
-                            <li><i class="fab fa-java mr-2 text-blue-500"></i>Spring Boot</li>
-                            <li><i class="fab fa-angular mr-2 text-blue-500"></i>AngularJS</li>
-                            <li><i class="fas fa-brain mr-2 text-blue-500"></i>TensorFlow</li>
-                            <li><i class="fas fa-robot mr-2 text-blue-500"></i>scikit-learn</li>
-                        </ul>
-                    </div>
-                    <div class="rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a] shadow-xl p-8 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
-                        <h3 class="text-xl font-bold mb-6 text-black dark:text-white">Cloud, DevOps & Tools</h3>
-                        <ul class="space-y-2 text-base font-medium text-gray-600 dark:text-gray-300">
-                            <li><i class="fab fa-aws mr-2 text-blue-500"></i>AWS</li>
-                            <li><i class="fab fa-docker mr-2 text-blue-500"></i>Docker</li>
-                            <li><i class="fas fa-cogs mr-2 text-blue-500"></i>Jenkins</li>
-                            <li><i class="fas fa-code-branch mr-2 text-blue-500"></i>Terraform</li>
-                            <li><i class="fas fa-database mr-2 text-blue-500"></i>PostgreSQL, MongoDB, MySQL</li>
-                            <li><i class="fab fa-git-alt mr-2 text-blue-500"></i>Git, Jira, Tableau, Wireshark</li>
-                            <li><i class="fas fa-network-wired mr-2 text-blue-500"></i>Cisco Networking</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Projects: alternate to dark:bg-[#18181b] for contrast -->
-        <section id="projects" class="py-20 md:py-24 bg-white dark:bg-[#23272f] fade-in">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Projects</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <div class="project-card bg-white border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 fade-in rounded-2xl">
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold mb-2 text-black dark:text-white">Starlight Blogging Website</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-base mb-4">Built a blogging website with user authentication and post-management features. Attracted 100+ users within three months.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Angular</span>
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Flask</span>
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">SQLite</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card bg-white border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 fade-in rounded-2xl">
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold mb-2 text-black dark:text-white">Real-Time Face Emotion Recognition</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-base mb-4">Developed a real-time emotion recognition model with 95% accuracy using OpenCV and ML techniques.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Python</span>
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">OpenCV</span>
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Machine Learning</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card bg-white border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300 fade-in rounded-2xl">
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold mb-2 text-black dark:text-white">PC Crime Detector</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-base mb-4">Implemented security automation using Java and database integration, reducing breaches by 80% in institutional deployments.</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Java</span>
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Database Integration</span>
-                                <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 font-semibold px-3 py-1 rounded-full text-sm">Automation</span>
+        <section id="about" class="fade-in">
+            <div class="container">
+                <h2>About Me</h2>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                            <div class="row">
+                                <div class="col-lg-4 text-center mb-8 lg:mb-0">
+                                    <img src="images/graduation.jpg" alt="Mangesh Raut Graduation" class="w-56 h-56 object-cover rounded-xl shadow-light mx-auto">
+                                </div>
+                                <div class="col-lg-8">
+                                    <p class="mb-6 leading-relaxed">
+                                        Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker). Currently enhancing energy analytics tools at Customized Energy Solutions, achieving a 40% efficiency gain.
+                                    </p>
+                                    <p class="leading-relaxed">
+                                        Previously honed expertise in network engineering (35% latency reduction at Harshwardhan Enterprises) and Java development (20% code optimization at IoasiZ). Eager to leverage hands-on experience with scalable systems, CI/CD pipelines, and machine learning to drive innovation.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Experience: alternate to dark:bg-[#23272f] for contrast -->
-        <section id="experience" class="py-20 md:py-24 bg-gray-50 dark:bg-[#18181b] fade-in">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Work Experience</h2>
-                <div class="space-y-12">
-                    <div class="timeline-item">
-                        <div class="p-8 rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300">
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-semibold text-black dark:text-white">Software Engineer</h3>
-                                <span class="date-badge">Aug 2024 – Present</span>
-                            </div>
-                            <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">Customized Energy Solutions - Philadelphia, PA</h4>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1 text-base">
-                                <li>Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40%.</li>
-                                <li>Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines.</li>
-                                <li>Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow).</li>
+        <section id="skills" class="fade-in">
+            <div class="container">
+                <h2>Skills & Technologies</h2>
+                <div class="row">
+                    <div class="col-lg-4 mb-8 lg:mb-0">
+                        <div class="bg-primary border border-border rounded-2xl p-8 shadow-light text-center">
+                            <h3>Languages</h3>
+                            <ul class="list-none p-0 mt-6 space-y-3">
+                                <li><i class="fas fa-code mr-2"></i>Java</li>
+                                <li><i class="fas fa-code mr-2"></i>Python</li>
+                                <li><i class="fas fa-database mr-2"></i>SQL</li>
+                                <li><i class="fab fa-js-square mr-2"></i>JavaScript</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="p-8 rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300">
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-semibold text-black dark:text-white">Software Engineer</h3>
-                                <span class="date-badge">Jul 2023 – Jul 2024</span>
-                            </div>
-                            <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">IoasiZ - Piscataway, NJ</h4>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1 text-base">
-                                <li>Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20%.</li>
-                                <li>Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites.</li>
-                                <li>Integrated Redis caching for inventory APIs, achieving 30% faster response times.</li>
+                    <div class="col-lg-4 mb-8 lg:mb-0">
+                        <div class="bg-primary border border-border rounded-2xl p-8 shadow-light text-center">
+                            <h3>Frameworks</h3>
+                            <ul class="list-none p-0 mt-6 space-y-3">
+                                <li><i class="fab fa-java mr-2"></i>Spring Boot</li>
+                                <li><i class="fab fa-angular mr-2"></i>AngularJS</li>
+                                <li><i class="fas fa-brain mr-2"></i>TensorFlow</li>
+                                <li><i class="fas fa-robot mr-2"></i>scikit-learn</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="p-8 rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300">
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-semibold text-black dark:text-white">Network Engineer</h3>
-                                <span class="date-badge">Jun 2020 – Jun 2021</span>
-                            </div>
-                            <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">Harshwardhan Enterprises - Pune, India</h4>
-                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-1 text-base">
-                                <li>Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35%.</li>
-                                <li>Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance.</li>
-                                <li>Created Python-based monitoring tools, reducing manual diagnostics by 50%.</li>
+                    <div class="col-lg-4">
+                        <div class="bg-primary border border-border rounded-2xl p-8 shadow-light text-center">
+                            <h3>Cloud, DevOps & Tools</h3>
+                            <ul class="list-none p-0 mt-6 space-y-3 text-sm">
+                                <li><i class="fab fa-aws mr-2"></i>AWS</li>
+                                <li><i class="fab fa-docker mr-2"></i>Docker</li>
+                                <li><i class="fas fa-cogs mr-2"></i>Jenkins</li>
+                                <li><i class="fas fa-code-branch mr-2"></i>Terraform</li>
+                                <li><i class="fas fa-database mr-2"></i>PostgreSQL, MongoDB, MySQL</li>
+                                <li><i class="fab fa-git-alt mr-2"></i>Git, Jira, Tableau, Wireshark</li>
+                                <li><i class="fas fa-network-wired mr-2"></i>Cisco Networking</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Education: alternate to dark:bg-[#18181b] for contrast -->
-        <section id="education" class="py-20 md:py-24 bg-white dark:bg-[#23272f] fade-in">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Education & Certifications</h2>
-                <div class="space-y-12">
-                    <div class="timeline-item rounded-2xl bg-white dark:bg-[#18181b] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300 fade-in p-8">
-                        <div>
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-bold text-black dark:text-white">Master of Science in Computer Science</h3>
-                                <span class="date-badge bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full font-semibold">Sep 2021 – Jun 2023</span>
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="project-grid">
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/apple-FastVLM-0.5B" target="_blank">Apple FastVLM 0.5B</a></h3>
+                                <p>Implementation of Apple's FastVLM 0.5B model for efficient vision-language tasks.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">Machine Learning</span>
+                                    <span class="tag">AI</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/apple-FastVLM-0.5B" target="_blank" class="btn btn-secondary">View Project</a>
                             </div>
-                            <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Drexel University - Philadelphia, PA</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">GPA: 3.3</p>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant" target="_blank">AssistMe Virtual Assistant</a></h3>
+                                <p>A chatbot application designed to assist users with various queries and tasks.</p>
+                                <div class="project-tags">
+                                    <span class="tag">JavaScript</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/Crime-Investigation-System" target="_blank">Crime Investigation System</a></h3>
+                                <p>A simple Java-based application for managing crime investigation data and records.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Java</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/Crime-Investigation-System" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/Drexel-University-MSCS-Academics-Quarter-System" target="_blank">Drexel MSCS Quarter System</a></h3>
+                                <p>Academic management system for Drexel University's MSCS program on quarter basis.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">Jupyter Notebook</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/Drexel-University-MSCS-Academics-Quarter-System" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/financial-forecasting-model" target="_blank">Financial Forecasting Model</a></h3>
+                                <p>Machine learning model for predicting financial trends and data forecasting.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">Machine Learning</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/financial-forecasting-model" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/Lead-Pred" target="_blank">Lead Prediction Model</a></h3>
+                                <p>Logistic regression model to predict which leads have the highest chance of getting converted.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">Machine Learning</span>
+                                    <span class="tag">Jupyter Notebook</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/Lead-Pred" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/LeetCodeByMangesh" target="_blank">LeetCode Solutions</a></h3>
+                                <p>Collection of LeetCode problems solved while preparing for interviews and assessments.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">Algorithms</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/LeetCodeByMangesh" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
+                            <div class="project-card">
+                                <h3><a href="https://github.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System" target="_blank">Real-Time Face Emotion Recognition</a></h3>
+                                <p>Real-time emotion recognition system using face detection and AI algorithms.</p>
+                                <div class="project-tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">OpenCV</span>
+                                    <span class="tag">Machine Learning</span>
+                                </div>
+                                <a href="https://github.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System" target="_blank" class="btn btn-secondary">View Project</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="timeline-item rounded-2xl bg-white dark:bg-[#18181b] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300 fade-in p-8">
-                        <div>
-                            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                                <h3 class="text-xl font-bold text-black dark:text-white">Bachelor of Engineering in Computer Engineering</h3>
-                                <span class="date-badge bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full font-semibold">Jun 2017 – Jun 2020</span>
+                </div>
+            </div>
+        </section>
+        <section id="experience" class="fade-in">
+            <div class="container">
+                <h2>Work Experience</h2>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="space-y-12">
+                            <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                    <h3>Software Engineer</h3>
+                                    <span class="date-badge">Aug 2024 – Present</span>
+                                </div>
+                                <h4 class="mb-4">Customized Energy Solutions - Philadelphia, PA</h4>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40%.</li>
+                                    <li>Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines.</li>
+                                    <li>Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow).</li>
+                                </ul>
                             </div>
-                            <h4 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Pune University - Pune, India</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">GPA: 3.6</p>
+                            <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                    <h3>Software Engineer</h3>
+                                    <span class="date-badge">Jul 2023 – Jul 2024</span>
+                                </div>
+                                <h4 class="mb-4">IoasiZ - Piscataway, NJ</h4>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20%.</li>
+                                    <li>Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites.</li>
+                                    <li>Integrated Redis caching for inventory APIs, achieving 30% faster response times.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                    <h3>Network Engineer</h3>
+                                    <span class="date-badge">Jun 2020 – Jun 2021</span>
+                                </div>
+                                <h4 class="mb-4">Harshwardhan Enterprises - Pune, India</h4>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35%.</li>
+                                    <li>Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance.</li>
+                                    <li>Created Python-based monitoring tools, reducing manual diagnostics by 50%.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="timeline-item rounded-2xl bg-white dark:bg-[#18181b] border-2 border-gray-200 dark:border-[#31313a] shadow-xl hover:scale-[1.02] hover:shadow-2xl transition-transform duration-300 fade-in p-8">
-                        <div>
-                            <h3 class="text-xl font-bold mb-4 text-black dark:text-white">Certifications</h3>
-                            <div class="space-y-3 text-base">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Google</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">Prompt Design in Vertex AI, Digital Marketing, Online Marketing Fundamentals</p>
+                </div>
+            </div>
+        </section>
+        <section id="education" class="fade-in">
+            <div class="container">
+                <h2>Education & Certifications</h2>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="space-y-12">
+                            <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                    <div>
+                                        <h3>Master of Science in Computer Science</h3>
+                                        <h4 class="mb-2 mt-2">Drexel University - Philadelphia, PA</h4>
+                                        <p class="text-sm opacity-75">GPA: 3.3</p>
+                                    </div>
+                                    <span class="date-badge">Sep 2021 – Jun 2023</span>
                                 </div>
-                                <div>
-                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">IBM</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">Cybersecurity Fundamentals, Data Fundamentals (SQL/NoSQL), Explore Emerging Tech (AI), Fundamentals of Sustainability and Technology</p>
+                            </div>
+                            <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                    <div>
+                                        <h3>Bachelor of Engineering in Computer Engineering</h3>
+                                        <h4 class="mb-2 mt-2">Pune University - Pune, India</h4>
+                                        <p class="text-sm opacity-75">GPA: 3.6</p>
+                                    </div>
+                                    <span class="date-badge">Jun 2017 – Jun 2020</span>
                                 </div>
-                                <div>
-                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Cisco</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">Networking Basics (OSPF/BGP), CCNP (Routing & Switching)</p>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-gray-800 dark:text-gray-200">Microsoft</h4>
-                                    <p class="text-gray-600 dark:text-gray-300">JavaScript Programming</p>
+                            </div>
+                            <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                                <h3 class="mb-6">Certifications</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-semibold mb-3">Google</h4>
+                                        <p class="text-sm opacity-75">Prompt Design in Vertex AI, Digital Marketing, Online Marketing Fundamentals</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-3">IBM</h4>
+                                        <p class="text-sm opacity-75">Cybersecurity Fundamentals, Data Fundamentals (SQL/NoSQL), Explore Emerging Tech (AI), Fundamentals of Sustainability and Technology</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-3">Cisco</h4>
+                                        <p class="text-sm opacity-75">Networking Basics (OSPF/BGP), CCNP (Routing & Switching)</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-3">Microsoft</h4>
+                                        <p class="text-sm opacity-75">JavaScript Programming</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -270,85 +310,88 @@
                 </div>
             </div>
         </section>
-        <!-- Contact: alternate to dark:bg-[#23272f] for contrast -->
-        <section id="contact" class="py-20 md:py-24 bg-gray-50 dark:bg-[#18181b] fade-in">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-black dark:text-white">Get In Touch</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div class="space-y-6 p-8 rounded-2xl bg-white dark:bg-[#23272f] border-2 border-gray-200 dark:border-[#31313a]">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Contact Information</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Feel free to reach out via email or connect on social media.</p>
-                        <div>
-                            <h4 class="font-medium text-sm text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</h4>
-                            <p class="text-gray-800 dark:text-gray-200 mt-1"><a href="mailto:mbr63drexel@gmail.com" class="hover:underline">mbr63drexel@gmail.com</a></p>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-sm text-gray-500 dark:text-gray-300 uppercase tracking-wider">Phone</h4>
-                            <p class="text-gray-800 mt-1">+1 (609) 505 3500</p>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-sm text-gray-500 dark:text-gray-300 uppercase tracking-wider">Location</h4>
-                            <p class="text-gray-800 mt-1">Philadelphia, PA, USA</p>
-                        </div>
-                        <div class="pt-4">
-                            <h4 class="font-medium text-sm text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-3">Follow Me</h4>
-                            <div class="flex space-x-5">
-                                <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
-                                    <i class="fab fa-instagram text-xl"></i>
-                                </a>
-                                <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
-                                    <i class="fab fa-facebook-f text-xl"></i>
-                                </a>
-                                <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
-                                    <i class="fab fa-linkedin-in text-xl"></i>
-                                </a>
-                                <a href="https://github.com/mangeshraut712" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="text-gray-500 hover:text-black transition duration-300">
-                                    <i class="fab fa-youtube text-xl"></i>
-                                </a>
-                                <a href="https://x.com/mrcommando712" target="_blank" class="text-gray-500 hover:text-black transition duration-300 inline-block w-5 h-5">
-                                    <img src="images/X_logo.jpg" alt="X Logo" class="w-full h-full object-contain filter invert brightness-75 hover:brightness-100">
-                                </a>
-                                <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="text-gray-500 hover:text-black transition duration-300" title="Wix Portfolio">
-                                    <i class="fas fa-globe text-xl"></i>
-                                </a>
-                                <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" class="text-gray-500 hover:text-black transition duration-300" title="LeetCode Profile">
-                                    <i class="fas fa-code text-xl"></i>
-                                </a>
+        <section id="contact" class="fade-in">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <div class="row">
+                    <div class="col-lg-6 mb-12 lg:mb-0">
+                        <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
+                            <h3 class="mb-6">Contact Information</h3>
+                            <p class="mb-8">Feel free to reach out via email or connect on social media.</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">Email</h4>
+                                    <p><a href="mailto:mbr63drexel@gmail.com" class="hover:underline">mbr63drexel@gmail.com</a></p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">Phone</h4>
+                                    <p>+1 (609) 505 3500</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">Location</h4>
+                                    <p>Philadelphia, PA, USA</p>
+                                </div>
+                                <div class="pt-4">
+                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-4">Follow Me</h4>
+                                    <div class="flex space-x-6">
+                                        <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" class="hover:opacity-75 transition-opacity">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" class="hover:opacity-75 transition-opacity">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                        <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="hover:opacity-75 transition-opacity">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                        <a href="https://github.com/mangeshraut712" target="_blank" class="hover:opacity-75 transition-opacity">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                        <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="hover:opacity-75 transition-opacity">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                        <a href="https://x.com/mrcommando712" target="_blank" class="hover:opacity-75 transition-opacity w-5 h-5 inline-block">
+                                            <img src="images/X_logo.jpg" alt="X Logo" class="w-full h-full object-contain">
+                                        </a>
+                                        <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="hover:opacity-75 transition-opacity" title="Wix Portfolio">
+                                            <i class="fas fa-globe"></i>
+                                        </a>
+                                        <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" class="hover:opacity-75 transition-opacity" title="LeetCode Profile">
+                                            <i class="fas fa-code"></i>
+                                        </a>
+                                    </div>
+                                    <div class="mt-6 pt-6 border-t border-border">
+                                        <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">Support Me</h4>
+                                        <p class="mb-3 opacity-75">If you like my work, consider buying me a coffee!</p>
+                                        <a href="https://www.buymeacoffee.com/xzvwsqf84xy" target="_blank" class="text-yellow-500 hover:text-yellow-600 hover:opacity-75 transition-all">
+                                            <i class="fas fa-coffee mr-2"></i>Buy Me a Coffee
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="pt-4">
-                            <h4 class="font-medium text-sm text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-3">Support Me</h4>
-                            <p class="text-gray-600">If you like my work, consider buying me a coffee!</p>
-                            <a href="https://www.buymeacoffee.com/xzvwsqf84xy" target="_blank" class="text-yellow-500 hover:text-yellow-600 transition duration-300">
-                                <i class="fas fa-coffee text-xl"></i> Buy Me a Coffee
-                            </a>
-                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-6 text-black dark:text-white">Send a Message</h3>
-                        <form id="contact-form" class="space-y-5">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="col-lg-6">
+                        <h3 class="mb-8">Send a Message</h3>
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label for="name" class="hidden">Your Name</label>
-                                    <input type="text" id="name" name="name" placeholder="Your Name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required>
+                                    <input type="text" id="name" name="name" placeholder="Your Name" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary" required>
                                 </div>
                                 <div>
                                     <label for="email" class="hidden">Your Email</label>
-                                    <input type="email" id="email" name="email" placeholder="Your Email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required>
+                                    <input type="email" id="email" name="email" placeholder="Your Email" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary" required>
                                 </div>
                             </div>
                             <div>
                                 <label for="subject" class="hidden">Subject</label>
-                                <input type="text" id="subject" name="subject" placeholder="Subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required>
+                                <input type="text" id="subject" name="subject" placeholder="Subject" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary" required>
                             </div>
                             <div>
                                 <label for="message" class="hidden">Message</label>
-                                <textarea id="message" name="message" rows="5" placeholder="Message" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:border-black transition duration-300 bg-white text-sm" required></textarea>
+                                <textarea id="message" name="message" rows="5" placeholder="Message" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary resize-none" required></textarea>
                             </div>
-                            <button type="submit" class="button-primary w-full">Send Message</button>
+                            <button type="submit" class="btn">Send Message</button>
                         </form>
                     </div>
                 </div>
