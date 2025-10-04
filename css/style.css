@@ -263,7 +263,7 @@ html.dark .assistant-message::before {
 
 .chat-input-area button i.fas.fa-microphone:before {
     content: "\f130";
-    color: #ffffff !important;
+    color: #3b82f6 !important;
 }
 
 .chat-input-area button:hover {
@@ -375,11 +375,11 @@ html {
 
 /* Typography - Apple Style */
 h1 {
-    font-size: 4rem;
+    font-size: 5rem;
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.022em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--text-primary);
 }
 
