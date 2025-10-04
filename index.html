@@ -1,791 +1,1372 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mangesh Raut - Software Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="images/profile icon.png">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" type="image/png" href="images/profile icon.png" />
 
-    <!-- Add Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    
-</head>
-<body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
-
+  </head>
+  <body
+    class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]"
+  >
     <nav>
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="#home">
-                    <img src="images/profile icon.png" alt="Mangesh Raut" />
-                </a>
-            </div>
-            <div class="nav-menu">
-                <div class="nav-links">
-                    <a href="#home" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <a href="#skills" class="nav-link">Skills</a>
-                    <a href="#projects" class="nav-link">Projects</a>
-                    <a href="#experience" class="nav-link">Experience</a>
-                    <a href="#education" class="nav-link">Education</a>
-                    <a href="#publications" class="nav-link">Publications</a>
-                    <a href="#awards" class="nav-link">Awards</a>
-                    <a href="#certifications" class="nav-link">Certifications</a>
-                    <a href="#contact" class="nav-link">Contact</a>
-                </div>
-                <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle Theme">
-                    <i id="theme-toggle-icon" class="fas fa-moon"></i>
-                </button>
-            </div>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="#home">
+            <img src="images/profile icon.png" alt="Mangesh Raut" />
+          </a>
         </div>
+        <div class="nav-menu">
+          <div class="nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#skills" class="nav-link">Skills</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#experience" class="nav-link">Experience</a>
+            <a href="#education" class="nav-link">Education</a>
+            <a href="#publications" class="nav-link">Publications</a>
+            <a href="#awards" class="nav-link">Awards</a>
+            <a href="#certifications" class="nav-link">Certifications</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+          <button
+            id="theme-toggle"
+            class="theme-toggle-nav"
+            aria-label="Toggle Theme"
+          >
+            <i id="theme-toggle-icon" class="fas fa-moon"></i>
+          </button>
+        </div>
+      </div>
     </nav>
-    <!-- Removed overlay menu and menu button markup -->
     <main id="main-content">
-        <section id="home" class="fade-in">
-            <div class="container-fluid">
-                <div class="max-w-4xl mx-auto text-center">
-                    <div class="mb-12 home-element">
-                        <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-light mx-auto mb-8">
-                            <img src="images/profile.jpg" alt="Mangesh Raut" class="w-full h-full object-cover">
-                        </div>
-                    </div>
-                    <h2 class="home-element">Mangesh Raut</h2>
-                    <h1 class="home-element">Software Engineer</h1>
-                    <p class="mx-auto mb-10 max-w-2xl home-element">
-                        Welcome! Explore my journey in crafting innovative software solutions.
+      <section id="home" class="fade-in">
+        <div class="container-fluid">
+          <div class="max-w-4xl mx-auto text-center">
+            <div class="mb-12 home-element">
+              <div
+                class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-light mx-auto mb-8"
+              >
+                <img
+                  src="images/profile.jpg"
+                  alt="Mangesh Raut"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <h2 class="home-element">Mangesh Raut</h2>
+            <h1 class="home-element">Software Engineer</h1>
+            <p class="mx-auto mb-10 max-w-2xl home-element">
+              Welcome! Explore my journey in crafting innovative software
+              solutions.
+            </p>
+            <a
+              href="files/Mangesh_Raut_Resume.pdf"
+              download="Mangesh_Raut_Resume.pdf"
+              class="btn btn-secondary home-element"
+              >Download Resume</a
+            >
+            <div
+              id="visitor-count"
+              class="text-center mt-6 text-sm opacity-75 home-element"
+            >
+              Visitors: <span id="visit-number">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="about" class="fade-in">
+        <div class="container">
+          <h2>About Me</h2>
+          <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="flex-shrink-0 w-80 text-center">
+              <img
+                src="images/graduation.jpg"
+                alt="Mangesh Raut Graduation"
+                class="w-full h-80 object-cover rounded-xl shadow-light"
+              />
+            </div>
+            <div class="flex-1">
+              <p class="mb-8 leading-relaxed">
+                Software Engineer skilled in full-stack development (Java,
+                Python, AngularJS) and cloud solutions (AWS, Docker). Currently
+                enhancing energy analytics tools at Customized Energy Solutions,
+                achieving a 40% efficiency gain.
+              </p>
+              <p class="mb-8 leading-relaxed">
+                Previously honed expertise in network engineering (35% latency
+                reduction at Harshwardhan Enterprises) and Java development (20%
+                code optimization at IoasiZ). Eager to leverage hands-on
+                experience with scalable systems, CI/CD pipelines, and machine
+                learning to drive innovation.
+              </p>
+              <p class="leading-relaxed">
+                Passionate about creating scalable software solutions that drive
+                business impact. Experienced in modern development practices
+                including DevOps, containerization, and AI integration.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="skills" class="fade-in">
+        <div class="container">
+          <h2>Skills & Technologies</h2>
+          <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">Languages</h3>
+                    <h5 class="text-lg font-medium mb-2 mt-6 text-accent">
+                      Programming Languages
+                    </h5>
+                    <ul class="list-none p-0 space-y-2">
+                      <li><i class="fas fa-code mr-2 text-sm"></i>HTML</li>
+                      <li>
+                        <i class="fas fa-code mr-2 text-sm"></i>JavaScript
+                      </li>
+                      <li><i class="fas fa-code mr-2 text-sm"></i>Python</li>
+                      <li><i class="fab fa-js mr-2 text-sm"></i>React</li>
+                      <li><i class="fas fa-code mr-2 text-sm"></i>Java</li>
+                      <li>
+                        <i class="fab fa-js-square mr-2 text-sm"></i>TypeScript
+                      </li>
+                      <li><i class="fas fa-code mr-2 text-sm"></i>C</li>
+                      <li><i class="fas fa-code mr-2 text-sm"></i>C++</li>
+                      <li><i class="fab fa-swift mr-2 text-sm"></i>Swift</li>
+                      <li><i class="fab fa-c-sharp mr-2 text-sm"></i>C#</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">Frameworks</h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li><i class="fab fa-java mr-2"></i>Spring Boot</li>
+                      <li><i class="fab fa-angular mr-2"></i>AngularJS</li>
+                      <li><i class="fas fa-brain mr-2"></i>TensorFlow</li>
+                      <li><i class="fas fa-robot mr-2"></i>scikit-learn</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">Cloud & DevOps</h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li><i class="fab fa-aws mr-2"></i>AWS</li>
+                      <li><i class="fab fa-docker mr-2"></i>Docker</li>
+                      <li><i class="fas fa-cogs mr-2"></i>Jenkins</li>
+                      <li><i class="fas fa-code-branch mr-2"></i>Terraform</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Databases & Tools
+                    </h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li><i class="fas fa-database mr-2"></i>PostgreSQL</li>
+                      <li><i class="fas fa-database mr-2"></i>MongoDB</li>
+                      <li><i class="fas fa-database mr-2"></i>MySQL</li>
+                      <li><i class="fab fa-git-alt mr-2"></i>Git & Jira</li>
+                      <li><i class="fas fa-chart-line mr-2"></i>Tableau</li>
+                      <li><i class="fas fa-search mr-2"></i>Wireshark</li>
+                      <li>
+                        <i class="fas fa-network-wired mr-2"></i>Cisco
+                        Networking
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="projects" class="fade-in">
+        <div class="container">
+          <h2>Projects</h2>
+          <div class="max-w-6xl mx-auto">
+            <div class="space-y-8">
+              <!-- Row 1: Latest Project (Featured) -->
+              <div class="w-full">
+                <div
+                  class="project-card project-card-large hover:shadow-xl transition-shadow"
+                >
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/apple-FastVLM-0.5B"
+                      target="_blank"
+                      >Apple FastVLM 0.5B</a
+                    >
+                  </h3>
+                  <p class="text-lg">
+                    Implementation of Apple's FastVLM 0.5B model for efficient
+                    vision-language tasks.
+                  </p>
+                  <div class="project-tags mt-4">
+                    <span class="tag">Python</span>
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">AI</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/apple-FastVLM-0.5B"
+                    target="_blank"
+                    class="btn btn-secondary mt-4"
+                    >View Project</a
+                  >
+                </div>
+              </div>
+
+              <!-- Row 2: Two Projects -->
+              <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1 project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant"
+                      target="_blank"
+                      >AssistMe Virtual Assistant</a
+                    >
+                  </h3>
+                  <p>
+                    A chatbot application designed to assist users with various
+                    queries and tasks.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">JavaScript</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+                <div class="flex-1 project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System"
+                      target="_blank"
+                      >Real-Time Face Emotion Recognition</a
+                    >
+                  </h3>
+                  <p>
+                    Real-time emotion recognition system using face detection
+                    and AI algorithms.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">OpenCV</span>
+                    <span class="tag">ML</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+              </div>
+
+              <!-- Row 3: Three Projects -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/Drexel-University-MSCS-Academics-Quarter-System"
+                      target="_blank"
+                      >Drexel MSCS Quarter System</a
+                    >
+                  </h3>
+                  <p>
+                    Academic management system for Drexel University's MSCS
+                    program on quarter basis.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Jupyter</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/Drexel-University-MSCS-Academics-Quarter-System"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+                <div class="project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/financial-forecasting-model"
+                      target="_blank"
+                      >Financial Forecasting Model</a
+                    >
+                  </h3>
+                  <p>
+                    Machine learning model for predicting financial trends and
+                    data forecasting.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">ML</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/financial-forecasting-model"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+                <div class="project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/LeetCodeByMangesh"
+                      target="_blank"
+                      >LeetCode Solutions</a
+                    >
+                  </h3>
+                  <p>
+                    Collection of LeetCode problems solved while preparing for
+                    interviews.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Algorithms</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/LeetCodeByMangesh"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+              </div>
+
+              <!-- Row 4: Two Projects -->
+              <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1 project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/Crime-Investigation-System"
+                      target="_blank"
+                      >Crime Investigation System</a
+                    >
+                  </h3>
+                  <p>
+                    A Java-based application for managing crime investigation
+                    data and records.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">Java</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/Crime-Investigation-System"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+                <div class="flex-1 project-card">
+                  <h3>
+                    <a
+                      href="https://github.com/mangeshraut712/Lead-Pred"
+                      target="_blank"
+                      >Lead Prediction Model</a
+                    >
+                  </h3>
+                  <p>
+                    Logistic regression model to predict lead conversion
+                    potential.
+                  </p>
+                  <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">ML</span>
+                    <span class="tag">Jupyter</span>
+                  </div>
+                  <a
+                    href="https://github.com/mangeshraut712/Lead-Pred"
+                    target="_blank"
+                    class="btn btn-secondary"
+                    >View Project</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="experience" class="fade-in">
+        <div class="container">
+          <h2>Work Experience</h2>
+
+          <!-- Full-Time Employment -->
+          <h3 class="text-2xl font-bold text-accent mt-12 mb-6">
+            Full-Time Employment
+          </h3>
+          <div class="space-y-8">
+            <div
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+            >
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-start mb-4"
+              >
+                <h4 class="text-xl font-bold">Software Engineer</h4>
+                <span class="date-badge">Aug 2024 – Aug 2025</span>
+              </div>
+              <h5 class="text-lg mb-4 text-accent font-semibold">
+                Customized Energy Solutions - Philadelphia, PA
+              </h5>
+              <ul class="list-disc list-inside space-y-3">
+                <li>
+                  <strong>Full-Stack Development:</strong> Built energy
+                  analytics dashboards using Java Spring Boot (backend) and
+                  AngularJS (frontend), reducing data rendering latency by 40%
+                  via RESTful API optimization
+                </li>
+                <li>
+                  <strong>Cloud DevOps:</strong> Orchestrated AWS Lambda/EC2
+                  workflows with Terraform IaC, accelerating deployment by 35%
+                  through Dockerized Jenkins CI/CD pipelines
+                </li>
+                <li>
+                  <strong>Machine Learning:</strong> Enhanced demand forecasting
+                  accuracy by 25% using Python-based LSTM models (TensorFlow)
+                  with feature engineering
+                </li>
+              </ul>
+            </div>
+            <div
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+            >
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-start mb-4"
+              >
+                <h4 class="text-xl font-bold">Software Engineer</h4>
+                <span class="date-badge">Jul 2023 – Jul 2024</span>
+              </div>
+              <h5 class="text-lg mb-4 text-accent font-semibold">
+                IoasiZ - Piscataway, NJ
+              </h5>
+              <ul class="list-disc list-inside space-y-3">
+                <li>
+                  <strong>System Modernization:</strong> Refactored legacy Java
+                  monoliths into modular services using Spring Framework,
+                  cutting code redundancy by 20% (SOLID principles)
+                </li>
+                <li>
+                  <strong>Distributed Systems:</strong> Resolved 50+ bugs in
+                  microservices architecture, boosting sprint efficiency by 15%
+                  via JUnit/Mockito test suites
+                </li>
+                <li>
+                  <strong>Performance Optimization:</strong> Integrated Redis
+                  caching for inventory APIs, achieving 30% faster response
+                  times through query tuning
+                </li>
+              </ul>
+            </div>
+            <div
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+            >
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-start mb-4"
+              >
+                <h4 class="text-xl font-bold">Network Engineer</h4>
+                <span class="date-badge">Jun 2020 – Jun 2021</span>
+              </div>
+              <h5 class="text-lg mb-4 text-accent font-semibold">
+                Harshwardhan Enterprises - Pune, India
+              </h5>
+              <ul class="list-disc list-inside space-y-3">
+                <li>
+                  <strong>Network Optimization:</strong> Deployed Cisco ASR 9000
+                  routers with OSPF/BGP protocols, slashing latency by 35% in
+                  enterprise WANs
+                </li>
+                <li>
+                  <strong>Troubleshooting:</strong> Resolved 500+ connectivity
+                  issues via Wireshark analysis, achieving 90% SLA compliance
+                  for client networks
+                </li>
+                <li>
+                  <strong>Scripting:</strong> Created Python-based monitoring
+                  tools, reducing manual diagnostics by 50%
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Internship -->
+          <h3 class="text-2xl font-bold text-accent mt-12 mb-6">Internship</h3>
+          <div class="space-y-8">
+            <div
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+            >
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-start mb-4"
+              >
+                <h4 class="text-xl font-bold">Database Administrator</h4>
+                <span class="date-badge">Jun 2022 – Jun 2023</span>
+              </div>
+              <h5 class="text-lg mb-4 text-accent font-semibold">
+                Aramark - Philadelphia, PA
+              </h5>
+              <ul class="list-disc list-inside space-y-3">
+                <li>
+                  <strong>AWS Automation:</strong> Developed Python scripts to
+                  manage event inventory systems on AWS, reducing manual errors
+                  by 25% for 200+ events
+                </li>
+                <li>
+                  <strong>Data Migration:</strong> Transitioned 3+ legacy
+                  databases to AWS RDS, improving scalability for high-traffic
+                  event analytics
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Part-Time Work -->
+          <h3 class="text-2xl font-bold text-accent mt-12 mb-6">
+            Part-Time Work
+          </h3>
+          <div class="space-y-8">
+            <div
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+            >
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-start mb-4"
+              >
+                <h4 class="text-xl font-bold">Database Administrator</h4>
+                <span class="date-badge">Sep 2021 – May 2022</span>
+              </div>
+              <h5 class="text-lg mb-4 text-accent font-semibold">
+                Drexel University - Philadelphia, PA
+              </h5>
+              <ul class="list-disc list-inside space-y-3">
+                <li>
+                  <strong>SQL & Compliance:</strong> Maintained HIPAA-compliant
+                  MySQL databases for 5K+ student records, ensuring 99.9%
+                  accuracy with constraint-driven validation
+                </li>
+                <li>
+                  <strong>Reporting Tools:</strong> Streamlined data workflows
+                  using Tableau and Excel, cutting report generation time by 20%
+                  for administrative teams
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Volunteer Work -->
+          <h3 class="text-2xl font-bold text-accent mt-12 mb-6">
+            Volunteer Work
+          </h3>
+          <div class="space-y-8">
+            <div
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+            >
+              <div
+                class="flex flex-col md:flex-row md:justify-between md:items-start mb-4"
+              >
+                <h4 class="text-xl font-bold">
+                  COVID-19 Testing Assistant and Vaccination Team
+                </h4>
+                <span class="date-badge">Jan 2022 </span>
+              </div>
+              <h5 class="text-lg mb-4 text-accent font-semibold">
+                Drexel University - Philadelphia, PA
+              </h5>
+              <p class="text-base leading-relaxed opacity-90">
+                As a dedicated volunteer and essential team member at Drexel
+                University, I played a crucial role in supporting the
+                university's COVID-19 vaccination efforts. My responsibilities
+                included ensuring smooth, organized processes for individuals
+                seeking vaccination, maintaining safety protocols, and providing
+                exceptional support during this critical time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="education" class="fade-in">
+        <div class="container">
+          <h2>Education</h2>
+          <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Master of Science in Computer Science
+                    </h3>
+                    <p class="text-accent font-medium mb-4">
+                      Drexel University
                     </p>
-                    <a href="files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="btn btn-secondary home-element">Download Resume</a>
-                    <div id="visitor-count" class="text-center mt-6 text-sm opacity-75 home-element">
-                        Visitors: <span id="visit-number">Loading...</span>
-                    </div>
+                    <p class="text-sm opacity-75 mb-4">Philadelphia, PA</p>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="text-sm opacity-60">Sep 2021 - Jun 2023</div>
+                    <span
+                      class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium"
+                      >Degree Earned</span
+                    >
+                  </div>
                 </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Bachelor of Engineering
+                    </h3>
+                    <p class="text-accent font-medium mb-4">
+                      JSPM's Rajarshi Shahu College of Engineering
+                    </p>
+                    <p class="text-sm opacity-75 mb-4">Pune, India</p>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="text-sm opacity-60">Jun 2017 - Jun 2020</div>
+                    <span
+                      class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium"
+                      >Degree Earned</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Diploma in Computer Engineering
+                    </h3>
+                    <p class="text-accent font-medium mb-4">
+                      Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
+                    </p>
+                    <p class="text-sm opacity-75 mb-4">Akurdi, Pune</p>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="text-sm opacity-60">Jun 2014 - Jun 2017</div>
+                    <span
+                      class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium"
+                      >Degree Earned</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Secondary School Certificate
+                    </h3>
+                    <p class="text-accent font-medium mb-4">
+                      Modern High School
+                    </p>
+                    <p class="text-sm opacity-75 mb-4">India</p>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="text-sm opacity-60">Jun 2013 - Jun 2014</div>
+                    <span
+                      class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium"
+                      >Degree Earned</span
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
-        <section id="about" class="fade-in">
-            <div class="container">
-                <h2>About Me</h2>
-                <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="flex-shrink-0 w-80 text-center">
-                        <img src="images/graduation.jpg" alt="Mangesh Raut Graduation" class="w-full h-80 object-cover rounded-xl shadow-light">
-                    </div>
-                    <div class="flex-1">
-                        <p class="mb-8 leading-relaxed">
-                            Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker). Currently enhancing energy analytics tools at Customized Energy Solutions, achieving a 40% efficiency gain.
-                        </p>
-                        <p class="mb-8 leading-relaxed">
-                            Previously honed expertise in network engineering (35% latency reduction at Harshwardhan Enterprises) and Java development (20% code optimization at IoasiZ). Eager to leverage hands-on experience with scalable systems, CI/CD pipelines, and machine learning to drive innovation.
-                        </p>
-                        <p class="leading-relaxed">
-                            Passionate about creating scalable software solutions that drive business impact. Experienced in modern development practices including DevOps, containerization, and AI integration.
-                        </p>
-                    </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="publications" class="fade-in">
+        <div class="container">
+          <h2>Publications</h2>
+          <div class="flex flex-col md:flex-row items-center gap-8">
+            <div class="flex-shrink-0 w-56 text-center">
+              <a href="files/RTFERS paper.pdf" target="_blank" class="block">
+                <div
+                  class="w-full h-56 bg-primary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
+                >
+                  <div class="text-center">
+                    <i class="fas fa-file-pdf text-4xl text-accent mb-2"></i>
+                    <p class="text-sm opacity-75">Click to View PDF</p>
+                  </div>
                 </div>
+              </a>
             </div>
-        </section>
-        <section id="skills" class="fade-in">
-            <div class="container">
-                <h2>Skills & Technologies</h2>
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Languages</h3>
-                                    <h5 class="text-lg font-medium mb-2 mt-6 text-accent">Programming Languages</h5>
-                                    <ul class="list-none p-0 space-y-2">
-                                        <li><i class="fas fa-code mr-2 text-sm"></i>HTML</li>
-                                        <li><i class="fas fa-code mr-2 text-sm"></i>JavaScript</li>
-                                        <li><i class="fas fa-code mr-2 text-sm"></i>Python</li>
-                                        <li><i class="fab fa-js mr-2 text-sm"></i>React</li>
-                                        <li><i class="fas fa-code mr-2 text-sm"></i>Java</li>
-                                        <li><i class="fab fa-js-square mr-2 text-sm"></i>TypeScript</li>
-                                        <li><i class="fas fa-code mr-2 text-sm"></i>C</li>
-                                        <li><i class="fas fa-code mr-2 text-sm"></i>C++</li>
-                                        <li><i class="fab fa-swift mr-2 text-sm"></i>Swift</li>
-                                        <li><i class="fab fa-c-sharp mr-2 text-sm"></i>C#</li>
-                                    </ul>
-                                    <h5 class="text-lg font-medium mb-2 mt-6 text-accent">Spoken Languages</h5>
-                                    <ul class="list-none p-0 space-y-2">
-                                        <li><i class="fas fa-language mr-2 text-sm"></i>Marathi</li>
-                                        <li><i class="fas fa-language mr-2 text-sm"></i>Hindi</li>
-                                        <li><i class="fas fa-language mr-2 text-sm"></i>English</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Frameworks</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fab fa-java mr-2"></i>Spring Boot</li>
-                                        <li><i class="fab fa-angular mr-2"></i>AngularJS</li>
-                                        <li><i class="fas fa-brain mr-2"></i>TensorFlow</li>
-                                        <li><i class="fas fa-robot mr-2"></i>scikit-learn</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Cloud & DevOps</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fab fa-aws mr-2"></i>AWS</li>
-                                        <li><i class="fab fa-docker mr-2"></i>Docker</li>
-                                        <li><i class="fas fa-cogs mr-2"></i>Jenkins</li>
-                                        <li><i class="fas fa-code-branch mr-2"></i>Terraform</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Databases & Tools</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fas fa-database mr-2"></i>PostgreSQL</li>
-                                        <li><i class="fas fa-database mr-2"></i>MongoDB</li>
-                                        <li><i class="fas fa-database mr-2"></i>MySQL</li>
-                                        <li><i class="fab fa-git-alt mr-2"></i>Git & Jira</li>
-                                        <li><i class="fas fa-chart-line mr-2"></i>Tableau</li>
-                                        <li><i class="fas fa-search mr-2"></i>Wireshark</li>
-                                        <li><i class="fas fa-network-wired mr-2"></i>Cisco Networking</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex-1">
+              <h3 class="mb-4">"Real-Time Face Emotion Recognition System"</h3>
+              <p class="mb-6 text-sm opacity-75">
+                Published in International Journal of Future Generation
+                Communication and Networking Vol. 13, No. 3, (2020), pp.
+                3306-3313, ISSN · Jun 15, 2020
+              </p>
+              <p class="mb-6 leading-relaxed">
+                This paper will give brief knowledge about Face detection and
+                recognition algorithms (Approaches). There are a few approaches
+                that will be helpful to detect faces from the static or binary
+                frame.
+              </p>
+              <p class="leading-relaxed">
+                The Paper will review the algorithm that is being used for
+                detecting faces and will give information about the following
+                algorithms: elastic bunch map graphing, principal component
+                analysis (PCA), protomorphic approach, and cascading technique.
+              </p>
             </div>
-        </section>
-        <section id="projects" class="fade-in">
-            <div class="container">
-                <h2>Projects</h2>
-                <div class="max-w-6xl mx-auto">
-                    <div class="space-y-8">
-                        <!-- Row 1: Latest Project (Featured) -->
-                        <div class="w-full">
-                            <div class="project-card project-card-large hover:shadow-xl transition-shadow">
-                                <h3><a href="https://github.com/mangeshraut712/apple-FastVLM-0.5B" target="_blank">Apple FastVLM 0.5B</a></h3>
-                                <p class="text-lg">Implementation of Apple's FastVLM 0.5B model for efficient vision-language tasks.</p>
-                                <div class="project-tags mt-4">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">Machine Learning</span>
-                                    <span class="tag">AI</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/apple-FastVLM-0.5B" target="_blank" class="btn btn-secondary mt-4">View Project</a>
-                            </div>
-                        </div>
-
-                        <!-- Row 2: Two Projects -->
-                        <div class="flex flex-col lg:flex-row gap-8">
-                            <div class="flex-1 project-card">
-                                <h3><a href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant" target="_blank">AssistMe Virtual Assistant</a></h3>
-                                <p>A chatbot application designed to assist users with various queries and tasks.</p>
-                                <div class="project-tags">
-                                    <span class="tag">JavaScript</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                            <div class="flex-1 project-card">
-                                <h3><a href="https://github.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System" target="_blank">Real-Time Face Emotion Recognition</a></h3>
-                                <p>Real-time emotion recognition system using face detection and AI algorithms.</p>
-                                <div class="project-tags">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">OpenCV</span>
-                                    <span class="tag">ML</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                        </div>
-
-                        <!-- Row 3: Three Projects -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <div class="project-card">
-                                <h3><a href="https://github.com/mangeshraut712/Drexel-University-MSCS-Academics-Quarter-System" target="_blank">Drexel MSCS Quarter System</a></h3>
-                                <p>Academic management system for Drexel University's MSCS program on quarter basis.</p>
-                                <div class="project-tags">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">Jupyter</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/Drexel-University-MSCS-Academics-Quarter-System" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                            <div class="project-card">
-                                <h3><a href="https://github.com/mangeshraut712/financial-forecasting-model" target="_blank">Financial Forecasting Model</a></h3>
-                                <p>Machine learning model for predicting financial trends and data forecasting.</p>
-                                <div class="project-tags">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">ML</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/financial-forecasting-model" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                            <div class="project-card">
-                                <h3><a href="https://github.com/mangeshraut712/LeetCodeByMangesh" target="_blank">LeetCode Solutions</a></h3>
-                                <p>Collection of LeetCode problems solved while preparing for interviews.</p>
-                                <div class="project-tags">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">Algorithms</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/LeetCodeByMangesh" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                        </div>
-
-                        <!-- Row 4: Two Projects -->
-                        <div class="flex flex-col lg:flex-row gap-8">
-                            <div class="flex-1 project-card">
-                                <h3><a href="https://github.com/mangeshraut712/Crime-Investigation-System" target="_blank">Crime Investigation System</a></h3>
-                                <p>A Java-based application for managing crime investigation data and records.</p>
-                                <div class="project-tags">
-                                    <span class="tag">Java</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/Crime-Investigation-System" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                            <div class="flex-1 project-card">
-                                <h3><a href="https://github.com/mangeshraut712/Lead-Pred" target="_blank">Lead Prediction Model</a></h3>
-                                <p>Logistic regression model to predict lead conversion potential.</p>
-                                <div class="project-tags">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">ML</span>
-                                    <span class="tag">Jupyter</span>
-                                </div>
-                                <a href="https://github.com/mangeshraut712/Lead-Pred" target="_blank" class="btn btn-secondary">View Project</a>
-                            </div>
-                        </div>
-                    </div>
+          </div>
+        </div>
+      </section>
+      <section id="awards" class="fade-in">
+        <div class="container">
+          <h2>Honors & Awards</h2>
+          <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Greatest Achievement in MSCS
+                    </h3>
+                    <p class="text-accent font-medium mb-4">
+                      Drexel University
+                    </p>
+                    <p class="text-sm opacity-75 mb-4">
+                      Issued by Academic Advisor • March 2022
+                    </p>
+                    <p class="leading-relaxed">
+                      In Winter 2022 at Drexel University, I achieved a
+                      remarkable academic turnaround. Overcoming previous
+                      challenges and maintaining a 1.90 GPA, I demonstrated
+                      exceptional perseverance by achieving an outstanding 3.91
+                      GPA, showcasing my commitment to academic excellence and
+                      personal growth.
+                    </p>
+                  </div>
                 </div>
+              </div>
+
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Student of the Year
+                    </h3>
+                    <p class="text-accent font-medium mb-4">
+                      Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
+                    </p>
+                    <p class="text-sm opacity-75 mb-4">
+                      Issued by Head of Department • June 2015
+                    </p>
+                    <p class="leading-relaxed">
+                      Recognized with the prestigious "Student of the Year"
+                      award at my polytechnic institution. This honor recognized
+                      my dedication and outstanding performance in both academic
+                      studies and extracurricular activities, reflecting my
+                      commitment to holistic excellence.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
-        <section id="experience" class="fade-in">
-            <div class="container">
-                <h2>Work Experience</h2>
-
-                <!-- Full-Time Employment -->
-                <h3 class="text-2xl font-bold text-accent mt-12 mb-6">Full-Time Employment</h3>
-                <div class="space-y-8">
-                    <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                            <h4 class="text-xl font-bold">Software Engineer</h4>
-                            <span class="date-badge">Aug 2024 – Aug 2025</span>
-                        </div>
-                        <h5 class="text-lg mb-4 text-accent font-semibold">Customized Energy Solutions - Philadelphia, PA</h5>
-                        <ul class="list-disc list-inside space-y-3">
-                            <li><strong>Full-Stack Development:</strong> Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API optimization</li>
-                            <li><strong>Cloud DevOps:</strong> Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines</li>
-                            <li><strong>Machine Learning:</strong> Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow) with feature engineering</li>
-                        </ul>
-                    </div>
-                    <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                            <h4 class="text-xl font-bold">Software Engineer</h4>
-                            <span class="date-badge">Jul 2023 – Jul 2024</span>
-                        </div>
-                        <h5 class="text-lg mb-4 text-accent font-semibold">IoasiZ - Piscataway, NJ</h5>
-                        <ul class="list-disc list-inside space-y-3">
-                            <li><strong>System Modernization:</strong> Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20% (SOLID principles)</li>
-                            <li><strong>Distributed Systems:</strong> Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites</li>
-                            <li><strong>Performance Optimization:</strong> Integrated Redis caching for inventory APIs, achieving 30% faster response times through query tuning</li>
-                        </ul>
-                    </div>
-                    <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                            <h4 class="text-xl font-bold">Network Engineer</h4>
-                            <span class="date-badge">Jun 2020 – Jun 2021</span>
-                        </div>
-                        <h5 class="text-lg mb-4 text-accent font-semibold">Harshwardhan Enterprises - Pune, India</h5>
-                        <ul class="list-disc list-inside space-y-3">
-                            <li><strong>Network Optimization:</strong> Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35% in enterprise WANs</li>
-                            <li><strong>Troubleshooting:</strong> Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance for client networks</li>
-                            <li><strong>Scripting:</strong> Created Python-based monitoring tools, reducing manual diagnostics by 50%</li>
-                        </ul>
-                    </div>
+          </div>
+        </div>
+      </section>
+      <section id="certifications" class="fade-in">
+        <div class="container">
+          <h2>Licenses & Certifications</h2>
+          <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Programming & Development
+                    </h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li>
+                        <i class="fas fa-code mr-2"></i>HackerRank - Software
+                        Engineer (Mar 2025)
+                      </li>
+                      <li>
+                        <i class="fas fa-code mr-2"></i>Microsoft - JavaScript
+                        Programming (Apr 2019)
+                      </li>
+                      <li>
+                        <i class="fas fa-code mr-2"></i>Spoken Tutorial - C
+                        Language (Sep 2017)
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
 
-                <!-- Internship -->
-                <h3 class="text-2xl font-bold text-accent mt-12 mb-6">Internship</h3>
-                <div class="space-y-8">
-                    <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                            <h4 class="text-xl font-bold">Database Administrator </h4>
-                            <span class="date-badge">Jun 2022 – Jun 2023</span>
-                        </div>
-                        <h5 class="text-lg mb-4 text-accent font-semibold">Aramark - Philadelphia, PA</h5>
-                        <ul class="list-disc list-inside space-y-3">
-                            <li><strong>AWS Automation:</strong> Developed Python scripts to manage event inventory systems on AWS, reducing manual errors by 25% for 200+ events</li>
-                            <li><strong>Data Migration:</strong> Transitioned 3+ legacy databases to AWS RDS, improving scalability for high-traffic event analytics</li>
-                        </ul>
-                    </div>
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      AI & Emerging Technology
+                    </h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li>
+                        <i class="fas fa-brain mr-2"></i>Google - Prompt Design
+                        in Vertex AI (May 2024)
+                      </li>
+                      <li>
+                        <i class="fas fa-rocket mr-2"></i>IBM - Explore Emerging
+                        Tech (Feb 2024)
+                      </li>
+                      <li>
+                        <i class="fas fa-leaf mr-2"></i>IBM - Fundamentals of
+                        Sustainability (Feb 2024)
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
 
-                <!-- Part-Time Work -->
-                <h3 class="text-2xl font-bold text-accent mt-12 mb-6">Part-Time Work</h3>
-                <div class="space-y-8">
-                    <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                            <h4 class="text-xl font-bold">Database Administrator </h4>
-                            <span class="date-badge">Sep 2021 – May 2022</span>
-                        </div>
-                        <h5 class="text-lg mb-4 text-accent font-semibold">Drexel University - Philadelphia, PA</h5>
-                        <ul class="list-disc list-inside space-y-3">
-                            <li><strong>SQL & Compliance:</strong> Maintained HIPAA-compliant MySQL databases for 5K+ student records, ensuring 99.9% accuracy with constraint-driven validation</li>
-                            <li><strong>Reporting Tools:</strong> Streamlined data workflows using Tableau and Excel, cutting report generation time by 20% for administrative teams</li>
-                        </ul>
-                    </div>
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Data & Cybersecurity
+                    </h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li>
+                        <i class="fas fa-database mr-2"></i>IBM - Data
+                        Fundamentals (Feb 2024)
+                      </li>
+                      <li>
+                        <i class="fas fa-shield-alt mr-2"></i>IBM -
+                        Cybersecurity Fundamentals (Feb 2024)
+                      </li>
+                      <li>
+                        <i class="fas fa-robot mr-2"></i>Spoorthy - Hello Bot
+                        RPA (Sep 2018)
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
 
-                <!-- Volunteer Work -->
-                <h3 class="text-2xl font-bold text-accent mt-12 mb-6">Volunteer Work</h3>
-                <div class="space-y-8">
-                    <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                        <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                            <h4 class="text-xl font-bold">COVID-19 Testing Assistant and Vaccination Team</h4>
-                            <span class="date-badge">Jan 2022 </span>
-                        </div>
-                        <h5 class="text-lg mb-4 text-accent font-semibold">Drexel University - Philadelphia, PA</h5>
-                        <p class="text-base leading-relaxed opacity-90">
-                            As a dedicated volunteer and essential team member at Drexel University, I played a crucial role in supporting the university's COVID-19 vaccination efforts. My responsibilities included ensuring smooth, organized processes for individuals seeking vaccination, maintaining safety protocols, and providing exceptional support during this critical time.
-                        </p>
-                    </div>
+              <div
+                class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+              >
+                <div class="flex flex-col h-full">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-3">
+                      Networking & Marketing
+                    </h3>
+                    <ul class="list-none p-0 mt-6 space-y-3">
+                      <li>
+                        <i class="fas fa-network-wired mr-2"></i>Cisco -
+                        Networking Basics (Feb 2024)
+                      </li>
+                      <li>
+                        <i class="fas fa-network-wired mr-2"></i>Cisco - CCNP
+                        Certification (Nov 2018)
+                      </li>
+                      <li>
+                        <i class="fas fa-search mr-2"></i>Apple - Search Ads
+                        Certified (Feb 2024)
+                      </li>
+                      <li>
+                        <i class="fas fa-chart-line mr-2"></i>Google - Digital
+                        Marketing Fundamentals (Jun 2019)
+                      </li>
+                      <li>
+                        <i class="fas fa-ad mr-2"></i>Google - Google Ads Search
+                        (Mar 2021 - Expired)
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
             </div>
-        </section>
-        <section id="education" class="fade-in">
-            <div class="container">
-                <h2>Education</h2>
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Master of Science in Computer Science</h3>
-                                    <p class="text-accent font-medium mb-4">Drexel University</p>
-                                    <p class="text-sm opacity-75 mb-4">Philadelphia, PA</p>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm opacity-60">Sep 2021 - Jun 2023</div>
-                                    <span class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree Earned</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Bachelor of Engineering</h3>
-                                    <p class="text-accent font-medium mb-4">JSPM's Rajarshi Shahu College of Engineering</p>
-                                    <p class="text-sm opacity-75 mb-4">Pune, India</p>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm opacity-60">Jun 2017 - Jun 2020</div>
-                                    <span class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree Earned</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Diploma in Computer Engineering</h3>
-                                    <p class="text-accent font-medium mb-4">Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic</p>
-                                    <p class="text-sm opacity-75 mb-4">Akurdi, Pune</p>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm opacity-60">Jun 2014 - Jun 2017</div>
-                                    <span class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree Earned</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Secondary School Certificate</h3>
-                                    <p class="text-accent font-medium mb-4">Modern High School</p>
-                                    <p class="text-sm opacity-75 mb-4">India</p>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm opacity-60">Jun 2013 - Jun 2014</div>
-                                    <span class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree Earned</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="publications" class="fade-in">
-            <div class="container">
-                <h2>Publications</h2>
-                <div class="flex flex-col md:flex-row items-center gap-8">
-                    <div class="flex-shrink-0 w-56 text-center">
-                        <a href="files/RTFERS paper.pdf" target="_blank" class="block">
-                            <div class="w-full h-56 bg-primary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300">
-                                <div class="text-center">
-                                    <i class="fas fa-file-pdf text-4xl text-accent mb-2"></i>
-                                    <p class="text-sm opacity-75">Click to View PDF</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="mb-4">"Real-Time Face Emotion Recognition System"</h3>
-                        <p class="mb-6 text-sm opacity-75">Published in International Journal of Future Generation Communication and Networking Vol. 13, No. 3, (2020), pp. 3306-3313, ISSN · Jun 15, 2020</p>
-                        <p class="mb-6 leading-relaxed">
-                            This paper will give brief knowledge about Face detection and recognition algorithms (Approaches). There are a few approaches that will be helpful to detect faces from the static or binary frame.
-                        </p>
-                        <p class="leading-relaxed">
-                            The Paper will review the algorithm that is being used for detecting faces and will give information about the following algorithms: elastic bunch map graphing, principal component analysis (PCA), protomorphic approach, and cascading technique.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="awards" class="fade-in">
-            <div class="container">
-                <h2>Honors & Awards</h2>
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Greatest Achievement in MSCS</h3>
-                                    <p class="text-accent font-medium mb-4">Drexel University</p>
-                                    <p class="text-sm opacity-75 mb-4">Issued by Academic Advisor • March 2022</p>
-                                    <p class="leading-relaxed">
-                                        In Winter 2022 at Drexel University, I achieved a remarkable academic turnaround. Overcoming previous challenges and maintaining a 1.90 GPA, I demonstrated exceptional perseverance by achieving an outstanding 3.91 GPA, showcasing my commitment to academic excellence and personal growth.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Student of the Year</h3>
-                                    <p class="text-accent font-medium mb-4">Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic</p>
-                                    <p class="text-sm opacity-75 mb-4">Issued by Head of Department • June 2015</p>
-                                    <p class="leading-relaxed">
-                                        Recognized with the prestigious "Student of the Year" award at my polytechnic institution. This honor recognized my dedication and outstanding performance in both academic studies and extracurricular activities, reflecting my commitment to holistic excellence.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="certifications" class="fade-in">
-            <div class="container">
-                <h2>Licenses & Certifications</h2>
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Programming & Development</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fas fa-code mr-2"></i>HackerRank - Software Engineer (Mar 2025)</li>
-                                        <li><i class="fas fa-code mr-2"></i>Microsoft - JavaScript Programming (Apr 2019)</li>
-                                        <li><i class="fas fa-code mr-2"></i>Spoken Tutorial - C Language (Sep 2017)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">AI & Emerging Technology</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fas fa-brain mr-2"></i>Google - Prompt Design in Vertex AI (May 2024)</li>
-                                        <li><i class="fas fa-rocket mr-2"></i>IBM - Explore Emerging Tech (Feb 2024)</li>
-                                        <li><i class="fas fa-leaf mr-2"></i>IBM - Fundamentals of Sustainability (Feb 2024)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Data & Cybersecurity</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fas fa-database mr-2"></i>IBM - Data Fundamentals (Feb 2024)</li>
-                                        <li><i class="fas fa-shield-alt mr-2"></i>IBM - Cybersecurity Fundamentals (Feb 2024)</li>
-                                        <li><i class="fas fa-robot mr-2"></i>Spoorthy - Hello Bot RPA (Sep 2018)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-                            <div class="flex flex-col h-full">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-semibold mb-3">Networking & Marketing</h3>
-                                    <ul class="list-none p-0 mt-6 space-y-3">
-                                        <li><i class="fas fa-network-wired mr-2"></i>Cisco - Networking Basics (Feb 2024)</li>
-                                        <li><i class="fas fa-network-wired mr-2"></i>Cisco - CCNP Certification (Nov 2018)</li>
-                                        <li><i class="fas fa-search mr-2"></i>Apple - Search Ads Certified (Feb 2024)</li>
-                                        <li><i class="fas fa-chart-line mr-2"></i>Google - Digital Marketing Fundamentals (Jun 2019)</li>
-                                        <li><i class="fas fa-ad mr-2"></i>Google - Google Ads Search (Mar 2021 - Expired)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="contact" class="fade-in">
-            <div class="container">
-                <h2>Get In Touch</h2>
-                <div class="row">
-                    <div class="col-lg-6 mb-12 lg:mb-0">
-                        <div class="bg-primary border border-border rounded-2xl p-8 shadow-light">
-                            <h3 class="mb-6">Contact Information</h3>
-                            <p class="mb-8">Feel free to reach out via email or connect on social media.</p>
-                            <div class="space-y-4">
-                                <div>
-                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">Email</h4>
-                                    <p class="mb-4 text-base"><i class="fas fa-envelope mr-3 text-accent"></i><a href="mailto:mbr63@drexel.edu" class="hover:underline">mbr63@drexel.edu</a></p>
-                                    <p class="text-base"><i class="fas fa-envelope mr-3 text-accent"></i><a href="mailto:mbr63drexel@gmail.com" class="hover:underline">mbr63drexel@gmail.com</a></p>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">Phone</h4>
-                                    <p class="mb-4 text-base"><i class="fab fa-whatsapp mr-3 text-green-500"></i>+917276819090 (whatsapp)</p>
-                                    <p class="text-base"><i class="fas fa-mobile-alt mr-3 text-accent"></i>+1 (609) 505 3500</p>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">Location</h4>
-                                    <p class="mb-4 text-base"><i class="fas fa-map-marker-alt mr-3 text-accent"></i>🇮🇳 Pune, MH, India</p>
-                                    <p class="text-base"><i class="fas fa-map-marker-alt mr-3 text-accent"></i>🇺🇸 Philadelphia, PA, USA</p>
-                                </div>
-                                <div class="pt-4">
-                                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-4">Follow Me</h4>
-                                    <div class="flex space-x-6">
-                                        <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" class="hover:opacity-75 transition-opacity">
-                                            <i class="fab fa-instagram"></i>
-                                        </a>
-                                        <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" class="hover:opacity-75 transition-opacity">
-                                            <i class="fab fa-facebook-f"></i>
-                                        </a>
-                                        <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="hover:opacity-75 transition-opacity">
-                                            <i class="fab fa-linkedin-in"></i>
-                                        </a>
-                                        <a href="https://github.com/mangeshraut712" target="_blank" class="hover:opacity-75 transition-opacity">
-                                            <i class="fab fa-github"></i>
-                                        </a>
-                                        <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="hover:opacity-75 transition-opacity">
-                                            <i class="fab fa-youtube"></i>
-                                        </a>
-                                        <a href="https://x.com/mrcommando712" target="_blank" class="hover:opacity-75 transition-opacity w-5 h-5 inline-block">
-                                            <img src="images/X_logo.jpg" alt="X Logo" class="w-full h-full object-contain">
-                                        </a>
-                                        <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="hover:opacity-75 transition-opacity" title="Wix Portfolio">
-                                            <i class="fas fa-globe"></i>
-                                        </a>
-                                        <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" class="hover:opacity-75 transition-opacity" title="LeetCode Profile">
-                                            <i class="fas fa-code"></i>
-                                        </a>
-                                    </div>
-                                    <div class="mt-6 pt-6 border-t border-border">
-                                        <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">Support Me</h4>
-                                        <p class="mb-3 opacity-75">If you like my work, consider buying me a coffee!</p>
-                                        <a href="https://www.buymeacoffee.com/xzvwsqf84xy" target="_blank" class="text-yellow-500 hover:text-yellow-600 hover:opacity-75 transition-all">
-                                            <i class="fas fa-coffee mr-2"></i>Buy Me a Coffee
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <h3 class="mb-8">Send a Message</h3>
-                        <form id="contact-form" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="name" class="hidden">Your Name</label>
-                                    <input type="text" id="name" name="name" placeholder="Your Name" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary" required>
-                                </div>
-                                <div>
-                                    <label for="email" class="hidden">Your Email</label>
-                                    <input type="email" id="email" name="email" placeholder="Your Email" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary" required>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="subject" class="hidden">Subject</label>
-                                <input type="text" id="subject" name="subject" placeholder="Subject" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary" required>
-                            </div>
-                            <div>
-                                <label for="message" class="hidden">Message</label>
-                                <textarea id="message" name="message" rows="5" placeholder="Message" class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary resize-none" required></textarea>
-                            </div>
-                            <button type="submit" class="btn">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <footer class="bg-white/80 dark:bg-[#18181b]/90 text-black dark:text-white py-12 border-t border-gray-200 dark:border-[#23272f]">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row justify-between items-center text-sm">
-                    <div class="mb-4 md:mb-0">
-                        <p>&copy; 2025 Mangesh Raut.</p>
-                    </div>
+          </div>
+        </div>
+      </section>
+      <section id="contact" class="fade-in">
+        <div class="container">
+          <h2>Get In Touch</h2>
+          <div class="row">
+            <div class="col-lg-6 mb-12 lg:mb-0">
+              <div
+                class="bg-primary border border-border rounded-2xl p-8 shadow-light"
+              >
+                <h3 class="mb-6">Contact Information</h3>
+                <p class="mb-8">
+                  Feel free to reach out via email or connect on social media.
+                </p>
+                <div class="space-y-4">
+                  <div>
+                    <h4
+                      class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2"
+                    >
+                      Email
+                    </h4>
+                    <p class="mb-4 text-base">
+                      <i class="fas fa-envelope mr-3 text-accent"></i
+                      ><a href="mailto:mbr63@drexel.edu" class="hover:underline"
+                        >mbr63@drexel.edu</a
+                      >
+                    </p>
+                    <p class="text-base">
+                      <i class="fas fa-envelope mr-3 text-accent"></i
+                      ><a
+                        href="mailto:mbr63drexel@gmail.com"
+                        class="hover:underline"
+                        >mbr63drexel@gmail.com</a
+                      >
+                    </p>
+                  </div>
+                  <div>
+                    <h4
+                      class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2"
+                    >
+                      Phone
+                    </h4>
+                    <p class="mb-4 text-base">
+                      <i class="fab fa-whatsapp mr-3 text-green-500"></i
+                      >+917276819090 (whatsapp)
+                    </p>
+                    <p class="text-base">
+                      <i class="fas fa-mobile-alt mr-3 text-accent"></i>+1 (609)
+                      505 3500
+                    </p>
+                  </div>
+                  <div>
+                    <h4
+                      class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2"
+                    >
+                      Location
+                    </h4>
+                    <p class="mb-4 text-base">
+                      <i class="fas fa-map-marker-alt mr-3 text-accent"></i>🇮🇳
+                      Pune, MH, India
+                    </p>
+                    <p class="text-base">
+                      <i class="fas fa-map-marker-alt mr-3 text-accent"></i>🇺🇸
+                      Philadelphia, PA, USA
+                    </p>
+                  </div>
+                  <div class="pt-4">
+                    <h4
+                      class="font-medium text-sm uppercase tracking-wider opacity-75 mb-4"
+                    >
+                      Follow Me
+                    </h4>
                     <div class="flex space-x-6">
-                        <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" class="hover:text-black transition duration-300">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" class="hover:text-black transition duration-300">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="hover:text-black transition duration-300">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://github.com/mangeshraut712" target="_blank" class="hover:text-black transition duration-300">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="hover:text-black transition duration-300">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="https://x.com/mrcommando712" target="_blank" class="hover:text-black transition duration-300 inline-block w-4 h-4">
-                            <img src="images/X_logo.jpg" alt="X Logo" class="w-full h-full object-contain filter invert brightness-75 hover:brightness-100">
-                        </a>
-                        <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="hover:text-black transition duration-300">
-                            <i class="fas fa-globe"></i>
-                        </a>
-                        <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" class="hover:text-black transition duration-300" title="LeetCode Profile">
-                            <i class="fas fa-code"></i>
-                        </a>
+                      <a
+                        href="https://www.instagram.com/mangesh_d_charming_guy/"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                      >
+                        <i class="fab fa-instagram"></i>
+                      </a>
+                      <a
+                        href="https://www.facebook.com/mangesh.raut.9674/"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                      >
+                        <i class="fab fa-facebook-f"></i>
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/in/mangeshraut71298/"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                      >
+                        <i class="fab fa-linkedin-in"></i>
+                      </a>
+                      <a
+                        href="https://github.com/mangeshraut712"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                      >
+                        <i class="fab fa-github"></i>
+                      </a>
+                      <a
+                        href="https://www.youtube.com/@mangeshraut71298"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                      >
+                        <i class="fab fa-youtube"></i>
+                      </a>
+                      <a
+                        href="https://x.com/mrcommando712"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity w-5 h-5 inline-block"
+                      >
+                        <img
+                          src="images/X_logo.jpg"
+                          alt="X Logo"
+                          class="w-full h-full object-contain"
+                        />
+                      </a>
+                      <a
+                        href="https://mangeshraut71298.wixsite.com/mangeshrautarchive"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                        title="Wix Portfolio"
+                      >
+                        <i class="fas fa-globe"></i>
+                      </a>
+                      <a
+                        href="https://leetcode.com/u/mangeshraut712/"
+                        target="_blank"
+                        class="hover:opacity-75 transition-opacity"
+                        title="LeetCode Profile"
+                      >
+                        <i class="fas fa-code"></i>
+                      </a>
                     </div>
+                    <div class="mt-6 pt-6 border-t border-border">
+                      <h4
+                        class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3"
+                      >
+                        Support Me
+                      </h4>
+                      <p class="mb-3 opacity-75">
+                        If you like my work, consider buying me a coffee!
+                      </p>
+                      <a
+                        href="https://www.buymeacoffee.com/xzvwsqf84xy"
+                        target="_blank"
+                        class="text-yellow-500 hover:text-yellow-600 hover:opacity-75 transition-all"
+                      >
+                        <i class="fas fa-coffee mr-2"></i>Buy Me a Coffee
+                      </a>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </footer>
+            <div class="col-lg-6">
+              <h3 class="mb-8">Send a Message</h3>
+              <form id="contact-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label for="name" class="hidden">Your Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Your Name"
+                      class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label for="email" class="hidden">Your Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Your Email"
+                      class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label for="subject" class="hidden">Subject</label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    placeholder="Subject"
+                    class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="message" class="hidden">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    placeholder="Message"
+                    class="w-full px-4 py-3 border border-border rounded-lg focus:border-accent transition-colors bg-primary resize-none"
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer
+        class="bg-white/80 dark:bg-[#18181b]/90 text-black dark:text-white py-12 border-t border-gray-200 dark:border-[#23272f]"
+      >
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            class="flex flex-col md:flex-row justify-between items-center text-sm"
+          >
+            <div class="mb-4 md:mb-0">
+              <p>&copy; 2025 Mangesh Raut.</p>
+            </div>
+            <div class="flex space-x-6">
+              <a
+                href="https://www.instagram.com/mangesh_d_charming_guy/"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://www.facebook.com/mangesh.raut.9674/"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/mangeshraut71298/"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a
+                href="https://github.com/mangeshraut712"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://www.youtube.com/@mangeshraut71298"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+              <a
+                href="https://x.com/mrcommando712"
+                target="_blank"
+                class="hover:text-black transition duration-300 inline-block w-4 h-4"
+              >
+                <img
+                  src="images/X_logo.jpg"
+                  alt="X Logo"
+                  class="w-full h-full object-contain filter invert brightness-75 hover:brightness-100"
+                />
+              </a>
+              <a
+                href="https://mangeshraut71298.wixsite.com/mangeshrautarchive"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+              >
+                <i class="fas fa-globe"></i>
+              </a>
+              <a
+                href="https://leetcode.com/u/mangeshraut712/"
+                target="_blank"
+                class="hover:text-black transition duration-300"
+                title="LeetCode Profile"
+              >
+                <i class="fas fa-code"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
 
     <!-- PORTFOLIO CHATBOT UI -->
     <button id="portfolio-chat-toggle">
-        <i class="fas fa-comment-dots"></i>
+      <i class="fas fa-comment-dots"></i>
     </button>
 
     <div id="portfolio-chat-widget" class="hidden">
-        <!-- Chat Header -->
-        <div class="chat-header">
-            <h3>AssistMe</h3>
-            <p>AI Assistant</p>
-            <button id="portfolio-chat-close" title="Close Chat">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <h3>AssistMe</h3>
+        <p>AI Assistant</p>
+        <button id="portfolio-chat-close" title="Close Chat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-        <!-- Message Area (Chat History) -->
-        <div id="portfolio-chat-messages">
-            <!-- Messages will be dynamically inserted here by script.js -->
-        </div>
+      <!-- Message Area (Chat History) -->
+      <div id="portfolio-chat-messages">
+        <!-- Messages will be dynamically inserted here by script.js -->
+      </div>
 
-        <!-- Input Area -->
-        <div class="chat-input-area">
-            <input type="text" id="portfolio-chat-input" placeholder="Ask me anything..." autocomplete="off">
-            <button type="button" id="portfolio-voice-input" aria-label="Use microphone" title="Use microphone">
-                <i class="fas fa-microphone"></i>
-            </button>
-        </div>
+      <!-- Input Area -->
+      <div class="chat-input-area">
+        <input
+          type="text"
+          id="portfolio-chat-input"
+          placeholder="Ask me anything..."
+          autocomplete="off"
+        />
+        <button
+          type="button"
+          id="portfolio-voice-input"
+          aria-label="Use microphone"
+          title="Use microphone"
+        >
+          <i class="fas fa-microphone"></i>
+        </button>
+      </div>
     </div>
     <!-- END PORTFOLIO CHATBOT -->
 
     <script src="js/math.js"></script>
     <script type="module" src="js/script.js"></script>
     <script>
-    // Theme toggle logic
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeToggleIcon = document.getElementById('theme-toggle-icon');
+      // Theme toggle logic
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeToggleIcon = document.getElementById("theme-toggle-icon");
 
-    function setInitialTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            themeToggleIcon.classList.remove('fa-moon');
-            themeToggleIcon.classList.add('fa-sun');
+      function setInitialTheme() {
+        const savedTheme = localStorage.getItem("theme");
+        if (
+          savedTheme === "dark" ||
+          (!savedTheme &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+          themeToggleIcon.classList.remove("fa-moon");
+          themeToggleIcon.classList.add("fa-sun");
         } else {
-            document.documentElement.classList.remove('dark');
-            themeToggleIcon.classList.remove('fa-sun');
-            themeToggleIcon.classList.add('fa-moon');
+          document.documentElement.classList.remove("dark");
+          themeToggleIcon.classList.remove("fa-sun");
+          themeToggleIcon.classList.add("fa-moon");
         }
-    }
-    setInitialTheme();
+      }
+      setInitialTheme();
 
-    themeToggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        const isDark = document.documentElement.classList.contains('dark');
-        themeToggleIcon.classList.toggle('fa-moon', !isDark);
-        themeToggleIcon.classList.toggle('fa-sun', isDark);
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+      themeToggle.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        themeToggleIcon.classList.toggle("fa-moon", !isDark);
+        themeToggleIcon.classList.toggle("fa-sun", isDark);
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
 
-    // Removed typewriter cursor stop logic as animation is removed
+      // Removed typewriter cursor stop logic as animation is removed
 
-    // Visitor Tracker using Firestore
-    const counterRef = db.collection('counters').doc('portfolio-visits');
+      // Visitor Tracker using Firestore
+      const counterRef = db.collection("counters").doc("portfolio-visits");
 
-    // Increment the counter
-    counterRef.update({
-        count: firebase.firestore.FieldValue.increment(1)
-    }).then(() => {
-        // Get the updated count and display
-        counterRef.get().then((doc) => {
+      // Increment the counter
+      counterRef
+        .update({
+          count: firebase.firestore.FieldValue.increment(1),
+        })
+        .then(() => {
+          // Get the updated count and display
+          counterRef.get().then((doc) => {
             if (doc.exists) {
-                document.getElementById('visit-number').textContent = doc.data().count;
+              document.getElementById("visit-number").textContent =
+                doc.data().count;
             }
+          });
+        })
+        .catch((error) => {
+          console.error("Error updating visitor count: ", error);
+          // Fallback to localStorage if Firestore fails
+          let count = parseInt(localStorage.getItem("portfolioVisits")) || 0;
+          count++;
+          localStorage.setItem("portfolioVisits", count);
+          document.getElementById("visit-number").textContent = count;
         });
-    }).catch((error) => {
-        console.error("Error updating visitor count: ", error);
-        // Fallback to localStorage if Firestore fails
-        let count = parseInt(localStorage.getItem('portfolioVisits')) || 0;
-        count++;
-        localStorage.setItem('portfolioVisits', count);
-        document.getElementById('visit-number').textContent = count;
-    });
 
-    // Simple search bar logic for section headings/anchors
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchInput = document.getElementById('site-search');
+      // Simple search bar logic for section headings/anchors
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("site-search");
         if (searchInput) {
-            searchInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    const query = searchInput.value.trim().toLowerCase();
-                    if (!query) return;
-                    // Try to match section by id or heading text
-                    const sections = document.querySelectorAll('section[id]');
-                    let found = false;
-                    sections.forEach(section => {
-                        const id = section.id.toLowerCase();
-                        const heading = section.querySelector('h2,h1,h3');
-                        const headingText = heading ? heading.textContent.toLowerCase() : '';
-                        if (id.includes(query) || headingText.includes(query)) {
-                            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            found = true;
-                        }
-                    });
-                    if (!found) {
-                        // Optionally, show a not found message or shake the input
-                        searchInput.classList.add('ring', 'ring-red-400');
-                        setTimeout(() => searchInput.classList.remove('ring', 'ring-red-400'), 700);
-                    }
+          searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+              const query = searchInput.value.trim().toLowerCase();
+              if (!query) return;
+              // Try to match section by id or heading text
+              const sections = document.querySelectorAll("section[id]");
+              let found = false;
+              sections.forEach((section) => {
+                const id = section.id.toLowerCase();
+                const heading = section.querySelector("h2,h1,h3");
+                const headingText = heading
+                  ? heading.textContent.toLowerCase()
+                  : "";
+                if (id.includes(query) || headingText.includes(query)) {
+                  section.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                  found = true;
                 }
-            });
+              });
+              if (!found) {
+                // Optionally, show a not found message or shake the input
+                searchInput.classList.add("ring", "ring-red-400");
+                setTimeout(
+                  () => searchInput.classList.remove("ring", "ring-red-400"),
+                  700,
+                );
+              }
+            }
+          });
         }
-    });
+      });
     </script>
 
-    <!-- Initialize Firebase -->
     <script>
       // Your web app's Firebase configuration
       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -796,12 +1377,12 @@
         storageBucket: "mangeshrautarchive.appspot.com", // Corrected storage bucket domain
         messagingSenderId: "560373560182",
         appId: "1:560373560182:web:218658d0db3b1aa6c60057",
-        measurementId: "G-YX2XQWYSCQ"
+        measurementId: "G-YX2XQWYSCQ",
       };
 
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore(); // Initialize Firestore
     </script>
-</body>
+  </body>
 </html>
