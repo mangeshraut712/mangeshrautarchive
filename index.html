@@ -1299,34 +1299,6 @@
         localStorage.setItem("theme", isDark ? "dark" : "light");
       });
 
-      // Removed typewriter cursor stop logic as animation is removed
-
-      // Visitor Tracker using Firestore
-      const counterRef = db.collection("counters").doc("portfolio-visits");
-
-      // Increment the counter
-      counterRef
-        .update({
-          count: firebase.firestore.FieldValue.increment(1),
-        })
-        .then(() => {
-          // Get the updated count and display
-          counterRef.get().then((doc) => {
-            if (doc.exists) {
-              document.getElementById("visit-number").textContent =
-                doc.data().count;
-            }
-          });
-        })
-        .catch((error) => {
-          console.error("Error updating visitor count: ", error);
-          // Fallback to localStorage if Firestore fails
-          let count = parseInt(localStorage.getItem("portfolioVisits")) || 0;
-          count++;
-          localStorage.setItem("portfolioVisits", count);
-          document.getElementById("visit-number").textContent = count;
-        });
-
 
     </script>
 
@@ -1347,6 +1319,30 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore(); // Initialize Firestore
+
+      // Visitor Tracker using Firestore
+      const counterRef = db.collection("visitorCounts").doc("mainCounter");
+
+      // Display the current count from Firebase without incrementing first
+      counterRef.get().then((doc) => {
+        if (doc.exists) {
+          document.getElementById("visit-number").textContent = doc.data().count;
+        }
+      }).catch((error) => {
+        console.error("Error getting visitor count: ", error);
+        // Fallback to localStorage if Firestore fails
+        let count = parseInt(localStorage.getItem("portfolioVisits")) || 0;
+        document.getElementById("visit-number").textContent = count;
+      });
+
+      // Increment the counter in the background for the next visitor
+      counterRef.update({
+        count: firebase.firestore.FieldValue.increment(1),
+      }).catch((error) => {
+        console.error("Error updating visitor count: ", error);
+        // Fallback increment if Firestore fails
+        localStorage.setItem("portfolioVisits", (parseInt(localStorage.getItem("portfolioVisits")) || 0) + 1);
+      });
     </script>
   </body>
 </html>
