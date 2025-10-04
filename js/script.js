@@ -418,7 +418,7 @@ function initScript() {
         },
         {
             keywords: ['mangesh projects', 'projects mangesh', 'what projects has mangesh done'],
-            handler: () => speakAndDisplay("Mangesh has developed a Starlight Blogging Website using Angular and Flask with attractive over 100 users. He also worked on Real-Time Face Emotion Recognition with 95% accuracy using Python and OpenCV. Additionally, he created a PC Crime Detector using Java for reduced security breaches.")
+            handler: () => speakAndDisplay("Mangesh has developed various projects showcasing expertise in AI, ML, web development, and systems. Including Apple's FastVLM implementation, Financial Forecasting model, Lead Prediction model, Real-Time Face Emotion Recognition system, Starlight Blogging Website, AssistMe Virtual Assistant chatbot, Crime Investigation System, and Laude Code solutions. View all his projects on GitHub: https://github.com/mangeshraut712")
         },
         {
             keywords: ['contact mangesh', 'how to contact mangesh', 'mangeshdex contact'],

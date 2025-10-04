@@ -1,42 +1,55 @@
-/* This file is for the portfolio chatbot and custom overrides. */
-/* Most of the site styling is handled by Tailwind CSS. */
+/* Apple.com Inspired Portfolio Styles */
 
 :root {
-    /* Light mode colors (Apple-inspired) */
-    --bg-color: #f5f5f7;
-    --container-bg: #ffffff;
-    --header-bg: rgba(255, 255, 255, 0.8);
-    --border-color: #e5e5e5;
-    --text-color: #1d1d1f;
-    --secondary-text: #8e8e93;
-    --user-bubble: #007aff;
-    --user-text: #ffffff;
-    --assistant-bubble: #e5e5ea;
-    --assistant-text: #1d1d1f;
-    --input-bg: #f2f2f7;
-    --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --icon-color: #8e8e93;
-    --icon-hover-bg: #e5e5ea;
-    --accent-color: #007aff;
+    /* Apple's precise light mode colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f7;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-accent: #0071e3;
+    --border-color: #d2d2d7;
+    --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
+
+    /* Header/Navigation */
+    --nav-bg: rgba(255,255,255,0.95);
+    --nav-text: #1d1d1f;
+    --nav-border: #d2d2d7;
+
+    /* Buttons */
+    --btn-primary: #0071e3;
+    --btn-primary-hover: #0077ed;
+    --btn-text-primary: #ffffff;
+
+    /* Chatbot */
+    --chat-bg: #ffffff;
+    --chat-text: #1d1d1f;
+    --chat-accent: #0071e3;
 }
 
 html.dark {
-    /* Dark mode colors (Apple-inspired) */
-    --bg-color: #1d1d1f;
-    --container-bg: #1c1c1e;
-    --header-bg: rgba(28, 28, 30, 0.8);
-    --border-color: #3a3a3c;
-    --text-color: #f5f5f7;
-    --secondary-text: #8d8d92;
-    --user-bubble: #0a84ff;
-    --user-text: #ffffff;
-    --assistant-bubble: #2c2c2e;
-    --assistant-text: #f5f5f7;
-    --input-bg: #2c2c2e;
-    --shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
-    --icon-color: #8d8d92;
-    --icon-hover-bg: #3a3a3c;
-    --accent-color: #0a84ff;
+    /* Apple's dark mode colors */
+    --bg-primary: #000000;
+    --bg-secondary: #1d1d1f;
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --text-accent: #2997ff;
+    --border-color: #424245;
+    --shadow-light: 0 1px 3px rgba(0,0,0,0.3);
+
+    /* Header/Navigation */
+    --nav-bg: rgba(0,0,0,0.95);
+    --nav-text: #f5f5f7;
+    --nav-border: #424245;
+
+    /* Buttons */
+    --btn-primary: #2997ff;
+    --btn-primary-hover: #0071e3;
+    --btn-text-primary: #ffffff;
+
+    /* Chatbot */
+    --chat-bg: #1d1d1f;
+    --chat-text: #f5f5f7;
+    --chat-accent: #2997ff;
 }
 
 /* --- PORTFOLIO CHATBOT STYLES --- */
@@ -44,12 +57,12 @@ html.dark {
 /* Chat Widget Container */
 #portfolio-chat-widget {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 400px;
+    bottom: 90px;
+    right: 24px;
+    width: 360px;
     max-width: 90vw;
-    height: 650px;
-    max-height: 85vh;
+    height: 550px;
+    max-height: 75vh;
     background: var(--container-bg);
     border-radius: 16px;
     display: flex;
@@ -57,8 +70,10 @@ html.dark {
     overflow: hidden;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-    z-index: 1000;
+    z-index: 900; /* Lower than toggle button */
 }
 
 /* Widget Visibility States */
@@ -166,22 +181,26 @@ html.dark {
 }
 
 .chat-input-area button {
-    background: none;
-    border: none;
-    color: var(--icon-color);
+    background: var(--accent-color);
+    border: 1px solid transparent;
+    color: white;
     font-size: 1.4rem;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border-radius: 50%;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 44px;
+    height: 44px;
+    box-shadow: var(--shadow-light);
 }
 
 .chat-input-area button:hover {
-    color: var(--accent-color);
-    background-color: var(--icon-hover-bg);
+    background: var(--btn-primary-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 #portfolio-voice-input.recording {
@@ -212,26 +231,36 @@ html.dark {
 /* Chat Toggle Button */
 #portfolio-chat-toggle {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background-color: var(--accent-color);
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #0071e3, #007aff);
     color: white;
-    border: none;
+    border: 3px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease, background-color 0.3s ease;
-    z-index: 999;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
 }
 
 #portfolio-chat-toggle:hover {
-    transform: scale(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Dark mode adjustments for chatbot */
+html.dark #portfolio-chat-toggle {
+    background: linear-gradient(135deg, #2997ff, #5ac8fa);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Keyframe Animations */
@@ -251,36 +280,126 @@ html.dark {
     100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
 }
 
-/* filepath: /Users/mangeshraut/http-mangeshrautarchive.github.io-/css/style.css */
-/* Base & Typography */
+/* Apple's precise design system */
+
+/* Body & Base Styles */
 body {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #222225; /* Slightly softer black */
-    background-color: #f9f9f9; /* Light gray background */
-    font-size: 18px; /* Slightly increased base font size */
-    line-height: 1.7; /* Increased line height for readability */
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background: var(--bg-primary);
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 700; /* Bolder headings */
-    color: #1a1a1c; /* Darker heading color */
-    line-height: 1.2; /* Adjusted line height */
-    margin-bottom: 0.75em;
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
-h1 { font-size: 3.8rem; letter-spacing: -0.025em; } /* Slightly larger h1 */
-h2 { font-size: 2.8rem; letter-spacing: -0.02em; margin-bottom: 2.8rem; } /* Slightly larger h2 */
-h3 { font-size: 1.7rem; } /* Slightly larger h3 */
-h4 { font-size: 1.2rem; font-weight: 600; } /* Slightly larger and bolder h4 */
+/* Typography - Apple Style */
+h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.0416666667;
+    letter-spacing: -0.021em;
+    margin-bottom: 2.5rem;
+    color: var(--text-primary);
+}
+
+h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.0834934585;
+    letter-spacing: -0.021em;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.0834934585;
+    letter-spacing: -0.016em;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+}
+
+h5 {
+    font-size: 1.08392rem;
+    font-weight: 600;
+    line-height: 1.454545;
+    letter-spacing: -0.003em;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
 
 p {
-    color: #444448; /* Softer paragraph text color */
-    margin-bottom: 1.3em;
-    max-width: 68ch; /* Slightly wider max-width */
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    max-width: 68ch;
+}
+
+strong, b {
+    font-weight: 600;
+}
+
+/* Links */
+a {
+    color: var(--text-accent);
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+a:hover {
+    color: var(--text-accent);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    font-size: 1.125rem;
+    font-weight: 400;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    background: var(--btn-primary);
+    color: var(--btn-text-primary);
+    border: none;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-accent);
+    border: 1px solid var(--border-color);
+    padding: 0.5625rem 1.125rem;
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 112, 224, 0.1);
+    color: var(--text-accent);
 }
 
 a {
@@ -435,15 +554,220 @@ body.menu-open {
 }
 
 
-/* Sections & Layout */
+/* Layout & Sections - Apple Style */
+
 section {
-    padding-top: 6rem; /* Adjusted padding */
-    padding-bottom: 6rem;
+    position: relative;
+    background: var(--bg-primary);
 }
-@media (min-width: 768px) {
-    section {
-        padding-top: 8rem; /* Adjusted padding */
-        padding-bottom: 8rem;
+
+/* Section Padding - Apple Inspired */
+section#home {
+    padding-top: 160px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#about {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-secondary);
+}
+
+section#skills {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#projects {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-secondary);
+}
+
+section#experience {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#education {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-secondary);
+}
+
+section#contact {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: var(--bg-primary);
+}
+
+section#company {
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+/* Container Utility - Apple Style */
+.container-fluid {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 22px;
+}
+
+.container {
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 0 22px;
+}
+
+@media (min-width: 834px) {
+    .container-fluid, .container {
+        padding: 0 44px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-fluid, .container {
+        padding: 0 68px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        padding: 0 110px;
+    }
+}
+
+/* Grid Systems - Apple Style */
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0 -11px;
+}
+
+.col-12 {
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 0 11px;
+}
+
+.col-lg-6 {
+    flex: 0 0 50%;
+    width: 50%;
+    padding: 0 11px;
+}
+
+.col-lg-4 {
+    flex: 0 0 33.3333%;
+    width: 33.3333%;
+    padding: 0 11px;
+}
+
+@media (max-width: 833px) {
+    .row {
+        margin: 0;
+    }
+    .col-12, .col-lg-6, .col-lg-4 {
+        flex: 0 0 100%;
+        width: 100%;
+        padding: 0;
+    }
+}
+
+/* Navigation - Apple Style */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 48px;
+    padding: 0 22px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--nav-border);
+    z-index: 1000;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-container {
+    max-width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo img {
+    height: 22px;
+    width: auto;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-link {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--nav-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: var(--text-accent);
+}
+
+.theme-toggle-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle-nav:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.theme-toggle-nav i {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        gap: 16px;
+    }
+    .nav-links {
+        display: none;
+    }
+    nav {
+        padding: 0 16px;
     }
 }
 
@@ -549,45 +873,93 @@ section h2 {
     text-align: center;
 }
 
-/* Cards (Projects) */
+/* Projects Grid - Apple Newsroom Style */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
 .project-card {
-    background-color: #ffffff; /* White background for cards */
-    border: 1px solid #e0e0e0; /* Subtle border */
-    border-radius: 20px; /* More rounded corners */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    overflow: hidden;
+    box-shadow: var(--shadow-light);
 }
+
 .project-card:hover {
-    transform: translateY(-8px); /* More pronounced lift */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
-    border-color: #0071e3; /* Highlight border on hover */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: var(--text-accent);
 }
+
 .project-card h3 {
-    font-size: 1.4rem; /* Slightly larger card title */
-    margin-bottom: 0.6em;
-    color: #1a1a1c;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    line-height: 1.0834934585 !important;
+    letter-spacing: -0.021em !important;
+    margin-bottom: 1.5rem !important;
+    color: var(--text-primary) !important;
 }
+
+.project-card h3 a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.project-card h3 a:hover {
+    color: var(--text-accent);
+}
+
 .project-card p {
-    font-size: 1rem; /* Standardized paragraph size */
-    color: #555558; /* Softer text color */
+    font-size: 1rem;
     line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
 }
-.project-card .tag {
-    display: inline-block;
-    background-color: #0071e31a; /* Light blue background for tags, with alpha */
-    color: #005bb5; /* Darker blue text for tags */
-    font-size: 0.8rem; /* Slightly smaller tag text */
-    font-weight: 600; /* Bolder tags */
-    padding: 6px 12px; /* Adjusted padding */
-    border-radius: 8px; /* Rounded tags */
-    margin-right: 6px;
-    margin-bottom: 6px;
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-tags .tag {
+    background: rgba(0, 113, 227, 0.1);
+    color: var(--text-accent);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
-.project-card .tag:hover {
-    background-color: #0071e3;
-    color: #fff;
+
+.project-tags .tag:hover {
+    background: var(--text-accent);
+    color: white;
+}
+
+/* Dark mode adjustments */
+html.dark .project-card {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+html.dark .project-card h3 a {
+    color: var(--text-primary);
+}
+
+html.dark .project-card h3 a:hover {
+    color: var(--text-accent);
+}
+
+html.dark .project-card p {
+    color: var(--text-secondary);
 }
 
 
@@ -735,7 +1107,7 @@ footer img {
     h3 { font-size: 1.5rem; }
 
     .project-card h3 {
-        font-size: 1.25rem;
+        font-size: 1.25rem !important;
     }
     .project-card p {
         font-size: 0.95rem;
