@@ -20,6 +20,11 @@ const assets = [
     'firestore.rules'
 ];
 
+// Include production config if available
+const productionAssets = [
+    'perplexity-mcp.json'
+];
+
 async function pathExists(path) {
     try {
         await stat(path);
@@ -33,6 +38,7 @@ async function build() {
     await rm(distDir, { recursive: true, force: true });
     await mkdir(distDir, { recursive: true });
 
+    // Copy main assets
     for (const item of assets) {
         const source = resolve(projectRoot, item);
         const destination = resolve(distDir, item);
@@ -44,7 +50,18 @@ async function build() {
         await cp(source, destination, { recursive: true });
     }
 
-    console.log('Build complete. Output written to dist/');
+    // Copy production-specific assets
+    for (const item of productionAssets) {
+        const source = resolve(projectRoot, item);
+        const destination = resolve(distDir, item);
+
+        if (await pathExists(source)) {
+            await cp(source, destination);
+            console.log(`📋 Copied production config: ${item}`);
+        }
+    }
+
+    console.log('✨ Build complete. Output written to dist/ with API keys embedded.');
 }
 
 build().catch((error) => {

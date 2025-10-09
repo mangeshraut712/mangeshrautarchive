@@ -1,26 +1,45 @@
-// Intelligent chatbot services using modern libraries and best practices
-import { localConfig } from './config.local.js'; // Import local configuration
+// Intelligent chatbot services using browser-native APIs
+// Compatible with GitHub Pages (client-side only)
+import { localConfig } from './config.local.js';
 import { MathUtilities } from './math.js';
-import { LRUCache } from 'lru-cache';
-import axios from 'axios'; // Import axios for server-side API calls
 
-// Use a combination of local and default configurations
+// Configuration for browser environment
 const config = {
-    ...localConfig, // Load keys from your local, uncommitted file
+    ...localConfig,
     duckduckgoEnabled: true,
     wikipediaEnabled: true,
     stackoverflowEnabled: true,
-    // MCP Server Integrations
     mcpEnabled: true,
     perplexityEnabled: true,
     githubEnabled: true
 };
 
-// Initialize in-memory cache
-const responseCache = new LRUCache({
-    max: 100,
-    ttl: 30 * 60 * 1000 // 30 minutes in ms
-});
+// Simple browser-based cache using Map
+class SimpleCache {
+    constructor(maxSize = 50) {
+        this.cache = new Map();
+        this.maxSize = maxSize;
+    }
+
+    get(key) {
+        return this.cache.get(key);
+    }
+
+    set(key, value) {
+        if (this.cache.size >= this.maxSize) {
+            const firstKey = this.cache.keys().next().value;
+            this.cache.delete(firstKey);
+        }
+        this.cache.set(key, value);
+        return value;
+    }
+
+    clear() {
+        this.cache.clear();
+    }
+}
+
+const responseCache = new SimpleCache(50);
 
 // Rate limiting (simple implementation)
 class SimpleRateLimiter {
@@ -547,31 +566,39 @@ Your expertise covers the latest technology, current events, and up-to-date info
 
 For portfolio questions, focus on Mangesh's background. For general questions, use your real-time knowledge to provide the most current information available.`;
 
-            const response = await axios.post(`${this.grokConfig.baseUrl}/chat/completions`, {
-                model: this.grokConfig.model,
-                messages: [
-                    {
-                        role: "system",
-                        content: systemPrompt
-                    },
-                    {
-                        role: "user",
-                        content: query
-                    }
-                ],
-                max_tokens: 1000,
-                temperature: 0.7,
-                stream: false
-            }, {
+            const response = await fetch(`${this.grokConfig.baseUrl}/chat/completions`, {
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${this.grokConfig.apiKey}`,
                     'Content-Type': 'application/json',
                 },
-                timeout: 15000
+                body: JSON.stringify({
+                    model: this.grokConfig.model,
+                    messages: [
+                        {
+                            role: "system",
+                            content: systemPrompt
+                        },
+                        {
+                            role: "user",
+                            content: query
+                        }
+                    ],
+                    max_tokens: 1000,
+                    temperature: 0.7,
+                    stream: false
+                })
             });
 
-            if (response.data && response.data.choices && response.data.choices.length > 0) {
-                const answer = response.data.choices[0].message?.content;
+            if (!response.ok) {
+                console.error(`Grok API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+
+            if (data && data.choices && data.choices.length > 0) {
+                const answer = data.choices[0].message?.content;
                 if (answer) {
                     console.log('✅ Grok API response received');
                     return `[Latest AI Response] ${answer} (Powered by Grok xAI)`;
@@ -582,17 +609,13 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
             return null;
 
         } catch (error) {
-            console.error('❌ Grok API error:', error.message);
-            if (error.response) {
-                console.error('Response status:', error.response.status);
-                console.error('Response data:', error.response.data);
-            }
+            console.error('❌ Grok API error:', error);
             return null;
         }
     }
 
     async _callClaudeAPI(query, context = {}) {
-        if (!this.claudeConfig.enabled || !this.claudeConfig.apiKey) {
+        if (!this.claudeConfig.enabled || !this.claudeConfig.apiKey || this.claudeConfig.apiKey.includes('your-anthropic-key-here')) {
             console.log('Claude not configured or disabled');
             return null;
         }
@@ -602,27 +625,35 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
 
             console.log('🤖 Calling Claude API (fallback)...');
 
-            const response = await axios.post('https://api.anthropic.com/v1/messages', {
-                model: 'claude-3-sonnet-20240229',
-                max_tokens: 1024,
-                system: "You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.",
-                messages: [
-                    {
-                        role: "user",
-                        content: query
-                    }
-                ]
-            }, {
+            const response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
                 headers: {
                     'x-api-key': this.claudeConfig.apiKey,
                     'anthropic-version': '2023-06-01',
                     'Content-Type': 'application/json',
                 },
-                timeout: 10000
+                body: JSON.stringify({
+                    model: 'claude-3-sonnet-20240229',
+                    max_tokens: 1024,
+                    system: "You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.",
+                    messages: [
+                        {
+                            role: "user",
+                            content: query
+                        }
+                    ]
+                })
             });
 
-            if (response.data && response.data.content && response.data.content.length > 0) {
-                const textBlock = response.data.content.find(block => block.type === 'text');
+            if (!response.ok) {
+                console.error(`Claude API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+
+            if (data && data.content && data.content.length > 0) {
+                const textBlock = data.content.find(block => block.type === 'text');
                 if (textBlock) {
                     console.log('✅ Claude API response received');
                     return `[AI Response] ${textBlock.text} (Powered by Claude)`;
@@ -633,7 +664,7 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
             return null;
 
         } catch (error) {
-            console.error('❌ Claude API error:', error.response ? error.response.data : error.message);
+            console.error('❌ Claude API error:', error);
             return null;
         }
     }
@@ -649,18 +680,27 @@ class ExternalServices {
 
         try {
             await apiLimiter.waitForSlot();
-            const response = await axios.get('https://api.duckduckgo.com/', {
-                params: {
-                    q: query,
-                    format: 'json',
-                    no_html: 1,
-                    no_redirect: 1,
-                    skip_disambig: 1
-                },
-                timeout: 5000
+            const params = new URLSearchParams({
+                q: query,
+                format: 'json',
+                no_html: '1',
+                no_redirect: '1',
+                skip_disambig: '1'
             });
 
-            const data = response.data;
+            const response = await fetch(`https://api.duckduckgo.com/?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                console.error(`DuckDuckGo API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
 
             if (data.AnswerType && data.Answer && data.Answer.length) {
                 return {
@@ -704,19 +744,25 @@ class ExternalServices {
             await apiLimiter.waitForSlot();
 
             // First, search for the article
-            const searchResponse = await axios.get('https://en.wikipedia.org/w/api.php', {
-                params: {
-                    action: 'query',
-                    list: 'search',
-                    srsearch: query,
-                    format: 'json',
-                    origin: '*'
-                },
-                timeout: 5000
+            const params = new URLSearchParams({
+                action: 'query',
+                list: 'search',
+                srsearch: query,
+                format: 'json',
+                origin: '*'
             });
 
-            if (searchResponse.data.query?.search?.length > 0) {
-                const title = searchResponse.data.query.search[0].title;
+            const searchResponse = await fetch(`https://en.wikipedia.org/w/api.php?${params}`);
+
+            if (!searchResponse.ok) {
+                console.error(`Wikipedia search API error: ${searchResponse.status}`);
+                return null;
+            }
+
+            const searchData = await searchResponse.json();
+
+            if (searchData.query?.search?.length > 0) {
+                const title = searchData.query.search[0].title;
                 return this.getWikipediaSummary(title);
             }
 
@@ -732,15 +778,20 @@ class ExternalServices {
 
         try {
             await apiLimiter.waitForSlot();
-            const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`, {
-                timeout: 5000
-            });
+            const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
 
-            if (response.data?.extract) {
+            if (!response.ok) {
+                console.error(`Wikipedia summary API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+
+            if (data?.extract) {
                 return {
-                    answer: response.data.extract,
+                    answer: data.extract,
                     source: 'wikipedia',
-                    url: response.data.content_urls?.desktop?.page || response.data.extract_html?.match(/href="(.*?)"/i)?.[1] || `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`
+                    url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`
                 };
             }
 
@@ -756,13 +807,22 @@ class ExternalServices {
 
         try {
             await apiLimiter.waitForSlot();
-            const response = await axios.get(`https://restcountries.com/v3.1/name/${encodeURIComponent(name)}`, {
-                params: { fullText: false, fields: 'name,capital,region,subregion,population,area,cca2,cca3' },
-                timeout: 5000
+            const params = new URLSearchParams({
+                fullText: 'false',
+                fields: 'name,capital,region,subregion,population,area,cca2,cca3'
             });
 
-            if (Array.isArray(response.data) && response.data.length) {
-                const country = response.data[0];
+            const response = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(name)}?${params}`);
+
+            if (!response.ok) {
+                console.error(`RestCountries API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+
+            if (Array.isArray(data) && data.length) {
+                const country = data[0];
                 const official = country.name?.official || country.name?.common || name;
                 const capital = Array.isArray(country.capital) ? country.capital[0] : country.capital;
                 const population = country.population?.toLocaleString('en-US');
@@ -788,19 +848,25 @@ class ExternalServices {
 
         try {
             await apiLimiter.waitForSlot();
-            const response = await axios.get('https://api.stackexchange.com/2.3/search', {
-                params: {
-                    site: 'stackoverflow',
-                    order: 'desc',
-                    sort: 'relevance',
-                    q: query,
-                    filter: 'default',
-                    pagesize: 1
-                },
-                timeout: 5000
+            const params = new URLSearchParams({
+                site: 'stackoverflow',
+                order: 'desc',
+                sort: 'relevance',
+                q: query,
+                filter: 'default',
+                pagesize: '1'
             });
 
-            const items = response.data.items;
+            const response = await fetch(`https://api.stackexchange.com/2.3/search?${params}`);
+
+            if (!response.ok) {
+                console.error(`Stack Overflow API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+
+            const items = data.items;
             if (items && items.length > 0) {
                 const answer = items[0];
                 return {

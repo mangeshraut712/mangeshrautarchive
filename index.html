@@ -35,7 +35,12 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="js/firebase-config.js"></script>
-    <!-- Removed module import - using simple inline script instead -->
+    <!-- Import the client-side chat service -->
+    <script type="module">
+      import { chatService } from './js/services.js';
+      window.portfolioChatService = chatService;
+      console.log('Client-side chat service loaded successfully');
+    </script>
   </head>
   <body
     class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]"
@@ -1456,7 +1461,7 @@
           const message = this.input.value.trim();
           if (!message) return;
 
-          console.log('Sending message via backend API:', message);
+          console.log('Sending message via client-side service:', message);
 
           // Add user message
           this.addMessage(message, 'user');
@@ -1465,62 +1470,50 @@
           // Show typing indicator
           this.showTypingIndicator();
 
-          // Send message to backend API
-          this.sendToBackendAPI(message);
+          // Send message via client-side service
+          this.sendToClientSideService(message);
         },
 
-        async sendToBackendAPI(message) {
+        async sendToClientSideService(message) {
           try {
-            console.log('=== SENDING TO BACKEND API ===');
-            console.log('Endpoint: /api/chat');
+            console.log('=== USING CLIENT-SIDE AI SERVICE ===');
             console.log('Message:', message);
 
-            const response = await axios.post('/api/chat', {
-              message: message
-            }, {
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              timeout: 30000 // 30 second timeout for enhanced responses
-            });
+            // Use the client-side chat service from services.js
+            const result = await window.portfolioChatService.processQuery(message);
 
-            console.log('=== BACKEND API RESPONSE RECEIVED ===');
-            console.log('Response status:', response.status);
-            console.log('Response data:', response.data);
+            console.log('=== CLIENT-SIDE AI RESPONSE RECEIVED ===');
+            console.log('Response:', result);
 
             // Hide typing indicator
             this.hideTypingIndicator();
 
-            if (response.data && response.data.answer) {
-              console.log('Adding backend response to chat:', response.data.answer);
-              this.addMessage(response.data.answer, 'assistant');
+            if (result && result.answer) {
+              console.log('Adding AI response to chat:', result.answer);
+              const responseText = result.confidence >= 0.8 ?
+                result.answer :
+                `${result.answer}\n\n<i>(Note: Lower confidence response - try rephrasing for better results)</i>`;
+
+              this.addMessage(responseText, 'assistant');
             } else {
-              console.error('Invalid response format:', response.data);
+              console.error('Invalid response format:', result);
               this.addMessage('Sorry, I received an invalid response. Please try again.', 'assistant');
             }
 
           } catch (error) {
-            console.error('=== BACKEND API ERROR ===');
-            console.error('Error type:', error.constructor.name);
+            console.error('=== CLIENT-SIDE AI ERROR ===');
             console.error('Error details:', error);
 
             let errorMessage = 'An unexpected error occurred. Please try again.';
 
-            if (error.code === 'ECONNABORTED') {
-              errorMessage = 'Request timed out. The response might take longer due to enhanced AI processing.';
-            } else if (error.response) {
-              console.error('HTTP Status:', error.response.status);
-              console.error('Server response:', error.response.data);
-
-              if (error.response.status === 429) {
-                errorMessage = 'Too many requests. Please wait a moment before trying again.';
-              } else if (error.response.status === 500) {
-                errorMessage = 'Server error. Our AI services might be temporarily unavailable.';
-              } else if (error.response.status >= 400) {
-                errorMessage = 'There was an issue with your request. Please try rephrasing your question.';
-              }
-            } else if (!navigator.onLine) {
+            if (!navigator.onLine) {
               errorMessage = 'No internet connection. Please check your network and try again.';
+            } else if (error.message && error.message.includes('timeout')) {
+              errorMessage = 'Request timed out. Please try again.';
+            } else if (error.message && error.message.includes('rate')) {
+              errorMessage = 'Too many requests. Please wait a moment before trying again.';
+            } else {
+              errorMessage = 'AI services are temporarily unavailable. Please try again later.';
             }
 
             this.hideTypingIndicator();
