@@ -225,23 +225,33 @@ Add repository secrets in GitHub Settings → Secrets and variables → Actions:
 3. **PERPLEXITY_API_KEY** → Your Perplexity API key
 4. **GITHUB_ACCESS_TOKEN** → Your GitHub Personal Access Token (for MCP server)
 
-#### 🏠 **Local Development (Environment Variables)**
-```bash
-# Set environment variables for local testing
-export GROK_API_KEY="xai-yXUWqZgbryXv8KKcBav1KqtE14mmTiBXUimiOfv3lEQLjIZDDEF8qm1uLkLlLDt3BWNRViqQC5WazyG8"
-export ANTHROPIC_API_KEY="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"
-export PERPLEXITY_API_KEY="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"
-
-# Start the server
-npm start
-
-# Test the chatbot at http://localhost:3000/api/chat
-```
 
 #### ⚡ **Automatic Build Process**
 • **Development**: Uses `process.env` variables or fallbacks to placeholders
 • **Production**: GitHub Actions injects real secrets during build
 • **MCP Config**: `perplexity-mcp.json` uses placeholder (replaced by GitHub Actions)
+
+### 🚀 **GitHub Actions Deployment & Security**
+
+The portfolio uses GitHub Actions for automated deployment to GitHub Pages with secure API key management:
+
+#### **Deployment Triggers**
+- **Push** to main/master branches
+- **Manual Trigger** via GitHub Actions UI
+- **Pull Requests** from the same repository (secrets unavailable for forked PRs)
+
+#### **Security Features**
+- **Conditional Secret Access**: Steps with secrets only run when secrets are guaranteed to be available
+- **Context-Access Protection**: Automatic skipping of secret-dependent steps on forked PRs
+- **Secure API Injection**: Runtime secret injection via GitHub Actions environment variables
+
+#### **Recent Security Improvements** ✨
+Fixed GitHub Actions context access warnings that occurred when the workflow tried to access API keys (`GROK_API_KEY`, `ANTHROPIC_API_KEY`, `PERPLEXITY_API_KEY`) in contexts where they weren't available (e.g., pull requests from forks).
+
+**Technical Details:**
+- Added conditional logic: `if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)`
+- Affected steps: API key configuration and MCP server setup
+- Result: Clean workflow runs without security warnings while maintaining full functionality for authorized builds
 
 ## 🎨 Customization Guide
 
