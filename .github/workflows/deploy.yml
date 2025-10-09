@@ -82,10 +82,37 @@ jobs:
       env:
         NODE_ENV: production
 
-    - name: 🚀 Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: 🚀 Deploy to GitHub Pages (/docs folder)
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        cname: mangeshraut712.github.io
+      run: |
+        # Copy built files to docs/ folder (GitHub Pages deployment)
+        echo "📁 Deploying built files to docs/ folder..."
+        rm -rf docs/
+        cp -r dist/ docs/
+
+        # Commit the deployment files to main branch
+        git config --local user.name 'github-actions[bot]'
+        git config --local user.email 'github-actions[bot]@users.noreturn.github.com'
+
+        git add docs/
+
+        # Only commit if there are changes
+        if git diff --staged --quiet; then
+          echo "✅ No changes to commit - build is up to date"
+        else
+          echo "📝 Committing deployment files..."
+          git commit -m "🚀 Deploy to GitHub Pages"
+          git commit --amend --no-edit
+          git push origin main
+          echo "🎉 Successfully deployed to main branch!"
+        fi
+
+        echo ""
+        echo "🌍 GitHub Pages Configuration:"
+        echo "1. Go to Repository → Settings → Pages"
+        echo "2. Select 'Deploy from a branch'"
+        echo "3. Choose branch: 'main' folder: '/docs'"
+        echo "4. URL: https://mangeshraut712.github.io/mangeshrautarchive"
+        echo ""
+        echo "✅ Build complete with API keys embedded!"
+        echo "📦 Files ready in docs/ folder"
