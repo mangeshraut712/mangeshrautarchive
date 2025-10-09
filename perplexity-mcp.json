@@ -4,7 +4,7 @@
       "command": "node",
       "args": ["/Users/mangeshraut/Documents/Cline/MCP/perplexity-server/build/index.js"],
       "env": {
-        "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key-here"
+        "PERPLEXITY_API_KEY": "${env.PERPLEXITY_API_KEY}"
       }
     }
   }
