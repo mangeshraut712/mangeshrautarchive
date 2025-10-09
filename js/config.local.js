@@ -8,7 +8,7 @@ export const localConfig = {
 
     // Grok API Configuration (xAI) - Latest and most up-to-date AI model
     grokEnabled: true,
-    grokApiKey: 'xai-yXUWqZgbryXv8KKcBav1KqtE14mmTiBXUimiOfv3lEQLjIZDDEF8qm1uLkLlLDt3BWNRViqQC5WazyG8', // 👈 PASTE YOUR GROK API KEY HERE (from x.ai/xAI)
+    grokApiKey: 'xai-your-grok-api-key-placeholder', // 👈 REPLACE WITH YOUR ACTUAL GROK API KEY HERE (from x.ai/xAI)
 
     // Other APIs
     supabaseUrl: '', // Not used in your current setup
