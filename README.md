@@ -21,27 +21,41 @@ An elegant, Apple-inspired portfolio website showcasing my professional journey 
 - Theme toggle with seamless light/dark mode transitions
 - Apple's precise interactive animations and transitions
 
-### 🤖 **Advanced AI Chatbot (AssistMe)**
-- Interactive AI assistant with voice controls
-- Portfolio knowledge base covering skills, experience, and projects
-- General knowledge queries using Wikipedia API integration
-- DuckDuckGo API for additional information sources
-- Voice synthesis with microphone and speaker controls
-- 9 project database for detailed project information
-- Responsive chat widget with proper positioning
+### 🤖 **Advanced AI Chatbot (AssistMe v2.0)**
+- **🌐 AI-Powered Intelligence**: Grok xAI (latest model) + Claude fallback
+- **🧠 Multiple Knowledge Sources**:
+  - Personal portfolio knowledge base (skills, experience, projects)
+  - Wikipedia API for factual information
+  - DuckDuckGo API for general queries
+  - StackOverflow API for coding questions
+  - Country/location data via RestCountries API
+- **🧮 Advanced Math Engine**: Unit conversions, calculations, equations
+- **🎤 Voice Controls**: Text-to-speech and speech-to-text integration
+- **🔄 Multi-API Fallback System**: Automatic switching between AI providers
+- **📱 Responsive Chat Widget**: Apple Intelligence-inspired design with glassmorphism
+- **⚡ Real-time Processing**: Server-side API calls via Express backend
+
+### 🔧 **MCP Server Integration**
+- **GitHub MCP Server**: Docker container running port 3002
+- **Perplexity MCP Server**: Advanced search capabilities
+- **Interactive API**: Direct GitHub repository queries and operations
+- **Seamless Integration**: CLI tools accessible via chatbot
 
 ### 📱 **Responsive & Accessible Design**
 - Mobile-first breakpoint system (834px, 1024px, 1120px, 1440px)
 - Touch-friendly buttons and proper touch targets
 - Optimized performance with backdrop-filter support
 - Accessibility-compliant design with proper focus states
+- Voice control compatibility
 
 ### 🛠️ **Technical Features**
-- **Firebase Visitor Counter**: Real-time visitor tracking with accurate count display and atomic increments
-- Firebase-powered contact form with real-time messaging
-- Dynamic project showcase with GitHub API integration
-- Smooth scroll navigation with section highlighting
-- Professional overlay menu system
+- **Node.js Backend**: Express server with `/api/chat` endpoint
+- **Real-time API Calls**: Axios-powered external service integration
+- **Firebase Visitor Counter**: Atomic increments and real-time tracking
+- **Firebase-Powered Contact Form**: Real-time messaging system
+- **Dynamic GitHub Integration**: Auto-updating project showcase
+- **Client-Server Architecture**: CORS-safe API communication
+- **Rate Limiting**: API protection and efficient resource management
 
 ## 🚀 Technologies Used
 
@@ -68,20 +82,38 @@ An elegant, Apple-inspired portfolio website showcasing my professional journey 
 
 ```
 mangeshrautarchive/
-├── index.html                 # Main HTML document with Apple design structure
+├── index.html                 # Main HTML document with Apple Intelligence chatbot
+├── server.js                  # Node.js Express backend for API integrations
+├── pacakge.json              # Node.js dependencies and scripts
+├── .gitignore                 # Git ignore rules for security
+├── api/
+│   └── chat.js                # Chatbot API endpoint handler
 ├── css/
 │   └── style.css             # Complete Apple-inspired design system
 ├── js/
-│   ├── script.js             # Interactive features and chatbot logic
-│   └── math.js               # Math.js for chatbot calculations
+│   ├── services.js           # Advanced AI chatbot with multi-API integration
+│   ├── config.local.js       # API keys and local configuration (gitignored)
+│   ├── firebase-config.js    # Firebase client-side configuration
+│   ├── math.js               # Advanced math utilities and unit conversions
+│   ├── script.js             # Frontend interactive features
+│   ├── theme.js              # Light/dark mode management
+│   └── modules/              # Modular component architecture
+│       ├── animations.js     # Page scroll and interaction animations
+│       ├── contact.js        # Contact form handling
+│       ├── external-config.js# External API configurations
+│       ├── math.js           # Mathematical calculations
+│       ├── overlay.js        # Navigation overlay system
+│       ├── projects.js       # GitHub projects integration
+│       └── voice.js          # Voice recognition and synthesis
+├── perplexity-mcp.json       # Perplexity MCP server configuration
 ├── images/                   # Image assets
 │   ├── profile.jpg           # Hero image
 │   ├── profile icon.png     # Navigation logo
 │   ├── graduation.jpg        # About section image
 │   └── X_logo.jpg            # Social media logos
-├── files/                    # Downloadable assets
-│   └── Mangesh_Raut_Resume.pdf # Professional resume
-└── README.md                 # Project documentation
+└── files/                    # Downloadable assets
+    ├── Mangesh_Raut_Resume.pdf # Professional resume
+    └── RTFERS paper.pdf      # Research publication
 ```
 
 ## 🎯 Features Detailed
@@ -183,14 +215,25 @@ service cloud.firestore {
 }
 ```
 
-### API Keys (Chatbot)
+### API Keys Configuration (Chatbot + MCP Servers)
 
-Configure API keys in `js/script.js`:
+#### 🚀 **Automated Setup with GitHub Secrets**
+Add repository secrets in GitHub Settings → Secrets and variables → Actions:
 
-```javascript
-const NEWS_API_KEY = 'YOUR_NEWSAPI_KEY';
-const NASA_API_KEY = 'YOUR_NASA_API_KEY';
-```
+1. **GROK_API_KEY** → Your xAI Grok API key
+2. **ANTHROPIC_API_KEY** → Your Claude API key
+3. **PERPLEXITY_API_KEY** → Your Perplexity API key
+4. **GITHUB_ACCESS_TOKEN** → Your GitHub Personal Access Token (for MCP server)
+
+#### 📦 **Local Development**
+1. Copy from `API_KEYS.txt` file (keep local, don't commit)
+2. Update `js/config.local.js` and `perplexity-mcp.json`
+3. The GitHub Actions workflow will automatically inject these for production
+
+#### ⚡ **Automatic Build Process**
+- Development uses `js/config.local.js`
+- Production uses GitHub secrets injected during build
+- MCP servers configured automatically with proper keys
 
 ## 🎨 Customization Guide
 
