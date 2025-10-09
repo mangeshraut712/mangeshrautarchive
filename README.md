@@ -225,15 +225,23 @@ Add repository secrets in GitHub Settings → Secrets and variables → Actions:
 3. **PERPLEXITY_API_KEY** → Your Perplexity API key
 4. **GITHUB_ACCESS_TOKEN** → Your GitHub Personal Access Token (for MCP server)
 
-#### 📦 **Local Development**
-1. Copy from `API_KEYS.txt` file (keep local, don't commit)
-2. Update `js/config.local.js` and `perplexity-mcp.json`
-3. The GitHub Actions workflow will automatically inject these for production
+#### 🏠 **Local Development (Environment Variables)**
+```bash
+# Set environment variables for local testing
+export GROK_API_KEY="xai-yXUWqZgbryXv8KKcBav1KqtE14mmTiBXUimiOfv3lEQLjIZDDEF8qm1uLkLlLDt3BWNRViqQC5WazyG8"
+export ANTHROPIC_API_KEY="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"
+export PERPLEXITY_API_KEY="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"
+
+# Start the server
+npm start
+
+# Test the chatbot at http://localhost:3000/api/chat
+```
 
 #### ⚡ **Automatic Build Process**
-- Development uses `js/config.local.js`
-- Production uses GitHub secrets injected during build
-- MCP servers configured automatically with proper keys
+• **Development**: Uses `process.env` variables or fallbacks to placeholders
+• **Production**: GitHub Actions injects real secrets during build
+• **MCP Config**: `perplexity-mcp.json` uses placeholder (replaced by GitHub Actions)
 
 ## 🎨 Customization Guide
 
@@ -314,3 +322,4 @@ Software Engineer | Philadelphia, PA
 ⭐ Star this repository if you found it helpful!
 
 </div>
+# Version: Fri Oct 10 03:19:22 IST 2025
