@@ -1,19 +1,21 @@
 /* Apple.com Inspired Portfolio Styles */
 
 :root {
-    /* Apple's precise light mode colors */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f5f5f7;
+    /* Original site colors */
+    --bg-white-light: #ffffff; /* White for light mode */
+    --bg-grey-light: #f5f5f7;  /* Grey for light mode */
+    --bg-black-dark: #000000;  /* Black for dark mode */
+    --bg-grey-dark: #1d1d1f;   /* Grey for dark mode */
     --text-primary: #1d1d1f;
     --text-secondary: #6e6e73;
     --text-accent: #0071e3;
     --border-color: #d2d2d7;
     --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
 
-    /* Header/Navigation */
-    --nav-bg: rgba(255,255,255,0.95);
+    /* Header/Navigation - Light mode: Apple style - transparent with visible text */
+    --nav-bg: rgba(255, 255, 255, 0.95);
     --nav-text: #1d1d1f;
-    --nav-border: #d2d2d7;
+     --nav-border: transparent;
 
     /* Buttons */
     --btn-primary: #0071e3;
@@ -24,12 +26,20 @@
     --chat-bg: #ffffff;
     --chat-text: #1d1d1f;
     --chat-accent: #0071e3;
+    --input-bg: #ffffff;
+    --accent-color: #0071e3;
+
+    /* Background variables for sections */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f7;
 }
 
 html.dark {
-    /* Apple's dark mode colors */
-    --bg-primary: #000000;
-    --bg-secondary: #1d1d1f;
+    /* Original dark mode colors */
+    --bg-white-light: #000000;  /* Black for dark mode */
+    --bg-grey-light: #1d1d1f;   /* Grey for dark mode */
+    --bg-black-dark: #000000;  /* Black for dark mode */
+    --bg-grey-dark: #1d1d1f;   /* Grey for dark mode */
     --text-primary: #f5f5f7;
     --text-secondary: #a1a1a6;
     --text-accent: #2997ff;
@@ -50,31 +60,47 @@ html.dark {
     --chat-bg: #1d1d1f;
     --chat-text: #f5f5f7;
     --chat-accent: #2997ff;
+    
+    /* Project Cards */
+    --project-card-bg: #000000; /* Ensure project cards are black in dark mode */
+    --project-card-text: #f5f5f7;
+    --project-card-tag-bg: rgba(41, 151, 255, 0.1);
+    --project-card-tag-text: #2997ff;
 }
 
-/* --- PORTFOLIO CHATBOT STYLES --- */
+/* ===== APPLE INTELLIGENCE CHATBOT STYLES ===== */
 
-/* Chat Widget - iMessage Style */
+/* Apple Intelligence Chat Widget - Seamless Integration */
 #portfolio-chat-widget {
     position: fixed;
     bottom: 90px;
     right: 24px;
-    width: 380px;
+    width: 420px;
     max-width: 95vw;
-    height: 620px;
-    max-height: 80vh;
-    background: var(--bg-primary);
-    border-radius: 24px;
+    height: 680px;
+    max-height: 85vh;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(80px) saturate(180%);
+    -webkit-backdrop-filter: blur(80px) saturate(180%);
+    border-radius: 28px !important;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.15);
-    border: none;
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     z-index: 900;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-family: "Inter", 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    visibility: hidden;
+}
+
+#portfolio-chat-widget:hover {
+    box-shadow: 0 30px 80px rgba(0, 113, 227, 0.4) !important;
 }
 
 /* Widget Visibility States */
@@ -84,28 +110,31 @@ html.dark {
     visibility: hidden;
 }
 
-/* Chat Header */
+/* Chat Header - Modern Design */
 .chat-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border-color, #d2d2d7) !important;
     text-align: center;
     position: relative;
-    background: var(--header-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, var(--chat-accent, #0071e3), #2997ff) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px 24px 0 0 !important;
+    box-shadow: 0 2px 10px rgba(0,113,227,0.3) !important;
 }
 
 .chat-header h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-color);
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
     margin: 0;
+    letter-spacing: -0.01em;
 }
 
 .chat-header p {
-    font-size: 0.8rem;
-    color: var(--secondary-text);
-    margin: 0;
+    font-size: 0.875rem !important;
+    color: #000000 !important;
+    margin: 0.25rem 0 0 0;
 }
 
 #portfolio-chat-close {
@@ -113,19 +142,28 @@ html.dark {
     top: 50%;
     right: 1rem;
     transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: var(--icon-color);
+    background: linear-gradient(135deg, var(--chat-accent, #0071e3), #2997ff) !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3) !important;
+    font-size: 1.25rem !important;
+    color: #000000 !important;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 50%;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 #portfolio-chat-close:hover {
-    background-color: var(--icon-hover-bg);
-    color: var(--text-color);
+    background: linear-gradient(135deg, #2997ff, #5ac8fa) !important;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4) !important;
 }
 
 /* Chat Messages Area */
@@ -136,30 +174,35 @@ html.dark {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background-color: var(--container-bg);
+    background-color: transparent !important;
 }
 
 .message {
     position: relative;
-    padding: 0.75rem 1rem;
-    border-radius: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    border-radius: 20px !important;
     max-width: 75%;
     word-wrap: break-word;
-    line-height: 1.4;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-    font-size: 0.9375rem;
+    line-height: 1.5;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-size: 1rem;
     margin: 0.25rem 0;
     animation: messageSlide 0.3s ease-out;
+    transition: transform 0.2s ease;
+}
+
+.message:hover {
+    transform: translateY(-1px);
 }
 
 .user-message {
-    background: linear-gradient(135deg, #0b93f6, #1ba1f3);
-    color: #000000;
+    background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+    color: #000000 !important;
     align-self: flex-end;
     margin-left: 4rem;
     text-align: right;
-    border-bottom-right-radius: 0.125rem;
-    box-shadow: 0 2px 8px rgba(11, 147, 246, 0.3);
+    border-bottom-right-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 113, 227, 0.4) !important;
 }
 
 .user-message::after {
@@ -170,27 +213,24 @@ html.dark {
     width: 0;
     height: 0;
     border: 0.5rem solid transparent;
-    border-left-color: #0b93f6;
+    border-left-color: #0071e3;
     border-bottom: none;
     border-right: none;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 2px 4px rgba(0, 113, 227, 0.2));
 }
 
 .assistant-message {
-    background: #e5e5ea;
-    color: #1d1d1f;
+    background: var(--chat-bg, #ffffff) !important;
+    color: var(--chat-text, #000000) !important;
     align-self: flex-start;
     margin-right: 4rem;
     text-align: left;
-    border-bottom-left-radius: 0.125rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-bottom-left-radius: 8px !important;
+    border: 1px solid var(--border-color, #f0f0f0) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
-html.dark .assistant-message {
-    background: #3a3a3c;
-    color: #f5f5f7;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
+/* No dark mode override for assistant messages to keep light design */
 
 .assistant-message::before {
     content: '';
@@ -200,14 +240,14 @@ html.dark .assistant-message {
     width: 0;
     height: 0;
     border: 0.5rem solid transparent;
-    border-right-color: #e5e5ea;
+    border-right-color: #ffffff;
     border-bottom: none;
     border-left: none;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
 }
 
 html.dark .assistant-message::before {
-    border-right-color: #3a3a3c;
+    border-right-color: #ffffff;
 }
 
 @keyframes messageSlide {
@@ -225,28 +265,32 @@ html.dark .assistant-message::before {
 .chat-input-area {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.5rem;
     border-top: 1px solid var(--border-color);
     background: var(--input-bg);
+    gap: 0.5rem; /* Consistent spacing between elements */
 }
 
 #portfolio-chat-input {
     flex-grow: 1;
+    flex-shrink: 1;
     border: none;
     background: var(--bg-primary);
     color: var(--text-primary);
     font-size: 1rem;
     outline: none;
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.75rem;
-    margin: 0 0.5rem;
+    margin: 0;
     min-height: 1.5rem;
     line-height: 1.5;
+    min-width: 0; /* Allow shrinking below content size */
 }
 
 .chat-input-area button {
-    background: var(--accent-color);
-    border: 1px solid transparent;
+    background: var(--accent-color) !important;
+    border: 1px solid var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
     color: #ffffff !important;
     font-size: 1.4rem;
     cursor: pointer;
@@ -258,18 +302,29 @@ html.dark .assistant-message::before {
     justify-content: center;
     width: 44px;
     height: 44px;
-    box-shadow: var(--shadow-light);
+    min-width: 44px;
+    min-height: 44px;
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
 .chat-input-area button i.fas.fa-microphone:before {
     content: "\f130";
-    color: #3b82f6 !important;
+    color: #ffffff !important;
 }
 
 .chat-input-area button:hover {
-    background: var(--btn-primary-hover);
+    background: var(--btn-primary-hover) !important;
+    border-color: var(--btn-primary-hover) !important;
     transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+}
+
+.chat-input-area button:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 4px rgba(0, 113, 227, 0.4) !important;
 }
 
 
@@ -328,10 +383,19 @@ html.dark .assistant-message::before {
     border-color: rgba(255, 255, 255, 0.4);
 }
 
+#portfolio-chat-toggle.active {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+}
+
 /* Dark mode adjustments for chatbot */
 html.dark #portfolio-chat-toggle {
     background: linear-gradient(135deg, #2997ff, #5ac8fa);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+html.dark #portfolio-chat-toggle.active {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
 }
 
 /* Keyframe Animations */
@@ -362,7 +426,7 @@ body {
     font-size: 17px;
     line-height: 1.5;
     color: var(--text-primary);
-    background: var(--bg-primary);
+    background: transparent; /* Allow sections to show their own backgrounds */
     overflow-x: hidden;
     margin: 0;
     padding: 0;
@@ -423,46 +487,8 @@ p {
     font-size: 1.125rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
-    color: #6e6e73 !important; /* Consistent grey for all paragraphs */
+    color: var(--text-secondary);
     max-width: 68ch;
-}
-
-li {
-    color: #6e6e73 !important; /* Grey for list items */
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color: #1d1d1f !important; /* Consistent black for all headings */
-}
-
-span, div, section {
-    color: #6e6e73 !important; /* Default grey for other text elements */
-}
-
-/* Override specific blue elements */
-.text-accent, .education-card h5 {
-    color: #0071e3 !important; /* Blue for accents and company names */
-}
-
-.education-card h3, .project-card h3, .project-card h3 a, .timeline-item h3, .timeline-item h4 {
-    color: #1d1d1f !important; /* Black for card headings */
-}
-
-.education-card p, .project-card p, .timeline-item p, .timeline-item ul, .timeline-item ul li {
-    color: #6e6e73 !important; /* Grey for all card content text */
-}
-
-.date-badge {
-    color: #6e6e73 !important; /* Grey for date badges */
-    /* background-color: #f5f5f7 !important; */ /* Removed background */
-}
-
-.button-primary {
-    color: #ffffff !important;
-}
-
-.button-secondary {
-    color: #0071e3 !important;
 }
 
 strong, b {
@@ -509,6 +535,11 @@ a:hover {
 .btn-secondary:hover {
     background: rgba(0, 112, 224, 0.1);
     color: var(--text-accent);
+}
+
+.btn-active {
+    background: var(--btn-primary);
+    color: var(--btn-text-primary);
 }
 
 a {
@@ -678,7 +709,6 @@ section {
 section#home {
     padding-top: 160px;
     padding-bottom: 120px;
-    background: var(--bg-primary);
 }
 
 /* Home Section Spacing */
@@ -695,88 +725,39 @@ section#home {
 section#about {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-secondary);
 }
 
 section#skills {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-primary);
 }
 
 section#projects {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-secondary);
-}
-
-section#experience {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-primary);
 }
 
 section#education {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-secondary);
 }
 
 section#publications {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-primary);
 }
 
 section#awards {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-secondary);
 }
 
 section#certifications {
     padding-top: 120px;
     padding-bottom: 120px;
-    background: var(--bg-primary);
-}
-
-section#awards {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-secondary);
-}
-
-section#certifications {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-primary);
 }
 
 section#contact {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-secondary);
-}
-
-section#languages {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-primary);
-}
-
-section#publications {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-primary);
-}
-
-section#contact {
-    padding-top: 120px;
-    padding-bottom: 120px;
-    background: var(--bg-secondary);
-}
-
-section#company {
     padding-top: 120px;
     padding-bottom: 120px;
 }
@@ -853,19 +834,19 @@ section#company {
     }
 }
 
-/* Navigation - Apple Style */
-.nav-simple {
+/* Navigation - Apple.com Style */
+nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: 48px;
-    padding: 0 22px;
+    height: 56px; /* Apple.com standard height */
+    padding: 0 32px; /* Increased horizontal padding */
     background: var(--nav-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--nav-border);
+    border-bottom: var(--nav-border);
     z-index: 1000;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -931,35 +912,16 @@ section#company {
     color: var(--text-primary);
 }
 
-@media (max-width: 1024px) {
-    nav {
-        padding: 0 16px;
+@media (max-width: 768px) {
+    .nav-menu {
+        gap: 16px;
     }
     .nav-links {
         display: none;
     }
-    .menu-toggle-button {
-        display: block;
+    nav {
+        padding: 0 16px;
     }
-    .nav-menu {
-        gap: 12px;
-    }
-}
-
-.menu-toggle-button {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    z-index: 101;
-    color: var(--text-primary);
-    transition: color 0.3s ease;
-    font-size: 18px;
-}
-
-.menu-toggle-button:hover {
-    color: var(--text-accent);
 }
 
 /* Chatbot UI Styles */
@@ -1064,99 +1026,209 @@ section h2 {
     text-align: center;
 }
 
-/* Projects Grid - Apple Newsroom Style */
+/* Projects Grid - Enhanced Apple-inspired Design with Superior Light Mode Visibility */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2.5rem;
+    margin-top: 4rem;
+    padding: 0 1rem;
 }
 
 .project-card {
-    background: var(--bg-secondary);
-    border-radius: 1rem;
-    padding: 2rem;
-    transition: transform 0.25s ease;
-    border: 1px solid var(--border-color);
-    color: #000000;
+    background: #ffffff !important;
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 20px !important;
+    padding: 2.5rem !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa);
+    border-radius: 20px 20px 0 0;
 }
 
 .project-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12) !important;
+    border-color: #e0e0e0 !important;
 }
 
-.education-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    color: #000000;
+.project-card:hover::after {
+    opacity: 1;
 }
 
 .project-card h3 {
-    font-size: 2rem !important;
+    font-size: 1.75rem !important;
     font-weight: 700 !important;
-    line-height: 1.0834934585 !important;
-    letter-spacing: -0.021em !important;
-    margin-bottom: 1.5rem !important;
-    color: var(--text-primary) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.025em !important;
+    margin-bottom: 1.25rem !important;
+    color: #1d1d1f !important;
+    transition: color 0.3s ease;
 }
 
-.project-card h3 a {
-    color: var(--text-primary);
-    text-decoration: none;
-}
-
-.project-card h3 a:hover {
-    color: var(--text-accent);
+.project-card h3:hover {
+    color: #0071e3 !important;
 }
 
 .project-card p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    color: var(--text-secondary);
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    margin-bottom: 1.75rem !important;
+    color: #666666 !important;
+    font-weight: 400;
 }
 
-.project-tags {
+/* Project Tags - Modern Pill Design with Excellent Light Mode Visibility */
+.project-card .project-tags {
+    margin-bottom: 2rem;
+}
+
+.project-card .project-tags .tag {
+    background: #f8f9fa !important;
+    color: #0071e3 !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 2rem !important;
+    border: 1px solid #e9ecef !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+    box-shadow: 0 1px 3px rgba(0, 113, 227, 0.05) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+}
+
+.project-card .project-tags .tag:hover {
+    background: #0071e3 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25) !important;
+}
+
+/* Project Action Links - View Project, Live Demo */
+.project-card .row {
+    margin-top: 2rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
 }
 
-.project-tags .tag {
-    background: rgba(0, 113, 227, 0.1);
-    color: var(--text-accent);
-    font-size: 0.875rem;
-    font-weight: 500;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.5rem;
-    border: 1px solid transparent;
-    transition: background-color 0.2s ease, color 0.2s ease;
+.project-card .row .col-lg-6 {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0;
 }
 
-.project-tags .tag:hover {
-    background: var(--text-accent);
-    color: white;
+.project-card .row a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 113, 227, 0.1) !important;
+    color: #0071e3 !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 113, 227, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    text-decoration: none !important;
+    white-space: nowrap;
 }
 
-/* Dark mode adjustments for project cards */
-html.dark .project-card {
-    background: #111111 !important; /* Dark background like experience section */
-    border-color: #3a3a3c;
-    color: #ffffff;
-}
-
-html.dark .project-card h3,
-html.dark .project-card h3 a {
+.project-card .row a:hover {
+    background: #0071e3 !important;
     color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3) !important;
+    border-color: #0071e3 !important;
+}
+
+.project-card .row a i {
+    font-size: 0.85rem !important;
+    color: inherit !important;
+}
+
+.project-card .row a::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 4px solid currentColor;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    margin-left: 0.25rem;
+}
+
+.project-card .project-tags .tag:hover {
+    background: #0071e3 !important; /* Solid blue on hover */
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0, 113, 227, 0.2) !important;
+}
+
+/* Dark mode adjustments */
+html.dark .project-card {
+    background: #1d1d1f !important;
+    border-color: #424245 !important;
+}
+
+html.dark .project-card h3 a {
+    color: #2997ff !important;
 }
 
 html.dark .project-card h3 a:hover {
-    color: var(--text-accent);
+    color: #66b5ff !important;
 }
 
 html.dark .project-card p {
-    color: #ffffff !important;
+    color: #f5f5f7 !important;
+}
+
+/* Project Card Links - Enhanced Visibility */
+.project-card a.text-accent {
+    color: #0071e3 !important; /* Keep original blue for text */
+}
+
+.project-card a.text-accent:hover {
+    color: #0051cc !important; /* Darker blue on hover for better contrast */
+}
+
+/* Add underline or background to make links more visible */
+.project-card a.text-accent {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.project-card a.text-accent:hover {
+    background-color: rgba(0, 113, 227, 0.1);
+    color: #0051cc !important;
+}
+
+/* GitHub and Globe icons on links - ensure visibility */
+.project-card a.text-accent i {
+    color: inherit !important;
+    margin-right: 0.25rem;
+}
+
+/* Dark mode project card link adjustments */
+html.dark .project-card a.text-accent {
+    color: #2997ff !important;
+}
+
+html.dark .project-card a.text-accent:hover {
+    color: #66b5ff !important;
+    background-color: rgba(41, 151, 255, 0.2);
 }
 
 
@@ -1167,12 +1239,11 @@ html.dark .project-card p {
     padding-left: 2rem; /* Increased padding */
 }
 .timeline-item > div {
-    background-color: var(--bg-secondary); /* Light gray background for timeline items */
+    background-color: #ffffff; /* White background for timeline items */
     padding: 2rem; /* Increased padding */
     border-radius: 16px; /* More rounded corners */
     box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* Subtle shadow */
-    border: 1px solid var(--border-color);
-    color: #000000;
+    border: 1px solid #e0e0e0;
 }
 .timeline-item h3 {
     font-size: 1.4rem; /* Standardized heading size */
@@ -1212,7 +1283,6 @@ html.dark .project-card p {
     color: #222225;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
-    -webkit-text-size-adjust: 100%;
 }
 #contact input:focus,
 #contact textarea:focus {
@@ -1256,42 +1326,86 @@ html.dark .project-card p {
 }
 
 
-/* Footer */
+/* Footer - Clean Dark Design with Visible White Text & Colorful Icons */
 footer {
-    background-color: #ffffff; /* White footer */
-    color: #555558; /* Softer footer text */
-    border-top: 1px solid #e0e0e0; /* Lighter border */
-    padding-top: 2.5rem; /* Increased padding */
+    background-color: #000000 !important; /* Clean solid black background */
+    color: #ffffff !important; /* Bright white footer text for maximum visibility */
+    border-top: 1px solid rgba(255,255,255,0.2); /* Subtle white border */
+    padding-top: 2.5rem; /* Comfortable padding */
     padding-bottom: 2.5rem;
 }
 footer a {
-    color: #444448; /* Softer link color */
+    color: #ffffff !important; /* White link color in both modes */
     transition: color 0.2s ease;
 }
 footer a:hover {
-    color: #0071e3; /* Primary blue on hover */
+    color: #0071e3 !important; /* Primary blue on hover (matches accent color) */
     text-decoration: none;
 }
 footer .fab, footer .fas {
-     font-size: 1.2rem; /* Slightly larger footer icons */
+     font-size: 1.4rem !important; /* Same size as contact links (1.4rem) */
+     color: #555558 !important; /* Same base color as contact section (#555558) */
+     transition: color 0.2s ease, transform 0.2s ease;
+}
+footer a:hover .fab, footer a:hover .fas {
+    transform: scale(1.1); /* Same scale effect as contact section */
 }
 footer img {
-    filter: grayscale(30%) contrast(90%);
+    width: 22px; /* Same size as contact section */
+    height: 22px;
+    filter: grayscale(30%) contrast(90%); /* Same filter as contact section */
     opacity: 0.8;
-    transition: filter 0.2s ease, opacity 0.2s ease;
+    transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
     vertical-align: middle;
 }
- footer a:hover img {
+footer a:hover img {
     filter: grayscale(0%) contrast(100%);
     opacity: 1;
+    transform: scale(1.1); /* Same scale effect as contact section */
  }
+
+/* Make footer social links colorful like contact section */
+footer i.fa-brands.fa-facebook,
+footer i.fa-brands.fa-facebook-f,
+footer a[href*="facebook.com"] i.fa-brands {
+    color: #1877f2 !important;
+    font-weight: 400;
+}
+footer i.fa-brands.fa-instagram,
+footer a[href*="instagram.com"] i.fa-brands {
+    color: #e4405f !important;
+    font-weight: 400;
+}
+footer i.fa-brands.fa-linkedin,
+footer i.fa-brands.fa-linkedin-in,
+footer a[href*="linkedin.com"] i.fa-brands {
+    color: #0077b5 !important;
+    font-weight: 400;
+}
+footer i.fa-brands.fa-github,
+footer a[href*="github.com"] i.fa-brands {
+    color: #181717 !important;
+    font-weight: 400;
+}
+footer i.fa-brands.fa-youtube,
+footer a[href*="youtube.com"] i.fa-brands {
+    color: #ff0000 !important;
+    font-weight: 400;
+}
+footer i.fa-brands.fa-x-twitter,
+footer i.fa-brands.fa-twitter,
+footer a[href*="x.com"] i.fa-brands,
+footer a[href*="twitter.com"] i.fa-brands {
+    color: #000000 !important;
+    font-weight: 400;
+}
 
 
 /* Animation */
 .fade-in {
-    opacity: 0;
+    opacity: 1; /* <-- Now visible by default */
+    transform: translateY(0);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    transform: translateY(20px);
 }
 
 .fade-in.visible {
@@ -1390,13 +1504,191 @@ footer img {
     }
 }
 
+/* ===== LIGHT/DARK MODE REFINEMENT ===== */
+
+/* Light Mode Overrides - Ensure Proper Solid Colors */
+section#home {
+    background: var(--bg-primary) !important;
+}
+section#about {
+    background: var(--bg-secondary) !important;
+}
+section#skills {
+    background: var(--bg-primary) !important;
+}
+section#experience {
+    background: var(--bg-secondary) !important;
+}
+section#projects {
+    background: var(--bg-primary) !important;
+}
+section#education {
+    background: var(--bg-secondary) !important;
+}
+section#publications {
+    background: var(--bg-primary) !important;
+}
+section#awards {
+    background: var(--bg-secondary) !important;
+}
+section#certifications {
+    background: var(--bg-primary) !important;
+}
+section#contact {
+    background: var(--bg-secondary) !important;
+}
+
+/* Dark Mode Section Backgrounds - Specific Overrides */
+html.dark section#home {
+    background: var(--bg-black-dark) !important; /* Home: Black */
+}
+
+html.dark section#about {
+    background: var(--bg-grey-dark) !important; /* About: Grey */
+}
+
+html.dark section#skills {
+    background: var(--bg-black-dark) !important; /* Skills: Black */
+}
+
+html.dark section#experience {
+    background: var(--bg-grey-dark) !important; /* Experience: Grey */
+}
+
+html.dark section#projects {
+    background: var(--bg-black-dark) !important; /* Projects: Black */
+}
+
+html.dark section#education {
+    background: var(--bg-grey-dark) !important; /* Education: Grey */
+}
+
+html.dark section#publications {
+    background: var(--bg-black-dark) !important; /* Publications: Black */
+}
+
+html.dark section#awards {
+    background: var(--bg-grey-dark) !important; /* Awards: Grey */
+}
+
+html.dark section#certifications {
+    background: var(--bg-black-dark) !important; /* Certifications: Black */
+}
+
+html.dark section#contact {
+    background: var(--bg-grey-dark) !important; /* Contact: Grey */
+}
+
+/* Navigation Header - Light/Dark Mode Optimization */
+nav {
+    background: var(--nav-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: var(--nav-border) !important;
+    transition: all 0.3s ease !important;
+}
+
+html.dark nav {
+    background: rgba(0,0,0,0.95) !important;
+    border-bottom: 1px solid #424245 !important;
+}
+
+/* Footer - Enhanced Light/Dark Mode */
+footer {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-top: 1px solid rgba(255,255,255,0.2) !important;
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+}
+
+html.dark footer {
+    background-color: #111111 !important; /* Same as other dark cards */
+    color: #a1a1a6 !important; /* Consistent with dark mode body text */
+    border-top-color: #3a3a3c !important;
+}
+
+html.dark footer a {
+    color: #f5f5f7 !important; /* Consistent with other links in dark mode */
+}
+
+html.dark footer a:hover {
+    color: #2997ff !important; /* Brand blue in dark mode */
+}
+
+/* Enhanced Theme Toggle - More Visible */
+.theme-toggle-nav {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--text-primary);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+    font-size: 14px;
+    color: var(--text-primary);
+    opacity: 0.8;
+}
+
+.theme-toggle-nav:hover {
+    background: rgba(0, 113, 227, 0.1);
+    border-color: var(--text-accent);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    opacity: 1;
+}
+
+html.dark .theme-toggle-nav {
+    border-color: #2997ff;
+    color: #2997ff;
+}
+
+html.dark .theme-toggle-nav:hover {
+    background: rgba(41, 151, 255, 0.15);
+    border-color: #66b5ff;
+}
+
+/* Additional Light Mode Safety Overrides */
+section:hover {
+    background: inherit; /* Prevent interference */
+}
+
+/* Ensure theme consistency on page load */
+html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+    transition: all 0.3s ease;
+}
+
+/* Image Visibility in Both Modes */
+.education-card img,
+.timeline-item img,
+.contact-social-links img {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+html.dark .education-card img,
+html.dark .timeline-item img,
+html.dark .contact-social-links img {
+    opacity: 0.9 !important;
+    filter: brightness(1.1) contrast(1.05);
+}
+
+/* Final Section Refinement */
+/* ===== END OF LIGHT/DARK MODE ENHANCEMENTS ===== */
 /* --- Improved Dark Mode Styles --- */
 html.dark {
-    background-color: #000000;
+    background-color: #000000; /* Keep body black only on html.dark class */
 }
-body.dark,
-html.dark body {
-    background-color: #1d1d1f; /* Apple's off-black for body */
+
+html.dark body { /* Override individual state selectors that might conflict */
+    background-color: #000000; /* Black body background for dark mode */
     color: #f5f5f7; /* Apple's primary off-white */
 }
 
@@ -1407,7 +1699,7 @@ html.dark body {
 .dark h4,
 .dark h5,
 .dark h6 {
-    color: #ffffff !important;
+    color: #f5f5f7 !important;
 }
 
 /* Paragraphs & Links in dark mode */
@@ -1415,7 +1707,7 @@ html.dark body {
 .dark .text-gray-700,
 .dark .text-gray-600,
 .dark .text-black {
-    color: #ffffff !important; /* White for body text in dark mode */
+    color: #a1a1a6 !important; /* Softer gray for body text */
 }
 
 .dark a {
@@ -1426,39 +1718,1078 @@ html.dark body {
 }
 
 
-/* Section backgrounds */
-.dark .bg-white { background-color: #1d1d1f !important; }
-.dark .bg-gray-50 { background-color: #000000 !important; }
+
 
 /* Project cards and timeline items */
-.dark .education-card,
 .dark .project-card,
 .dark .timeline-item > div {
     background-color: #111111 !important; /* Darker card background */
     border-color: #3a3a3c !important; /* Subtle border */
     color: #f5f5f7 !important;
 }
-.dark .education-card:hover,
 .dark .project-card:hover {
     border-color: #2997ff !important; /* Highlight with accent color */
 }
 .dark .project-card h3,
 .dark .timeline-item h3,
 .dark .timeline-item h4 {
-    color: #ffffff !important;
+    color: #f5f5f7 !important;
 }
 .dark .project-card p,
 .dark .timeline-item ul,
 .dark .timeline-item ul li {
-    color: #ffffff !important;
+    color: #a1a1a6 !important;
 }
 .dark .project-card .tag {
     background-color: rgba(41, 151, 255, 0.15) !important;
-    color: #ffffff !important;
+    color: #2997ff !important;
 }
 .dark .project-card .tag:hover {
     background-color: #2997ff !important;
     color: #fff !important;
+}
+
+/* ===== BEAUTIFUL ICON SYSTEM - Latest Font Awesome 6.6.0+ ===== */
+
+/* Programming Languages - Perfect Brand Colors */
+.fa-solid.fa-code,
+.fa.fa-code,
+.fas.fa-code {
+    color: #61dafb; /* React blue for general coding */
+    font-weight: 900;
+}
+
+/* JavaScript & TypeScript - Official Colors */
+.fa-brands.fa-js,
+.fa-brands.fa-square-js,
+.fa.fa-js,
+.fab.fa-js,
+.fab.fa-js-square {
+    color: #f7df1e; /* JavaScript yellow */
+    font-weight: 400;
+    background: linear-gradient(45deg, #f7df1e, #f0c); /* Gradient for 3D effect */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.fa-brands.fa-node-js,
+.fa.fa-node-js,
+.fab.fa-node-js {
+    color: #339933; /* Node.js green */
+    font-weight: 400;
+}
+
+.fa-brands.fa-react,
+.fa.fa-react,
+.fab.fa-react {
+    color: #61dafb; /* React blue */
+    font-weight: 400;
+}
+
+/* Frameworks & Libraries */
+.fa-brands.fa-java,
+.fa.fa-java,
+.fab.fa-java {
+    color: #ee4c2c; /* Java red */
+    font-weight: 400;
+}
+
+.fa-brands.fa-spring,
+.fa.fa-spring,
+.fab.fa-spring {
+    color: #6db33f; /* Spring green */
+    font-weight: 400;
+}
+
+.fa-brands.fa-angular,
+.fa.fa-angular,
+.fab.fa-angular {
+    color: #dd0031; /* Angular red */
+    font-weight: 400;
+}
+
+.fa-solid.fa-brain,
+.fa.fa-brain,
+.fas.fa-brain {
+    color: #8b5cf6; /* Purple for AI/ML */
+    font-weight: 900;
+    animation: brainPulse 2s infinite;
+}
+
+.fa-solid.fa-robot,
+.fa.fa-robot,
+.fas.fa-robot {
+    color: #06b6d4; /* Cyan for robotics/AI */
+    font-weight: 900;
+}
+
+/* Cloud & DevOps - Precise Brand Colors */
+.fa-brands.fa-aws,
+.fa.fa-aws,
+.fab.fa-aws {
+    color: #ff9900; /* AWS orange */
+    font-weight: 400;
+}
+
+.fa-brands.fa-docker,
+.fa.fa-docker,
+.fab.fa-docker {
+    color: #2496ed; /* Docker blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-jenkins,
+.fa.fa-jenkins,
+.fab.fa-jenkins {
+    color: #d73b15; /* Jenkins red */
+    font-weight: 400;
+}
+
+/* Development Tools */
+.fa-solid.fa-gear,
+.fa-solid.fa-cogs,
+.fa.fa-cogs,
+.fas.fa-cogs {
+    color: #6366f1; /* Indigo for DevOps tools */
+    font-weight: 900;
+    animation: spin 4s linear infinite;
+}
+
+.fa-solid.fa-code-branch,
+.fa.fa-code-branch,
+.fas.fa-code-branch {
+    color: #10b981; /* Emerald for git/terraform */
+    font-weight: 900;
+}
+
+.fa-brands.fa-git-alt,
+.fa-brands.fa-git,
+.fa.fa-git,
+.fab.fa-git {
+    color: #f4511e; /* Git orange */
+    font-weight: 400;
+}
+
+/* Databases - Perfect Colors */
+.fa-solid.fa-database,
+.fa.fa-database,
+.fas.fa-database {
+    color: #059669; /* Green for databases */
+    font-weight: 900;
+}
+
+.fa-brands.fa-mysql,
+.fa.fa-mysql,
+.fab.fa-mysql {
+    color: #4479a1; /* MySQL blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-postgresql,
+.fa.fa-postgresql,
+.fab.fa-postgresql {
+    color: #4169e1; /* PostgreSQL blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-mongodb,
+.fa.fa-mongodb,
+.fab.fa-mongodb {
+    color: #47a248; /* MongoDB green */
+    font-weight: 400;
+}
+
+.fa-brands.fa-redis,
+.fa.fa-redis,
+.fab.fa-redis {
+    color: #dc2626; /* Redis red */
+    font-weight: 400;
+}
+
+/* Analysis & Search */
+.fa-solid.fa-magnifying-glass,
+.fa-solid.fa-search,
+.fa.fa-search,
+.fas.fa-search {
+    color: #6b7280; /* Cool gray */
+    font-weight: 900;
+}
+
+.fa-solid.fa-network-wired,
+.fa.fa-network-wired,
+.fas.fa-network-wired {
+    color: #0ea5e9; /* Sky blue for networking */
+    font-weight: 900;
+}
+
+.fa-brands.fa-microsoft,
+.fa.fa-microsoft,
+.fab.fa-microsoft {
+    color: #00a4ef; /* Microsoft blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-google,
+.fa.fa-google,
+.fab.fa-google {
+    color: #4285f4; /* Google blue */
+    font-weight: 400;
+}
+
+/* Modern Tech - Vibrant Colors */
+.fa-solid.fa-leaf,
+.fa.fa-leaf,
+.fas.fa-leaf {
+    color: #16a34a; /* Modern green */
+    font-weight: 900;
+    filter: drop-shadow(0 0 4px rgba(22, 163, 74, 0.3));
+}
+
+.fa-solid.fa-shield,
+.fa-solid.fa-shield-alt,
+.fa.fa-shield-alt,
+.fas.fa-shield-alt {
+    color: #dc2626; /* Red for security */
+    font-weight: 900;
+    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.2));
+}
+
+.fa-solid.fa-chart-line,
+.fa.fa-chart-line,
+.fas.fa-chart-line {
+    color: #f59e0b; /* Amber for analytics */
+    font-weight: 900;
+}
+
+/* Latest Font Awesome Features */
+.fa-solid.fa-laptop-code,
+.fa.fa-laptop-code,
+.fas.fa-laptop-code {
+    color: #8b5cf6; /* Purple for coding laptops */
+    font-weight: 900;
+}
+
+.fa-solid.fa-server,
+.fa.fa-server,
+.fas.fa-server {
+    color: #374151; /* Gray for servers */
+    font-weight: 900;
+}
+
+.fa-solid.fa-cloud,
+.fa.fa-cloud,
+.fas.fa-cloud {
+    color: #6366f1; /* Indigo for cloud */
+    font-weight: 900;
+}
+
+.fa-solid.fa-spinner,
+.fa.fa-spinner,
+.fas.fa-spinner {
+    color: #06b6d4; /* Cyan for loading */
+    font-weight: 900;
+}
+
+/* Certifications & Achievement Icons */
+.fa-solid.fa-certificate,
+.fa.fa-certificate,
+.fas.fa-certificate {
+    color: #a855f7; /* Purple for certifications */
+    font-weight: 900;
+}
+
+.fa-solid.fa-trophy,
+.fa.fa-trophy,
+.fas.fa-trophy {
+    color: #fbbf24; /* Gold for awards */
+    font-weight: 900;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+}
+
+/* Project & Demo Links */
+.fa-solid.fa-external-link-alt,
+.fa-solid.fa-external-link,
+.fa.fa-external-link,
+.fas.fa-external-link {
+    color: #3b82f6; /* Blue for external links */
+    font-weight: 900;
+}
+
+.fa-solid.fa-globe,
+.fa.fa-globe,
+.fas.fa-globe {
+    color: #10b981; /* Emerald for web/live demo */
+    font-weight: 900;
+}
+
+.fa-brands.fa-github,
+.fa.fa-github,
+.fab.fa-github {
+    color: #181717; /* GitHub dark */
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.fa-brands.fa-github:hover {
+    color: #ffffff; /* White on hover */
+    background: linear-gradient(135deg, #6b7280, #374151);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Resume Download */
+.fa-solid.fa-download,
+.fa.fa-download,
+.fas.fa-download {
+    color: #059669; /* Green for download */
+    font-weight: 900;
+}
+
+.fa-solid.fa-file-pdf,
+.fa.fa-file-pdf,
+.fas.fa-file-pdf {
+    color: #ef4444; /* Red for PDF */
+    font-weight: 900;
+}
+
+/* Theme Toggle - Perfect Mode Switching */
+.theme-toggle-nav i.fa-moon,
+.fa.fa-moon,
+.fas.fa-moon {
+    color: #fbbf24; /* Gold for moon */
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+html.dark .theme-toggle-nav i.fa-moon {
+    color: #fbbf24; /* Keep visible in dark mode */
+}
+
+.zone-toggle-nav i.fa-sun,
+.fa.fa-sun,
+.fas.fa-sun {
+    color: #f97316; /* Orange for sun */
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+}
+
+.fa-solid.fa-magic,
+.fa.fa-magic,
+.fas.fa-magic {
+    color: #a855f7; /* Purple for magic/settings */
+    font-weight: 900;
+}
+
+/* Chat & Communication */
+.fa-solid.fa-comment-dots,
+.fa.fa-comment-dots,
+.fas.fa-comment-dots {
+    color: #3b82f6; /* Blue for chat */
+    font-weight: 900;
+}
+
+.fa-solid.fa-paper-plane,
+.fa.fa-paper-plane,
+.fas.fa-paper-plane {
+    color: #10b981; /* Green for send */
+    font-weight: 900;
+}
+
+.fa-solid.fa-microphone,
+.fa.fa-microphone,
+.fas.fa-microphone {
+    color: #ef4444; /* Red for microphone */
+    font-weight: 900;
+}
+
+.fa-solid.fa-times,
+.fa.fa-times,
+.fas.fa-times {
+    color: #6b7280; /* Gray for close */
+    font-weight: 900;
+}
+
+/* Keyframe animations for beautiful effects */
+@keyframes brainPulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2) drop-shadow(0 0 8px rgba(139, 92, 246, 0.6)); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Contact Information Icons */
+.fa-solid.fa-envelope,
+.fa.fa-envelope,
+.fas.fa-envelope {
+    color: #3b82f6; /* Blue for email */
+    font-weight: 900;
+}
+
+.fa-brands.fa-whatsapp,
+.fa.fa-whatsapp,
+.fab.fa-whatsapp {
+    color: #25d366; /* WhatsApp green */
+    font-weight: 400;
+}
+
+.fa-solid.fa-phone,
+.fa-solid.fa-mobile-alt,
+.fa.fa-mobile-alt,
+.fas.fa-mobile-alt {
+    color: #6366f1; /* Indigo for phone */
+    font-weight: 900;
+}
+
+.fa-solid.fa-map-marker-alt,
+.fa.fa-map-marker-alt,
+.fas.fa-map-marker-alt {
+    color: #ef4444; /* Red for location */
+    font-weight: 900;
+}
+
+.fa-solid.fa-globe,
+.fa.fa-globe,
+.fas.fa-globe {
+    color: #06b6d4; /* Cyan for web links */
+    font-weight: 900;
+}
+
+.fa-solid.fa-coffee,
+.fa.fa-coffee,
+.fas.fa-coffee {
+    color: #92400e; /* Brown for coffee */
+    font-weight: 900;
+}
+
+/* Tech Stack Specific - Latest App Icons */
+.fa-brands.fa-swift,
+.fa.fa-swift,
+.fab.fa-swift {
+    color: #fa7343; /* Swift orange */
+    font-weight: 400;
+}
+
+.fa-brands.fa-swift {
+    background: linear-gradient(135deg, #fa7343, #ff9900);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.fa-brands.fa-python,
+.fa.fa-python,
+.fab.fa-python {
+    color: #3776ab; /* Python blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-c-plus-plus,
+.fa.fa-c-plus-plus,
+.fab.fa-c-plus-plus {
+    color: #00599c; /* C++ blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-c,
+.fa.fa-c,
+.fab.fa-c {
+    color: #a8b9cc; /* C language blue-gray */
+    font-weight: 400;
+}
+
+/* Advanced Tech Icons */
+.fa-solid.fa-layer-group,
+.fa.fa-layer-group,
+.fas.fa-layer-group {
+    color: #f59e0b; /* Amber for layers/Deep Learning */
+    font-weight: 900;
+}
+
+.fa-solid.fa-brain-circuit,
+.fa.fa-brain-circuit,
+.fas.fa-brain-circuit {
+    color: #8b5cf6; /* Purple for neural networks */
+    font-weight: 900;
+    animation: brainPulse 3s infinite;
+}
+
+.fa-solid.fa-chart-simple,
+.fa.fa-chart-simple,
+.fas.fa-chart-simple {
+    color: #059669; /* Green for analytics */
+    font-weight: 900;
+}
+
+.fa-brands.fa-figma,
+.fa.fa-figma,
+.fab.fa-figma {
+    color: #f24e1e; /* Figma orange */
+    font-weight: 400;
+}
+
+.fa-brands.fa-vscode,
+.fa.fa-vscode,
+.fab.fa-vscode {
+    color: #007acc; /* VS Code blue */
+    font-weight: 400;
+}
+
+/* Experience Checkmarks - Updated */
+.timeline-item svg {
+    color: #10b981; /* Emerald for success/checkmarks */
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 50%;
+    padding: 4px;
+}
+
+html.dark .timeline-item svg {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+/* Social Media Icons - Updated */
+.fa-brands.fa-facebook,
+.fa-brands.fa-facebook-f,
+.fa.fa-facebook-f,
+.fab.fa-facebook-f {
+    color: #1877f2;
+    font-weight: 400;
+}
+
+.fa-brands.fa-instagram,
+.fa.fa-instagram,
+.fab.fa-instagram {
+    color: #e4405f;
+    font-weight: 400;
+}
+
+.fa-brands.fa-linkedin,
+.fa-brands.fa-linkedin-in,
+.fa.fa-linkedin-in,
+.fab.fa-linkedin-in {
+    color: #0077b5;
+    font-weight: 400;
+}
+
+.fa-brands.fa-github,
+.fa.fa-github,
+.fab.fa-github {
+    color: #181717;
+    font-weight: 400;
+}
+
+.fa-brands.fa-youtube,
+.fa.fa-youtube,
+.fab.fa-youtube {
+    color: #ff0000;
+    font-weight: 400;
+}
+
+.fa-brands.fa-x-twitter,
+.fa-brands.fa-twitter,
+.fa.fa-twitter,
+.fab.fa-twitter,
+.fab.fa-x-twitter {
+    color: #000000;
+    font-weight: 400;
+}
+
+.fa-solid.fa-globe,
+.fa.fa-globe,
+.fas.fa-globe {
+    color: #0077b5;
+    font-weight: 900;
+}
+
+.fa-solid.fa-code,
+.fa.fa-code,
+.fas.fa-code {
+    color: #61dafb;
+    font-weight: 900;
+}
+
+/* PDF and File Icons */
+.fa-solid.fa-file-pdf,
+.fa.fa-file-pdf,
+.fas.fa-file-pdf {
+    color: #dc2626;
+    font-weight: 900;
+}
+
+/* Envelope and Contact Icons */
+.fa-solid.fa-envelope,
+.fa.fa-envelope,
+.fas.fa-envelope {
+    color: #6b7280;
+    font-weight: 900;
+}
+
+.fa-brands.fa-whatsapp,
+.fa.fa-whatsapp,
+.fab.fa-whatsapp {
+    color: #25d366;
+    font-weight: 400;
+}
+
+.fa-solid.fa-mobile-screen-button,
+.fa-solid.fa-mobile,
+.fa-solid.fa-mobile-alt,
+.fa.fa-mobile-alt,
+.fas.fa-mobile-alt {
+    color: #6b7280;
+    font-weight: 900;
+}
+
+.fa-solid.fa-location-dot,
+.fa-solid.fa-map-marker-alt,
+.fa.fa-map-marker-alt,
+.fas.fa-map-marker-alt {
+    color: #ef4444;
+    font-weight: 900;
+}
+
+/* Chatbot Icons */
+.fa-solid.fa-comments,
+.fa-solid.fa-comment-dots,
+.fa.fa-comment-dots,
+.fas.fa-comment-dots {
+    color: #ffffff;
+    font-weight: 900;
+}
+
+.fa-solid.fa-xmark,
+.fa-solid.fa-times,
+.fa.fa-times,
+.fas.fa-times {
+    color: #ffffff;
+    font-weight: 900;
+}
+
+.fa-solid.fa-microphone,
+.fa.fa-microphone,
+.fas.fa-microphone {
+    color: #ffffff;
+    font-weight: 900;
+}
+
+/* Additional Programming Languages */
+.fa-solid.fa-c,
+.fa.fa-c {
+    color: #00599c;
+    font-weight: 900;
+}
+
+.fa-solid.fa-cpp,
+.fa.fa-cpp,
+.fa-solid.fa-c-plus-plus {
+    color: #00599c;
+    font-weight: 900;
+}
+
+.fa-brands.fa-swift,
+.fa.fa-swift,
+.fab.fa-swift {
+    color: #fa7343;
+    font-weight: 400;
+}
+
+/* Python and Data Science */
+.fa-brands.fa-python {
+    color: #306998;
+    font-weight: 400;
+}
+
+.fa-solid.fa-chart-simple,
+.fa-solid.fa-chart-bar {
+    color: #10b981;
+    font-weight: 900;
+}
+
+/* AI and ML Icons */
+.fa-solid.fa-brain-circuit,
+.fa-solid.fa-robot {
+    color: #8b5cf6;
+    font-weight: 900;
+}
+
+.fa-solid.fa-layer-group {
+    color: #f59e0b;
+    font-weight: 900;
+}
+
+/* Checklist/Achievement Icons */
+.fa-solid.fa-circle-check,
+.fa-solid.fa-check-circle,
+.fa.fa-check-circle,
+.fas.fa-check-circle {
+    color: #10b981;
+    font-weight: 900;
+}
+
+.fa-solid.fa-circle-exclamation,
+.fa-solid.fa-exclamation-circle {
+    color: #f59e0b;
+    font-weight: 900;
+}
+
+.fa-solid.fa-circle-xmark,
+.fa-solid.fa-times-circle {
+    color: #ef4444;
+    font-weight: 900;
+}
+
+/* Award icons */
+.fa-solid.fa-trophy,
+.fa.fa-trophy,
+.fas.fa-trophy {
+    color: #f59e0b;
+    font-weight: 900;
+}
+
+.fa-solid.fa-medal,
+.fa.fa-medal,
+.fas.fa-medal {
+    color: #f97316;
+    font-weight: 900;
+}
+
+.fa-solid.fa-certificate,
+.fa.fa-certificate,
+.fas.fa-certificate {
+    color: #8b5cf6;
+    font-weight: 900;
+}
+
+/* Universial Fallback */
+.fa, .fas, .far, .fab,
+.fa-solid, .fa-regular, .fa-brands {
+    font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif;
+    font-style: normal;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+/* SIMPLE X ICON FORCE VISIBLE */
+.follow-link i.fa-brands.fa-x-twitter,
+footer a[href*="x.com"] i.fa-brands.fa-x-twitter {
+    color: #000000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    font-size: 1.4rem !important;
+}
+
+html.dark .follow-link i.fa-brands.fa-x-twitter,
+html.dark footer a[href*="x.com"] i.fa-brands.fa-x-twitter {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    font-size: 1.4rem !important;
+}
+
+/* Dark Mode Icon Visibility Fixes */
+html.dark .fa-brands.fa-github,
+html.dark .fa.fa-github,
+html.dark .fab.fa-github,
+html.dark footer .fab.fa-github,
+html.dark footer .fa-brands.fa-github {
+    color: #f0f0f0 !important; /* Light grey for dark mode */
+}
+
+html.dark .fa-brands.fa-x-twitter,
+html.dark .fa-brands.fa-twitter,
+html.dark .fa.fa-twitter,
+html.dark .fab.fa-twitter,
+html.dark .fab.fa-x-twitter,
+html.dark footer .fab.fa-x-twitter,
+html.dark footer .fab.fa-twitter,
+html.dark footer .fa-brands.fa-x-twitter,
+html.dark footer .fa-brands.fa-twitter,
+html.dark .contact-social-links .fa-brands.fa-x-twitter,
+html.dark .contact-social-links .fab.fa-x-twitter {
+    color: #ffffff !important; /* White for dark mode */
+    opacity: 1 !important; /* Ensure visibility */
+}
+
+/* Specific X icon fixes - Ensure X icon is ALWAYS visible in dark mode */
+html.dark .fa-brands.fa-x-twitter,
+html.dark .fab.fa-x-twitter,
+html.dark i.fab.fa-x-twitter,
+html.dark .fa-brands.fa-twitter,
+html.dark .fab.fa-twitter,
+html.dark i.fab.fa-twitter,
+html.dark i.fa-brands.fa-x-twitter,
+html.dark i.fa-brands.fa-twitter,
+/* Contact section specific */
+html.dark .contact-social-links .fa-brands.fa-x-twitter,
+html.dark .contact-social-links .fab.fa-x-twitter,
+html.dark .contact-social-links i.fab.fa-x-twitter,
+html.dark .contact-social-links .fa-brands.fa-twitter,
+html.dark .contact-social-links .fab.fa-twitter,
+html.dark .contact-social-links i.fab.fa-twitter,
+/* Footer specific */
+html.dark footer .fa-brands.fa-x-twitter,
+html.dark footer .fab.fa-x-twitter,
+html.dark footer i.fab.fa-x-twitter,
+html.dark footer .fa-brands.fa-twitter,
+html.dark footer .fab.fa-twitter,
+html.dark footer i.fab.fa-twitter {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    font-weight: 400 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    font-family: "Font Awesome 6 Brands", "Font Awesome 6 Free" !important;
+}
+
+/* Ensure X icon displays with proper styling */
+html.dark .fab.fa-x-twitter:before,
+html.dark .fa-brands.fa-x-twitter:before,
+html.dark i.fab.fa-x-twitter:before,
+html.dark i.fa-brands.fa-x-twitter:before {
+    color: #ffffff !important;
+/* Let Font Awesome handle the content property - don't force it */
+}
+
+/* MAXIMUM PRIORITY X ICON VISIBILITY - SUPER FORCE OVERRIDE */
+.fa-brands.fa-x-twitter,
+.fab.fa-x-twitter,
+i.fa-brands.fa-x-twitter,
+i.fab.fa-x-twitter,
+.fa-x-twitter,
+.fa-brands.fa-twitter,
+.fab.fa-twitter,
+i.fa-brands.fa-twitter,
+i.fab.fa-twitter {
+    /* Super aggressive visibility rules */
+    color: #000000 !important;
+    background-color: transparent !important;
+    border: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    font-size: 1.5rem !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    vertical-align: baseline !important;
+    white-space: nowrap !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-feature-settings: normal !important;
+    font-family: "Font Awesome 6 Brands", "Font Awesome 6 Free" !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    position: static !important;
+    z-index: auto !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Dark mode X icon - white color */
+html.dark .fa-brands.fa-x-twitter,
+html.dark .fab.fa-x-twitter,
+html.dark i.fa-brands.fa-x-twitter,
+html.dark i.fab.fa-x-twitter,
+html.dark .fa-x-twitter,
+html.dark .fa-brands.fa-twitter,
+html.dark .fab.fa-twitter,
+html.dark i.fa-brands.fa-twitter,
+html.dark i.fab.fa-twitter {
+    color: #ffffff !important;
+}
+
+/* Force X icon content for any missing CSS */
+.fa-brands.fa-x-twitter:before,
+.fab.fa-x-twitter:before,
+.fa-x-twitter:before,
+.fa-brands.fa-twitter:before,
+.fab.fa-twitter:before {
+    content: "\e61b" !important;
+    font-family: "Font Awesome 6 Brands" !important;
+}
+
+/* Remove any conflicting styles that might hide the X icon */
+a[href*="x.com"] i.fa-brands.fa-x-twitter,
+a[href*="twitter.com"] i.fa-brands.fa-x-twitter,
+footer a[href*="x.com"] i.fa-brands.fa-x-twitter,
+.contact-social-links a[href*="x.com"] i.fa-brands.fa-x-twitter {
+    color: #000000 !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-size: 1.5rem !important;
+}
+
+html.dark a[href*="x.com"] i.fa-brands.fa-x-twitter,
+html.dark a[href*="twitter.com"] i.fa-brands.fa-x-twitter,
+html.dark footer a[href*="x.com"] i.fa-brands.fa-x-twitter,
+html.dark .contact-social-links a[href*="x.com"] i.fa-brands.fa-x-twitter {
+    color: #ffffff !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-size: 1.5rem !important;
+}
+
+/* CONTACT SECTION FOLLOW ME ICONS - Dark Mode */
+html.dark .contact-social-links .fa-brands.fa-facebook,
+html.dark .contact-social-links .fa-brands.fa-facebook-f,
+html.dark .contact-social-links a:hover .fa-brands.fa-facebook,
+html.dark .contact-social-links a:hover .fa-brands.fa-facebook-f {
+    color: #1877f2 !important; /* Keep Facebook blue */
+}
+
+html.dark .contact-social-links .fa-brands.fa-instagram,
+html.dark .contact-social-links a:hover .fa-brands.fa-instagram {
+    color: #e4405f !important; /* Keep Instagram pink */
+}
+
+html.dark .contact-social-links .fa-brands.fa-linkedin,
+html.dark .contact-social-links .fa-brands.fa-linkedin-in,
+html.dark .contact-social-links a:hover .fa-brands.fa-linkedin,
+html.dark .contact-social-links a:hover .fa-brands.fa-linkedin-in {
+    color: #0077b5 !important; /* Keep LinkedIn blue */
+}
+
+html.dark .contact-social-links .fa-brands.fa-github,
+html.dark .contact-social-links a:hover .fa-brands.fa-github {
+    color: #f0f0f0 !important; /* GitHub light grey */
+}
+
+html.dark .contact-social-links .fa-brands.fa-youtube,
+html.dark .contact-social-links a:hover .fa-brands.fa-youtube {
+    color: #ff0000 !important; /* Keep YouTube red */
+}
+
+html.dark .contact-social-links .fa-brands.fa-x-twitter,
+html.dark .contact-social-links .fa-brands.fa-twitter,
+html.dark .contact-social-links a:hover .fa-brands.fa-x-twitter,
+html.dark .contact-social-links a:hover .fa-brands.fa-twitter {
+    color: #ffffff !important; /* Twitter white */
+}
+
+html.dark .contact-social-links .fa-solid.fa-globe,
+html.dark .contact-social-links a:hover .fa-solid.fa-globe {
+    color: #0077b5 !important; /* Globe blue */
+}
+
+html.dark .contact-social-links .fa-solid.fa-code,
+html.dark .contact-social-links a:hover .fa-solid.fa-code {
+    color: #61dafb !important; /* Code cyan */
+}
+
+/* FOOTER SOCIAL ICONS - Dark Mode */
+html.dark footer .fa-brands.fa-facebook,
+html.dark footer .fa-brands.fa-facebook-f {
+    color: #f0f0f0 !important; /* Light grey for footer */
+}
+
+html.dark footer .fa-brands.fa-instagram {
+    color: #f0f0f0 !important; /* Light grey for footer */
+}
+
+html.dark footer .fa-brands.fa-linkedin,
+html.dark footer .fa-brands.fa-linkedin-in {
+    color: #f0f0f0 !important; /* Light grey for footer */
+}
+
+html.dark footer .fa-brands.fa-github,
+html.dark footer .fa.fa-github,
+html.dark footer .fab.fa-github {
+    color: #f0f0f0 !important; /* GitHub light grey */
+}
+
+html.dark footer .fa-brands.fa-youtube {
+    color: #f0f0f0 !important; /* Light grey for footer */
+}
+
+html.dark footer .fa-brands.fa-x-twitter,
+html.dark footer .fa-brands.fa-twitter,
+html.dark footer .fa.fa-twitter,
+html.dark footer .fab.fa-twitter,
+html.dark footer .fab.fa-x-twitter {
+    color: #ffffff !important; /* Twitter white */
+}
+
+html.dark footer .fa-solid.fa-globe {
+    color: #f0f0f0 !important; /* Light grey for footer */
+}
+
+html.dark footer .fa-solid.fa-code {
+    color: #f0f0f0 !important; /* Light grey for footer */
+}
+
+
+
+/* Black, Blue, Grey Fonts for Education Cards */
+.education-card h3,
+.education-card h5 {
+    color: #0071e3 !important; /* Blue for titles */
+}
+.education-card h4 {
+    color: #000000 !important; /* Black for subheadings */
+}
+.education-card p,
+.education-card ul li {
+    color: #000000 !important; /* Black for body */
+}
+.education-card .date-badge {
+    color: #666666 !important; /* Grey for dates */
+    background-color: #f0f0f0 !important;
+}
+
+/* Updated Card Design - Latest Technology */
+.education-card {
+    background: #ffffff !important;
+    border: 1px solid #d2d2d7 !important;
+    border-radius: 16px !important;
+    padding: 2rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.education-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* For Dark Mode Overrides */
+html.dark .education-card {
+    background: #1d1d1f !important;
+    border-color: #424245 !important;
+}
+html.dark .education-card h3,
+html.dark .education-card h5 {
+    color: #2997ff !important;
+}
+html.dark .education-card h4,
+html.dark .education-card p,
+html.dark .education-card ul li {
+    color: #f5f5f7 !important;
+}
+html.dark .education-card .date-badge {
+    color: #a1a1a6 !important;
+    background-color: #3a3a3c !important;
 }
 
 /* Overlay menu */
@@ -1515,6 +2846,12 @@ html.dark body {
 .dark #chat-widget .bg-white {
     background-color: #111111 !important;
 }
+.dark .chat-header h3 {
+    color: #000000 !important;
+}
+.dark .chat-header p {
+    color: #000000 !important;
+}
 .dark #chat-messages {
     background-color: #1d1d1f !important;
 }
@@ -1541,10 +2878,10 @@ html.dark body {
 }
 
 /* Timeline badge */
-/* .dark .timeline-item .date-badge {
+.dark .timeline-item .date-badge {
     background-color: #3a3a3c !important;
     color: #a1a1a6 !important;
-} */
+}
 
 /* Button styles */
 .dark .button-primary {
