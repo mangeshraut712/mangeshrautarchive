@@ -90,6 +90,9 @@ jobs:
         rm -rf docs/
         cp -r dist/ docs/
 
+        # Disable Jekyll processing for static site
+        touch docs/.nojekyll
+
         # Commit the deployment files to main branch
         git config --local user.name 'github-actions[bot]'
         git config --local user.email 'github-actions[bot]@users.noreturn.github.com'
