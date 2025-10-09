@@ -1492,7 +1492,7 @@
               console.log('Adding AI response to chat:', result.answer);
               const responseText = result.confidence >= 0.8 ?
                 result.answer :
-                `${result.answer}\n\n<i>(Note: Lower confidence response - try rephrasing for better results)</i>`;
+                result.answer;
 
               this.addMessage(responseText, 'assistant');
             } else {
