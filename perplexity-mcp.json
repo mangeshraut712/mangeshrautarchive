@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "pplx-server": {
+      "command": "node",
+      "args": ["/Users/mangeshraut/Documents/Cline/MCP/perplexity-server/build/index.js"],
+      "env": {
+        "PERPLEXITY_API_KEY": "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"
+      }
+    }
+  }
+}

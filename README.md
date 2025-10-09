@@ -37,7 +37,7 @@ An elegant, Apple-inspired portfolio website showcasing my professional journey 
 - Accessibility-compliant design with proper focus states
 
 ### 🛠️ **Technical Features**
-- Smart visitor counter using localStorage/sessionStorage
+- **Firebase Visitor Counter**: Real-time visitor tracking with accurate count display and atomic increments
 - Firebase-powered contact form with real-time messaging
 - Dynamic project showcase with GitHub API integration
 - Smooth scroll navigation with section highlighting
@@ -136,7 +136,9 @@ open index.html
 
 ## ⚙️ Configuration
 
-### Firebase Setup (Contact Form)
+### Firebase Setup
+
+#### Contact Form & Visitor Counter
 
 Update Firebase configuration in `index.html`:
 
@@ -147,8 +149,38 @@ const firebaseConfig = {
     projectId: "YOUR_PROJECT_ID",
     storageBucket: "YOUR_PROJECT.appspot.com",
     messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456"
+    appId: "1:123456789:web:abcdef123456",
+    measurementId: "G-XXXXXXXXXX"
 };
+```
+
+#### Firestore Security Rules
+
+The visitor counter requires specific Firestore rules. Update your `firestore.rules`:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Visitor counter rules
+    match /visitorCounts/mainCounter {
+      allow read: if true;
+      allow write: if request.resource.data.count == resource.data.count + 1 ||
+                      (request.resource.data.count == 1 && !exists(path));
+    }
+
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
 ```
 
 ### API Keys (Chatbot)
