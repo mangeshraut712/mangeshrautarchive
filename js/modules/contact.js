@@ -62,34 +62,30 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
 
         try {
             // Direct Firebase v9 call
-            import('./firebase-config.js').then(async (firebaseConfig) => {
-                const { collection, addDoc, serverTimestamp } = firebaseConfig;
+            const firebaseConfig = await import('./firebase-config.js');
+            const { collection, addDoc, serverTimestamp } = firebaseConfig;
+            const db = firebaseConfig.db;
 
-                const db = firebaseConfig.app ? firebaseConfig.db : null;
-                if (!db) {
-                    throw new Error('Firebase database not available');
-                }
+            if (!db) {
+                throw new Error('Firebase database not available');
+            }
 
-                const messageData = {
-                    ...payload,
-                    timestamp: serverTimestamp(),
-                    userAgent: navigator.userAgent || 'unknown',
-                    submittedFrom: window.location.href
-                };
+            const messageData = {
+                ...payload,
+                timestamp: serverTimestamp(),
+                userAgent: navigator.userAgent || 'unknown',
+                submittedFrom: window.location.href
+            };
 
-                await addDoc(collection(db, 'messages'), messageData);
+            await addDoc(collection(db, 'messages'), messageData);
 
-                showMessage('Thank you! Your message has been sent successfully.');
-                form.reset();
+            showMessage('Thank you! Your message has been sent successfully.');
+            form.reset();
 
-                console.log('Message sent successfully');
-            }).catch(error => {
-                console.error('Firebase error:', error);
-                showMessage('Failed to send your message. Please try again.', 'error');
-            });
+            console.log('Message sent successfully');
 
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Firebase error:', error);
             showMessage('Failed to send your message. Please try again.', 'error');
         } finally {
             // Reset loading state
