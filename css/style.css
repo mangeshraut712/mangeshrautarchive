@@ -1113,10 +1113,10 @@ nav {
     width: 100%;
     height: 56px; /* Apple.com standard height */
     padding: 0 32px; /* Increased horizontal padding */
-    background: var(--nav-bg);
+    background: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: var(--nav-border);
+    border-bottom: 1px solid var(--border-color);
     z-index: 1000;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -1899,9 +1899,9 @@ section#contact {
 
 /* Footer - Enhanced Light/Dark Mode */
 html.dark footer {
-    background-color: #111111; /* Same as other dark cards */
+    background: inherit; /* Match the page background (dark gradients) */
     color: #a1a1a6; /* Consistent with dark mode body text */
-    border-top-color: #3a3a3c;
+    border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 html.dark footer a {
