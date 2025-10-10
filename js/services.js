@@ -2,6 +2,7 @@
 // Compatible with GitHub Pages (client-side only)
 // Remove the import of config.local.js - it contains Node.js specific code
 import { MathUtilities } from './math.js';
+import { localConfig } from './config.js';
 
 // Configuration for browser environment - defaults only
 const config = {
@@ -514,18 +515,23 @@ class KnowledgeBase {
 
 class AIService {
     constructor() {
+        // Use dynamically loaded API configuration
+        this.updateConfigs();
+    }
+
+    updateConfigs() {
         // Primary AI: Grok (xAI) - Most up-to-date and reliable
         this.grokConfig = {
-            apiKey: config.grokApiKey,
-            enabled: config.grokEnabled,
+            apiKey: localConfig.grokApiKey || '',
+            enabled: localConfig.grokEnabled !== false,
             baseUrl: 'https://api.x.ai/v1/chat/completions',
             model: 'grok-4-latest'
         };
 
         // Fallback AI: Claude (Anthropic)
         this.claudeConfig = {
-            apiKey: config.anthropicApiKey,
-            enabled: config.anthropicEnabled
+            apiKey: localConfig.anthropicApiKey || '',
+            enabled: localConfig.anthropicEnabled !== false
         };
     }
 
