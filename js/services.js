@@ -506,14 +506,22 @@ class AIService {
         this.grokConfig = {
             apiKey: localConfig.grokApiKey || '',
             enabled: localConfig.grokEnabled !== false,
-            baseUrl: 'https://api.x.ai/v1/chat/completions',
-            model: 'grok-4-latest'
+            baseUrl: '/api/ai/grok',
+            fallbackUrl: 'https://api.x.ai/v1/chat/completions',
+            model: localConfig.grokModel || 'grok-4-latest'
         };
 
         // Fallback AI: Claude (Anthropic)
         this.claudeConfig = {
             apiKey: localConfig.anthropicApiKey || '',
-            enabled: localConfig.anthropicEnabled !== false
+            enabled: localConfig.anthropicEnabled !== false,
+            baseUrl: '/api/ai/claude',
+            fallbackUrl: 'https://api.anthropic.com/v1/messages'
+        };
+
+        // External search endpoints
+        this.searchEndpoints = {
+            duckduckgo: '/api/search/duckduckgo'
         };
     }
 
@@ -541,11 +549,47 @@ class AIService {
         }
     }
 
+    supportsGrok() {
+        return this.grokConfig.enabled !== false;
+    }
+
+    supportsClaude() {
+        return this.claudeConfig.enabled !== false;
+    }
+
+    async getModelResponses(query, context = {}) {
+        const results = [];
+
+        if (this.supportsGrok()) {
+            const grok = await this._callGrokAPI(query, context);
+            if (grok) {
+                results.push({
+                    source: 'grok',
+                    content: grok
+                });
+            }
+        }
+
+        if (this.supportsClaude()) {
+            const claude = await this._callClaudeAPI(query, { ...context, allowFallback: true });
+            if (claude) {
+                results.push({
+                    source: 'claude',
+                    content: claude
+                });
+            }
+        }
+
+        return results;
+    }
+
     async _callGrokAPI(query, context = {}) {
-        if (!this.grokConfig.enabled || !this.grokConfig.apiKey || this.grokConfig.apiKey.includes('your-grok-api-key')) {
-            console.log('Grok not configured or disabled');
+        if (this.grokConfig.enabled === false) {
+            console.log('Grok disabled via configuration');
             return null;
         }
+
+        const hasBrowserKey = this.grokConfig.apiKey && !this.grokConfig.apiKey.includes('your-grok-api-key');
 
         try {
             await apiLimiter.waitForSlot();
@@ -560,36 +604,31 @@ Your expertise covers the latest technology, current events, and up-to-date info
 
 For portfolio questions, focus on Mangesh's background. For general questions, use your real-time knowledge to provide the most current information available.`;
 
-            const response = await fetch(`${this.grokConfig.baseUrl}/chat/completions`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${this.grokConfig.apiKey}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: this.grokConfig.model,
-                    messages: [
-                        {
-                            role: "system",
-                            content: systemPrompt
-                        },
-                        {
-                            role: "user",
-                            content: query
-                        }
-                    ],
-                    max_tokens: 1000,
-                    temperature: 0.7,
-                    stream: false
-                })
-            });
+            const requestPayload = {
+                model: this.grokConfig.model,
+                messages: [
+                    {
+                        role: "system",
+                        content: systemPrompt
+                    },
+                    {
+                        role: "user",
+                        content: query
+                    }
+                ],
+                max_tokens: 1000,
+                temperature: 0.7,
+                stream: false
+            };
 
-            if (!response.ok) {
-                console.error(`Grok API error: ${response.status}`);
+            let data = await this._requestGrokProxy(requestPayload);
+
+            if (!data && hasBrowserKey) {
+                data = await this._requestGrokDirect(requestPayload);
+            } else if (!data) {
+                console.warn('Grok proxy unavailable and no browser API key configured');
                 return null;
             }
-
-            const data = await response.json();
 
             if (data && data.choices && data.choices.length > 0) {
                 const answer = data.choices[0].message?.content;
@@ -608,43 +647,84 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
         }
     }
 
-    async _callClaudeAPI(query, context = {}) {
-        if (!this.claudeConfig.enabled || !this.claudeConfig.apiKey || this.claudeConfig.apiKey.includes('your-anthropic-key-here')) {
-            console.log('Claude not configured or disabled');
+    async _requestGrokProxy(payload) {
+        try {
+            const response = await fetch(this.grokConfig.baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                console.error(`Grok proxy error: ${response.status}`);
+                return null;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Grok proxy request failed:', error);
             return null;
         }
+    }
+
+    async _requestGrokDirect(payload) {
+        try {
+            const response = await fetch(this.grokConfig.fallbackUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.grokConfig.apiKey}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                console.error(`Grok API error: ${response.status}`);
+                return null;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('❌ Grok API error:', error);
+            return null;
+        }
+    }
+
+    async _callClaudeAPI(query, context = {}) {
+        if (this.claudeConfig.enabled === false) {
+            console.log('Claude disabled via configuration');
+            return null;
+        }
+
+        const hasBrowserKey = this.claudeConfig.apiKey && !this.claudeConfig.apiKey.includes('your-anthropic-key-here');
 
         try {
             await apiLimiter.waitForSlot();
 
             console.log('🤖 Calling Claude API (fallback)...');
 
-            const response = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: {
-                    'x-api-key': this.claudeConfig.apiKey,
-                    'anthropic-version': '2023-06-01',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: 'claude-3-sonnet-20240229',
-                    max_tokens: 1024,
-                    system: "You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.",
-                    messages: [
-                        {
-                            role: "user",
-                            content: query
-                        }
-                    ]
-                })
-            });
+            const requestPayload = {
+                model: this.claudeConfig.model || 'claude-3-sonnet-20240229',
+                max_tokens: 1024,
+                system: "You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.",
+                messages: [
+                    {
+                        role: "user",
+                        content: query
+                    }
+                ]
+            };
 
-            if (!response.ok) {
-                console.error(`Claude API error: ${response.status}`);
+            let data = await this._requestClaudeProxy(requestPayload);
+
+            if (!data && hasBrowserKey) {
+                data = await this._requestClaudeDirect(requestPayload);
+            } else if (!data) {
+                console.warn('Claude proxy unavailable and no browser API key configured');
                 return null;
             }
-
-            const data = await response.json();
 
             if (data && data.content && data.content.length > 0) {
                 const textBlock = data.content.find(block => block.type === 'text');
@@ -662,6 +742,53 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
             return null;
         }
     }
+
+    async _requestClaudeProxy(payload) {
+        try {
+            const response = await fetch(this.claudeConfig.baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'anthropic-version': '2023-06-01'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                console.error(`Claude proxy error: ${response.status}`);
+                return null;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Claude proxy request failed:', error);
+            return null;
+        }
+    }
+
+    async _requestClaudeDirect(payload) {
+        try {
+            const response = await fetch(this.claudeConfig.fallbackUrl, {
+                method: 'POST',
+                headers: {
+                    'x-api-key': this.claudeConfig.apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                console.error(`Claude API error: ${response.status}`);
+                return null;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('❌ Claude API error:', error);
+            return null;
+        }
+    }
 }
 
 // ========================
@@ -669,6 +796,12 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
 // ========================
 
 class ExternalServices {
+    constructor() {
+        this.endpoints = {
+            duckduckgo: '/api/search/duckduckgo'
+        };
+    }
+
     async searchDuckDuckGo(query) {
         if (!localConfig.duckduckgoEnabled !== false) return null;
 
@@ -682,21 +815,15 @@ class ExternalServices {
                 skip_disambig: '1'
             });
 
-            const response = await fetch(`https://api.duckduckgo.com/?${params}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors'
-            });
+            let data = await this._requestDuckDuckGoProxy(params);
 
-            if (!response.ok) {
-                console.error(`DuckDuckGo API error: ${response.status}`);
-                return null;
+            if (!data) {
+                data = await this._requestDuckDuckGoDirect(params);
             }
 
-            const data = await response.json();
+            if (!data) {
+                return null;
+            }
 
             if (data.AnswerType && data.Answer && data.Answer.length) {
                 return {
@@ -727,6 +854,57 @@ class ExternalServices {
             }
 
             return null;
+        } catch (error) {
+            console.error('DuckDuckGo API error:', error);
+            return null;
+        }
+    }
+
+    async _requestDuckDuckGoProxy(params) {
+        if (!this.endpoints.duckduckgo) {
+            return null;
+        }
+
+        try {
+            const response = await fetch(`${this.endpoints.duckduckgo}?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                console.error(`DuckDuckGo proxy error: ${response.status}`);
+                if (response.status === 404) {
+                    this.endpoints.duckduckgo = null;
+                }
+                return null;
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('DuckDuckGo proxy request failed:', error);
+            return null;
+        }
+    }
+
+    async _requestDuckDuckGoDirect(params) {
+        try {
+            const response = await fetch(`https://api.duckduckgo.com/?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
+
+            if (!response.ok) {
+                console.error(`DuckDuckGo API error: ${response.status}`);
+                return null;
+            }
+
+            return await response.json();
         } catch (error) {
             console.error('DuckDuckGo API error:', error);
             return null;
@@ -1364,11 +1542,14 @@ class ChatService {
             const subject = whoMatch[1].trim();
             const responses = await this._collectMultipleResponses(query, 'factual', { subject, type: 'person' });
             const bestResponse = this._compareAndSelectBestResponse(query, responses);
-            if (bestResponse) return {
-                answer: bestResponse.formatted,
-                type: 'factual',
-                source: bestResponse.source
-            };
+            if (bestResponse) {
+                const verified = this._decorateWithVerification(bestResponse);
+                return {
+                    answer: verified,
+                    type: 'factual',
+                    source: bestResponse.source
+                };
+            }
         }
 
         const whatMatch = lower.match(/what\s+is\s+([\w\s.'-]+)/);
@@ -1376,11 +1557,14 @@ class ChatService {
             const topic = whatMatch[1].trim();
             const responses = await this._collectMultipleResponses(query, 'definition', { topic, type: 'definition' });
             const bestResponse = this._compareAndSelectBestResponse(query, responses);
-            if (bestResponse) return {
-                answer: bestResponse.formatted,
-                type: 'definition',
-                source: bestResponse.source
-            };
+            if (bestResponse) {
+                const verified = this._decorateWithVerification(bestResponse);
+                return {
+                    answer: verified,
+                    type: 'definition',
+                    source: bestResponse.source
+                };
+            }
         }
 
         const whereMatch = lower.match(/where\s+is\s+([\w\s.'-]+)/);
@@ -1388,26 +1572,33 @@ class ChatService {
             const place = whereMatch[1].trim();
             const responses = await this._collectMultipleResponses(query, 'factual', { type: 'location' });
             const bestResponse = this._compareAndSelectBestResponse(query, responses);
-            if (bestResponse) return {
-                answer: bestResponse.formatted,
-                type: 'factual',
-                source: bestResponse.source
-            };
+            if (bestResponse) {
+                const verified = this._decorateWithVerification(bestResponse);
+                return {
+                    answer: verified,
+                    type: 'factual',
+                    source: bestResponse.source
+                };
+            }
         }
 
         if (/which\s+country.*most\s+population/.test(lower)) {
             const responses = await this._collectMultipleResponses(query, 'factual', { subject: 'population statistics', type: 'statistics' });
             const bestResponse = this._compareAndSelectBestResponse(query, responses);
-            if (bestResponse) return {
-                answer: bestResponse.formatted,
-                type: 'factual',
-                source: bestResponse.source
-            };
+            if (bestResponse) {
+                const verified = this._decorateWithVerification(bestResponse);
+                return {
+                    answer: verified,
+                    type: 'factual',
+                    source: bestResponse.source
+                };
+            }
             // Fallback
             const concise = this.makeConcise('According to the United Nations World Population Prospects 2023 revision, India has the largest national population (~1.43 billion) followed by China (~1.41 billion).', 2, 360);
             return {
                 answer: `${concise} (Source: Wikipedia • https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations))`,
-                type: 'factual'
+                type: 'factual',
+                source: 'wikipedia'
             };
         }
 
@@ -1416,8 +1607,9 @@ class ChatService {
         const bestResponse = this._compareAndSelectBestResponse(query, responses);
 
         if (bestResponse) {
+            const verified = this._decorateWithVerification(bestResponse);
             return {
-                answer: bestResponse.formatted,
+                answer: verified,
                 type: 'factual',
                 source: bestResponse.source
             };
@@ -1430,20 +1622,22 @@ class ChatService {
     async _collectMultipleResponses(query, queryType, context = {}) {
         const responses = [];
 
-        // Try AI services first (up to 2)
-        if (this.aiService && localConfig.grokEnabled) {
+        // Try AI services first (Grok + Claude if available)
+        if (this.aiService) {
             try {
-                const grokResponse = await this.aiService.getEnhancedResponse(query, { context: 'verification', limit: 100 });
-                if (grokResponse) {
-                    responses.push({
-                        source: 'grok',
-                        content: grokResponse,
-                        type: 'ai',
-                        priority: 1
-                    });
-                }
+                const aiResults = await this.aiService.getModelResponses(query, { context: 'verification', limit: 120 });
+                aiResults.forEach(result => {
+                    if (result?.content) {
+                        responses.push({
+                            source: result.source,
+                            content: result.content,
+                            type: 'ai',
+                            priority: 1
+                        });
+                    }
+                });
             } catch (error) {
-                console.log('Grok verification failed:', error.message);
+                console.log('AI verification failed:', error.message);
             }
         }
 
@@ -1493,17 +1687,6 @@ class ChatService {
     _compareAndSelectBestResponse(query, responses) {
         if (!responses || responses.length === 0) return null;
 
-        if (responses.length === 1) {
-            // Only one response, format and return it
-            const response = responses[0];
-            return {
-                formatted: this._formatKnowledgeResult(response.content, response.source),
-                source: response.source,
-                confidence: 0.5
-            };
-        }
-
-        // Multiple responses - compare and select best
         const scored = responses.map(response => ({
             ...response,
             score: this._scoreResponse(query, response),
@@ -1519,11 +1702,42 @@ class ChatService {
 
         // Return the highest scoring response
         const best = scored[0];
+        const consensusSources = scored
+            .filter(item => item.formatted)
+            .slice(0, Math.min(3, scored.length))
+            .map(item => item.source);
+
         return {
             formatted: best.formatted,
             source: best.source,
-            confidence: Math.min(best.score / 100, 1.0) // Normalize to 0-1
+            confidence: Math.min(best.score / 100, 1.0),
+            consensus: consensusSources
         };
+    }
+
+    _decorateWithVerification(result) {
+        if (!result?.formatted) return result?.formatted || null;
+        if (!Array.isArray(result.consensus) || result.consensus.length <= 1) {
+            return result.formatted;
+        }
+
+        const peers = result.consensus
+            .filter(source => source && source !== result.source)
+            .map(source => this._capitalizeSource(source));
+
+        if (peers.length === 0) {
+            return result.formatted;
+        }
+
+        const formattedPeers = peers.length === 1
+            ? peers[0]
+            : `${peers.slice(0, -1).join(', ')} & ${peers.slice(-1)}`;
+
+        if (result.formatted.toLowerCase().includes('verified via')) {
+            return result.formatted;
+        }
+
+        return `${result.formatted} • Verified via ${formattedPeers}.`;
     }
 
     // Score response accuracy based on multiple factors

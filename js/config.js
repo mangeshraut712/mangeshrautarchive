@@ -124,29 +124,56 @@ if (Object.keys(localConfig).length === 0) {
     }
 
     // If still no config loaded, use safe fallback (development/demo mode)
-    if (Object.keys(localConfig).length === 0) {
-        localConfig = {
-            // 🔥 Primary AI: Grok (xAI) - Disabled in fallback for security
-            grokEnabled: false,
-            grokApiKey: '',
+if (Object.keys(localConfig).length === 0) {
+    localConfig = {
+        // 🔥 Primary AI: Grok (xAI) - Disabled in fallback for security
+        grokEnabled: true,
+        grokApiKey: '',
 
-            // 🤖 Fallback AI: Claude (Anthropic) - Disabled in fallback for security
-            anthropicEnabled: false,
-            anthropicApiKey: '',
+        // 🤖 Fallback AI: Claude (Anthropic) - Disabled in fallback for security
+        anthropicEnabled: true,
+        anthropicApiKey: '',
 
-            // 📚 External services remain available (free APIs, no keys needed)
-            wikipediaEnabled: true,
-            duckduckgoEnabled: true,
-            stackoverflowEnabled: true,
+        // 📚 External services remain available (free APIs, no keys needed)
+        wikipediaEnabled: true,
+        duckduckgoEnabled: true,
+        stackoverflowEnabled: true,
 
-            // 🔧 MCP Server integrations - disabled in fallback
-            mcpEnabled: false,
-            perplexityEnabled: false,
-            githubEnabled: false
-        };
+        // 🔧 MCP Server integrations - disabled in fallback
+        mcpEnabled: false,
+        perplexityEnabled: false,
+        githubEnabled: false
+    };
 
-        console.warn('🔒 Using secure fallback - AI features disabled (expected for PRs/forks or missing API keys)');
+    console.warn('🔒 Using secure fallback configuration; runtime AI availability will be auto-detected.');
+}
+
+// Attempt to detect server-side AI availability (will fail silently on static hosting)
+try {
+    const statusResponse = await fetch('/api/ai/status', { cache: 'no-store' });
+    if (statusResponse.ok) {
+        const status = await statusResponse.json();
+
+        if (status?.grok && typeof status.grok.available === 'boolean') {
+            localConfig.grokEnabled = status.grok.available;
+            if (!status.grok.available) {
+                localConfig.grokApiKey = localConfig.grokApiKey || '';
+            }
+        }
+
+        if (status?.claude && typeof status.claude.available === 'boolean') {
+            localConfig.anthropicEnabled = status.claude.available;
+            if (!status.claude.available) {
+                localConfig.anthropicApiKey = localConfig.anthropicApiKey || '';
+            }
+        }
+
+        if (status?.duckduckgo && typeof status.duckduckgo.available === 'boolean') {
+            localConfig.duckduckgoEnabled = status.duckduckgo.available;
+        }
     }
+} catch (error) {
+    console.info('AI status endpoint unavailable (likely static build):', error.message);
 }
 
 // Export local configuration as defaults if no real keys
