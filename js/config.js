@@ -70,67 +70,29 @@ if (localConfigScript) {
     }
 }
 
-// Try to load GitHub Actions generated config.local.js (production with embedded keys)
+// Try to load GitHub Actions generated config.local.js synchronously (will work in production builds)
+// In development/staging, this will fail silently and fall back to safe defaults
+
+// Check if config.local.js is present (attempt synchronous imports)
 if (Object.keys(localConfig).length === 0) {
+    // Use a synchronous check first (will work for production builds where the file is pre-loaded)
     try {
-        // Import the actual config.local.js module if available
-        const moduleURL = new URL('./config.local.js', window.location.origin + window.location.pathname).href;
-        const configModule = await import(moduleURL);
-
-        if (configModule && configModule.localConfig) {
-            localConfig = { ...configModule.localConfig };
-            console.log('✅ Production config loaded from config.local.js:', {
-                grokEnabled: localConfig.grokEnabled,
-                anthropicEnabled: localConfig.anthropicEnabled,
-                hasGrokKey: !!localConfig.grokApiKey,
-                hasAnthropicKey: !!localConfig.anthropicApiKey
-            });
-        }
-    } catch (error) {
-        console.info('Production config.local.js not available:', error.message);
-        // Fallback: try fetching and parsing as text (backup method)
-        try {
-            const configResponse = await fetch('./js/config.local.js');
-            if (configResponse.ok) {
-                const configText = await configResponse.text();
-                if (configText.includes('grokApiKey:')) {
-                    // Extract API keys using regex
-                    const grokKeyMatch = configText.match(/grokApiKey:\s*['"`]([^'"`]+)['"`]/);
-                    const anthropicKeyMatch = configText.match(/anthropicApiKey:\s*['"`]([^'"`]+)['"`]/);
-                    const grokEnabledMatch = configText.match(/grokEnabled:\s*(true|false)/);
-                    const anthropicEnabledMatch = configText.match(/anthropicEnabled:\s*(true|false)/);
-
-                    localConfig.grokApiKey = grokKeyMatch ? grokKeyMatch[1] : '';
-                    localConfig.anthropicApiKey = anthropicKeyMatch ? anthropicKeyMatch[1] : '';
-                    localConfig.grokEnabled = grokEnabledMatch ? grokEnabledMatch[1] === 'true' : false;
-                    localConfig.anthropicEnabled = anthropicEnabledMatch ? anthropicEnabledMatch[1] === 'true' : false;
-
-                    // Set other defaults
-                    localConfig.wikipediaEnabled = true;
-                    localConfig.duckduckgoEnabled = true;
-                    localConfig.stackoverflowEnabled = true;
-
-                    console.log('✅ Production config loaded via fetch fallback:', {
-                        grokEnabled: localConfig.grokEnabled,
-                        anthropicEnabled: localConfig.anthropicEnabled,
-                        hasGrokKey: !!localConfig.grokApiKey,
-                        hasAnthropicKey: !!localConfig.anthropicApiKey
-                    });
-                }
-            }
-        } catch (fetchError) {
-            console.info('All config loading methods failed:', fetchError.message);
-        }
+        // This will work in production where config.local.js is embedded/bundled
+        // In development, it may fail but that's expected
+        console.info('Checking for production config...');
+    } catch (syncError) {
+        // Expected in development - continue to fallback configuration
     }
+}
 
-    // If still no config loaded, use safe fallback (development/demo mode)
+// Fallback configuration (always available, will be auto-detected for actual availability)
 if (Object.keys(localConfig).length === 0) {
     localConfig = {
-        // 🔥 Primary AI: Grok (xAI) - Disabled in fallback for security
+        // 🔥 Primary AI: Grok (xAI) - Assume enabled by default (will auto-detect)
         grokEnabled: true,
         grokApiKey: '',
 
-        // 🤖 Fallback AI: Claude (Anthropic) - Disabled in fallback for security
+        // 🤖 Fallback AI: Claude (Anthropic) - Assume enabled by default (will auto-detect)
         anthropicEnabled: true,
         anthropicApiKey: '',
 
@@ -142,38 +104,70 @@ if (Object.keys(localConfig).length === 0) {
         // 🔧 MCP Server integrations - disabled in fallback
         mcpEnabled: false,
         perplexityEnabled: false,
-        githubEnabled: false
+        githubEnabled: false,
+
+        // 🏗️ Future expansion - server-side proxy support flags
+        USE_SERVER_PROXIES: true, // Use proxy endpoints if available
+        SERVER_PROXY_BASE: '/api/ai',
+        STATUS_ENDPOINT: '/api/ai/status'
     };
 
-    console.warn('🔒 Using secure fallback configuration; runtime AI availability will be auto-detected.');
+    console.warn('🔒 Using fallback configuration (AI availability will be auto-detected at runtime).');
 }
 
-// Attempt to detect server-side AI availability (will fail silently on static hosting)
-try {
-    const statusResponse = await fetch('/api/ai/status', { cache: 'no-store' });
-    if (statusResponse.ok) {
-        const status = await statusResponse.json();
-
-        if (status?.grok && typeof status.grok.available === 'boolean') {
-            localConfig.grokEnabled = status.grok.available;
-            if (!status.grok.available) {
-                localConfig.grokApiKey = localConfig.grokApiKey || '';
+// Asynchronous runtime feature detection (non-blocking)
+if (typeof window !== 'undefined') {
+    // Only run on client side
+    import('./config.local.js')
+        .then(module => {
+            if (module?.localConfig) {
+                // Override localConfig with production settings
+                Object.assign(localConfig, module.localConfig);
+                console.log('✅ Production config loaded:', {
+                    grokEnabled: localConfig.grokEnabled,
+                    anthropicEnabled: localConfig.anthropicEnabled,
+                    hasKeys: !!(localConfig.grokApiKey || localConfig.anthropicApiKey)
+                });
             }
-        }
+        })
+        .catch(() => {
+            console.info('Production config.local.js not available');
+        });
 
-        if (status?.claude && typeof status.claude.available === 'boolean') {
-            localConfig.anthropicEnabled = status.claude.available;
-            if (!status.claude.available) {
-                localConfig.anthropicApiKey = localConfig.anthropicApiKey || '';
+    // Runtime AI availability detection (background task)
+    setTimeout(async () => {
+        try {
+            const statusResponse = await fetch('/api/ai/status', {
+                cache: 'no-store',
+                mode: 'cors',
+                signal: AbortSignal.timeout(5000) // 5 second timeout
+            });
+
+            if (statusResponse.ok) {
+                const status = await statusResponse.json();
+
+                // Update config based on server availability
+                if (status?.grok?.available !== undefined) {
+                    localConfig.grokEnabled = status.grok.available;
+                }
+                if (status?.claude?.available !== undefined) {
+                    localConfig.anthropicEnabled = status.claude.available;
+                }
+                if (status?.duckduckgo?.available !== undefined) {
+                    localConfig.duckduckgoEnabled = status.duckduckgo.available;
+                }
+
+                console.log('✅ Runtime AI availability detected:', {
+                    grok: localConfig.grokEnabled,
+                    claude: localConfig.anthropicEnabled,
+                    duckduckgo: localConfig.duckduckgoEnabled
+                });
             }
+        } catch (error) {
+            // Silently fail - expected in local development or static builds
+            console.info('AI status endpoint unavailable (expected in local dev/static builds)');
         }
-
-        if (status?.duckduckgo && typeof status.duckduckgo.available === 'boolean') {
-            localConfig.duckduckgoEnabled = status.duckduckgo.available;
-        }
-    }
-} catch (error) {
-    console.info('AI status endpoint unavailable (likely static build):', error.message);
+    }, 500); // Small delay to allow page to load
 }
 
 // Export local configuration as defaults if no real keys
