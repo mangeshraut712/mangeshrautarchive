@@ -62,7 +62,7 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
 
         try {
             // Direct Firebase v9 call
-            const firebaseConfig = await import('./firebase-config.js');
+            const firebaseConfig = await import('../firebase-config.js');
             const { collection, addDoc, serverTimestamp } = firebaseConfig;
             const db = firebaseConfig.db;
 
