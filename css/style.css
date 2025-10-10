@@ -1681,40 +1681,100 @@ footer a:hover img {
     transform: scale(1.1); /* Same scale effect as contact section */
  }
 
-/* Make footer social links colorful like contact section */
+/* CONTACT & FOOTER - ORIGINAL BRAND COLORFUL ICONS */
+
+/* Contact Section Follow Me - Original Brand Colors */
+.contact-social-links .fa-brands.fa-facebook,
+.contact-social-links .fa-brands.fa-facebook-f,
+.contact-social-links a[href*="facebook.com"] i.fa-brands,
+.contact-social-links a[href*="facebook.com"] .fa-brands.fa-facebook {
+    color: #1877f2 !important; /* Original Facebook Blue */
+    font-weight: 400;
+}
+.contact-social-links .fa-brands.fa-instagram,
+.contact-social-links a[href*="instagram.com"] i.fa-brands {
+    color: #e4405f !important; /* Original Instagram Pink */
+    font-weight: 400;
+}
+.contact-social-links .fa-brands.fa-linkedin,
+.contact-social-links .fa-brands.fa-linkedin-in,
+.contact-social-links a[href*="linkedin.com"] i.fa-brands {
+    color: #0077b5 !important; /* Original LinkedIn Blue */
+    font-weight: 400;
+}
+.contact-social-links .fa-brands.fa-github,
+.contact-social-links a[href*="github.com"] i.fa-brands {
+    color: #181717 !important; /* Original GitHub Dark */
+    font-weight: 400;
+}
+.contact-social-links .fa-brands.fa-youtube,
+.contact-social-links a[href*="youtube.com"] i.fa-brands {
+    color: #ff0000 !important; /* Original YouTube Red */
+    font-weight: 400;
+}
+.contact-social-links .fa-brands.fa-x-twitter,
+.contact-social-links .fa-brands.fa-twitter,
+.contact-social-links a[href*="x.com"] i.fa-brands,
+.contact-social-links a[href*="twitter.com"] i.fa-brands {
+    color: #000000 !important; /* Original Twitter/X Black */
+    font-weight: 400;
+}
+.contact-social-links .fa-solid.fa-globe,
+.contact-social-links a[href*="wixsite.com"] i.fa-solid,
+.contact-social-links a[href*="portfolio"] .fa-solid.fa-globe {
+    color: #0077b5 !important; /* LinkedIn Blue for Web Links */
+    font-weight: 900;
+}
+.contact-social-links .fa-solid.fa-code,
+.contact-social-links a[href*="leetcode.com"] i.fa-solid {
+    color: #61dafb !important; /* React Blue for LeetCode */
+    font-weight: 900;
+}
+
+/* Footer - Original Brand Colors (matching Contact Section) */
 footer i.fa-brands.fa-facebook,
 footer i.fa-brands.fa-facebook-f,
 footer a[href*="facebook.com"] i.fa-brands {
-    color: #1877f2;
+    color: #1877f2 !important; /* Original Facebook Blue */
     font-weight: 400;
 }
 footer i.fa-brands.fa-instagram,
 footer a[href*="instagram.com"] i.fa-brands {
-    color: #e4405f;
+    color: #e4405f !important; /* Original Instagram Pink */
     font-weight: 400;
 }
 footer i.fa-brands.fa-linkedin,
 footer i.fa-brands.fa-linkedin-in,
 footer a[href*="linkedin.com"] i.fa-brands {
-    color: #0077b5;
+    color: #0077b5 !important; /* Original LinkedIn Blue */
     font-weight: 400;
 }
 footer i.fa-brands.fa-github,
 footer a[href*="github.com"] i.fa-brands {
-    color: #181717;
+    color: #181717 !important; /* Original GitHub Dark */
     font-weight: 400;
 }
 footer i.fa-brands.fa-youtube,
 footer a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000;
+    color: #ff0000 !important; /* Original YouTube Red */
     font-weight: 400;
 }
 footer i.fa-brands.fa-x-twitter,
 footer i.fa-brands.fa-twitter,
 footer a[href*="x.com"] i.fa-brands,
 footer a[href*="twitter.com"] i.fa-brands {
-    color: #000000;
+    color: #000000 !important; /* Original Twitter/X Black */
     font-weight: 400;
+}
+footer i.fa-solid.fa-globe,
+footer a[href*="wixsite.com"] .fa-solid.fa-globe {
+    color: #0077b5 !important; /* LinkedIn Blue for Web Links */
+    font-weight: 900;
+}
+footer i.fa-solid.fa-code,
+footer a[href*="leetcode.com"] .fa-solid.fa-code {
+    color: #61dafb !important; /* React Blue for LeetCode */
+    font-weight: 900;
 }
 
 
