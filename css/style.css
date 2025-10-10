@@ -3392,13 +3392,14 @@ html.dark .timeline-item svg {
     line-height: 1;
 }
 
-/* Dark Mode Icon Visibility Fixes */
+/* Dark Mode Icon Visibility Fixes - GitHub and X/Twitter */
 html.dark .fa-brands.fa-github, html.dark .fab.fa-github {
-    color: #f0f0f0; /* Light grey for dark mode */
+    color: #f0f0f0 !important; /* Light grey for GitHub visibility in dark mode */
 }
 
-html.dark .fa-brands.fa-x-twitter, html.dark .fa-brands.fa-twitter, html.dark .fab.fa-twitter, html.dark .fab.fa-x-twitter {
-    color: #ffffff; /* White for dark mode */
+html.dark .fa-brands.fa-x-twitter, html.dark .fa-brands.fa-twitter,
+html.dark .fab.fa-twitter, html.dark .fab.fa-x-twitter {
+    color: #ffffff !important; /* White for Twitter/X visibility in dark mode */
 }
 
 /* CONTACT SECTION FOLLOW ME ICONS - Dark Mode */
