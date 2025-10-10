@@ -1,22 +1,23 @@
-// This file contains your secret API keys and configuration.
-// It is imported by services.js and should NOT be committed to Git.
-// API keys are managed via environment variables or GitHub secrets.
-
+// 🔧 DEVELOPMENT CONFIGURATION - Local Testing
+// ⚠️  DO NOT COMMIT - contains API keys for testing only
 export const localConfig = {
-    // Anthropic (Claude) Configuration
-    anthropicEnabled: true,
-    anthropicApiKey: process.env.ANTHROPIC_API_KEY || 'your-anthropic-key-here',
+  // 🔥 Grok xAI - Latest AI Model
+  grokEnabled: true,
+  grokApiKey: "",
 
-    // Grok API Configuration (xAI) - Latest and most up-to-date AI model
-    grokEnabled: true,
-    grokApiKey: process.env.GROK_API_KEY || 'your-grok-key-here',
+  // 🤖 Claude (Anthropic) - Fallback AI
+  anthropicEnabled: true,
+  anthropicApiKey: "",
 
-    // Other APIs
-    supabaseUrl: '', // Not used in your current setup
-    supabaseKey: '', // Not used in your current setup
+  // 📚 Other API configurations
+  wikipediaEnabled: true,
+  duckduckgoEnabled: true,
+  stackoverflowEnabled: true,
 
-    // MCP Server integration
-    mcpEnabled: true,
-    perplexityEnabled: true,
-    githubEnabled: true
+  // 🔧 MCP Server integrations
+  mcpEnabled: true,
+  perplexityEnabled: true,
+  githubEnabled: true
 };
+
+console.log("🔧 Development config loaded - local testing mode");

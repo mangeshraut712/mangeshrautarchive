@@ -788,15 +788,42 @@ class ExternalServices {
             // Clean up and search for the title first
             const cleanedTitle = title.trim().toLowerCase();
 
+            // Handle special cases for common queries
+            const specialMappings = {
+                'the current prime minister of india': 'Narendra Modi',
+                'prime minister of india': 'Narendra Modi',
+                'president of usa': 'President of the United States',
+                'president of united states': 'President of the United States',
+                'who won the last world cup': '2023 FIFA World Cup',
+                'latest iphone': 'IPhone',
+                'newest iphone': 'IPhone',
+                'capital of india': 'New Delhi',
+                'largest country': 'Russia',
+                'smallest country': 'Vatican City',
+                'most populous country': 'India'
+            };
+
+            // Check for special mappings
+            let searchTitle = specialMappings[cleanedTitle] || cleanedTitle;
+
+            // If it's still a natural language query, have the AI translate it first
+            if (!specialMappings[cleanedTitle] && cleanedTitle.split(' ').length > 2) {
+                // For now, just use the input as search terms but clean them
+                searchTitle = cleanedTitle
+                    .replace(/\b(the|a|an|of|for|in|what|who|when|where|why|how|is)\b/g, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
             // Try to find the actual Wikipedia page by searching first
             const searchParams = new URLSearchParams({
                 action: 'query',
                 list: 'search',
-                srsearch: cleanedTitle,
+                srsearch: searchTitle,
                 format: 'json',
                 srwhat: 'text',
                 origin: '*',
-                limit: '1'
+                limit: '5'  // Increase limit to get better matches
             });
 
             const searchResponse = await fetch(`https://en.wikipedia.org/w/api.php?${searchParams}`);
@@ -809,22 +836,36 @@ class ExternalServices {
             const searchData = await searchResponse.json();
 
             if (searchData.query?.search?.length > 0) {
-                const foundTitle = searchData.query.search[0].title;
-                const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(foundTitle)}`);
+                // Find the best title match
+                const foundResult = searchData.query.search.find(result => {
+                    // Prefer exact matches or highly relevant results
+                    const resultTitle = result.title.toLowerCase();
+                    const relevanceScore = result.size > 1000 && !resultTitle.includes('disambiguation');
+                    return relevanceScore || resultTitle.includes(searchTitle.split(' ')[0]);
+                }) || searchData.query.search[0];
 
-                if (!response.ok) {
-                    console.error(`Wikipedia summary API error: ${response.status} for title: ${foundTitle}`);
-                    return null;
-                }
+                const foundTitle = foundResult.title;
 
-                const data = await response.json();
+                try {
+                    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(foundTitle)}`);
 
-                if (data?.extract) {
-                    return {
-                        answer: data.extract,
-                        source: 'wikipedia',
-                        url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(foundTitle)}`
-                    };
+                    if (!response.ok) {
+                        console.error(`Wikipedia summary API error: ${response.status} for title: ${foundTitle}`);
+                        return null;
+                    }
+
+                    const data = await response.json();
+
+                    if (data?.extract) {
+                        return {
+                            answer: data.extract,
+                            source: 'wikipedia',
+                            url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(foundTitle)}`
+                        };
+                    }
+                } catch (summaryError) {
+                    console.error(`Error fetching Wikipedia summary for ${foundTitle}:`, summaryError);
+                    // Continue to next result or return null
                 }
             }
 
@@ -1296,77 +1337,234 @@ class ChatService {
     async handleKnowledgeQuery(query, analysis) {
         const lower = query.toLowerCase();
 
+        // Direct query handling for specific patterns (no verification needed)
         const whoMatch = lower.match(/who\s+(?:is|was)\s+([\w\s.'-]+)/);
         if (whoMatch) {
             const subject = whoMatch[1].trim();
-            const wiki = await this.externalServices.getWikipediaSummary(subject);
-            if (wiki) return {
-                answer: this._formatKnowledgeResult(wiki),
-                type: 'factual'
+            const responses = await this._collectMultipleResponses(query, 'factual', { subject, type: 'person' });
+            const bestResponse = this._compareAndSelectBestResponse(query, responses);
+            if (bestResponse) return {
+                answer: bestResponse.formatted,
+                type: 'factual',
+                source: bestResponse.source
             };
         }
 
         const whatMatch = lower.match(/what\s+is\s+([\w\s.'-]+)/);
         if (whatMatch) {
             const topic = whatMatch[1].trim();
-            const wiki = await this.externalServices.getWikipediaSummary(topic);
-            if (wiki) return {
-                answer: this._formatKnowledgeResult(wiki),
-                type: 'definition'
+            const responses = await this._collectMultipleResponses(query, 'definition', { topic, type: 'definition' });
+            const bestResponse = this._compareAndSelectBestResponse(query, responses);
+            if (bestResponse) return {
+                answer: bestResponse.formatted,
+                type: 'definition',
+                source: bestResponse.source
             };
         }
 
         const whereMatch = lower.match(/where\s+is\s+([\w\s.'-]+)/);
         if (whereMatch) {
             const place = whereMatch[1].trim();
-            const countryFacts = await this.externalServices.getCountryFacts(place);
-            if (countryFacts) return {
-                answer: this._formatKnowledgeResult(countryFacts),
-                type: 'factual'
-            };
-            const wiki = await this.externalServices.getWikipediaSummary(place);
-            if (wiki) return {
-                answer: this._formatKnowledgeResult(wiki),
-                type: 'factual'
+            const responses = await this._collectMultipleResponses(query, 'factual', { place, type: 'location' });
+            const bestResponse = this._compareAndSelectBestResponse(query, responses);
+            if (bestResponse) return {
+                answer: bestResponse.formatted,
+                type: 'factual',
+                source: bestResponse.source
             };
         }
 
         if (/which\s+country.*most\s+population/.test(lower)) {
-            const wiki = await this.externalServices.getWikipediaSummary('List of countries by population (United Nations)');
-            if (wiki) {
-                const concise = this.makeConcise('According to the United Nations World Population Prospects 2023 revision, India has the largest national population (~1.43 billion) followed by China (~1.41 billion).', 2, 360);
-                return {
-                    answer: `${concise} (Source: Wikipedia • https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations))`,
-                    type: 'factual'
-                };
-            }
-            return 'According to United Nations 2023 estimates, India has the largest population (~1.43 billion) followed by China (~1.41 billion). (Source: United Nations World Population Prospects)';
-        }
-
-        const stackPromise = analysis.keywords.some(keyword =>
-            ['code', 'programming', 'bug', 'error'].includes(keyword)
-        )
-            ? this.externalServices.searchStackOverflow(query)
-            : Promise.resolve(null);
-
-        const [ddgResult, wikiResult, stackResult] = await Promise.allSettled([
-            this.externalServices.searchDuckDuckGo(query),
-            this.externalServices.searchWikipedia(query),
-            stackPromise
-        ]);
-
-        const ordered = [
-            ddgResult.status === 'fulfilled' ? ddgResult.value : null,
-            wikiResult.status === 'fulfilled' ? wikiResult.value : null,
-            stackResult.status === 'fulfilled' ? stackResult.value : null
-        ];
-
-        for (const item of ordered) {
-            const answer = this._formatKnowledgeResult(item);
-            if (answer) return {
-                answer,
+            const responses = await this._collectMultipleResponses(query, 'factual', { subject: 'population statistics', type: 'statistics' });
+            const bestResponse = this._compareAndSelectBestResponse(query, responses);
+            if (bestResponse) return {
+                answer: bestResponse.formatted,
+                type: 'factual',
+                source: bestResponse.source
+            };
+            // Fallback
+            const concise = this.makeConcise('According to the United Nations World Population Prospects 2023 revision, India has the largest national population (~1.43 billion) followed by China (~1.41 billion).', 2, 360);
+            return {
+                answer: `${concise} (Source: Wikipedia • https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations))`,
                 type: 'factual'
             };
+        }
+
+        // Collect responses from multiple sources for verification
+        const responses = await this._collectMultipleResponses(query, 'factual', analysis);
+        const bestResponse = this._compareAndSelectBestResponse(query, responses);
+
+        if (bestResponse) {
+            return {
+                answer: bestResponse.formatted,
+                type: 'factual',
+                source: bestResponse.source
+            };
+        }
+
+        return null;
+    }
+
+    // Collect responses from multiple sources for verification
+    async _collectMultipleResponses(query, queryType, context = {}) {
+        const responses = [];
+
+        // Try AI services first (up to 2)
+        if (this.aiService && config.grokEnabled) {
+            try {
+                const grokResponse = await this.aiService.getEnhancedResponse(query, { context: 'verification', limit: 100 });
+                if (grokResponse) {
+                    responses.push({
+                        source: 'grok',
+                        content: grokResponse,
+                        type: 'ai',
+                        priority: 1
+                    });
+                }
+            } catch (error) {
+                console.log('Grok verification failed:', error.message);
+            }
+        }
+
+        // Try external APIs
+        const promises = [
+            this.externalServices.searchDuckDuckGo(query),
+            this.externalServices.searchWikipedia(query),
+            this.externalServices.getCountryFacts(query), // For location queries
+        ];
+
+        // Add Stack Overflow for technical queries
+        if (context.keywords && context.keywords.some(k => ['code', 'programming', 'bug', 'error'].includes(k))) {
+            promises.push(this.externalServices.searchStackOverflow(query));
+        }
+
+        const results = await Promise.allSettled(promises);
+
+        results.forEach((result, index) => {
+            if (result.status === 'fulfilled' && result.value) {
+                let source = 'unknown';
+                switch(index) {
+                    case 0: source = 'duckduckgo'; break;
+                    case 1: source = 'wikipedia'; break;
+                    case 2: source = 'country_facts'; break;
+                    case 3: source = 'stackoverflow'; break;
+                }
+                responses.push({
+                    source,
+                    content: result.value,
+                    type: 'external',
+                    priority: 2
+                });
+            }
+        });
+
+        return responses;
+    }
+
+    // Compare responses and select the most accurate one
+    _compareAndSelectBestResponse(query, responses) {
+        if (!responses || responses.length === 0) return null;
+
+        if (responses.length === 1) {
+            // Only one response, format and return it
+            const response = responses[0];
+            return {
+                formatted: this._formatKnowledgeResult(response.content, response.source),
+                source: response.source,
+                confidence: 0.5
+            };
+        }
+
+        // Multiple responses - compare and select best
+        const scored = responses.map(response => ({
+            ...response,
+            score: this._scoreResponse(query, response),
+            formatted: this._formatKnowledgeResult(response.content, response.source)
+        }));
+
+        // Sort by score (higher is better)
+        scored.sort((a, b) => b.score - a.score);
+
+        // Log comparison for debugging
+        console.log(`Response comparison for "${query}":`);
+        scored.forEach((r, i) => console.log(`${i+1}. ${r.source}: ${r.score} points`));
+
+        // Return the highest scoring response
+        const best = scored[0];
+        return {
+            formatted: best.formatted,
+            source: best.source,
+            confidence: Math.min(best.score / 100, 1.0) // Normalize to 0-1
+        };
+    }
+
+    // Score response accuracy based on multiple factors
+    _scoreResponse(query, response) {
+        let score = 0;
+        const content = response.content?.answer || '';
+        const source = response.source;
+
+        // Source reliability scoring
+        const sourceScores = {
+            'grok': 90,
+            'wikipedia': 85,
+            'duckduckgo': 70,
+            'stackoverflow': 80,
+            'country_facts': 75
+        };
+        score += sourceScores[source] || 50;
+
+        // Content quality scoring
+        if (content.length > 50) score += 15; // Adequate length
+        if (content.length > 200) score += 10; // Detailed but not too long
+
+        // Query specificity match
+        const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+        const contentWords = content.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+        const wordOverlap = queryWords.filter(word =>
+            contentWords.some(contentWord => contentWord.includes(word) || word.includes(contentWord))
+        ).length;
+        score += Math.min(wordOverlap * 5, 25); // Up to 25 points for relevance
+
+        // Factuality indicators
+        if (content.includes('according to') || content.includes('source') || content.includes('data') || content.includes('statistics')) {
+            score += 10; // Likely factual
+        }
+
+        // Technical accuracy for programming queries
+        if (query.toLowerCase().includes('code') || query.toLowerCase().includes('programming')) {
+            if (source === 'stackoverflow' || source === 'grok') {
+                score += 15; // Preferred sources for technical questions
+            }
+        }
+
+        // Location accuracy
+        if (query.toLowerCase().includes('where') || query.toLowerCase().includes('location')) {
+            if (source === 'wikipedia' || source === 'country_facts') {
+                score += 10; // Preferred for location queries
+            }
+        }
+
+        return Math.min(score, 100); // Cap at 100
+    }
+
+    _formatKnowledgeResult(result, source) {
+        if (!result) return null;
+
+        if (typeof result === 'object' && result.answer) {
+            // Already formatted response object
+            return this._formatKnowledgeResult(result.answer, result.source || source);
+        }
+
+        if (typeof result === 'string') {
+            const concise = this.makeConcise(result, 3, 400);
+            const sourceLabel = this._capitalizeSource(source);
+
+            // Add source attribution if not already present
+            if (!concise.includes(`Source:`)) {
+                return `${concise} (Source: ${sourceLabel})`;
+            }
+            return concise;
         }
 
         return null;
