@@ -3392,14 +3392,44 @@ html.dark .timeline-item svg {
     line-height: 1;
 }
 
-/* Dark Mode Icon Visibility Fixes - GitHub and X/Twitter */
+/* Dark Mode Icon Visibility Fixes - Enhanced Social Media Branding */
+html.dark .fa-brands.fa-facebook, html.dark .fab.fa-facebook,
+html.dark .fa-brands.fa-facebook-f, html.dark .fab.fa-facebook-f {
+    color: #4267b2 !important; /* Lighter Facebook blue for dark mode */
+}
+
+html.dark .fa-brands.fa-instagram, html.dark .fab.fa-instagram {
+    color: #e95950 !important; /* Brighter Instagram pink for dark mode */
+}
+
+html.dark .fa-brands.fa-linkedin, html.dark .fab.fa-linkedin,
+html.dark .fa-brands.fa-linkedin-in, html.dark .fab.fa-linkedin-in {
+    color: #0a66c2 !important; /* LinkedIn blue remains vibrant */
+}
+
 html.dark .fa-brands.fa-github, html.dark .fab.fa-github {
-    color: #f0f0f0 !important; /* Light grey for GitHub visibility in dark mode */
+    color: #f78166 !important; /* Warm orange for GitHub in dark mode */
+}
+
+html.dark .fa-brands.fa-youtube, html.dark .fab.fa-youtube {
+    color: #ff0000 !important; /* YouTube red stays vibrant */
 }
 
 html.dark .fa-brands.fa-x-twitter, html.dark .fa-brands.fa-twitter,
 html.dark .fab.fa-twitter, html.dark .fab.fa-x-twitter {
-    color: #ffffff !important; /* White for Twitter/X visibility in dark mode */
+    color: #1da1f2 !important; /* Twitter blue for X in dark mode */
+}
+
+html.dark .fa-solid.fa-globe, html.dark .fas.fa-globe {
+    color: #5ac8fa !important; /* Bright cyan for web links */
+}
+
+html.dark .fa-solid.fa-code, html.dark .fas.fa-code {
+    color: #61dafb !important; /* Bright React blue for code links */
+}
+
+html.dark .fa-brands.fa-whatsapp, html.dark .fab.fa-whatsapp {
+    color: #25d366 !important; /* WhatsApp green stays bright */
 }
 
 /* CONTACT SECTION FOLLOW ME ICONS - Dark Mode */
