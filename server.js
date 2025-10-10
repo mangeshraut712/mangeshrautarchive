@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { promises as fs } from 'fs';
 import { RateLimiter } from 'limiter';
 import chatRouter from './api/chat.js';
 
@@ -15,6 +16,8 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const DATA_DIR = join(__dirname, 'data');
+const CONTACT_MESSAGES_FILE = join(DATA_DIR, 'contact-messages.json');
 
 // Middleware
 app.use(cors());
@@ -45,6 +48,76 @@ app.use(express.static(__dirname));
 
 // API Routes
 app.use('/api/chat', chatRouter);
+
+async function appendContactMessage(entry) {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+
+    let existingMessages = [];
+    try {
+        const raw = await fs.readFile(CONTACT_MESSAGES_FILE, 'utf-8');
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+            existingMessages = parsed;
+        }
+    } catch (error) {
+        if (error.code !== 'ENOENT') {
+            throw error;
+        }
+    }
+
+    existingMessages.push(entry);
+    await fs.writeFile(CONTACT_MESSAGES_FILE, JSON.stringify(existingMessages, null, 2));
+}
+
+app.post('/api/contact', async (req, res) => {
+    const { name, email, subject, message } = req.body ?? {};
+
+    if (!name || !email || !subject || !message) {
+        return res.status(400).json({
+            error: 'All fields are required.',
+        });
+    }
+
+    const trimmed = {
+        name: String(name).trim(),
+        email: String(email).trim(),
+        subject: String(subject).trim(),
+        message: String(message).trim()
+    };
+
+    if (!trimmed.name || !trimmed.email || !trimmed.subject || !trimmed.message) {
+        return res.status(400).json({
+            error: 'All fields are required.',
+        });
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(trimmed.email)) {
+        return res.status(400).json({
+            error: 'Please provide a valid email address.',
+        });
+    }
+
+    const contactEntry = {
+        ...trimmed,
+        submittedAt: new Date().toISOString(),
+        ip: req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip,
+        userAgent: req.get('user-agent') || null
+    };
+
+    try {
+        await appendContactMessage(contactEntry);
+        res.status(201).json({
+            success: true,
+            message: 'Message received. Thank you for reaching out!'
+        });
+    } catch (error) {
+        console.error('Failed to save contact message:', error);
+        res.status(500).json({
+            error: 'Something went wrong while saving your message. Please try again later.'
+        });
+    }
+});
 
 // Serve index.html for the root path
 app.get('/', (req, res) => {

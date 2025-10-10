@@ -479,73 +479,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initFadeInAnimation();
     renderProjects();
 
-    // Enhanced contact form initialization with Firebase readiness check
-    function initializeContactFormWithFirebase() {
-        // Check if Firebase is ready
-        function checkFirebaseReady() {
-            return typeof firebase !== 'undefined' &&
-                   firebase.apps &&
-                   firebase.apps.length > 0 &&
-                   firebase.firestore;
-        }
-
-        // If Firebase is ready, init contact form
-        if (checkFirebaseReady()) {
-            console.log('Firebase ready, initializing contact form...');
-            initContactForm();
-        } else {
-            // Wait for Firebase to be ready, with retry
-            let retries = 0;
-            const maxRetries = 10;
-            const retryInterval = 500; // ms
-
-            const waitForFirebase = setInterval(() => {
-                retries++;
-
-                if (checkFirebaseReady()) {
-                    console.log('Firebase ready after retry, initializing contact form...');
-                    clearInterval(waitForFirebase);
-                    initContactForm();
-                } else if (retries >= maxRetries) {
-                    console.warn('Firebase not ready after maximum retries, initializing contact form in fallback mode');
-                    clearInterval(waitForFirebase);
-
-                    // Still initialize the form, it will handle Firebase errors gracefully
-                    initContactForm();
-
-                    // Show user-friendly message about potential offline mode
-                    const contactSection = document.getElementById('contact');
-                    if (contactSection && !document.querySelector('.firebase-offline-notice')) {
-                        const notice = document.createElement('div');
-                        notice.className = 'firebase-offline-notice alert alert-warning';
-                        notice.style.cssText = `
-                            background-color: #fef3c7;
-                            color: #d97706;
-                            padding: 12px;
-                            border-radius: 8px;
-                            margin-bottom: 16px;
-                            font-size: 14px;
-                            border: 1px solid #fcd34d;
-                        `;
-                        notice.innerHTML = `
-                            <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                            </svg>
-                            Contact form is operating in offline mode. Messages may not be saved. Please check back later.
-                        `;
-
-                        const contactForm = document.getElementById('contact-form');
-                        if (contactForm) {
-                            contactForm.insertBefore(notice, contactForm.firstChild);
-                        }
-                    }
-                }
-            }, retryInterval);
-        }
+    try {
+        initContactForm();
+    } catch (error) {
+        console.error('Failed to initialize contact form:', error);
     }
-
-    // Initialize contact form
-    initializeContactFormWithFirebase();
 
     // Configure global settings
     window.AssistMeConfig = Object.freeze({
