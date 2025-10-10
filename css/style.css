@@ -645,19 +645,64 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
-/* Headings in dark mode */
-.dark h1,
-.dark h2,
-.dark h3,
-.dark h4,
-.dark h5,
-.dark h6 {
-    color: #f5f5f7;
+/* ===== COMPREHENSIVE DARK MODE TEXT SYSTEM ===== */
+/* Primary Headings - White for maximum readability */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark .education-card h3,
+html.dark .education-card h4,
+html.dark .education-card h5,
+html.dark .project-card h3 {
+    color: hsl(0, 0%, 98%); /* Pure white for headings */
+    font-weight: 700; /* Ensure proper font weight in dark mode */
 }
 
-/* Paragraphs & Links in dark mode */
-.dark p {
-    color: #a1a1a6; /* Softer gray for body text */
+/* Body Text - Appropriate white and blue hierarchy */
+html.dark p,
+html.dark .education-card p,
+html.dark .education-card ul li,
+html.dark .project-card p,
+html.dark .timeline-item p,
+html.dark .timeline-item ul li,
+html.dark .timeline-item h4,
+html.dark .education-card .date-badge {
+    color: hsl(0, 0%, 95%); /* Soft white for body text */
+    font-weight: 400; /* Normal weight for body text */
+}
+
+/* Links - Blue for interactivity */
+html.dark a:not(.btn),
+html.dark .nav-link,
+html.dark .overlay-nav-link {
+    color: hsl(210, 95%, 55%); /* Vibrant blue for links */
+}
+html.dark a:not(.btn):hover,
+html.dark .nav-link:hover,
+html.dark .overlay-nav-link:hover {
+    color: hsl(210, 95%, 70%); /* Lighter blue on hover */
+}
+
+/* Typewriter Effect - Ensure visibility */
+html.dark .typewriter {
+    border-right: 2px solid hsl(0, 0%, 95%);
+}
+html.dark .typewriter::before {
+    border-right: 2px solid hsl(0, 0%, 95%);
+}
+
+/* Project Card Links - Blue color system */
+html.dark .project-card .row a,
+html.dark .project-card a.text-accent,
+html.dark .project-card h3:hover {
+    color: hsl(210, 95%, 55%) !important;
+}
+html.dark .project-card .row a:hover,
+html.dark .project-card a.text-accent:hover {
+    color: hsl(210, 95%, 70%) !important;
 }
 
 /* Typography - Apple Style */
