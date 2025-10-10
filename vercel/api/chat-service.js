@@ -76,7 +76,7 @@ class MultiModelAIService {
     const bestResponse = this.selectBestResponse(responses, message);
     console.log(`✅ Selected best response from ${bestResponse.provider} (confidence: ${bestResponse.confidence})`);
 
-    return `[AI Response] ${bestResponse.content} (Powered by ${this.getProviderDisplayName(bestResponse.provider)})`;
+    return `${bestResponse.content} (Powered by ${this.getProviderDisplayName(bestResponse.provider)})`;
   }
 
   async callProvider(providerName, config, message, options) {
