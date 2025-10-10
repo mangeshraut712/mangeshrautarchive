@@ -1405,6 +1405,48 @@ section h2 {
     border-color: #e5e5e7 !important; /* Subtle border */
 }
 
+/* ===== ENHANCED DARK MODE TEXT SYSTEM WITH BLUE HEADINGS ===== */
+/* Universal dark mode text override - ensure everything is white in dark mode */
+html.dark *, html.dark p, html.dark span, html.dark div, html.dark strong, html.dark em {
+    color: hsl(0, 0%, 95%) !important; /* Force most text to soft white */
+}
+
+/* H1 & H2 headings - BLUE for distinctive branding */
+html.dark h1, html.dark h2 {
+    color: hsl(210, 95%, 55%) !important; /* Vibrant blue for main headings */
+    font-weight: 700 !important;
+}
+
+/* Other headings and text elements - White for readability */
+html.dark h3, html.dark h4, html.dark h5, html.dark h6,
+html.dark .education-card h4, html.dark .education-card h5,
+html.dark .project-card h3, html.dark .nav-link, html.dark .timeline-item h3,
+html.dark .timeline-item h4, html.dark .education-card h3 {
+    color: hsl(0, 0%, 98%) !important; /* Pure white for sub-headings */
+    font-weight: 700 !important;
+}
+
+/* Body text and content - White */
+html.dark .education-card p, html.dark .education-card ul li,
+html.dark .project-card p, html.dark .timeline-item p,
+html.dark .timeline-item ul li, html.dark .education-card .date-badge,
+html.dark .nav-text, html.dark .overlay-nav-link {
+    color: hsl(0, 0%, 95%) !important; /* Soft white for readability */
+}
+
+/* Links and interactive elements - blue in dark mode */
+html.dark a:not(.btn), html.dark .nav-link, html.dark .overlay-nav-link,
+html.dark .project-card .row a, html.dark .project-card a.text-accent,
+html.dark .project-card h3:hover {
+    color: hsl(210, 95%, 55%) !important; /* Vibrant blue for all links */
+}
+
+/* Hover state for links - lighter blue */
+html.dark a:not(.btn):hover, html.dark .nav-link:hover, html.dark .overlay-nav-link:hover,
+html.dark .project-card .row a:hover, html.dark .project-card a.text-accent:hover {
+    color: hsl(210, 95%, 70%) !important; /* Lighter blue on hover */
+}
+
 /* JavaScript override protection - catches the specific querySelector */
 .text-accent,
 .text-xs {
