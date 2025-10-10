@@ -49,9 +49,9 @@
   <body
     class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]"
   >
-    <nav class="global-nav" aria-label="Primary navigation">
+    <nav class="global-nav" aria-label="Primary navigation" data-animate="fade-down" data-animate-duration="650">
       <div class="nav-container">
-        <div class="nav-left">
+        <div class="nav-left" data-animate="fade-right" data-animate-delay="120" data-animate-duration="720">
           <button
             id="menu-btn"
             class="menu-toggle-button"
@@ -67,7 +67,7 @@
             <img src="images/profile icon.png" alt="Mangesh Raut" />
           </a>
         </div>
-        <div class="nav-links" role="menubar">
+        <div class="nav-links" role="menubar" data-animate="fade-up" data-animate-delay="220" data-animate-duration="720">
           <a href="#home" class="nav-link" role="menuitem">Home</a>
           <a href="#about" class="nav-link" role="menuitem">About</a>
           <a href="#skills" class="nav-link" role="menuitem">Skills</a>
@@ -79,7 +79,7 @@
           <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
           <a href="#contact" class="nav-link" role="menuitem">Contact</a>
         </div>
-        <div class="nav-actions">
+        <div class="nav-actions" data-animate="fade-left" data-animate-delay="260" data-animate-duration="700">
           <button
             id="theme-toggle"
             class="theme-toggle-nav"
@@ -123,30 +123,42 @@
     </div>
     <main id="main-content">
       <!-- Home Section -->
-      <section id="home" class="fade-in py-20">
+      <section
+        id="home"
+        class="py-20"
+        data-animate="zoom-in"
+        data-animate-duration="1100"
+        data-animate-parallax="0.08"
+      >
         <div class="container-fluid">
-          <div class="max-w-4xl mx-auto text-center">
-            <div class="mb-12 home-element">
+          <div class="max-w-4xl mx-auto text-center" data-animate="fade-up" data-animate-delay="120">
+            <div class="mb-12" data-animate="zoom-in" data-animate-delay="160">
               <div
                 class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-light mx-auto mb-8"
+                data-animate="zoom-in"
+                data-animate-delay="200"
               >
                 <img
                   src="images/profile.jpg"
                   alt="Mangesh Raut"
                   class="w-full h-full object-cover"
+                  data-animate="zoom-in"
+                  data-animate-delay="260"
                 />
               </div>
             </div>
-            <h2 class="home-element">Mangesh Raut</h2>
-            <h1 class="home-element">Software Engineer</h1>
-            <p class="mx-auto mb-10 max-w-2xl home-element">
+            <h2 data-animate="fade-up" data-animate-delay="300">Mangesh Raut</h2>
+            <h1 data-animate="fade-up" data-animate-delay="340">Software Engineer</h1>
+            <p class="mx-auto mb-10 max-w-2xl" data-animate="fade-up" data-animate-delay="380">
               Welcome! Explore my journey in crafting innovative software
               solutions.
             </p>
             <a
               href="files/Mangesh_Raut_Resume.pdf"
               download="Mangesh_Raut_Resume.pdf"
-              class="btn btn-secondary home-element"
+              class="btn btn-secondary"
+              data-animate="zoom-in"
+              data-animate-delay="420"
               >Download Resume</a
             >
 
@@ -154,32 +166,43 @@
         </div>
       </section>
       <!-- About Section -->
-      <section id="about" class="fade-in py-20 bg-gray-100">
+      <section
+        id="about"
+        class="fade-in py-20 bg-gray-100"
+        data-animate="fade-up"
+        data-animate-duration="900"
+      >
         <div class="container">
-          <h2>About Me</h2>
+          <h2 data-animate="fade-down">About Me</h2>
           <div class="flex flex-col md:flex-row items-center gap-12">
-            <div class="flex-shrink-0 w-80 text-center">
+            <div
+              class="flex-shrink-0 w-80 text-center"
+              data-animate="zoom-in"
+              data-animate-delay="140"
+            >
               <img
                 src="images/graduation.jpg"
                 alt="Mangesh Raut Graduation"
                 class="w-full h-80 object-cover rounded-xl shadow-light"
+                data-animate="zoom-in"
+                data-animate-delay="180"
               />
             </div>
-            <div class="flex-1">
-              <p class="mb-8 leading-relaxed">
+            <div class="flex-1" data-animate="fade-left" data-animate-delay="200">
+              <p class="mb-8 leading-relaxed" data-animate="fade-up" data-animate-delay="220">
                 Software Engineer skilled in full-stack development (Java,
                 Python, AngularJS) and cloud solutions (AWS, Docker). Currently
                 enhancing energy analytics tools at Customized Energy Solutions,
                 achieving a 40% efficiency gain.
               </p>
-              <p class="mb-8 leading-relaxed">
+              <p class="mb-8 leading-relaxed" data-animate="fade-up" data-animate-delay="260">
                 Previously honed expertise in network engineering (35% latency
                 reduction at Harshwardhan Enterprises) and Java development (20%
                 code optimization at IoasiZ). Eager to leverage hands-on
                 experience with scalable systems, CI/CD pipelines, and machine
                 learning to drive innovation.
               </p>
-              <p class="leading-relaxed">
+              <p class="leading-relaxed" data-animate="fade-up" data-animate-delay="300">
                 Passionate about creating scalable software solutions that drive
                 business impact. Experienced in modern development practices
                 including DevOps, containerization, and AI integration.
@@ -189,12 +212,19 @@
         </div>
       </section>
       <!-- Skills Section -->
-      <section id="skills" class="fade-in py-20 bg-white">
+      <section
+        id="skills"
+        class="fade-in py-20 bg-white"
+        data-animate="fade-up"
+        data-animate-duration="950"
+      >
         <div class="container">
-          <h2>Skills & Technologies</h2>
+          <h2 data-animate="fade-down">Skills & Technologies</h2>
           <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="120"
               >
                 <div class="flex flex-col h-full">
                   <div class="flex-1">
@@ -222,6 +252,8 @@
 
               <div
                 class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="160"
               >
                 <div class="flex flex-col h-full">
                   <div class="flex-1">
@@ -238,6 +270,8 @@
 
               <div
                 class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="200"
               >
                 <div class="flex flex-col h-full">
                   <div class="flex-1">
@@ -254,6 +288,8 @@
 
               <div
                 class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="240"
               >
                 <div class="flex flex-col h-full">
                   <div class="flex-1">
@@ -274,9 +310,15 @@
       </section>
 
       <!-- Experience Section -->
-      <section id="experience" class="fade-in py-20 bg-gray-100">
+      <section
+        id="experience"
+        class="fade-in py-20 bg-gray-100"
+        data-animate="fade-up"
+        data-animate-duration="950"
+        data-animate-parallax="0.05"
+      >
         <div class="container">
-          <h2>Professional Experience</h2>
+          <h2 data-animate="fade-down">Professional Experience</h2>
 
           <!-- Full-Time Employment -->
           <div class="mb-12">
@@ -510,13 +552,21 @@
       </section>
 
       <!-- Projects Section -->
-      <section id="projects" class="fade-in py-20 bg-white">
+      <section
+        id="projects"
+        class="fade-in py-20 bg-white"
+        data-animate="fade-up"
+        data-animate-duration="1000"
+      >
         <div class="container">
-          <h2>Projects</h2>
+          <h2 data-animate="fade-down">Projects</h2>
           <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <!-- Project 1: LeetCodeByMangesh -->
-              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="120"
+              >
                 <h3 class="text-xl font-semibold mb-3">LeetCodeByMangesh</h3>
                 <p class="text-sm opacity-80 mb-3 leading-tight">Curated solutions for coding interviews with clean patterns and comments.</p>
                 <div class="flex flex-wrap gap-1 mb-3">
@@ -530,7 +580,10 @@
               </div>
 
               <!-- Project 2: Kashish Beauty Parlour -->
-              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="160"
+              >
                 <h3 class="text-xl font-semibold mb-3">Kashish Beauty Parlour (Salon Website)</h3>
                 <p class="text-sm opacity-80 mb-3 leading-tight">Responsive website for a Pune-based professional salon & training center.</p>
                 <div class="flex flex-wrap gap-1 mb-3">
@@ -545,7 +598,10 @@
               </div>
 
               <!-- Project 3: StarLight – Blogging Platform -->
-              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="200"
+              >
                 <h3 class="text-xl font-semibold mb-3">StarLight – Blogging Platform</h3>
                 <p class="text-sm opacity-80 mb-3 leading-tight">Medium/Hashnode-inspired platform for writers and communities.</p>
                 <div class="flex flex-wrap gap-1 mb-3">
@@ -559,7 +615,10 @@
               </div>
 
               <!-- Project 4: Mangesh Raut Portfolio (Live) -->
-              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300"
+                data-animate="tilt-in"
+                data-animate-delay="240"
+              >
                 <h3 class="text-xl font-semibold mb-3">Mangesh Raut Portfolio (Live)</h3>
                 <p class="text-sm opacity-80 mb-3 leading-tight">Apple-inspired portfolio with projects, resume, and interactive elements.</p>
                 <div class="flex flex-wrap gap-1 mb-3">
@@ -677,9 +736,14 @@
       </section>
 
       <!-- Education Section -->
-      <section id="education" class="fade-in py-20 bg-gray-100">
+      <section
+        id="education"
+        class="fade-in py-20 bg-gray-100"
+        data-animate="fade-up"
+        data-animate-duration="950"
+      >
         <div class="container">
-          <h2>Education</h2>
+          <h2 data-animate="fade-down">Education</h2>
           <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
               <div
@@ -779,14 +843,21 @@
       </section>
 
       <!-- Publications Section -->
-      <section id="publications" class="fade-in py-20 bg-white">
+      <section
+        id="publications"
+        class="fade-in py-20 bg-white"
+        data-animate="fade-up"
+        data-animate-duration="900"
+      >
         <div class="container">
-          <h2>Publications</h2>
+          <h2 data-animate="fade-down">Publications</h2>
           <div class="flex flex-col md:flex-row items-center gap-8">
-            <div class="flex-shrink-0 w-56 text-center">
+            <div class="flex-shrink-0 w-56 text-center" data-animate="zoom-in" data-animate-delay="140">
               <a href="files/RTFERS paper.pdf" target="_blank" class="block">
                 <div
                   class="w-full h-56 bg-primary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
+                  data-animate="tilt-in"
+                  data-animate-delay="180"
                 >
                   <div class="text-center">
                     <i class="fas fa-file-pdf text-4xl text-accent mb-2"></i>
@@ -795,20 +866,20 @@
                 </div>
               </a>
             </div>
-            <div class="flex-1">
-              <h3 class="mb-4">"Real-Time Face Emotion Recognition System"</h3>
-              <p class="mb-6 text-sm opacity-75">
+            <div class="flex-1" data-animate="fade-left" data-animate-delay="220">
+              <h3 class="mb-4" data-animate="fade-up" data-animate-delay="240">"Real-Time Face Emotion Recognition System"</h3>
+              <p class="mb-6 text-sm opacity-75" data-animate="fade-up" data-animate-delay="260">
                 Published in International Journal of Future Generation
                 Communication and Networking Vol. 13, No. 3, (2020), pp.
                 3306-3313, ISSN · Jun 15, 2020
               </p>
-              <p class="mb-6 leading-relaxed">
+              <p class="mb-6 leading-relaxed" data-animate="fade-up" data-animate-delay="300">
                 This paper will give brief knowledge about Face detection and
                 recognition algorithms (Approaches). There are a few approaches
                 that will be helpful to detect faces from the static or binary
                 frame.
               </p>
-              <p class="leading-relaxed">
+              <p class="leading-relaxed" data-animate="fade-up" data-animate-delay="320">
                 The Paper will review the algorithm that is being used for
                 detecting faces and will give information about the following
                 algorithms: elastic bunch map graphing, principal component
@@ -819,9 +890,14 @@
         </div>
       </section>
       <!-- Awards Section -->
-      <section id="awards" class="fade-in py-20 bg-gray-100">
+      <section
+        id="awards"
+        class="fade-in py-20 bg-gray-100"
+        data-animate="fade-up"
+        data-animate-duration="900"
+      >
         <div class="container">
-          <h2>Honors & Awards</h2>
+          <h2 data-animate="fade-down">Honors & Awards</h2>
           <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
               <div
@@ -879,9 +955,14 @@
         </div>
       </section>
       <!-- Certifications Section -->
-      <section id="certifications" class="fade-in py-20 bg-white">
+      <section
+        id="certifications"
+        class="fade-in py-20 bg-white"
+        data-animate="fade-up"
+        data-animate-duration="900"
+      >
         <div class="container">
-          <h2>Licenses & Certifications</h2>
+          <h2 data-animate="fade-down">Licenses & Certifications</h2>
           <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div
@@ -1000,16 +1081,24 @@
         </div>
       </section>
       <!-- Contact Section -->
-      <section id="contact" class="fade-in py-20 bg-gray-100">
+      <section
+        id="contact"
+        class="fade-in py-20 bg-gray-100"
+        data-animate="fade-up"
+        data-animate-duration="900"
+        data-animate-parallax="0.04"
+      >
         <div class="container">
-          <h2>Get In Touch</h2>
+          <h2 data-animate="fade-down">Get In Touch</h2>
           <div class="row">
-            <div class="col-lg-6 mb-12 lg:mb-0">
+            <div class="col-lg-6 mb-12 lg:mb-0" data-animate="fade-right" data-animate-delay="160">
               <div
                 class="bg-primary border border-border rounded-2xl p-8 shadow-light"
+                data-animate="tilt-in"
+                data-animate-delay="220"
               >
-                <h3 class="mb-6">Contact Information</h3>
-                <p class="mb-8">
+                <h3 class="mb-6" data-animate="fade-up" data-animate-delay="240">Contact Information</h3>
+                <p class="mb-8" data-animate="fade-up" data-animate-delay="260">
                   Feel free to reach out via email or connect on social media.
                 </p>
                 <div class="space-y-4">
@@ -1151,11 +1240,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
-              <h3 class="mb-8">Send a Message</h3>
-              <form id="contact-form" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+            <div class="col-lg-6" data-animate="fade-left" data-animate-delay="200">
+              <h3 class="mb-8" data-animate="fade-up" data-animate-delay="240">Send a Message</h3>
+              <form id="contact-form" class="space-y-6" data-animate="fade-up" data-animate-delay="280">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-animate="fade-up" data-animate-delay="320">
+                  <div data-animate="fade-up" data-animate-delay="340">
                     <label for="name" class="hidden">Your Name</label>
                     <input
                       type="text"
@@ -1167,7 +1256,7 @@
                       required
                     />
                   </div>
-                  <div>
+                  <div data-animate="fade-up" data-animate-delay="360">
                     <label for="email" class="hidden">Your Email</label>
                     <input
                       type="email"
@@ -1180,7 +1269,7 @@
                     />
                   </div>
                 </div>
-                <div>
+                <div data-animate="fade-up" data-animate-delay="380">
                   <label for="subject" class="hidden">Subject</label>
                   <input
                     type="text"
@@ -1192,7 +1281,7 @@
                     required
                   />
                 </div>
-                <div>
+                <div data-animate="fade-up" data-animate-delay="400">
                   <label for="message" class="hidden">Message</label>
                   <textarea
                     id="message"
@@ -1204,7 +1293,7 @@
                     required
                   ></textarea>
                 </div>
-                <button type="submit" class="btn">Send Message</button>
+                <button type="submit" class="btn" data-animate="zoom-in" data-animate-delay="420">Send Message</button>
               </form>
             </div>
           </div>
@@ -1212,6 +1301,8 @@
       </section>
       <footer
         class="bg-white/80 dark:bg-[#18181b]/90 text-black dark:text-white py-12 border-t border-gray-200 dark:border-[#23272f]"
+        data-animate="fade-up"
+        data-animate-duration="900"
       >
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div

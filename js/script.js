@@ -476,7 +476,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initOverlayMenu();
     initOverlayNavigation();
     initSmoothScroll();
-    initFadeInAnimation();
+    initFadeInAnimation(undefined, {
+        threshold: 0.2,
+        rootMargin: '0px 0px -5% 0px'
+    });
     renderProjects();
 
     try {

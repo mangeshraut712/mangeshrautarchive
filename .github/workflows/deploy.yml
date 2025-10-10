@@ -90,6 +90,63 @@ jobs:
       env:
         PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
 
+    - name: 📊 Generate AI Status File (Production Only)
+      if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
+      run: |
+        # Determine actual AI service availability based on secrets
+        GROK_AVAILABLE=${{ secrets.GROK_API_KEY != '' }}
+        CLAUDE_AVAILABLE=${{ secrets.ANTHROPIC_API_KEY != '' }}
+        PERPLEXITY_AVAILABLE=${{ secrets.PERPLEXITY_API_KEY != '' }}
+
+        # Create dynamic status file based on available secrets
+        mkdir -p api/ai
+        cat > api/ai/status.json << EOF
+        {
+          "grok": {
+            "enabled": true,
+            "model": "grok-4-latest",
+            "available": $GROK_AVAILABLE,
+            "reason": "$([[ $GROK_AVAILABLE == "true" ]] && echo "API key configured" || echo "No API key configured")"
+          },
+          "claude": {
+            "enabled": true,
+            "model": "claude-3-sonnet-20240229",
+            "available": $CLAUDE_AVAILABLE,
+            "reason": "$([[ $CLAUDE_AVAILABLE == "true" ]] && echo "API key configured" || echo "No API key configured")"
+          },
+          "duckduckgo": {
+            "available": true,
+            "reason": "No API key required"
+          },
+          "wiki": {
+            "available": true,
+            "reason": "No API key required"
+          },
+          "stackOverflow": {
+            "available": true,
+            "reason": "No API key required"
+          },
+          "perplexity": {
+            "available": $PERPLEXITY_AVAILABLE,
+            "reason": "$([[ $PERPLEXITY_AVAILABLE == "true" ]] && echo "API key configured" || echo "No API key configured")"
+          },
+          "_metadata": {
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "source": "GitHub Actions Build",
+            "deployment_type": "GitHub Pages",
+            "api_keys_configured": {
+              "grok": $GROK_AVAILABLE,
+              "claude": $CLAUDE_AVAILABLE,
+              "perplexity": $PERPLEXITY_AVAILABLE
+            }
+          }
+        }
+        EOF
+
+        # Show what was generated
+        echo "🚀 AI Status File Generated:"
+        cat api/ai/status.json
+
     - name: 🏗️ Build Portfolio
       run: npm run build
       env:
