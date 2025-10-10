@@ -39,34 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/lru-cache@10/dist/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- Firebase SDK v9 (modular) -->
-    <script type="module">
-      // Firebase v9 modular imports
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-      // Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
-        authDomain: "mangeshrautarchive.firebaseapp.com",
-        projectId: "mangeshrautarchive",
-        storageBucket: "mangeshrautarchive.firebasestorage.app",
-        messagingSenderId: "560373560182",
-        appId: "1:560373560182:web:218658d0db3b1aa6c60057",
-        measurementId: "G-YX2XQWYSCQ"
-      };
-
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const db = getFirestore(app);
-
-      // Make Firebase available globally for the contact form
-      window.firebase = { db, app };
-
-      console.log('Firebase v9 initialized successfully');
-    </script>
     <!-- Import the client-side chat service -->
     <script type="module">
       import { chatService } from './js/services.js';
@@ -1328,6 +1301,7 @@
     <!-- END PORTFOLIO CHATBOT -->
 
     <script src="js/theme.js"></script>
+    <script type="module" src="js/modules/contact.js"></script>
     <!-- Enhanced Apple Intelligence Chatbot - Backend API Integration -->
     <script>
       console.log('Apple Intelligence Chatbot loading...');
