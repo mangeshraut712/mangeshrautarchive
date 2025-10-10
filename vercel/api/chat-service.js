@@ -1,68 +1,254 @@
 // Server-side chat service for Vercel functions
 // Simplified version that doesn't rely on browser APIs
 
-// Hugging Face AI integration for microsoft/UserLM-8b
-class HuggingFaceService {
+// Multi-Model AI Service - Combines multiple AI providers for best responses
+class MultiModelAIService {
   constructor() {
-    this.apiKey = process.env.HUGGINGFACE_API_KEY;
-    this.enabled = !!this.apiKey;
-    this.model = 'microsoft/UserLM-8b';
-    this.baseURL = `https://api-inference.huggingface.co/models/${this.model}`;
+    this.providers = {
+      grok: {
+        apiKey: process.env.GROK_API_KEY,
+        enabled: !!process.env.GROK_API_KEY,
+        baseURL: 'https://api.x.ai/v1/chat/completions',
+        model: 'grok-4-latest'
+      },
+      anthropic: {
+        apiKey: process.env.ANTHROPIC_API_KEY,
+        enabled: !!process.env.ANTHROPIC_API_KEY,
+        baseURL: 'https://api.anthropic.com/v1/messages',
+        model: 'claude-3-haiku-20240307'
+      },
+      perplexity: {
+        apiKey: process.env.PERPLEXITY_API_KEY,
+        enabled: !!process.env.PERPLEXITY_API_KEY,
+        baseURL: 'https://api.perplexity.ai/chat/completions',
+        model: 'llama-3.1-sonar-small-128k-online'
+      },
+      huggingface: {
+        apiKey: process.env.HUGGINGFACE_API_KEY,
+        enabled: !!process.env.HUGGINGFACE_API_KEY,
+        baseURL: 'https://api-inference.huggingface.co/models/microsoft/UserLM-8b',
+        model: 'microsoft/UserLM-8b'
+      }
+    };
   }
 
   async generateResponse(message, options = {}) {
-    if (!this.enabled) {
-      console.log('Hugging Face API key not configured');
-      return null;
-    }
+    console.log('🤖 Trying all available AI models for best response...');
 
-    try {
-      console.log('🧠 Calling Hugging Face UserLM-8b API...');
+    const responses = [];
 
-      const response = await fetch(this.baseURL, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          inputs: message,
-          parameters: {
-            max_new_tokens: options.maxTokens || 512,
-            temperature: options.temperature || 0.7,
-            top_p: options.topP || 0.9,
-            do_sample: true,
-            return_full_text: false
-          },
-          options: {
-            wait_for_model: true,
-            use_cache: false
-          }
-        })
-      });
+    // Try each provider
+    for (const [providerName, config] of Object.entries(this.providers)) {
+      if (!config.enabled) continue;
 
-      if (!response.ok) {
-        console.error(`Hugging Face API error: ${response.status} ${response.statusText}`);
-        return null;
-      }
-
-      const data = await response.json();
-
-      if (data && Array.isArray(data) && data.length > 0) {
-        const generatedText = data[0]?.generated_text || data[0]?.text;
-        if (generatedText) {
-          console.log('✅ Hugging Face API response received');
-          return `[AI Response] ${generatedText} (Powered by UserLM-8b)`;
+      try {
+        const response = await this.callProvider(providerName, config, message, options);
+        if (response) {
+          responses.push({
+            provider: providerName,
+            content: response,
+            confidence: this.calculateConfidence(response, message)
+          });
         }
+      } catch (error) {
+        console.error(`❌ ${providerName} API error:`, error.message);
       }
+    }
 
-      console.log('❌ Hugging Face API returned incomplete response');
-      return null;
-
-    } catch (error) {
-      console.error('❌ Hugging Face API error:', error);
+    if (responses.length === 0) {
+      console.log('❌ No AI providers available');
       return null;
     }
+
+    // Return the best response
+    const bestResponse = this.selectBestResponse(responses, message);
+    console.log(`✅ Selected best response from ${bestResponse.provider} (confidence: ${bestResponse.confidence})`);
+
+    return `[AI Response] ${bestResponse.content} (Powered by ${this.getProviderDisplayName(bestResponse.provider)})`;
+  }
+
+  async callProvider(providerName, config, message, options) {
+    switch (providerName) {
+      case 'grok':
+        return await this.callGrokAPI(config, message, options);
+      case 'anthropic':
+        return await this.callAnthropicAPI(config, message, options);
+      case 'perplexity':
+        return await this.callPerplexityAPI(config, message, options);
+      case 'huggingface':
+        return await this.callHuggingFaceAPI(config, message, options);
+      default:
+        return null;
+    }
+  }
+
+  async callGrokAPI(config, message, options) {
+    const response = await fetch(config.baseURL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: config.model,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are AssistMe, an intelligent AI assistant for Mangesh Raut\'s portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.'
+          },
+          { role: 'user', content: message }
+        ],
+        max_tokens: options.maxTokens || 512,
+        temperature: options.temperature || 0.7
+      })
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content;
+  }
+
+  async callAnthropicAPI(config, message, options) {
+    const response = await fetch(config.baseURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': config.apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: config.model,
+        max_tokens: options.maxTokens || 512,
+        system: 'You are AssistMe, an intelligent AI assistant for Mangesh Raut\'s portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.',
+        messages: [{ role: 'user', content: message }]
+      })
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const textBlock = data.content?.find(block => block.type === 'text');
+    return textBlock?.text;
+  }
+
+  async callPerplexityAPI(config, message, options) {
+    const response = await fetch(config.baseURL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: config.model,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are AssistMe, an intelligent AI assistant for Mangesh Raut\'s portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.'
+          },
+          { role: 'user', content: message }
+        ],
+        max_tokens: options.maxTokens || 512,
+        temperature: options.temperature || 0.7
+      })
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content;
+  }
+
+  async callHuggingFaceAPI(config, message, options) {
+    const response = await fetch(config.baseURL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        inputs: `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.
+
+User query: ${message}`,
+        parameters: {
+          max_new_tokens: options.maxTokens || 512,
+          temperature: options.temperature || 0.7,
+          top_p: options.topP || 0.9,
+          do_sample: true,
+          return_full_text: false
+        },
+        options: {
+          wait_for_model: true,
+          use_cache: false
+        }
+      })
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (data && Array.isArray(data) && data.length > 0) {
+      return data[0]?.generated_text || data[0]?.text;
+    }
+
+    return null;
+  }
+
+  calculateConfidence(response, originalQuery) {
+    if (!response) return 0;
+
+    let score = 0.5; // Base score
+
+    // Length appropriateness (not too short, not too long)
+    if (response.length > 50) score += 0.2;
+    if (response.length > 200) score += 0.1;
+    if (response.length < 10) score -= 0.3;
+
+    // Relevance to query
+    const queryWords = originalQuery.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    const responseWords = response.toLowerCase().split(/\s+/);
+    const relevanceMatches = queryWords.filter(word =>
+      responseWords.some(rWord => rWord.includes(word) || word.includes(rWord))
+    ).length;
+    score += Math.min(relevanceMatches * 0.1, 0.3);
+
+    // Professional tone indicators
+    if (response.includes('Mangesh') || response.includes('portfolio') || response.includes('experience')) {
+      score += 0.1;
+    }
+
+    return Math.min(score, 1.0);
+  }
+
+  selectBestResponse(responses, originalQuery) {
+    // Score each response
+    const scored = responses.map(response => ({
+      ...response,
+      score: this.calculateConfidence(response.content, originalQuery)
+    }));
+
+    // Sort by score (highest first)
+    scored.sort((a, b) => b.score - a.score);
+
+    console.log(`📊 Response scores: ${scored.map(r => `${r.provider}: ${r.score.toFixed(2)}`).join(', ')}`);
+
+    return scored[0];
+  }
+
+  getProviderDisplayName(provider) {
+    const names = {
+      grok: 'Grok xAI',
+      anthropic: 'Claude',
+      perplexity: 'Perplexity',
+      huggingface: 'UserLM-8b'
+    };
+    return names[provider] || provider;
+  }
+
+  getEnabledProviders() {
+    return Object.entries(this.providers)
+      .filter(([_, config]) => config.enabled)
+      .map(([name, _]) => name);
   }
 }
 
@@ -243,7 +429,7 @@ class ChatService {
   constructor() {
     this.knowledgeBase = new KnowledgeBase();
     this.mathUtils = new MathUtils();
-    this.huggingFaceService = new HuggingFaceService();
+    this.multiModelService = new MultiModelAIService();
   }
 
   async processQuery(query) {
@@ -392,10 +578,12 @@ class ChatService {
       return greeting;
     }
 
-    // Try Hugging Face UserLM-8b for general knowledge queries
-    if (this.huggingFaceService.enabled) {
-      console.log('🧠 Trying Hugging Face UserLM-8b for general query...');
-      const aiResponse = await this.huggingFaceService.generateResponse(
+    // Try all available AI models and pick the best response
+    const enabledProviders = this.multiModelService.getEnabledProviders();
+    if (enabledProviders.length > 0) {
+      console.log(`🤖 Trying ${enabledProviders.length} AI models: ${enabledProviders.join(', ')}`);
+
+      const aiResponse = await this.multiModelService.generateResponse(
         `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful. If the query is about Mangesh's portfolio, focus on his background. For general questions, use your real-time knowledge to provide the most current information available.
 
 User query: ${query}`,
@@ -410,7 +598,7 @@ User query: ${query}`,
         return {
           answer: aiResponse,
           type: 'ai',
-          confidence: 0.8
+          confidence: 0.9
         };
       }
     }
