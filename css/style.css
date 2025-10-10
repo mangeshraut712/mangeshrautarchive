@@ -3438,7 +3438,7 @@ html.dark .fa-brands.fa-linkedin-in, html.dark .fab.fa-linkedin-in {
 }
 
 html.dark .fa-brands.fa-github, html.dark .fab.fa-github {
-    color: #f78166 !important; /* Warm orange for GitHub in dark mode */
+    color: #f0f0f0 !important; /* Light grey for GitHub - clear visibility on dark backgrounds */
 }
 
 html.dark .fa-brands.fa-youtube, html.dark .fab.fa-youtube {
@@ -3447,7 +3447,7 @@ html.dark .fa-brands.fa-youtube, html.dark .fab.fa-youtube {
 
 html.dark .fa-brands.fa-x-twitter, html.dark .fa-brands.fa-twitter,
 html.dark .fab.fa-twitter, html.dark .fab.fa-x-twitter {
-    color: #1da1f2 !important; /* Twitter blue for X in dark mode */
+    color: #ffffff !important; /* White for X/Twitter - maximum visibility on dark backgrounds */
 }
 
 html.dark .fa-solid.fa-globe, html.dark .fas.fa-globe {
