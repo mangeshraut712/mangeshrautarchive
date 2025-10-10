@@ -1223,7 +1223,7 @@ section h2 {
     font-weight: 400;
 }
 
-/* Project Tags - Modern Pill Design with Excellent Light Mode Visibility */
+/* Project Tags - Enhanced Visibility and Contrast */
 .project-card .project-tags {
     margin-bottom: 2rem;
 }
@@ -1248,6 +1248,33 @@ section h2 {
     color: var(--project-card-link-hover-text);
     transform: translateY(-2px);
     box-shadow: var(--project-card-link-hover-shadow);
+}
+
+/* Override for maximum light mode visibility - solid black text */
+.project-card .project-tags .tag {
+    color: #1d1d1f !important; /* Solid black for maximum contrast */
+    background: #f5f5f7 !important; /* Clean light grey background */
+    border-color: #e5e5e7 !important; /* Subtle border */
+}
+
+/* Fix project description text - remove opacity for better readability */
+.project-card p {
+    color: #424245 !important; /* Strong grey, no opacity */
+    opacity: 1 !important; /* Ensure no opacity reduction */
+    line-height: 1.65;
+    font-weight: 400;
+}
+
+/* Ensure all project card text elements are highly visible */
+.project-card .row a,
+.project-card a.text-accent {
+    color: #1d1d1f !important; /* Dark text for links in light mode */
+    font-weight: 600;
+}
+
+.project-card .row a:hover,
+.project-card a.text-accent:hover {
+    color: #0071e3 !important; /* Blue on hover */
 }
 
 /* Project Action Links - View Project, Live Demo */
