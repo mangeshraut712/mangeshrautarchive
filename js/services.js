@@ -1430,8 +1430,12 @@ class ChatService {
         const promises = [
             this.externalServices.searchDuckDuckGo(query),
             this.externalServices.searchWikipedia(query),
-            this.externalServices.getCountryFacts(query), // For location queries
         ];
+
+        // Only call country facts API if query appears to be about countries/locations
+        if (this._isLikelyCountryQuery(query, context)) {
+            promises.push(this.externalServices.getCountryFacts(query));
+        }
 
         // Add Stack Overflow for technical queries
         if (context.keywords && context.keywords.some(k => ['code', 'programming', 'bug', 'error'].includes(k))) {
@@ -1632,6 +1636,56 @@ class ChatService {
         return value
             .replace(/[_-]/g, ' ')
             .replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+
+    // Check if a query is likely about countries
+    _isLikelyCountryQuery(query, context = {}) {
+        if (!query) return false;
+
+        const lower = query.toLowerCase().trim();
+
+        // Always exclude person-related query patterns first
+        const personIndicators = ['who is', 'who was', 'biography of', 'born', 'died', 'age of', 'height of', 'weight of'];
+        if (personIndicators.some(indicator => lower.includes(indicator))) {
+            return false;
+        }
+
+        // Check for actual country names or location queries
+        const countryNames = [
+            'india', 'china', 'usa', 'america', 'united states', 'uk', 'england', 'france', 'germany',
+            'japan', 'canada', 'australia', 'brazil', 'russia', 'mexico', 'italy', 'spain',
+            'south korea', 'netherlands', 'sweden', 'norway', 'denmark', 'finland'
+        ];
+
+        // Direct country queries
+        if (lower.includes('what country') || lower.includes('which country')) return false;
+
+        // Location queries about countries
+        if ((lower.includes('where is') || lower.includes('location of') || lower.includes('capital of')) &&
+            countryNames.some(country => lower.includes(country))) {
+            return true;
+        }
+
+        // Statistics about countries
+        if ((lower.includes('population of') || lower.includes('area of') || lower.includes('gdp of') ||
+             lower.includes('largest country') || lower.includes('smallest country')) &&
+            countryNames.some(country => lower.includes(country))) {
+            return true;
+        }
+
+        // Region/continent queries
+        const regionKeywords = ['continent', 'region', 'europe', 'asia', 'africa', 'north america', 'south america'];
+        if (regionKeywords.some(kw => lower.includes(kw))) {
+            return true;
+        }
+
+        // Context-based detection for specific cases
+        if (context.type === 'location' || context.type === 'statistics') {
+            return true;
+        }
+
+        // Default to false for unclear cases
+        return false;
     }
 
     getHistory() {
