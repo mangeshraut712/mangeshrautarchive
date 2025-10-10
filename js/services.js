@@ -1437,7 +1437,10 @@ class ChatService {
 
         // Only call country facts API if query appears to be about countries/locations
         if (this._isLikelyCountryQuery(query, context)) {
-            promises.push(this.externalServices.getCountryFacts(query));
+            const countryName = this._extractCountryFromQuery(query);
+            if (countryName) {
+                promises.push(this.externalServices.getCountryFacts(countryName));
+            }
         }
 
         // Add Stack Overflow for technical queries
@@ -1639,6 +1642,72 @@ class ChatService {
         return value
             .replace(/[_-]/g, ' ')
             .replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+
+    // Extract country name from natural language queries
+    _extractCountryFromQuery(query) {
+        if (!query) return null;
+
+        const lower = query.toLowerCase().trim();
+
+        // Common country name variations
+        const countryMappings = {
+            'india': 'India',
+            'china': 'China',
+            'usa': 'United States',
+            'america': 'United States',
+            'united states': 'United States',
+            'uk': 'United Kingdom',
+            'england': 'United Kingdom',
+            'france': 'France',
+            'germany': 'Germany',
+            'japan': 'Japan',
+            'canada': 'Canada',
+            'australia': 'Australia',
+            'brazil': 'Brazil',
+            'russia': 'Russia',
+            'mexico': 'Mexico',
+            'italy': 'Italy',
+            'spain': 'Spain',
+            'south korea': 'South Korea',
+            'netherlands': 'Netherlands',
+            'sweden': 'Sweden',
+            'norway': 'Norway',
+            'denmark': 'Denmark',
+            'finland': 'Finland'
+        };
+
+        // Check for countries in the query directly
+        for (const [key, value] of Object.entries(countryMappings)) {
+            if (lower.includes(key)) {
+                return value;
+            }
+        }
+
+        // Extract from patterns like "capital of France", "population of India"
+        const patterns = [
+            /(?:capital|population|area|gdp|size|location)\s+of\s+([\w\s '-]+)/i,
+            /where\s+is\s+([\w\s '-]+)\s+located/i,
+            /[\w\s '-]+(?:capital|population|area)\s+of\s+([\w\s '-]+)/i
+        ];
+
+        for (const pattern of patterns) {
+            const match = lower.match(pattern);
+            if (match) {
+                const extracted = match[match.length - 1].trim();
+                return countryMappings[extracted.toLowerCase()] || extracted;
+            }
+        }
+
+        // Try basic country detection as fallback
+        const commonCountries = Object.values(countryMappings);
+        for (const country of commonCountries) {
+            if (query.toLowerCase().includes(country.toLowerCase())) {
+                return country;
+            }
+        }
+
+        return null;
     }
 
     // Check if a query is likely about countries
