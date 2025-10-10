@@ -5,11 +5,11 @@ import { MathUtilities } from './math.js';
 
 // Configuration for browser environment - defaults only
 const config = {
-    // AI Service configs (disabled by default in browser)
+    // AI Service configs (enabled by default for chat functionality)
     grokApiKey: '',
-    grokEnabled: false,
+    grokEnabled: true,
     anthropicApiKey: '',
-    anthropicEnabled: false,
+    anthropicEnabled: true,
 
     // External service configs
     duckduckgoEnabled: true,
@@ -1263,8 +1263,11 @@ class ChatService {
             ? response.answer
             : this.makeConcise(response);
 
+        const sourceMessage = this._generateSourceMessage(finalAnswer, analysis.type);
+
         const payload = {
             answer: finalAnswer,
+            sourceMessage: sourceMessage,
             type: (response && response.type) || analysis.type,
             confidence: analysis.confidence
         };
@@ -1686,6 +1689,61 @@ class ChatService {
 
         // Default to false for unclear cases
         return false;
+    }
+
+    // Generate a simple source message separate from the answer
+    _generateSourceMessage(answer, queryType) {
+        if (!answer) return '';
+
+        const lowerAnswer = answer.toLowerCase();
+
+        // Detect Grok AI responses
+        if (lowerAnswer.includes('[latest ai response]') || lowerAnswer.includes('powered by grok xai')) {
+            return '📪 Answer provided by Grok AI';
+        }
+
+        // Detect Claude responses
+        if (lowerAnswer.includes('[ai response]') || lowerAnswer.includes('powered by claude')) {
+            return '🤖 Answer provided by Claude AI';
+        }
+
+        // Detect Wikipedia responses
+        if (lowerAnswer.includes('(source: wikipedia') || lowerAnswer.includes('wikipedia.org')) {
+            return '📚 Information from Wikipedia';
+        }
+
+        // Detect DuckDuckGo responses
+        if (lowerAnswer.includes('duckduckgo') || lowerAnswer.includes('(source: duckduckgo')) {
+            return '🔍 Results from DuckDuckGo search';
+        }
+
+        // Detect Stack Overflow responses
+        if (lowerAnswer.includes('stackoverflow') || lowerAnswer.includes('(source: stackoverflow')) {
+            return '💻 Coding answer from Stack Overflow';
+        }
+
+        // Detect country facts
+        if (lowerAnswer.includes('restcountries') || lowerAnswer.includes('population') || lowerAnswer.includes('capital')) {
+            return '🌍 Country information';
+        }
+
+        // Detect portfolio responses
+        if (queryType === 'portfolio' || lowerAnswer.includes('linkedin') || lowerAnswer.includes('github.com/mangeshraut')) {
+            return '👨‍💼 Portfolio information about Mangesh Raut';
+        }
+
+        // Detect math responses
+        if (queryType === 'math' || lowerAnswer.includes('result:') || lowerAnswer.includes('converted:')) {
+            return '🧮 Mathematical calculation';
+        }
+
+        // Detect utility/time responses
+        if (queryType === 'utility' || lowerAnswer.includes('time') || lowerAnswer.includes('today')) {
+            return '🕐 Current date/time information';
+        }
+
+        // Default fallback
+        return '💬 Chatbot response';
     }
 
     getHistory() {
