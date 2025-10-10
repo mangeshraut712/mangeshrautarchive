@@ -3448,31 +3448,49 @@ html.dark .contact-social-links a:hover .fa-solid.fa-code {
     color: #61dafb; /* Code cyan */
 }
 
-/* FOOTER SOCIAL ICONS - Dark Mode */
-html.dark footer .fa-brands.fa-facebook,
-html.dark footer .fa-brands.fa-facebook-f {
-    color: #f0f0f0; /* Light grey for footer */
+/* FOOTER SOCIAL ICONS - Dark Mode - Keep Original Brand Colors */
+html.dark footer i.fa-brands.fa-facebook,
+html.dark footer i.fa-brands.fa-facebook-f,
+html.dark footer a[href*="facebook.com"] i.fa-brands {
+    color: #1877f2 !important; /* Original Facebook Blue */
 }
 
-html.dark footer .fa-brands.fa-instagram {
-    color: #f0f0f0; /* Light grey for footer */
+html.dark footer i.fa-brands.fa-instagram,
+html.dark footer a[href*="instagram.com"] i.fa-brands {
+    color: #e4405f !important; /* Original Instagram Pink */
 }
 
-html.dark footer .fa-brands.fa-linkedin,
-html.dark footer .fa-brands.fa-linkedin-in {
-    color: #f0f0f0; /* Light grey for footer */
+html.dark footer i.fa-brands.fa-linkedin,
+html.dark footer i.fa-brands.fa-linkedin-in,
+html.dark footer a[href*="linkedin.com"] i.fa-brands {
+    color: #0077b5 !important; /* Original LinkedIn Blue */
 }
 
-html.dark footer .fa-brands.fa-youtube {
-    color: #f0f0f0; /* Light grey for footer */
+html.dark footer i.fa-brands.fa-github,
+html.dark footer a[href*="github.com"] i.fa-brands {
+    color: #f0f0f0 !important; /* GitHub light grey (original dark, but needs visibility) */
 }
 
-html.dark footer .fa-solid.fa-globe {
-    color: #f0f0f0; /* Light grey for footer */
+html.dark footer i.fa-brands.fa-youtube,
+html.dark footer a[href*="youtube.com"] i.fa-brands {
+    color: #ff0000 !important; /* Original YouTube Red */
 }
 
-html.dark footer .fa-solid.fa-code {
-    color: #f0f0f0; /* Light grey for footer */
+html.dark footer i.fa-brands.fa-x-twitter,
+html.dark footer i.fa-brands.fa-twitter,
+html.dark footer a[href*="x.com"] i.fa-brands,
+html.dark footer a[href*="twitter.com"] i.fa-brands {
+    color: #ffffff !important; /* Twitter white (original black, but needs visibility) */
+}
+
+html.dark footer i.fa-solid.fa-globe,
+html.dark footer a[href*="wixsite.com"] .fa-solid.fa-globe {
+    color: #0077b5 !important; /* LinkedIn Blue for Web Links */
+}
+
+html.dark footer i.fa-solid.fa-code,
+html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
+    color: #61dafb !important; /* React Blue for LeetCode */
 }
 
 
