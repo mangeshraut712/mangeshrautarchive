@@ -1,4 +1,4 @@
-import { chatService } from './chat-service.js';
+import chatService from './chat-service.js';
 
 // Vercel serverless function for chat processing
 export default async function handler(req, res) {
