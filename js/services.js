@@ -697,8 +697,10 @@ class ExternalServices {
             const response = await fetch(`https://api.duckduckgo.com/?${params}`, {
                 method: 'GET',
                 headers: {
-                    'Accept': 'application/json'
-                }
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
             });
 
             if (!response.ok) {
@@ -758,7 +760,14 @@ class ExternalServices {
                 origin: '*'
             });
 
-            const searchResponse = await fetch(`https://en.wikipedia.org/w/api.php?${params}`);
+            const searchResponse = await fetch(`https://en.wikipedia.org/w/api.php?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
 
             if (!searchResponse.ok) {
                 console.error(`Wikipedia search API error: ${searchResponse.status}`);
@@ -847,7 +856,14 @@ class ExternalServices {
                 const foundTitle = foundResult.title;
 
                 try {
-                    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(foundTitle)}`);
+                    const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(foundTitle)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        mode: 'cors'
+                    });
 
                     if (!response.ok) {
                         console.error(`Wikipedia summary API error: ${response.status} for title: ${foundTitle}`);
@@ -886,7 +902,14 @@ class ExternalServices {
                 fields: 'name,capital,region,subregion,population,area,cca2,cca3'
             });
 
-            const response = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(name)}?${params}`);
+            const response = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(name)}?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
 
             if (!response.ok) {
                 console.error(`RestCountries API error: ${response.status}`);
@@ -931,7 +954,14 @@ class ExternalServices {
                 pagesize: '1'
             });
 
-            const response = await fetch(`https://api.stackexchange.com/2.3/search?${params}`);
+            const response = await fetch(`https://api.stackexchange.com/2.3/search?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
 
             if (!response.ok) {
                 console.error(`Stack Overflow API error: ${response.status}`);
@@ -1368,7 +1398,7 @@ class ChatService {
         const whereMatch = lower.match(/where\s+is\s+([\w\s.'-]+)/);
         if (whereMatch) {
             const place = whereMatch[1].trim();
-            const responses = await this._collectMultipleResponses(query, 'factual', { place, type: 'location' });
+            const responses = await this._collectMultipleResponses(query, 'factual', { type: 'location' });
             const bestResponse = this._compareAndSelectBestResponse(query, responses);
             if (bestResponse) return {
                 answer: bestResponse.formatted,
