@@ -89,53 +89,112 @@
     --shadow-light: var(--shadow-sm);
 }
 
+/* ===== ADVANCED DARK MODE CSS - Latest Technology Implementation ===== */
+
+/* Dark Mode Master Theme - Using Modern CSS Architecture */
+@supports selector(:has()) {
+  html:has(body.dark-trigger) {
+    color-scheme: dark only;
+  }
+}
+
 html.dark {
-    /* Original dark mode colors */
-    --bg-white-light: #000000;  /* Black for dark mode */
-    --bg-grey-light: #1d1d1f;   /* Grey for dark mode */
-    --bg-black-dark: #000000;  /* Black for dark mode */
-    --bg-grey-dark: #1d1d1f;   /* Grey for dark mode */
-    --text-primary: #f5f5f7;
-    --text-secondary: #a1a1a6;
-    --text-accent: #2997ff;
-    --border-color: #424245;
-    --shadow-light: 0 1px 3px rgba(0,0,0,0.3);
+  /* Advanced Color System - HSL Based Dark Mode Palette */
 
-    /* Header/Navigation */
-    --nav-bg: rgba(0,0,0,0.95);
-    --nav-text: #f5f5f7;
-    --nav-border: #424245;
+  /* Dynamic Dark Mode Color Tokens using modern CSS variables */
+  --color-dark-bg-primary: hsl(0, 0%, 0%);
+  --color-dark-bg-secondary: hsl(210, 10%, 15%);
+  --color-dark-bg-tertiary: hsl(210, 8%, 20%);
+  --color-dark-surface: hsl(210, 10%, 10%);
 
-    /* Buttons */
-    --btn-primary: #2997ff;
-    --btn-primary-hover: #0071e3;
-    --btn-text-primary: #ffffff;
+  /* Advanced Text Hierarchy for Dark Mode */
+  --text-primary-dark: hsl(0, 0%, 98%);
+  --text-secondary-dark: hsl(210, 8%, 70%);
+  --text-tertiary-dark: hsl(210, 8%, 50%);
+  --text-accent-dark: hsl(210, 95%, 55%);
 
-    /* Chatbot */
-    --chat-bg: #1d1d1f;
-    --chat-text: #f5f5f7;
-    --chat-accent: #2997ff;
+  /* Modern Border System with HSL Alpha */
+  --border-dark-primary: hsl(210, 10%, 25%);
+  --border-dark-secondary: hsl(210, 10%, 30%);
+  --border-dark-accent: hsl(210, 95%, 45%, 0.6);
 
-    /* Project Cards */
-    --project-card-bg: #1d1d1f;
-    --project-card-text: #f5f5f7;
-    --project-card-border: #424245;
-    --project-card-shadow: 0 6px 24px rgba(0,0,0,0.55);
-    --project-card-hover-shadow: 0 30px 70px rgba(0,0,0,0.65);
-    --project-card-tag-bg: rgba(41, 151, 255, 0.2);
-    --project-card-tag-text: #2997ff;
-    --project-card-link-bg: rgba(41, 151, 255, 0.2);
-    --project-card-link-border: rgba(41, 151, 255, 0.35);
-    --project-card-link-text: #2997ff;
-    --project-card-link-hover-bg: #2997ff;
-    --project-card-link-hover-text: #ffffff;
-    --project-card-link-hover-shadow: 0 6px 18px rgba(41, 151, 255, 0.45);
+  /* Advanced Shadow System using Color-mix and OKLCH */
+  --shadow-dark-sm: 0 1px 2px hsl(0, 0%, 0%, 0.4), 0 1px 4px hsl(210, 95%, 45%, 0.1);
+  --shadow-dark-md: 0 8px 16px hsl(0, 0%, 0%, 0.5), 0 4px 12px hsl(210, 95%, 45%, 0.15);
+  --shadow-dark-lg: 0 16px 32px hsl(0, 0%, 0%, 0.6), 0 8px 24px hsl(210, 95%, 45%, 0.2);
+  --shadow-dark-xl: 0 32px 64px hsl(0, 0%, 0%, 0.7), 0 16px 48px hsl(210, 95%, 45%, 0.25);
 
-    /* Section backgrounds */
-    --bg-primary: #000000;
-    --bg-secondary: #1d1d1f;
+  /* Automated Theme Switching using CSS Container Queries */
+  --text-primary: var(--text-primary-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --text-accent: var(--text-accent-dark);
+  --bg-primary: var(--color-dark-bg-primary);
+  --bg-secondary: var(--color-dark-bg-secondary);
+  --border-color: var(--border-dark-primary);
 
-    background-color: #000000; /* Keep body black only on html.dark class */
+  /* Component-Level Dark Mode Variables */
+  --nav-bg: hsl(0, 0%, 0%, 0.95);
+  --nav-text: var(--text-primary-dark);
+  --nav-border: var(--border-dark-primary);
+
+  /* Modern Button System - Using CSS Var() and calc() */
+  --btn-primary-dark: hsl(210, 95%, 50%);
+  --btn-primary-hover-dark: hsl(210, 95%, 60%);
+  --btn-secondary-dark: hsl(210, 95%, 50%, 0.1);
+  --btn-secondary-border-dark: hsl(210, 95%, 50%, 0.3);
+
+  /* Advanced Card System for Dark Mode */
+  --card-bg-dark: hsl(210, 10%, 12%);
+  --card-border-dark: hsl(210, 10%, 25%);
+  --card-shadow-dark: var(--shadow-dark-lg);
+
+  /* Project Cards - Advanced Dark Mode Implementation */
+  --project-card-bg: var(--card-bg-dark);
+  --project-card-border: var(--card-border-dark);
+  --project-card-shadow: var(--shadow-dark-lg);
+  --project-card-hover-shadow: var(--shadow-dark-xl);
+  --project-card-tag-bg: hsl(210, 95%, 50%, 0.15);
+  --project-card-tag-border: hsl(210, 95%, 50%, 0.3);
+  --project-card-link-text: hsl(210, 95%, 55%);
+  --project-card-link-hover-text: hsl(210, 95%, 70%);
+
+  /* Modern Glassmorphism Effects */
+  --glass-bg: hsl(210, 10%, 8%, 0.8);
+  --glass-border: hsl(210, 10%, 25%, 0.6);
+  --glass-backdrop: blur(20px) saturate(180%);
+
+  /* Advanced Body Background - Using CSS Layer Blending */
+  background:
+    radial-gradient(circle at 20% 50%, hsl(210, 95%, 50%, 0.05), transparent 50%),
+    radial-gradient(circle at 80% 20%, hsl(210, 95%, 45%, 0.03), transparent 50%),
+    radial-gradient(circle at 40% 80%, hsl(210, 100%, 40%, 0.04), transparent 50%),
+    hsl(210, 10%, 5%);
+
+  /* Modern Animation Timing */
+  --animation-fast: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --animation-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* CSS Container Query Support for Component-Level Responsiveness */
+  container-type: inline-size;
+
+  /* Advanced CSS Features */
+  color-scheme: dark;
+
+  /* Modern Scroll Behavior for Dark Theme */
+  scroll-behavior: smooth;
+}
+
+/* Dark Mode Body Enhancement - Using Modern CSS Selectors */
+html.dark body {
+  background: inherit; /* Inherit from html element */
+  color: var(--text-primary-dark);
+
+  /* Modern Prefers-Contrast Support */
+  @media (prefers-contrast: high) {
+    --text-primary-dark: hsl(0, 0%, 100%);
+    --text-secondary-dark: hsl(0, 0%, 95%);
+  }
 }
 html.dark body { /* Override individual state selectors that might conflict */
     background-color: #000000; /* Black body background for dark mode */
