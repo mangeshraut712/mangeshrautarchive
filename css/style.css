@@ -2713,7 +2713,12 @@ html.dark {
 /* Additional Programming Languages */
 .fa-solid.fa-c {
     color: hsl(207, 100%, 47%) !important;
-    font-weight: 900;
+    font-weight: 900 !important;
+}
+
+.fa-solid.fa-cpp, .fa.fa-cpp, .fas.fa-cpp {
+    color: hsl(207, 100%, 47%) !important;
+    font-weight: 900 !important;
 }
 
 .fa-solid.fa-cpp, .fa-solid.fa-c-plus-plus {
