@@ -22,7 +22,8 @@ const assets = [
 
 // Include production config if available
 const productionAssets = [
-    'perplexity-mcp.json'
+    'perplexity-mcp.json',
+    'js/config.local.js'
 ];
 
 async function pathExists(path) {
