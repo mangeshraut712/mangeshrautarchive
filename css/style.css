@@ -3562,7 +3562,7 @@ html.dark .education-card .date-badge {
 
 /* Footer */
 .dark footer {
-    background-color: #111111; /* Match card background */
+    background-color: #2a2a2a; /* Grey footer in dark mode */
     color: #a1a1a6;
     border-top-color: #3a3a3c;
 }
