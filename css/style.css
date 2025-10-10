@@ -1275,10 +1275,10 @@ section h2 {
     font-weight: 400;
 }
 
-/* Colorful project card links - blue by default, blue hover for visual feedback */
+/* Colorful project card links - blue by default and on hover */
 .project-card .row a,
 .project-card a.text-accent {
-    color: #0071e3 !important; /* Blue links by default for color */
+    color: #0071e3 !important; /* Blue links by default */
     font-weight: 600;
     text-decoration: none; /* Clean look without underlines */
     transition: all 0.3s ease;
@@ -1286,7 +1286,8 @@ section h2 {
 
 .project-card .row a:hover,
 .project-card a.text-accent:hover {
-    color: #2997ff !important; /* Lighter blue on hover for visual feedback */
+    color: #0071e3 !important; /* Stay blue on hover for consistency */
+    opacity: 0.8; /* Subtle visual feedback */
     transform: translateY(-1px); /* Subtle lift effect */
 }
 
@@ -1707,33 +1708,51 @@ html.dark .contact-social-links img {
 /* Final Section Refinement */
 /* ===== END OF LIGHT/DARK MODE ENHANCEMENTS ===== */
 
-/* Project cards and timeline items */
-.dark .project-card,
-.dark .timeline-item > div {
-    background-color: #111111; /* Darker card background */
-    border-color: #3a3a3c; /* Subtle border */
-    color: #f5f5f7;
+/* Dark Mode Project Cards - Professional Design */
+html.dark .project-card {
+    background: #1d1d1f; /* Dark card background */
+    border-color: #424245; /* Subtle dark border */
+    box-shadow: 0 6px 24px rgba(0,0,0,0.55); /* Enhanced shadow for dark mode */
 }
-.dark .project-card:hover {
-    border-color: #2997ff; /* Highlight with accent color */
+
+html.dark .project-card:hover {
+    border-color: #2997ff; /* Blue accent on hover */
+    box-shadow: 0 30px 70px rgba(0,0,0,0.65); /* More dramatic shadow */
+    transform: translateY(-8px);
 }
-.dark .project-card h3,
-.dark .timeline-item h3,
-.dark .timeline-item h4 {
-    color: #f5f5f7;
+
+html.dark .project-card h3 {
+    color: #f5f5f7; /* Light text for visibility */
 }
-.dark .project-card p,
-.dark .timeline-item ul,
-.dark .timeline-item ul li {
-    color: #a1a1a6;
+
+html.dark .project-card p {
+    color: #a1a1a6; /* Softer grey for body text */
 }
-.dark .project-card .tag {
-    background-color: rgba(41, 151, 255, 0.15);
-    color: #2997ff;
+
+/* Dark Mode Project Tags - With Blue Accents */
+html.dark .project-card .project-tags .tag {
+    color: #f5f5f7 !important; /* Light text for dark mode */
+    background: rgba(41, 151, 255, 0.2) !important; /* Semi-transparent blue background */
+    border-color: rgba(41, 151, 255, 0.4) !important; /* Blue border */
 }
-.dark .project-card .tag:hover {
-    background-color: #2997ff;
-    color: #fff;
+
+html.dark .project-card .project-tags .tag:hover {
+    background: #2997ff !important; /* Solid blue on hover */
+    color: #ffffff !important; /* White text */
+}
+
+/* Dark Mode Project Links - Blue for Consistency */
+html.dark .project-card .row a,
+html.dark .project-card a.text-accent {
+    color: #2997ff !important; /* Blue links for dark mode */
+    border-color: rgba(41, 151, 255, 0.3) !important;
+}
+
+html.dark .project-card .row a:hover,
+html.dark .project-card a.text-accent:hover {
+    color: #5ac8fa !important; /* Lighter blue on hover */
+    opacity: 0.9; /* Subtle feedback */
+    border-color: rgba(90, 200, 250, 0.5) !important;
 }
 
 /* ===== MOBILE & RESPONSIVE DESIGN - iOS/Android/Tablet Compatible ===== */
