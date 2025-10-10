@@ -57,16 +57,19 @@ export const errorMessages = {
 };
 
 // Load local configuration if available (for API keys)
+// Server-safe: only access document if available
 let localConfig = {};
-const localConfigScript = document.querySelector('script[data-config]');
-if (localConfigScript) {
-    try {
-        const configData = localConfigScript.getAttribute('data-config');
-        if (configData) {
-            localConfig = JSON.parse(configData);
+if (typeof document !== 'undefined') {
+    const localConfigScript = document.querySelector('script[data-config]');
+    if (localConfigScript) {
+        try {
+            const configData = localConfigScript.getAttribute('data-config');
+            if (configData) {
+                localConfig = JSON.parse(configData);
+            }
+        } catch (error) {
+            console.warn('Failed to load local config from script tag:', error);
         }
-    } catch (error) {
-        console.warn('Failed to load local config from script tag:', error);
     }
 }
 
@@ -88,8 +91,9 @@ if (Object.keys(localConfig).length === 0) {
 // Fallback configuration (always available, will be auto-detected for actual availability)
 if (Object.keys(localConfig).length === 0) {
     // Check if we're in a static deployment (GitHub Pages, etc.)
+    // Server-safe: only access window if available
     const isStaticDeployment = typeof window !== 'undefined' &&
-        (window.location.protocol === 'https:' || window.location.hostname.includes('github.io'));
+        window.location && (window.location.protocol === 'https:' || window.location.hostname.includes('github.io'));
 
     localConfig = {
         // 🔥 Primary AI: Grok (xAI) - Disabled by default in static deployments
@@ -157,7 +161,8 @@ if (typeof window !== 'undefined') {
     // Runtime AI availability detection (background task)
     setTimeout(async () => {
         // Skip status check for static deployments (GitHub Pages, etc.)
-        if (window.location.protocol === 'https:' || window.location.hostname.includes('github.io')) {
+        if (typeof window !== 'undefined' && window.location &&
+            (window.location.protocol === 'https:' || window.location.hostname.includes('github.io'))) {
             console.info('Static deployment detected - skipping server status check');
             return;
         }
