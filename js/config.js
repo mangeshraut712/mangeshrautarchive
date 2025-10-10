@@ -66,7 +66,61 @@ if (localConfigScript) {
             localConfig = JSON.parse(configData);
         }
     } catch (error) {
-        console.warn('Failed to load local config:', error);
+        console.warn('Failed to load local config from script tag:', error);
+    }
+}
+
+// Check for GitHub Actions generated config.local.js
+if (Object.keys(localConfig).length === 0) {
+    try {
+        // Try dynamic import for GitHub Actions generated config.local.js
+        const configResponse = await fetch('./js/config.local.js');
+        if (configResponse.ok) {
+            const configModule = await configResponse.text();
+            if (configModule && configModule.includes('export const localConfig')) {
+                // Extract and parse the config object
+                const startIndex = configModule.indexOf('export const localConfig');
+                if (startIndex !== -1) {
+                    const endIndex = configModule.indexOf('};', startIndex) + 2;
+                    const configText = configModule.substring(startIndex, endIndex);
+                    // Simple parsing - extract object content
+                    const configStart = configText.indexOf('{');
+                    const configEnd = configText.lastIndexOf('}');
+                    if (configStart !== -1 && configEnd !== -1) {
+                        const configObjText = configText.substring(configStart + 1, configEnd);
+                        // Simple key-value extraction (basic approach)
+                        localConfig = {};
+                        const lines = configObjText.split(/\r?\n/).map(line => line.trim());
+                        for (const line of lines) {
+                            if (line.includes('grokApiKey:')) {
+                                localConfig.grokApiKey = line.split(':')[1].trim().replace(/[,"']/g, '');
+                            }
+                            if (line.includes('anthropicApiKey:')) {
+                                localConfig.anthropicApiKey = line.split(':')[1].trim().replace(/[,"']/g, '');
+                            }
+                            if (line.includes('grokEnabled:')) {
+                                localConfig.grokEnabled = (line.split(':')[1].trim().toLowerCase() === 'true');
+                            }
+                            if (line.includes('anthropicEnabled:')) {
+                                localConfig.anthropicEnabled = (line.split(':')[1].trim().toLowerCase() === 'true');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.info('GitHub Actions config not available (expected for PRs/forks):', error.message);
+        // Safe fallback - no API keys available for security, but system will still work
+        localConfig = {
+            grokEnabled: false,
+            anthropicEnabled: false,
+            grokApiKey: '',
+            anthropicApiKey: '',
+            // External services remain available
+            wikipediaEnabled: true,
+            duckduckgoEnabled: true
+        };
     }
 }
 
