@@ -1,0 +1,24 @@
+{
+  "grok": {
+    "enabled": true,
+    "model": "grok-4-latest",
+    "available": true
+  },
+  "claude": {
+    "enabled": true,
+    "model": "claude-3-sonnet-20240229",
+    "available": true
+  },
+  "duckduckgo": {
+    "available": true
+  },
+  "wiki": {
+    "available": true
+  },
+  "stackOverflow": {
+    "available": true
+  },
+  "_comment": "Static status file for GitHub Pages - AI services are assumed available when deployed with proper API keys",
+  "_source": "generated-during-github-actions-build",
+  "_timestamp": "2025-10-10T19:20:00Z"
+}
