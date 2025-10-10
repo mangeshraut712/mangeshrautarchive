@@ -2890,21 +2890,25 @@ html.dark footer .fa-solid.fa-code {
 
 
 
-/* Black, Blue, Grey Fonts for Education Cards */
+/* Enhanced Education Card Typography - Perfect Light Mode Visibility */
 .education-card h3,
 .education-card h5 {
     color: #0071e3; /* Blue for titles */
+    font-weight: 700;
+    letter-spacing: -0.025em;
 }
 .education-card h4 {
-    color: #000000; /* Black for subheadings */
+    color: #1d1d1f; /* Deep black for subheadings - maximum contrast */
+    font-weight: 600;
 }
 .education-card p,
 .education-card ul li {
-    color: #000000; /* Black for body */
+    color: #424245; /* Strong grey for body text - excellent readability */
+    line-height: 1.6;
 }
 .education-card .date-badge {
-    color: #666666; /* Grey for dates */
-    background-color: #f0f0f0;
+    color: #86868b; /* Soft grey for dates - proper contrast */
+    background-color: #f5f5f7;
 }
 
 /* Updated Card Design - Latest Technology */
