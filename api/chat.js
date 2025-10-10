@@ -219,37 +219,68 @@ router.post('/', async (req, res) => {
         const trimmedMessage = message.trim();
         console.log(`🎯 Processing query: "${trimmedMessage}"`);
 
-        // First try MCP enhancement
+        // Determine query type for routing
+        const queryType = queryAnalyzer.analyzeQueryType(trimmedMessage);
+        console.log(`📋 Query classified as: ${queryType}`);
+
+        if (queryType === 'portfolio') {
+            // Portfolio queries get direct, accurate, concise answers from knowledge base
+            console.log('💼 Portfolio query - using knowledge base');
+            const result = await chatService.processQuery(trimmedMessage);
+
+            return res.json({
+                answer: result.answer,
+                type: 'portfolio',
+                confidence: result.confidence,
+                processingTime: Date.now() - startTime,
+                mcpEnhanced: false
+            });
+        }
+
+        // For general knowledge, math, and technical queries: Priority is Grok AI first, then other APIs
+        console.log('🤖 Non-portfolio query - prioritizing Grok AI');
+
+        // First try Grok AI via chat service
+        const primaryResult = await chatService.processQuery(trimmedMessage);
+
+        if (primaryResult && (primaryResult.type === 'ai' || primaryResult.type === 'math' || primaryResult.type === 'factual' || primaryResult.type === 'general')) {
+            console.log('✅ Grok AI or direct computation successful');
+            return res.json({
+                answer: primaryResult.answer,
+                type: primaryResult.type,
+                confidence: primaryResult.confidence,
+                source: 'Grok AI',
+                processingTime: Date.now() - startTime,
+                mcpEnhanced: false
+            });
+        }
+
+        // If Grok doesn't provide a direct AI/math response, try MCP enhancement as backup
+        console.log('🔄 Grok AI fallback - trying MCP enhancement');
         const mcpEnhancement = await processWithMCPEnhancement(trimmedMessage);
 
         if (mcpEnhancement) {
-            console.log('🚀 Using MCP-enhanced response');
-            const processingTime = Date.now() - startTime;
-
-            // If we have an MCP response, use it enhanced with the regular chat service if needed
+            console.log('✅ MCP enhancement successful');
             let finalAnswer = mcpEnhancement.answer;
 
-            // For some queries, combine MCP with portfolio knowledge
+            // For queries that might benefit from portfolio context
             if (mcpEnhancement.type && trimmedMessage.toLowerCase().includes('mangesh')) {
-                const baseResult = await chatService.processQuery(trimmedMessage);
-                if (baseResult && baseResult.answer) {
-                    finalAnswer = `${mcpEnhancement.answer}\n\n💼 Portfolio Context: ${baseResult.answer}`;
-                }
+                finalAnswer = `${mcpEnhancement.answer}\n\n💼 Portfolio Context: ${primaryResult ? primaryResult.answer : 'Mangesh is a Software Engineer specializing in Java Spring, AngularJS, AWS, and machine learning.'}`;
             }
 
             return res.json({
                 answer: finalAnswer,
                 type: 'enhanced_ai',
-                confidence: 0.95,
+                confidence: 0.85,
                 source: mcpEnhancement.source,
-                processingTime,
+                processingTime: Date.now() - startTime,
                 mcpEnhanced: true
             });
         }
 
-        // Fallback to regular chat service
-        console.log('🔄 Using standard chat service');
-        const result = await chatService.processQuery(trimmedMessage);
+        // Final fallback to chat service (should include knowledge base responses, external APIs, etc.)
+        console.log('🔄 Final fallback to standard chat service');
+        const result = primaryResult || await chatService.processQuery(trimmedMessage);
 
         res.json({
             answer: result.answer,
