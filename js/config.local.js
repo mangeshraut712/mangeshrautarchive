@@ -4,11 +4,11 @@
 export const localConfig = {
   // 🔥 Grok xAI - Latest AI Model
   grokEnabled: true,
-  grokApiKey: "", // ← Configure locally (see API_KEYS.txt)
+  grokApiKey: "xai-yXUWqZgbryXv8KKcBav1KqtE14mmTiBXUimiOfv3lEQLjIZDDEF8qm1uLkLlLDt3BWNRViqQC5WazyG8",
 
   // 🤖 Claude (Anthropic) - Fallback AI
   anthropicEnabled: true,
-  anthropicApiKey: "", // ← Configure locally (see API_KEYS.txt)
+  anthropicApiKey: "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",
 
   // 📚 Other API configurations
   wikipediaEnabled: true,

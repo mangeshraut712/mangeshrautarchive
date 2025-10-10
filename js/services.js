@@ -1,25 +1,7 @@
 // Intelligent chatbot services using browser-native APIs
 // Compatible with GitHub Pages (client-side only)
-// Remove the import of config.local.js - it contains Node.js specific code
 import { MathUtilities } from './math.js';
 import { localConfig } from './config.js';
-
-// Configuration for browser environment - defaults only
-const config = {
-    // AI Service configs (enabled by default for chat functionality)
-    grokApiKey: '',
-    grokEnabled: true,
-    anthropicApiKey: '',
-    anthropicEnabled: true,
-
-    // External service configs
-    duckduckgoEnabled: true,
-    wikipediaEnabled: true,
-    stackoverflowEnabled: true,
-    mcpEnabled: true,
-    perplexityEnabled: true,
-    githubEnabled: true
-};
 
 // Simple browser-based cache using Map
 class SimpleCache {
@@ -688,7 +670,7 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
 
 class ExternalServices {
     async searchDuckDuckGo(query) {
-        if (!config.duckduckgoEnabled) return null;
+        if (!localConfig.duckduckgoEnabled !== false) return null;
 
         try {
             await apiLimiter.waitForSlot();
@@ -752,7 +734,7 @@ class ExternalServices {
     }
 
     async searchWikipedia(query) {
-        if (!config.wikipediaEnabled) return null;
+        if (!localConfig.wikipediaEnabled !== false) return null;
 
         try {
             await apiLimiter.waitForSlot();
@@ -795,7 +777,7 @@ class ExternalServices {
     }
 
     async getWikipediaSummary(title) {
-        if (!config.wikipediaEnabled || !title) return null;
+        if (!localConfig.wikipediaEnabled !== false || !title) return null;
 
         try {
             await apiLimiter.waitForSlot();
@@ -947,7 +929,7 @@ class ExternalServices {
     }
 
     async searchStackOverflow(query) {
-        if (!config.stackoverflowEnabled) return null;
+        if (!localConfig.stackoverflowEnabled !== false) return null;
 
         try {
             await apiLimiter.waitForSlot();
@@ -1449,7 +1431,7 @@ class ChatService {
         const responses = [];
 
         // Try AI services first (up to 2)
-        if (this.aiService && config.grokEnabled) {
+        if (this.aiService && localConfig.grokEnabled) {
             try {
                 const grokResponse = await this.aiService.getEnhancedResponse(query, { context: 'verification', limit: 100 });
                 if (grokResponse) {

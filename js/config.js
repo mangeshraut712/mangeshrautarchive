@@ -70,57 +70,82 @@ if (localConfigScript) {
     }
 }
 
-// Check for GitHub Actions generated config.local.js
+// Try to load GitHub Actions generated config.local.js (production with embedded keys)
 if (Object.keys(localConfig).length === 0) {
     try {
-        // Try dynamic import for GitHub Actions generated config.local.js
-        const configResponse = await fetch('./js/config.local.js');
-        if (configResponse.ok) {
-            const configModule = await configResponse.text();
-            if (configModule && configModule.includes('export const localConfig')) {
-                // Extract and parse the config object
-                const startIndex = configModule.indexOf('export const localConfig');
-                if (startIndex !== -1) {
-                    const endIndex = configModule.indexOf('};', startIndex) + 2;
-                    const configText = configModule.substring(startIndex, endIndex);
-                    // Simple parsing - extract object content
-                    const configStart = configText.indexOf('{');
-                    const configEnd = configText.lastIndexOf('}');
-                    if (configStart !== -1 && configEnd !== -1) {
-                        const configObjText = configText.substring(configStart + 1, configEnd);
-                        // Simple key-value extraction (basic approach)
-                        localConfig = {};
-                        const lines = configObjText.split(/\r?\n/).map(line => line.trim());
-                        for (const line of lines) {
-                            if (line.includes('grokApiKey:')) {
-                                localConfig.grokApiKey = line.split(':')[1].trim().replace(/[,"']/g, '');
-                            }
-                            if (line.includes('anthropicApiKey:')) {
-                                localConfig.anthropicApiKey = line.split(':')[1].trim().replace(/[,"']/g, '');
-                            }
-                            if (line.includes('grokEnabled:')) {
-                                localConfig.grokEnabled = (line.split(':')[1].trim().toLowerCase() === 'true');
-                            }
-                            if (line.includes('anthropicEnabled:')) {
-                                localConfig.anthropicEnabled = (line.split(':')[1].trim().toLowerCase() === 'true');
-                            }
-                        }
-                    }
-                }
-            }
+        // Import the actual config.local.js module if available
+        const moduleURL = new URL('./config.local.js', window.location.origin + window.location.pathname).href;
+        const configModule = await import(moduleURL);
+
+        if (configModule && configModule.localConfig) {
+            localConfig = { ...configModule.localConfig };
+            console.log('✅ Production config loaded from config.local.js:', {
+                grokEnabled: localConfig.grokEnabled,
+                anthropicEnabled: localConfig.anthropicEnabled,
+                hasGrokKey: !!localConfig.grokApiKey,
+                hasAnthropicKey: !!localConfig.anthropicApiKey
+            });
         }
     } catch (error) {
-        console.info('GitHub Actions config not available (expected for PRs/forks):', error.message);
-        // Safe fallback - no API keys available for security, but system will still work
+        console.info('Production config.local.js not available:', error.message);
+        // Fallback: try fetching and parsing as text (backup method)
+        try {
+            const configResponse = await fetch('./js/config.local.js');
+            if (configResponse.ok) {
+                const configText = await configResponse.text();
+                if (configText.includes('grokApiKey:')) {
+                    // Extract API keys using regex
+                    const grokKeyMatch = configText.match(/grokApiKey:\s*['"`]([^'"`]+)['"`]/);
+                    const anthropicKeyMatch = configText.match(/anthropicApiKey:\s*['"`]([^'"`]+)['"`]/);
+                    const grokEnabledMatch = configText.match(/grokEnabled:\s*(true|false)/);
+                    const anthropicEnabledMatch = configText.match(/anthropicEnabled:\s*(true|false)/);
+
+                    localConfig.grokApiKey = grokKeyMatch ? grokKeyMatch[1] : '';
+                    localConfig.anthropicApiKey = anthropicKeyMatch ? anthropicKeyMatch[1] : '';
+                    localConfig.grokEnabled = grokEnabledMatch ? grokEnabledMatch[1] === 'true' : false;
+                    localConfig.anthropicEnabled = anthropicEnabledMatch ? anthropicEnabledMatch[1] === 'true' : false;
+
+                    // Set other defaults
+                    localConfig.wikipediaEnabled = true;
+                    localConfig.duckduckgoEnabled = true;
+                    localConfig.stackoverflowEnabled = true;
+
+                    console.log('✅ Production config loaded via fetch fallback:', {
+                        grokEnabled: localConfig.grokEnabled,
+                        anthropicEnabled: localConfig.anthropicEnabled,
+                        hasGrokKey: !!localConfig.grokApiKey,
+                        hasAnthropicKey: !!localConfig.anthropicApiKey
+                    });
+                }
+            }
+        } catch (fetchError) {
+            console.info('All config loading methods failed:', fetchError.message);
+        }
+    }
+
+    // If still no config loaded, use safe fallback (development/demo mode)
+    if (Object.keys(localConfig).length === 0) {
         localConfig = {
+            // 🔥 Primary AI: Grok (xAI) - Disabled in fallback for security
             grokEnabled: false,
-            anthropicEnabled: false,
             grokApiKey: '',
+
+            // 🤖 Fallback AI: Claude (Anthropic) - Disabled in fallback for security
+            anthropicEnabled: false,
             anthropicApiKey: '',
-            // External services remain available
+
+            // 📚 External services remain available (free APIs, no keys needed)
             wikipediaEnabled: true,
-            duckduckgoEnabled: true
+            duckduckgoEnabled: true,
+            stackoverflowEnabled: true,
+
+            // 🔧 MCP Server integrations - disabled in fallback
+            mcpEnabled: false,
+            perplexityEnabled: false,
+            githubEnabled: false
         };
+
+        console.warn('🔒 Using secure fallback - AI features disabled (expected for PRs/forks or missing API keys)');
     }
 }
 
