@@ -23,6 +23,18 @@ class MultiModelAIService {
         baseURL: 'https://api.perplexity.ai/chat/completions',
         model: 'llama-3.1-sonar-small-128k-online'
       },
+      gemini: {
+        apiKey: process.env.GEMINI_API_KEY,
+        enabled: !!process.env.GEMINI_API_KEY,
+        baseURL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+        model: 'gemini-pro'
+      },
+      gemini_firebase: {
+        apiKey: process.env.GEMINI_FIREBASE_API_KEY,
+        enabled: !!process.env.GEMINI_FIREBASE_API_KEY,
+        baseURL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+        model: 'gemini-pro'
+      },
       huggingface: {
         apiKey: process.env.HUGGINGFACE_API_KEY,
         enabled: !!process.env.HUGGINGFACE_API_KEY,
@@ -75,6 +87,9 @@ class MultiModelAIService {
         return await this.callAnthropicAPI(config, message, options);
       case 'perplexity':
         return await this.callPerplexityAPI(config, message, options);
+      case 'gemini':
+      case 'gemini_firebase':
+        return await this.callGeminiAPI(config, message, options);
       case 'huggingface':
         return await this.callHuggingFaceAPI(config, message, options);
       default:
@@ -194,6 +209,35 @@ User query: ${message}`,
     return null;
   }
 
+  async callGeminiAPI(config, message, options) {
+    const response = await fetch(`${config.baseURL}?key=${config.apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.
+
+User query: ${message}`
+          }]
+        }],
+        generationConfig: {
+          temperature: options.temperature || 0.7,
+          topK: 40,
+          topP: options.topP || 0.9,
+          maxOutputTokens: options.maxTokens || 512,
+        }
+      })
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+  }
+
   calculateConfidence(response, originalQuery) {
     if (!response) return 0;
 
@@ -240,6 +284,8 @@ User query: ${message}`,
       grok: 'Grok xAI',
       anthropic: 'Claude',
       perplexity: 'Perplexity',
+      gemini: 'Gemini',
+      gemini_firebase: 'Gemini',
       huggingface: 'UserLM-8b'
     };
     return names[provider] || provider;
