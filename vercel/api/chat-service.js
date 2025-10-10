@@ -4,6 +4,14 @@
 // Multi-Model AI Service - Combines multiple AI providers for best responses
 class MultiModelAIService {
   constructor() {
+    // Initialize providers lazily to avoid issues during import
+    this.providers = null;
+    this._initialized = false;
+  }
+
+  _initializeProviders() {
+    if (this._initialized) return;
+
     this.providers = {
       grok: {
         apiKey: process.env.GROK_API_KEY,
@@ -42,9 +50,14 @@ class MultiModelAIService {
         model: 'microsoft/UserLM-8b'
       }
     };
+
+    this._initialized = true;
   }
 
   async generateResponse(message, options = {}) {
+    // Initialize providers if not already done
+    this._initializeProviders();
+
     console.log('🤖 Trying all available AI models for best response...');
 
     const responses = [];
@@ -292,6 +305,9 @@ User query: ${message}`
   }
 
   getEnabledProviders() {
+    // Initialize providers if not already done
+    this._initializeProviders();
+
     return Object.entries(this.providers)
       .filter(([_, config]) => config.enabled)
       .map(([name, _]) => name);
