@@ -87,19 +87,23 @@ if (Object.keys(localConfig).length === 0) {
 
 // Fallback configuration (always available, will be auto-detected for actual availability)
 if (Object.keys(localConfig).length === 0) {
+    // Check if we're in a static deployment (GitHub Pages, etc.)
+    const isStaticDeployment = typeof window !== 'undefined' &&
+        (window.location.protocol === 'https:' || window.location.hostname.includes('github.io'));
+
     localConfig = {
-        // 🔥 Primary AI: Grok (xAI) - Assume enabled by default (will auto-detect)
-        grokEnabled: true,
+        // 🔥 Primary AI: Grok (xAI) - Disabled by default in static deployments
+        grokEnabled: !isStaticDeployment,  // Only enable if we have server proxy support
         grokApiKey: '',
 
-        // 🤖 Fallback AI: Claude (Anthropic) - Assume enabled by default (will auto-detect)
-        anthropicEnabled: true,
+        // 🤖 Fallback AI: Claude (Anthropic) - Disabled by default in static deployments
+        anthropicEnabled: !isStaticDeployment,  // Only enable if we have server proxy support
         anthropicApiKey: '',
 
-        // 📚 External services remain available (free APIs, no keys needed)
-        wikipediaEnabled: true,
-        duckduckgoEnabled: true,
-        stackoverflowEnabled: true,
+        // 📚 External services - CORS-compatible only for static deployments
+        wikipediaEnabled: true,  // Works with CORS and proper headers
+        duckduckgoEnabled: !isStaticDeployment,  // DuckDuckGo blocks CORS in static sites
+        stackoverflowEnabled: !isStaticDeployment, // Stack Overflow has strict CORS policies
 
         // 🔧 MCP Server integrations - disabled in fallback
         mcpEnabled: false,
@@ -107,12 +111,16 @@ if (Object.keys(localConfig).length === 0) {
         githubEnabled: false,
 
         // 🏗️ Future expansion - server-side proxy support flags
-        USE_SERVER_PROXIES: true, // Use proxy endpoints if available
+        USE_SERVER_PROXIES: !isStaticDeployment,  // Disable server proxies in static deployments
         SERVER_PROXY_BASE: '/api/ai',
         STATUS_ENDPOINT: '/api/ai/status'
     };
 
-    console.warn('🔒 Using fallback configuration (AI availability will be auto-detected at runtime).');
+    if (isStaticDeployment) {
+        console.info('🔒 Static deployment detected - AI services disabled by default');
+    } else {
+        console.warn('🔒 Using fallback configuration (AI availability will be auto-detected at runtime).');
+    }
 }
 
 // Suppress expected console warnings for cleaner user experience
@@ -148,6 +156,12 @@ if (typeof window !== 'undefined') {
 
     // Runtime AI availability detection (background task)
     setTimeout(async () => {
+        // Skip status check for static deployments (GitHub Pages, etc.)
+        if (window.location.protocol === 'https:' || window.location.hostname.includes('github.io')) {
+            console.info('Static deployment detected - skipping server status check');
+            return;
+        }
+
         try {
             const statusResponse = await fetch('/api/ai/status', {
                 cache: 'no-store',

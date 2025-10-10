@@ -506,9 +506,10 @@ class AIService {
         this.grokConfig = {
             apiKey: localConfig.grokApiKey || '',
             enabled: localConfig.grokEnabled !== false,
-            baseUrl: '/api/ai/grok',
+            baseUrl: '/api/ai/grok',  // This should be handled by server proxy if available
             fallbackUrl: 'https://api.x.ai/v1/chat/completions',
-            model: localConfig.grokModel || 'grok-4-latest'
+            model: localConfig.grokModel || 'grok-4-latest',
+            available: false  // Will be set during connectivity check
         };
 
         // Fallback AI: Claude (Anthropic)
@@ -516,7 +517,8 @@ class AIService {
             apiKey: localConfig.anthropicApiKey || '',
             enabled: localConfig.anthropicEnabled !== false,
             baseUrl: '/api/ai/claude',
-            fallbackUrl: 'https://api.anthropic.com/v1/messages'
+            fallbackUrl: 'https://api.anthropic.com/v1/messages',
+            available: false  // Will be set during connectivity check
         };
 
         // External search endpoints
@@ -626,8 +628,12 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
             if (!data && hasBrowserKey) {
                 data = await this._requestGrokDirect(requestPayload);
             } else if (!data) {
-                console.warn('Grok proxy unavailable and no browser API key configured');
+            console.warn('Grok proxy unavailable and no browser API key configured');
+            if (!this.supportsGrok()) {
+                console.log('Grok is disabled, skipping this warning');
                 return null;
+            }
+            return null;
             }
 
             if (data && data.choices && data.choices.length > 0) {
@@ -648,6 +654,13 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
     }
 
     async _requestGrokProxy(payload) {
+        // For static deployments (GitHub Pages), server proxy isn't available
+        // This prevents 405 errors in static hosting environments
+        if (window.location.protocol === 'https:' || window.location.hostname.includes('github.io')) {
+            console.log('Static deployment detected - skipping server proxy');
+            return null;
+        }
+
         try {
             const response = await fetch(this.grokConfig.baseUrl, {
                 method: 'POST',
@@ -744,6 +757,12 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
     }
 
     async _requestClaudeProxy(payload) {
+        // For static deployments, server proxy isn't available
+        if (window.location.protocol === 'https:' || window.location.hostname.includes('github.io')) {
+            console.log('Static deployment detected - skipping Claude server proxy');
+            return null;
+        }
+
         try {
             const response = await fetch(this.claudeConfig.baseUrl, {
                 method: 'POST',
