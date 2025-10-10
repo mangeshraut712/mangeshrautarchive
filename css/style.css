@@ -133,9 +133,9 @@ html.dark {
   --border-color: var(--border-dark-primary);
 
   /* Component-Level Dark Mode Variables */
-  --nav-bg: hsl(0, 0%, 0%, 0.95);
+  --nav-bg: hsl(0, 0%, 0%, 0.8);
   --nav-text: var(--text-primary-dark);
-  --nav-border: var(--border-dark-primary);
+  --nav-border: hsl(210, 10%, 35%);
 
   /* Modern Button System - Using CSS Var() and calc() */
   --btn-primary-dark: hsl(210, 95%, 50%);
@@ -1113,10 +1113,10 @@ nav {
     width: 100%;
     height: 56px; /* Apple.com standard height */
     padding: 0 32px; /* Increased horizontal padding */
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 1000;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -1643,34 +1643,35 @@ html.dark .project-card .row a:hover, html.dark .project-card a.text-accent:hove
 }
 
 
-/* Footer - Clean Dark Design with Visible White Text & Colorful Icons */
+/* Footer - Professional Design with Clean Color Scheme */
 footer {
-    background-color: #000000; /* Clean solid black background */
-    color: #ffffff; /* Bright white footer text for maximum visibility */
-    border-top: 1px solid rgba(255,255,255,0.2); /* Subtle white border */
+    background-color: #f8f8f8; /* Clean light grey background in light mode */
+    color: #1d1d1f; /* Dark text for readability */
+    border-top: 1px solid rgba(0,0,0,0.1); /* Subtle border */
     padding-top: 2.5rem; /* Comfortable padding */
     padding-bottom: 2.5rem;
 }
 footer a {
-    color: #ffffff; /* White link color in both modes */
+    color: #1d1d1f; /* Dark link color in light mode */
     transition: color 0.2s ease;
 }
 footer a:hover {
-    color: #0071e3; /* Primary blue on hover (matches accent color) */
+    color: #0071e3; /* Primary blue on hover */
     text-decoration: none;
 }
 footer .fab, footer .fas {
-     font-size: 1.4rem; /* Same size as contact links (1.4rem) */
-     color: #555558; /* Same base color as contact section (#555558) */
+     font-size: 1.4rem;
+     color: #555558; /* Softer grey for icons */
      transition: color 0.2s ease, transform 0.2s ease;
 }
 footer a:hover .fab, footer a:hover .fas {
-    transform: scale(1.1); /* Same scale effect as contact section */
+    color: #0071e3; /* Matching link hover color */
+    transform: scale(1.1);
 }
 footer img {
-    width: 22px; /* Same size as contact section */
+    width: 22px;
     height: 22px;
-    filter: grayscale(30%) contrast(90%); /* Same filter as contact section */
+    filter: grayscale(30%) contrast(90%);
     opacity: 0.8;
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
     vertical-align: middle;
@@ -1678,7 +1679,7 @@ footer img {
 footer a:hover img {
     filter: grayscale(0%) contrast(100%);
     opacity: 1;
-    transform: scale(1.1); /* Same scale effect as contact section */
+    transform: scale(1.1);
  }
 
 /* CONTACT & FOOTER - ORIGINAL BRAND COLORFUL ICONS */
