@@ -1,11 +1,17 @@
 // Intelligent chatbot services using browser-native APIs
 // Compatible with GitHub Pages (client-side only)
-import { localConfig } from './config.local.js';
+// Remove the import of config.local.js - it contains Node.js specific code
 import { MathUtilities } from './math.js';
 
-// Configuration for browser environment
+// Configuration for browser environment - defaults only
 const config = {
-    ...localConfig,
+    // AI Service configs (disabled by default in browser)
+    grokApiKey: '',
+    grokEnabled: false,
+    anthropicApiKey: '',
+    anthropicEnabled: false,
+
+    // External service configs
     duckduckgoEnabled: true,
     wikipediaEnabled: true,
     stackoverflowEnabled: true,
