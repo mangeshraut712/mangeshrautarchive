@@ -784,26 +784,53 @@ class ExternalServices {
 
         try {
             await apiLimiter.waitForSlot();
-            const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
 
-            if (!response.ok) {
-                console.error(`Wikipedia summary API error: ${response.status}`);
+            // Clean up and search for the title first
+            const cleanedTitle = title.trim().toLowerCase();
+
+            // Try to find the actual Wikipedia page by searching first
+            const searchParams = new URLSearchParams({
+                action: 'query',
+                list: 'search',
+                srsearch: cleanedTitle,
+                format: 'json',
+                srwhat: 'text',
+                origin: '*',
+                limit: '1'
+            });
+
+            const searchResponse = await fetch(`https://en.wikipedia.org/w/api.php?${searchParams}`);
+
+            if (!searchResponse.ok) {
+                console.error(`Wikipedia search API error: ${searchResponse.status}`);
                 return null;
             }
 
-            const data = await response.json();
+            const searchData = await searchResponse.json();
 
-            if (data?.extract) {
-                return {
-                    answer: data.extract,
-                    source: 'wikipedia',
-                    url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`
-                };
+            if (searchData.query?.search?.length > 0) {
+                const foundTitle = searchData.query.search[0].title;
+                const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(foundTitle)}`);
+
+                if (!response.ok) {
+                    console.error(`Wikipedia summary API error: ${response.status} for title: ${foundTitle}`);
+                    return null;
+                }
+
+                const data = await response.json();
+
+                if (data?.extract) {
+                    return {
+                        answer: data.extract,
+                        source: 'wikipedia',
+                        url: data.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(foundTitle)}`
+                    };
+                }
             }
 
             return null;
         } catch (error) {
-            console.error('Wikipedia summary error:', error);
+            console.error('Wikipedia API error:', error);
             return null;
         }
     }
