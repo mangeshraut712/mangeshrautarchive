@@ -1,63 +1,66 @@
 // Server-side chat service for Vercel functions
 // Simplified version that doesn't rely on browser APIs
 
-// Anthropic AI integration
-class AnthropicService {
+// Hugging Face AI integration for microsoft/UserLM-8b
+class HuggingFaceService {
   constructor() {
-    this.apiKey = process.env.ANTHROPIC_API_KEY;
+    this.apiKey = process.env.HUGGINGFACE_API_KEY;
     this.enabled = !!this.apiKey;
-    this.baseURL = 'https://api.anthropic.com/v1/messages';
+    this.model = 'microsoft/UserLM-8b';
+    this.baseURL = `https://api-inference.huggingface.co/models/${this.model}`;
   }
 
   async generateResponse(message, options = {}) {
     if (!this.enabled) {
-      console.log('Anthropic API key not configured');
+      console.log('Hugging Face API key not configured');
       return null;
     }
 
     try {
-      console.log('🤖 Calling Anthropic Claude API...');
+      console.log('🧠 Calling Hugging Face UserLM-8b API...');
 
       const response = await fetch(this.baseURL, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
-          'x-api-key': this.apiKey,
-          'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-          model: options.model || 'claude-3-haiku-20240307',
-          max_tokens: options.maxTokens || 512,
-          system: options.systemPrompt || "You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.",
-          messages: [
-            {
-              role: 'user',
-              content: message
-            }
-          ]
+          inputs: message,
+          parameters: {
+            max_new_tokens: options.maxTokens || 512,
+            temperature: options.temperature || 0.7,
+            top_p: options.topP || 0.9,
+            do_sample: true,
+            return_full_text: false
+          },
+          options: {
+            wait_for_model: true,
+            use_cache: false
+          }
         })
       });
 
       if (!response.ok) {
-        console.error(`Anthropic API error: ${response.status} ${response.statusText}`);
+        console.error(`Hugging Face API error: ${response.status} ${response.statusText}`);
         return null;
       }
 
       const data = await response.json();
 
-      if (data.content && data.content.length > 0) {
-        const textBlock = data.content.find(block => block.type === 'text');
-        if (textBlock && textBlock.text) {
-          console.log('✅ Anthropic API response received');
-          return `[AI Response] ${textBlock.text} (Powered by Claude)`;
+      if (data && Array.isArray(data) && data.length > 0) {
+        const generatedText = data[0]?.generated_text || data[0]?.text;
+        if (generatedText) {
+          console.log('✅ Hugging Face API response received');
+          return `[AI Response] ${generatedText} (Powered by UserLM-8b)`;
         }
       }
 
-      console.log('❌ Anthropic API returned incomplete response');
+      console.log('❌ Hugging Face API returned incomplete response');
       return null;
 
     } catch (error) {
-      console.error('❌ Anthropic API error:', error);
+      console.error('❌ Hugging Face API error:', error);
       return null;
     }
   }
@@ -240,7 +243,7 @@ class ChatService {
   constructor() {
     this.knowledgeBase = new KnowledgeBase();
     this.mathUtils = new MathUtils();
-    this.anthropicService = new AnthropicService();
+    this.huggingFaceService = new HuggingFaceService();
   }
 
   async processQuery(query) {
@@ -389,13 +392,19 @@ class ChatService {
       return greeting;
     }
 
-    // Try Anthropic AI for general knowledge queries
-    if (this.anthropicService.enabled) {
-      console.log('🔄 Trying Anthropic AI for general query...');
-      const aiResponse = await this.anthropicService.generateResponse(query, {
-        systemPrompt: "You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful. If the query is about Mangesh's portfolio, focus on his background. For general questions, use your real-time knowledge to provide the most current information available.",
-        maxTokens: 512
-      });
+    // Try Hugging Face UserLM-8b for general knowledge queries
+    if (this.huggingFaceService.enabled) {
+      console.log('🧠 Trying Hugging Face UserLM-8b for general query...');
+      const aiResponse = await this.huggingFaceService.generateResponse(
+        `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful. If the query is about Mangesh's portfolio, focus on his background. For general questions, use your real-time knowledge to provide the most current information available.
+
+User query: ${query}`,
+        {
+          maxTokens: 512,
+          temperature: 0.7,
+          topP: 0.9
+        }
+      );
 
       if (aiResponse) {
         return {
