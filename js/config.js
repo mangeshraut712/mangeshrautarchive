@@ -115,9 +115,21 @@ if (Object.keys(localConfig).length === 0) {
     console.warn('🔒 Using fallback configuration (AI availability will be auto-detected at runtime).');
 }
 
-// Asynchronous runtime feature detection (non-blocking)
+// Suppress expected console warnings for cleaner user experience
 if (typeof window !== 'undefined') {
     // Only run on client side
+    const originalWarn = console.warn;
+    console.warn = function(message, ...args) {
+        if (message && typeof message === 'string') {
+            // Suppress known expected warnings
+            if (message.includes('Using fallback configuration (AI availability will be auto-detected at runtime)')) {
+                return; // This is expected behavior
+            }
+        }
+        originalWarn.call(console, message, ...args);
+    };
+
+    // Asynchronous runtime feature detection (non-blocking)
     import('./config.local.js')
         .then(module => {
             if (module?.localConfig) {
