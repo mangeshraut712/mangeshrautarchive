@@ -17,12 +17,45 @@ export function initOverlayMenu(options = {}) {
         return;
     }
 
-    menuToggle.addEventListener('click', () => {
+    const openMenu = () => {
+        if (body.classList.contains('menu-open')) return;
         body.classList.add('menu-open');
+        overlayMenu.setAttribute('aria-hidden', 'false');
+        menuToggle.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeMenu = () => {
+        if (!body.classList.contains('menu-open')) return;
+        body.classList.remove('menu-open');
+        overlayMenu.setAttribute('aria-hidden', 'true');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        if (typeof menuToggle.focus === 'function') {
+            menuToggle.focus();
+        }
+    };
+
+    menuToggle.addEventListener('click', () => {
+        if (body.classList.contains('menu-open')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
     });
 
     menuClose.addEventListener('click', () => {
-        body.classList.remove('menu-open');
+        closeMenu();
+    });
+
+    overlayMenu.addEventListener('click', (event) => {
+        if (event.target === overlayMenu) {
+            closeMenu();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeMenu();
+        }
     });
 }
 
@@ -50,6 +83,15 @@ export function initOverlayNavigation(options = {}) {
 
             if (body && closeClass) {
                 body.classList.remove(closeClass);
+            }
+            const overlayMenu = documentRef.getElementById('overlay-menu');
+            if (overlayMenu) {
+                overlayMenu.setAttribute('aria-hidden', 'true');
+            }
+            const menuToggle = documentRef.getElementById('menu-btn');
+            if (menuToggle) {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.focus();
             }
 
             setTimeout(() => {

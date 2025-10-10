@@ -66,8 +66,10 @@
     --border-color: var(--border-light);
 
     /* Component-specific color tokens */
-    --nav-bg: hsl(0, 0%, 100%, 0.95);
-    --nav-text: var(--text-primary);
+    --nav-bg: hsla(0, 0%, 100%, 0.85);
+    --nav-text: #1d1d1f;
+    --nav-border: hsla(240, 8%, 85%, 0.55);
+    --nav-hover: #0071e3;
     --btn-primary: var(--color-blue-700);
     --btn-primary-hover: hsl(210, 95%, 45%);
     --btn-text-primary: var(--color-white);
@@ -133,9 +135,10 @@ html.dark {
   --border-color: var(--border-dark-primary);
 
   /* Component-Level Dark Mode Variables */
-  --nav-bg: hsl(0, 0%, 0%, 0.8);
-  --nav-text: var(--text-primary-dark);
-  --nav-border: hsl(210, 10%, 35%);
+  --nav-bg: hsla(240, 6%, 12%, 0.82);
+  --nav-text: #f5f5f7;
+  --nav-border: hsla(0, 0%, 100%, 0.12);
+  --nav-hover: #5ac8fa;
 
   /* Modern Button System - Using CSS Var() and calc() */
   --btn-primary-dark: hsl(210, 95%, 50%);
@@ -676,12 +679,10 @@ html.dark .education-card .date-badge {
 
 /* Links - Blue for interactivity */
 html.dark a:not(.btn),
-html.dark .nav-link,
 html.dark .overlay-nav-link {
     color: hsl(210, 95%, 55%); /* Vibrant blue for links */
 }
 html.dark a:not(.btn):hover,
-html.dark .nav-link:hover,
 html.dark .overlay-nav-link:hover {
     color: hsl(210, 95%, 70%); /* Lighter blue on hover */
 }
@@ -1105,95 +1106,108 @@ section#contact {
 }
 
 /* Navigation - Apple.com Style */
-nav {
+.global-nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    height: 44px; /* Apple's updated navigation height */
-    padding: 0 22px; /* Apple's standard padding */
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    height: 44px;
+    padding: 0 22px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--nav-border);
+    color: var(--nav-text);
     z-index: 1000;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .nav-container {
     max-width: 1024px;
     height: 100%;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-left,
+.nav-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 16px;
+}
+
+.nav-actions {
+    justify-content: flex-end;
+}
+
+.nav-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
 }
 
 .nav-logo img {
     height: 22px;
     width: auto;
-}
-
-.nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 32px;
+    display: block;
 }
 
 .nav-links {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 22px;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.015em;
+    width: 100%;
 }
 
 .nav-link {
-    font-size: 14px;
-    font-weight: 400;
-    color: #1d1d1f;
+    position: relative;
+    color: var(--nav-text);
     text-decoration: none;
     transition: color 0.2s ease;
+    padding: 4px 2px;
     white-space: nowrap;
-    position: relative;
-}
-
-.nav-link:hover {
-    color: #0071e3;
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    bottom: -1px;
     left: 0;
+    bottom: -3px;
     width: 0;
     height: 1px;
-    background-color: #0071e3;
+    background-color: var(--nav-hover);
     transition: width 0.2s ease;
 }
 
-.nav-link:hover::after {
+.nav-link:hover,
+.nav-link:focus-visible {
+    color: var(--nav-hover);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
     width: 100%;
 }
 
-/* Dark mode navigation links */
-html.dark .nav-link {
-    color: #f5f5f7;
-}
-
-html.dark .nav-link:hover {
-    color: #2997ff;
-}
-
-html.dark .nav-link::after {
-    background-color: #2997ff;
+.nav-link:focus-visible {
+    outline: none;
 }
 
 .theme-toggle-nav {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(29, 29, 31, 0.2);
     background: transparent;
     display: flex;
     align-items: center;
@@ -1201,31 +1215,113 @@ html.dark .nav-link::after {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     font-size: 14px;
-    color: var(--text-primary);
-    opacity: 0.8;
+    color: var(--nav-text);
+    opacity: 0.85;
 }
 
-.theme-toggle-nav:hover {
-    background: rgba(0, 113, 227, 0.1);
-    border-color: var(--text-accent);
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+.theme-toggle-nav:hover,
+.theme-toggle-nav:focus-visible {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.35);
+    transform: scale(1.05);
+    color: var(--nav-hover);
     opacity: 1;
+    outline: none;
 }
 
 .theme-toggle-nav i {
     font-size: 14px;
-    color: var(--text-primary);
+    color: currentColor;
 }
 
-@media (max-width: 768px) {
-    .nav-menu {
+.menu-toggle-button {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    color: var(--nav-text);
+    cursor: pointer;
+    padding: 0.35rem 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.menu-toggle-button:hover,
+.menu-toggle-button:focus-visible {
+    color: var(--nav-hover);
+    outline: none;
+}
+
+.menu-icon {
+    position: relative;
+    width: 16px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 999px;
+    display: block;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 999px;
+}
+
+.menu-icon::before {
+    top: -5px;
+}
+
+.menu-icon::after {
+    top: 5px;
+}
+
+.menu-label {
+    display: inline-block;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 1200px) {
+    .nav-container {
+        gap: 24px;
+    }
+    .nav-links {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .nav-container {
         gap: 16px;
     }
     .nav-links {
         display: none;
     }
-    nav {
+    .menu-toggle-button {
+        display: inline-flex;
+    }
+}
+
+@media (max-width: 768px) {
+    .global-nav {
         padding: 0 16px;
     }
 }
@@ -1449,7 +1545,7 @@ html.dark h1, html.dark h2 {
 /* Other headings and text elements - White for readability */
 html.dark h3, html.dark h4, html.dark h5, html.dark h6,
 html.dark .education-card h4, html.dark .education-card h5,
-html.dark .project-card h3, html.dark .nav-link, html.dark .timeline-item h3,
+html.dark .project-card h3, html.dark .timeline-item h3,
 html.dark .timeline-item h4, html.dark .education-card h3 {
     color: hsl(0, 0%, 98%) !important; /* Pure white for sub-headings */
     font-weight: 700 !important;
@@ -1464,16 +1560,46 @@ html.dark .nav-text, html.dark .overlay-nav-link {
 }
 
 /* Links and interactive elements - blue in dark mode */
-html.dark a:not(.btn), html.dark .nav-link, html.dark .overlay-nav-link,
+html.dark a:not(.btn), html.dark .overlay-nav-link,
 html.dark .project-card .row a, html.dark .project-card a.text-accent,
 html.dark .project-card h3:hover {
     color: hsl(210, 95%, 55%) !important; /* Vibrant blue for all links */
 }
 
 /* Hover state for links - lighter blue */
-html.dark a:not(.btn):hover, html.dark .nav-link:hover, html.dark .overlay-nav-link:hover,
+html.dark a:not(.btn):hover, html.dark .overlay-nav-link:hover,
 html.dark .project-card .row a:hover, html.dark .project-card a.text-accent:hover {
     color: hsl(210, 95%, 70%) !important; /* Lighter blue on hover */
+}
+
+/* Preserve Apple-style navigation appearance in dark mode */
+html.dark .global-nav,
+html.dark .global-nav * {
+    color: var(--nav-text) !important;
+}
+
+html.dark .global-nav .nav-link::after {
+    background-color: var(--nav-hover);
+}
+
+html.dark .global-nav .nav-link:hover,
+html.dark .global-nav .nav-link:focus-visible {
+    color: var(--nav-hover) !important;
+}
+
+html.dark .global-nav .theme-toggle-nav {
+    border-color: rgba(245, 245, 247, 0.2);
+    color: var(--nav-text) !important;
+}
+
+html.dark .global-nav .theme-toggle-nav:hover,
+html.dark .global-nav .theme-toggle-nav:focus-visible {
+    border-color: rgba(245, 245, 247, 0.35);
+    background: hsla(0, 0%, 100%, 0.12);
+}
+
+html.dark .global-nav .theme-toggle-nav i {
+    color: currentColor !important;
 }
 
 /* JavaScript override protection - catches the specific querySelector */
@@ -1942,16 +2068,6 @@ html.dark footer a:hover {
     color: #2997ff; /* Brand blue in dark mode */
 }
 
-html.dark .theme-toggle-nav {
-    border-color: #2997ff;
-    color: #2997ff;
-}
-
-html.dark .theme-toggle-nav:hover {
-    background: rgba(41, 151, 255, 0.15);
-    border-color: #66b5ff;
-}
-
 /* Additional Light Mode Safety Overrides */
 section:hover {
     background: inherit; /* Prevent interference */
@@ -2046,7 +2162,7 @@ html.dark .project-card a.text-accent:hover {
     }
 
     /* Mobile Navigation */
-    nav {
+    .global-nav {
         height: 48px; /* Smaller on mobile */
         padding: 0 16px;
     }
@@ -2065,7 +2181,7 @@ html.dark .project-card a.text-accent:hover {
         display: none !important; /* Hide desktop nav on mobile */
     }
 
-    .nav-menu {
+    .nav-left {
         gap: 12px;
     }
 
@@ -2343,7 +2459,7 @@ html.dark .project-card a.text-accent:hover {
         padding: 0 2rem;
     }
 
-    nav {
+    .global-nav {
         height: 52px;
         padding: 0 24px;
     }
@@ -2553,7 +2669,7 @@ html.dark {
 
 /* ===== PRINT STYLES ===== */
 @media print {
-    nav,
+    .global-nav,
     #portfolio-chat-toggle,
     .theme-toggle-nav,
     footer {

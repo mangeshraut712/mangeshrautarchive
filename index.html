@@ -49,36 +49,78 @@
   <body
     class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]"
   >
-    <nav>
+    <nav class="global-nav" aria-label="Primary navigation">
       <div class="nav-container">
-        <div class="nav-logo">
-          <a href="#home">
+        <div class="nav-left">
+          <button
+            id="menu-btn"
+            class="menu-toggle-button"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="overlay-menu"
+            aria-expanded="false"
+          >
+            <span class="menu-icon" aria-hidden="true"></span>
+            <span class="menu-label">Menu</span>
+          </button>
+          <a class="nav-logo" href="#home" aria-label="Mangesh Raut home">
             <img src="images/profile icon.png" alt="Mangesh Raut" />
           </a>
         </div>
-        <div class="nav-menu">
-          <div class="nav-links">
-            <a href="#home" class="nav-link">Home</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#experience" class="nav-link">Experience</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#education" class="nav-link">Education</a>
-            <a href="#publications" class="nav-link">Publications</a>
-            <a href="#awards" class="nav-link">Awards</a>
-            <a href="#certifications" class="nav-link">Certifications</a>
-            <a href="#contact" class="nav-link">Contact</a>
-          </div>
+        <div class="nav-links" role="menubar">
+          <a href="#home" class="nav-link" role="menuitem">Home</a>
+          <a href="#about" class="nav-link" role="menuitem">About</a>
+          <a href="#skills" class="nav-link" role="menuitem">Skills</a>
+          <a href="#experience" class="nav-link" role="menuitem">Experience</a>
+          <a href="#projects" class="nav-link" role="menuitem">Projects</a>
+          <a href="#education" class="nav-link" role="menuitem">Education</a>
+          <a href="#publications" class="nav-link" role="menuitem">Publications</a>
+          <a href="#awards" class="nav-link" role="menuitem">Awards</a>
+          <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
+          <a href="#contact" class="nav-link" role="menuitem">Contact</a>
+        </div>
+        <div class="nav-actions">
           <button
             id="theme-toggle"
             class="theme-toggle-nav"
-            aria-label="Toggle Theme"
+            aria-label="Toggle theme"
           >
-            <i id="theme-toggle-icon" class="fas fa-moon"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" aria-hidden="true"></i>
+            <span class="sr-only">Toggle theme</span>
           </button>
         </div>
       </div>
     </nav>
+
+    <div
+      id="overlay-menu"
+      class="overlay-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-label="Site navigation"
+    >
+      <button
+        id="menu-close"
+        class="menu-close-button"
+        type="button"
+        aria-label="Close navigation menu"
+      >
+        &times;
+      </button>
+      <nav class="overlay-nav" aria-label="Mobile navigation">
+        <a href="#home" class="overlay-nav-link">Home</a>
+        <a href="#about" class="overlay-nav-link">About</a>
+        <a href="#skills" class="overlay-nav-link">Skills</a>
+        <a href="#experience" class="overlay-nav-link">Experience</a>
+        <a href="#projects" class="overlay-nav-link">Projects</a>
+        <a href="#education" class="overlay-nav-link">Education</a>
+        <a href="#publications" class="overlay-nav-link">Publications</a>
+        <a href="#awards" class="overlay-nav-link">Awards</a>
+        <a href="#certifications" class="overlay-nav-link">Certifications</a>
+        <a href="#contact" class="overlay-nav-link">Contact</a>
+      </nav>
+    </div>
     <main id="main-content">
       <!-- Home Section -->
       <section id="home" class="fade-in py-20">
@@ -1300,6 +1342,11 @@
     <!-- END PORTFOLIO CHATBOT -->
 
     <script src="js/theme.js"></script>
+    <script type="module">
+      import { initOverlayMenu, initOverlayNavigation } from './js/modules/overlay.js';
+      initOverlayMenu();
+      initOverlayNavigation({ offsetSelector: '.global-nav' });
+    </script>
     <script type="module" src="js/modules/contact.js"></script>
     <!-- Enhanced Apple Intelligence Chatbot - Backend API Integration -->
     <script>
