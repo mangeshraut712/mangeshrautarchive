@@ -2488,7 +2488,272 @@ html.dark {
     }
 }
 
-/* ===== BEAUTIFUL ICON SYSTEM - Latest Font Awesome 6.6.0+ ===== */
+/* ===== SKILLS & TECHNOLOGIES ICONS IN DARK MODE - ORIGINAL COLORS ===== */
+
+/* Programming Languages - Perfect Brand Colors */
+.fa-solid.fa-code, .fas.fa-code {
+    color: hsl(199, 100%, 55%) !important; /* React blue for general coding */
+    font-weight: 900;
+}
+
+/* JavaScript & TypeScript - Official Colors */
+.fa-brands.fa-js, .fa-brands.fa-square-js, .fab.fa-js, .fab.fa-js-square {
+    color: hsl(54, 91%, 58%) !important; /* JavaScript yellow */
+    font-weight: 400;
+    background: linear-gradient(45deg, hsl(54, 91%, 58%), hsl(0, 0%, 80%)); /* Gradient for 3D effect */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.fa-brands.fa-node-js, .fab.fa-node-js {
+    color: hsl(118, 48%, 43%) !important; /* Node.js green */
+    font-weight: 400;
+}
+
+.fa-brands.fa-react, .fab.fa-react {
+    color: hsl(199, 100%, 55%) !important; /* React blue */
+    font-weight: 400;
+}
+
+/* Frameworks & Libraries */
+.fa-brands.fa-java, .fab.fa-java {
+    color: hsl(12, 85%, 52%) !important; /* Java red */
+    font-weight: 400;
+}
+
+.fa-brands.fa-spring, .fab.fa-spring {
+    color: hsl(99, 43%, 47%) !important; /* Spring green */
+    font-weight: 400;
+}
+
+.fa-brands.fa-angular, .fab.fa-angular {
+    color: hsl(0, 84%, 60%) !important; /* Angular red */
+    font-weight: 400;
+}
+
+.fa-solid.fa-brain, .fas.fa-brain {
+    color: hsl(259, 100%, 70%) !important; /* Purple for AI/ML */
+    font-weight: 900;
+    animation: brainPulse 2s infinite;
+}
+
+.fa-solid.fa-robot, .fas.fa-robot {
+    color: hsl(188, 100%, 50%) !important; /* Cyan for robotics/AI */
+    font-weight: 900;
+}
+
+/* Cloud & DevOps - Precise Brand Colors */
+.fa-brands.fa-aws, .fab.fa-aws {
+    color: hsl(32, 100%, 50%) !important; /* AWS orange */
+    font-weight: 400;
+}
+
+.fa-brands.fa-docker, .fab.fa-docker {
+    color: hsl(203, 87%, 53%) !important; /* Docker blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-jenkins, .fab.fa-jenkins {
+    color: hsl(5, 76%, 45%) !important; /* Jenkins red */
+    font-weight: 400;
+}
+
+/* Development Tools */
+.fa-solid.fa-gear, .fa-solid.fa-cogs, .fas.fa-cogs {
+    color: hsl(233, 47%, 71%) !important; /* Indigo for DevOps tools */
+    font-weight: 900;
+    animation: spin 4s linear infinite;
+}
+
+.fa-solid.fa-code-branch, .fas.fa-code-branch {
+    color: hsl(160, 84%, 39%) !important; /* Emerald for git/terraform */
+    font-weight: 900;
+}
+
+.fa-brands.fa-git-alt, .fa-brands.fa-git, .fab.fa-git {
+    color: hsl(15, 86%, 50%) !important; /* Git orange */
+    font-weight: 400;
+}
+
+/* Databases - Perfect Colors */
+.fa-solid.fa-database, .fas.fa-database {
+    color: hsl(162, 84%, 39%) !important; /* Green for databases */
+    font-weight: 900;
+}
+
+.fa-brands.fa-mysql, .fab.fa-mysql {
+    color: hsl(204, 64%, 44%) !important; /* MySQL blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-postgresql, .fab.fa-postgresql {
+    color: hsl(215, 79%, 51%) !important; /* PostgreSQL blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-mongodb, .fab.fa-mongodb {
+    color: hsl(114, 55%, 55%) !important; /* MongoDB green */
+    font-weight: 400;
+}
+
+.fa-brands.fa-redis, .fab.fa-redis {
+    color: hsl(0, 71%, 51%) !important; /* Redis red */
+    font-weight: 400;
+}
+
+/* Analysis & Search */
+.fa-solid.fa-magnifying-glass, .fa-solid.fa-search, .fas.fa-search {
+    color: hsl(220, 13%, 50%) !important; /* Cool gray */
+    font-weight: 900;
+}
+
+.fa-solid.fa-network-wired, .fas.fa-network-wired {
+    color: hsl(192, 95%, 51%) !important; /* Sky blue for networking */
+    font-weight: 900;
+}
+
+.fa-brands.fa-microsoft, .fab.fa-microsoft {
+    color: hsl(195, 100%, 47%) !important; /* Microsoft blue */
+    font-weight: 400;
+}
+
+.fa-brands.fa-google, .fab.fa-google {
+    color: hsl(217, 89%, 61%) !important; /* Google blue */
+    font-weight: 400;
+}
+
+/* Modern Tech - Vibrant Colors */
+.fa-solid.fa-leaf, .fas.fa-leaf {
+    color: hsl(142, 76%, 36%) !important; /* Modern green */
+    font-weight: 900;
+    filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.3));
+}
+
+.fa-solid.fa-shield, .fa-solid.fa-shield-alt, .fas.fa-shield-alt {
+    color: hsl(0, 71%, 51%) !important; /* Red for security */
+    font-weight: 900;
+    filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.2));
+}
+
+.fa-solid.fa-chart-line, .fas.fa-chart-line {
+    color: hsl(38, 92%, 50%) !important; /* Amber for analytics */
+    font-weight: 900;
+}
+
+/* Latest Font Awesome Features */
+.fa-solid.fa-laptop-code, .fas.fa-laptop-code {
+    color: hsl(259, 100%, 70%) !important; /* Purple for coding laptops */
+    font-weight: 900;
+}
+
+.fa-solid.fa-server, .fas.fa-server {
+    color: hsl(218, 19%, 35%) !important; /* Gray for servers */
+    font-weight: 900;
+}
+
+.fa-solid.fa-cloud, .fas.fa-cloud {
+    color: hsl(233, 47%, 71%) !important; /* Indigo for cloud */
+    font-weight: 900;
+}
+
+.fa-solid.fa-spinner, .fas.fa-spinner {
+    color: hsl(188, 100%, 50%) !important; /* Cyan for loading */
+    font-weight: 900;
+}
+
+/* Certifications & Achievement Icons */
+.fa-solid.fa-certificate, .fas.fa-certificate {
+    color: hsl(267, 84%, 73%) !important; /* Purple for certifications */
+    font-weight: 900;
+}
+
+.fa-solid.fa-trophy, .fas.fa-trophy {
+    color: hsl(45, 93%, 47%) !important; /* Gold for awards */
+    font-weight: 900;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+}
+
+/* Project & Demo Links */
+.fa-solid.fa-external-link-alt, .fa-solid.fa-external-link, .fas.fa-external-link {
+    color: hsl(217, 91%, 60%) !important; /* Blue for external links */
+    font-weight: 900;
+}
+
+.fa-solid.fa-globe, .fas.fa-globe {
+    color: hsl(160, 84%, 39%) !important; /* Emerald for web/live demo */
+    font-weight: 900;
+}
+
+.fa-brands.fa-github, .fab.fa-github {
+    color: hsl(0, 0%, 10%) !important; /* GitHub dark */
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.fa-brands.fa-github:hover {
+    color: hsl(0, 0%, 100%) !important; /* White on hover */
+    background: linear-gradient(135deg, #6b7280, #374151);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Resume Download */
+.fa-solid.fa-download, .fas.fa-download {
+    color: hsl(162, 84%, 39%) !important; /* Green for download */
+    font-weight: 900;
+}
+
+.fa-solid.fa-file-pdf, .fas.fa-file-pdf {
+    color: hsl(0, 76%, 63%) !important; /* Red for PDF */
+    font-weight: 900;
+}
+
+/* Additional Programming Languages */
+.fa-solid.fa-c {
+    color: hsl(207, 100%, 47%) !important;
+    font-weight: 900;
+}
+
+.fa-solid.fa-cpp, .fa-solid.fa-c-plus-plus {
+    color: hsl(207, 100%, 47%) !important;
+    font-weight: 900;
+}
+
+.fa-brands.fa-swift, .fab.fa-swift {
+    color: hsl(19, 88%, 61%) !important; /* Swift orange */
+    font-weight: 400;
+}
+
+.fa-brands.fa-python {
+    color: hsl(200, 52%, 45%) !important;
+    font-weight: 400;
+}
+
+.fa-brands.fa-c-plus-plus, .fab.fa-c-plus-plus {
+    color: hsl(207, 100%, 47%) !important;
+    font-weight: 400;
+}
+
+/* Advanced Tech Icons */
+.fa-solid.fa-layer-group, .fas.fa-layer-group {
+    color: hsl(38, 92%, 50%) !important; /* Amber for layers/Deep Learning */
+    font-weight: 900;
+}
+
+.fa-solid.fa-brain-circuit, .fas.fa-brain-circuit {
+    color: hsl(259, 100%, 70%) !important; /* Purple for neural networks */
+    font-weight: 900;
+    animation: brainPulse 3s infinite;
+}
+
+.fa-solid.fa-chart-simple, .fas.fa-chart-simple {
+    color: hsl(162, 84%, 39%) !important; /* Green for analytics */
+    font-weight: 900;
+}
+
+/* ===== ORIGINAL ICON SYSTEM - Latest Font Awesome 6.6.0+ ===== */
 
 /* Programming Languages - Perfect Brand Colors */
 .fa-solid.fa-code, .fas.fa-code {
