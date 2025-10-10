@@ -2,7 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="theme-color" content="#0071e3" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="format-detection" content="telephone=yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
     <title>Mangesh Raut - Software Engineer</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -32,9 +39,34 @@
     <script src="https://cdn.jsdelivr.net/npm/lru-cache@10/dist/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="js/firebase-config.js"></script>
+    <!-- Firebase SDK v9 (modular) -->
+    <script type="module">
+      // Firebase v9 modular imports
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
+        authDomain: "mangeshrautarchive.firebaseapp.com",
+        projectId: "mangeshrautarchive",
+        storageBucket: "mangeshrautarchive.firebasestorage.app",
+        messagingSenderId: "560373560182",
+        appId: "1:560373560182:web:218658d0db3b1aa6c60057",
+        measurementId: "G-YX2XQWYSCQ"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getFirestore(app);
+
+      // Make Firebase available globally for the contact form
+      window.firebase = { db, app };
+
+      console.log('Firebase v9 initialized successfully');
+    </script>
     <!-- Import the client-side chat service -->
     <script type="module">
       import { chatService } from './js/services.js';
@@ -1614,9 +1646,8 @@
     </script>
 
     <script>
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
+      // Firebase v9 initialization is now handled by the module script above
+      console.log('Firebase initialization completed');
     </script>
   </body>
 </html>
