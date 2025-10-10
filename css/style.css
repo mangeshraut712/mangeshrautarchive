@@ -1251,10 +1251,20 @@ section h2 {
 }
 
 /* Override for maximum light mode visibility - solid black text */
-.project-card .project-tags .tag {
+.project-card .project-tags .tag,
+/* Prevent JavaScript color overrides - maximum specificity */
+.project-card .project-tags .tag[class*="text-accent"],
+/* Additional selector to catch all text-accent variations */
+.project-card .project-tags .text-accent.text-xs.rounded {
     color: #1d1d1f !important; /* Solid black for maximum contrast */
     background: #f5f5f7 !important; /* Clean light grey background */
     border-color: #e5e5e7 !important; /* Subtle border */
+}
+
+/* JavaScript override protection - catches the specific querySelector */
+.text-accent,
+.text-xs {
+    color: #1d1d1f !important; /* Force override any JS changes */
 }
 
 /* Fix project description text - remove opacity for better readability */
@@ -1265,16 +1275,19 @@ section h2 {
     font-weight: 400;
 }
 
-/* Ensure all project card text elements are highly visible */
+/* Colorful project card links - blue by default, blue hover for visual feedback */
 .project-card .row a,
 .project-card a.text-accent {
-    color: #1d1d1f !important; /* Dark text for links in light mode */
+    color: #0071e3 !important; /* Blue links by default for color */
     font-weight: 600;
+    text-decoration: none; /* Clean look without underlines */
+    transition: all 0.3s ease;
 }
 
 .project-card .row a:hover,
 .project-card a.text-accent:hover {
-    color: #0071e3 !important; /* Blue on hover */
+    color: #2997ff !important; /* Lighter blue on hover for visual feedback */
+    transform: translateY(-1px); /* Subtle lift effect */
 }
 
 /* Project Action Links - View Project, Live Demo */
