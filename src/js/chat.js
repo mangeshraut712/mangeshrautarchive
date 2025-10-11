@@ -43,6 +43,14 @@ class IntelligentAssistant {
     }
 
     async initialize() {
+        // For GitHub Pages deployment, work offline only to avoid CORS issues
+        const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+        if (hostname.includes('github.io')) {
+            console.log('🤖 GitHub Pages detected - running in offline mode');
+            this.isReadyState = true;
+            return false; // False indicates offline mode, but ready for local processing
+        }
+
         if (!navigator.onLine) {
             console.warn('Offline mode - limited functionality');
             this.isReadyState = true;
@@ -146,6 +154,13 @@ class IntelligentAssistant {
     }
 
     async callApi(query) {
+        // Skip API calls on GitHub Pages to avoid CORS issues
+        const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+        if (hostname.includes('github.io')) {
+            console.log('🔄 Skipping API call on GitHub Pages (CORS restriction)');
+            return null;
+        }
+
         try {
             console.log('🖥️ Calling API with query:', query);
 
