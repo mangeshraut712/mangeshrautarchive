@@ -8,10 +8,11 @@ if (typeof window !== 'undefined') {
         API_BASE = window.APP_CONFIG.apiBaseUrl;
     } else if (!API_BASE) {
         const hostname = window.location.hostname || '';
-        if (hostname.includes('github.io')) {
-            API_BASE = 'https://mangeshrautarchive.vercel.app';
-        } else if (hostname.endsWith('.vercel.app') || hostname === 'localhost' || hostname === '127.0.0.1') {
+        // Use API for local development and Vercel deployment only - GitHub Pages gets offline mode
+        if (hostname.endsWith('.vercel.app') || hostname === 'localhost' || hostname === '127.0.0.1') {
             API_BASE = '';
+        } else {
+            // On GitHub Pages or other static hosting, don't set API_BASE at all for offline mode
         }
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
