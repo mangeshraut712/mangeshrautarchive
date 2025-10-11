@@ -321,12 +321,48 @@ class ChatUI {
 
         if (response.error) metadata.error = true;
 
-        if (response.html && features.enableMarkdownRendering) {
-            return { content: { html: response.html }, metadata };
+        const normalized = this._normalizeAnswerPayload(response);
+        if (normalized && typeof normalized === 'object' && normalized.html && features.enableMarkdownRendering) {
+            return { content: { html: normalized.html }, metadata };
         }
 
-        const answer = response.answer ?? response.text ?? '';
-        return { content: answer, metadata };
+        return { content: normalized, metadata };
+    }
+
+    _normalizeAnswerPayload(response) {
+        const value = response?.html ? { html: response.html } : (response?.answer ?? response?.text ?? response);
+        return this._normalizeAnswerValue(value);
+    }
+
+    _normalizeAnswerValue(value) {
+        if (value === null || value === undefined) return '';
+        if (typeof value === 'string') return value;
+        if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+        if (Array.isArray(value)) {
+            return value.map(item => this._normalizeAnswerValue(item)).filter(Boolean).join('\n');
+        }
+
+        if (typeof value === 'object') {
+            if (value.html && typeof value.html === 'string') {
+                return { html: value.html };
+            }
+            if (typeof value.text === 'string') {
+                return value.text;
+            }
+            if (typeof value.answer === 'string') {
+                return value.answer;
+            }
+            if (typeof value.content === 'string') {
+                return value.content;
+            }
+        }
+
+        try {
+            return JSON.stringify(value);
+        } catch {
+            return String(value);
+        }
     }
 
     _formatProviderLabel(entry) {
