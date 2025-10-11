@@ -12,16 +12,6 @@ function buildApiUrl(path) {
     return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
-function buildApiUrl(path) {
-    if (!API_BASE) {
-        return path;
-    }
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-        return path;
-    }
-    return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
-}
-
 // Intelligent Chat Assistant with Integrated AI
 class IntelligentAssistant {
     constructor(options = {}) {
