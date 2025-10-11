@@ -243,7 +243,7 @@ html.dark body { /* Override individual state selectors that might conflict */
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
-    z-index: 900;
+    z-index: 1600;
     font-family: "Inter", 'SF Pro Display', 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     opacity: 0;
     transform: translateY(20px) scale(0.98);
@@ -550,7 +550,7 @@ html.dark .message-metadata span {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: all 0.3s ease;
-    z-index: 1000;
+    z-index: 1700;
 }
 
 #portfolio-chat-toggle:hover {

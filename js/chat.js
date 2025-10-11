@@ -1,6 +1,22 @@
 import { localConfig } from './config.js';
+import { chatService as clientChatService } from './services.js';
 
-const API_BASE = localConfig.apiBaseUrl || '';
+let API_BASE = localConfig.apiBaseUrl || '';
+
+if (typeof window !== 'undefined') {
+    if (window.APP_CONFIG?.apiBaseUrl) {
+        API_BASE = window.APP_CONFIG.apiBaseUrl;
+    } else if (!API_BASE) {
+        const hostname = window.location.hostname || '';
+        if (hostname.includes('github.io')) {
+            API_BASE = 'https://mangeshrautarchive.vercel.app';
+        } else if (hostname.endsWith('.vercel.app') || hostname === 'localhost' || hostname === '127.0.0.1') {
+            API_BASE = '';
+        }
+    }
+} else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
+    API_BASE = `https://${process.env.VERCEL_URL}`;
+}
 
 function buildApiUrl(path) {
     if (!API_BASE) {
@@ -95,21 +111,41 @@ class IntelligentAssistant {
     }
 
     async processQuery(query) {
-        const response = await this.callApi(query);
+        const trimmed = query.trim();
+        const responses = [];
 
-        if (response && response.answer) {
-            return response;
+        if (!this.isReady()) {
+            try {
+                await this.initialize();
+            } catch (error) {
+                console.warn('Assistant initialization failed before processing:', error);
+            }
         }
 
-        console.log('🔄 Backend failed, using basic processing...');
-        return this.basicQueryProcessing(query);
+        const serverRaw = await this.callApi(trimmed);
+        const serverResponse = this.normalizeResponse(serverRaw, 'AssistMe Server');
+        if (serverResponse) {
+            responses.push(serverResponse);
+            if (this.isMeaningfulResponse(serverResponse)) {
+                return serverResponse;
+            }
+        }
+
+        const clientRaw = await this.callClientService(trimmed);
+        const clientResponse = this.normalizeResponse(clientRaw, 'AssistMe');
+        if (clientResponse) {
+            responses.push(clientResponse);
+        }
+
+        const best = this.chooseBestResponse(responses);
+        if (best) {
+            return best;
+        }
+
+        return this.basicQueryProcessing(trimmed);
     }
 
     async callApi(query) {
-        if (!this.isReadyState) {
-            return null;
-        }
-
         try {
             console.log('🖥️ Calling API with query:', query);
 
@@ -120,7 +156,7 @@ class IntelligentAssistant {
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({ message: query }),
-                signal: AbortSignal.timeout(15000) // 15 second timeout
+                signal: AbortSignal.timeout(15000)
             });
 
             if (!response.ok) {
@@ -129,6 +165,7 @@ class IntelligentAssistant {
 
             const data = await response.json();
             console.log('✅ API response received:', data);
+            this.isReadyState = true;
 
             return data;
 
@@ -137,6 +174,60 @@ class IntelligentAssistant {
             this.markServerUnavailable();
             return null;
         }
+    }
+
+    async callClientService(query) {
+        try {
+            return await clientChatService.processQuery(query);
+        } catch (error) {
+            console.warn('Client-side service failed:', error);
+            return null;
+        }
+    }
+
+    normalizeResponse(payload, defaultSource = 'AssistMe') {
+        if (!payload) return null;
+
+        if (typeof payload === 'string') {
+            return {
+                answer: payload,
+                type: 'general',
+                confidence: 0.3,
+                source: defaultSource,
+                providers: []
+            };
+        }
+
+        return {
+            answer: payload.answer ?? payload.text ?? '',
+            type: payload.type || 'general',
+            confidence: typeof payload.confidence === 'number' ? payload.confidence : 0.5,
+            source: payload.source || defaultSource,
+            providers: Array.isArray(payload.providers) ? payload.providers : [],
+            processingTime: payload.processingTime
+        };
+    }
+
+    isMeaningfulResponse(response) {
+        if (!response || !response.answer) return false;
+        if (this.isGenericFallback(response.answer)) return false;
+        if (response.type && response.type !== 'general') return true;
+        return (response.confidence ?? 0) >= 0.55;
+    }
+
+    isGenericFallback(answer) {
+        if (!answer) return true;
+        const lower = String(answer).toLowerCase();
+        return lower.includes("i can help with information about mangesh raut's portfolio") ||
+               lower.includes("i'm still learning") ||
+               lower.includes('technical difficulties') ||
+               lower.includes('try rephrasing');
+    }
+
+    chooseBestResponse(responses = []) {
+        const valid = responses.filter(Boolean);
+        if (!valid.length) return null;
+        return valid.sort((a, b) => (b.confidence ?? 0) - (a.confidence ?? 0))[0] || valid[0];
     }
 
     basicQueryProcessing(query) {
