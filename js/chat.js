@@ -1,24 +1,16 @@
-import { localConfig, features } from './config.js';
+import { localConfig } from './config.js';
 
-const API_BASE = (() => {
-    if (typeof window !== 'undefined') {
-        if (window.APP_CONFIG?.apiBaseUrl) return window.APP_CONFIG.apiBaseUrl;
+const API_BASE = localConfig.apiBaseUrl || '';
 
-        if (localConfig.apiBaseUrl) return localConfig.apiBaseUrl;
-
-        const hostname = window.location.hostname || '';
-
-        if (hostname.includes('github.io')) {
-            return 'https://mangeshrautarchive.vercel.app';
-        }
-
-        if (hostname.endsWith('vercel.app')) {
-            return '';
-        }
+function buildApiUrl(path) {
+    if (!API_BASE) {
+        return path;
     }
-
-    return localConfig.apiBaseUrl || '';
-})();
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        return path;
+    }
+    return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 function buildApiUrl(path) {
     if (!API_BASE) {
