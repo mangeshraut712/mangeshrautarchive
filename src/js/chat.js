@@ -29,6 +29,80 @@ function buildApiUrl(path) {
     return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
+const SOURCE_KEY_ALIASES = {
+    'assistme': 'assistme',
+    'assistme server': 'assistme',
+    'assistme client': 'assistme',
+    'assistme portfolio': 'assistme-portfolio',
+    'assistme chat': 'assistme',
+    'assistme math': 'assistme-math',
+    'assistme math engine': 'assistme-math',
+    'assistme general': 'assistme',
+    'assistme utility': 'assistme-utility',
+    'portfolio': 'assistme-portfolio',
+    'math': 'assistme-math',
+    'openai': 'openai',
+    'openai gpt': 'openai',
+    'gpt': 'openai',
+    'gpt-4': 'openai',
+    'gpt-4o': 'openai',
+    'gpt-35-turbo': 'openai',
+    'gpt-3.5-turbo': 'openai',
+    'anthropic': 'claude',
+    'claude': 'claude',
+    'claude ai': 'claude',
+    'claude 3': 'claude',
+    'sonnet': 'claude',
+    'haiku': 'claude',
+    'grok': 'grok',
+    'xai grok': 'grok',
+    'grok ai': 'grok',
+    'x.ai': 'grok',
+    'gemini': 'gemini',
+    'google gemini': 'gemini',
+    'duckduckgo': 'duckduckgo',
+    'duck duck go': 'duckduckgo',
+    'duckduckgo search': 'duckduckgo',
+    'wikipedia': 'wikipedia',
+    'wiki': 'wikipedia',
+    'wikipedia.org': 'wikipedia',
+    'stack overflow': 'stackoverflow',
+    'stackoverflow': 'stackoverflow',
+    'offline knowledge': 'offline',
+    'offline knowledge base': 'offline',
+    'offline': 'offline',
+    'restcountries': 'country_facts',
+    'country facts': 'country_facts',
+    'perplexity': 'perplexity',
+    'perplexity ai': 'perplexity',
+    'huggingface': 'huggingface',
+    'hugging face': 'huggingface',
+    'openrouter': 'openrouter',
+    'open router': 'openrouter',
+    'local cache': 'assistme',
+    'cached': 'assistme'
+};
+
+const SOURCE_LABELS = {
+    'assistme': 'AssistMe Portfolio',
+    'assistme-portfolio': 'AssistMe Portfolio',
+    'assistme-math': 'AssistMe Math Engine',
+    'assistme-utility': 'AssistMe Utility',
+    'assistme-general': 'AssistMe',
+    'openai': 'OpenAI',
+    'grok': 'Grok (xAI)',
+    'claude': 'Claude (Anthropic)',
+    'gemini': 'Google Gemini',
+    'duckduckgo': 'DuckDuckGo',
+    'wikipedia': 'Wikipedia',
+    'stackoverflow': 'Stack Overflow',
+    'offline': 'Offline Knowledge Base',
+    'country_facts': 'REST Countries',
+    'perplexity': 'Perplexity AI',
+    'huggingface': 'Hugging Face',
+    'openrouter': 'OpenRouter'
+};
+
 // Intelligent Chat Assistant with Integrated AI
 class IntelligentAssistant {
     constructor(options = {}) {
@@ -231,21 +305,33 @@ class IntelligentAssistant {
         if (!payload) return null;
 
         if (typeof payload === 'string') {
+            const defaultKey = this.normalizeSourceKey(defaultSource) || 'assistme-general';
             return {
                 answer: payload,
                 type: 'general',
                 confidence: 0.3,
-                source: defaultSource,
-                providers: []
+                source: defaultKey,
+                sourceLabel: this.getSourceLabelForKey(defaultKey, 'general'),
+                sourceMessage: '',
+                providers: [],
+                processingTime: undefined
             };
         }
+
+        const { key: sourceKey, label: sourceLabel } = this.identifySource(payload, defaultSource);
+        const providerCandidates = [
+            ...(Array.isArray(payload.providers) ? payload.providers : []),
+            ...(Array.isArray(payload.consensus) ? payload.consensus : [])
+        ];
 
         return {
             answer: payload.answer ?? payload.text ?? '',
             type: payload.type || 'general',
             confidence: typeof payload.confidence === 'number' ? payload.confidence : 0.5,
-            source: payload.source || defaultSource,
-            providers: Array.isArray(payload.providers) ? payload.providers : [],
+            source: sourceKey,
+            sourceLabel,
+            sourceMessage: payload.sourceMessage || '',
+            providers: this.normalizeProviders(providerCandidates, sourceKey),
             processingTime: payload.processingTime
         };
     }
@@ -277,7 +363,9 @@ class IntelligentAssistant {
             answer: '',
             type: 'general',
             confidence: 0.3,
-            source: 'AssistMe',
+            source: 'assistme-general',
+            sourceLabel: this.getSourceLabelForKey('assistme-general', 'general'),
+            sourceMessage: '',
             providers: []
         };
 
@@ -286,18 +374,24 @@ class IntelligentAssistant {
         if (lower.includes('hello') || lower.includes('hi')) {
             result.answer = this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)];
             result.type = 'greeting';
+            result.source = 'assistme-utility';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-utility', 'utility');
             return result;
         }
 
         if (lower.includes('portfolio') || lower.includes('work')) {
             result.answer = 'Mangesh is a Software Engineer specializing in Java Spring Boot, AngularJS, AWS, and machine learning. Check out his GitHub: github.com/mangeshraut712';
             result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('contact') || lower.includes('email')) {
             result.answer = 'You can reach Mangesh at mbr63@drexel.edu or connect on LinkedIn: linkedin.com/in/mangeshraut71298';
             result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
@@ -316,9 +410,165 @@ class IntelligentAssistant {
             answer: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
             type: 'fallback',
             confidence: 0.2,
-            source: 'AssistMe',
+            source: 'assistme-general',
+            sourceLabel: this.getSourceLabelForKey('assistme-general', 'general'),
+            sourceMessage: '',
             providers: []
         };
+    }
+
+    normalizeSourceKey(value) {
+        if (value === undefined || value === null) return '';
+        const trimmed = String(value).trim();
+        if (!trimmed) return '';
+        const lowered = trimmed.toLowerCase();
+        if (SOURCE_KEY_ALIASES[lowered]) {
+            return SOURCE_KEY_ALIASES[lowered];
+        }
+        return lowered.replace(/\s+/g, '-');
+    }
+
+    getSourceLabelForKey(sourceKey, type = 'general') {
+        const normalized = this.normalizeSourceKey(sourceKey);
+        if (!normalized) {
+            if (type === 'portfolio') return SOURCE_LABELS['assistme-portfolio'];
+            if (type === 'math') return SOURCE_LABELS['assistme-math'];
+            if (type === 'utility') return SOURCE_LABELS['assistme-utility'];
+            return SOURCE_LABELS['assistme-general'];
+        }
+
+        if (SOURCE_LABELS[normalized]) {
+            return SOURCE_LABELS[normalized];
+        }
+
+        if (normalized === 'assistme' && type === 'portfolio') {
+            return SOURCE_LABELS['assistme-portfolio'];
+        }
+
+        const words = normalized.split(/[-_]/g).filter(Boolean);
+        if (!words.length) return SOURCE_LABELS['assistme-general'];
+
+        return words
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    }
+
+    inferSourceFromAnswer(answer) {
+        if (!answer || typeof answer !== 'string') return '';
+        const lower = answer.toLowerCase();
+
+        if (lower.includes('powered by openai')) return 'openai';
+        if (lower.includes('powered by claude')) return 'claude';
+        if (lower.includes('powered by grok')) return 'grok';
+        if (lower.includes('powered by gemini')) return 'gemini';
+        if (lower.includes('(source: wikipedia')) return 'wikipedia';
+        if (lower.includes('(source: duckduckgo')) return 'duckduckgo';
+        if (lower.includes('(source: stack overflow')) return 'stackoverflow';
+        if (lower.includes('source: portfolio')) return 'assistme-portfolio';
+        if (lower.includes('source: linkedin')) return 'assistme-portfolio';
+        if (lower.includes('offline knowledge')) return 'offline';
+        if (lower.includes('restcountries')) return 'country_facts';
+
+        return '';
+    }
+
+    identifySource(payload, defaultSource = 'AssistMe') {
+        const defaultKey = this.normalizeSourceKey(defaultSource) || 'assistme-general';
+
+        let key = this.normalizeSourceKey(payload?.source);
+        if (!key && payload?.origin) {
+            key = this.normalizeSourceKey(payload.origin);
+        }
+        if (!key && payload?.provider) {
+            key = this.normalizeSourceKey(payload.provider);
+        }
+
+        if (!key && Array.isArray(payload?.providers) && payload.providers.length > 0) {
+            const primary = payload.providers[0];
+            if (typeof primary === 'string') {
+                key = this.normalizeSourceKey(primary);
+            } else if (primary) {
+                key = this.normalizeSourceKey(primary.provider || primary.name || primary.source);
+            }
+        }
+
+        if (!key && Array.isArray(payload?.consensus) && payload.consensus.length > 0) {
+            const primary = payload.consensus[0];
+            if (typeof primary === 'string') {
+                key = this.normalizeSourceKey(primary);
+            } else if (primary) {
+                key = this.normalizeSourceKey(primary.provider || primary.name || primary.source);
+            }
+        }
+
+        if (!key) {
+            const inferred = this.inferSourceFromAnswer(payload?.answer ?? payload?.text ?? '');
+            if (inferred) {
+                key = inferred;
+            }
+        }
+
+        if (!key) {
+            if (payload?.type === 'portfolio') {
+                key = 'assistme-portfolio';
+            } else if (payload?.type === 'math') {
+                key = 'assistme-math';
+            } else if (payload?.type === 'utility') {
+                key = 'assistme-utility';
+            } else if (payload?.type === 'general' || payload?.type === 'factual' || payload?.type === 'definition') {
+                key = defaultKey || 'assistme-general';
+            } else {
+                key = defaultKey || 'assistme-general';
+            }
+        }
+
+        const label = this.getSourceLabelForKey(key, payload?.type);
+        return { key, label };
+    }
+
+    normalizeProviders(providers = [], primaryKey = '') {
+        if (!Array.isArray(providers) || providers.length === 0) {
+            return [];
+        }
+
+        const normalized = [];
+        const seen = new Set();
+        const primaryNormalized = this.normalizeSourceKey(primaryKey);
+
+        providers.forEach((entry) => {
+            if (!entry) return;
+
+            let key = '';
+            let confidence = undefined;
+
+            if (typeof entry === 'string') {
+                key = this.normalizeSourceKey(entry);
+            } else if (typeof entry === 'object') {
+                key = this.normalizeSourceKey(
+                    entry.provider || entry.name || entry.source || entry.id || entry.value
+                );
+                if (typeof entry.confidence === 'number') {
+                    confidence = entry.confidence;
+                }
+            }
+
+            if (!key) return;
+            if (key === primaryNormalized) return;
+
+            const label = this.getSourceLabelForKey(key);
+            if (!label) return;
+
+            const display = typeof confidence === 'number'
+                ? `${label} (${Math.round(confidence * 100)}%)`
+                : label;
+
+            if (!seen.has(display)) {
+                seen.add(display);
+                normalized.push(display);
+            }
+        });
+
+        return normalized;
     }
 
     handleConcurrency(options) {
@@ -361,6 +611,7 @@ class IntelligentAssistant {
 
     markServerUnavailable() {
         this.isReadyState = false;
+        this.canUseServerAI = false;
         // Try to reinitialize after a delay
         setTimeout(() => this.initialize(), 30000); // 30 seconds
     }

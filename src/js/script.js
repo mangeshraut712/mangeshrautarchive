@@ -254,45 +254,50 @@ class ChatUI {
 
         messageDiv.appendChild(contentDiv);
 
-        const metaParts = [];
+        const metaChips = [];
 
         if (metadata.type) {
-            metaParts.push(`<span class="query-type">${metadata.type}</span>`);
+            metaChips.push(this._createMetaChip('query-type', this._formatQueryType(metadata.type)));
         }
 
         if (metadata.source) {
-            metaParts.push(`<span class="response-source">${metadata.source}</span>`);
+            metaChips.push(this._createMetaChip('response-source', `Source: ${metadata.source}`));
         }
 
         if (metadata.confidence !== undefined) {
-            const confidenceValue = typeof metadata.confidence === 'number'
-                ? `${Math.round(metadata.confidence * 100)}%`
-                : metadata.confidence;
-            metaParts.push(`<span class="response-confidence">${confidenceValue}</span>`);
-        }
-
-        if (metadata.processingTime !== undefined) {
-            const processingValue = typeof metadata.processingTime === 'number'
-                ? `${metadata.processingTime}ms`
-                : metadata.processingTime;
-            metaParts.push(`<span class="processing-time">${processingValue}</span>`);
-        }
-
-        if (Array.isArray(metadata.providers) && metadata.providers.length) {
-            const providerText = metadata.providers
-                .map((entry) => this._formatProviderLabel(entry))
-                .filter(Boolean)
-                .join(', ');
-            if (providerText) {
-                metaParts.push(`<span class="providers-tried">Tried: ${providerText}</span>`);
+            const confidenceValue = this._formatConfidence(metadata.confidence);
+            if (confidenceValue) {
+                metaChips.push(this._createMetaChip('response-confidence', `Confidence: ${confidenceValue}`));
             }
         }
 
-        if (metaParts.length) {
+        if (metadata.processingTime !== undefined) {
+            const processingValue = this._formatProcessingTime(metadata.processingTime);
+            if (processingValue) {
+                metaChips.push(this._createMetaChip('processing-time', processingValue));
+            }
+        }
+
+        if (Array.isArray(metadata.providers) && metadata.providers.length) {
+            const providerText = this._formatProviders(metadata.providers);
+            if (providerText) {
+                metaChips.push(this._createMetaChip('providers-tried', providerText));
+            }
+        }
+
+        if (metadata.sourceDetail) {
+            metaChips.push(this._createMetaChip('source-detail', metadata.sourceDetail));
+        }
+
+        if (metaChips.some(Boolean)) {
             const metaDiv = document.createElement('div');
             metaDiv.className = 'message-metadata';
-            metaDiv.innerHTML = metaParts.join(' ');
-            messageDiv.appendChild(metaDiv);
+            metaChips.forEach((chip) => {
+                if (chip) metaDiv.appendChild(chip);
+            });
+            if (metaDiv.childNodes.length) {
+                messageDiv.appendChild(metaDiv);
+            }
         }
 
         return messageDiv;
@@ -310,14 +315,31 @@ class ChatUI {
         const metadata = {};
 
         if (response.type) metadata.type = response.type;
-        if (response.source) metadata.source = response.source;
-        if (typeof response.confidence === 'number') metadata.confidence = response.confidence;
+        if (typeof response.source === 'string') {
+            metadata.sourceKey = response.source;
+        }
+        if (response.sourceLabel) {
+            metadata.source = response.sourceLabel;
+        } else if (response.source) {
+            metadata.source = this._formatSourceLabel(response.source, response.type);
+        }
+        if (response.sourceMessage) {
+            metadata.sourceDetail = response.sourceMessage;
+        }
+
+        if (typeof response.confidence === 'number' || typeof response.confidence === 'string') {
+            metadata.confidence = response.confidence;
+        }
         if (typeof response.processingTime === 'number') {
             metadata.processingTime = Math.max(0, Math.round(response.processingTime));
         } else if (response.processingTime) {
             metadata.processingTime = response.processingTime;
         }
-        if (Array.isArray(response.providers)) metadata.providers = response.providers;
+        if (Array.isArray(response.providers)) {
+            metadata.providers = response.providers;
+        } else {
+            metadata.providers = [];
+        }
 
         if (response.error) metadata.error = true;
 
@@ -365,40 +387,131 @@ class ChatUI {
         }
     }
 
-    _formatProviderLabel(entry) {
-        if (!entry) return '';
-
-        let name;
-        let confidence;
-
-        if (typeof entry === 'string') {
-            name = entry;
-        } else {
-            name = this._prettifyProviderName(entry.provider || entry.name || '');
-            confidence = entry.confidence;
-        }
-
-        if (!name) return '';
-
-        if (typeof confidence === 'number') {
-            return `${name} (${Math.round(confidence * 100)}%)`;
-        }
-
-        return name;
+    _createMetaChip(className, text) {
+        if (!text) return null;
+        const span = document.createElement('span');
+        span.className = className;
+        span.textContent = text;
+        return span;
     }
 
-    _prettifyProviderName(provider) {
+    _formatQueryType(type) {
         const map = {
-            grok: 'Grok xAI',
-            anthropic: 'Claude',
-            claude: 'Claude',
-            perplexity: 'Perplexity',
-            gemini: 'Gemini',
-            gemini_firebase: 'Gemini',
-            huggingface: 'UserLM-8b'
+            portfolio: 'Portfolio',
+            math: 'Math',
+            factual: 'Factual',
+            definition: 'Definition',
+            general: 'General',
+            greeting: 'Greeting',
+            help: 'Help',
+            identity: 'Identity',
+            utility: 'Utility',
+            fallback: 'Fallback',
+            ai: 'AI'
+        };
+        return map[type] || (type ? type.charAt(0).toUpperCase() + type.slice(1) : '');
+    }
+
+    _formatConfidence(value) {
+        if (value === null || value === undefined) return '';
+        if (typeof value === 'string') return value;
+        if (typeof value === 'number') {
+            if (value > 1) {
+                return `${Math.round(value)}%`;
+            }
+            return `${Math.round(value * 100)}%`;
+        }
+        return '';
+    }
+
+    _formatProcessingTime(value) {
+        if (value === null || value === undefined) return '';
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            return `${Math.max(0, Math.round(value))}ms`;
+        }
+        if (typeof value === 'string') {
+            return value;
+        }
+        return '';
+    }
+
+    _formatProviders(providers) {
+        if (!Array.isArray(providers) || providers.length === 0) return '';
+        const unique = [...new Set(providers.filter(Boolean))];
+        if (!unique.length) return '';
+        return `Signals: ${unique.join(', ')}`;
+    }
+
+    _formatSourceLabel(sourceKey, type = 'general') {
+        if (!sourceKey) {
+            return type === 'portfolio'
+                ? 'AssistMe Portfolio'
+                : type === 'math'
+                    ? 'AssistMe Math Engine'
+                    : 'AssistMe';
+        }
+
+        const normalized = this._normalizeSourceKey(sourceKey);
+        const map = {
+            'assistme': 'AssistMe',
+            'assistme-portfolio': 'AssistMe Portfolio',
+            'assistme-general': 'AssistMe',
+            'assistme-math': 'AssistMe Math Engine',
+            'assistme-utility': 'AssistMe Utility',
+            'openai': 'OpenAI',
+            'grok': 'Grok (xAI)',
+            'claude': 'Claude (Anthropic)',
+            'gemini': 'Google Gemini',
+            'duckduckgo': 'DuckDuckGo',
+            'wikipedia': 'Wikipedia',
+            'stackoverflow': 'Stack Overflow',
+            'offline': 'Offline Knowledge Base',
+            'country_facts': 'REST Countries',
+            'perplexity': 'Perplexity AI',
+            'huggingface': 'Hugging Face',
+            'openrouter': 'OpenRouter'
         };
 
-        return map[provider] || provider || '';
+        if (map[normalized]) {
+            return map[normalized];
+        }
+
+        const words = normalized.split(/[-_]/g).filter(Boolean);
+        if (!words.length) return 'AssistMe';
+        return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    _normalizeSourceKey(value) {
+        if (!value && value !== 0) return '';
+        const lowered = String(value).trim().toLowerCase();
+        const aliasMap = {
+            'assistme server': 'assistme',
+            'assistme client': 'assistme',
+            'assistme portfolio': 'assistme-portfolio',
+            'portfolio': 'assistme-portfolio',
+            'assistme math': 'assistme-math',
+            'gpt': 'openai',
+            'gpt-4': 'openai',
+            'gpt-4o': 'openai',
+            'openai gpt': 'openai',
+            'claude ai': 'claude',
+            'grok ai': 'grok',
+            'x.ai': 'grok',
+            'duck duck go': 'duckduckgo',
+            'wikipedia.org': 'wikipedia',
+            'stack overflow': 'stackoverflow',
+            'offline knowledge base': 'offline',
+            'restcountries': 'country_facts',
+            'perplexity ai': 'perplexity',
+            'hugging face': 'huggingface',
+            'open router': 'openrouter'
+        };
+
+        if (aliasMap[lowered]) {
+            return aliasMap[lowered];
+        }
+
+        return lowered.replace(/\s+/g, '-');
     }
 
     _createTypingIndicator() {
