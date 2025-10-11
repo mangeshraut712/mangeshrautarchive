@@ -504,6 +504,7 @@ class ChatUI {
     _openWidget() {
         if (!this.elements.widget) return;
         this.elements.widget.classList.remove('hidden');
+        this.elements.widget.classList.add('visible');
         this.elements.widget.setAttribute('aria-hidden', 'false');
         if (this.elements.toggleButton) {
             this.elements.toggleButton.setAttribute('aria-expanded', 'true');

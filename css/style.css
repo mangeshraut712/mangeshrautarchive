@@ -255,6 +255,12 @@ html.dark body { /* Override individual state selectors that might conflict */
 }
 
 /* Widget Visibility States */
+#portfolio-chat-widget.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
+}
+
 #portfolio-chat-widget.hidden {
     opacity: 0;
     transform: translateY(20px) scale(0.95);
