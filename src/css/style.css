@@ -463,9 +463,8 @@ html.dark body { /* Override individual state selectors that might conflict */
     flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
-.chat-input-area button i.fas.fa-microphone:before {
-    content: "\f130";
-    color: #ef4444; /* Red microphone icon in light mode */
+button#portfolio-voice-input i.fas.fa-microphone {
+    color: #ef4444 !important; /* Red microphone icon */
 }
 
 .chat-input-area button:hover {
