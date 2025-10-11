@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "build": "node scripts/build.js",
     "dev": "open index.html"
   },
   "devDependencies": {
