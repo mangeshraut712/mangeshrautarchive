@@ -605,10 +605,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export { ChatUI, renderProjects as loadProjectsData };
 export default ChatUI;
-
-000);
-});
-
-export { ChatUI, renderProjects as loadProjectsData };
-export default ChatUI;
-
