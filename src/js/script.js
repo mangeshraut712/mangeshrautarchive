@@ -458,17 +458,7 @@ class ChatUI {
     }
 
     _createStatusIndicator() {
-        this.elements.status = document.createElement('div');
-        this.elements.status.className = 'chat-status';
-        this.elements.status.id = 'chat-status';
-        this.elements.status.textContent = 'Ready';
-
-        if (this.elements.messages && this.elements.messages.parentNode) {
-            this.elements.messages.parentNode.insertBefore(
-                this.elements.status,
-                this.elements.messages
-            );
-        }
+        // Status indicator removed per design request
     }
 
     _showWelcomeMessage() {
