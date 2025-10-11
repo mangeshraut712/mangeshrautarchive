@@ -90,7 +90,16 @@ class IntelligentAssistant {
             return response.answer;
         }
 
-        // Fallback to basic processing if server unavailable
+        // If server fails, try Vercel backend directly
+        console.log('🔄 Server failed, trying Vercel backend directly...');
+        const vercelResponse = await this.callVercelAPI(query);
+
+        if (vercelResponse && vercelResponse.answer) {
+            return vercelResponse.answer;
+        }
+
+        // Final fallback to basic processing if everything fails
+        console.log('🔄 All backends failed, using basic processing...');
         return this.basicQueryProcessing(query);
     }
 
@@ -124,6 +133,35 @@ class IntelligentAssistant {
         } catch (error) {
             console.error('❌ Server API call failed:', error.message);
             this.markServerUnavailable();
+            return null;
+        }
+    }
+
+    async callVercelAPI(query) {
+        try {
+            console.log('🚀 Calling Vercel backend directly with query:', query);
+
+            const response = await fetch('https://mangeshrautarchive-kg79ohbyr-mangesh-rauts-projects.vercel.app/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ message: query }),
+                signal: AbortSignal.timeout(15000) // 15 second timeout
+            });
+
+            if (!response.ok) {
+                throw new Error(`Vercel backend responded with ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('✅ Vercel backend response received:', data);
+
+            return data;
+
+        } catch (error) {
+            console.error('❌ Vercel backend call failed:', error.message);
             return null;
         }
     }
