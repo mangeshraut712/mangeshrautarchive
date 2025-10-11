@@ -683,5 +683,6 @@ User query: ${query}`,
 
 const chatService = new ChatService();
 
-export { ChatService, chatService };
+export { ChatService };
+export { chatService };
 export default chatService;
