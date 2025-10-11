@@ -150,11 +150,11 @@ class AIService {
     }
 
     async _callOpenAI(query, context = {}) {
-        try {
-            if (!this.supportsOpenAI() || preferServerAI) {
-                return null;
-            }
+        if (!this.supportsOpenAI() || preferServerAI) {
+            return null;
+        }
 
+        try {
             // For localhost development, use Vercel backend
             if (typeof window !== 'undefined' && !window.location.protocol.startsWith('https:')) {
                 console.log('🏠 Using Vercel backend for AI calls (localhost development)');
@@ -186,49 +186,49 @@ class AIService {
                 }
 
                 return null;
-            } else {
-                // Direct API calls for production
-                await apiLimiter.waitForSlot();
-                console.log('🤖 Calling OpenAI API directly (production)...');
+            }
 
-                const systemPrompt = 'You are AssistMe, Mangesh Raut\'s portfolio assistant. Provide accurate, helpful answers. Background: Mangesh is a Software Engineer with MS Computer Science from Drexel, experienced in Spring Boot, AWS, TensorFlow.';
+            // Direct API calls for production
+            await apiLimiter.waitForSlot();
+            console.log('🤖 Calling OpenAI API directly (production)...');
 
-                const requestPayload = {
-                    model: this.openAIConfig.model,
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: query }
-                    ],
-                    max_tokens: 400,
-                    temperature: 0.3
-                };
+            const systemPrompt = 'You are AssistMe, Mangesh Raut\'s portfolio assistant. Provide accurate, helpful answers. Background: Mangesh is a Software Engineer with MS Computer Science from Drexel, experienced in Spring Boot, AWS, TensorFlow.';
 
-                const response = await fetch(this.openAIConfig.fallbackUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${this.openAIConfig.apiKey}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestPayload)
-                });
+            const requestPayload = {
+                model: this.openAIConfig.model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: query }
+                ],
+                max_tokens: 400,
+                temperature: 0.3
+            };
 
-                if (!response.ok) {
-                    console.error(`OpenAI API error: ${response.status}`);
-                    return null;
-                }
+            const response = await fetch(this.openAIConfig.fallbackUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.openAIConfig.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestPayload)
+            });
 
-                const data = await response.json();
-                if (data && data.choices && data.choices.length > 0) {
-                    const answer = data.choices[0].message?.content;
-                    if (answer) {
-                        console.log('✅ OpenAI API response received directly');
-                        return `[AI Response] ${answer} (Powered by OpenAI GPT)`;
-                    }
-                }
-
-                console.log('❌ OpenAI API returned incomplete response');
+            if (!response.ok) {
+                console.error(`OpenAI API error: ${response.status}`);
                 return null;
             }
+
+            const data = await response.json();
+            if (data && data.choices && data.choices.length > 0) {
+                const answer = data.choices[0].message?.content;
+                if (answer) {
+                    console.log('✅ OpenAI API response received directly');
+                    return `[AI Response] ${answer} (Powered by OpenAI GPT)`;
+                }
+            }
+
+            console.log('❌ OpenAI API returned incomplete response');
+            return null;
         } catch (error) {
             console.error('❌ OpenAI API error:', error);
             return null;
