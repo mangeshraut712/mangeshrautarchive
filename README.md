@@ -82,38 +82,43 @@ An elegant, Apple-inspired portfolio website showcasing my professional journey 
 
 ```
 mangeshrautarchive/
-├── index.html                 # Main HTML document with Apple Intelligence chatbot
-├── server.js                  # Node.js Express backend for API integrations
-├── pacakge.json              # Node.js dependencies and scripts
-├── .gitignore                 # Git ignore rules for security
-├── api/
-│   └── chat.js                # Chatbot API endpoint handler
-├── css/
-│   └── style.css             # Complete Apple-inspired design system
-├── js/
-│   ├── services.js           # Advanced AI chatbot with multi-API integration
-│   ├── config.local.js       # API keys and local configuration (gitignored)
-│   ├── firebase-config.js    # Firebase client-side configuration
-│   ├── math.js               # Advanced math utilities and unit conversions
-│   ├── script.js             # Frontend interactive features
-│   ├── theme.js              # Light/dark mode management
-│   └── modules/              # Modular component architecture
-│       ├── animations.js     # Page scroll and interaction animations
-│       ├── contact.js        # Contact form handling
-│       ├── external-config.js# External API configurations
-│       ├── math.js           # Mathematical calculations
-│       ├── overlay.js        # Navigation overlay system
-│       ├── projects.js       # GitHub projects integration
-│       └── voice.js          # Voice recognition and synthesis
-├── perplexity-mcp.json       # Perplexity MCP server configuration
-├── images/                   # Image assets
-│   ├── profile.jpg           # Hero image
-│   ├── profile icon.png     # Navigation logo
-│   ├── graduation.jpg        # About section image
-│   └── X_logo.jpg            # Social media logos
-└── files/                    # Downloadable assets
-    ├── Mangesh_Raut_Resume.pdf # Professional resume
-    └── RTFERS paper.pdf      # Research publication
+├── api/                       # Serverless functions (Vercel runtime)
+│   ├── chat.js
+│   ├── chat-service.js
+│   └── status.js
+├── config/
+│   └── firebase/              # Firebase configuration assets
+│       ├── firebase.json
+│       ├── firestore.rules
+│       └── firestore.indexes.json
+├── scripts/
+│   └── build.js               # Copies src/ → dist/ before deploys
+├── src/                       # Front-end source (served from dist/ in production)
+│   ├── index.html
+│   ├── css/
+│   ├── files/
+│   ├── images/
+│   └── js/
+│       ├── chat.js
+│       ├── config.js
+│       ├── firebase-config.js
+│       ├── math.js
+│       ├── script.js
+│       ├── services.js
+│       ├── theme.js
+│       └── modules/
+├── tests/                     # Utility scripts used in CI / local verification
+│   ├── test-config.js
+│   ├── test-end-to-end.js
+│   ├── test-live-deployment.js
+│   ├── test-vercel-functions.js
+│   └── test-vercel-local.js
+├── dist/                      # Generated static output (npm run build)
+├── package.json
+├── package-lock.json
+├── perplexity-mcp.json        # MCP server configuration
+├── server.js                  # Optional local Express server for dist/
+└── vercel.json                # Vercel deployment configuration
 ```
 
 ## 🎯 Features Detailed
@@ -156,9 +161,42 @@ cd mangeshrautarchive
 
 ### Open Locally
 ```bash
-# No server required - fully client-side
-open index.html
+npm install
+npm run dev  # Opens src/index.html in your default browser (macOS)
 ```
+
+### Build Production Assets
+```bash
+npm run build   # emits dist/ from src/
+```
+
+### Deploy to Vercel
+```bash
+vercel --prod
+```
+
+### Inspect Serverless Logs
+```bash
+# Replace the URL with the deployment you wish to inspect
+vercel logs https://mangeshrautarchive-XYZ.vercel.app --scope mangesh-rauts-projects --since 1h
+```
+
+### Required Environment Variables
+
+Configure these secrets in Vercel (or a local `.env` file when testing functions):
+
+```
+GROK_API_KEY
+ANTHROPIC_API_KEY
+PERPLEXITY_API_KEY
+GEMINI_API_KEY
+GEMINI_FIREBASE_API_KEY
+HUGGINGFACE_API_KEY
+OPENAI_API_KEY
+OPENROUTER_API_KEY
+```
+
+Only the providers with populated keys will be queried; the rest are skipped automatically.
 
 ### Deploy to GitHub Pages
 1. Push to your GitHub repository

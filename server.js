@@ -17,7 +17,7 @@ function resolveBoolean(value, fallback = true) {
 
 let serverLocalConfig = {};
 try {
-    const configModule = await import('./js/config.local.js');
+    const configModule = await import('./src/js/config.local.js');
     if (configModule?.localConfig) {
         serverLocalConfig = configModule.localConfig;
     }
@@ -81,11 +81,18 @@ app.use(async (req, res, next) => {
     }
 });
 
-// Serve static files from root directory
-app.use(express.static(__dirname));
+// Serve static files from the built directory
+const staticDir = join(__dirname, 'dist');
+app.use(express.static(staticDir));
 
 // API Routes
 app.use('/api/chat', chatRouter);
+
+// SPA fallback to index.html
+app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    res.sendFile(join(staticDir, 'index.html'));
+});
 
 async function appendContactMessage(entry) {
     await fs.mkdir(DATA_DIR, { recursive: true });

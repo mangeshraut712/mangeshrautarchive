@@ -10,6 +10,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.vercel
 API_KEYS.txt
 js/config.local.js
 

@@ -7,22 +7,10 @@ const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '..');
 const distDir = resolve(projectRoot, 'dist');
 
-const assets = [
-    'index.html',
-    'css',
-    'js',
-    'images',
-    'files',
-    'api',
-    'server.js',
-    'package.json',
-    'package-lock.json',
-    'firestore.rules'
-];
+const srcDir = resolve(projectRoot, 'src');
 
-const productionAssets = [
-    'perplexity-mcp.json',
-    'js/config.local.js'
+const staticExtras = [
+    'perplexity-mcp.json'
 ];
 
 async function pathExists(path) {
@@ -36,30 +24,23 @@ async function pathExists(path) {
 
 async function build() {
     await rm(distDir, { recursive: true, force: true });
+    if (!(await pathExists(srcDir))) {
+        throw new Error('Source directory "src/" not found.');
+    }
+
     await mkdir(distDir, { recursive: true });
+    await cp(srcDir, distDir, { recursive: true });
 
-    for (const item of assets) {
+    for (const item of staticExtras) {
         const source = resolve(projectRoot, item);
-        const destination = resolve(distDir, item);
-
-        if (!(await pathExists(source))) {
-            continue;
-        }
-
-        await cp(source, destination, { recursive: true });
-    }
-
-    for (const item of productionAssets) {
-        const source = resolve(projectRoot, item);
-        const destination = resolve(distDir, item);
-
         if (await pathExists(source)) {
-            await cp(source, destination);
-            console.log(`📋 Copied production config: ${item}`);
+            const destination = resolve(distDir, item.split('/').pop());
+            await cp(source, destination, { recursive: true });
+            console.log(`📋 Copied extra asset: ${item}`);
         }
     }
 
-    console.log('✨ Build complete. Output written to dist/ with API keys embedded.');
+    console.log('✨ Build complete. Static assets written to dist/.');
 }
 
 build().catch((error) => {
