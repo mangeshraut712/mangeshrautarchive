@@ -335,4 +335,12 @@ class KnowledgeBase {
 }
 
 const knowledgeBase = new KnowledgeBase();
+
+// Backward compatibility - export chatService for existing imports
+export const chatService = {
+    async processQuery(query) {
+        return await knowledgeBase.getKnowledge(query);
+    }
+};
+
 export default knowledgeBase;
