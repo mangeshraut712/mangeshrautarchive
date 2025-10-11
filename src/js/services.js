@@ -3,16 +3,20 @@
 import { MathUtilities } from './math.js';
 import { localConfig } from './config.js';
 
-// Smart AI service preference - allow external APIs even from GitHub Pages if configured
-const preferServerAI = typeof window !== 'undefined'
+// Smart AI service detection - determine when we CAN use AI services
+const canUseAIServices = typeof window !== 'undefined'
     ? Boolean(
-        // Allow server AI if explicitly configured OR if we have API keys available
+        // Can use AI if on Vercel deployment OR if API is explicitly configured
+        window.location.hostname.endsWith('.vercel.app') ||
         (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl) ||
         localConfig.apiBaseUrl ||
-        window.location.hostname.endsWith('.vercel.app') ||
-        (window.location.hostname.includes('github.io') && (localConfig.apiBaseUrl || localConfig.openaiApiKey))
+        // Allow AI from GitHub Pages if API keys or base URL are configured
+        (window.location.hostname.includes('github.io') && (localConfig.apiBaseUrl || localConfig.openaiApiKey || localConfig.grokApiKey || localConfig.anthropicApiKey))
       )
     : Boolean(localConfig.apiBaseUrl || process.env?.VERCEL_URL);
+
+// Legacy variable for compatibility - true means disable AI (confusing naming)
+const preferServerAI = !canUseAIServices; // If we can use AI, don't "prefer server" offline mode
 
 // Simple browser-based cache using Map
 class SimpleCache {
