@@ -491,8 +491,6 @@ class ChatUI {
     }
 
     _toggleWidget() {
-        console.log('Toggling widget...');
-        console.log('Widget classList before toggle:', this.elements.widget?.classList);
         if (!this.elements.widget) return;
         if (this._isWidgetOpen()) {
             this._closeWidget();
@@ -604,6 +602,12 @@ document.addEventListener('DOMContentLoaded', () => {
             typewriter.style.borderRight = 'none';
         }
     }, 6000);
+});
+
+export { ChatUI, renderProjects as loadProjectsData };
+export default ChatUI;
+
+000);
 });
 
 export { ChatUI, renderProjects as loadProjectsData };
