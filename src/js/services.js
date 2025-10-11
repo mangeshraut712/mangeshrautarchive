@@ -215,7 +215,7 @@ For questions: Be direct and factual. Keep answers concise but informative. Incl
                 model: this.openAIConfig.model,
                 messages: [
                     {
-                        role: "system",
+                        "role": "system",
                         content: systemPrompt
                     },
                     {

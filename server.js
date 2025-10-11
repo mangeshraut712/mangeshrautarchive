@@ -88,11 +88,7 @@ app.use(express.static(staticDir));
 // API Routes
 app.use('/api/chat', chatRouter);
 
-// SPA fallback to index.html
-app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api/')) return next();
-    res.sendFile(join(staticDir, 'index.html'));
-});
+
 
 async function appendContactMessage(entry) {
     await fs.mkdir(DATA_DIR, { recursive: true });
