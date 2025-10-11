@@ -395,13 +395,14 @@ class ChatUI {
             return;
         }
 
-        const suggestions = input.length > 2
-            ? this._getContextualSuggestions(input)
-            : this.history.length
-                ? chatAssistant.getSuggestions()
-                : [];
+        let suggestions = [];
+        if (input.length > 2) {
+            suggestions = this._getContextualSuggestions(input) || [];
+        } else if (this.history.length) {
+            suggestions = chatAssistant.getSuggestions?.() || [];
+        }
 
-        if (!suggestions.length) {
+        if (!Array.isArray(suggestions) || !suggestions.length) {
             this._hideSuggestions();
             return;
         }
