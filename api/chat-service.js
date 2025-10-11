@@ -1,10 +1,8 @@
 // Server-side chat service for Vercel functions
 // Simplified version that doesn't rely on browser APIs
 
-// Multi-Model AI Service - Combines multiple AI providers for best responses
 class MultiModelAIService {
   constructor() {
-    // Initialize providers lazily to avoid issues during import
     this.providers = null;
     this._initialized = false;
   }
@@ -55,14 +53,11 @@ class MultiModelAIService {
   }
 
   async generateResponse(message, options = {}) {
-    // Initialize providers if not already done
     this._initializeProviders();
-
     console.log('🤖 Trying all available AI models for best response...');
 
     const responses = [];
 
-    // Try each provider
     for (const [providerName, config] of Object.entries(this.providers)) {
       if (!config.enabled) continue;
 
@@ -85,7 +80,6 @@ class MultiModelAIService {
       return null;
     }
 
-    // Return the best response
     const bestResponse = this.selectBestResponse(responses, message);
     console.log(`✅ Selected best response from ${bestResponse.provider} (confidence: ${bestResponse.confidence})`);
 
@@ -195,9 +189,7 @@ class MultiModelAIService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        inputs: `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.
-
-User query: ${message}`,
+        inputs: `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.\n\nUser query: ${message}`,
         parameters: {
           max_new_tokens: options.maxTokens || 512,
           temperature: options.temperature || 0.7,
@@ -215,7 +207,7 @@ User query: ${message}`,
     if (!response.ok) return null;
 
     const data = await response.json();
-    if (data && Array.isArray(data) && data.length > 0) {
+    if (Array.isArray(data) && data.length > 0) {
       return data[0]?.generated_text || data[0]?.text;
     }
 
@@ -231,16 +223,14 @@ User query: ${message}`,
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.
-
-User query: ${message}`
+            text: `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful.\n\nUser query: ${message}`
           }]
         }],
         generationConfig: {
           temperature: options.temperature || 0.7,
           topK: 40,
           topP: options.topP || 0.9,
-          maxOutputTokens: options.maxTokens || 512,
+          maxOutputTokens: options.maxTokens || 512
         }
       })
     });
@@ -254,14 +244,12 @@ User query: ${message}`
   calculateConfidence(response, originalQuery) {
     if (!response) return 0;
 
-    let score = 0.5; // Base score
+    let score = 0.5;
 
-    // Length appropriateness (not too short, not too long)
     if (response.length > 50) score += 0.2;
     if (response.length > 200) score += 0.1;
     if (response.length < 10) score -= 0.3;
 
-    // Relevance to query
     const queryWords = originalQuery.toLowerCase().split(/\s+/).filter(w => w.length > 3);
     const responseWords = response.toLowerCase().split(/\s+/);
     const relevanceMatches = queryWords.filter(word =>
@@ -269,7 +257,6 @@ User query: ${message}`
     ).length;
     score += Math.min(relevanceMatches * 0.1, 0.3);
 
-    // Professional tone indicators
     if (response.includes('Mangesh') || response.includes('portfolio') || response.includes('experience')) {
       score += 0.1;
     }
@@ -278,13 +265,11 @@ User query: ${message}`
   }
 
   selectBestResponse(responses, originalQuery) {
-    // Score each response
     const scored = responses.map(response => ({
       ...response,
       score: this.calculateConfidence(response.content, originalQuery)
     }));
 
-    // Sort by score (highest first)
     scored.sort((a, b) => b.score - a.score);
 
     console.log(`📊 Response scores: ${scored.map(r => `${r.provider}: ${r.score.toFixed(2)}`).join(', ')}`);
@@ -305,12 +290,11 @@ User query: ${message}`
   }
 
   getEnabledProviders() {
-    // Initialize providers if not already done
     this._initializeProviders();
 
     return Object.entries(this.providers)
       .filter(([_, config]) => config.enabled)
-      .map(([name, _]) => name);
+      .map(([name]) => name);
   }
 }
 
@@ -340,7 +324,6 @@ class SimpleCache {
 
 const responseCache = new SimpleCache(50);
 
-// Knowledge base for portfolio information
 class KnowledgeBase {
   constructor() {
     this.profile = {
@@ -430,20 +413,17 @@ class KnowledgeBase {
   }
 }
 
-// Math utilities for server-side calculations
 class MathUtils {
   evaluate(expression) {
     if (!expression) return null;
 
     try {
-      // Basic arithmetic evaluation (simplified)
       const sanitized = expression
         .replace(/\s/g, '')
         .replace(/[^0-9+\-*/.()]/g, '');
 
       if (!sanitized) return null;
 
-      // Use Function constructor for evaluation (safer than eval in some contexts)
       const result = new Function('return ' + sanitized)();
 
       if (typeof result === 'number' && isFinite(result)) {
@@ -459,19 +439,14 @@ class MathUtils {
 
   convertUnits(value, fromUnit, toUnit) {
     const conversions = {
-      // Length
       'meters': { 'feet': value * 3.28084, 'inches': value * 39.3701, 'kilometers': value / 1000, 'miles': value * 0.000621371 },
       'feet': { 'meters': value / 3.28084, 'inches': value * 12, 'kilometers': value / 3280.84, 'miles': value / 5280 },
       'inches': { 'meters': value / 39.3701, 'feet': value / 12, 'kilometers': value / 39370.1, 'miles': value / 63360 },
       'kilometers': { 'meters': value * 1000, 'feet': value * 3280.84, 'inches': value * 39370.1, 'miles': value * 0.621371 },
       'miles': { 'meters': value / 0.000621371, 'feet': value * 5280, 'inches': value * 63360, 'kilometers': value / 0.621371 },
-
-      // Temperature
       'celsius': { 'fahrenheit': (value * 9/5) + 32, 'kelvin': value + 273.15 },
       'fahrenheit': { 'celsius': (value - 32) * 5/9, 'kelvin': (value - 32) * 5/9 + 273.15 },
       'kelvin': { 'celsius': value - 273.15, 'fahrenheit': (value - 273.15) * 9/5 + 32 },
-
-      // Weight
       'kilograms': { 'pounds': value * 2.20462, 'grams': value * 1000, 'ounces': value * 35.274 },
       'pounds': { 'kilograms': value / 2.20462, 'grams': value * 453.592, 'ounces': value * 16 },
       'grams': { 'kilograms': value / 1000, 'pounds': value / 453.592, 'ounces': value / 28.3495 },
@@ -486,7 +461,6 @@ class MathUtils {
   }
 }
 
-// Main chat service for Vercel
 class ChatService {
   constructor() {
     this.knowledgeBase = new KnowledgeBase();
@@ -508,8 +482,6 @@ class ChatService {
     }
 
     const cacheKey = `answer:${normalizedQuery.toLowerCase()}`;
-
-    // Check cache first
     const cached = responseCache.get(cacheKey);
     if (cached) {
       return { ...cached, processingTime: Date.now() - startTime };
@@ -518,33 +490,30 @@ class ChatService {
     let response = null;
 
     try {
-      // Handle utility queries
       response = this.handleUtilityQuery(normalizedQuery);
       if (response) {
         responseCache.set(cacheKey, response);
         return { ...response, processingTime: Date.now() - startTime };
       }
 
-      // Handle portfolio queries
       if (this.isPortfolioQuery(normalizedQuery)) {
         response = await this.handlePortfolioQuery(normalizedQuery);
-      }
-      // Handle math queries
-      else if (this.isMathQuery(normalizedQuery)) {
+      } else if (this.isMathQuery(normalizedQuery)) {
         response = await this.handleMathQuery(normalizedQuery);
-      }
-      // Handle general queries
-      else {
+      } else {
         response = await this.handleGeneralQuery(normalizedQuery);
       }
 
       if (!response) {
         response = this.generateFallback(normalizedQuery);
       }
-
     } catch (error) {
       console.error('Query processing error:', error);
-      response = { answer: "I hit a snag processing that question. Try rephrasing it.", type: 'error' };
+      response = {
+        answer: "I hit a snag processing that question. Try rephrasing it.",
+        type: 'error',
+        confidence: 0.1
+      };
     }
 
     responseCache.set(cacheKey, response);
@@ -555,7 +524,7 @@ class ChatService {
     const lower = query.toLowerCase().trim();
 
     if (/\b(time|current time|what time is it)\b/.test(lower)) {
-      return { answer: `Current server time: ${new Date().toLocaleTimeString()}`, type: 'utility' };
+      return { answer: `Current server time: ${new Date().toLocaleTimeString()}`, type: 'utility', confidence: 0.9 };
     }
 
     if (/\b(date|today|what day is it)\b/.test(lower)) {
@@ -565,7 +534,7 @@ class ChatService {
         month: 'long',
         day: 'numeric'
       });
-      return { answer: `Today is ${date}`, type: 'utility' };
+      return { answer: `Today is ${date}`, type: 'utility', confidence: 0.9 };
     }
 
     return null;
@@ -587,43 +556,26 @@ class ChatService {
 
   async handlePortfolioQuery(query) {
     const answer = this.knowledgeBase.getPortfolioInfo(query);
-    return {
-      answer,
-      type: 'portfolio',
-      confidence: 0.9
-    };
+    return { answer, type: 'portfolio', confidence: 0.9 };
   }
 
   async handleMathQuery(query) {
     const lower = query.toLowerCase();
-
-    // Handle unit conversions
     const conversionMatch = lower.match(/convert\s+(\d+(?:\.\d+)?)\s*(\w+)\s+to\s+(\w+)/);
     if (conversionMatch) {
       const [, value, fromUnit, toUnit] = conversionMatch;
       const result = this.mathUtils.convertUnits(parseFloat(value), fromUnit, toUnit);
-
       if (result !== null) {
-        return {
-          answer: `Converted: ${result.toFixed(2)} ${toUnit}`,
-          type: 'math',
-          confidence: 0.9
-        };
+        return { answer: `Converted: ${result.toFixed(2)} ${toUnit}`, type: 'math', confidence: 0.9 };
       }
     }
 
-    // Handle basic calculations
     const calcMatch = query.match(/(\d+(?:\.\d+)?)\s*([+\-*/])\s*(\d+(?:\.\d+)?)/);
     if (calcMatch) {
       const [, num1, operator, num2] = calcMatch;
       const result = this.mathUtils.evaluate(`${num1}${operator}${num2}`);
-
       if (result !== null) {
-        return {
-          answer: `Result: ${result}`,
-          type: 'math',
-          confidence: 0.9
-        };
+        return { answer: `Result: ${result}`, type: 'math', confidence: 0.9 };
       }
     }
 
@@ -640,15 +592,12 @@ class ChatService {
       return greeting;
     }
 
-    // Try all available AI models and pick the best response
     const enabledProviders = this.multiModelService.getEnabledProviders();
     if (enabledProviders.length > 0) {
       console.log(`🤖 Trying ${enabledProviders.length} AI models: ${enabledProviders.join(', ')}`);
 
       const aiResponse = await this.multiModelService.generateResponse(
-        `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful. If the query is about Mangesh's portfolio, focus on his background. For general questions, use your real-time knowledge to provide the most current information available.
-
-User query: ${query}`,
+        `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website. Provide concise, accurate answers about his background, skills, projects, and general knowledge. Keep responses professional and helpful. If the query is about Mangesh's portfolio, focus on his background. For general questions, use your real-time knowledge to provide the most current information available.\n\nUser query: ${query}`,
         {
           maxTokens: 512,
           temperature: 0.7,
@@ -672,7 +621,7 @@ User query: ${query}`,
     };
   }
 
-  generateFallback(query) {
+  generateFallback() {
     return {
       answer: "I'm still learning! For now, I can help with Mangesh's portfolio information, basic math, and unit conversions.",
       type: 'general',

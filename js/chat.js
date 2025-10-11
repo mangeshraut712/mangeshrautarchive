@@ -1,5 +1,35 @@
 import { localConfig, features, results as searchResults } from './config.js';
 
+const API_BASE = (() => {
+    if (typeof window !== 'undefined') {
+        if (window.APP_CONFIG?.apiBaseUrl) return window.APP_CONFIG.apiBaseUrl;
+
+        if (localConfig.apiBaseUrl) return localConfig.apiBaseUrl;
+
+        const hostname = window.location.hostname || '';
+
+        if (hostname.includes('github.io')) {
+            return 'https://mangeshrautarchive.vercel.app';
+        }
+
+        if (hostname.endsWith('vercel.app')) {
+            return '';
+        }
+    }
+
+    return localConfig.apiBaseUrl || '';
+})();
+
+function buildApiUrl(path) {
+    if (!API_BASE) {
+        return path;
+    }
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        return path;
+    }
+    return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
 // Intelligent Chat Assistant with Integrated AI
 class IntelligentAssistant {
     constructor(options = {}) {
@@ -23,7 +53,7 @@ class IntelligentAssistant {
 
         try {
             // Test server connectivity - use Vercel endpoint
-            const response = await fetch('https://mangeshrautarchive-oj9kmz9nr-mangesh-rauts-projects.vercel.app/api/status', {
+            const response = await fetch(buildApiUrl('/api/status'), {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' },
                 timeout: 5000
@@ -111,7 +141,7 @@ class IntelligentAssistant {
         try {
             console.log('🖥️ Calling server API with query:', query);
 
-            const response = await fetch('https://mangeshrautarchive-oj9kmz9nr-mangesh-rauts-projects.vercel.app/api/chat', {
+            const response = await fetch(buildApiUrl('/api/chat'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,7 +171,7 @@ class IntelligentAssistant {
         try {
             console.log('🚀 Calling Vercel backend directly with query:', query);
 
-            const response = await fetch('https://mangeshrautarchive-oj9kmz9nr-mangesh-rauts-projects.vercel.app/api/chat', {
+            const response = await fetch(buildApiUrl('/api/chat'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

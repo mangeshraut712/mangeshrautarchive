@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { promises as fs } from 'fs';
 import { RateLimiter } from 'limiter';
-import chatRouter from './api/chat.js';
+import chatRouter from './api/chat-router.js';
 
 function resolveBoolean(value, fallback = true) {
     if (typeof value === 'boolean') return value;
