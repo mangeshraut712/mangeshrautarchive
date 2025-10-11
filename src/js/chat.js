@@ -46,37 +46,48 @@ class IntelligentAssistant {
     async initialize() {
         // For GitHub Pages deployment, work offline only to avoid CORS issues
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
-        if (hostname.includes('github.io')) {
-            console.log('🤖 GitHub Pages detected - running in offline mode');
+
+        // Check multiple ways to detect GitHub Pages and static hosting
+        const isGitHubPages = hostname.includes('github.io') ||
+                              hostname.includes('mangeshraut712.github.io') ||
+                              !navigator.onLine ||
+                              (window.location.protocol === 'https:' &&
+                               !['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname) &&
+                               !hostname.endsWith('.vercel.app') &&
+                               !hostname.endsWith('.herokuapp.com') &&
+                               !hostname.endsWith('.netlify.app'));
+
+        if (isGitHubPages || !navigator.onLine) {
+            console.log(`🤖 ${isGitHubPages ? 'GitHub Pages' : 'Offline mode'} detected - running in offline mode`);
+            console.log('Current hostname:', hostname);
+            console.log('Protocol:', window.location.protocol);
             this.isReadyState = true;
             return false; // False indicates offline mode, but ready for local processing
         }
 
-        if (!navigator.onLine) {
-            console.warn('Offline mode - limited functionality');
-            this.isReadyState = true;
-            return false;
-        }
-
         try {
             // Test server connectivity - use Vercel endpoint
+            console.log('🖥️ Testing server connectivity...');
             const response = await fetch(buildApiUrl('/api/status'), {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' },
-                timeout: 5000
+                signal: AbortSignal.timeout(8000) // Increased timeout
             });
 
             if (response.ok) {
+                console.log('✅ Server connectivity test successful');
                 this.isReadyState = true;
                 return true;
             }
 
-            console.warn('Server connectivity test failed');
+            console.warn('Server connectivity test failed with status:', response.status);
             return false;
 
         } catch (error) {
-            console.warn('Server initialization failed:', error.message);
-            return false;
+            console.warn('Server initialization failed - running offline mode:', error.message);
+            console.log('Falling back to offline mode due to server unavailability');
+            this.isReadyState = true; // Still set as ready for local processing
+            return false; // Return false to indicate offline mode
         }
     }
 
