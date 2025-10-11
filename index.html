@@ -42,8 +42,66 @@
     <!-- Import the client-side chat service -->
     <script type="module">
       import { chatService } from './js/services.js';
-      window.portfolioChatService = chatService;
-      console.log('Client-side chat service loaded successfully');
+      import intelligentAssistant from './js/chat.js';
+
+      class HybridChatService {
+        constructor(baseService, assistant) {
+          this.baseService = baseService;
+          this.assistant = assistant;
+          this.initialized = false;
+          this.pendingInit = null;
+        }
+
+        async ensureInitialized() {
+          if (this.initialized) return true;
+          if (this.pendingInit) return this.pendingInit;
+
+          this.pendingInit = (async () => {
+            try {
+              const ready = await this.assistant.initialize();
+              this.initialized = ready || this.assistant.isReady();
+              return this.initialized;
+            } catch (error) {
+              console.warn('Assistant init failed, falling back to client-side service:', error);
+              return false;
+            } finally {
+              this.pendingInit = null;
+            }
+          })();
+
+          return this.pendingInit;
+        }
+
+        async processQuery(message) {
+          const trimmed = typeof message === 'string' ? message.trim() : '';
+          if (!trimmed) {
+            return this.baseService.processQuery(message);
+          }
+
+          const assistantReady = await this.ensureInitialized();
+
+          if (assistantReady) {
+            try {
+              const answer = await this.assistant.ask(trimmed);
+              if (answer) {
+                return {
+                  answer,
+                  type: 'ai',
+                  confidence: 0.9,
+                  source: 'AssistMe (server)'
+                };
+              }
+            } catch (error) {
+              console.warn('Assistant ask failed, falling back to client-side service:', error);
+            }
+          }
+
+          return this.baseService.processQuery(trimmed);
+        }
+      }
+
+      window.portfolioChatService = new HybridChatService(chatService, intelligentAssistant);
+      console.log('Hybrid chat service loaded successfully');
     </script>
   </head>
   <body
