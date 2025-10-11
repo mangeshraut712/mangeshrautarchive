@@ -117,18 +117,16 @@ class IntelligentAssistant {
         const response = await this.callServerAPI(query);
 
         if (response && response.answer) {
-            return response.answer;
+            return response;
         }
 
-        // If server fails, try Vercel backend directly
         console.log('🔄 Server failed, trying Vercel backend directly...');
         const vercelResponse = await this.callVercelAPI(query);
 
         if (vercelResponse && vercelResponse.answer) {
-            return vercelResponse.answer;
+            return vercelResponse;
         }
 
-        // Final fallback to basic processing if everything fails
         console.log('🔄 All backends failed, using basic processing...');
         return this.basicQueryProcessing(query);
     }
@@ -163,7 +161,7 @@ class IntelligentAssistant {
         } catch (error) {
             console.error('❌ Server API call failed:', error.message);
             this.markServerUnavailable();
-            return null;
+        return null;
         }
     }
 
@@ -197,22 +195,36 @@ class IntelligentAssistant {
     }
 
     basicQueryProcessing(query) {
-        // Simple fallback processing
+        const result = {
+            answer: '',
+            type: 'general',
+            confidence: 0.3,
+            source: 'AssistMe',
+            providers: []
+        };
+
         const lower = query.toLowerCase();
 
         if (lower.includes('hello') || lower.includes('hi')) {
-            return this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)];
+            result.answer = this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)];
+            result.type = 'greeting';
+            return result;
         }
 
         if (lower.includes('portfolio') || lower.includes('work')) {
-            return 'Mangesh is a Software Engineer specializing in Java Spring Boot, AngularJS, AWS, and machine learning. Check out his GitHub: github.com/mangeshraut712';
+            result.answer = 'Mangesh is a Software Engineer specializing in Java Spring Boot, AngularJS, AWS, and machine learning. Check out his GitHub: github.com/mangeshraut712';
+            result.type = 'portfolio';
+            return result;
         }
 
         if (lower.includes('contact') || lower.includes('email')) {
-            return 'You can reach Mangesh at mbr63@drexel.edu or connect on LinkedIn: linkedin.com/in/mangeshraut71298';
+            result.answer = 'You can reach Mangesh at mbr63@drexel.edu or connect on LinkedIn: linkedin.com/in/mangeshraut71298';
+            result.type = 'portfolio';
+            return result;
         }
 
-        return 'I\'m here to help! Ask me about Mangesh\'s skills, experience, or general questions.';
+        result.answer = 'I\'m here to help! Ask me about Mangesh\'s skills, experience, or general questions.';
+        return result;
     }
 
     generateFallbackResponse(query, error) {
@@ -222,7 +234,13 @@ class IntelligentAssistant {
             "I'm having trouble connecting right now. Please check your internet and try again."
         ];
 
-        return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+        return {
+            answer: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
+            type: 'fallback',
+            confidence: 0.2,
+            source: 'AssistMe',
+            providers: []
+        };
     }
 
     handleConcurrency(options) {

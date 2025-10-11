@@ -150,7 +150,15 @@ class ChatUI {
     }
 
     async _handleUserInput() {
-        if (this.isProcessing || !chatAssistant.isReady()) return;
+        if (this.isProcessing) return;
+
+        if (!chatAssistant.isReady()) {
+            try {
+                await chatAssistant.initialize();
+            } catch (initError) {
+                console.warn('Assistant initialization failed, continuing with fallback services:', initError);
+            }
+        }
 
         const text = this.elements.input?.value.trim();
         if (!text) return;
@@ -173,7 +181,8 @@ class ChatUI {
                 this._hideTypingIndicator();
             }
 
-            const assistantMessage = this._createMessageElement(response, 'assistant', Date.now());
+            const { content, metadata } = this._formatAssistantResponse(response);
+            const assistantMessage = this._createMessageElement(content, 'assistant', Date.now(), metadata);
             this._addMessageElement(assistantMessage);
 
             setTimeout(() => this._updateSuggestions(), 400);
@@ -226,22 +235,115 @@ class ChatUI {
 
         messageDiv.appendChild(contentDiv);
 
-        if (metadata.type || metadata.processingTime) {
+        const metaParts = [];
+
+        if (metadata.type) {
+            metaParts.push(`<span class="query-type">${metadata.type}</span>`);
+        }
+
+        if (metadata.source) {
+            metaParts.push(`<span class="response-source">${metadata.source}</span>`);
+        }
+
+        if (metadata.confidence !== undefined) {
+            const confidenceValue = typeof metadata.confidence === 'number'
+                ? `${Math.round(metadata.confidence * 100)}%`
+                : metadata.confidence;
+            metaParts.push(`<span class="response-confidence">${confidenceValue}</span>`);
+        }
+
+        if (metadata.processingTime !== undefined) {
+            const processingValue = typeof metadata.processingTime === 'number'
+                ? `${metadata.processingTime}ms`
+                : metadata.processingTime;
+            metaParts.push(`<span class="processing-time">${processingValue}</span>`);
+        }
+
+        if (Array.isArray(metadata.providers) && metadata.providers.length) {
+            const providerText = metadata.providers
+                .map((entry) => this._formatProviderLabel(entry))
+                .filter(Boolean)
+                .join(', ');
+            if (providerText) {
+                metaParts.push(`<span class="providers-tried">Tried: ${providerText}</span>`);
+            }
+        }
+
+        if (metaParts.length) {
             const metaDiv = document.createElement('div');
             metaDiv.className = 'message-metadata';
-
-            if (metadata.type) {
-                metaDiv.innerHTML += `<span class="query-type">${metadata.type}</span>`;
-            }
-
-            if (metadata.processingTime) {
-                metaDiv.innerHTML += `<span class="processing-time">${metadata.processingTime}ms</span>`;
-            }
-
+            metaDiv.innerHTML = metaParts.join(' ');
             messageDiv.appendChild(metaDiv);
         }
 
         return messageDiv;
+    }
+
+    _formatAssistantResponse(response) {
+        if (!response) {
+            return { content: '', metadata: {} };
+        }
+
+        if (typeof response === 'string') {
+            return { content: response, metadata: {} };
+        }
+
+        const metadata = {};
+
+        if (response.type) metadata.type = response.type;
+        if (response.source) metadata.source = response.source;
+        if (typeof response.confidence === 'number') metadata.confidence = response.confidence;
+        if (typeof response.processingTime === 'number') {
+            metadata.processingTime = Math.max(0, Math.round(response.processingTime));
+        } else if (response.processingTime) {
+            metadata.processingTime = response.processingTime;
+        }
+        if (Array.isArray(response.providers)) metadata.providers = response.providers;
+
+        if (response.error) metadata.error = true;
+
+        if (response.html && features.enableMarkdownRendering) {
+            return { content: { html: response.html }, metadata };
+        }
+
+        const answer = response.answer ?? response.text ?? '';
+        return { content: answer, metadata };
+    }
+
+    _formatProviderLabel(entry) {
+        if (!entry) return '';
+
+        let name;
+        let confidence;
+
+        if (typeof entry === 'string') {
+            name = entry;
+        } else {
+            name = this._prettifyProviderName(entry.provider || entry.name || '');
+            confidence = entry.confidence;
+        }
+
+        if (!name) return '';
+
+        if (typeof confidence === 'number') {
+            return `${name} (${Math.round(confidence * 100)}%)`;
+        }
+
+        return name;
+    }
+
+    _prettifyProviderName(provider) {
+        const map = {
+            grok: 'Grok xAI',
+            anthropic: 'Claude',
+            claude: 'Claude',
+            perplexity: 'Perplexity',
+            gemini: 'Gemini',
+            gemini_firebase: 'Gemini',
+            huggingface: 'UserLM-8b'
+        };
+
+        return map[provider] || provider || '';
     }
 
     _createTypingIndicator() {

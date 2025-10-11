@@ -34,6 +34,8 @@ export default async function handler(req, res) {
             type: result.type,
             confidence: result.confidence,
             processingTime: result.processingTime,
+            source: result.source,
+            providers: result.providers,
             mcpEnhanced: false
         });
     } catch (error) {
@@ -53,6 +55,8 @@ export default async function handler(req, res) {
                     type: 'fallback',
                     confidence: 0.5,
                     processingTime: fallbackResult.processingTime,
+                    source: fallbackResult.source || 'AssistMe',
+                    providers: fallbackResult.providers || [],
                     error: true
                 });
             }

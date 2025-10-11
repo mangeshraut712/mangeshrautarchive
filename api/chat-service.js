@@ -62,12 +62,14 @@ class MultiModelAIService {
       if (!config.enabled) continue;
 
       try {
-        const response = await this.callProvider(providerName, config, message, options);
-        if (response) {
+        const raw = await this.callProvider(providerName, config, message, options);
+        const normalized = this.normalizeProviderResponse(raw);
+        if (normalized) {
+          const confidence = this.calculateConfidence(normalized, message);
           responses.push({
             provider: providerName,
-            content: response,
-            confidence: this.calculateConfidence(response, message)
+            content: normalized,
+            confidence
           });
         }
       } catch (error) {
@@ -75,15 +77,44 @@ class MultiModelAIService {
       }
     }
 
-    if (responses.length === 0) {
+    if (!responses.length) {
       console.log('❌ No AI providers available');
       return null;
     }
 
     const bestResponse = this.selectBestResponse(responses, message);
-    console.log(`✅ Selected best response from ${bestResponse.provider} (confidence: ${bestResponse.confidence})`);
+    console.log(`✅ Selected best response from ${bestResponse.provider} (confidence: ${bestResponse.confidence.toFixed(2)})`);
 
-    return `${bestResponse.content} (Powered by ${this.getProviderDisplayName(bestResponse.provider)})`;
+    return {
+      provider: bestResponse.provider,
+      answer: bestResponse.content,
+      confidence: bestResponse.confidence,
+      providersTried: responses.map(({ provider, confidence }) => ({
+        provider,
+        confidence
+      }))
+    };
+  }
+
+  normalizeProviderResponse(response) {
+    if (!response) return null;
+
+    if (Array.isArray(response)) {
+      return response
+        .map((item) => this.normalizeProviderResponse(item))
+        .filter(Boolean)
+        .join('\n')
+        .trim();
+    }
+
+    if (typeof response === 'object') {
+      if (response.text) return String(response.text).trim();
+      if (response.content) return this.normalizeProviderResponse(response.content);
+      if (response.generated_text) return String(response.generated_text).trim();
+      if (response.message) return this.normalizeProviderResponse(response.message);
+    }
+
+    return String(response).trim();
   }
 
   async callProvider(providerName, config, message, options) {
@@ -265,14 +296,14 @@ class MultiModelAIService {
   }
 
   selectBestResponse(responses, originalQuery) {
-    const scored = responses.map(response => ({
+    const scored = responses.map((response) => ({
       ...response,
-      score: this.calculateConfidence(response.content, originalQuery)
+      confidence: response.confidence ?? this.calculateConfidence(response.content, originalQuery)
     }));
 
-    scored.sort((a, b) => b.score - a.score);
+    scored.sort((a, b) => b.confidence - a.confidence);
 
-    console.log(`📊 Response scores: ${scored.map(r => `${r.provider}: ${r.score.toFixed(2)}`).join(', ')}`);
+    console.log(`📊 Response scores: ${scored.map(r => `${r.provider}: ${r.confidence.toFixed(2)}`).join(', ')}`);
 
     return scored[0];
   }
@@ -484,7 +515,14 @@ class ChatService {
     const cacheKey = `answer:${normalizedQuery.toLowerCase()}`;
     const cached = responseCache.get(cacheKey);
     if (cached) {
-      return { ...cached, processingTime: Date.now() - startTime };
+      return {
+        answer: cached.answer,
+        type: cached.type || 'general',
+        confidence: cached.confidence ?? 0.5,
+        source: cached.source || 'AssistMe',
+        providers: cached.providers || [],
+        processingTime: Date.now() - startTime
+      };
     }
 
     let response = null;
@@ -512,19 +550,34 @@ class ChatService {
       response = {
         answer: "I hit a snag processing that question. Try rephrasing it.",
         type: 'error',
-        confidence: 0.1
+        confidence: 0.1,
+        source: 'AssistMe'
       };
     }
 
     responseCache.set(cacheKey, response);
-    return { ...response, processingTime: Date.now() - startTime };
+
+    const processingTime = Date.now() - startTime;
+    return {
+      answer: response.answer,
+      type: response.type || 'general',
+      confidence: response.confidence ?? 0.5,
+      source: response.source || 'AssistMe',
+      providers: response.providers || [],
+      processingTime
+    };
   }
 
   handleUtilityQuery(query) {
     const lower = query.toLowerCase().trim();
 
     if (/\b(time|current time|what time is it)\b/.test(lower)) {
-      return { answer: `Current server time: ${new Date().toLocaleTimeString()}`, type: 'utility', confidence: 0.9 };
+      return {
+        answer: `Current server time: ${new Date().toLocaleTimeString()}`,
+        type: 'utility',
+        confidence: 0.9,
+        source: 'AssistMe'
+      };
     }
 
     if (/\b(date|today|what day is it)\b/.test(lower)) {
@@ -534,7 +587,12 @@ class ChatService {
         month: 'long',
         day: 'numeric'
       });
-      return { answer: `Today is ${date}`, type: 'utility', confidence: 0.9 };
+      return {
+        answer: `Today is ${date}`,
+        type: 'utility',
+        confidence: 0.9,
+        source: 'AssistMe'
+      };
     }
 
     return null;
@@ -556,7 +614,13 @@ class ChatService {
 
   async handlePortfolioQuery(query) {
     const answer = this.knowledgeBase.getPortfolioInfo(query);
-    return { answer, type: 'portfolio', confidence: 0.9 };
+    return {
+      answer,
+      type: 'portfolio',
+      confidence: 0.9,
+      source: 'AssistMe Portfolio',
+      providers: []
+    };
   }
 
   async handleMathQuery(query) {
@@ -566,7 +630,13 @@ class ChatService {
       const [, value, fromUnit, toUnit] = conversionMatch;
       const result = this.mathUtils.convertUnits(parseFloat(value), fromUnit, toUnit);
       if (result !== null) {
-        return { answer: `Converted: ${result.toFixed(2)} ${toUnit}`, type: 'math', confidence: 0.9 };
+        return {
+          answer: `Converted: ${result.toFixed(2)} ${toUnit}`,
+          type: 'math',
+          confidence: 0.9,
+          source: 'AssistMe Math',
+          providers: []
+        };
       }
     }
 
@@ -575,21 +645,33 @@ class ChatService {
       const [, num1, operator, num2] = calcMatch;
       const result = this.mathUtils.evaluate(`${num1}${operator}${num2}`);
       if (result !== null) {
-        return { answer: `Result: ${result}`, type: 'math', confidence: 0.9 };
+        return {
+          answer: `Result: ${result}`,
+          type: 'math',
+          confidence: 0.9,
+          source: 'AssistMe Math',
+          providers: []
+        };
       }
     }
 
     return {
       answer: "I can handle basic calculations and unit conversions. Try: 'convert 10 km to miles' or 'calculate 15 + 27'",
       type: 'math',
-      confidence: 0.3
+      confidence: 0.3,
+      source: 'AssistMe Math',
+      providers: []
     };
   }
 
   async handleGeneralQuery(query) {
     const greeting = this.knowledgeBase.getGeneralInfo(query);
     if (greeting) {
-      return greeting;
+      return {
+        ...greeting,
+        source: 'AssistMe',
+        providers: []
+      };
     }
 
     const enabledProviders = this.multiModelService.getEnabledProviders();
@@ -605,11 +687,17 @@ class ChatService {
         }
       );
 
-      if (aiResponse) {
+      if (aiResponse?.answer) {
+        const providerName = this.multiModelService.getProviderDisplayName(aiResponse.provider);
+        const trimmedAnswer = aiResponse.answer.trim();
+        const answerWithSource = `${trimmedAnswer}${trimmedAnswer.endsWith('.') ? '' : '.'}\n\n🔎 Source: ${providerName}`;
+
         return {
-          answer: aiResponse,
+          answer: answerWithSource,
           type: 'ai',
-          confidence: 0.9
+          confidence: Math.max(aiResponse.confidence ?? 0.85, 0.75),
+          source: providerName,
+          providers: aiResponse.providersTried || []
         };
       }
     }
@@ -617,7 +705,8 @@ class ChatService {
     return {
       answer: "I can help with information about Mangesh Raut's portfolio, basic math calculations, and unit conversions. What would you like to know?",
       type: 'general',
-      confidence: 0.5
+      confidence: 0.5,
+      source: 'AssistMe'
     };
   }
 
@@ -625,7 +714,9 @@ class ChatService {
     return {
       answer: "I'm still learning! For now, I can help with Mangesh's portfolio information, basic math, and unit conversions.",
       type: 'general',
-      confidence: 0.3
+      confidence: 0.3,
+      source: 'AssistMe',
+      providers: []
     };
   }
 }

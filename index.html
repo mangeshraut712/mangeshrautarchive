@@ -41,31 +41,101 @@
 
     <!-- Multi-Model AI Chatbot Service -->
     <script type="module">
+      import { chatService as clientChatService } from './js/services.js';
       import intelligentAssistant from './js/chat.js';
 
-      // Make the assistant globally available
-      window.portfolioChatService = {
+      class HybridChatService {
+        constructor(clientService, serverAssistant) {
+          this.clientService = clientService;
+          this.serverAssistant = serverAssistant;
+          this.initialized = false;
+          this.initializing = null;
+        }
+
+        async _ensureServerReady() {
+          if (this.serverAssistant.isReady()) {
+            this.initialized = true;
+            return true;
+          }
+
+          if (this.initializing) {
+            return this.initializing;
+          }
+
+          this.initializing = (async () => {
+            try {
+              const ready = await this.serverAssistant.initialize();
+              this.initialized = ready || this.serverAssistant.isReady();
+              return this.initialized;
+            } catch (error) {
+              console.warn('Server assistant initialization failed:', error);
+              return false;
+            } finally {
+              this.initializing = null;
+            }
+          })();
+
+          return this.initializing;
+        }
+
         async processQuery(message) {
-          try {
-            const response = await intelligentAssistant.ask(message);
+          const trimmed = typeof message === 'string' ? message.trim() : '';
+
+          if (!trimmed) {
+            return this._normalizePayload(await this.clientService.processQuery(message));
+          }
+
+          const serverReady = await this._ensureServerReady();
+
+          if (serverReady) {
+            try {
+              const serverResult = await this.serverAssistant.ask(trimmed);
+              const normalized = this._normalizePayload(serverResult, 'AssistMe Server');
+              if (normalized?.answer) {
+                return normalized;
+              }
+            } catch (error) {
+              console.warn('Server assistant error, falling back to client service:', error);
+            }
+          }
+
+          const clientResult = await this.clientService.processQuery(trimmed);
+          return this._normalizePayload(clientResult, 'AssistMe');
+        }
+
+        _normalizePayload(payload, defaultSource = 'AssistMe') {
+          if (!payload) {
             return {
-              answer: response,
-              type: 'ai',
-              confidence: 0.9,
-              source: 'Multi-Model AI'
-            };
-          } catch (error) {
-            console.error('AI service error:', error);
-            return {
-              answer: 'I\'m experiencing technical difficulties. Please try again.',
-              type: 'error',
-              confidence: 0
+              answer: '',
+              type: 'general',
+              confidence: 0.2,
+              source: defaultSource
             };
           }
-        }
-      };
 
-      console.log('Multi-Model AI Chatbot loaded successfully');
+          if (typeof payload === 'string') {
+            return {
+              answer: payload,
+              type: 'general',
+              confidence: 0.3,
+              source: defaultSource
+            };
+          }
+
+          return {
+            answer: payload.answer ?? payload.text ?? '',
+            type: payload.type || 'general',
+            confidence: payload.confidence ?? 0.5,
+            source: payload.source || defaultSource,
+            processingTime: payload.processingTime,
+            providers: payload.providers || [],
+            html: payload.html
+          };
+        }
+      }
+
+      window.portfolioChatService = new HybridChatService(clientChatService, intelligentAssistant);
+      console.log('Hybrid Multi-Model AI Chatbot loaded successfully');
     </script>
   </head>
   <body
