@@ -221,6 +221,18 @@ For questions: Be direct and factual. Keep answers concise but informative. Incl
 
             if (!response.ok) {
                 console.error(`OpenAI API error: ${response.status}`);
+
+                // Handle rate limiting (429) - try fallback services
+                if (response.status === 429) {
+                    console.log('🔄 OpenAI rate limited, trying Grok...');
+                    const grokResponse = await this._callGrokAPI(query, context);
+                    if (grokResponse) return grokResponse;
+
+                    console.log('🔄 Grok failed, trying Claude...');
+                    const claudeResponse = await this._callClaudeAPI(query, context);
+                    if (claudeResponse) return claudeResponse;
+                }
+
                 return null;
             }
 
@@ -245,15 +257,110 @@ For questions: Be direct and factual. Keep answers concise but informative. Incl
     // Grok and Claude methods (simplified)
 
     async _callGrokAPI(query, context = {}) {
-        // Simplified version - prioritize OpenAI
-        console.log('🔄 Skipping Grok (OpenAI has priority)');
-        return null;
+        if (!this.supportsGrok() || preferServerAI) {
+            return null;
+        }
+
+        try {
+            await apiLimiter.waitForSlot();
+            console.log('🧠 Calling Grok API as fallback...');
+
+            const requestPayload = {
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are AssistMe, Mangesh Raut's portfolio assistant. Be concise and helpful."
+                    },
+                    {
+                        "role": "user",
+                        "content": query
+                    }
+                ],
+                "model": "grok-2-1212",
+                "stream": false,
+                "temperature": 0.3
+            };
+
+            const response = await fetch(this.grokConfig.fallbackUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.grokConfig.apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestPayload)
+            });
+
+            if (!response.ok) {
+                console.log(`Grok API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+            if (data && data.choices && data.choices.length > 0) {
+                const answer = data.choices[0].message?.content;
+                if (answer) {
+                    console.log('✅ Grok API response received');
+                    return `[AI Response] ${answer} (Powered by Grok)`;
+                }
+            }
+
+            return null;
+        } catch (error) {
+            console.error('❌ Grok API error:', error);
+            return null;
+        }
     }
 
     async _callClaudeAPI(query, context = {}) {
-        // Simplified version - prioritize OpenAI
-        console.log('🔄 Skipping Claude (OpenAI has priority)');
-        return null;
+        if (!this.supportsClaude() || preferServerAI) {
+            return null;
+        }
+
+        try {
+            await apiLimiter.waitForSlot();
+            console.log('🤖 Calling Claude API as fallback...');
+
+            const requestPayload = {
+                "model": "claude-3-haiku-20240307",
+                "max_tokens": 400,
+                "system": "You are AssistMe, Mangesh Raut's portfolio assistant. Be concise and helpful.",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": query
+                    }
+                ]
+            };
+
+            const response = await fetch(this.claudeConfig.fallbackUrl, {
+                method: 'POST',
+                headers: {
+                    'x-api-key': this.claudeConfig.apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestPayload)
+            });
+
+            if (!response.ok) {
+                console.log(`Claude API error: ${response.status}`);
+                return null;
+            }
+
+            const data = await response.json();
+            if (data && data.content && data.content.length > 0) {
+                const answer = data.content[0].text;
+                if (answer) {
+                    console.log('✅ Claude API response received');
+                    return `[AI Response] ${answer} (Powered by Claude)`;
+                }
+            }
+
+            return null;
+        } catch (error) {
+            console.error('❌ Claude API error:', error);
+            return null;
+        }
     }
 }
 
