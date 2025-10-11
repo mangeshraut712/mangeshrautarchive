@@ -178,7 +178,9 @@ class QueryProcessor {
             'projects',
             'resume',
             'cv',
-            'background'
+            'background',
+            'qualification',
+            'degree'
         ];
 
         return portfolioTerms.some(term => lower.includes(term));
@@ -392,6 +394,14 @@ class KnowledgeBase {
             return this._withSource(this._summarizeExperience(), 'linkedin');
         }
 
+        if (this._matches(lower, ['highest qualification', 'highest degree', 'highest education', 'top qualification'])) {
+            return this._withSource(this._highestQualification(), 'linkedin');
+        }
+
+        if (lower.includes('qualification')) {
+            return this._withSource(this._highestQualification(), 'linkedin');
+        }
+
         if (this._matches(lower, ['education', 'degree', 'university', 'school'])) {
             return this._withSource(this._summarizeEducation(), 'linkedin');
         }
@@ -447,6 +457,25 @@ class KnowledgeBase {
         return null;
     }
 
+    getOfflineFact(query) {
+        if (!query) return null;
+
+        const normalized = query
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        if (!normalized) return null;
+
+        if ((normalized.startsWith('who is') || normalized.startsWith('tell me about')) &&
+            normalized.includes('elon musk')) {
+            return "Elon Musk is a technology entrepreneur best known for leading Tesla and SpaceX, and for co-founding ventures such as Neuralink and The Boring Company. He focuses on electric vehicles, space exploration, and advanced infrastructure projects. (Source: Offline knowledge base)";
+        }
+
+        return null;
+    }
+
     _matches(query, keywords) {
         return keywords.some(keyword => query.includes(keyword));
     }
@@ -475,6 +504,17 @@ class KnowledgeBase {
             `${item.degree} – ${item.school} (${item.period})`
         );
         return `Education: ${schools.join(' • ')}.`;
+    }
+
+    _highestQualification() {
+        const highest = this.profile.education && this.profile.education[0];
+        if (!highest) {
+            return "Highest qualification: Master's in Computer Science.";
+        }
+
+        const focus = highest.focus ? ` with a focus in ${highest.focus}` : '';
+        const period = highest.period ? ` (${highest.period})` : '';
+        return `Highest qualification: ${highest.degree} from ${highest.school}${focus}${period}.`;
     }
 
     _summarizeSkills() {
@@ -1808,6 +1848,16 @@ class ChatService {
         const greeting = this.knowledgeBase.getGeneralInfo(query);
         if (greeting) return { ...greeting, confidence: 0.8 };
 
+        const offlineFact = this.knowledgeBase.getOfflineFact(query);
+        if (offlineFact) {
+            return {
+                answer: offlineFact,
+                type: 'general',
+                source: 'offline',
+                confidence: 0.65
+            };
+        }
+
         const ddgResult = await this.externalServices.searchDuckDuckGo(query);
         if (ddgResult) {
             return {
@@ -2026,6 +2076,10 @@ class ChatService {
         // Detect country facts
         if (lowerAnswer.includes('restcountries') || lowerAnswer.includes('population') || lowerAnswer.includes('capital')) {
             return '🌍 Country information';
+        }
+
+        if (lowerAnswer.includes('offline knowledge base')) {
+            return '🗂️ Offline knowledge reference';
         }
 
         // Detect portfolio responses
