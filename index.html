@@ -90,10 +90,16 @@
           if (serverReady) {
             try {
               const serverResult = await this.serverAssistant.ask(trimmed);
-              const normalized = this._normalizePayload(serverResult, 'AssistMe Server');
-              if (normalized?.answer) {
-                return normalized;
+              const normalizedServer = this._normalizePayload(serverResult, 'AssistMe Server');
+
+              if (this._shouldUseServerResponse(normalizedServer)) {
+                return normalizedServer;
               }
+
+              const clientResult = await this.clientService.processQuery(trimmed);
+              const normalizedClient = this._normalizePayload(clientResult, 'AssistMe');
+
+              return this._chooseBetterResponse(normalizedServer, normalizedClient) || normalizedClient;
             } catch (error) {
               console.warn('Server assistant error, falling back to client service:', error);
             }
@@ -109,7 +115,8 @@
               answer: '',
               type: 'general',
               confidence: 0.2,
-              source: defaultSource
+              source: defaultSource,
+              providers: []
             };
           }
 
@@ -118,7 +125,8 @@
               answer: payload,
               type: 'general',
               confidence: 0.3,
-              source: defaultSource
+              source: defaultSource,
+              providers: []
             };
           }
 
@@ -128,9 +136,61 @@
             confidence: payload.confidence ?? 0.5,
             source: payload.source || defaultSource,
             processingTime: payload.processingTime,
-            providers: payload.providers || [],
+            providers: Array.isArray(payload.providers) ? payload.providers : [],
             html: payload.html
           };
+        }
+
+        _shouldUseServerResponse(response) {
+          if (!response || !response.answer) return false;
+
+          if (this._isGenericFallback(response.answer)) {
+            return false;
+          }
+
+          if (response.type && response.type !== 'general') {
+            return true;
+          }
+
+          if (typeof response.confidence === 'number' && response.confidence >= 0.6) {
+            return true;
+          }
+
+          return false;
+        }
+
+        _chooseBetterResponse(serverResponse, clientResponse) {
+          if (!serverResponse && !clientResponse) return null;
+          if (!serverResponse) return clientResponse;
+          if (!clientResponse) return serverResponse;
+
+          const serverScore = this._scoreResponse(serverResponse);
+          const clientScore = this._scoreResponse(clientResponse);
+
+          return serverScore >= clientScore ? serverResponse : clientResponse;
+        }
+
+        _scoreResponse(response) {
+          if (!response) return 0;
+
+          let score = typeof response.confidence === 'number' ? response.confidence : 0.5;
+
+          if (response.type === 'ai') score += 0.2;
+          if (response.type === 'portfolio' || response.type === 'math') score += 0.15;
+          if (['factual', 'search', 'knowledge', 'wikipedia'].includes(response.type)) score += 0.1;
+          if (this._isGenericFallback(response.answer)) score -= 0.4;
+
+          return score;
+        }
+
+        _isGenericFallback(answer) {
+          if (!answer) return true;
+          const lower = String(answer).toLowerCase();
+
+          return lower.includes("i can help with information about mangesh raut's portfolio") ||
+                 lower.includes('i\'m still learning') ||
+                 lower.includes('try rephrasing it') ||
+                 lower.includes('technical difficulties');
         }
       }
 
