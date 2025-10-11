@@ -1,10 +1,18 @@
 import chatService from './chat-service.js';
 
 export default async function handler(req, res) {
-    // Specific CORS headers for GitHub Pages - IMPORTANT: Not using '*' for security
-    const allowedOrigin = 'https://mangeshraut712.github.io';
+    // Specific CORS headers for GitHub Pages and Local Development - IMPORTANT: Not using '*' for security
+    const allowedOrigins = [
+        'https://mangeshraut712.github.io',
+        'http://localhost:3000',
+        'http://127.0.0.1:3000'
+    ];
 
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'false'); // Important: false when using specific origins

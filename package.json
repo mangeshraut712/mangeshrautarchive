@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "dev": "open src/index.html"
+    "dev": "node scripts/local-server.js",
+    "open": "open src/index.html"
   },
   "devDependencies": {
     "stylelint": "^16.25.0",

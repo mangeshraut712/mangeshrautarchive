@@ -159,11 +159,20 @@ git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
 ```
 
-### Open Locally
+### Open Locally (Recommended)
 ```bash
 npm install
-npm run dev  # Opens src/index.html in your default browser (macOS)
+npm run dev  # Starts HTTP server at http://localhost:3000
+# OR
+node scripts/local-server.js  # Direct server startup
 ```
+
+### Alternative: Open HTML Directly (Limited functionality)
+```bash
+npm run open  # Opens src/index.html (may have CORS issues)
+```
+
+**⚠️ Important:** Don't use `npm run dev` in the terminal's content since it just runs `open src/index.html`. Use `node scripts/local-server.js` instead for proper HTTP server that supports all chatbot features.
 
 ### Build Production Assets
 ```bash
