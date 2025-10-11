@@ -150,6 +150,52 @@ class AIService {
     }
 
     async _callOpenAI(query, context = {}) {
+        // For localhost development, ALWAYS use the Vercel backend for AI calls
+        // This avoids CORS issues and allows proper fallback handling on the server
+        if (typeof window !== 'undefined' && !window.location.protocol.startsWith('https:')) {
+            console.log('🏠 Using Vercel backend for AI calls (localhost development)');
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: query
+                    })
+                });
+
+                if (!response.ok) {
+                    console.error(`Vercel backend error: ${response.status}`);
+                    return null;
+                }
+
+                const data = await response.json();
+                if (data && data.answer) {
+                    console.log('✅ AI response received via Vercel backend');
+
+                    // Extract the source from the response for proper attribution
+                    let source = 'openai';
+                    if (data.answer.includes('Powered by Grok')) source = 'grok';
+                    else if (data.answer.includes('Powered by Claude')) source = 'claude';
+                    else if (data.answer.includes('Powered by OpenAI')) source = 'openai';
+
+                    return {
+                        answer: data.answer,
+                        source: source,
+                        confidence: data.confidence || 0.8
+                    };
+                }
+
+                return null;
+            } catch (error) {
+                console.error('❌ Vercel backend error:', error);
+                return null;
+            }
+        }
+
+        // Fallback to direct API calls only for production (GitHub Pages)
         if (!this.supportsOpenAI() || preferServerAI) {
             return null;
         }
@@ -157,7 +203,7 @@ class AIService {
         try {
             await apiLimiter.waitForSlot();
 
-            console.log('🤖 Calling OpenAI API (highest priority)...');
+            console.log('🤖 Calling OpenAI API directly (production)...');
 
             const systemPrompt = `You are AssistMe, Mangesh Raut's portfolio assistant. You provide accurate, helpful answers.
 
@@ -173,7 +219,7 @@ For questions: Be direct and factual. Keep answers concise but informative. Incl
                         content: systemPrompt
                     },
                     {
-                        role: "user",
+                        "role": "user",
                         content: query
                     }
                 ],
@@ -181,35 +227,6 @@ For questions: Be direct and factual. Keep answers concise but informative. Incl
                 temperature: 0.3
             };
 
-            // Try server proxy first
-            if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-                try {
-                    const response = await fetch(this.openAIConfig.baseUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(requestPayload)
-                    });
-
-                    if (!response.ok) {
-                        console.log(`OpenAI proxy error: ${response.status}`);
-                    } else {
-                        const data = await response.json();
-                        if (data && data.choices && data.choices.length > 0) {
-                            const answer = data.choices[0].message?.content;
-                            if (answer) {
-                                console.log('✅ OpenAI API response received via proxy');
-                                return `[AI Response] ${answer} (Powered by OpenAI)`;
-                            }
-                        }
-                    }
-                } catch (proxyError) {
-                    console.log('OpenAI proxy failed, trying direct...');
-                }
-            }
-
-            // Direct call as fallback
             const response = await fetch(this.openAIConfig.fallbackUrl, {
                 method: 'POST',
                 headers: {
@@ -221,18 +238,6 @@ For questions: Be direct and factual. Keep answers concise but informative. Incl
 
             if (!response.ok) {
                 console.error(`OpenAI API error: ${response.status}`);
-
-                // Handle rate limiting (429) - try fallback services
-                if (response.status === 429) {
-                    console.log('🔄 OpenAI rate limited, trying Grok...');
-                    const grokResponse = await this._callGrokAPI(query, context);
-                    if (grokResponse) return grokResponse;
-
-                    console.log('🔄 Grok failed, trying Claude...');
-                    const claudeResponse = await this._callClaudeAPI(query, context);
-                    if (claudeResponse) return claudeResponse;
-                }
-
                 return null;
             }
 
