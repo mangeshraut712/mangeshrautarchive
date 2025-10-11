@@ -324,7 +324,7 @@ class IntelligentAssistant {
             ...(Array.isArray(payload.consensus) ? payload.consensus : [])
         ];
 
-        return {
+        const result = {
             answer: payload.answer ?? payload.text ?? '',
             type: payload.type || 'general',
             confidence: typeof payload.confidence === 'number' ? payload.confidence : 0.5,
@@ -334,6 +334,17 @@ class IntelligentAssistant {
             providers: this.normalizeProviders(providerCandidates, sourceKey),
             processingTime: payload.processingTime
         };
+
+        if (this.isGenericFallback(result.answer)) {
+            result.source = 'assistme-general';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-general', result.type);
+            result.providers = [];
+            if (typeof result.confidence === 'number') {
+                result.confidence = Math.min(result.confidence, 0.25);
+            }
+        }
+
+        return result;
     }
 
     isMeaningfulResponse(response) {
@@ -520,6 +531,11 @@ class IntelligentAssistant {
             } else {
                 key = defaultKey || 'assistme-general';
             }
+        }
+
+        const answerText = payload?.answer ?? payload?.text ?? '';
+        if (this.isGenericFallback(answerText)) {
+            key = 'assistme-general';
         }
 
         const label = this.getSourceLabelForKey(key, payload?.type);
