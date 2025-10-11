@@ -465,7 +465,7 @@ html.dark body { /* Override individual state selectors that might conflict */
 
 .chat-input-area button i.fas.fa-microphone:before {
     content: "\f130";
-    color: #ffffff;
+    color: #ef4444; /* Red microphone icon in light mode */
 }
 
 .chat-input-area button:hover {
