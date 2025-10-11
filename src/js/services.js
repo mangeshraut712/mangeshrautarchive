@@ -150,20 +150,19 @@ class AIService {
     }
 
     async _callOpenAI(query, context = {}) {
-        // For localhost development, ALWAYS use the Vercel backend for AI calls
-        // This avoids CORS issues and allows proper fallback handling on the server
+        if (!this.supportsOpenAI() || preferServerAI) {
+            return null;
+        }
+
+        // For localhost development, use Vercel backend
         if (typeof window !== 'undefined' && !window.location.protocol.startsWith('https:')) {
             console.log('🏠 Using Vercel backend for AI calls (localhost development)');
 
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: query
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: query })
                 });
 
                 if (!response.ok) {
@@ -175,11 +174,9 @@ class AIService {
                 if (data && data.answer) {
                     console.log('✅ AI response received via Vercel backend');
 
-                    // Extract the source from the response for proper attribution
                     let source = 'openai';
                     if (data.answer.includes('Powered by Grok')) source = 'grok';
-                    else if (data.answer.includes('Powered by Claude')) source = 'claude';
-                    else if (data.answer.includes('Powered by OpenAI')) source = 'openai';
+                    if (data.answer.includes('Powered by Claude')) source = 'claude';
 
                     return {
                         answer: data.answer,
@@ -195,33 +192,18 @@ class AIService {
             }
         }
 
-        // Fallback to direct API calls only for production (GitHub Pages)
-        if (!this.supportsOpenAI() || preferServerAI) {
-            return null;
-        }
-
+        // Direct API calls for production
         try {
             await apiLimiter.waitForSlot();
-
             console.log('🤖 Calling OpenAI API directly (production)...');
 
-            const systemPrompt = `You are AssistMe, Mangesh Raut's portfolio assistant. You provide accurate, helpful answers.
-
-Background: Mangesh is a Software Engineer with MS Computer Science from Drexel, experienced in Spring Boot, AWS, TensorFlow.
-
-For questions: Be direct and factual. Keep answers concise but informative. Include sources when relevant.`;
+            const systemPrompt = `You are AssistMe, Mangesh Raut's portfolio assistant. Provide accurate, helpful answers. Background: Mangesh is a Software Engineer with MS Computer Science from Drexel, experienced in Spring Boot, AWS, TensorFlow.`;
 
             const requestPayload = {
                 model: this.openAIConfig.model,
                 messages: [
-                    {
-                        "role": "system",
-                        content: systemPrompt
-                    },
-                    {
-                        "role": "user",
-                        content: query
-                    }
+                    { "role": "system", "content": systemPrompt },
+                    { "role": "user", "content": query }
                 ],
                 max_tokens: 400,
                 temperature: 0.3
