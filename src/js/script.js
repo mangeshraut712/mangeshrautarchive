@@ -31,6 +31,7 @@ class ChatUI {
         this.isProcessing = false;
         this.maxMessages = uiConfig.maxMessages;
         this.suggestionsVisible = false;
+        this.history = [];
 
         if (this.elements.widget) {
             const isOpen = !this.elements.widget.classList.contains('hidden');
