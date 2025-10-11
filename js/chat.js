@@ -23,7 +23,7 @@ class IntelligentAssistant {
 
         try {
             // Test server connectivity - use Vercel endpoint
-            const response = await fetch('https://mangeshrautarchive-bktj4bl5o-mangesh-rauts-projects.vercel.app/api/status', {
+            const response = await fetch('https://mangeshrautarchive-oj9kmz9nr-mangesh-rauts-projects.vercel.app/api/status', {
                 method: 'GET',
                 headers: { 'Accept': 'application/json' },
                 timeout: 5000
@@ -111,7 +111,7 @@ class IntelligentAssistant {
         try {
             console.log('🖥️ Calling server API with query:', query);
 
-            const response = await fetch('https://mangeshrautarchive-bktj4bl5o-mangesh-rauts-projects.vercel.app/api/chat', {
+            const response = await fetch('https://mangeshrautarchive-oj9kmz9nr-mangesh-rauts-projects.vercel.app/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ class IntelligentAssistant {
         try {
             console.log('🚀 Calling Vercel backend directly with query:', query);
 
-            const response = await fetch('https://mangeshrautarchive-bktj4bl5o-mangesh-rauts-projects.vercel.app/api/chat', {
+            const response = await fetch('https://mangeshrautarchive-oj9kmz9nr-mangesh-rauts-projects.vercel.app/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
