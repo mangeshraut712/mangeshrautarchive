@@ -8,12 +8,23 @@ import initVoiceInput from './modules/voice.js';
 import initFadeInAnimation from './modules/animations.js';
 import renderProjects from './modules/projects.js';
 
-if (features.enableMarkdownRendering) {
-    marked.setOptions({
-        renderer: new marked.Renderer(),
+const markdownLib = (typeof window !== 'undefined' && window.marked)
+    ? window.marked
+    : (typeof marked !== 'undefined' ? marked : null);
+
+const syntaxHighlighter = (typeof window !== 'undefined' && window.hljs)
+    ? window.hljs
+    : (typeof hljs !== 'undefined' ? hljs : null);
+
+if (features.enableMarkdownRendering && markdownLib) {
+    markdownLib.setOptions({
+        renderer: new markdownLib.Renderer(),
         highlight(code, language) {
-            const validLanguage = hljs.getLanguage(language) ? language : 'plaintext';
-            return hljs.highlight(code, { language: validLanguage }).value;
+            if (!syntaxHighlighter) {
+                return code;
+            }
+            const validLanguage = syntaxHighlighter.getLanguage(language) ? language : 'plaintext';
+            return syntaxHighlighter.highlight(code, { language: validLanguage }).value;
         },
         pedantic: false,
         gfm: true,
