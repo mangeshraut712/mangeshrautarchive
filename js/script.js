@@ -386,9 +386,16 @@ class ChatUI {
     _updateSuggestions(input = '') {
         if (!features.enableHistory || !this.elements.suggestions) return;
 
+        if (!input && !this.history.length) {
+            this._hideSuggestions();
+            return;
+        }
+
         const suggestions = input.length > 2
             ? this._getContextualSuggestions(input)
-            : chatAssistant.getSuggestions();
+            : this.history.length
+                ? chatAssistant.getSuggestions()
+                : [];
 
         if (!suggestions.length) {
             this._hideSuggestions();
@@ -468,7 +475,6 @@ class ChatUI {
             { welcome: true }
         );
         this._addMessageElement(welcomeMessage);
-        this._updateSuggestions();
     }
 
     _addMessageElement(element) {

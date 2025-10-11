@@ -54,28 +54,33 @@ class MultiModelAIService {
 
   async generateResponse(message, options = {}) {
     this._initializeProviders();
-    console.log('🤖 Trying all available AI models for best response...');
+    console.log('🤖 Gathering answers from all enabled AI providers...');
 
-    const responses = [];
+    const providerEntries = Object.entries(this.providers).filter(([_, config]) => config.enabled);
 
-    for (const [providerName, config] of Object.entries(this.providers)) {
-      if (!config.enabled) continue;
-
-      try {
+    const settled = await Promise.allSettled(
+      providerEntries.map(async ([providerName, config]) => {
         const raw = await this.callProvider(providerName, config, message, options);
         const normalized = this.normalizeProviderResponse(raw);
-        if (normalized) {
-          const confidence = this.calculateConfidence(normalized, message);
-          responses.push({
-            provider: providerName,
-            content: normalized,
-            confidence
-          });
-        }
-      } catch (error) {
-        console.error(`❌ ${providerName} API error:`, error.message);
+        if (!normalized) return null;
+        return {
+          provider: providerName,
+          content: this.cleanAnswer(normalized),
+          confidence: this.calculateConfidence(normalized, message)
+        };
+      })
+    );
+
+    const responses = settled
+      .filter((result) => result.status === 'fulfilled' && result.value)
+      .map((result) => result.value);
+
+    settled.forEach((result, index) => {
+      if (result.status === 'rejected') {
+        const providerName = providerEntries[index]?.[0];
+        console.error(`❌ ${providerName || 'AI provider'} API error:`, result.reason?.message || result.reason);
       }
-    }
+    });
 
     if (!responses.length) {
       console.log('❌ No AI providers available');
@@ -115,6 +120,15 @@ class MultiModelAIService {
     }
 
     return String(response).trim();
+  }
+
+  cleanAnswer(answer) {
+    if (!answer) return '';
+    return String(answer)
+      .replace(/\[[^\]]*\]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 800);
   }
 
   async callProvider(providerName, config, message, options) {

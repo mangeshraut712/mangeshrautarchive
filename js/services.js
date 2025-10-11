@@ -3,6 +3,15 @@
 import { MathUtilities } from './math.js';
 import { localConfig } from './config.js';
 
+const preferServerAI = typeof window !== 'undefined'
+    ? Boolean(
+        (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl) ||
+        localConfig.apiBaseUrl ||
+        window.location.hostname.includes('github.io') ||
+        window.location.hostname.endsWith('.vercel.app')
+      )
+    : Boolean(localConfig.apiBaseUrl || process.env?.VERCEL_URL);
+
 // Simple browser-based cache using Map
 class SimpleCache {
     constructor(maxSize = 50) {
@@ -527,15 +536,16 @@ class AIService {
     }
 
     async getEnhancedResponse(query, context = {}) {
+        if (preferServerAI) {
+            return null;
+        }
+
         try {
-            // Try Grok first - it's the most up-to-date AI model
             const grokResponse = await this._callGrokAPI(query, context);
             if (grokResponse) {
                 return grokResponse;
             }
 
-            // Fallback to Claude
-            console.log('Grok unavailable, trying Claude...');
             const claudeResponse = await this._callClaudeAPI(query, context);
             if (claudeResponse) {
                 return claudeResponse;
@@ -559,6 +569,10 @@ class AIService {
     }
 
     async getModelResponses(query, context = {}) {
+        if (preferServerAI) {
+            return [];
+        }
+
         const results = [];
 
         if (this.supportsGrok()) {
@@ -585,12 +599,15 @@ class AIService {
     }
 
     async _callGrokAPI(query, context = {}) {
-        if (this.grokConfig.enabled === false) {
-            console.log('Grok disabled via configuration');
+        if (preferServerAI || this.grokConfig.enabled === false) {
             return null;
         }
 
         const hasBrowserKey = this.grokConfig.apiKey && !this.grokConfig.apiKey.includes('your-grok-api-key');
+
+        if (!hasBrowserKey && !this.grokConfig.proxyUrl) {
+            return null;
+        }
 
         try {
             await apiLimiter.waitForSlot();
@@ -626,13 +643,10 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
 
             if (!data && hasBrowserKey) {
                 data = await this._requestGrokDirect(requestPayload);
-            } else if (!data) {
-            console.warn('Grok proxy unavailable and no browser API key configured');
-            if (!this.supportsGrok()) {
-                console.log('Grok is disabled, skipping this warning');
-                return null;
             }
-            return null;
+
+            if (!data) {
+                return null;
             }
 
             if (data && data.choices && data.choices.length > 0) {
@@ -655,7 +669,7 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
     async _requestGrokProxy(payload) {
         // For static deployments (GitHub Pages), server proxy isn't available
         // This prevents 405 errors in static hosting environments
-        if (window.location.protocol === 'https:' || window.location.hostname.includes('github.io')) {
+        if (typeof window !== 'undefined' && (window.location.protocol === 'https:' || window.location.hostname.includes('github.io'))) {
             console.log('Static deployment detected - skipping server proxy');
             return null;
         }
@@ -705,12 +719,15 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
     }
 
     async _callClaudeAPI(query, context = {}) {
-        if (this.claudeConfig.enabled === false) {
-            console.log('Claude disabled via configuration');
+        if (preferServerAI || this.claudeConfig.enabled === false) {
             return null;
         }
 
         const hasBrowserKey = this.claudeConfig.apiKey && !this.claudeConfig.apiKey.includes('your-anthropic-key-here');
+
+        if (!hasBrowserKey && !this.claudeConfig.proxyUrl) {
+            return null;
+        }
 
         try {
             await apiLimiter.waitForSlot();
@@ -733,8 +750,9 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
 
             if (!data && hasBrowserKey) {
                 data = await this._requestClaudeDirect(requestPayload);
-            } else if (!data) {
-                console.warn('Claude proxy unavailable and no browser API key configured');
+            }
+
+            if (!data) {
                 return null;
             }
 
@@ -757,7 +775,7 @@ For portfolio questions, focus on Mangesh's background. For general questions, u
 
     async _requestClaudeProxy(payload) {
         // For static deployments, server proxy isn't available
-        if (window.location.protocol === 'https:' || window.location.hostname.includes('github.io')) {
+        if (typeof window !== 'undefined' && (window.location.protocol === 'https:' || window.location.hostname.includes('github.io'))) {
             console.log('Static deployment detected - skipping Claude server proxy');
             return null;
         }
@@ -1588,10 +1606,9 @@ class ChatService {
     async _collectMultipleResponses(query, queryType, context = {}) {
         const responses = [];
 
-        // PRIORITY 1: Try ALL AI services first (Grok, Claude, Perplexity, Gemini, etc.)
-        if (this.aiService) {
+        if (this.aiService && !preferServerAI) {
             try {
-                console.log('🤖 PRIORITY: Trying all AI models first...');
+                console.log('🤖 Collecting responses from available local AI helpers...');
                 const aiResults = await this.aiService.getModelResponses(query, { context: 'verification', limit: 120 });
                 aiResults.forEach(result => {
                     if (result?.content) {
@@ -1609,9 +1626,8 @@ class ChatService {
             }
         }
 
-        // PRIORITY 2: Try external APIs only if NO AI responses available
         if (responses.length === 0) {
-            console.log('🔄 No AI responses, trying external APIs...');
+            console.log('🔄 Querying external knowledge sources...');
             const promises = [
                 this.externalServices.searchWikipedia(query),
             ];
