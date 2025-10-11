@@ -3,12 +3,14 @@
 import { MathUtilities } from './math.js';
 import { localConfig } from './config.js';
 
+// Smart AI service preference - allow external APIs even from GitHub Pages if configured
 const preferServerAI = typeof window !== 'undefined'
     ? Boolean(
+        // Allow server AI if explicitly configured OR if we have API keys available
         (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl) ||
         localConfig.apiBaseUrl ||
-        window.location.hostname.includes('github.io') ||
-        window.location.hostname.endsWith('.vercel.app')
+        window.location.hostname.endsWith('.vercel.app') ||
+        (window.location.hostname.includes('github.io') && (localConfig.apiBaseUrl || localConfig.openaiApiKey))
       )
     : Boolean(localConfig.apiBaseUrl || process.env?.VERCEL_URL);
 
