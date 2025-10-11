@@ -1,15 +1,19 @@
 import chatService from './chat-service.js';
 
 export default async function handler(req, res) {
+    // Specific CORS headers for GitHub Pages - IMPORTANT: Not using '*' for security
+    const allowedOrigin = 'https://mangeshraut712.github.io';
+
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'false'); // Important: false when using specific origins
+
     if (req.method === 'OPTIONS') {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
         return res.status(204).end();
     }
 
     if (req.method !== 'POST') {
-        res.setHeader('Access-Control-Allow-Origin', '*');
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
@@ -17,7 +21,6 @@ export default async function handler(req, res) {
         const { message } = req.body ?? {};
 
         if (!message || typeof message !== 'string') {
-            res.setHeader('Access-Control-Allow-Origin', '*');
             return res.status(400).json({
                 error: 'Message is required and must be a string'
             });
@@ -26,7 +29,6 @@ export default async function handler(req, res) {
         const trimmedMessage = message.trim();
         const result = await chatService.processQuery(trimmedMessage);
 
-        res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Content-Type', 'application/json');
 
         return res.status(200).json({
@@ -41,7 +43,6 @@ export default async function handler(req, res) {
     } catch (error) {
         console.error('Chat API error:', error);
 
-        res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Content-Type', 'application/json');
 
         try {
