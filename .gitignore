@@ -13,6 +13,9 @@ yarn-error.log*
 .env.vercel
 API_KEYS.txt
 js/config.local.js
+src/js/config.local.js
+config.local.js
+config.local.js
 
 # Build outputs
 dist/

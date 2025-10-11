@@ -107,250 +107,61 @@ class AIService {
     }
 
     async getEnhancedResponse(query, context = {}) {
-        if (preferServerAI) {
+        // This function now acts as the single point of contact to our backend.
+        // It works for both local development and production on Vercel.
+        if (preferServerAI) { // If AI is disabled
             return null;
         }
 
         try {
-            // Priority: OpenAI first (as user requested)
-            const openAIResponse = await this._callOpenAI(query, context);
-            if (openAIResponse) {
-                return openAIResponse;
+            await apiLimiter.waitForSlot();
+
+            // Determine the correct API endpoint.
+            // In local dev, local-server.js proxies /api.
+            // In production, vercel.json routes /api.
+            const baseUrl = window.location.origin;
+            const endpoint = `${baseUrl}/api/chat`;
+
+            console.log(`🤖 Calling backend API in auto mode: ${endpoint}`);
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: query, context })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.warn(`Backend API error: ${response.status} - ${errorText}`);
+                return null;
             }
 
-            const grokResponse = await this._callGrokAPI(query, context);
-            if (grokResponse) {
-                return grokResponse;
+            const data = await response.json();
+            if (data && data.answer) {
+                console.log('✅ AI response received via backend');
+                // The backend now provides all the necessary metadata.
+                return data;
             }
 
-            const claudeResponse = await this._callClaudeAPI(query, context);
-            if (claudeResponse) {
-                return claudeResponse;
-            }
-
-            console.log('No AI services available');
+            console.warn('❌ Backend returned an incomplete response');
             return null;
-
         } catch (error) {
-            console.error('AI Service error:', error);
+            console.error('❌ Failed to fetch from backend API:', error);
             return null;
         }
     }
 
     supportsOpenAI() {
-        return this.openAIConfig.enabled !== false && this.openAIConfig.apiKey;
+        // This is now determined by the backend.
+        return canUseAIServices;
     }
 
     supportsGrok() {
-        return this.grokConfig.enabled !== false && this.grokConfig.apiKey;
+        return canUseAIServices;
     }
 
     supportsClaude() {
-        return this.claudeConfig.enabled !== false && this.claudeConfig.apiKey;
-    }
-
-    async _callOpenAI(query, context = {}) {
-        if (!this.supportsOpenAI() || preferServerAI) {
-            return null;
-        }
-
-        try {
-            // For localhost development, use Vercel backend
-            if (typeof window !== 'undefined' && !window.location.protocol.startsWith('https:')) {
-                const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl) ||
-                    localConfig.apiBaseUrl ||
-                    '';
-                if (!baseUrl) {
-                    return null;
-                }
-
-                console.log('🏠 Using remote backend for AI calls (localhost development)');
-
-                const endpoint = `${baseUrl.replace(/\/$/, '')}/api/chat`;
-
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: query })
-                });
-
-                if (!response.ok) {
-                    console.warn(`Remote backend error: ${response.status}`);
-                    return null;
-                }
-
-                const data = await response.json();
-                if (data && data.answer) {
-                    console.log('✅ AI response received via remote backend');
-
-                    let source = 'openai';
-                    if (data.answer.includes('Powered by Grok')) source = 'grok';
-                    if (data.answer.includes('Powered by Claude')) source = 'claude';
-
-                    return {
-                        answer: data.answer,
-                        source: source,
-                        confidence: data.confidence || 0.8
-                    };
-                }
-
-                return null;
-            }
-
-            // Direct API calls for production
-            await apiLimiter.waitForSlot();
-            console.log('🤖 Calling OpenAI API directly (production)...');
-
-            const systemPrompt = 'You are AssistMe, Mangesh Raut\'s portfolio assistant. Provide accurate, helpful answers. Background: Mangesh is a Software Engineer with MS Computer Science from Drexel, experienced in Spring Boot, AWS, TensorFlow.';
-
-            const requestPayload = {
-                model: this.openAIConfig.model,
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: query }
-                ],
-                max_tokens: 400,
-                temperature: 0.3
-            };
-
-            const response = await fetch(this.openAIConfig.fallbackUrl, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${this.openAIConfig.apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestPayload)
-            });
-
-            if (!response.ok) {
-                console.error(`OpenAI API error: ${response.status}`);
-                return null;
-            }
-
-            const data = await response.json();
-            if (data && data.choices && data.choices.length > 0) {
-                const answer = data.choices[0].message?.content;
-                if (answer) {
-                    console.log('✅ OpenAI API response received directly');
-                    return `[AI Response] ${answer} (Powered by OpenAI GPT)`;
-                }
-            }
-
-            console.log('❌ OpenAI API returned incomplete response');
-            return null;
-        } catch (error) {
-            console.error('❌ OpenAI API error:', error);
-            return null;
-        }
-    }
-
-    // Grok and Claude methods (simplified)
-
-    async _callGrokAPI(query, context = {}) {
-        if (!this.supportsGrok() || preferServerAI) {
-            return null;
-        }
-
-        try {
-            await apiLimiter.waitForSlot();
-            console.log('🧠 Calling Grok API as fallback...');
-
-            const requestPayload = {
-                "messages": [
-                    {
-                        "role": "system",
-                        "content": "You are AssistMe, Mangesh Raut's portfolio assistant. Be concise and helpful."
-                    },
-                    {
-                        "role": "user",
-                        "content": query
-                    }
-                ],
-                "model": "grok-2-1212",
-                "stream": false,
-                "temperature": 0.3
-            };
-
-            const response = await fetch(this.grokConfig.fallbackUrl, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${this.grokConfig.apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestPayload)
-            });
-
-            if (!response.ok) {
-                console.log(`Grok API error: ${response.status}`);
-                return null;
-            }
-
-            const data = await response.json();
-            if (data && data.choices && data.choices.length > 0) {
-                const answer = data.choices[0].message?.content;
-                if (answer) {
-                    console.log('✅ Grok API response received');
-                    return `[AI Response] ${answer} (Powered by Grok)`;
-                }
-            }
-
-            return null;
-        } catch (error) {
-            console.error('❌ Grok API error:', error);
-            return null;
-        }
-    }
-
-    async _callClaudeAPI(query, context = {}) {
-        if (!this.supportsClaude() || preferServerAI) {
-            return null;
-        }
-
-        try {
-            await apiLimiter.waitForSlot();
-            console.log('🤖 Calling Claude API as fallback...');
-
-            const requestPayload = {
-                "model": "claude-3-haiku-20240307",
-                "max_tokens": 400,
-                "system": "You are AssistMe, Mangesh Raut's portfolio assistant. Be concise and helpful.",
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": query
-                    }
-                ]
-            };
-
-            const response = await fetch(this.claudeConfig.fallbackUrl, {
-                method: 'POST',
-                headers: {
-                    'x-api-key': this.claudeConfig.apiKey,
-                    'anthropic-version': '2023-06-01',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestPayload)
-            });
-
-            if (!response.ok) {
-                console.log(`Claude API error: ${response.status}`);
-                return null;
-            }
-
-            const data = await response.json();
-            if (data && data.content && data.content.length > 0) {
-                const answer = data.content[0].text;
-                if (answer) {
-                    console.log('✅ Claude API response received');
-                    return `[AI Response] ${answer} (Powered by Claude)`;
-                }
-            }
-
-            return null;
-        } catch (error) {
-            console.error('❌ Claude API error:', error);
-            return null;
-        }
+        return canUseAIServices;
     }
 }
 
@@ -367,11 +178,7 @@ class KnowledgeBase {
         // Try OpenAI first
         const aiResponse = await this.aiService.getEnhancedResponse(query);
         if (aiResponse) {
-            return {
-                answer: aiResponse,
-                source: 'openai',
-                confidence: 0.9
-            };
+            return aiResponse;
         }
 
         // Fallback to offline facts
