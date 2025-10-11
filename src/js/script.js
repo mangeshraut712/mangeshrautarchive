@@ -386,6 +386,10 @@ class ChatUI {
     _updateSuggestions(input = '') {
         if (!features.enableHistory || !this.elements.suggestions) return;
 
+        if (typeof input !== 'string') {
+            input = typeof input === 'number' ? String(input) : '';
+        }
+
         if (!input && !this.history.length) {
             this._hideSuggestions();
             return;
