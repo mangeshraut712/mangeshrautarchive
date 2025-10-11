@@ -1,4 +1,4 @@
-import { localConfig, features, results as searchResults } from './config.js';
+import { localConfig, features } from './config.js';
 
 const API_BASE = (() => {
     if (typeof window !== 'undefined') {
