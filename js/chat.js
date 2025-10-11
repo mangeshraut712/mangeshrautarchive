@@ -95,31 +95,23 @@ class IntelligentAssistant {
     }
 
     async processQuery(query) {
-        // Use server API for intelligent processing
-        const response = await this.callServerAPI(query);
+        const response = await this.callApi(query);
 
         if (response && response.answer) {
             return response;
         }
 
-        console.log('🔄 Server failed, trying Vercel backend directly...');
-        const vercelResponse = await this.callVercelAPI(query);
-
-        if (vercelResponse && vercelResponse.answer) {
-            return vercelResponse;
-        }
-
-        console.log('🔄 All backends failed, using basic processing...');
+        console.log('🔄 Backend failed, using basic processing...');
         return this.basicQueryProcessing(query);
     }
 
-    async callServerAPI(query) {
+    async callApi(query) {
         if (!this.isReadyState) {
             return null;
         }
 
         try {
-            console.log('🖥️ Calling server API with query:', query);
+            console.log('🖥️ Calling API with query:', query);
 
             const response = await fetch(buildApiUrl('/api/chat'), {
                 method: 'POST',
@@ -136,42 +128,13 @@ class IntelligentAssistant {
             }
 
             const data = await response.json();
-            console.log('✅ Server response received:', data);
+            console.log('✅ API response received:', data);
 
             return data;
 
         } catch (error) {
-            console.error('❌ Server API call failed:', error.message);
+            console.error('❌ API call failed:', error.message);
             this.markServerUnavailable();
-        return null;
-        }
-    }
-
-    async callVercelAPI(query) {
-        try {
-            console.log('🚀 Calling Vercel backend directly with query:', query);
-
-            const response = await fetch(buildApiUrl('/api/chat'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ message: query }),
-                signal: AbortSignal.timeout(15000) // 15 second timeout
-            });
-
-            if (!response.ok) {
-                throw new Error(`Vercel backend responded with ${response.status}: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            console.log('✅ Vercel backend response received:', data);
-
-            return data;
-
-        } catch (error) {
-            console.error('❌ Vercel backend call failed:', error.message);
             return null;
         }
     }
