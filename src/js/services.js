@@ -1449,7 +1449,9 @@ class ChatService {
             answer: finalAnswer,
             sourceMessage: sourceMessage,
             type: (response && response.type) || analysis.type,
-            confidence: analysis.confidence
+            confidence: response?.confidence ?? analysis.confidence ?? 0.5,
+            source: response?.source,
+            providers: response?.consensus || response?.providers || []
         };
 
         const processingTime = Date.now() - startTime;
@@ -1503,7 +1505,8 @@ class ChatService {
         const answer = this.knowledgeBase.getPortfolioInfo(query);
         return {
             answer,
-            type: 'portfolio'
+            type: 'portfolio',
+            confidence: 0.9
         };
     }
 
@@ -1513,7 +1516,8 @@ class ChatService {
         const prefix = result.kind === 'conversion' ? 'Converted: ' : 'Result: ';
         return {
             answer: `${prefix}${result.answer}`,
-            type: 'math'
+            type: 'math',
+            confidence: 0.9
         };
     }
 
@@ -1531,7 +1535,8 @@ class ChatService {
                 return {
                     answer: verified,
                     type: 'factual',
-                    source: bestResponse.source
+                    source: bestResponse.source,
+                    confidence: bestResponse.confidence ?? 0.85
                 };
             }
         }
@@ -1546,7 +1551,8 @@ class ChatService {
                 return {
                     answer: verified,
                     type: 'definition',
-                    source: bestResponse.source
+                    source: bestResponse.source,
+                    confidence: bestResponse.confidence ?? 0.85
                 };
             }
         }
@@ -1561,7 +1567,8 @@ class ChatService {
                 return {
                     answer: verified,
                     type: 'factual',
-                    source: bestResponse.source
+                    source: bestResponse.source,
+                    confidence: bestResponse.confidence ?? 0.85
                 };
             }
         }
@@ -1799,19 +1806,27 @@ class ChatService {
 
     async handleGeneralQuery(query, analysis) {
         const greeting = this.knowledgeBase.getGeneralInfo(query);
-        if (greeting) return greeting;
+        if (greeting) return { ...greeting, confidence: 0.8 };
 
         const ddgResult = await this.externalServices.searchDuckDuckGo(query);
-        if (ddgResult) return {
-            answer: this._formatKnowledgeResult(ddgResult),
-            type: 'general'
-        };
+        if (ddgResult) {
+            return {
+                answer: this._formatKnowledgeResult(ddgResult),
+                type: 'general',
+                source: ddgResult.source || 'duckduckgo',
+                confidence: 0.7
+            };
+        }
 
         const wikiResult = await this.externalServices.searchWikipedia(query);
-        if (wikiResult) return {
-            answer: this._formatKnowledgeResult(wikiResult),
-            type: 'general'
-        };
+        if (wikiResult) {
+            return {
+                answer: this._formatKnowledgeResult(wikiResult),
+                type: 'general',
+                source: wikiResult.source || 'wikipedia',
+                confidence: 0.75
+            };
+        }
 
         return null;
     }
