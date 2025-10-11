@@ -35,7 +35,24 @@ export const errorMessages = {
 };
 
 export const localConfig = {
-    apiBaseUrl: 'https://mangeshrautarchive.vercel.app'
+    apiBaseUrl: 'https://mangeshrautarchive.vercel.app',
+    // Load API keys from window object (injected for localhost development)
+    openaiApiKey: typeof window !== 'undefined' ? window.API_KEYS?.OPENAI_API_KEY : process.env?.OPENAI_API_KEY || '',
+    grokApiKey: typeof window !== 'undefined' ? window.API_KEYS?.GROK_API_KEY : process.env?.GROK_API_KEY || '',
+    anthropicApiKey: typeof window !== 'undefined' ? window.API_KEYS?.ANTHROPIC_API_KEY : process.env?.ANTHROPIC_API_KEY || '',
+    perplexityApiKey: typeof window !== 'undefined' ? window.API_KEYS?.PERPLEXITY_API_KEY : process.env?.PERPLEXITY_API_KEY || '',
+    geminiApiKey: typeof window !== 'undefined' ? window.API_KEYS?.GEMINI_API_KEY : process.env?.GEMINI_API_KEY || '',
+    geminiFirebaseApiKey: typeof window !== 'undefined' ? window.API_KEYS?.GEMINI_FIREBASE_API_KEY : process.env?.GEMINI_FIREBASE_API_KEY || '',
+    openrouterApiKey: typeof window !== 'undefined' ? window.API_KEYS?.OPENROUTER_API_KEY : process.env?.OPENROUTER_API_KEY || '',
+    huggingfaceApiKey: typeof window !== 'undefined' ? window.API_KEYS?.HUGGINGFACE_API_KEY : process.env?.HUGGINGFACE_API_KEY || '',
+    // Service configuration
+    openaiEnabled: true,
+    grokEnabled: true,
+    anthropicEnabled: true,
+    perplexityEnabled: true,
+    geminiEnabled: true,
+    huggingfaceEnabled: true,
+    openrouterEnabled: true
 };
 
 export default {
