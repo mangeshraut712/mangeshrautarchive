@@ -41,6 +41,16 @@ class IntelligentAssistant {
         ];
         this.processing = false;
         this.history = [];
+
+        // Determine if we can use server AI services
+        this.canUseServerAI = false;
+        if (typeof window !== 'undefined') {
+            const hostname = window.location.hostname;
+            this.canUseServerAI = hostname.endsWith('.vercel.app') ||
+                                  hostname === 'localhost' ||
+                                  hostname === '127.0.0.1' ||
+                                  (hostname.includes('github.io') && localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app'));
+        }
     }
 
     async initialize() {
@@ -166,10 +176,15 @@ class IntelligentAssistant {
     }
 
     async callApi(query) {
-        // Skip API calls on GitHub Pages to avoid CORS issues
+        // Allow API calls from GitHub Pages if CORS is configured and API base URL is set
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
-        if (hostname.includes('github.io')) {
-            console.log('🔄 Skipping API call on GitHub Pages (CORS restriction)');
+        const canCallServerAPI = this.canUseServerAI ||
+            (hostname.includes('github.io') &&
+             localConfig.apiBaseUrl &&
+             localConfig.apiBaseUrl.includes('vercel.app'));
+
+        if (!canCallServerAPI) {
+            console.log('🔄 Skipping server API call - not available or CORS restricted');
             return null;
         }
 
