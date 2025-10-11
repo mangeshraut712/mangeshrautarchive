@@ -142,11 +142,11 @@ class AIService {
     }
 
     supportsGrok() {
-        return this.grokConfig.enabled !== false;
+        return this.grokConfig.enabled !== false && this.grokConfig.apiKey;
     }
 
     supportsClaude() {
-        return this.claudeConfig.enabled !== false;
+        return this.claudeConfig.enabled !== false && this.claudeConfig.apiKey;
     }
 
     async _callOpenAI(query, context = {}) {
@@ -157,22 +157,31 @@ class AIService {
         try {
             // For localhost development, use Vercel backend
             if (typeof window !== 'undefined' && !window.location.protocol.startsWith('https:')) {
-                console.log('🏠 Using Vercel backend for AI calls (localhost development)');
+                const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl) ||
+                    localConfig.apiBaseUrl ||
+                    '';
+                if (!baseUrl) {
+                    return null;
+                }
 
-                const response = await fetch('/api/chat', {
+                console.log('🏠 Using remote backend for AI calls (localhost development)');
+
+                const endpoint = `${baseUrl.replace(/\/$/, '')}/api/chat`;
+
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: query })
                 });
 
                 if (!response.ok) {
-                    console.error(`Vercel backend error: ${response.status}`);
+                    console.warn(`Remote backend error: ${response.status}`);
                     return null;
                 }
 
                 const data = await response.json();
                 if (data && data.answer) {
-                    console.log('✅ AI response received via Vercel backend');
+                    console.log('✅ AI response received via remote backend');
 
                     let source = 'openai';
                     if (data.answer.includes('Powered by Grok')) source = 'grok';
