@@ -444,9 +444,8 @@ class KnowledgeBase {
 
     _withSource(answer, sourceKey = 'linkedin') {
         const normalized = sourceKey.toLowerCase();
-        const link = this.profile.sources[normalized] || this.profile.sources.linkedin;
-        const label = normalized === 'portfolio' ? 'Portfolio' : 'LinkedIn';
-        return `${answer} (Source: ${label} • ${link})`;
+        const label = normalized === 'portfolio' ? 'Portfolio website' : 'LinkedIn information';
+        return `${answer} (Source: ${label})`;
     }
 
     _formatRole(role) {
