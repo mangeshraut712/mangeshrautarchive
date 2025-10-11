@@ -39,69 +39,33 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 
-    <!-- Import the client-side chat service -->
+    <!-- Multi-Model AI Chatbot Service -->
     <script type="module">
-      import { chatService } from './js/services.js';
       import intelligentAssistant from './js/chat.js';
 
-      class HybridChatService {
-        constructor(baseService, assistant) {
-          this.baseService = baseService;
-          this.assistant = assistant;
-          this.initialized = false;
-          this.pendingInit = null;
-        }
-
-        async ensureInitialized() {
-          if (this.initialized) return true;
-          if (this.pendingInit) return this.pendingInit;
-
-          this.pendingInit = (async () => {
-            try {
-              const ready = await this.assistant.initialize();
-              this.initialized = ready || this.assistant.isReady();
-              return this.initialized;
-            } catch (error) {
-              console.warn('Assistant init failed, falling back to client-side service:', error);
-              return false;
-            } finally {
-              this.pendingInit = null;
-            }
-          })();
-
-          return this.pendingInit;
-        }
-
+      // Make the assistant globally available
+      window.portfolioChatService = {
         async processQuery(message) {
-          const trimmed = typeof message === 'string' ? message.trim() : '';
-          if (!trimmed) {
-            return this.baseService.processQuery(message);
+          try {
+            const response = await intelligentAssistant.ask(message);
+            return {
+              answer: response,
+              type: 'ai',
+              confidence: 0.9,
+              source: 'Multi-Model AI'
+            };
+          } catch (error) {
+            console.error('AI service error:', error);
+            return {
+              answer: 'I\'m experiencing technical difficulties. Please try again.',
+              type: 'error',
+              confidence: 0
+            };
           }
-
-          const assistantReady = await this.ensureInitialized();
-
-          if (assistantReady) {
-            try {
-              const answer = await this.assistant.ask(trimmed);
-              if (answer) {
-                return {
-                  answer,
-                  type: 'ai',
-                  confidence: 0.9,
-                  source: 'AssistMe (server)'
-                };
-              }
-            } catch (error) {
-              console.warn('Assistant ask failed, falling back to client-side service:', error);
-            }
-          }
-
-          return this.baseService.processQuery(trimmed);
         }
-      }
+      };
 
-      window.portfolioChatService = new HybridChatService(chatService, intelligentAssistant);
-      console.log('Hybrid chat service loaded successfully');
+      console.log('Multi-Model AI Chatbot loaded successfully');
     </script>
   </head>
   <body
