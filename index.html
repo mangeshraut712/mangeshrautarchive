@@ -1437,6 +1437,34 @@
     </script>
     <script type="module" src="js/modules/contact.js"></script>
 
+    <!-- Multi-Model AI Chatbot Integration -->
+    <script type="module">
+      import intelligentAssistant from './js/chat.js';
+
+      // Make the assistant globally available
+      window.portfolioChatService = {
+        async processQuery(message) {
+          try {
+            const response = await intelligentAssistant.ask(message);
+            return {
+              answer: response,
+              type: 'ai',
+              confidence: 0.9,
+              source: 'Multi-Model AI'
+            };
+          } catch (error) {
+            console.error('AI service error:', error);
+            return {
+              answer: 'I\'m experiencing technical difficulties. Please try again.',
+              type: 'error',
+              confidence: 0
+            };
+          }
+        }
+      };
+
+      console.log('Multi-Model AI Chatbot loaded successfully');
+    </script>
 
     <script type="module" src="js/script.js"></script>
     <script>
