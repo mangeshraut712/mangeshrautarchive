@@ -822,61 +822,9 @@ class ExternalServices {
     }
 
     async searchDuckDuckGo(query) {
-        if (!localConfig.duckduckgoEnabled !== false) return null;
-
-        try {
-            await apiLimiter.waitForSlot();
-            const params = new URLSearchParams({
-                q: query,
-                format: 'json',
-                no_html: '1',
-                no_redirect: '1',
-                skip_disambig: '1'
-            });
-
-            let data = await this._requestDuckDuckGoProxy(params);
-
-            if (!data) {
-                data = await this._requestDuckDuckGoDirect(params);
-            }
-
-            if (!data) {
-                return null;
-            }
-
-            if (data.AnswerType && data.Answer && data.Answer.length) {
-                return {
-                    answer: data.Answer,
-                    source: `duckduckgo (${data.AnswerType})`,
-                    url: data.AbstractURL || data.Redirect || null
-                };
-            }
-
-            if (data.AbstractText && data.AbstractText.length > 40) {
-                const sourceLabel = data.AbstractSource ? `duckduckgo • ${data.AbstractSource}` : 'duckduckgo';
-                return {
-                    answer: data.AbstractText,
-                    source: sourceLabel,
-                    url: data.AbstractURL || data.Redirect || null
-                };
-            }
-
-            if (data.RelatedTopics && data.RelatedTopics.length) {
-                const topic = data.RelatedTopics.find(item => item.Text && item.FirstURL && !item.Text.startsWith('Category:'));
-                if (topic) {
-                    return {
-                        answer: topic.Text,
-                        source: 'duckduckgo related',
-                        url: topic.FirstURL
-                    };
-                }
-            }
-
-            return null;
-        } catch (error) {
-            console.error('DuckDuckGo API error:', error);
-            return null;
-        }
+        // Disabled for GitHub Pages compatibility - causes 404 errors
+        console.log('DuckDuckGo search disabled for static deployment compatibility');
+        return null;
     }
 
     async _requestDuckDuckGoProxy(params) {
