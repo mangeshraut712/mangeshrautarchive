@@ -259,12 +259,14 @@ html.dark body { /* Override individual state selectors that might conflict */
     opacity: 1;
     transform: translateY(0) scale(1);
     visibility: visible;
+    display: flex !important;
 }
 
 #portfolio-chat-widget.hidden {
     opacity: 0;
     transform: translateY(20px) scale(0.95);
     visibility: hidden;
+    display: none !important;
 }
 
 /* Chat Header - Modern Design */

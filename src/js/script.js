@@ -530,7 +530,6 @@ class ChatUI {
         this.elements.widget.classList.remove('hidden');
         this.elements.widget.classList.add('visible');
         this.elements.widget.setAttribute('aria-hidden', 'false');
-        this.elements.widget.style.display = 'flex';
         if (this.elements.toggleButton) {
             this.elements.toggleButton.setAttribute('aria-expanded', 'true');
             this.elements.toggleButton.classList.add('active');
@@ -547,7 +546,6 @@ class ChatUI {
         if (!this.elements.widget) return;
         this.elements.widget.classList.add('hidden');
         this.elements.widget.setAttribute('aria-hidden', 'true');
-        this.elements.widget.style.display = '';
         if (this.elements.toggleButton) {
             this.elements.toggleButton.setAttribute('aria-expanded', 'false');
             this.elements.toggleButton.classList.remove('active');
