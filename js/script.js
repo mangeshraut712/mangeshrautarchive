@@ -491,6 +491,8 @@ class ChatUI {
     }
 
     _toggleWidget() {
+        console.log('Toggling widget...');
+        console.log('Widget classList before toggle:', this.elements.widget?.classList);
         if (!this.elements.widget) return;
         if (this._isWidgetOpen()) {
             this._closeWidget();
