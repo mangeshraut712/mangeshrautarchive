@@ -513,6 +513,7 @@ class ChatUI {
     }
 
     _closeWidget() {
+        console.log('Closing widget...');
         if (!this.elements.widget) return;
         this.elements.widget.classList.add('hidden');
         this.elements.widget.setAttribute('aria-hidden', 'true');
@@ -606,3 +607,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export { ChatUI, renderProjects as loadProjectsData };
 export default ChatUI;
+
