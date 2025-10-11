@@ -16,6 +16,10 @@ const syntaxHighlighter = (typeof window !== 'undefined' && window.hljs)
     ? window.hljs
     : (typeof hljs !== 'undefined' ? hljs : null);
 
+const htmlSanitizer = (typeof window !== 'undefined' && window.DOMPurify)
+    ? window.DOMPurify
+    : (typeof DOMPurify !== 'undefined' ? DOMPurify : null);
+
 if (features.enableMarkdownRendering && markdownLib) {
     markdownLib.setOptions({
         renderer: new markdownLib.Renderer(),
@@ -235,10 +239,15 @@ class ChatUI {
         if (typeof content === 'string') {
             contentDiv.textContent = content;
         } else if (content?.html && features.enableMarkdownRendering) {
-            contentDiv.innerHTML = DOMPurify.sanitize(content.html);
-            contentDiv.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-            });
+            const safeHtml = htmlSanitizer
+                ? htmlSanitizer.sanitize(content.html)
+                : content.html;
+            contentDiv.innerHTML = safeHtml;
+            if (syntaxHighlighter?.highlightElement) {
+                contentDiv.querySelectorAll('pre code').forEach((block) => {
+                    syntaxHighlighter.highlightElement(block);
+                });
+            }
         } else {
             contentDiv.textContent = content?.text || content;
         }
