@@ -1,8 +1,6 @@
 import { intelligentAssistant as chatAssistant } from './chat.js';
 import { ui as uiConfig, features, chat as chatConfig, errorMessages } from './config.js';
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
-import hljs from 'highlight.js/lib/common';
+
 import ExternalApiKeys from './modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from './modules/overlay.js';
 import initContactForm from './modules/contact.js';
