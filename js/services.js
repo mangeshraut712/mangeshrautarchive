@@ -1610,7 +1610,8 @@ class ChatService {
 
         // Try external APIs (DuckDuckGo disabled for GitHub Pages compatibility)
         const promises = [
-            // this.externalServices.searchDuckDuckGo(query), // Disabled - causes CORS issues
+            // DuckDuckGo disabled - causes CORS issues on GitHub Pages
+            // this.externalServices.searchDuckDuckGo(query),
             this.externalServices.searchWikipedia(query),
         ];
 
