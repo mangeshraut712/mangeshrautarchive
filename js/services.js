@@ -1584,13 +1584,14 @@ class ChatService {
         return null;
     }
 
-    // Collect responses from multiple sources for verification
+    // Collect responses from multiple sources for verification (AI FIRST, then external)
     async _collectMultipleResponses(query, queryType, context = {}) {
         const responses = [];
 
-        // Try AI services first (Grok + Claude if available)
+        // PRIORITY 1: Try ALL AI services first (Grok, Claude, Perplexity, Gemini, etc.)
         if (this.aiService) {
             try {
+                console.log('🤖 PRIORITY: Trying all AI models first...');
                 const aiResults = await this.aiService.getModelResponses(query, { context: 'verification', limit: 120 });
                 aiResults.forEach(result => {
                     if (result?.content) {
@@ -1602,50 +1603,51 @@ class ChatService {
                         });
                     }
                 });
+                console.log(`✅ Got ${aiResults.length} AI responses`);
             } catch (error) {
-                console.log('AI verification failed:', error.message);
+                console.log('❌ AI services failed:', error.message);
             }
         }
 
-        // Try external APIs (DuckDuckGo disabled for GitHub Pages compatibility)
-        const promises = [
-            // DuckDuckGo disabled - causes CORS issues on GitHub Pages
-            // this.externalServices.searchDuckDuckGo(query),
-            this.externalServices.searchWikipedia(query),
-        ];
+        // PRIORITY 2: Try external APIs only if NO AI responses available
+        if (responses.length === 0) {
+            console.log('🔄 No AI responses, trying external APIs...');
+            const promises = [
+                this.externalServices.searchWikipedia(query),
+            ];
 
-        // Only call country facts API if query appears to be about countries/locations
-        if (this._isLikelyCountryQuery(query, context)) {
-            const countryName = this._extractCountryFromQuery(query);
-            if (countryName) {
-                promises.push(this.externalServices.getCountryFacts(countryName));
-            }
-        }
-
-        // Add Stack Overflow for technical queries
-        if (context.keywords && context.keywords.some(k => ['code', 'programming', 'bug', 'error'].includes(k))) {
-            promises.push(this.externalServices.searchStackOverflow(query));
-        }
-
-        const results = await Promise.allSettled(promises);
-
-        results.forEach((result, index) => {
-            if (result.status === 'fulfilled' && result.value) {
-                let source = 'unknown';
-                switch(index) {
-                    case 0: source = 'duckduckgo'; break;
-                    case 1: source = 'wikipedia'; break;
-                    case 2: source = 'country_facts'; break;
-                    case 3: source = 'stackoverflow'; break;
+            // Only call country facts API if query appears to be about countries/locations
+            if (this._isLikelyCountryQuery(query, context)) {
+                const countryName = this._extractCountryFromQuery(query);
+                if (countryName) {
+                    promises.push(this.externalServices.getCountryFacts(countryName));
                 }
-                responses.push({
-                    source,
-                    content: result.value,
-                    type: 'external',
-                    priority: 2
-                });
             }
-        });
+
+            // Add Stack Overflow for technical queries
+            if (context.keywords && context.keywords.some(k => ['code', 'programming', 'bug', 'error'].includes(k))) {
+                promises.push(this.externalServices.searchStackOverflow(query));
+            }
+
+            const results = await Promise.allSettled(promises);
+
+            results.forEach((result, index) => {
+                if (result.status === 'fulfilled' && result.value) {
+                    let source = 'unknown';
+                    switch(index) {
+                        case 0: source = 'wikipedia'; break;
+                        case 1: source = 'country_facts'; break;
+                        case 2: source = 'stackoverflow'; break;
+                    }
+                    responses.push({
+                        source,
+                        content: result.value,
+                        type: 'external',
+                        priority: 2
+                    });
+                }
+            });
+        }
 
         return responses;
     }
