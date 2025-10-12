@@ -117,10 +117,33 @@ class AIService {
             await apiLimiter.waitForSlot();
 
             // Determine the correct API endpoint.
-            // In local dev, local-server.js proxies /api.
-            // In production, vercel.json routes /api.
-            const baseUrl = window.location.origin;
+        // In local dev, local-server.js proxies /api (relative URL).
+        // In production, vercel.json routes /api (full URL).
+        const hostname = window.location.hostname;
+        let baseUrl;
+
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            // Use relative URL for local development
+            baseUrl = '';
+            const endpoint = '/api/chat';
+            console.log(`🔧 Using local development endpoint: ${endpoint}`);
+        } else if (hostname.endsWith('.vercel.app')) {
+            // Use full URL for Vercel production
+            baseUrl = window.location.origin;
             const endpoint = `${baseUrl}/api/chat`;
+            console.log(`🚀 Using Vercel production endpoint: ${endpoint}`);
+        } else if (localConfig.apiBaseUrl) {
+            // Use configured custom base URL
+            baseUrl = localConfig.apiBaseUrl;
+            const endpoint = `${baseUrl}/api/chat`;
+            console.log(`🔗 Using configured endpoint: ${endpoint}`);
+        } else {
+            // No API available (GitHub Pages offline mode)
+            console.log('📱 GitHub Pages detected, using offline mode');
+            return null;
+        }
+
+        const endpoint = baseUrl ? `${baseUrl}/api/chat` : '/api/chat';
 
             console.log(`🤖 Calling backend API in auto mode: ${endpoint}`);
 

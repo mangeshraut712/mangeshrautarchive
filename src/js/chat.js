@@ -1,19 +1,26 @@
 import { localConfig } from './config.js';
 import { chatService as clientChatService } from './services.js';
 
-let API_BASE = localConfig.apiBaseUrl || '';
+let API_BASE = '';
 
 if (typeof window !== 'undefined') {
     if (window.APP_CONFIG?.apiBaseUrl) {
         API_BASE = window.APP_CONFIG.apiBaseUrl;
-    } else if (!API_BASE) {
+    } else {
         const hostname = window.location.hostname || '';
-        // Use API for local development and Vercel deployment only - GitHub Pages gets offline mode
-        if (hostname.endsWith('.vercel.app') || hostname === 'localhost' || hostname === '127.0.0.1') {
-            API_BASE = '';
-        } else {
-            // On GitHub Pages or other static hosting, don't set API_BASE at all for offline mode
+        // Use LOCAL API if running on localhost with local server
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            API_BASE = ''; // This will use relative paths to local server
         }
+        // Use DEPLOYED API for Vercel production
+        else if (hostname.endsWith('.vercel.app')) {
+            API_BASE = `https://${hostname}`;
+        }
+        // Use custom API base if configured
+        else if (localConfig.apiBaseUrl) {
+            API_BASE = localConfig.apiBaseUrl;
+        }
+        // Otherwise, no API_BASE means offline mode for GitHub Pages
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
     API_BASE = `https://${process.env.VERCEL_URL}`;
