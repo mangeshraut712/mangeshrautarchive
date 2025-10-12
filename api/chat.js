@@ -325,65 +325,7 @@ async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
     return null;
 }
 
-// Groq API integration (BACKUP - fastest)
-async function tryGroq(query, systemPrompt, startTime, isPersonalQuery) {
-    if (!GROQ_API_KEY) return null;
-    
-    // Try multiple Groq models
-    for (const model of GROQ_MODELS) {
-        try {
-            console.log(`⚡ Trying Groq model: ${model}`);
-            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${GROQ_API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: model,
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: query }
-                    ],
-                    temperature: 0.7,
-                    max_tokens: 1000
-                })
-            });
-            
-            if (!response.ok) {
-                console.warn(`⚠️ Groq ${model} error: ${response.status}`);
-                continue;
-            }
-            
-            const data = await response.json();
-            const answer = data?.choices?.[0]?.message?.content;
-            
-            if (answer && answer.trim().length > 10) {
-                const elapsed = Date.now() - startTime;
-                console.log(`✅ Groq ${model} success (${elapsed}ms)`);
-                
-                const source = isPersonalQuery ? 'linkedin + groq' : 'groq';
-                
-                return {
-                    answer: answer.trim(),
-                    source: `${source} (${model})`,
-                    confidence: isPersonalQuery ? 0.95 : 0.90,
-                    processingTime: elapsed,
-                    providers: ['Groq'],
-                    winner: model,
-                    type: isPersonalQuery ? 'portfolio' : 'general',
-                    rateLimit: false,
-                    statusMessage: '🟢 AI Online (Groq)'
-                };
-            }
-        } catch (error) {
-            console.error(`❌ Groq ${model} error:`, error.message);
-            continue;
-        }
-    }
-    
-    return null;
-}
+// Groq removed per user request - not needed
 
 // Gemini API integration (backup)
 async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
