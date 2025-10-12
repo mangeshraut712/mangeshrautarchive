@@ -25,12 +25,12 @@ const GROK_MODELS = [
     'grok-2-latest'
 ];
 
-// OpenRouter models (BACKUP) - using currently available free models
+// OpenRouter models (BACKUP) - using working free models
 const OPENROUTER_MODELS = [
     'meta-llama/llama-3.1-8b-instruct:free',
     'google/gemini-flash-1.5:free',
     'microsoft/phi-3-mini-128k-instruct:free',
-    'qwen/qwen-2-7b-instruct:free'
+    'nousresearch/hermes-3-llama-3.1-405b:free'
 ];
 
 // Default models
