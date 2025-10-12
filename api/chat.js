@@ -35,8 +35,8 @@ const OPENROUTER_MODELS = [
 ];
 
 // Default models
-const DEFAULT_GROK_MODEL = 'grok-beta';
-const DEFAULT_GROQ_MODEL = 'llama-3.1-8b-instant';
+const DEFAULT_GROK_MODEL = 'grok-2-1212';
+const DEFAULT_GEMINI_MODEL = 'gemini-1.5-flash';
 const DEFAULT_OPENROUTER_MODEL = 'openai/gpt-4o-mini:free';
 
 // Enhanced system prompt with deep reasoning and accuracy
