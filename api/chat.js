@@ -187,24 +187,26 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     }
 }
 
-export default async function handler(req, res) {
-    // CORS headers for development and production
-    const allowedOrigins = [
+function applyCors(res, origin) {
+    const allowed = new Set([
         'https://mangeshraut712.github.io',
         'http://localhost:3000',
         'http://127.0.0.1:3000'
-    ];
-
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin) || origin === 'https://mangeshraut712.github.io') {
+    ]);
+    if (origin && allowed.has(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
-    } else if (origin && allowedOrigins.includes('https://mangeshraut712.github.io')) {
-        res.setHeader('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
+    } else if (origin && allowed.has('https://mangeshraut712.github.io') && origin.startsWith('https://mangeshraut712.github.io')) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
     }
-
+    res.setHeader('Vary', 'Origin');
     res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
     res.setHeader('Access-Control-Allow-Credentials', 'false');
+}
+
+export default async function handler(req, res) {
+    // Apply CORS headers to ALL responses (including OPTIONS, errors, etc.)
+    applyCors(res, req.headers.origin);
 
     if (req.method === 'OPTIONS') {
         return res.status(204).end();
