@@ -224,12 +224,19 @@ class VoiceManager {
     }
 
     /**
-     * Toggle voice input on/off
+     * Toggle voice input - Click to start/stop/reset
      */
     toggleVoiceInput() {
-        if (this.isListening) {
+        if (this.isListening || this.isProcessing) {
+            // Clicking while active = STOP and RESET
+            console.log('🛑 User clicked to stop');
             this.stopVoiceInput();
+            this.isProcessing = false;
+            this.lastProcessedTranscript = '';
+            this.chatManager.addMessage('🎤 Voice stopped. Click again to start fresh.', 'system', { skipSpeech: true });
         } else {
+            // Clicking while idle = START
+            console.log('▶️ User clicked to start');
             this.startVoiceInput();
         }
     }
