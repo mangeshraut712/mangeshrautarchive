@@ -30,7 +30,7 @@ async function testOpenRouter() {
                 'HTTP-Referer': 'https://mangeshrautarchive.vercel.app'
             },
             body: JSON.stringify({
-                model: 'openai/gpt-4o-mini:free',
+                model: 'meta-llama/llama-3.1-8b-instruct:free',
                 messages: [{ role: 'user', content: TEST_QUESTION }],
                 max_tokens: 100
             })
@@ -57,7 +57,7 @@ async function testGemini() {
     if (!API_KEYS.gemini) return { working: false, error: 'No API key' };
     
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEYS.gemini}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEYS.gemini}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -94,7 +94,7 @@ async function testAnthropic() {
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: 'claude-3-haiku-20240307',
+                model: 'claude-3-5-sonnet-20241022',
                 max_tokens: 100,
                 messages: [{ role: 'user', content: TEST_QUESTION }]
             })
@@ -162,7 +162,7 @@ async function testPerplexity() {
                 'Authorization': `Bearer ${API_KEYS.perplexity}`
             },
             body: JSON.stringify({
-                model: 'llama-3.1-sonar-small-128k-online',
+                model: 'llama-3.1-sonar-small-128k-chat',
                 messages: [{ role: 'user', content: TEST_QUESTION }],
                 max_tokens: 100
             })
