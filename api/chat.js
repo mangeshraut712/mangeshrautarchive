@@ -156,12 +156,24 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     }
 
     console.log(`🔑 OpenRouter API Key: ${OPENROUTER_API_KEY ? 'Found (length: ' + OPENROUTER_API_KEY.length + ')' : 'NOT FOUND'}`);
+    
+    // Simple in-memory cache to reduce API calls
+    const cacheKey = query.toLowerCase().trim();
+    if (responseCache.has(cacheKey)) {
+        const cached = responseCache.get(cacheKey);
+        console.log('💾 Using cached response');
+        return {
+            ...cached,
+            processingTime: Date.now() - startTime,
+            cached: true
+        };
+    }
 
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
     const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
 
     // Try multiple models with rotation and fallback
-    const maxAttempts = Math.min(3, FREE_MODELS.length); // Try up to 3 models
+    const maxAttempts = Math.min(5, FREE_MODELS.length); // Try up to 5 models
     
     // Select random model each time for better distribution
     const startIndex = Math.floor(Math.random() * FREE_MODELS.length);
@@ -171,6 +183,13 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         const modelIndex = (startIndex + attempt) % FREE_MODELS.length;
         const model = FREE_MODELS[modelIndex];
         console.log(`🤖 Attempting model ${attempt + 1}/${maxAttempts}: ${model}`);
+        
+        // Add exponential backoff between attempts
+        if (attempt > 0) {
+            const delay = Math.min(1000 * Math.pow(2, attempt - 1), 3000);
+            console.log(`⏳ Waiting ${delay}ms before retry...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
 
         try {
             const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -206,7 +225,7 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
             if (answer && answer.trim().length > 10) {
                 console.log(`✅ Success with ${model} (${Date.now() - startTime}ms): ${answer.substring(0, 100)}...`);
 
-                return {
+                const result = {
                     answer: answer.trim(),
                     source: `${source} (${model})`,
                     confidence: isPersonalQuery ? 0.95 : 0.88,
@@ -215,6 +234,13 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
                     winner: model,
                     type: isPersonalQuery ? 'portfolio' : 'general'
                 };
+                
+                // Cache successful responses
+                if (!isPersonalQuery) {
+                    responseCache.set(cacheKey, result);
+                }
+                
+                return result;
             } else {
                 console.warn(`⚠️ Model ${model} returned empty response`);
                 continue;
