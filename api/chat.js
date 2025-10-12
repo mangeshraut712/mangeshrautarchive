@@ -199,94 +199,82 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         console.log('⚠️ No Gemini key configured, skipping...');
     }
     
-    const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
-
     // PRIORITY 3: Try OpenRouter models
-    const maxAttempts = Math.min(3, OPENROUTER_MODELS.length);
-    
-    // Select random model each time
-    const startIndex = Math.floor(Math.random() * OPENROUTER_MODELS.length);
-    
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        const modelIndex = (startIndex + attempt) % OPENROUTER_MODELS.length;
-        const model = OPENROUTER_MODELS[modelIndex];
-        console.log(`🤖 Attempting model ${attempt + 1}/${maxAttempts}: ${model}`);
+    if (OPENROUTER_API_KEY) {
+        console.log('🔄 Trying OpenRouter API...');
+        const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
+        const maxAttempts = Math.min(3, OPENROUTER_MODELS.length);
+        
+        // Select random model each time
+        const startIndex = Math.floor(Math.random() * OPENROUTER_MODELS.length);
+        
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const modelIndex = (startIndex + attempt) % OPENROUTER_MODELS.length;
+            const model = OPENROUTER_MODELS[modelIndex];
+            console.log(`🤖 Attempting OpenRouter model ${attempt + 1}/${maxAttempts}: ${model}`);
 
-        try {
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                    'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://mangeshrautarchive.vercel.app',
-                    'X-Title': process.env.OPENROUTER_APP_TITLE || 'S2R Enhanced AI Assistant'
-                },
-                body: JSON.stringify({
-                    model: model,
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: query },
-                    ],
-                    temperature: 0.4,
-                    max_tokens: 1000,
-                    top_p: 0.9
-                })
-            });
+            try {
+                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                        'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://mangeshrautarchive.vercel.app',
+                        'X-Title': process.env.OPENROUTER_APP_TITLE || 'S2R Enhanced AI Assistant'
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: query }
+                        ],
+                        temperature: 0.4,
+                        max_tokens: 1000,
+                        top_p: 0.9
+                    })
+                });
 
-            if (!response.ok) {
-                const errorBody = await response.text();
-                console.warn(`⚠️ Model ${model} failed (${response.status}): ${errorBody.substring(0, 100)}`);
-                // Try next model
-                continue;
-            }
-
-            const data = await response.json();
-            const answer = data?.choices?.[0]?.message?.content;
-
-            if (answer && answer.trim().length > 10) {
-                console.log(`✅ Success with ${model} (${Date.now() - startTime}ms): ${answer.substring(0, 100)}...`);
-
-                const result = {
-                    answer: answer.trim(),
-                    source: `${source} (${model})`,
-                    confidence: isPersonalQuery ? 0.95 : 0.88,
-                    processingTime: Date.now() - startTime,
-                    providers: ['OpenRouter'],
-                    winner: model,
-                    type: isPersonalQuery ? 'portfolio' : 'general'
-                };
-                
-                // Cache successful responses
-                if (!isPersonalQuery) {
-                    responseCache.set(cacheKey, result);
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    console.warn(`⚠️ OpenRouter ${model} failed (${response.status}): ${errorBody.substring(0, 100)}`);
+                    continue;
                 }
-                
-                return result;
-            } else {
-                console.warn(`⚠️ Model ${model} returned empty response`);
+
+                const data = await response.json();
+                const answer = data?.choices?.[0]?.message?.content;
+
+                if (answer && answer.trim().length > 10) {
+                    console.log(`✅ OpenRouter SUCCESS with ${model} (${Date.now() - startTime}ms)`);
+
+                    return {
+                        answer: answer.trim(),
+                        source: `${source} (${model})`,
+                        confidence: isPersonalQuery ? 0.95 : 0.88,
+                        processingTime: Date.now() - startTime,
+                        providers: ['OpenRouter'],
+                        winner: model,
+                        type: isPersonalQuery ? 'portfolio' : 'general',
+                        rateLimit: false,
+                        statusMessage: '🟢 AI Online (OpenRouter)'
+                    };
+                } else {
+                    console.warn(`⚠️ OpenRouter ${model} returned empty response`);
+                    continue;
+                }
+            } catch (error) {
+                console.error(`❌ OpenRouter ${model} error:`, error.message);
                 continue;
             }
-        } catch (error) {
-            console.error(`❌ Model ${model} error:`, error.message);
-            // Try next model
-            continue;
         }
-    }
-
-    // PRIORITY 3: Try Gemini as last resort
-    if (GEMINI_API_KEY) {
-        console.log('🔷 Trying Gemini API (last resort)...');
-        const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);
-        if (geminiResult) {
-            apiStatus.gemini = { available: true, lastCheck: Date.now() };
-            apiStatus.rateLimit = false;
-            return geminiResult;
-        }
+    } else {
+        console.log('⚠️ No OpenRouter key configured, skipping...');
     }
     
     // All providers failed
-    console.error('❌ All AI providers unavailable');
-    apiStatus.groq = { available: false, lastCheck: Date.now() };
+    console.error('❌❌❌ ALL AI PROVIDERS FAILED ❌❌❌');
+    console.error('Grok:', GROK_API_KEY ? 'Key present but failed' : 'No key');
+    console.error('Gemini:', GEMINI_API_KEY ? 'Key present but failed' : 'No key');
+    console.error('OpenRouter:', OPENROUTER_API_KEY ? 'Key present but failed' : 'No key');
     apiStatus.openrouter = { available: false, lastCheck: Date.now() };
     apiStatus.gemini = { available: false, lastCheck: Date.now() };
     apiStatus.rateLimit = true;
