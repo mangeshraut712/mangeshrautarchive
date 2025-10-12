@@ -1,0 +1,119 @@
+/* Ultra Performance - 120Hz Optimized */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: auto; /* Disable CSS smooth scroll for manual control */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+}
+
+/* Remove ALL slow animations */
+* {
+    animation-duration: 0.2s !important; /* Fast animations only */
+    transition-duration: 0.15s !important; /* Quick transitions */
+}
+
+/* GPU Acceleration for everything */
+*,
+*::before,
+*::after {
+    will-change: auto;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Disable heavy effects that slow scrolling */
+[data-animate] {
+    animation: none !important;
+}
+
+.fade-in,
+.slide-in,
+.fade-up {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Optimize scrolling containers */
+.hero-section,
+.section,
+#chat-messages,
+main {
+    contain: layout style paint;
+}
+
+/* Remove backdrop filters that cause lag */
+.global-nav,
+.chat-header {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Simplify shadows */
+* {
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+/* Add only essential shadows back */
+.global-nav {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+#portfolio-chat-widget {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* Optimize images */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Optimize chat messages */
+.user-message,
+.assistant-message {
+    contain: content;
+    will-change: auto;
+}
+
+/* Instant scrolling - no delays */
+.chat-messages,
+#chat-messages,
+#portfolio-chat-messages {
+    scroll-behavior: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Remove all transform animations */
+@media (prefers-reduced-motion: no-preference) {
+    * {
+        animation-timing-function: ease-out !important;
+        transition-timing-function: ease-out !important;
+    }
+}
+
+/* Force 120Hz rendering */
+@supports (content-visibility: auto) {
+    .section,
+    .hero-section,
+    .project-card,
+    .message {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 500px;
+    }
+}
