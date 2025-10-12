@@ -163,37 +163,7 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const startTime = Date.now();
     const isPersonalQuery = isPersonalQuestion(query);
 
-    // Check if API key is configured
-    if (!OPENROUTER_API_KEY) {
-        console.error('❌ OPENROUTER_API_KEY not set in environment variables');
-        return {
-            answer: "I'm an AI assistant that can help with technology, science, mathematics, and general knowledge. I can also provide information about software development and AI/ML topics. What would you like to know?",
-            source: 'offline-knowledge',
-            type: 'general',
-            confidence: 0.3,
-            processingTime: Date.now() - startTime,
-            providers: [],
-        };
-    }
-
-    console.log(`🔑 OpenRouter API Key: ${OPENROUTER_API_KEY ? 'Found (length: ' + OPENROUTER_API_KEY.length + ')' : 'NOT FOUND'}`);
-    
-    // Simple in-memory cache to reduce API calls
-    const cacheKey = query.toLowerCase().trim();
-    if (responseCache.has(cacheKey)) {
-        const cached = responseCache.get(cacheKey);
-        console.log('💾 Using cached response');
-        return {
-            ...cached,
-            processingTime: Date.now() - startTime,
-            cached: true
-        };
-    }
-
-    const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
-    const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
-
-    // PRIORITY 3: Try OpenRouter models
+    console.log(`🔑 Grok (xAI) API Key: ${GROK_API_KEY ? 'Found (length: ' + GROK_API_KEY.length + ')' : 'NOT FOUND - CRITICAL!'}`);\n    console.log(`🔑 Gemini API Key: ${GEMINI_API_KEY ? 'Found (length: ' + GEMINI_API_KEY.length + ')' : 'NOT FOUND'}`);\n    console.log(`🔑 OpenRouter API Key: ${OPENROUTER_API_KEY ? 'Found (length: ' + OPENROUTER_API_KEY.length + ')' : 'NOT FOUND'}`);\n\n    const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;\n    \n    // PRIORITY 1: Try Grok (xAI - YOUR PRIMARY CHOICE)\n    if (GROK_API_KEY) {\n        console.log('\ud83d\ude80 Trying Grok (xAI) with latest model...');\n        const grokResult = await tryGrok(query, systemPrompt, startTime, isPersonalQuery);\n        if (grokResult) {\n            apiStatus.grok = { available: true, lastCheck: Date.now() };\n            apiStatus.rateLimit = false;\n            return grokResult;\n        }\n        console.log('\u26a0\ufe0f Grok failed, trying Gemini...');\n    } else {\n        console.error('\u274c\u274c GROK_API_KEY NOT FOUND IN VERCEL!');\n    }\n    \n    // PRIORITY 2: Try Gemini\n    if (GEMINI_API_KEY) {\n        console.log('\ud83d\udd37 Trying Gemini API...');\n        const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);\n        if (geminiResult) {\n            apiStatus.gemini = { available: true, lastCheck: Date.now() };\n            apiStatus.rateLimit = false;\n            return geminiResult;\n        }\n        console.log('\u26a0\ufe0f Gemini failed, trying OpenRouter...');\n    }\n    \n    const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';\n\n    // PRIORITY 3: Try OpenRouter models
     const maxAttempts = Math.min(3, OPENROUTER_MODELS.length);
     
     // Select random model each time
