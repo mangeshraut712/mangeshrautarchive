@@ -1,5 +1,3 @@
-import { chatService } from './chat-service.js';
-
 export default function handler(req, res) {
   // Add CORS headers for GitHub Pages and Local Development
   const allowedOrigins = [
@@ -26,31 +24,40 @@ export default function handler(req, res) {
   }
 
   try {
-    const enabledProviders = chatService.multiModelService.getEnabledProviders();
+    // Check availability based on environment variables
     const status = {
       grok: {
-        available: enabledProviders.includes('grok'),
+        available: !!process.env.GROK_API_KEY || !!process.env.XAI_API_KEY,
       },
       anthropic: {
-        available: enabledProviders.includes('anthropic'),
+        available: !!process.env.ANTHROPIC_API_KEY || !!process.env.CLAUDE_API_KEY,
       },
       perplexity: {
-        available: enabledProviders.includes('perplexity'),
+        available: !!process.env.PERPLEXITY_API_KEY,
       },
       gemini: {
-        available: enabledProviders.includes('gemini'),
+        available: !!process.env.GEMINI_API_KEY,
       },
       huggingface: {
-        available: enabledProviders.includes('huggingface'),
+        available: !!process.env.HUGGINGFACE_API_KEY,
+      },
+      openai: {
+        available: !!process.env.OPENAI_API_KEY || !!process.env.GPT_API_KEY,
       },
     };
+
+    console.log('📊 API Status Check:', {
+      environment: process.env.NODE_ENV || 'development',
+      providers: Object.entries(status).map(([name, { available }]) => `${name}: ${available ? '✅' : '❌'}`),
+    });
 
     res.status(200).json(status);
   } catch (error) {
     console.error('Status API error:', error);
     res.status(500).json({
       error: 'Internal server error',
-      message: 'Status check failed'
+      message: 'Status check failed',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 }
