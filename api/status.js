@@ -1,33 +1,39 @@
-export default function handler(req, res) {
-  // Add comprehensive CORS headers for all environments
+function applyCors(res, origin) {
   const allowedOrigins = [
     'https://mangeshraut712.github.io',
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://mangeshraut712.github.io/mangeshrautarchive'
+    'http://localhost:8080',
+    'http://127.0.0.1:8080'
   ];
-
-  const origin = req.headers.origin;
-  // Allow any HTTP/HTTPS localhost for development
-  if (origin && (allowedOrigins.includes(origin) ||
-                 origin.startsWith('http://localhost:') ||
-                 origin.startsWith('https://localhost:') ||
-                 origin.startsWith('http://127.0.0.1'))) {
+  
+  // Check if origin matches any allowed origin or is a subdomain
+  const isAllowed = allowedOrigins.some(allowed => {
+    if (origin === allowed) return true;
+    // Allow subpaths of GitHub Pages
+    if (allowed === 'https://mangeshraut712.github.io' && origin && origin.startsWith('https://mangeshraut712.github.io')) {
+      return true;
+    }
+    return false;
+  });
+  
+  if (origin && isAllowed) {
     res.setHeader('Access-Control-Allow-Origin', origin);
-  } else if (req.headers['user-agent'] && req.headers['user-agent'].includes('curl')) {
-    // Allow curl requests for testing (no origin header)
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  } else if (origin && (
-    origin.includes('vercel.app') ||
-    origin.includes('github.io') ||
-    origin.includes('netlify.app') ||
-    origin.includes('surge.sh')
-  )) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+  } else {
+    // Default to GitHub Pages origin if no origin header or not allowed
+    res.setHeader('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
   }
-
+  
+  res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', 'false');
+  res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight for 24 hours
+}
+
+export default function handler(req, res) {
+  // Apply CORS headers to ALL responses
+  applyCors(res, req.headers.origin);
 
   // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
