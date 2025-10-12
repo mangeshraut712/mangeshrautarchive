@@ -256,16 +256,20 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         }
     }
 
-    // All models failed - return offline fallback
-    console.error('❌ All OpenRouter models failed, using offline fallback');
+    // All models failed - return offline fallback with rate limit notification
+    console.error('❌ All AI providers rate-limited or unavailable');
+    apiStatus.openrouter = { available: false, lastCheck: Date.now() };
+    apiStatus.rateLimit = true;
+    
     return {
-        answer: "I'm an AI assistant that can help with technology, science, mathematics, and general knowledge questions. What would you like to explore?",
+        answer: "⚠️ AI models are currently rate-limited (free tier limit reached). The AI will be back when limits reset. You can still ask questions and I'll respond with basic knowledge.",
         source: 'offline-knowledge',
         type: 'general',
         confidence: 0.3,
         processingTime: Date.now() - startTime,
         providers: [],
-        note: 'All AI models unavailable'
+        rateLimit: true,
+        statusMessage: '🔴 Rate Limited - Free tier exhausted'
     };
 }
 

@@ -1,0 +1,124 @@
+/* API Status Indicator - Red/Green Dot */
+
+.api-status-indicator {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.dark .api-status-indicator {
+    background: rgba(29, 29, 31, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.api-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.api-status-dot.online {
+    background: #30d158; /* Green - iOS style */
+    box-shadow: 0 0 6px rgba(48, 209, 88, 0.6);
+}
+
+.api-status-dot.offline {
+    background: #ff453a; /* Red - iOS style */
+    box-shadow: 0 0 6px rgba(255, 69, 58, 0.6);
+    animation: pulse-offline 1s ease-in-out infinite;
+}
+
+.api-status-dot.rate-limited {
+    background: #ff9f0a; /* Orange - iOS style */
+    box-shadow: 0 0 6px rgba(255, 159, 10, 0.6);
+    animation: pulse-warning 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+@keyframes pulse-offline {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+@keyframes pulse-warning {
+    0%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.7; }
+    50% { opacity: 0.9; }
+}
+
+.api-status-text {
+    color: #1d1d1f;
+    font-size: 12px;
+}
+
+.dark .api-status-text {
+    color: #f5f5f7;
+}
+
+/* Hide on mobile to save space */
+@media (max-width: 640px) {
+    .api-status-indicator {
+        top: auto;
+        bottom: 100px;
+        right: 10px;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    .api-status-text {
+        display: none;
+    }
+}
+
+/* Message metadata status */
+.message-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px;
+    font-size: 11px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.status-badge.online {
+    background: rgba(48, 209, 88, 0.1);
+    color: #30d158;
+}
+
+.status-badge.rate-limited {
+    background: rgba(255, 159, 10, 0.1);
+    color: #ff9f0a;
+}
+
+.status-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
