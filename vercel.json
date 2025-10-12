@@ -15,16 +15,6 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1",
-      "headers": {
-        "Access-Control-Allow-Origin": "https://mangeshraut712.github.io",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization, Origin, X-Requested-With, Accept",
-        "Access-Control-Allow-Credentials": "false"
-      }
-    },
-    {
       "src": "/(.*)",
       "dest": "/src/$1"
     }
