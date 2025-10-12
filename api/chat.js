@@ -162,56 +162,53 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const isPersonalQuery = isPersonalQuestion(query);
 
     console.log('=== API KEYS STATUS ===');
-    console.log(`🔑 Grok (xAI) API Key: ${GROK_API_KEY ? 'Found (length: ' + GROK_API_KEY.length + ')' : 'NOT FOUND - CRITICAL!'}`);
-    console.log(`🔑 Gemini API Key: ${GEMINI_API_KEY ? 'Found (length: ' + GEMINI_API_KEY.length + ')' : 'NOT FOUND'}`);
-    console.log(`🔑 OpenRouter API Key: ${OPENROUTER_API_KEY ? 'Found (length: ' + OPENROUTER_API_KEY.length + ')' : 'NOT FOUND'}`);
+    console.log(`🔑 Grok (xAI): ${GROK_API_KEY ? 'Found ✓' : 'Missing ✗'}`);
+    console.log(`🔑 Gemini: ${GEMINI_API_KEY ? 'Found ✓' : 'Missing ✗'}`);
+    console.log(`🔑 OpenRouter: ${OPENROUTER_API_KEY ? 'Found ✓' : 'Missing ✗'}`);
     console.log('======================');
 
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
     
-    // PRIORITY 1: Try Grok (xAI - YOUR PRIMARY CHOICE)
+    // TRY ALL PROVIDERS - USE FIRST ONE THAT WORKS
+    // Test Grok (xAI) - YOUR PREFERRED CHOICE
     if (GROK_API_KEY) {
-        console.log('🚀 Trying Grok (xAI) with latest model...');
-        const grokResult = await tryGrok(query, systemPrompt, startTime, isPersonalQuery);
-        if (grokResult) {
-            console.log('✅ Grok SUCCESS! Returning response...');
-            apiStatus.grok = { available: true, lastCheck: Date.now() };
-            apiStatus.rateLimit = false;
-            return grokResult;
+        console.log('🚀 Testing Grok (xAI)...');
+        try {
+            const grokResult = await tryGrok(query, systemPrompt, startTime, isPersonalQuery);
+            if (grokResult) {
+                console.log('✅ GROK SUCCESS!');
+                return grokResult;
+            }
+        } catch (error) {
+            console.error('❌ Grok failed:', error.message);
         }
-        console.log('⚠️ Grok failed, trying Gemini...');
-    } else {
-        console.error('❌❌ GROK_API_KEY NOT FOUND IN VERCEL!');
     }
     
-    // PRIORITY 2: Try Gemini
+    // Test Gemini
     if (GEMINI_API_KEY) {
-        console.log('🔷 Trying Gemini API...');
-        const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);
-        if (geminiResult) {
-            console.log('✅ Gemini SUCCESS! Returning response...');
-            apiStatus.gemini = { available: true, lastCheck: Date.now() };
-            apiStatus.rateLimit = false;
-            return geminiResult;
+        console.log('🔷 Testing Gemini...');
+        try {
+            const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);
+            if (geminiResult) {
+                console.log('✅ GEMINI SUCCESS!');
+                return geminiResult;
+            }
+        } catch (error) {
+            console.error('❌ Gemini failed:', error.message);
         }
-        console.log('⚠️ Gemini failed, trying OpenRouter...');
-    } else {
-        console.log('⚠️ No Gemini key configured, skipping...');
     }
     
-    // PRIORITY 3: Try OpenRouter models
+    // Test OpenRouter (multiple models)
     if (OPENROUTER_API_KEY) {
-        console.log('🔄 Trying OpenRouter API...');
+        console.log('🔄 Testing OpenRouter...');
         const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
         const maxAttempts = Math.min(3, OPENROUTER_MODELS.length);
-        
-        // Select random model each time
         const startIndex = Math.floor(Math.random() * OPENROUTER_MODELS.length);
         
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
             const modelIndex = (startIndex + attempt) % OPENROUTER_MODELS.length;
             const model = OPENROUTER_MODELS[modelIndex];
-            console.log(`🤖 Attempting OpenRouter model ${attempt + 1}/${maxAttempts}: ${model}`);
+            console.log(`🤖 Testing OpenRouter model: ${model}`);
 
             try {
                 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -219,8 +216,8 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                        'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://mangeshrautarchive.vercel.app',
-                        'X-Title': process.env.OPENROUTER_APP_TITLE || 'S2R Enhanced AI Assistant'
+                        'HTTP-Referer': 'https://mangeshrautarchive.vercel.app',
+                        'X-Title': 'AssistMe AI'
                     },
                     body: JSON.stringify({
                         model: model,
@@ -229,14 +226,12 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
                             { role: 'user', content: query }
                         ],
                         temperature: 0.4,
-                        max_tokens: 1000,
-                        top_p: 0.9
+                        max_tokens: 1000
                     })
                 });
 
                 if (!response.ok) {
-                    const errorBody = await response.text();
-                    console.warn(`⚠️ OpenRouter ${model} failed (${response.status}): ${errorBody.substring(0, 100)}`);
+                    console.warn(`⚠️ OpenRouter ${model} HTTP ${response.status}`);
                     continue;
                 }
 
@@ -244,8 +239,7 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
                 const answer = data?.choices?.[0]?.message?.content;
 
                 if (answer && answer.trim().length > 10) {
-                    console.log(`✅ OpenRouter SUCCESS with ${model} (${Date.now() - startTime}ms)`);
-
+                    console.log(`✅ OPENROUTER SUCCESS with ${model}!`);
                     return {
                         answer: answer.trim(),
                         source: `${source} (${model})`,
@@ -257,26 +251,19 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
                         rateLimit: false,
                         statusMessage: '🟢 AI Online (OpenRouter)'
                     };
-                } else {
-                    console.warn(`⚠️ OpenRouter ${model} returned empty response`);
-                    continue;
                 }
             } catch (error) {
                 console.error(`❌ OpenRouter ${model} error:`, error.message);
                 continue;
             }
         }
-    } else {
-        console.log('⚠️ No OpenRouter key configured, skipping...');
     }
     
     // All providers failed
-    console.error('❌❌❌ ALL AI PROVIDERS FAILED ❌❌❌');
-    console.error('Grok:', GROK_API_KEY ? 'Key present but failed' : 'No key');
-    console.error('Gemini:', GEMINI_API_KEY ? 'Key present but failed' : 'No key');
-    console.error('OpenRouter:', OPENROUTER_API_KEY ? 'Key present but failed' : 'No key');
-    apiStatus.openrouter = { available: false, lastCheck: Date.now() };
+    console.error('❌ ALL PROVIDERS FAILED');
+    apiStatus.grok = { available: false, lastCheck: Date.now() };
     apiStatus.gemini = { available: false, lastCheck: Date.now() };
+    apiStatus.openrouter = { available: false, lastCheck: Date.now() };
     apiStatus.rateLimit = true;
     
     return {
