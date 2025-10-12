@@ -16,19 +16,24 @@ let apiStatus = {
     rateLimit: false
 };
 
-// Free tier models - Testing different models for variety
-const FREE_MODELS = [
-    'meta-llama/llama-3.1-8b-instruct:free',
-    'meta-llama/llama-3.2-3b-instruct:free', 
-    'google/gemini-2.0-flash-exp:free',
-    'qwen/qwen-2.5-7b-instruct:free',
-    'microsoft/phi-3-mini-128k-instruct:free',
-    'nousresearch/hermes-3-llama-3.1-405b:free',
-    'openai/gpt-4o-mini:free'
+// Groq models (PRIMARY - fastest inference, best free tier)
+const GROQ_MODELS = [
+    'llama-3.1-8b-instant',
+    'llama-3.2-3b-preview',
+    'mixtral-8x7b-32768'
 ];
 
-// Use OpenRouter's auto mode for best model selection
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini:free';
+// OpenRouter models (BACKUP)
+const OPENROUTER_MODELS = [
+    'meta-llama/llama-3.1-8b-instruct:free',
+    'openai/gpt-4o-mini:free',
+    'google/gemini-2.0-flash-exp:free',
+    'qwen/qwen-2.5-7b-instruct:free'
+];
+
+// Default models
+const DEFAULT_GROQ_MODEL = 'llama-3.1-8b-instant';
+const DEFAULT_OPENROUTER_MODEL = 'openai/gpt-4o-mini:free';
 
 // Enhanced system prompt with deep reasoning and accuracy
 const SYSTEM_PROMPT = `You are an advanced AI assistant with deep reasoning capabilities.
@@ -256,29 +261,102 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         }
     }
 
-    // All models failed - return offline fallback with rate limit notification
-    console.error('❌ All AI providers rate-limited or unavailable');
+    // PRIORITY 3: Try Gemini as last resort
+    if (GEMINI_API_KEY) {
+        console.log('🔷 Trying Gemini API (last resort)...');
+        const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);
+        if (geminiResult) {
+            apiStatus.gemini = { available: true, lastCheck: Date.now() };
+            apiStatus.rateLimit = false;
+            return geminiResult;
+        }
+    }
+    
+    // All providers failed
+    console.error('❌ All AI providers unavailable');
+    apiStatus.groq = { available: false, lastCheck: Date.now() };
     apiStatus.openrouter = { available: false, lastCheck: Date.now() };
+    apiStatus.gemini = { available: false, lastCheck: Date.now() };
     apiStatus.rateLimit = true;
     
     return {
-        answer: "⚠️ AI models are currently rate-limited (free tier limit reached). The AI will be back when limits reset. You can still ask questions and I'll respond with basic knowledge.",
+        answer: "⚠️ AI models are currently unavailable. Please try again in a moment.",
         source: 'offline-knowledge',
         type: 'general',
         confidence: 0.3,
         processingTime: Date.now() - startTime,
         providers: [],
         rateLimit: true,
-        statusMessage: '🔴 Rate Limited - Free tier exhausted'
+        statusMessage: '🔴 All providers unavailable'
     };
 }
 
-// Gemini API integration as backup
-async function tryGemini(query, systemPrompt, startTime) {
+// Groq API integration (PRIMARY - fastest and best free tier)
+async function tryGroq(query, systemPrompt, startTime, isPersonalQuery) {
+    if (!GROQ_API_KEY) return null;
+    
+    // Try multiple Groq models
+    for (const model of GROQ_MODELS) {
+        try {
+            console.log(`⚡ Trying Groq model: ${model}`);
+            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${GROQ_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: query }
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 1000
+                })
+            });
+            
+            if (!response.ok) {
+                console.warn(`⚠️ Groq ${model} error: ${response.status}`);
+                continue;
+            }
+            
+            const data = await response.json();
+            const answer = data?.choices?.[0]?.message?.content;
+            
+            if (answer && answer.trim().length > 10) {
+                const elapsed = Date.now() - startTime;
+                console.log(`✅ Groq ${model} success (${elapsed}ms)`);
+                
+                const source = isPersonalQuery ? 'linkedin + groq' : 'groq';
+                
+                return {
+                    answer: answer.trim(),
+                    source: `${source} (${model})`,
+                    confidence: isPersonalQuery ? 0.95 : 0.90,
+                    processingTime: elapsed,
+                    providers: ['Groq'],
+                    winner: model,
+                    type: isPersonalQuery ? 'portfolio' : 'general',
+                    rateLimit: false,
+                    statusMessage: '🟢 AI Online (Groq)'
+                };
+            }
+        } catch (error) {
+            console.error(`❌ Groq ${model} error:`, error.message);
+            continue;
+        }
+    }
+    
+    return null;
+}
+
+// Gemini API integration (backup)
+async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
     if (!GEMINI_API_KEY) return null;
     
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -301,15 +379,19 @@ async function tryGemini(query, systemPrompt, startTime) {
         const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (answer && answer.trim().length > 10) {
-            console.log(`✅ Gemini success (${Date.now() - startTime}ms)`);
+            const elapsed = Date.now() - startTime;
+            console.log(`✅ Gemini success (${elapsed}ms)`);
+            
+            const source = isPersonalQuery ? 'linkedin + gemini' : 'gemini';
+            
             return {
                 answer: answer.trim(),
-                source: 'gemini-pro',
-                confidence: 0.90,
-                processingTime: Date.now() - startTime,
+                source: `${source} (gemini-1.5-flash)`,
+                confidence: isPersonalQuery ? 0.95 : 0.90,
+                processingTime: elapsed,
                 providers: ['Gemini'],
-                winner: 'gemini-pro',
-                type: 'general',
+                winner: 'gemini-1.5-flash',
+                type: isPersonalQuery ? 'portfolio' : 'general',
                 rateLimit: false,
                 statusMessage: '🟢 AI Online (Gemini)'
             };
