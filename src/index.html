@@ -45,14 +45,18 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/performance-optimizations.css" />
+    <link rel="stylesheet" href="css/apple-intelligence.css" />
     <link rel="icon" type="image/png" href="images/profile-icon.png" />
     
-    <!-- Added CDN links for external libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lru-cache@10/dist/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.0/purify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Added CDN links for external libraries with preload -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" as="script">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lru-cache@10/dist/index.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.0/purify.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
 
 
 
@@ -1405,9 +1409,17 @@
       aria-label="AssistMe chat window"
     >
       <div class="chat-header">
-        <h3>AssistMe</h3>
-        <p>AI Assistant</p>
-        <button id="portfolio-chat-close" title="Close Chat">
+        <div class="chat-header-content">
+          <div class="chat-title-group">
+            <h3>AssistMe</h3>
+            <span class="apple-intelligence-badge">
+              <span class="apple-intelligence-icon">✨</span>
+              <span>Apple Intelligence</span>
+            </span>
+          </div>
+          <p>AI Assistant powered by advanced reasoning</p>
+        </div>
+        <button id="portfolio-chat-close" title="Close Chat" class="chat-close-btn">
           <i class="fas fa-times"></i>
         </button>
       </div>

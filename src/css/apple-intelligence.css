@@ -1,0 +1,570 @@
+/* Apple Intelligence Styling - apple.com Inspired */
+
+/* Chat Header - Apple Style */
+.chat-header {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,248,248,0.98) 100%) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: auto;
+}
+
+.dark .chat-header {
+    background: linear-gradient(135deg, rgba(29,29,31,0.95) 0%, rgba(44,44,46,0.98) 100%) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.chat-header-content {
+    flex: 1;
+}
+
+.chat-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.chat-header h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+
+.dark .chat-header h3 {
+    color: #f5f5f7;
+}
+
+.chat-header p {
+    font-size: 13px;
+    color: #86868b;
+    margin: 0;
+    font-weight: 400;
+}
+
+.dark .chat-header p {
+    color: #a1a1a6;
+}
+
+/* Apple Intelligence Badge */
+.apple-intelligence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #667eea;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-intelligence-badge:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.12) 100%);
+    transform: translateY(-1px);
+}
+
+.dark .apple-intelligence-badge {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.12) 100%);
+    border-color: rgba(102, 126, 234, 0.25);
+    color: #a8b8ff;
+}
+
+.apple-intelligence-icon {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Close Button - Apple Style */
+.chat-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(120, 120, 128, 0.16);
+    color: #86868b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+}
+
+.chat-close-btn:hover {
+    background: rgba(120, 120, 128, 0.24);
+    transform: scale(1.05);
+}
+
+.chat-close-btn:active {
+    transform: scale(0.95);
+}
+
+.dark .chat-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #a1a1a6;
+}
+
+.dark .chat-close-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Chat Messages - Apple Style */
+#chat-messages {
+    background: #ffffff;
+    padding: 16px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dark #chat-messages {
+    background: #1d1d1f;
+}
+
+/* Message Bubbles - iMessage Style */
+.user-message {
+    background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 18px;
+    border-bottom-right-radius: 4px;
+    max-width: 70%;
+    margin-left: auto;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 2px rgba(0, 122, 255, 0.2);
+    animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    word-wrap: break-word;
+}
+
+.assistant-message {
+    background: rgba(120, 120, 128, 0.12);
+    color: #1d1d1f;
+    padding: 12px 16px;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    max-width: 75%;
+    margin-right: auto;
+    margin-bottom: 8px;
+    animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    word-wrap: break-word;
+}
+
+.dark .assistant-message {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f5f5f7;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translate3d(20px, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translate3d(-20px, 0, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Chat Input - Apple Style */
+.chat-input-container {
+    padding: 12px 16px;
+    background: #f5f5f7;
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.dark .chat-input-container {
+    background: #2c2c2e;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+#chat-input {
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 20px;
+    background: white;
+    color: #1d1d1f;
+    font-size: 15px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.dark #chat-input {
+    background: #3a3a3c;
+    color: #f5f5f7;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+#chat-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 125, 250, 0.15);
+}
+
+/* Voice Button - Apple Intelligence Style */
+.voice-control-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+}
+
+.voice-control-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.4);
+}
+
+.voice-control-btn:active {
+    transform: scale(0.92);
+}
+
+/* Listening State - Animated */
+.voice-control-btn.listening {
+    animation: pulse-voice 1.5s ease-in-out infinite;
+    background: linear-gradient(135deg, #00d4ff 0%, #0077ff 100%);
+}
+
+.voice-control-btn.listening::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+    animation: ripple-out 1.5s ease-out infinite;
+    z-index: -1;
+}
+
+@keyframes pulse-voice {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7),
+                    0 4px 16px rgba(0, 119, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 212, 255, 0),
+                    0 6px 24px rgba(0, 119, 255, 0.6);
+    }
+}
+
+@keyframes ripple-out {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+/* Processing State */
+.voice-control-btn.processing {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+    animation: rotate-processing 2s linear infinite;
+}
+
+@keyframes rotate-processing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Speaking State */
+.voice-control-btn.speaking {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    animation: speaking-beat 0.6s ease-in-out infinite;
+}
+
+@keyframes speaking-beat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    75% { transform: scale(0.95); }
+}
+
+/* Typing Indicator - Apple Style */
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: rgba(120, 120, 128, 0.12);
+    border-radius: 18px;
+    width: fit-content;
+    margin-bottom: 8px;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background: #86868b;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
+}
+
+.dark .typing-indicator {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .typing-indicator span {
+    background: #a1a1a6;
+}
+
+/* Chat Toggle Button - Apple Style */
+#portfolio-chat-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+    color: white;
+    font-size: 26px;
+    box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3),
+                0 2px 6px rgba(0, 122, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+#portfolio-chat-toggle:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 122, 255, 0.4),
+                0 4px 8px rgba(0, 122, 255, 0.3);
+}
+
+#portfolio-chat-toggle:active {
+    transform: scale(0.95);
+}
+
+.dark #portfolio-chat-toggle {
+    background: linear-gradient(135deg, #0a84ff 0%, #006be6 100%);
+    box-shadow: 0 8px 24px rgba(10, 132, 255, 0.4),
+                0 2px 6px rgba(10, 132, 255, 0.3);
+}
+
+/* Message Metadata - Subtle Apple Style */
+.message-metadata {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #86868b;
+    flex-wrap: wrap;
+}
+
+.dark .message-metadata {
+    color: #a1a1a6;
+}
+
+.confidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.dark .confidence-badge {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.source-badge {
+    padding: 2px 8px;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.dark .source-badge {
+    background: rgba(102, 126, 234, 0.15);
+    color: #a8b8ff;
+}
+
+/* Header - Apple.com Style */
+.global-nav {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.global-nav.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+
+.dark .global-nav {
+    background: rgba(29, 29, 31, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .global-nav.scrolled {
+    background: rgba(29, 29, 31, 0.95);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Footer - Apple Style */
+footer {
+    background: #f5f5f7;
+    color: #1d1d1f;
+    padding: 40px 20px;
+    margin-top: 80px;
+}
+
+.dark footer {
+    background: #1d1d1f;
+    color: #f5f5f7;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+footer a {
+    color: #06c;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: #0077ed;
+    text-decoration: underline;
+}
+
+.dark footer a {
+    color: #2997ff;
+}
+
+.dark footer a:hover {
+    color: #66b5ff;
+}
+
+/* Hero Section - Apple Style */
+.hero-section {
+    padding: 120px 20px 60px;
+    text-align: center;
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f7 100%);
+}
+
+.dark .hero-section {
+    background: linear-gradient(135deg, #000000 0%, #1d1d1f 100%);
+}
+
+.hero-section h1 {
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #1d1d1f 0%, #494949 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.dark .hero-section h1 {
+    background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Performance Optimizations */
+.chat-container,
+.message,
+.voice-control-btn,
+#portfolio-chat-widget {
+    contain: layout style paint;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Smooth Transitions - Apple Easing */
+.smooth-transition {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .voice-control-btn.listening::before {
+        animation: none;
+    }
+}

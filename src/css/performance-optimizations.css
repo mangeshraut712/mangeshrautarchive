@@ -1,0 +1,233 @@
+/* Performance Optimizations - Apple.com Style */
+
+/* Hardware Acceleration for Smooth Animations */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize Scroll Performance */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+
+body {
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+}
+
+/* GPU Acceleration for Animated Elements */
+.global-nav,
+.hero-section,
+.chat-container,
+[data-animate],
+.fade-in,
+.slide-in {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Optimize Images */
+img {
+    content-visibility: auto;
+    loading: lazy;
+}
+
+/* Reduce Animation Complexity */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Apple-Style Fast Animations */
+.fast-fade {
+    animation: fastFadeIn 0.3s ease-out;
+}
+
+.fast-slide-up {
+    animation: fastSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fastFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fastSlideUp {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Apple Intelligence Voice Button Styles */
+.voice-btn-enhanced {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    overflow: hidden;
+}
+
+.voice-btn-enhanced:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.4);
+}
+
+.voice-btn-enhanced:active {
+    transform: scale(0.95);
+}
+
+/* Listening State - Apple Intelligence Style */
+.voice-btn-enhanced.listening {
+    animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+.voice-btn-enhanced.listening::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%);
+    animation: ripple 1.5s ease-out infinite;
+    z-index: -1;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.6),
+                    0 0 40px rgba(118, 75, 162, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.8),
+                    0 0 60px rgba(118, 75, 162, 0.6);
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Processing State */
+.voice-btn-enhanced.processing {
+    animation: rotate 2s linear infinite;
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Speaking State */
+.voice-btn-enhanced.speaking {
+    animation: speaking-pulse 0.6s ease-in-out infinite;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+@keyframes speaking-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.08);
+    }
+    75% {
+        transform: scale(0.95);
+    }
+}
+
+/* Apple Intelligence Branding */
+.apple-intelligence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #667eea;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dark .apple-intelligence-badge {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+    color: #a0b0ff;
+}
+
+.apple-intelligence-icon {
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+/* Optimize Chat Container Performance */
+.chat-container {
+    contain: layout style paint;
+    content-visibility: auto;
+}
+
+.message {
+    contain: content;
+}
+
+/* Apple-style Smooth Scroll */
+.smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Reduce Paint Operations */
+.user-message,
+.assistant-message {
+    transform: translateZ(0);
+    will-change: auto;
+}

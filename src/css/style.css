@@ -200,8 +200,9 @@ html.dark {
   /* Advanced CSS Features */
   color-scheme: dark;
 
-  /* Modern Scroll Behavior for Dark Theme */
+  /* Optimized Scroll Behavior - Apple Style */
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 /* Dark Mode Body Enhancement - Using Modern CSS Selectors */
