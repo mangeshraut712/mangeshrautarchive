@@ -149,12 +149,29 @@ class IntelligentAssistant {
                                !hostname.endsWith('.herokuapp.com') &&
                                !hostname.endsWith('.netlify.app'));
 
-        if (isGitHubPages || !navigator.onLine) {
-            console.log(`🤖 ${isGitHubPages ? 'GitHub Pages' : 'Offline mode'} detected - running in offline mode`);
+        if (isGitHubPages) {
+            console.log('🤖 GitHub Pages detected - checking API availability...');
             console.log('Current hostname:', hostname);
             console.log('Protocol:', window.location.protocol);
+            console.log('API Base URL:', localConfig.apiBaseUrl);
+            
+            // GitHub Pages can still use Vercel API if configured
+            if (localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app')) {
+                console.log('✅ Vercel API configured - hybrid mode enabled');
+                this.canUseServerAI = true;
+                this.isReadyState = true;
+                return true; // API is available
+            } else {
+                console.log('📴 No API configured - offline mode only');
+                this.isReadyState = true;
+                return false;
+            }
+        }
+        
+        if (!navigator.onLine) {
+            console.log('📴 Offline mode - no network connection');
             this.isReadyState = true;
-            return false; // False indicates offline mode, but ready for local processing
+            return false;
         }
 
         try {
@@ -278,18 +295,23 @@ class IntelligentAssistant {
              localConfig.apiBaseUrl.includes('vercel.app'));
 
         if (!canCallServerAPI) {
-            console.log('🔄 Skipping server API call - not available or CORS restricted');
+            console.log('🔄 Skipping server API call - GitHub Pages running in hybrid mode');
             return null;
         }
 
-        try {
-            console.log('🖥️ Calling API with query:', query);
+        console.log('📡 API Base URL:', localConfig.apiBaseUrl);
 
-            const response = await fetch(buildApiUrl('/api/chat'), {
+        try {
+            const apiUrl = buildApiUrl('/api/chat');
+            console.log('🖥️ Calling API:', apiUrl);
+            console.log('📤 Request payload:', { message: query.substring(0, 50) + '...' });
+
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Origin': window.location.origin
                 },
                 body: JSON.stringify({
                     message: query,
@@ -299,17 +321,25 @@ class IntelligentAssistant {
             });
 
             if (!response.ok) {
+                const errorText = await response.text().catch(() => 'No error details');
+                console.error(`❌ Server error ${response.status}: ${errorText}`);
                 throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
             }
 
             const data = await response.json();
-            console.log('✅ API response received:', data);
+            console.log('✅ API response received:', {
+                source: data.source,
+                type: data.type,
+                confidence: data.confidence,
+                answerLength: data.answer?.length || 0
+            });
             this.isReadyState = true;
 
             return data;
 
         } catch (error) {
             console.error('❌ API call failed:', error.message);
+            console.log('💡 Falling back to client-side processing');
             this.markServerUnavailable();
             return null;
         }

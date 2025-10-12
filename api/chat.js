@@ -224,18 +224,24 @@ export default async function handler(req, res) {
     // Apply CORS headers to ALL responses (including OPTIONS, errors, etc.)
     applyCors(res, req.headers.origin);
 
+    // Handle preflight OPTIONS request
     if (req.method === 'OPTIONS') {
+        console.log('✅ CORS preflight request handled');
         return res.status(204).end();
     }
 
     if (req.method !== 'POST') {
+        console.log('❌ Method not allowed:', req.method);
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    console.log('📨 Received chat request from origin:', req.headers.origin);
+
     try {
-        const { message } = req.body ?? {};
+        const { message, messages } = req.body ?? {};
 
         if (!message || typeof message !== 'string') {
+            console.log('❌ Invalid request: missing or invalid message');
             return res.status(400).json({
                 error: 'Message is required and must be a string'
             });
@@ -243,14 +249,23 @@ export default async function handler(req, res) {
 
         const trimmedMessage = message.trim();
         if (!trimmedMessage) {
+            console.log('❌ Invalid request: empty message');
             return res.status(400).json({
                 error: 'Message cannot be empty'
             });
         }
 
-        const result = await processQueryWithAI(trimmedMessage);
+        console.log('💬 Processing message:', trimmedMessage.substring(0, 100));
+
+        const result = await processQueryWithAI(trimmedMessage, isPersonalQuestion(trimmedMessage));
 
         res.setHeader('Content-Type', 'application/json');
+
+        console.log('✅ Sending response:', {
+            source: result.source,
+            confidence: result.confidence,
+            answerLength: result.answer?.length || 0
+        });
 
         return res.status(200).json({
             answer: result.answer,
@@ -258,8 +273,8 @@ export default async function handler(req, res) {
             confidence: result.confidence,
             processingTime: result.processingTime,
             source: result.source,
-            providers: result.providers,
-            winner: result.winner
+            providers: result.providers || [],
+            winner: result.winner || 'OpenRouter'
         });
     } catch (error) {
         console.error('Chat API error:', error);
