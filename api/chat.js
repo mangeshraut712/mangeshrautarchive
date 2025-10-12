@@ -4,19 +4,29 @@ import axios from 'axios';
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
 // Free tier models (ordered by quality and availability)
+// Rotate through models for better variety and reliability
 const FREE_MODELS = [
-    'deepseek/deepseek-chat',
     'google/gemini-2.0-flash-exp:free',
-    'meta-llama/llama-3.1-8b-instruct:free',
     'meta-llama/llama-3.3-70b-instruct:free',
     'qwen/qwen-2.5-72b-instruct:free',
-    'microsoft/phi-3-medium-4k-instruct:free'
+    'meta-llama/llama-3.1-8b-instruct:free',
+    'deepseek/deepseek-chat',
+    'microsoft/phi-3-medium-4k-instruct:free',
+    'mistralai/mistral-7b-instruct:free'
 ];
 
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || FREE_MODELS[0];
+// Randomly select starting model to distribute load
+let currentModelIndex = Math.floor(Math.random() * FREE_MODELS.length);
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || FREE_MODELS[currentModelIndex];
 
-// Enhanced system prompt with deep reasoning
-const SYSTEM_PROMPT = `You are an advanced AI assistant with deep reasoning capabilities. You excel at:
+// Enhanced system prompt with deep reasoning and accuracy
+const SYSTEM_PROMPT = `You are an advanced AI assistant with deep reasoning capabilities.
+
+**CRITICAL: Accuracy First**
+- If you don't know something with certainty, admit it
+- Never fabricate dates, events, or facts
+- For current events beyond your training, say "I don't have real-time information"
+- For political questions, be cautious and factual
 
 **Deep Thinking Process:**
 1. Analyze the question thoroughly before responding
@@ -27,15 +37,15 @@ const SYSTEM_PROMPT = `You are an advanced AI assistant with deep reasoning capa
 **Core Capabilities:**
 - Expert-level knowledge in technology, science, mathematics, AI/ML
 - Step-by-step problem solving with clear explanations
-- Factual accuracy with current information (today: ${new Date().toLocaleDateString()})
-- Concise yet comprehensive responses
+- Honest about knowledge limitations
+- Concise yet comprehensive responses (2-4 sentences ideal)
 - Natural conversation flow
 
 **Response Guidelines:**
-- For factual questions: Provide direct, accurate answers
+- For factual questions: Provide direct, accurate answers OR admit uncertainty
+- For current events: State training cutoff limitations
 - For complex queries: Show your reasoning process
 - For technical topics: Include relevant details and examples
-- Keep responses focused and concise (2-4 sentences ideal)
 - Use markdown formatting for clarity when helpful
 
 You were created by Mangesh Raut. Answer questions directly and helpfully.`;
@@ -150,10 +160,19 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
     const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
 
-    // Try multiple models with fallback
-    for (let i = 0; i < FREE_MODELS.length; i++) {
-        const model = FREE_MODELS[i];
-        console.log(`🤖 Attempting model ${i + 1}/${FREE_MODELS.length}: ${model}`);
+    // Try multiple models with rotation and fallback
+    const maxAttempts = Math.min(3, FREE_MODELS.length); // Try up to 3 models
+    
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        // Rotate through models
+        const modelIndex = (currentModelIndex + attempt) % FREE_MODELS.length;
+        const model = FREE_MODELS[modelIndex];
+        console.log(`🤖 Attempting model ${attempt + 1}/${maxAttempts}: ${model}`);
+        
+        // Update index for next request
+        if (attempt === 0) {
+            currentModelIndex = (currentModelIndex + 1) % FREE_MODELS.length;
+        }
 
         try {
             const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
