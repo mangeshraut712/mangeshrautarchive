@@ -1431,30 +1431,54 @@
         >
           <i class="fas fa-paper-plane"></i>
         </button>
-        <button
-          type="button"
-          id="portfolio-voice-input"
-          aria-label="Voice input (S2R-Inspired)"
-          title="Voice input: semantic intent recognition"
-        >
-          <i class="fas fa-microphone"></i>
-        </button>
-        <button
-          type="button"
-          id="portfolio-voice-output"
-          aria-label="Toggle voice responses"
-          title="Toggle voice responses on/off"
-        >
-          <i class="fas fa-volume-up"></i>
-        </button>
-        <button
-          type="button"
-          id="portfolio-continuous-mode"
-          aria-label="Continuous listening mode"
-          title="Start/stop continuous voice listening"
-        >
-          <i class="fas fa-circle"></i>
-        </button>
+        <div class="voice-controls">
+          <button
+            type="button"
+            id="portfolio-voice-input"
+            aria-label="S2R-inspired voice control"
+            title="Tap to talk • Hold for voice modes"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+          >
+            <span class="voice-icon">
+              <i class="fas fa-microphone"></i>
+            </span>
+            <span class="voice-pill">S2R</span>
+          </button>
+          <div
+            id="voice-control-menu"
+            class="voice-menu hidden"
+            role="dialog"
+            aria-label="Voice control menu"
+            aria-hidden="true"
+          >
+            <div class="voice-menu-header">
+              <span>S2R Voice Modes</span>
+              <button type="button" id="voice-mode-close" aria-label="Close voice menu">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="voice-menu-body">
+              <label class="voice-menu-option">
+                <input type="checkbox" id="voice-output-toggle" checked />
+                <span>
+                  <strong>Playback responses</strong>
+                  <small>Listen to answers with natural speech</small>
+                </span>
+              </label>
+              <label class="voice-menu-option">
+                <input type="checkbox" id="continuous-mode-toggle" />
+                <span>
+                  <strong>Continuous listening</strong>
+                  <small>Hands-free conversation loop</small>
+                </span>
+              </label>
+            </div>
+            <div class="voice-menu-footnote">
+              <span>Powered by S2R semantic understanding</span>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
     <!-- END PORTFOLIO CHATBOT -->

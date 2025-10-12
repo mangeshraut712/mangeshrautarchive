@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "build": "node scripts/build.js",
     "dev": "node scripts/local-server.js",
     "security-check": "node scripts/security-check.js",
     "check-secrets": "npm run security-check",

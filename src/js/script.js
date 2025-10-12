@@ -4,7 +4,7 @@ import { ui as uiConfig, features, chat as chatConfig, errorMessages } from './c
 import ExternalApiKeys from './modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from './modules/overlay.js';
 import initContactForm from './modules/contact.js';
-import initVoiceInput from './modules/voice.js';
+import VoiceManager from './voice-manager.js';
 import initFadeInAnimation from './modules/animations.js';
 import renderProjects from './modules/projects.js';
 
@@ -48,6 +48,12 @@ class ChatUI {
         this.suggestionsVisible = false;
         this.history = [];
 
+        // Voice integration properties (S2R-Inspired)
+        this.voiceOutputEnabled = true; // Default to voice enabled
+        this.voiceMenuVisible = false;
+        this.voiceHoldTimer = null;
+        this.voiceHoldTriggered = false;
+
         if (this.elements.widget) {
             const isOpen = !this.elements.widget.classList.contains('hidden');
             this.elements.widget.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
@@ -82,7 +88,11 @@ class ChatUI {
             widget: document.getElementById('portfolio-chat-widget'),
             toggleButton: document.getElementById('portfolio-chat-toggle'),
             closeButton: document.getElementById('portfolio-chat-close'),
-            voiceButton: document.getElementById('portfolio-voice-input')
+            voiceButton: document.getElementById('portfolio-voice-input'),
+            voiceMenu: document.getElementById('voice-control-menu'),
+            voiceMenuClose: document.getElementById('voice-mode-close'),
+            voiceOutputToggle: document.getElementById('voice-output-toggle'),
+            voiceContinuousToggle: document.getElementById('continuous-mode-toggle')
         };
     }
 
@@ -136,6 +146,42 @@ class ChatUI {
             });
         }
 
+        if (this.elements.voiceButton) {
+            const voiceButton = this.elements.voiceButton;
+            voiceButton.addEventListener('pointerdown', (event) => this._handleVoiceButtonPointerDown(event));
+            voiceButton.addEventListener('pointerup', (event) => this._handleVoiceButtonPointerUp(event));
+            voiceButton.addEventListener('pointerleave', () => this._cancelVoiceButtonHold());
+            voiceButton.addEventListener('pointercancel', () => this._cancelVoiceButtonHold());
+            voiceButton.addEventListener('keydown', (event) => this._handleVoiceButtonKey(event));
+        }
+
+        if (this.elements.voiceMenuClose) {
+            this.elements.voiceMenuClose.addEventListener('click', (event) => {
+                event.preventDefault();
+                this.hideVoiceMenu();
+            });
+        }
+
+        if (this.elements.voiceOutputToggle) {
+            this.elements.voiceOutputToggle.addEventListener('change', (event) => {
+                const enabled = Boolean(event.target.checked);
+                document.dispatchEvent(new CustomEvent('voice-output-toggle', {
+                    detail: { enabled }
+                }));
+            });
+        }
+
+        if (this.elements.voiceContinuousToggle) {
+            this.elements.voiceContinuousToggle.addEventListener('change', (event) => {
+                const enabled = Boolean(event.target.checked);
+                document.dispatchEvent(new CustomEvent('voice-continuous-toggle', {
+                    detail: { enabled }
+                }));
+            });
+        }
+
+        document.addEventListener('click', (event) => this._handleDocumentClick(event));
+
         if (this.elements.widget) {
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape' && this._isWidgetOpen()) {
@@ -161,6 +207,7 @@ class ChatUI {
 
         this._createStatusIndicator();
         this._createSuggestionsElement();
+        this.setVoiceOutputEnabledState(this.voiceOutputEnabled);
     }
 
     async _handleUserInput() {
@@ -693,6 +740,7 @@ class ChatUI {
 
     _closeWidget() {
         if (!this.elements.widget) return;
+        this.hideVoiceMenu();
         this.elements.widget.classList.add('hidden');
         this.elements.widget.setAttribute('aria-hidden', 'true');
         if (this.elements.toggleButton) {
@@ -725,8 +773,7 @@ class ChatUI {
 
     notifyAssistant(message) {
         if (!message) return;
-        const assistantMessage = this._createMessageElement(message, 'assistant', Date.now());
-        this._addMessageElement(assistantMessage);
+        this.addMessage(message, 'assistant', { skipSpeech: true });
     }
 
     getStatus() {
@@ -735,6 +782,353 @@ class ChatUI {
             messageCount: this.elements.messages?.children.length || 0,
             assistantStatus: chatAssistant.getStatus()
         };
+    }
+
+    // ========== VOICE INTEGRATION METHODS (S2R-Inspired) ==========
+
+    /**
+     * Add a message to the chat (used by Voice Manager)
+     * @param {string} text - Message text
+     * @param {string} role - 'user', 'assistant', or 'system'
+     * @param {object} options - Additional options for formatting
+     */
+    addMessage(text, role = 'assistant', options = {}) {
+        if (text === undefined || text === null) return null;
+
+        const metadata = { ...(options.metadata || {}) };
+        if (options.system) {
+            metadata.type = metadata.type || 'system';
+        }
+
+        const message = this._createMessageElement(text, role, Date.now(), metadata);
+        this._addMessageElement(message);
+
+        if (this.voiceOutputEnabled &&
+            role === 'assistant' &&
+            !options.skipSpeech &&
+            typeof text === 'string') {
+            this._speakText(text);
+        }
+
+        return message;
+    }
+
+    showAssistantThinking() {
+        if (features.enableTypingIndicator) {
+            this._showTypingIndicator();
+        }
+    }
+
+    hideAssistantThinking() {
+        if (features.enableTypingIndicator) {
+            this._hideTypingIndicator();
+        }
+    }
+
+    refreshSuggestions() {
+        this._updateSuggestions();
+    }
+
+    async fetchAssistantResponse(text) {
+        if (!text) return { content: '', metadata: {} };
+
+        if (!chatAssistant.isReady()) {
+            try {
+                await chatAssistant.initialize();
+            } catch (initError) {
+                console.warn('Assistant initialization failed before processing voice query:', initError);
+            }
+        }
+
+        const response = await chatAssistant.ask(text);
+        return this._formatAssistantResponse(response);
+    }
+
+    _handleVoiceButtonPointerDown(event) {
+        if (event.button !== 0) return;
+        if (this.elements.voiceButton?.disabled) return;
+
+        if (this.voiceMenuVisible) {
+            this.hideVoiceMenu();
+        }
+
+        this.voiceHoldTriggered = false;
+        this._cancelVoiceButtonHold();
+
+        this.voiceHoldTimer = window.setTimeout(() => {
+            this.voiceHoldTriggered = true;
+            this.showVoiceMenu();
+        }, 520);
+    }
+
+    _handleVoiceButtonPointerUp(event) {
+        if (event.button !== 0) return;
+        if (this.voiceHoldTimer) {
+            clearTimeout(this.voiceHoldTimer);
+            this.voiceHoldTimer = null;
+        }
+
+        if (this.voiceHoldTriggered) {
+            this.voiceHoldTriggered = false;
+            return;
+        }
+
+        if (this.elements.voiceButton?.disabled) return;
+        document.dispatchEvent(new CustomEvent('voice-input-click'));
+        this._cancelVoiceButtonHold();
+    }
+
+    _cancelVoiceButtonHold() {
+        if (this.voiceHoldTimer) {
+            clearTimeout(this.voiceHoldTimer);
+            this.voiceHoldTimer = null;
+        }
+        this.voiceHoldTriggered = false;
+    }
+
+    _handleVoiceButtonKey(event) {
+        if (event.key === ' ' || event.key === 'Enter') {
+            event.preventDefault();
+            document.dispatchEvent(new CustomEvent('voice-input-click'));
+            return;
+        }
+
+        if (event.key === 'ArrowDown' || (event.key === 'F10' && event.shiftKey)) {
+            event.preventDefault();
+            this.showVoiceMenu();
+            return;
+        }
+
+        if (event.key === 'Escape' && this.voiceMenuVisible) {
+            event.preventDefault();
+            this.hideVoiceMenu();
+        }
+    }
+
+    _handleDocumentClick(event) {
+        if (!this.voiceMenuVisible) return;
+        const menu = this.elements.voiceMenu;
+        const button = this.elements.voiceButton;
+        if (!menu) return;
+
+        const target = event.target;
+        if (menu.contains(target) || button?.contains(target)) return;
+        this.hideVoiceMenu();
+    }
+
+    _syncVoiceMenuState() {
+        if (this.elements.voiceOutputToggle) {
+            this.elements.voiceOutputToggle.checked = this.voiceOutputEnabled;
+            const option = this.elements.voiceOutputToggle.closest('.voice-menu-option');
+            if (option) option.classList.toggle('disabled', this.elements.voiceOutputToggle.disabled);
+        }
+
+        if (this.elements.voiceContinuousToggle) {
+            const isContinuous = Boolean(window.voiceManager?.isContinuous);
+            this.elements.voiceContinuousToggle.checked = isContinuous;
+            const option = this.elements.voiceContinuousToggle.closest('.voice-menu-option');
+            if (option) option.classList.toggle('disabled', this.elements.voiceContinuousToggle.disabled);
+        }
+    }
+
+    showVoiceMenu() {
+        const menu = this.elements.voiceMenu;
+        if (!menu || this.elements.voiceButton?.disabled) return;
+
+        this._syncVoiceMenuState();
+        this.voiceMenuVisible = true;
+        menu.classList.remove('hidden');
+        menu.setAttribute('aria-hidden', 'false');
+        this.elements.voiceButton?.classList.add('menu-open');
+        this.elements.voiceButton?.setAttribute('aria-expanded', 'true');
+
+        const focusTarget = this.elements.voiceOutputToggle?.disabled
+            ? this.elements.voiceContinuousToggle
+            : this.elements.voiceOutputToggle;
+        if (focusTarget && !focusTarget.disabled) {
+            setTimeout(() => focusTarget.focus({ preventScroll: true }), 0);
+        }
+    }
+
+    hideVoiceMenu() {
+        const menu = this.elements.voiceMenu;
+        if (!menu || !this.voiceMenuVisible) return;
+
+        this.voiceMenuVisible = false;
+        menu.classList.add('hidden');
+        menu.setAttribute('aria-hidden', 'true');
+        this.elements.voiceButton?.classList.remove('menu-open');
+        this.elements.voiceButton?.setAttribute('aria-expanded', 'false');
+        this._cancelVoiceButtonHold();
+
+        if (menu.contains(document.activeElement)) {
+            this.elements.voiceButton?.focus({ preventScroll: true });
+        }
+    }
+
+    /**
+     * Update UI to show voice input activity status
+     * @param {boolean} active - Whether voice input is active
+     */
+    setVoiceInputActive(active) {
+        const button = this.elements.voiceButton;
+        if (!button) return;
+
+        if (active) {
+            button.classList.add('active', 'recording');
+            button.setAttribute('aria-pressed', 'true');
+            button.title = 'Listening... Click to stop voice input';
+        } else {
+            button.classList.remove('active', 'recording');
+            button.setAttribute('aria-pressed', 'false');
+            button.title = 'Click to start voice input';
+        }
+    }
+
+    /**
+     * Update UI to show voice output activity status
+     * @param {boolean} active - Whether voice output is active
+     */
+    setVoiceOutputActive(active) {
+        const button = this.elements.voiceButton;
+        if (!button) return;
+
+        if (active) {
+            button.classList.add('speaking');
+            button.setAttribute('data-speaking', 'true');
+        } else {
+            button.classList.remove('speaking');
+            button.removeAttribute('data-speaking');
+        }
+    }
+
+    /**
+     * Update UI to reflect whether voice output is enabled
+     * @param {boolean} enabled
+     */
+    setVoiceOutputEnabledState(enabled) {
+        this.voiceOutputEnabled = Boolean(enabled);
+        const button = this.elements.voiceButton;
+        if (button) {
+            button.classList.toggle('voice-muted', !this.voiceOutputEnabled);
+            button.setAttribute('data-voice-enabled', this.voiceOutputEnabled ? 'true' : 'false');
+        }
+
+        const toggle = this.elements.voiceOutputToggle;
+        if (toggle && toggle.checked !== this.voiceOutputEnabled) {
+            toggle.checked = this.voiceOutputEnabled;
+        }
+
+        if (this.voiceMenuVisible) {
+            this._syncVoiceMenuState();
+        }
+    }
+
+    /**
+     * Update the UI for continuous listening mode
+     * @param {boolean} active
+     */
+    setContinuousModeActive(active) {
+        const isActive = Boolean(active);
+        const button = this.elements.voiceButton;
+        if (button) {
+            button.classList.toggle('continuous-active', isActive);
+        }
+
+        const toggle = this.elements.voiceContinuousToggle;
+        if (toggle && toggle.checked !== isActive) {
+            toggle.checked = isActive;
+        }
+
+        if (this.voiceMenuVisible) {
+            this._syncVoiceMenuState();
+        }
+    }
+
+    disableVoiceInput(reason = 'Voice input is not supported in this browser.') {
+        const button = this.elements.voiceButton;
+        if (button) {
+            button.disabled = true;
+            button.classList.add('disabled');
+            button.classList.remove('active', 'recording', 'continuous-active');
+            button.setAttribute('aria-pressed', 'false');
+            button.title = reason;
+        }
+
+        this.disableContinuousMode('Continuous listening requires voice input support.');
+        this.hideVoiceMenu();
+    }
+
+    disableVoiceOutput(reason = 'Voice output is not supported in this browser.') {
+        this.setVoiceOutputEnabledState(false);
+
+        const toggle = this.elements.voiceOutputToggle;
+        if (toggle) {
+            toggle.checked = false;
+            toggle.disabled = true;
+            toggle.title = reason;
+            const option = toggle.closest('.voice-menu-option');
+            if (option) option.classList.add('disabled');
+        }
+
+        this.hideVoiceMenu();
+    }
+
+    disableContinuousMode(reason = 'Continuous listening is not available.') {
+        const toggle = this.elements.voiceContinuousToggle;
+        if (toggle) {
+            toggle.checked = false;
+            toggle.disabled = true;
+            toggle.title = reason;
+            const option = toggle.closest('.voice-menu-option');
+            if (option) option.classList.add('disabled');
+        }
+
+        const button = this.elements.voiceButton;
+        if (button) {
+            button.classList.remove('continuous-active');
+        }
+    }
+
+    /**
+     * Show interim voice recognition results
+     * @param {string} transcript - Real-time transcript
+     */
+    updateInterimTranscript(transcript) {
+        // Could show live transcription as user speaks
+        // For now, keep simple and just log
+        console.log('🎤 Interim transcript:', transcript);
+    }
+
+    /**
+     * Speak text using browser TTS (fallback if Web Speech API unavailable)
+     * @param {string} text - Text to speak
+     */
+    _speakText(text) {
+        if (!window.speechSynthesis) return;
+
+        // Stop any current speech
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.8;
+
+        // Choose a good voice
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(voice =>
+            voice.lang.startsWith('en') &&
+            (voice.name.toLowerCase().includes('natural') ||
+             voice.name.toLowerCase().includes('human') ||
+             voice.localService)
+        ) || voices.find(voice => voice.lang.startsWith('en'));
+
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
     }
 }
 
@@ -747,7 +1141,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatAnchor) {
         try {
             window.chatUI = new ChatUI();
-            initVoiceInput(window.chatUI);
+
+            // Initialize advanced S2R-inspired voice manager
+            window.voiceManager = new VoiceManager(window.chatUI);
+            console.log('🎤 Voice Manager (S2R-Inspired) initialized with semantic intent recognition');
+
         } catch (error) {
             console.error('Failed to initialize full chat experience:', error);
         }

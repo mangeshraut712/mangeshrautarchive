@@ -17,10 +17,19 @@ class VoiceManager {
         this.isContinuous = false;
         this.voiceCommands = new Map();
 
+        // S2R (Speech-to-Retrieval) inspired features
+        this.voiceEmbeddings = new Map(); // Store voice semantic embeddings
+        this.responseEmbeddings = this.initializeResponseEmbeddings(); // Pre-computed response embeddings
+        this.semanticCache = new Map(); // Cache semantic matches
+
         this.initializeSpeechRecognition();
         this.initializeSpeechSynthesis();
         this.setupVoiceCommands();
+        this.setupS2RSystem();
         this.bindEvents();
+
+        this.chatManager.setVoiceOutputEnabledState(this.chatManager.voiceOutputEnabled);
+        this.chatManager.setContinuousModeActive(false);
     }
 
     /**
@@ -33,6 +42,8 @@ class VoiceManager {
 
         if (!SpeechRecognition) {
             console.warn('Speech recognition not supported in this browser');
+            this.chatManager.disableVoiceInput('Voice input is not supported in this browser.');
+            this.chatManager.disableContinuousMode('Continuous listening requires voice input support.');
             return;
         }
 
@@ -61,21 +72,26 @@ class VoiceManager {
         this.voices = [];
         this.preferredVoice = null;
 
-        if (this.synthesis) {
-            // Load available voices
-            const loadVoices = () => {
-                this.voices = this.synthesis.getVoices();
-                // Prefer natural, human-like voices
-                this.preferredVoice = this.voices.find(voice =>
-                    voice.name.toLowerCase().includes('natural') ||
-                    voice.name.toLowerCase().includes('human') ||
-                    voice.lang.startsWith('en') && voice.localService
-                ) || this.voices.find(voice => voice.lang.startsWith('en'));
-            };
-
-            loadVoices();
-            this.synthesis.onvoiceschanged = loadVoices;
+        if (!this.synthesis) {
+            console.warn('Speech synthesis not supported in this browser');
+            this.setVoiceOutputEnabled(false, { silent: true });
+            this.chatManager.disableVoiceOutput('Voice output is not supported in this browser.');
+            return;
         }
+
+        // Load available voices
+        const loadVoices = () => {
+            this.voices = this.synthesis.getVoices();
+            // Prefer natural, human-like voices
+            this.preferredVoice = this.voices.find(voice =>
+                voice.name.toLowerCase().includes('natural') ||
+                voice.name.toLowerCase().includes('human') ||
+                (voice.lang.startsWith('en') && voice.localService)
+            ) || this.voices.find(voice => voice.lang.startsWith('en'));
+        };
+
+        loadVoices();
+        this.synthesis.onvoiceschanged = loadVoices;
     }
 
     /**
@@ -116,9 +132,24 @@ class VoiceManager {
      * Bind UI events for voice functionality
      */
     bindEvents() {
-        // Voice button bindings (will be set up in UI)
         document.addEventListener('voice-input-click', () => this.toggleVoiceInput());
         document.addEventListener('voice-output-click', () => this.toggleVoiceOutput());
+
+        document.addEventListener('voice-output-toggle', (event) => {
+            if (event?.detail && 'enabled' in event.detail) {
+                this.setVoiceOutputEnabled(event.detail.enabled);
+            } else {
+                this.toggleVoiceOutput();
+            }
+        });
+
+        document.addEventListener('voice-continuous-toggle', (event) => {
+            if (event?.detail && 'enabled' in event.detail) {
+                this.setContinuousListening(event.detail.enabled);
+            } else {
+                this.toggleContinuousMode();
+            }
+        });
     }
 
     // ========== VOICE INPUT METHODS ==========
@@ -171,7 +202,8 @@ class VoiceManager {
         if (!this.recognition) return;
 
         this.isContinuous = true;
-        this.chatManager.addMessage('🔥 Continuous voice mode activated. I\'m listening...', 'system');
+        this.chatManager.setContinuousModeActive(true);
+        this.chatManager.addMessage('🔥 Continuous voice mode activated. I\'m listening...', 'system', { skipSpeech: true });
         this.startVoiceInput();
     }
 
@@ -181,7 +213,16 @@ class VoiceManager {
     stopContinuousListening() {
         this.isContinuous = false;
         this.stopVoiceInput();
-        this.chatManager.addMessage('🔇 Continuous voice mode deactivated.', 'system');
+        this.chatManager.setContinuousModeActive(false);
+        this.chatManager.addMessage('🔇 Continuous voice mode deactivated.', 'system', { skipSpeech: true });
+    }
+
+    toggleContinuousMode() {
+        if (this.isContinuous) {
+            this.stopContinuousListening();
+        } else {
+            this.startContinuousListening();
+        }
     }
 
     // ========== VOICE RECOGNITION EVENT HANDLERS ==========
@@ -192,7 +233,7 @@ class VoiceManager {
 
         // Add listening indicator
         if (!this.isContinuous) {
-            this.chatManager.addMessage('🎤 Listening...', 'system');
+            this.chatManager.addMessage('🎤 Listening...', 'system', { skipSpeech: true });
         }
     }
 
@@ -213,7 +254,9 @@ class VoiceManager {
 
             console.log(`Voice Recognition (${confidence*100}%): "${transcript}"`);
 
-            this.processVoiceIntent(transcript);
+            this.processVoiceIntent(transcript).catch((error) => {
+                console.error('Voice intent processing failed:', error);
+            });
             this.isListening = false;
         } else if (interimResult) {
             // Show interim results for user feedback
@@ -256,9 +299,167 @@ class VoiceManager {
                 break;
         }
 
-        this.chatManager.addMessage(`🚨 ${errorMessage}`, 'system');
+        this.chatManager.addMessage(`🚨 ${errorMessage}`, 'system', { skipSpeech: true });
         this.isListening = false;
         this.chatManager.setVoiceInputActive(false);
+    }
+
+    /**
+     * Setup S2R (Speech-to-Retrieval) System
+     * Initialize dual encoders and semantic mapping
+     */
+    setupS2RSystem() {
+        this.semanticEncoder = this.createSemanticEncoder();
+        this.responseMatcher = new ResponseMatcher(this.responseEmbeddings);
+        this.contextHistory = new ContextHistory();
+
+        console.log('🔍 S2R System initialized with semantic matching capabilities');
+    }
+
+    /**
+     * Initialize pre-computed response embeddings for portfolio data
+     */
+    initializeResponseEmbeddings() {
+        const embeddings = new Map();
+
+        // Portfolio-specific responses
+        embeddings.set('portfolio-qualification', {
+            keywords: ['qualification', 'degree', 'masters', 'education', 'highest qualification'],
+            response: "Highest qualification: Master's in Computer Science from Drexel University (AI/ML focus).",
+            type: 'portfolio'
+        });
+
+        embeddings.set('portfolio-experience', {
+            keywords: ['experience', 'job', 'work', 'career', 'professional'],
+            response: "Software Engineer at Customized Energy Solutions (Spring Boot, AngularJS, AWS, TensorFlow/ML).",
+            type: 'portfolio'
+        });
+
+        embeddings.set('portfolio-skills', {
+            keywords: ['skills', 'technologies', 'expertise', 'programming', 'tech'],
+            response: "Technical skills: Java Spring Boot, AngularJS, Python, AWS, TensorFlow, Machine Learning, Docker.",
+            type: 'portfolio'
+        });
+
+        embeddings.set('portfolio-projects', {
+            keywords: ['projects', 'work', 'portfolio', 'github', 'code'],
+            response: "Key projects: AI-powered chatbot system, Machine Learning research, Full-stack web applications.",
+            type: 'portfolio'
+        });
+
+        embeddings.set('portfolio-contact', {
+            keywords: ['contact', 'email', 'phone', 'reach', 'connect'],
+            response: "Contact Mangesh at mbr63@drexel.edu or linkedin.com/in/mangeshraut71298",
+            type: 'portfolio'
+        });
+
+        // General knowledge responses
+        embeddings.set('general-capital-france', {
+            keywords: ['capital', 'france', 'paris', 'country'],
+            response: "Paris is the capital and most populous city of France.",
+            type: 'factual'
+        });
+
+        embeddings.set('general-elon-musk', {
+            keywords: ['elon musk', 'tesla', 'spacex', 'entrepreneur'],
+            response: "Elon Musk is a technology entrepreneur and businessman, leading Tesla and SpaceX.",
+            type: 'factual'
+        });
+
+        // Math responses
+        embeddings.set('math-basic-addition', {
+            keywords: ['plus', 'add', 'sum', 'calculate'],
+            response: "I can help with mathematical calculations!",
+            type: 'math'
+        });
+
+        return embeddings;
+    }
+
+    /**
+     * Create semantic encoder for voice-to-text matching
+     */
+    createSemanticEncoder() {
+        return {
+            encodeVoiceIntent: (transcript, confidence = 1.0) => {
+                const normalized = transcript.toLowerCase().trim();
+                const embedding = this.generateTextEmbedding(normalized);
+
+                return {
+                    embedding,
+                    confidence,
+                    timestamp: Date.now(),
+                    features: this.extractSemanticFeatures(normalized)
+                };
+            },
+
+            encodeResponse: (response) => {
+                return this.generateTextEmbedding(response.toLowerCase().trim());
+            }
+        };
+    }
+
+    /**
+     * Generate text embedding vector (simplified version for browser)
+     */
+    generateTextEmbedding(text) {
+        const words = text.split(/\s+/).filter(word => word.length > 0);
+        const vector = new Array(300).fill(0); // 300-dimensional embedding space
+
+        words.forEach((word, index) => {
+            const hash = this.simpleHash(word);
+            const position = (hash % 300 + 300) % 300;
+            const weight = Math.sqrt(index + 1); // Position-based weighting
+            vector[position] += weight;
+        });
+
+        // Normalize the vector
+        const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+        if (magnitude > 0) {
+            return vector.map(val => val / magnitude);
+        }
+
+        return vector;
+    }
+
+    /**
+     * Extract semantic features from text for enhanced matching
+     */
+    extractSemanticFeatures(text) {
+        const features = {};
+
+        // Intent categories
+        features.hasGreeting = /\b(hello|hi|hey|greetings|good morning|good afternoon|good evening)\b/i.test(text);
+        features.hasQuestion = /\b(what|who|where|when|why|how|tell me|can you)\b/i.test(text);
+        features.hasCommand = /\b(stop|help|end|quit|start|activate|deactivate)\b/i.test(text);
+
+        // Portfolio queries
+        features.portfolioQuery = /\b(qualification|experience|skills|projects|contact|portfolio|work)\b/i.test(text);
+
+        // Math expressions
+        features.mathExpression = /\b(calculate|compute|solve|plus|minus|times|divide|equals)\b|\d+\s*[+\-×÷*/]\s*\d+/i.test(text);
+
+        // Factual queries
+        features.factualQuery = /\b(who is|what is|capital of|population|history)\b/i.test(text);
+
+        // Numbers
+        const numbers = text.match(/\d+(?:\.\d+)?/g);
+        features.numericValues = numbers ? numbers.map(n => parseFloat(n)) : [];
+
+        return features;
+    }
+
+    /**
+     * Simple hash function for deterministic embeddings
+     */
+    simpleHash(text) {
+        let hash = 0;
+        for (let i = 0; i < text.length; i++) {
+            const char = text.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
     }
 
     // ========== SEMANTIC INTENT PROCESSING (S2R-Inspired) ==========
@@ -266,43 +467,66 @@ class VoiceManager {
     /**
      * Process voice input using semantic intent matching (S2R approach)
      */
-    processVoiceIntent(transcript) {
+    async processVoiceIntent(transcript) {
         // Normalize input
         const normalizedText = transcript.toLowerCase().trim();
 
-        // Extract intent using semantic similarity matching
-        const intent = this.classifyIntent(normalizedText);
+        this.logTranscript(transcript);
 
-        console.log(`Detected Intent: ${intent}`);
+        // S2R Process: Voice-to-Embeddings + Semantic Retrieval
+        const voiceEmbedding = this.semanticEncoder.encodeVoiceIntent(normalizedText);
+
+        // Check for semantic matches first (S2R approach)
+        const semanticMatch = this.responseMatcher.findBestMatch(voiceEmbedding, 0.4); // Higher threshold for direct matches
+
+        if (semanticMatch) {
+            console.log(`🔍 S2R Match: "${normalizedText}" → "${semanticMatch.response}" (score: ${semanticMatch.score.toFixed(3)})`);
+
+            // Add contextual boost if this is a follow-up
+            const contextBoost = this.contextHistory.getIntentBoost(normalizedText, semanticMatch.type);
+            if (contextBoost > 0) {
+                semanticMatch.score += contextBoost;
+                console.log(`📝 Context boost applied: +${contextBoost.toFixed(3)}`);
+            }
+
+            // Display response directly from semantic matching
+            this.announceIntent(`S2R Match • ${semanticMatch.type}`, normalizedText);
+            await this.handleSemanticResponse(semanticMatch, transcript);
+            return;
+        }
+
+        // Fallback to traditional intent classification
+        const intent = this.classifyIntent(normalizedText);
+        console.log(`🎯 Detected Intent: ${intent}`);
 
         // Process based on intent
         switch (intent) {
             case 'greetings':
-                this.handleGreetingIntent(transcript);
+                await this.handleGreetingIntent(transcript);
                 break;
             case 'qualifications':
-                this.handleQualificationQuery(transcript);
+                await this.handleQualificationQuery(transcript);
                 break;
             case 'experience':
-                this.handleExperienceQuery(transcript);
+                await this.handleExperienceQuery(transcript);
                 break;
             case 'skills':
-                this.handleSkillsQuery(transcript);
+                await this.handleSkillsQuery(transcript);
                 break;
             case 'projects':
-                this.handleProjectsQuery(transcript);
+                await this.handleProjectsQuery(transcript);
                 break;
             case 'contact':
-                this.handleContactQuery(transcript);
+                await this.handleContactQuery(transcript);
                 break;
             case 'who_is':
-                this.handleWhoIsQuery(transcript);
+                await this.handleWhoIsQuery(transcript);
                 break;
             case 'math':
-                this.handleMathQuery(transcript);
+                await this.handleMathQuery(transcript);
                 break;
             case 'facts':
-                this.handleFactsQuery(transcript);
+                await this.handleFactsQuery(transcript);
                 break;
             case 'help':
                 this.handleHelpCommand();
@@ -312,7 +536,120 @@ class VoiceManager {
                 break;
             default:
                 // Fall back to general AI processing
-                this.sendToChatbot(transcript);
+                await this.sendToChatbot(transcript);
+        }
+    }
+
+    /**
+     * Handle semantic response matching (S2R approach)
+     */
+    async handleSemanticResponse(match, originalTranscript) {
+        const response = match.response;
+
+        // Add contextual information to the response
+        let enhancedResponse = response;
+        if (match.type === 'portfolio') {
+            enhancedResponse += '\n\n💡 This information is part of my portfolio presentation.';
+        } else if (match.type === 'factual') {
+            enhancedResponse += '\n\n📚 This is based on general knowledge.';
+        }
+
+        this.chatManager.addMessage(enhancedResponse, 'assistant', {
+            metadata: {
+                source: 's2r-semantic-match',
+                confidence: match.score,
+                type: match.type,
+                semanticMatch: true
+            },
+            skipSpeech: !this.chatManager.voiceOutputEnabled
+        });
+
+        // Update context history for better future matching
+        this.contextHistory.addInteraction(originalTranscript, response, match.type, match.score);
+
+        // Speak the response if voice output is enabled
+        if (this.chatManager.voiceOutputEnabled) {
+            this.speak(this.cleanTextForSpeech(response));
+        }
+
+        // Cache semantic matches for faster future lookups
+        const cacheKey = this.simpleHash(originalTranscript.toLowerCase());
+        this.semanticCache.set(cacheKey, match);
+
+        // Refresh suggestions if this was a portfolio-related query
+        if (match.type === 'portfolio') {
+            this.chatManager.refreshSuggestions();
+        }
+    }
+
+    logTranscript(transcript) {
+        if (!transcript) return;
+        this.chatManager.addMessage(`🎤 ${transcript}`, 'user', { skipSpeech: true });
+    }
+
+    announceIntent(label, mappedQuery) {
+        if (!label && !mappedQuery) return;
+        const segments = [];
+        if (label) segments.push(label);
+        if (mappedQuery) segments.push(`query → ${mappedQuery}`);
+        this.chatManager.addMessage(`🎯 ${segments.join(' • ')}`, 'system', { skipSpeech: true });
+    }
+
+    /**
+     * Enhanced status reporting for S2R system
+     */
+    getEnhancedStatus() {
+        const baseStatus = this.getStatus();
+        return {
+            ...baseStatus,
+            s2rReady: !!this.semanticEncoder && !!this.responseMatcher && !!this.contextHistory,
+            semanticCacheSize: this.semanticCache.size,
+            responseEmbeddings: this.responseEmbeddings.size,
+            recentContextItems: this.contextHistory.history.length,
+            voiceEmbeddingsStored: this.voiceEmbeddings.size
+        };
+    }
+
+    async handleMappedQuery(transcript, mappedQuery, intentLabel) {
+        if (intentLabel || mappedQuery) {
+            this.announceIntent(intentLabel || 'Intent detected', mappedQuery);
+        }
+        await this.executeQuery(mappedQuery || transcript);
+    }
+
+    async executeQuery(query) {
+        if (!query) return null;
+
+        try {
+            this.chatManager.showAssistantThinking();
+            const { content, metadata } = await this.chatManager.fetchAssistantResponse(query);
+            this.chatManager.hideAssistantThinking();
+
+            this.chatManager.addMessage(content, 'assistant', {
+                metadata,
+                skipSpeech: true
+            });
+
+            this.chatManager.refreshSuggestions();
+
+            if (this.chatManager.voiceOutputEnabled) {
+                const speechText = typeof content === 'string'
+                    ? content
+                    : this.cleanTextForSpeech(content?.html || '');
+                if (speechText) {
+                    this.speak(speechText);
+                }
+            }
+
+            return { content, metadata };
+        } catch (error) {
+            this.chatManager.hideAssistantThinking();
+            console.error('Voice query failed:', error);
+            this.chatManager.addMessage('I ran into a problem handling that voice request. Please try again.', 'assistant', {
+                skipSpeech: true,
+                metadata: { type: 'error' }
+            });
+            return null;
         }
     }
 
@@ -373,103 +710,52 @@ class VoiceManager {
 
     // ========== INTENT HANDLERS ==========
 
-    handleGreetingIntent(transcript) {
+    async handleGreetingIntent(transcript) {
         const greetings = ['Hello!', 'Hi there!', 'Hey!', 'Greetings!'];
         const response = greetings[Math.floor(Math.random() * greetings.length)];
-        this.chatManager.addMessage(response, 'assistant');
+        this.chatManager.addMessage(response, 'assistant', {
+            skipSpeech: !this.chatManager.voiceOutputEnabled
+        });
 
         if (this.chatManager.voiceOutputEnabled) {
             this.speak(response);
         }
 
         if (!this.isContinuous) {
-            this.sendToChatbot(transcript); // Let AI handle full greeting
+            await this.executeQuery(transcript); // Allow AI to elaborate on greeting
         }
     }
 
     async handleQualificationQuery(transcript) {
-        const query = 'highest qualification';
-        const response = await this.chatManager.sendMessage(query, false);
-        this.chatManager.addMessage(`"${transcript}" → ${query}`, 'user');
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.handleMappedQuery(transcript, 'highest qualification', 'Portfolio • Highest Qualification');
     }
 
     async handleExperienceQuery(transcript) {
-        const query = 'professional experience';
-        const response = await this.chatManager.sendMessage(query, false);
-        this.chatManager.addMessage(`"${transcript}" → ${query}`, 'user');
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.handleMappedQuery(transcript, 'professional experience', 'Portfolio • Professional Experience');
     }
 
     async handleSkillsQuery(transcript) {
-        const query = 'technical skills';
-        const response = await this.chatManager.sendMessage(query, false);
-        this.chatManager.addMessage(`"${transcript}" → ${query}`, 'user');
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.handleMappedQuery(transcript, 'technical skills', 'Portfolio • Technical Skills');
     }
 
     async handleProjectsQuery(transcript) {
-        const query = 'featured projects';
-        const response = await this.chatManager.sendMessage(query, false);
-        this.chatManager.addMessage(`"${transcript}" → ${query}`, 'user');
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.handleMappedQuery(transcript, 'featured projects', 'Portfolio • Featured Projects');
     }
 
     async handleContactQuery(transcript) {
-        const query = 'contact information';
-        const response = await this.chatManager.sendMessage(query, false);
-        this.chatManager.addMessage(`"${transcript}" → ${query}`, 'user');
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.handleMappedQuery(transcript, 'contact information', 'Portfolio • Contact Details');
     }
 
     async handleWhoIsQuery(transcript) {
-        this.chatManager.addMessage(`🎤 "${transcript}"`, 'user');
-        const response = await this.chatManager.sendMessage(transcript, false);
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.executeQuery(transcript);
     }
 
     async handleMathQuery(transcript) {
-        this.chatManager.addMessage(`🎤 "${transcript}"`, 'user');
-        const response = await this.chatManager.sendMessage(transcript, false);
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.executeQuery(transcript);
     }
 
     async handleFactsQuery(transcript) {
-        this.chatManager.addMessage(`🎤 "${transcript}"`, 'user');
-        const response = await this.chatManager.sendMessage(transcript, false);
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.executeQuery(transcript);
     }
 
     handleHelpCommand() {
@@ -498,7 +784,7 @@ class VoiceManager {
 • Click speaker to toggle voice responses
         `;
 
-        this.chatManager.addMessage(helpText, 'system');
+        this.chatManager.addMessage(helpText, 'system', { skipSpeech: true });
 
         if (this.chatManager.voiceOutputEnabled) {
             this.speak('Here are the available voice commands for interacting with my portfolio.');
@@ -507,6 +793,7 @@ class VoiceManager {
 
     handleStopCommand() {
         this.stopContinuousListening();
+        this.chatManager.addMessage('Voice mode stopped.', 'system', { skipSpeech: true });
 
         if (this.chatManager.voiceOutputEnabled) {
             this.speak('Voice mode stopped.');
@@ -514,13 +801,7 @@ class VoiceManager {
     }
 
     async sendToChatbot(text) {
-        this.chatManager.addMessage(`🎤 "${text}"`, 'user');
-        const response = await this.chatManager.sendMessage(text, false);
-        this.chatManager.addMessage(response, 'assistant');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak(response);
-        }
+        await this.executeQuery(text);
     }
 
     // ========== VOICE OUTPUT METHODS ==========
@@ -595,18 +876,44 @@ class VoiceManager {
         }
     }
 
+    setVoiceOutputEnabled(enabled, options = {}) {
+        const normalized = Boolean(enabled);
+        const previous = this.chatManager.voiceOutputEnabled;
+
+        this.chatManager.setVoiceOutputEnabledState(normalized);
+
+        if (!normalized) {
+            this.stopSpeaking();
+        }
+
+        if (options.silent || normalized === previous) {
+            return;
+        }
+
+        const status = normalized ? 'enabled' : 'disabled';
+        this.chatManager.addMessage(`🔊 Voice responses ${status}`, 'system', { skipSpeech: true });
+
+        if (normalized) {
+            this.speak('Voice responses enabled.');
+        }
+    }
+
+    setContinuousListening(enabled) {
+        const normalized = Boolean(enabled);
+        if (normalized) {
+            if (!this.isContinuous) {
+                this.startContinuousListening();
+            }
+        } else if (this.isContinuous) {
+            this.stopContinuousListening();
+        }
+    }
+
     /**
      * Toggle voice output on/off
      */
     toggleVoiceOutput() {
-        this.chatManager.voiceOutputEnabled = !this.chatManager.voiceOutputEnabled;
-
-        const status = this.chatManager.voiceOutputEnabled ? 'enabled' : 'disabled';
-        this.chatManager.addMessage(`🔊 Voice responses ${status}`, 'system');
-
-        if (this.chatManager.voiceOutputEnabled) {
-            this.speak('Voice responses enabled');
-        }
+        this.setVoiceOutputEnabled(!this.chatManager.voiceOutputEnabled);
     }
 
     // ========== UTILITY METHODS ==========
@@ -646,5 +953,192 @@ class VoiceManager {
     }
 }
 
+// ========== S2R HELPER CLASSES ==========
+
+/**
+ * Response Matcher - Implements semantic similarity matching for S2R
+ */
+class ResponseMatcher {
+    constructor(responseEmbeddings) {
+        this.responseEmbeddings = responseEmbeddings;
+        this.embeddingCache = new Map();
+    }
+
+    /**
+     * Find best matching response for voice embedding
+     */
+    findBestMatch(voiceEmbedding, threshold = 0.3) {
+        let bestMatch = null;
+        let bestScore = 0;
+
+        for (const [key, response] of this.responseEmbeddings) {
+            const responseEmbedding = this.getResponseEmbedding(key, response.response);
+            const similarity = this.cosineSimilarity(voiceEmbedding.embedding, responseEmbedding);
+
+            if (similarity > bestScore && similarity >= threshold) {
+                bestScore = similarity;
+                bestMatch = {
+                    key,
+                    response: response.response,
+                    type: response.type,
+                    score: similarity,
+                    keywords: response.keywords
+                };
+            }
+        }
+
+        return bestMatch;
+    }
+
+    /**
+     * Generate or retrieve cached response embedding
+     */
+    getResponseEmbedding(key, response) {
+        if (this.embeddingCache.has(key)) {
+            return this.embeddingCache.get(key);
+        }
+
+        const embedding = this.generateTextEmbedding(response);
+        this.embeddingCache.set(key, embedding);
+        return embedding;
+    }
+
+    /**
+     * Calculate cosine similarity between two vectors
+     */
+    cosineSimilarity(vecA, vecB) {
+        if (vecA.length !== vecB.length) return 0;
+
+        let dotProduct = 0;
+        let magA = 0;
+        let magB = 0;
+
+        for (let i = 0; i < vecA.length; i++) {
+            dotProduct += vecA[i] * vecB[i];
+            magA += vecA[i] * vecA[i];
+            magB += vecB[i] * vecB[i];
+        }
+
+        magA = Math.sqrt(magA);
+        magB = Math.sqrt(magB);
+
+        if (magA === 0 || magB === 0) return 0;
+
+        return dotProduct / (magA * magB);
+    }
+
+    /**
+     * Generate text embedding vector (duplicate from VoiceManager for encapsulation)
+     */
+    generateTextEmbedding(text) {
+        const words = text.split(/\s+/).filter(word => word.length > 0);
+        const vector = new Array(300).fill(0);
+
+        words.forEach((word, index) => {
+            const hash = this.simpleHash(word);
+            const position = (hash % 300 + 300) % 300;
+            const weight = Math.sqrt(index + 1);
+            vector[position] += weight;
+        });
+
+        // Normalize
+        const magnitude = Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
+        if (magnitude > 0) {
+            return vector.map(val => val / magnitude);
+        }
+
+        return vector;
+    }
+
+    simpleHash(text) {
+        let hash = 0;
+        for (let i = 0; i < text.length; i++) {
+            const char = text.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return hash;
+    }
+}
+
+/**
+ * Context History - Maintains conversation context for better S2R matching
+ */
+class ContextHistory {
+    constructor(maxSize = 10) {
+        this.history = [];
+        this.maxSize = maxSize;
+    }
+
+    /**
+     * Add interaction to context history
+     */
+    addInteraction(voiceInput, response, intent, confidence) {
+        this.history.push({
+            voiceInput,
+            response,
+            intent,
+            confidence,
+            timestamp: Date.now()
+        });
+
+        if (this.history.length > this.maxSize) {
+            this.history.shift();
+        }
+    }
+
+    /**
+     * Get recent context for improving semantic matching
+     */
+    getRecentContext(maxItems = 3) {
+        return this.history.slice(-maxItems);
+    }
+
+    /**
+     * Check if query is follow-up to recent topic
+     */
+    isFollowUp(query) {
+        const recent = this.getRecentContext();
+        const queryWords = query.toLowerCase().split(/\s+/);
+
+        for (const interaction of recent) {
+            const responseWords = interaction.response.toLowerCase().split(/\s+/);
+            const sharedWords = queryWords.filter(word =>
+                responseWords.some(rWord => rWord.includes(word) || word.includes(rWord))
+            );
+
+            // If significant word overlap, consider it a follow-up
+            if (sharedWords.length >= Math.min(queryWords.length * 0.3, 3)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get contextual intent boost based on conversation history
+     */
+    getIntentBoost(query, intent) {
+        const recent = this.getRecentContext();
+        let boost = 0;
+
+        // Boost score if query relates to recent topics
+        for (const interaction of recent) {
+            if (interaction.intent === intent) {
+                boost += 0.2; // Slight boost for repeated intents
+            }
+        }
+
+        // Boost if it's a follow-up question
+        if (this.isFollowUp(query)) {
+            boost += 0.1;
+        }
+
+        return Math.min(boost, 0.5); // Cap the boost
+    }
+}
+
 // Export for module usage
 export default VoiceManager;
+export { ResponseMatcher, ContextHistory };
