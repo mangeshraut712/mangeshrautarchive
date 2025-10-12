@@ -17,8 +17,8 @@ export const features = {
 };
 
 export const chat = {
-    defaultGreeting: "Hello! I'm AssistMe, your intelligent AI assistant. I can help you learn about Mangesh Raut's experience, skills, or answer any technical questions with advanced reasoning capabilities.",
-    welcomeDelay: 500,
+    defaultGreeting: "Hello! I'm AssistMe. Ask me about Mangesh Raut's experience, skills, or any technical questions.",
+    welcomeDelay: 300,
     suggestionsLimit: 5,
     historyRetentionHours: 24
 };
