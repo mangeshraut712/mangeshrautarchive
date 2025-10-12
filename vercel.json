@@ -1,24 +1,9 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node",
-      "config": {
-        "runtime": "nodejs20.x"
-      }
-    },
-    {
-      "src": "src/**/*",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/src/$1"
-    }
-  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/api/(.*)",
@@ -38,8 +23,18 @@
         {
           "key": "Access-Control-Allow-Credentials",
           "value": "false"
+        },
+        {
+          "key": "Access-Control-Max-Age",
+          "value": "86400"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
