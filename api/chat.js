@@ -170,32 +170,42 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
     
     // TRY ALL PROVIDERS - USE FIRST ONE THAT WORKS
+    console.log('🔍 Starting provider tests...');
+    
     // Test Grok (xAI) - YOUR PREFERRED CHOICE
     if (GROK_API_KEY) {
-        console.log('🚀 Testing Grok (xAI)...');
+        console.log('🚀 Testing Grok (xAI)... Key length:', GROK_API_KEY.length);
         try {
             const grokResult = await tryGrok(query, systemPrompt, startTime, isPersonalQuery);
             if (grokResult) {
-                console.log('✅ GROK SUCCESS!');
+                console.log('✅ GROK SUCCESS! Returning response');
                 return grokResult;
+            } else {
+                console.log('⚠️ Grok returned null');
             }
         } catch (error) {
-            console.error('❌ Grok failed:', error.message);
+            console.error('❌ Grok exception:', error.message, error.stack);
         }
+    } else {
+        console.log('⚠️ Grok: No key found');
     }
     
     // Test Gemini
     if (GEMINI_API_KEY) {
-        console.log('🔷 Testing Gemini...');
+        console.log('🔷 Testing Gemini... Key length:', GEMINI_API_KEY.length);
         try {
             const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);
             if (geminiResult) {
-                console.log('✅ GEMINI SUCCESS!');
+                console.log('✅ GEMINI SUCCESS! Returning response');
                 return geminiResult;
+            } else {
+                console.log('⚠️ Gemini returned null');
             }
         } catch (error) {
-            console.error('❌ Gemini failed:', error.message);
+            console.error('❌ Gemini exception:', error.message, error.stack);
         }
+    } else {
+        console.log('⚠️ Gemini: No key found');
     }
     
     // Test OpenRouter (multiple models)
