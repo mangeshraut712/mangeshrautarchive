@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import { chatService } from '../src/js/services.js';
+import chatService from './chat-service.js';
 
 // MCP Server configurations
 const MCP_SERVERS = {

@@ -69,6 +69,40 @@ class SimpleRateLimiter {
 const apiLimiter = new SimpleRateLimiter(30); // 30 requests per minute across all APIs
 
 // ========================
+// CURATED FACTS
+// ========================
+
+const CURATED_FACTS = [
+    {
+        pattern: /(?:who\s+won|winner).*?(?:2024).*?(?:indian premier league|ipl)/i,
+        answer: `The 2024 Indian Premier League (IPL) was won by the Kolkata Knight Riders (KKR). They defeated Sunrisers Hyderabad by 8 wickets in the final played on 26 May 2024 at the M. A. Chidambaram Stadium in Chennai.`,
+        source: 'curated-fact (Google verified)',
+        type: 'factual'
+    }
+];
+
+function checkCuratedFact(message = '') {
+    // First check curated facts
+    const curated = CURATED_FACTS.find((entry) => entry.pattern.test(message));
+    if (curated) return curated;
+
+    // Check for model questions
+    if (message && /\b(which|what)\b[^?]*\bmodel\b[^?]*?(running|on)?|current\s+model/i.test(message)) {
+        return {
+            answer: `I am currently running on OpenRouter using the model ${localConfig.openrouterModel || 'deepseek/deepseek-chat-v3.1:free'}.`,
+            source: 'curated-fact (system status)',
+            type: 'general',
+            confidence: 0.95,
+            providers: ['curated'],
+            processingTime: null,
+            usage: null
+        };
+    }
+
+    return null;
+}
+
+// ========================
 // AI SERVICE INTEGRATION
 // ========================
 
@@ -330,6 +364,11 @@ const knowledgeBase = new KnowledgeBase();
 // Backward compatibility - export chatService for existing imports
 export const chatService = {
     async processQuery(query) {
+        // First check for curated facts
+        const curated = checkCuratedFact(query);
+        if (curated) return curated;
+
+        // Then proceed to AI
         return await knowledgeBase.getKnowledge(query);
     }
 };
