@@ -295,36 +295,45 @@ async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
         return null;
     }
     
-    console.log(`🔑 Grok: Key starts with "${GROK_API_KEY.substring(0, 4)}..." (length: ${GROK_API_KEY.length})`);
+    console.log(`🔑 Grok: Testing with key (length: ${GROK_API_KEY.length})`);
     
     // Try Grok models
     for (const model of GROK_MODELS) {
         try {
-            console.log(`🚀 Trying Grok model: ${model}`);
+            console.log(`🚀 Grok: Calling API with model: ${model}`);
+            
+            const requestBody = {
+                model: model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: query }
+                ],
+                stream: false,
+                temperature: 0.7,
+                max_tokens: 1000
+            };
+            
+            console.log(`📤 Grok request to: https://api.x.ai/v1/chat/completions`);
+            
             const response = await fetch('https://api.x.ai/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${GROK_API_KEY}`
                 },
-                body: JSON.stringify({
-                    model: model,
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: query }
-                    ],
-                    stream: false,
-                    temperature: 0.7
-                })
+                body: JSON.stringify(requestBody)
             });
             
+            console.log(`📥 Grok response status: ${response.status}`);
+            
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error(`❌ Grok ${model} HTTP ${response.status}:`, JSON.stringify(errorData));
+                const errorText = await response.text();
+                console.error(`❌ Grok ${model} HTTP ${response.status}:`, errorText.substring(0, 500));
                 continue;
             }
             
             const data = await response.json();
+            console.log(`📦 Grok response received:`, JSON.stringify(data).substring(0, 200));
             const answer = data?.choices?.[0]?.message?.content;
             
             if (answer && answer.trim().length > 10) {
