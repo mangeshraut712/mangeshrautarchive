@@ -18,7 +18,7 @@
 1. Go to: **Repository → Settings → Secrets and Variables → Actions**
 2. Add **Repository Secrets** (not Environment Variables):
    - Name: `OPENROUTER_API_KEY`
-   - Value: `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`
+   - Value: `YOUR_OPENROUTER_API_KEY_FROM_DASHBOARD` ⭐
 3. Create/update `.github/workflows/deploy.yml`:
 
 ```yaml
