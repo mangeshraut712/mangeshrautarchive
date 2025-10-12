@@ -8,21 +8,19 @@ const CACHE_TTL = 3600000; // 1 hour
 // --- Multiple AI Providers with Fallback Support ---
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
-// Free tier models (ordered by quality and availability)
-// Rotate through models for better variety and reliability
+// Free tier models - Testing different models for variety
 const FREE_MODELS = [
-    'google/gemini-2.0-flash-exp:free',
-    'meta-llama/llama-3.3-70b-instruct:free',
-    'qwen/qwen-2.5-72b-instruct:free',
     'meta-llama/llama-3.1-8b-instruct:free',
-    'deepseek/deepseek-chat',
-    'microsoft/phi-3-medium-4k-instruct:free',
-    'mistralai/mistral-7b-instruct:free'
+    'meta-llama/llama-3.2-3b-instruct:free', 
+    'google/gemini-2.0-flash-exp:free',
+    'qwen/qwen-2.5-7b-instruct:free',
+    'microsoft/phi-3-mini-128k-instruct:free',
+    'nousresearch/hermes-3-llama-3.1-405b:free',
+    'openai/gpt-4o-mini:free'
 ];
 
-// Randomly select starting model to distribute load
-let currentModelIndex = Math.floor(Math.random() * FREE_MODELS.length);
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || FREE_MODELS[currentModelIndex];
+// Use OpenRouter's auto mode for best model selection
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini:free';
 
 // Enhanced system prompt with deep reasoning and accuracy
 const SYSTEM_PROMPT = `You are an advanced AI assistant with deep reasoning capabilities.

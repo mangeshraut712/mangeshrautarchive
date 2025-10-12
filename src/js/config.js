@@ -17,7 +17,7 @@ export const features = {
 };
 
 export const chat = {
-    defaultGreeting: "Hello! I'm AssistMe, powered by Apple Intelligence and advanced AI models. I can help you learn about Mangesh Raut's experience, skills, or answer any technical questions with deep reasoning capabilities.",
+    defaultGreeting: "Hello! I'm AssistMe, your intelligent AI assistant. I can help you learn about Mangesh Raut's experience, skills, or answer any technical questions with advanced reasoning capabilities.",
     welcomeDelay: 500,
     suggestionsLimit: 5,
     historyRetentionHours: 24
