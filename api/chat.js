@@ -194,16 +194,15 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
     const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
 
-    // Try multiple models with rotation and fallback
-    const maxAttempts = Math.min(3, FREE_MODELS.length); // Try up to 3 models
+    // PRIORITY 3: Try OpenRouter models
+    const maxAttempts = Math.min(3, OPENROUTER_MODELS.length);
     
-    // Select random model each time for better distribution
-    const startIndex = Math.floor(Math.random() * FREE_MODELS.length);
+    // Select random model each time
+    const startIndex = Math.floor(Math.random() * OPENROUTER_MODELS.length);
     
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        // Try different models each attempt
-        const modelIndex = (startIndex + attempt) % FREE_MODELS.length;
-        const model = FREE_MODELS[modelIndex];
+        const modelIndex = (startIndex + attempt) % OPENROUTER_MODELS.length;
+        const model = OPENROUTER_MODELS[modelIndex];
         console.log(`🤖 Attempting model ${attempt + 1}/${maxAttempts}: ${model}`);
 
         try {
