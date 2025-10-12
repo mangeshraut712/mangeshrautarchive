@@ -525,6 +525,14 @@ class VoiceManager {
      * Process voice input using semantic intent matching (S2R approach)
      */
     async processVoiceIntent(transcript) {
+        // Prevent processing if already processing
+        if (this.isProcessing) {
+            console.log('⚠️ Already processing, skipping duplicate...');
+            return;
+        }
+        
+        this.isProcessing = true;
+        
         // Normalize input
         const normalizedText = transcript.toLowerCase().trim();
 
@@ -596,6 +604,11 @@ class VoiceManager {
                 // Fall back to general AI processing
                 await this.sendToChatbot(transcript);
         }
+        
+        // Reset processing flag after a delay
+        setTimeout(() => {
+            this.isProcessing = false;
+        }, 1000);
     }
 
     /**
@@ -642,7 +655,11 @@ class VoiceManager {
 
     logTranscript(transcript) {
         if (!transcript) return;
-        this.chatManager.addMessage(`🎤 ${transcript}`, 'user', { skipSpeech: true });
+        // Only add message if it's different from last one
+        if (transcript !== this.lastDisplayedTranscript) {
+            this.chatManager.addMessage(`🎤 ${transcript}`, 'user', { skipSpeech: true });
+            this.lastDisplayedTranscript = transcript;
+        }
     }
 
     announceIntent(label, mappedQuery) {
