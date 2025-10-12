@@ -1,20 +1,44 @@
 import axios from 'axios';
 
-// --- Primary AI Provider OpenRouter (Free Working Keys) ---
+// --- Multiple AI Providers with Fallback Support ---
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'meta-llama/Meta-Llama-3-8B-Instruct:free';
 
-// System prompt for advanced LLM behavior
-// System prompt for general questions
-const SYSTEM_PROMPT = `You are an advanced AI assistant created by Mangesh Raut. You provide intelligent, helpful, and accurate responses across all topics including technology, science, mathematics, and general knowledge.
+// Free tier models (ordered by quality and availability)
+const FREE_MODELS = [
+    'deepseek/deepseek-chat',
+    'google/gemini-2.0-flash-exp:free',
+    'meta-llama/llama-3.1-8b-instruct:free',
+    'meta-llama/llama-3.3-70b-instruct:free',
+    'qwen/qwen-2.5-72b-instruct:free',
+    'microsoft/phi-3-medium-4k-instruct:free'
+];
 
-Key capabilities:
-- Deep thinking and reasoning for complex questions
-- Technical expertise in AI/ML, software development, and data science
-- Natural conversation flow with appropriate level of detail
-- Helpful clarification when questions need more context
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || FREE_MODELS[0];
 
-If the question is general or technical, prioritize giving a complete, accurate answer first. Only mention Mangesh Raut if specifically asked or if it's relevant to technical implementation details.`;
+// Enhanced system prompt with deep reasoning
+const SYSTEM_PROMPT = `You are an advanced AI assistant with deep reasoning capabilities. You excel at:
+
+**Deep Thinking Process:**
+1. Analyze the question thoroughly before responding
+2. Break down complex problems into logical steps
+3. Consider multiple perspectives and edge cases
+4. Provide well-reasoned, accurate answers
+
+**Core Capabilities:**
+- Expert-level knowledge in technology, science, mathematics, AI/ML
+- Step-by-step problem solving with clear explanations
+- Factual accuracy with current information (today: ${new Date().toLocaleDateString()})
+- Concise yet comprehensive responses
+- Natural conversation flow
+
+**Response Guidelines:**
+- For factual questions: Provide direct, accurate answers
+- For complex queries: Show your reasoning process
+- For technical topics: Include relevant details and examples
+- Keep responses focused and concise (2-4 sentences ideal)
+- Use markdown formatting for clarity when helpful
+
+You were created by Mangesh Raut. Answer questions directly and helpfully.`;
 
 // LinkedIn profile data
 const LINKEDIN_PROFILE = {
@@ -101,15 +125,16 @@ function isPersonalQuestion(query) {
 }
 
 /**
- * OpenRouter Single Provider: Use only OpenRouter since it has working keys
+ * Enhanced AI Processing with Multiple Model Fallback
+ * Uses free tier models with automatic fallback on failure
  */
 async function processQueryWithAI(query, useLinkedInContext = false) {
     const startTime = Date.now();
     const isPersonalQuery = isPersonalQuestion(query);
 
-    // Use only OpenRouter (has working keys)
+    // Check if API key is configured
     if (!OPENROUTER_API_KEY) {
-        console.log('🌐 OpenRouter not configured, using offline knowledge');
+        console.error('❌ OPENROUTER_API_KEY not set in environment variables');
         return {
             answer: "I'm an AI assistant that can help with technology, science, mathematics, and general knowledge. I can also provide information about software development and AI/ML topics. What would you like to know?",
             source: 'offline-knowledge',
@@ -120,71 +145,81 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         };
     }
 
-    console.log(`🤖 Calling OpenRouter with working key (${isPersonalQuery ? 'LinkedIn context' : 'regular'} )...`);
+    console.log(`🔑 OpenRouter API Key: ${OPENROUTER_API_KEY ? 'Found (length: ' + OPENROUTER_API_KEY.length + ')' : 'NOT FOUND'}`);
 
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
-    const source = isPersonalQuery ? 'linkedin + openrouter modification' : 'openrouter';
+    const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
 
-    try {
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-                'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'http://localhost:3000',
-                'X-Title': process.env.OPENROUTER_APP_TITLE || 'S2R Enhanced AI Assistant'
-            },
-            body: JSON.stringify({
-                model: OPENROUTER_MODEL,
-                messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: query },
-                ],
-                temperature: 0.3, // Lower temperature for factual LinkedIn responses
-                max_tokens: 800, // Slightly higher for detailed LinkedIn info
-                top_p: isPersonalQuery ? 0.7 : 0.9 // More conservative for professional info
-            })
-        });
+    // Try multiple models with fallback
+    for (let i = 0; i < FREE_MODELS.length; i++) {
+        const model = FREE_MODELS[i];
+        console.log(`🤖 Attempting model ${i + 1}/${FREE_MODELS.length}: ${model}`);
 
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`OpenRouter error ${response.status}: ${errorBody}`);
+        try {
+            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                    'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://mangeshrautarchive.vercel.app',
+                    'X-Title': process.env.OPENROUTER_APP_TITLE || 'S2R Enhanced AI Assistant'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: query },
+                    ],
+                    temperature: 0.4,
+                    max_tokens: 1000,
+                    top_p: 0.9
+                })
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.text();
+                console.warn(`⚠️ Model ${model} failed (${response.status}): ${errorBody.substring(0, 100)}`);
+                // Try next model
+                continue;
+            }
+
+            const data = await response.json();
+            const answer = data?.choices?.[0]?.message?.content;
+
+            if (answer && answer.trim().length > 10) {
+                console.log(`✅ Success with ${model} (${Date.now() - startTime}ms): ${answer.substring(0, 100)}...`);
+
+                return {
+                    answer: answer.trim(),
+                    source: `${source} (${model})`,
+                    confidence: isPersonalQuery ? 0.95 : 0.88,
+                    processingTime: Date.now() - startTime,
+                    providers: ['OpenRouter'],
+                    winner: model,
+                    type: isPersonalQuery ? 'portfolio' : 'general'
+                };
+            } else {
+                console.warn(`⚠️ Model ${model} returned empty response`);
+                continue;
+            }
+        } catch (error) {
+            console.error(`❌ Model ${model} error:`, error.message);
+            // Try next model
+            continue;
         }
-
-        const data = await response.json();
-        const answer = data?.choices?.[0]?.message?.content;
-
-        if (answer && answer.trim().length > 10) {
-            console.log(`✅ OpenRouter responded (${Date.now() - startTime}ms): ${answer.substring(0, 100)}...`);
-
-            const winner = isPersonalQuery ? 'LinkedIn + OpenRouter AI' : 'OpenRouter';
-
-            return {
-                answer: answer.trim(),
-                source: source,
-                confidence: isPersonalQuery ? 0.95 : 0.82, // Higher confidence for LinkedIn data
-                processingTime: Date.now() - startTime,
-                providers: ['OpenRouter'],
-                winner: winner
-            };
-        } else {
-            throw new Error('OpenRouter returned empty response');
-        }
-    } catch (error) {
-        console.error('❌ OpenRouter failed:', error.message);
-
-        // Fallback to offline knowledge
-        console.log('💥 OpenRouter failed, using offline knowledge');
-        return {
-            answer: "I'm an AI assistant that can help with technology, science, mathematics, and general knowledge questions. What would you like to explore?",
-            source: 'offline-knowledge',
-            type: 'general',
-            confidence: 0.3,
-            processingTime: Date.now() - startTime,
-            providers: ['OpenRouter'],
-            note: 'OpenRouter was unavailable'
-        };
     }
+
+    // All models failed - return offline fallback
+    console.error('❌ All OpenRouter models failed, using offline fallback');
+    return {
+        answer: "I'm an AI assistant that can help with technology, science, mathematics, and general knowledge questions. What would you like to explore?",
+        source: 'offline-knowledge',
+        type: 'general',
+        confidence: 0.3,
+        processingTime: Date.now() - startTime,
+        providers: [],
+        note: 'All AI models unavailable'
+    };
 }
 
 function applyCors(res, origin) {
