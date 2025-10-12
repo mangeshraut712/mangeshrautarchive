@@ -25,12 +25,12 @@ const GROK_MODELS = [
     'grok-2-latest'
 ];
 
-// OpenRouter models (BACKUP) - using working free models
+// OpenRouter models (BACKUP) - trying different free models
 const OPENROUTER_MODELS = [
     'meta-llama/llama-3.1-8b-instruct:free',
-    'google/gemini-flash-1.5:free',
-    'microsoft/phi-3-mini-128k-instruct:free',
-    'nousresearch/hermes-3-llama-3.1-405b:free'
+    'google/gemini-2.0-flash-exp:free',
+    'qwen/qwen-2-7b-instruct:free',
+    'mistralai/mistral-7b-instruct:free'
 ];
 
 // Default models
@@ -369,17 +369,9 @@ async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
 async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
     if (!GEMINI_API_KEY) return null;
     
-    // Try multiple Gemini models
-    const geminiModels = [
-        'gemini-1.5-flash',
-        'gemini-1.5-flash-8b',
-        'gemini-1.0-pro'
-    ];
-    
-    for (const modelName of geminiModels) {
-        try {
-            console.log(`🔷 Trying Gemini model: ${modelName}`);
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`, {
+    try {
+        // Use v1beta API with gemini-1.5-flash (working model)
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
