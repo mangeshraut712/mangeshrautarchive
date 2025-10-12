@@ -8,10 +8,10 @@
 
 ## 💡 **About Response Sources:**
 
-Each response should show the model name in the **source field**:
-- `"source": "linkedin + openrouter modification"` → Uses LinkedIn contextual data
-- `"source": "openrouter"` → Direct AI response from OpenRouter
-- **Model name** will be shown when asking "what model" questions
+Each response now shows the **specific model name** in the **source field**:
+- `"source": "linkedin + openrouter (deepseek/deepseek-chat-v3-0324:free)"` → LinkedIn context + specific model
+- `"source": "openrouter (openai/gpt-4o-mini:free)"` → Direct AI response + specific model
+- `"source": "curated-fact (system status)"` → System info responses
 
 ---
 
@@ -25,7 +25,9 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"What experience does Mangesh have with AWS and machine learning?"}'
 ```
-**Expected:** `"source": "linkedin + openrouter modification"`
+**Expected:** `"source": "linkedin + openrouter (deepseek/deepseek-chat-v3-0324:free)"` or other random model
+
+*(Will show the specific model: `deepseek/deepseek-chat-v3-0324:free`, `openai/gpt-4o-mini:free`, or `meta-llama/llama-3.2-3b-instruct:free`)*
 
 ---
 
@@ -35,7 +37,9 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"Where did Mangesh study and what are his qualifications?"}'
 ```
-**Expected:** `"source": "linkedin + openrouter modification"`
+**Expected:** `"source": "linkedin + openrouter (openai/gpt-4o-mini:free)"` or other random model
+
+*(Specific model name will vary based on random selection)*
 
 ---
 
@@ -45,7 +49,9 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"Can you tell me about Mangesh's work with Spring Boot and AngularJS?"}'
 ```
-**Expected:** `"source": "linkedin + openrouter modification"`
+**Expected:** `"source": "linkedin + openrouter (meta-llama/llama-3.2-3b-instruct:free)"` or other random model
+
+*(Model rotates between the 3 available: DeepSeek-V3, GPT-4o Mini, Llama 3.2)*
 
 ---
 
@@ -57,7 +63,7 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"Explain the difference between supervised and unsupervised machine learning?"}'
 ```
-**Expected:** `"source": "openrouter"`
+**Expected:** `"source": "openrouter (deepseek/deepseek-chat-v3-0324:free)"` or other specific model
 
 ---
 
@@ -67,7 +73,7 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"How do I implement a REST API in Java Spring Boot?"}'
 ```
-**Expected:** `"source": "openrouter"`
+**Expected:** `"source": "openrouter (openai/gpt-4o-mini:free)"` or other specific model
 
 ---
 
@@ -77,7 +83,7 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"What algorithms are commonly used for recommendation systems?"}'
 ```
-**Expected:** `"source": "openrouter"`
+**Expected:** `"source": "openrouter (meta-llama/llama-3.2-3b-instruct:free)"` or other specific model
 
 ---
 
@@ -100,7 +106,7 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"What are the benefits of using multiple AI models in a system?"}'
 ```
-**Expected:** `"source": "openrouter"`
+**Expected:** `"source": "openrouter (deepseek/deepseek-chat-v3-0324:free)"` or other specific model
 
 ---
 
@@ -112,7 +118,7 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"Calculate compound interest: $1000 at 5% annual interest for 3 years."}'
 ```
-**Expected:** `"source": "openrouter"`
+**Expected:** `"source": "openrouter (openai/gpt-4o-mini:free)"` or other specific model
 
 ---
 
@@ -122,7 +128,7 @@ curl -X POST https://mangeshraut712.github.io/mangeshrautarchive/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"Explain quantum entanglement using simple analogies."}'
 ```
-**Expected:** `"source": "openrouter"`
+**Expected:** `"source": "openrouter (meta-llama/llama-3.2-3b-instruct:free)"` or other specific model
 
 ---
 
@@ -222,17 +228,22 @@ questions=(
     "Explain quantum entanglement using simple analogies."
 )
 
+# Note: The actual expected sources will include specific model names
+# like "linkedin + openrouter (deepseek/deepseek-chat-v3-0324:free)"
+# or "openrouter (openai/gpt-4o-mini:free)"
+# The script above is for reference - actual results will vary due to random model selection
+
 expected_sources=(
-    "linkedin + openrouter modification"
-    "linkedin + openrouter modification"
-    "linkedin + openrouter modification"
-    "openrouter"
-    "openrouter"
-    "openrouter"
+    "linkedin + openrouter (*)"  # * = any of the 3 models
+    "linkedin + openrouter (*)"
+    "linkedin + openrouter (*)"
+    "openrouter (*)"  # * = any of the 3 models
+    "openrouter (*)"
+    "openrouter (*)"
     "curated-fact (system status)"
-    "openrouter"
-    "openrouter"
-    "openrouter"
+    "openrouter (*)"
+    "openrouter (*)"
+    "openrouter (*)"
 )
 
 for i in ${!questions[@]}; do
