@@ -25,12 +25,12 @@ const GROK_MODELS = [
     'grok-2-latest'
 ];
 
-// OpenRouter models (BACKUP)
+// OpenRouter models (BACKUP) - using currently available free models
 const OPENROUTER_MODELS = [
     'meta-llama/llama-3.1-8b-instruct:free',
-    'openai/gpt-4o-mini:free',
-    'google/gemini-2.0-flash-exp:free',
-    'qwen/qwen-2.5-7b-instruct:free'
+    'google/gemini-flash-1.5:free',
+    'microsoft/phi-3-mini-128k-instruct:free',
+    'qwen/qwen-2-7b-instruct:free'
 ];
 
 // Default models
@@ -370,7 +370,8 @@ async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
     if (!GEMINI_API_KEY) return null;
     
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        // Use v1 API (not v1beta) with gemini-pro model
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -379,7 +380,7 @@ async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
                 }],
                 generationConfig: {
                     temperature: 0.7,
-                    maxOutputTokens: 1000,
+                    maxOutputTokens: 1000
                 }
             })
         });
