@@ -34,6 +34,12 @@ class VoiceManager {
         this.responseEmbeddings = new Map(); // Pre-computed response embeddings
         this.semanticCache = new Map(); // Cache semantic matches
         this.s2rReady = false;
+        
+        // Prevent duplicate processing
+        this.lastProcessedTranscript = '';
+        this.lastProcessedTime = 0;
+        this.processingQueue = [];
+        this.isProcessing = false;
 
     try {
         this.initializeSpeechRecognition();
@@ -284,7 +290,18 @@ class VoiceManager {
             const transcript = finalResult[0].transcript.trim();
             const confidence = finalResult[0].confidence;
 
-            console.log(`Voice Recognition (${confidence*100}%): "${transcript}"`);
+            // Prevent duplicate processing
+            if (this.lastProcessedTranscript === transcript && 
+                Date.now() - this.lastProcessedTime < 5000) {
+                console.log('🔄 Duplicate transcript detected, skipping...');
+                return;
+            }
+
+            console.log(`Voice Recognition (${(confidence*100).toFixed(1)}%): "${transcript}"`);
+
+            // Store transcript and timestamp
+            this.lastProcessedTranscript = transcript;
+            this.lastProcessedTime = Date.now();
 
             this.processVoiceIntent(transcript).catch((error) => {
                 console.error('Voice intent processing failed:', error);
@@ -302,13 +319,14 @@ class VoiceManager {
         this.isListening = false;
         this.chatManager.setVoiceInputActive(false);
 
-        // Restart continuous listening
-        if (this.isContinuous) {
+        // Restart continuous listening with better timing
+        if (this.isContinuous && !this.isProcessing) {
             setTimeout(() => {
-                if (this.isContinuous && !this.isListening) {
+                if (this.isContinuous && !this.isListening && !this.isProcessing) {
+                    console.log('🔄 Restarting continuous listening...');
                     this.startVoiceInput();
                 }
-            }, 1000); // Brief pause between utterances
+            }, 2000); // Longer pause to prevent overlap
         }
     }
 
