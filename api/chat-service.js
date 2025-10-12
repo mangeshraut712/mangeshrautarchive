@@ -41,19 +41,21 @@ async function callAIEngine({ name, url, headers, payload }) {
 }
 
 /**
- * Processes a query by trying different AI models in a specific order.
- * This is the "auto mode" implementation.
+ * Processes a query by calling ALL available AI models in parallel (race condition).
+ * Uses whichever responds first with a concise, accurate answer related to the question.
  * @param {string} query - The user's question.
  * @returns {Promise<object>} The result object with the answer and metadata.
  */
 async function processQueryWithAI(query) {
     const startTime = Date.now();
-    const providersTried = [];
+    const availableProviders = [];
 
-    // --- 1. Try OpenAI (Highest Priority) ---
+    // Define all available model configurations
+    const modelConfigs = [];
+
     if (OPENAI_API_KEY) {
-        providersTried.push('OpenAI');
-        const answer = await callAIEngine({
+        availableProviders.push('OpenAI');
+        modelConfigs.push({
             name: 'OpenAI',
             url: 'https://api.openai.com/v1/chat/completions',
             headers: {
@@ -61,7 +63,7 @@ async function processQueryWithAI(query) {
                 'Content-Type': 'application/json',
             },
             payload: {
-                model: 'gpt-4o', // Or 'gpt-3.5-turbo'
+                model: 'gpt-4o',
                 messages: [
                     { role: 'system', content: SYSTEM_PROMPT },
                     { role: 'user', content: query },
@@ -69,22 +71,14 @@ async function processQueryWithAI(query) {
                 max_tokens: 400,
                 temperature: 0.3,
             },
+            source: 'openai',
+            confidence: 0.9
         });
-        if (answer) {
-            return {
-                answer,
-                source: 'openai',
-                confidence: 0.9,
-                processingTime: Date.now() - startTime,
-                providers: providersTried,
-            };
-        }
     }
 
-    // --- 2. Fallback to Grok ---
     if (GROK_API_KEY) {
-        providersTried.push('Grok');
-        const answer = await callAIEngine({
+        availableProviders.push('Grok');
+        modelConfigs.push({
             name: 'Grok',
             url: 'https://api.x.ai/v1/chat/completions',
             headers: {
@@ -99,22 +93,14 @@ async function processQueryWithAI(query) {
                 ],
                 temperature: 0.3,
             },
+            source: 'grok',
+            confidence: 0.85
         });
-        if (answer) {
-            return {
-                answer,
-                source: 'grok',
-                confidence: 0.85,
-                processingTime: Date.now() - startTime,
-                providers: providersTried,
-            };
-        }
     }
-    
-    // --- 3. Fallback to Claude (Haiku) ---
+
     if (ANTHROPIC_API_KEY) {
-        providersTried.push('Claude');
-        const answer = await callAIEngine({
+        availableProviders.push('Claude');
+        modelConfigs.push({
             name: 'Claude',
             url: 'https://api.anthropic.com/v1/messages',
             headers: {
@@ -128,26 +114,70 @@ async function processQueryWithAI(query) {
                 system: SYSTEM_PROMPT,
                 messages: [{ role: 'user', content: query }],
             },
+            source: 'claude',
+            confidence: 0.8
         });
-        if (answer) {
-            return {
-                answer,
-                source: 'claude',
-                confidence: 0.8,
-                processingTime: Date.now() - startTime,
-                providers: providersTried,
-            };
-        }
     }
 
-    // --- Final Fallback ---
+    // If no models are available, return fallback
+    if (modelConfigs.length === 0) {
+        return {
+            answer: "I can help with information about Mangesh Raut's portfolio, as well as basic math and unit conversions. What would you like to know?",
+            source: 'assistme-general',
+            type: 'general',
+            confidence: 0.5,
+            processingTime: Date.now() - startTime,
+            providers: [],
+        };
+    }
+
+    // Call ALL available models in parallel (race condition)
+    const responsePromises = modelConfigs.map(config =>
+        callAIEngine(config).then(answer => {
+            if (answer) {
+                console.log(`🏆 ${config.name} won the race with a response!`);
+                return {
+                    answer,
+                    source: config.source,
+                    confidence: config.confidence,
+                    processingTime: Date.now() - startTime,
+                    providers: availableProviders,
+                    winner: config.name
+                };
+            }
+            return null;
+        }).catch(error => {
+            console.log(`${config.name} failed: ${error.message}`);
+            return null;
+        })
+    );
+
+    // Wait for the first successful response (race condition)
+    try {
+        const results = await Promise.allSettled(responsePromises);
+        const validResults = results
+            .filter(result => result.status === 'fulfilled' && result.value)
+            .map(result => result.value);
+
+        if (validResults.length > 0) {
+            // Return the first successful result (they complete in race order due to Promise.allSettled)
+            const firstResponse = validResults[0];
+            console.log(`🎯 Race completed! Winner: ${firstResponse.winner} (${Date.now() - startTime}ms)`);
+            return firstResponse;
+        }
+    } catch (error) {
+        console.error('Race condition failed:', error);
+    }
+
+    // If all models failed, return fallback
+    console.log('💥 All models failed, using fallback response');
     return {
         answer: "I can help with information about Mangesh Raut's portfolio, as well as basic math and unit conversions. What would you like to know?",
         source: 'assistme-general',
         type: 'general',
         confidence: 0.5,
         processingTime: Date.now() - startTime,
-        providers: providersTried,
+        providers: availableProviders,
     };
 }
 
