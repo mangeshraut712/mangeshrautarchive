@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+// Simple in-memory cache for responses
+const responseCache = new Map();
+const CACHE_MAX_SIZE = 100;
+const CACHE_TTL = 3600000; // 1 hour
+
 // --- Multiple AI Providers with Fallback Support ---
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
