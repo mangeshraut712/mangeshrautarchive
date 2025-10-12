@@ -273,6 +273,55 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     };
 }
 
+// Gemini API integration as backup
+async function tryGemini(query, systemPrompt, startTime) {
+    if (!GEMINI_API_KEY) return null;
+    
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: `${systemPrompt}\n\nUser: ${query}\n\nAssistant:` }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 1000,
+                }
+            })
+        });
+        
+        if (!response.ok) {
+            console.warn(`⚠️ Gemini API error: ${response.status}`);
+            return null;
+        }
+        
+        const data = await response.json();
+        const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (answer && answer.trim().length > 10) {
+            console.log(`✅ Gemini success (${Date.now() - startTime}ms)`);
+            return {
+                answer: answer.trim(),
+                source: 'gemini-pro',
+                confidence: 0.90,
+                processingTime: Date.now() - startTime,
+                providers: ['Gemini'],
+                winner: 'gemini-pro',
+                type: 'general',
+                rateLimit: false,
+                statusMessage: '🟢 AI Online (Gemini)'
+            };
+        }
+        
+        return null;
+    } catch (error) {
+        console.error('❌ Gemini error:', error.message);
+        return null;
+    }
+}
+
 function applyCors(res, origin) {
     const allowedOrigins = [
         'https://mangeshraut712.github.io',
