@@ -370,8 +370,8 @@ async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
     if (!GEMINI_API_KEY) return null;
     
     try {
-        // Use v1 API with gemini-1.5-flash-latest (stable model)
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+        // Use v1beta API with gemini-1.5-flash (working model)
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
