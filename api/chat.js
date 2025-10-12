@@ -7,6 +7,14 @@ const CACHE_TTL = 3600000; // 1 hour
 
 // --- Multiple AI Providers with Fallback Support ---
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+// Track API status for user feedback
+let apiStatus = {
+    openrouter: { available: false, lastCheck: 0 },
+    gemini: { available: false, lastCheck: 0 },
+    rateLimit: false
+};
 
 // Free tier models - Testing different models for variety
 const FREE_MODELS = [
