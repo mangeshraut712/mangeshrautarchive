@@ -15,9 +15,8 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 // Track API status for user feedback
 let apiStatus = {
     grok: { available: false, lastCheck: 0 },
-    groq: { available: false, lastCheck: 0 },
-    openrouter: { available: false, lastCheck: 0 },
     gemini: { available: false, lastCheck: 0 },
+    openrouter: { available: false, lastCheck: 0 },
     rateLimit: false
 };
 
