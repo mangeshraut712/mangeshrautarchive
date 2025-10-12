@@ -793,8 +793,10 @@ class VoiceManager {
     // ========== INTENT HANDLERS ==========
 
     async handleGreetingIntent(transcript) {
-        const greetings = ['Hello!', 'Hi there!', 'Hey!', 'Greetings!'];
+        // FIXED: Simple greeting without calling AI (prevents infinite loops)
+        const greetings = ['Hello! How can I help you?', 'Hi there! What would you like to know?', 'Hey! Ask me anything.'];
         const response = greetings[Math.floor(Math.random() * greetings.length)];
+        
         this.chatManager.addMessage(response, 'assistant', {
             skipSpeech: !this.chatManager.voiceOutputEnabled
         });
@@ -802,10 +804,9 @@ class VoiceManager {
         if (this.chatManager.voiceOutputEnabled) {
             this.speak(response);
         }
-
-        if (!this.isContinuous) {
-            await this.executeQuery(transcript); // Allow AI to elaborate on greeting
-        }
+        
+        // Don't call executeQuery for greetings - just respond directly
+        console.log('👋 Greeting handled, ready for next input');
     }
 
     async handleQualificationQuery(transcript) {
