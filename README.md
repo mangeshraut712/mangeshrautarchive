@@ -21,19 +21,14 @@ An elegant, Apple-inspired portfolio website showcasing my professional journey 
 - Theme toggle with seamless light/dark mode transitions
 - Apple's precise interactive animations and transitions
 
-### 🤖 **Advanced AI Chatbot (AssistMe v2.0)**
-- **🌐 AI-Powered Intelligence**: Grok xAI (latest model) + Claude fallback
-- **🧠 Multiple Knowledge Sources**:
-  - Personal portfolio knowledge base (skills, experience, projects)
-  - Wikipedia API for factual information
-  - DuckDuckGo API for general queries
-  - StackOverflow API for coding questions
-  - Country/location data via RestCountries API
+### 🤖 **Advanced AI Chatbot (AssistMe v3.0)**
+- **🌐 AI-Powered Intelligence**: OpenRouter (defaults to DeepSeek Chat free tier) with LinkedIn-enhanced portfolio responses
+- **🧠 Portfolio-Aware Retrieval**: Serverless prompt enrichment keeps Mangesh's CV context available without exposing secrets
+- **🔁 Conversational Memory**: Client-side history streams to the Vercel proxy for multi-turn continuity
 - **🧮 Advanced Math Engine**: Unit conversions, calculations, equations
-- **🎤 Voice Controls**: Text-to-speech and speech-to-text integration
-- **🔄 Multi-API Fallback System**: Automatic switching between AI providers
+- **🎤 S2R Voice Stack**: Single mic control with semantic voice modes, continuous listening, and natural TTS
 - **📱 Responsive Chat Widget**: Apple Intelligence-inspired design with glassmorphism
-- **⚡ Real-time Processing**: Server-side API calls via Express backend
+- **⚡ Serverless Processing**: Secure Vercel API route keeps API keys off the static frontend
 
 ### 🔧 **MCP Server Integration**
 - **GitHub MCP Server**: Docker container running port 3002
@@ -66,6 +61,7 @@ An elegant, Apple-inspired portfolio website showcasing my professional journey 
 - **Font Awesome 6**: Extensive icon library for UI elements
 
 ### APIs & Integrations
+- **OpenRouter API**: Powers the assistant responses (LinkedIn context for portfolio queries)
 - **Firebase Firestore**: Contact form messaging system
 - **GitHub REST API**: Auto-updating project portfolio
 - **Wikipedia API**: General knowledge queries for chatbot
@@ -195,17 +191,13 @@ vercel logs https://mangeshrautarchive-XYZ.vercel.app --scope mangesh-rauts-proj
 Configure these secrets in Vercel (or a local `.env` file when testing functions):
 
 ```
-GROK_API_KEY
-ANTHROPIC_API_KEY
-PERPLEXITY_API_KEY
-GEMINI_API_KEY
-GEMINI_FIREBASE_API_KEY
-HUGGINGFACE_API_KEY
-OPENAI_API_KEY
-OPENROUTER_API_KEY
+OPENROUTER_API_KEY=sk-or-...            # required – OpenRouter account key
+OPENROUTER_MODEL=deepseek/deepseek-chat-v3.1:free  # optional – override default model
+OPENROUTER_SITE_URL=https://your-site.dev          # optional – analytics referer
+OPENROUTER_APP_TITLE=AssistMe Portfolio Assistant  # optional – label in dashboards
 ```
 
-Only the providers with populated keys will be queried; the rest are skipped automatically.
+Only `OPENROUTER_API_KEY` is required for LLM responses. The optional variables let you swap models or adjust metadata without code changes.
 
 ### Deploy to GitHub Pages
 1. Push to your GitHub repository

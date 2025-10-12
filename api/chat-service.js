@@ -3,6 +3,13 @@ const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat
 const OPENROUTER_SITE_URL = process.env.OPENROUTER_SITE_URL || 'http://localhost:3000';
 const OPENROUTER_APP_TITLE = process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant';
 
+// Top 3 recommended OpenRouter models for random selection
+const OPENROUTER_MODELS = [
+    'deepseek/deepseek-chat-v3-0324:free',
+    'google/gemma-3-3n-e2b-it',
+    'tng-tech/deepseek-tng-r1t2-chimera'
+];
+
 const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio.
 
 Goals:
@@ -57,7 +64,9 @@ const CURATED_FACTS = [
     },
     {
         pattern: /which.*model|what.*model|current.*model/i,
-        answer: `I am currently running on OpenRouter using the model ${OPENROUTER_MODEL}.`,
+        answer: process.env.OPENROUTER_MODEL
+            ? `I am currently running on OpenRouter using the model: ${process.env.OPENROUTER_MODEL} (configured via environment variable).`
+            : `I am currently running on OpenRouter using random model selection from our top 3 models: DeepSeek-V3, Google's Gemma 3n E2B IT, and TNG Tech's DeepSeek-TNG-R1T2-Chimera.`,
         source: 'curated-fact (system status)',
         type: 'general'
     }
@@ -122,6 +131,16 @@ Instructions:
 
 Question: ${question}
 `;
+}
+
+// Random model selection from the top 3 OpenRouter models
+// Respects OPENROUTER_MODEL environment override for deterministic selection
+function getRandomOpenRouterModel() {
+    const envModel = process.env.OPENROUTER_MODEL;
+    if (envModel && envModel.trim() !== '') {
+        return envModel.trim();
+    }
+    return OPENROUTER_MODELS[Math.floor(Math.random() * OPENROUTER_MODELS.length)];
 }
 
 async function callOpenRouter(payload) {
@@ -215,7 +234,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
     if (wantsLinkedIn) {
         try {
             const linkedInResponse = await callOpenRouter({
-                model: OPENROUTER_MODEL,
+                model: getRandomOpenRouterModel(),
                 messages: [
                     {
                         role: 'system',
@@ -246,7 +265,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
 
     try {
         const generalResponse = await callOpenRouter({
-            model: OPENROUTER_MODEL,
+            model: getRandomOpenRouterModel(),
             messages: buildGeneralMessages(messages, latest),
             temperature: 0.4,
             max_tokens: 700

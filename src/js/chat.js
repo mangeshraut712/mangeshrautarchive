@@ -122,6 +122,7 @@ class IntelligentAssistant {
         ];
         this.processing = false;
         this.history = [];
+        this.conversation = [];
 
         // Determine if we can use server AI services
         this.canUseServerAI = false;
@@ -203,19 +204,31 @@ class IntelligentAssistant {
         try {
             // Add to history
             this.history.push({ question, timestamp: Date.now() });
+            const trimmed = question.trim();
+            this._pushConversation('user', trimmed);
 
             // Process the query
-            const response = await this.processQuery(question.trim());
+            const response = await this.processQuery(trimmed);
 
             // Add response to history
             this.history[this.history.length - 1].response = response;
             this.history[this.history.length - 1].processingTime = Date.now() - this.history[this.history.length - 1].timestamp;
 
+            const answerText = this._extractAnswerText(response);
+            if (answerText) {
+                this._pushConversation('assistant', answerText);
+            }
+
             return response;
 
         } catch (error) {
             console.error('Error processing query:', error);
-            return this.generateFallbackResponse(question, error);
+            const fallback = this.generateFallbackResponse(question, error);
+            const fallbackText = this._extractAnswerText(fallback);
+            if (fallbackText) {
+                this._pushConversation('assistant', fallbackText);
+            }
+            return fallback;
         } finally {
             this.processing = false;
         }
@@ -278,8 +291,11 @@ class IntelligentAssistant {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({ message: query }),
-                signal: AbortSignal.timeout(15000)
+                body: JSON.stringify({
+                    message: query,
+                    messages: this._getConversationForServer()
+                }),
+                signal: AbortSignal.timeout(30000)
             });
 
             if (!response.ok) {
@@ -306,6 +322,34 @@ class IntelligentAssistant {
             console.warn('Client-side service failed:', error);
             return null;
         }
+    }
+
+    _pushConversation(role, content) {
+        if (!content || typeof content !== 'string') return;
+        const normalized = content.trim();
+        if (!normalized) return;
+        this.conversation.push({ role: role === 'assistant' ? 'assistant' : 'user', content: normalized });
+        if (this.conversation.length > 16) {
+            this.conversation.splice(0, this.conversation.length - 16);
+        }
+    }
+
+    _extractAnswerText(response) {
+        if (!response && response !== 0) return '';
+        if (typeof response === 'string') return response.trim();
+        if (typeof response === 'number') return String(response);
+        if (response?.html && typeof response.html === 'string') return response.html.replace(/<[^>]+>/g, ' ').trim();
+        if (response?.answer && typeof response.answer === 'string') return response.answer.trim();
+        if (response?.text && typeof response.text === 'string') return response.text.trim();
+        if (response?.content && typeof response.content === 'string') return response.content.trim();
+        return '';
+    }
+
+    _getConversationForServer() {
+        return this.conversation.slice(-12).map(entry => ({
+            role: entry.role === 'assistant' ? 'assistant' : 'user',
+            content: entry.content
+        }));
     }
 
     normalizeResponse(payload, defaultSource = 'AssistMe') {
@@ -668,6 +712,7 @@ class IntelligentAssistant {
 
     clearHistory() {
         this.history = [];
+        this.conversation = [];
         return true;
     }
 
@@ -690,6 +735,7 @@ class IntelligentAssistant {
         // Reset state
         this.processing = false;
         this.history = [];
+        this.conversation = [];
         this.cache = null;
 
         console.log('Assistant destroyed and cleaned up');

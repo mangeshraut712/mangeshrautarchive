@@ -23,21 +23,29 @@ class VoiceManager {
         this.semanticCache = new Map(); // Cache semantic matches
         this.s2rReady = false;
 
-        try {
-            this.initializeSpeechRecognition();
-            this.initializeSpeechSynthesis();
-            this.setupVoiceCommands();
+    try {
+        this.initializeSpeechRecognition();
+        this.initializeSpeechSynthesis();
+        this.setupVoiceCommands();
+        if (typeof window !== 'undefined' && window.ai) {
+            // Browser has AI API support - use HuggingFace embeddings for advanced S2R
+            this.setupS2RHuggingFaceSystem();
+            console.log('🎯 S2R HuggingFace system activated for advanced semantic matching');
+        } else {
+            // Fallback to simple embeddings
             this.setupS2RSystem();
-            this.bindEvents();
-
-            this.chatManager.setVoiceOutputEnabledState(this.chatManager.voiceOutputEnabled);
-            this.chatManager.setContinuousModeActive(false);
-            this.s2rReady = true;
-        } catch (error) {
-            console.warn('S2R Voice Manager initialization failed, falling back to basic mode:', error.message);
-            this.s2rReady = false;
-            this.initializeBasicVoiceSupport();
+            console.log('🔍 S2R semantic matching system initialized');
         }
+        this.bindEvents();
+
+        this.chatManager.setVoiceOutputEnabledState(this.chatManager.voiceOutputEnabled);
+        this.chatManager.setContinuousModeActive(false);
+        this.s2rReady = true;
+    } catch (error) {
+        console.warn('S2R Voice Manager initialization failed, falling back to basic mode:', error.message);
+        this.s2rReady = false;
+        this.initializeBasicVoiceSupport();
+    }
     }
 
     /**
@@ -297,7 +305,7 @@ class VoiceManager {
                 errorMessage = 'Microphone access denied. Please allow microphone access.';
                 break;
             case 'network':
-                errorMessage = 'Network error during speech recognition.';
+                errorMessage = 'Network error occurred. Please check your internet connection and try again. (Tip: modern browsers only enable voice recognition over secure HTTPS connections.)';
                 break;
             case 'no-speech':
                 errorMessage = 'No speech detected.';
