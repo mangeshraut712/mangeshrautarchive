@@ -22,11 +22,7 @@ async function injectApiKeys() {
         appTitle: process.env.OPENROUTER_APP_TITLE || '',
 
         // Other configuration
-        selectedModel: process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat-v3-0324:free',
-        environment: process.env.NODE_ENV || 'production',
-
-        // Build timestamp for cache busting
-        buildTimestamp: new Date().toISOString()
+        selectedModel: process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat-v3-0324:free'
     };
 
     // Create build config JSON file
@@ -49,6 +45,10 @@ export { buildConfig };
     await writeFile(jsConfigPath, jsConfig);
 
     console.log('📝 JS config file written to: dist/build-config.js');
+
+    // Creates both build-config.json AND build-config.js
+    // await writeFile(configPath, JSON.stringify(config, null, 2));
+    // await writeFile(jsConfigPath, jsConfig);
 }
 
 async function pathExists(path) {
