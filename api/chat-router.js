@@ -143,7 +143,20 @@ async function processWithMCPEnhancement(message) {
     return mcpResult;
 }
 
+// Handle CORS preflight request
+router.options('/', (req, res) => {
+    res.header('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.sendStatus(200);
+});
+
 router.post('/', async (req, res) => {
+    // CORS headers for GitHub Pages
+    res.header('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+
     try {
         const { message } = req.body;
         const startTime = Date.now();
@@ -238,6 +251,11 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/history', (req, res) => {
+    // CORS headers for GitHub Pages
+    res.header('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+
     try {
         const history = chatService.getHistory();
         res.json({ history });
@@ -251,6 +269,11 @@ router.get('/history', (req, res) => {
 });
 
 router.post('/clear', (req, res) => {
+    // CORS headers for GitHub Pages
+    res.header('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+
     try {
         chatService.clearHistory();
         res.json({
