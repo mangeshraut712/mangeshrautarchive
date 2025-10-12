@@ -1,41 +1,82 @@
+// Import required modules
 import axios from 'axios';
 
-// --- Configuration ---
+// --- External AI Configuration ---
 // API keys are securely read from environment variables on Vercel
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const GROK_API_KEY = process.env.GROK_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
-const SYSTEM_PROMPT = "You are AssistMe, Mangesh Raut's portfolio assistant. Provide accurate, helpful answers. Be concise. Mangesh is a Software Engineer with an MS in Computer Science from Drexel University, experienced in Spring Boot, AWS, and TensorFlow.";
+// System prompt for advanced LLM behavior (portfolio information available if relevant)
+const SYSTEM_PROMPT = `You are an advanced AI assistant created by Mangesh Raut. You provide intelligent, helpful, and accurate responses across all topics including technology, science, mathematics, and general knowledge.
+
+Key capabilities:
+- Deep thinking and reasoning for complex questions
+- Technical expertise in AI/ML, software development, and data science
+- Natural conversation flow with appropriate level of detail
+- Helpful clarification when questions need more context
+
+When asked about Mangesh Raut:
+- He is a Software Engineer with MS in Computer Science from Drexel University
+- Expertise: Spring Boot, AngularJS, AWS, TensorFlow, Machine Learning, Python
+- Portfolio available at: mangeshraut712.github.io
+- Contact: linkedin.com/in/mangeshraut71298 or mbr63@drexel.edu
+
+If the question is general or technical, prioritize giving a complete, accurate answer first. Only mention Mangesh Raut if specifically asked or if it's relevant to technical implementation details.`;
 
 /**
- * A generic function to call an AI provider.
+ * Advanced AI engine caller with better error handling and response validation.
  * @param {object} config - The configuration for the API call.
  * @returns {Promise<string|null>} The answer from the AI, or null if it failed.
  */
-async function callAIEngine({ name, url, headers, payload }) {
+async function callAIEngine({ name, url, headers, payload, timeout = 15000 }) {
+    const startTime = Date.now();
     try {
-        console.log(`🧠 Attempting to call ${name}...`);
-        const response = await axios.post(url, payload, { headers, timeout: 15000 });
+        console.log(`🤖 Calling ${name} AI engine...`);
+        const response = await axios.post(url, payload, {
+            headers,
+            timeout,
+            maxRedirects: 5,
+            validateStatus: (status) => status < 500 // Accept error responses for better logging
+        });
 
         let answer = null;
-        if (name === 'OpenAI' && response.data?.choices?.[0]?.message?.content) {
-            answer = response.data.choices[0].message.content;
-        } else if (name === 'Grok' && response.data?.choices?.[0]?.message?.content) {
-            answer = response.data.choices[0].message.content;
-        } else if (name === 'Claude' && response.data?.content?.[0]?.text) {
-            answer = response.data.content[0].text;
+        const processingTime = Date.now() - startTime;
+
+        // Extract response based on provider format
+        if (response.status === 200) {
+            if (name === 'OpenAI' && response.data?.choices?.[0]?.message?.content) {
+                answer = response.data.choices[0].message.content;
+            } else if (name === 'Grok' && response.data?.choices?.[0]?.message?.content) {
+                answer = response.data.choices[0].message.content.replace(/a16z/gi, ''); // Common Grok issue
+            } else if (name === 'Claude' && response.data?.content?.[0]?.text) {
+                answer = response.data.content[0].text;
+            }
         }
 
-        if (answer) {
-            console.log(`✅ Successfully received response from ${name}.`);
-            return answer;
+        if (answer && answer.trim().length > 10) { // Minimum response length validation
+            console.log(`✅ ${name} responded (${processingTime}ms): ${answer.substring(0, 100)}...`);
+            return answer.trim();
         }
-        console.warn(`⚠️ ${name} returned an unexpected response structure.`);
+
+        console.warn(`⚠️ ${name} returned empty or invalid response.`);
         return null;
+
     } catch (error) {
         const status = error.response?.status || 'N/A';
-        console.error(`❌ Error calling ${name} (Status: ${status}):`, error.message);
+        const processingTime = Date.now() - startTime;
+
+        if (status === '401') {
+            console.error(`🔐 ${name}: Invalid API key (401 Unauthorized)`);
+        } else if (status === '429') {
+            console.warn(`⏱️ ${name}: Rate limit exceeded (429), try again later`);
+        } else if (status === '500' || status === '503') {
+            console.warn(`🔧 ${name}: Server error (${status}), will try other providers`);
+        } else if (!error.response) {
+            console.warn(`🌐 ${name}: Network/connection error - ${error.code || 'Unknown'}`);
+        } else {
+            console.error(`❌ ${name} error (${status}, ${processingTime}ms):`, error.message);
+        }
         return null;
     }
 }
@@ -119,11 +160,12 @@ async function processQueryWithAI(query) {
         });
     }
 
-    // If no models are available, return fallback
+    // If no models are available, return offline knowledge fallback
     if (modelConfigs.length === 0) {
+        console.log('🌐 No AI models configured, responding with offline knowledge');
         return {
-            answer: "I can help with information about Mangesh Raut's portfolio, as well as basic math and unit conversions. What would you like to know?",
-            source: 'assistme-general',
+            answer: "I'm an AI assistant that can help with technology, science, mathematics, and general knowledge queries. I can also provide information about software development and AI/ML topics. What would you like to know?",
+            source: 'offline-knowledge',
             type: 'general',
             confidence: 0.5,
             processingTime: Date.now() - startTime,
@@ -169,15 +211,16 @@ async function processQueryWithAI(query) {
         console.error('Race condition failed:', error);
     }
 
-    // If all models failed, return fallback
-    console.log('💥 All models failed, using fallback response');
+    // If all models failed, return offline knowledge fallback (rare case)
+    console.log('💥 All AI providers failed, using offline knowledge');
     return {
-        answer: "I can help with information about Mangesh Raut's portfolio, as well as basic math and unit conversions. What would you like to know?",
-        source: 'assistme-general',
+        answer: "I'm an advanced AI that can help with technology, software development, mathematics, science, and general knowledge questions. I specialize in AI/ML topics and can provide information about computer science. What would you like to explore?",
+        source: 'offline-knowledge',
         type: 'general',
-        confidence: 0.5,
+        confidence: 0.3, // Lower confidence for offline fallback
         processingTime: Date.now() - startTime,
         providers: availableProviders,
+        note: 'All AI providers were unavailable'
     };
 }
 

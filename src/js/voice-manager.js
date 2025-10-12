@@ -489,13 +489,14 @@ class VoiceManager {
         this.logTranscript(transcript);
 
         // S2R Process: Voice-to-Embeddings + Semantic Retrieval
-        const voiceEmbedding = this.semanticEncoder.encodeVoiceIntent(normalizedText);
+            const voiceEmbedding = this.semanticEncoder.encodeVoiceIntent(normalizedText);
 
-        // Check for semantic matches first (S2R approach)
-        const semanticMatch = this.responseMatcher.findBestMatch(voiceEmbedding, 0.4); // Higher threshold for direct matches
+        // Check for semantic matches first (S2R approach - portfolio/tech queries)
+        // Unlike general LLMs, S2R can respond directly for specific portfolio queries
+        const semanticMatch = this.responseMatcher.findBestMatch(voiceEmbedding, 0.4);
 
         if (semanticMatch) {
-            console.log(`🔍 S2R Match: "${normalizedText}" → "${semanticMatch.response}" (score: ${semanticMatch.score.toFixed(3)})`);
+            console.log(`🔍 S2R Direct Match: "${normalizedText}" → "${semanticMatch.response}" (score: ${semanticMatch.score.toFixed(3)})`);
 
             // Add contextual boost if this is a follow-up
             const contextBoost = this.contextHistory.getIntentBoost(normalizedText, semanticMatch.type);
@@ -504,8 +505,8 @@ class VoiceManager {
                 console.log(`📝 Context boost applied: +${contextBoost.toFixed(3)}`);
             }
 
-            // Display response directly from semantic matching
-            this.announceIntent(`S2R Match • ${semanticMatch.type}`, normalizedText);
+            // Display response directly from semantic matching (for portfolio/tech info)
+            this.announceIntent(`S2R Response • ${semanticMatch.type}`, normalizedText);
             await this.handleSemanticResponse(semanticMatch, transcript);
             return;
         }
