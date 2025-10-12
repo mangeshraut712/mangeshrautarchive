@@ -6,11 +6,16 @@ const CACHE_MAX_SIZE = 100;
 const CACHE_TTL = 3600000; // 1 hour
 
 // --- Multiple AI Providers with Fallback Support ---
+// Priority: Grok (xAI) → Groq → OpenRouter → Gemini → Offline
+const GROK_API_KEY = process.env.GROK_API_KEY || process.env.XAI_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // Track API status for user feedback
 let apiStatus = {
+    grok: { available: false, lastCheck: 0 },
+    groq: { available: false, lastCheck: 0 },
     openrouter: { available: false, lastCheck: 0 },
     gemini: { available: false, lastCheck: 0 },
     rateLimit: false
