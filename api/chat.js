@@ -161,9 +161,11 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const startTime = Date.now();
     const isPersonalQuery = isPersonalQuestion(query);
 
+    console.log('=== API KEYS STATUS ===');
     console.log(`🔑 Grok (xAI) API Key: ${GROK_API_KEY ? 'Found (length: ' + GROK_API_KEY.length + ')' : 'NOT FOUND - CRITICAL!'}`);
     console.log(`🔑 Gemini API Key: ${GEMINI_API_KEY ? 'Found (length: ' + GEMINI_API_KEY.length + ')' : 'NOT FOUND'}`);
     console.log(`🔑 OpenRouter API Key: ${OPENROUTER_API_KEY ? 'Found (length: ' + OPENROUTER_API_KEY.length + ')' : 'NOT FOUND'}`);
+    console.log('======================');
 
     const systemPrompt = isPersonalQuery ? LINKEDIN_SYSTEM_PROMPT : SYSTEM_PROMPT;
     
@@ -172,6 +174,7 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         console.log('🚀 Trying Grok (xAI) with latest model...');
         const grokResult = await tryGrok(query, systemPrompt, startTime, isPersonalQuery);
         if (grokResult) {
+            console.log('✅ Grok SUCCESS! Returning response...');
             apiStatus.grok = { available: true, lastCheck: Date.now() };
             apiStatus.rateLimit = false;
             return grokResult;
@@ -186,11 +189,14 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         console.log('🔷 Trying Gemini API...');
         const geminiResult = await tryGemini(query, systemPrompt, startTime, isPersonalQuery);
         if (geminiResult) {
+            console.log('✅ Gemini SUCCESS! Returning response...');
             apiStatus.gemini = { available: true, lastCheck: Date.now() };
             apiStatus.rateLimit = false;
             return geminiResult;
         }
         console.log('⚠️ Gemini failed, trying OpenRouter...');
+    } else {
+        console.log('⚠️ No Gemini key configured, skipping...');
     }
     
     const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
