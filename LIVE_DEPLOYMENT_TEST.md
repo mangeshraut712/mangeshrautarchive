@@ -11,8 +11,15 @@
 
 ## 🧪 **Testing Environment Override vs Random Selection**
 
-### **Current Setup (.env has OPENROUTER_MODEL set to gpt-ossip)**
-Your `.env` has `OPENROUTER_MODEL=openai/gpt-oss-20b:free` - this means your site uses **deterministic selection**.
+### **How to Verify Your API Key is Working:**
+
+**Check Your Key Format (Security First):**
+```bash
+# Your key should look like this: sk-or-v1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# Never display the full key - this is just format verification
+
+grep "sk-or-v1-" ~/.bashrc ~/.zshrc ~/.profile .env 2>/dev/null || echo "No API keys found in config files"
+```
 
 ### **To Test Random Selection**
 1. **Remove or comment out** `OPENROUTER_MODEL` in your `.env` file locally
