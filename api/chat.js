@@ -299,7 +299,12 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
 
 // Grok (xAI) API integration (PRIMARY - most powerful)
 async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
-    if (!GROK_API_KEY) return null;
+    if (!GROK_API_KEY) {
+        console.log('❌ Grok: No API key found');
+        return null;
+    }
+    
+    console.log(`🔑 Grok: Key starts with "${GROK_API_KEY.substring(0, 4)}..." (length: ${GROK_API_KEY.length})`);
     
     // Try Grok models
     for (const model of GROK_MODELS) {
@@ -323,7 +328,8 @@ async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
             });
             
             if (!response.ok) {
-                console.warn(`⚠️ Grok ${model} error: ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                console.error(`❌ Grok ${model} HTTP ${response.status}:`, JSON.stringify(errorData));
                 continue;
             }
             
