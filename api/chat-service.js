@@ -160,25 +160,38 @@ function classifyType(message = '') {
 
 function offlineFallback(message = '') {
     const type = classifyType(message);
+    const categoryMap = {
+        'math': 'Mathematics',
+        'factual': 'General Knowledge',
+        'general': 'General',
+        'portfolio': 'Portfolio'
+    };
+
     if (type === 'portfolio') {
         return {
             answer: "Mangesh Raut is a Software Engineer with an MS in Computer Science (AI/ML) from Drexel University. He specialises in Spring Boot, AngularJS, AWS, TensorFlow, and data analytics. Reach him at mbr63@drexel.edu or linkedin.com/in/mangeshraut71298.",
-            source: 'offline-portfolio',
-            type,
+            source: 'Offline',
+            model: 'Static Data',
+            category: 'Portfolio',
             confidence: 0.55,
+            runtime: '0ms',
+            type,
             providers: [],
-            processingTime: null,
+            processingTime: 0,
             usage: null
         };
     }
 
     return {
         answer: "⚠️ AI is temporarily unavailable. Please try again.",
-        source: 'offline',
-        type,
+        source: 'Offline',
+        model: 'None',
+        category: categoryMap[type] || 'General',
         confidence: 0.3,
+        runtime: '0ms',
+        type,
         providers: [],
-        processingTime: null,
+        processingTime: 0,
         usage: null
     };
 }
@@ -206,15 +219,18 @@ async function processQuery({ message = '', messages = [] } = {}) {
                 max_tokens: 1000
             });
 
-            return {
-                answer: linkedInResponse.answer,
-                source: `LinkedIn + Google Gemini 2.0`,
-                type: 'portfolio',
-                confidence: 0.95,
-                providers: ['OpenRouter'],
-                processingTime: linkedInResponse.processingTime,
-                usage: linkedInResponse.usage
-            };
+        return {
+            answer: linkedInResponse.answer,
+            source: 'OpenRouter',
+            model: 'Gemini 2.0 Flash',
+            category: 'Portfolio',
+            confidence: 0.95,
+            runtime: linkedInResponse.processingTime + 'ms',
+            type: 'portfolio',
+            providers: ['OpenRouter'],
+            processingTime: linkedInResponse.processingTime,
+            usage: linkedInResponse.usage
+        };
         } catch (error) {
             console.error('LinkedIn-enhanced OpenRouter call failed:', error.message);
             return offlineFallback(latest);
@@ -229,11 +245,21 @@ async function processQuery({ message = '', messages = [] } = {}) {
             max_tokens: 1000
         });
 
+        const categoryMap = {
+            'math': 'Mathematics',
+            'factual': 'General Knowledge',
+            'general': 'General',
+            'portfolio': 'Portfolio'
+        };
+
         return {
             answer: generalResponse.answer,
-            source: `Google Gemini 2.0`,
-            type: typeHint,
+            source: 'OpenRouter',
+            model: 'Gemini 2.0 Flash',
+            category: categoryMap[typeHint] || 'General',
             confidence: 0.90,
+            runtime: generalResponse.processingTime + 'ms',
+            type: typeHint,
             providers: ['OpenRouter'],
             processingTime: generalResponse.processingTime,
             usage: generalResponse.usage

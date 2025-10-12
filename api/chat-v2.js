@@ -149,30 +149,47 @@ export default async function handler(req, res) {
 
         const result = await callOpenRouter(messages);
 
+        const categoryMap = {
+            portfolio: 'Portfolio',
+            general: 'General',
+            math: 'Mathematics',
+            technical: 'Technical',
+            coding: 'Coding'
+        };
+        
+        const questionType = isLinkedIn ? 'portfolio' : 'general';
+
         return res.status(200).json({
             answer: result.answer,
-            type: isLinkedIn ? 'portfolio' : 'general',
+            source: 'OpenRouter',
+            model: 'Gemini 2.0 Flash',
+            category: categoryMap[questionType] || 'General',
             confidence: isLinkedIn ? 0.95 : 0.90,
+            runtime: result.processingTime + 'ms',
+            // Legacy fields for compatibility
+            type: questionType,
             processingTime: result.processingTime,
-            source: isLinkedIn ? 'LinkedIn + Google Gemini 2.0' : 'Google Gemini 2.0',
             providers: ['OpenRouter'],
-            winner: MODEL,
-            version: 'v2-fresh'
+            version: 'v2'
         });
 
     } catch (error) {
         console.error('❌ Error:', error.message);
 
-        const fallbackAnswer = isLinkedInQuery(req.body?.message) 
+        const isPortfolio = isLinkedInQuery(req.body?.message);
+        const fallbackAnswer = isPortfolio
             ? "Mangesh Raut is a Software Engineer with an MS in Computer Science (AI/ML) from Drexel University. Contact: mbr63@drexel.edu"
             : "⚠️ AI is temporarily unavailable. Please try again.";
 
         return res.status(200).json({
             answer: fallbackAnswer,
-            type: 'offline',
+            source: 'Offline',
+            model: 'Static Data',
+            category: isPortfolio ? 'Portfolio' : 'General',
             confidence: 0.3,
+            runtime: '0ms',
+            type: 'offline',
             processingTime: 0,
-            source: 'offline',
             error: error.message
         });
     }

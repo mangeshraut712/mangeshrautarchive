@@ -80,12 +80,15 @@ export default async function handler(req, res) {
 
         return res.status(200).json({
             answer: result.answer,
-            type: result.type || 'general',
+            source: result.source || 'OpenRouter',
+            model: result.model || 'Gemini 2.0 Flash',
+            category: result.category || 'General',
             confidence: result.confidence,
+            runtime: result.runtime || (result.processingTime + 'ms'),
+            // Legacy fields for compatibility
+            type: result.type || 'general',
             processingTime: result.processingTime,
-            source: result.source,
-            providers: result.providers || ['OpenRouter'],
-            winner: 'google/gemini-2.0-flash-001'
+            providers: result.providers || ['OpenRouter']
         });
     } catch (error) {
         console.error('❌ Chat error:', error);
