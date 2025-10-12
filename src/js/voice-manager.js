@@ -38,6 +38,7 @@ class VoiceManager {
         // Prevent duplicate processing
         this.lastProcessedTranscript = '';
         this.lastProcessedTime = 0;
+        this.lastDisplayedTranscript = '';
         this.processingQueue = [];
         this.isProcessing = false;
 
