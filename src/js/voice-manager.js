@@ -373,6 +373,13 @@ class VoiceManager {
             type: 'math'
         });
 
+        // More geographical facts
+        embeddings.set('general-capital-india', {
+            keywords: ['capital', 'india', 'delhi', 'country'],
+            response: "New Delhi is the capital of India.",
+            type: 'factual'
+        });
+
         return embeddings;
     }
 

@@ -265,6 +265,15 @@ class KnowledgeBase {
             };
         }
 
+        // Basic geography - India
+        if (normalized.includes('capital of') && normalized.includes('india')) {
+            return {
+                answer: "New Delhi is the capital of India. (Source: Offline knowledge base)",
+                source: 'offline',
+                confidence: 0.65
+            };
+        }
+
         // Basic science - Earth
         if (normalized.includes('moon') && (normalized.includes('around') || normalized.includes('revolves'))) {
             return {
