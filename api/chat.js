@@ -16,10 +16,15 @@ let apiStatus = {
     rateLimit: false
 };
 
-// Groq models (PRIMARY - fastest inference, best free tier)
+// Grok models (xAI - PRIMARY - most powerful)
+const GROK_MODELS = [
+    'grok-beta',
+    'grok-2-latest'
+];
+
+// Groq models (BACKUP - fastest)
 const GROQ_MODELS = [
     'llama-3.1-8b-instant',
-    'llama-3.2-3b-preview',
     'mixtral-8x7b-32768'
 ];
 
@@ -32,6 +37,7 @@ const OPENROUTER_MODELS = [
 ];
 
 // Default models
+const DEFAULT_GROK_MODEL = 'grok-beta';
 const DEFAULT_GROQ_MODEL = 'llama-3.1-8b-instant';
 const DEFAULT_OPENROUTER_MODEL = 'openai/gpt-4o-mini:free';
 
@@ -291,7 +297,67 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     };
 }
 
-// Groq API integration (PRIMARY - fastest and best free tier)
+// Grok (xAI) API integration (PRIMARY - most powerful)
+async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
+    if (!GROK_API_KEY) return null;
+    
+    // Try Grok models
+    for (const model of GROK_MODELS) {
+        try {
+            console.log(`🚀 Trying Grok model: ${model}`);
+            const response = await fetch('https://api.x.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${GROK_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: query }
+                    ],
+                    stream: false,
+                    temperature: 0.7
+                })
+            });
+            
+            if (!response.ok) {
+                console.warn(`⚠️ Grok ${model} error: ${response.status}`);
+                continue;
+            }
+            
+            const data = await response.json();
+            const answer = data?.choices?.[0]?.message?.content;
+            
+            if (answer && answer.trim().length > 10) {
+                const elapsed = Date.now() - startTime;
+                console.log(`✅ Grok ${model} success (${elapsed}ms)`);
+                
+                const source = isPersonalQuery ? 'linkedin + grok' : 'grok';
+                
+                return {
+                    answer: answer.trim(),
+                    source: `${source} (${model})`,
+                    confidence: isPersonalQuery ? 0.95 : 0.92,
+                    processingTime: elapsed,
+                    providers: ['Grok'],
+                    winner: model,
+                    type: isPersonalQuery ? 'portfolio' : 'general',
+                    rateLimit: false,
+                    statusMessage: '🟢 AI Online (Grok)'
+                };
+            }
+        } catch (error) {
+            console.error(`❌ Grok ${model} error:`, error.message);
+            continue;
+        }
+    }
+    
+    return null;
+}
+
+// Groq API integration (BACKUP - fastest)
 async function tryGroq(query, systemPrompt, startTime, isPersonalQuery) {
     if (!GROQ_API_KEY) return null;
     
