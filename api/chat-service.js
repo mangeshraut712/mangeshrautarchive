@@ -151,6 +151,8 @@ async function callOpenRouter(payload) {
     }
 
     const start = Date.now();
+    const modelUsed = payload.model; // Capture the model being used
+
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -175,6 +177,7 @@ async function callOpenRouter(payload) {
 
     return {
         answer,
+        model: modelUsed, // Include the specific model used
         usage: data?.usage || null,
         processingTime: Date.now() - start
     };
@@ -235,8 +238,9 @@ async function processQuery({ message = '', messages = [] } = {}) {
 
     if (wantsLinkedIn) {
         try {
+            const selectedModel = getRandomOpenRouterModel();
             const linkedInResponse = await callOpenRouter({
-                model: getRandomOpenRouterModel(),
+                model: selectedModel,
                 messages: [
                     {
                         role: 'system',
@@ -253,7 +257,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
 
             return {
                 answer: linkedInResponse.answer,
-                source: 'linkedin + openrouter modification',
+                source: `linkedin + openrouter (${linkedInResponse.model})`,
                 type: 'portfolio',
                 confidence: 0.9,
                 providers: ['openrouter'],
@@ -266,8 +270,9 @@ async function processQuery({ message = '', messages = [] } = {}) {
     }
 
     try {
+        const selectedModel = getRandomOpenRouterModel();
         const generalResponse = await callOpenRouter({
-            model: getRandomOpenRouterModel(),
+            model: selectedModel,
             messages: buildGeneralMessages(messages, latest),
             temperature: 0.4,
             max_tokens: 700
@@ -275,7 +280,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
 
         return {
             answer: generalResponse.answer,
-            source: 'openrouter',
+            source: `openrouter (${generalResponse.model})`,
             type: typeHint,
             confidence: 0.82,
             providers: ['openrouter'],
