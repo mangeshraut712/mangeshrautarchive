@@ -21,8 +21,8 @@ let apiStatus = {
 
 // Grok models (xAI - PRIMARY - latest free tier)
 const GROK_MODELS = [
-    'grok-2-1212',
-    'grok-beta'
+    'grok-beta',
+    'grok-2-latest'
 ];
 
 // OpenRouter models (BACKUP)
