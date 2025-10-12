@@ -178,7 +178,7 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     const source = isPersonalQuery ? 'linkedin + openrouter' : 'openrouter';
 
     // Try multiple models with rotation and fallback
-    const maxAttempts = Math.min(5, FREE_MODELS.length); // Try up to 5 models
+    const maxAttempts = Math.min(3, FREE_MODELS.length); // Try up to 3 models
     
     // Select random model each time for better distribution
     const startIndex = Math.floor(Math.random() * FREE_MODELS.length);
@@ -188,13 +188,6 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
         const modelIndex = (startIndex + attempt) % FREE_MODELS.length;
         const model = FREE_MODELS[modelIndex];
         console.log(`🤖 Attempting model ${attempt + 1}/${maxAttempts}: ${model}`);
-        
-        // Add exponential backoff between attempts
-        if (attempt > 0) {
-            const delay = Math.min(1000 * Math.pow(2, attempt - 1), 3000);
-            console.log(`⏳ Waiting ${delay}ms before retry...`);
-            await new Promise(resolve => setTimeout(resolve, delay));
-        }
 
         try {
             const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
