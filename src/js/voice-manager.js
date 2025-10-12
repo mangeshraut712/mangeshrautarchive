@@ -19,17 +19,25 @@ class VoiceManager {
 
         // S2R (Speech-to-Retrieval) inspired features
         this.voiceEmbeddings = new Map(); // Store voice semantic embeddings
-        this.responseEmbeddings = this.initializeResponseEmbeddings(); // Pre-computed response embeddings
+        this.responseEmbeddings = new Map(); // Pre-computed response embeddings
         this.semanticCache = new Map(); // Cache semantic matches
+        this.s2rReady = false;
 
-        this.initializeSpeechRecognition();
-        this.initializeSpeechSynthesis();
-        this.setupVoiceCommands();
-        this.setupS2RSystem();
-        this.bindEvents();
+        try {
+            this.initializeSpeechRecognition();
+            this.initializeSpeechSynthesis();
+            this.setupVoiceCommands();
+            this.setupS2RSystem();
+            this.bindEvents();
 
-        this.chatManager.setVoiceOutputEnabledState(this.chatManager.voiceOutputEnabled);
-        this.chatManager.setContinuousModeActive(false);
+            this.chatManager.setVoiceOutputEnabledState(this.chatManager.voiceOutputEnabled);
+            this.chatManager.setContinuousModeActive(false);
+            this.s2rReady = true;
+        } catch (error) {
+            console.warn('S2R Voice Manager initialization failed, falling back to basic mode:', error.message);
+            this.s2rReady = false;
+            this.initializeBasicVoiceSupport();
+        }
     }
 
     /**
@@ -947,6 +955,44 @@ class VoiceManager {
         this.stopVoiceInput();
         this.stopSpeaking();
         this.isContinuous = false;
+    }
+
+    /**
+     * Initialize basic voice support as fallback when S2R fails
+     */
+    initializeBasicVoiceSupport() {
+        console.log('📱 Initializing basic voice support (non-S2R mode)');
+
+        try {
+            this.initializeSpeechRecognition();
+            this.initializeSpeechSynthesis();
+            this.setupVoiceCommands();
+            this.bindEvents();
+
+            this.chatManager.setVoiceOutputEnabledState(this.chatManager.voiceOutputEnabled);
+            this.chatManager.setContinuousModeActive(false);
+
+            console.log('✅ Basic voice support initialized');
+        } catch (error) {
+            console.warn('Basic voice support failed to initialize:', error);
+            this.handleGracefulDegradation();
+        }
+    }
+
+    /**
+     * Handle graceful degradation when voice features are not available
+     */
+    handleGracefulDegradation() {
+        console.log('📦 Graceful degradation: Voice features disabled');
+
+        // Try to disable voice features gracefully
+        try {
+            this.chatManager.disableVoiceInput('Voice input not available in this environment.');
+            this.chatManager.disableVoiceOutput('Voice output not available in this environment.');
+            this.chatManager.disableContinuousMode('Continuous listening not available in this environment.');
+        } catch (error) {
+            console.warn('Graceful degradation failed:', error);
+        }
     }
 
     /**
