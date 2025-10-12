@@ -21,16 +21,10 @@ let apiStatus = {
     rateLimit: false
 };
 
-// Grok models (xAI - PRIMARY - most powerful)
+// Grok models (xAI - PRIMARY - latest free tier)
 const GROK_MODELS = [
-    'grok-beta',
-    'grok-2-latest'
-];
-
-// Groq models (BACKUP - fastest)
-const GROQ_MODELS = [
-    'llama-3.1-8b-instant',
-    'mixtral-8x7b-32768'
+    'grok-2-1212',
+    'grok-beta'
 ];
 
 // OpenRouter models (BACKUP)
