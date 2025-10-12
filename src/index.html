@@ -44,10 +44,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/instant-performance.css" />
-    <link rel="stylesheet" href="css/chat-icon-fix.css" />
-    <link rel="icon" type="image/png" href="images/profile-icon.png" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/instant-performance.css" />
+    <link rel="stylesheet" href="assets/css/chat-icon-fix.css" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
     
     <!-- Added CDN links for external libraries with preload -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" as="script">
@@ -85,7 +85,7 @@
             <span class="menu-label">Menu</span>
           </button>
           <a class="nav-logo" href="#home" aria-label="Mangesh Raut home">
-            <img src="images/profile-icon.png" alt="Mangesh Raut" />
+            <img src="assets/images/profile-icon.png" alt="Mangesh Raut" />
           </a>
         </div>
         <div class="nav-links" role="menubar" data-animate="fade-up" data-animate-delay="220" data-animate-duration="720">
@@ -159,9 +159,9 @@
                 data-animate="zoom-in"
                 data-animate-delay="200"
               >
-                <img
-                  src="images/profile.jpg"
-                  alt="Mangesh Raut"
+          <img
+            src="assets/images/profile.jpg"
+            alt="Mangesh Raut"
                   class="w-full h-full object-cover"
                   data-animate="zoom-in"
                   data-animate-delay="260"
@@ -175,7 +175,7 @@
               solutions.
             </p>
             <a
-              href="files/Mangesh_Raut_Resume.pdf"
+              href="assets/files/Mangesh_Raut_Resume.pdf"
               download="Mangesh_Raut_Resume.pdf"
               class="btn btn-secondary"
               data-animate="zoom-in"
@@ -202,7 +202,7 @@
               data-animate-delay="140"
             >
               <img
-                src="images/graduation.jpg"
+                src="assets/images/graduation.jpg"
                 alt="Mangesh Raut Graduation"
                 class="w-full h-80 object-cover rounded-xl shadow-light"
                 data-animate="zoom-in"
@@ -874,7 +874,7 @@
           <h2 data-animate="fade-down">Publications</h2>
           <div class="flex flex-col md:flex-row items-center gap-8">
             <div class="flex-shrink-0 w-56 text-center" data-animate="zoom-in" data-animate-delay="140">
-              <a href="files/RTFERS paper.pdf" target="_blank" class="block">
+              <a href="assets/files/RTFERS paper.pdf" target="_blank" class="block">
                 <div
                   class="w-full h-56 bg-primary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
                   data-animate="tilt-in"
@@ -1495,9 +1495,9 @@
     </div>
     <!-- END PORTFOLIO CHATBOT -->
 
-    <script type="module" src="js/api-status.js"></script>
-    <script type="module" src="js/smart-navbar.js"></script>
-    <script src="js/theme.js"></script>
+    <script type="module" src="js/utils/api-status.js"></script>
+    <script type="module" src="js/utils/smart-navbar.js"></script>
+    <script src="js/utils/theme.js"></script>
     <script type="module">
       import { initOverlayMenu, initOverlayNavigation } from './js/modules/overlay.js';
       initOverlayMenu();
@@ -1505,7 +1505,7 @@
     </script>
     <script type="module" src="js/modules/contact.js"></script>
 
-    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/core/script.js"></script>
     <script>
       // Firebase v9 initialization is now handled by the module script above
       console.log('Firebase initialization completed');

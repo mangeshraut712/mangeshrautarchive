@@ -1,374 +1,269 @@
-# Mangesh Raut Portfolio Website 🌟
+# 🎯 Mangesh Raut - Portfolio Website
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-007AFF?style=for-the-badge&logo=safari)](https://mangeshraut712.github.io/mangeshrautarchive/)
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/mangeshraut712/mangeshrautarchive)
+**Modern, AI-Powered Portfolio with Voice Assistant**
 
-An elegant, Apple-inspired portfolio website showcasing my professional journey as a Software Engineer. Features a modern design system, interactive AI chatbot, and comprehensive project showcase.
+[![Live Demo](https://img.shields.io/badge/Demo-Live-success)](https://mangeshraut712.github.io/mangeshrautarchive/)
+[![Vercel](https://img.shields.io/badge/Backend-Vercel-black)](https://mangeshrautarchive.vercel.app/)
 
-## ✨ Key Features
+---
 
-### 🎨 **Apple.com Design Language**
-- Complete visual redesign matching Apple's aesthetic standards
-- Precise color palette (#ffffff, #f5f5f7, #1d1d1f, #6e6e73, #0071e3)
-- SF Pro typography system with Inter fallback
-- Apple's signature spacing and grid systems
-- Backdrop blur effects and modern glass aesthetics
+## ✨ Features
 
-### 🌟 **Premium User Experience**
-- Fully responsive design for all devices (desktop, tablet, mobile)
-- Smooth navigation with backdrop blur effects and hover animations
-- Alternating section backgrounds (white/grey pattern)
-- Theme toggle with seamless light/dark mode transitions
-- Apple's precise interactive animations and transitions
+- **AI Chatbot** - Powered by OpenRouter & Google Gemini 2.0 Flash
+- **Voice Assistant** - Natural voice interaction with S2R technology
+- **Smart Navbar** - Apple.com-inspired navigation
+- **Performance Optimized** - 120Hz smooth animations
+- **Responsive Design** - Mobile-first, works on all devices
+- **Real-time API Status** - Live AI availability indicator
 
-### 🤖 **Advanced AI Chatbot (AssistMe v3.0)**
-- **🌐 AI-Powered Intelligence**: OpenRouter (defaults to DeepSeek Chat free tier) with LinkedIn-enhanced portfolio responses
-- **🧠 Portfolio-Aware Retrieval**: Serverless prompt enrichment keeps Mangesh's CV context available without exposing secrets
-- **🔁 Conversational Memory**: Client-side history streams to the Vercel proxy for multi-turn continuity
-- **🧮 Advanced Math Engine**: Unit conversions, calculations, equations
-- **🎤 S2R Voice Stack**: Single mic control with semantic voice modes, continuous listening, and natural TTS
-- **📱 Responsive Chat Widget**: Apple Intelligence-inspired design with glassmorphism
-- **⚡ Serverless Processing**: Secure Vercel API route keeps API keys off the static frontend
+---
 
-### 🔧 **MCP Server Integration**
-- **GitHub MCP Server**: Docker container running port 3002
-- **Perplexity MCP Server**: Advanced search capabilities
-- **Interactive API**: Direct GitHub repository queries and operations
-- **Seamless Integration**: CLI tools accessible via chatbot
+## 🚀 Quick Start
 
-### 📱 **Responsive & Accessible Design**
-- Mobile-first breakpoint system (834px, 1024px, 1120px, 1440px)
-- Touch-friendly buttons and proper touch targets
-- Optimized performance with backdrop-filter support
-- Accessibility-compliant design with proper focus states
-- Voice control compatibility
+### For Users
 
-### 🛠️ **Technical Features**
-- **Node.js Backend**: Express server with `/api/chat` endpoint
-- **Real-time API Calls**: Axios-powered external service integration
-- **Firebase Visitor Counter**: Atomic increments and real-time tracking
-- **Firebase-Powered Contact Form**: Real-time messaging system
-- **Dynamic GitHub Integration**: Auto-updating project showcase
-- **Client-Server Architecture**: CORS-safe API communication
-- **Rate Limiting**: API protection and efficient resource management
+Visit the live site: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
 
-## 🚀 Technologies Used
+### For Developers
 
-### Frontend Architecture
-- **HTML5**: Semantic markup with Apple's design system structure
-- **CSS3**: Custom Apple-inspired design system with CSS variables
-- **JavaScript (ES6+)**: Modern async/await patterns and Intersection Observer API
-- **Font Awesome 6**: Extensive icon library for UI elements
+```bash
+# Clone the repository
+git clone https://github.com/mangeshraut712/mangeshrautarchive.git
+cd mangeshrautarchive
 
-### APIs & Integrations
-- **OpenRouter API**: Powers the assistant responses (LinkedIn context for portfolio queries)
-- **Firebase Firestore**: Contact form messaging system
-- **GitHub REST API**: Auto-updating project portfolio
-- **Wikipedia API**: General knowledge queries for chatbot
-- **DuckDuckGo API**: Additional information retrieval
-- **Web Speech API**: Voice recognition and synthesis
+# Install dependencies
+npm install
 
-### Build & Development
-- **CSS Grid & Flexbox**: Apple's 12-column responsive system
-- **Mobile-First Responsive Design**: Touch-first approach
-- **Progressive Enhancement**: Graceful degradation
-- **Performance Optimized**: Minimal dependencies, optimized assets
+# Start local development server
+npm start
+
+# Open browser
+# http://localhost:3000
+```
+
+---
 
 ## 📁 Project Structure
 
 ```
-mangeshrautarchive/
-├── api/                       # Serverless functions (Vercel runtime)
-│   ├── chat.js
-│   ├── chat-service.js
-│   └── status.js
-├── config/
-│   └── firebase/              # Firebase configuration assets
-│       ├── firebase.json
-│       ├── firestore.rules
-│       └── firestore.indexes.json
-├── scripts/
-│   └── build.js               # Copies src/ → dist/ before deploys
-├── src/                       # Front-end source (served from dist/ in production)
-│   ├── index.html
-│   ├── css/
-│   ├── files/
-│   ├── images/
-│   └── js/
-│       ├── chat.js
-│       ├── config.js
-│       ├── firebase-config.js
-│       ├── math.js
-│       ├── script.js
-│       ├── services.js
-│       ├── theme.js
-│       └── modules/
-├── tests/                     # Utility scripts used in CI / local verification
-│   ├── test-config.js
-│   ├── test-end-to-end.js
-│   ├── test-live-deployment.js
-│   ├── test-vercel-functions.js
-│   └── test-vercel-local.js
-├── dist/                      # Generated static output (npm run build)
+portfolio/
+├── api/                    # Backend Serverless Functions
+│   ├── chat.js            # Main chat endpoint
+│   ├── chat-service.js    # AI service logic
+│   └── status.js          # API status check
+│
+├── src/                   # Frontend Source
+│   ├── assets/           
+│   │   ├── css/          # Stylesheets
+│   │   ├── images/       # Images & icons
+│   │   └── files/        # PDFs & documents
+│   │
+│   ├── js/
+│   │   ├── core/         # Core functionality
+│   │   │   ├── chat.js   # Chatbot logic
+│   │   │   ├── config.js # Configuration
+│   │   │   └── script.js # Main script
+│   │   │
+│   │   ├── modules/      # Feature modules
+│   │   │   ├── animations.js
+│   │   │   ├── contact.js
+│   │   │   ├── overlay.js
+│   │   │   └── ...
+│   │   │
+│   │   └── utils/        # Utilities
+│   │       ├── api-status.js
+│   │       ├── smart-navbar.js
+│   │       ├── theme.js
+│   │       └── voice-manager.js
+│   │
+│   └── index.html        # Main HTML file
+│
+├── docs/                 # Documentation
+│   ├── setup/           # Setup guides
+│   ├── deployment/      # Deployment guides
+│   └── guides/          # Various guides
+│
+├── scripts/             # Build & dev scripts
+├── .github/workflows/   # GitHub Actions
 ├── package.json
-├── package-lock.json
-├── perplexity-mcp.json        # MCP server configuration
-├── server.js                  # Optional local Express server for dist/
-└── vercel.json                # Vercel deployment configuration
+├── vercel.json         # Vercel configuration
+└── README.md
 ```
-
-## 🎯 Features Detailed
-
-### 🎨 Design System
-- **Typography**: Complete SF Pro scaling with Inter fallback
-- **Color Palette**: Around exact Apple RGB values
-- **Grid System**: Apple's 12-column responsive framework
-- **Spacing**: em-based scalable spacing system
-- **Interactive States**: Apple's hover, focus, and press states
-
-### 🤖 AI Chatbot Features
-- **Voice Controls**: Microphone and speaker with recording states
-- **Knowledge Base**: Complete responses about portfolio, skills, experience
-- **General Knowledge**: Powered by Wikipedia and DuckDuckGo APIs
-- **Math Calculations**: Built-in calculator using math.js
-- **Project Database**: 9 complete GitHub projects with descriptions
-- **Responsive Interface**: Clean chat bubbles and typing indicators
-
-### 📄 Projects Section
-- **Auto-Updating**: GitHub API integration showing 9 live projects
-- **Newsroom Layout**: Apple News-style compact grid design
-- **Technology Tags**: Badge-style technology indicators
-- **Direct Links**: One-click access to GitHub repositories
-- **Featured Projects**: Apple's FastVLM, Starlight Blogging, Lead Prediction, etc.
-
-### 🌙 Dark Mode Excellence
-- **Apple Dark**: Authentic dark theme with #000000 base
-- **Smart Transitions**: Seamless color palette switching
-- **Contrast Optimized**: WCAG-compliant contrast ratios
-- **Glass Morphism**: Backdrop blur effects in both modes
-
-## 🚀 Quick Start
-
-### Clone Repository
-```bash
-git clone https://github.com/mangeshraut712/mangeshrautarchive.git
-cd mangeshrautarchive
-```
-
-### Open Locally (Recommended)
-```bash
-npm install
-npm run dev  # Starts HTTP server at http://localhost:3000
-# OR
-node scripts/local-server.js  # Direct server startup
-```
-
-### Alternative: Open HTML Directly (Limited functionality)
-```bash
-npm run open  # Opens src/index.html (may have CORS issues)
-```
-
-**⚠️ Important:** Don't use `npm run dev` in the terminal's content since it just runs `open src/index.html`. Use `node scripts/local-server.js` instead for proper HTTP server that supports all chatbot features.
-
-### Build Production Assets
-```bash
-npm run build   # emits dist/ from src/
-```
-
-### Deploy to Vercel
-```bash
-vercel --prod
-```
-
-### Inspect Serverless Logs
-```bash
-# Replace the URL with the deployment you wish to inspect
-vercel logs https://mangeshrautarchive-XYZ.vercel.app --scope mangesh-rauts-projects --since 1h
-```
-
-### Required Environment Variables
-
-Configure these secrets in Vercel (or a local `.env` file when testing functions):
-
-```
-OPENROUTER_API_KEY=sk-or-...            # required – OpenRouter account key
-OPENROUTER_MODEL=deepseek/deepseek-chat-v3.1:free  # optional – override default model
-OPENROUTER_SITE_URL=https://your-site.dev          # optional – analytics referer
-OPENROUTER_APP_TITLE=AssistMe Portfolio Assistant  # optional – label in dashboards
-```
-
-Only `OPENROUTER_API_KEY` is required for LLM responses. The optional variables let you swap models or adjust metadata without code changes.
-
-### Deploy to GitHub Pages
-1. Push to your GitHub repository
-2. Go to Settings > Pages
-3. Select main branch as source
-4. Your site will be live at: `https://[username].github.io/mangeshrautarchive`
-
-## ⚙️ Configuration
-
-### Firebase Setup
-
-#### Contact Form & Visitor Counter
-
-Update Firebase configuration in `index.html`:
-
-```javascript
-const firebaseConfig = {
-    apiKey: "YOUR_FIREBASE_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456",
-    measurementId: "G-XXXXXXXXXX"
-};
-```
-
-#### Firestore Security Rules
-
-The visitor counter requires specific Firestore rules. Update your `firestore.rules`:
-
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Visitor counter rules
-    match /visitorCounts/mainCounter {
-      allow read: if true;
-      allow write: if request.resource.data.count == resource.data.count + 1 ||
-                      (request.resource.data.count == 1 && !exists(path));
-    }
-
-    match /messages/{messageId} {
-      allow create: if true;
-      allow read: if false;
-      allow update: if false;
-      allow delete: if false;
-    }
-
-    match /{document=**} {
-      allow read, write: if false;
-    }
-  }
-}
-```
-
-### API Keys Configuration (Chatbot + MCP Servers)
-
-#### 🚀 **Automated Setup with GitHub Secrets**
-Add repository secrets in GitHub Settings → Secrets and variables → Actions:
-
-1. **GROK_API_KEY** → Your xAI Grok API key
-2. **ANTHROPIC_API_KEY** → Your Claude API key
-3. **PERPLEXITY_API_KEY** → Your Perplexity API key
-4. **GITHUB_ACCESS_TOKEN** → Your GitHub Personal Access Token (for MCP server)
-
-
-#### ⚡ **Automatic Build Process**
-• **Development**: Uses `process.env` variables or fallbacks to placeholders
-• **Production**: GitHub Actions injects real secrets during build
-• **MCP Config**: `perplexity-mcp.json` uses placeholder (replaced by GitHub Actions)
-
-### 🚀 **GitHub Actions Deployment & Security**
-
-The portfolio uses GitHub Actions for automated deployment to GitHub Pages with secure API key management:
-
-#### **Deployment Triggers**
-- **Push** to main/master branches
-- **Manual Trigger** via GitHub Actions UI
-- **Pull Requests** from the same repository (secrets unavailable for forked PRs)
-
-#### **Security Features**
-- **Conditional Secret Access**: Steps with secrets only run when secrets are guaranteed to be available
-- **Context-Access Protection**: Automatic skipping of secret-dependent steps on forked PRs
-- **Secure API Injection**: Runtime secret injection via GitHub Actions environment variables
-
-#### **Recent Security Improvements** ✨
-Fixed GitHub Actions context access warnings that occurred when the workflow tried to access API keys (`GROK_API_KEY`, `ANTHROPIC_API_KEY`, `PERPLEXITY_API_KEY`) in contexts where they weren't available (e.g., pull requests from forks).
-
-**Technical Details:**
-- Added conditional logic: `if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)`
-- Affected steps: API key configuration and MCP server setup
-- Result: Clean workflow runs without security warnings while maintaining full functionality for authorized builds
-
-## 🎨 Customization Guide
-
-### Update Personal Information
-- **Profile Picture**: Replace `images/profile.jpg`
-- **Hero Data**: Edit name, title, description in `index.html`
-- **Skills**: Modify `.col-lg-4` sections in skills
-- **Experience**: Update timeline items in experience section
-- **Projects**: Auto-populated from GitHub API (manual override optional)
-
-### Styling Changes
-- **Colors**: Modify CSS variables in `:root`
-- **Typography**: Adjust font scales in CSS
-- **Spacing**: Update section padding values
-- **Layout**: Modify grid breakpoints and sizing
-
-### Content Updates
-- **Resume**: Replace `files/Mangesh_Raut_Resume.pdf`
-- **Contact Links**: Update social media URLs
-- **Chatbot Responses**: Edit command handlers in `js/script.js`
-
-## 📊 Recent Updates
-
-### v2.0.0 - Complete Apple Redesign ✅
-- ✨ Full Apple.com design language implementation
-- 🎯 Alternating section backgrounds (White/Grey pattern)
-- 🚀 Newsroom-style projects grid with 9 GitHub projects
-- 🤖 Enhanced chatbot with proper positioning and voice controls
-- 🌙 Complete dark mode system with Apple's palette
-- 📱 Responsive design refinements
-- ⚡ Performance optimizations
-
-### v1.5.0 - AI Chatbot Integration ✅
-- 🤖 Advanced AssistMe AI chatbot with voice controls
-- 📱 Improved mobile responsiveness
-- 🎨 UI enhancements and animations
-
-### v1.0.0 - Initial Portfolio ✅
-- 🎨 Clean, responsive portfolio design
-- 📄 Professional project showcase
-- 📱 Mobile-first responsive design
-- 🛠️ Interactive features and animations
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Contact & Connect
-
-<div align="center">
-
-**Mangesh Raut**  
-Software Engineer | Philadelphia, PA
-
-[![Portfolio](https://img.shields.io/badge/Portfolio-007AFF?style=flat-square&logo=web&logoColor=white)](https://mangeshraut712.github.io/mangeshrautarchive/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mangeshraut71298/)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/mangeshraut712)
-[![Email](https://img.shields.io/badge/Email-mbr63drexel@gmail.com-red?style=flat-square&logo=gmail&logoColor=white)](mailto:mbr63drexel@gmail.com)
-
-</div>
 
 ---
 
-<div align="center">
+## 🤖 AI Chatbot
 
-**Built with ❤️ using Apple's design philosophy and modern web standards**
+### Technology
 
-⭐ Star this repository if you found it helpful!
+- **Provider**: OpenRouter
+- **Model**: Google Gemini 2.0 Flash (`google/gemini-2.0-flash-001`)
+- **Features**:
+  - Portfolio Q&A (LinkedIn integration)
+  - General knowledge
+  - Code examples
+  - Math calculations
+  - Auto-categorization
 
-</div>
-# Version: Fri Oct 10 03:19:22 IST 2025
+### Response Format
+
+```json
+{
+  "answer": "AI-generated response...",
+  "source": "OpenRouter",
+  "model": "Gemini 2.0 Flash",
+  "category": "Portfolio|Math|General Knowledge|...",
+  "confidence": 0.90,
+  "runtime": "450ms"
+}
+```
+
+---
+
+## 🎙️ Voice Mode
+
+- Natural voice interaction
+- Continuous conversation
+- Auto-silence detection
+- Visual feedback
+- Works on mobile & desktop
+
+---
+
+## 🛠️ Development
+
+### Scripts
+
+```bash
+npm start          # Start development server
+npm run build      # Build for production
+npm test           # Run tests
+```
+
+### Environment Variables
+
+For local development, set these in Vercel dashboard:
+
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key
+```
+
+---
+
+## 📦 Deployment
+
+### Frontend (GitHub Pages)
+
+Automatically deployed on push to `main` branch.
+
+```bash
+git push origin main
+```
+
+### Backend (Vercel)
+
+Connected to GitHub - auto-deploys on push.
+
+**Manual Deploy:**
+1. Go to Vercel Dashboard
+2. Select project
+3. Click "Redeploy"
+
+---
+
+## 🎨 Customization
+
+### Update Profile
+
+Edit `src/index.html`:
+- Personal info
+- Experience
+- Projects
+- Skills
+
+### Update Styles
+
+Edit `src/assets/css/style.css`:
+- Colors
+- Fonts
+- Layout
+
+### Update Chatbot
+
+Edit `api/chat-service.js`:
+- AI model
+- System prompts
+- LinkedIn data
+
+---
+
+## 🧪 Testing
+
+```bash
+# Test chatbot
+curl -X POST https://mangeshrautarchive.vercel.app/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message":"What is 5+5?"}'
+
+# Expected response
+{
+  "answer": "10",
+  "source": "OpenRouter",
+  "model": "Gemini 2.0 Flash",
+  "category": "Mathematics",
+  "confidence": 0.90,
+  "runtime": "450ms"
+}
+```
+
+---
+
+## 📚 Documentation
+
+Full documentation available in `docs/`:
+
+- [Setup Guide](docs/setup/)
+- [Deployment Guide](docs/deployment/)
+- [API Documentation](docs/api/)
+- [Troubleshooting](docs/guides/)
+
+---
+
+## 🤝 Contributing
+
+This is a personal portfolio project, but suggestions are welcome!
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+---
+
+## 📄 License
+
+MIT License - feel free to use this template for your own portfolio!
+
+---
+
+## 👤 Author
+
+**Mangesh Raut**
+
+- Portfolio: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+- LinkedIn: [linkedin.com/in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298/)
+- Email: mbr63@drexel.edu
+
+---
+
+## 🙏 Acknowledgments
+
+- OpenRouter for AI API
+- Google Gemini 2.0 Flash
+- Vercel for hosting
+- GitHub Pages
+
+---
+
+**Built with ❤️ using HTML, CSS, JavaScript, and AI**
