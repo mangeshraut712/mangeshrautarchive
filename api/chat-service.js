@@ -4,10 +4,12 @@ const OPENROUTER_SITE_URL = process.env.OPENROUTER_SITE_URL || 'http://localhost
 const OPENROUTER_APP_TITLE = process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant';
 
 // Top 3 recommended OpenRouter models for random selection
+// Following OpenRouter's recommended approach for model selection
+// These models provide excellent performance-balance cost ratios
 const OPENROUTER_MODELS = [
-    'deepseek/deepseek-chat-v3-0324:free',
-    'google/gemma-3-3n-e2b-it',
-    'tng-tech/deepseek-tng-r1t2-chimera'
+    'deepseek/deepseek-chat-v3-0324:free',  // Excellent reasoning capabilities
+    'meta-llama/llama-3.2-3b-instruct:free', // Efficient and fast (alternative to gemma)
+    'openai/gpt-4o-mini:free'  // High quality with good performance
 ];
 
 const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio.
@@ -66,7 +68,7 @@ const CURATED_FACTS = [
         pattern: /which.*model|what.*model|current.*model/i,
         answer: process.env.OPENROUTER_MODEL
             ? `I am currently running on OpenRouter using the model: ${process.env.OPENROUTER_MODEL} (configured via environment variable).`
-            : `I am currently running on OpenRouter using random model selection from our top 3 models: DeepSeek-V3, Google's Gemma 3n E2B IT, and TNG Tech's DeepSeek-TNG-R1T2-Chimera.`,
+            : `I am currently running on OpenRouter using random model selection from our top 3 models: DeepSeek-V3, GPT-4o Mini, and Llama 3.2 3B Instruct.`,
         source: 'curated-fact (system status)',
         type: 'general'
     }
