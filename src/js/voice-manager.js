@@ -726,6 +726,12 @@ class VoiceManager {
                 metadata: { type: 'error' }
             });
             return null;
+        } finally {
+            // CRITICAL FIX: Reset processing flag so mic can listen again
+            setTimeout(() => {
+                this.isProcessing = false;
+                console.log('✅ Voice processing complete, ready for next input');
+            }, 500);
         }
     }
 
