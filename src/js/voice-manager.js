@@ -855,7 +855,13 @@ class VoiceManager {
         };
 
         utterance.onerror = (event) => {
-            console.error('Speech synthesis error:', event.error);
+            if (event.error === 'canceled') {
+                // This is normal behavior when speech is interrupted/canceled
+                console.debug('Speech synthesis canceled (normal interruption).');
+            } else {
+                // Log actual errors
+                console.error('Speech synthesis error:', event.error);
+            }
             this.isSpeaking = false;
             this.chatManager.setVoiceOutputActive(false);
         };
