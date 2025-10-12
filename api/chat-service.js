@@ -1,16 +1,9 @@
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat-v3.1:free';
-const OPENROUTER_SITE_URL = process.env.OPENROUTER_SITE_URL || 'http://localhost:3000';
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
+const OPENROUTER_SITE_URL = process.env.OPENROUTER_SITE_URL || 'https://mangeshrautarchive.vercel.app';
 const OPENROUTER_APP_TITLE = process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant';
 
-// Top 3 recommended OpenRouter models for random selection
-// Following OpenRouter's recommended approach for model selection
-// These models provide excellent performance-balance cost ratios
-const OPENROUTER_MODELS = [
-    'deepseek/deepseek-chat-v3-0324:free',  // Excellent reasoning capabilities
-    'meta-llama/llama-3.2-3b-instruct:free', // Efficient and fast (alternative to gemma)
-    'openai/gpt-4o-mini:free'  // High quality with good performance
-];
+// WORKING MODEL - User tested and confirmed with Google AI Studio
+const MODEL = 'google/gemini-2.0-flash-001';
 
 const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio.
 
@@ -41,7 +34,7 @@ EXPERIENCE:
 
 EDUCATION:
 • Drexel University — MS Computer Science (AI/ML focus), expected 2025
-• Bachelor’s in Computer Engineering — Savitribai Phule Pune University
+• Bachelor's in Computer Engineering — Savitribai Phule Pune University
 
 SKILLS:
 Spring Boot, AngularJS, Python, AWS, TensorFlow, Machine Learning, Java, JavaScript, SQL, Docker, PyTorch, Scikit-learn, Pandas, NumPy
@@ -56,28 +49,6 @@ CONTACT:
 • Email: mbr63@drexel.edu
 • LinkedIn: https://www.linkedin.com/in/mangeshraut71298/
 `;
-
-const CURATED_FACTS = [
-    {
-        pattern: /(?:who\s+won|winner).*?(?:2024).*?(?:indian premier league|ipl)/i,
-        answer: `The 2024 Indian Premier League (IPL) was won by the Kolkata Knight Riders (KKR). They defeated Sunrisers Hyderabad by 8 wickets in the final played on 26 May 2024 at the M. A. Chidambaram Stadium in Chennai.`,
-        source: 'curated-fact (Google verified)',
-        type: 'factual'
-    },
-    {
-        pattern: /which.*model|what.*model|current.*model/i,
-        answer: process.env.OPENROUTER_MODEL
-            ? `I am currently running on OpenRouter using the model: ${process.env.OPENROUTER_MODEL} (configured via environment variable).`
-            : `I am currently running on OpenRouter using random model selection from our top 3 models: DeepSeek-V3, GPT-4o Mini, and Llama 3.2 3B Instruct.`,
-        source: 'curated-fact (system status)',
-        type: 'general'
-    }
-];
-
-function checkCuratedFact(message = '') {
-    if (!message) return null;
-    return CURATED_FACTS.find((entry) => entry.pattern.test(message));
-}
 
 function normalizeHistory(history = []) {
     return Array.isArray(history)
@@ -135,23 +106,13 @@ Question: ${question}
 `;
 }
 
-// Random model selection from the top 3 OpenRouter models
-// Respects OPENROUTER_MODEL environment override for deterministic selection
-function getRandomOpenRouterModel() {
-    const envModel = process.env.OPENROUTER_MODEL;
-    if (envModel && envModel.trim() !== '') {
-        return envModel.trim();
-    }
-    return OPENROUTER_MODELS[Math.floor(Math.random() * OPENROUTER_MODELS.length)];
-}
-
 async function callOpenRouter(payload) {
     if (!OPENROUTER_API_KEY) {
         throw new Error('Missing OPENROUTER_API_KEY');
     }
 
     const start = Date.now();
-    const modelUsed = payload.model; // Capture the model being used
+    console.log(`🤖 Calling OpenRouter with model: ${payload.model}`);
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -166,6 +127,7 @@ async function callOpenRouter(payload) {
 
     if (!response.ok) {
         const text = await response.text();
+        console.error(`❌ OpenRouter error ${response.status}:`, text);
         throw new Error(`OpenRouter error ${response.status}: ${text}`);
     }
 
@@ -175,11 +137,14 @@ async function callOpenRouter(payload) {
         throw new Error('OpenRouter returned an empty response.');
     }
 
+    const elapsed = Date.now() - start;
+    console.log(`✅ OpenRouter success (${elapsed}ms) - Answer length: ${answer.length}`);
+
     return {
         answer,
-        model: modelUsed, // Include the specific model used
+        model: payload.model,
         usage: data?.usage || null,
-        processingTime: Date.now() - start
+        processingTime: elapsed
     };
 }
 
@@ -198,7 +163,7 @@ function offlineFallback(message = '') {
     if (type === 'portfolio') {
         return {
             answer: "Mangesh Raut is a Software Engineer with an MS in Computer Science (AI/ML) from Drexel University. He specialises in Spring Boot, AngularJS, AWS, TensorFlow, and data analytics. Reach him at mbr63@drexel.edu or linkedin.com/in/mangeshraut71298.",
-            source: 'assistme-portfolio',
+            source: 'offline-portfolio',
             type,
             confidence: 0.55,
             providers: [],
@@ -208,10 +173,10 @@ function offlineFallback(message = '') {
     }
 
     return {
-        answer: "I'm AssistMe, Mangesh Raut's AI assistant. Ask about his experience, skills, projects, or fire away with a technical / general question and I'll do my best to help!",
-        source: 'assistme-general',
+        answer: "⚠️ AI is temporarily unavailable. Please try again.",
+        source: 'offline',
         type,
-        confidence: 0.4,
+        confidence: 0.3,
         providers: [],
         processingTime: null,
         usage: null
@@ -223,24 +188,10 @@ async function processQuery({ message = '', messages = [] } = {}) {
     const typeHint = classifyType(latest || messages?.slice(-1)?.[0]?.content || '');
     const wantsLinkedIn = isLinkedInQuery(latest);
 
-    const curatedFact = checkCuratedFact(latest);
-    if (curatedFact) {
-        return {
-            answer: curatedFact.answer,
-            source: curatedFact.source,
-            type: curatedFact.type,
-            confidence: 0.98,
-            providers: ['curated'],
-            processingTime: null,
-            usage: null
-        };
-    }
-
     if (wantsLinkedIn) {
         try {
-            const selectedModel = getRandomOpenRouterModel();
             const linkedInResponse = await callOpenRouter({
-                model: selectedModel,
+                model: MODEL,
                 messages: [
                     {
                         role: 'system',
@@ -251,39 +202,39 @@ async function processQuery({ message = '', messages = [] } = {}) {
                         content: buildLinkedInPrompt(latest)
                     }
                 ],
-                temperature: 0.25,
-                max_tokens: 700
+                temperature: 0.7,
+                max_tokens: 1000
             });
 
             return {
                 answer: linkedInResponse.answer,
-                source: `linkedin + openrouter (${linkedInResponse.model})`,
+                source: `LinkedIn + Google Gemini 2.0`,
                 type: 'portfolio',
-                confidence: 0.9,
-                providers: ['openrouter'],
+                confidence: 0.95,
+                providers: ['OpenRouter'],
                 processingTime: linkedInResponse.processingTime,
                 usage: linkedInResponse.usage
             };
         } catch (error) {
             console.error('LinkedIn-enhanced OpenRouter call failed:', error.message);
+            return offlineFallback(latest);
         }
     }
 
     try {
-        const selectedModel = getRandomOpenRouterModel();
         const generalResponse = await callOpenRouter({
-            model: selectedModel,
+            model: MODEL,
             messages: buildGeneralMessages(messages, latest),
-            temperature: 0.4,
-            max_tokens: 700
+            temperature: 0.7,
+            max_tokens: 1000
         });
 
         return {
             answer: generalResponse.answer,
-            source: `openrouter (${generalResponse.model})`,
+            source: `Google Gemini 2.0`,
             type: typeHint,
-            confidence: 0.82,
-            providers: ['openrouter'],
+            confidence: 0.90,
+            providers: ['OpenRouter'],
             processingTime: generalResponse.processingTime,
             usage: generalResponse.usage
         };
