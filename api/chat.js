@@ -163,16 +163,14 @@ async function processQueryWithAI(query, useLinkedInContext = false) {
     // Try multiple models with rotation and fallback
     const maxAttempts = Math.min(3, FREE_MODELS.length); // Try up to 3 models
     
+    // Select random model each time for better distribution
+    const startIndex = Math.floor(Math.random() * FREE_MODELS.length);
+    
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        // Rotate through models
-        const modelIndex = (currentModelIndex + attempt) % FREE_MODELS.length;
+        // Try different models each attempt
+        const modelIndex = (startIndex + attempt) % FREE_MODELS.length;
         const model = FREE_MODELS[modelIndex];
         console.log(`🤖 Attempting model ${attempt + 1}/${maxAttempts}: ${model}`);
-        
-        // Update index for next request
-        if (attempt === 0) {
-            currentModelIndex = (currentModelIndex + 1) % FREE_MODELS.length;
-        }
 
         try {
             const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
