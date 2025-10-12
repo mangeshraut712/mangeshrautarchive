@@ -369,9 +369,17 @@ async function tryGrok(query, systemPrompt, startTime, isPersonalQuery) {
 async function tryGemini(query, systemPrompt, startTime, isPersonalQuery) {
     if (!GEMINI_API_KEY) return null;
     
-    try {
-        // Use v1beta API with gemini-1.5-flash (working model)
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+    // Try multiple Gemini models
+    const geminiModels = [
+        'gemini-1.5-flash',
+        'gemini-1.5-flash-8b',
+        'gemini-1.0-pro'
+    ];
+    
+    for (const modelName of geminiModels) {
+        try {
+            console.log(`🔷 Trying Gemini model: ${modelName}`);
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
