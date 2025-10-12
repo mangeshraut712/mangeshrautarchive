@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
-import { mkdir, rm, cp, stat } from 'fs/promises';
+import { mkdir, rm, cp, stat, writeFile } from 'fs/promises';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,6 +12,44 @@ const srcDir = resolve(projectRoot, 'src');
 const staticExtras = [
     'perplexity-mcp.json'
 ];
+
+// Build-time API key injection for GitHub Pages
+async function injectApiKeys() {
+    const config = {
+        // API keys injected at build time
+        deepseekApiKey: process.env.OPENROUTER_API_KEY || '',
+        siteUrl: process.env.OPENROUTER_SITE_URL || '',
+        appTitle: process.env.OPENROUTER_APP_TITLE || '',
+
+        // Other configuration
+        selectedModel: process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat-v3-0324:free',
+        environment: process.env.NODE_ENV || 'production',
+
+        // Build timestamp for cache busting
+        buildTimestamp: new Date().toISOString()
+    };
+
+    // Create build config JSON file
+    const configPath = resolve(distDir, 'build-config.json');
+    await writeFile(configPath, JSON.stringify(config, null, 2));
+
+    console.log('🔑 Injected API configuration for static hosting');
+    console.log('📝 Config file written to: dist/build-config.json');
+
+    // Also create a JavaScript config for direct browser import
+    const jsConfig = `
+// Auto-generated build configuration
+// DO NOT EDIT - This file is created by the build process
+const buildConfig = ${JSON.stringify(config, null, 2)};
+
+export default buildConfig;
+export { buildConfig };
+`;
+    const jsConfigPath = resolve(distDir, 'build-config.js');
+    await writeFile(jsConfigPath, jsConfig);
+
+    console.log('📝 JS config file written to: dist/build-config.js');
+}
 
 async function pathExists(path) {
     try {
@@ -39,6 +77,9 @@ async function build() {
             console.log(`📋 Copied extra asset: ${item}`);
         }
     }
+
+    // Inject API keys and configuration at build time
+    await injectApiKeys();
 
     console.log('✨ Build complete. Static assets written to dist/.');
 }
