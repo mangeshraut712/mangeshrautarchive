@@ -39,6 +39,8 @@ jobs:
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
           NODE_ENV: production
+          # Force environment variables to be available during build
+          VITE_OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
