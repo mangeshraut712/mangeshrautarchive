@@ -109,7 +109,7 @@ export default async function handler(req, res) {
                     'HTTP-Referer': 'https://mangeshrautarchive.vercel.app'
                 },
                 body: JSON.stringify({
-                    model: 'openai/gpt-4o-mini:free',
+                    model: 'meta-llama/llama-3.1-8b-instruct:free',
                     messages: [{ role: 'user', content: 'Say hello in 3 words' }]
                 })
             });
