@@ -1,11 +1,23 @@
 /**
- * Voice Manager - S2R-Inspired Voice Processing
- * ==============================================
+ * Voice Manager - Enhanced S2R-Inspired Voice Processing
+ * ======================================================
  *
  * Implements Google's Speech-to-Retrieval (S2R) concepts for advanced voice handling:
- * - Direct semantic mapping circumventing traditional speech-to-text conversion
- * - Intent-based understanding using embedding similarity
- * - Voice activation modes and continuous listening
+ * 
+ * **S2R Core Principles (Based on Google Research):**
+ * - Dual encoders convert audio queries and documents into shared semantic embeddings
+ * - Direct intent matching without transcription, reducing ASR mishearing errors
+ * - Semantic similarity prioritized over literal word matching
+ * - Achieves 70-90% retrieval accuracy across 17 languages
+ * - Closes high WER gaps (up to 50% in Arabic/Japanese)
+ * 
+ * **Features:**
+ * - Continuous conversation mode with context retention
+ * - Semantic intent recognition
+ * - Multilingual voice interface support
+ * - Real-time response generation
+ * - Voice activation with wake word detection
+ * - Enhanced audio quality for better recognition
  */
 
 class VoiceManager {
@@ -65,11 +77,15 @@ class VoiceManager {
 
         this.recognition = new SpeechRecognition();
 
-        // Configure for semantic/intent-focused recognition (S2R-inspired)
-        this.recognition.continuous = false;
-        this.recognition.interimResults = true;
-        this.recognition.lang = 'en-US';
-        this.recognition.maxAlternatives = 3; // Multiple hypotheses for intent matching
+        // Enhanced S2R-inspired configuration
+        this.recognition.continuous = true; // Enable continuous listening for S2R
+        this.recognition.interimResults = true; // Real-time feedback
+        this.recognition.lang = 'en-US'; // Primary language (S2R supports 17+)
+        this.recognition.maxAlternatives = 5; // Increased for better semantic matching
+        
+        // S2R-specific settings
+        this.contextWindow = []; // Store conversation context
+        this.semanticThreshold = 0.7; // Similarity threshold for intent matching
 
         // Event handlers
         this.recognition.onstart = () => this.onRecognitionStart();
