@@ -1,104 +1,111 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * CHAT API ENDPOINT
+ * OpenRouter + Gemini 2.0 Flash ONLY
+ * Returns proper response format
+ * ═══════════════════════════════════════════════════════════
+ */
+
 import chatService from './chat-service.js';
 
+/**
+ * Apply CORS headers
+ */
 function applyCors(res, origin) {
-    const allowedOrigins = [
-        'https://mangeshraut712.github.io',
-        'http://localhost:3000',
-        'http://127.0.0.1:3000',
-        'http://localhost:8080',
-        'http://127.0.0.1:8080'
-    ];
-    
-    const isAllowed = allowedOrigins.some(allowed => {
-        if (origin === allowed) return true;
-        if (allowed === 'https://mangeshraut712.github.io' && origin && origin.startsWith('https://mangeshraut712.github.io')) {
-            return true;
-        }
-        return false;
-    });
-    
-    if (origin && isAllowed) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    } else {
-        res.setHeader('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
-    }
-    
-    res.setHeader('Vary', 'Origin');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
-    res.setHeader('Access-Control-Allow-Credentials', 'false');
-    res.setHeader('Access-Control-Max-Age', '86400');
+  const allowedOrigins = [
+    'https://mangeshraut712.github.io',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000'
+  ];
+
+  const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
+  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', 'false');
+  res.setHeader('Access-Control-Max-Age', '86400');
 }
 
+/**
+ * Main handler
+ */
 export default async function handler(req, res) {
-    applyCors(res, req.headers.origin);
+  // Apply CORS
+  applyCors(res, req.headers.origin);
 
-    if (req.method === 'OPTIONS') {
-        console.log('✅ CORS preflight handled');
-        return res.status(204).end();
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Only accept POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ 
+      error: 'Method not allowed',
+      message: 'Use POST method'
+    });
+  }
+
+  try {
+    // Get message from request
+    const { message, messages } = req.body ?? {};
+
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json({
+        error: 'Invalid request',
+        message: 'Message is required'
+      });
     }
 
-    if (req.method !== 'POST') {
-        console.log('❌ Method not allowed:', req.method);
-        return res.status(405).json({ error: 'Method not allowed' });
+    const trimmedMessage = message.trim();
+    if (!trimmedMessage) {
+      return res.status(400).json({
+        error: 'Invalid request',
+        message: 'Message cannot be empty'
+      });
     }
 
-    console.log('📨 Chat request received');
+    console.log(`📨 Received: "${trimmedMessage}"`);
 
-    try {
-        const { message, messages } = req.body ?? {};
+    // Process query through chat service
+    const result = await chatService.processQuery({
+      message: trimmedMessage,
+      messages: messages || []
+    });
 
-        if (!message || typeof message !== 'string') {
-            console.log('❌ Invalid message');
-            return res.status(400).json({
-                error: 'Message is required and must be a string'
-            });
-        }
+    console.log(`✅ Response: ${result.source} | ${result.model} | ${result.category}`);
 
-        const trimmedMessage = message.trim();
-        if (!trimmedMessage) {
-            console.log('❌ Empty message');
-            return res.status(400).json({
-                error: 'Message cannot be empty'
-            });
-        }
+    // Return standardized response format
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).json({
+      answer: result.answer,
+      source: result.source,           // "OpenRouter"
+      model: result.model,              // "Gemini 2.0 Flash"
+      category: result.category,        // "Mathematics", "Portfolio", etc.
+      confidence: result.confidence,    // 0.90
+      runtime: result.runtime,          // "450ms"
+      
+      // Legacy fields for backward compatibility
+      type: result.type || 'general',
+      processingTime: result.processingTime || 0,
+      providers: result.providers || [result.source]
+    });
 
-        console.log('💬 Processing:', trimmedMessage.substring(0, 100));
+  } catch (error) {
+    console.error('❌ API Error:', error);
 
-        const result = await chatService.processQuery({ 
-            message: trimmedMessage, 
-            messages: messages || [] 
-        });
-
-        res.setHeader('Content-Type', 'application/json');
-
-        console.log('✅ Response:', {
-            source: result.source,
-            confidence: result.confidence,
-            length: result.answer?.length || 0
-        });
-
-        return res.status(200).json({
-            answer: result.answer,
-            source: result.source || 'OpenRouter',
-            model: result.model || 'Gemini 2.0 Flash',
-            category: result.category || 'General',
-            confidence: result.confidence,
-            runtime: result.runtime || (result.processingTime + 'ms'),
-            // Legacy fields for compatibility
-            type: result.type || 'general',
-            processingTime: result.processingTime,
-            providers: result.providers || ['OpenRouter']
-        });
-    } catch (error) {
-        console.error('❌ Chat error:', error);
-
-        res.setHeader('Content-Type', 'application/json');
-
-        return res.status(500).json({
-            error: 'Internal server error',
-            message: 'I\'m experiencing technical difficulties. Please try again.',
-            details: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
-    }
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to process request',
+      answer: '⚠️ Something went wrong. Please try again.',
+      source: 'Error',
+      model: 'None',
+      category: 'Error',
+      confidence: 0,
+      runtime: '0ms'
+    });
+  }
 }

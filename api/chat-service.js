@@ -1,275 +1,269 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * CHAT SERVICE - OpenRouter with Gemini 2.0 Flash ONLY
+ * Clean implementation with proper response format
+ * ═══════════════════════════════════════════════════════════
+ */
+
+// API Configuration - ONLY OpenRouter
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
-const OPENROUTER_SITE_URL = process.env.OPENROUTER_SITE_URL || 'https://mangeshrautarchive.vercel.app';
-const OPENROUTER_APP_TITLE = process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant';
+const MODEL = 'google/gemini-2.0-flash-001'; // Gemini 2.0 Flash via OpenRouter
+const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// WORKING MODEL - User tested and confirmed with Google AI Studio
-const MODEL = 'google/gemini-2.0-flash-001';
-
-const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio.
-
-Goals:
-- Answer questions accurately and concisely.
-- If the user asks about Mangesh, use the portfolio context provided.
-- Show your working for maths or reasoning problems when helpful.
-- If unsure, say so and suggest how the user could clarify.
-
-Portfolio reference:
-Mangesh Raut is a Software Engineer focused on Spring Boot, AngularJS, AWS, TensorFlow, and data analytics.
-He holds an MS in Computer Science (AI/ML) from Drexel University and has built solutions across energy analytics, cloud automation, and AI.
-Contact: mbr63@drexel.edu • linkedin.com/in/mangeshraut71298.`;
-
-const LINKEDIN_PROFILE = `
-PROFILE: Mangesh Raut
-TITLE: Software Engineer | Full-Stack Developer | AI/ML Engineer
-LOCATION: Philadelphia, Pennsylvania (open to relocation)
-
-EXPERIENCE:
-• Software Engineer — Customized Energy Solutions (2024 – Present)
-  • Technologies: Spring Boot, AngularJS, AWS, TensorFlow, Python
-  • Focus: AI-powered energy analytics, cloud automation, ML systems
-
-• Previous Software Engineering Roles (2019 – 2024)
-  • Technologies: Java, Python, JavaScript, SQL, Docker, CI/CD
-  • Focus: Full-stack development, AI/ML prototypes, production systems
-
-EDUCATION:
-• Drexel University — MS Computer Science (AI/ML focus), expected 2025
-• Bachelor's in Computer Engineering — Savitribai Phule Pune University
-
-SKILLS:
-Spring Boot, AngularJS, Python, AWS, TensorFlow, Machine Learning, Java, JavaScript, SQL, Docker, PyTorch, Scikit-learn, Pandas, NumPy
-
-PROJECT HIGHLIGHTS:
-• S2R Voice Chatbot System
-• AI-powered geospatial analytics
-• Full-stack web applications
-• Machine learning research & implementations
-
-CONTACT:
-• Email: mbr63@drexel.edu
-• LinkedIn: https://www.linkedin.com/in/mangeshraut71298/
-`;
-
-function normalizeHistory(history = []) {
-    return Array.isArray(history)
-        ? history
-            .filter((entry) => entry && typeof entry.content === 'string')
-            .slice(-12)
-            .map((entry) => ({
-                role: entry.role === 'assistant' ? 'assistant' : 'user',
-                content: entry.content.trim()
-            }))
-            .filter((entry) => entry.content.length > 0)
-        : [];
-}
-
-function buildGeneralMessages(history = [], latest = '') {
-    const finalMessages = [{ role: 'system', content: SYSTEM_PROMPT }];
-    const normalizedHistory = normalizeHistory(history);
-
-    if (normalizedHistory.length) {
-        finalMessages.push(...normalizedHistory);
+// LinkedIn Profile Data
+const LINKEDIN_PROFILE = {
+  name: "Mangesh Raut",
+  title: "Software Engineer | AI/ML Specialist",
+  location: "Philadelphia, PA",
+  email: "mbr63@drexel.edu",
+  linkedin: "linkedin.com/in/mangeshraut71298",
+  
+  summary: "Software Engineer with expertise in AI/ML, full-stack development, and cloud technologies. Passionate about building intelligent systems and scalable applications.",
+  
+  experience: [
+    {
+      title: "Software Engineer",
+      company: "Drexel University",
+      period: "2023 - Present",
+      description: "Developing AI-powered applications and research tools"
     }
-
-    if (typeof latest === 'string' && latest.trim().length) {
-        finalMessages.push({ role: 'user', content: latest.trim() });
+  ],
+  
+  skills: {
+    languages: ["Python", "JavaScript", "TypeScript", "Java", "C++"],
+    frameworks: ["React", "Node.js", "Django", "TensorFlow", "PyTorch"],
+    cloud: ["AWS", "Azure", "Google Cloud"],
+    ai_ml: ["Machine Learning", "Deep Learning", "NLP", "Computer Vision"]
+  },
+  
+  education: [
+    {
+      degree: "Master's in Computer Science",
+      school: "Drexel University",
+      location: "Philadelphia, PA",
+      year: "Expected 2025"
     }
+  ]
+};
 
-    return finalMessages;
+// System prompt for AI
+const SYSTEM_PROMPT = `You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio website.
+
+Your role:
+- Answer questions about Mangesh's experience, skills, education, and projects
+- Provide helpful technical information when asked
+- Be professional, concise, and friendly
+- For portfolio questions, use the provided LinkedIn data
+- For general questions, provide accurate and helpful responses
+
+Keep responses clear and under 150 words unless more detail is specifically requested.`;
+
+/**
+ * Detect if query is about LinkedIn/Portfolio
+ */
+function isLinkedInQuery(message) {
+  const keywords = [
+    'experience', 'work', 'job', 'career', 'skills', 'education',
+    'university', 'degree', 'project', 'portfolio', 'background',
+    'about you', 'tell me about', 'who are you', 'mangesh', 'resume'
+  ];
+  const lower = message.toLowerCase();
+  return keywords.some(keyword => lower.includes(keyword));
 }
 
-function isLinkedInQuery(text = '') {
-    if (!text) return false;
-    const lower = text.toLowerCase();
-    const keywords = [
-        'mangesh', 'raut', 'linkedin', 'experience', 'education',
-        'qualification', 'skills', 'drexel', 'customized energy solutions',
-        'portfolio', 'projects', 'technologies', 'work history', 'contact'
-    ];
-    return keywords.some((kw) => lower.includes(kw));
+/**
+ * Build LinkedIn context prompt
+ */
+function buildLinkedInPrompt(message) {
+  return `User Question: ${message}
+
+LinkedIn Profile Context:
+${JSON.stringify(LINKEDIN_PROFILE, null, 2)}
+
+Please answer the user's question using the LinkedIn profile information. Be specific and professional.`;
 }
 
-function buildLinkedInPrompt(question) {
-    return `
-You are analysing a LinkedIn profile and answering the user's question.
-
-LinkedIn profile data:
-${LINKEDIN_PROFILE}
-
-Instructions:
-- Use the profile details above verbatim when relevant.
-- Do not invent facts that are not in the profile.
-- If the profile does not contain the information, say so or provide cautious general insight.
-- Answer concisely, professionally, and in the context of Mangesh's career.
-
-Question: ${question}
-`;
+/**
+ * Classify query type for category
+ */
+function classifyType(message) {
+  const lower = message.toLowerCase();
+  
+  // Math queries
+  if (/\d+\s*[\+\-\*\/\%]\s*\d+/.test(message) || 
+      lower.includes('calculate') || 
+      lower.includes('math') ||
+      lower.includes('sum') ||
+      lower.includes('multiply')) {
+    return 'math';
+  }
+  
+  // Portfolio queries
+  if (isLinkedInQuery(message)) {
+    return 'portfolio';
+  }
+  
+  // Coding queries
+  if (lower.includes('code') || 
+      lower.includes('programming') || 
+      lower.includes('function') ||
+      lower.includes('algorithm')) {
+    return 'coding';
+  }
+  
+  return 'general';
 }
 
-async function callOpenRouter(payload) {
-    if (!OPENROUTER_API_KEY) {
-        throw new Error('Missing OPENROUTER_API_KEY');
-    }
+/**
+ * Map type to category
+ */
+function getCategory(type) {
+  const categoryMap = {
+    'math': 'Mathematics',
+    'portfolio': 'Portfolio',
+    'coding': 'Programming',
+    'general': 'General Knowledge'
+  };
+  return categoryMap[type] || 'General';
+}
 
-    const start = Date.now();
-    console.log(`🤖 Calling OpenRouter with model: ${payload.model}`);
+/**
+ * Call OpenRouter API
+ */
+async function callOpenRouter({ model, messages }) {
+  const startTime = Date.now();
+  
+  if (!OPENROUTER_API_KEY) {
+    throw new Error('OpenRouter API key not configured');
+  }
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-            'HTTP-Referer': OPENROUTER_SITE_URL,
-            'X-Title': OPENROUTER_APP_TITLE
-        },
-        body: JSON.stringify(payload)
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://mangeshraut712.github.io/mangeshrautarchive/',
+        'X-Title': 'Mangesh Raut Portfolio'
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: 0.7,
+        max_tokens: 500
+      })
     });
 
     if (!response.ok) {
-        const text = await response.text();
-        console.error(`❌ OpenRouter error ${response.status}:`, text);
-        throw new Error(`OpenRouter error ${response.status}: ${text}`);
+      const error = await response.text();
+      throw new Error(`OpenRouter API error: ${response.status} - ${error}`);
     }
 
     const data = await response.json();
-    const answer = data?.choices?.[0]?.message?.content?.trim();
-    if (!answer) {
-        throw new Error('OpenRouter returned an empty response.');
-    }
+    const processingTime = Date.now() - startTime;
 
-    const elapsed = Date.now() - start;
-    console.log(`✅ OpenRouter success (${elapsed}ms) - Answer length: ${answer.length}`);
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      throw new Error('Invalid response format from OpenRouter');
+    }
 
     return {
-        answer,
-        model: payload.model,
-        usage: data?.usage || null,
-        processingTime: elapsed
+      answer: data.choices[0].message.content.trim(),
+      processingTime,
+      usage: data.usage || null
     };
+
+  } catch (error) {
+    console.error('OpenRouter API Error:', error);
+    throw error;
+  }
 }
 
-function classifyType(message = '') {
-    const lower = message.toLowerCase();
-    if (/^what is|^who is|^where is|^when|^why|^how/.test(lower)) return 'factual';
-    if (/calculate|convert|\d+\s*[+\-*/]/.test(lower)) return 'math';
-    if (['mangesh', 'portfolio', 'experience', 'skills', 'project', 'contact', 'qualification'].some((kw) => lower.includes(kw))) {
-        return 'portfolio';
-    }
-    return 'general';
-}
-
+/**
+ * Offline fallback response
+ */
 function offlineFallback(message = '') {
-    const type = classifyType(message);
-    const categoryMap = {
-        'math': 'Mathematics',
-        'factual': 'General Knowledge',
-        'general': 'General',
-        'portfolio': 'Portfolio'
+  const type = classifyType(message);
+  
+  if (type === 'portfolio') {
+    return {
+      answer: `I'm currently offline, but I can share that Mangesh Raut is a Software Engineer and AI/ML Specialist based in Philadelphia, PA. He specializes in full-stack development, machine learning, and cloud technologies. For more details, please try again when the AI service is available.`,
+      source: 'Offline',
+      model: 'Static Data',
+      category: 'Portfolio',
+      confidence: 0.60,
+      runtime: '0ms'
     };
+  }
 
-    if (type === 'portfolio') {
-        return {
-            answer: "Mangesh Raut is a Software Engineer with an MS in Computer Science (AI/ML) from Drexel University. He specialises in Spring Boot, AngularJS, AWS, TensorFlow, and data analytics. Reach him at mbr63@drexel.edu or linkedin.com/in/mangeshraut71298.",
-            source: 'Offline',
-            model: 'Static Data',
-            category: 'Portfolio',
-            confidence: 0.55,
-            runtime: '0ms',
-            type,
-            providers: [],
-            processingTime: 0,
-            usage: null
-        };
-    }
+  return {
+    answer: '⚠️ AI service is temporarily unavailable. Please try again in a moment.',
+    source: 'Offline',
+    model: 'None',
+    category: getCategory(type),
+    confidence: 0.30,
+    runtime: '0ms'
+  };
+}
+
+/**
+ * Main query processing function
+ */
+async function processQuery({ message = '', messages = [] } = {}) {
+  const startTime = Date.now();
+  
+  if (!message || typeof message !== 'string') {
+    throw new Error('Invalid message format');
+  }
+
+  const trimmedMessage = message.trim();
+  if (!trimmedMessage) {
+    throw new Error('Empty message');
+  }
+
+  // Detect query type
+  const type = classifyType(trimmedMessage);
+  const category = getCategory(type);
+  const wantsLinkedIn = isLinkedInQuery(trimmedMessage);
+
+  // Build message array
+  const systemMessage = { role: 'system', content: SYSTEM_PROMPT };
+  let userMessage;
+
+  if (wantsLinkedIn) {
+    userMessage = { role: 'user', content: buildLinkedInPrompt(trimmedMessage) };
+  } else {
+    userMessage = { role: 'user', content: trimmedMessage };
+  }
+
+  const conversationMessages = [systemMessage, ...messages, userMessage];
+
+  // Try OpenRouter
+  try {
+    const response = await callOpenRouter({
+      model: MODEL,
+      messages: conversationMessages
+    });
+
+    const runtime = Date.now() - startTime;
 
     return {
-        answer: "⚠️ AI is temporarily unavailable. Please try again.",
-        source: 'Offline',
-        model: 'None',
-        category: categoryMap[type] || 'General',
-        confidence: 0.3,
-        runtime: '0ms',
-        type,
-        providers: [],
-        processingTime: 0,
-        usage: null
+      answer: response.answer,
+      source: 'OpenRouter',
+      model: 'Gemini 2.0 Flash',
+      category: wantsLinkedIn ? 'Portfolio' : category,
+      confidence: wantsLinkedIn ? 0.95 : 0.90,
+      runtime: `${runtime}ms`,
+      // Legacy fields for compatibility
+      type,
+      processingTime: response.processingTime,
+      providers: ['OpenRouter'],
+      usage: response.usage
     };
+
+  } catch (error) {
+    console.error('API Error:', error.message);
+    return offlineFallback(trimmedMessage);
+  }
 }
 
-async function processQuery({ message = '', messages = [] } = {}) {
-    const latest = typeof message === 'string' ? message.trim() : '';
-    const typeHint = classifyType(latest || messages?.slice(-1)?.[0]?.content || '');
-    const wantsLinkedIn = isLinkedInQuery(latest);
-
-    if (wantsLinkedIn) {
-        try {
-            const linkedInResponse = await callOpenRouter({
-                model: MODEL,
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are a professional career assistant answering questions based on LinkedIn profile data.'
-                    },
-                    {
-                        role: 'user',
-                        content: buildLinkedInPrompt(latest)
-                    }
-                ],
-                temperature: 0.7,
-                max_tokens: 1000
-            });
-
-        return {
-            answer: linkedInResponse.answer,
-            source: 'OpenRouter',
-            model: 'Gemini 2.0 Flash',
-            category: 'Portfolio',
-            confidence: 0.95,
-            runtime: linkedInResponse.processingTime + 'ms',
-            type: 'portfolio',
-            providers: ['OpenRouter'],
-            processingTime: linkedInResponse.processingTime,
-            usage: linkedInResponse.usage
-        };
-        } catch (error) {
-            console.error('LinkedIn-enhanced OpenRouter call failed:', error.message);
-            return offlineFallback(latest);
-        }
-    }
-
-    try {
-        const generalResponse = await callOpenRouter({
-            model: MODEL,
-            messages: buildGeneralMessages(messages, latest),
-            temperature: 0.7,
-            max_tokens: 1000
-        });
-
-        const categoryMap = {
-            'math': 'Mathematics',
-            'factual': 'General Knowledge',
-            'general': 'General',
-            'portfolio': 'Portfolio'
-        };
-
-        return {
-            answer: generalResponse.answer,
-            source: 'OpenRouter',
-            model: 'Gemini 2.0 Flash',
-            category: categoryMap[typeHint] || 'General',
-            confidence: 0.90,
-            runtime: generalResponse.processingTime + 'ms',
-            type: typeHint,
-            providers: ['OpenRouter'],
-            processingTime: generalResponse.processingTime,
-            usage: generalResponse.usage
-        };
-    } catch (error) {
-        console.error('OpenRouter call failed:', error.message);
-        return offlineFallback(latest);
-    }
-}
-
-export default {
-    processQuery
-};
+export default { processQuery };
