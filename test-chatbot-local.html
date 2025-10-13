@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot/styles/chatbot.css">
+    <link rel="stylesheet" href="chatbot/styles/apple-intelligence.css">
+    <link rel="stylesheet" href="chatbot/styles/animations.css">
+</head>
+<body>
+    <h1>Chatbot Test Page</h1>
+    
+    <!-- Chatbot -->
+    <button id="chatbot-toggle" type="button">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <div id="chatbot-widget" class="hidden">
+        <div class="chatbot-header">
+            <div class="chatbot-header-content">
+                <h3>AssistMe</h3>
+                <p>AI Assistant</p>
+            </div>
+            <button class="chatbot-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="chatbot-messages"></div>
+
+        <form class="chatbot-input-area" id="chatbot-form">
+            <input type="text" id="chatbot-input" placeholder="Ask me anything..." />
+            <button type="submit" class="chatbot-btn chatbot-send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+            <button type="button" class="chatbot-btn chatbot-voice-btn" id="chatbot-voice-btn">
+                <i class="fas fa-microphone"></i>
+                <span class="chatbot-voice-badge">S2R</span>
+            </button>
+        </form>
+    </div>
+
+    <script type="module" src="chatbot/chatbot-init.js"></script>
+</body>
+</html>

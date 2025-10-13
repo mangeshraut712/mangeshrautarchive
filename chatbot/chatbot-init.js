@@ -13,29 +13,47 @@
 import { initChatbot } from './scripts/chatbot-core.js';
 
 // Auto-initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 Starting chatbot initialization...');
-  
-  try {
-    // Initialize chatbot with default config
-    const chatbot = await initChatbot({
-      // Override any config here if needed
-      debug: false
-    });
+if (typeof window !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 Starting chatbot initialization...');
     
-    // Show welcome message after a delay
-    setTimeout(() => {
-      if (chatbot && chatbot.ui) {
-        chatbot.ui.addMessage(
-          "Hello! I'm AssistMe. Ask me about Mangesh Raut's experience, skills, or any technical questions.",
-          'bot'
-        );
+    try {
+      // Check if chatbot elements exist
+      const toggle = document.getElementById('chatbot-toggle');
+      const widget = document.getElementById('chatbot-widget');
+      
+      if (!toggle || !widget) {
+        console.error('❌ Chatbot elements not found!', {
+          toggle: !!toggle,
+          widget: !!widget
+        });
+        return;
       }
-    }, 500);
-    
-  } catch (error) {
-    console.error('❌ Failed to initialize chatbot:', error);
-  }
-});
+      
+      console.log('✅ Chatbot elements found');
+      
+      // Initialize chatbot with default config
+      const chatbot = await initChatbot({
+        // Override any config here if needed
+        debug: true // Enable debug for testing
+      });
+      
+      console.log('✅ Chatbot initialized:', chatbot);
+      
+      // Show welcome message after a delay
+      setTimeout(() => {
+        if (chatbot && chatbot.ui) {
+          chatbot.ui.addMessage(
+            "Hello! I'm AssistMe. Ask me about Mangesh Raut's experience, skills, or any technical questions.",
+            'bot'
+          );
+        }
+      }, 500);
+      
+    } catch (error) {
+      console.error('❌ Failed to initialize chatbot:', error);
+    }
+  });
+}
 
 console.log('📦 Chatbot module loaded');
