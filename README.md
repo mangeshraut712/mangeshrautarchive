@@ -1,44 +1,50 @@
-# 🎯 Mangesh Raut - Portfolio Website
+# 🎯 Mangesh Raut - AI-Powered Portfolio
 
-**Modern, AI-Powered Portfolio with Voice Assistant**
+**Modern Portfolio Website with Intelligent Chatbot Assistant**
 
 [![Live Demo](https://img.shields.io/badge/Demo-Live-success)](https://mangeshraut712.github.io/mangeshrautarchive/)
-[![Vercel](https://img.shields.io/badge/Backend-Vercel-black)](https://mangeshrautarchive.vercel.app/)
+[![Backend](https://img.shields.io/badge/API-Vercel-black)](https://mangeshrautarchive.vercel.app/)
+[![AI](https://img.shields.io/badge/AI-Gemini%202.0-blue)](https://openrouter.ai/)
 
 ---
 
 ## ✨ Features
 
-- **AI Chatbot** - Powered by OpenRouter & Google Gemini 2.0 Flash
-- **Voice Assistant** - Natural voice interaction with S2R technology
-- **Smart Navbar** - Apple.com-inspired navigation
-- **Performance Optimized** - 120Hz smooth animations
-- **Responsive Design** - Mobile-first, works on all devices
-- **Real-time API Status** - Live AI availability indicator
+- 🤖 **AI Chatbot** - Google Gemini 2.0 Flash via OpenRouter
+- 🎙️ **Voice Assistant** - S2R-inspired natural conversation
+- 🎨 **Apple-Inspired Design** - Clean, modern, professional
+- ⚡ **Performance Optimized** - 120Hz smooth animations
+- 📱 **Fully Responsive** - Works on all devices
+- 🌓 **Dark Mode** - Automatic theme switching
+- 📊 **Real-time Status** - Live AI availability indicator
 
 ---
 
 ## 🚀 Quick Start
 
-### For Users
+### For Visitors
 
-Visit the live site: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+**Visit Live Site**: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+
+**Try the Chatbot**:
+1. Click the blue 💬 icon (bottom right)
+2. Ask about Mangesh's experience, skills, or projects
+3. Or ask general questions - AI will respond!
 
 ### For Developers
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
 
 # Install dependencies
 npm install
 
-# Start local development server
-npm start
+# Start development server
+npm run dev
 
-# Open browser
-# http://localhost:3000
+# Open browser at http://localhost:3000
 ```
 
 ---
@@ -47,61 +53,47 @@ npm start
 
 ```
 portfolio/
-├── api/                    # Backend Serverless Functions
+├── api/                    # Backend (Vercel Serverless)
 │   ├── chat.js            # Main chat endpoint
 │   ├── chat-service.js    # AI service logic
-│   └── status.js          # API status check
+│   └── status.js          # Health check
 │
-├── src/                   # Frontend Source
-│   ├── assets/           
+├── src/                   # Frontend (GitHub Pages)
+│   ├── assets/
 │   │   ├── css/          # Stylesheets
 │   │   ├── images/       # Images & icons
-│   │   └── files/        # PDFs & documents
-│   │
+│   │   └── files/        # Resume & papers
 │   ├── js/
-│   │   ├── core/         # Core functionality
-│   │   │   ├── chat.js   # Chatbot logic
-│   │   │   ├── config.js # Configuration
-│   │   │   └── script.js # Main script
-│   │   │
-│   │   ├── modules/      # Feature modules
-│   │   │   ├── animations.js
-│   │   │   ├── contact.js
-│   │   │   ├── overlay.js
-│   │   │   └── ...
-│   │   │
-│   │   └── utils/        # Utilities
-│   │       ├── api-status.js
-│   │       ├── smart-navbar.js
-│   │       ├── theme.js
-│   │       └── voice-manager.js
-│   │
-│   └── index.html        # Main HTML file
+│   │   ├── core/         # Core (chat, config, script)
+│   │   ├── modules/      # Features (animations, contact, etc.)
+│   │   └── utils/        # Utilities (navbar, theme, voice)
+│   └── index.html
 │
-├── docs/                 # Documentation
-│   ├── setup/           # Setup guides
-│   ├── deployment/      # Deployment guides
-│   └── guides/          # Various guides
+├── docs/                  # Documentation
+│   ├── setup/            # Setup guides
+│   ├── deployment/       # Deploy guides
+│   └── guides/           # Historical docs
 │
-├── scripts/             # Build & dev scripts
-├── .github/workflows/   # GitHub Actions
-├── package.json
-├── vercel.json         # Vercel configuration
-└── README.md
+├── scripts/              # Build tools
+└── .github/workflows/    # CI/CD
+
+Total: ~100 files, clean & organized
 ```
+
+**See [STRUCTURE.md](STRUCTURE.md) for complete layout**
 
 ---
 
 ## 🤖 AI Chatbot
 
-### Technology
+### Technology Stack
 
 - **Provider**: OpenRouter
 - **Model**: Google Gemini 2.0 Flash (`google/gemini-2.0-flash-001`)
 - **Features**:
-  - Portfolio Q&A (LinkedIn integration)
-  - General knowledge
-  - Code examples
+  - Portfolio Q&A with LinkedIn integration
+  - General knowledge questions
+  - Code examples and explanations
   - Math calculations
   - Auto-categorization
 
@@ -112,7 +104,7 @@ portfolio/
   "answer": "AI-generated response...",
   "source": "OpenRouter",
   "model": "Gemini 2.0 Flash",
-  "category": "Portfolio|Math|General Knowledge|...",
+  "category": "Portfolio|Mathematics|General Knowledge",
   "confidence": 0.90,
   "runtime": "450ms"
 }
@@ -123,29 +115,29 @@ portfolio/
 ## 🎙️ Voice Mode
 
 - Natural voice interaction
-- Continuous conversation
-- Auto-silence detection
+- Continuous conversation flow
+- Auto-silence detection  
 - Visual feedback
-- Works on mobile & desktop
+- S2R semantic understanding
 
 ---
 
 ## 🛠️ Development
 
-### Scripts
+### Available Scripts
 
 ```bash
-npm start          # Start development server
-npm run build      # Build for production
-npm test           # Run tests
+npm run dev           # Start development server
+npm run build         # Build for production
+npm run security-check # Check for exposed secrets
 ```
 
 ### Environment Variables
 
-For local development, set these in Vercel dashboard:
+Set in Vercel Dashboard → Settings → Environment Variables:
 
 ```env
-OPENROUTER_API_KEY=your_openrouter_api_key
+OPENROUTER_API_KEY=your_openrouter_api_key_here
 ```
 
 ---
@@ -154,20 +146,22 @@ OPENROUTER_API_KEY=your_openrouter_api_key
 
 ### Frontend (GitHub Pages)
 
-Automatically deployed on push to `main` branch.
+Automatically deploys on push to `main` branch via GitHub Actions.
 
 ```bash
 git push origin main
+# Deployed in ~2 minutes
 ```
 
 ### Backend (Vercel)
 
-Connected to GitHub - auto-deploys on push.
+Auto-deploys when GitHub repo updates.
 
-**Manual Deploy:**
-1. Go to Vercel Dashboard
-2. Select project
-3. Click "Redeploy"
+**Manual Redeploy**:
+1. Vercel Dashboard → Project
+2. Deployments → "..." → Redeploy
+3. Uncheck "Use existing Build Cache"
+4. Wait 2-3 minutes
 
 ---
 
@@ -176,36 +170,39 @@ Connected to GitHub - auto-deploys on push.
 ### Update Profile
 
 Edit `src/index.html`:
-- Personal info
-- Experience
-- Projects
-- Skills
+- Personal information
+- Work experience
+- Education
+- Projects & skills
 
-### Update Styles
+### Modify Styles
 
 Edit `src/assets/css/style.css`:
-- Colors
-- Fonts
-- Layout
+- Colors & themes
+- Fonts & typography
+- Layout & spacing
 
-### Update Chatbot
+### Configure Chatbot
 
 Edit `api/chat-service.js`:
-- AI model
+- AI model settings
 - System prompts
-- LinkedIn data
+- LinkedIn profile data
 
 ---
 
 ## 🧪 Testing
 
+### Test Chatbot API
+
 ```bash
-# Test chatbot
 curl -X POST https://mangeshrautarchive.vercel.app/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message":"What is 5+5?"}'
+```
 
-# Expected response
+**Expected Response**:
+```json
 {
   "answer": "10",
   "source": "OpenRouter",
@@ -216,34 +213,43 @@ curl -X POST https://mangeshrautarchive.vercel.app/api/chat \
 }
 ```
 
+### Test Frontend
+
+Visit: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+
+- ✅ Homepage loads
+- ✅ Navigation works
+- ✅ Chatbot icon appears (bottom right)
+- ✅ Click to open chatbot
+- ✅ Send messages
+
 ---
 
 ## 📚 Documentation
 
-Full documentation available in `docs/`:
+Comprehensive documentation in `docs/`:
 
-- [Setup Guide](docs/setup/)
-- [Deployment Guide](docs/deployment/)
-- [API Documentation](docs/api/)
-- [Troubleshooting](docs/guides/)
+- **[Setup Guide](docs/setup/)** - Getting started
+- **[Deployment](docs/deployment/)** - Deploy instructions
+- **[Guides](docs/guides/)** - Troubleshooting & more
+- **[Structure](STRUCTURE.md)** - Project organization
 
 ---
 
 ## 🤝 Contributing
 
-This is a personal portfolio project, but suggestions are welcome!
+Personal portfolio, but suggestions welcome!
 
 1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
+2. Create feature branch
+3. Make changes
+4. Submit pull request
 
 ---
 
 ## 📄 License
 
-MIT License - feel free to use this template for your own portfolio!
+MIT License - Use this template for your own portfolio!
 
 ---
 
@@ -251,19 +257,25 @@ MIT License - feel free to use this template for your own portfolio!
 
 **Mangesh Raut**
 
-- Portfolio: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
-- LinkedIn: [linkedin.com/in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298/)
-- Email: mbr63@drexel.edu
+- 🌐 Portfolio: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+- 💼 LinkedIn: [linkedin.com/in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298/)
+- 📧 Email: mbr63@drexel.edu
+- 📍 Location: Philadelphia, PA
+
+**Software Engineer | AI/ML Specialist | Full-Stack Developer**
 
 ---
 
 ## 🙏 Acknowledgments
 
-- OpenRouter for AI API
-- Google Gemini 2.0 Flash
-- Vercel for hosting
-- GitHub Pages
+- OpenRouter - AI API Platform
+- Google Gemini 2.0 Flash - AI Model
+- Vercel - Backend Hosting
+- GitHub Pages - Frontend Hosting
 
 ---
 
 **Built with ❤️ using HTML, CSS, JavaScript, and AI**
+
+**Last Updated**: October 2025  
+**Version**: 2.0 (Refactored & Optimized)
