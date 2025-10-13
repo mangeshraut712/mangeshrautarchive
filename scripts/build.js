@@ -68,6 +68,7 @@ async function build() {
 
     await mkdir(distDir, { recursive: true });
     await cp(srcDir, distDir, { recursive: true });
+    await cp(resolve(projectRoot, 'chatbot'), resolve(distDir, 'chatbot'), { recursive: true });
 
     for (const item of staticExtras) {
         const source = resolve(projectRoot, item);

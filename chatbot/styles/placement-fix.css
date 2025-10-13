@@ -8,9 +8,8 @@
 /* Chatbot Toggle - Scroll-Aware Floating Button */
 #chatbot-toggle {
   position: fixed !important;
-  bottom: 32px !important;
-  right: 32px !important;
-  z-index: 998 !important; /* Above content but below widget */
+  bottom: 200px !important;
+  right: 60px !important;
 
   /* Classic Blue Circular Button */
   width: 56px !important;
