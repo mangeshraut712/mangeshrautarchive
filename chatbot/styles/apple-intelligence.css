@@ -1,0 +1,310 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * APPLE INTELLIGENCE DESIGN SYSTEM
+ * Matching Apple.com and Apple Intelligence UI exactly
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ─────────────────────────────────────────────────────────── 
+   DESIGN TOKENS (Apple Intelligence)
+   ─────────────────────────────────────────────────────────── */
+
+:root {
+  /* Typography - Apple SF Pro */
+  --ai-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --ai-font-weight-regular: 400;
+  --ai-font-weight-medium: 500;
+  --ai-font-weight-semibold: 600;
+  --ai-font-weight-bold: 700;
+  
+  /* Font Sizes (Apple Scale) */
+  --ai-text-xs: 11px;
+  --ai-text-sm: 13px;
+  --ai-text-base: 15px;
+  --ai-text-lg: 17px;
+  --ai-text-xl: 20px;
+  --ai-text-2xl: 24px;
+  
+  /* Line Heights */
+  --ai-leading-tight: 1.2;
+  --ai-leading-normal: 1.5;
+  --ai-leading-relaxed: 1.6;
+  
+  /* Letter Spacing */
+  --ai-tracking-tight: -0.022em;
+  --ai-tracking-normal: -0.01em;
+  
+  /* LIGHT MODE COLORS (Apple.com) */
+  --ai-light-bg-primary: #ffffff;
+  --ai-light-bg-secondary: #f5f5f7;
+  --ai-light-bg-tertiary: #e8e8ed;
+  
+  --ai-light-text-primary: #1d1d1f;
+  --ai-light-text-secondary: #6e6e73;
+  --ai-light-text-tertiary: #86868b;
+  
+  --ai-light-border: rgba(0, 0, 0, 0.1);
+  --ai-light-border-subtle: rgba(0, 0, 0, 0.06);
+  
+  --ai-light-blue: #0071e3;
+  --ai-light-blue-hover: #0077ed;
+  
+  /* DARK MODE COLORS (Apple.com) */
+  --ai-dark-bg-primary: #000000;
+  --ai-dark-bg-secondary: #1d1d1f;
+  --ai-dark-bg-tertiary: #2d2d2d;
+  
+  --ai-dark-text-primary: #f5f5f7;
+  --ai-dark-text-secondary: #a1a1a6;
+  --ai-dark-text-tertiary: #86868b;
+  
+  --ai-dark-border: rgba(255, 255, 255, 0.15);
+  --ai-dark-border-subtle: rgba(255, 255, 255, 0.08);
+  
+  --ai-dark-blue: #2997ff;
+  --ai-dark-blue-hover: #409cff;
+  
+  /* Effects */
+  --ai-blur: 20px;
+  --ai-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --ai-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --ai-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --ai-shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.15);
+  
+  /* Transitions */
+  --ai-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --ai-transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --ai-transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────────────────── 
+   LIGHT MODE (Default)
+   ─────────────────────────────────────────────────────────── */
+
+#chatbot-toggle {
+  /* Use light mode colors */
+  background: linear-gradient(135deg, var(--ai-light-blue), #0051d5);
+  color: white;
+  font-family: var(--ai-font-family);
+  font-weight: var(--ai-font-weight-semibold);
+  box-shadow: var(--ai-shadow-md), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+#chatbot-widget {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(var(--ai-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--ai-blur)) saturate(180%);
+  border: 1px solid var(--ai-light-border-subtle);
+  box-shadow: var(--ai-shadow-xl);
+  font-family: var(--ai-font-family);
+}
+
+.chatbot-header {
+  background: linear-gradient(135deg, var(--ai-light-blue), #0051d5);
+  backdrop-filter: blur(var(--ai-blur));
+  -webkit-backdrop-filter: blur(var(--ai-blur));
+}
+
+.chatbot-header h3 {
+  color: white;
+  font-size: var(--ai-text-lg);
+  font-weight: var(--ai-font-weight-semibold);
+  letter-spacing: var(--ai-tracking-tight);
+}
+
+.chatbot-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--ai-text-sm);
+  font-weight: var(--ai-font-weight-regular);
+  letter-spacing: var(--ai-tracking-normal);
+}
+
+.chatbot-message {
+  font-family: var(--ai-font-family);
+  font-size: var(--ai-text-base);
+  font-weight: var(--ai-font-weight-regular);
+  line-height: var(--ai-leading-normal);
+  letter-spacing: var(--ai-tracking-normal);
+}
+
+.chatbot-message.user {
+  background: linear-gradient(135deg, var(--ai-light-blue), #5ac8fa);
+  color: white;
+  font-weight: var(--ai-font-weight-regular);
+}
+
+.chatbot-message.bot {
+  background: var(--ai-light-bg-secondary);
+  color: var(--ai-light-text-primary);
+  font-weight: var(--ai-font-weight-regular);
+}
+
+.chatbot-message-metadata {
+  color: var(--ai-light-text-tertiary);
+  font-size: var(--ai-text-xs);
+  font-weight: var(--ai-font-weight-regular);
+}
+
+#chatbot-input {
+  background: var(--ai-light-bg-primary);
+  color: var(--ai-light-text-primary);
+  border: 1px solid var(--ai-light-border);
+  font-family: var(--ai-font-family);
+  font-size: var(--ai-text-base);
+  font-weight: var(--ai-font-weight-regular);
+}
+
+#chatbot-input::placeholder {
+  color: var(--ai-light-text-tertiary);
+  font-weight: var(--ai-font-weight-regular);
+}
+
+.chatbot-input-area {
+  background: var(--ai-light-bg-secondary);
+  border-top: 1px solid var(--ai-light-border-subtle);
+}
+
+/* ─────────────────────────────────────────────────────────── 
+   DARK MODE (Matches Apple.com exactly)
+   ─────────────────────────────────────────────────────────── */
+
+html.dark #chatbot-toggle,
+[data-theme="dark"] #chatbot-toggle {
+  background: linear-gradient(135deg, var(--ai-dark-blue), #147ce5);
+  box-shadow: var(--ai-shadow-md), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+html.dark #chatbot-widget,
+[data-theme="dark"] #chatbot-widget {
+  background: rgba(29, 29, 31, 0.85);
+  backdrop-filter: blur(var(--ai-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--ai-blur)) saturate(180%);
+  border: 1px solid var(--ai-dark-border-subtle);
+  box-shadow: var(--ai-shadow-xl), 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+html.dark .chatbot-header,
+[data-theme="dark"] .chatbot-header {
+  background: linear-gradient(135deg, var(--ai-dark-blue), #147ce5);
+}
+
+html.dark .chatbot-header h3,
+[data-theme="dark"] .chatbot-header h3 {
+  color: white;
+  font-size: var(--ai-text-lg);
+  font-weight: var(--ai-font-weight-semibold);
+  letter-spacing: var(--ai-tracking-tight);
+}
+
+html.dark .chatbot-header p,
+[data-theme="dark"] .chatbot-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--ai-text-sm);
+  font-weight: var(--ai-font-weight-regular);
+  letter-spacing: var(--ai-tracking-normal);
+}
+
+/* IMPORTANT: Same font weight in dark mode (not bold!) */
+html.dark .chatbot-message,
+[data-theme="dark"] .chatbot-message {
+  font-weight: var(--ai-font-weight-regular); /* Same as light mode */
+  font-size: var(--ai-text-base); /* Same as light mode */
+  line-height: var(--ai-leading-normal); /* Same as light mode */
+  letter-spacing: var(--ai-tracking-normal); /* Same as light mode */
+}
+
+html.dark .chatbot-message.user,
+[data-theme="dark"] .chatbot-message.user {
+  background: linear-gradient(135deg, var(--ai-dark-blue), #5ac8fa);
+  color: white;
+  font-weight: var(--ai-font-weight-regular); /* NOT BOLD */
+}
+
+html.dark .chatbot-message.bot,
+[data-theme="dark"] .chatbot-message.bot {
+  background: var(--ai-dark-bg-secondary);
+  color: var(--ai-dark-text-primary);
+  font-weight: var(--ai-font-weight-regular); /* NOT BOLD */
+}
+
+html.dark .chatbot-message-metadata,
+[data-theme="dark"] .chatbot-message-metadata {
+  color: var(--ai-dark-text-tertiary);
+  font-size: var(--ai-text-xs); /* Same as light mode */
+  font-weight: var(--ai-font-weight-regular); /* Same as light mode */
+}
+
+html.dark #chatbot-input,
+[data-theme="dark"] #chatbot-input {
+  background: var(--ai-dark-bg-tertiary);
+  color: var(--ai-dark-text-primary);
+  border: 1px solid var(--ai-dark-border);
+  font-size: var(--ai-text-base); /* Same as light mode */
+  font-weight: var(--ai-font-weight-regular); /* Same as light mode */
+}
+
+html.dark #chatbot-input::placeholder,
+[data-theme="dark"] #chatbot-input::placeholder {
+  color: var(--ai-dark-text-tertiary);
+  font-weight: var(--ai-font-weight-regular); /* Same as light mode */
+}
+
+html.dark .chatbot-input-area,
+[data-theme="dark"] .chatbot-input-area {
+  background: var(--ai-dark-bg-secondary);
+  border-top: 1px solid var(--ai-dark-border-subtle);
+}
+
+html.dark #chatbot-messages::-webkit-scrollbar-thumb,
+[data-theme="dark"] #chatbot-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────── 
+   BUTTONS (Same weight in both modes)
+   ─────────────────────────────────────────────────────────── */
+
+.chatbot-btn {
+  font-weight: var(--ai-font-weight-semibold); /* Consistent */
+  transition: all var(--ai-transition-base);
+}
+
+.chatbot-close-btn {
+  font-weight: var(--ai-font-weight-regular); /* Light */
+  transition: all var(--ai-transition-fast);
+}
+
+/* ─────────────────────────────────────────────────────────── 
+   ENSURE CONSISTENCY
+   ─────────────────────────────────────────────────────────── */
+
+/* All text uses same font family */
+#chatbot-widget,
+#chatbot-widget * {
+  font-family: var(--ai-font-family);
+}
+
+/* Reset any bold that might be applied */
+html.dark .chatbot-message,
+html.dark .chatbot-header h3,
+html.dark .chatbot-header p,
+html.dark #chatbot-input,
+[data-theme="dark"] .chatbot-message,
+[data-theme="dark"] .chatbot-header h3,
+[data-theme="dark"] .chatbot-header p,
+[data-theme="dark"] #chatbot-input {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth theme transitions */
+#chatbot-widget,
+#chatbot-widget *,
+#chatbot-toggle {
+  transition: 
+    background-color var(--ai-transition-base),
+    color var(--ai-transition-base),
+    border-color var(--ai-transition-base),
+    box-shadow var(--ai-transition-base);
+}

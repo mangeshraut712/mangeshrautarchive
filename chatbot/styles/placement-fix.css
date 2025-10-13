@@ -1,0 +1,86 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * CHATBOT PLACEMENT - Apple Intelligence Position
+ * Perfect placement matching Apple.com standards
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* Toggle Button - Fixed Bottom Right */
+#chatbot-toggle {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 9999 !important;
+  
+  /* Ensure always visible */
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  
+  /* Never moves */
+  transform: translate3d(0, 0, 0) !important;
+}
+
+/* Widget - Below Toggle */
+#chatbot-widget {
+  position: fixed !important;
+  bottom: 100px !important;
+  right: 24px !important;
+  z-index: 9998 !important;
+  
+  /* Size constraints */
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  height: 600px;
+  max-height: calc(100vh - 140px);
+  
+  /* Never moves on scroll */
+  transform: translate3d(0, 0, 0);
+}
+
+/* Hidden state */
+#chatbot-widget.hidden {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translate3d(0, 20px, 0) scale(0.95) !important;
+}
+
+/* Visible state */
+#chatbot-widget:not(.hidden) {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  #chatbot-toggle {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 56px !important;
+    height: 56px !important;
+  }
+  
+  #chatbot-widget {
+    bottom: 84px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    height: calc(100vh - 110px) !important;
+    max-height: none !important;
+  }
+}
+
+/* Prevent any layout shifts */
+body {
+  overflow-anchor: none;
+}
+
+#chatbot-toggle,
+#chatbot-widget {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}

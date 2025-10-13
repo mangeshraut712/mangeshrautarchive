@@ -46,8 +46,11 @@
     />
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/instant-performance.css" />
-    <!-- Chatbot Styles (loaded last to override conflicts) -->
-    <link rel="stylesheet" href="assets/css/chatbot-complete.css" />
+    <!-- Chatbot Styles (Standalone Module) -->
+    <link rel="stylesheet" href="../chatbot/styles/chatbot.css" />
+    <link rel="stylesheet" href="../chatbot/styles/apple-intelligence.css" />
+    <link rel="stylesheet" href="../chatbot/styles/placement-fix.css" />
+    <link rel="stylesheet" href="../chatbot/styles/animations.css" />
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
     
     <!-- Added CDN links for external libraries with preload -->
@@ -1394,56 +1397,72 @@
             </div>
           </div>
         </div>
-      </footer>
-    </main>
-
-    <!-- PORTFOLIO CHATBOT UI -->
+    <!-- ═══════════════════════════════════════════════════════════
+         ASSISTME CHATBOT (Standalone Module)
+         ═══════════════════════════════════════════════════════════ -->
+    
+    <!-- Toggle Button -->
     <button
-      id="portfolio-chat-toggle"
+      id="chatbot-toggle"
       type="button"
       aria-label="Open AssistMe chat"
       aria-haspopup="dialog"
-      aria-controls="portfolio-chat-widget"
+      aria-controls="chatbot-widget"
       aria-expanded="false"
     >
       <i class="fas fa-comment-dots"></i>
     </button>
 
+    <!-- Chatbot Widget -->
     <div
-      id="portfolio-chat-widget"
+      id="chatbot-widget"
       class="hidden"
       role="dialog"
       aria-label="AssistMe chat window"
+      aria-hidden="true"
     >
-      <div class="chat-header">
-        <div class="chat-header-content">
+      <!-- Header -->
+      <div class="chatbot-header">
+        <div class="chatbot-header-content">
           <h3>AssistMe</h3>
           <p>AI Assistant</p>
         </div>
-        <button id="portfolio-chat-close" title="Close Chat" class="chat-close-btn">
+        <button
+          class="chatbot-close-btn"
+          aria-label="Close chat"
+          title="Close Chat"
+        >
           <i class="fas fa-times"></i>
         </button>
       </div>
 
-      <div id="portfolio-chat-messages" aria-live="polite"></div>
+      <!-- Messages Area -->
+      <div
+        id="chatbot-messages"
+        aria-live="polite"
+        aria-atomic="false"
+      ></div>
 
-      <form class="chat-input-area" id="portfolio-chat-form">
+      <!-- Input Area -->
+      <form class="chatbot-input-area" id="chatbot-form">
         <input
           type="text"
-          id="portfolio-chat-input"
+          id="chatbot-input"
           placeholder="Ask me anything..."
           autocomplete="off"
           aria-label="Message AssistMe"
           required
         />
+        
         <button
           type="submit"
-          class="chat-send-button"
+          class="chatbot-btn chatbot-send-btn"
           aria-label="Send message"
           title="Send message"
         >
           <i class="fas fa-paper-plane"></i>
         </button>
+<<<<<<< HEAD
         <div class="voice-controls">
           <button
             type="button"
@@ -1495,24 +1514,35 @@
       </form>
     </div>
     <!-- END PORTFOLIO CHATBOT -->
+=======
+        
+        <button
+          type="button"
+          class="chatbot-btn chatbot-voice-btn"
+          id="chatbot-voice-btn"
+          aria-label="Voice input"
+          title="Voice input"
+        >
+          <i class="fas fa-microphone"></i>
+          <span class="chatbot-voice-badge">S2R</span>
+        </button>
+      </form>
+    </div>
+    <!-- END CHATBOT -->
+>>>>>>> 329211c3f95960fb02a26586d256e3dbed6865a4
 
     <script type="module" src="js/utils/api-status.js"></script>
     <script type="module" src="js/utils/smart-navbar.js"></script>
     <script src="js/utils/theme.js"></script>
-    <script type="module" src="js/modules/contact.js"></script>
     <script type="module">
-      // Initialize overlay menu functionality
-      if (typeof document !== 'undefined') {
-        document.addEventListener('DOMContentLoaded', () => {
-          // Mock overlay functions for now
-          console.log('Overlay menu initialized');
-        });
-      }
+      import { initOverlayMenu, initOverlayNavigation } from './js/modules/overlay.js';
+      initOverlayMenu();
+      initOverlayNavigation({ offsetSelector: '.global-nav' });
     </script>
-
-    <!-- Chatbot -->
-    <script type="module" src="js/core/chat.js"></script>
-    <script type="module" src="js/utils/voice-manager.js"></script>
+    <script type="module" src="js/modules/contact.js"></script>
+    
+    <!-- Chatbot Module (Standalone) -->
+    <script type="module" src="../chatbot/chatbot-init.js"></script>
 
     <script type="module" src="js/core/script.js"></script>
     <script>
