@@ -345,12 +345,9 @@ class IntelligentAssistant {
     }
 
     async callClientService(query) {
-        try {
-            return await clientChatService.processQuery(query);
-        } catch (error) {
-            console.warn('Client-side service failed:', error);
-            return null;
-        }
+        // Return null to skip client-side processing
+        // All processing is now handled server-side
+        return null;
     }
 
     _pushConversation(role, content) {
