@@ -1,12 +1,12 @@
 import { intelligentAssistant as chatAssistant } from './chat.js';
 import { ui as uiConfig, features, chat as chatConfig, errorMessages } from './config.js';
 
-import ExternalApiKeys from './modules/external-config.js';
-import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from './modules/overlay.js';
-import initContactForm from './modules/contact.js';
-import VoiceManager from './voice-manager.js';
-import initFadeInAnimation from './modules/animations.js';
-import renderProjects from './modules/projects.js';
+import ExternalApiKeys from '../modules/external-config.js';
+import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
+import initContactForm from '../modules/contact.js';
+import VoiceManager from '../utils/voice-manager.js';
+import initFadeInAnimation from '../modules/animations.js';
+import renderProjects from '../modules/projects.js';
 
 const markdownLib = (typeof window !== 'undefined' && window.marked)
     ? window.marked
@@ -72,11 +72,14 @@ class ChatUI {
 
     _initializeElements() {
         const form = document.getElementById('chat-form') ||
-                     document.getElementById('portfolio-chat-form');
+                     document.getElementById('portfolio-chat-form') ||
+                     document.getElementById('chatbot-form');
         const input = document.getElementById('message-input') ||
-                      document.getElementById('portfolio-chat-input');
+                      document.getElementById('portfolio-chat-input') ||
+                      document.getElementById('chatbot-input');
         const messages = document.getElementById('chat-messages') ||
-                         document.getElementById('portfolio-chat-messages');
+                         document.getElementById('portfolio-chat-messages') ||
+                         document.getElementById('chatbot-messages');
 
         return {
             form,
@@ -85,10 +88,14 @@ class ChatUI {
             clearButton: document.getElementById('clear-chat'),
             suggestions: null,
             status: null,
-            widget: document.getElementById('portfolio-chat-widget'),
-            toggleButton: document.getElementById('portfolio-chat-toggle'),
-            closeButton: document.getElementById('portfolio-chat-close'),
-            voiceButton: document.getElementById('portfolio-voice-input'),
+            widget: document.getElementById('portfolio-chat-widget') ||
+                    document.getElementById('chatbot-widget'),
+            toggleButton: document.getElementById('portfolio-chat-toggle') ||
+                          document.getElementById('chatbot-toggle'),
+            closeButton: document.getElementById('portfolio-chat-close') ||
+                         document.querySelector('.chatbot-close-btn'),
+            voiceButton: document.getElementById('portfolio-voice-input') ||
+                         document.getElementById('chatbot-voice-btn'),
             voiceMenu: document.getElementById('voice-control-menu'),
             voiceMenuClose: document.getElementById('voice-mode-close'),
             voiceOutputToggle: document.getElementById('voice-output-toggle'),
@@ -130,7 +137,9 @@ class ChatUI {
         document.addEventListener('click', (event) => {
             if (!this.suggestionsVisible) return;
             if (event.target.closest('.chat-suggestions')) return;
-            if (event.target.closest('#message-input') || event.target.closest('#portfolio-chat-input')) return;
+            if (event.target.closest('#message-input') ||
+                event.target.closest('#portfolio-chat-input') ||
+                event.target.closest('#chatbot-input')) return;
             this._hideSuggestions();
         });
 
@@ -192,7 +201,9 @@ class ChatUI {
             document.addEventListener('click', (event) => {
                 if (!this._isWidgetOpen()) return;
                 if (event.target.closest('#portfolio-chat-widget') ||
-                    event.target.closest('#portfolio-chat-toggle')) {
+                    event.target.closest('#chatbot-widget') ||
+                    event.target.closest('#portfolio-chat-toggle') ||
+                    event.target.closest('#chatbot-toggle')) {
                     return;
                 }
                 this._closeWidget();
@@ -1135,8 +1146,11 @@ class ChatUI {
 document.addEventListener('DOMContentLoaded', () => {
     const chatAnchor = document.getElementById('chat-form') ||
                        document.getElementById('portfolio-chat-form') ||
+                       document.getElementById('chatbot-form') ||
                        document.getElementById('portfolio-chat-widget') ||
-                       document.getElementById('portfolio-chat-messages');
+                       document.getElementById('chatbot-widget') ||
+                       document.getElementById('portfolio-chat-messages') ||
+                       document.getElementById('chatbot-messages');
 
     if (chatAnchor) {
         try {

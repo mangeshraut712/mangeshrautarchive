@@ -208,8 +208,8 @@ html.dark,
   transform: scale(1.1);
 }
 
-/* ─────────────────────────────────────────────────────────── 
-   MESSAGES AREA
+/* ───────────────────────────────────────────────────────────
+   MESSAGES AREA - Ultra Modern Glass Morphism
    ─────────────────────────────────────────────────────────── */
 
 #chatbot-messages {
@@ -220,14 +220,14 @@ html.dark,
   display: flex;
   flex-direction: column;
   gap: var(--chatbot-spacing-md);
-  
-  /* Scrollbar */
+
+  /* Ultra Modern Scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: var(--chatbot-border) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 #chatbot-messages::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 #chatbot-messages::-webkit-scrollbar-track {
@@ -235,8 +235,13 @@ html.dark,
 }
 
 #chatbot-messages::-webkit-scrollbar-thumb {
-  background: var(--chatbot-border);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+#chatbot-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* ─────────────────────────────────────────────────────────── 
@@ -305,8 +310,8 @@ html.dark,
   30% { opacity: 1; }
 }
 
-/* ─────────────────────────────────────────────────────────── 
-   INPUT AREA
+/* ───────────────────────────────────────────────────────────
+   INPUT AREA - Ultra Modern Glass Morphism
    ─────────────────────────────────────────────────────────── */
 
 .chatbot-input-area {
@@ -314,31 +319,54 @@ html.dark,
   align-items: center;
   gap: var(--chatbot-spacing-sm);
   padding: var(--chatbot-spacing-md) var(--chatbot-spacing-lg);
-  background: var(--chatbot-input-bg);
-  border-top: 1px solid var(--chatbot-border);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0 0 var(--chatbot-radius) var(--chatbot-radius);
   flex-shrink: 0;
+
+  /* Subtle glass morphism */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 }
 
 #chatbot-input {
   flex: 1;
   padding: 12px var(--chatbot-spacing-md);
-  border: 1px solid var(--chatbot-border);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--chatbot-radius);
-  background: var(--chatbot-bg);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--chatbot-text);
   font-size: var(--chatbot-font-message);
   font-family: var(--chatbot-font);
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Subtle glass morphism */
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+
+  /* Placeholder styling */
+  position: relative;
+}
+
+#chatbot-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
 }
 
 #chatbot-input:focus {
   border-color: var(--chatbot-primary);
-  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
+
+  /* Focus glow effect */
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2),
+              inset 0 1px 2px rgba(255, 255, 255, 0.15);
 }
 
-/* Buttons */
+/* Buttons - Classic Blue Design for Send and Voice */
 .chatbot-btn {
   width: 44px;
   height: 44px;
@@ -350,27 +378,48 @@ html.dark,
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   flex-shrink: 0;
+  position: relative;
+
+  /* Ensure icons are perfectly centered */
+  justify-content: center;
+  align-items: center;
 }
 
 .chatbot-send-btn {
-  background: linear-gradient(135deg, var(--chatbot-primary), var(--chatbot-primary-dark));
+  /* Classic blue send button */
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
 }
 
 .chatbot-send-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+  background: linear-gradient(135deg, #0069d9, #004085);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+.chatbot-send-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0, 123, 255, 0.5);
 }
 
 .chatbot-voice-btn {
-  background: linear-gradient(135deg, var(--chatbot-success), var(--chatbot-success-dark));
+  /* Classic green voice button */
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
   position: relative;
 }
 
 .chatbot-voice-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.4);
+  background: linear-gradient(135deg, #218838, #155724);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.chatbot-voice-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(40, 167, 69, 0.5);
 }
 
 .chatbot-voice-badge {

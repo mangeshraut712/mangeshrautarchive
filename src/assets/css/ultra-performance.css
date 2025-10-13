@@ -73,7 +73,7 @@ main {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
 }
 
-#portfolio-chat-widget {
+#chatbot-widget {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
 }
 
@@ -91,9 +91,8 @@ img {
 }
 
 /* Instant scrolling - no delays */
-.chat-messages,
 #chat-messages,
-#portfolio-chat-messages {
+#chatbot-messages {
     scroll-behavior: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -112,7 +111,7 @@ img {
     .section,
     .hero-section,
     .project-card,
-    .message {
+    .chatbot-message {
         content-visibility: auto;
         contain-intrinsic-size: auto 500px;
     }

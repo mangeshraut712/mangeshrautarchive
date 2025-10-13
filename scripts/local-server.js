@@ -43,6 +43,10 @@ app.all('/api/:apiName', async (req, res) => {
 const staticPath = join(projectRoot, 'src');
 app.use(express.static(staticPath));
 
+// Serve chatbot assets so linked styles/scripts resolve correctly
+const chatbotPath = join(projectRoot, 'chatbot');
+app.use('/chatbot', express.static(chatbotPath));
+
 app.listen(port, () => {
     console.log(`\n🚀 Local development server running!`);
     console.log(`   - Frontend: http://localhost:${port}`);

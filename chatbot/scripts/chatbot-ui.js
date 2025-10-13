@@ -11,7 +11,7 @@ export class ChatbotUI {
     this.messageId = 0;
     
     // Get DOM elements
-    this.toggle = document.getElementById('chatbot-toggle');
+    this.toggleButton = document.getElementById('chatbot-toggle');
     this.widget = document.getElementById('chatbot-widget');
     this.closeBtn = document.querySelector('.chatbot-close-btn');
     this.form = document.getElementById('chatbot-form');
@@ -19,7 +19,7 @@ export class ChatbotUI {
     this.messages = document.getElementById('chatbot-messages');
     this.voiceBtn = document.getElementById('chatbot-voice-btn');
     
-    if (!this.toggle || !this.widget) {
+    if (!this.toggleButton || !this.widget) {
       console.error('❌ Chatbot elements not found!');
     }
   }
@@ -42,7 +42,7 @@ export class ChatbotUI {
    */
   open() {
     this.widget.classList.remove('hidden');
-    this.toggle.setAttribute('aria-expanded', 'true');
+    this.toggleButton?.setAttribute('aria-expanded', 'true');
     this.widget.setAttribute('aria-hidden', 'false');
     this.input?.focus();
     console.log('✅ Chatbot opened');
@@ -53,7 +53,7 @@ export class ChatbotUI {
    */
   close() {
     this.widget.classList.add('hidden');
-    this.toggle.setAttribute('aria-expanded', 'false');
+    this.toggleButton?.setAttribute('aria-expanded', 'false');
     this.widget.setAttribute('aria-hidden', 'true');
     console.log('✅ Chatbot closed');
   }
@@ -141,7 +141,7 @@ export class ChatbotUI {
    * Event: Toggle button clicked
    */
   onToggle(callback) {
-    this.toggle?.addEventListener('click', callback);
+    this.toggleButton?.addEventListener('click', callback);
   }
 
   /**

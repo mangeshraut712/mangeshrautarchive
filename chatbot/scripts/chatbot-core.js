@@ -15,6 +15,8 @@ class Chatbot {
     this.ui = null;
     this.api = null;
     this.isReady = false;
+    this.lastScrollY = 0;
+    this.scrollTimeout = null;
   }
 
   /**
@@ -50,15 +52,29 @@ class Chatbot {
    * Set up event listeners
    */
   setupEventListeners() {
-    // Toggle button click
-    this.ui.onToggle(() => {
-      this.ui.toggle();
+    // Scroll event for dynamic positioning
+    window.addEventListener('scroll', () => {
+      this.handleScroll();
     });
 
+    // Toggle button click - bind directly to avoid method reference issues
+    const toggleButton = document.getElementById('chatbot-toggle');
+    if (toggleButton) {
+      // Remove existing listeners to prevent duplication
+      toggleButton.removeEventListener('click', this._toggleHandler);
+      this._toggleHandler = (event) => {
+        console.log('Toggle button clicked directly');
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.ui && this.ui.toggle) {
+          this.ui.toggle();
+        }
+      };
+      toggleButton.addEventListener('click', this._toggleHandler);
+    }
+
     // Close button click
-    this.ui.onClose(() => {
-      this.ui.close();
-    });
+    this.ui.onClose(() => this.ui.close());
 
     // Message submission
     this.ui.onSubmit(async (message) => {
@@ -69,6 +85,59 @@ class Chatbot {
     this.ui.onVoiceClick(() => {
       this.handleVoice();
     });
+  }
+
+  /**
+   * Handle scroll events for dynamic positioning
+   */
+  handleScroll() {
+    const currentScrollY = window.scrollY;
+    const direction = currentScrollY > this.lastScrollY ? 'down' : 'up';
+    const scrollDistance = Math.abs(currentScrollY - this.lastScrollY);
+
+    // Update toggle position based on scroll direction
+    this.updateTogglePosition(direction, scrollDistance);
+
+    this.lastScrollY = currentScrollY;
+
+    // Clear existing timeout
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+    }
+
+    // Set new timeout to reset position after scrolling stops
+    this.scrollTimeout = setTimeout(() => {
+      this.resetTogglePosition();
+    }, 150);
+  }
+
+  /**
+   * Update toggle button position based on scroll direction
+   */
+  updateTogglePosition(direction, distance) {
+    const toggleButton = document.getElementById('chatbot-toggle');
+    if (!toggleButton) return;
+
+    // Calculate movement (subtle effect)
+    const maxMovement = 20;
+    const movement = Math.min(distance * 0.5, maxMovement);
+
+    // Apply transform based on scroll direction
+    if (direction === 'down') {
+      toggleButton.style.transform = `translate3d(0, ${-160 - movement}px, 0)`;
+    } else {
+      toggleButton.style.transform = `translate3d(0, ${-160 + movement}px, 0)`;
+    }
+  }
+
+  /**
+   * Reset toggle position after scrolling stops
+   */
+  resetTogglePosition() {
+    const toggleButton = document.getElementById('chatbot-toggle');
+    if (toggleButton) {
+      toggleButton.style.transform = 'translate3d(0, -160px, 0)';
+    }
   }
 
   /**
