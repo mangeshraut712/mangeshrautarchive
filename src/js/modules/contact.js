@@ -61,18 +61,17 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Import Firebase modules - CORRECTED PATH
+            // Import Firebase (Compat Mode)
             const firebaseModule = await import('../firebase-config.js');
-            const { db, collection, addDoc, serverTimestamp } = firebaseModule;
+            const { db, collection, serverTimestamp } = firebaseModule;
 
-            console.log('📡 Firebase module loaded:', {
+            console.log('📡 Firebase compat module loaded:', {
                 hasDb: !!db,
-                hasCollection: !!collection,
-                hasAddDoc: !!addDoc
+                dbType: typeof db
             });
 
             if (!db) {
-                throw new Error('Firebase database not initialized - check firebase-config.js');
+                throw new Error('Firebase database not initialized');
             }
 
             // Prepare message data
@@ -86,17 +85,17 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 submittedFrom: window.location.href
             };
 
-            console.log('📤 Sending to Firestore collection: messages');
+            console.log('📤 Sending to Firestore (compat mode)...');
             
-            // Send to Firestore
-            const docRef = await addDoc(collection(db, 'messages'), messageData);
+            // Send to Firestore using compat API
+            const messagesRef = db.collection('messages');
+            const docRef = await messagesRef.add(messageData);
 
             console.log('✅ Message saved to Firebase with ID:', docRef.id);
-            console.log('📬 Data saved:', {
+            console.log('📬 Data:', {
                 name: payload.name,
                 email: payload.email,
-                subject: payload.subject,
-                messageLength: payload.message.length
+                subject: payload.subject
             });
 
             showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');

@@ -1,12 +1,13 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * FIREBASE CONFIGURATION
+ * FIREBASE CONFIGURATION - COMPAT MODE
  * Portfolio Contact Form Backend
+ * Using compat for better transport stability
  * ═══════════════════════════════════════════════════════════
  */
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import firebase from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+import 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -19,33 +20,41 @@ const firebaseConfig = {
   measurementId: "G-YX2XQWYSCQ"
 };
 
-console.log('🔥 Initializing Firebase...');
+console.log('🔥 Initializing Firebase (Compat Mode for stability)...');
 
 // Initialize Firebase
-let app;
-let db;
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-try {
-  app = initializeApp(firebaseConfig);
-  console.log('✅ Firebase app initialized');
-  
-  db = getFirestore(app);
-  console.log('✅ Firestore database connected');
-  
-  // Test connection
-  console.log('📡 Firestore connection status:', {
-    app: !!app,
-    db: !!db,
-    projectId: firebaseConfig.projectId
+// Enable persistence for offline support
+db.enablePersistence({ synchronizeTabs: true })
+  .then(() => {
+    console.log('✅ Firebase persistence enabled');
+  })
+  .catch((err) => {
+    if (err.code === 'failed-precondition') {
+      console.log('⚠️ Persistence failed: Multiple tabs open');
+    } else if (err.code === 'unimplemented') {
+      console.log('⚠️ Persistence not supported');
+    }
   });
-  
-} catch (error) {
-  console.error('❌ Firebase initialization error:', error);
-  throw error;
-}
 
-console.log('✅ Firebase initialized successfully');
+console.log('✅ Firebase app initialized');
+console.log('✅ Firestore database connected');
+console.log('📡 Connection status:', {
+  app: !!app,
+  db: !!db,
+  projectId: firebaseConfig.projectId
+});
 
-// Export Firebase services
-export { db, collection, addDoc, serverTimestamp };
-export default { db, collection, addDoc, serverTimestamp };
+// Export for compat mode
+export { db };
+export default { 
+  db,
+  // Compat mode helpers
+  collection: (collectionName) => db.collection(collectionName),
+  serverTimestamp: () => firebase.firestore.FieldValue.serverTimestamp(),
+  addDoc: async (collectionRef, data) => {
+    return await collectionRef.add(data);
+  }
+};
