@@ -1954,7 +1954,7 @@
           const newToggle = toggle.cloneNode(true);
           toggle.parentNode.replaceChild(newToggle, toggle);
           
-          // Toggle handler
+          // Toggle handler - FIX ARIA WARNING
           newToggle.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1966,9 +1966,12 @@
               widget.classList.remove('hidden');
               widget.classList.add('active');
               newToggle.setAttribute('aria-expanded', 'true');
+              // FIX: Set aria-hidden BEFORE widget becomes visible (prevents focus warning)
               widget.setAttribute('aria-hidden', 'false');
               console.log('✅ Widget opened');
             } else {
+              // FIX: Blur input before closing to prevent aria-hidden warning
+              if (input) input.blur();
               widget.classList.add('hidden');
               widget.classList.remove('active');
               newToggle.setAttribute('aria-expanded', 'false');
@@ -1977,7 +1980,7 @@
             }
           });
           
-          // Close button
+          // Close button - FIX ARIA WARNING
           if (closeBtn) {
             const newClose = closeBtn.cloneNode(true);
             closeBtn.parentNode.replaceChild(newClose, closeBtn);
@@ -1985,9 +1988,12 @@
             newClose.addEventListener('click', function(e) {
               e.preventDefault();
               e.stopPropagation();
+              // FIX: Blur input before closing
+              if (input) input.blur();
               widget.classList.add('hidden');
               widget.classList.remove('active');
               newToggle.setAttribute('aria-expanded', 'false');
+              widget.setAttribute('aria-hidden', 'true');
               console.log('❌ Close button clicked');
             });
           }
