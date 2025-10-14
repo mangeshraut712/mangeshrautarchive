@@ -716,14 +716,15 @@
       }
     </style>
     
-    <!-- Chatbot JavaScript Styling -->
+    <!-- Chatbot JavaScript (Minimal - CSS handles styling) -->
     <script>
-      // Apply all chatbot styles via JavaScript for dynamic theme handling
+      // Removed JavaScript styling - now using advanced CSS with CSS variables
+      // CSS automatically adapts to html.dark class changes
       document.addEventListener('DOMContentLoaded', function() {
-        const isDark = () => document.documentElement.classList.contains('dark');
+        console.log('🎨 Using advanced CSS for theme-reactive styling');
         
-        // Apply styles to chatbot elements
-        function applyChatbotStyles() {
+        // Minimal JavaScript for functionality only
+        function initChatbotMinimal() {
           const isCurrentlyDark = isDark();
           
           // Scroll to top button
