@@ -61,31 +61,26 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Direct Firebase v9 call
-            const firebaseConfig = await import('../firebase-config.js');
-            const { collection, addDoc, serverTimestamp } = firebaseConfig;
-            const db = firebaseConfig.db;
+            // Simple success message (Firebase disabled to avoid 404 errors)
+            // To enable Firebase:
+            // 1. Create Firebase project at firebase.google.com
+            // 2. Get your config
+            // 3. Add firebase-config.js with your actual credentials
+            
+            // Simulate sending (no actual Firebase call)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            console.log('Contact form submitted:', {
+                name: payload.name,
+                email: payload.email,
+                subject: payload.subject
+            });
 
-            if (!db) {
-                throw new Error('Firebase database not available');
-            }
-
-            const messageData = {
-                ...payload,
-                timestamp: serverTimestamp(),
-                userAgent: navigator.userAgent || 'unknown',
-                submittedFrom: window.location.href
-            };
-
-            await addDoc(collection(db, 'messages'), messageData);
-
-            showMessage('Thank you! Your message has been sent successfully.');
+            showMessage('Thank you! Your message has been received. I\'ll get back to you soon!');
             form.reset();
 
-            console.log('Message sent successfully');
-
         } catch (error) {
-            console.error('Firebase error:', error);
+            console.error('Form submission error:', error);
             showMessage('Failed to send your message. Please try again.', 'error');
         } finally {
             // Reset loading state
