@@ -65,11 +65,32 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             message: formData.get('message')?.trim() || ''
         };
 
-        // Validate
+        console.log('📝 Form data captured:', {
+            name: payload.name,
+            email: payload.email,
+            subject: payload.subject,
+            hasMessage: !!payload.message
+        });
+
+        // Validate (skip if all fields present)
         if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+            console.log('❌ Validation failed:', {
+                name: !!payload.name,
+                email: !!payload.email,
+                subject: !!payload.subject,
+                message: !!payload.message
+            });
             showMessage('❌ Please fill in all fields.', 'error');
+            isSubmitting = false;
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Send Message';
+            }
+            inputs.forEach(input => input.disabled = false);
             return;
         }
+        
+        console.log('✅ Validation passed, proceeding with submission...');
 
         // Set loading state
         isSubmitting = true;
