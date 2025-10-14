@@ -306,7 +306,7 @@ html.dark .bot-message {
   box-shadow: 0 2px 12px rgba(10, 132, 255, 0.12) !important;
 }
 
-/* METADATA - Matches Response Text */
+/* METADATA - BLACK for both themes (as requested) */
 .message-metadata {
   font-size: 11px !important;
   margin-top: 8px !important;
@@ -314,20 +314,22 @@ html.dark .bot-message {
   font-weight: 400 !important;
   
   color: #000000 !important;
-  opacity: 0.7 !important;
+  opacity: 0.8 !important;
 }
 
 html.dark .message-metadata {
-  color: #ffffff !important;
+  color: #000000 !important;
+  opacity: 0.8 !important;
 }
 
 .message-metadata div {
   color: #000000 !important;
-  opacity: 0.7 !important;
+  opacity: 1 !important;
 }
 
 html.dark .message-metadata div {
-  color: #ffffff !important;
+  color: #000000 !important;
+  opacity: 1 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
