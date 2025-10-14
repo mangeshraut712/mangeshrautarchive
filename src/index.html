@@ -2264,12 +2264,12 @@
             const userMsg = text.trim();
             console.log('📤 Sending:', userMsg);
             
-              // Show user message (prevent vertical text)
+              // Show user message (FORCE HORIZONTAL)
               if (messages) {
                 const userDiv = document.createElement('div');
                 userDiv.className = 'message user-message';
-                userDiv.style.cssText = 'display: block !important; word-break: keep-all !important; white-space: pre-wrap !important; writing-mode: horizontal-tb !important;';
-                userDiv.textContent = userMsg;
+                userDiv.style.cssText = 'display: inline-block !important; word-break: normal !important; white-space: normal !important; writing-mode: horizontal-tb !important; direction: ltr !important; float: right !important; clear: both !important; margin-left: auto !important;';
+                userDiv.innerText = userMsg; // Use innerText (not textContent)
                 messages.appendChild(userDiv);
                 messages.scrollTop = messages.scrollHeight;
               }
