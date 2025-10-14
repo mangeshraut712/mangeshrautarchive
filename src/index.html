@@ -1673,12 +1673,80 @@
     <script type="module" src="js/modules/contact.js"></script>
     
     <!-- Chatbot Module (Standalone) -->
-    <script type="module" src="chatbot/chatbot-init.js"></script>
-
     <script type="module" src="js/core/script.js"></script>
     <script>
       // Firebase v9 initialization is now handled by the module script above
       console.log('Firebase initialization completed');
+    </script>
+    
+    <!-- CHATBOT FIX: Inline override to resolve opening issue -->
+    <script>
+      console.log('🚀 FIXING chatbot with inline override...');
+      
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const toggle = document.getElementById('chatbot-toggle');
+          const widget = document.getElementById('chatbot-widget');
+          const closeBtn = document.querySelector('.chatbot-close-btn');
+          
+          if (!toggle || !widget) {
+            console.error('❌ Elements not found:', { toggle: !!toggle, widget: !!widget });
+            return;
+          }
+          
+          console.log('✅ Elements found - Resetting handlers');
+          
+          // Clone toggle to remove ALL existing listeners
+          const newToggle = toggle.cloneNode(true);
+          toggle.parentNode.replaceChild(newToggle, toggle);
+          
+          // Clone close button too
+          if (closeBtn) {
+            const newClose = closeBtn.cloneNode(true);
+            closeBtn.parentNode.replaceChild(newClose, closeBtn);
+            
+            newClose.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('❌ CLOSE clicked');
+              widget.classList.add('hidden');
+              widget.classList.remove('active');
+              widget.style.cssText = 'visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;';
+              newToggle.setAttribute('aria-expanded', 'false');
+            });
+          }
+          
+          // SINGLE CLEAN TOGGLE HANDLER
+          newToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isHidden = widget.classList.contains('hidden') || 
+                            widget.style.visibility === 'hidden' ||
+                            window.getComputedStyle(widget).visibility === 'hidden';
+            
+            console.log('🔄 TOGGLE clicked - isHidden:', isHidden);
+            
+            if (isHidden) {
+              // OPEN - Force all visibility styles
+              widget.classList.remove('hidden');
+              widget.classList.add('active');
+              widget.style.cssText = 'visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; display: flex !important;';
+              newToggle.setAttribute('aria-expanded', 'true');
+              console.log('✅ OPENED - Widget should be visible now!');
+            } else {
+              // CLOSE
+              widget.classList.add('hidden');
+              widget.classList.remove('active');
+              widget.style.cssText = 'visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;';
+              newToggle.setAttribute('aria-expanded', 'false');
+              console.log('❌ CLOSED - Widget hidden');
+            }
+          });
+          
+          console.log('✅ Chatbot FIXED and ready!');
+        }, 500); // 500ms delay to let external modules finish
+      });
     </script>
   </body>
 </html>
