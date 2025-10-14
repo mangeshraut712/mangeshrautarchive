@@ -1,14 +1,16 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * FIREBASE CONFIGURATION - MODULAR SDK (v10)
+ * FIREBASE CONFIGURATION - Using Your Console SDK
  * Portfolio Contact Form Backend
  * ═══════════════════════════════════════════════════════════
  */
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+// Using CDN with your exact Firebase config from console
+const firebaseScript = document.createElement('script');
+firebaseScript.src = 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+firebaseScript.type = 'module';
 
-// Your Firebase configuration
+// Your web app's Firebase configuration (from Firebase Console)
 const firebaseConfig = {
   apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
   authDomain: "mangeshrautarchive.firebaseapp.com",
@@ -19,20 +21,26 @@ const firebaseConfig = {
   measurementId: "G-YX2XQWYSCQ"
 };
 
-console.log('🔥 Initializing Firebase...');
+// Initialize Firebase using script tag approach
+window.initFirebaseForContact = async function() {
+  console.log('🔥 Initializing Firebase from console SDK...');
+  
+  try {
+    // Dynamically import Firebase
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    console.log('✅ Firebase initialized successfully');
+    console.log('📡 Project:', firebaseConfig.projectId);
+    
+    return { db, collection, addDoc, serverTimestamp };
+  } catch (error) {
+    console.error('❌ Firebase init error:', error);
+    throw error;
+  }
+};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-console.log('✅ Firebase app initialized');
-console.log('✅ Firestore database connected');
-console.log('📡 Connection status:', {
-  app: !!app,
-  db: !!db,
-  projectId: firebaseConfig.projectId
-});
-
-// Export Firebase services
-export { db, collection, addDoc, serverTimestamp };
-export default { db, collection, addDoc, serverTimestamp };
+console.log('✅ Firebase config loaded');
