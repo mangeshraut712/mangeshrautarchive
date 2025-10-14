@@ -61,36 +61,41 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Send to Vercel API endpoint (more stable than direct Firebase)
-            console.log('📤 Sending message via API...');
+            // Initialize Firebase directly (using your console SDK config)
+            console.log('📤 Initializing Firebase for submission...');
             
-            const response = await fetch('https://mangeshrautarchive.vercel.app/api/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: payload.name,
-                    email: payload.email,
-                    subject: payload.subject,
-                    message: payload.message
-                })
-            });
+            const firebase = await window.initFirebaseForContact();
+            const { db, collection, addDoc, serverTimestamp } = firebase;
 
-            const data = await response.json();
-
-            if (!response.ok || !data.success) {
-                throw new Error(data.error || 'Failed to send message');
+            if (!db) {
+                throw new Error('Firebase not initialized');
             }
 
-            console.log('✅ Message sent successfully!');
-            console.log('📬 Message ID:', data.id);
+            // Prepare message data
+            const messageData = {
+                name: payload.name,
+                email: payload.email,
+                subject: payload.subject,
+                message: payload.message,
+                timestamp: serverTimestamp(),
+                userAgent: navigator.userAgent,
+                submittedFrom: window.location.href
+            };
+
+            console.log('📬 Saving to Firestore...');
+
+            // Save to Firestore
+            const messagesCollection = collection(db, 'messages');
+            const docRef = await addDoc(messagesCollection, messageData);
+
+            console.log('✅ Message saved with ID:', docRef.id);
 
             showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
             form.reset();
 
         } catch (error) {
             console.error('❌ Contact form error:', error);
+            console.error('Error details:', error.message);
             
             showMessage(`❌ Failed to send message. Please email directly: mbr63@drexel.edu`, 'error');
         } finally {
