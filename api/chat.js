@@ -41,9 +41,10 @@ export default async function handler(req, res) {
   // Apply CORS
   applyCors(res, req.headers.origin);
 
-  // Handle preflight
+  // Handle preflight (CORS)
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
 
   // Only accept POST
