@@ -10,7 +10,7 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
 const MODEL = 'google/gemini-2.0-flash-001'; // Gemini 2.0 Flash via OpenRouter
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// LinkedIn Profile Data
+// LinkedIn Profile Data - UPDATED WITH CORRECT EDUCATION
 const LINKEDIN_PROFILE = {
   name: "Mangesh Raut",
   title: "Software Engineer | AI/ML Specialist",
@@ -38,10 +38,18 @@ const LINKEDIN_PROFILE = {
   
   education: [
     {
-      degree: "Master's in Computer Science",
+      degree: "Bachelor's in Computer Engineering",
+      school: "University",
+      location: "India",
+      year: "Graduated 2023",
+      status: "Completed"
+    },
+    {
+      degree: "Master's in Computer Science (AI/ML focus)",
       school: "Drexel University",
       location: "Philadelphia, PA",
-      year: "Expected 2025"
+      year: "Expected 2025",
+      status: "Currently pursuing"
     }
   ]
 };

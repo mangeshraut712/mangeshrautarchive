@@ -343,8 +343,9 @@
         border: 0.5px solid rgba(0, 0, 0, 0.08) !important;
         
         box-shadow: 
-          0 24px 48px rgba(0, 0, 0, 0.12),
-          0 8px 16px rgba(0, 0, 0, 0.08) !important;
+          0 32px 64px rgba(0, 0, 0, 0.15),
+          0 16px 32px rgba(0, 0, 0, 0.1),
+          0 0 1px rgba(0, 0, 0, 0.1) !important;
         
         display: flex !important;
         flex-direction: column !important;
@@ -2256,8 +2257,11 @@
             newClose.addEventListener('click', function(e) {
               e.preventDefault();
               e.stopPropagation();
-              // FIX: Blur input before closing
+              // FIX: Blur ALL focusable elements
               if (input) input.blur();
+              if (sendBtn) sendBtn.blur();
+              if (voiceBtn) voiceBtn.blur();
+              newClose.blur();
               widget.classList.add('hidden');
               widget.classList.remove('active');
               newToggle.setAttribute('aria-expanded', 'false');
@@ -2427,5 +2431,8 @@
         }, 600); // Delay to override external modules
       });
     </script>
+  </body>
+</html>
+script>
   </body>
 </html>
