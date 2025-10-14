@@ -188,6 +188,32 @@ class ChatUI {
                 }));
             });
         }
+        
+        // Mute button handler
+        const muteBtn = document.getElementById('mute-voice-btn');
+        if (muteBtn) {
+            muteBtn.addEventListener('click', () => {
+                if (window.voiceManager) {
+                    window.voiceManager.stopSpeaking();
+                    this.setVoiceOutputEnabledState(false);
+                    this.addMessage('🔇 Voice output muted', 'system', { skipSpeech: true });
+                    this.hideVoiceMenu();
+                }
+            });
+        }
+        
+        // Stop voice button handler
+        const stopBtn = document.getElementById('stop-voice-btn');
+        if (stopBtn) {
+            stopBtn.addEventListener('click', () => {
+                if (window.voiceManager) {
+                    window.voiceManager.stopVoiceInput();
+                    window.voiceManager.stopSpeaking();
+                    this.addMessage('⏹️ Voice mode stopped', 'system', { skipSpeech: true });
+                    this.hideVoiceMenu();
+                }
+            });
+        }
 
         document.addEventListener('click', (event) => this._handleDocumentClick(event));
 
@@ -752,12 +778,25 @@ class ChatUI {
     _closeWidget() {
         if (!this.elements.widget) return;
         this.hideVoiceMenu();
+        
+        // First remove focus from any elements inside the widget
+        if (document.activeElement && this.elements.widget.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+        
+        // Then hide the widget
         this.elements.widget.classList.add('hidden');
         this.elements.widget.setAttribute('aria-hidden', 'true');
+        
         if (this.elements.toggleButton) {
             this.elements.toggleButton.setAttribute('aria-expanded', 'false');
             this.elements.toggleButton.classList.remove('active');
-            this.elements.toggleButton.focus();
+            // Use setTimeout to avoid focus issues
+            setTimeout(() => {
+                if (this.elements.toggleButton) {
+                    this.elements.toggleButton.focus();
+                }
+            }, 100);
         }
     }
 

@@ -41,6 +41,11 @@ class VoiceManager {
         this.lastDisplayedTranscript = '';
         this.processingQueue = [];
         this.isProcessing = false;
+        
+        // Auto-stop silence detection
+        this.silenceTimer = null;
+        this.silenceTimeout = 5000; // 5 seconds
+        this.lastSpeechTime = 0;
 
     try {
         this.initializeSpeechRecognition();
@@ -191,6 +196,43 @@ class VoiceManager {
         });
     }
 
+    // ========== SILENCE DETECTION METHODS ==========
+    
+    /**
+     * Start silence detection timer
+     */
+    startSilenceDetection() {
+        this.stopSilenceDetection();
+        this.lastSpeechTime = Date.now();
+        
+        this.silenceTimer = setInterval(() => {
+            const silenceDuration = Date.now() - this.lastSpeechTime;
+            
+            if (silenceDuration > this.silenceTimeout && this.isListening) {
+                console.log('🔇 5 seconds of silence detected, stopping voice input');
+                this.stopVoiceInput();
+                this.chatManager.addMessage('🔇 Voice input stopped after 5 seconds of silence. Click mic to ask another question.', 'system', { skipSpeech: true });
+            }
+        }, 1000); // Check every second
+    }
+    
+    /**
+     * Stop silence detection timer
+     */
+    stopSilenceDetection() {
+        if (this.silenceTimer) {
+            clearInterval(this.silenceTimer);
+            this.silenceTimer = null;
+        }
+    }
+    
+    /**
+     * Reset silence detection (called when speech is detected)
+     */
+    resetSilenceDetection() {
+        this.lastSpeechTime = Date.now();
+    }
+
     // ========== VOICE INPUT METHODS ==========
 
     /**
@@ -203,14 +245,27 @@ class VoiceManager {
         }
 
         if (this.isListening) {
-            this.stopVoiceInput();
+            console.log('⚠️ Already listening, ignoring start request');
             return;
         }
 
         try {
             this.recognition.start();
+            this.startSilenceDetection();
         } catch (error) {
             console.error('Speech recognition start failed:', error);
+            if (error.message && error.message.includes('already started')) {
+                console.log('Recognition already running, forcing stop and restart');
+                this.recognition.stop();
+                setTimeout(() => {
+                    try {
+                        this.recognition.start();
+                        this.startSilenceDetection();
+                    } catch (e) {
+                        console.error('Failed to restart recognition:', e);
+                    }
+                }, 100);
+            }
         }
     }
 
@@ -221,6 +276,7 @@ class VoiceManager {
         if (this.recognition && this.isListening) {
             this.recognition.stop();
         }
+        this.stopSilenceDetection();
     }
 
     /**
@@ -233,10 +289,13 @@ class VoiceManager {
             this.stopVoiceInput();
             this.isProcessing = false;
             this.lastProcessedTranscript = '';
+            this.lastProcessedTime = 0;
             this.chatManager.addMessage('🎤 Voice stopped. Click again to start fresh.', 'system', { skipSpeech: true });
         } else {
-            // Clicking while idle = START
+            // Clicking while idle = START (with fresh state)
             console.log('▶️ User clicked to start');
+            this.lastProcessedTranscript = '';
+            this.lastProcessedTime = 0;
             this.startVoiceInput();
         }
     }
@@ -293,28 +352,36 @@ class VoiceManager {
         const finalResult = results.find(result => result.isFinal);
         const interimResult = results[results.length - 1][0].transcript;
 
+        // Update last speech time for silence detection
+        this.lastSpeechTime = Date.now();
+        this.resetSilenceDetection();
+
         if (finalResult) {
             // Process final result
             const transcript = finalResult[0].transcript.trim();
             const confidence = finalResult[0].confidence;
 
-            // Prevent duplicate processing
-            if (this.lastProcessedTranscript === transcript && 
-                Date.now() - this.lastProcessedTime < 5000) {
+            // Prevent duplicate processing with stricter check
+            const isDuplicate = this.lastProcessedTranscript === transcript && 
+                               Date.now() - this.lastProcessedTime < 10000; // 10 seconds window
+            
+            if (isDuplicate) {
                 console.log('🔄 Duplicate transcript detected, skipping...');
                 return;
             }
 
             console.log(`Voice Recognition (${(confidence*100).toFixed(1)}%): "${transcript}"`);
 
-            // Store transcript and timestamp
+            // Store transcript and timestamp BEFORE processing
             this.lastProcessedTranscript = transcript;
             this.lastProcessedTime = Date.now();
+
+            // Stop listening immediately to prevent repeats
+            this.stopVoiceInput();
 
             this.processVoiceIntent(transcript).catch((error) => {
                 console.error('Voice intent processing failed:', error);
             });
-            this.isListening = false;
         } else if (interimResult) {
             // Show interim results for user feedback
             if (!this.isContinuous) {
@@ -326,16 +393,10 @@ class VoiceManager {
     onRecognitionEnd() {
         this.isListening = false;
         this.chatManager.setVoiceInputActive(false);
+        this.stopSilenceDetection();
 
-        // Restart continuous listening with better timing
-        if (this.isContinuous && !this.isProcessing) {
-            setTimeout(() => {
-                if (this.isContinuous && !this.isListening && !this.isProcessing) {
-                    console.log('🔄 Restarting continuous listening...');
-                    this.startVoiceInput();
-                }
-            }, 2000); // Longer pause to prevent overlap
-        }
+        // Don't auto-restart - user needs to click again
+        console.log('🎤 Voice input ended. Click mic to start again.');
     }
 
     onRecognitionError(event) {
@@ -930,12 +991,12 @@ class VoiceManager {
         };
 
         utterance.onerror = (event) => {
-            if (event.error === 'canceled') {
+            if (event.error === 'canceled' || event.error === 'interrupted') {
                 // This is normal behavior when speech is interrupted/canceled
-                console.debug('Speech synthesis canceled (normal interruption).');
+                console.debug('Speech synthesis', event.error, '(normal behavior)');
             } else {
                 // Log actual errors
-                console.error('Speech synthesis error:', event.error);
+                console.warn('Speech synthesis error:', event.error);
             }
             this.isSpeaking = false;
             this.chatManager.setVoiceOutputActive(false);

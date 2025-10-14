@@ -51,13 +51,241 @@
     <!-- Chatbot iMessage Style - Complete Redesign -->
     <style>
       /* ═══════════════════════════════════════════════════════════
+         VOICE CONTROL MENU
+         ═══════════════════════════════════════════════════════════ */
+      
+      .voice-control-menu {
+        position: absolute;
+        bottom: 70px;
+        right: 10px;
+        width: 280px;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        padding: 16px;
+        z-index: 1001;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      
+      .voice-control-menu:not(.hidden) {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+      
+      .voice-menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      
+      .voice-menu-header h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1d1d1f;
+      }
+      
+      .voice-menu-close {
+        background: none;
+        border: none;
+        color: #86868b;
+        cursor: pointer;
+        padding: 4px;
+        transition: color 0.2s;
+      }
+      
+      .voice-menu-close:hover {
+        color: #1d1d1f;
+      }
+      
+      .voice-menu-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .voice-menu-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        border-radius: 8px;
+        transition: background 0.2s;
+      }
+      
+      .voice-menu-option:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+      
+      .voice-menu-option label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        cursor: pointer;
+        font-size: 14px;
+        color: #1d1d1f;
+      }
+      
+      .voice-menu-option input[type="checkbox"] {
+        width: 42px;
+        height: 24px;
+        cursor: pointer;
+      }
+      
+      .voice-menu-divider {
+        height: 1px;
+        background: rgba(0, 0, 0, 0.1);
+        margin: 4px 0;
+      }
+      
+      .voice-menu-action {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 12px;
+        background: none;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        font-size: 14px;
+        color: #1d1d1f;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      
+      .voice-menu-action:hover {
+        background: rgba(0, 0, 0, 0.05);
+        border-color: rgba(0, 0, 0, 0.2);
+      }
+      
+      html.dark .voice-control-menu {
+        background: rgba(30, 30, 30, 0.98);
+      }
+      
+      html.dark .voice-menu-header h4,
+      html.dark .voice-menu-option label,
+      html.dark .voice-menu-action {
+        color: #f5f5f7;
+      }
+      
+      html.dark .voice-menu-header,
+      html.dark .voice-menu-divider {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      html.dark .voice-menu-action {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      html.dark .voice-menu-action:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      /* ═══════════════════════════════════════════════════════════
+         IMPROVED MESSAGE CARD UI
+         ═══════════════════════════════════════════════════════════ */
+      
+      .message {
+        margin: 12px 0;
+        animation: slideIn 0.3s ease-out;
+      }
+      
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .user-message .message-content {
+        background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 18px;
+        max-width: 75%;
+        margin-left: auto;
+        box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+        word-wrap: break-word;
+      }
+      
+      .assistant-message .message-content {
+        background: rgba(0, 0, 0, 0.05);
+        color: #1d1d1f;
+        padding: 14px 18px;
+        border-radius: 18px;
+        max-width: 80%;
+        margin-right: auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        word-wrap: break-word;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      
+      .system-message .message-content {
+        background: rgba(255, 149, 0, 0.1);
+        color: #ff9500;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        text-align: center;
+        margin: 8px auto;
+        max-width: 90%;
+        border: 1px solid rgba(255, 149, 0, 0.2);
+      }
+      
+      html.dark .assistant-message .message-content {
+        background: rgba(255, 255, 255, 0.08);
+        color: #f5f5f7;
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      html.dark .system-message .message-content {
+        background: rgba(255, 149, 0, 0.15);
+        color: #ffb340;
+        border-color: rgba(255, 149, 0, 0.3);
+      }
+      
+      .message-metadata {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+        font-size: 11px;
+        opacity: 0.7;
+      }
+      
+      .message-metadata span {
+        background: rgba(0, 0, 0, 0.05);
+        padding: 2px 8px;
+        border-radius: 8px;
+        font-size: 10px;
+      }
+      
+      html.dark .message-metadata span {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      /* ═══════════════════════════════════════════════════════════
          CHATBOT TOGGLE - Bottom Right, Stable Position
          ═══════════════════════════════════════════════════════════ */
       
       #chatbot-toggle,
       button[id="chatbot-toggle"] {
         position: fixed !important;
-        bottom: 30px !important;
+        bottom: 100px !important;
         right: 30px !important;
         z-index: 10000 !important;
         
@@ -1831,6 +2059,7 @@
             </div>
           </div>
         </div>
+      </footer>
     
     <!-- ═══════════════════════════════════════════════════════════
          ASSISTME CHATBOT (Fixed - No Conflicts)
@@ -1908,6 +2137,41 @@
           <span class="chatbot-voice-badge">S2R</span>
         </button>
       </form>
+      
+      <!-- Voice Control Menu -->
+      <div id="voice-control-menu" class="voice-control-menu hidden" aria-hidden="true">
+        <div class="voice-menu-header">
+          <h4>Voice Settings</h4>
+          <button id="voice-mode-close" class="voice-menu-close" aria-label="Close voice menu">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="voice-menu-options">
+          <div class="voice-menu-option">
+            <label for="voice-output-toggle">
+              <i class="fas fa-volume-up"></i>
+              <span>Voice Responses</span>
+            </label>
+            <input type="checkbox" id="voice-output-toggle" checked />
+          </div>
+          <div class="voice-menu-option">
+            <label for="continuous-mode-toggle">
+              <i class="fas fa-infinity"></i>
+              <span>Continuous Listening</span>
+            </label>
+            <input type="checkbox" id="continuous-mode-toggle" />
+          </div>
+          <div class="voice-menu-divider"></div>
+          <button class="voice-menu-action" id="stop-voice-btn">
+            <i class="fas fa-stop-circle"></i>
+            <span>Stop Voice Mode</span>
+          </button>
+          <button class="voice-menu-action" id="mute-voice-btn">
+            <i class="fas fa-volume-mute"></i>
+            <span>Mute All Audio</span>
+          </button>
+        </div>
+      </div>
     </div>
     <!-- END CHATBOT -->
 
