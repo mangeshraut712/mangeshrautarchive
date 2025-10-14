@@ -1,13 +1,12 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * FIREBASE CONFIGURATION - COMPAT MODE
+ * FIREBASE CONFIGURATION - MODULAR SDK (v10)
  * Portfolio Contact Form Backend
- * Using compat for better transport stability
  * ═══════════════════════════════════════════════════════════
  */
 
-import firebase from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
-import 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -20,24 +19,11 @@ const firebaseConfig = {
   measurementId: "G-YX2XQWYSCQ"
 };
 
-console.log('🔥 Initializing Firebase (Compat Mode for stability)...');
+console.log('🔥 Initializing Firebase...');
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Enable persistence for offline support
-db.enablePersistence({ synchronizeTabs: true })
-  .then(() => {
-    console.log('✅ Firebase persistence enabled');
-  })
-  .catch((err) => {
-    if (err.code === 'failed-precondition') {
-      console.log('⚠️ Persistence failed: Multiple tabs open');
-    } else if (err.code === 'unimplemented') {
-      console.log('⚠️ Persistence not supported');
-    }
-  });
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 console.log('✅ Firebase app initialized');
 console.log('✅ Firestore database connected');
@@ -47,14 +33,6 @@ console.log('📡 Connection status:', {
   projectId: firebaseConfig.projectId
 });
 
-// Export for compat mode
-export { db };
-export default { 
-  db,
-  // Compat mode helpers
-  collection: (collectionName) => db.collection(collectionName),
-  serverTimestamp: () => firebase.firestore.FieldValue.serverTimestamp(),
-  addDoc: async (collectionRef, data) => {
-    return await collectionRef.add(data);
-  }
-};
+// Export Firebase services
+export { db, collection, addDoc, serverTimestamp };
+export default { db, collection, addDoc, serverTimestamp };

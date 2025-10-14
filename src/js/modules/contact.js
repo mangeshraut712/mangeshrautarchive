@@ -61,17 +61,19 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Import Firebase (Compat Mode)
+            // Import Firebase (Modular SDK v10)
             const firebaseModule = await import('../firebase-config.js');
-            const { db, collection, serverTimestamp } = firebaseModule;
+            const { db, collection, addDoc, serverTimestamp } = firebaseModule;
 
-            console.log('📡 Firebase compat module loaded:', {
+            console.log('📡 Firebase module loaded:', {
                 hasDb: !!db,
-                dbType: typeof db
+                hasCollection: !!collection,
+                hasAddDoc: !!addDoc,
+                hasServerTimestamp: !!serverTimestamp
             });
 
-            if (!db) {
-                throw new Error('Firebase database not initialized');
+            if (!db || !collection || !addDoc) {
+                throw new Error('Firebase services not initialized');
             }
 
             // Prepare message data
@@ -85,11 +87,11 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 submittedFrom: window.location.href
             };
 
-            console.log('📤 Sending to Firestore (compat mode)...');
+            console.log('📤 Sending to Firestore collection: messages');
             
-            // Send to Firestore using compat API
-            const messagesRef = db.collection('messages');
-            const docRef = await messagesRef.add(messageData);
+            // Send to Firestore using modular API
+            const messagesRef = collection(db, 'messages');
+            const docRef = await addDoc(messagesRef, messageData);
 
             console.log('✅ Message saved to Firebase with ID:', docRef.id);
             console.log('📬 Data:', {
