@@ -10,58 +10,130 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
 const MODEL = 'google/gemini-2.0-flash-001'; // Gemini 2.0 Flash via OpenRouter
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// LinkedIn Profile Data - VERIFIED FROM linkedin.com/in/mangeshraut71298
+// LinkedIn Profile Data - UPDATED FROM RESUME
 const LINKEDIN_PROFILE = {
   name: "Mangesh Raut",
   title: "Software Engineer | Full-Stack Developer | AI/ML Engineer",
-  location: "Philadelphia, Pennsylvania, United States",
-  email: "mbr63@drexel.edu",
-  phone: "+1 (267) 738-6508",
+  location: "Philadelphia, PA, USA",
+  email: "mbr63drexel@gmail.com",
+  phone: "+1 (609) 505 3500",
   linkedin: "linkedin.com/in/mangeshraut71298",
-  github: "github.com/mangeshraut712",
-  
-  summary: "Software Engineer with expertise in Spring Boot, AngularJS, AWS, TensorFlow, Python, and Machine Learning. Focused on building AI-powered applications and cloud-based solutions.",
-  
+  github: "mangeshraut71298",
+
+  summary: `Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker), currently enhancing energy analytics tools at Customized Energy Solutions (40% efficiency gain). Previously honed expertise in network engineering (35% latency reduction at Harshwardhan Enterprises) and Java development (20% code optimization at IoasiZ), alongside part-time roles managing databases at Aramark and Drexel University. Eager to leverage hands-on experience with scalable systems, CI/CD pipelines, and machine learning to drive innovation in fast-paced teams. Actively pursuing roles focused on emerging technologies to accelerate career growth.`,
+
   experience: [
     {
       title: "Software Engineer",
       company: "Customized Energy Solutions",
-      location: "Blue Bell, Pennsylvania",
-      period: "May 2024 - Present",
-      description: "Working on energy analytics, AI-powered solutions, and cloud automation using Spring Boot, AngularJS, AWS, and TensorFlow"
-    }
-  ],
-  
-  skills: {
-    languages: ["Python", "Java", "JavaScript", "TypeScript", "C++", "SQL"],
-    frameworks: ["Spring Boot", "AngularJS", "React", "Node.js", "Django", "TensorFlow", "PyTorch"],
-    cloud: ["AWS", "Azure", "Google Cloud", "Docker"],
-    ai_ml: ["Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "NLP", "Computer Vision"],
-    tools: ["Git", "CI/CD", "Pandas", "NumPy", "Scikit-learn"]
-  },
-  
-  education: [
-    {
-      degree: "Master of Science - MS, Computer Science",
-      field: "Artificial Intelligence and Machine Learning",
-      school: "Drexel University",
-      location: "Philadelphia, Pennsylvania",
-      period: "2023 - 2025",
-      status: "Currently pursuing (Expected graduation: 2025)"
+      location: "Philadelphia, PA",
+      period: "Aug 2024 - Present",
+      description: `Full-Stack Development: Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API optimization
+Cloud DevOps: Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines
+Machine Learning: Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow) with feature engineering`
     },
     {
-      degree: "Bachelor of Engineering - BE, Computer Engineering",
-      school: "Savitribai Phule Pune University",
-      location: "Pune, Maharashtra, India",
-      period: "2014 - 2017",
-      year: "Graduated 2017",
+      title: "Software Engineer",
+      company: "IoasiZ",
+      location: "Piscataway, NJ",
+      period: "Jul 2023 - Jul 2024",
+      description: `System Modernization: Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20% (SOLID principles)
+Distributed Systems: Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites
+Performance Optimization: Integrated Redis caching for inventory APIs, achieving 30% faster response times through query tuning`
+    },
+    {
+      title: "Database Administrator (Part-Time & Internship)",
+      company: "Aramark",
+      location: "Philadelphia, PA",
+      period: "Jun 2022 - Jun 2023",
+      description: `AWS Automation: Developed Python scripts to manage event inventory systems on AWS, reducing manual errors by 25% for 200+ events
+Data Migration: Transitioned 3+ legacy databases to AWS RDS, improving scalability for high-traffic event analytics`
+    },
+    {
+      title: "Database Administrator (Part-Time)",
+      company: "Drexel University",
+      location: "Philadelphia, PA",
+      period: "Sep 2021 - May 2022",
+      description: `SQL & Compliance: Maintained HIPAA-compliant MySQL databases for 5K+ student records, ensuring 99.9% accuracy with constraint-driven validation
+Reporting Tools: Streamlined data workflows using Tableau and Excel, cutting report generation time by 20% for administrative teams`
+    },
+    {
+      title: "Network Engineer",
+      company: "Harshwardhan Enterprises",
+      location: "Pune, India",
+      period: "Jun 2020 - Jun 2021",
+      description: `Network Optimization: Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35% in enterprise WANs
+Troubleshooting: Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance for client networks
+Scripting: Created Python-based monitoring tools, reducing manual diagnostics by 50%`
+    }
+  ],
+
+  skills: {
+    languages: ["Java", "Python", "SQL", "JavaScript"],
+    frameworks: ["Spring Boot", "AngularJS", "TensorFlow", "scikit-learn"],
+    cloud: ["AWS", "Docker", "Jenkins", "Terraform"],
+    databases: ["PostgreSQL", "MongoDB", "MySQL"],
+    tools: ["Git", "Jira", "Tableau", "Wireshark"],
+    networking: ["Cisco", "OSPF/BGP"]
+  },
+
+  education: [
+    {
+      degree: "Master of Science in Computer Science, GPA: 3.3",
+      school: "Drexel University",
+      location: "Philadelphia, PA",
+      period: "Sep 2021 - Jun 2023",
+      status: "Completed"
+    },
+    {
+      degree: "Bachelor of Engineering in Computer Engineering, GPA: 3.6",
+      school: "Pune University",
+      location: "Pune, India",
+      period: "Jun 2017 - Jun 2020",
       status: "Completed"
     }
   ],
   
+  projects: [
+    {
+      name: "Starlight Blogging Website",
+      tech: ["Angular", "Flask", "SQLite"],
+      period: "Jan 2023 - Apr 2023",
+      description: "Built a blogging website with user authentication and post-management features. Attracted 100+ users within three months and enabled interactive community features"
+    },
+    {
+      name: "Real-Time Face Emotion Recognition System",
+      tech: ["Python", "OpenCV", "Machine Learning"],
+      period: "Jun 2019 - Jun 2020",
+      description: "Planned a real-time emotion recognition model with 95% accuracy. Arranged in retail stores and institutions, reducing incidents by 50%"
+    },
+    {
+      name: "PC Crime Detector",
+      tech: ["Java", "Database Integration", "Automation"],
+      period: "Jun 2016 - Jun 2017",
+      description: "Implemented security automation, reducing breaches by 80%. Deployed in institutions, decreasing security incidents by 50%"
+    }
+  ],
+
+  publications: [
+    {
+      title: "Real-Time Face Emotion Recognition System",
+      journal: "International Journal of Future Generation Communication and Networking",
+      period: "May 2020 - Jun 2020",
+      description: "Published research on facial recognition algorithms and image processing. Explored elastic bunch map graphing, PCA, and cascading techniques"
+    }
+  ],
+
   certifications: [
-    "AWS Certified",
-    "Machine Learning Specialist"
+    "Google - Prompt Design in Vertex AI Skill Badge",
+    "Digital Marketing, Online Marketing Fundamentals",
+    "IBM - Cybersecurity Fundamentals",
+    "Data Fundamentals (SQL/NoSQL)",
+    "Explore Emerging Tech (AI)",
+    "Fundamentals of Sustainability and Technology",
+    "Cisco - Networking Basics (OSPF/BGP)",
+    "CCNP (Routing & Switching)",
+    "Microsoft - JavaScript Programming"
   ]
 };
 
