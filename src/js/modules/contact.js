@@ -61,11 +61,18 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Import Firebase configuration
-            const { db, collection, addDoc, serverTimestamp } = await import('../firebase-config.js');
+            // Import Firebase modules - CORRECTED PATH
+            const firebaseModule = await import('../firebase-config.js');
+            const { db, collection, addDoc, serverTimestamp } = firebaseModule;
+
+            console.log('📡 Firebase module loaded:', {
+                hasDb: !!db,
+                hasCollection: !!collection,
+                hasAddDoc: !!addDoc
+            });
 
             if (!db) {
-                throw new Error('Firebase database not initialized');
+                throw new Error('Firebase database not initialized - check firebase-config.js');
             }
 
             // Prepare message data
@@ -79,21 +86,31 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 submittedFrom: window.location.href
             };
 
+            console.log('📤 Sending to Firestore collection: messages');
+            
             // Send to Firestore
-            await addDoc(collection(db, 'messages'), messageData);
+            const docRef = await addDoc(collection(db, 'messages'), messageData);
 
-            console.log('✅ Message sent to Firebase:', {
+            console.log('✅ Message saved to Firebase with ID:', docRef.id);
+            console.log('📬 Data saved:', {
                 name: payload.name,
                 email: payload.email,
-                subject: payload.subject
+                subject: payload.subject,
+                messageLength: payload.message.length
             });
 
-            showMessage('Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
+            showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
             form.reset();
 
         } catch (error) {
             console.error('❌ Firebase error:', error);
-            showMessage('Failed to send your message. Please try again or email directly: mbr63@drexel.edu', 'error');
+            console.error('Error details:', {
+                message: error.message,
+                code: error.code,
+                stack: error.stack?.substring(0, 200)
+            });
+            
+            showMessage(`❌ Failed to send message: ${error.message}\n\nPlease email directly: mbr63@drexel.edu`, 'error');
         } finally {
             // Reset loading state
             isSubmitting = false;
