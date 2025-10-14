@@ -1,4 +1,6 @@
 // Simple contact form - no validation warnings, minimum requirements
+let firebaseInstance = null; // Cache Firebase instance
+
 export function initContactForm(formId = 'contact-form', documentRef = document) {
     const form = documentRef.getElementById(formId);
     if (!form) {
@@ -9,6 +11,17 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
     let isSubmitting = false;
     const submitButton = form.querySelector('button[type="submit"], .btn');
     const inputs = form.querySelectorAll('input, textarea');
+    
+    console.log('📬 Contact form initialized (Firebase loads on submit)');
+    
+    // Preload Firebase SDK in background (non-blocking)
+    if (typeof window !== 'undefined' && !firebaseInstance) {
+        setTimeout(() => {
+            import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js')
+                .then(() => console.log('✅ Firebase SDK preloaded'))
+                .catch(() => console.log('⚠️ Firebase preload failed'));
+        }, 2000); // Wait 2 seconds after page load
+    }
 
     // Simple success/error display
     function showMessage(message, type = 'success') {
