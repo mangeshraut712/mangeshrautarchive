@@ -280,26 +280,30 @@ function handleDirectCommand(message) {
   const lower = message.toLowerCase();
   const now = new Date();
   
-  // Time commands
+  // Time commands (uses system timezone)
   if (lower.includes('time') && !lower.includes('timezone')) {
-    const time = now.toLocaleTimeString('en-US', { 
+    const time = now.toLocaleTimeString(undefined, { 
       hour: '2-digit', 
       minute: '2-digit',
       hour12: true 
     });
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return {
-      answer: `⏰ Current time is ${time}`,
+      answer: `⏰ Current time is ${time} (${timezone})`,
+      source: 'Direct Command',
+      model: 'Built-in',
       category: 'Time & Date',
       confidence: 1.0,
       runtime: '0ms',
       type: 'time',
-      isDirect: true
+      processingTime: 0,
+      providers: ['Built-in']
     };
   }
   
-  // Date commands
+  // Date commands (uses system timezone)
   if (lower.includes('date') || lower.includes('today')) {
-    const date = now.toLocaleDateString('en-US', { 
+    const date = now.toLocaleDateString(undefined, { 
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -307,24 +311,30 @@ function handleDirectCommand(message) {
     });
     return {
       answer: `📅 Today is ${date}`,
+      source: 'Direct Command',
+      model: 'Built-in',
       category: 'Time & Date',
       confidence: 1.0,
       runtime: '0ms',
       type: 'time',
-      isDirect: true
+      processingTime: 0,
+      providers: ['Built-in']
     };
   }
   
   // Day command
   if (lower.includes('which day') || lower.includes('what day')) {
-    const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+    const day = now.toLocaleDateString(undefined, { weekday: 'long' });
     return {
       answer: `📆 Today is ${day}`,
+      source: 'Direct Command',
+      model: 'Built-in',
       category: 'Time & Date',
       confidence: 1.0,
       runtime: '0ms',
       type: 'time',
-      isDirect: true
+      processingTime: 0,
+      providers: ['Built-in']
     };
   }
   

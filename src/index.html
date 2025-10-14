@@ -2275,12 +2275,31 @@
             const userMsg = text.trim();
             console.log('📤 Sending:', userMsg);
             
-              // Show user message (FORCE HORIZONTAL)
+              // Show user message (JAVASCRIPT FORCE HORIZONTAL)
               if (messages) {
                 const userDiv = document.createElement('div');
                 userDiv.className = 'message user-message';
-                userDiv.style.cssText = 'display: inline-block !important; word-break: normal !important; white-space: normal !important; writing-mode: horizontal-tb !important; direction: ltr !important; float: right !important; clear: both !important; margin-left: auto !important;';
-                userDiv.innerText = userMsg; // Use innerText (not textContent)
+                
+                // AGGRESSIVE JavaScript styling to force horizontal
+                userDiv.style.display = 'inline-block';
+                userDiv.style.wordBreak = 'normal';
+                userDiv.style.whiteSpace = 'normal';
+                userDiv.style.writingMode = 'horizontal-tb';
+                userDiv.style.direction = 'ltr';
+                userDiv.style.unicodeBidi = 'normal';
+                userDiv.style.textOrientation = 'mixed';
+                userDiv.style.float = 'right';
+                userDiv.style.clear = 'both';
+                userDiv.style.marginLeft = 'auto';
+                userDiv.style.maxWidth = '70%';
+                
+                // Use innerHTML to ensure proper rendering
+                const span = document.createElement('span');
+                span.style.display = 'inline';
+                span.style.whiteSpace = 'normal';
+                span.textContent = userMsg;
+                userDiv.appendChild(span);
+                
                 messages.appendChild(userDiv);
                 messages.scrollTop = messages.scrollHeight;
               }
