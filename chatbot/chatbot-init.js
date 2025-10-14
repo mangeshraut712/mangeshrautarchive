@@ -41,14 +41,8 @@ if (typeof window !== 'undefined') {
       console.log('✅ Chatbot initialized:', chatbot);
       
       // Show welcome message after a delay
-      setTimeout(() => {
-        if (chatbot && chatbot.ui) {
-          chatbot.ui.addMessage(
-            "Hello! I'm AssistMe. Ask me about Mangesh Raut's experience, skills, or any technical questions.",
-            'bot'
-          );
-        }
-      }, 500);
+      // Welcome message handled by inline script in index.html
+      // Removed to prevent duplicate messages
       
     } catch (error) {
       console.error('❌ Failed to initialize chatbot:', error);

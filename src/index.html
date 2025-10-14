@@ -2354,15 +2354,15 @@
           
           console.log('✅ iMessage chatbot ready!');
           
-          // Welcome message
+          // Single welcoming message (improved)
           setTimeout(() => {
-            if (messages) {
+            if (messages && messages.children.length === 0) {
               const welcome = document.createElement('div');
               welcome.className = 'message bot-message';
-              welcome.textContent = "👋 Hi! I'm AssistMe. Ask me about Mangesh Raut's skills, experience, or any technical questions!";
+              welcome.textContent = "👋 Hey there! I'm AssistMe, your AI companion. I'd love to chat about Mangesh's expertise, projects, or answer any tech questions you have. What would you like to know?";
               messages.appendChild(welcome);
             }
-          }, 300);
+          }, 400);
           
         }, 600); // Delay to override external modules
       });
