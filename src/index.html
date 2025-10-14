@@ -2462,6 +2462,62 @@
           
           console.log('✅ iMessage chatbot ready!');
           
+          // Scroll to top button
+          const scrollTopBtn = document.getElementById('scroll-to-top');
+          if (scrollTopBtn) {
+            // Show/hide on scroll
+            window.addEventListener('scroll', function() {
+              if (window.pageYOffset > 300) {
+                scrollTopBtn.style.display = 'flex';
+              } else {
+                scrollTopBtn.style.display = 'none';
+              }
+            });
+            
+            // Click to scroll
+            scrollTopBtn.addEventListener('click', function() {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+            });
+          }
+          
+          // Mobile menu toggle
+          const menuBtn = document.getElementById('menu-btn');
+          const overlayMenu = document.getElementById('overlay-menu');
+          const menuClose = document.getElementById('menu-close');
+          
+          if (menuBtn && overlayMenu) {
+            menuBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              overlayMenu.classList.add('active');
+              overlayMenu.setAttribute('aria-hidden', 'false');
+              document.body.style.overflow = 'hidden';
+              console.log('📱 Mobile menu opened');
+            });
+          }
+          
+          if (menuClose && overlayMenu) {
+            menuClose.addEventListener('click', function(e) {
+              e.preventDefault();
+              overlayMenu.classList.remove('active');
+              overlayMenu.setAttribute('aria-hidden', 'true');
+              document.body.style.overflow = '';
+              console.log('📱 Mobile menu closed');
+            });
+            
+            // Close on link click
+            const menuLinks = overlayMenu.querySelectorAll('.overlay-nav-link');
+            menuLinks.forEach(link => {
+              link.addEventListener('click', function() {
+                overlayMenu.classList.remove('active');
+                overlayMenu.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+              });
+            });
+          }
+          
           // Single welcoming message (improved)
           setTimeout(() => {
             if (messages && messages.children.length === 0) {
