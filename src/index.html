@@ -2735,12 +2735,29 @@
                 voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">S2R</span>';
                 console.log('🎤 Voice stopped');
               } else {
-                // Start listening
-                recognition.start();
-                isListening = true;
-                voiceBtn.style.background = '#ff3b30';
-                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">●</span>';
-                console.log('🎤 Voice listening...');
+                // Request mic permission and start listening
+                console.log('🎤 Requesting microphone permission...');
+                
+                // Check if mic permission is needed
+                if (navigator.permissions) {
+                  navigator.permissions.query({ name: 'microphone' }).then((result) => {
+                    console.log('🎤 Mic permission state:', result.state);
+                    if (result.state === 'prompt') {
+                      console.log('🎤 Will request mic permission...');
+                    }
+                  }).catch(err => console.log('🎤 Permission query not supported'));
+                }
+                
+                try {
+                  recognition.start();
+                  isListening = true;
+                  voiceBtn.style.background = 'linear-gradient(135deg, #FF3B30 0%, #FF2D21 100%)';
+                  voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">●</span>';
+                  console.log('🎤 Voice listening... (Mic permission granted)');
+                } catch (err) {
+                  console.error('🎤 Failed to start:', err);
+                  alert('🎤 Microphone Error\n\nPlease ensure:\n• Microphone permission is allowed\n• No other app is using the microphone\n• Your browser supports voice input');
+                }
               }
             });
           }
