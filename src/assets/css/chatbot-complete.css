@@ -287,7 +287,7 @@ html.dark .user-message {
   background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
 }
 
-/* BOT MESSAGE - Theme-Aware */
+/* BOT MESSAGE - BLACK text for both themes */
 .bot-message {
   background: #F2F2F7 !important;
   color: #000000 !important;
@@ -301,9 +301,9 @@ html.dark .user-message {
 }
 
 html.dark .bot-message {
-  background: #2C2C2E !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 12px rgba(10, 132, 255, 0.12) !important;
+  background: #E5E5EA !important;
+  color: #000000 !important;
+  box-shadow: 0 2px 12px rgba(10, 132, 255, 0.15) !important;
 }
 
 /* METADATA - BLACK for both themes (as requested) */
