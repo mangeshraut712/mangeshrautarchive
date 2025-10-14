@@ -37,7 +37,11 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
     async function handleSubmit(event) {
         event.preventDefault();
 
-        if (isSubmitting) return;
+        // PREVENT DUPLICATE SUBMISSIONS
+        if (isSubmitting) {
+            console.log('⚠️ Already submitting, please wait...');
+            return;
+        }
 
         // Get form data
         const formData = new FormData(form);
@@ -47,6 +51,12 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             subject: formData.get('subject')?.trim() || '',
             message: formData.get('message')?.trim() || ''
         };
+
+        // Validate
+        if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+            showMessage('❌ Please fill in all fields.', 'error');
+            return;
+        }
 
         // Set loading state
         isSubmitting = true;
