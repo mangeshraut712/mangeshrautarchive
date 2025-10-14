@@ -61,57 +61,38 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Import Firebase (Modular SDK v10)
-            const firebaseModule = await import('../firebase-config.js');
-            const { db, collection, addDoc, serverTimestamp } = firebaseModule;
-
-            console.log('📡 Firebase module loaded:', {
-                hasDb: !!db,
-                hasCollection: !!collection,
-                hasAddDoc: !!addDoc,
-                hasServerTimestamp: !!serverTimestamp
+            // Send to Vercel API endpoint (more stable than direct Firebase)
+            console.log('📤 Sending message via API...');
+            
+            const response = await fetch('https://mangeshrautarchive.vercel.app/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: payload.name,
+                    email: payload.email,
+                    subject: payload.subject,
+                    message: payload.message
+                })
             });
 
-            if (!db || !collection || !addDoc) {
-                throw new Error('Firebase services not initialized');
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || 'Failed to send message');
             }
 
-            // Prepare message data
-            const messageData = {
-                name: payload.name,
-                email: payload.email,
-                subject: payload.subject,
-                message: payload.message,
-                timestamp: serverTimestamp(),
-                userAgent: navigator.userAgent || 'unknown',
-                submittedFrom: window.location.href
-            };
-
-            console.log('📤 Sending to Firestore collection: messages');
-            
-            // Send to Firestore using modular API
-            const messagesRef = collection(db, 'messages');
-            const docRef = await addDoc(messagesRef, messageData);
-
-            console.log('✅ Message saved to Firebase with ID:', docRef.id);
-            console.log('📬 Data:', {
-                name: payload.name,
-                email: payload.email,
-                subject: payload.subject
-            });
+            console.log('✅ Message sent successfully!');
+            console.log('📬 Message ID:', data.id);
 
             showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
             form.reset();
 
         } catch (error) {
-            console.error('❌ Firebase error:', error);
-            console.error('Error details:', {
-                message: error.message,
-                code: error.code,
-                stack: error.stack?.substring(0, 200)
-            });
+            console.error('❌ Contact form error:', error);
             
-            showMessage(`❌ Failed to send message: ${error.message}\n\nPlease email directly: mbr63@drexel.edu`, 'error');
+            showMessage(`❌ Failed to send message. Please email directly: mbr63@drexel.edu`, 'error');
         } finally {
             // Reset loading state
             isSubmitting = false;
