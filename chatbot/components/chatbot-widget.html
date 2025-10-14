@@ -1,74 +1,81 @@
-<!-- Chatbot Toggle Button (Stable Position) -->
+<!-- ═══════════════════════════════════════════════════════════
+     ASSISTME CHATBOT - COMPLETE WIDGET
+     Toggle Button + Chat Widget with S2R Voice
+     ═══════════════════════════════════════════════════════════ -->
+
+<!-- Toggle Button (Blue Circular Button) -->
 <button
   id="chatbot-toggle"
-  class="chatbot-toggle"
-  aria-label="Open AI Assistant"
+  type="button"
+  aria-label="Open AssistMe chat"
+  aria-haspopup="dialog"
   aria-controls="chatbot-widget"
   aria-expanded="false"
 >
-  <i class="fas fa-robot"></i>
+  <i class="fas fa-comment-dots"></i>
 </button>
 
-<!-- Chatbot Widget Window -->
+<!-- Chatbot Widget (Main Container) -->
 <div
   id="chatbot-widget"
-  class="chatbot-widget"
+  class="hidden"
   role="dialog"
-  aria-labelledby="chatbot-title"
+  aria-label="AssistMe chat window"
   aria-hidden="true"
 >
-  <!-- Header with Title -->
+  <!-- Header with AssistMe Title -->
   <div class="chatbot-header">
     <div class="chatbot-header-content">
-      <h2 id="chatbot-title" class="chatbot-title">AssistMe AI</h2>
-      <p class="chatbot-subtitle">AI Assistant</p>
+      <h3>AssistMe</h3>
+      <p>AI Assistant</p>
     </div>
     <button
       class="chatbot-close-btn"
-      aria-label="Close chatbot"
-      id="chatbot-close"
+      aria-label="Close chat"
+      title="Close Chat"
     >
       <i class="fas fa-times"></i>
     </button>
   </div>
 
-  <!-- Messages Area -->
-  <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite">
-    <!-- Messages will be inserted here dynamically -->
-  </div>
+  <!-- Messages Area (User + Bot Messages) -->
+  <div
+    id="chatbot-messages"
+    aria-live="polite"
+    aria-atomic="false"
+  ></div>
 
-  <!-- Input Area with Icons -->
-  <div class="chatbot-input-area">
-    <form id="chatbot-form" class="chatbot-form">
-      <input
-        type="text"
-        id="chatbot-input"
-        class="chatbot-input"
-        placeholder="Type your message..."
-        autocomplete="off"
-        aria-label="Message input"
-      />
-    </form>
+  <!-- Input Area with Send + Voice Buttons -->
+  <form class="chatbot-input-area" id="chatbot-form">
+    <input
+      type="text"
+      id="chatbot-input"
+      placeholder="Ask me anything..."
+      autocomplete="off"
+      aria-label="Message AssistMe"
+      required
+    />
     
-    <!-- Send Button with Icon -->
+    <!-- Send Button (Blue) -->
     <button
       type="submit"
-      class="chatbot-send-btn"
+      class="chatbot-btn chatbot-send-btn"
       aria-label="Send message"
-      form="chatbot-form"
+      title="Send message"
     >
       <i class="fas fa-paper-plane"></i>
     </button>
     
-    <!-- Voice/Mic Button with S2R Badge -->
+    <!-- Voice Button (Green with S2R Badge) -->
     <button
-      class="chatbot-voice-btn"
+      type="button"
+      class="chatbot-btn chatbot-voice-btn"
       id="chatbot-voice-btn"
-      aria-label="Voice mode (S2R)"
-      title="Voice mode with Speech-to-Retrieval"
+      aria-label="Voice input (S2R)"
+      title="Voice input with Speech-to-Retrieval"
     >
       <i class="fas fa-microphone"></i>
       <span class="chatbot-voice-badge">S2R</span>
     </button>
-  </div>
+  </form>
 </div>
