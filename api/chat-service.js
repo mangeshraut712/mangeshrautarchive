@@ -297,6 +297,179 @@ function offlineFallback(message = '') {
 }
 
 /**
+ * Main query processing function with enhanced features
+ */
+async function processQuery({ message = '', messages = [] } = {}) {
+  const startTime = Date.now();
+  
+  if (!message || typeof message !== 'string') {
+    throw new Error('Invalid message format');
+  }
+
+  const trimmedMessage = message.trim();
+  if (!trimmedMessage) {
+    throw new Error('Empty message');
+  }
+
+  // Check for direct commands (instant response)
+  const directResponse = handleDirectCommand(trimmedMessage);
+  if (directResponse) {
+    return {
+      answer: directResponse.answer,
+      source: 'Direct Command',
+      model: 'Built-in',
+      category: directResponse.category,
+      confidence: directResponse.confidence,
+      runtime: directResponse.runtime,
+      type: directResponse.type,
+      processingTime: 0,
+      providers: ['Built-in'],
+      usage: null
+    };
+  }
+
+  // Detect query type
+  const type = classifyType(trimmedMessage);
+  const category = getCategory(type);
+  const wantsLinkedIn = isLinkedInQuery(trimmedMessage);
+  
+  // Handle special command types with enhanced features
+  const lower = trimmedMessage.toLowerCase();
+  
+  // Joke command
+  if (lower.includes('joke') || lower.includes('funny')) {
+    try {
+      const response = await fetch('https://official-joke-api.appspot.com/random_joke');
+      const data = await response.json();
+      const runtime = Date.now() - startTime;
+      
+      return {
+        answer: `😄 ${data.setup}\n\n${data.punchline}`,
+        source: 'Joke API',
+        model: 'Entertainment',
+        category: 'Entertainment',
+        confidence: 1.0,
+        runtime: `${runtime}ms`,
+        type: 'entertainment',
+        processingTime: runtime,
+        providers: ['Joke API'],
+        usage: null
+      };
+    } catch (error) {
+      // Continue to AI if joke API fails
+    }
+  }
+  
+  // Weather command (simulated)
+  if (lower.includes('weather')) {
+    const cityMatch = trimmedMessage.match(/weather in (\w+)/i);
+    const city = cityMatch ? cityMatch[1] : 'Philadelphia';
+    const conditions = ['Sunny', 'Cloudy', 'Partly Cloudy', 'Clear'];
+    const condition = conditions[Math.floor(Math.random() * conditions.length)];
+    const temp = Math.floor(Math.random() * 30) + 50;
+    const runtime = Date.now() - startTime;
+    
+    return {
+      answer: `🌤️ Weather in ${city}: ${condition}, ${temp}°F\n\n💡 This is simulated. For real weather, configure OpenWeatherMap API key.`,
+      source: 'Simulated',
+      model: 'Weather Sim',
+      category: 'Weather',
+      confidence: 0.5,
+      runtime: `${runtime}ms`,
+      type: 'weather',
+      processingTime: runtime,
+      providers: ['Simulated'],
+      usage: null
+    };
+  }
+  
+  // Web commands
+  if (lower.includes('open google') || lower.includes('open youtube')) {
+    let answer = '';
+    const runtime = Date.now() - startTime;
+    
+    if (lower.includes('open google')) {
+      const query = trimmedMessage.replace(/open google/i, '').trim();
+      if (query) {
+        answer = `🔍 Google Search: "${query}"\n\n🔗 https://www.google.com/search?q=${encodeURIComponent(query)}\n\n💡 Copy the link above to open in browser.`;
+      } else {
+        answer = `🔍 Google.com\n\n🔗 https://www.google.com`;
+      }
+    } else if (lower.includes('open youtube')) {
+      const query = trimmedMessage.replace(/open youtube|youtube/i, '').trim();
+      if (query) {
+        answer = `📺 YouTube Search: "${query}"\n\n🔗 https://www.youtube.com/results?search_query=${encodeURIComponent(query)}\n\n💡 Copy the link above to open in browser.`;
+      } else {
+        answer = `📺 YouTube.com\n\n🔗 https://www.youtube.com`;
+      }
+    }
+    
+    return {
+      answer,
+      source: 'Web Command',
+      model: 'Built-in',
+      category: 'Web Command',
+      confidence: 1.0,
+      runtime: `${runtime}ms`,
+      type: 'web',
+      processingTime: runtime,
+      providers: ['Built-in'],
+      usage: null
+    };
+  }
+
+  // Build message array
+  const systemMessage = { role: 'system', content: SYSTEM_PROMPT };
+  let userMessage;
+
+  if (wantsLinkedIn) {
+    userMessage = { role: 'user', content: buildLinkedInPrompt(trimmedMessage) };
+  } else {
+    userMessage = { role: 'user', content: trimmedMessage };
+  }
+
+  const conversationMessages = [systemMessage, ...messages, userMessage];
+
+  // Try OpenRouter
+  try {
+    const response = await callOpenRouter({
+      model: MODEL,
+      messages: conversationMessages
+    });
+
+    const runtime = Date.now() - startTime;
+
+    return {
+      answer: response.answer,
+      source: 'OpenRouter',
+      model: 'Gemini 2.0 Flash',
+      category: wantsLinkedIn ? 'Portfolio' : category,
+      confidence: wantsLinkedIn ? 0.95 : 0.90,
+      runtime: `${runtime}ms`,
+      // Legacy fields for compatibility
+      type,
+      processingTime: response.processingTime,
+      providers: ['OpenRouter'],
+      usage: response.usage
+    };
+
+  } catch (error) {
+    console.error('API Error:', error.message);
+    return offlineFallback(trimmedMessage);
+  }
+}
+
+export default { processQuery };
+ AI service is temporarily unavailable. Please try again in a moment.',
+    source: 'Offline',
+    model: 'None',
+    category: getCategory(type),
+    confidence: 0.30,
+    runtime: '0ms'
+  };
+}
+
+/**
  * Main query processing function
  */
 async function processQuery({ message = '', messages = [] } = {}) {
