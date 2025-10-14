@@ -1,0 +1,404 @@
+
+╔══════════════════════════════════════════════════════════════╗
+║        🧪 CHATBOT COMPREHENSIVE FEATURE TEST 🧪              ║
+╚══════════════════════════════════════════════════════════════╝
+
+API Endpoint: https://mangeshrautarchive.vercel.app/api/chat
+Total Tests: 20
+Start Time: 10/14/2025, 5:36:20 PM
+
+
+======================================================================
+TEST 1/20: Time & Date
+======================================================================
+📝 Question: "What time is it?"
+
+✅ RESPONSE RECEIVED:
+   Answer: ⏰ Current time is 05:36 PM (UTC)
+   Source: Direct Command
+   Model: Built-in
+   Category: Time & Date
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 480ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 2/20: Time & Date
+======================================================================
+📝 Question: "What date is today?"
+
+✅ RESPONSE RECEIVED:
+   Answer: 📅 Today is Tuesday, October 14, 2025
+   Source: Direct Command
+   Model: Built-in
+   Category: Time & Date
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 239ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 3/20: Time & Date
+======================================================================
+📝 Question: "Which day is today?"
+
+✅ RESPONSE RECEIVED:
+   Answer: 📅 Today is Tuesday, October 14, 2025
+   Source: Direct Command
+   Model: Built-in
+   Category: Time & Date
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 203ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 4/20: Mathematics
+======================================================================
+📝 Question: "5 + 5"
+
+✅ RESPONSE RECEIVED:
+   Answer: 🔢 5 + 5 = 10
+   Source: Direct Command
+   Model: Built-in
+   Category: Mathematics
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 94ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 5/20: Mathematics
+======================================================================
+📝 Question: "100 - 25"
+
+✅ RESPONSE RECEIVED:
+   Answer: 🔢 100 - 25 = 75
+   Source: Direct Command
+   Model: Built-in
+   Category: Mathematics
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 218ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 6/20: Mathematics
+======================================================================
+📝 Question: "8 * 7"
+
+✅ RESPONSE RECEIVED:
+   Answer: 🔢 8 * 7 = 56
+   Source: Direct Command
+   Model: Built-in
+   Category: Mathematics
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 109ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 7/20: Entertainment
+======================================================================
+📝 Question: "Tell me a joke"
+
+✅ RESPONSE RECEIVED:
+   Answer: 😄 Why do valley girls hang out in odd numbered groups?
+
+Because they can't even.
+   Source: Joke API
+   Model: Entertainment
+   Category: Entertainment
+   Confidence: 1
+   Runtime: 90ms
+   Response Time: 186ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 8/20: Weather
+======================================================================
+📝 Question: "Weather in Philadelphia"
+
+✅ RESPONSE RECEIVED:
+   Answer: 🌤️ Weather in Philadelphia: Clear, 65°F
+
+💡 This is simulated. For real weather, configure OpenWeat...
+   Source: Simulated
+   Model: Weather Sim
+   Category: Weather
+   Confidence: 0.5
+   Runtime: 0ms
+   Response Time: 95ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 9/20: Web Command
+======================================================================
+📝 Question: "Open Google AI"
+
+✅ RESPONSE RECEIVED:
+   Answer: 🔍 Google Search: "AI"
+
+🔗 https://www.google.com/search?q=AI
+
+💡 Copy the link above to open in bro...
+   Source: Web Command
+   Model: Built-in
+   Category: Web Command
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 120ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 10/20: Web Command
+======================================================================
+📝 Question: "Open YouTube tutorials"
+
+✅ RESPONSE RECEIVED:
+   Answer: 📺 YouTube Search: "tutorials"
+
+🔗 https://www.youtube.com/results?search_query=tutorials
+
+💡 Copy t...
+   Source: Web Command
+   Model: Built-in
+   Category: Web Command
+   Confidence: 1
+   Runtime: 0ms
+   Response Time: 202ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 11/20: Portfolio
+======================================================================
+📝 Question: "What are Mangesh Raut's skills?"
+
+✅ RESPONSE RECEIVED:
+   Answer: Mangesh Raut's skills include:
+
+*   **Languages:** Java, Python, SQL, JavaScript
+*   **Frameworks:**...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: Portfolio
+   Confidence: 0.95
+   Runtime: 1243ms
+   Response Time: 1424ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 12/20: Portfolio
+======================================================================
+📝 Question: "Tell me about Mangesh's experience"
+
+✅ RESPONSE RECEIVED:
+   Answer: Mangesh Raut is a Software Engineer with experience in full-stack development, cloud solutions, and ...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: Portfolio
+   Confidence: 0.95
+   Runtime: 2240ms
+   Response Time: 2339ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 13/20: Portfolio
+======================================================================
+📝 Question: "What is Mangesh's highest qualification?"
+
+✅ RESPONSE RECEIVED:
+   Answer: Mangesh Raut's highest qualification is a Master of Science in Computer Science from Drexel Universi...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: Portfolio
+   Confidence: 0.95
+   Runtime: 764ms
+   Response Time: 867ms
+
+❌ TEST FAILED
+   ⚠️  Expected answer to include: Bachelor
+
+======================================================================
+TEST 14/20: Portfolio
+======================================================================
+📝 Question: "Where does Mangesh work?"
+
+✅ RESPONSE RECEIVED:
+   Answer: Mangesh Raut currently works as a Software Engineer at Customized Energy Solutions in Philadelphia, ...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: Portfolio
+   Confidence: 0.95
+   Runtime: 712ms
+   Response Time: 815ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 15/20: Portfolio
+======================================================================
+📝 Question: "What projects has Mangesh worked on?"
+
+✅ RESPONSE RECEIVED:
+   Answer: Mangesh has worked on the following projects:
+
+*   **Starlight Blogging Website:** Built with Angula...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: Portfolio
+   Confidence: 0.95
+   Runtime: 1525ms
+   Response Time: 1621ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 16/20: Programming
+======================================================================
+📝 Question: "What is a REST API?"
+
+✅ RESPONSE RECEIVED:
+   Answer: A REST API (Representational State Transfer Application Programming Interface) is an architectural s...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: General Knowledge
+   Confidence: 0.9
+   Runtime: 1259ms
+   Response Time: 1366ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 17/20: Programming
+======================================================================
+📝 Question: "Explain React hooks"
+
+✅ RESPONSE RECEIVED:
+   Answer: React Hooks are functions that let you "hook into" React state and lifecycle features from function ...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: General Knowledge
+   Confidence: 0.9
+   Runtime: 1692ms
+   Response Time: 1824ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 18/20: General Knowledge
+======================================================================
+📝 Question: "Who is the Prime Minister of India?"
+
+✅ RESPONSE RECEIVED:
+   Answer: The current Prime Minister of India is Narendra Modi.
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: General Knowledge
+   Confidence: 0.9
+   Runtime: 614ms
+   Response Time: 723ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 19/20: General Knowledge
+======================================================================
+📝 Question: "What is machine learning?"
+
+✅ RESPONSE RECEIVED:
+   Answer: Machine learning is a subfield of artificial intelligence that focuses on enabling computers to lear...
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: General Knowledge
+   Confidence: 0.9
+   Runtime: 1183ms
+   Response Time: 1291ms
+
+✅ TEST PASSED
+
+======================================================================
+TEST 20/20: General Knowledge
+======================================================================
+📝 Question: "Hello"
+
+✅ RESPONSE RECEIVED:
+   Answer: Hello! How can I assist you today?
+   Source: OpenRouter
+   Model: Gemini 2.0 Flash
+   Category: General Knowledge
+   Confidence: 0.9
+   Runtime: 626ms
+   Response Time: 721ms
+
+✅ TEST PASSED
+
+
+======================================================================
+TEST SUMMARY
+======================================================================
+
+Total Tests: 20
+✅ Passed: 19
+❌ Failed: 1
+Success Rate: 95.0%
+
+RESULTS BY CATEGORY:
+
+✅ Time & Date: 3/3
+✅ Mathematics: 3/3
+✅ Entertainment: 1/1
+✅ Weather: 1/1
+✅ Web Command: 2/2
+⚠️ Portfolio: 4/5
+✅ Programming: 2/2
+✅ General Knowledge: 3/3
+
+
+LINKEDIN INTEGRATION TESTS:
+
+Total LinkedIn tests: 5
+Passed: 4
+✅ What are Mangesh Raut's skills?
+   → Mangesh Raut's skills include:
+
+*   **Languages:** Java, Python, SQL, JavaScript...
+✅ Tell me about Mangesh's experience
+   → Mangesh Raut is a Software Engineer with experience in full-stack development, c...
+❌ What is Mangesh's highest qualification?
+   → Mangesh Raut's highest qualification is a Master of Science in Computer Science ...
+✅ Where does Mangesh work?
+   → Mangesh Raut currently works as a Software Engineer at Customized Energy Solutio...
+✅ What projects has Mangesh worked on?
+   → Mangesh has worked on the following projects:
+
+*   **Starlight Blogging Website:...
+
+
+======================================================================
+End Time: 10/14/2025, 5:36:45 PM
+======================================================================
+
+
+❌ FAILED TESTS DETAILS:
+
+1. What is Mangesh's highest qualification?
+   Category: Portfolio
+   - Expected answer to include: Bachelor
+
+
+❌ Test suite failed: ReferenceError: require is not defined
+    at runAllTests (file:///workspace/scripts/test-all-features.js:364:14)
