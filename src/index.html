@@ -2271,14 +2271,15 @@
             const userMsg = text.trim();
             console.log('📤 Sending:', userMsg);
             
-            // Show user message
-            if (messages) {
-              const userDiv = document.createElement('div');
-              userDiv.className = 'message user-message';
-              userDiv.textContent = userMsg;
-              messages.appendChild(userDiv);
-              messages.scrollTop = messages.scrollHeight;
-            }
+              // Show user message (prevent vertical text)
+              if (messages) {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'message user-message';
+                userDiv.style.cssText = 'display: block !important; word-break: keep-all !important; white-space: pre-wrap !important; writing-mode: horizontal-tb !important;';
+                userDiv.textContent = userMsg;
+                messages.appendChild(userDiv);
+                messages.scrollTop = messages.scrollHeight;
+              }
             
             input.value = '';
             

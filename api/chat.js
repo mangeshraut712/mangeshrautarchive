@@ -9,9 +9,10 @@
 import chatService from './chat-service.js';
 
 /**
- * Apply CORS headers
+ * Apply CORS headers - FIXED
  */
 function applyCors(res, origin) {
+  // Allow GitHub Pages and localhost
   const allowedOrigins = [
     'https://mangeshraut712.github.io',
     'http://localhost:3000',
@@ -20,13 +21,17 @@ function applyCors(res, origin) {
     'http://127.0.0.1:3000'
   ];
 
-  const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+  // Set CORS headers properly
+  const corsOrigin = (origin && allowedOrigins.some(allowed => origin.startsWith(allowed))) 
+    ? origin 
+    : 'https://mangeshraut712.github.io';
 
   res.setHeader('Access-Control-Allow-Origin', corsOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
   res.setHeader('Access-Control-Allow-Credentials', 'false');
   res.setHeader('Access-Control-Max-Age', '86400');
+  res.setHeader('Vary', 'Origin');
 }
 
 /**
