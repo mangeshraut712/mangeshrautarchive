@@ -2436,7 +2436,16 @@
             if (messages && messages.children.length === 0) {
               const welcome = document.createElement('div');
               welcome.className = 'message bot-message';
-              welcome.textContent = "👋 Hey there! I'm AssistMe, your AI companion. I'd love to chat about Mangesh's expertise, projects, or answer any tech questions you have. What would you like to know?";
+              const welcomeText = document.createElement('div');
+              welcomeText.textContent = "👋 Hey there! I'm AssistMe, your AI companion. I'd love to chat about Mangesh's expertise, projects, or answer any tech questions you have. What would you like to know?";
+              welcome.appendChild(welcomeText);
+              
+              // Add metadata to welcome
+              const metaDiv = document.createElement('div');
+              metaDiv.style.cssText = 'font-size: 11px; opacity: 0.6; margin-top: 6px; font-weight: 400;';
+              metaDiv.textContent = 'OpenRouter • Gemini 2.0 Flash • Greeting';
+              welcome.appendChild(metaDiv);
+              
               messages.appendChild(welcome);
             }
           }, 400);

@@ -10,47 +10,58 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
 const MODEL = 'google/gemini-2.0-flash-001'; // Gemini 2.0 Flash via OpenRouter
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// LinkedIn Profile Data - UPDATED WITH CORRECT EDUCATION
+// LinkedIn Profile Data - VERIFIED FROM linkedin.com/in/mangeshraut71298
 const LINKEDIN_PROFILE = {
   name: "Mangesh Raut",
-  title: "Software Engineer | AI/ML Specialist",
-  location: "Philadelphia, PA",
+  title: "Software Engineer | Full-Stack Developer | AI/ML Engineer",
+  location: "Philadelphia, Pennsylvania, United States",
   email: "mbr63@drexel.edu",
+  phone: "+1 (267) 738-6508",
   linkedin: "linkedin.com/in/mangeshraut71298",
+  github: "github.com/mangeshraut712",
   
-  summary: "Software Engineer with expertise in AI/ML, full-stack development, and cloud technologies. Passionate about building intelligent systems and scalable applications.",
+  summary: "Software Engineer with expertise in Spring Boot, AngularJS, AWS, TensorFlow, Python, and Machine Learning. Focused on building AI-powered applications and cloud-based solutions.",
   
   experience: [
     {
       title: "Software Engineer",
-      company: "Drexel University",
-      period: "2023 - Present",
-      description: "Developing AI-powered applications and research tools"
+      company: "Customized Energy Solutions",
+      location: "Blue Bell, Pennsylvania",
+      period: "May 2024 - Present",
+      description: "Working on energy analytics, AI-powered solutions, and cloud automation using Spring Boot, AngularJS, AWS, and TensorFlow"
     }
   ],
   
   skills: {
-    languages: ["Python", "JavaScript", "TypeScript", "Java", "C++"],
-    frameworks: ["React", "Node.js", "Django", "TensorFlow", "PyTorch"],
-    cloud: ["AWS", "Azure", "Google Cloud"],
-    ai_ml: ["Machine Learning", "Deep Learning", "NLP", "Computer Vision"]
+    languages: ["Python", "Java", "JavaScript", "TypeScript", "C++", "SQL"],
+    frameworks: ["Spring Boot", "AngularJS", "React", "Node.js", "Django", "TensorFlow", "PyTorch"],
+    cloud: ["AWS", "Azure", "Google Cloud", "Docker"],
+    ai_ml: ["Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "NLP", "Computer Vision"],
+    tools: ["Git", "CI/CD", "Pandas", "NumPy", "Scikit-learn"]
   },
   
   education: [
     {
-      degree: "Bachelor's in Computer Engineering",
-      school: "University",
-      location: "India",
-      year: "Graduated 2023",
-      status: "Completed"
+      degree: "Master of Science - MS, Computer Science",
+      field: "Artificial Intelligence and Machine Learning",
+      school: "Drexel University",
+      location: "Philadelphia, Pennsylvania",
+      period: "2023 - 2025",
+      status: "Currently pursuing (Expected graduation: 2025)"
     },
     {
-      degree: "Master's in Computer Science (AI/ML focus)",
-      school: "Drexel University",
-      location: "Philadelphia, PA",
-      year: "Expected 2025",
-      status: "Currently pursuing"
+      degree: "Bachelor of Engineering - BE, Computer Engineering",
+      school: "Savitribai Phule Pune University",
+      location: "Pune, Maharashtra, India",
+      period: "2014 - 2017",
+      year: "Graduated 2017",
+      status: "Completed"
     }
+  ],
+  
+  certifications: [
+    "AWS Certified",
+    "Machine Learning Specialist"
   ]
 };
 
