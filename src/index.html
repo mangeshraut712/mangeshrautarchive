@@ -2458,10 +2458,18 @@
               welcomeText.textContent = "👋 Hey there! I'm AssistMe, your AI companion. I'd love to chat about Mangesh's expertise, projects, or answer any tech questions you have. What would you like to know?";
               welcome.appendChild(welcomeText);
               
-              // Add metadata to welcome
+              // Add metadata to welcome (UNIFIED FORMAT)
               const metaDiv = document.createElement('div');
-              metaDiv.style.cssText = 'font-size: 11px; opacity: 0.6; margin-top: 6px; font-weight: 400;';
-              metaDiv.textContent = 'OpenRouter • Gemini 2.0 Flash • Greeting';
+              metaDiv.style.cssText = 'font-size: 11px; opacity: 0.6; margin-top: 6px; font-weight: 400; line-height: 1.4;';
+              const welcomeText = "👋 Hey there! I'm AssistMe, your AI companion. I'd love to chat about Mangesh's expertise, projects, or answer any tech questions you have. What would you like to know?";
+              metaDiv.innerHTML = `
+                <div>Source: AssistMe</div>
+                <div>Model: Greeting Bot</div>
+                <div>Category: Welcome</div>
+                <div>Confidence: 100%</div>
+                <div>Length: ${welcomeText.length} chars</div>
+                <div>Runtime: 0ms</div>
+              `.trim();
               welcome.appendChild(metaDiv);
               
               messages.appendChild(welcome);

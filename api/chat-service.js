@@ -544,6 +544,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
       model: 'Gemini 2.0 Flash',
       category: wantsLinkedIn ? 'Portfolio' : category,
       confidence: wantsLinkedIn ? 0.95 : 0.90,
+      answerLength: response.answer.length,
       runtime: `${runtime}ms`,
       // Legacy fields for compatibility
       type,
