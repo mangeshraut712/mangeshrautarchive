@@ -2303,15 +2303,28 @@
               });
               
               const data = await response.json();
-              console.log('✅ Response:', data.source, '|', data.model);
+              console.log('✅ Response:', {
+                source: data.source,
+                model: data.model,
+                category: data.category,
+                confidence: data.confidence,
+                runtime: data.runtime
+              });
               
               // Remove typing
               typingDiv.remove();
               
-              // Show bot message
+              // Show bot message with metadata
               const botDiv = document.createElement('div');
               botDiv.className = 'message bot-message';
               botDiv.textContent = data.answer;
+              
+              // Add metadata footer
+              const metaDiv = document.createElement('div');
+              metaDiv.style.cssText = 'font-size: 11px; opacity: 0.6; margin-top: 6px; font-weight: 400;';
+              metaDiv.textContent = `${data.source} • ${data.model} • ${data.category} • ${data.runtime}`;
+              botDiv.appendChild(metaDiv);
+              
               messages.appendChild(botDiv);
               messages.scrollTop = messages.scrollHeight;
               
