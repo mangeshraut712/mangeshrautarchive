@@ -56,31 +56,39 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             return;
         }
 
-        // Get form data
+        // Get form data - check all possible field names
         const formData = new FormData(form);
+        
+        // Log all form data
+        console.log('📝 All form fields:');
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: "${value}"`);
+        }
+        
         const payload = {
-            name: formData.get('name')?.trim() || '',
-            email: formData.get('email')?.trim() || '',
+            name: formData.get('name')?.trim() || formData.get('user-name')?.trim() || '',
+            email: formData.get('email')?.trim() || formData.get('user-email')?.trim() || '',
             subject: formData.get('subject')?.trim() || '',
-            message: formData.get('message')?.trim() || ''
+            message: formData.get('message')?.trim() || formData.get('user-message')?.trim() || ''
         };
 
-        console.log('📝 Form data captured:', {
-            name: payload.name,
-            email: payload.email,
-            subject: payload.subject,
-            hasMessage: !!payload.message
+        console.log('📝 Captured payload:', {
+            name: `"${payload.name}"`,
+            email: `"${payload.email}"`,
+            subject: `"${payload.subject}"`,
+            message: `"${payload.message.substring(0, 50)}..."`
         });
 
-        // Validate (skip if all fields present)
-        if (!payload.name || !payload.email || !payload.subject || !payload.message) {
-            console.log('❌ Validation failed:', {
-                name: !!payload.name,
-                email: !!payload.email,
-                subject: !!payload.subject,
-                message: !!payload.message
-            });
-            showMessage('❌ Please fill in all fields.', 'error');
+        // Validate
+        const missingFields = [];
+        if (!payload.name) missingFields.push('name');
+        if (!payload.email) missingFields.push('email');
+        if (!payload.subject) missingFields.push('subject');
+        if (!payload.message) missingFields.push('message');
+        
+        if (missingFields.length > 0) {
+            console.log('❌ Missing fields:', missingFields.join(', '));
+            showMessage(`❌ Please fill in: ${missingFields.join(', ')}`, 'error');
             isSubmitting = false;
             if (submitButton) {
                 submitButton.disabled = false;
@@ -90,7 +98,7 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             return;
         }
         
-        console.log('✅ Validation passed, proceeding with submission...');
+        console.log('✅ All fields validated, submitting to Firebase...');
 
         // Set loading state
         isSubmitting = true;
