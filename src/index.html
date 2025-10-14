@@ -478,7 +478,7 @@
         background: rgba(255, 255, 255, 0.2) !important;
       }
       
-      /* Message Bubbles */
+      /* Message Bubbles - AGGRESSIVE FIX FOR HORIZONTAL TEXT */
       .message {
         max-width: 70% !important;
         padding: 10px 14px !important;
@@ -486,7 +486,18 @@
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
         font-size: 15px !important;
         line-height: 1.4 !important;
+        
+        /* FORCE HORIZONTAL - AGGRESSIVE */
         word-wrap: break-word !important;
+        word-break: normal !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+        writing-mode: horizontal-tb !important;
+        text-orientation: mixed !important;
+        direction: ltr !important;
+        unicode-bidi: normal !important;
+        display: inline-block !important;
+        
         animation: messageSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
       }
       
