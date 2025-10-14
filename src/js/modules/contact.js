@@ -61,15 +61,28 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         inputs.forEach(input => input.disabled = true);
 
         try {
-            // Initialize Firebase directly (using your console SDK config)
-            console.log('📤 Initializing Firebase for submission...');
+            console.log('🔥 Connecting to Firebase...');
             
-            const firebase = await window.initFirebaseForContact();
-            const { db, collection, addDoc, serverTimestamp } = firebase;
-
-            if (!db) {
-                throw new Error('Firebase not initialized');
-            }
+            // Import Firebase SDK directly
+            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+            const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            
+            // Your Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
+                authDomain: "mangeshrautarchive.firebaseapp.com",
+                projectId: "mangeshrautarchive",
+                storageBucket: "mangeshrautarchive.firebasestorage.app",
+                messagingSenderId: "560373560182",
+                appId: "1:560373560182:web:218658d0db3b1aa6c60057",
+                measurementId: "G-YX2XQWYSCQ"
+            };
+            
+            console.log('🔥 Initializing Firebase app...');
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            
+            console.log('✅ Firebase connected to project:', firebaseConfig.projectId);
 
             // Prepare message data
             const messageData = {
@@ -82,22 +95,31 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 submittedFrom: window.location.href
             };
 
-            console.log('📬 Saving to Firestore...');
+            console.log('📬 Saving to Firestore collection: messages');
 
             // Save to Firestore
-            const messagesCollection = collection(db, 'messages');
-            const docRef = await addDoc(messagesCollection, messageData);
+            const messagesRef = collection(db, 'messages');
+            const docRef = await addDoc(messagesRef, messageData);
 
-            console.log('✅ Message saved with ID:', docRef.id);
+            console.log('✅ Message saved successfully!');
+            console.log('📧 Document ID:', docRef.id);
+            console.log('📬 From:', payload.name, `<${payload.email}>`);
 
             showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
             form.reset();
 
         } catch (error) {
-            console.error('❌ Contact form error:', error);
-            console.error('Error details:', error.message);
+            console.error('❌ Firebase error:', error);
+            console.error('Error code:', error.code);
+            console.error('Error message:', error.message);
             
-            showMessage(`❌ Failed to send message. Please email directly: mbr63@drexel.edu`, 'error');
+            if (error.code === 'permission-denied') {
+                showMessage('❌ Permission denied. Please check Firestore rules.', 'error');
+            } else if (error.message.includes('Failed to fetch')) {
+                showMessage('❌ Network error. Please check your connection.', 'error');
+            } else {
+                showMessage(`❌ Error: ${error.message}. Please email: mbr63@drexel.edu`, 'error');
+            }
         } finally {
             // Reset loading state
             isSubmitting = false;
