@@ -5,9 +5,8 @@
  * ═══════════════════════════════════════════════════════════
  */
 
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -20,21 +19,33 @@ const firebaseConfig = {
   measurementId: "G-YX2XQWYSCQ"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+console.log('🔥 Initializing Firebase...');
 
-// Initialize Analytics (optional)
-let analytics = null;
+// Initialize Firebase
+let app;
+let db;
+
 try {
-  analytics = getAnalytics(app);
-  console.log('✅ Firebase Analytics initialized');
+  app = initializeApp(firebaseConfig);
+  console.log('✅ Firebase app initialized');
+  
+  db = getFirestore(app);
+  console.log('✅ Firestore database connected');
+  
+  // Test connection
+  console.log('📡 Firestore connection status:', {
+    app: !!app,
+    db: !!db,
+    projectId: firebaseConfig.projectId
+  });
+  
 } catch (error) {
-  console.log('ℹ️ Analytics not available (normal in some environments)');
+  console.error('❌ Firebase initialization error:', error);
+  throw error;
 }
 
 console.log('✅ Firebase initialized successfully');
 
 // Export Firebase services
-export { db, collection, addDoc, serverTimestamp, analytics };
-export default { db, collection, addDoc, serverTimestamp, analytics };
+export { db, collection, addDoc, serverTimestamp };
+export default { db, collection, addDoc, serverTimestamp };
