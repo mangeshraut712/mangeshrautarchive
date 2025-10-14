@@ -274,6 +274,91 @@ async function callOpenRouter({ model, messages }) {
 }
 
 /**
+ * Handle direct commands (instant responses)
+ */
+function handleDirectCommand(message) {
+  const lower = message.toLowerCase();
+  const now = new Date();
+  
+  // Time commands
+  if (lower.includes('time') && !lower.includes('timezone')) {
+    const time = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+    return {
+      answer: `⏰ Current time is ${time}`,
+      category: 'Time & Date',
+      confidence: 1.0,
+      runtime: '0ms',
+      type: 'time',
+      isDirect: true
+    };
+  }
+  
+  // Date commands
+  if (lower.includes('date') || lower.includes('today')) {
+    const date = now.toLocaleDateString('en-US', { 
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    return {
+      answer: `📅 Today is ${date}`,
+      category: 'Time & Date',
+      confidence: 1.0,
+      runtime: '0ms',
+      type: 'time',
+      isDirect: true
+    };
+  }
+  
+  // Day command
+  if (lower.includes('which day') || lower.includes('what day')) {
+    const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+    return {
+      answer: `📆 Today is ${day}`,
+      category: 'Time & Date',
+      confidence: 1.0,
+      runtime: '0ms',
+      type: 'time',
+      isDirect: true
+    };
+  }
+  
+  // Basic math (simple calculations)
+  const mathMatch = message.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
+  if (mathMatch) {
+    const [, num1, operator, num2] = mathMatch;
+    const n1 = parseFloat(num1);
+    const n2 = parseFloat(num2);
+    let result;
+    
+    switch(operator) {
+      case '+': result = n1 + n2; break;
+      case '-': result = n1 - n2; break;
+      case '*': result = n1 * n2; break;
+      case '/': result = n2 !== 0 ? n1 / n2 : 'Cannot divide by zero'; break;
+    }
+    
+    if (typeof result === 'number') {
+      return {
+        answer: `🔢 ${num1} ${operator} ${num2} = ${result}`,
+        category: 'Mathematics',
+        confidence: 1.0,
+        runtime: '0ms',
+        type: 'math',
+        isDirect: true
+      };
+    }
+  }
+  
+  return null; // No direct command matched
+}
+
+/**
  * Offline fallback response
  */
 function offlineFallback(message = '') {
