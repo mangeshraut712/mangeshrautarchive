@@ -75,25 +75,38 @@ html.dark .card:hover {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   TEXT COLORS - Ensure Visibility
+   TEXT COLORS - Blue Headings, White Main
    ═══════════════════════════════════════════════════════════ */
 
-html.dark #about .text-sm,
-html.dark #about p,
-html.dark #about span {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-html.dark #publications .text-sm,
-html.dark #publications p,
-html.dark #publications span {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-html.dark h2,
-html.dark h3,
-html.dark h4 {
+/* Main Headings (h1, h2) - WHITE */
+html.dark h1,
+html.dark h2 {
   color: #ffffff !important;
+}
+
+/* Sub Headings (h3, h4) - BLUE */
+html.dark h3,
+html.dark h4,
+html.dark .card h3,
+html.dark .card h4 {
+  color: #0A84FF !important;
+}
+
+/* Paragraphs and Content - White */
+html.dark p,
+html.dark span,
+html.dark .text-sm,
+html.dark li {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Links - Blue */
+html.dark a {
+  color: #0A84FF !important;
+}
+
+html.dark a:hover {
+  color: #64D2FF !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
