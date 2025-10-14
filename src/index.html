@@ -2275,14 +2275,53 @@
             const userMsg = text.trim();
             const lower = userMsg.toLowerCase();
             
-            // Check if location is needed
-            const needsLoc = lower.includes('time') || lower.includes('weather') || lower.includes('near me');
+            // Check if location is needed and request it
+            const needsLoc = lower.includes('time') || lower.includes('weather') || lower.includes('near me') || lower.includes('location');
             if (needsLoc && 'geolocation' in navigator) {
               console.log('📍 Question needs location...');
-              const allow = confirm('📍 Allow location access for accurate time and weather?');
-              if (allow) {
-                console.log('📍 Requesting location permission...');
-                // Location request (permission handled)
+              
+              try {
+                // Request location permission
+                const position = await new Promise((resolve, reject) => {
+                  navigator.geolocation.getCurrentPosition(
+                    (pos) => resolve(pos),
+                    (err) => reject(err),
+                    {
+                      enableHighAccuracy: true,
+                      timeout: 10000,
+                      maximumAge: 0
+                    }
+                  );
+                });
+                
+                console.log('✅ Location granted:', {
+                  lat: position.coords.latitude.toFixed(4),
+                  lon: position.coords.longitude.toFixed(4),
+                  accuracy: Math.round(position.coords.accuracy) + 'm'
+                });
+                
+                // Show location info in chat
+                const locDiv = document.createElement('div');
+                locDiv.className = 'message bot-message';
+                locDiv.style.cssText = 'background: #34C759 !important; color: white !important; font-size: 13px; padding: 8px 12px;';
+                locDiv.textContent = `📍 Location acquired: ${position.coords.latitude.toFixed(4)}°, ${position.coords.longitude.toFixed(4)}° (±${Math.round(position.coords.accuracy)}m)`;
+                if (messages) {
+                  messages.appendChild(locDiv);
+                  messages.scrollTop = messages.scrollHeight;
+                }
+                
+              } catch (error) {
+                console.log('📍 Location denied or unavailable:', error.message);
+                
+                // Show permission request message
+                const permDiv = document.createElement('div');
+                permDiv.className = 'message bot-message';
+                permDiv.style.cssText = 'background: #FF9500 !important; color: white !important; font-size: 13px; padding: 8px 12px;';
+                permDiv.textContent = '📍 Location permission needed for accurate time/weather. Using default timezone. Enable location in browser settings for better results.';
+                if (messages) {
+                  messages.appendChild(permDiv);
+                  messages.scrollTop = messages.scrollHeight;
+                }
               }
             }
             
