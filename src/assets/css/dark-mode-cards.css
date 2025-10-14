@@ -1,0 +1,200 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * DARK MODE CARDS & TABLES
+ * Contrasting background strategy for depth
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   STRATEGY: Alternating Contrast
+   
+   Black background → Dark grey cards
+   Dark grey background → Black cards
+   ═══════════════════════════════════════════════════════════ */
+
+/* About Section - Black background, Dark grey cards */
+html.dark #about {
+  background: #000000 !important;
+}
+
+html.dark #about .card,
+html.dark #about .bg-primary,
+html.dark #about > div {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Publications Section - Black background, Dark grey cards */
+html.dark #publications {
+  background: #000000 !important;
+}
+
+html.dark #publications .card,
+html.dark #publications .bg-primary,
+html.dark #publications > div > div {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Skills Section - Dark grey background, Black cards */
+html.dark #skills {
+  background: #1C1C1E !important;
+}
+
+html.dark #skills .card,
+html.dark #skills .bg-primary {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Experience Section - Black background, Dark grey cards */
+html.dark #experience {
+  background: #000000 !important;
+}
+
+html.dark #experience .card,
+html.dark #experience .bg-primary,
+html.dark #experience .experience-card {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Projects Section - Dark grey background, Black cards */
+html.dark #projects {
+  background: #1C1C1E !important;
+}
+
+html.dark #projects .card,
+html.dark #projects .bg-primary,
+html.dark #projects .project-card {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Education Section - Black background, Dark grey cards */
+html.dark #education {
+  background: #000000 !important;
+}
+
+html.dark #education .card,
+html.dark #education .bg-primary,
+html.dark #education .education-card {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Awards Section - Dark grey background, Black cards */
+html.dark #awards {
+  background: #1C1C1E !important;
+}
+
+html.dark #awards .card,
+html.dark #awards .bg-primary {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Certifications Section - Black background, Dark grey cards */
+html.dark #certifications {
+  background: #000000 !important;
+}
+
+html.dark #certifications .card,
+html.dark #certifications .bg-primary {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Contact Section - Dark grey background, Black form */
+html.dark #contact {
+  background: #1C1C1E !important;
+}
+
+html.dark #contact form,
+html.dark #contact .bg-primary {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GENERAL CARD IMPROVEMENTS
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark .card {
+  box-shadow: 
+    0 4px 20px rgba(0, 122, 255, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .card:hover {
+  box-shadow: 
+    0 8px 32px rgba(0, 122, 255, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TEXT COLORS - Ensure Visibility
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark #about .text-sm,
+html.dark #about p,
+html.dark #about span {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html.dark #publications .text-sm,
+html.dark #publications p,
+html.dark #publications span {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html.dark h2,
+html.dark h3,
+html.dark h4 {
+  color: #ffffff !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TABLES (if any)
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark table {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark table th {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark table td {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HOVER EFFECTS - Subtle Blue Glow
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark .card:hover,
+html.dark .education-card:hover,
+html.dark .experience-card:hover,
+html.dark .project-card:hover {
+  border-color: rgba(0, 122, 255, 0.3) !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 122, 255, 0.15),
+    0 0 0 1px rgba(0, 122, 255, 0.2) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  html.dark .card {
+    margin-bottom: 16px;
+  }
+}
