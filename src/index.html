@@ -2343,12 +2343,71 @@
             });
           }
           
-          // Voice button
+          // Voice button - S2R functionality
           if (voiceBtn) {
+            let isListening = false;
+            let recognition = null;
+            
+            // Initialize speech recognition
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+              const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+              recognition = new SpeechRecognition();
+              recognition.continuous = false;
+              recognition.interimResults = false;
+              recognition.lang = 'en-US';
+              
+              recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                console.log('🎤 Voice recognized:', transcript);
+                
+                if (input) {
+                  input.value = transcript;
+                  sendMessage(transcript);
+                }
+                
+                isListening = false;
+                voiceBtn.style.background = '#34c759';
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">S2R</span>';
+              };
+              
+              recognition.onerror = function(event) {
+                console.error('🎤 Voice error:', event.error);
+                isListening = false;
+                voiceBtn.style.background = '#34c759';
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">S2R</span>';
+              };
+              
+              recognition.onend = function() {
+                isListening = false;
+                voiceBtn.style.background = '#34c759';
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">S2R</span>';
+              };
+            }
+            
             voiceBtn.addEventListener('click', function(e) {
               e.preventDefault();
-              console.log('🎤 Voice mode clicked');
-              alert('🎤 Voice mode (S2R) coming soon!\n\nThis will enable Speech-to-Retrieval for natural voice conversations.');
+              console.log('🎤 Voice button clicked');
+              
+              if (!recognition) {
+                alert('🎤 Voice recognition not supported in this browser.\n\nPlease use Chrome, Edge, or Safari.');
+                return;
+              }
+              
+              if (isListening) {
+                // Stop listening
+                recognition.stop();
+                isListening = false;
+                voiceBtn.style.background = '#34c759';
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">S2R</span>';
+                console.log('🎤 Voice stopped');
+              } else {
+                // Start listening
+                recognition.start();
+                isListening = true;
+                voiceBtn.style.background = '#ff3b30';
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i><span class="chatbot-voice-badge">●</span>';
+                console.log('🎤 Voice listening...');
+              }
             });
           }
           
