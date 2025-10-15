@@ -42,7 +42,11 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
 
     // Handle submit
     async function handleSubmit(event) {
+        // CRITICAL: Prevent page reload!
         event.preventDefault();
+        event.stopPropagation();
+
+        console.log('🚫 Form submission prevented (no page reload)');
 
         if (isSubmitting) {
             console.log('⚠️ Already submitting...');
@@ -134,7 +138,7 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             console.log('   📛 name:', messageData.name);
             console.log('   📧 email:', messageData.email);
             console.log('   📋 subject:', messageData.subject);
-            console.log('   💬 message:', messageData.message);  // ← THIS IS THE KEY!
+            console.log('   💬 message:', messageData.message);
             console.log('   ⏰ timestamp: [serverTimestamp]');
             console.log('   🌐 userAgent:', navigator.userAgent.substring(0, 50) + '...');
 
@@ -187,8 +191,8 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         }
     }
 
-    // Attach listener
-    form.addEventListener('submit', handleSubmit);
+    // Attach listener - use { capture: true } to ensure it fires first
+    form.addEventListener('submit', handleSubmit, { capture: true });
 
     // Add spinner CSS
     if (!document.querySelector('#contact-form-styles')) {
@@ -219,13 +223,6 @@ if (typeof window !== 'undefined') {
         document.addEventListener('DOMContentLoaded', () => {
             initContactForm();
         }, { once: true });
-    } else {
-        initContactForm();
-    }
-}
-
-export default initContactForm;
- true });
     } else {
         initContactForm();
     }
