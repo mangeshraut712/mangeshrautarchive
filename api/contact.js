@@ -35,9 +35,12 @@ async function saveToFirestoreREST(data) {
     }
 
     const projectId = 'mangeshrautarchive';
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/messages?key=${apiKey}`;
+    // Try default database first, then 'messages' database
+    const databaseId = process.env.FIREBASE_DATABASE_ID || '(default)';
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/messages?key=${apiKey}`;
 
     console.log('📡 Using Firebase REST API');
+    console.log('Database ID:', databaseId);
 
     const response = await fetch(url, {
         method: 'POST',
