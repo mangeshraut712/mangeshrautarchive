@@ -960,12 +960,12 @@
           }
         }
         
-        // Apply styles initially
-        applyChatbotStyles();
+        // Styles handled by external CSS (chatbot-complete.css)
+        console.log('🎨 Chatbot styles loaded from external CSS');
         
         // Watch for theme changes
         const observer = new MutationObserver(() => {
-          applyChatbotStyles();
+          console.log('🎨 Theme changed, CSS handles styling automatically');
         });
         
         observer.observe(document.documentElement, {
