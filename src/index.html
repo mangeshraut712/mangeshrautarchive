@@ -978,7 +978,8 @@
           const messagesContainer = document.getElementById('chatbot-messages');
           if (messagesContainer) {
             const messageObserver = new MutationObserver(() => {
-              // Styles are handled by CSS now
+              // CSS automatically handles new message styling
+              console.log('📬 New message added, CSS styling applied');
             });
             messageObserver.observe(messagesContainer, {
               childList: true,
