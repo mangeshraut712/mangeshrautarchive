@@ -1,24 +1,73 @@
 /**
  * Vercel Serverless Function - Contact Form Backend
- * Saves messages to Firebase Firestore from server-side
+ * Uses Firebase Admin SDK OR REST API to save messages
  */
 
 const admin = require('firebase-admin');
 
-// Initialize Firebase Admin SDK (once)
-if (!admin.apps.length) {
+// Try to initialize Firebase Admin SDK
+let firebaseInitialized = false;
+
+if (process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL) {
     try {
-        admin.initializeApp({
-            credential: admin.credential.cert({
-                projectId: process.env.FIREBASE_PROJECT_ID || 'mangeshrautarchive',
-                clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
-            })
-        });
-        console.log('✅ Firebase Admin initialized');
+        if (!admin.apps.length) {
+            admin.initializeApp({
+                credential: admin.credential.cert({
+                    projectId: process.env.FIREBASE_PROJECT_ID || 'mangeshrautarchive',
+                    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+                    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+                })
+            });
+            firebaseInitialized = true;
+            console.log('✅ Firebase Admin SDK initialized');
+        }
     } catch (error) {
-        console.error('❌ Firebase Admin init error:', error.message);
+        console.warn('⚠️ Firebase Admin init failed:', error.message);
     }
+}
+
+// Fallback: Use Firebase REST API with API key
+async function saveToFirestoreREST(data) {
+    const apiKey = process.env.GEMINI_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY;
+    
+    if (!apiKey) {
+        throw new Error('No Firebase API key found');
+    }
+
+    const projectId = 'mangeshrautarchive';
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/messages?key=${apiKey}`;
+
+    console.log('📡 Using Firebase REST API');
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            fields: {
+                name: { stringValue: data.name },
+                email: { stringValue: data.email },
+                subject: { stringValue: data.subject },
+                message: { stringValue: data.message },
+                timestamp: { timestampValue: new Date().toISOString() },
+                userAgent: { stringValue: data.userAgent || 'Unknown' },
+                submittedFrom: { stringValue: data.submittedFrom || 'Direct' }
+            }
+        })
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Firestore REST API error:', errorText);
+        throw new Error(`Firestore API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    // Extract document ID from name field (format: projects/.../documents/messages/{id})
+    const docId = result.name.split('/').pop();
+    
+    return { id: docId };
 }
 
 // CORS helper
@@ -82,29 +131,46 @@ module.exports = async (req, res) => {
         console.log('From:', name, '<' + email + '>');
         console.log('Subject:', subject);
 
-        // Save to Firestore
-        const db = admin.firestore();
-        const docRef = await db.collection('messages').add({
-            name: name.trim(),
-            email: email.trim(),
-            subject: subject.trim(),
-            message: message.trim(),
-            timestamp: admin.firestore.FieldValue.serverTimestamp(),
-            userAgent: req.headers['user-agent'] || 'Unknown',
-            submittedFrom: req.headers.referer || req.headers.origin || 'Direct',
-            ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-        });
+        let docRef;
 
-        console.log('✅ Message saved! Document ID:', docRef.id);
+        // Try Admin SDK first, fallback to REST API
+        if (firebaseInitialized) {
+            console.log('🔥 Using Firebase Admin SDK');
+            const db = admin.firestore();
+            docRef = await db.collection('messages').add({
+                name: name.trim(),
+                email: email.trim(),
+                subject: subject.trim(),
+                message: message.trim(),
+                timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                userAgent: req.headers['user-agent'] || 'Unknown',
+                submittedFrom: req.headers.referer || req.headers.origin || 'Direct',
+                ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            });
+        } else {
+            console.log('🔄 Falling back to Firebase REST API');
+            docRef = await saveToFirestoreREST({
+                name: name.trim(),
+                email: email.trim(),
+                subject: subject.trim(),
+                message: message.trim(),
+                userAgent: req.headers['user-agent'] || 'Unknown',
+                submittedFrom: req.headers.referer || req.headers.origin || 'Direct'
+            });
+        }
+
+        const docId = docRef.id || docRef.id;
+        console.log('✅ Message saved! Document ID:', docId);
 
         return res.status(200).json({
             success: true,
             message: 'Message sent successfully!',
-            id: docRef.id
+            id: docId
         });
 
     } catch (error) {
         console.error('❌ Server error:', error);
+        console.error('Error details:', error.message);
         
         return res.status(500).json({
             success: false,
