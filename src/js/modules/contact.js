@@ -109,14 +109,17 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             
             console.log('🔥 Connecting to Firebase project:', firebaseConfig.projectId);
             
-            // Initialize Firebase
+            // Initialize Firebase app
             const app = initializeApp(firebaseConfig, 'contact-form-' + Date.now());
-            const db = getFirestore(app); // Connects to (default) database
             
-            console.log('✅ Firebase connected successfully');
-            console.log('📬 Saving to Firestore collection: messages');
+            // Get Firestore - NO second argument = (default) database
+            const db = getFirestore(app);
+            
+            console.log('✅ Firebase app initialized');
+            console.log('✅ Firestore connected to (default) database');
+            console.log('📬 Target collection: messages');
 
-            // Prepare message data
+            // Prepare message data - ALL fields
             const messageData = {
                 name: payload.name,
                 email: payload.email,
@@ -127,19 +130,28 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 submittedFrom: window.location.href
             };
 
-            console.log('💾 Message data prepared:', {
-                name: messageData.name,
-                email: messageData.email,
-                subject: messageData.subject
-            });
+            console.log('💾 Message data prepared (ALL FIELDS):');
+            console.log('   📛 name:', messageData.name);
+            console.log('   📧 email:', messageData.email);
+            console.log('   📋 subject:', messageData.subject);
+            console.log('   💬 message:', messageData.message);  // ← THIS IS THE KEY!
+            console.log('   ⏰ timestamp: [serverTimestamp]');
+            console.log('   🌐 userAgent:', navigator.userAgent.substring(0, 50) + '...');
 
             // Save to Firestore (default database, messages collection)
+            console.log('📤 Sending to Firestore...');
             const messagesRef = collection(db, 'messages');
             const docRef = await addDoc(messagesRef, messageData);
 
-            console.log('✅ Message saved successfully!');
+            console.log('✅✅✅ MESSAGE SAVED SUCCESSFULLY! ✅✅✅');
             console.log('📝 Document ID:', docRef.id);
-            console.log('🎉 Check Firebase Console: https://console.firebase.google.com/project/mangeshrautarchive/firestore/data/~2Fmessages~2F' + docRef.id);
+            console.log('📊 Saved data:', {
+                name: messageData.name,
+                email: messageData.email,
+                subject: messageData.subject,
+                message: messageData.message
+            });
+            console.log('🎉 View in Firebase: https://console.firebase.google.com/project/mangeshrautarchive/firestore/data/~2Fmessages~2F' + docRef.id);
 
             showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
             form.reset();
@@ -207,6 +219,13 @@ if (typeof window !== 'undefined') {
         document.addEventListener('DOMContentLoaded', () => {
             initContactForm();
         }, { once: true });
+    } else {
+        initContactForm();
+    }
+}
+
+export default initContactForm;
+ true });
     } else {
         initContactForm();
     }
