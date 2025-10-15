@@ -1,77 +1,7 @@
 /**
  * Vercel Serverless Function - Contact Form Backend
- * Uses Firebase Admin SDK OR REST API to save messages
+ * Uses Firebase REST API to save messages
  */
-
-const admin = require('firebase-admin');
-
-// Try to initialize Firebase Admin SDK
-let firebaseInitialized = false;
-
-if (process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL) {
-    try {
-        if (!admin.apps.length) {
-            admin.initializeApp({
-                credential: admin.credential.cert({
-                    projectId: process.env.FIREBASE_PROJECT_ID || 'mangeshrautarchive',
-                    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-                    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
-                })
-            });
-            firebaseInitialized = true;
-            console.log('✅ Firebase Admin SDK initialized');
-        }
-    } catch (error) {
-        console.warn('⚠️ Firebase Admin init failed:', error.message);
-    }
-}
-
-// Fallback: Use Firebase REST API with API key
-async function saveToFirestoreREST(data) {
-    const apiKey = process.env.GEMINI_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY;
-    
-    if (!apiKey) {
-        throw new Error('No Firebase API key found');
-    }
-
-    const projectId = 'mangeshrautarchive';
-    // Try default database first, then 'messages' database
-    const databaseId = process.env.FIREBASE_DATABASE_ID || '(default)';
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/messages?key=${apiKey}`;
-
-    console.log('📡 Using Firebase REST API');
-    console.log('Database ID:', databaseId);
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            fields: {
-                name: { stringValue: data.name },
-                email: { stringValue: data.email },
-                subject: { stringValue: data.subject },
-                message: { stringValue: data.message },
-                timestamp: { timestampValue: new Date().toISOString() },
-                userAgent: { stringValue: data.userAgent || 'Unknown' },
-                submittedFrom: { stringValue: data.submittedFrom || 'Direct' }
-            }
-        })
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Firestore REST API error:', errorText);
-        throw new Error(`Firestore API error: ${response.status}`);
-    }
-
-    const result = await response.json();
-    // Extract document ID from name field (format: projects/.../documents/messages/{id})
-    const docId = result.name.split('/').pop();
-    
-    return { id: docId };
-}
 
 // CORS helper
 function applyCors(req, res) {
@@ -94,6 +24,78 @@ function applyCors(req, res) {
     res.setHeader('Vary', 'Origin');
 }
 
+// Save to Firestore using REST API
+async function saveToFirestoreREST(data) {
+    const apiKey = process.env.GEMINI_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY;
+    
+    if (!apiKey) {
+        throw new Error('No Firebase API key found in environment variables');
+    }
+
+    const projectId = 'mangeshrautarchive';
+    const databaseId = '(default)'; // Using default database
+    const collectionId = 'messages';
+    
+    // Firebase REST API endpoint
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/${collectionId}?key=${apiKey}`;
+
+    console.log('📡 Using Firebase REST API');
+    console.log('Project:', projectId);
+    console.log('Database:', databaseId);
+    console.log('Collection:', collectionId);
+    console.log('API Key length:', apiKey.length);
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fields: {
+                    name: { stringValue: data.name },
+                    email: { stringValue: data.email },
+                    subject: { stringValue: data.subject },
+                    message: { stringValue: data.message },
+                    timestamp: { timestampValue: new Date().toISOString() },
+                    userAgent: { stringValue: data.userAgent || 'Unknown' },
+                    submittedFrom: { stringValue: data.submittedFrom || 'Direct' }
+                }
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Firestore REST API error:');
+            console.error('Status:', response.status);
+            console.error('Response:', errorText);
+            
+            let errorMessage = 'Firestore API error';
+            try {
+                const errorJson = JSON.parse(errorText);
+                errorMessage = errorJson.error?.message || errorText;
+            } catch (e) {
+                errorMessage = errorText;
+            }
+            
+            throw new Error(`Firestore API error (${response.status}): ${errorMessage}`);
+        }
+
+        const result = await response.json();
+        console.log('✅ Firestore response:', JSON.stringify(result, null, 2));
+        
+        // Extract document ID from name field (format: projects/.../documents/messages/{id})
+        const docId = result.name.split('/').pop();
+        console.log('📝 Document ID:', docId);
+        
+        return { id: docId };
+        
+    } catch (error) {
+        console.error('❌ Fetch error:', error.message);
+        throw error;
+    }
+}
+
 module.exports = async (req, res) => {
     applyCors(req, res);
 
@@ -106,15 +108,20 @@ module.exports = async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(405).json({ 
             success: false, 
-            error: 'Method not allowed' 
+            error: 'Method not allowed. Use POST.' 
         });
     }
 
     try {
         const { name, email, subject, message } = req.body;
 
+        console.log('📬 Received contact form submission');
+        console.log('From:', name, '<' + email + '>');
+        console.log('Subject:', subject);
+
         // Validate
         if (!name?.trim() || !email?.trim() || !subject?.trim() || !message?.trim()) {
+            console.log('❌ Validation failed - missing fields');
             return res.status(400).json({
                 success: false,
                 error: 'All fields are required'
@@ -124,60 +131,52 @@ module.exports = async (req, res) => {
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            console.log('❌ Validation failed - invalid email');
             return res.status(400).json({
                 success: false,
                 error: 'Invalid email address'
             });
         }
 
-        console.log('📬 Saving message to Firestore...');
-        console.log('From:', name, '<' + email + '>');
-        console.log('Subject:', subject);
+        console.log('✅ Validation passed, saving to Firestore...');
 
-        let docRef;
+        // Save to Firestore via REST API
+        const docRef = await saveToFirestoreREST({
+            name: name.trim(),
+            email: email.trim(),
+            subject: subject.trim(),
+            message: message.trim(),
+            userAgent: req.headers['user-agent'] || 'Unknown',
+            submittedFrom: req.headers.referer || req.headers.origin || 'Direct'
+        });
 
-        // Try Admin SDK first, fallback to REST API
-        if (firebaseInitialized) {
-            console.log('🔥 Using Firebase Admin SDK');
-            const db = admin.firestore();
-            docRef = await db.collection('messages').add({
-                name: name.trim(),
-                email: email.trim(),
-                subject: subject.trim(),
-                message: message.trim(),
-                timestamp: admin.firestore.FieldValue.serverTimestamp(),
-                userAgent: req.headers['user-agent'] || 'Unknown',
-                submittedFrom: req.headers.referer || req.headers.origin || 'Direct',
-                ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
-            });
-        } else {
-            console.log('🔄 Falling back to Firebase REST API');
-            docRef = await saveToFirestoreREST({
-                name: name.trim(),
-                email: email.trim(),
-                subject: subject.trim(),
-                message: message.trim(),
-                userAgent: req.headers['user-agent'] || 'Unknown',
-                submittedFrom: req.headers.referer || req.headers.origin || 'Direct'
-            });
-        }
-
-        const docId = docRef.id || docRef.id;
-        console.log('✅ Message saved! Document ID:', docId);
+        console.log('✅ Message saved successfully! ID:', docRef.id);
 
         return res.status(200).json({
             success: true,
             message: 'Message sent successfully!',
-            id: docId
+            id: docRef.id
         });
 
     } catch (error) {
         console.error('❌ Server error:', error);
-        console.error('Error details:', error.message);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        
+        // Check for specific Firebase errors
+        let errorMessage = 'Failed to send message. Please try again or email mbr63@drexel.edu';
+        
+        if (error.message.includes('PERMISSION_DENIED')) {
+            errorMessage = 'Database permission denied. Please check Firestore rules.';
+        } else if (error.message.includes('NOT_FOUND')) {
+            errorMessage = 'Database or collection not found. Please check Firebase configuration.';
+        } else if (error.message.includes('API key')) {
+            errorMessage = 'Firebase API key issue. Please check environment variables.';
+        }
         
         return res.status(500).json({
             success: false,
-            error: 'Failed to send message. Please try again or email mbr63@drexel.edu',
+            error: errorMessage,
             details: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
