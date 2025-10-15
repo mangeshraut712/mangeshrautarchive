@@ -185,8 +185,13 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         }
     }
 
-    // Add event listener
+    // Add event listener - PREVENT DUPLICATES
+    if (form.dataset.contactInitialized) {
+        console.log('⚠️ Contact form already initialized, skipping');
+        return;
+    }
     form.addEventListener('submit', handleSubmit);
+    form.dataset.contactInitialized = 'true';
 
     // Add basic spinner CSS
     if (!document.querySelector('#simple-contact-styles')) {
@@ -213,13 +218,15 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
     console.log('Simple contact form initialized');
 }
 
-// Auto-initialize
-if (typeof window !== 'undefined' && document.readyState !== 'loading') {
-    initContactForm();
-} else if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', () => {
+// Auto-initialize ONCE
+if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            initContactForm();
+        }, { once: true }); // ← Only fire once
+    } else {
         initContactForm();
-    });
+    }
 }
 
 export default initContactForm;
