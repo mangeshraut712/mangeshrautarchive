@@ -1,5 +1,5 @@
-// Simple contact form - no validation warnings, minimum requirements
-let firebaseInstance = null; // Cache Firebase instance
+// Simple contact form - Direct Firebase connection
+// No Vercel backend needed!
 
 export function initContactForm(formId = 'contact-form', documentRef = document) {
     const form = documentRef.getElementById(formId);
@@ -8,27 +8,23 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         return;
     }
 
+    // Prevent duplicate initialization
+    if (form.dataset.contactInitialized) {
+        console.log('⚠️ Contact form already initialized, skipping');
+        return;
+    }
+    form.dataset.contactInitialized = 'true';
+
     let isSubmitting = false;
     const submitButton = form.querySelector('button[type="submit"], .btn');
     const inputs = form.querySelectorAll('input, textarea');
     
-    console.log('📬 Contact form initialized (Firebase loads on submit)');
-    
-    // Preload Firebase SDK in background (non-blocking)
-    if (typeof window !== 'undefined' && !firebaseInstance) {
-        setTimeout(() => {
-            import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js')
-                .then(() => console.log('✅ Firebase SDK preloaded'))
-                .catch(() => console.log('⚠️ Firebase preload failed'));
-        }, 2000); // Wait 2 seconds after page load
-    }
+    console.log('📬 Contact form initialized (Direct Firebase)');
 
-    // Simple success/error display
+    // Show message
     function showMessage(message, type = 'success') {
         const existing = form.querySelector('.contact-message');
-        if (existing) {
-            existing.remove();
-        }
+        if (existing) existing.remove();
 
         const div = document.createElement('div');
         div.className = `contact-message alert alert-${type}`;
@@ -40,44 +36,29 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         form.insertBefore(div, form.firstChild);
 
         setTimeout(() => {
-            if (div.parentNode) {
-                div.remove();
-            }
+            if (div.parentNode) div.remove();
         }, 5000);
     }
 
-    // Direct submit to Firebase
+    // Handle submit
     async function handleSubmit(event) {
         event.preventDefault();
 
-        // PREVENT DUPLICATE SUBMISSIONS
         if (isSubmitting) {
-            console.log('⚠️ Already submitting, please wait...');
+            console.log('⚠️ Already submitting...');
             return;
         }
 
-        // Get form data - check all possible field names
+        // Get form data
         const formData = new FormData(form);
-        
-        // Log all form data
-        console.log('📝 All form fields:');
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}: "${value}"`);
-        }
-        
         const payload = {
-            name: formData.get('name')?.trim() || formData.get('user-name')?.trim() || '',
-            email: formData.get('email')?.trim() || formData.get('user-email')?.trim() || '',
+            name: formData.get('name')?.trim() || '',
+            email: formData.get('email')?.trim() || '',
             subject: formData.get('subject')?.trim() || '',
-            message: formData.get('message')?.trim() || formData.get('user-message')?.trim() || ''
+            message: formData.get('message')?.trim() || ''
         };
 
-        console.log('📝 Captured payload:', {
-            name: `"${payload.name}"`,
-            email: `"${payload.email}"`,
-            subject: `"${payload.subject}"`,
-            message: `"${payload.message.substring(0, 50)}..."`
-        });
+        console.log('📝 Form data:', payload);
 
         // Validate
         const missingFields = [];
@@ -87,39 +68,35 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
         if (!payload.message) missingFields.push('message');
         
         if (missingFields.length > 0) {
-            console.log('❌ Missing fields:', missingFields.join(', '));
             showMessage(`❌ Please fill in: ${missingFields.join(', ')}`, 'error');
-            isSubmitting = false;
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Send Message';
-            }
-            inputs.forEach(input => input.disabled = false);
             return;
         }
-        
-        console.log('✅ All fields validated, submitting to Firebase...');
 
-        // Set loading state
-        isSubmitting = true;
-        const originalText = submitButton?.textContent;
-
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner mr-2"></span>Sending...';
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(payload.email)) {
+            showMessage('❌ Please enter a valid email address', 'error');
+            return;
         }
 
-        // Disable inputs
+        // Set loading
+        isSubmitting = true;
+        const originalText = submitButton?.textContent || 'Send Message';
+        
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner"></span> Sending...';
+        }
         inputs.forEach(input => input.disabled = true);
 
         try {
-            console.log('🔥 Connecting to Firebase...');
+            console.log('🔥 Initializing Firebase...');
             
-            // Import Firebase SDK directly
+            // Import Firebase SDK modules
             const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
             const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
             
-            // Your Firebase configuration
+            // Firebase configuration (your exact config)
             const firebaseConfig = {
                 apiKey: "AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",
                 authDomain: "mangeshrautarchive.firebaseapp.com",
@@ -130,11 +107,14 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 measurementId: "G-YX2XQWYSCQ"
             };
             
-            console.log('🔥 Initializing Firebase app...');
-            const app = initializeApp(firebaseConfig);
-            const db = getFirestore(app);
+            console.log('🔥 Connecting to Firebase project:', firebaseConfig.projectId);
             
-            console.log('✅ Firebase connected to project:', firebaseConfig.projectId);
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig, 'contact-form-' + Date.now());
+            const db = getFirestore(app); // Connects to (default) database
+            
+            console.log('✅ Firebase connected successfully');
+            console.log('📬 Saving to Firestore collection: messages');
 
             // Prepare message data
             const messageData = {
@@ -147,15 +127,19 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 submittedFrom: window.location.href
             };
 
-            console.log('📬 Saving to Firestore collection: messages');
+            console.log('💾 Message data prepared:', {
+                name: messageData.name,
+                email: messageData.email,
+                subject: messageData.subject
+            });
 
-            // Save to Firestore
+            // Save to Firestore (default database, messages collection)
             const messagesRef = collection(db, 'messages');
             const docRef = await addDoc(messagesRef, messageData);
 
             console.log('✅ Message saved successfully!');
-            console.log('📧 Document ID:', docRef.id);
-            console.log('📬 From:', payload.name, `<${payload.email}>`);
+            console.log('📝 Document ID:', docRef.id);
+            console.log('🎉 Check Firebase Console: https://console.firebase.google.com/project/mangeshrautarchive/firestore/data/~2Fmessages~2F' + docRef.id);
 
             showMessage('✅ Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
             form.reset();
@@ -165,38 +149,39 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
             console.error('Error code:', error.code);
             console.error('Error message:', error.message);
             
+            let errorMessage = '❌ Failed to send message. ';
+            
             if (error.code === 'permission-denied') {
-                showMessage('❌ Permission denied. Please check Firestore rules.', 'error');
-            } else if (error.message.includes('Failed to fetch')) {
-                showMessage('❌ Network error. Please check your connection.', 'error');
+                errorMessage += 'Permission denied. Please make sure Firestore security rules allow create operations.';
+                console.error('💡 Tip: Check security rules at https://console.firebase.google.com/project/mangeshrautarchive/firestore/rules');
+            } else if (error.message?.includes('Failed to fetch')) {
+                errorMessage += 'Network error. Please check your internet connection.';
+            } else if (error.message?.includes('transport')) {
+                errorMessage += 'Connection error. Please try again.';
             } else {
-                showMessage(`❌ Error: ${error.message}. Please email: mbr63@drexel.edu`, 'error');
+                errorMessage += error.message || 'Unknown error occurred.';
             }
+            
+            errorMessage += ' Please email: mbr63@drexel.edu';
+            
+            showMessage(errorMessage, 'error');
         } finally {
-            // Reset loading state
             isSubmitting = false;
             if (submitButton) {
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalText;
             }
-
-            // Re-enable inputs
             inputs.forEach(input => input.disabled = false);
         }
     }
 
-    // Add event listener - PREVENT DUPLICATES
-    if (form.dataset.contactInitialized) {
-        console.log('⚠️ Contact form already initialized, skipping');
-        return;
-    }
+    // Attach listener
     form.addEventListener('submit', handleSubmit);
-    form.dataset.contactInitialized = 'true';
 
-    // Add basic spinner CSS
-    if (!document.querySelector('#simple-contact-styles')) {
+    // Add spinner CSS
+    if (!document.querySelector('#contact-form-styles')) {
         const style = document.createElement('style');
-        style.id = 'simple-contact-styles';
+        style.id = 'contact-form-styles';
         style.textContent = `
             .spinner {
                 display: inline-block;
@@ -206,16 +191,14 @@ export function initContactForm(formId = 'contact-form', documentRef = document)
                 border-radius: 50%;
                 border-top-color: currentColor;
                 animation: spin 1s linear infinite;
+                margin-right: 8px;
             }
-
             @keyframes spin {
                 to { transform: rotate(360deg); }
             }
         `;
         document.head.appendChild(style);
     }
-
-    console.log('Simple contact form initialized');
 }
 
 // Auto-initialize ONCE
@@ -223,7 +206,7 @@ if (typeof window !== 'undefined') {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             initContactForm();
-        }, { once: true }); // ← Only fire once
+        }, { once: true });
     } else {
         initContactForm();
     }
