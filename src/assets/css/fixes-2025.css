@@ -240,24 +240,38 @@ html.dark .nav-link {
 /* ═══════════════════════════════════════════════════════════
    MOBILE MENU - Enhanced
    ═══════════════════════════════════════════════════════════ */
+/* Enhanced Menu Toggle Button */
 .menu-toggle-button {
   color: var(--color-text-primary);
+  z-index: 10001;
+  /* Ensure above overlay */
+  position: relative;
 }
 
 html:not(.dark) .menu-toggle-button {
-  color: #1d1d1f;
+  color: #000000 !important;
+  /* Force black in light mode */
 }
 
 html.dark .menu-toggle-button {
-  color: #f5f5f7;
+  color: #ffffff !important;
+  /* Force white in dark mode */
 }
 
 .overlay-menu {
   background: rgba(255, 255, 255, 0.98);
+  z-index: 10000;
+  /* Ensure high z-index */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 html.dark .overlay-menu {
-  background: rgba(24, 24, 27, 0.98);
+  background: rgba(0, 0, 0, 0.95);
+  /* Darker background for dark mode */
 }
 
 .overlay-nav a {
@@ -797,6 +811,54 @@ html:not(.dark) #game-start-btn {
   background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
   color: #ffffff !important;
   border: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE GAME FIXES
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  #debug-runner-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    border-radius: 8px !important;
+  }
+
+  #debug-runner-canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL LIGHT MODE TEXT FIX
+   ═══════════════════════════════════════════════════════════ */
+html:not(.dark) body {
+  color: #1d1d1f;
+  background-color: #ffffff;
+}
+
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) h5,
+html:not(.dark) h6 {
+  color: #000000;
+}
+
+html:not(.dark) p,
+html:not(.dark) span,
+html:not(.dark) li,
+html:not(.dark) a {
+  color: #1d1d1f;
+}
+
+/* Exception for buttons and specific colored elements */
+html:not(.dark) .btn,
+html:not(.dark) button {
+  color: inherit;
 }
 
 html:not(.dark) #game-start-btn:hover {
