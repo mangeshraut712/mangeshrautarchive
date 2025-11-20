@@ -10,6 +10,12 @@ class EnhancedChatbot {
         this.isListening = false;
         this.conversationHistory = [];
         this.voiceEnabled = false;
+        this.lastContextTime = 0;
+        this.cachedContext = null;
+        this.visibleProjectsCache = null;
+        this.blogCache = null;
+        this.sectionObserver = null;
+        this.currentSection = 'home';
 
         // Initialize Web Speech API
         this.initSpeechRecognition();
@@ -91,6 +97,35 @@ class EnhancedChatbot {
     }
 
     /**
+     * Send Message (Enhanced with Context)
+     */
+    async sendMessage(message) {
+        if (!message || !message.trim()) return;
+
+        // Add to conversation history
+        this.conversationHistory.push({
+            role: 'user',
+            content: message,
+            timestamp: new Date()
+        });
+
+        const context = this.getPageContext();
+
+        // Use the exposed ChatUI instance
+        if (window.chatUI && typeof window.chatUI.sendMessage === 'function') {
+            console.log('📤 Sending message via ChatUI with context:', context);
+            await window.chatUI.sendMessage(message, context);
+        } else {
+            // Fallback to legacy click method
+            console.warn('⚠️ ChatUI not found, falling back to legacy click');
+            const input = document.getElementById('chatbot-input');
+            if (input) input.value = message;
+            const sendBtn = document.querySelector('.chatbot-send-btn');
+            if (sendBtn) sendBtn.click();
+        }
+    }
+
+    /**
      * Toggle Voice Recognition
      */
     toggleVoiceRecognition() {
@@ -129,51 +164,53 @@ class EnhancedChatbot {
     }
 
     /**
-     * Send Message (Enhanced with Context)
-     */
-    /**
-     * Send Message (Enhanced with Context)
-     */
-    async sendMessage(message) {
-        if (!message || !message.trim()) return;
-
-        // Add to conversation history
-        this.conversationHistory.push({
-            role: 'user',
-            content: message,
-            timestamp: new Date()
-        });
-
-        const context = this.getPageContext();
-
-        // Use the exposed ChatUI instance
-        if (window.chatUI && typeof window.chatUI.sendMessage === 'function') {
-            console.log('📤 Sending message via ChatUI with context:', context);
-            await window.chatUI.sendMessage(message, context);
-        } else {
-            // Fallback to legacy click method
-            console.warn('⚠️ ChatUI not found, falling back to legacy click');
-            const input = document.getElementById('chatbot-input');
-            if (input) input.value = message;
-            const sendBtn = document.querySelector('.chatbot-send-btn');
-            if (sendBtn) sendBtn.click();
-        }
-    }
-
-    /**
-     * Get Page Context (Scrape dynamic content)
+     * Get Page Context (Optimized - Cached & Minimal)
      */
     getPageContext() {
-        return {
+        // Cache context to avoid repeated DOM queries
+        const now = Date.now();
+        if (this.lastContextTime && (now - this.lastContextTime) < 5000) { // 5 second cache
+            return this.cachedContext;
+        }
+
+        this.cachedContext = {
             currentSection: this.getCurrentSection(),
             visibleProjects: this.getVisibleProjects(),
-            skills: this.getSkills(),
             latestBlog: this.getLatestBlog()
+            // Removed heavy getSkills() call - performance optimization
         };
+
+        this.lastContextTime = now;
+        return this.cachedContext;
     }
 
     getCurrentSection() {
-        const sections = document.querySelectorAll('section');
+        // Use Intersection Observer if available for better performance
+        if (window.IntersectionObserver) {
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.currentSection = entry.target.id;
+                    }
+                });
+            };
+
+            if (!this.sectionObserver) {
+                this.sectionObserver = new IntersectionObserver(observerCallback, {
+                    threshold: 0.5,
+                    rootMargin: '-50% 0px'
+                });
+
+                document.querySelectorAll('section').forEach(section => {
+                    this.sectionObserver.observe(section);
+                });
+            }
+
+            return this.currentSection || 'home';
+        }
+
+        // Fallback for older browsers
+        const sections = document.querySelectorAll('section[id]');
         let current = 'home';
         sections.forEach(section => {
             const rect = section.getBoundingClientRect();
@@ -185,32 +222,28 @@ class EnhancedChatbot {
     }
 
     getVisibleProjects() {
-        const projects = [];
-        document.querySelectorAll('.project-card, .github-project-card').forEach(card => {
-            const title = card.querySelector('h3')?.textContent;
-            const desc = card.querySelector('p')?.textContent;
-            if (title) projects.push({ title, description: desc });
-        });
-        return projects.slice(0, 5); // Limit to 5
-    }
-
-    getSkills() {
-        const skills = [];
-        document.querySelectorAll('.skill-item, .skill-tag').forEach(item => {
-            skills.push(item.textContent.trim());
-        });
-        return skills.slice(0, 20);
+        // Limit DOM queries and cache results
+        if (!this.visibleProjectsCache) {
+            this.visibleProjectsCache = [];
+            document.querySelectorAll('.project-card, .github-project-card, .portfolio-item').forEach(card => {
+                const title = card.querySelector('h3, .project-title')?.textContent?.trim();
+                if (title && title.length > 0) {
+                    this.visibleProjectsCache.push({ title });
+                }
+            });
+        }
+        return this.visibleProjectsCache.slice(0, 3); // Reduced from 5 to 3
     }
 
     getLatestBlog() {
-        const blogCard = document.querySelector('.blog-card');
-        if (blogCard) {
-            return {
-                title: blogCard.querySelector('.blog-title')?.textContent,
-                summary: blogCard.querySelector('.blog-summary')?.textContent
-            };
+        // Simplified blog detection
+        if (!this.blogCache) {
+            const blogCard = document.querySelector('.blog-card, .blog-post');
+            this.blogCache = blogCard ? {
+                title: blogCard.querySelector('.blog-title, h3')?.textContent?.trim()
+            } : null;
         }
-        return null;
+        return this.blogCache;
     }
 
     /**
@@ -272,11 +305,11 @@ class EnhancedChatbot {
           </p>
           <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
             ${suggestedPrompts.map(prompt => `
-              <button class="suggested-prompt-btn" 
-                      style="padding: 0.5rem 1rem; 
-                             background: var(--bg-secondary); 
-                             border: 1px solid var(--border-color); 
-                             border-radius: 1rem; 
+              <button class="suggested-prompt-btn"
+                      style="padding: 0.5rem 1rem;
+                             background: var(--bg-secondary);
+                             border: 1px solid var(--border-color);
+                             border-radius: 1rem;
                              font-size: 0.8125rem;
                              cursor: pointer;
                              transition: all 0.2s ease;"
@@ -312,9 +345,6 @@ class EnhancedChatbot {
 let enhancedChatbot;
 document.addEventListener('DOMContentLoaded', () => {
     enhancedChatbot = new EnhancedChatbot();
-    console.log('✅ Enhanced Chatbot initialized with voice capabilities');
-
-    // Make it globally accessible
     window.enhancedChatbot = enhancedChatbot;
 });
 

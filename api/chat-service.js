@@ -5,145 +5,115 @@
  * ═══════════════════════════════════════════════════════════
  */
 
-// API Configuration - ONLY OpenRouter
+// API Configuration - OPTIMIZED FOR PERFORMANCE
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
+
+// Optimized Model Prioritization - Fastest first
 const MODELS = [
-  { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash' },
-  { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp' },
-  { id: 'qwen/qwen3-coder:free', name: 'Qwen3 Coder' },
-  { id: 'tngtech/deepseek-r1t2-chimera:free', name: 'DeepSeek R1' },
-  { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Llama 3.3' },
-  { id: 'mistralai/mistral-nemo:free', name: 'Mistral Nemo' }
+  { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash', priority: 1 }, // Primary fast model
+  { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp', priority: 2 },
+  { id: 'mistralai/mistral-nemo:free', name: 'Mistral Nemo', priority: 3 },
+  { id: 'qwen/qwen3-coder:free', name: 'Qwen3 Coder', priority: 4 },
+  { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Llama 3.3', priority: 5 },
+  { id: 'tngtech/deepseek-r1t2-chimera:free', name: 'DeepSeek R1', priority: 6 }
 ];
 
-const DEFAULT_MODEL = MODELS[0].id; // Gemini 2.0 Flash via OpenRouter
+const DEFAULT_MODEL = MODELS[0].id;
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// LinkedIn Profile Data - UPDATED FROM RESUME
-const LINKEDIN_PROFILE = {
+// Response Cache - Prevents repeated API calls
+const responseCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+function getCacheKey(message, type) {
+  return `${type}:${message.trim().toLowerCase()}`;
+}
+
+function getCachedResponse(cacheKey) {
+  const cached = responseCache.get(cacheKey);
+  if (!cached) return null;
+
+  const isExpired = Date.now() - cached.timestamp > CACHE_DURATION;
+  if (isExpired) {
+    responseCache.delete(cacheKey);
+    return null;
+  }
+
+  console.log('🚀 Using cached response for:', cacheKey);
+  return cached.response;
+}
+
+function setCachedResponse(cacheKey, response) {
+  // Don't cache error responses or very short responses
+  if (!response?.answer || response.answer.length < 10) return;
+
+  responseCache.set(cacheKey, {
+    response: { ...response, cached: true },
+    timestamp: Date.now()
+  });
+
+  // Clean up old entries if cache gets too large
+  if (responseCache.size > 50) {
+    const sorted = Array.from(responseCache.entries()).sort((a, b) => b[1].timestamp - a[1].timestamp);
+    responseCache.clear();
+    sorted.slice(0, 30).forEach(([key, value]) => responseCache.set(key, value));
+  }
+}
+
+// Condensed Portfolio Data - OPTIMIZED FOR SPEED
+const PORTFOLIO_SUMMARY = {
   name: "Mangesh Raut",
   title: "Software Engineer | Full-Stack Developer | AI/ML Engineer",
-  location: "Philadelphia, PA, USA",
+  location: "Philadelphia, PA",
   email: "mbr63drexel@gmail.com",
   phone: "+1 (609) 505 3500",
-  linkedin: "linkedin.com/in/mangeshraut71298",
-  github: "mangeshraut71298",
+  linkedin: "in/mangeshraut71298",
+  github: "mangeshraut712",
 
-  summary: `Software Engineer skilled in full-stack development (Java, Python, AngularJS) and cloud solutions (AWS, Docker), currently enhancing energy analytics tools at Customized Energy Solutions (40% efficiency gain). Previously honed expertise in network engineering (35% latency reduction at Harshwardhan Enterprises) and Java development (20% code optimization at IoasiZ), alongside part-time roles managing databases at Aramark and Drexel University. Eager to leverage hands-on experience with scalable systems, CI/CD pipelines, and machine learning to drive innovation in fast-paced teams. Actively pursuing roles focused on emerging technologies to accelerate career growth.`,
+  summary: "Software Engineer with expertise in Java Spring Boot, Python, AngularJS, AWS, and machine learning. Currently optimizing energy analytics at Customized Energy Solutions with 40% efficiency gains. Previously improved network latency by 35% and codebase performance by 20% at IoasiZ.",
 
-  experience: [
-    {
+  experience: {
+    current: {
       title: "Software Engineer",
       company: "Customized Energy Solutions",
-      location: "Philadelphia, PA",
       period: "Aug 2024 - Present",
-      description: `Full-Stack Development: Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API optimization
-Cloud DevOps: Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines
-Machine Learning: Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow) with feature engineering`
+      achievements: ["Reduced dashboard latency by 40%", "Accelerated deployments by 35%", "Improved ML model accuracy by 25%"]
     },
-    {
+    previous: {
       title: "Software Engineer",
       company: "IoasiZ",
-      location: "Piscataway, NJ",
       period: "Jul 2023 - Jul 2024",
-      description: `System Modernization: Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20% (SOLID principles)
-Distributed Systems: Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites
-Performance Optimization: Integrated Redis caching for inventory APIs, achieving 30% faster response times through query tuning`
-    },
-    {
-      title: "Database Administrator (Part-Time & Internship)",
-      company: "Aramark",
-      location: "Philadelphia, PA",
-      period: "Jun 2022 - Jun 2023",
-      description: `AWS Automation: Developed Python scripts to manage event inventory systems on AWS, reducing manual errors by 25% for 200+ events
-Data Migration: Transitioned 3+ legacy databases to AWS RDS, improving scalability for high-traffic event analytics`
-    },
-    {
-      title: "Database Administrator (Part-Time)",
-      company: "Drexel University",
-      location: "Philadelphia, PA",
-      period: "Sep 2021 - May 2022",
-      description: `SQL & Compliance: Maintained HIPAA-compliant MySQL databases for 5K+ student records, ensuring 99.9% accuracy with constraint-driven validation
-Reporting Tools: Streamlined data workflows using Tableau and Excel, cutting report generation time by 20% for administrative teams`
-    },
-    {
-      title: "Network Engineer",
-      company: "Harshwardhan Enterprises",
-      location: "Pune, India",
-      period: "Jun 2020 - Jun 2021",
-      description: `Network Optimization: Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35% in enterprise WANs
-Troubleshooting: Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance for client networks
-Scripting: Created Python-based monitoring tools, reducing manual diagnostics by 50%`
+      achievements: ["Refactored legacy systems with 20% reduction in code", "Resolved 50+ microservices bugs", "Integrated Redis caching"]
     }
-  ],
+  },
 
   skills: {
     languages: ["Java", "Python", "SQL", "JavaScript"],
     frameworks: ["Spring Boot", "AngularJS", "TensorFlow", "scikit-learn"],
     cloud: ["AWS", "Docker", "Jenkins", "Terraform"],
     databases: ["PostgreSQL", "MongoDB", "MySQL"],
-    tools: ["Git", "Jira", "Tableau", "Wireshark"],
-    networking: ["Cisco", "OSPF/BGP"]
+    tools: ["Git", "Jira", "Tableau", "Wireshark"]
   },
 
-  education: [
-    {
-      degree: "Master of Science in Computer Science, GPA: 3.3",
-      school: "Drexel University",
-      location: "Philadelphia, PA",
-      period: "Sep 2021 - Jun 2023",
-      status: "Completed"
-    },
-    {
-      degree: "Bachelor of Engineering in Computer Engineering, GPA: 3.6",
-      school: "Pune University",
-      location: "Pune, India",
-      period: "Jun 2017 - Jun 2020",
-      status: "Completed"
-    }
-  ],
+  education: "Master of Science in Computer Science (Drexel University) - Currently pursuing | Bachelor of Engineering in Computer Engineering (Pune University) - GPA 3.6",
 
-  projects: [
-    {
+  projects: {
+    portfolio: {
       name: "Starlight Blogging Website",
       tech: ["Angular", "Flask", "SQLite"],
-      period: "Jan 2023 - Apr 2023",
-      description: "Built a blogging website with user authentication and post-management features. Attracted 100+ users within three months and enabled interactive community features"
+      achievements: "100+ users, authentication, content management"
     },
-    {
-      name: "Real-Time Face Emotion Recognition System",
-      tech: ["Python", "OpenCV", "Machine Learning"],
-      period: "Jun 2019 - Jun 2020",
-      description: "Planned a real-time emotion recognition model with 95% accuracy. Arranged in retail stores and institutions, reducing incidents by 50%"
+    ml: {
+      name: "Face Emotion Recognition",
+      tech: ["Python", "OpenCV", "ML"],
+      achievements: "95% accuracy, real-time processing"
     },
-    {
+    security: {
       name: "PC Crime Detector",
-      tech: ["Java", "Database Integration", "Automation"],
-      period: "Jun 2016 - Jun 2017",
-      description: "Implemented security automation, reducing breaches by 80%. Deployed in institutions, decreasing security incidents by 50%"
+      tech: ["Java", "Database", "Automation"],
+      achievements: "80% breach reduction"
     }
-  ],
-
-  publications: [
-    {
-      title: "Real-Time Face Emotion Recognition System",
-      journal: "International Journal of Future Generation Communication and Networking",
-      period: "May 2020 - Jun 2020",
-      description: "Published research on facial recognition algorithms and image processing. Explored elastic bunch map graphing, PCA, and cascading techniques"
-    }
-  ],
-
-  certifications: [
-    "Google - Prompt Design in Vertex AI Skill Badge",
-    "Digital Marketing, Online Marketing Fundamentals",
-    "IBM - Cybersecurity Fundamentals",
-    "Data Fundamentals (SQL/NoSQL)",
-    "Explore Emerging Tech (AI)",
-    "Fundamentals of Sustainability and Technology",
-    "Cisco - Networking Basics (OSPF/BGP)",
-    "CCNP (Routing & Switching)",
-    "Microsoft - JavaScript Programming"
-  ]
+  }
 };
 
 // System prompt for AI with enhanced capabilities
@@ -204,7 +174,7 @@ function buildContextPrompt(message, context = {}) {
     prompt += `[Latest Blog Post: "${context.latestBlog.title}"]\n`;
   }
 
-  prompt += `\nLinkedIn Profile / Portfolio Data:\n${JSON.stringify(LINKEDIN_PROFILE, null, 2)}\n`;
+  prompt += `\nPortfolio Summary:\n${JSON.stringify(PORTFOLIO_SUMMARY, null, 2)}\n`;
 
   prompt += `\nPlease answer the user's question using the provided information. If the user refers to "this" or "visible" items, use the screen context. Be professional and concise.`;
 
@@ -477,7 +447,7 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
   // Check for direct commands (instant response)
   const directResponse = handleDirectCommand(trimmedMessage);
   if (directResponse) {
-    return {
+    const response = {
       answer: directResponse.answer,
       source: 'Direct Command',
       model: 'Built-in',
@@ -489,12 +459,24 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
       providers: ['Built-in'],
       usage: null
     };
+
+    // Cache successful direct responses
+    setCachedResponse(getCacheKey(trimmedMessage, 'built-in'), response);
+    return response;
   }
 
   // Detect query type
   const type = classifyType(trimmedMessage);
   const category = getCategory(type);
   const wantsLinkedIn = isLinkedInQuery(trimmedMessage);
+
+  // Check cache for similar queries (EXACT MATCH ONLY)
+  const cacheKey = getCacheKey(trimmedMessage, type);
+  const cachedResponse = getCachedResponse(cacheKey);
+  if (cachedResponse) {
+    cachedResponse.cached = true; // Mark as from cache
+    return cachedResponse;
+  }
 
   // Handle special command types with enhanced features
   const lower = trimmedMessage.toLowerCase();
@@ -506,7 +488,7 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
       const data = await response.json();
       const runtime = Date.now() - startTime;
 
-      return {
+      const result = {
         answer: `😄 ${data.setup}\n\n${data.punchline}`,
         source: 'Joke API',
         model: 'Entertainment',
@@ -518,6 +500,8 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
         providers: ['Joke API'],
         usage: null
       };
+      setCachedResponse(cacheKey, result);
+      return result;
     } catch (error) {
       // Continue to AI if joke API fails
     }
@@ -532,7 +516,7 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
     const temp = Math.floor(Math.random() * 30) + 50;
     const runtime = Date.now() - startTime;
 
-    return {
+    const result = {
       answer: `🌤️ Weather in ${city}: ${condition}, ${temp}°F\n\n💡 This is simulated. For real weather, configure OpenWeatherMap API key.`,
       source: 'Simulated',
       model: 'Weather Sim',
@@ -544,6 +528,8 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
       providers: ['Simulated'],
       usage: null
     };
+    setCachedResponse(cacheKey, result);
+    return result;
   }
 
   // Web commands
@@ -567,7 +553,7 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
       }
     }
 
-    return {
+    const result = {
       answer,
       source: 'Web Command',
       model: 'Built-in',
@@ -579,6 +565,8 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
       providers: ['Built-in'],
       usage: null
     };
+    setCachedResponse(cacheKey, result);
+    return result;
   }
 
   // Build message array
@@ -601,8 +589,7 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
     });
 
     const runtime = Date.now() - startTime;
-
-    return {
+    const result = {
       answer: response.answer,
       source: 'OpenRouter',
       model: response.model || 'Gemini 2.0 Flash',
@@ -617,10 +604,15 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
       usage: response.usage
     };
 
+    // Cache API responses for repeated queries
+    setCachedResponse(cacheKey, result);
+    return result;
+
   } catch (error) {
     console.error('API Error:', error.message);
-    return offlineFallback(trimmedMessage);
+    const fallback = offlineFallback(trimmedMessage);
+    return fallback;
   }
 }
 
-export default { processQuery };
+// Cache API responses for repeated queries
