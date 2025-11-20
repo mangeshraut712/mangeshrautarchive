@@ -4,9 +4,9 @@ import { ui as uiConfig, features, chat as chatConfig, errorMessages } from './c
 import ExternalApiKeys from '../modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
 import initContactForm from '../modules/contact.js';
-import VoiceManager from '../utils/voice-manager.js';
+
 import initFadeInAnimation from '../modules/animations.js';
-import renderProjects from '../modules/projects.js';
+
 
 const markdownLib = (typeof window !== 'undefined' && window.marked)
     ? window.marked
@@ -72,14 +72,14 @@ class ChatUI {
 
     _initializeElements() {
         const form = document.getElementById('chat-form') ||
-                     document.getElementById('portfolio-chat-form') ||
-                     document.getElementById('chatbot-form');
+            document.getElementById('portfolio-chat-form') ||
+            document.getElementById('chatbot-form');
         const input = document.getElementById('message-input') ||
-                      document.getElementById('portfolio-chat-input') ||
-                      document.getElementById('chatbot-input');
+            document.getElementById('portfolio-chat-input') ||
+            document.getElementById('chatbot-input');
         const messages = document.getElementById('chat-messages') ||
-                         document.getElementById('portfolio-chat-messages') ||
-                         document.getElementById('chatbot-messages');
+            document.getElementById('portfolio-chat-messages') ||
+            document.getElementById('chatbot-messages');
 
         return {
             form,
@@ -89,13 +89,13 @@ class ChatUI {
             suggestions: null,
             status: null,
             widget: document.getElementById('portfolio-chat-widget') ||
-                    document.getElementById('chatbot-widget'),
+                document.getElementById('chatbot-widget'),
             toggleButton: document.getElementById('portfolio-chat-toggle') ||
-                          document.getElementById('chatbot-toggle'),
+                document.getElementById('chatbot-toggle'),
             closeButton: document.getElementById('portfolio-chat-close') ||
-                         document.querySelector('.chatbot-close-btn'),
+                document.querySelector('.chatbot-close-btn'),
             voiceButton: document.getElementById('portfolio-voice-input') ||
-                         document.getElementById('chatbot-voice-btn'),
+                document.getElementById('chatbot-voice-btn'),
             voiceMenu: document.getElementById('voice-control-menu'),
             voiceMenuClose: document.getElementById('voice-mode-close'),
             voiceOutputToggle: document.getElementById('voice-output-toggle'),
@@ -188,7 +188,7 @@ class ChatUI {
                 }));
             });
         }
-        
+
         // Mute button handler
         const muteBtn = document.getElementById('mute-voice-btn');
         if (muteBtn) {
@@ -201,7 +201,7 @@ class ChatUI {
                 }
             });
         }
-        
+
         // Stop voice button handler
         const stopBtn = document.getElementById('stop-voice-btn');
         if (stopBtn) {
@@ -248,6 +248,22 @@ class ChatUI {
     }
 
     async _handleUserInput() {
+        const text = this.elements.input?.value.trim();
+
+        let context = {};
+        if (window.enhancedChatbot && typeof window.enhancedChatbot.getPageContext === 'function') {
+            try {
+                context = window.enhancedChatbot.getPageContext();
+                console.log('🧠 Context attached to message:', context);
+            } catch (e) {
+                console.warn('Failed to get context:', e);
+            }
+        }
+
+        await this.sendMessage(text, context);
+    }
+
+    async sendMessage(text, context = {}) {
         if (this.isProcessing) return;
 
         if (!chatAssistant.isReady()) {
@@ -258,12 +274,11 @@ class ChatUI {
             }
         }
 
-        const text = this.elements.input?.value.trim();
         if (!text) return;
 
         try {
             this.isProcessing = true;
-            this.elements.input.value = '';
+            if (this.elements.input) this.elements.input.value = '';
             this._hideSuggestions();
 
             const userMessage = this._createMessageElement(text, 'user', Date.now());
@@ -273,7 +288,7 @@ class ChatUI {
                 this._showTypingIndicator();
             }
 
-            const response = await chatAssistant.ask(text);
+            const response = await chatAssistant.ask(text, { context });
 
             if (features.enableTypingIndicator) {
                 this._hideTypingIndicator();
@@ -778,16 +793,16 @@ class ChatUI {
     _closeWidget() {
         if (!this.elements.widget) return;
         this.hideVoiceMenu();
-        
+
         // First remove focus from any elements inside the widget
         if (document.activeElement && this.elements.widget.contains(document.activeElement)) {
             document.activeElement.blur();
         }
-        
+
         // Then hide the widget
         this.elements.widget.classList.add('hidden');
         this.elements.widget.setAttribute('aria-hidden', 'true');
-        
+
         if (this.elements.toggleButton) {
             this.elements.toggleButton.setAttribute('aria-expanded', 'false');
             this.elements.toggleButton.classList.remove('active');
@@ -813,12 +828,6 @@ class ChatUI {
 
         chatAssistant.clearHistory();
         this._showWelcomeMessage();
-    }
-
-    sendMessage(message) {
-        if (!this.elements.input) return;
-        this.elements.input.value = message;
-        this._handleUserInput();
     }
 
     notifyAssistant(message) {
@@ -1170,8 +1179,8 @@ class ChatUI {
         const preferredVoice = voices.find(voice =>
             voice.lang.startsWith('en') &&
             (voice.name.toLowerCase().includes('natural') ||
-             voice.name.toLowerCase().includes('human') ||
-             voice.localService)
+                voice.name.toLowerCase().includes('human') ||
+                voice.localService)
         ) || voices.find(voice => voice.lang.startsWith('en'));
 
         if (preferredVoice) {
@@ -1183,27 +1192,6 @@ class ChatUI {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const chatAnchor = document.getElementById('chat-form') ||
-                       document.getElementById('portfolio-chat-form') ||
-                       document.getElementById('chatbot-form') ||
-                       document.getElementById('portfolio-chat-widget') ||
-                       document.getElementById('chatbot-widget') ||
-                       document.getElementById('portfolio-chat-messages') ||
-                       document.getElementById('chatbot-messages');
-
-    if (chatAnchor) {
-        try {
-            window.chatUI = new ChatUI();
-
-            // Initialize advanced S2R-inspired voice manager
-            window.voiceManager = new VoiceManager(window.chatUI);
-            console.log('🎤 Voice Manager (S2R-Inspired) initialized with semantic intent recognition');
-
-        } catch (error) {
-            console.error('Failed to initialize full chat experience:', error);
-        }
-    }
-
     // Initialize core functionality
     initOverlayMenu();
     initOverlayNavigation();
@@ -1212,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.2,
         rootMargin: '0px 0px -5% 0px'
     });
-    renderProjects();
+
 
     try {
         initContactForm();
@@ -1234,5 +1222,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 6000);
 });
 
-export { ChatUI, renderProjects as loadProjectsData };
-export default ChatUI;
+// Initialize Chat UI when DOM is ready
+let chatUI;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Chat UI
+    chatUI = new ChatUI();
+
+    // Expose for external modules (like enhanced-chatbot.js)
+    window.chatUI = chatUI;
+    window.chatAssistant = chatAssistant;
+
+    console.log('✅ ChatUI initialized and ready');
+});
+
+export { ChatUI };

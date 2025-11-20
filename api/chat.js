@@ -22,8 +22,8 @@ function applyCors(res, origin) {
   ];
 
   // Set CORS headers properly
-  const corsOrigin = (origin && allowedOrigins.some(allowed => origin.startsWith(allowed))) 
-    ? origin 
+  const corsOrigin = (origin && allowedOrigins.some(allowed => origin.startsWith(allowed)))
+    ? origin
     : 'https://mangeshraut712.github.io';
 
   res.setHeader('Access-Control-Allow-Origin', corsOrigin);
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
   // Only accept POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ 
+    return res.status(405).json({
       error: 'Method not allowed',
       message: 'Use POST method'
     });
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 
   try {
     // Get message from request
-    const { message, messages } = req.body ?? {};
+    const { message, messages, context } = req.body ?? {};
 
     if (!message || typeof message !== 'string') {
       return res.status(400).json({
@@ -79,7 +79,8 @@ export default async function handler(req, res) {
     // Process query through chat service
     const result = await chatService.processQuery({
       message: trimmedMessage,
-      messages: messages || []
+      messages: messages || [],
+      context: context || {}
     });
 
     console.log(`✅ Response: ${result.source} | ${result.model} | ${result.category}`);
@@ -93,7 +94,7 @@ export default async function handler(req, res) {
       category: result.category,        // "Mathematics", "Portfolio", etc.
       confidence: result.confidence,    // 0.90
       runtime: result.runtime,          // "450ms"
-      
+
       // Legacy fields for backward compatibility
       type: result.type || 'general',
       processingTime: result.processingTime || 0,

@@ -128,9 +128,9 @@ class IntelligentAssistant {
         if (typeof window !== 'undefined') {
             const hostname = window.location.hostname;
             this.canUseServerAI = hostname.endsWith('.vercel.app') ||
-                                  hostname === 'localhost' ||
-                                  hostname === '127.0.0.1' ||
-                                  (hostname.includes('github.io') && localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app'));
+                hostname === 'localhost' ||
+                hostname === '127.0.0.1' ||
+                (hostname.includes('github.io') && localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app'));
         }
     }
 
@@ -140,20 +140,20 @@ class IntelligentAssistant {
 
         // Check multiple ways to detect GitHub Pages and static hosting
         const isGitHubPages = hostname.includes('github.io') ||
-                              hostname.includes('mangeshraut712.github.io') ||
-                              !navigator.onLine ||
-                              (window.location.protocol === 'https:' &&
-                               !['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname) &&
-                               !hostname.endsWith('.vercel.app') &&
-                               !hostname.endsWith('.herokuapp.com') &&
-                               !hostname.endsWith('.netlify.app'));
+            hostname.includes('mangeshraut712.github.io') ||
+            !navigator.onLine ||
+            (window.location.protocol === 'https:' &&
+                !['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname) &&
+                !hostname.endsWith('.vercel.app') &&
+                !hostname.endsWith('.herokuapp.com') &&
+                !hostname.endsWith('.netlify.app'));
 
         if (isGitHubPages) {
             console.log('🤖 GitHub Pages detected - checking API availability...');
             console.log('Current hostname:', hostname);
             console.log('Protocol:', window.location.protocol);
             console.log('API Base URL:', localConfig.apiBaseUrl);
-            
+
             // GitHub Pages can still use Vercel API if configured
             if (localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app')) {
                 console.log('✅ Vercel API configured - hybrid mode enabled');
@@ -166,7 +166,7 @@ class IntelligentAssistant {
                 return false;
             }
         }
-        
+
         if (!navigator.onLine) {
             console.log('📴 Offline mode - no network connection');
             this.isReadyState = true;
@@ -224,7 +224,7 @@ class IntelligentAssistant {
             this._pushConversation('user', trimmed);
 
             // Process the query
-            const response = await this.processQuery(trimmed);
+            const response = await this.processQuery(trimmed, options);
 
             // Add response to history
             this.history[this.history.length - 1].response = response;
@@ -250,7 +250,7 @@ class IntelligentAssistant {
         }
     }
 
-    async processQuery(query) {
+    async processQuery(query, options = {}) {
         const trimmed = query.trim();
         const responses = [];
 
@@ -262,7 +262,7 @@ class IntelligentAssistant {
             }
         }
 
-        const serverRaw = await this.callApi(trimmed);
+        const serverRaw = await this.callApi(trimmed, options);
         const serverResponse = this.normalizeResponse(serverRaw, 'AssistMe Server');
         if (serverResponse) {
             responses.push(serverResponse);
@@ -285,13 +285,13 @@ class IntelligentAssistant {
         return this.basicQueryProcessing(trimmed);
     }
 
-    async callApi(query) {
+    async callApi(query, options = {}) {
         // Allow API calls from GitHub Pages if CORS is configured and API base URL is set
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
         const canCallServerAPI = this.canUseServerAI ||
             (hostname.includes('github.io') &&
-             localConfig.apiBaseUrl &&
-             localConfig.apiBaseUrl.includes('vercel.app'));
+                localConfig.apiBaseUrl &&
+                localConfig.apiBaseUrl.includes('vercel.app'));
 
         if (!canCallServerAPI) {
             console.log('🔄 Skipping server API call - GitHub Pages running in hybrid mode');
@@ -314,7 +314,8 @@ class IntelligentAssistant {
                 },
                 body: JSON.stringify({
                     message: query,
-                    messages: this._getConversationForServer()
+                    messages: this._getConversationForServer(),
+                    context: options.context || {}
                 }),
                 signal: AbortSignal.timeout(30000)
             });
@@ -435,9 +436,9 @@ class IntelligentAssistant {
         if (!answer) return true;
         const lower = String(answer).toLowerCase();
         return lower.includes("i can help with information about mangesh raut's portfolio") ||
-               lower.includes("i'm still learning") ||
-               lower.includes('technical difficulties') ||
-               lower.includes('try rephrasing');
+            lower.includes("i'm still learning") ||
+            lower.includes('technical difficulties') ||
+            lower.includes('try rephrasing');
     }
 
     chooseBestResponse(responses = []) {

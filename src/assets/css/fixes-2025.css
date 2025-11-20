@@ -1,0 +1,847 @@
+/**
+ * Header, Navbar, Footer Fixes & Go to Top Button
+ * Fixes for light/dark mode compatibility
+ * 2025 Portfolio Enhancement
+ */
+
+/* Define color-accent variable */
+:root {
+  --color-accent: #007aff;
+  --color-accent-hover: #0051d5;
+}
+
+/* Light mode - Dark text on blue background */
+html:not(.dark) .projects-view-all-btn {
+  color: #1d1d1f !important;
+  background: #007aff;
+}
+
+html:not(.dark) .projects-view-all-btn i {
+  color: #1d1d1f !important;
+}
+
+/* Dark mode - White text on blue background */
+html.dark .projects-view-all-btn {
+  color: #ffffff !important;
+  background: #0a84ff;
+}
+
+.projects-view-all-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem 1.5rem !important;
+  text-decoration: none !important;
+  border-radius: 8px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+html.dark .projects-view-all-btn i {
+  color: #ffffff !important;
+}
+
+html.dark .projects-view-all-btn:hover {
+  background: #409cff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FIX: Footer Social Icons - Dark Mode Visibility
+   ═══════════════════════════════════════════════════════════ */
+.footer-social-link {
+  color: var(--color-text-primary);
+  transition: all 0.3s ease;
+  font-size: 1.25rem;
+  opacity: 0.8;
+}
+
+.footer-social-link:hover {
+  color: var(--color-accent);
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* Light mode */
+html:not(.dark) .footer-social-link {
+  color: #1d1d1f;
+}
+
+html:not(.dark) .footer-social-link:hover {
+  color: var(--color-accent);
+}
+
+/* Dark mode */
+html.dark .footer-social-link {
+  color: #f5f5f7;
+}
+
+html.dark .footer-social-link:hover {
+  color: var(--color-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GO TO TOP BUTTON - New Feature
+   ═══════════════════════════════════════════════════════════ */
+#go-to-top {
+  position: fixed;
+  bottom: 20px;
+  /* In footer area at bottom */
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--color-accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9997;
+  /* Below chatbot */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px);
+}
+
+#go-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#go-to-top:hover {
+  background: var(--color-accent-hover);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
+#go-to-top:active {
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHATBOT BUTTON - Position Fix (No Conflict with Go to Top)
+   ═══════════════════════════════════════════════════════════ */
+#chatbot-toggle {
+  position: fixed !important;
+  bottom: 80px !important;
+  /* Above go-to-top and footer */
+  right: 30px !important;
+  width: 60px !important;
+  height: 60px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.5rem !important;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 9999 !important;
+}
+
+/* Light mode chatbot button */
+html:not(.dark) #chatbot-toggle {
+  background: #007aff !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark) #chatbot-toggle i {
+  color: #ffffff !important;
+}
+
+html:not(.dark) #chatbot-toggle:hover {
+  background: #0051d5 !important;
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Dark mode chatbot button */
+html.dark #chatbot-toggle {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+}
+
+html.dark #chatbot-toggle i {
+  color: #ffffff !important;
+}
+
+html.dark #chatbot-toggle:hover {
+  background: #409cff !important;
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4) !important;
+  transform: scale(1.1) !important;
+}
+
+#chatbot-toggle:active {
+  transform: scale(0.95) !important;
+}
+
+/* Mobile: Stack buttons vertically with more spacing */
+@media (max-width: 768px) {
+  #chatbot-toggle {
+    bottom: 180px !important;
+    /* Higher on mobile - above footer and go-to-top */
+    right: 20px !important;
+    width: 55px !important;
+    height: 55px !important;
+  }
+
+  #go-to-top {
+    bottom: 20px;
+    right: 20px;
+    /* In footer area on mobile */
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAVBAR - Enhanced Light/Dark Mode
+   ═══════════════════════════════════════════════════════════ */
+.global-nav {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html.dark .global-nav {
+  background: rgba(24, 24, 27, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-link {
+  color: var(--color-text-primary);
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-accent);
+}
+
+/* Light mode */
+html:not(.dark) .nav-link {
+  color: #1d1d1f;
+}
+
+/* Dark mode */
+html.dark .nav-link {
+  color: #f5f5f7;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE MENU - Enhanced
+   ═══════════════════════════════════════════════════════════ */
+.menu-toggle-button {
+  color: var(--color-text-primary);
+}
+
+html:not(.dark) .menu-toggle-button {
+  color: #1d1d1f;
+}
+
+html.dark .menu-toggle-button {
+  color: #f5f5f7;
+}
+
+.overlay-menu {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+html.dark .overlay-menu {
+  background: rgba(24, 24, 27, 0.98);
+}
+
+.overlay-nav a {
+  color: var(--color-text-primary);
+}
+
+html:not(.dark) .overlay-nav a {
+  color: #1d1d1f;
+}
+
+html.dark .overlay-nav a {
+  color: #f5f5f7;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER - Enhanced Light/Dark Mode
+   ═══════════════════════════════════════════════════════════ */
+footer {
+  background: rgba(255, 255, 255, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+html.dark footer {
+  background: rgba(24, 24, 27, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer p {
+  color: var(--color-text-primary);
+}
+
+html:not(.dark) footer p {
+  color: #1d1d1f;
+}
+
+html.dark footer p {
+  color: #f5f5f7;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THEME TOGGLE BUTTON - Enhanced
+   ═══════════════════════════════════════════════════════════ */
+.theme-toggle-nav {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--color-text-primary);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+html.dark .theme-toggle-nav {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f5f5f7;
+}
+
+.theme-toggle-nav:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: var(--color-accent);
+}
+
+html.dark .theme-toggle-nav:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SMOOTH SCROLL BEHAVIOR
+   ═══════════════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY IMPROVEMENTS
+   ═══════════════════════════════════════════════════════════ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus styles */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKILLS SECTION - Compact Design
+   ═══════════════════════════════════════════════════════════ */
+#skills .education-card {
+  padding: 0.75rem !important;
+}
+
+#skills-container>*:not(.grid)+.grid {
+  gap: 0.75rem !important;
+}
+
+#skills {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+#skills h2 {
+  margin-bottom: 1rem !important;
+  font-size: 1.875rem !important;
+}
+
+#skills .education-card h3 {
+  font-size: 0.95rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+#skills .education-card ul {
+  margin-top: 0.25rem !important;
+  font-size: 0.75rem !important;
+}
+
+#skills .education-card li {
+  font-size: 0.75rem !important;
+  padding: 0.125rem 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE ADJUSTMENTS
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .footer-social-link {
+    font-size: 1.1rem;
+  }
+
+  footer {
+    padding: 2rem 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PRINT STYLES
+   ═══════════════════════════════════════════════════════════ */
+@media print {
+
+  #go-to-top,
+  #chatbot-toggle,
+  #chatbot-widget {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE MENU FIXES - Proper Responsive Behavior
+   ═══════════════════════════════════════════════════════════ */
+
+/* Ensure nav links are hidden on mobile and tablet */
+@media (max-width: 1024px) {
+  .nav-links {
+    display: none !important;
+  }
+
+  .menu-toggle-button {
+    display: inline-flex !important;
+  }
+}
+
+/* Reduce overlay menu link font size for better mobile experience */
+.overlay-nav a,
+.overlay-nav-link {
+  font-size: 1.5rem !important;
+  /* Reduced from 2rem */
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+
+  .overlay-nav a,
+  .overlay-nav-link {
+    font-size: 1.25rem !important;
+    /* Even smaller on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+
+  .overlay-nav a,
+  .overlay-nav-link {
+    font-size: 1.1rem !important;
+    /* Smallest on very small screens */
+  }
+}
+
+/* Ensure overlay menu is properly styled */
+.overlay-menu {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Fix menu toggle button visibility */
+.menu-toggle-button {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .menu-toggle-button {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BLOG SECTION STYLES
+   ═══════════════════════════════════════════════════════════ */
+#blog {
+  padding: 5rem 0;
+  background-color: var(--bg-secondary);
+}
+
+#blog-posts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: var(--bg-primary);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+
+.blog-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.blog-meta {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.blog-summary {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: 1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.blog-read-btn {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: gap 0.2s ease;
+  align-self: flex-start;
+}
+
+.blog-read-btn:hover {
+  gap: 0.75rem;
+}
+
+/* Blog Modal */
+.blog-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blog-modal.hidden {
+  display: none;
+}
+
+.blog-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.blog-modal-container {
+  position: relative;
+  background: var(--bg-primary);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-heavy);
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.blog-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s;
+}
+
+.blog-modal-close:hover {
+  color: var(--text-primary);
+}
+
+.blog-modal-content {
+  padding: 3rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.article-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2rem;
+}
+
+.article-meta {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.article-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.article-body {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  margin-bottom: 1.5rem;
+}
+
+.article-body pre {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  color: #d4d4d4;
+}
+
+.article-body code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+  .blog-modal-content {
+    padding: 1.5rem;
+  }
+
+  .article-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT MODE THEME FIXES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Chatbot Light Mode Fixes */
+html:not(.dark) #chatbot-widget {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.12), 0 16px 32px rgba(0, 0, 0, 0.08) !important;
+}
+
+html:not(.dark) .chatbot-header {
+  background: rgba(248, 248, 248, 0.98) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html:not(.dark) .chatbot-header h3,
+html:not(.dark) .chatbot-header p {
+  color: #000000 !important;
+}
+
+html:not(.dark) #chatbot-messages {
+  background: #ffffff !important;
+}
+
+html:not(.dark) .user-message {
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark) .assistant-message,
+html:not(.dark) .bot-message {
+  background: #E9E9EB !important;
+  color: #000000 !important;
+}
+
+html:not(.dark) .message-metadata {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+html:not(.dark) .chatbot-input-area {
+  background: rgba(248, 248, 248, 0.98) !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html:not(.dark) #chatbot-input {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+html:not(.dark) #chatbot-input::placeholder {
+  color: rgba(0, 0, 0, 0.4) !important;
+}
+
+html:not(.dark) .chatbot-send-btn,
+html:not(.dark) #chatbot-voice-btn {
+  background: #007AFF !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark) .chatbot-send-btn:hover,
+html:not(.dark) #chatbot-voice-btn:hover {
+  background: #0051D5 !important;
+}
+
+/* Debug Runner Game Light Mode */
+html:not(.dark) #debug-runner-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+html:not(.dark) #debug-runner-section h2 {
+  color: #000000 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) #debug-runner-section p {
+  color: #333333 !important;
+}
+
+html:not(.dark) #debug-runner-container {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 2px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) #game-start-btn {
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+html:not(.dark) #game-start-btn:hover {
+  background: linear-gradient(135deg, #0051D5 0%, #4AB8E8 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4) !important;
+}
+
+/* Footer Light Mode */
+html:not(.dark) footer {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) footer h3,
+html:not(.dark) footer p,
+html:not(.dark) footer a {
+  color: #000000 !important;
+}
+
+html:not(.dark) footer a:hover {
+  color: #007AFF !important;
+}
+
+html:not(.dark) .footer-social a {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #000000 !important;
+}
+
+html:not(.dark) .footer-social a:hover {
+  background: #007AFF !important;
+  color: #ffffff !important;
+}
+
+/* Scroll to Top Button Light Mode */
+html:not(.dark) #scroll-to-top {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #007AFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) #scroll-to-top:hover {
+  background: #007AFF !important;
+  color: #ffffff !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3) !important;
+}

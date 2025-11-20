@@ -7,7 +7,16 @@
 
 // API Configuration - ONLY OpenRouter
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim() || '';
-const MODEL = 'google/gemini-2.0-flash-001'; // Gemini 2.0 Flash via OpenRouter
+const MODELS = [
+  { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash' },
+  { id: 'google/gemini-2.0-flash-exp:free', name: 'Gemini 2.0 Flash Exp' },
+  { id: 'qwen/qwen3-coder:free', name: 'Qwen3 Coder' },
+  { id: 'tngtech/deepseek-r1t2-chimera:free', name: 'DeepSeek R1' },
+  { id: 'meta-llama/llama-3.3-70b-instruct:free', name: 'Llama 3.3' },
+  { id: 'mistralai/mistral-nemo:free', name: 'Mistral Nemo' }
+];
+
+const DEFAULT_MODEL = MODELS[0].id; // Gemini 2.0 Flash via OpenRouter
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 // LinkedIn Profile Data - UPDATED FROM RESUME
@@ -93,7 +102,7 @@ Scripting: Created Python-based monitoring tools, reducing manual diagnostics by
       status: "Completed"
     }
   ],
-  
+
   projects: [
     {
       name: "Starlight Blogging Website",
@@ -138,7 +147,7 @@ Scripting: Created Python-based monitoring tools, reducing manual diagnostics by
 };
 
 // System prompt for AI with enhanced capabilities
-const SYSTEM_PROMPT = `You are AssistMe, an intelligent AI assistant powered by OpenRouter using Google's Gemini 2.0 Flash model.
+const SYSTEM_PROMPT = `You are AssistMe, an intelligent AI assistant powered by OpenRouter using advanced models like Google's Gemini 2.0 Flash, Llama 3.3, and DeepSeek.
 
 Your capabilities:
 - Answer questions about Mangesh Raut's portfolio (experience, skills, education, projects)
@@ -146,7 +155,7 @@ Your capabilities:
 - Help with programming and coding questions
 - Answer general knowledge questions
 - Be professional, concise, and friendly
-- When asked about yourself: "I'm AssistMe, powered by OpenRouter using Google's Gemini 2.0 Flash model"
+- When asked about yourself: "I'm AssistMe, a virtual assistant powered by advanced AI models via OpenRouter."
 
 For portfolio questions, use the provided LinkedIn profile data EXACTLY.
 
@@ -174,13 +183,30 @@ function isLinkedInQuery(message) {
 /**
  * Build LinkedIn context prompt
  */
-function buildLinkedInPrompt(message) {
-  return `User Question: ${message}
+/**
+ * Build Contextual Prompt
+ */
+function buildContextPrompt(message, context = {}) {
+  let prompt = `User Question: ${message}\n\n`;
 
-LinkedIn Profile Context:
-${JSON.stringify(LINKEDIN_PROFILE, null, 2)}
+  // Add dynamic screen context if available
+  if (context.currentSection) {
+    prompt += `[User is currently viewing the "${context.currentSection}" section]\n`;
+  }
 
-Please answer the user's question using the LinkedIn profile information. Be specific and professional.`;
+  if (context.visibleProjects && context.visibleProjects.length > 0) {
+    prompt += `[Projects currently visible on screen: ${context.visibleProjects.map(p => p.title).join(', ')}]\n`;
+  }
+
+  if (context.latestBlog) {
+    prompt += `[Latest Blog Post: "${context.latestBlog.title}"]\n`;
+  }
+
+  prompt += `\nLinkedIn Profile / Portfolio Data:\n${JSON.stringify(LINKEDIN_PROFILE, null, 2)}\n`;
+
+  prompt += `\nPlease answer the user's question using the provided information. If the user refers to "this" or "visible" items, use the screen context. Be professional and concise.`;
+
+  return prompt;
 }
 
 /**
@@ -188,29 +214,29 @@ Please answer the user's question using the LinkedIn profile information. Be spe
  */
 function classifyType(message) {
   const lower = message.toLowerCase();
-  
+
   // Math queries
-  if (/\d+\s*[\+\-\*\/\%]\s*\d+/.test(message) || 
-      lower.includes('calculate') || 
-      lower.includes('math') ||
-      lower.includes('sum') ||
-      lower.includes('multiply')) {
+  if (/\d+\s*[\+\-\*\/\%]\s*\d+/.test(message) ||
+    lower.includes('calculate') ||
+    lower.includes('math') ||
+    lower.includes('sum') ||
+    lower.includes('multiply')) {
     return 'math';
   }
-  
+
   // Portfolio queries
   if (isLinkedInQuery(message)) {
     return 'portfolio';
   }
-  
+
   // Coding queries
-  if (lower.includes('code') || 
-      lower.includes('programming') || 
-      lower.includes('function') ||
-      lower.includes('algorithm')) {
+  if (lower.includes('code') ||
+    lower.includes('programming') ||
+    lower.includes('function') ||
+    lower.includes('algorithm')) {
     return 'coding';
   }
-  
+
   return 'general';
 }
 
@@ -232,50 +258,66 @@ function getCategory(type) {
  */
 async function callOpenRouter({ model, messages }) {
   const startTime = Date.now();
-  
+
   if (!OPENROUTER_API_KEY) {
     throw new Error('OpenRouter API key not configured');
   }
 
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://mangeshraut712.github.io/mangeshrautarchive/',
-        'X-Title': 'Mangesh Raut Portfolio'
-      },
-      body: JSON.stringify({
-        model,
-        messages,
-        temperature: 0.7,
-        max_tokens: 500
-      })
-    });
+  // Try models in sequence if the primary one fails
+  const modelsToTry = model ? [model] : MODELS.map(m => m.id);
+  let lastError = null;
 
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`OpenRouter API error: ${response.status} - ${error}`);
+  for (const currentModel of modelsToTry) {
+    try {
+      console.log(`🔄 Trying model: ${currentModel}`);
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://mangeshraut712.github.io/mangeshrautarchive/',
+          'X-Title': 'Mangesh Raut Portfolio'
+        },
+        body: JSON.stringify({
+          model: currentModel,
+          messages,
+          temperature: 0.7,
+          max_tokens: 1000
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.warn(`⚠️ Model ${currentModel} failed: ${response.status} - ${error}`);
+        lastError = new Error(`OpenRouter API error: ${response.status} - ${error}`);
+        continue; // Try next model
+      }
+
+      const data = await response.json();
+      const processingTime = Date.now() - startTime;
+
+      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+        console.warn(`⚠️ Invalid format from ${currentModel}`);
+        lastError = new Error('Invalid response format from OpenRouter');
+        continue;
+      }
+
+      return {
+        answer: data.choices[0].message.content.trim(),
+        processingTime,
+        usage: data.usage || null,
+        model: currentModel // Return which model actually worked
+      };
+
+    } catch (error) {
+      console.error(`❌ Error with model ${currentModel}:`, error);
+      lastError = error;
     }
-
-    const data = await response.json();
-    const processingTime = Date.now() - startTime;
-
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid response format from OpenRouter');
-    }
-
-    return {
-      answer: data.choices[0].message.content.trim(),
-      processingTime,
-      usage: data.usage || null
-    };
-
-  } catch (error) {
-    console.error('OpenRouter API Error:', error);
-    throw error;
   }
+
+  // If all models failed
+  throw lastError || new Error('All OpenRouter models failed');
 }
 
 /**
@@ -284,13 +326,13 @@ async function callOpenRouter({ model, messages }) {
 function handleDirectCommand(message) {
   const lower = message.toLowerCase();
   const now = new Date();
-  
+
   // Time commands (uses system timezone)
   if (lower.includes('time') && !lower.includes('timezone')) {
-    const time = now.toLocaleTimeString(undefined, { 
-      hour: '2-digit', 
+    const time = now.toLocaleTimeString(undefined, {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true
     });
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return {
@@ -305,10 +347,10 @@ function handleDirectCommand(message) {
       providers: ['Built-in']
     };
   }
-  
+
   // Date commands (uses system timezone)
   if (lower.includes('date') || lower.includes('today')) {
-    const date = now.toLocaleDateString(undefined, { 
+    const date = now.toLocaleDateString(undefined, {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -326,7 +368,7 @@ function handleDirectCommand(message) {
       providers: ['Built-in']
     };
   }
-  
+
   // Day command
   if (lower.includes('which day') || lower.includes('what day')) {
     const day = now.toLocaleDateString(undefined, { weekday: 'long' });
@@ -342,7 +384,7 @@ function handleDirectCommand(message) {
       providers: ['Built-in']
     };
   }
-  
+
   // Basic math (simple calculations)
   const mathMatch = message.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
   if (mathMatch) {
@@ -350,14 +392,14 @@ function handleDirectCommand(message) {
     const n1 = parseFloat(num1);
     const n2 = parseFloat(num2);
     let result;
-    
-    switch(operator) {
+
+    switch (operator) {
       case '+': result = n1 + n2; break;
       case '-': result = n1 - n2; break;
       case '*': result = n1 * n2; break;
       case '/': result = n2 !== 0 ? n1 / n2 : 'Cannot divide by zero'; break;
     }
-    
+
     if (typeof result === 'number') {
       return {
         answer: `🔢 ${num1} ${operator} ${num2} = ${result}`,
@@ -369,7 +411,7 @@ function handleDirectCommand(message) {
       };
     }
   }
-  
+
   return null; // No direct command matched
 }
 
@@ -378,7 +420,22 @@ function handleDirectCommand(message) {
  */
 function offlineFallback(message = '') {
   const type = classifyType(message);
-  
+
+  // Check if API key is missing
+  if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY.trim() === '') {
+    return {
+      answer: `⚠️ **AI Chatbot Configuration Required**\n\nThe OpenRouter API key is not configured. To enable AI responses:\n\n1. Get a free API key from [OpenRouter](https://openrouter.ai/keys)\n2. Add it to your environment variables:\n   - **Local**: Create a \`.env\` file with \`OPENROUTER_API_KEY=your-key\`\n   - **Vercel**: Add to Settings → Environment Variables\n3. Restart the server\n\n📖 See \`CHATBOT_SETUP.md\` for detailed instructions.`,
+      source: 'Configuration Error',
+      model: 'System',
+      category: 'Error',
+      confidence: 1.0,
+      runtime: '0ms',
+      type: 'error',
+      processingTime: 0,
+      providers: ['System']
+    };
+  }
+
   if (type === 'portfolio') {
     return {
       answer: `I'm currently offline, but I can share that Mangesh Raut is a Software Engineer and AI/ML Specialist based in Philadelphia, PA. He specializes in full-stack development, machine learning, and cloud technologies. For more details, please try again when the AI service is available.`,
@@ -403,9 +460,9 @@ function offlineFallback(message = '') {
 /**
  * Main query processing function with enhanced features
  */
-async function processQuery({ message = '', messages = [] } = {}) {
+async function processQuery({ message = '', messages = [], context = {} } = {}) {
   const startTime = Date.now();
-  
+
   if (!message || typeof message !== 'string') {
     throw new Error('Invalid message format');
   }
@@ -436,17 +493,17 @@ async function processQuery({ message = '', messages = [] } = {}) {
   const type = classifyType(trimmedMessage);
   const category = getCategory(type);
   const wantsLinkedIn = isLinkedInQuery(trimmedMessage);
-  
+
   // Handle special command types with enhanced features
   const lower = trimmedMessage.toLowerCase();
-  
+
   // Joke command
   if (lower.includes('joke') || lower.includes('funny')) {
     try {
       const response = await fetch('https://official-joke-api.appspot.com/random_joke');
       const data = await response.json();
       const runtime = Date.now() - startTime;
-      
+
       return {
         answer: `😄 ${data.setup}\n\n${data.punchline}`,
         source: 'Joke API',
@@ -463,7 +520,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
       // Continue to AI if joke API fails
     }
   }
-  
+
   // Weather command (simulated)
   if (lower.includes('weather')) {
     const cityMatch = trimmedMessage.match(/weather in (\w+)/i);
@@ -472,7 +529,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
     const condition = conditions[Math.floor(Math.random() * conditions.length)];
     const temp = Math.floor(Math.random() * 30) + 50;
     const runtime = Date.now() - startTime;
-    
+
     return {
       answer: `🌤️ Weather in ${city}: ${condition}, ${temp}°F\n\n💡 This is simulated. For real weather, configure OpenWeatherMap API key.`,
       source: 'Simulated',
@@ -486,12 +543,12 @@ async function processQuery({ message = '', messages = [] } = {}) {
       usage: null
     };
   }
-  
+
   // Web commands
   if (lower.includes('open google') || lower.includes('open youtube')) {
     let answer = '';
     const runtime = Date.now() - startTime;
-    
+
     if (lower.includes('open google')) {
       const query = trimmedMessage.replace(/open google/i, '').trim();
       if (query) {
@@ -507,7 +564,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
         answer = `📺 YouTube.com\n\n🔗 https://www.youtube.com`;
       }
     }
-    
+
     return {
       answer,
       source: 'Web Command',
@@ -526,8 +583,8 @@ async function processQuery({ message = '', messages = [] } = {}) {
   const systemMessage = { role: 'system', content: SYSTEM_PROMPT };
   let userMessage;
 
-  if (wantsLinkedIn) {
-    userMessage = { role: 'user', content: buildLinkedInPrompt(trimmedMessage) };
+  if (wantsLinkedIn || Object.keys(context).length > 0) {
+    userMessage = { role: 'user', content: buildContextPrompt(trimmedMessage, context) };
   } else {
     userMessage = { role: 'user', content: trimmedMessage };
   }
@@ -537,7 +594,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
   // Try OpenRouter
   try {
     const response = await callOpenRouter({
-      model: MODEL,
+      model: DEFAULT_MODEL,
       messages: conversationMessages
     });
 
@@ -546,7 +603,7 @@ async function processQuery({ message = '', messages = [] } = {}) {
     return {
       answer: response.answer,
       source: 'OpenRouter',
-      model: 'Gemini 2.0 Flash',
+      model: response.model || 'Gemini 2.0 Flash',
       category: wantsLinkedIn ? 'Portfolio' : category,
       confidence: wantsLinkedIn ? 0.95 : 0.90,
       answerLength: response.answer.length,
