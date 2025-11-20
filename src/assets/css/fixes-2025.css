@@ -186,8 +186,8 @@ html.dark #chatbot-toggle:hover {
 /* Mobile: Stack buttons vertically with more spacing */
 @media (max-width: 768px) {
   #chatbot-toggle {
-    bottom: 180px !important;
-    /* Higher on mobile - above footer and go-to-top */
+    bottom: 100px !important;
+    /* More space above go-to-top button to prevent overlap */
     right: 20px !important;
     width: 55px !important;
     height: 55px !important;
