@@ -167,9 +167,14 @@ Required for production chatbot functionality:
 
 ```bash
 OPENROUTER_API_KEY=your_openrouter_api_key_here
+# Optional overrides
+OPENROUTER_MODEL=google/gemini-2.0-flash-001
+OPENROUTER_SITE_URL=https://mangeshraut712.github.io/mangeshrautarchive/
 ```
 
 Set these in your Vercel dashboard under project settings.
+
+For local development, copy `.env.example` to `.env` and add your `OPENROUTER_API_KEY`. The local dev server (`npm run dev`) automatically loads `.env`, and the deployed GitHub Pages frontend will call the Vercel API (`https://mangeshrautarchive.vercel.app/api/chat`) by default.
 
 ### Firebase Configuration
 Contact form requires Firebase Firestore setup:

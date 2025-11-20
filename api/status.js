@@ -47,6 +47,9 @@ export default function handler(req, res) {
   try {
     // Check availability based on environment variables
     const status = {
+      openrouter: {
+        available: !!process.env.OPENROUTER_API_KEY,
+      },
       grok: {
         available: !!(process.env.GROK_API_KEY || process.env.XAI_API_KEY),
       },
@@ -77,7 +80,7 @@ export default function handler(req, res) {
 
     console.log('📊 API Status Check:', {
       environment: process.env.NODE_ENV || 'development',
-      providers: Object.entries(response).filter(([k, v]) => typeof v === 'boolean' || typeof v === 'object').map(([name, data]) => `${name}: ${data.available !== undefined ? (data.available ? '✅' : '❌') : 'N/A'}`),
+      providers: Object.entries(status).map(([name, data]) => `${name}: ${data.available ? '✅' : '❌'}`),
     });
 
     res.status(200).json(response);

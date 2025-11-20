@@ -56,12 +56,17 @@ class DebugRunner {
     init() {
         // Create canvas with matrix-style appearance
         this.canvas = document.createElement('canvas');
+        this.canvas.id = 'debug-runner-canvas';
         this.canvas.width = 1200;
         this.canvas.height = 400;
         this.canvas.style.background = 'black';
         this.canvas.style.border = '2px solid #00ff41';
         this.canvas.style.borderRadius = '4px';
         this.canvas.style.imageRendering = 'pixelated';
+        this.canvas.style.width = '100%';
+        this.canvas.style.maxWidth = '900px';
+        this.canvas.style.height = 'auto';
+        this.canvas.style.touchAction = 'none';
 
         this.ctx = this.canvas.getContext('2d');
 
@@ -104,6 +109,7 @@ class DebugRunner {
 
         // Add keyboard controls
         this.setupControls();
+        this.setupTouchControls();
 
         // Start starfield animation
         this.animateStarfield();
@@ -145,6 +151,50 @@ class DebugRunner {
 
         // Store for cleanup
         this.keyListeners = { handleKeyPress, handleKeyUp };
+    }
+
+    /**
+     * Touch / mobile controls
+     */
+    setupTouchControls() {
+        const canvas = this.canvas;
+        if (!canvas) return;
+
+        let touchStartY = null;
+        let performedDuck = false;
+
+        const handleTouchStart = (e) => {
+            if (!this.gameRunning) return;
+            const touch = e.changedTouches[0];
+            touchStartY = touch.clientY;
+            performedDuck = false;
+            // Light tap triggers jump; deeper swipe handled on end
+            e.preventDefault();
+        };
+
+        const handleTouchEnd = (e) => {
+            if (!this.gameRunning) return;
+            const touch = e.changedTouches[0];
+            const deltaY = touch.clientY - (touchStartY ?? touch.clientY);
+
+            if (deltaY > 40) {
+                // Swipe/drag down -> duck briefly
+                performedDuck = true;
+                this.duck();
+                setTimeout(() => this.standUp(), 450);
+            } else if (!performedDuck) {
+                this.jump();
+            }
+
+            touchStartY = null;
+            performedDuck = false;
+            e.preventDefault();
+        };
+
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+        this.touchHandlers = { handleTouchStart, handleTouchEnd };
     }
 
     /**
@@ -946,6 +996,63 @@ class DebugRunner {
         // Initialize and add canvas
         const canvas = this.init();
         gameWrapper.appendChild(canvas);
+
+        // Mobile-friendly quick controls
+        const mobileControls = document.createElement('div');
+        mobileControls.style.cssText = `
+            display: ${window.innerWidth <= 1024 ? 'grid' : 'none'};
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+            max-width: 480px;
+        `;
+        const jumpBtn = document.createElement('button');
+        jumpBtn.textContent = 'Tap to Jump';
+        jumpBtn.style.cssText = `
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 12px;
+            font-weight: 700;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0, 255, 65, 0.35);
+        `;
+        jumpBtn.onclick = () => {
+            if (!this.gameRunning) return;
+            this.jump();
+        };
+
+        const duckBtn = document.createElement('button');
+        duckBtn.textContent = 'Hold to Duck';
+        duckBtn.style.cssText = `
+            background: #111;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 12px;
+            font-weight: 700;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0, 255, 65, 0.2);
+        `;
+        duckBtn.onmousedown = duckBtn.ontouchstart = (e) => {
+            e.preventDefault();
+            if (!this.gameRunning) return;
+            this.duck();
+        };
+        duckBtn.onmouseup = duckBtn.onmouseleave = duckBtn.ontouchend = () => {
+            if (!this.gameRunning) return;
+            this.standUp();
+        };
+
+        mobileControls.appendChild(jumpBtn);
+        mobileControls.appendChild(duckBtn);
+
+        gameWrapper.appendChild(mobileControls);
+
+        const syncMobileControls = () => {
+            mobileControls.style.display = window.innerWidth <= 1024 ? 'grid' : 'none';
+        };
+        window.addEventListener('resize', syncMobileControls, { passive: true });
+        syncMobileControls();
 
         // Add start button
         const startBtn = document.createElement('button');

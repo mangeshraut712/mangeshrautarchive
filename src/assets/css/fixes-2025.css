@@ -88,7 +88,7 @@ html.dark .footer-social-link:hover {
   position: fixed;
   bottom: 20px;
   /* In footer area at bottom */
-  right: 30px;
+  right: 96px;
   width: 50px;
   height: 50px;
   background: var(--color-accent);
@@ -195,7 +195,7 @@ html.dark #chatbot-toggle:hover {
 
   #go-to-top {
     bottom: 20px;
-    right: 20px;
+    right: 88px;
     /* In footer area on mobile */
     width: 45px;
     height: 45px;
@@ -259,14 +259,14 @@ html.dark .menu-toggle-button {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MOBILE NAVBAR FIX - Proper Flex Layout
+   MOBILE NAVBAR - Overlay Experience
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .nav-container {
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
-    min-height: 44px !important;
-    /* iOS touch target */
+    min-height: 48px !important;
+    gap: 12px !important;
   }
 
   .nav-left,
@@ -276,46 +276,107 @@ html.dark .menu-toggle-button {
     align-items: center !important;
   }
 
+  /* Hide desktop links on mobile */
   .nav-links {
     display: none !important;
   }
 
-  .nav-left .nav-logo {
+  /* Prominent hamburger */
+  .menu-toggle-button {
     display: inline-flex !important;
     align-items: center !important;
+    gap: 10px !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    color: var(--color-text-primary) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
   }
 
-  .nav-left .nav-logo img {
-    height: 20px !important;
-    width: auto !important;
+  html.dark .menu-toggle-button {
+    background: rgba(28, 28, 30, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f5f5f7 !important;
   }
 
+  /* Overlay base */
   .overlay-menu {
-    background: rgba(255, 255, 255, 0.98);
-    z-index: 10000;
-    /* Ensure high z-index */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 1.75rem !important;
+    padding: 4rem 1.5rem !important;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(245, 247, 250, 0.92));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 10002 !important;
   }
 
   html.dark .overlay-menu {
-    background: rgba(0, 0, 0, 0.95);
-    /* Darker background for dark mode */
+    background: linear-gradient(165deg, rgba(17, 17, 20, 0.96), rgba(28, 28, 32, 0.94));
   }
 
-  .overlay-nav a {
-    color: var(--color-text-primary);
+  /* Reveal overlay when menu is open */
+  body.menu-open .overlay-menu,
+  .overlay-menu[aria-hidden="false"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
 
-  html:not(.dark) .overlay-nav a {
-    color: #1d1d1f;
+  body.menu-open {
+    overflow: hidden !important;
   }
 
-  html.dark .overlay-nav a {
-    color: #f5f5f7;
+  .overlay-nav {
+    width: min(560px, 88vw) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.2rem !important;
+    text-align: center !important;
+  }
+
+  .overlay-nav-link {
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    color: var(--color-text-primary) !important;
+    padding: 0.85rem 1rem !important;
+    border-radius: 14px !important;
+    background: rgba(0, 0, 0, 0.02) !important;
+    transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease !important;
+  }
+
+  .overlay-nav-link:hover,
+  .overlay-nav-link:focus-visible {
+    transform: translateY(-2px) !important;
+    background: rgba(0, 122, 255, 0.08) !important;
+    color: var(--color-accent) !important;
+    outline: none !important;
+  }
+
+  html.dark .overlay-nav-link {
+    background: rgba(255, 255, 255, 0.04) !important;
+    color: #f5f5f7 !important;
+  }
+
+  html.dark .overlay-nav-link:hover,
+  html.dark .overlay-nav-link:focus-visible {
+    background: rgba(0, 122, 255, 0.14) !important;
+  }
+
+  .menu-close-button {
+    position: absolute !important;
+    top: 18px !important;
+    right: 20px !important;
+    font-size: 2rem !important;
+    color: var(--color-text-primary) !important;
   }
 }
 
@@ -463,18 +524,6 @@ button:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    MOBILE MENU FIXES - Proper Responsive Behavior
    ═══════════════════════════════════════════════════════════ */
-
-/* Ensure nav links are hidden on mobile and tablet */
-@media (max-width: 1024px) {
-  .nav-links {
-    display: none !important;
-  }
-
-  .menu-toggle-button {
-    display: inline-flex !important;
-  }
-}
-
 /* Reduce overlay menu link font size for better mobile experience */
 .overlay-nav a,
 .overlay-nav-link {
@@ -499,25 +548,6 @@ button:focus-visible {
   .overlay-nav-link {
     font-size: 1.1rem !important;
     /* Smallest on very small screens */
-  }
-}
-
-/* Ensure overlay menu is properly styled */
-.overlay-menu {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-/* Fix menu toggle button visibility */
-.menu-toggle-button {
-  display: none;
-}
-
-@media (max-width: 1024px) {
-  .menu-toggle-button {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 8px;
   }
 }
 
@@ -854,12 +884,27 @@ html:not(.dark) #game-start-btn {
     max-width: 100% !important;
     overflow: hidden !important;
     border-radius: 8px !important;
+    padding: 0 0.5rem !important;
   }
 
   #debug-runner-canvas {
     width: 100% !important;
     height: auto !important;
     max-width: 100% !important;
+  }
+
+  #debug-runner-section h2 {
+    font-size: 1.75rem !important;
+  }
+
+  #debug-runner-section p {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+  }
+
+  #debug-runner-container canvas {
+    max-height: 260px !important;
+    border-radius: 12px !important;
   }
 }
 

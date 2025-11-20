@@ -20,6 +20,9 @@ const MODELS = [
 
 const DEFAULT_MODEL = MODELS[0].id;
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const SITE_URL = process.env.OPENROUTER_SITE_URL ||
+  'https://mangeshraut712.github.io/mangeshrautarchive/';
+const SITE_TITLE = process.env.OPENROUTER_SITE_TITLE || 'Mangesh Raut Portfolio';
 
 // Response Cache - Prevents repeated API calls
 const responseCache = new Map();
@@ -248,8 +251,9 @@ async function callOpenRouter({ model, messages }) {
         headers: {
           'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://mangeshraut712.github.io/mangeshrautarchive/',
-          'X-Title': 'Mangesh Raut Portfolio'
+          // OpenRouter requires referer/title for rate limits & attribution
+          'HTTP-Referer': SITE_URL,
+          'X-Title': SITE_TITLE
         },
         body: JSON.stringify({
           model: currentModel,
@@ -616,3 +620,11 @@ async function processQuery({ message = '', messages = [], context = {} } = {}) 
 }
 
 // Cache API responses for repeated queries
+
+
+// Exports
+export { callOpenRouter, processQuery };
+export default {
+  callOpenRouter,
+  processQuery
+};

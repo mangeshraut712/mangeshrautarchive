@@ -13,24 +13,13 @@ export function initOverlayMenu(options = {}) {
     const overlayMenu = documentRef.getElementById(menuId);
     const body = documentRef.body;
 
-    console.log('🔍 Mobile Menu Debug:', {
-        menuToggle: !!menuToggle,
-        menuClose: !!menuClose,
-        overlayMenu: !!overlayMenu,
-        body: !!body
-    });
-
-    if (menuToggle) {
-        console.log('🔍 Menu Toggle Element:', menuToggle, 'Classes:', menuToggle.classList);
-        console.log('🔍 Menu Toggle Visibility:', window.getComputedStyle(menuToggle).display);
-    }
-
     if (!menuToggle || !menuClose || !overlayMenu || !body) {
         console.error('❌ Mobile menu initialization failed - missing elements');
         return;
     }
 
-    console.log('✅ Mobile menu elements found, binding events');
+    if (menuToggle.dataset.overlayBound === 'true') return;
+    menuToggle.dataset.overlayBound = 'true';
 
     const openMenu = () => {
         if (body.classList.contains('menu-open')) return;
@@ -148,3 +137,11 @@ export default {
     initOverlayNavigation,
     initSmoothScroll
 };
+
+// Auto-init on DOM ready as a safety net (in case inline scripts fail to run)
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        initOverlayMenu();
+        initOverlayNavigation({ offsetSelector: '.global-nav' });
+    });
+}

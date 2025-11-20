@@ -6,7 +6,7 @@
  * ═══════════════════════════════════════════════════════════
  */
 
-import chatService from './chat-service.js';
+import { processQuery } from './chat-service.js';
 
 /**
  * Apply CORS headers - FIXED
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
     console.log(`📨 Received: "${trimmedMessage}"`);
 
     // Process query through chat service
-    const result = await chatService.processQuery({
+    const result = await processQuery({
       message: trimmedMessage,
       messages: messages || [],
       context: context || {}
@@ -104,10 +104,15 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('❌ API Error:', error);
 
-    return res.status(500).json({
-      error: 'Internal server error',
-      message: 'Failed to process request',
-      answer: '⚠️ Something went wrong. Please try again.',
+    const message = error.message || 'Failed to process request';
+    const isConfigError = message.toLowerCase().includes('key not configured');
+
+    return res.status(isConfigError ? 400 : 500).json({
+      error: isConfigError ? 'Configuration error' : 'Internal server error',
+      message,
+      answer: isConfigError
+        ? '⚠️ OpenRouter API key missing. Add OPENROUTER_API_KEY to your environment and restart.'
+        : '⚠️ Something went wrong. Please try again.',
       source: 'Error',
       model: 'None',
       category: 'Error',

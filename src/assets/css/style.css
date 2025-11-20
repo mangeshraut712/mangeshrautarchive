@@ -356,20 +356,6 @@ a:hover {
 }
 
 
-.menu-toggle-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem; /* Add some padding for easier clicking */
-    z-index: 101; /* Above overlay */
-    color: var(--nav-text);
-    transition: color 0.3s ease;
-}
-.menu-toggle-button:hover {
-    color: var(--nav-hover);
-}
-
-
 /* Overlay Menu */
 .overlay-menu {
     position: fixed;
@@ -783,6 +769,7 @@ section#contact {
     color: var(--nav-text);
     cursor: pointer;
     padding: 0.35rem 0.5rem;
+    z-index: 101;
     transition: color 0.2s ease;
 }
 
@@ -866,6 +853,8 @@ section#contact {
     }
     .menu-toggle-button {
         display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
 }
 
@@ -2005,11 +1994,6 @@ html.dark .project-card a.text-accent:hover {
 
     .contact-social-links a {
         font-size: 1.2rem;
-    }
-
-    /* Hide overlay menu on mobile */
-    .menu-toggle-button {
-        display: none;
     }
 
     /* Mobile-specific scrollbar */
