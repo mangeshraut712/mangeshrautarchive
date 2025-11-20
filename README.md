@@ -81,11 +81,14 @@ mangeshrautarchive/
 │   │   ├── css/
 │   │   │   ├── fixes-2025.css   # Core styling and responsive design
 │   │   │   ├── chatbot-complete.css  # Chatbot UI components
-│   │   │   └── dark-mode-cards.css   # Theme-aware component styles
+│   │   │   ├── dark-mode-cards.css   # Theme-aware component styles
+│   │   │   ├── instant-performance.css  # Performance optimization styles
+│   │   │   └── style.css            # Main stylesheet
 │   │   ├── images/              # Profile photos, icons
 │   │   └── files/               # Resume PDF, research papers
 │   └── js/
 │       ├── core/
+│       │   ├── config.js        # Application configuration
 │       │   ├── script.js        # Main application initialization
 │       │   └── chat.js          # Chatbot core logic (client-side)
 │       ├── modules/
@@ -95,14 +98,20 @@ mangeshrautarchive/
 │       │   ├── blog-loader.js         # Blog content management
 │       │   ├── blog-data.js           # Blog post data
 │       │   ├── debug-runner.js        # Development debugging tools
-│       │   └── skills-visualization.js # Skills display components
+│       │   ├── skills-visualization.js # Skills display components
+│       │   ├── animations.js          # Animation effects
+│       │   ├── overlay.js             # UI overlay components
+│       │   └── external-config.js     # External service configuration
 │       └── utils/
 │           ├── go-to-top.js           # Scroll-to-top functionality
 │           ├── smart-navbar.js        # Intelligent navigation
 │           └── theme.js               # Theme management system
 ├── api/
 │   ├── chat.js                  # Chatbot API endpoint (Vercel-only)
-│   └── chat-service.js          # OpenRouter integration service
+│   ├── chat-service.js          # OpenRouter integration service
+│   ├── contact.js               # Contact form API (Vercel)
+│   ├── enhanced-features.js     # Enhanced features API
+│   └── status.js                # System status API
 ├── scripts/
 │   ├── build.js                 # Production build pipeline
 │   ├── local-server.js          # Express development server
@@ -110,9 +119,12 @@ mangeshrautarchive/
 │   ├── test-api.sh              # API integration testing
 │   ├── diagnose-firebase.js     # Firebase setup verification
 │   ├── check-firebase-config.sh # Firebase configuration helper
-│   └── security-check.js        # Security audit tools
+│   ├── security-check.js        # Security audit tools
+│   ├── start-dev.js             # Alternative dev server starter
+│   └── run-local-server.sh      # Local server runner script
 ├── .github/workflows/           # GitHub Actions CI/CD
 ├── vercel.json                  # Vercel deployment configuration
+├── .gitignore                   # Version control exclusions
 ├── package.json                 # Project dependencies and scripts
 └── README.md                    # This documentation
 ```
