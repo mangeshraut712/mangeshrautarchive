@@ -258,84 +258,121 @@ html.dark .menu-toggle-button {
   /* Force white in dark mode */
 }
 
-.overlay-menu {
-  background: rgba(255, 255, 255, 0.98);
-  z-index: 10000;
-  /* Ensure high z-index */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
+/* ═══════════════════════════════════════════════════════════
+   MOBILE NAVBAR FIX - Proper Flex Layout
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .nav-container {
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    min-height: 44px !important;
+    /* iOS touch target */
+  }
 
-html.dark .overlay-menu {
-  background: rgba(0, 0, 0, 0.95);
-  /* Darker background for dark mode */
-}
+  .nav-left,
+  .nav-actions {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+  }
 
-.overlay-nav a {
-  color: var(--color-text-primary);
-}
+  .nav-links {
+    display: none !important;
+  }
 
-html:not(.dark) .overlay-nav a {
-  color: #1d1d1f;
-}
+  .nav-left .nav-logo {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
 
-html.dark .overlay-nav a {
-  color: #f5f5f7;
+  .nav-left .nav-logo img {
+    height: 20px !important;
+    width: auto !important;
+  }
+
+  .overlay-menu {
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 10000;
+    /* Ensure high z-index */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  html.dark .overlay-menu {
+    background: rgba(0, 0, 0, 0.95);
+    /* Darker background for dark mode */
+  }
+
+  .overlay-nav a {
+    color: var(--color-text-primary);
+  }
+
+  html:not(.dark) .overlay-nav a {
+    color: #1d1d1f;
+  }
+
+  html.dark .overlay-nav a {
+    color: #f5f5f7;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
    FOOTER - Enhanced Light/Dark Mode
    ═══════════════════════════════════════════════════════════ */
-footer {
-  background: rgba(255, 255, 255, 0.8);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
+@media (max-width: 1024px) {
+  footer {
+    background: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
 
-html.dark footer {
-  background: rgba(24, 24, 27, 0.9);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+  html.dark footer {
+    background: rgba(24, 24, 27, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
 
-footer p {
-  color: var(--color-text-primary);
-}
+  footer p {
+    color: var(--color-text-primary);
+  }
 
-html:not(.dark) footer p {
-  color: #1d1d1f;
-}
+  html:not(.dark) footer p {
+    color: #1d1d1f;
+  }
 
-html.dark footer p {
-  color: #f5f5f7;
+  html.dark footer p {
+    color: #f5f5f7;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
    THEME TOGGLE BUTTON - Enhanced
    ═══════════════════════════════════════════════════════════ */
-.theme-toggle-nav {
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: var(--color-text-primary);
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+@media (max-width: 1024px) {
+  .theme-toggle-nav {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--color-text-primary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 
-html.dark .theme-toggle-nav {
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #f5f5f7;
-}
+  html.dark .theme-toggle-nav {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #f5f5f7;
+  }
 
-.theme-toggle-nav:hover {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: var(--color-accent);
-}
+  .theme-toggle-nav:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: var(--color-accent);
+  }
 
-html.dark .theme-toggle-nav:hover {
-  background: rgba(255, 255, 255, 0.1);
+  html.dark .theme-toggle-nav:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -394,11 +431,6 @@ button:focus-visible {
 }
 
 #skills .education-card ul {
-  margin-top: 0.25rem !important;
-  font-size: 0.75rem !important;
-}
-
-#skills .education-card li {
   font-size: 0.75rem !important;
   padding: 0.125rem 0 !important;
 }
