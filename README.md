@@ -1,87 +1,73 @@
-# 🚀 Mangesh Raut - 2025 Portfolio & AI Assistant
+# 🚀 Mangesh Raut Portfolio - Modern 2025 Edition
 
-A cutting-edge, fully responsive portfolio website featuring dynamic GitHub integration, intelligent AI chatbot powered by OpenRouter's Gemini 2.0 Flash, and modern 2025 web technologies.
+A sleek, AI-powered portfolio website featuring dynamic GitHub integration, intelligent chatbot, and cutting-edge web technologies. Deployed on GitHub Pages with Vercel backend for seamless functionality.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://mangeshraut712.github.io/mangeshrautarchive/)
-[![Firebase](https://img.shields.io/badge/Firebase-Firestore-orange)](https://firebase.google.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-Backend-black)](https://vercel.com)
 [![OpenRouter](https://img.shields.io/badge/AI-OpenRouter-blue)](https://openrouter.ai/)
 [![GitHub API](https://img.shields.io/badge/GitHub-API-black)](https://docs.github.com/en/rest)
 
 ---
 
-## ✨ 2025 Features & Enhancements
+## ✨ Key Features
 
-### 🎯 **NEW: Dynamic GitHub Projects Integration**
-- **Real-time Repository Loading**: Automatically fetches latest projects from GitHub API
-- **Smart Search & Filter**: Search by name/description, filter by programming language
-- **Live Statistics Dashboard**: Total repos, stars, forks, and languages used
-- **Responsive Project Cards**: Beautiful cards with language indicators, stars, and live demo links
-- **Auto-updating**: Projects stay current without manual updates
-- **Caching System**: 5-minute cache for optimal performance
-
-### 🤖 **AI Chatbot - "AssistMe"**
-- **Powered by**: OpenRouter API with Google Gemini 2.0 Flash (`google/gemini-2.0-flash-001`)
+### 🤖 **AI-Powered Chatbot** ("AssistMe")
+- **AI Engine**: OpenRouter API with Google Gemini 2.0 Flash
 - **Capabilities**:
-  - Portfolio Q&A (experience, skills, projects)
-  - Real-time info (time, date, timezone)
-  - Advanced mathematics calculations
-  - Entertainment (jokes via Official Joke API)
-  - Web commands (Google, YouTube search)
-  - Voice mode (Speech-to-Text)
-  - Location-aware responses
-- **UI/UX**: Apple iMessage-inspired design with light/dark mode
-- **Response metadata**: Source, Model, Category, Confidence, Length, Runtime
+  - Portfolio Q&A (experience, skills, education)
+  - Math calculations and technical queries
+  - Time/date/timezone information
+  - Entertainment (jokes, gaming)
+  - Web search commands
+- **Response Intelligence**: Includes source, model, category, confidence, and runtime metadata
+- **Fallback Mode**: Graceful degradation when API unavailable
 
-### 📬 **Contact Form**
-- **Direct Firebase Integration**: Saves messages to Firestore `(default)` database
-- **Real-time validation**: Email format, required fields
-- **User feedback**: Success/error messages with icons
-- **No page reload**: AJAX-style submission
-- **Security**: Firestore rules allow only `create` operations
+### 📊 **Dynamic GitHub Integration**
+- **Live Projects Display**: Automatically fetches and displays GitHub repositories
+- **Smart Filtering**: Search by name, filter by programming language
+- **Statistics Dashboard**: Real-time repo counts, stars, forks
+- **Performance**: Cached API calls (5-minute intervals) for optimal loading
+- **Responsive Cards**: Beautiful project showcases with live demo links
 
-### 🎨 **Modern Design (2025 Standards)**
-- **Apple.com-inspired** aesthetic
-- **Fully Responsive**: Mobile-first design, tablet, desktop optimized
-- **Dark/Light mode**: Theme-aware with CSS variables
-- **Smooth animations**: 120Hz feel with cubic-bezier easing
-- **Glassmorphism effects**: Modern UI components
-- **Micro-interactions**: Hover effects, transitions, loading states
+### 📬 **Contact System**
+- **Firebase Firestore**: Secure contact form with direct database integration
+- **Real-time Validation**: Email format checking, required field enforcement
+- **User Experience**: AJAX-style submission with instant feedback
+- **Security**: Firestore rules restrict to create-only operations
 
-### 📊 **Interactive Features**
-- **Smart Navigation**: Auto-hiding navbar on scroll
-- **Smooth Scrolling**: Anchor links with offset
-- **Dynamic Content Loading**: Lazy loading for performance
-- **Search Functionality**: Real-time project search
-- **Filter System**: Language-based filtering
-- **Sort Options**: Sort by date (ascending/descending)
+### 🎨 **Modern 2025 Design**
+- **Responsive First**: Mobile-optimized layout with CSS Grid/Flexbox
+- **Dark Mode**: System-aware theme switching with smooth transitions
+- **Performance**: Optimized animations, lazy loading, efficient caching
+- **Progressive Enhancement**: Works across all modern browsers
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
 ### Frontend
-- **HTML5/CSS3**: Semantic markup, modern styling
-- **JavaScript (ES6+)**: Modular code, async/await, ES modules
-- **Tailwind CSS**: Utility-first CSS framework
-- **External CSS**: Theme-reactive styling with CSS variables
-- **CDN Libraries**: 
-  - Firebase SDK 10.7.1 (dynamic imports)
-  - Font Awesome icons
-  - Google Fonts (Inter)
+- **HTML5/ES6 Modules**: Modular, semantic code structure
+- **CSS3**: Custom properties, Flexbox, Grid, animations
+- **JavaScript ES2024**: Async/await, destructuring, modern APIs
+- **Performance**: Lightweight, zero-bundle approach
 
-### Backend/Services
-- **Firebase Firestore**: NoSQL database for contact messages
-- **OpenRouter API**: AI model aggregation service
-- **GitHub REST API**: Dynamic repository fetching
-- **Vercel**: Serverless functions (optional, for chatbot API)
-- **GitHub Pages**: Static site hosting
+### Backend & APIs
+- **Express.js**: Local development server (port 3000)
+- **Vercel Serverless**: Production backend functions
+- **Firebase Firestore**: Contact message storage
+- **OpenRouter API**: AI model orchestration
+- **GitHub REST API**: Dynamic repository data
 
-### APIs
-- **GitHub API v3**: Repository data, statistics
-- **OpenRouter**: AI responses (Gemini 2.0 Flash)
-- **Firebase REST API**: Direct Firestore writes
-- **Official Joke API**: Entertainment responses
-- **Browser APIs**: Geolocation, Speech Recognition
+### Deployment & Hosting
+- **GitHub Pages**: Static asset hosting with automated builds
+- **GitHub Actions**: CI/CD pipeline with build verification
+- **Vercel**: Serverless deployment for API endpoints
+
+### Development Tools
+- **Node.js 20+**: Server runtime and build tools
+- **npm**: Package management
+- **Git**: Version control
+- **ESLint**: Code quality (integrated)
 
 ---
 
@@ -90,34 +76,45 @@ A cutting-edge, fully responsive portfolio website featuring dynamic GitHub inte
 ```
 mangeshrautarchive/
 ├── src/
-│   ├── index.html              # Main HTML file (2025 enhanced)
+│   ├── index.html               # Main application entry point
 │   ├── assets/
 │   │   ├── css/
-│   │   │   ├── chatbot-complete.css    # Chatbot styling
-│   │   │   └── dark-mode-cards.css     # Theme styling
-│   │   ├── images/             # Profile images, icons
-│   │   └── files/              # Resume, publications
+│   │   │   ├── fixes-2025.css   # Core styling and responsive design
+│   │   │   ├── chatbot-complete.css  # Chatbot UI components
+│   │   │   └── dark-mode-cards.css   # Theme-aware component styles
+│   │   ├── images/              # Profile photos, icons
+│   │   └── files/               # Resume PDF, research papers
 │   └── js/
-│       ├── modules/
-│       │   ├── contact.js              # Contact form logic
-│       │   ├── github-projects.js      # NEW: GitHub API integration
-│       │   ├── skills-visualization.js # NEW: Skills display
-│       │   └── overlay.js              # Navigation overlay
 │       ├── core/
-│       │   └── script.js               # Chatbot logic
+│       │   ├── script.js        # Main application initialization
+│       │   └── chat.js          # Chatbot core logic (client-side)
+│       ├── modules/
+│       │   ├── enhanced-chatbot.js    # Advanced chatbot features
+│       │   ├── github-projects.js     # GitHub API integration
+│       │   ├── contact.js             # Contact form logic
+│       │   ├── blog-loader.js         # Blog content management
+│       │   ├── blog-data.js           # Blog post data
+│       │   ├── debug-runner.js        # Development debugging tools
+│       │   └── skills-visualization.js # Skills display components
 │       └── utils/
-│           ├── theme.js                # Dark mode toggle
-│           ├── smart-navbar.js         # Auto-hide navbar
-│           └── api-status.js           # API health checks
+│           ├── go-to-top.js           # Scroll-to-top functionality
+│           ├── smart-navbar.js        # Intelligent navigation
+│           └── theme.js               # Theme management system
 ├── api/
-│   ├── chat.js                 # Chatbot API endpoint (Vercel)
-│   └── chat-service.js         # AI service logic
+│   ├── chat.js                  # Chatbot API endpoint (Vercel-only)
+│   └── chat-service.js          # OpenRouter integration service
 ├── scripts/
-│   ├── diagnose-firebase.js    # Firebase diagnostic tool
-│   ├── test-all-features.js    # Chatbot feature tests
-│   ├── local-server.js         # Development server
-│   └── build.js                # Build script
-└── README.md                   # This file
+│   ├── build.js                 # Production build pipeline
+│   ├── local-server.js          # Express development server
+│   ├── fix-chatbot.sh           # Chatbot configuration utility
+│   ├── test-api.sh              # API integration testing
+│   ├── diagnose-firebase.js     # Firebase setup verification
+│   ├── check-firebase-config.sh # Firebase configuration helper
+│   └── security-check.js        # Security audit tools
+├── .github/workflows/           # GitHub Actions CI/CD
+├── vercel.json                  # Vercel deployment configuration
+├── package.json                 # Project dependencies and scripts
+└── README.md                    # This documentation
 ```
 
 ---
@@ -125,348 +122,208 @@ mangeshrautarchive/
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 16+ (for local testing)
-- Firebase project with Firestore
-- OpenRouter API key (optional, for chatbot)
-- Git
+- **Node.js** 20.9.0 or higher
+- **npm** 10.1.0 or higher
+- **Git** for version control
 
 ### Installation
 
-1. **Clone the repository**
+1. **Clone Repository**
    ```bash
    git clone https://github.com/mangeshraut712/mangeshrautarchive.git
    cd mangeshrautarchive
-   ```
-
-2. **Install dependencies**
-   ```bash
    npm install
    ```
 
-3. **Configure Firebase**
-   - Create a Firebase project: https://console.firebase.google.com
-   - Enable Firestore in Native mode
-   - Create `(default)` database
-   - Update API key in `src/js/modules/contact.js` (line 104-110)
-
-4. **Set up security rules**
-   ```javascript
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{database}/documents {
-       match /messages/{messageId} {
-         allow create: if true;
-         allow read, update, delete: if false;
-       }
-       match /{document=**} {
-         allow read, write: if false;
-       }
-     }
-   }
-   ```
-
-5. **Enable Firestore API**
-   - Go to: https://console.cloud.google.com/apis/library/firestore.googleapis.com
-   - Click "ENABLE"
-   - Configure API key:
-     - Go to: https://console.cloud.google.com/apis/credentials
-     - Edit "Browser key (auto created by Firebase)"
-     - Set to "Don't restrict key" OR add "Cloud Firestore API" to restrictions
-
-6. **Run locally**
+2. **Local Development**
    ```bash
    npm run dev
    ```
-   Open http://localhost:3000 in your browser
+   Access at: http://localhost:3000
 
-7. **Deploy to GitHub Pages**
-   - Push to GitHub
-   - Enable GitHub Pages in repository settings
-   - Source: `main` branch, `/` (root)
-
----
-
-## 🎯 2025 Portfolio Features Checklist
-
-- ✅ **Dynamic Content**: GitHub API integration for auto-updating projects
-- ✅ **Search & Filter**: Real-time project search and language filtering
-- ✅ **Statistics Dashboard**: Live GitHub stats (repos, stars, forks)
-- ✅ **Responsive Design**: Mobile-first, works on all devices
-- ✅ **Dark Mode**: System-aware theme switching
-- ✅ **AI Integration**: Gemini 2.0 Flash chatbot
-- ✅ **Performance**: Lazy loading, caching, optimized assets
-- ✅ **Accessibility**: Semantic HTML, ARIA labels, keyboard navigation
-- ✅ **SEO Optimized**: Meta tags, structured data, sitemap
-- ✅ **Modern UI/UX**: Glassmorphism, micro-animations, smooth transitions
-- ✅ **Contact Form**: Firebase integration with validation
-- ✅ **Voice Assistant**: Speech recognition for chatbot
-- ✅ **Analytics Ready**: Vercel Analytics integration
-
----
-
-## 🧪 Testing
-
-### Test Contact Form
-```bash
-# Run Firebase diagnostic
-node scripts/diagnose-firebase.js
-```
-
-**Expected output:**
-```
-✅ PASS: Firestore API is accessible
-✅ PASS: Successfully wrote to Firestore!
-```
-
-### Test Chatbot
-```bash
-# Test all chatbot features
-node scripts/test-all-features.js
-```
-
-### Test GitHub Integration
-Open the portfolio and navigate to the Projects section. You should see:
-- Live statistics dashboard
-- Dynamically loaded project cards
-- Working search functionality
-- Language filter dropdown
-- Sort toggle button
+3. **Build Static Assets**
+   ```bash
+   npm run build
+   ```
 
 ---
 
 ## 🔧 Configuration
 
-### Firebase Config
-Located in `src/js/modules/contact.js`:
-```javascript
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project",
-  storageBucket: "your-project.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
-};
+### Environment Variables (Vercel)
+Required for production chatbot functionality:
+
+```bash
+OPENROUTER_API_KEY=your_openrouter_api_key_here
 ```
 
-### OpenRouter Config
-Located in `api/chat-service.js`:
-```javascript
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = 'google/gemini-2.0-flash-001';
-```
+Set these in your Vercel dashboard under project settings.
 
-**Set environment variable in Vercel:**
-- `OPENROUTER_API_KEY` = Your OpenRouter API key
+### Firebase Configuration
+Contact form requires Firebase Firestore setup:
 
-### GitHub Projects Config
-Located in `src/js/modules/github-projects.js`:
-```javascript
-const username = 'mangeshraut712'; // Your GitHub username
-const cacheDuration = 5 * 60 * 1000; // 5 minutes
-const maxProjects = 12; // Projects to display
-```
-
----
-
-## 🐛 Troubleshooting
-
-### GitHub Projects Not Loading
-
-**Issue**: Projects section shows loading spinner indefinitely  
-**Fix**:
-1. Check browser console for errors
-2. Verify GitHub API rate limits (60 requests/hour for unauthenticated)
-3. Check network tab for failed requests
-4. Clear browser cache and reload
-
-**Issue**: "No projects found"  
-**Fix**: 
-1. Verify GitHub username in `github-projects.js`
-2. Ensure repositories are public
-3. Check if repositories exist
-
-### Contact Form Not Working
-
-**Issue**: "Missing or insufficient permissions"  
-**Fix**:
-1. Enable Firestore API: https://console.cloud.google.com/apis/library/firestore.googleapis.com?project=YOUR_PROJECT
-2. Publish security rules in Firebase Console
-3. Check API key restrictions allow Firestore API
-
-**Issue**: Page reloads when submitting form  
-**Fix**: Already fixed in latest version with `event.preventDefault()`
-
-### Chatbot Not Responding
-
-**Issue**: AI not responding  
-**Fix**: 
-1. Check OpenRouter API key in Vercel environment variables
-2. Ensure `OPENROUTER_API_KEY` is set
-3. Verify model name: `google/gemini-2.0-flash-001`
-
----
-
-## 📊 Features Breakdown
-
-### Dynamic GitHub Projects
-- ✅ Real-time repository fetching
-- ✅ Automatic updates (5-minute cache)
-- ✅ Search by name/description
-- ✅ Filter by programming language
-- ✅ Sort by update date
-- ✅ Live statistics dashboard
-- ✅ Responsive project cards
-- ✅ Language color indicators
-- ✅ Star/fork counts
-- ✅ Live demo links
-
-### Contact Form
-- ✅ Direct Firebase Firestore integration
-- ✅ Real-time validation
-- ✅ No page reload (AJAX-style)
-- ✅ Success/error feedback
-- ✅ All fields saved: name, email, subject, message, timestamp
-
-### AI Chatbot Categories
-1. **Portfolio** - Questions about Mangesh's experience, skills, projects
-2. **Time & Date** - Current time, date, timezone
-3. **Mathematics** - Calculations, equations
-4. **Entertainment** - Jokes
-5. **Web Commands** - Google/YouTube search
-6. **Programming** - Technical questions
-7. **General** - Other queries via Gemini 2.0 Flash
-
-### Response Metadata
-Every response includes:
-- **Source**: OpenRouter, AssistMe, Joke API, etc.
-- **Model**: Gemini 2.0 Flash
-- **Category**: Portfolio, Math, Entertainment, etc.
-- **Confidence**: 0-100%
-- **Length**: Character count
-- **Runtime**: Response time in ms
-
----
-
-## 🔒 Security
-
-### Firestore Rules
-- ✅ Allow `create` on `/messages` collection (contact form)
-- ❌ Deny `read`, `update`, `delete` (privacy)
-- ❌ Deny all other collections (security)
+1. Create Firebase project
+2. Enable Firestore database
+3. Publish security rules (allow create on `/messages`)
+4. Update API key in `src/js/modules/contact.js`
 
 ### API Keys
-- ✅ Firebase API key in frontend (OK for Firestore with rules)
-- ✅ OpenRouter API key in backend environment variables (Vercel)
-- ✅ GitHub API (public, no auth required for public repos)
-- ✅ No sensitive data exposed in frontend
-
-### CORS
-- ✅ Firestore API allows `https://mangeshraut712.github.io`
-- ✅ API endpoints use proper CORS headers
-- ✅ GitHub API supports CORS
+- **OpenRouter**: Free API key from [openrouter.ai](https://openrouter.ai)
+- **Firebase**: Project-specific keys (safe to include in frontend)
+- **GitHub API**: Public access (no key required)
 
 ---
 
-## 📈 Performance
+## 📋 Development Scripts
 
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3s
-- **Chatbot Response**: 400-800ms average
-- **Form Submission**: < 1s
-- **GitHub API**: 200-500ms (cached: instant)
-- **Smooth Animations**: 60fps (120Hz feel)
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
+```bash
+npm run dev          # Start local development server
+npm run build        # Build for production GitHub Pages
+npm install          # Install all dependencies
+```
 
 ---
 
-## 🎯 2025 Roadmap
+## 🎨 Features Overview
 
-### Completed ✅
-- [x] Dynamic GitHub projects integration
-- [x] Search and filter functionality
-- [x] Statistics dashboard
-- [x] Responsive design improvements
-- [x] Modern UI/UX enhancements
-- [x] Performance optimizations
+### AI Chatbot System
+- **Intelligent Fallbacks**: Continues working even if API is unavailable
+- **Context Awareness**: Understands portfolio content and navigation context
+- **Performance Optimized**: Minimal client-side bundle, server-side processing
+- **Responsive Design**: Adapts to mobile and desktop interfaces
 
-### Planned 🚀
-- [ ] Skills visualization with interactive charts
-- [ ] Blog section with markdown support
-- [ ] Project detail pages
+### GitHub Integration
+- **No Manual Updates**: Automatically stays current with repository changes
+- **Search & Discovery**: Find projects by technology stack or keywords
+- **Visual Analytics**: Language distribution charts and contribution graphs
+- **Zero-Maintenance**: Handles rate limiting and error conditions gracefully
+
+### Contact Form
+- **Secure by Design**: Write-only Firestore access prevents data breaches
+- **Validation**: Real-time input validation with user-friendly error messages
+- **Confirmation**: Immediate feedback on message submission status
+- **Privacy**: No read access, data remains secure in Firebase
+
+### Performance & Reliability
+- **Progressive Loading**: Components load as needed
+- **Cache Management**: Intelligent caching of API responses
+- **Error Boundaries**: Graceful failure handling
+- **Lighthouse Optimized**: 95+ scores across all metrics
+
+---
+
+## 🔍 Troubleshooting
+
+### Build Failures
+```bash
+# Check Node.js version
+node --version  # Should be 20.9+
+
+# Clear npm cache
+npm cache clean --force
+
+# Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### API Issues
+```bash
+# Test OpenRouter connection
+node scripts/test-api.sh
+
+# Diagnose Firebase setup
+node scripts/diagnose-firebase.js
+```
+
+### GitHub Integration Problems
+- Check repository visibility (must be public)
+- Verify API rate limits (60 requests/hour unauthenticated)
+- Clear browser cache for updated GitHub data
+
+---
+
+## 📦 Deployment
+
+### GitHub Pages (Frontend)
+- Automated via GitHub Actions
+- Static assets only (no server-side rendering)
+- Fast global CDN distribution
+
+### Vercel (API Backend)
+- Serverless functions for chatbot API
+- Automatic scaling and edge deployment
+- Environment variable management
+
+---
+
+## 🛡️ Security Features
+
+- **CSP Headers**: Content Security Policy implementation
+- **API Rate Limiting**: Protected against abuse
+- **Input Sanitization**: XSS prevention on user inputs
+- **Firestore Rules**: Restrictive database access patterns
+- **Environment Variables**: Secure API key management
+
+---
+
+## 🎯 Performance Metrics
+
+- **Load Time**: < 2 seconds first contentful paint
+- **Interaction**: < 3 seconds time to interactive
+- **Chatbot Response**: 400-800ms average latency
+- **Bundle Size**: Minimal JavaScript payload
+- **Lighthouse Score**: 95+ performance rating
+
+---
+
+## 🔮 Future Enhancements
+
+- [ ] Blog section with markdown content
+- [ ] Interactive skills visualization dashboard
 - [ ] Email notifications for contact form
-- [ ] Admin dashboard to view messages
-- [ ] More AI model options (GPT-4, Claude, etc.)
+- [ ] Multiple AI model options (GPT-4, Claude)
 - [ ] Chat history persistence
-- [ ] Multi-language support (i18n)
-- [ ] Advanced analytics dashboard
+- [ ] Advanced analytics and tracking
 - [ ] Resume builder integration
-- [ ] Testimonials section
-- [ ] Video introduction
-- [ ] Newsletter subscription
+- [ ] Multi-language support
 
 ---
 
-## 📝 License
+## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+Licensed under MIT License. See LICENSE file for details.
 
 ---
 
-## 👤 Author
+## 👨‍💻 Author
 
 **Mangesh Raut**
-- Website: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+- Portfolio: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
 - GitHub: [@mangeshraut712](https://github.com/mangeshraut712)
-- LinkedIn: [linkedin.com/in/mangeshraut71298](https://www.linkedin.com/in/mangeshraut71298/)
+- LinkedIn: [mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
 - Email: mbr63@drexel.edu
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **Firebase** - Backend database and hosting
-- **OpenRouter** - AI model aggregation
-- **Google Gemini** - AI model
-- **GitHub** - Repository hosting and API
-- **Apple** - Design inspiration
-- **Official Joke API** - Entertainment responses
-- **Vercel** - Serverless functions and analytics
+- **Google Gemini** for AI capabilities
+- **OpenRouter** for API aggregation
+- **Firebase** for backend services
+- **Vercel** for serverless deployment
+- **GitHub** for hosting and APIs
 
 ---
 
-## 🆘 Support
-
-If you encounter any issues:
-
-1. **Run diagnostics**: `node scripts/diagnose-firebase.js`
-2. **Check console**: Press F12 and look for errors
-3. **Hard refresh**: `Ctrl + F5` (Windows) or `Cmd + Shift + R` (Mac) to clear cache
-4. **Check GitHub API**: Verify rate limits at https://api.github.com/rate_limit
-5. **Create an issue**: [GitHub Issues](https://github.com/mangeshraut712/mangeshrautarchive/issues)
-
----
-
-## 🌟 Show Your Support
-
-If you like this project, please consider:
-- ⭐ Starring the repository
-- 🐛 Reporting bugs
-- 💡 Suggesting new features
-- 🔀 Contributing code
-- 📢 Sharing with others
-
----
-
-## 📊 Project Stats
-
-![GitHub stars](https://img.shields.io/github/stars/mangeshraut712/mangeshrautarchive?style=social)
-![GitHub forks](https://img.shields.io/github/forks/mangeshraut712/mangeshrautarchive?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/mangeshraut712/mangeshrautarchive?style=social)
-
----
-
-**Built with ❤️ by Mangesh Raut | 2025 Edition**
-
-*Powered by cutting-edge web technologies and modern design principles*
+**Built with ❤️ using modern web technologies**
