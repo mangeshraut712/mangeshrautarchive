@@ -12,6 +12,10 @@
   <meta name="format-detection" content="telephone=yes" />
   <meta name="apple-touch-fullscreen" content="yes" />
   <title>Mangesh Raut - Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script>
@@ -34,11 +38,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/instant-performance.css" />
+
   <link rel="stylesheet" href="assets/css/dark-mode-cards.css" />
   <link rel="stylesheet" href="assets/css/chatbot-complete.css" />
   <link rel="stylesheet" href="assets/css/fixes-2025.css" />
-  <link rel="stylesheet" href="assets/css/animations-2025.css" />
+
   <link rel="stylesheet" href="assets/css/publications.css" />
   <link rel="stylesheet" href="assets/css/recommendations.css" />
   <link rel="stylesheet" href="assets/css/awards.css" />
@@ -48,7 +52,10 @@
   <link rel="stylesheet" href="assets/css/about.css" />
   <link rel="stylesheet" href="assets/css/blog.css" />
   <link rel="stylesheet" href="assets/css/projects.css" />
-  <link rel="stylesheet" href="assets/css/enhanced-animations.css" />
+
+  <!-- Enhanced Dark Mode Theme -->
+  <link rel="stylesheet" href="assets/css/dark-mode-enhanced.css" />
+
   <link rel="stylesheet" href="assets/css/theme-background-fix.css" />
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
 
@@ -742,17 +749,11 @@
   </div>
 
   <!-- Background Clip Animation -->
-  <div class="bg-clip-container">
-    <div class="bg-clip-col"></div>
-    <div class="bg-clip-col"></div>
-    <div class="bg-clip-col"></div>
-    <div class="bg-clip-col"></div>
-    <div class="bg-clip-col"></div>
-  </div>
 
-  <nav class="global-nav" aria-label="Primary navigation" data-animate="fade-down" data-animate-duration="650">
+
+  <nav class="global-nav" aria-label="Primary navigation">
     <div class="nav-container">
-      <div class="nav-left" data-animate="fade-right" data-animate-delay="120" data-animate-duration="720">
+      <div class="nav-left">
         <button id="menu-btn" class="menu-toggle-button" type="button" aria-label="Open navigation menu"
           aria-controls="overlay-menu" aria-expanded="false">
           <span class="menu-icon" aria-hidden="true"></span>
@@ -762,7 +763,7 @@
           <img src="assets/images/profile-icon.png" alt="Mangesh Raut" />
         </a>
       </div>
-      <div class="nav-links" role="menubar" data-animate="fade-up" data-animate-delay="220" data-animate-duration="720">
+      <div class="nav-links" role="menubar">
         <a href="#home" class="nav-link" role="menuitem">Home</a>
         <a href="#about" class="nav-link" role="menuitem">About</a>
         <a href="#skills" class="nav-link" role="menuitem">Skills</a>
@@ -775,7 +776,7 @@
         <a href="#blog" class="nav-link" role="menuitem">Blog</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
       </div>
-      <div class="nav-actions" data-animate="fade-left" data-animate-delay="260" data-animate-duration="700">
+      <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav mr-4" aria-label="Search">
           <i class="fas fa-search" aria-hidden="true"></i>
         </button>
@@ -808,34 +809,31 @@
   </div>
   <main id="main-content">
     <!-- Home Section -->
-    <section id="home" class="py-20 home-hero" data-animate="zoom-in" data-animate-duration="1100"
-      data-animate-parallax="0.08">
+    <section id="home" class="py-32 home-hero">
       <div class="container-fluid">
-        <div class="max-w-4xl mx-auto text-center" data-animate="fade-up" data-animate-delay="120">
+        <div class="max-w-4xl mx-auto text-center">
           <!-- Profile Image -->
-          <div class="mb-12" data-animate="zoom-in" data-animate-delay="160">
-            <div class="profile-image-wrapper mx-auto mb-8" data-animate="zoom-in" data-animate-delay="200">
-              <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" data-animate="zoom-in"
-                data-animate-delay="260" />
+          <div class="mb-12">
+            <div class="profile-image-wrapper mx-auto mb-8">
+              <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" fetchpriority="high"
+                loading="eager" />
               <div class="profile-ring"></div>
             </div>
           </div>
 
           <!-- Name and Title -->
-          <h2 class="text-reveal hero-name" data-animate="fade-up" data-animate-delay="300">Mangesh Raut</h2>
-          <h1 class="text-reveal hero-title" data-animate="fade-up" data-animate-delay="340">Software Developer Engineer
-          </h1>
+          <h2 class="hero-name">Mangesh Raut</h2>
+          <h1 class="hero-title">Software Developer Engineer</h1>
 
           <!-- Description -->
-          <p class="hero-description mx-auto mb-8 max-w-2xl" data-animate="fade-up" data-animate-delay="380">
+          <p class="hero-description mx-auto mb-8 max-w-2xl">
             Welcome! Explore my journey in crafting innovative software solutions with expertise in Full-Stack
             Development, Cloud Technologies, and Machine Learning.
           </p>
 
-          <!-- Social Links -->
           <!-- CTA Button -->
           <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf"
-            class="btn btn-secondary btn-beam hero-cta" data-animate="zoom-in" data-animate-delay="420">
+            class="btn btn-secondary hero-cta">
             <i class="fas fa-download"></i>
             Download Resume
           </a>
@@ -843,22 +841,23 @@
       </div>
     </section>
     <!-- About Section -->
-    <section id="about" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
+    <section id="about" class="fade-in py-32 bg-white">
       <div class="container">
-        <h2 data-animate="fade-down">About Me</h2>
+        <h2>About Me</h2>
 
         <div class="about-content">
           <!-- Main Content -->
-          <div class="about-main" data-animate="fade-up" data-animate-delay="100">
-            <div class="about-image-wrapper" data-animate="zoom-in" data-animate-delay="140">
-              <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" />
+          <div class="about-main">
+            <div class="about-image-wrapper">
+              <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image"
+                loading="lazy" />
               <div class="about-image-badge">
                 <i class="fas fa-graduation-cap"></i>
                 <span>MS in Computer Science</span>
               </div>
             </div>
 
-            <div class="about-text" data-animate="fade-left" data-animate-delay="180">
+            <div class="about-text">
               <h3 class="about-intro-title">Hello! I'm Mangesh Raut</h3>
               <p class="about-intro-text">
                 A passionate <strong>Software Engineer</strong> with 5+ years of experience in building scalable,
@@ -882,31 +881,40 @@
           </div>
 
           <!-- Highlights Grid -->
-          <div class="about-highlights" data-animate="fade-up" data-animate-delay="220"></div>
+          <div class="about-highlights"></div>
         </div>
       </div>
     </section>
     <!-- Skills Section -->
-    <section id="skills" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="950">
+    <section id="skills" class="fade-in py-32 bg-white">
       <div class="container">
-        <h2 data-animate="fade-down">Skills & Technologies</h2>
+        <h2>Skills & Technologies</h2>
 
         <!-- Tech Stack Marquee -->
         <div class="marquee-container mb-12">
           <div class="marquee-content">
-            <div class="marquee-item"><i class="fab fa-java"></i></div>
-            <div class="marquee-item"><i class="fab fa-python"></i></div>
-            <div class="marquee-item"><i class="fab fa-js"></i></div>
-            <div class="marquee-item"><i class="fab fa-react"></i></div>
-            <div class="marquee-item"><i class="fab fa-angular"></i></div>
-            <div class="marquee-item"><i class="fab fa-node"></i></div>
-            <div class="marquee-item"><i class="fab fa-aws"></i></div>
-            <div class="marquee-item"><i class="fab fa-docker"></i></div>
-            <div class="marquee-item"><i class="fas fa-database"></i></div>
-            <div class="marquee-item"><i class="fab fa-git-alt"></i></div>
-            <div class="marquee-item"><i class="fab fa-linux"></i></div>
-            <div class="marquee-item"><i class="fab fa-html5"></i></div>
-            <div class="marquee-item"><i class="fab fa-css3-alt"></i></div>
+            <div class="marquee-item"><i class="fab fa-java text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-python text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-js text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-react text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-angular text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-node text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-aws text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-docker text-4xl"></i></div>
+            <div class="marquee-item"><i class="fas fa-database text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-git-alt text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-linux text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-html5 text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-css3-alt text-4xl"></i></div>
+            <!-- Duplicate for seamless loop -->
+            <div class="marquee-item"><i class="fab fa-java text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-python text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-js text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-react text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-angular text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-node text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-aws text-4xl"></i></div>
+            <div class="marquee-item"><i class="fab fa-docker text-4xl"></i></div>
           </div>
         </div>
 
@@ -927,10 +935,9 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="950"
-      data-animate-parallax="0.05">
+    <section id="experience" class="fade-in py-32 bg-gray-100">
       <div class="container">
-        <h2 data-animate="fade-down">Professional Experience</h2>
+        <h2>Professional Experience</h2>
 
         <!-- Full-Time Employment -->
         <div class="mb-12">
@@ -938,7 +945,7 @@
 
           <!-- Customized Energy Solutions -->
           <div
-            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Software Engineer</h3>
@@ -990,7 +997,7 @@
 
           <!-- IoasiZ -->
           <div
-            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Software Engineer</h3>
@@ -1041,7 +1048,7 @@
 
           <!-- Harshwardhan Enterprises -->
           <div
-            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Network Engineer</h3>
@@ -1097,7 +1104,7 @@
 
           <!-- Aramark -->
           <div
-            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Database Administrator</h3>
@@ -1144,7 +1151,7 @@
 
           <!-- Drexel University -->
           <div
-            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Database Administrator</h3>
@@ -1191,7 +1198,7 @@
 
           <!-- Drexel University COVID-19 Service -->
           <div
-            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">COVID-19 Testing Assistant and Vaccination Team</h3>
@@ -1221,28 +1228,48 @@
     </section>
 
     <!-- Projects Section - Dynamic GitHub Integration -->
-    <section id="projects" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="1000">
+    <section id="projects" class="fade-in py-32 bg-white">
       <div class="container">
-        <h2 data-animate="fade-down">Latest Projects</h2>
+        <h2>Latest Projects</h2>
 
         <!-- Projects Stats Dashboard -->
         <div class="max-w-6xl mx-auto mb-12" id="projects-stats">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="text-3xl font-bold text-accent mb-2" id="stat-repos">--</div>
-              <div class="text-sm opacity-75">Repositories</div>
+            <div
+              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
+              <div
+                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-blue-500 to-cyan-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="text-3xl font-bold text-accent mb-1" id="stat-repos">--</div>
+              <div class="text-sm opacity-75 font-medium">Repositories</div>
             </div>
-            <div class="bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="text-3xl font-bold text-accent mb-2" id="stat-stars">--</div>
-              <div class="text-sm opacity-75">Total Stars</div>
+            <div
+              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
+              <div
+                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-yellow-400 to-orange-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="text-3xl font-bold text-accent mb-1" id="stat-stars">--</div>
+              <div class="text-sm opacity-75 font-medium">Total Stars</div>
             </div>
-            <div class="bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="text-3xl font-bold text-accent mb-2" id="stat-forks">--</div>
-              <div class="text-sm opacity-75">Total Forks</div>
+            <div
+              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
+              <div
+                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-purple-500 to-pink-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-code-branch"></i>
+              </div>
+              <div class="text-3xl font-bold text-accent mb-1" id="stat-forks">--</div>
+              <div class="text-sm opacity-75 font-medium">Total Forks</div>
             </div>
-            <div class="bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="text-3xl font-bold text-accent mb-2" id="stat-languages">--</div>
-              <div class="text-sm opacity-75">Languages</div>
+            <div
+              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
+              <div
+                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-green-400 to-emerald-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+                <i class="fas fa-language"></i>
+              </div>
+              <div class="text-3xl font-bold text-accent mb-1" id="stat-languages">--</div>
+              <div class="text-sm opacity-75 font-medium">Languages</div>
             </div>
           </div>
         </div>
@@ -1296,13 +1323,13 @@
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="950">
+    <section id="education" class="fade-in py-32 bg-gray-100">
       <div class="container">
-        <h2 data-animate="fade-down">Education</h2>
+        <h2>Education</h2>
 
         <div class="education-timeline">
           <!-- Education Item 1 -->
-          <article class="education-item" data-animate="fade-up" data-animate-delay="100">
+          <article class="education-item">
             <div class="education-icon">
               <i class="fas fa-graduation-cap"></i>
             </div>
@@ -1328,7 +1355,7 @@
           </article>
 
           <!-- Education Item 2 -->
-          <article class="education-item" data-animate="fade-up" data-animate-delay="140">
+          <article class="education-item">
             <div class="education-icon">
               <i class="fas fa-graduation-cap"></i>
             </div>
@@ -1354,7 +1381,7 @@
           </article>
 
           <!-- Education Item 3 -->
-          <article class="education-item" data-animate="fade-up" data-animate-delay="180">
+          <article class="education-item">
             <div class="education-icon">
               <i class="fas fa-graduation-cap"></i>
             </div>
@@ -1380,7 +1407,7 @@
           </article>
 
           <!-- Education Item 4 -->
-          <article class="education-item" data-animate="fade-up" data-animate-delay="220">
+          <article class="education-item">
             <div class="education-icon">
               <i class="fas fa-school"></i>
             </div>
@@ -1409,15 +1436,15 @@
     </section>
 
     <!-- Publications Section -->
-    <section id="publications" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900">
+    <section id="publications" class="fade-in py-32 bg-gray-100">
       <div class="container">
-        <h2 data-animate="fade-down">Recent Publications</h2>
+        <h2>Recent Publications</h2>
 
         <div class="publications-divider"></div>
 
         <div class="publications-grid">
           <!-- Publication Card -->
-          <article class="publication-card" data-animate="tilt-in" data-animate-delay="140" data-animate-duration="900">
+          <article class="publication-card">
             <div class="publication-header">
               <div class="publication-meta">
                 <span class="publication-category">Methods and Algorithms</span>
@@ -1452,13 +1479,13 @@
       </div>
     </section>
     <!-- Awards Section -->
-    <section id="awards" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
+    <section id="awards" class="fade-in py-32 bg-white">
       <div class="container">
-        <h2 data-animate="fade-down">Honors & Awards</h2>
+        <h2>Honors & Awards</h2>
 
         <div class="awards-grid">
           <!-- Award Card 1 -->
-          <article class="award-card" data-animate="fade-up" data-animate-delay="100">
+          <article class="award-card">
             <div class="award-icon">
               <i class="fas fa-trophy"></i>
             </div>
@@ -1484,7 +1511,7 @@
           </article>
 
           <!-- Award Card 2 -->
-          <article class="award-card" data-animate="fade-up" data-animate-delay="140">
+          <article class="award-card">
             <div class="award-icon">
               <i class="fas fa-medal"></i>
             </div>
@@ -1513,19 +1540,20 @@
     </section>
 
     <!-- Recommendations Section -->
-    <section id="recommendations" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900">
+    <section id="recommendations" class="fade-in py-32 bg-gray-100">
       <div class="container">
-        <h2 data-animate="fade-down">Recommendations</h2>
+        <h2>Recommendations</h2>
 
         <div class="recommendations-grid">
-          <!-- Recommendation Cards -->
-          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="100">
+          <!-- Card 1 -->
+          <article class="recommendation-card">
             <div class="recommendation-quote">
               <i class="fas fa-quote-left quote-icon"></i>
               <p class="recommendation-text">
                 “Mangesh is a highly committed and technically skilled individual with a strong foundation in both
                 hardware and software. I had the opportunity to witness his growth first-hand as he pursued and
-                completed his Computer Science degree at Drexel University. His sincerity, problem-solving mindset, and
+                completed his Computer Science degree at Drexel University. His sincerity, problem-solving mindset,
+                and
                 eagerness to contribute make him an asset to any team. I strongly recommend him for any challenging
                 technical role.”
               </p>
@@ -1542,14 +1570,17 @@
             </div>
           </article>
 
-          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="140">
+          <!-- Card 2 -->
+          <article class="recommendation-card">
             <div class="recommendation-quote">
               <i class="fas fa-quote-left quote-icon"></i>
               <p class="recommendation-text">
                 “Mangesh played a key role in helping us modernize several legacy systems. His ability to quickly
                 understand complex architectures and implement innovative solutions significantly improved our
-                operational efficiency. What stood out most was his collaborative spirit—team members frequently sought
-                his insights when tackling difficult technical problems. His contributions elevated the performance and
+                operational efficiency. What stood out most was his collaborative spirit—team members frequently
+                sought
+                his insights when tackling difficult technical problems. His contributions elevated the performance
+                and
                 culture of our engineering team.”
               </p>
             </div>
@@ -1565,13 +1596,15 @@
             </div>
           </article>
 
-          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="180">
+          <!-- Card 3 -->
+          <article class="recommendation-card">
             <div class="recommendation-quote">
               <i class="fas fa-quote-left quote-icon"></i>
               <p class="recommendation-text">
                 “Mangesh is an exceptionally dedicated professional who consistently delivers beyond expectations. His
                 work on optimizing and stabilizing our network infrastructure resulted in noticeable performance
-                improvements. His attention to detail, strong technical knowledge, and calm approach under pressure make
+                improvements. His attention to detail, strong technical knowledge, and calm approach under pressure
+                make
                 him a dependable engineer.”
               </p>
             </div>
@@ -1587,11 +1620,13 @@
             </div>
           </article>
 
-          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="220">
+          <!-- Card 4 -->
+          <article class="recommendation-card">
             <div class="recommendation-quote">
               <i class="fas fa-quote-left quote-icon"></i>
               <p class="recommendation-text">
-                “Mangesh distinguished himself as a student employee who always took initiative and approached problems
+                “Mangesh distinguished himself as a student employee who always took initiative and approached
+                problems
                 with a learner’s mindset. His eagerness to help others and his steady improvement throughout his
                 academic journey demonstrated his resilience and strong work ethic. He has the qualities of a future
                 leader.”
@@ -1608,18 +1643,19 @@
               </div>
             </div>
           </article>
-
         </div>
+
+      </div>
       </div>
     </section>
     <!-- Certifications Section -->
-    <section id="certifications" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
+    <section id="certifications" class="fade-in py-32 bg-white">
       <div class="container">
-        <h2 data-animate="fade-down">Licenses & Certifications</h2>
+        <h2>Licenses & Certifications</h2>
         <div class="max-w-6xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div
-              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1644,7 +1680,7 @@
             </div>
 
             <div
-              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1669,7 +1705,7 @@
             </div>
 
             <div
-              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1694,7 +1730,7 @@
             </div>
 
             <div
-              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1731,13 +1767,13 @@
     </section>
     <!-- Contact Section -->
     <!-- Blog Section -->
-    <section id="blog" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
+    <section id="blog" class="fade-in py-32 bg-white">
       <div class="container">
-        <h2 data-animate="fade-down">Technical Writings</h2>
-        <p class="text-center text-secondary max-w-2xl mx-auto mb-12" data-animate="fade-up" data-animate-delay="100">
+        <h2>Technical Writings</h2>
+        <p class="text-center text-secondary max-w-2xl mx-auto mb-12">
           Sharing insights on cloud architecture, full-stack development, and machine learning.
         </p>
-        <div id="blog-posts-container" data-animate="fade-up" data-animate-delay="200">
+        <div id="blog-posts-container">
           <!-- Blog posts injected by blog-loader.js -->
           <div class="flex justify-center p-12">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
@@ -1745,16 +1781,14 @@
         </div>
       </div>
     </section>
-    <section id="contact" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900"
-      data-animate-parallax="0.04">
+    <section id="contact" class="fade-in py-32 bg-gray-100">
       <div class="container">
-        <h2 data-animate="fade-down">Get In Touch</h2>
+        <h2>Get In Touch</h2>
         <div class="row">
-          <div class="col-lg-6 mb-12 lg:mb-0" data-animate="fade-right" data-animate-delay="160">
-            <div class="contact-card bg-primary border border-border rounded-2xl shadow-light" data-animate="tilt-in"
-              data-animate-delay="220">
-              <h3 class="mb-6" data-animate="fade-up" data-animate-delay="240">Contact Information</h3>
-              <p class="mb-8" data-animate="fade-up" data-animate-delay="260">
+          <div class="col-lg-6 mb-12 lg:mb-0">
+            <div class="contact-card bg-primary border border-border rounded-2xl shadow-light">
+              <h3 class="mb-6">Contact Information</h3>
+              <p class="mb-8">
                 Feel free to reach out via email or connect on social media.
               </p>
               <div class="space-y-4">
@@ -1896,11 +1930,10 @@
             </div>
           </div>
 
-          <div class="col-lg-6" data-animate="fade-left" data-animate-delay="200">
-            <div class="contact-form-card bg-primary border border-border rounded-2xl shadow-light"
-              data-animate="fade-up" data-animate-delay="240">
+          <div class="col-lg-6">
+            <div class="contact-form-card bg-primary border border-border rounded-2xl shadow-light">
               <h3 class="mb-6">Send a Message</h3>
-              <form id="contact-form" class="contact-form" data-animate="fade-up" data-animate-delay="280">
+              <form id="contact-form" class="contact-form">
                 <div class="contact-form-grid">
                   <div class="contact-form-field">
                     <label for="name" class="sr-only">Your Name</label>
@@ -1923,7 +1956,7 @@
                   <textarea id="message" name="message" autocomplete="off" rows="5" placeholder="Message"
                     class="contact-input contact-textarea" required></textarea>
                 </div>
-                <button type="submit" class="btn contact-submit" data-animate="zoom-in" data-animate-delay="420">
+                <button type="submit" class="btn contact-submit">
                   Send Message
                 </button>
               </form>
@@ -1957,8 +1990,7 @@
     </section>
 
     <footer
-      class="bg-white/80 dark:bg-[#18181b]/90 text-black dark:text-white py-12 border-t border-gray-200 dark:border-[#23272f]"
-      data-animate="fade-up" data-animate-duration="900">
+      class="bg-white/80 dark:bg-[#18181b]/90 text-black dark:text-white py-12 border-t border-gray-200 dark:border-[#23272f]">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center text-sm">
           <div class="mb-4 md:mb-0">
@@ -2159,7 +2191,8 @@
     <script type="module" src="js/modules/blog-loader.js"></script>
 
     <!-- Advanced Animations Module -->
-    <script type="module" src="js/modules/animations-2025.js"></script>
+
+    <!-- Animations disabled for performance -->
     <script type="module">
       // Initialize Skills Visualization
       document.addEventListener('DOMContentLoaded', () => {
@@ -2172,8 +2205,8 @@
       document.addEventListener('DOMContentLoaded', async () => {
         const githubProjects = new GitHubProjects('mangeshraut712');
 
-        // Load and render projects
-        await githubProjects.renderProjects('github-projects-container', 12);
+        // Load and render projects (all 8 curated projects)
+        await githubProjects.renderProjects('github-projects-container', 8);
 
         // Update stats
         const stats = await githubProjects.getStats();

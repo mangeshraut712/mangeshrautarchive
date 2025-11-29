@@ -174,21 +174,27 @@ class IntelligentAssistant {
         }
 
         try {
-            // Test server connectivity - use Vercel endpoint
+            // Test server connectivity - try lightweight health first, then status
             console.log('🖥️ Testing server connectivity...');
-            const response = await fetch(buildApiUrl('/api/status'), {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' },
-                signal: AbortSignal.timeout(8000) // Increased timeout
-            });
+            const tryEndpoint = async (path, timeoutMs) => {
+                const res = await fetch(buildApiUrl(path), {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    signal: AbortSignal.timeout(timeoutMs)
+                });
+                return res.ok;
+            };
 
-            if (response.ok) {
+            const healthy = await tryEndpoint('/api/health', 3000)
+                .catch(() => false) || await tryEndpoint('/api/status', 5000).catch(() => false);
+
+            if (healthy) {
                 console.log('✅ Server connectivity test successful');
                 this.isReadyState = true;
                 return true;
             }
 
-            console.warn('Server connectivity test failed with status:', response.status);
+            console.warn('Server connectivity test failed');
             return false;
 
         } catch (error) {

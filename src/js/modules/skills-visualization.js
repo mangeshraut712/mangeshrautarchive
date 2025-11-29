@@ -68,7 +68,7 @@ class SkillsVisualization {
     const delay = index * 30; // Faster stagger
 
     return `
-      <div class="skill-card group compact-card" data-animate="zoom-in" data-animate-delay="${delay}">
+      <div class="skill-card group compact-card">
         <div class="flex items-center gap-3">
             <div class="skill-icon text-xl" style="color: ${skill.color}">
               <i class="${skill.icon}"></i>
@@ -94,7 +94,7 @@ class SkillsVisualization {
     const skillsHTML = skills.map((skill, index) => this.createSkillCard(skill, index)).join('');
 
     return `
-      <div class="skill-category mb-8" data-animate="fade-up" data-animate-delay="${categoryIndex * 80}">
+      <div class="skill-category mb-8">
         <h3 class="text-lg font-bold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
           <span class="text-primary">${category}</span>
         </h3>
@@ -124,10 +124,7 @@ class SkillsVisualization {
     // Add CSS styles
     this.injectStyles();
 
-    // Trigger animations if available
-    if (window.initAnimations) {
-      setTimeout(() => window.initAnimations(), 100);
-    }
+
   }
 
   /**
@@ -140,36 +137,42 @@ class SkillsVisualization {
       <style id="skills-visualization-styles">
         .skill-card {
           padding: 1rem;
-          background: var(--color-bg-primary);
-          border-radius: 0.75rem;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 16px;
           border: 1px solid rgba(0, 0, 0, 0.05);
-          transition: all 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
         }
 
         html.dark .skill-card {
-          background: rgba(255, 255, 255, 0.03);
-          border-color: rgba(255, 255, 255, 0.08);
+          background: #000000;
+          border-color: rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         .skill-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
           border-color: var(--color-accent);
+          z-index: 10;
         }
 
         html.dark .skill-card:hover {
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+          background: #000000;
         }
 
         .skill-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
-          border-radius: 6px;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
           background: rgba(0,0,0,0.03);
-          transition: transform 0.3s ease;
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
         html.dark .skill-icon {
@@ -177,24 +180,38 @@ class SkillsVisualization {
         }
 
         .skill-card:hover .skill-icon {
-          transform: scale(1.1);
+          transform: scale(1.15) rotate(5deg);
         }
 
         .skill-bar-container {
           background: rgba(0, 0, 0, 0.05);
           border-radius: 999px;
           overflow: hidden;
+          height: 6px;
         }
 
         html.dark .skill-bar-container {
-          background: rgba(255, 255, 255, 0.08);
+          background: rgba(255, 255, 255, 0.1);
         }
 
         .skill-bar {
           height: 100%;
           border-radius: 999px;
-          transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+          position: relative;
+          overflow: hidden;
         }
+        
+        .skill-bar::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+          transform: translateX(-100%);
+
       </style>
     `;
 
@@ -227,4 +244,12 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 // Make available globally
+// Make available globally
 window.SkillsVisualization = SkillsVisualization;
+
+// Auto-initialize if container exists
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('skills-container')) {
+    new SkillsVisualization().render('skills-container');
+  }
+});

@@ -48,13 +48,13 @@ html:not(.dark) #recommendations {
 }
 
 html.dark .recommendation-card {
-    background: #18181b;
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    background: #000000;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
 }
 
 html.dark .recommendation-card:hover {
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
 }
 
 /* Quote Section */
@@ -213,35 +213,4 @@ html.dark .author-company {
 }
 
 /* Animation */
-.recommendation-card {
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.recommendation-card:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.recommendation-card:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.recommendation-card:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.recommendation-card:nth-child(4) {
-    animation-delay: 0.4s;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* Animation removed for performance and visibility */

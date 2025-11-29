@@ -1,8 +1,12 @@
 /* ========================================
-   Experience Section - Modern Timeline Design
+   PROFESSIONAL EXPERIENCE - EDUCATION-STYLE TIMELINE
+   Clean timeline design matching Education section
    ======================================== */
 
-/* Experience Section Background */
+/* ========================================
+   SECTION BACKGROUND
+   ======================================== */
+
 #experience {
     background: var(--bg-secondary);
 }
@@ -15,19 +19,25 @@ html:not(.dark) #experience {
     background: #f5f5f7;
 }
 
-/* Remove category headings */
+/* ========================================
+   CATEGORY HEADERS - HIDDEN
+   ======================================== */
+
 #experience h3.text-2xl {
     display: none;
 }
 
-/* Experience Timeline - Unified */
+/* ========================================
+   EXPERIENCE TIMELINE CONTAINER
+   ======================================== */
+
 #experience .container>div {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 3rem auto 0;
     position: relative;
 }
 
-/* Timeline Line */
+/* Timeline Vertical Line */
 #experience .container>div::before {
     content: '';
     position: absolute;
@@ -42,43 +52,42 @@ html.dark #experience .container>div::before {
     background: linear-gradient(to bottom, #2997ff, #0071e3);
 }
 
-/* Experience Cards - Redesign */
+/* ========================================
+   EXPERIENCE CARDS - CLEAN DESIGN
+   ======================================== */
+
 #experience .education-card {
     position: relative;
     padding-left: 90px;
     margin-bottom: 3rem;
-    background: var(--bg-primary);
-    border-radius: 16px;
-    padding: 2rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
     padding-left: 90px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#experience .education-card:hover {
-    transform: translateX(8px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+#experience .education-card:last-child {
+    margin-bottom: 0;
 }
 
-html.dark #experience .education-card {
-    background: #18181b;
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+/* Remove all Tailwind utility classes effects */
+#experience .education-card.gemini-flashlight-card {
+    background: transparent !important;
+    box-shadow: none !important;
 }
 
-html.dark #experience .education-card:hover {
-    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
-}
+/* ========================================
+   TIMELINE ICON - POSITIONED LEFT
+   ======================================== */
 
-/* Add icon to each card */
 #experience .education-card::before {
     content: '\f0b1';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
-    left: -58px;
-    top: 2rem;
+    left: 0;
+    top: 0;
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -90,28 +99,134 @@ html.dark #experience .education-card:hover {
     z-index: 2;
     font-size: 1.75rem;
     color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     line-height: 64px;
+    text-align: center;
 }
 
-/* Experience Header */
+html.dark #experience .education-card::before {
+    background: linear-gradient(135deg, #2997ff, #5ac8fa);
+    box-shadow: 0 8px 20px rgba(41, 151, 255, 0.5);
+}
+
+/* Different icons for different sections */
+#experience .mb-12:nth-child(2) .education-card:nth-child(2)::before {
+    content: '\f0b1';
+    /* briefcase */
+}
+
+#experience .mb-12:nth-child(2) .education-card:nth-child(3)::before {
+    content: '\f121';
+    /* code */
+}
+
+#experience .mb-12:nth-child(2) .education-card:nth-child(4)::before {
+    content: '\f233';
+    /* server */
+}
+
+#experience .mb-12:nth-child(3) .education-card::before {
+    content: '\f19d';
+    /* graduation cap */
+    background: linear-gradient(135deg, #8b5cf6, #c084fc);
+}
+
+#experience .mb-12:nth-child(4) .education-card::before {
+    content: '\f0c0';
+    /* users */
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+#experience .mb-12:nth-child(5) .education-card::before {
+    content: '\f004';
+    /* heart */
+    background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+/* ========================================
+   CARD CONTENT WRAPPER
+   ======================================== */
+
+/* Create a wrapper for the card content */
+#experience .education-card>div:first-child,
+#experience .education-card>ul,
+#experience .education-card>.mt-4 {
+    position: relative;
+}
+
+/* Wrap all content in a card-like container */
+#experience .education-card {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style the actual content area */
+#experience .education-card::after {
+    content: '';
+    position: absolute;
+    left: 90px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-primary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    z-index: -1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#experience .education-card:hover::after {
+    transform: translateX(8px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+}
+
+html.dark #experience .education-card::after {
+    background: #000000;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+
+html.dark #experience .education-card:hover::after {
+    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+}
+
+/* Add padding to content */
+#experience .education-card>* {
+    position: relative;
+    z-index: 1;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+#experience .education-card>div:first-child {
+    padding-top: 2rem;
+}
+
+#experience .education-card>.mt-4 {
+    padding-bottom: 2rem;
+}
+
+/* ========================================
+   CARD HEADER
+   ======================================== */
+
 #experience .education-card .flex.flex-col {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
     gap: 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
+/* Job Title */
 #experience .education-card h3 {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
 }
 
 html.dark #experience .education-card h3 {
@@ -122,39 +237,70 @@ html:not(.dark) #experience .education-card h3 {
     color: #1d1d1f;
 }
 
+/* Company Name */
 #experience .education-card .text-accent.font-semibold {
     font-size: 1.125rem;
     font-weight: 600;
     color: #0071e3;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
 }
 
 html.dark #experience .education-card .text-accent.font-semibold {
     color: #2997ff;
 }
 
-/* Date Badge */
+/* ========================================
+   DATE BADGE
+   ======================================== */
+
 #experience .education-card .inline-block.px-3 {
     padding: 0.5rem 1rem;
     border-radius: 20px;
-    background: linear-gradient(135deg, #0071e3, #2997ff);
+    background: #22c55e !important;
     color: #ffffff !important;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
 }
 
-/* Achievements List */
+html.dark #experience .education-card .inline-block.px-3 {
+    background: #16a34a !important;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;
+}
+
+/* ========================================
+   ACHIEVEMENTS LIST
+   ======================================== */
+
 #experience .education-card ul {
     margin: 1.5rem 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 #experience .education-card ul li {
     margin-bottom: 1rem;
     line-height: 1.6;
+    font-size: 1rem;
+    color: var(--text-secondary);
 }
 
+#experience .education-card ul li:last-child {
+    margin-bottom: 0;
+}
+
+html.dark #experience .education-card ul li {
+    color: #a1a1a6;
+}
+
+html:not(.dark) #experience .education-card ul li {
+    color: #6e6e73;
+}
+
+/* Checkmark Icons */
 #experience .education-card ul li svg {
     color: #0071e3;
 }
@@ -163,10 +309,30 @@ html.dark #experience .education-card ul li svg {
     color: #2997ff;
 }
 
-/* Tech Tags */
+/* Strong Text */
+#experience .education-card ul li strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+html.dark #experience .education-card ul li strong {
+    color: #f5f5f7;
+}
+
+html:not(.dark) #experience .education-card ul li strong {
+    color: #1d1d1f;
+}
+
+/* ========================================
+   TECH TAGS
+   ======================================== */
+
 #experience .education-card .mt-4.flex.flex-wrap {
     margin-top: 1.5rem;
     gap: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
 }
 
 #experience .education-card .mt-4.flex.flex-wrap span {
@@ -185,7 +351,31 @@ html.dark #experience .education-card .mt-4.flex.flex-wrap span {
     border-color: rgba(41, 151, 255, 0.2);
 }
 
-/* Responsive Design */
+/* ========================================
+   VOLUNTEER WORK - SPECIAL STYLING
+   ======================================== */
+
+#experience .mb-12:nth-child(5) .education-card p.text-secondary {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+html.dark #experience .mb-12:nth-child(5) .education-card p.text-secondary {
+    color: #a1a1a6;
+}
+
+html:not(.dark) #experience .mb-12:nth-child(5) .education-card p.text-secondary {
+    color: #6e6e73;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
 @media (max-width: 768px) {
     #experience .container>div::before {
         left: 24px;
@@ -193,16 +383,31 @@ html.dark #experience .education-card .mt-4.flex.flex-wrap span {
 
     #experience .education-card {
         padding-left: 70px;
-        padding: 1.5rem;
-        padding-left: 70px;
+        margin-bottom: 2rem;
     }
 
     #experience .education-card::before {
-        left: -46px;
         width: 48px;
         height: 48px;
         font-size: 1.25rem;
         line-height: 48px;
+    }
+
+    #experience .education-card::after {
+        left: 70px;
+    }
+
+    #experience .education-card>* {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    #experience .education-card>div:first-child {
+        padding-top: 1.5rem;
+    }
+
+    #experience .education-card>.mt-4 {
+        padding-bottom: 1.5rem;
     }
 
     #experience .education-card .flex.flex-col {
@@ -212,5 +417,31 @@ html.dark #experience .education-card .mt-4.flex.flex-wrap span {
 
     #experience .education-card h3 {
         font-size: 1.25rem;
+    }
+
+    #experience .education-card .text-accent.font-semibold {
+        font-size: 1rem;
+    }
+
+    #experience .education-card ul {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    #experience .education-card .mt-4.flex.flex-wrap {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #experience .education-card ul li {
+        font-size: 0.9375rem;
+    }
+
+    #experience .education-card .mt-4.flex.flex-wrap span {
+        font-size: 0.6875rem;
+        padding: 0.375rem 0.75rem;
     }
 }

@@ -4,7 +4,7 @@ const themeToggleIcon = document.getElementById("theme-toggle-icon");
 
 function setInitialTheme() {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (savedTheme === "dark") {
         document.documentElement.classList.add("dark");
         themeToggleIcon.classList.remove("fa-moon");
         themeToggleIcon.classList.add("fa-sun");

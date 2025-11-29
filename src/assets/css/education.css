@@ -85,8 +85,8 @@ html.dark .education-timeline::before {
 }
 
 html.dark .education-content {
-    background: #18181b;
-    border-color: rgba(255, 255, 255, 0.08);
+    background: #000000;
+    border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
 }
 
@@ -250,35 +250,4 @@ html:not(.dark) .education-period {
 }
 
 /* Animation */
-.education-item {
-    opacity: 0;
-    animation: fadeInRight 0.6s ease forwards;
-}
-
-.education-item:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.education-item:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.education-item:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.education-item:nth-child(4) {
-    animation-delay: 0.4s;
-}
-
-@keyframes fadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
+/* Animation removed for performance and visibility */

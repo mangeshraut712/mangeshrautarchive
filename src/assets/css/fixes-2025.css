@@ -12,7 +12,6 @@
 
 /* Light mode cards: enforce clean white surfaces */
 html:not(.dark) .project-card,
-html:not(.dark) .publication-card,
 html:not(.dark) .recommendation-card,
 html:not(.dark) .education-card,
 html:not(.dark) .contact-card,
@@ -25,39 +24,21 @@ html:not(.dark) .bg-primary {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08) !important;
 }
 
+/* Force pure-white hero background in light mode */
+html:not(.dark) #home {
+  background: #ffffff !important;
+  background-attachment: scroll !important;
+}
+
+/* Force clean hero background in all themes to avoid banding/lines */
+#home {
+  background: #ffffff !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+}
+
 /* Experience cards - add accent spine and tighter layout */
-#experience .education-card {
-  position: relative;
-  overflow: hidden;
-  padding: 1.75rem;
-}
-
-#experience .education-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 6px;
-  background: linear-gradient(180deg, #007aff, #5ac8fa);
-  opacity: 0.9;
-}
-
-html.dark #experience .education-card::before {
-  background: linear-gradient(180deg, #0a84ff, #5ac8fa);
-}
-
-#experience .education-card h3 {
-  margin-bottom: 0.25rem;
-}
-
-#experience .education-card .text-accent {
-  font-weight: 600;
-}
-
-#experience .education-card ul {
-  margin-top: 0.75rem;
-}
+/* Experience styles moved to experience.css */
 
 /* Project styles moved to projects.css */
 
@@ -482,33 +463,7 @@ button:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    SKILLS SECTION - Compact Design
    ═══════════════════════════════════════════════════════════ */
-#skills .education-card {
-  padding: 0.75rem !important;
-}
-
-#skills-container>*:not(.grid)+.grid {
-  gap: 0.75rem !important;
-}
-
-#skills {
-  padding-top: 2rem !important;
-  padding-bottom: 2rem !important;
-}
-
-#skills h2 {
-  margin-bottom: 1rem !important;
-  font-size: 1.875rem !important;
-}
-
-#skills .education-card h3 {
-  font-size: 0.95rem !important;
-  margin-bottom: 0.25rem !important;
-}
-
-#skills .education-card ul {
-  font-size: 0.75rem !important;
-  padding: 0.125rem 0 !important;
-}
+/* Skills styles handled by skills-visualization.js */
 
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE ADJUSTMENTS
@@ -646,19 +601,30 @@ button:focus-visible {
 .blog-read-btn {
   background: none;
   border: none;
-  color: var(--accent-color);
+  color: var(--color-accent);
   font-weight: 600;
   cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: gap 0.2s ease;
+  transition: gap 0.2s ease, color 0.2s ease;
   align-self: flex-start;
+}
+
+html.dark .blog-read-btn {
+  color: #409cff;
+  /* Lighter blue for dark mode visibility */
 }
 
 .blog-read-btn:hover {
   gap: 0.75rem;
+  color: var(--color-accent-hover);
+}
+
+html.dark .blog-read-btn:hover {
+  color: #66b5ff;
+  /* Even lighter on hover */
 }
 
 /* Blog Modal */
@@ -875,9 +841,7 @@ html:not(.dark) #chatbot-voice-btn:hover {
 #debug-runner-section {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.08), transparent 35%),
-    radial-gradient(circle at 90% 20%, rgba(90, 200, 250, 0.08), transparent 30%),
-    linear-gradient(180deg, #0d1117 0%, #0b0f1a 100%);
+  background: #000000;
   color: var(--text-primary);
 }
 
@@ -1144,9 +1108,7 @@ html:not(.dark) p {
 }
 
 /* Preserve white badge text in light mode */
-html:not(.dark) .education-status {
-  color: #ffffff !important;
-}
+/* Education status handled by education.css */
 
 /* Exception for buttons and specific colored elements */
 /* Footer Light Mode */

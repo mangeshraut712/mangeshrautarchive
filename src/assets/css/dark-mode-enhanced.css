@@ -1,0 +1,496 @@
+/* ========================================
+   ENHANCED DARK MODE THEME
+   Comprehensive improvements for all pages
+   ======================================== */
+
+/* ========================================
+   GLOBAL DARK MODE ENHANCEMENTS
+   ======================================== */
+
+html.dark {
+    /* Enhanced background with subtle gradient */
+    background: linear-gradient(180deg, #0a0d1a 0%, #020518 100%);
+    color: #f5f5f7;
+}
+
+html.dark body {
+    background: transparent;
+    color: #f5f5f7;
+}
+
+/* ========================================
+   BUTTONS - Enhanced Dark Mode
+   ======================================== */
+
+/* Primary Buttons */
+html.dark .btn,
+html.dark .btn-primary,
+html.dark .btn-secondary {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(41, 151, 255, 0.2) !important;
+    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3), 0 0 0 1px rgba(41, 151, 255, 0.1) inset !important;
+}
+
+html.dark .btn:hover,
+html.dark .btn-primary:hover,
+html.dark .btn-secondary:hover {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    box-shadow: 0 8px 24px rgba(41, 151, 255, 0.4), 0 0 0 1px rgba(41, 151, 255, 0.2) inset !important;
+    border-color: rgba(41, 151, 255, 0.4) !important;
+}
+
+/* Contact Submit Button */
+html.dark .contact-submit {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(41, 151, 255, 0.2) !important;
+    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3) !important;
+}
+
+html.dark .contact-submit:hover {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    box-shadow: 0 8px 24px rgba(41, 151, 255, 0.4) !important;
+}
+
+/* ========================================
+   CARDS - Enhanced Dark Mode
+   ======================================== */
+
+/* Universal Card Styling */
+html.dark .card,
+html.dark .education-card,
+html.dark .project-card,
+html.dark .recommendation-card,
+html.dark .award-card,
+html.dark .contact-card,
+html.dark .stat-card,
+html.dark .bg-primary {
+    background: #000000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03) inset !important;
+}
+
+html.dark .card:hover,
+html.dark .education-card:hover,
+html.dark .project-card:hover,
+html.dark .recommendation-card:hover,
+html.dark .award-card:hover {
+    border-color: rgba(41, 151, 255, 0.2) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(41, 151, 255, 0.1) inset !important;
+}
+
+/* Card Headers */
+html.dark .card-header,
+html.dark .project-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Card Footers */
+html.dark .card-footer,
+html.dark .project-footer {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ========================================
+   FORM ELEMENTS - Enhanced Dark Mode
+   ======================================== */
+
+/* Input Fields */
+html.dark input[type="text"],
+html.dark input[type="email"],
+html.dark input[type="tel"],
+html.dark textarea,
+html.dark select,
+html.dark .contact-input,
+html.dark .contact-textarea,
+html.dark #project-search {
+    background: rgba(15, 20, 35, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f5f5f7 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) inset !important;
+}
+
+html.dark input[type="text"]:focus,
+html.dark input[type="email"]:focus,
+html.dark input[type="tel"]:focus,
+html.dark textarea:focus,
+html.dark select:focus,
+html.dark .contact-input:focus,
+html.dark .contact-textarea:focus,
+html.dark #project-search:focus {
+    background: rgba(15, 20, 35, 0.8) !important;
+    border-color: rgba(41, 151, 255, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.3) inset !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #6e6e73 !important;
+}
+
+/* ========================================
+   TOGGLES & CONTROLS - Enhanced Dark Mode
+   ======================================== */
+
+/* Sort Toggle - Solid Blue with White Text */
+html.dark #sort-toggle {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+    border: 1px solid rgba(41, 151, 255, 0.2) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3) !important;
+}
+
+html.dark #sort-toggle:hover {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    border-color: rgba(41, 151, 255, 0.4) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgba(41, 151, 255, 0.4) !important;
+}
+
+html.dark #sort-toggle i,
+html.dark #sort-toggle span {
+    color: #ffffff !important;
+}
+
+/* Language Filter */
+html.dark #language-filter {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+    border: 1px solid rgba(41, 151, 255, 0.2) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3) !important;
+}
+
+html.dark #language-filter:hover,
+html.dark #language-filter:focus {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    border-color: rgba(41, 151, 255, 0.4) !important;
+    box-shadow: 0 6px 16px rgba(41, 151, 255, 0.4) !important;
+}
+
+/* Theme Toggle Button */
+html.dark .theme-toggle,
+html.dark .theme-toggle-nav {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f5f5f7 !important;
+}
+
+html.dark .theme-toggle:hover,
+html.dark .theme-toggle-nav:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ========================================
+   NAVIGATION - Enhanced Dark Mode
+   ======================================== */
+
+html.dark .global-nav {
+    background: rgba(10, 13, 26, 0.85) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+html.dark .nav-link {
+    color: #f5f5f7 !important;
+}
+
+html.dark .nav-link:hover {
+    color: #2997ff !important;
+}
+
+/* Mobile Menu */
+html.dark .overlay-menu {
+    background: linear-gradient(165deg, rgba(10, 13, 26, 0.98), rgba(15, 20, 35, 0.96)) !important;
+}
+
+html.dark .overlay-nav-link {
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: #f5f5f7 !important;
+}
+
+html.dark .overlay-nav-link:hover {
+    background: rgba(41, 151, 255, 0.12) !important;
+    color: #2997ff !important;
+}
+
+/* ========================================
+   SECTIONS - Enhanced Dark Mode
+   ======================================== */
+
+/* Section Backgrounds */
+html.dark section {
+    background: transparent !important;
+}
+
+html.dark #home {
+    background: linear-gradient(180deg, #0a0d1a 0%, #020518 100%) !important;
+}
+
+html.dark #about,
+html.dark #experience,
+html.dark #education,
+html.dark #skills,
+html.dark #projects,
+html.dark #publications,
+html.dark #awards,
+html.dark #recommendations,
+html.dark #contact,
+html.dark #blog {
+    background: transparent !important;
+}
+
+/* Section Headings */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+    color: #f5f5f7 !important;
+}
+
+/* Section Text */
+html.dark p {
+    color: #d1d1d6 !important;
+}
+
+html.dark .text-secondary {
+    color: #a1a1a6 !important;
+}
+
+/* ========================================
+   BADGES & TAGS - Enhanced Dark Mode
+   ======================================== */
+
+/* Status Badges */
+html.dark .education-status {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Tags */
+html.dark .project-tag,
+html.dark .blog-tag {
+    background: rgba(41, 151, 255, 0.12) !important;
+    color: #5ac8fa !important;
+    border: 1px solid rgba(41, 151, 255, 0.25) !important;
+}
+
+html.dark .project-tag:hover,
+html.dark .blog-tag:hover {
+    background: rgba(41, 151, 255, 0.2) !important;
+    border-color: rgba(41, 151, 255, 0.4) !important;
+}
+
+/* ========================================
+   LINKS - Enhanced Dark Mode
+   ======================================== */
+
+html.dark a {
+    color: #5ac8fa !important;
+}
+
+html.dark a:hover {
+    color: #7dd3fc !important;
+}
+
+/* Social Links */
+html.dark .hero-social-link,
+html.dark .footer-social-link {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f5f5f7 !important;
+}
+
+html.dark .hero-social-link:hover,
+html.dark .footer-social-link:hover {
+    background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%) !important;
+    border-color: rgba(41, 151, 255, 0.4) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(41, 151, 255, 0.3) !important;
+}
+
+/* ========================================
+   STATS & METRICS - Enhanced Dark Mode
+   ======================================== */
+
+html.dark .stat-value,
+html.dark .hero-stat-value {
+    background: linear-gradient(135deg, #2997ff 0%, #5ac8fa 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+html.dark .stat-label,
+html.dark .hero-stat-label {
+    color: #a1a1a6 !important;
+}
+
+/* ========================================
+   FOOTER - Enhanced Dark Mode
+   ======================================== */
+
+html.dark footer {
+    background: linear-gradient(180deg, #020518 0%, #000000 100%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark footer p,
+html.dark footer span {
+    color: #d1d1d6 !important;
+}
+
+/* ========================================
+   CHATBOT - Enhanced Dark Mode
+   ======================================== */
+
+html.dark #chatbot-widget {
+    background: linear-gradient(135deg, #0f1423 0%, #0a0d1a 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark .chatbot-header {
+    background: rgba(15, 20, 35, 0.8) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .chatbot-header h3,
+html.dark .chatbot-header p {
+    color: #f5f5f7 !important;
+}
+
+html.dark #chatbot-messages {
+    background: rgba(10, 13, 26, 0.5) !important;
+}
+
+html.dark .user-message {
+    background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(41, 151, 255, 0.2) !important;
+}
+
+html.dark .assistant-message,
+html.dark .bot-message {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #f5f5f7 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .chatbot-input-area {
+    background: rgba(15, 20, 35, 0.8) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark #chatbot-toggle {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4) !important;
+}
+
+html.dark #chatbot-toggle:hover {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    box-shadow: 0 12px 32px rgba(41, 151, 255, 0.5) !important;
+}
+
+/* ========================================
+   MODALS - Enhanced Dark Mode
+   ======================================== */
+
+html.dark .blog-modal-container,
+html.dark .modal-content {
+    background: linear-gradient(135deg, #0f1423 0%, #0a0d1a 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.dark .blog-modal-overlay,
+html.dark .modal-overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(8px);
+}
+
+/* ========================================
+   SCROLLBAR - Enhanced Dark Mode
+   ======================================== */
+
+html.dark ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+    background: #0a0d1a;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+    background: rgba(41, 151, 255, 0.3);
+    border-radius: 6px;
+    border: 2px solid #0a0d1a;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(41, 151, 255, 0.5);
+}
+
+/* ========================================
+   SELECTION - Enhanced Dark Mode
+   ======================================== */
+
+html.dark ::selection {
+    background: rgba(41, 151, 255, 0.3);
+    color: #ffffff;
+}
+
+html.dark ::-moz-selection {
+    background: rgba(41, 151, 255, 0.3);
+    color: #ffffff;
+}
+
+/* ========================================
+   CODE BLOCKS - Enhanced Dark Mode
+   ======================================== */
+
+html.dark pre,
+html.dark code {
+    background: rgba(0, 0, 0, 0.4) !important;
+    color: #f5f5f7 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ========================================
+   BORDERS & DIVIDERS - Enhanced Dark Mode
+   ======================================== */
+
+html.dark hr,
+html.dark .divider {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ========================================
+   ACCESSIBILITY - Enhanced Dark Mode
+   ======================================== */
+
+html.dark :focus-visible {
+    outline: 2px solid #2997ff !important;
+    outline-offset: 2px;
+}
+
+/* ========================================
+   LOADING STATES - Enhanced Dark Mode
+   ======================================== */
+
+html.dark .loading-spinner {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    border-top-color: #2997ff !important;
+}
+
+html.dark .skeleton {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%);
+    background-size: 200% 100%;
+}

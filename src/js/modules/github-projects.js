@@ -11,15 +11,31 @@ class GitHubProjects {
     this.cache = null;
     this.cacheTime = null;
     this.cacheDuration = 5 * 60 * 1000; // 5 minutes
+    this.localCacheKey = `github_repos_${username}`;
   }
 
   /**
    * Fetch repositories from GitHub API
    */
   async fetchRepositories() {
-    // Check cache first
+    // 1) In-memory cache
     if (this.cache && this.cacheTime && (Date.now() - this.cacheTime < this.cacheDuration)) {
       return this.cache;
+    }
+
+    // 2) LocalStorage cache (survives reloads)
+    try {
+      const cached = localStorage.getItem(this.localCacheKey);
+      if (cached) {
+        const { repos, timestamp } = JSON.parse(cached);
+        if (repos && timestamp && (Date.now() - timestamp < this.cacheDuration)) {
+          this.cache = repos;
+          this.cacheTime = timestamp;
+          return repos;
+        }
+      }
+    } catch (err) {
+      console.warn('Local cache read failed:', err);
     }
 
     try {
@@ -34,7 +50,7 @@ class GitHubProjects {
       }
 
       const repos = await response.json();
-      
+
       // Filter out forked repos and sort by updated date
       const filteredRepos = repos
         .filter(repo => !repo.fork)
@@ -43,6 +59,14 @@ class GitHubProjects {
       // Cache the results
       this.cache = filteredRepos;
       this.cacheTime = Date.now();
+      try {
+        localStorage.setItem(this.localCacheKey, JSON.stringify({
+          repos: filteredRepos,
+          timestamp: this.cacheTime
+        }));
+      } catch (err) {
+        console.warn('Local cache write failed:', err);
+      }
 
       return filteredRepos;
     } catch (error) {
@@ -132,10 +156,7 @@ class GitHubProjects {
     const homepage = repo.homepage;
 
     return `
-      <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300 group"
-        data-animate="tilt-in"
-        data-animate-delay="${120 + (index * 40)}"
-      >
+      <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300 group">
         <div class="flex flex-col h-full">
           <!-- Header -->
           <div class="flex items-start justify-between mb-3">
@@ -154,8 +175,8 @@ class GitHubProjects {
               ` : ''}
             </div>
             ${stars > 0 ? `
-              <div class="flex items-center gap-1 text-sm opacity-60">
-                <i class="fas fa-star text-yellow-500"></i>
+              <div class="flex items-center gap-1 text-sm opacity-80 font-medium">
+                <i class="fas fa-star text-yellow-400 drop-shadow-sm"></i>
                 <span>${stars}</span>
               </div>
             ` : ''}
@@ -188,13 +209,13 @@ class GitHubProjects {
           <!-- Actions -->
           <div class="flex items-center gap-3 pt-3 border-t border-border">
             <a href="${repo.html_url}" target="_blank" 
-               class="project-action-btn text-sm">
+               class="project-action-btn btn-github text-sm">
               <i class="fab fa-github"></i>
               <span>View Code</span>
             </a>
             ${homepage ? `
               <a href="${homepage}" target="_blank" 
-                 class="project-action-btn text-sm">
+                 class="project-action-btn btn-demo text-sm">
                 <i class="fas fa-external-link-alt"></i>
                 <span>Live Demo</span>
               </a>
@@ -227,7 +248,7 @@ class GitHubProjects {
 
     try {
       const repos = await this.fetchRepositories();
-      
+
       if (repos.length === 0) {
         container.innerHTML = `
           <div class="col-span-full text-center py-12">
@@ -238,18 +259,59 @@ class GitHubProjects {
         return;
       }
 
+      // Priority projects list (curated selection)
+      const priorityProjects = [
+        'mangeshrautarchive',
+        'AssistMe-VirtualAssistant',
+        'Bug-Reporting-System',
+        'ces-ltd.com',
+        'kashishbeautyparlour',
+        'Real-Time-Face-Emotion-Recognition-System',
+        'Crime-Investigation-System',
+        'Starlight-Blogging-Website'
+      ];
+
+      // Filter for priority projects (all 8, with or without demos)
+      let filteredRepos = repos.filter(repo => {
+        return priorityProjects.includes(repo.name);
+      });
+
+      // Sort by priority order
+      filteredRepos.sort((a, b) => {
+        const indexA = priorityProjects.indexOf(a.name);
+        const indexB = priorityProjects.indexOf(b.name);
+        return indexA - indexB;
+      });
+
+      // If we don't have enough priority projects, add other projects with demos as fallback
+      if (filteredRepos.length < limit) {
+        const otherReposWithDemos = repos.filter(repo => {
+          const notInPriority = !priorityProjects.includes(repo.name);
+          const hasDemo = repo.homepage && repo.homepage.trim() !== '';
+          return notInPriority && hasDemo;
+        });
+        filteredRepos = [...filteredRepos, ...otherReposWithDemos];
+      }
+
+      if (filteredRepos.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <i class="fas fa-folder-open text-6xl text-accent opacity-20 mb-4"></i>
+            <p class="text-secondary">No priority projects found</p>
+          </div>
+        `;
+        return;
+      }
+
       // Render project cards
-      const projectsHTML = repos
+      const projectsHTML = filteredRepos
         .slice(0, limit)
         .map((repo, index) => this.createProjectCard(repo, index))
         .join('');
 
       container.innerHTML = projectsHTML;
 
-      // Trigger animations if available
-      if (window.initAnimations) {
-        window.initAnimations();
-      }
+
 
     } catch (error) {
       container.innerHTML = `
@@ -266,7 +328,7 @@ class GitHubProjects {
    */
   async getStats() {
     const repos = await this.fetchRepositories();
-    
+
     const stats = {
       totalRepos: repos.length,
       totalStars: repos.reduce((sum, repo) => sum + repo.stargazers_count, 0),

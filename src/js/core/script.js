@@ -5,7 +5,7 @@ import ExternalApiKeys from '../modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
 import initContactForm from '../modules/contact.js';
 
-import initFadeInAnimation from '../modules/animations.js';
+
 
 
 const markdownLib = (typeof window !== 'undefined' && window.marked)
@@ -316,10 +316,14 @@ class ChatUI {
     }
 
     _handleTyping(value) {
+        const trimmed = (value || '').trim();
+        if (trimmed.length < 2) {
+            return; // Skip suggestion work for tiny/empty input
+        }
         if (this.typingTimeout) clearTimeout(this.typingTimeout);
         this.typingTimeout = setTimeout(() => {
-            this._updateSuggestions(value);
-        }, 250);
+            this._updateSuggestions(trimmed);
+        }, 350); // Slightly longer debounce for smoother typing
     }
 
     _createMessageElement(content, role, timestamp, metadata = {}) {
@@ -1196,10 +1200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initOverlayMenu();
     initOverlayNavigation();
     initSmoothScroll();
-    initFadeInAnimation(undefined, {
-        threshold: 0.2,
-        rootMargin: '0px 0px -5% 0px'
-    });
+
 
 
     try {

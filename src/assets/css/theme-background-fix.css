@@ -83,8 +83,14 @@ html.dark .education-card,
 html.dark .award-card,
 html.dark .recommendation-card,
 html.dark .about-highlight-card,
-html.dark .blog-card {
-    background: #18181b !important;
+html.dark .blog-card,
+html.dark .contact-card,
+html.dark .contact-form-card,
+html.dark .project-card,
+html.dark .publication-card,
+html.dark .stat-card,
+html.dark .bg-primary {
+    background: #000000 !important;
 }
 
 /* Text colors for light mode */

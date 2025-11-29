@@ -203,8 +203,8 @@ html.dark {
     /* Advanced CSS Features */
     color-scheme: dark;
 
-    /* Optimized Scroll Behavior - Apple Style */
-    scroll-behavior: smooth;
+    /* Optimized Scroll Behavior */
+    scroll-behavior: auto;
     scroll-padding-top: 80px;
 }
 
@@ -232,7 +232,7 @@ html.dark body {
 /* Body & Base Styles */
 body {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 17px;
@@ -382,6 +382,22 @@ a:hover {
 
 .btn-active {
     background: #0071e3 !important;
+    color: #ffffff !important;
+}
+
+/* Dark Mode Button Visibility Fixes */
+html.dark .btn,
+html.dark .btn-secondary,
+html.dark .btn-primary {
+    color: #ffffff !important;
+    background-color: #0071e3 !important;
+}
+
+html.dark .btn:hover,
+html.dark .btn-secondary:hover,
+html.dark .btn-primary:hover {
+    background-color: #2997ff !important;
+    /* Lighter blue for dark mode hover */
     color: #ffffff !important;
 }
 
@@ -1599,37 +1615,58 @@ footer a:hover img {
 
 /* Licenses & Certifications - Colorful icons stay vivid */
 #certifications .fas.fa-code {
-    color: #f97316 !important; /* orange */
+    color: #f97316 !important;
+    /* orange */
 }
+
 #certifications .fas.fa-brain {
-    color: #a855f7 !important; /* purple */
+    color: #a855f7 !important;
+    /* purple */
 }
+
 #certifications .fas.fa-rocket {
-    color: #22c55e !important; /* green */
+    color: #22c55e !important;
+    /* green */
 }
+
 #certifications .fas.fa-leaf {
-    color: #10b981 !important; /* emerald */
+    color: #10b981 !important;
+    /* emerald */
 }
+
 #certifications .fas.fa-database {
-    color: #0ea5e9 !important; /* sky */
+    color: #0ea5e9 !important;
+    /* sky */
 }
+
 #certifications .fas.fa-shield-alt {
-    color: #ef4444 !important; /* red */
+    color: #ef4444 !important;
+    /* red */
 }
+
 #certifications .fas.fa-robot {
-    color: #facc15 !important; /* amber */
+    color: #facc15 !important;
+    /* amber */
 }
+
 #certifications .fas.fa-network-wired {
-    color: #6366f1 !important; /* indigo */
+    color: #6366f1 !important;
+    /* indigo */
 }
+
 #certifications .fas.fa-search {
-    color: #0891b2 !important; /* teal */
+    color: #0891b2 !important;
+    /* teal */
 }
+
 #certifications .fas.fa-chart-line {
-    color: #10b981 !important; /* green */
+    color: #10b981 !important;
+    /* green */
 }
+
 #certifications .fas.fa-ad {
-    color: #f43f5e !important; /* pink */
+    color: #f43f5e !important;
+    /* pink */
 }
 
 /* Footer - Original Brand Colors (matching Contact Section) */
@@ -1702,144 +1739,8 @@ html:not(.dark) footer i {
 
 
 /* Animation */
-.apple-reveal,
-[data-animate],
-.fade-in {
-    --reveal-x: 0px;
-    --reveal-y: 32px;
-    --reveal-rotate: 0deg;
-    --reveal-scale: 0.98;
-    --reveal-filter: blur(16px);
-    --parallax-offset: 0%;
-    transition:
-        transform var(--animate-duration, 900ms) var(--animate-easing, cubic-bezier(0.25, 0.1, 0.25, 1)),
-        opacity var(--animate-duration, 900ms) var(--animate-easing, cubic-bezier(0.25, 0.1, 0.25, 1)),
-        filter var(--animate-duration, 900ms) var(--animate-easing, cubic-bezier(0.25, 0.1, 0.25, 1));
-    will-change: transform, opacity, filter;
-}
-
-.apple-reveal.is-queued,
-[data-animate].is-queued,
-.fade-in.is-queued {
-    opacity: 0;
-    transform: translate3d(var(--reveal-x), calc(var(--reveal-y) + var(--parallax-offset, 0%)), 0) rotate(var(--reveal-rotate)) scale(var(--reveal-scale));
-    filter: var(--reveal-filter);
-}
-
-.apple-reveal.is-visible,
-[data-animate].is-visible,
-.fade-in.is-visible {
-    opacity: 1;
-    transform: translate3d(0, var(--parallax-offset, 0%), 0) rotate(0deg) scale(1);
-    filter: blur(0px);
-}
-
-.apple-reveal.is-visible[data-animate="zoom-in"],
-[data-animate="zoom-in"].is-visible {
-    transform: translate3d(0, var(--parallax-offset, 0%), 0) scale(1.01);
-}
-
-.apple-reveal.is-visible[data-animate="tilt-in"],
-[data-animate="tilt-in"].is-visible {
-    transform: translate3d(0, var(--parallax-offset, 0%), 0) rotate(0deg) scale(1);
-}
-
-[data-animate="fade-up"] {
-    --reveal-y: 40px;
-}
-
-[data-animate="fade-down"] {
-    --reveal-y: -40px;
-}
-
-[data-animate="fade-left"] {
-    --reveal-x: 48px;
-    --reveal-y: 0px;
-}
-
-[data-animate="fade-right"] {
-    --reveal-x: -48px;
-    --reveal-y: 0px;
-}
-
-[data-animate="zoom-in"] {
-    --reveal-scale: 0.85;
-    --reveal-filter: blur(22px);
-}
-
-[data-animate="blur-up"] {
-    --reveal-y: 48px;
-    --reveal-filter: blur(28px);
-}
-
-[data-animate="tilt-in"] {
-    --reveal-y: 32px;
-    --reveal-rotate: -4deg;
-    --reveal-scale: 0.94;
-}
-
-[data-animate][data-animate-delay] {
-    transition-delay: var(--animate-delay, 120ms);
-}
-
-[data-animate][data-animate-duration] {
-    transition-duration: var(--animate-duration, 900ms);
-}
-
-[data-animate-parallax] {
-    will-change: transform;
-}
-
-.is-visible[data-animate-parallax] {
-    transform: translate3d(0, var(--parallax-offset, 0%), 0) scale(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .apple-reveal,
-    [data-animate],
-    .fade-in {
-        transition: none !important;
-    }
-
-    .apple-reveal.is-queued,
-    [data-animate].is-queued,
-    .fade-in.is-queued {
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
-    }
-}
 
 /* Typewriter Effect for Software Engineer */
-.typewriter {
-    overflow: hidden;
-    border-right: 2px solid var(--text-primary);
-    white-space: nowrap;
-    animation: typing 3.5s steps(17, end) 1.5s both, blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-    from {
-        width: 0;
-    }
-
-    to {
-        width: 100%;
-    }
-}
-
-@keyframes blink-caret {
-
-    from,
-    to {
-        border-color: var(--text-primary);
-    }
-
-    50% {
-        border-color: transparent;
-    }
-}
 
 /* Profile Image Hover Effect */
 #home img {
@@ -3776,6 +3677,13 @@ html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
     color: var(--text-accent);
     font-weight: 700;
     letter-spacing: -0.025em;
+}
+
+/* Keep recommendation cards static (no hover animations) */
+.recommendation-card {
+    transform: none !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08) !important;
+    transition: none !important;
 }
 
 .education-card h4 {
