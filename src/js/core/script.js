@@ -12,9 +12,10 @@ const markdownLib = (typeof window !== 'undefined' && window.marked)
     ? window.marked
     : (typeof marked !== 'undefined' ? marked : null);
 
-const syntaxHighlighter = (typeof window !== 'undefined' && window.hljs)
-    ? window.hljs
-    : (typeof hljs !== 'undefined' ? hljs : null);
+// Prefer Prism, fallback to hljs
+const syntaxHighlighter = (typeof window !== 'undefined' && window.Prism)
+    ? window.Prism
+    : ((typeof window !== 'undefined' && window.hljs) ? window.hljs : null);
 
 const htmlSanitizer = (typeof window !== 'undefined' && window.DOMPurify)
     ? window.DOMPurify
@@ -24,11 +25,16 @@ if (features.enableMarkdownRendering && markdownLib) {
     markdownLib.setOptions({
         renderer: new markdownLib.Renderer(),
         highlight(code, language) {
-            if (!syntaxHighlighter) {
-                return code;
+            if (window.Prism) {
+                // Prism handling
+                const lang = window.Prism.languages[language] ? language : 'javascript';
+                return window.Prism.highlight(code, window.Prism.languages[lang], lang);
+            } else if (window.hljs) {
+                // HLJS fallback
+                const validLanguage = window.hljs.getLanguage(language) ? language : 'plaintext';
+                return window.hljs.highlight(code, { language: validLanguage }).value;
             }
-            const validLanguage = syntaxHighlighter.getLanguage(language) ? language : 'plaintext';
-            return syntaxHighlighter.highlight(code, { language: validLanguage }).value;
+            return code;
         },
         pedantic: false,
         gfm: true,
@@ -407,6 +413,10 @@ class ChatUI {
         messageDiv.dataset.timestamp = timestamp;
         messageDiv.dataset.role = role;
 
+        // Add unique ID for ChatbotUpgrade features
+        const uniqueId = `msg-${timestamp}-${Math.random().toString(36).substr(2, 9)}`;
+        messageDiv.id = uniqueId;
+
         if (metadata.error) {
             messageDiv.classList.add('error-message');
         }
@@ -421,9 +431,20 @@ class ChatUI {
                 ? htmlSanitizer.sanitize(content.html)
                 : content.html;
             contentDiv.innerHTML = safeHtml;
-            if (syntaxHighlighter?.highlightElement) {
+
+            // Highlight code blocks after insertion
+            if (window.Prism) {
                 contentDiv.querySelectorAll('pre code').forEach((block) => {
-                    syntaxHighlighter.highlightElement(block);
+                    window.Prism.highlightElement(block);
+                    // Add copy button if ChatbotUpgrade is available
+                    if (window.chatbotUpgrade && window.chatbotUpgrade.highlightCodeBlocks) {
+                        // This might be redundant if highlightCodeBlocks does it, but let's be safe
+                        // Actually ChatbotUpgrade.highlightCodeBlocks expects a message element
+                    }
+                });
+            } else if (window.hljs) {
+                contentDiv.querySelectorAll('pre code').forEach((block) => {
+                    window.hljs.highlightElement(block);
                 });
             }
         } else {
@@ -483,23 +504,36 @@ class ChatUI {
                 const copyBtn = document.createElement('button');
                 copyBtn.className = 'msg-action-btn';
                 copyBtn.title = 'Copy';
-                copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
                 copyBtn.onclick = (e) => {
                     e.stopPropagation();
                     this._copyMessageText(contentDiv.textContent, copyBtn);
                 };
                 actionsDiv.appendChild(copyBtn);
 
-                // Speak Button
+                // Speak/Stop Button
                 const speakBtn = document.createElement('button');
                 speakBtn.className = 'msg-action-btn';
                 speakBtn.title = 'Read Aloud';
-                speakBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+                speakBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
                 speakBtn.onclick = (e) => {
                     e.stopPropagation();
                     this._speakMessage(contentDiv.textContent, speakBtn);
                 };
                 actionsDiv.appendChild(speakBtn);
+
+                // Reaction Button (New)
+                if (window.chatbotUpgrade) {
+                    const reactBtn = document.createElement('button');
+                    reactBtn.className = 'msg-action-btn';
+                    reactBtn.title = 'React';
+                    reactBtn.innerHTML = '<i class="fas fa-smile"></i>';
+                    reactBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        window.chatbotUpgrade.toggleReactions(uniqueId);
+                    };
+                    actionsDiv.appendChild(reactBtn);
+                }
 
                 metaDiv.appendChild(actionsDiv);
             }
@@ -514,12 +548,33 @@ class ChatUI {
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'message-actions';
 
-            // Copy & Speak (Same as above, simplified for brevity in this branch)
+            // Copy & Speak
             const copyBtn = document.createElement('button');
             copyBtn.className = 'msg-action-btn';
-            copyBtn.innerHTML = '📋';
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
             copyBtn.onclick = () => this._copyMessageText(contentDiv.textContent, copyBtn);
             actionsDiv.appendChild(copyBtn);
+
+            const speakBtn = document.createElement('button');
+            speakBtn.className = 'msg-action-btn';
+            speakBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            speakBtn.onclick = (e) => {
+                e.stopPropagation();
+                this._speakMessage(contentDiv.textContent, speakBtn);
+            };
+            actionsDiv.appendChild(speakBtn);
+
+            // Reaction Button
+            if (window.chatbotUpgrade) {
+                const reactBtn = document.createElement('button');
+                reactBtn.className = 'msg-action-btn';
+                reactBtn.innerHTML = '<i class="fas fa-smile"></i>';
+                reactBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    window.chatbotUpgrade.toggleReactions(uniqueId);
+                };
+                actionsDiv.appendChild(reactBtn);
+            }
 
             metaDiv.appendChild(actionsDiv);
             messageDiv.appendChild(metaDiv);
@@ -581,14 +636,12 @@ class ChatUI {
         const metadata = {};
 
         if (response.type) metadata.type = response.type;
-        if (typeof response.source === 'string') {
-            metadata.sourceKey = response.source;
-        }
-        if (response.sourceLabel) {
-            metadata.source = response.sourceLabel;
-        } else if (response.source) {
-            metadata.source = this._formatSourceLabel(response.source, response.type);
-        }
+
+        const sourceKey = response.source || response.provider || 'OpenRouter';
+        metadata.sourceKey = sourceKey;
+        metadata.source = response.sourceLabel || this._formatSourceLabel(sourceKey, response.type);
+        metadata.model = response.model || 'x-ai/grok-4.1-fast:free';
+
         if (response.sourceMessage) {
             metadata.sourceDetail = response.sourceMessage;
         }
@@ -601,10 +654,10 @@ class ChatUI {
         } else if (response.processingTime) {
             metadata.processingTime = response.processingTime;
         }
-        if (Array.isArray(response.providers)) {
+        if (Array.isArray(response.providers) && response.providers.length) {
             metadata.providers = response.providers;
         } else {
-            metadata.providers = [];
+            metadata.providers = [sourceKey];
         }
 
         if (response.error) metadata.error = true;

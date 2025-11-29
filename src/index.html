@@ -48,6 +48,13 @@
   <link rel="stylesheet" href="assets/css/awards.css" />
   <link rel="stylesheet" href="assets/css/education.css" />
   <link rel="stylesheet" href="assets/css/experience.css" />
+  <link rel="stylesheet" href="assets/css/calendar.css" />
+  <link rel="stylesheet" href="assets/css/theme-background-fix.css" />
+
+  <!-- Prism.js for Code Highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/certifications.css" />
   <link rel="stylesheet" href="assets/css/homepage.css" />
   <link rel="stylesheet" href="assets/css/about.css" />
   <link rel="stylesheet" href="assets/css/blog.css" />
@@ -56,7 +63,9 @@
   <!-- Enhanced Dark Mode Theme -->
   <link rel="stylesheet" href="assets/css/dark-mode-enhanced.css" />
 
-  <link rel="stylesheet" href="assets/css/theme-background-fix.css" />
+  <!-- Contact Page Mobile Fix - Must be last to override all other styles -->
+  <link rel="stylesheet" href="assets/css/contact-mobile-fix.css" />
+
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
 
   <!-- Chatbot iMessage Style - Complete Redesign -->
@@ -772,9 +781,11 @@
         <a href="#education" class="nav-link" role="menuitem">Education</a>
         <a href="#publications" class="nav-link" role="menuitem">Publications</a>
         <a href="#awards" class="nav-link" role="menuitem">Awards</a>
+        <a href="#recommendations" class="nav-link" role="menuitem">Recommendations</a>
         <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
         <a href="#blog" class="nav-link" role="menuitem">Blog</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
+        <a href="#debug-runner-section" class="nav-link" role="menuitem">Game</a>
       </div>
       <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav mr-4" aria-label="Search">
@@ -802,9 +813,11 @@
       <a href="#education" class="overlay-nav-link">Education</a>
       <a href="#publications" class="overlay-nav-link">Publications</a>
       <a href="#awards" class="overlay-nav-link">Awards</a>
+      <a href="#recommendations" class="overlay-nav-link">Recommendations</a>
       <a href="#certifications" class="overlay-nav-link">Certifications</a>
       <a href="#blog" class="overlay-nav-link">Blog</a>
       <a href="#contact" class="overlay-nav-link">Contact</a>
+      <a href="#debug-runner-section" class="overlay-nav-link">Game</a>
     </nav>
   </div>
   <main id="main-content">
@@ -868,7 +881,8 @@
               <p class="about-description">
                 Currently enhancing energy analytics tools at <strong>Customized Energy Solutions</strong>, where I've
                 achieved a 40% efficiency gain through innovative solutions. My journey includes optimizing legacy
-                systems, deploying cloud infrastructure, and implementing AI-driven features that deliver real business
+                systems, deploying cloud infrastructure, and implementing AI-driven features that deliver real
+                business
                 value.
               </p>
 
@@ -963,7 +977,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span><strong>Full-Stack Development:</strong> Built energy analytics dashboards using Java Spring Boot
+                <span><strong>Full-Stack Development:</strong> Built energy analytics dashboards using Java Spring
+                  Boot
                   (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API
                   optimization</span>
               </li>
@@ -982,12 +997,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span><strong>Machine Learning:</strong> Enhanced demand forecasting accuracy by 25% using Python-based
+                <span><strong>Machine Learning:</strong> Enhanced demand forecasting accuracy by 25% using
+                  Python-based
                   LSTM models (TensorFlow) with feature engineering</span>
               </li>
             </ul>
             <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Java Spring Boot</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Java Spring
+                Boot</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">AngularJS</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">AWS</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">TensorFlow</span>
@@ -1033,13 +1050,15 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span><strong>Performance Optimization:</strong> Integrated Redis caching for inventory APIs, achieving
+                <span><strong>Performance Optimization:</strong> Integrated Redis caching for inventory APIs,
+                  achieving
                   30% faster response times through query tuning</span>
               </li>
             </ul>
             <div class="mt-4 flex flex-wrap gap-2">
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Java</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Spring Framework</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Spring
+                Framework</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Microservices</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Redis</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">JUnit</span>
@@ -1084,7 +1103,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span><strong>Scripting:</strong> Created Python-based monitoring tools, reducing manual diagnostics by
+                <span><strong>Scripting:</strong> Created Python-based monitoring tools, reducing manual diagnostics
+                  by
                   50%</span>
               </li>
             </ul>
@@ -1093,7 +1113,8 @@
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">OSPF/BGP</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Wireshark</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Python</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Network Security</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Network
+                Security</span>
             </div>
           </div>
         </div>
@@ -1184,7 +1205,8 @@
             </ul>
             <div class="mt-4 flex flex-wrap gap-2">
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">MySQL</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">HIPAA Compliance</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">HIPAA
+                Compliance</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Tableau</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Excel</span>
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">SQL</span>
@@ -1218,9 +1240,12 @@
             <div class="mt-4 flex flex-wrap gap-2">
               <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Healthcare
                 Support</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Safety Protocols</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Community Service</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">COVID-19 Response</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Safety
+                Protocols</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Community
+                Service</span>
+              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">COVID-19
+                Response</span>
             </div>
           </div>
         </div>
@@ -1652,116 +1677,162 @@
     <section id="certifications" class="fade-in py-32 bg-white">
       <div class="container">
         <h2>Licenses & Certifications</h2>
-        <div class="max-w-6xl mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Programming & Development
-                  </h3>
-                  <ul class="list-none p-0 mt-6 space-y-3">
-                    <li>
-                      <i class="fas fa-code mr-2"></i>HackerRank - Software
-                      Engineer (Mar 2025)
-                    </li>
-                    <li>
-                      <i class="fas fa-code mr-2"></i>Microsoft - JavaScript
-                      Programming (Apr 2019)
-                    </li>
-                    <li>
-                      <i class="fas fa-code mr-2"></i>Spoken Tutorial - C
-                      Language (Sep 2017)
-                    </li>
-                  </ul>
-                </div>
+        <div class="certifications-grid mt-12">
+          <!-- 2025 -->
+          <div class="certification-card">
+            <span class="certification-category">Programming</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/hackerrank.com" class="certification-logo" alt="HackerRank"
+                  onerror="this.src='https://ui-avatars.com/api/?name=HR&background=random'">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">Software Engineer</h3>
+                <p class="certification-issuer">HackerRank</p>
               </div>
             </div>
-
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    AI & Emerging Technology
-                  </h3>
-                  <ul class="list-none p-0 mt-6 space-y-3">
-                    <li>
-                      <i class="fas fa-brain mr-2"></i>Google - Prompt Design
-                      in Vertex AI (May 2024)
-                    </li>
-                    <li>
-                      <i class="fas fa-rocket mr-2"></i>IBM - Explore Emerging
-                      Tech (Feb 2024)
-                    </li>
-                    <li>
-                      <i class="fas fa-leaf mr-2"></i>IBM - Fundamentals of
-                      Sustainability (Feb 2024)
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Data & Cybersecurity
-                  </h3>
-                  <ul class="list-none p-0 mt-6 space-y-3">
-                    <li>
-                      <i class="fas fa-database mr-2"></i>IBM - Data
-                      Fundamentals (Feb 2024)
-                    </li>
-                    <li>
-                      <i class="fas fa-shield-alt mr-2"></i>IBM -
-                      Cybersecurity Fundamentals (Feb 2024)
-                    </li>
-                    <li>
-                      <i class="fas fa-robot mr-2"></i>Spoorthy - Hello Bot
-                      RPA (Sep 2018)
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Networking & Marketing
-                  </h3>
-                  <ul class="list-none p-0 mt-6 space-y-3">
-                    <li>
-                      <i class="fas fa-network-wired mr-2"></i>Cisco -
-                      Networking Basics (Feb 2024)
-                    </li>
-                    <li>
-                      <i class="fas fa-network-wired mr-2"></i>Cisco - CCNP
-                      Certification (Nov 2018)
-                    </li>
-                    <li>
-                      <i class="fas fa-search mr-2"></i>Apple - Search Ads
-                      Certified (Feb 2024)
-                    </li>
-                    <li>
-                      <i class="fas fa-chart-line mr-2"></i>Google - Digital
-                      Marketing Fundamentals (Jun 2019)
-                    </li>
-                    <li>
-                      <i class="fas fa-ad mr-2"></i>Google - Google Ads Search
-                      (Mar 2021 - Expired)
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Mar 2025</span>
             </div>
           </div>
+
+          <!-- 2024 -->
+          <div class="certification-card">
+            <span class="certification-category">Marketing</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/apple.com" class="certification-logo" alt="Apple">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">Search Ads</h3>
+                <p class="certification-issuer">Apple</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Nov 2024</span>
+            </div>
+          </div>
+
+          <div class="certification-card">
+            <span class="certification-category">AI</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/google.com" class="certification-logo" alt="Google">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">Prompt Design in Vertex AI</h3>
+                <p class="certification-issuer">Google</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> May 2024</span>
+            </div>
+          </div>
+
+          <div class="certification-card">
+            <span class="certification-category">Data</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png"
+                  class="certification-logo" alt="IBM">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">Data Fundamentals</h3>
+                <p class="certification-issuer">IBM</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Feb 2024</span>
+            </div>
+          </div>
+
+          <div class="certification-card">
+            <span class="certification-category">Security</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png"
+                  class="certification-logo" alt="IBM">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">Cybersecurity Fundamentals</h3>
+                <p class="certification-issuer">IBM</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Feb 2024</span>
+            </div>
+          </div>
+
+          <div class="certification-card">
+            <span class="certification-category">Networking</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/cisco.com" class="certification-logo" alt="Cisco">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">Networking Basics</h3>
+                <p class="certification-issuer">Cisco</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Feb 2024</span>
+            </div>
+          </div>
+
+          <!-- 2019 -->
+          <div class="certification-card">
+            <span class="certification-category">Programming</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/microsoft.com" class="certification-logo" alt="Microsoft">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">JavaScript Programming</h3>
+                <p class="certification-issuer">Microsoft</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Apr 2019</span>
+            </div>
+          </div>
+
+          <!-- 2018 -->
+          <div class="certification-card">
+            <span class="certification-category">Networking</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/cisco.com" class="certification-logo" alt="Cisco">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">CCNP Certification</h3>
+                <p class="certification-issuer">Cisco</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Nov 2018</span>
+            </div>
+          </div>
+
+          <!-- 2017 -->
+          <div class="certification-card">
+            <span class="certification-category">Programming</span>
+            <div class="certification-header">
+              <div class="certification-logo-container">
+                <img src="https://logo.clearbit.com/spoken-tutorial.org" class="certification-logo"
+                  alt="Spoken Tutorial" onerror="this.src='https://ui-avatars.com/api/?name=ST&background=random'">
+              </div>
+              <div class="certification-info">
+                <h3 class="certification-title">C Language</h3>
+                <p class="certification-issuer">Spoken Tutorial</p>
+              </div>
+            </div>
+            <div class="certification-details">
+              <span class="certification-date"><i class="fas fa-calendar-alt"></i> Sep 2017</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1781,6 +1852,9 @@
         </div>
       </div>
     </section>
+
+
+
     <section id="contact" class="fade-in py-32 bg-gray-100">
       <div class="container">
         <h2>Get In Touch</h2>
@@ -1915,17 +1989,146 @@
                   </ul>
                 </div>
               </div>
-              <div class="mt-6 pt-6 border-t border-border">
-                <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">
-                  Support Me
-                </h4>
-                <p class="mb-3 opacity-75">
-                  If you like my work, consider buying me a coffee!
-                </p>
-                <a href="https://www.buymeacoffee.com/xzvwsqf84xy" target="_blank"
-                  class="text-yellow-500 hover:text-yellow-600 hover:opacity-75 transition-all">
-                  <i class="fas fa-coffee mr-2"></i>Buy Me a Coffee
-                </a>
+              <div class="mt-6 pt-6 border-t border-border flex justify-between items-center">
+                <div>
+                  <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">
+                    Support Me
+                  </h4>
+                  <p class="mb-4 opacity-75 text-sm">
+                    If you like my work, consider buying me a coffee!
+                  </p>
+                  <a href="https://www.buymeacoffee.com/mangeshraut" target="_blank" style="color: black !important;"
+                    class="inline-flex items-center px-4 py-2 bg-[#FFDD00] text-black font-semibold rounded-lg hover:bg-[#FFEA00] transition-all transform hover:scale-105 shadow-sm text-sm support-btn-animate">
+                    <i class="fas fa-mug-hot mr-2"></i>Buy Me a Coffee
+                  </a>
+                </div>
+                <div class="ml-4">
+                  <img src="assets/images/ganesh.jpg" alt="Lord Ganesh"
+                    class="w-20 h-20 rounded-lg object-cover shadow-md ganesh-animate">
+                </div>
+              </div>
+            </div>
+
+            <!-- Dream Companies Marquee -->
+            <div class="mt-8">
+              <h3 class="text-lg font-bold mb-4 text-primary">Dream Companies</h3>
+              <div
+                class="dream-companies-marquee relative overflow-hidden bg-secondary/30 rounded-xl py-4 border border-border">
+                <div class="marquee-track flex items-center gap-8">
+                  <!-- Logos (Duplicated for seamless loop) -->
+                  <!-- Set 1 -->
+                  <img src="https://logo.clearbit.com/nvidia.com" alt="Nvidia"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Nvidia">
+                  <img src="https://logo.clearbit.com/apple.com" alt="Apple"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Apple">
+                  <img src="https://logo.clearbit.com/google.com" alt="Google"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Google">
+                  <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Microsoft">
+                  <img src="https://logo.clearbit.com/amazon.com" alt="Amazon"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Amazon">
+                  <img src="https://logo.clearbit.com/meta.com" alt="Meta"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Meta">
+                  <img src="https://logo.clearbit.com/tesla.com" alt="Tesla"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Tesla">
+                  <img src="https://logo.clearbit.com/netflix.com" alt="Netflix"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Netflix">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Adobe_Corporate_logo.svg/512px-Adobe_Corporate_logo.svg.png"
+                    alt="Adobe" class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Adobe">
+                  <img src="https://logo.clearbit.com/intel.com" alt="Intel"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Intel">
+
+                  <!-- Set 2 (Duplicate) -->
+                  <img src="https://logo.clearbit.com/nvidia.com" alt="Nvidia"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Nvidia">
+                  <img src="https://logo.clearbit.com/apple.com" alt="Apple"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Apple">
+                  <img src="https://logo.clearbit.com/google.com" alt="Google"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Google">
+                  <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Microsoft">
+                  <img src="https://logo.clearbit.com/amazon.com" alt="Amazon"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Amazon">
+                  <img src="https://logo.clearbit.com/meta.com" alt="Meta"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Meta">
+                  <img src="https://logo.clearbit.com/tesla.com" alt="Tesla"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Tesla">
+                  <img src="https://logo.clearbit.com/netflix.com" alt="Netflix"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Netflix">
+                  <img src="https://logo.clearbit.com/adobe.com" alt="Adobe"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Adobe">
+                  <img src="https://logo.clearbit.com/intel.com" alt="Intel"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Intel">
+                </div>
+              </div>
+            </div>
+
+            <!-- Dream Cars Marquee -->
+            <div class="mt-8">
+              <h3 class="text-lg font-bold mb-4 text-primary">Dream Cars</h3>
+              <div
+                class="dream-companies-marquee relative overflow-hidden bg-secondary/30 rounded-xl py-4 border border-border">
+                <div class="marquee-track flex items-center gap-8">
+                  <!-- Logos (Duplicated for seamless loop) -->
+                  <!-- Set 1 -->
+                  <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Mercedes-Benz">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png"
+                    alt="BMW" class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="BMW">
+                  <img src="https://logo.clearbit.com/audi.com" alt="Audi"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Audi">
+                  <img src="assets/images/rolls-royce.png" alt="Rolls-Royce"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform bg-white rounded-md p-1"
+                    title="Rolls-Royce">
+                  <img src="https://logo.clearbit.com/porsche.com" alt="Porsche"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Porsche">
+                  <img src="https://logo.clearbit.com/lexus.com" alt="Lexus"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lexus">
+                  <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Land Rover">
+                  <img src="https://logo.clearbit.com/bentleymotors.com" alt="Bentley"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Bentley">
+                  <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Jaguar">
+                  <img src="https://logo.clearbit.com/volvocars.com" alt="Volvo"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Volvo">
+                  <img src="assets/images/aston-martin.png" alt="Aston Martin"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Aston Martin">
+                  <img src="https://logo.clearbit.com/ferrari.com" alt="Ferrari"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Ferrari">
+                  <img src="https://logo.clearbit.com/lamborghini.com" alt="Lamborghini"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lamborghini">
+
+                  <!-- Set 2 (Duplicate) -->
+                  <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Mercedes-Benz">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png"
+                    alt="BMW" class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="BMW">
+                  <img src="https://logo.clearbit.com/audi.com" alt="Audi"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Audi">
+                  <img src="assets/images/rolls-royce.png" alt="Rolls-Royce"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform bg-white rounded-md p-1"
+                    title="Rolls-Royce">
+                  <img src="https://logo.clearbit.com/porsche.com" alt="Porsche"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Porsche">
+                  <img src="https://logo.clearbit.com/lexus.com" alt="Lexus"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lexus">
+                  <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Land Rover">
+                  <img src="https://logo.clearbit.com/bentleymotors.com" alt="Bentley"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Bentley">
+                  <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Jaguar">
+                  <img src="https://logo.clearbit.com/volvocars.com" alt="Volvo"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Volvo">
+                  <img src="https://logo.clearbit.com/astonmartin.com" alt="Aston Martin"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Aston Martin">
+                  <img src="https://logo.clearbit.com/ferrari.com" alt="Ferrari"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Ferrari">
+                  <img src="https://logo.clearbit.com/lamborghini.com" alt="Lamborghini"
+                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lamborghini">
+                </div>
               </div>
             </div>
           </div>
@@ -1934,32 +2137,40 @@
             <div class="contact-form-card bg-primary border border-border rounded-2xl shadow-light">
               <h3 class="mb-6">Send a Message</h3>
               <form id="contact-form" class="contact-form">
-                <div class="contact-form-grid">
+                <div class="contact-form-grid grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                   <div class="contact-form-field">
                     <label for="name" class="sr-only">Your Name</label>
                     <input type="text" id="name" name="name" autocomplete="name" placeholder="Your Name"
-                      class="contact-input" required />
+                      class="contact-input py-2" required />
                   </div>
                   <div class="contact-form-field">
                     <label for="email" class="sr-only">Your Email</label>
                     <input type="email" id="email" name="email" autocomplete="email" placeholder="Your Email"
-                      class="contact-input" required />
+                      class="contact-input py-2" required />
                   </div>
                 </div>
-                <div class="contact-form-field">
+                <div class="contact-form-field mb-3">
                   <label for="subject" class="sr-only">Subject</label>
                   <input type="text" id="subject" name="subject" autocomplete="off" placeholder="Subject"
-                    class="contact-input" required />
+                    class="contact-input py-2" required />
                 </div>
-                <div class="contact-form-field">
+                <div class="contact-form-field mb-4">
                   <label for="message" class="sr-only">Message</label>
-                  <textarea id="message" name="message" autocomplete="off" rows="5" placeholder="Message"
-                    class="contact-input contact-textarea" required></textarea>
+                  <textarea id="message" name="message" autocomplete="off" rows="3" placeholder="Message"
+                    class="contact-input contact-textarea py-2" required></textarea>
                 </div>
-                <button type="submit" class="btn contact-submit">
-                  Send Message
-                </button>
+                <div class="text-center">
+                  <button type="submit" class="btn contact-submit w-full md:w-auto px-8">
+                    Send Message
+                  </button>
+                </div>
               </form>
+            </div>
+
+            <!-- Calendar Widget -->
+            <div id="calendar-container"
+              class="calendar-card bg-primary border border-border rounded-2xl shadow-light p-3 mt-6">
+              <!-- Calendar will be injected here by calendar.js -->
             </div>
           </div>
         </div>
@@ -2190,6 +2401,9 @@
     <!-- Blog Loader Module -->
     <script type="module" src="js/modules/blog-loader.js"></script>
 
+    <!-- Calendar Module -->
+    <script type="module" src="js/modules/calendar.js"></script>
+
     <!-- Advanced Animations Module -->
 
     <!-- Animations disabled for performance -->
@@ -2296,6 +2510,34 @@
 
     <!-- Search Functionality -->
     <script src="js/modules/search.js" type="module"></script>
+
+    <!-- Chatbot Upgrade 2025 Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+
+    <!-- Chatbot Upgrade Module -->
+    <script type="module" src="js/modules/chatbot-upgrade-2025.js"></script>
+
+    <script>
+      // Initialize Chatbot Upgrade
+      window.addEventListener('load', () => {
+        if (window.chatbotUpgrade) {
+          console.log('✅ Chatbot Upgrade 2025 Active');
+          // Show smart suggestions after a delay
+          setTimeout(() => {
+            if (window.chatbotUpgrade.showSmartSuggestions) {
+              window.chatbotUpgrade.showSmartSuggestions();
+            }
+          }, 2000);
+        }
+      });
+    </script>
 </body>
 
 </html>

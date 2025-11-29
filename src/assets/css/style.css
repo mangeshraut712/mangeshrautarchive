@@ -3,30 +3,30 @@
 /* Modern CSS Color System with Latest Technology - HSL, CSS Variables, and Advanced Theming */
 :root {
     /* Primary Color Palette - Modern HSL-based approach */
-    --color-black: hsl(0, 0%, 0%);
-    --color-white: hsl(0, 0%, 100%);
-    --color-grey-50: hsl(0, 0%, 98%);
-    --color-grey-100: hsl(0, 0%, 96%);
-    --color-grey-200: hsl(0, 0%, 95%);
-    --color-grey-300: hsl(0, 0%, 90%);
-    --color-grey-400: hsl(210, 10%, 80%);
-    --color-grey-500: hsl(210, 8%, 50%);
-    --color-grey-600: hsl(210, 8%, 40%);
-    --color-grey-700: hsl(210, 8%, 30%);
-    --color-grey-800: hsl(210, 10%, 15%);
-    --color-grey-900: hsl(210, 10%, 10%);
+    --color-black: hsl(0deg 0% 0%);
+    --color-white: hsl(0deg 0% 100%);
+    --color-grey-50: hsl(0deg 0% 98%);
+    --color-grey-100: hsl(0deg 0% 96%);
+    --color-grey-200: hsl(0deg 0% 95%);
+    --color-grey-300: hsl(0deg 0% 90%);
+    --color-grey-400: hsl(210deg 10% 80%);
+    --color-grey-500: hsl(210deg 8% 50%);
+    --color-grey-600: hsl(210deg 8% 40%);
+    --color-grey-700: hsl(210deg 8% 30%);
+    --color-grey-800: hsl(210deg 10% 15%);
+    --color-grey-900: hsl(210deg 10% 10%);
 
     /* Vibrant Blue Palette - Using HSL for dynamic color management */
-    --color-blue-50: hsl(210, 100%, 97%);
-    --color-blue-100: hsl(210, 100%, 95%);
-    --color-blue-200: hsl(210, 100%, 91%);
-    --color-blue-300: hsl(210, 100%, 85%);
-    --color-blue-400: hsl(210, 100%, 75%);
-    --color-blue-500: hsl(210, 100%, 60%);
-    --color-blue-600: hsl(210, 100%, 50%);
-    --color-blue-700: hsl(210, 95%, 42%);
-    --color-blue-800: hsl(210, 95%, 35%);
-    --color-blue-900: hsl(210, 95%, 25%);
+    --color-blue-50: hsl(210deg 100% 97%);
+    --color-blue-100: hsl(210deg 100% 95%);
+    --color-blue-200: hsl(210deg 100% 91%);
+    --color-blue-300: hsl(210deg 100% 85%);
+    --color-blue-400: hsl(210deg 100% 75%);
+    --color-blue-500: hsl(210deg 100% 60%);
+    --color-blue-600: hsl(210deg 100% 50%);
+    --color-blue-700: hsl(210deg 95% 42%);
+    --color-blue-800: hsl(210deg 95% 35%);
+    --color-blue-900: hsl(210deg 95% 25%);
 
     /* Semantic Color Tokens using CSS Variables */
     --text-primary-light: var(--color-black);
@@ -50,12 +50,11 @@
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
     --radius-2xl: 1.5rem;
-
-    --shadow-sm: 0 1px 2px 0 hsl(0, 0%, 0%, 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(0, 0%, 0%, 0.1);
-    --shadow-lg: 0 10px 15px -3px hsl(0, 0%, 0%, 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(0, 0%, 0%, 0.1);
-    --shadow-2xl: 0 25px 50px -12px hsl(0, 0%, 0%, 0.25);
+    --shadow-sm: 0 1px 2px 0 hsl(0deg 0% 0% / 5%);
+    --shadow-md: 0 4px 6px -1px hsl(0deg 0% 0% / 10%);
+    --shadow-lg: 0 10px 15px -3px hsl(0deg 0% 0% / 10%);
+    --shadow-xl: 0 20px 25px -5px hsl(0deg 0% 0% / 10%);
+    --shadow-2xl: 0 25px 50px -12px hsl(0deg 0% 0% / 25%);
 
     /* Colors mapped to design system */
     --text-primary: var(--text-primary-light);
@@ -66,13 +65,13 @@
     --border-color: var(--border-light);
 
     /* Component-specific color tokens */
-    --nav-bg: hsla(0, 0%, 100%, 0.85);
+    --nav-bg: hsl(0deg 0% 100% / 85%);
     --nav-text: #1d1d1f;
-    --nav-border: hsla(240, 8%, 85%, 0.55);
+    --nav-border: hsl(240deg 8% 85% / 55%);
     --nav-hover: #0071e3;
-    --nav-icon-hover-bg: hsla(210, 95%, 55%, 0.12);
+    --nav-icon-hover-bg: hsl(210deg 95% 55% / 12%);
     --btn-primary: var(--color-blue-700);
-    --btn-primary-hover: hsl(210, 95%, 45%);
+    --btn-primary-hover: hsl(210deg 95% 45%);
     --btn-text-primary: var(--color-white);
 
     /* Project Cards - Modern Color System */
@@ -80,11 +79,11 @@
     --project-card-text: var(--text-primary);
     --project-card-border: var(--color-grey-200);
     --project-card-shadow: var(--shadow-lg);
-    --project-card-hover-shadow: 0 20px 60px hsl(0, 0%, 0%, 0.12);
+    --project-card-hover-shadow: 0 20px 60px hsl(0deg 0% 0% / 12%);
     --project-card-tag-bg: var(--color-grey-100);
     --project-card-tag-text: var(--color-blue-700);
     --project-card-link-text: var(--color-blue-700);
-    --project-card-link-hover-text: hsl(210, 95%, 55%);
+    --project-card-link-hover-text: hsl(210deg 95% 55%);
 
     /* Clean hexadecimal fallbacks for maximum compatibility */
     --bg-white-light: var(--color-white);
@@ -92,8 +91,8 @@
     --shadow-light: var(--shadow-sm);
 
     /* Footer tokens */
-    --footer-bg: #000000;
-    --footer-border: rgba(255, 255, 255, 0.08);
+    --footer-bg: #000;
+    --footer-border: rgb(255 255 255 / 8%);
     --footer-text: #f5f5f7;
     --footer-link: #d2d2d7;
     --footer-link-hover: #5ac8fa;
@@ -113,29 +112,32 @@ html.dark {
 
     /* Dynamic Dark Mode Color Tokens using modern CSS variables */
     --color-dark-bg-primary: #020518;
+
     /* Deep Navy Blue from Apple Event */
     --color-dark-bg-secondary: #0b0e1e;
+
     /* Slightly lighter navy */
     --color-dark-bg-tertiary: #15192b;
     --color-dark-surface: #0a0d20;
 
     /* Advanced Text Hierarchy for Dark Mode */
-    --text-primary-dark: #ffffff;
+    --text-primary-dark: #fff;
     --text-secondary-dark: #a1a1a6;
     --text-tertiary-dark: #86868b;
     --text-accent-dark: #2997ff;
+
     /* Apple Blue */
 
     /* Modern Border System with HSL Alpha */
-    --border-dark-primary: rgba(255, 255, 255, 0.1);
-    --border-dark-secondary: rgba(255, 255, 255, 0.15);
-    --border-dark-accent: rgba(41, 151, 255, 0.5);
+    --border-dark-primary: rgb(255 255 255 / 10%);
+    --border-dark-secondary: rgb(255 255 255 / 15%);
+    --border-dark-accent: rgb(41 151 255 / 50%);
 
     /* Advanced Shadow System using Color-mix and OKLCH */
-    --shadow-dark-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-    --shadow-dark-md: 0 8px 16px rgba(0, 0, 0, 0.6);
-    --shadow-dark-lg: 0 16px 32px rgba(0, 0, 0, 0.7);
-    --shadow-dark-xl: 0 32px 64px rgba(0, 0, 0, 0.8);
+    --shadow-dark-sm: 0 1px 2px rgb(0 0 0 / 50%);
+    --shadow-dark-md: 0 8px 16px rgb(0 0 0 / 60%);
+    --shadow-dark-lg: 0 16px 32px rgb(0 0 0 / 70%);
+    --shadow-dark-xl: 0 32px 64px rgb(0 0 0 / 80%);
 
     /* Automated Theme Switching using CSS Container Queries */
     --text-primary: var(--text-primary-dark);
@@ -146,25 +148,28 @@ html.dark {
     --border-color: var(--border-dark-primary);
 
     /* Component-Level Dark Mode Variables */
-    --nav-bg: rgba(2, 5, 24, 0.8);
+    --nav-bg: rgb(2 5 24 / 80%);
+
     /* Matches new bg */
     --nav-text: #f5f5f7;
-    --nav-border: rgba(255, 255, 255, 0.1);
+    --nav-border: rgb(255 255 255 / 10%);
     --nav-hover: #2997ff;
-    --nav-icon-hover-bg: rgba(41, 151, 255, 0.1);
+    --nav-icon-hover-bg: rgb(41 151 255 / 10%);
 
     /* Modern Button System - Apple Style */
     --btn-primary-dark: #0071e3;
+
     /* Apple Button Blue */
     --btn-primary-hover-dark: #0077ed;
     --btn-secondary-dark: #0071e3;
+
     /* Make secondary button also blue for the "Shop" look */
     --btn-secondary-border-dark: transparent;
-    --btn-text-primary: #ffffff;
+    --btn-text-primary: #fff;
 
     /* Advanced Card System for Dark Mode */
     --card-bg-dark: #0b0e1e;
-    --card-border-dark: rgba(255, 255, 255, 0.1);
+    --card-border-dark: rgb(255 255 255 / 10%);
     --card-shadow-dark: var(--shadow-dark-lg);
 
     /* Project Cards - Advanced Dark Mode Implementation */
@@ -172,19 +177,19 @@ html.dark {
     --project-card-border: var(--card-border-dark);
     --project-card-shadow: var(--shadow-dark-lg);
     --project-card-hover-shadow: var(--shadow-dark-xl);
-    --project-card-tag-bg: rgba(41, 151, 255, 0.1);
-    --project-card-tag-border: rgba(41, 151, 255, 0.2);
+    --project-card-tag-bg: rgb(41 151 255 / 10%);
+    --project-card-tag-border: rgb(41 151 255 / 20%);
     --project-card-link-text: #2997ff;
     --project-card-link-hover-text: #5ac8fa;
 
     /* Modern Glassmorphism Effects */
-    --glass-bg: rgba(2, 5, 24, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgb(2 5 24 / 70%);
+    --glass-border: rgb(255 255 255 / 10%);
     --glass-backdrop: blur(20px) saturate(180%);
 
     /* Footer tokens */
     --footer-bg: #020518;
-    --footer-border: rgba(255, 255, 255, 0.1);
+    --footer-border: rgb(255 255 255 / 10%);
     --footer-text: #f5f5f7;
     --footer-link: #d2d2d7;
     --footer-link-hover: #2997ff;
@@ -211,19 +216,21 @@ html.dark {
 /* Dark Mode Body Enhancement - Using Modern CSS Selectors */
 html.dark body {
     background: inherit;
+
     /* Inherit from html element */
     color: var(--text-primary-dark);
 
     /* Modern Prefers-Contrast Support */
     @media (prefers-contrast: high) {
-        --text-primary-dark: hsl(0, 0%, 100%);
-        --text-secondary-dark: hsl(0, 0%, 95%);
+        --text-primary-dark: hsl(0deg 0% 100%);
+        --text-secondary-dark: hsl(0deg 0% 95%);
     }
 }
 
 html.dark body {
     /* Override individual state selectors that might conflict */
-    background-color: #000000;
+    background-color: #000;
+
     /* Black body background for dark mode */
 }
 
@@ -231,7 +238,7 @@ html.dark body {
 
 /* Body & Base Styles */
 body {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
     scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -239,6 +246,7 @@ body {
     line-height: 1.5;
     color: var(--text-primary);
     background: transparent;
+
     /* Allow sections to show their own backgrounds */
     overflow-x: hidden;
     margin: 0;
@@ -247,7 +255,7 @@ body {
 
 html {
     font-size: 100%;
-    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 /* Typography - Apple Style */
@@ -319,16 +327,19 @@ a {
 a:hover {
     color: var(--text-accent);
     text-decoration: none;
+
     /* Remove underline on hover for a cleaner look */
 }
 
 .dark a {
     color: #2997ff;
+
     /* Apple's vibrant blue for links */
 }
 
 .dark a:hover {
     color: #66b5ff;
+
     /* Lighter blue on hover */
 }
 
@@ -339,57 +350,65 @@ a:hover {
     font-weight: 500;
     padding: 0.75rem 1.5rem;
     border-radius: 980px;
+
     /* Pill shape like homepage */
     background: #0071e3 !important;
+
     /* Apple Blue */
-    color: #ffffff !important;
+    color: #fff !important;
+
     /* White text */
     border: none;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
 }
 
 .btn:hover {
     background: #0077ed !important;
+
     /* Lighter blue on hover */
     transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
-    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgb(0 113 227 / 40%);
+    color: #fff !important;
 }
 
 .btn-secondary {
     background: #0071e3 !important;
+
     /* Same blue as primary */
-    color: #ffffff !important;
+    color: #fff !important;
+
     /* White text */
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 980px;
+
     /* Pill shape */
     font-weight: 500;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
 }
 
 .btn-secondary:hover {
     background: #0077ed !important;
+
     /* Lighter blue on hover */
-    color: #ffffff !important;
+    color: #fff !important;
     transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+    box-shadow: 0 6px 16px rgb(0 113 227 / 40%);
 }
 
 .btn-active {
     background: #0071e3 !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 /* Dark Mode Button Visibility Fixes */
 html.dark .btn,
 html.dark .btn-secondary,
 html.dark .btn-primary {
-    color: #ffffff !important;
+    color: #fff !important;
     background-color: #0071e3 !important;
 }
 
@@ -397,10 +416,13 @@ html.dark .btn:hover,
 html.dark .btn-secondary:hover,
 html.dark .btn-primary:hover {
     background-color: #2997ff !important;
+
     /* Lighter blue for dark mode hover */
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
+
+/* Overlay Menu */
 
 /* Overlay Menu */
 .overlay-menu {
@@ -409,10 +431,9 @@ html.dark .btn-primary:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: hsla(0, 0%, 100%, 0.9);
-    /* Slightly more opaque with new bg color */
-    backdrop-filter: blur(12px);
-    /* Increased blur */
+    background: #fff;
+
+    /* Solid white for light mode */
     z-index: 100;
     display: flex;
     flex-direction: column;
@@ -421,8 +442,13 @@ html.dark .btn-primary:hover {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0s linear 0.3s;
-    /* Smoother transition */
     overflow-y: auto;
+}
+
+html.dark .overlay-menu {
+    background: #000;
+
+    /* Solid black for dark mode */
 }
 
 body.menu-open .overlay-menu {
@@ -437,18 +463,17 @@ body.menu-open {
 
 .menu-close-button {
     position: absolute;
-    top: 25px;
-    right: 25px;
-    font-size: 2.2rem;
-    /* Larger close icon */
+    top: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+
+    /* Smaller close icon */
     font-weight: 300;
-    /* Lighter weight for a modern feel */
     color: var(--nav-text);
     background: transparent;
-    /* No background */
     border: none;
     cursor: pointer;
-    padding: 12px;
+    padding: 8px;
     border-radius: 50%;
     transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -456,89 +481,128 @@ body.menu-open {
 .menu-close-button:hover {
     color: var(--nav-hover);
     transform: rotate(90deg);
-    /* Add a subtle rotation on hover */
 }
 
 .overlay-nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.8rem;
-    /* Increased gap */
-    padding: 2rem;
+    gap: 4px;
+
+    /* Ultra compact gap */
+    padding: 0;
+
+    /* No padding */
+    width: 100%;
+    max-width: 300px;
+
+    /* Reduced width */
 }
 
 .overlay-nav-link {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 2rem;
-    /* Larger font size for overlay links */
-    font-weight: 600;
-    /* Bolder links */
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+
+    /* Smaller font size */
+    font-weight: 500;
     color: var(--nav-text);
     text-decoration: none;
-    transition: color 0.2s ease, transform 0.2s ease;
-    padding: 0.6rem 0;
+    transition: color 0.2s ease;
+    padding: 2px 0;
+
+    /* Ultra minimal padding */
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    border-radius: 0;
 }
 
 .overlay-nav-link:hover {
     color: var(--nav-hover);
     text-decoration: none;
-    transform: translateX(5px);
-    /* Slight move effect on hover */
+    background: transparent;
+    border-bottom-color: var(--nav-hover);
+    transform: none;
+
+    /* No scale effect */
+}
+
+html.dark .overlay-nav-link {
+    background: transparent;
+}
+
+html.dark .overlay-nav-link:hover {
+    background: transparent;
+    border-bottom-color: var(--nav-hover);
 }
 
 /* Buttons */
 .button-primary {
     display: inline-block;
     padding: 12px 28px;
+
     /* Increased padding */
     background-color: #0071e3;
     color: #fff;
     font-size: 1rem;
+
     /* Relative font size */
     font-weight: 500;
+
     /* Medium weight */
     border-radius: 12px;
+
     /* Modern rounded corners */
     border: 1px solid transparent;
+
     /* Transparent border initially */
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+
     /* Subtle shadow */
 }
 
 .button-primary:hover {
     background-color: #005bb5;
+
     /* Darker blue */
     border-color: transparent;
     text-decoration: none;
     color: #fff;
     transform: translateY(-2px);
+
     /* Slight lift */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+
     /* Enhanced shadow on hover */
 }
 
 .button-primary:active {
-    transform: translateY(0px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
 }
 
 .button-secondary {
     display: inline-block;
     padding: 12px 28px;
+
     /* Increased padding */
     background-color: transparent;
     color: #0071e3;
     font-size: 1rem;
+
     /* Relative font size */
     font-weight: 500;
+
     /* Medium weight */
     border-radius: 12px;
+
     /* Modern rounded corners */
     border: 1px solid #c0c0c5;
+
     /* Lighter border */
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
@@ -546,20 +610,24 @@ body.menu-open {
 }
 
 .button-secondary:hover {
-    background-color: rgba(0, 113, 227, 0.05);
+    background-color: rgb(0 113 227 / 5%);
+
     /* Lighter hover background */
     border-color: #0071e3;
     color: #005bb5;
+
     /* Darker blue on hover */
     text-decoration: none;
     transform: translateY(-2px);
+
     /* Slight lift */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 5%);
+
     /* Subtle shadow on hover */
 }
 
 .button-secondary:active {
-    transform: translateY(0px);
+    transform: translateY(0);
     box-shadow: none;
 }
 
@@ -652,23 +720,21 @@ section#contact {
     padding: 0 22px;
 }
 
-@media (min-width: 834px) {
-
+@media (width >= 834px) {
     .container-fluid,
     .container {
         padding: 0 44px;
     }
 }
 
-@media (min-width: 1024px) {
-
+@media (width >= 1024px) {
     .container-fluid,
     .container {
         padding: 0 68px;
     }
 }
 
-@media (min-width: 1400px) {
+@media (width >= 1400px) {
     .container {
         padding: 0 110px;
     }
@@ -678,8 +744,7 @@ section#contact {
 
 .row {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     width: 100%;
     margin: 0 -11px;
 }
@@ -702,7 +767,7 @@ section#contact {
     padding: 0 11px;
 }
 
-@media (max-width: 833px) {
+@media (width <= 833px) {
     .row {
         margin: 0;
     }
@@ -727,7 +792,7 @@ section#contact {
     padding: 0 22px;
     background: var(--nav-bg);
     backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--nav-border);
     color: var(--nav-text);
     box-shadow: inset 0 -1px 0 var(--nav-border);
@@ -736,13 +801,17 @@ section#contact {
 }
 
 .nav-container {
-    max-width: 1024px;
+    max-width: 1400px;
+
+    /* Increased from 1024px to fit more links */
     height: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 32px;
+    gap: 16px;
+
+    /* Reduced gap between logo/links/actions */
 }
 
 .nav-left,
@@ -774,11 +843,48 @@ section#contact {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 28px;
-    font-size: 14px;
+    gap: 20px;
+
+    /* Reduced from 28px */
+    font-size: 13px;
+
+    /* Slightly smaller font for better fit */
     font-weight: 400;
-    letter-spacing: 0.015em;
+    letter-spacing: 0.01em;
     width: 100%;
+}
+
+/* ... existing styles ... */
+
+@media (width <= 1400px) {
+    .nav-container {
+        gap: 16px;
+    }
+
+    .nav-links {
+        gap: 16px;
+    }
+}
+
+@media (width <= 1280px) {
+    /* Changed from 1024px to 1280px */
+    .nav-container {
+        gap: 16px;
+    }
+
+    .nav-links {
+        display: none;
+
+        /* Hide links earlier */
+    }
+
+    .menu-toggle-button {
+        display: inline-flex;
+
+        /* Show hamburger earlier */
+        align-items: center;
+        gap: 8px;
+    }
 }
 
 .nav-link {
@@ -843,7 +949,7 @@ section#contact {
 
 .theme-toggle-nav i {
     font-size: 14px;
-    color: currentColor;
+    color: currentcolor;
 }
 
 .menu-toggle-button {
@@ -870,21 +976,21 @@ section#contact {
 
 .menu-toggle-button:focus-visible .menu-icon,
 .menu-toggle-button:hover .menu-icon {
-    background-color: currentColor;
+    background-color: currentcolor;
 }
 
 .menu-toggle-button:focus-visible .menu-icon::before,
 .menu-toggle-button:hover .menu-icon::before,
 .menu-toggle-button:focus-visible .menu-icon::after,
 .menu-toggle-button:hover .menu-icon::after {
-    background-color: currentColor;
+    background-color: currentcolor;
 }
 
 .menu-icon {
     position: relative;
     width: 16px;
     height: 2px;
-    background-color: currentColor;
+    background-color: currentcolor;
     border-radius: 999px;
     display: block;
 }
@@ -896,7 +1002,7 @@ section#contact {
     left: 0;
     width: 16px;
     height: 2px;
-    background-color: currentColor;
+    background-color: currentcolor;
     border-radius: 999px;
 }
 
@@ -924,148 +1030,23 @@ section#contact {
     border: 0;
 }
 
-@media (max-width: 1200px) {
-    .nav-container {
-        gap: 24px;
-    }
+/* Media queries moved up to line ~780 */
 
-    .nav-links {
-        gap: 24px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .nav-container {
-        gap: 16px;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    .menu-toggle-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-}
-
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .global-nav {
         padding: 0 16px;
     }
 }
 
-/* Chatbot UI Styles */
-#chat-toggle {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1000;
-    transition: transform 0.3s ease;
-}
-
-#chat-toggle:hover {
-    transform: scale(1.1);
-}
-
-#chat-widget {
-    position: fixed;
-    bottom: 6rem;
-    right: 2rem;
-    width: 90%;
-    max-width: 28rem;
-    /* 448px */
-    max-height: 70vh;
-    z-index: 1000;
-    opacity: 0;
-    transform: translateY(2rem);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-}
-
-#chat-widget.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-
-#chat-widget .chat-header h3 {
-    margin-bottom: 0;
-    /* Override default h3 margin */
-}
-
-#chat-messages {
-    scrollbar-width: thin;
-    scrollbar-color: #9ca3af #e5e7eb;
-}
-
-#chat-messages::-webkit-scrollbar {
-    width: 8px;
-}
-
-#chat-messages::-webkit-scrollbar-track {
-    background: #e5e7eb;
-}
-
-#chat-messages::-webkit-scrollbar-thumb {
-    background-color: #9ca3af;
-    border-radius: 10px;
-    border: 2px solid #e5e7eb;
-}
-
-.message-bubble {
-    padding: 0.75rem 1rem;
-    border-radius: 1rem;
-    max-width: 80%;
-    word-wrap: break-word;
-}
-
-.message-bubble.user {
-    background-color: #d1d5db;
-    /* gray-300 */
-    color: #1f2937;
-    /* gray-800 */
-    border-bottom-right-radius: 0.25rem;
-    margin-left: auto;
-}
-
-.message-bubble.bot {
-    background-color: #3b82f6;
-    /* blue-500 */
-    color: white;
-    border-bottom-left-radius: 0.25rem;
-}
-
-#chat-input {
-    transition: all 0.2s ease-in-out;
-}
-
-#chat-send {
-    transition: background-color 0.2s ease-in-out;
-}
-
-#chat-send:hover i {
-    transform: scale(1.1);
-}
-
-
-/* Responsive adjustments for chat widget */
-@media (max-width: 500px) {
-
-    /* max-w-md is 32rem = 512px, so this is for smaller than typical "md" */
-    #chat-widget {
-        right: 5%;
-        width: 90%;
-    }
-}
+/* Chatbot styles moved to chatbot-complete.css */
 
 section h2 {
     font-size: 2.8rem;
+
     /* Matches h2 definition */
     letter-spacing: -0.02em;
     margin-bottom: 4.5rem;
+
     /* More space below section titles */
     text-align: center;
 }
@@ -1148,7 +1129,7 @@ section h2 {
     border-radius: 2rem;
     border: 1px solid var(--project-card-link-border);
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    box-shadow: 0 1px 3px rgba(0, 113, 227, 0.05);
+    box-shadow: 0 1px 3px rgb(0 113 227 / 5%);
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
@@ -1197,7 +1178,7 @@ html.dark .global-nav .theme-toggle-nav:focus-visible {
 }
 
 html.dark .global-nav .theme-toggle-nav i {
-    color: currentColor !important;
+    color: currentcolor !important;
 }
 
 /* JavaScript override protection - catches the specific querySelector */
@@ -1212,6 +1193,7 @@ html.dark .global-nav .theme-toggle-nav i {
     color: var(--text-accent) !important;
     font-weight: 600;
     text-decoration: none;
+
     /* Clean look without underlines */
     transition: all 0.3s ease;
 }
@@ -1220,8 +1202,10 @@ html.dark .global-nav .theme-toggle-nav i {
 .project-card a.text-accent:hover {
     color: var(--text-accent) !important;
     opacity: 0.8;
+
     /* Subtle visual feedback */
     transform: translateY(-1px);
+
     /* Subtle lift effect */
 }
 
@@ -1272,7 +1256,7 @@ html.dark .global-nav .theme-toggle-nav i {
     content: '';
     width: 0;
     height: 0;
-    border-left: 4px solid currentColor;
+    border-left: 4px solid currentcolor;
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
     margin-left: 0.25rem;
@@ -1301,8 +1285,10 @@ html.dark .global-nav .theme-toggle-nav i {
 .timeline-item {
     position: relative;
     border-left: 3px solid #d0d0d5;
+
     /* Slightly thicker border */
     padding-left: 2rem;
+
     /* Increased padding */
 }
 
@@ -1310,7 +1296,7 @@ html.dark .global-nav .theme-toggle-nav i {
     background-color: var(--bg-primary);
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 4%);
     border: 1px solid var(--border-color);
 }
 
@@ -1363,18 +1349,19 @@ html.dark .global-nav .theme-toggle-nav i {
 .contact-form-card {
     background: var(--bg-primary);
     border: 1px solid var(--border-color);
-    border-radius: 1.75rem;
-    padding: clamp(1.75rem, 2.5vw, 2.5rem);
-    box-shadow: var(--shadow-light, 0 10px 20px rgba(0, 0, 0, 0.08));
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-light, 0 10px 20px rgb(0 0 0 / 8%));
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 1rem;
 }
 
 .contact-card h3,
 .contact-form-card h3 {
-    font-size: clamp(1.5rem, 2vw, 1.75rem);
+    font-size: 1.25rem;
     margin: 0;
+    font-weight: 600;
 }
 
 .contact-card h4 {
@@ -1412,13 +1399,15 @@ html.dark .global-nav .theme-toggle-nav i {
 
 .contact-input:focus {
     border-color: var(--text-accent);
-    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+    box-shadow: 0 0 0 4px rgb(0 113 227 / 12%);
     outline: none;
 }
 
 .contact-textarea {
     min-height: 160px;
     resize: vertical;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .contact-submit {
@@ -1428,24 +1417,277 @@ html.dark .global-nav .theme-toggle-nav i {
     align-items: center;
     margin-top: 0.5rem;
     background: #0071e3 !important;
-    color: #ffffff !important;
+    color: #fff !important;
     border-radius: 980px;
     font-weight: 500;
     padding: 0.75rem 1.5rem;
     border: none;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
+    box-sizing: border-box;
 }
 
 .contact-submit:hover {
     background: #0077ed !important;
-    color: #ffffff !important;
+    color: #fff !important;
     transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+    box-shadow: 0 6px 16px rgb(0 113 227 / 40%);
 }
 
-@media (min-width: 640px) {
+/* Mobile-friendly contact layout */
+@media (width <= 768px) {
+    /* Ensure proper container padding on mobile */
+    #contact {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    #contact .container {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #contact h2 {
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    #contact .row {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem;
+        width: 100% !important;
+    }
+
+    #contact .col-lg-6 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .contact-card,
+    .contact-form-card,
+    .calendar-card {
+        padding: 1.25rem !important;
+        border-radius: 1rem;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden;
+    }
+
+    .contact-card h3,
+    .contact-form-card h3 {
+        font-size: 1.15rem !important;
+        margin-bottom: 0.75rem;
+    }
+
+    .contact-card h4 {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-card p {
+        font-size: 0.9rem !important;
+        line-height: 1.5;
+    }
+
+    .contact-card .space-y-4 {
+        gap: 0.75rem;
+    }
+
+    /* Email and phone links - ensure they don't overflow */
+    .contact-card a {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* Social icons wrapper */
+    .contact-card .wrapper {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: flex-start !important;
+    }
+
+    .contact-card .wrapper .icon {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+
+    /* Support section on mobile */
+    .contact-card .flex.justify-between {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+
+    .contact-card .flex.justify-between .ml-4 {
+        margin-left: 0 !important;
+        align-self: center;
+    }
+
+    .contact-card .flex.justify-between img {
+        width: 4rem !important;
+        height: 4rem !important;
+    }
+
+    /* Form improvements */
+    .contact-form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem;
+    }
+
+    .contact-input {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.95rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .contact-textarea {
+        min-height: 120px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .contact-submit {
+        width: 100% !important;
+        padding: 0.875rem 1.5rem !important;
+        font-size: 0.95rem !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Dream Companies and Cars Marquees */
+    .dream-companies-marquee,
+    .dream-cars-marquee {
+        padding: 0.75rem !important;
+        border-radius: 0.75rem;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden;
+    }
+
+    .dream-companies-marquee h3,
+    .dream-cars-marquee h3 {
+        font-size: 1rem !important;
+        margin-bottom: 0.75rem;
+    }
+
+    .marquee-track {
+        gap: 1.5rem;
+    }
+
+    .marquee-track img {
+        height: 1.5rem !important;
+        max-width: 4rem;
+        object-fit: contain;
+    }
+}
+
+/* Extra small screens - phones in portrait */
+@media (width <= 480px) {
+    #contact {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    #contact .container {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    #contact h2 {
+        font-size: 1.85rem !important;
+        margin-bottom: 1.75rem;
+    }
+
+    .contact-card,
+    .contact-form-card,
+    .calendar-card {
+        padding: 1rem !important;
+        border-radius: 0.875rem;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .contact-card h3,
+    .contact-form-card h3 {
+        font-size: 1.05rem !important;
+    }
+
+    .contact-card h4 {
+        font-size: 0.8rem !important;
+    }
+
+    .contact-card p,
+    .contact-form-card p {
+        font-size: 0.85rem !important;
+        line-height: 1.4;
+    }
+
+    .contact-input {
+        padding: 0.65rem 0.875rem !important;
+        font-size: 0.9rem !important;
+        width: 100% !important;
+    }
+
+    .contact-textarea {
+        min-height: 100px !important;
+        width: 100% !important;
+    }
+
+    .contact-submit {
+        padding: 0.75rem 1.25rem !important;
+        font-size: 0.9rem !important;
+        width: 100% !important;
+    }
+
+    /* Marquee sections */
+    .dream-companies-marquee,
+    .dream-cars-marquee {
+        padding: 0.625rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .dream-companies-marquee h3,
+    .dream-cars-marquee h3 {
+        font-size: 0.95rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .marquee-track {
+        gap: 1.25rem;
+    }
+
+    .marquee-track img {
+        height: 1.25rem !important;
+        max-width: 3.5rem;
+        object-fit: contain;
+    }
+
+    /* Social icons */
+    .contact-card .wrapper .icon {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+    }
+
+    /* Support section */
+    .contact-card .flex.justify-between img {
+        width: 3.5rem !important;
+        height: 3.5rem !important;
+    }
+
+    .support-btn-animate {
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0.875rem !important;
+    }
+}
+
+/* Desktop override for submit button */
+@media (width >= 769px) {
     .contact-submit {
         width: auto;
         justify-self: end;
@@ -1453,36 +1695,45 @@ html.dark .global-nav .theme-toggle-nav i {
     }
 }
 
+
 .contact-social-links {
     margin-top: 2.5rem;
+
     /* Increased margin */
     display: flex;
     gap: 1.8rem;
+
     /* Increased gap */
     align-items: center;
 }
 
 .contact-social-links a {
     color: #555558;
+
     /* Softer icon color */
     font-size: 1.4rem;
+
     /* Larger icons */
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .contact-social-links a:hover {
     color: #0071e3;
+
     /* Primary blue on hover */
     transform: scale(1.1);
+
     /* Slight scale effect */
 }
 
 .contact-social-links img {
     width: 22px;
+
     /* Slightly larger image icons */
     height: 22px;
     object-fit: contain;
     filter: grayscale(30%) contrast(90%);
+
     /* Less aggressive filter */
     opacity: 0.8;
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
@@ -1493,6 +1744,7 @@ html.dark .global-nav .theme-toggle-nav i {
     filter: grayscale(0%) contrast(100%);
     opacity: 1;
     transform: scale(1.1);
+
     /* Slight scale effect */
 }
 
@@ -1501,22 +1753,27 @@ html.dark .global-nav .theme-toggle-nav i {
 footer {
     background: var(--footer-bg);
     color: var(--footer-text);
+
     /* High contrast text on black */
     border-top: 1px solid var(--footer-border);
+
     /* Subtle edge highlight */
     padding-top: 2.5rem;
+
     /* Comfortable padding */
     padding-bottom: 2.5rem;
 }
 
 footer a {
     color: var(--footer-link);
+
     /* Soft silver link color */
     transition: color 0.2s ease;
 }
 
 footer a:hover {
     color: var(--footer-link-hover);
+
     /* Apple accent blue on hover */
     text-decoration: none;
 }
@@ -1524,7 +1781,7 @@ footer a:hover {
 footer .fab,
 footer .fas {
     font-size: 1.4rem;
-    color: currentColor;
+    color: currentcolor;
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
@@ -1556,6 +1813,7 @@ footer a:hover img {
 .contact-social-links a[href*="facebook.com"] i.fa-brands,
 .contact-social-links a[href*="facebook.com"] .fa-brands.fa-facebook {
     color: #1877f2 !important;
+
     /* Original Facebook Blue */
     font-weight: 400;
 }
@@ -1563,6 +1821,7 @@ footer a:hover img {
 .contact-social-links .fa-brands.fa-instagram,
 .contact-social-links a[href*="instagram.com"] i.fa-brands {
     color: #e4405f !important;
+
     /* Original Instagram Pink */
     font-weight: 400;
 }
@@ -1571,6 +1830,7 @@ footer a:hover img {
 .contact-social-links .fa-brands.fa-linkedin-in,
 .contact-social-links a[href*="linkedin.com"] i.fa-brands {
     color: #0077b5 !important;
+
     /* Original LinkedIn Blue */
     font-weight: 400;
 }
@@ -1578,13 +1838,15 @@ footer a:hover img {
 .contact-social-links .fa-brands.fa-github,
 .contact-social-links a[href*="github.com"] i.fa-brands {
     color: #181717 !important;
+
     /* Original GitHub Dark */
     font-weight: 400;
 }
 
 .contact-social-links .fa-brands.fa-youtube,
 .contact-social-links a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000 !important;
+    color: #f00 !important;
+
     /* Original YouTube Red */
     font-weight: 400;
 }
@@ -1593,7 +1855,8 @@ footer a:hover img {
 .contact-social-links .fa-brands.fa-twitter,
 .contact-social-links a[href*="x.com"] i.fa-brands,
 .contact-social-links a[href*="twitter.com"] i.fa-brands {
-    color: #000000 !important;
+    color: #000 !important;
+
     /* Original Twitter/X Black */
     font-weight: 400;
 }
@@ -1602,6 +1865,7 @@ footer a:hover img {
 .contact-social-links a[href*="wixsite.com"] i.fa-solid,
 .contact-social-links a[href*="portfolio"] .fa-solid.fa-globe {
     color: #0077b5 !important;
+
     /* LinkedIn Blue for Web Links */
     font-weight: 900;
 }
@@ -1609,6 +1873,7 @@ footer a:hover img {
 .contact-social-links .fa-solid.fa-code,
 .contact-social-links a[href*="leetcode.com"] i.fa-solid {
     color: #61dafb !important;
+
     /* React Blue for LeetCode */
     font-weight: 900;
 }
@@ -1616,125 +1881,185 @@ footer a:hover img {
 /* Licenses & Certifications - Colorful icons stay vivid */
 #certifications .fas.fa-code {
     color: #f97316 !important;
+
     /* orange */
 }
 
 #certifications .fas.fa-brain {
     color: #a855f7 !important;
+
     /* purple */
 }
 
 #certifications .fas.fa-rocket {
     color: #22c55e !important;
+
     /* green */
 }
 
 #certifications .fas.fa-leaf {
     color: #10b981 !important;
+
     /* emerald */
 }
 
 #certifications .fas.fa-database {
     color: #0ea5e9 !important;
+
     /* sky */
 }
 
 #certifications .fas.fa-shield-alt {
     color: #ef4444 !important;
+
     /* red */
 }
 
 #certifications .fas.fa-robot {
     color: #facc15 !important;
+
     /* amber */
 }
 
 #certifications .fas.fa-network-wired {
     color: #6366f1 !important;
+
     /* indigo */
 }
 
 #certifications .fas.fa-search {
     color: #0891b2 !important;
+
     /* teal */
 }
 
 #certifications .fas.fa-chart-line {
     color: #10b981 !important;
+
     /* green */
 }
 
 #certifications .fas.fa-ad {
     color: #f43f5e !important;
+
     /* pink */
 }
+
+/* Footer - Original Brand Colors (matching Contact Section) */
 
 /* Footer - Original Brand Colors (matching Contact Section) */
 footer i.fa-brands.fa-facebook,
 footer i.fa-brands.fa-facebook-f,
 footer a[href*="facebook.com"] i.fa-brands {
-    color: #0a84ff !important;
-    /* Bright Facebook blue for dark background */
+    color: #1877f2 !important;
+
+    /* Original Facebook Blue */
     font-weight: 400;
 }
 
 footer i.fa-brands.fa-instagram,
 footer a[href*="instagram.com"] i.fa-brands {
-    color: #ff375f !important;
-    /* Vibrant Instagram pink */
+    color: #e4405f !important;
+
+    /* Original Instagram Pink */
     font-weight: 400;
 }
 
 footer i.fa-brands.fa-linkedin,
 footer i.fa-brands.fa-linkedin-in,
 footer a[href*="linkedin.com"] i.fa-brands {
-    color: #0a66c2 !important;
-    /* LinkedIn primary blue */
+    color: #0077b5 !important;
+
+    /* Original LinkedIn Blue */
     font-weight: 400;
 }
 
-footer i.fa-brands.fa-github,
-footer a[href*="github.com"] i.fa-brands {
-    color: #f5f5f7 !important;
-    /* Light GitHub mark for visibility */
-    font-weight: 400;
-}
+/* GitHub and X colors are defined in theme-specific sections below */
 
 footer i.fa-brands.fa-youtube,
 footer a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000 !important;
-    /* Original YouTube Red */
-    font-weight: 400;
-}
+    color: #f00 !important;
 
-footer i.fa-brands.fa-x-twitter,
-footer i.fa-brands.fa-twitter,
-footer a[href*="x.com"] i.fa-brands,
-footer a[href*="twitter.com"] i.fa-brands {
-    color: #1da1f2 !important;
-    /* Twitter airy blue */
+    /* Original YouTube Red */
     font-weight: 400;
 }
 
 footer i.fa-solid.fa-globe,
 footer a[href*="wixsite.com"] .fa-solid.fa-globe {
-    color: #5ac8fa !important;
-    /* Aqua blue accent */
+    color: #0077b5 !important;
+
+    /* LinkedIn Blue for Web Links */
     font-weight: 900;
 }
 
 footer i.fa-solid.fa-code,
 footer a[href*="leetcode.com"] .fa-solid.fa-code {
     color: #61dafb !important;
+
     /* React Blue for LeetCode */
     font-weight: 900;
 }
 
-/* Keep social icon brand colors vivid in light mode (contact + footer) */
-html:not(.dark) .contact-social-links i,
-html:not(.dark) footer i {
-    color: inherit !important;
-    opacity: 1 !important;
+/* Dark mode adjustments for better visibility */
+html.dark footer i.fa-brands.fa-facebook,
+html.dark footer a[href*="facebook.com"] i.fa-brands {
+    color: #0a84ff !important;
+}
+
+html.dark footer i.fa-brands.fa-instagram,
+html.dark footer a[href*="instagram.com"] i.fa-brands {
+    color: #ff375f !important;
+}
+
+html.dark footer i.fa-brands.fa-linkedin,
+html.dark footer a[href*="linkedin.com"] i.fa-brands {
+    color: #0a66c2 !important;
+}
+
+html.dark footer i.fa-brands.fa-github,
+html.dark footer a[href*="github.com"] i.fa-brands {
+    color: #f5f5f7 !important;
+}
+
+html.dark footer i.fa-brands.fa-x-twitter,
+html.dark footer i.fa-brands.fa-twitter,
+html.dark footer a[href*="x.com"] i.fa-brands,
+html.dark footer a[href*="twitter.com"] i.fa-brands {
+    color: #1da1f2 !important;
+}
+
+html.dark footer i.fa-solid.fa-globe {
+    color: #5ac8fa !important;
+}
+
+/* Light mode adjustments for GitHub and X visibility on light footer */
+html:not(.dark) footer i.fa-brands.fa-github,
+html:not(.dark) footer a[href*="github.com"] i.fa-brands {
+    color: #fff !important;
+
+    /* White for visibility on light footer */
+}
+
+html:not(.dark) footer i.fa-brands.fa-x-twitter,
+html:not(.dark) footer i.fa-brands.fa-twitter,
+html:not(.dark) footer a[href*="x.com"] i.fa-brands,
+html:not(.dark) footer a[href*="twitter.com"] i.fa-brands {
+    color: #fff !important;
+
+    /* White for visibility on light footer */
+}
+
+/* Footer hover effect - scale only, keep brand colors */
+footer a:hover i.fa-brands,
+footer a:hover i.fa-solid {
+    transform: scale(1.15);
+    transition: transform 0.3s ease;
+}
+
+/* Smooth transition for all footer icons */
+footer i.fa-brands,
+footer i.fa-solid {
+    transition: transform 0.3s ease;
 }
 
 
@@ -1751,7 +2076,7 @@ html:not(.dark) footer i {
 #home img:hover {
     transform: scale(1.05);
     filter: grayscale(0%) contrast(1.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgb(0 0 0 / 10%);
 }
 
 /* Subtle Gradient Background for Home */
@@ -1761,7 +2086,7 @@ html:not(.dark) footer i {
 }
 
 /* Responsive adjustments for smaller screens if needed */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     h1 {
         font-size: 2.8rem;
     }
@@ -1784,11 +2109,13 @@ html:not(.dark) footer i {
 
     .overlay-nav-link {
         font-size: 1.8rem;
+
         /* Adjust for smaller screens */
     }
 
     .contact-input {
         padding: 12px 16px;
+
         /* Adjust padding for smaller screens */
     }
 
@@ -1799,7 +2126,7 @@ html:not(.dark) footer i {
     }
 }
 
-@media (max-width: 599px) {
+@media (width <= 599px) {
     #contact .row {
         grid-template-columns: 1fr;
     }
@@ -1834,9 +2161,9 @@ section#contact {
 
 /* Footer - Enhanced Light/Dark Mode */
 html.dark footer {
-    background: linear-gradient(180deg, #000000 0%, #0c0c0f 100%);
+    background: linear-gradient(180deg, #000 0%, #0c0c0f 100%);
     color: #f5f5f7;
-    border-top-color: rgba(255, 255, 255, 0.08);
+    border-top-color: rgb(255 255 255 / 8%);
 }
 
 html.dark footer a {
@@ -1850,6 +2177,7 @@ html.dark footer a:hover {
 /* Additional Light Mode Safety Overrides */
 section:hover {
     background: inherit;
+
     /* Prevent interference */
 }
 
@@ -1878,6 +2206,7 @@ html.dark .contact-social-links img {
 }
 
 /* Final Section Refinement */
+
 /* ===== END OF LIGHT/DARK MODE ENHANCEMENTS ===== */
 
 /* Dark Mode Project Cards - Professional Design */
@@ -1902,8 +2231,8 @@ html.dark .project-card p {
 }
 
 html.dark .project-card .project-tags .tag {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.16) !important;
+    background: rgb(255 255 255 / 8%) !important;
+    border-color: rgb(255 255 255 / 16%) !important;
 }
 
 html.dark .project-card .project-tags .tag:hover {
@@ -1914,23 +2243,25 @@ html.dark .project-card .project-tags .tag:hover {
 html.dark .project-card .row a,
 html.dark .project-card a.text-accent {
     color: var(--text-accent) !important;
-    border-color: rgba(41, 151, 255, 0.35) !important;
+    border-color: rgb(41 151 255 / 35%) !important;
 }
 
 html.dark .project-card .row a:hover,
 html.dark .project-card a.text-accent:hover {
     color: color-mix(in srgb, var(--text-accent) 80%, white 20%) !important;
     opacity: 0.9;
-    border-color: rgba(90, 200, 250, 0.45) !important;
+    border-color: rgb(90 200 250 / 45%) !important;
 }
 
 /* ===== MOBILE & RESPONSIVE DESIGN - iOS/Android/Tablet Compatible ===== */
 
 /* ===== MOBILE VIEWPORT & BASE SETUP ===== */
+
 /* Mobile-first approach - optimize for mobile, enhance for desktop */
-@media (max-width: 767px) {
+@media (width <= 767px) {
     html {
         font-size: 14px;
+
         /* Smaller base font for mobile */
     }
 
@@ -1942,6 +2273,7 @@ html.dark .project-card a.text-accent:hover {
     /* Mobile Navigation */
     .global-nav {
         height: 48px;
+
         /* Smaller on mobile */
         padding: 0 16px;
     }
@@ -1949,6 +2281,7 @@ html.dark .project-card a.text-accent:hover {
     .nav-container {
         height: 100%;
         gap: 12px;
+
         /* Tighter spacing */
     }
 
@@ -1959,6 +2292,7 @@ html.dark .project-card a.text-accent:hover {
 
     .nav-links {
         display: none !important;
+
         /* Hide desktop nav on mobile */
     }
 
@@ -1981,6 +2315,7 @@ html.dark .project-card a.text-accent:hover {
     .btn,
     a[role="button"] {
         min-height: 44px;
+
         /* Apple recommended minimum */
         min-width: 44px;
     }
@@ -1988,12 +2323,14 @@ html.dark .project-card a.text-accent:hover {
     /* Mobile Typography */
     h1 {
         font-size: 2.5rem;
+
         /* Base: 40px on mobile */
         line-height: 1.1;
     }
 
     h2 {
         font-size: 1.75rem;
+
         /* Base: 28px on mobile */
         letter-spacing: -0.02em;
         margin-bottom: 2rem;
@@ -2034,6 +2371,7 @@ html.dark .project-card a.text-accent:hover {
     /* Home Section Mobile */
     .home-element {
         opacity: 0;
+
         /* Remove fading for better mobile performance */
     }
 
@@ -2055,6 +2393,7 @@ html.dark .project-card a.text-accent:hover {
         font-size: 1.125rem;
         margin-bottom: 1.5rem;
         max-width: none;
+
         /* Remove restrictive width on mobile */
     }
 
@@ -2063,8 +2402,10 @@ html.dark .project-card a.text-accent:hover {
         width: 200px;
         height: 200px;
         filter: none;
+
         /* Remove filters for better mobile performance */
         transition: none;
+
         /* Remove transitions */
     }
 
@@ -2080,6 +2421,7 @@ html.dark .project-card a.text-accent:hover {
         font-size: 1rem;
         padding: 0.75rem 1.5rem;
         width: 100%;
+
         /* Full width on mobile */
         margin-bottom: 1rem;
     }
@@ -2102,6 +2444,7 @@ html.dark .project-card a.text-accent:hover {
     /* Mobile Project Grid */
     .project-grid {
         grid-template-columns: 1fr;
+
         /* Single column */
         gap: 1.5rem;
         padding: 0;
@@ -2110,6 +2453,7 @@ html.dark .project-card a.text-accent:hover {
     /* Contact Form Layout */
     .contact-input {
         font-size: 16px;
+
         /* Prevent zoom on iOS */
         padding: 12px 16px;
     }
@@ -2155,18 +2499,17 @@ html.dark .project-card a.text-accent:hover {
     }
 
     ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgb(0 0 0 / 20%);
         border-radius: 2px;
     }
 
     html.dark ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgb(255 255 255 / 20%);
     }
 }
 
 /* ===== TABLET DESIGN ===== */
-@media (min-width: 768px) and (max-width: 1023px) {
-
+@media (width >= 768px) and (width <= 1023px) {
     /* Tablet-specific styles */
     .container,
     .container-fluid {
@@ -2180,6 +2523,7 @@ html.dark .project-card a.text-accent:hover {
 
     .nav-links {
         display: none !important;
+
         /* Still hide on tablets to save space */
     }
 
@@ -2193,6 +2537,7 @@ html.dark .project-card a.text-accent:hover {
 
     .project-grid {
         grid-template-columns: repeat(2, 1fr);
+
         /* 2 columns on tablets */
         gap: 2rem;
     }
@@ -2200,8 +2545,7 @@ html.dark .project-card a.text-accent:hover {
 }
 
 /* ===== DESKTOP ENHANCEMENTS ===== */
-@media (min-width: 1024px) {
-
+@media (width >= 1024px) {
     /* Desktop navigation - show full nav */
     .nav-links {
         display: flex !important;
@@ -2222,9 +2566,9 @@ html.dark .project-card a.text-accent:hover {
 }
 
 /* ===== iOS SPECIFIC OPTIMIZATIONS ===== */
+
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
-
     /* iOS Safari touch targets */
     button,
     .btn,
@@ -2232,36 +2576,36 @@ html.dark .project-card a.text-accent:hover {
     textarea,
     select,
     a[role="button"] {
-        -webkit-appearance: none;
         appearance: none;
-        -webkit-tap-highlight-color: rgba(0, 113, 227, 0.1);
-        -webkit-user-select: text;
+        appearance: none;
+        -webkit-tap-highlight-color: rgb(0 113 227 / 10%);
+        user-select: text;
         user-select: text;
     }
 
     /* iOS Safari input fixes */
     input:focus,
     textarea:focus {
-        -webkit-user-select: text;
         user-select: text;
-        -webkit-appearance: none;
+        user-select: text;
+        appearance: none;
         appearance: none;
     }
 
     /* iOS Safari animation performance */
     .fade-in {
-        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
         backface-visibility: hidden;
     }
 }
 
 /* ===== ANDROID SPECIFIC OPTIMIZATIONS ===== */
+
 /* Android Chrome specific fixes */
 @supports not (-webkit-touch-callout: none) {
-
     /* Android Chrome touch improvements */
     * {
-        -webkit-tap-highlight-color: rgba(0, 113, 227, 0.1);
+        -webkit-tap-highlight-color: rgb(0 113 227 / 10%);
     }
 
     /* Android Chrome scrollbar */
@@ -2270,19 +2614,18 @@ html.dark .project-card a.text-accent:hover {
     }
 
     ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.3);
+        background: rgb(0 0 0 / 30%);
         border-radius: 3px;
     }
 
     html.dark ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
+        background: rgb(255 255 255 / 30%);
     }
 }
 
 /* ===== HIGH RESOLUTION DISPLAYS ===== */
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
-
+@media (min-device-pixel-ratio: 2),
+(resolution >= 192dpi) {
     /* Retina display optimizations */
     .nav-logo img {
         image-rendering: -webkit-optimize-contrast;
@@ -2293,13 +2636,12 @@ html.dark .project-card a.text-accent:hover {
     body {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        text-rendering: optimizeLegibility;
+        text-rendering: optimizelegibility;
     }
 }
 
 /* ===== ACCESSIBILITY ENHANCEMENTS ===== */
 @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
@@ -2320,20 +2662,20 @@ html.dark .project-card a.text-accent:hover {
 }
 
 /* ===== PERFORMANCE OPTIMIZATIONS ===== */
-/* Reduce complexity on mobile for better performance */
-@media (max-width: 767px) {
 
+/* Reduce complexity on mobile for better performance */
+@media (width <= 767px) {
     /* Disable heavy shadows on mobile */
     .project-card,
     .education-card,
     .timeline-item>div {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
     }
 
     html.dark .project-card,
     html.dark .education-card,
     html.dark .timeline-item>div {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
     }
 
     /* Simplify animations */
@@ -2349,7 +2691,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== PRINT STYLES ===== */
 @media print {
-
     .global-nav,
     .theme-toggle-nav,
     footer {
@@ -2370,7 +2711,7 @@ html.dark .project-card a.text-accent:hover {
     .education-card,
     .project-card {
         break-inside: avoid;
-        page-break-inside: avoid;
+        break-inside: avoid;
     }
 }
 
@@ -2379,7 +2720,8 @@ html.dark .project-card a.text-accent:hover {
 /* Programming Languages - Perfect Brand Colors */
 .fa-solid.fa-code,
 .fas.fa-code {
-    color: hsl(199, 100%, 55%) !important;
+    color: hsl(199deg 100% 55%) !important;
+
     /* React blue for general coding */
     font-weight: 900;
 }
@@ -2389,26 +2731,30 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-square-js,
 .fab.fa-js,
 .fab.fa-js-square {
-    color: hsl(54, 91%, 58%) !important;
+    color: hsl(54deg 91% 58%) !important;
+
     /* JavaScript yellow */
     font-weight: 400;
-    background: linear-gradient(45deg, hsl(54, 91%, 58%), hsl(0, 0%, 80%));
+    background: linear-gradient(45deg, hsl(54deg 91% 58%), hsl(0deg 0% 80%));
+
     /* Gradient for 3D effect */
-    -webkit-background-clip: text;
+    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .fa-brands.fa-node-js,
 .fab.fa-node-js {
-    color: hsl(118, 48%, 43%) !important;
+    color: hsl(118deg 48% 43%) !important;
+
     /* Node.js green */
     font-weight: 400;
 }
 
 .fa-brands.fa-react,
 .fab.fa-react {
-    color: hsl(199, 100%, 55%) !important;
+    color: hsl(199deg 100% 55%) !important;
+
     /* React blue */
     font-weight: 400;
 }
@@ -2416,28 +2762,32 @@ html.dark .project-card a.text-accent:hover {
 /* Frameworks & Libraries */
 .fa-brands.fa-java,
 .fab.fa-java {
-    color: hsl(12, 85%, 52%) !important;
+    color: hsl(12deg 85% 52%) !important;
+
     /* Java red */
     font-weight: 400;
 }
 
 .fa-brands.fa-spring,
 .fab.fa-spring {
-    color: hsl(99, 43%, 47%) !important;
+    color: hsl(99deg 43% 47%) !important;
+
     /* Spring green */
     font-weight: 400;
 }
 
 .fa-brands.fa-angular,
 .fab.fa-angular {
-    color: hsl(0, 84%, 60%) !important;
+    color: hsl(0deg 84% 60%) !important;
+
     /* Angular red */
     font-weight: 400;
 }
 
 .fa-solid.fa-brain,
 .fas.fa-brain {
-    color: hsl(259, 100%, 70%) !important;
+    color: hsl(259deg 100% 70%) !important;
+
     /* Purple for AI/ML */
     font-weight: 900;
     animation: brainPulse 2s infinite;
@@ -2445,7 +2795,8 @@ html.dark .project-card a.text-accent:hover {
 
 .fa-solid.fa-robot,
 .fas.fa-robot {
-    color: hsl(188, 100%, 50%) !important;
+    color: hsl(188deg 100% 50%) !important;
+
     /* Cyan for robotics/AI */
     font-weight: 900;
 }
@@ -2453,21 +2804,24 @@ html.dark .project-card a.text-accent:hover {
 /* Cloud & DevOps - Precise Brand Colors */
 .fa-brands.fa-aws,
 .fab.fa-aws {
-    color: hsl(32, 100%, 50%) !important;
+    color: hsl(32deg 100% 50%) !important;
+
     /* AWS orange */
     font-weight: 400;
 }
 
 .fa-brands.fa-docker,
 .fab.fa-docker {
-    color: hsl(203, 87%, 53%) !important;
+    color: hsl(203deg 87% 53%) !important;
+
     /* Docker blue */
     font-weight: 400;
 }
 
 .fa-brands.fa-jenkins,
 .fab.fa-jenkins {
-    color: hsl(5, 76%, 45%) !important;
+    color: hsl(5deg 76% 45%) !important;
+
     /* Jenkins red */
     font-weight: 400;
 }
@@ -2476,7 +2830,8 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-gear,
 .fa-solid.fa-cogs,
 .fas.fa-cogs {
-    color: hsl(233, 47%, 71%) !important;
+    color: hsl(233deg 47% 71%) !important;
+
     /* Indigo for DevOps tools */
     font-weight: 900;
     animation: spin 4s linear infinite;
@@ -2484,7 +2839,8 @@ html.dark .project-card a.text-accent:hover {
 
 .fa-solid.fa-code-branch,
 .fas.fa-code-branch {
-    color: hsl(160, 84%, 39%) !important;
+    color: hsl(160deg 84% 39%) !important;
+
     /* Emerald for git/terraform */
     font-weight: 900;
 }
@@ -2492,7 +2848,8 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-git-alt,
 .fa-brands.fa-git,
 .fab.fa-git {
-    color: hsl(15, 86%, 50%) !important;
+    color: hsl(15deg 86% 50%) !important;
+
     /* Git orange */
     font-weight: 400;
 }
@@ -2500,35 +2857,40 @@ html.dark .project-card a.text-accent:hover {
 /* Databases - Perfect Colors */
 .fa-solid.fa-database,
 .fas.fa-database {
-    color: hsl(162, 84%, 39%) !important;
+    color: hsl(162deg 84% 39%) !important;
+
     /* Green for databases */
     font-weight: 900;
 }
 
 .fa-brands.fa-mysql,
 .fab.fa-mysql {
-    color: hsl(204, 64%, 44%) !important;
+    color: hsl(204deg 64% 44%) !important;
+
     /* MySQL blue */
     font-weight: 400;
 }
 
 .fa-brands.fa-postgresql,
 .fab.fa-postgresql {
-    color: hsl(215, 79%, 51%) !important;
+    color: hsl(215deg 79% 51%) !important;
+
     /* PostgreSQL blue */
     font-weight: 400;
 }
 
 .fa-brands.fa-mongodb,
 .fab.fa-mongodb {
-    color: hsl(114, 55%, 55%) !important;
+    color: hsl(114deg 55% 55%) !important;
+
     /* MongoDB green */
     font-weight: 400;
 }
 
 .fa-brands.fa-redis,
 .fab.fa-redis {
-    color: hsl(0, 71%, 51%) !important;
+    color: hsl(0deg 71% 51%) !important;
+
     /* Redis red */
     font-weight: 400;
 }
@@ -2537,28 +2899,32 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-magnifying-glass,
 .fa-solid.fa-search,
 .fas.fa-search {
-    color: hsl(220, 13%, 50%) !important;
+    color: hsl(220deg 13% 50%) !important;
+
     /* Cool gray */
     font-weight: 900;
 }
 
 .fa-solid.fa-network-wired,
 .fas.fa-network-wired {
-    color: hsl(192, 95%, 51%) !important;
+    color: hsl(192deg 95% 51%) !important;
+
     /* Sky blue for networking */
     font-weight: 900;
 }
 
 .fa-brands.fa-microsoft,
 .fab.fa-microsoft {
-    color: hsl(195, 100%, 47%) !important;
+    color: hsl(195deg 100% 47%) !important;
+
     /* Microsoft blue */
     font-weight: 400;
 }
 
 .fa-brands.fa-google,
 .fab.fa-google {
-    color: hsl(217, 89%, 61%) !important;
+    color: hsl(217deg 89% 61%) !important;
+
     /* Google blue */
     font-weight: 400;
 }
@@ -2566,24 +2932,27 @@ html.dark .project-card a.text-accent:hover {
 /* Modern Tech - Vibrant Colors */
 .fa-solid.fa-leaf,
 .fas.fa-leaf {
-    color: hsl(142, 76%, 36%) !important;
+    color: hsl(142deg 76% 36%) !important;
+
     /* Modern green */
     font-weight: 900;
-    filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.3));
+    filter: drop-shadow(0 0 4px rgb(34 197 94 / 30%));
 }
 
 .fa-solid.fa-shield,
 .fa-solid.fa-shield-alt,
 .fas.fa-shield-alt {
-    color: hsl(0, 71%, 51%) !important;
+    color: hsl(0deg 71% 51%) !important;
+
     /* Red for security */
     font-weight: 900;
-    filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.2));
+    filter: drop-shadow(0 0 6px rgb(239 68 68 / 20%));
 }
 
 .fa-solid.fa-chart-line,
 .fas.fa-chart-line {
-    color: hsl(38, 92%, 50%) !important;
+    color: hsl(38deg 92% 50%) !important;
+
     /* Amber for analytics */
     font-weight: 900;
 }
@@ -2591,28 +2960,32 @@ html.dark .project-card a.text-accent:hover {
 /* Latest Font Awesome Features */
 .fa-solid.fa-laptop-code,
 .fas.fa-laptop-code {
-    color: hsl(259, 100%, 70%) !important;
+    color: hsl(259deg 100% 70%) !important;
+
     /* Purple for coding laptops */
     font-weight: 900;
 }
 
 .fa-solid.fa-server,
 .fas.fa-server {
-    color: hsl(218, 19%, 35%) !important;
+    color: hsl(218deg 19% 35%) !important;
+
     /* Gray for servers */
     font-weight: 900;
 }
 
 .fa-solid.fa-cloud,
 .fas.fa-cloud {
-    color: hsl(233, 47%, 71%) !important;
+    color: hsl(233deg 47% 71%) !important;
+
     /* Indigo for cloud */
     font-weight: 900;
 }
 
 .fa-solid.fa-spinner,
 .fas.fa-spinner {
-    color: hsl(188, 100%, 50%) !important;
+    color: hsl(188deg 100% 50%) !important;
+
     /* Cyan for loading */
     font-weight: 900;
 }
@@ -2620,48 +2993,54 @@ html.dark .project-card a.text-accent:hover {
 /* Certifications & Achievement Icons */
 .fa-solid.fa-certificate,
 .fas.fa-certificate {
-    color: hsl(267, 84%, 73%) !important;
+    color: hsl(267deg 84% 73%) !important;
+
     /* Purple for certifications */
     font-weight: 900;
 }
 
 .fa-solid.fa-trophy,
 .fas.fa-trophy {
-    color: hsl(45, 93%, 47%) !important;
+    color: hsl(45deg 93% 47%) !important;
+
     /* Gold for awards */
     font-weight: 900;
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+    filter: drop-shadow(0 0 8px rgb(251 191 36 / 40%));
 }
 
 /* Project & Demo Links */
 .fa-solid.fa-external-link-alt,
 .fa-solid.fa-external-link,
 .fas.fa-external-link {
-    color: hsl(217, 91%, 60%) !important;
+    color: hsl(217deg 91% 60%) !important;
+
     /* Blue for external links */
     font-weight: 900;
 }
 
 .fa-solid.fa-globe,
 .fas.fa-globe {
-    color: hsl(160, 84%, 39%) !important;
+    color: hsl(160deg 84% 39%) !important;
+
     /* Emerald for web/live demo */
     font-weight: 900;
 }
 
 .fa-brands.fa-github,
 .fab.fa-github {
-    color: hsl(0, 0%, 10%) !important;
+    color: hsl(0deg 0% 10%) !important;
+
     /* GitHub dark */
     font-weight: 400;
     transition: all 0.3s ease;
 }
 
 .fa-brands.fa-github:hover {
-    color: hsl(0, 0%, 100%) !important;
+    color: hsl(0deg 0% 100%) !important;
+
     /* White on hover */
     background: linear-gradient(135deg, #6b7280, #374151);
-    -webkit-background-clip: text;
+    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -2669,52 +3048,55 @@ html.dark .project-card a.text-accent:hover {
 /* Resume Download */
 .fa-solid.fa-download,
 .fas.fa-download {
-    color: hsl(162, 84%, 39%) !important;
+    color: hsl(162deg 84% 39%) !important;
+
     /* Green for download */
     font-weight: 900;
 }
 
 .fa-solid.fa-file-pdf,
 .fas.fa-file-pdf {
-    color: hsl(0, 76%, 63%) !important;
+    color: hsl(0deg 76% 63%) !important;
+
     /* Red for PDF */
     font-weight: 900;
 }
 
 /* Additional Programming Languages */
 .fa-solid.fa-c {
-    color: hsl(207, 100%, 47%) !important;
+    color: hsl(207deg 100% 47%) !important;
     font-weight: 900 !important;
 }
 
 .fa-solid.fa-cpp,
 .fa.fa-cpp,
 .fas.fa-cpp {
-    color: hsl(207, 100%, 47%) !important;
+    color: hsl(207deg 100% 47%) !important;
     font-weight: 900 !important;
 }
 
 .fa-solid.fa-cpp,
 .fa-solid.fa-c-plus-plus {
-    color: hsl(207, 100%, 47%) !important;
+    color: hsl(207deg 100% 47%) !important;
     font-weight: 900;
 }
 
 .fa-brands.fa-swift,
 .fab.fa-swift {
-    color: hsl(19, 88%, 61%) !important;
+    color: hsl(19deg 88% 61%) !important;
+
     /* Swift orange */
     font-weight: 400;
 }
 
 .fa-brands.fa-python {
-    color: hsl(200, 52%, 45%) !important;
+    color: hsl(200deg 52% 45%) !important;
     font-weight: 400;
 }
 
 .fa-brands.fa-c-plus-plus,
 .fab.fa-c-plus-plus {
-    color: hsl(207, 100%, 47%) !important;
+    color: hsl(207deg 100% 47%) !important;
     font-weight: 400;
 }
 
@@ -2722,7 +3104,8 @@ html.dark .project-card a.text-accent:hover {
 .fa.fa-c,
 .fas.fa-c,
 .fa-solid.fa-c {
-    color: hsl(207, 100%, 47%) !important;
+    color: hsl(207deg 100% 47%) !important;
+
     /* Proper C language blue */
     font-weight: 900 !important;
 }
@@ -2733,7 +3116,8 @@ html.dark .project-card a.text-accent:hover {
 .fa.fa-c-plus-plus,
 .fas.fa-c-plus-plus,
 .fa-solid.fa-c-plus-plus {
-    color: hsl(207, 100%, 47%) !important;
+    color: hsl(207deg 100% 47%) !important;
+
     /* Proper C++ language blue */
     font-weight: 900 !important;
 }
@@ -2741,14 +3125,16 @@ html.dark .project-card a.text-accent:hover {
 /* Advanced Tech Icons */
 .fa-solid.fa-layer-group,
 .fas.fa-layer-group {
-    color: hsl(38, 92%, 50%) !important;
+    color: hsl(38deg 92% 50%) !important;
+
     /* Amber for layers/Deep Learning */
     font-weight: 900;
 }
 
 .fa-solid.fa-brain-circuit,
 .fas.fa-brain-circuit {
-    color: hsl(259, 100%, 70%) !important;
+    color: hsl(259deg 100% 70%) !important;
+
     /* Purple for neural networks */
     font-weight: 900;
     animation: brainPulse 3s infinite;
@@ -2756,7 +3142,8 @@ html.dark .project-card a.text-accent:hover {
 
 .fa-solid.fa-chart-simple,
 .fas.fa-chart-simple {
-    color: hsl(162, 84%, 39%) !important;
+    color: hsl(162deg 84% 39%) !important;
+
     /* Green for analytics */
     font-weight: 900;
 }
@@ -2767,6 +3154,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-code,
 .fas.fa-code {
     color: #61dafb;
+
     /* React blue for general coding */
     font-weight: 900;
 }
@@ -2777,18 +3165,21 @@ html.dark .project-card a.text-accent:hover {
 .fab.fa-js,
 .fab.fa-js-square {
     color: #f7df1e;
+
     /* JavaScript yellow */
     font-weight: 400;
     background: linear-gradient(45deg, #f7df1e, #f0c);
+
     /* Gradient for 3D effect */
-    -webkit-background-clip: text;
+    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .fa-brands.fa-node-js,
 .fab.fa-node-js {
-    color: #339933;
+    color: #393;
+
     /* Node.js green */
     font-weight: 400;
 }
@@ -2796,6 +3187,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-react,
 .fab.fa-react {
     color: #61dafb;
+
     /* React blue */
     font-weight: 400;
 }
@@ -2804,6 +3196,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-java,
 .fab.fa-java {
     color: #ee4c2c;
+
     /* Java red */
     font-weight: 400;
 }
@@ -2811,6 +3204,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-spring,
 .fab.fa-spring {
     color: #6db33f;
+
     /* Spring green */
     font-weight: 400;
 }
@@ -2818,6 +3212,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-angular,
 .fab.fa-angular {
     color: #dd0031;
+
     /* Angular red */
     font-weight: 400;
 }
@@ -2825,6 +3220,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-brain,
 .fas.fa-brain {
     color: #8b5cf6;
+
     /* Purple for AI/ML */
     font-weight: 900;
     animation: brainPulse 2s infinite;
@@ -2833,6 +3229,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-robot,
 .fas.fa-robot {
     color: #06b6d4;
+
     /* Cyan for robotics/AI */
     font-weight: 900;
 }
@@ -2840,7 +3237,8 @@ html.dark .project-card a.text-accent:hover {
 /* Cloud & DevOps - Precise Brand Colors */
 .fa-brands.fa-aws,
 .fab.fa-aws {
-    color: #ff9900;
+    color: #f90;
+
     /* AWS orange */
     font-weight: 400;
 }
@@ -2848,6 +3246,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-docker,
 .fab.fa-docker {
     color: #2496ed;
+
     /* Docker blue */
     font-weight: 400;
 }
@@ -2855,6 +3254,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-jenkins,
 .fab.fa-jenkins {
     color: #d73b15;
+
     /* Jenkins red */
     font-weight: 400;
 }
@@ -2864,6 +3264,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-cogs,
 .fas.fa-cogs {
     color: #6366f1;
+
     /* Indigo for DevOps tools */
     font-weight: 900;
     animation: spin 4s linear infinite;
@@ -2872,6 +3273,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-code-branch,
 .fas.fa-code-branch {
     color: #10b981;
+
     /* Emerald for git/terraform */
     font-weight: 900;
 }
@@ -2880,6 +3282,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-git,
 .fab.fa-git {
     color: #f4511e;
+
     /* Git orange */
     font-weight: 400;
 }
@@ -2888,6 +3291,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-database,
 .fas.fa-database {
     color: #059669;
+
     /* Green for databases */
     font-weight: 900;
 }
@@ -2895,6 +3299,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-mysql,
 .fab.fa-mysql {
     color: #4479a1;
+
     /* MySQL blue */
     font-weight: 400;
 }
@@ -2902,6 +3307,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-postgresql,
 .fab.fa-postgresql {
     color: #4169e1;
+
     /* PostgreSQL blue */
     font-weight: 400;
 }
@@ -2909,6 +3315,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-mongodb,
 .fab.fa-mongodb {
     color: #47a248;
+
     /* MongoDB green */
     font-weight: 400;
 }
@@ -2916,6 +3323,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-redis,
 .fab.fa-redis {
     color: #dc2626;
+
     /* Redis red */
     font-weight: 400;
 }
@@ -2925,6 +3333,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-search,
 .fas.fa-search {
     color: #6b7280;
+
     /* Cool gray */
     font-weight: 900;
 }
@@ -2932,6 +3341,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-network-wired,
 .fas.fa-network-wired {
     color: #0ea5e9;
+
     /* Sky blue for networking */
     font-weight: 900;
 }
@@ -2939,6 +3349,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-microsoft,
 .fab.fa-microsoft {
     color: #00a4ef;
+
     /* Microsoft blue */
     font-weight: 400;
 }
@@ -2946,6 +3357,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-google,
 .fab.fa-google {
     color: #4285f4;
+
     /* Google blue */
     font-weight: 400;
 }
@@ -2954,23 +3366,26 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-leaf,
 .fas.fa-leaf {
     color: #16a34a;
+
     /* Modern green */
     font-weight: 900;
-    filter: drop-shadow(0 0 4px rgba(22, 163, 74, 0.3));
+    filter: drop-shadow(0 0 4px rgb(22 163 74 / 30%));
 }
 
 .fa-solid.fa-shield,
 .fa-solid.fa-shield-alt,
 .fas.fa-shield-alt {
     color: #dc2626;
+
     /* Red for security */
     font-weight: 900;
-    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.2));
+    filter: drop-shadow(0 0 6px rgb(220 38 38 / 20%));
 }
 
 .fa-solid.fa-chart-line,
 .fas.fa-chart-line {
     color: #f59e0b;
+
     /* Amber for analytics */
     font-weight: 900;
 }
@@ -2979,6 +3394,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-laptop-code,
 .fas.fa-laptop-code {
     color: #8b5cf6;
+
     /* Purple for coding laptops */
     font-weight: 900;
 }
@@ -2986,6 +3402,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-server,
 .fas.fa-server {
     color: #374151;
+
     /* Gray for servers */
     font-weight: 900;
 }
@@ -2993,6 +3410,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-cloud,
 .fas.fa-cloud {
     color: #6366f1;
+
     /* Indigo for cloud */
     font-weight: 900;
 }
@@ -3000,6 +3418,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-spinner,
 .fas.fa-spinner {
     color: #06b6d4;
+
     /* Cyan for loading */
     font-weight: 900;
 }
@@ -3008,6 +3427,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-certificate,
 .fas.fa-certificate {
     color: #a855f7;
+
     /* Purple for certifications */
     font-weight: 900;
 }
@@ -3015,9 +3435,10 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-trophy,
 .fas.fa-trophy {
     color: #fbbf24;
+
     /* Gold for awards */
     font-weight: 900;
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+    filter: drop-shadow(0 0 8px rgb(251 191 36 / 40%));
 }
 
 /* Project & Demo Links */
@@ -3025,6 +3446,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-external-link,
 .fas.fa-external-link {
     color: #3b82f6;
+
     /* Blue for external links */
     font-weight: 900;
 }
@@ -3032,6 +3454,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-globe,
 .fas.fa-globe {
     color: #10b981;
+
     /* Emerald for web/live demo */
     font-weight: 900;
 }
@@ -3039,16 +3462,18 @@ html.dark .project-card a.text-accent:hover {
 .fa-brands.fa-github,
 .fab.fa-github {
     color: #181717;
+
     /* GitHub dark */
     font-weight: 400;
     transition: all 0.3s ease;
 }
 
 .fa-brands.fa-github:hover {
-    color: #ffffff;
+    color: #fff;
+
     /* White on hover */
     background: linear-gradient(135deg, #6b7280, #374151);
-    -webkit-background-clip: text;
+    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -3057,6 +3482,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-download,
 .fas.fa-download {
     color: #059669;
+
     /* Green for download */
     font-weight: 900;
 }
@@ -3064,6 +3490,7 @@ html.dark .project-card a.text-accent:hover {
 .fa-solid.fa-file-pdf,
 .fas.fa-file-pdf {
     color: #ef4444;
+
     /* Red for PDF */
     font-weight: 900;
 }
@@ -3072,9 +3499,10 @@ html.dark .project-card a.text-accent:hover {
 .theme-toggle-nav i.fa-moon,
 .fas.fa-moon {
     color: #fbbf24;
+
     /* Gold for moon */
     font-weight: 900;
-    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+    text-shadow: 0 0 10px rgb(251 191 36 / 50%);
 }
 
 .fa-moon {
@@ -3083,6 +3511,7 @@ html.dark .project-card a.text-accent:hover {
 
 html.dark .theme-toggle-nav i.fa-moon {
     color: #fbbf24;
+
     /* Keep visible in dark mode */
 }
 
@@ -3090,9 +3519,10 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa.fa-sun,
 .fas.fa-sun {
     color: #f97316;
+
     /* Orange for sun */
     font-weight: 900;
-    text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+    text-shadow: 0 0 10px rgb(249 115 22 / 50%);
 }
 
 .fa-sun {
@@ -3102,6 +3532,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-magic,
 .fas.fa-magic {
     color: #a855f7;
+
     /* Purple for magic/settings */
     font-weight: 900;
 }
@@ -3110,6 +3541,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-comment-dots,
 .fas.fa-comment-dots {
     color: #3b82f6;
+
     /* Blue for chat */
     font-weight: 900;
 }
@@ -3117,6 +3549,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-paper-plane,
 .fas.fa-paper-plane {
     color: #10b981;
+
     /* Green for send */
     font-weight: 900;
 }
@@ -3124,6 +3557,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-microphone,
 .fas.fa-microphone {
     color: #ef4444;
+
     /* Red for microphone */
     font-weight: 900;
 }
@@ -3131,20 +3565,20 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-times,
 .fas.fa-times {
     color: #6b7280;
+
     /* Gray for close */
     font-weight: 900;
 }
 
 /* Keyframe animations for beautiful effects */
 @keyframes brainPulse {
-
     0%,
     100% {
         filter: brightness(1);
     }
 
     50% {
-        filter: brightness(1.2) drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+        filter: brightness(1.2) drop-shadow(0 0 8px rgb(139 92 246 / 60%));
     }
 }
 
@@ -3162,6 +3596,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-envelope,
 .fas.fa-envelope {
     color: #3b82f6;
+
     /* Blue for email */
     font-weight: 900;
 }
@@ -3169,6 +3604,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-whatsapp,
 .fab.fa-whatsapp {
     color: #25d366;
+
     /* WhatsApp green */
     font-weight: 400;
 }
@@ -3177,6 +3613,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-mobile-alt,
 .fas.fa-mobile-alt {
     color: #6366f1;
+
     /* Indigo for phone */
     font-weight: 900;
 }
@@ -3184,6 +3621,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-map-marker-alt,
 .fas.fa-map-marker-alt {
     color: #ef4444;
+
     /* Red for location */
     font-weight: 900;
 }
@@ -3191,6 +3629,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-globe,
 .fas.fa-globe {
     color: #06b6d4;
+
     /* Cyan for web links */
     font-weight: 900;
 }
@@ -3198,6 +3637,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-coffee,
 .fas.fa-coffee {
     color: #92400e;
+
     /* Brown for coffee */
     font-weight: 900;
 }
@@ -3206,13 +3646,14 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-swift,
 .fab.fa-swift {
     color: #fa7343;
+
     /* Swift orange */
     font-weight: 400;
 }
 
 .fa-brands.fa-swift {
-    background: linear-gradient(135deg, #fa7343, #ff9900);
-    -webkit-background-clip: text;
+    background: linear-gradient(135deg, #fa7343, #f90);
+    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -3220,6 +3661,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-python,
 .fab.fa-python {
     color: #3776ab;
+
     /* Python blue */
     font-weight: 400;
 }
@@ -3227,6 +3669,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-c-plus-plus,
 .fab.fa-c-plus-plus {
     color: #00599c;
+
     /* C++ blue */
     font-weight: 400;
 }
@@ -3234,6 +3677,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-c,
 .fab.fa-c {
     color: #a8b9cc;
+
     /* C language blue-gray */
     font-weight: 400;
 }
@@ -3242,6 +3686,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-layer-group,
 .fas.fa-layer-group {
     color: #f59e0b;
+
     /* Amber for layers/Deep Learning */
     font-weight: 900;
 }
@@ -3249,6 +3694,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-brain-circuit,
 .fas.fa-brain-circuit {
     color: #8b5cf6;
+
     /* Purple for neural networks */
     font-weight: 900;
     animation: brainPulse 3s infinite;
@@ -3257,6 +3703,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-solid.fa-chart-simple,
 .fas.fa-chart-simple {
     color: #059669;
+
     /* Green for analytics */
     font-weight: 900;
 }
@@ -3264,6 +3711,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-figma,
 .fab.fa-figma {
     color: #f24e1e;
+
     /* Figma orange */
     font-weight: 400;
 }
@@ -3271,6 +3719,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 .fa-brands.fa-vscode,
 .fab.fa-vscode {
     color: #007acc;
+
     /* VS Code blue */
     font-weight: 400;
 }
@@ -3278,14 +3727,15 @@ html.dark .theme-toggle-nav i.fa-moon {
 /* Experience Checkmarks - Updated */
 .timeline-item svg {
     color: #10b981;
+
     /* Emerald for success/checkmarks */
-    background: rgba(16, 185, 129, 0.1);
+    background: rgb(16 185 129 / 10%);
     border-radius: 50%;
     padding: 4px;
 }
 
 html.dark .timeline-item svg {
-    background: rgba(16, 185, 129, 0.2);
+    background: rgb(16 185 129 / 20%);
 }
 
 /* Social Media Icons - Updated */
@@ -3317,7 +3767,7 @@ html.dark .timeline-item svg {
 
 .fa-brands.fa-youtube,
 .fab.fa-youtube {
-    color: #ff0000;
+    color: #f00;
     font-weight: 400;
 }
 
@@ -3325,7 +3775,7 @@ html.dark .timeline-item svg {
 .fa-brands.fa-twitter,
 .fab.fa-twitter,
 .fab.fa-x-twitter {
-    color: #000000;
+    color: #000;
     font-weight: 400;
 }
 
@@ -3380,20 +3830,20 @@ html.dark .timeline-item svg {
 .fa-solid.fa-comments,
 .fa-solid.fa-comment-dots,
 .fas.fa-comment-dots {
-    color: #ffffff;
+    color: #fff;
     font-weight: 900;
 }
 
 .fa-solid.fa-xmark,
 .fa-solid.fa-times,
 .fas.fa-times {
-    color: #ffffff;
+    color: #fff;
     font-weight: 900;
 }
 
 .fa-solid.fa-microphone,
 .fas.fa-microphone {
-    color: #ffffff;
+    color: #fff;
     font-weight: 900;
 }
 
@@ -3506,12 +3956,14 @@ html.dark .fab.fa-facebook,
 html.dark .fa-brands.fa-facebook-f,
 html.dark .fab.fa-facebook-f {
     color: #4267b2 !important;
+
     /* Lighter Facebook blue for dark mode */
 }
 
 html.dark .fa-brands.fa-instagram,
 html.dark .fab.fa-instagram {
     color: #e95950 !important;
+
     /* Brighter Instagram pink for dark mode */
 }
 
@@ -3520,18 +3972,21 @@ html.dark .fab.fa-linkedin,
 html.dark .fa-brands.fa-linkedin-in,
 html.dark .fab.fa-linkedin-in {
     color: #0a66c2 !important;
+
     /* LinkedIn blue remains vibrant */
 }
 
 html.dark .fa-brands.fa-github,
 html.dark .fab.fa-github {
     color: #f0f0f0 !important;
+
     /* Light grey for GitHub - clear visibility on dark backgrounds */
 }
 
 html.dark .fa-brands.fa-youtube,
 html.dark .fab.fa-youtube {
-    color: #ff0000 !important;
+    color: #f00 !important;
+
     /* YouTube red stays vibrant */
 }
 
@@ -3539,25 +3994,29 @@ html.dark .fa-brands.fa-x-twitter,
 html.dark .fa-brands.fa-twitter,
 html.dark .fab.fa-twitter,
 html.dark .fab.fa-x-twitter {
-    color: #ffffff !important;
+    color: #fff !important;
+
     /* White for X/Twitter - maximum visibility on dark backgrounds */
 }
 
 html.dark .fa-solid.fa-globe,
 html.dark .fas.fa-globe {
     color: #5ac8fa !important;
+
     /* Bright cyan for web links */
 }
 
 html.dark .fa-solid.fa-code,
 html.dark .fas.fa-code {
     color: #61dafb !important;
+
     /* Bright React blue for code links */
 }
 
 html.dark .fa-brands.fa-whatsapp,
 html.dark .fab.fa-whatsapp {
     color: #25d366 !important;
+
     /* WhatsApp green stays bright */
 }
 
@@ -3567,12 +4026,14 @@ html.dark .contact-social-links .fa-brands.fa-facebook-f,
 html.dark .contact-social-links a:hover .fa-brands.fa-facebook,
 html.dark .contact-social-links a:hover .fa-brands.fa-facebook-f {
     color: #1877f2 !important;
+
     /* Keep Facebook blue */
 }
 
 html.dark .contact-social-links .fa-brands.fa-instagram,
 html.dark .contact-social-links a:hover .fa-brands.fa-instagram {
     color: #e4405f !important;
+
     /* Keep Instagram pink */
 }
 
@@ -3581,18 +4042,21 @@ html.dark .contact-social-links .fa-brands.fa-linkedin-in,
 html.dark .contact-social-links a:hover .fa-brands.fa-linkedin,
 html.dark .contact-social-links a:hover .fa-brands.fa-linkedin-in {
     color: #0077b5 !important;
+
     /* Keep LinkedIn blue */
 }
 
 html.dark .contact-social-links .fa-brands.fa-github,
 html.dark .contact-social-links a:hover .fa-brands.fa-github {
     color: #bfc3c9 !important;
+
     /* GitHub light mark for contrast */
 }
 
 html.dark .contact-social-links .fa-brands.fa-youtube,
 html.dark .contact-social-links a:hover .fa-brands.fa-youtube {
-    color: #ff0000 !important;
+    color: #f00 !important;
+
     /* Keep YouTube red */
 }
 
@@ -3601,72 +4065,22 @@ html.dark .contact-social-links .fa-brands.fa-twitter,
 html.dark .contact-social-links a:hover .fa-brands.fa-x-twitter,
 html.dark .contact-social-links a:hover .fa-brands.fa-twitter {
     color: #1da1f2 !important;
+
     /* Twitter blue */
 }
 
 html.dark .contact-social-links .fa-solid.fa-globe,
 html.dark .contact-social-links a:hover .fa-solid.fa-globe {
     color: #0077b5 !important;
+
     /* Globe blue */
 }
 
 html.dark .contact-social-links .fa-solid.fa-code,
 html.dark .contact-social-links a:hover .fa-solid.fa-code {
     color: #61dafb !important;
+
     /* Code cyan */
-}
-
-/* FOOTER SOCIAL ICONS - Dark Mode - Keep Original Brand Colors */
-html.dark footer i.fa-brands.fa-facebook,
-html.dark footer i.fa-brands.fa-facebook-f,
-html.dark footer a[href*="facebook.com"] i.fa-brands {
-    color: #0a84ff !important;
-    /* Bright Facebook blue */
-}
-
-html.dark footer i.fa-brands.fa-instagram,
-html.dark footer a[href*="instagram.com"] i.fa-brands {
-    color: #ff375f !important;
-    /* Vibrant Instagram pink */
-}
-
-html.dark footer i.fa-brands.fa-linkedin,
-html.dark footer i.fa-brands.fa-linkedin-in,
-html.dark footer a[href*="linkedin.com"] i.fa-brands {
-    color: #0a66c2 !important;
-    /* LinkedIn blue */
-}
-
-html.dark footer i.fa-brands.fa-github,
-html.dark footer a[href*="github.com"] i.fa-brands {
-    color: #f5f5f7 !important;
-    /* Light GitHub mark */
-}
-
-html.dark footer i.fa-brands.fa-youtube,
-html.dark footer a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000 !important;
-    /* Original YouTube Red */
-}
-
-html.dark footer i.fa-brands.fa-x-twitter,
-html.dark footer i.fa-brands.fa-twitter,
-html.dark footer a[href*="x.com"] i.fa-brands,
-html.dark footer a[href*="twitter.com"] i.fa-brands {
-    color: #1da1f2 !important;
-    /* Twitter blue */
-}
-
-html.dark footer i.fa-solid.fa-globe,
-html.dark footer a[href*="wixsite.com"] .fa-solid.fa-globe {
-    color: #5ac8fa !important;
-    /* Aqua blue accent */
-}
-
-html.dark footer i.fa-solid.fa-code,
-html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
-    color: #61dafb !important;
-    /* React Blue for LeetCode */
 }
 
 
@@ -3682,13 +4096,65 @@ html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
 /* Keep recommendation cards static (no hover animations) */
 .recommendation-card {
     transform: none !important;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 10px 28px rgb(0 0 0 / 8%) !important;
     transition: none !important;
 }
 
 .education-card h4 {
     color: var(--text-primary);
     font-weight: 600;
+}
+
+.support-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 10px 28px rgb(0 0 0 / 8%);
+}
+
+.support-kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #ff8a00;
+    margin: 0 0 0.35rem;
+}
+
+.support-title {
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+}
+
+.support-copy {
+    margin: 0;
+    color: var(--text-secondary);
+    max-width: 52ch;
+}
+
+.support-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.5rem !important;
+    background: linear-gradient(135deg, #ffb347 0%, #ff9a3c 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: 0 10px 22px rgb(255 154 60 / 35%) !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.support-btn:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 12px 26px rgb(255 154 60 / 45%) !important;
 }
 
 .education-card p,
@@ -3710,13 +4176,13 @@ html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .education-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgb(0 0 0 / 15%);
 }
 
 /* For Dark Mode Overrides */
@@ -3738,12 +4204,13 @@ html.dark .education-card ul li {
 
 html.dark .education-card .date-badge {
     color: var(--text-secondary);
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgb(255 255 255 / 8%);
 }
 
 /* Overlay menu */
 .dark .overlay-menu {
-    background: hsla(240, 8%, 10%, 0.92);
+    background: hsl(240deg 8% 10% / 92%);
+
     /* Use body color with opacity */
 }
 
@@ -3757,9 +4224,9 @@ html.dark .education-card .date-badge {
 
 /* Footer */
 .dark footer {
-    background: linear-gradient(180deg, #000000 0%, #0c0c0f 100%);
+    background: linear-gradient(180deg, #000 0%, #0c0c0f 100%);
     color: #f5f5f7;
-    border-top-color: rgba(255, 255, 255, 0.08);
+    border-top-color: rgb(255 255 255 / 8%);
 }
 
 .dark footer a {
@@ -3772,7 +4239,7 @@ html.dark .education-card .date-badge {
 
 .dark footer .fab,
 .dark footer .fas {
-    color: currentColor;
+    color: currentcolor;
 }
 
 /* Chatbot */
@@ -3807,7 +4274,7 @@ html.dark .education-card .date-badge {
 }
 
 .dark #chat-widget .bg-gray-200 {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgb(255 255 255 / 12%);
     color: var(--text-primary);
 }
 
@@ -3829,25 +4296,25 @@ html.dark .education-card .date-badge {
 }
 
 .dark .message-bubble.user {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgb(255 255 255 / 12%);
     color: var(--text-primary);
 }
 
 /* Inputs and forms */
 .dark .contact-input {
-    background-color: rgba(17, 17, 17, 0.85);
+    background-color: rgb(17 17 17 / 85%);
     color: var(--text-primary);
     border-color: var(--border-color);
 }
 
 .dark .contact-input:focus {
     border-color: #2997ff;
-    box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.3);
+    box-shadow: 0 0 0 4px rgb(41 151 255 / 30%);
 }
 
 /* Timeline badge */
 .dark .timeline-item .date-badge {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgb(255 255 255 / 12%);
     color: var(--text-secondary);
 }
 
@@ -3869,7 +4336,7 @@ html.dark .education-card .date-badge {
 }
 
 .dark .button-secondary:hover {
-    background-color: rgba(41, 151, 255, 0.15);
+    background-color: rgb(41 151 255 / 15%);
     color: #66b5ff;
     border-color: #2997ff;
 }
@@ -3889,7 +4356,7 @@ html.dark .education-card .date-badge {
     max-height: calc(100vh - clamp(20px, 4vh, 48px) - 120px);
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     #chatbot-toggle {
         bottom: clamp(16px, 6vw, 32px) !important;
         right: clamp(16px, 6vw, 32px) !important;
@@ -3914,8 +4381,9 @@ html.dark .education-card .date-badge {
     --github-color: #24292E;
     --instagram-color: #e4405f;
     --linkedin-color: #0177B5;
-    --youtube-color: #FF0000;
+    --youtube-color: #F00;
     --wix-color: #0C6FD5;
+
     /* Wix Blue */
     --leetcode-color: #FFA116;
 }
@@ -3923,19 +4391,21 @@ html.dark .education-card .date-badge {
 /* Scoped to wrapper to avoid breaking body */
 .wrapper {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     gap: 0.75rem;
-    flex-wrap: wrap;
     list-style: none;
     margin: 0 auto;
     justify-content: center;
+
     /* Center the icons */
     padding: 1rem 0;
+
     /* Add some padding */
 }
 
 .wrapper a {
     text-decoration: none;
+
     /* Remove underline from links */
     color: inherit;
 }
@@ -3951,16 +4421,17 @@ html.dark .education-card .date-badge {
     align-items: center;
     flex-direction: column;
     cursor: pointer;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 10px rgb(0 0 0 / 10%);
     transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     background: #fff;
+
     /* Ensure icons have background */
 }
 
 /* Dark mode support for icons */
 html.dark .wrapper .icon {
     background: #2c2c2e;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
     color: #fff;
 }
 
@@ -3970,16 +4441,17 @@ html.dark .wrapper .icon {
     font-size: 0.875rem;
     background: #fff;
     color: #000;
+
     /* Fixed text color for tooltip */
     padding: 5px 8px;
     border-radius: 5px;
     opacity: 0;
     pointer-events: none;
     transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    font-family: 'Poppins', sans-serif;
+    font-family: Poppins, sans-serif;
     white-space: nowrap;
     z-index: 10;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px rgb(0 0 0 / 10%);
 }
 
 .wrapper .tooltip::before {
@@ -4003,7 +4475,7 @@ html.dark .wrapper .icon {
 
 .wrapper .icon:hover span,
 .wrapper .icon:hover .tooltip {
-    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 10%);
 }
 
 /* Default Colorful Icons */
@@ -4088,32 +4560,33 @@ html.dark .wrapper .icon {
 /* Fix Hero Text Visibility */
 #home h2.text-reveal {
     color: var(--text-primary);
+
     /* Ensure it uses the primary text color which adapts to theme */
 }
 
 /* Apple Event Style Button Override - Theme Aware */
 .btn.btn-secondary.btn-beam {
     background-color: #0071e3 !important;
-    color: #ffffff !important;
+    color: #fff !important;
     border-radius: 980px;
     padding: 12px 32px;
     font-weight: 500;
     font-size: 17px;
     border: none;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
 }
 
 .btn.btn-secondary.btn-beam:hover {
     background-color: #0077ed !important;
     transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
-    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgb(0 113 227 / 40%);
+    color: #fff !important;
 }
 
 /* Ensure button text is white in dark mode */
 html.dark .btn.btn-secondary.btn-beam {
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 /* Theme Aware Hero Text - CRITICAL VISIBILITY FIX */
@@ -4126,8 +4599,8 @@ html.dark .btn.btn-secondary.btn-beam {
 /* Dark Mode Specifics for Hero */
 html.dark #home h2.text-reveal,
 html.dark #home h1.text-reveal {
-    color: #ffffff !important;
-    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+    color: #fff !important;
+    text-shadow: 0 2px 8px rgb(255 255 255 / 20%);
 }
 
 html.dark #home p {
@@ -4139,7 +4612,7 @@ html.dark #home p {
 /* Light Mode Specifics for Hero */
 html:not(.dark) #home h2.text-reveal,
 html:not(.dark) #home h1.text-reveal {
-    color: #000000 !important;
+    color: #000 !important;
     text-shadow: none;
 }
 
@@ -4156,7 +4629,7 @@ html.dark body {
 }
 
 html:not(.dark) body {
-    background: #ffffff;
+    background: #fff;
 }
 
 /* Search Overlay Styles - Apple Inspired Theme Aware */
@@ -4182,11 +4655,11 @@ html:not(.dark) body {
 }
 
 html.dark #search-overlay {
-    background: rgba(0, 0, 0, 0.98);
+    background: rgb(0 0 0 / 98%);
 }
 
 html:not(.dark) #search-overlay {
-    background: rgba(255, 255, 255, 0.98);
+    background: rgb(255 255 255 / 98%);
 }
 
 .search-container {
@@ -4230,7 +4703,7 @@ html:not(.dark) #search-overlay {
 
 html.dark #search-input {
     color: #f5f5f7;
-    border-bottom-color: rgba(255, 255, 255, 0.2);
+    border-bottom-color: rgb(255 255 255 / 20%);
 }
 
 html:not(.dark) #search-input {
@@ -4264,7 +4737,7 @@ html:not(.dark) #search-input {
 }
 
 #search-close:hover {
-    background: rgba(128, 128, 128, 0.1);
+    background: rgb(128 128 128 / 10%);
     color: var(--text-primary);
 }
 
@@ -4321,7 +4794,7 @@ html:not(.dark) .search-section-title {
 }
 
 html.dark .search-result-item:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgb(255 255 255 / 5%);
 }
 
 html:not(.dark) .search-result-item:hover {
@@ -4457,4 +4930,70 @@ html:not(.dark) .search-result-section {
 
 .search-result-item:nth-child(5) {
     animation-delay: 0.25s;
+}
+
+/* Support Section Animations */
+@keyframes gentle-pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgb(255 221 0 / 70%);
+    }
+
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgb(255 221 0 / 0%);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgb(255 221 0 / 0%);
+    }
+}
+
+@keyframes float-image {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.support-btn-animate {
+    animation: gentle-pulse 2s infinite;
+}
+
+.ganesh-animate {
+    animation: float-image 3s ease-in-out infinite;
+    border: 2px solid rgb(255 215 0 / 30%);
+
+    /* Gold border */
+}
+
+/* Ensure hover pauses animation or enhances it */
+.support-btn-animate:hover {
+    animation: none;
+    transform: scale(1.05);
+}
+
+/* Dream Companies Marquee */
+.marquee-track {
+    animation: scroll 20s linear infinite;
+    width: max-content;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.dream-companies-marquee:hover .marquee-track {
+    animation-play-state: paused;
 }

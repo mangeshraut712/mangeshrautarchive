@@ -8,11 +8,11 @@
 }
 
 html.dark #about {
-    background: #000000;
+    background: #000;
 }
 
 html:not(.dark) #about {
-    background: #ffffff;
+    background: #fff;
 }
 
 /* About Content Container */
@@ -40,11 +40,11 @@ html:not(.dark) #about {
     height: 500px;
     object-fit: cover;
     border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 15%);
 }
 
 html.dark .about-image {
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 50%);
 }
 
 .about-image-badge {
@@ -52,18 +52,18 @@ html.dark .about-image {
     bottom: 20px;
     left: 20px;
     right: 20px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgb(255 255 255 / 95%);
     backdrop-filter: blur(10px);
     padding: 1rem 1.5rem;
     border-radius: 12px;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 10%);
 }
 
 html.dark .about-image-badge {
-    background: rgba(24, 24, 27, 0.95);
+    background: rgb(24 24 27 / 95%);
 }
 
 .about-image-badge i {
@@ -159,23 +159,23 @@ html:not(.dark) .about-description {
     border-radius: 16px;
     padding: 2rem;
     border: 1px solid var(--border-color);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .about-highlight-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
 }
 
 html.dark .about-highlight-card {
-    background: #000000;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    background: #000;
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
 
 html.dark .about-highlight-card:hover {
-    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 20px 56px rgb(0 0 0 / 55%);
 }
 
 .about-highlight-icon {
@@ -187,19 +187,19 @@ html.dark .about-highlight-card:hover {
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
-    box-shadow: 0 8px 20px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 8px 20px rgb(0 113 227 / 30%);
 }
 
 .about-highlight-icon i {
     font-size: 1.75rem;
-    color: #ffffff;
+    color: #fff;
 }
 
 .about-highlight-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.75rem;
 }
 
 html.dark .about-highlight-title {
@@ -226,7 +226,7 @@ html:not(.dark) .about-highlight-text {
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
     .about-main {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -237,7 +237,7 @@ html:not(.dark) .about-highlight-text {
     }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .about-image {
         height: 350px;
     }

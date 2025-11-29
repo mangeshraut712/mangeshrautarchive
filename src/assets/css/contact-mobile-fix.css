@@ -1,0 +1,305 @@
+/* ========================================
+   CONTACT PAGE MOBILE FIX - COMPLETE OVERRIDE
+   ======================================== */
+
+/* Force mobile viewport constraints */
+@media (width <= 768px) {
+    /* Section level fixes */
+    #contact {
+        padding: 2rem 0 !important;
+        margin: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+    }
+
+    #contact.py-32 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* Container fixes */
+    #contact .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Row/Grid fixes */
+    #contact .row {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.25rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Column fixes */
+    #contact .col-lg-6 {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex: none !important;
+    }
+
+    #contact .col-lg-6.mb-12 {
+        margin-bottom: 0 !important;
+    }
+
+    /* Card fixes - Contact Information & Form */
+    #contact .contact-card,
+    #contact .contact-form-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 1.25rem !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Calendar card */
+    #contact .calendar-card,
+    #contact #calendar-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 1rem !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Marquee containers */
+    #contact .dream-companies-marquee,
+    #contact .dream-cars-marquee {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.75rem !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Form elements */
+    #contact .contact-form,
+    #contact .contact-form-grid {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    #contact .contact-form-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+
+    #contact .contact-input,
+    #contact .contact-textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    #contact .contact-textarea {
+        min-height: 120px !important;
+    }
+
+    #contact .contact-submit {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 0.875rem 1.5rem !important;
+    }
+
+    /* Typography fixes */
+    #contact h2 {
+        font-size: 2rem !important;
+        margin-bottom: 2rem !important;
+        padding: 0 !important;
+    }
+
+    #contact h3 {
+        font-size: 1.15rem !important;
+    }
+
+    #contact h3.mb-6 {
+        margin-bottom: 1rem !important;
+    }
+
+    #contact p {
+        font-size: 0.9rem !important;
+    }
+
+    #contact p.mb-8 {
+        margin-bottom: 1rem !important;
+    }
+
+    /* Space utilities override */
+    #contact .space-y-4>*+* {
+        margin-top: 0.75rem !important;
+    }
+
+    /* Flex utilities */
+    #contact .flex {
+        display: flex !important;
+    }
+
+    #contact .flex.justify-between {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1rem !important;
+    }
+
+    /* Margin utilities */
+    #contact .mt-6,
+    #contact .mt-8 {
+        margin-top: 1rem !important;
+    }
+
+    #contact .mb-4,
+    #contact .mb-6,
+    #contact .mb-8 {
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Wrapper for social icons */
+    #contact .wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-wrap: wrap !important;
+        gap: 0.75rem !important;
+    }
+
+    #contact .wrapper .icon {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+}
+
+/* Extra small screens */
+@media (width <= 480px) {
+    #contact {
+        padding: 1.5rem 0 !important;
+    }
+
+    #contact .container {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    #contact .contact-card,
+    #contact .contact-form-card,
+    #contact .calendar-card {
+        padding: 1rem !important;
+    }
+
+    #contact h2 {
+        font-size: 1.75rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    #contact h3 {
+        font-size: 1.05rem !important;
+    }
+
+    #contact .contact-input,
+    #contact .contact-textarea {
+        padding: 0.65rem 0.875rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    #contact .contact-textarea {
+        min-height: 100px !important;
+    }
+
+    #contact .wrapper .icon {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+    }
+}
+
+/* ========================================
+   SUPPORT ME SECTION - MOBILE FIX
+   ======================================== */
+
+@media (width <= 768px) {
+    /* Support Me section container */
+    #contact .contact-card .border-t {
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Support Me flex container */
+    #contact .contact-card .flex.justify-between {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1rem !important;
+        width: 100% !important;
+    }
+
+    /* Support Me content (left side) */
+    #contact .contact-card .flex.justify-between>div:first-child {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* Buy Me a Coffee button */
+    #contact .contact-card .support-btn-animate,
+    #contact .contact-card a[href*="buymeacoffee"] {
+        display: inline-flex !important;
+        width: auto !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    /* Ganesh image container */
+    #contact .contact-card .flex.justify-between .ml-4 {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    /* Ganesh image styling */
+    #contact .contact-card .ganesh-animate,
+    #contact .contact-card img[alt="Lord Ganesh"] {
+        width: 5rem !important;
+        height: 5rem !important;
+        max-width: 5rem !important;
+        max-height: 5rem !important;
+        object-fit: cover !important;
+        border-radius: 0.75rem !important;
+        box-shadow: 0 4px 12px rgb(0 0 0 / 15%) !important;
+        margin: 0 auto !important;
+    }
+}
+
+@media (width <= 480px) {
+    /* Smaller Ganesh image on very small screens */
+    #contact .contact-card .ganesh-animate,
+    #contact .contact-card img[alt="Lord Ganesh"] {
+        width: 4rem !important;
+        height: 4rem !important;
+        max-width: 4rem !important;
+        max-height: 4rem !important;
+    }
+
+    /* Smaller button text */
+    #contact .contact-card .support-btn-animate,
+    #contact .contact-card a[href*="buymeacoffee"] {
+        font-size: 0.85rem !important;
+        padding: 0.625rem 1rem !important;
+    }
+}

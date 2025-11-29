@@ -8,11 +8,11 @@
 }
 
 html.dark #blog {
-    background: #000000;
+    background: #000;
 }
 
 html:not(.dark) #blog {
-    background: #ffffff;
+    background: #fff;
 }
 
 /* Blog Posts Container */
@@ -31,24 +31,24 @@ html:not(.dark) #blog {
     border: 1px solid var(--border-color);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
     display: flex;
     flex-direction: column;
 }
 
 .blog-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
 }
 
 html.dark .blog-card {
-    background: #000000;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    background: #000;
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
 
 html.dark .blog-card:hover {
-    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 20px 56px rgb(0 0 0 / 55%);
 }
 
 /* Blog Card Content */
@@ -147,18 +147,18 @@ html:not(.dark) .blog-summary {
 
 .blog-tag {
     padding: 0.375rem 0.75rem;
-    background: rgba(0, 113, 227, 0.1);
+    background: rgb(0 113 227 / 10%);
     color: #0071e3;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
-    border: 1px solid rgba(0, 113, 227, 0.2);
+    border: 1px solid rgb(0 113 227 / 20%);
 }
 
 html.dark .blog-tag {
-    background: rgba(41, 151, 255, 0.1);
+    background: rgb(41 151 255 / 10%);
     color: #2997ff;
-    border-color: rgba(41, 151, 255, 0.2);
+    border-color: rgb(41 151 255 / 20%);
 }
 
 /* Blog Read Button */
@@ -166,7 +166,7 @@ html.dark .blog-tag {
     width: 100%;
     padding: 0.875rem 1.5rem;
     background: #0071e3;
-    color: #ffffff !important;
+    color: #fff !important;
     border: none;
     border-radius: 12px;
     font-size: 0.9375rem;
@@ -183,12 +183,12 @@ html.dark .blog-tag {
 .blog-read-btn:hover {
     background: #0077ed;
     transform: translateX(4px);
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 .blog-read-btn i {
     transition: transform 0.3s ease;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 .blog-read-btn:hover i {
@@ -197,25 +197,22 @@ html.dark .blog-tag {
 
 html.dark .blog-read-btn {
     background: #2997ff;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 html.dark .blog-read-btn:hover {
     background: #0071e3;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 html.dark .blog-read-btn i {
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 /* Blog Modal */
 .blog-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -229,11 +226,8 @@ html.dark .blog-read-btn i {
 
 .blog-modal-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    inset: 0;
+    background: rgb(0 0 0 / 70%);
     backdrop-filter: blur(4px);
 }
 
@@ -245,12 +239,12 @@ html.dark .blog-read-btn i {
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 30%);
     z-index: 1;
 }
 
 html.dark .blog-modal-container {
-    background: #000000;
+    background: #000;
 }
 
 .blog-modal-close {
@@ -260,11 +254,11 @@ html.dark .blog-modal-container {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgb(255 255 255 / 90%);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgb(0 0 0 / 10%);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
@@ -294,15 +288,15 @@ html.dark .blog-modal-container {
 }
 
 .blog-modal-close:hover {
-    background: rgba(255, 59, 48, 0.95);
-    border-color: rgba(255, 59, 48, 0.3);
-    box-shadow: 0 12px 32px rgba(255, 59, 48, 0.4);
+    background: rgb(255 59 48 / 95%);
+    border-color: rgb(255 59 48 / 30%);
+    box-shadow: 0 12px 32px rgb(255 59 48 / 40%);
     transform: scale(1.08) rotate(90deg);
 }
 
 .blog-modal-close:hover::before,
 .blog-modal-close:hover::after {
-    background: #ffffff;
+    background: #fff;
 }
 
 .blog-modal-close:active {
@@ -310,11 +304,11 @@ html.dark .blog-modal-container {
 }
 
 html.dark .blog-modal-close {
-    background: rgba(44, 44, 46, 0.9);
+    background: rgb(44 44 46 / 90%);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    border-color: rgb(255 255 255 / 15%);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 50%);
 }
 
 html.dark .blog-modal-close::before,
@@ -323,14 +317,14 @@ html.dark .blog-modal-close::after {
 }
 
 html.dark .blog-modal-close:hover {
-    background: rgba(255, 69, 58, 0.95);
-    border-color: rgba(255, 69, 58, 0.3);
-    box-shadow: 0 12px 32px rgba(255, 69, 58, 0.5);
+    background: rgb(255 69 58 / 95%);
+    border-color: rgb(255 69 58 / 30%);
+    box-shadow: 0 12px 32px rgb(255 69 58 / 50%);
 }
 
 html.dark .blog-modal-close:hover::before,
 html.dark .blog-modal-close:hover::after {
-    background: #ffffff;
+    background: #fff;
 }
 
 .blog-modal-content {
@@ -418,7 +412,7 @@ html.dark .article-title {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     #blog-posts-container {
         grid-template-columns: 1fr;
         gap: 1.5rem;

@@ -25,7 +25,7 @@ html.dark #publications,
 html.dark #awards,
 html.dark #certifications,
 html.dark #contact {
-  background: #000000 !important;
+  background: #000 !important;
 }
 
 /* ALL CARDS & TABLES - Dark Grey with Blue Borders */
@@ -36,25 +36,25 @@ html.dark .education-card,
 html.dark .project-card,
 html.dark div[class*="card"],
 html.dark div[class*="bg-"] {
-  background: #000000 !important;
-  border: 1px solid rgba(0, 122, 255, 0.3) !important;
-  box-shadow: 0 4px 20px rgba(0, 122, 255, 0.08) !important;
+  background: #000 !important;
+  border: 1px solid rgb(0 122 255 / 30%) !important;
+  box-shadow: 0 4px 20px rgb(0 122 255 / 8%) !important;
 }
 
 html.dark table {
   background: #1C1C1E !important;
-  border: 1px solid rgba(0, 122, 255, 0.3) !important;
+  border: 1px solid rgb(0 122 255 / 30%) !important;
 }
 
 html.dark table th {
   background: #0A0A0A !important;
-  color: #ffffff !important;
-  border-bottom: 1px solid rgba(0, 122, 255, 0.3) !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgb(0 122 255 / 30%) !important;
 }
 
 html.dark table td {
-  color: rgba(255, 255, 255, 0.9) !important;
-  border-bottom: 1px solid rgba(0, 122, 255, 0.1) !important;
+  color: rgb(255 255 255 / 90%) !important;
+  border-bottom: 1px solid rgb(0 122 255 / 10%) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -63,14 +63,14 @@ html.dark table td {
 
 html.dark .card {
   box-shadow:
-    0 4px 20px rgba(0, 122, 255, 0.08),
-    0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    0 4px 20px rgb(0 122 255 / 8%),
+    0 1px 3px rgb(0 0 0 / 30%) !important;
 }
 
 html.dark .card:hover {
   box-shadow:
-    0 8px 32px rgba(0, 122, 255, 0.15),
-    0 2px 6px rgba(0, 0, 0, 0.4) !important;
+    0 8px 32px rgb(0 122 255 / 15%),
+    0 2px 6px rgb(0 0 0 / 40%) !important;
   transform: translateY(-2px);
 }
 
@@ -81,7 +81,7 @@ html.dark .card:hover {
 /* Main Headings (h1, h2) - WHITE */
 html.dark h1,
 html.dark h2 {
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Sub Headings (h3, h4) - BLUE */
@@ -97,7 +97,7 @@ html.dark p,
 html.dark span,
 html.dark .text-sm,
 html.dark li {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: rgb(255 255 255 / 90%) !important;
 }
 
 /* Links - Blue */
@@ -115,18 +115,18 @@ html.dark a:hover {
 
 html.dark table {
   background: #1C1C1E !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgb(255 255 255 / 8%) !important;
 }
 
 html.dark table th {
-  background: #000000 !important;
-  color: #ffffff !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: #000 !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgb(255 255 255 / 12%) !important;
 }
 
 html.dark table td {
-  color: rgba(255, 255, 255, 0.9) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: rgb(255 255 255 / 90%) !important;
+  border-bottom: 1px solid rgb(255 255 255 / 6%) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -137,17 +137,17 @@ html.dark .card:hover,
 html.dark .education-card:hover,
 html.dark .experience-card:hover,
 html.dark .project-card:hover {
-  border-color: rgba(0, 122, 255, 0.3) !important;
+  border-color: rgb(0 122 255 / 30%) !important;
   box-shadow:
-    0 8px 32px rgba(0, 122, 255, 0.15),
-    0 0 0 1px rgba(0, 122, 255, 0.2) !important;
+    0 8px 32px rgb(0 122 255 / 15%),
+    0 0 0 1px rgb(0 122 255 / 20%) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
    MOBILE RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   html.dark .card {
     margin-bottom: 16px;
   }

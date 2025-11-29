@@ -16,29 +16,29 @@ html:not(.dark) #publications,
 html:not(.dark) #recommendations,
 html:not(.dark) #blog,
 html:not(.dark) #contact {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: #fff !important;
+    background-color: #fff !important;
 }
 
 /* Light Mode - Body Background */
 html:not(.dark) body {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: #fff !important;
+    background-color: #fff !important;
 }
 
 /* Light Mode - Main Content */
 html:not(.dark) main,
 html:not(.dark) #main-content {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: #fff !important;
+    background-color: #fff !important;
 }
 
 /* Light Mode - Remove gray backgrounds */
 html:not(.dark) .bg-gray-100,
 html:not(.dark) .bg-gray-50,
 html:not(.dark) .bg-secondary {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: #fff !important;
+    background-color: #fff !important;
 }
 
 /* Dark Mode - Keep black backgrounds */
@@ -54,29 +54,30 @@ html.dark #publications,
 html.dark #recommendations,
 html.dark #blog,
 html.dark #contact {
-    background: #000000 !important;
-    background-color: #000000 !important;
+    background: #000 !important;
+    background-color: #000 !important;
 }
 
 html.dark body {
-    background: #000000 !important;
-    background-color: #000000 !important;
+    background: #000 !important;
+    background-color: #000 !important;
 }
 
 html.dark main,
 html.dark #main-content {
-    background: #000000 !important;
-    background-color: #000000 !important;
+    background: #000 !important;
+    background-color: #000 !important;
 }
 
 /* Ensure cards have proper backgrounds */
+
 /* Ensure cards have proper backgrounds */
 html:not(.dark) .education-card,
 html:not(.dark) .award-card,
 html:not(.dark) .recommendation-card,
 html:not(.dark) .about-highlight-card,
 html:not(.dark) .blog-card {
-    background: #ffffff !important;
+    background: #fff !important;
 }
 
 html.dark .education-card,
@@ -90,7 +91,7 @@ html.dark .project-card,
 html.dark .publication-card,
 html.dark .stat-card,
 html.dark .bg-primary {
-    background: #000000 !important;
+    background: #000 !important;
 }
 
 /* Text colors for light mode */
@@ -124,9 +125,9 @@ html.dark .text-secondary {
 
 /* Light Mode Footer */
 html:not(.dark) footer {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    background: #fff !important;
+    background-color: #fff !important;
+    border-top: 1px solid rgb(0 0 0 / 10%) !important;
 }
 
 html:not(.dark) footer p,
@@ -139,11 +140,24 @@ html:not(.dark) footer .text-secondary {
     color: #6e6e73 !important;
 }
 
+/* Footer Icon Colors - Light Mode */
+html:not(.dark) footer i.fa-brands.fa-github,
+html:not(.dark) footer a[href*="github.com"] i.fa-brands {
+    color: #fff !important;
+}
+
+html:not(.dark) footer i.fa-brands.fa-x-twitter,
+html:not(.dark) footer i.fa-brands.fa-twitter,
+html:not(.dark) footer a[href*="x.com"] i.fa-brands,
+html:not(.dark) footer a[href*="twitter.com"] i.fa-brands {
+    color: #fff !important;
+}
+
 /* Dark Mode Footer */
 html.dark footer {
-    background: #000000 !important;
-    background-color: #000000 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: #000 !important;
+    background-color: #000 !important;
+    border-top: 1px solid rgb(255 255 255 / 10%) !important;
 }
 
 html.dark footer p,
@@ -157,4 +171,356 @@ html.dark footer a {
 
 html.dark footer .text-secondary {
     color: #86868b !important;
+}
+
+/* Footer Icon Colors - Dark Mode - Brand Colors */
+
+/* Target .icon classes used in footer HTML */
+html.dark footer .icon.facebook,
+html.dark footer .icon.facebook svg,
+html.dark footer a[href*="facebook.com"] .icon,
+html.dark footer a[href*="facebook.com"] svg {
+    color: #0a84ff !important;
+}
+
+html.dark footer .icon.instagram,
+html.dark footer .icon.instagram svg,
+html.dark footer a[href*="instagram.com"] .icon,
+html.dark footer a[href*="instagram.com"] svg {
+    color: #ff375f !important;
+}
+
+html.dark footer .icon.linkedin,
+html.dark footer a[href*="linkedin.com"] .icon,
+html.dark footer a[href*="linkedin.com"] svg {
+    color: #0a66c2 !important;
+}
+
+html.dark footer .icon.github,
+html.dark footer .icon.github svg,
+html.dark footer a[href*="github.com"] .icon,
+html.dark footer a[href*="github.com"] svg {
+    color: #f5f5f7 !important;
+    stroke: #f5f5f7 !important;
+}
+
+html.dark footer .icon.youtube,
+html.dark footer .icon.youtube svg,
+html.dark footer a[href*="youtube.com"] .icon,
+html.dark footer a[href*="youtube.com"] svg {
+    color: #f00 !important;
+}
+
+html.dark footer .icon.twitter,
+html.dark footer .icon.twitter svg,
+html.dark footer a[href*="x.com"] .icon,
+html.dark footer a[href*="x.com"] svg,
+html.dark footer a[href*="twitter.com"] .icon,
+html.dark footer a[href*="twitter.com"] svg {
+    color: #1da1f2 !important;
+    stroke: #1da1f2 !important;
+}
+
+html.dark footer .icon.globe,
+html.dark footer .icon.globe svg,
+html.dark footer a[href*="wixsite.com"] .icon,
+html.dark footer a[href*="wixsite.com"] svg {
+    color: #5ac8fa !important;
+}
+
+html.dark footer .icon.leetcode,
+html.dark footer .icon.leetcode svg,
+html.dark footer a[href*="leetcode.com"] .icon,
+html.dark footer a[href*="leetcode.com"] svg {
+    color: #61dafb !important;
+}
+
+/* Also target Font Awesome classes if present */
+html.dark footer i.fa-brands.fa-facebook,
+html.dark footer i.fa-brands.fa-facebook-f,
+html.dark footer a[href*="facebook.com"] i.fa-brands {
+    color: #0a84ff !important;
+}
+
+html.dark footer i.fa-brands.fa-instagram,
+html.dark footer a[href*="instagram.com"] i.fa-brands {
+    color: #ff375f !important;
+}
+
+html.dark footer i.fa-brands.fa-linkedin,
+html.dark footer i.fa-brands.fa-linkedin-in,
+html.dark footer a[href*="linkedin.com"] i.fa-brands {
+    color: #0a66c2 !important;
+}
+
+html.dark footer i.fa-brands.fa-github,
+html.dark footer a[href*="github.com"] i.fa-brands {
+    color: #f5f5f7 !important;
+}
+
+html.dark footer i.fa-brands.fa-youtube,
+html.dark footer a[href*="youtube.com"] i.fa-brands {
+    color: #f00 !important;
+}
+
+html.dark footer i.fa-brands.fa-x-twitter,
+html.dark footer i.fa-brands.fa-twitter,
+html.dark footer a[href*="x.com"] i.fa-brands,
+html.dark footer a[href*="twitter.com"] i.fa-brands {
+    color: #1da1f2 !important;
+}
+
+html.dark footer i.fa-solid.fa-globe,
+html.dark footer a[href*="wixsite.com"] .fa-solid.fa-globe {
+    color: #5ac8fa !important;
+}
+
+html.dark footer i.fa-solid.fa-code,
+html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
+    color: #61dafb !important;
+}
+
+/* Contact Page Icon Colors - Dark Mode - Brand Colors */
+
+/* Target .icon classes used in contact page HTML */
+html.dark #contact .icon.facebook,
+html.dark #contact .icon.facebook svg,
+html.dark #contact a[href*="facebook.com"] .icon,
+html.dark #contact a[href*="facebook.com"] svg {
+    color: #0a84ff !important;
+}
+
+html.dark #contact .icon.instagram,
+html.dark #contact .icon.instagram svg,
+html.dark #contact a[href*="instagram.com"] .icon,
+html.dark #contact a[href*="instagram.com"] svg {
+    color: #ff375f !important;
+}
+
+html.dark #contact .icon.linkedin,
+html.dark #contact a[href*="linkedin.com"] .icon,
+html.dark #contact a[href*="linkedin.com"] svg {
+    color: #0a66c2 !important;
+}
+
+html.dark #contact .icon.github,
+html.dark #contact .icon.github svg,
+html.dark #contact a[href*="github.com"] .icon,
+html.dark #contact a[href*="github.com"] svg {
+    color: #f5f5f7 !important;
+    stroke: #f5f5f7 !important;
+}
+
+html.dark #contact .icon.youtube,
+html.dark #contact .icon.youtube svg,
+html.dark #contact a[href*="youtube.com"] .icon,
+html.dark #contact a[href*="youtube.com"] svg {
+    color: #f00 !important;
+}
+
+html.dark #contact .icon.x,
+html.dark #contact .icon.x svg,
+html.dark #contact .icon.twitter,
+html.dark #contact .icon.twitter svg,
+html.dark #contact a[href*="x.com"] .icon,
+html.dark #contact a[href*="x.com"] svg,
+html.dark #contact a[href*="twitter.com"] .icon,
+html.dark #contact a[href*="twitter.com"] svg {
+    color: #1da1f2 !important;
+    stroke: #1da1f2 !important;
+}
+
+html.dark #contact .icon.leetcode,
+html.dark #contact .icon.leetcode svg,
+html.dark #contact a[href*="leetcode.com"] .icon,
+html.dark #contact a[href*="leetcode.com"] svg {
+    color: #61dafb !important;
+}
+
+html.dark #contact .icon.globe,
+html.dark #contact .icon.globe svg,
+html.dark #contact a[href*="wixsite.com"] .icon,
+html.dark #contact a[href*="wixsite.com"] svg {
+    color: #5ac8fa !important;
+}
+
+/* Also target Font Awesome classes if present in contact page */
+html.dark .contact-social-links i.fa-brands.fa-facebook,
+html.dark .contact-social-links a[href*="facebook.com"] i.fa-brands {
+    color: #0a84ff !important;
+}
+
+html.dark .contact-social-links i.fa-brands.fa-instagram,
+html.dark .contact-social-links a[href*="instagram.com"] i.fa-brands {
+    color: #ff375f !important;
+}
+
+html.dark .contact-social-links i.fa-brands.fa-linkedin,
+html.dark .contact-social-links i.fa-brands.fa-linkedin-in,
+html.dark .contact-social-links a[href*="linkedin.com"] i.fa-brands {
+    color: #0a66c2 !important;
+}
+
+html.dark .contact-social-links i.fa-brands.fa-github,
+html.dark .contact-social-links a[href*="github.com"] i.fa-brands {
+    color: #f5f5f7 !important;
+}
+
+html.dark .contact-social-links i.fa-brands.fa-youtube,
+html.dark .contact-social-links a[href*="youtube.com"] i.fa-brands {
+    color: #f00 !important;
+}
+
+html.dark .contact-social-links i.fa-brands.fa-x-twitter,
+html.dark .contact-social-links i.fa-brands.fa-twitter,
+html.dark .contact-social-links a[href*="x.com"] i.fa-brands,
+html.dark .contact-social-links a[href*="twitter.com"] i.fa-brands {
+    color: #1da1f2 !important;
+}
+
+html.dark .contact-social-links i.fa-solid.fa-globe,
+html.dark .contact-social-links a[href*="wixsite.com"] i.fa-solid,
+html.dark .contact-social-links a[href*="portfolio"] .fa-solid.fa-globe {
+    color: #5ac8fa !important;
+}
+
+html.dark .contact-social-links i.fa-solid.fa-code,
+html.dark .contact-social-links a[href*="leetcode.com"] i.fa-solid {
+    color: #61dafb !important;
+}
+
+/* ========================================
+   CALENDAR - Dark Mode Fixes
+   ======================================== */
+
+/* Ensure Sundays stay red in dark mode */
+html.dark .calendar-day.sunday .day-number {
+    color: #ef4444 !important;
+}
+
+html.dark .calendar-day-header.text-red-500 {
+    color: #ef4444 !important;
+}
+
+/* Calendar today highlight */
+html.dark .calendar-day.today {
+    background: var(--accent-color, #0a84ff) !important;
+    color: white !important;
+}
+
+html.dark .calendar-day.today.sunday .day-number {
+    color: white !important;
+}
+
+/* Calendar text colors */
+html.dark .calendar-title h3 {
+    color: #f5f5f7 !important;
+}
+
+html.dark .calendar-today-info {
+    color: #5ac8fa !important;
+}
+
+html.dark .calendar-day .day-number {
+    color: #f5f5f7 !important;
+}
+
+html.dark .calendar-day .day-tithi {
+    color: #a1a1a6 !important;
+}
+
+/* Panchang details in dark mode */
+html.dark .panchang-details h4 {
+    color: #5ac8fa !important;
+}
+
+html.dark .panchang-details .bg-secondary {
+    background: rgb(255 255 255 / 5%) !important;
+}
+
+/* ========================================
+   PROJECT CARDS - Dark Mode Improvements
+   ======================================== */
+
+/* Project card backgrounds */
+html.dark .project-card {
+    background: #000 !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 50%) !important;
+}
+
+html.dark .project-card:hover {
+    border-color: rgb(41 151 255 / 30%) !important;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 60%), 0 0 0 1px rgb(41 151 255 / 10%) inset !important;
+}
+
+/* Project card text */
+html.dark .project-card h3,
+html.dark .project-card .project-title {
+    color: #f5f5f7 !important;
+}
+
+html.dark .project-card p,
+html.dark .project-card .project-description {
+    color: #d1d1d6 !important;
+}
+
+/* Project tags */
+html.dark .project-tag {
+    background: rgb(41 151 255 / 12%) !important;
+    color: #5ac8fa !important;
+    border: 1px solid rgb(41 151 255 / 25%) !important;
+}
+
+html.dark .project-tag:hover {
+    background: rgb(41 151 255 / 20%) !important;
+    border-color: rgb(41 151 255 / 40%) !important;
+}
+
+/* Project links/buttons */
+html.dark .project-card a,
+html.dark .project-link {
+    color: #5ac8fa !important;
+}
+
+html.dark .project-card a:hover,
+html.dark .project-link:hover {
+    color: #7dd3fc !important;
+}
+
+/* Project stats/metadata */
+html.dark .project-stats,
+html.dark .project-meta {
+    color: #a1a1a6 !important;
+}
+
+/* Project language badge */
+html.dark .project-language {
+    color: #5ac8fa !important;
+}
+
+/* ========================================
+   ADDITIONAL CARD IMPROVEMENTS
+   ======================================== */
+
+/* Blog cards */
+html.dark .blog-card {
+    background: #000 !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+html.dark .blog-card:hover {
+    border-color: rgb(41 151 255 / 30%) !important;
+}
+
+/* Publication cards */
+html.dark .publication-card {
+    background: #000 !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+/* Certification cards */
+html.dark .certification-card {
+    background: #000 !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
 }

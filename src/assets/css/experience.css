@@ -12,7 +12,7 @@
 }
 
 html.dark #experience {
-    background: #000000;
+    background: #000;
 }
 
 html:not(.dark) #experience {
@@ -58,7 +58,6 @@ html.dark #experience .container>div::before {
 
 #experience .education-card {
     position: relative;
-    padding-left: 90px;
     margin-bottom: 3rem;
     background: transparent;
     border: none;
@@ -95,49 +94,55 @@ html.dark #experience .container>div::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgba(0, 113, 227, 0.4);
+    box-shadow: 0 8px 20px rgb(0 113 227 / 40%);
     z-index: 2;
     font-size: 1.75rem;
-    color: #ffffff;
+    color: #fff;
     line-height: 64px;
     text-align: center;
 }
 
 html.dark #experience .education-card::before {
     background: linear-gradient(135deg, #2997ff, #5ac8fa);
-    box-shadow: 0 8px 20px rgba(41, 151, 255, 0.5);
+    box-shadow: 0 8px 20px rgb(41 151 255 / 50%);
 }
 
 /* Different icons for different sections */
 #experience .mb-12:nth-child(2) .education-card:nth-child(2)::before {
     content: '\f0b1';
+
     /* briefcase */
 }
 
 #experience .mb-12:nth-child(2) .education-card:nth-child(3)::before {
     content: '\f121';
+
     /* code */
 }
 
 #experience .mb-12:nth-child(2) .education-card:nth-child(4)::before {
     content: '\f233';
+
     /* server */
 }
 
 #experience .mb-12:nth-child(3) .education-card::before {
     content: '\f19d';
+
     /* graduation cap */
     background: linear-gradient(135deg, #8b5cf6, #c084fc);
 }
 
 #experience .mb-12:nth-child(4) .education-card::before {
     content: '\f0c0';
+
     /* users */
     background: linear-gradient(135deg, #f59e0b, #fbbf24);
 }
 
 #experience .mb-12:nth-child(5) .education-card::before {
     content: '\f004';
+
     /* heart */
     background: linear-gradient(135deg, #ef4444, #f87171);
 }
@@ -163,31 +168,28 @@ html.dark #experience .education-card::before {
 #experience .education-card::after {
     content: '';
     position: absolute;
-    left: 90px;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0 0 0 90px;
     background: var(--bg-primary);
     border-radius: 16px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
     z-index: -1;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #experience .education-card:hover::after {
     transform: translateX(8px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
 }
 
 html.dark #experience .education-card::after {
-    background: #000000;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    background: #000;
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
 
 html.dark #experience .education-card:hover::after {
-    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 20px 56px rgb(0 0 0 / 55%);
 }
 
 /* Add padding to content */
@@ -225,7 +227,7 @@ html.dark #experience .education-card:hover::after {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.75rem;
     line-height: 1.3;
 }
 
@@ -257,18 +259,18 @@ html.dark #experience .education-card .text-accent.font-semibold {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     background: #22c55e !important;
-    color: #ffffff !important;
+    color: #fff !important;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
+    box-shadow: 0 4px 12px rgb(34 197 94 / 30%) !important;
 }
 
 html.dark #experience .education-card .inline-block.px-3 {
     background: #16a34a !important;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;
+    box-shadow: 0 4px 12px rgb(22 163 74 / 30%) !important;
 }
 
 /* ========================================
@@ -337,18 +339,18 @@ html:not(.dark) #experience .education-card ul li strong {
 
 #experience .education-card .mt-4.flex.flex-wrap span {
     padding: 0.5rem 1rem;
-    background: rgba(0, 113, 227, 0.1);
+    background: rgb(0 113 227 / 10%);
     color: #0071e3;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
-    border: 1px solid rgba(0, 113, 227, 0.2);
+    border: 1px solid rgb(0 113 227 / 20%);
 }
 
 html.dark #experience .education-card .mt-4.flex.flex-wrap span {
-    background: rgba(41, 151, 255, 0.1);
+    background: rgb(41 151 255 / 10%);
     color: #2997ff;
-    border-color: rgba(41, 151, 255, 0.2);
+    border-color: rgb(41 151 255 / 20%);
 }
 
 /* ========================================
@@ -376,7 +378,7 @@ html:not(.dark) #experience .mb-12:nth-child(5) .education-card p.text-secondary
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     #experience .container>div::before {
         left: 24px;
     }
@@ -435,7 +437,7 @@ html:not(.dark) #experience .mb-12:nth-child(5) .education-card p.text-secondary
     }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
     #experience .education-card ul li {
         font-size: 0.9375rem;
     }

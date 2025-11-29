@@ -18,26 +18,27 @@ html:not(.dark) .contact-card,
 html:not(.dark) .contact-form-card,
 html:not(.dark) .stat-card,
 html:not(.dark) .bg-primary {
-  background: #ffffff !important;
-  border-color: rgba(0, 0, 0, 0.08) !important;
+  background: #fff !important;
+  border-color: rgb(0 0 0 / 8%) !important;
   color: #1d1d1f !important;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 8%) !important;
 }
 
 /* Force pure-white hero background in light mode */
 html:not(.dark) #home {
-  background: #ffffff !important;
+  background: #fff !important;
   background-attachment: scroll !important;
 }
 
 /* Force clean hero background in all themes to avoid banding/lines */
 #home {
-  background: #ffffff !important;
+  background: #fff !important;
   background-image: none !important;
   background-attachment: scroll !important;
 }
 
 /* Experience cards - add accent spine and tighter layout */
+
 /* Experience styles moved to experience.css */
 
 /* Project styles moved to projects.css */
@@ -82,12 +83,13 @@ html.dark .footer-social-link:hover {
 #go-to-top {
   position: fixed;
   bottom: 20px;
+
   /* In footer area at bottom */
   right: 96px;
   width: 50px;
   height: 50px;
   background: var(--color-accent);
-  color: #ffffff;
+  color: #fff;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -95,9 +97,10 @@ html.dark .footer-social-link:hover {
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 9997;
+
   /* Below chatbot */
   opacity: 0;
   visibility: hidden;
@@ -112,7 +115,7 @@ html.dark .footer-social-link:hover {
 
 #go-to-top:hover {
   background: var(--color-accent-hover);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 20%);
   transform: translateY(-3px);
 }
 
@@ -126,6 +129,7 @@ html.dark .footer-social-link:hover {
 #chatbot-toggle {
   position: fixed !important;
   bottom: 80px !important;
+
   /* Above go-to-top and footer */
   right: 30px !important;
   width: 60px !important;
@@ -137,7 +141,7 @@ html.dark .footer-social-link:hover {
   align-items: center !important;
   justify-content: center !important;
   font-size: 1.5rem !important;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3) !important;
+  box-shadow: 0 4px 12px rgb(0 122 255 / 30%) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   z-index: 9999 !important;
 }
@@ -145,32 +149,32 @@ html.dark .footer-social-link:hover {
 /* Light mode chatbot button */
 html:not(.dark) #chatbot-toggle {
   background: #007aff !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 html:not(.dark) #chatbot-toggle i {
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 html:not(.dark) #chatbot-toggle:hover {
   background: #0051d5 !important;
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4) !important;
+  box-shadow: 0 6px 20px rgb(0 122 255 / 40%) !important;
   transform: scale(1.1) !important;
 }
 
 /* Dark mode chatbot button */
 html.dark #chatbot-toggle {
   background: #0a84ff !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 html.dark #chatbot-toggle i {
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 html.dark #chatbot-toggle:hover {
   background: #409cff !important;
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4) !important;
+  box-shadow: 0 6px 20px rgb(0 122 255 / 40%) !important;
   transform: scale(1.1) !important;
 }
 
@@ -179,9 +183,10 @@ html.dark #chatbot-toggle:hover {
 }
 
 /* Mobile: Stack buttons vertically with more spacing */
-@media (max-width: 768px) {
+@media (width <= 768px) {
   #chatbot-toggle {
     bottom: 100px !important;
+
     /* More space above go-to-top button to prevent overlap */
     right: 20px !important;
     width: 55px !important;
@@ -191,6 +196,7 @@ html.dark #chatbot-toggle:hover {
   #go-to-top {
     bottom: 20px;
     right: 88px;
+
     /* In footer area on mobile */
     width: 45px;
     height: 45px;
@@ -202,15 +208,15 @@ html.dark #chatbot-toggle:hover {
    NAVBAR - Enhanced Light/Dark Mode
    ═══════════════════════════════════════════════════════════ */
 .global-nav {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgb(255 255 255 / 80%);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
 }
 
 html.dark .global-nav {
-  background: rgba(24, 24, 27, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgb(24 24 27 / 80%);
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
 }
 
 .nav-link {
@@ -235,28 +241,36 @@ html.dark .nav-link {
 /* ═══════════════════════════════════════════════════════════
    MOBILE MENU - Enhanced
    ═══════════════════════════════════════════════════════════ */
+
 /* Enhanced Menu Toggle Button */
 .menu-toggle-button {
   color: var(--color-text-primary);
   z-index: 10001;
+
   /* Ensure above overlay */
   position: relative;
 }
 
 html:not(.dark) .menu-toggle-button {
-  color: #000000 !important;
+  color: #000 !important;
+
   /* Force black in light mode */
 }
 
 html.dark .menu-toggle-button {
-  color: #ffffff !important;
+  color: #fff !important;
+
   /* Force white in dark mode */
 }
 
 /* ═══════════════════════════════════════════════════════════
    MOBILE NAVBAR - Overlay Experience
    ═══════════════════════════════════════════════════════════ */
-@media (max-width: 1024px) {
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE NAVBAR - Overlay Experience
+   ═══════════════════════════════════════════════════════════ */
+@media (width <= 1024px) {
   .nav-container {
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
@@ -283,20 +297,20 @@ html.dark .menu-toggle-button {
     gap: 10px !important;
     padding: 0.5rem 0.75rem !important;
     border-radius: 999px !important;
-    background: rgba(255, 255, 255, 0.7) !important;
+    background: rgb(255 255 255 / 70%) !important;
     backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(16px) !important;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 8%) !important;
     color: var(--color-text-primary) !important;
     font-weight: 600 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid rgb(0 0 0 / 6%) !important;
   }
 
   html.dark .menu-toggle-button {
-    background: rgba(28, 28, 30, 0.9) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    background: rgb(28 28 30 / 90%) !important;
+    border-color: rgb(255 255 255 / 8%) !important;
     color: #f5f5f7 !important;
   }
 
@@ -306,16 +320,22 @@ html.dark .menu-toggle-button {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 1.75rem !important;
-    padding: 4rem 1.5rem !important;
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.96), rgba(245, 247, 250, 0.92));
+    gap: 0 !important;
+
+    /* Removed gap */
+    padding: 1rem !important;
+
+    /* Minimal padding */
+    background: rgb(255 255 255 / 98%);
     backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
     z-index: 10002 !important;
   }
 
   html.dark .overlay-menu {
-    background: linear-gradient(165deg, rgba(17, 17, 20, 0.96), rgba(28, 28, 32, 0.94));
+    background: #000 !important;
+
+    /* Solid black for dark mode */
   }
 
   /* Reveal overlay when menu is open */
@@ -331,62 +351,88 @@ html.dark .menu-toggle-button {
   }
 
   .overlay-nav {
-    width: min(560px, 88vw) !important;
+    width: 100% !important;
+    max-width: 320px !important;
+
+    /* Slightly wider for better readability */
     display: flex !important;
     flex-direction: column !important;
-    gap: 1.2rem !important;
+    gap: 12px !important;
+
+    /* Comfortable spacing */
     text-align: center !important;
+    padding: 0 !important;
   }
 
   .overlay-nav-link {
-    font-size: 1.35rem !important;
-    font-weight: 700 !important;
+    font-size: 16px !important;
+
+    /* Readable, premium size */
+    font-weight: 500 !important;
     color: var(--color-text-primary) !important;
-    padding: 0.85rem 1rem !important;
-    border-radius: 14px !important;
-    background: rgba(0, 0, 0, 0.02) !important;
-    transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease !important;
+    padding: 8px 0 !important;
+
+    /* Better touch target */
+    border-radius: 8px !important;
+
+    /* Subtle rounding */
+    background: transparent !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+    display: block !important;
+    letter-spacing: -0.01em !important;
   }
 
   .overlay-nav-link:hover,
   .overlay-nav-link:focus-visible {
-    transform: translateY(-2px) !important;
-    background: rgba(0, 122, 255, 0.08) !important;
+    transform: scale(1.02) !important;
+
+    /* Subtle scale */
+    background: rgb(0 0 0 / 4%) !important;
+
+    /* Very subtle hover bg */
     color: var(--color-accent) !important;
     outline: none !important;
+    text-decoration: none !important;
+
+    /* Clean look */
   }
 
   html.dark .overlay-nav-link {
-    background: rgba(255, 255, 255, 0.04) !important;
+    background: transparent !important;
     color: #f5f5f7 !important;
   }
 
   html.dark .overlay-nav-link:hover,
   html.dark .overlay-nav-link:focus-visible {
-    background: rgba(0, 122, 255, 0.14) !important;
+    background: rgb(255 255 255 / 10%) !important;
+
+    /* Subtle dark mode hover */
+    color: #2997ff !important;
   }
 
   .menu-close-button {
     position: absolute !important;
-    top: 18px !important;
+    top: 20px !important;
     right: 20px !important;
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
     color: var(--color-text-primary) !important;
+    padding: 8px !important;
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
    FOOTER - Enhanced Light/Dark Mode
    ═══════════════════════════════════════════════════════════ */
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   footer {
-    background: rgba(255, 255, 255, 0.8);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgb(255 255 255 / 80%);
+    border-top: 1px solid rgb(0 0 0 / 10%);
   }
 
   html.dark footer {
-    background: rgba(24, 24, 27, 0.9);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgb(24 24 27 / 90%);
+    border-top: 1px solid rgb(255 255 255 / 10%);
   }
 
   footer p {
@@ -405,10 +451,10 @@ html.dark .menu-toggle-button {
 /* ═══════════════════════════════════════════════════════════
    THEME TOGGLE BUTTON - Enhanced
    ═══════════════════════════════════════════════════════════ */
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .theme-toggle-nav {
     background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(0 0 0 / 10%);
     color: var(--color-text-primary);
     padding: 0.5rem;
     border-radius: 0.5rem;
@@ -417,17 +463,17 @@ html.dark .menu-toggle-button {
   }
 
   html.dark .theme-toggle-nav {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgb(255 255 255 / 20%);
     color: #f5f5f7;
   }
 
   .theme-toggle-nav:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgb(0 0 0 / 5%);
     border-color: var(--color-accent);
   }
 
   html.dark .theme-toggle-nav:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
   }
 }
 
@@ -463,12 +509,13 @@ button:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    SKILLS SECTION - Compact Design
    ═══════════════════════════════════════════════════════════ */
+
 /* Skills styles handled by skills-visualization.js */
 
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE ADJUSTMENTS
    ═══════════════════════════════════════════════════════════ */
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .footer-social-link {
     font-size: 1.1rem;
   }
@@ -482,7 +529,6 @@ button:focus-visible {
    PRINT STYLES
    ═══════════════════════════════════════════════════════════ */
 @media print {
-
   #go-to-top,
   #chatbot-toggle,
   #chatbot-widget {
@@ -493,29 +539,31 @@ button:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    MOBILE MENU FIXES - Proper Responsive Behavior
    ═══════════════════════════════════════════════════════════ */
+
 /* Reduce overlay menu link font size for better mobile experience */
 .overlay-nav a,
 .overlay-nav-link {
   font-size: 1.5rem !important;
+
   /* Reduced from 2rem */
   font-weight: 600;
   line-height: 1.4;
 }
 
-@media (max-width: 768px) {
-
+@media (width <= 768px) {
   .overlay-nav a,
   .overlay-nav-link {
     font-size: 1.25rem !important;
+
     /* Even smaller on mobile */
   }
 }
 
-@media (max-width: 480px) {
-
+@media (width <= 480px) {
   .overlay-nav a,
   .overlay-nav-link {
     font-size: 1.1rem !important;
+
     /* Smallest on very small screens */
   }
 }
@@ -525,7 +573,7 @@ button:focus-visible {
    ═══════════════════════════════════════════════════════════ */
 #blog {
   padding: 5rem 0;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 #blog-posts-container {
@@ -536,12 +584,12 @@ button:focus-visible {
 }
 
 .blog-card {
-  background: #ffffff;
+  background: #fff;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 8%);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgb(0 0 0 / 8%);
   display: flex;
   flex-direction: column;
 }
@@ -614,6 +662,7 @@ button:focus-visible {
 
 html.dark .blog-read-btn {
   color: #409cff;
+
   /* Lighter blue for dark mode visibility */
 }
 
@@ -624,6 +673,7 @@ html.dark .blog-read-btn {
 
 html.dark .blog-read-btn:hover {
   color: #66b5ff;
+
   /* Even lighter on hover */
 }
 
@@ -650,7 +700,7 @@ html.dark .blog-read-btn:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgb(0 0 0 / 70%);
   backdrop-filter: blur(5px);
 }
 
@@ -753,7 +803,7 @@ html.dark .blog-read-btn:hover {
   font-size: 0.9em;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .blog-modal-content {
     padding: 1.5rem;
   }
@@ -769,49 +819,49 @@ html.dark .blog-read-btn:hover {
 
 /* Chatbot Light Mode Fixes */
 html:not(.dark) #chatbot-widget {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.12), 0 16px 32px rgba(0, 0, 0, 0.08) !important;
+  background: rgb(255 255 255 / 95%) !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
+  box-shadow: 0 32px 64px rgb(0 0 0 / 12%), 0 16px 32px rgb(0 0 0 / 8%) !important;
 }
 
 html:not(.dark) .chatbot-header {
-  background: rgba(248, 248, 248, 0.98) !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgb(248 248 248 / 98%) !important;
+  border-bottom: 1px solid rgb(0 0 0 / 8%) !important;
 }
 
 html:not(.dark) .chatbot-header h3,
 html:not(.dark) .chatbot-header p {
-  color: #000000 !important;
+  color: #000 !important;
 }
 
 html:not(.dark) #chatbot-messages {
-  background: #ffffff !important;
+  background: #fff !important;
 }
 
 html:not(.dark) .user-message {
   background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 html:not(.dark) .assistant-message,
 html:not(.dark) .bot-message {
   background: #E9E9EB !important;
-  color: #000000 !important;
+  color: #000 !important;
 }
 
 html:not(.dark) .message-metadata {
-  color: rgba(0, 0, 0, 0.6) !important;
+  color: rgb(0 0 0 / 60%) !important;
 }
 
 html:not(.dark) .chatbot-input-area {
-  background: rgba(248, 248, 248, 0.98) !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgb(248 248 248 / 98%) !important;
+  border-top: 1px solid rgb(0 0 0 / 8%) !important;
 }
 
 html:not(.dark) #chatbot-input {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
 }
 
 :root {
@@ -819,17 +869,17 @@ html:not(.dark) #chatbot-input {
   --debug-accent-strong: #0051d5;
   --debug-surface-dark: #0b1020;
   --debug-surface-light: #f7f9fc;
-  --debug-grid: rgba(255, 255, 255, 0.06);
+  --debug-grid: rgb(255 255 255 / 6%);
 }
 
 html:not(.dark) #chatbot-input::placeholder {
-  color: rgba(0, 0, 0, 0.4) !important;
+  color: rgb(0 0 0 / 40%) !important;
 }
 
 html:not(.dark) .chatbot-send-btn,
 html:not(.dark) #chatbot-voice-btn {
   background: #007AFF !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 html:not(.dark) .chatbot-send-btn:hover,
@@ -841,20 +891,20 @@ html:not(.dark) #chatbot-voice-btn:hover {
 #debug-runner-section {
   position: relative;
   overflow: hidden;
-  background: #000000;
+  background: #000;
   color: var(--text-primary);
 }
 
 html:not(.dark) #debug-runner-section {
-  background: #ffffff;
+  background: #fff;
 }
 
 #debug-runner-section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(transparent 95%, rgba(255, 255, 255, 0.04) 100%),
-    linear-gradient(90deg, transparent 95%, rgba(255, 255, 255, 0.04) 100%);
+  background-image: linear-gradient(transparent 95%, rgb(255 255 255 / 4%) 100%),
+    linear-gradient(90deg, transparent 95%, rgb(255 255 255 / 4%) 100%);
   background-size: 18px 18px;
   opacity: 0.6;
   pointer-events: none;
@@ -872,12 +922,12 @@ html:not(.dark) #debug-runner-section {
   font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   letter-spacing: 0.04em;
   color: var(--text-primary);
-  text-shadow: 0 6px 26px rgba(0, 122, 255, 0.28);
+  text-shadow: 0 6px 26px rgb(0 122 255 / 28%);
 }
 
 html.dark .debug-runner-title {
   color: #e8f1ff;
-  text-shadow: 0 6px 30px rgba(0, 122, 255, 0.5);
+  text-shadow: 0 6px 30px rgb(0 122 255 / 50%);
 }
 
 .debug-runner-subtitle {
@@ -898,15 +948,15 @@ html.dark .debug-runner-title {
   margin: 0 3px;
   border-radius: 6px;
   font-size: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgb(255 255 255 / 15%);
+  background: rgb(255 255 255 / 6%);
   color: inherit;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
 }
 
 html:not(.dark) .debug-shortcuts kbd {
-  border-color: rgba(0, 0, 0, 0.08);
-  background: rgba(0, 0, 0, 0.04);
+  border-color: rgb(0 0 0 / 8%);
+  background: rgb(0 0 0 / 4%);
 }
 
 #debug-runner-container {
@@ -917,25 +967,25 @@ html:not(.dark) .debug-shortcuts kbd {
   border-radius: 18px;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 18px 60px rgb(0 0 0 / 18%);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 html.dark #debug-runner-container {
   background: var(--debug-surface-dark);
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.55);
+  border-color: rgb(255 255 255 / 8%);
+  box-shadow: 0 20px 70px rgb(0 0 0 / 55%);
 }
 
 #debug-runner-container:hover {
   transform: translateY(-4px);
-  box-shadow: 0 22px 80px rgba(0, 0, 0, 0.22);
-  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 22px 80px rgb(0 0 0 / 22%);
+  border-color: rgb(0 0 0 / 8%);
 }
 
 html.dark #debug-runner-container:hover {
-  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.65);
-  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 90px rgb(0 0 0 / 65%);
+  border-color: rgb(255 255 255 / 12%);
 }
 
 #debug-runner-container canvas {
@@ -944,17 +994,17 @@ html.dark #debug-runner-container:hover {
   max-width: 100% !important;
   max-height: 540px;
   border-radius: 14px;
-  background: radial-gradient(circle at 30% 20%, rgba(0, 122, 255, 0.12), transparent 45%),
-    radial-gradient(circle at 80% 10%, rgba(0, 255, 130, 0.1), transparent 40%),
+  background: radial-gradient(circle at 30% 20%, rgb(0 122 255 / 12%), transparent 45%),
+    radial-gradient(circle at 80% 10%, rgb(0 255 130 / 10%), transparent 40%),
     #0b0f19;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgb(255 255 255 / 8%);
 }
 
 html:not(.dark) #debug-runner-container canvas {
-  background: radial-gradient(circle at 30% 20%, rgba(0, 122, 255, 0.08), transparent 45%),
-    radial-gradient(circle at 80% 10%, rgba(0, 255, 130, 0.06), transparent 40%),
-    #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
+  background: radial-gradient(circle at 30% 20%, rgb(0 122 255 / 8%), transparent 45%),
+    radial-gradient(circle at 80% 10%, rgb(0 255 130 / 6%), transparent 40%),
+    #fff;
+  border-color: rgb(0 0 0 / 8%);
 }
 
 .debug-runner-wrapper {
@@ -986,17 +1036,17 @@ html:not(.dark) #debug-runner-container canvas {
   border-radius: 999px;
   border: 1px solid transparent;
   background: linear-gradient(135deg, #007aff, #5ac8fa);
-  color: #ffffff !important;
+  color: #fff !important;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  box-shadow: 0 12px 30px rgba(0, 122, 255, 0.35);
+  box-shadow: 0 12px 30px rgb(0 122 255 / 35%);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 
 .debug-game-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 16px 36px rgba(0, 122, 255, 0.45);
+  box-shadow: 0 16px 36px rgb(0 122 255 / 45%);
   background: linear-gradient(135deg, #006be6, #4ab8e8);
 }
 
@@ -1009,45 +1059,45 @@ html:not(.dark) #debug-runner-container canvas {
 
 .debug-game-btn.is-running {
   background: linear-gradient(135deg, #0071e3, #2997ff);
-  box-shadow: 0 14px 34px rgba(0, 113, 227, 0.4);
+  box-shadow: 0 14px 34px rgb(0 113 227 / 40%);
 }
 
 .debug-game-btn--start {
   min-width: 220px;
   font-size: 1rem;
   background: linear-gradient(135deg, #0071e3, #2997ff);
-  box-shadow: 0 12px 30px rgba(0, 113, 227, 0.35);
+  box-shadow: 0 12px 30px rgb(0 113 227 / 35%);
 }
 
 .debug-game-btn--start:hover:not(:disabled) {
   background: linear-gradient(135deg, #006be6, #4ab8e8);
-  box-shadow: 0 16px 36px rgba(0, 113, 227, 0.45);
+  box-shadow: 0 16px 36px rgb(0 113 227 / 45%);
 }
 
 .debug-game-btn--jump {
   background: linear-gradient(135deg, #16a34a, #22d3ee);
-  box-shadow: 0 12px 30px rgba(34, 211, 238, 0.35);
+  box-shadow: 0 12px 30px rgb(34 211 238 / 35%);
 }
 
 .debug-game-btn--duck {
   background: linear-gradient(135deg, #0f172a, #1f2937);
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  color: #fff !important;
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 28%);
 }
 
 .debug-game-btn--duck:hover:not(:disabled) {
   background: linear-gradient(135deg, #0b7dde, #2997ff);
-  color: #ffffff !important;
-  box-shadow: 0 12px 30px rgba(0, 122, 255, 0.35);
+  color: #fff !important;
+  box-shadow: 0 12px 30px rgb(0 122 255 / 35%);
 }
 
 html:not(.dark) .debug-game-btn--duck {
   background: linear-gradient(135deg, #0f172a, #2b394f);
-  border-color: rgba(0, 0, 0, 0.12);
+  border-color: rgb(0 0 0 / 12%);
 }
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   #debug-runner-container {
     padding: 10px;
   }
@@ -1057,7 +1107,7 @@ html:not(.dark) .debug-game-btn--duck {
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   #debug-runner-section {
     padding-top: 60px;
     padding-bottom: 60px;
@@ -1091,7 +1141,7 @@ html:not(.dark) .debug-game-btn--duck {
    ═══════════════════════════════════════════════════════════ */
 html:not(.dark) body {
   color: #1d1d1f;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 html:not(.dark) h1,
@@ -1100,7 +1150,7 @@ html:not(.dark) h3,
 html:not(.dark) h4,
 html:not(.dark) h5,
 html:not(.dark) h6 {
-  color: #000000;
+  color: #000;
 }
 
 html:not(.dark) p {
@@ -1108,19 +1158,21 @@ html:not(.dark) p {
 }
 
 /* Preserve white badge text in light mode */
+
 /* Education status handled by education.css */
 
 /* Exception for buttons and specific colored elements */
+
 /* Footer Light Mode */
 html:not(.dark) footer {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid rgb(0 0 0 / 10%) !important;
 }
 
 html:not(.dark) footer h3,
 html:not(.dark) footer p,
 html:not(.dark) footer a {
-  color: #000000 !important;
+  color: #000 !important;
 }
 
 html:not(.dark) footer a:hover {
@@ -1128,26 +1180,26 @@ html:not(.dark) footer a:hover {
 }
 
 html:not(.dark) .footer-social a {
-  background: rgba(0, 0, 0, 0.05) !important;
-  color: #000000 !important;
+  background: rgb(0 0 0 / 5%) !important;
+  color: #000 !important;
 }
 
 html:not(.dark) .footer-social a:hover {
   background: #007AFF !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Scroll to Top Button Light Mode */
 html:not(.dark) #scroll-to-top {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgb(255 255 255 / 90%) !important;
   color: #007AFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%) !important;
 }
 
 html:not(.dark) #scroll-to-top:hover {
   background: #007AFF !important;
-  color: #ffffff !important;
+  color: #fff !important;
   transform: translateY(-4px) !important;
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3) !important;
+  box-shadow: 0 8px 24px rgb(0 122 255 / 30%) !important;
 }

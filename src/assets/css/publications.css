@@ -8,7 +8,8 @@
 }
 
 html.dark #publications {
-    background: #000000 !important;
+    background: #000 !important;
+
     /* Solid black for dark mode */
 }
 
@@ -35,7 +36,7 @@ html:not(.dark) #publications {
 }
 
 html.dark .publications-divider {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 10%);
 }
 
 html:not(.dark) .publications-divider {
@@ -56,23 +57,23 @@ html:not(.dark) .publications-divider {
     border-radius: 16px;
     padding: 2rem;
     border: 1px solid var(--border-color);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .publication-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
 }
 
 html.dark .publication-card {
-    background: #000000;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    background: #000;
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
 
 html.dark .publication-card:hover {
-    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 20px 56px rgb(0 0 0 / 55%);
 }
 
 /* Publication Header */
@@ -185,52 +186,56 @@ html:not(.dark) .publication-details {
     justify-content: center;
     padding: 0.75rem 1.5rem;
     background: #0071e3 !important;
+
     /* Apple Blue */
-    color: #ffffff !important;
+    color: #fff !important;
+
     /* White text */
     border: none;
     border-radius: 980px;
+
     /* Pill shape */
     font-size: 15px;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
 }
 
 .publication-read-btn:hover {
     background: #0077ed !important;
+
     /* Lighter blue on hover */
-    color: #ffffff !important;
+    color: #fff !important;
     transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+    box-shadow: 0 6px 16px rgb(0 113 227 / 40%);
 }
 
 /* Ensure white text in dark mode */
 html.dark .publication-read-btn {
     background: #0071e3 !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 html.dark .publication-read-btn:hover {
     background: #0077ed !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 /* Ensure proper styling in light mode */
 html:not(.dark) .publication-read-btn {
     background: #0071e3 !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 html:not(.dark) .publication-read-btn:hover {
     background: #0077ed !important;
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .publication-footer {
         flex-direction: column;
         align-items: flex-start;
@@ -247,4 +252,5 @@ html:not(.dark) .publication-read-btn:hover {
 }
 
 /* Animation for publication cards */
+
 /* Animation removed for performance and visibility */

@@ -11,16 +11,23 @@ A sleek, AI-powered portfolio website featuring dynamic GitHub integration, inte
 
 ## ✨ Key Features
 
-### 🤖 **AI-Powered Chatbot** ("AssistMe")
+### 🤖 **AI-Powered Chatbot (2025 Upgrade)**
 - **Advanced AI Engine**: Powered by **Google Gemini 2.0 Flash** via OpenRouter API.
+- **Real-Time Streaming**: Smooth, typewriter-style response streaming with animated indicators.
+- **Rich Content Support**:
+  - **Markdown Rendering**: Full support for bold, italic, lists, tables, and links.
+  - **Code Highlighting**: Syntax highlighting for 100+ languages with **Prism.js**.
+  - **Copy & Actions**: One-click copy for code blocks and messages.
+- **Interactive Features**:
+  - **Smart Suggestions**: Context-aware prompt chips to guide conversation.
+  - **Voice Integration**: Text-to-Speech (TTS) and Voice-to-Text support.
+  - **Reactions**: Emoji reactions for assistant responses.
 - **Intelligent Capabilities**:
-  - **Portfolio Expert**: Answers questions about experience, skills, and education contextually.
+  - **Portfolio Expert**: Deep knowledge of Mangesh's skills, projects, and experience.
   - **Math & Logic**: Solves complex calculations and technical queries.
-  - **General Knowledge**: Provides information on world topics, history, and science.
-  - **Entertainment**: Tells jokes and engages in casual conversation.
 - **Robust Architecture**:
   - **FastAPI Backend**: High-performance Python API on Vercel.
-  - **Smart Fallbacks**: Graceful degradation to offline mode if API is unavailable.
+  - **Smart Fallbacks**: Graceful degradation to offline mode.
   - **Response Metadata**: Displays model used, confidence score, and processing time.
 
 ### 🎨 **Premium UI/UX Design**

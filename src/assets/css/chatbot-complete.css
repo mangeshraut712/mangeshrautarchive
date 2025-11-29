@@ -14,29 +14,24 @@
   bottom: 180px !important;
   right: 30px !important;
   z-index: 9996 !important;
-
   width: 48px;
   height: 48px;
   border-radius: 50%;
-
-  background: rgba(120, 120, 128, 0.2);
+  background: rgb(120 120 128 / 20%);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-
+  border: 1px solid rgb(0 0 0 / 10%);
   color: #007aff;
   font-size: 20px;
-
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
   transition: all 0.3s ease;
 }
 
 html.dark #scroll-to-top {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgb(255 255 255 / 10%);
+  border-color: rgb(255 255 255 / 20%);
   color: #0a84ff;
 }
 
@@ -54,33 +49,36 @@ html.dark #scroll-to-top {
   bottom: 20px !important;
   right: 20px !important;
   z-index: 9997 !important;
-
   width: 60px;
   height: 60px;
   border-radius: 50%;
-
-  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+  background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
   border: none;
   box-shadow:
-    0 8px 32px rgba(0, 122, 255, 0.4),
-    0 4px 16px rgba(0, 0, 0, 0.12);
-
+    0 8px 32px rgb(74 0 224 / 40%),
+    0 4px 16px rgb(0 0 0 / 12%);
   color: white;
   font-size: 26px;
-
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+#chatbot-toggle i {
+  background: linear-gradient(to bottom, #fff, #e0e0e0);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 20%));
+  font-size: 28px;
+}
+
 #chatbot-toggle:hover {
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-4px) scale(1.1);
   box-shadow:
-    0 12px 40px rgba(0, 122, 255, 0.5),
-    0 6px 20px rgba(0, 0, 0, 0.15);
+    0 12px 40px rgb(74 0 224 / 50%),
+    0 6px 20px rgb(0 0 0 / 15%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -92,23 +90,19 @@ html.dark #scroll-to-top {
   bottom: 100px !important;
   right: 20px !important;
   z-index: 10000 !important;
-
   width: 420px;
   height: 680px;
   max-height: 85vh;
 
   /* Apple Intelligence glass effect */
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   backdrop-filter: blur(80px) saturate(180%);
-  -webkit-backdrop-filter: blur(80px) saturate(180%);
-
+  backdrop-filter: blur(80px) saturate(180%);
   border-radius: 28px;
-  border: 0.5px solid rgba(0, 122, 255, 0.08);
-
+  border: 0.5px solid rgb(0 122 255 / 8%);
   box-shadow:
-    0 32px 64px rgba(0, 122, 255, 0.12),
-    0 16px 32px rgba(0, 0, 0, 0.08);
-
+    0 32px 64px rgb(0 122 255 / 12%),
+    0 16px 32px rgb(0 0 0 / 8%);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -128,11 +122,11 @@ html.dark #scroll-to-top {
 }
 
 html.dark #chatbot-widget {
-  background: rgba(28, 28, 30, 0.95);
-  border-color: rgba(100, 200, 255, 0.15);
+  background: rgb(28 28 30 / 95%);
+  border-color: rgb(100 200 255 / 15%);
   box-shadow:
-    0 32px 64px rgba(0, 0, 0, 0.5),
-    0 0 1px rgba(10, 132, 255, 0.3);
+    0 32px 64px rgb(0 0 0 / 50%),
+    0 0 1px rgb(10 132 255 / 30%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -140,21 +134,25 @@ html.dark #chatbot-widget {
    ═══════════════════════════════════════════════════════════ */
 
 .chatbot-header {
-  padding: 20px 24px;
-  background: rgba(248, 248, 248, 0.95);
-  backdrop-filter: blur(40px);
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
-
+  padding: 18px 24px;
+  background: rgb(255 255 255 / 80%);
+  backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgb(0 0 0 / 5%);
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  flex-shrink: 0;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border-radius: 28px 28px 0 0;
 }
 
 html.dark .chatbot-header {
-  background: rgba(44, 44, 46, 0.95);
-  border-bottom-color: rgba(255, 255, 255, 0.06);
+  background: rgb(28 28 30 / 80%);
+  border-bottom-color: rgb(255 255 255 / 5%);
 }
 
 .chatbot-header h2,
@@ -162,48 +160,51 @@ html.dark .chatbot-header {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
   font-size: 17px;
   font-weight: 600;
-  color: #000000;
+  color: #000;
   margin: 0;
   letter-spacing: -0.4px;
 }
 
 html.dark .chatbot-header h2,
 html.dark .chatbot-header h3 {
-  color: #ffffff;
+  color: #fff;
 }
 
 .chatbot-header p {
   font-size: 13px;
   color: #86868b;
-  margin: 2px 0 0 0;
+  margin: 2px 0 0;
 }
 
 .chatbot-close-btn {
   position: absolute;
-  left: 16px;
-  width: 30px;
-  height: 30px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-
-  background: linear-gradient(135deg, rgba(255, 59, 48, 0.12) 0%, rgba(255, 45, 33, 0.08) 100%);
-  border: none;
-  color: #FF3B30;
+  background: rgb(255 59 48 / 95%);
+  border: 1px solid rgb(255 59 48 / 30%);
+  color: #fff;
   font-size: 16px;
-  font-weight: 600;
-
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  box-shadow: 0 6px 18px rgb(255 59 48 / 35%);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
 }
 
 html.dark .chatbot-close-btn {
-  background: linear-gradient(135deg, rgba(255, 59, 48, 0.2) 0%, rgba(255, 45, 33, 0.15) 100%);
+  background: rgb(255 69 58 / 95%);
+  border-color: rgb(255 69 58 / 30%);
+  box-shadow: 0 6px 18px rgb(255 69 58 / 40%);
 }
 
 .chatbot-close-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 22px rgb(255 59 48 / 50%);
   filter: brightness(1.1);
 }
 
@@ -213,14 +214,16 @@ html.dark .chatbot-close-btn {
 
 #chatbot-messages {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px 16px;
-  background: #ffffff;
+  overflow: hidden auto;
+  padding: 80px 16px 100px;
+
+  /* Top padding for header, Bottom for floating input */
+  background: #fff;
+  scroll-behavior: smooth;
 }
 
 html.dark #chatbot-messages {
-  background: #000000;
+  background: #000;
 }
 
 #chatbot-messages::-webkit-scrollbar {
@@ -228,7 +231,7 @@ html.dark #chatbot-messages {
 }
 
 #chatbot-messages::-webkit-scrollbar-thumb {
-  background: rgba(0, 122, 255, 0.2);
+  background: rgb(0 122 255 / 20%);
   border-radius: 3px;
 }
 
@@ -241,7 +244,6 @@ html.dark #chatbot-messages {
   padding: 12px 16px !important;
   border-radius: 22px !important;
   margin-bottom: 12px !important;
-
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
   font-size: 16px !important;
   line-height: 1.47 !important;
@@ -253,7 +255,6 @@ html.dark #chatbot-messages {
   overflow-wrap: break-word !important;
   direction: ltr !important;
   writing-mode: horizontal-tb !important;
-
   display: inline-block !important;
   animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -271,54 +272,54 @@ html.dark #chatbot-messages {
 }
 
 /* USER MESSAGE - iMessage Blue */
+
+/* USER MESSAGE - Gradient Blue */
 .user-message {
-  background: #007AFF !important;
-  color: #ffffff !important;
+  background: linear-gradient(135deg, #007AFF 0%, #0062cc 100%) !important;
+  color: #fff !important;
   border-radius: 20px !important;
   border-bottom-right-radius: 4px !important;
-
   margin-left: auto !important;
   float: right !important;
   clear: both !important;
-
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgb(0 122 255 / 25%) !important;
   font-weight: 400 !important;
   position: relative;
 }
 
 html.dark .user-message {
-  background: #0A84FF !important;
+  background: linear-gradient(135deg, #0A84FF 0%, #06c 100%) !important;
 }
 
 /* BOT MESSAGE - iMessage Gray */
+
+/* BOT MESSAGE - Subtle Gradient */
 .bot-message {
-  background: #E9E9EB !important;
-  color: #000000 !important;
+  background: linear-gradient(135deg, #F2F2F7 0%, #E5E5EA 100%) !important;
+  color: #000 !important;
   border-radius: 20px !important;
   border-bottom-left-radius: 4px !important;
-
   margin-right: auto !important;
   float: left !important;
   clear: both !important;
-
-  box-shadow: none !important;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 5%) !important;
   position: relative;
 }
 
 html.dark .bot-message {
-  background: #262628 !important;
-  color: #ffffff !important;
-  box-shadow: none !important;
+  background: linear-gradient(135deg, #2C2C2E 0%, #1C1C1E 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 20%) !important;
 }
 
 /* METADATA - BLACK for both themes (as requested) */
+
 /* METADATA - Subtle Gray */
 .message-metadata {
   font-size: 11px !important;
   margin-top: 4px !important;
   line-height: 1.3 !important;
   font-weight: 400 !important;
-
   color: #8E8E93 !important;
   opacity: 1 !important;
 }
@@ -329,12 +330,12 @@ html.dark .message-metadata {
 }
 
 .message-metadata div {
-  color: #000000 !important;
+  color: #000 !important;
   opacity: 1 !important;
 }
 
 html.dark .message-metadata div {
-  color: #000000 !important;
+  color: #000 !important;
   opacity: 1 !important;
 }
 
@@ -344,51 +345,60 @@ html.dark .message-metadata div {
 
 .chatbot-input-area,
 #chatbot-form {
-  padding: 16px 20px;
-  background: rgba(248, 248, 248, 0.95);
-  backdrop-filter: blur(40px);
-  border-top: 0.5px solid rgba(0, 0, 0, 0.06);
-
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  padding: 8px;
+  background: rgb(255 255 255 / 85%);
+  backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 32px;
+  box-shadow:
+    0 4px 24px rgb(0 0 0 / 8%),
+    0 1px 2px rgb(0 0 0 / 4%);
+  border: 1px solid rgb(0 0 0 / 5%);
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
-  flex-shrink: 0;
+  z-index: 10;
 }
 
 html.dark .chatbot-input-area,
 html.dark #chatbot-form {
-  background: rgba(28, 28, 30, 0.95);
-  border-top-color: rgba(255, 255, 255, 0.06);
+  background: rgb(44 44 46 / 85%);
+  border-color: rgb(255 255 255 / 10%);
+  box-shadow:
+    0 4px 24px rgb(0 0 0 / 30%),
+    0 1px 2px rgb(0 0 0 / 20%);
 }
 
 #chatbot-input {
   flex: 1;
-  padding: 12px 16px;
-  border-radius: 22px;
-  border: 1px solid rgba(0, 122, 255, 0.15);
-  background: #ffffff;
-
+  padding: 10px 16px;
+  border-radius: 24px;
+  border: 1px solid transparent;
+  background: transparent;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
   font-size: 16px;
-  color: #000000;
-
+  color: #000;
   outline: none;
   transition: all 0.3s ease;
 }
 
 #chatbot-input:focus {
   border-color: #007AFF;
-  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+  box-shadow: 0 0 0 4px rgb(0 122 255 / 10%);
 }
 
 html.dark #chatbot-input {
-  background: #2C2C2E;
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  background: transparent;
+  border-color: transparent;
+  color: #fff;
 }
 
 html.dark #chatbot-input:focus {
-  border-color: #0A84FF;
+  border-color: transparent;
 }
 
 /* BUTTONS - Colorful Apple Intelligence */
@@ -399,37 +409,67 @@ html.dark #chatbot-input:focus {
   height: 38px;
   border-radius: 50%;
   border: none;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .chatbot-send-btn {
-  background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+  color: #fff;
+  box-shadow: 0 6px 16px rgb(0 114 255 / 35%);
+  position: relative;
+  overflow: hidden;
+}
+
+.chatbot-send-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(to right, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 30%) 50%, rgb(255 255 255 / 0%) 100%);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+
+  20% {
+    transform: translateX(100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
 }
 
 .chatbot-send-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+  box-shadow: 0 8px 22px rgb(0 114 255 / 45%);
 }
 
 .chatbot-voice-btn {
-  background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
-  color: white;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #fff;
   position: relative;
-  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+  box-shadow: 0 6px 16px rgb(67 233 123 / 30%);
+}
+
+.chatbot-voice-btn i {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 10%);
 }
 
 .chatbot-voice-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
+  box-shadow: 0 8px 22px rgb(67 233 123 / 45%);
 }
 
 .chatbot-voice-btn.listening {
@@ -438,16 +478,15 @@ html.dark #chatbot-input:focus {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
-    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4);
+    box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
   }
 
   50% {
     box-shadow:
-      0 4px 12px rgba(255, 59, 48, 0.6),
-      0 0 0 8px rgba(255, 59, 48, 0.2);
+      0 4px 12px rgb(255 59 48 / 60%),
+      0 0 0 8px rgb(255 59 48 / 20%);
   }
 }
 
@@ -461,7 +500,7 @@ html.dark #chatbot-input:focus {
   font-weight: 700;
   padding: 2px 5px;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -502,7 +541,6 @@ html.dark .chatbot-typing {
 }
 
 @keyframes typingDot {
-
   0%,
   60%,
   100% {
@@ -520,7 +558,7 @@ html.dark .chatbot-typing {
    MOBILE RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   #scroll-to-top {
     bottom: 90px;
     right: 16px;
@@ -561,9 +599,9 @@ html.dark .chatbot-typing {
 }
 
 .msg-action-btn {
-  background: rgba(142, 142, 147, 0.1);
+  background: linear-gradient(135deg, #0a84ff 0%, #2997ff 100%);
   border: none;
-  color: #8E8E93;
+  color: #fff;
   width: 28px;
   height: 28px;
   padding: 0;
@@ -577,24 +615,24 @@ html.dark .chatbot-typing {
 
 .msg-action-btn:hover {
   transform: scale(1.15);
-  background: rgba(0, 122, 255, 0.1);
-  color: #007AFF;
+  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  color: #fff;
 }
 
 html.dark .msg-action-btn:hover {
-  background: rgba(10, 132, 255, 0.2);
-  color: #0A84FF;
+  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  color: #fff;
 }
 
 /* Specific Colors for Actions */
 .msg-action-btn[title="Copy"]:hover {
   color: #34C759;
-  background: rgba(52, 199, 89, 0.15);
+  background: linear-gradient(135deg, #34c759 0%, #2cc04f 100%);
 }
 
 .msg-action-btn[title="Read Aloud"]:hover {
   color: #FF9500;
-  background: rgba(255, 149, 0, 0.15);
+  background: linear-gradient(135deg, #ffb347 0%, #ff9500 100%);
 }
 
 .msg-retry-btn {
@@ -611,13 +649,13 @@ html.dark .msg-action-btn:hover {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  box-shadow: 0 4px 10px rgba(255, 59, 48, 0.3);
+  box-shadow: 0 4px 10px rgb(255 59 48 / 30%);
   transition: transform 0.2s;
 }
 
 .msg-retry-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(255, 59, 48, 0.4);
+  box-shadow: 0 6px 14px rgb(255 59 48 / 40%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -640,9 +678,9 @@ html.dark .msg-action-btn:hover {
 }
 
 .suggestion-button {
-  background: rgba(0, 122, 255, 0.08);
+  background: rgb(0 122 255 / 8%);
   color: #007AFF;
-  border: 1px solid rgba(0, 122, 255, 0.1);
+  border: 1px solid rgb(0 122 255 / 10%);
   padding: 8px 14px;
   border-radius: 16px;
   font-size: 13px;
@@ -657,19 +695,19 @@ html.dark .msg-action-btn:hover {
   background: #007AFF;
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+  box-shadow: 0 4px 12px rgb(0 122 255 / 25%);
   border-color: #007AFF;
 }
 
 html.dark .suggestion-button {
-  background: rgba(10, 132, 255, 0.15);
+  background: rgb(10 132 255 / 15%);
   color: #0A84FF;
-  border-color: rgba(10, 132, 255, 0.2);
+  border-color: rgb(10 132 255 / 20%);
 }
 
 html.dark .suggestion-button:hover {
   background: #0A84FF;
   color: white;
   border-color: #0A84FF;
-  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+  box-shadow: 0 4px 12px rgb(10 132 255 / 30%);
 }

@@ -17,7 +17,7 @@ html.dark #projects {
 }
 
 html:not(.dark) #projects {
-    background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
+    background: linear-gradient(180deg, #f5f5f7 0%, #fff 100%);
 }
 
 /* ========================================
@@ -57,25 +57,27 @@ html:not(.dark) #projects {
 }
 
 html.dark .stat-card {
-    background: #000000;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    background: #000;
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 8px 32px rgb(0 0 0 / 40%);
 }
 
 html:not(.dark) .stat-card {
-    background: #ffffff;
-    border-color: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    border-color: rgb(0 0 0 / 6%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 8%);
 }
 
 /* Stats icons - keep visible in both themes */
 .stat-icon {
     color: #0071e3;
+
     /* blue for light mode icons */
 }
 
 html.dark .stat-icon {
     color: #5ac8fa;
+
     /* aqua for dark mode icons */
 }
 
@@ -94,7 +96,7 @@ html.dark .stat-icon {
     font-size: 3rem;
     font-weight: 800;
     background: linear-gradient(135deg, #0071e3, #2997ff);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 0.5rem;
@@ -103,7 +105,7 @@ html.dark .stat-icon {
 
 html.dark .stat-value {
     background: linear-gradient(135deg, #2997ff, #5ac8fa);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
@@ -137,15 +139,15 @@ html.dark .stat-value {
 }
 
 html.dark .search-filter-wrapper {
-    background: rgba(15, 20, 35, 0.6);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgb(15 20 35 / 60%);
+    border-color: rgb(255 255 255 / 10%);
     backdrop-filter: blur(20px);
 }
 
 html:not(.dark) .search-filter-wrapper {
-    background: #ffffff;
-    border-color: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    background: #fff;
+    border-color: rgb(0 0 0 / 6%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 6%);
 }
 
 .search-input-wrapper {
@@ -169,18 +171,18 @@ html:not(.dark) .search-filter-wrapper {
 #project-search:focus {
     outline: none;
     border-color: #0071e3;
-    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+    box-shadow: 0 0 0 4px rgb(0 113 227 / 10%);
 }
 
 html.dark #project-search {
-    background: rgba(10, 13, 26, 0.8);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgb(10 13 26 / 80%);
+    border-color: rgb(255 255 255 / 10%);
     color: #f5f5f7;
 }
 
 html.dark #project-search:focus {
     border-color: #2997ff;
-    box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.15);
+    box-shadow: 0 0 0 4px rgb(41 151 255 / 15%);
 }
 
 html:not(.dark) #project-search {
@@ -223,14 +225,14 @@ html.dark #project-search::placeholder {
     gap: 0.75rem;
     padding: 1rem 2rem;
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    color: #ffffff;
+    color: #fff;
     border: 2px solid transparent;
     border-radius: 16px;
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 16px rgb(0 113 227 / 30%);
     white-space: nowrap;
     position: relative;
     overflow: hidden;
@@ -244,7 +246,7 @@ html.dark #project-search::placeholder {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
     transition: left 0.5s;
 }
 
@@ -256,7 +258,7 @@ html.dark #project-search::placeholder {
 #sort-toggle:hover,
 #language-filter:hover {
     background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 6px 24px rgba(41, 151, 255, 0.4);
+    box-shadow: 0 6px 24px rgb(41 151 255 / 40%);
     transform: translateY(-2px);
 }
 
@@ -264,7 +266,7 @@ html.dark #project-search::placeholder {
 #sort-toggle span,
 #language-filter i,
 #language-filter span {
-    color: #ffffff !important;
+    color: #fff !important;
     position: relative;
     z-index: 1;
 }
@@ -272,35 +274,35 @@ html.dark #project-search::placeholder {
 html.dark #sort-toggle,
 html.dark #language-filter {
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    border-color: rgba(41, 151, 255, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.4);
+    border-color: rgb(41 151 255 / 20%);
+    box-shadow: 0 4px 16px rgb(0 113 227 / 40%);
 }
 
 html.dark #sort-toggle:hover,
 html.dark #language-filter:hover {
     background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 8px 32px rgba(41, 151, 255, 0.5);
+    box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
 }
 
 /* Light Mode - Darker text for visibility */
 html:not(.dark) #sort-toggle,
 html:not(.dark) #language-filter {
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 html:not(.dark) #sort-toggle i,
 html:not(.dark) #sort-toggle span,
 html:not(.dark) #language-filter i,
 html:not(.dark) #language-filter span {
-    color: #ffffff !important;
+    color: #fff !important;
 }
 
 /* Language Filter Dropdown */
 #language-filter {
     appearance: none;
-    -webkit-appearance: none;
+    appearance: none;
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-    color: #ffffff !important;
+    color: #fff !important;
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
     background-repeat: no-repeat;
     background-position: right 1.25rem center;
@@ -349,26 +351,26 @@ html:not(.dark) #language-filter span {
 }
 
 html.dark .project-card {
-    background: #000000;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    background: #000;
+    border-color: rgb(255 255 255 / 10%);
+    box-shadow: 0 12px 40px rgb(0 0 0 / 50%);
 }
 
 html.dark .project-card:hover {
-    border-color: rgba(41, 151, 255, 0.3);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(41, 151, 255, 0.2) inset;
+    border-color: rgb(41 151 255 / 30%);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 60%), 0 0 0 1px rgb(41 151 255 / 20%) inset;
     transform: translateY(-4px);
 }
 
 html:not(.dark) .project-card {
-    background: #ffffff;
-    border-color: rgba(0, 0, 0, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    border-color: rgb(0 0 0 / 8%);
+    box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
 }
 
 html:not(.dark) .project-card:hover {
-    border-color: rgba(0, 113, 227, 0.2);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+    border-color: rgb(0 113 227 / 20%);
+    box-shadow: 0 16px 48px rgb(0 0 0 / 12%);
     transform: translateY(-4px);
 }
 
@@ -379,18 +381,18 @@ html:not(.dark) .project-card:hover {
 }
 
 html.dark .project-header {
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: rgb(255 255 255 / 8%);
 }
 
 html:not(.dark) .project-header {
-    border-bottom-color: rgba(0, 0, 0, 0.06);
+    border-bottom-color: rgb(0 0 0 / 6%);
 }
 
 .project-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -479,18 +481,18 @@ html.dark .project-stat i.fa-code-branch {
     font-size: 1rem;
     font-weight: 600;
     padding: 0.75rem 1.25rem;
-    background: rgba(0, 113, 227, 0.08);
+    background: rgb(0 113 227 / 8%);
     border-radius: 12px;
     width: fit-content;
 }
 
 html.dark .project-language {
-    background: rgba(41, 151, 255, 0.1);
+    background: rgb(41 151 255 / 10%);
     color: #5ac8fa;
 }
 
 html:not(.dark) .project-language {
-    background: rgba(0, 113, 227, 0.08);
+    background: rgb(0 113 227 / 8%);
     color: #0071e3;
 }
 
@@ -511,24 +513,24 @@ html:not(.dark) .project-language {
 
 .project-tag {
     padding: 0.5rem 1rem;
-    background: rgba(0, 113, 227, 0.1);
+    background: rgb(0 113 227 / 10%);
     color: #0071e3;
     border-radius: 12px;
     font-size: 0.875rem;
     font-weight: 600;
-    border: 2px solid rgba(0, 113, 227, 0.2);
+    border: 2px solid rgb(0 113 227 / 20%);
 }
 
 html.dark .project-tag {
-    background: rgba(41, 151, 255, 0.12);
+    background: rgb(41 151 255 / 12%);
     color: #5ac8fa;
-    border-color: rgba(41, 151, 255, 0.25);
+    border-color: rgb(41 151 255 / 25%);
 }
 
 html:not(.dark) .project-tag {
-    background: rgba(0, 113, 227, 0.08);
+    background: rgb(0 113 227 / 8%);
     color: #0071e3;
-    border-color: rgba(0, 113, 227, 0.15);
+    border-color: rgb(0 113 227 / 15%);
 }
 
 /* Project Footer */
@@ -540,11 +542,11 @@ html:not(.dark) .project-tag {
 }
 
 html.dark .project-footer {
-    border-top-color: rgba(255, 255, 255, 0.08);
+    border-top-color: rgb(255 255 255 / 8%);
 }
 
 html:not(.dark) .project-footer {
-    border-top-color: rgba(0, 0, 0, 0.06);
+    border-top-color: rgb(0 0 0 / 6%);
 }
 
 /* Project Action Buttons */
@@ -558,14 +560,14 @@ html:not(.dark) .project-footer {
     gap: 0.75rem;
     padding: 1rem 1.5rem;
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    color: #ffffff;
+    color: #fff;
     border: 2px solid transparent;
     border-radius: 14px;
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
     position: relative;
     overflow: hidden;
 }
@@ -579,7 +581,7 @@ html:not(.dark) .project-footer {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
     transition: left 0.5s;
 }
 
@@ -593,7 +595,7 @@ html:not(.dark) .project-footer {
 .btn-github:hover,
 .btn-demo:hover {
     background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 6px 20px rgba(41, 151, 255, 0.4);
+    box-shadow: 0 6px 20px rgb(41 151 255 / 40%);
     transform: translateY(-2px);
 }
 
@@ -603,7 +605,7 @@ html:not(.dark) .project-footer {
 .btn-github span,
 .btn-demo i,
 .btn-demo span {
-    color: #ffffff !important;
+    color: #fff !important;
     position: relative;
     z-index: 1;
 }
@@ -612,15 +614,15 @@ html.dark .project-action-btn,
 html.dark .btn-github,
 html.dark .btn-demo {
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    border-color: rgba(41, 151, 255, 0.2);
-    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.4);
+    border-color: rgb(41 151 255 / 20%);
+    box-shadow: 0 4px 16px rgb(0 113 227 / 40%);
 }
 
 html.dark .project-action-btn:hover,
 html.dark .btn-github:hover,
 html.dark .btn-demo:hover {
     background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 8px 24px rgba(41, 151, 255, 0.5);
+    box-shadow: 0 8px 24px rgb(41 151 255 / 50%);
 }
 
 /* ========================================
@@ -646,7 +648,7 @@ html.dark .btn-demo:hover {
 }
 
 html.dark .loading-spinner {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgb(255 255 255 / 10%);
     border-top-color: #2997ff;
 }
 
@@ -673,14 +675,14 @@ html.dark .loading-spinner {
     gap: 1rem;
     padding: 1.25rem 3.5rem;
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    color: #ffffff;
+    color: #fff;
     border: 2px solid transparent;
     border-radius: 16px;
     font-size: 1.125rem;
     font-weight: 700;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 8px 24px rgb(0 113 227 / 30%);
     margin-top: 3rem;
     position: relative;
     overflow: hidden;
@@ -693,7 +695,7 @@ html.dark .loading-spinner {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
     transition: left 0.5s;
 }
 
@@ -703,13 +705,13 @@ html.dark .loading-spinner {
 
 .projects-view-all-btn:hover {
     background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 12px 36px rgba(41, 151, 255, 0.4);
+    box-shadow: 0 12px 36px rgb(41 151 255 / 40%);
     transform: translateY(-3px);
 }
 
 .projects-view-all-btn i,
 .projects-view-all-btn span {
-    color: #ffffff !important;
+    color: #fff !important;
     position: relative;
     z-index: 1;
 }
@@ -718,7 +720,7 @@ html.dark .loading-spinner {
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
     #projects-stats .grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
@@ -730,7 +732,7 @@ html.dark .loading-spinner {
     }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     #projects {
         padding: 3rem 0;
     }
@@ -791,7 +793,7 @@ html.dark .loading-spinner {
     }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
     .stat-value {
         font-size: 2rem;
     }
