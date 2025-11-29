@@ -11,6 +11,10 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from datetime import datetime
 import asyncio
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Initialize FastAPI
 app = FastAPI()
@@ -39,13 +43,11 @@ API_URL = "https://openrouter.ai/api/v1/chat/completions"
 SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut712.github.io/mangeshrautarchive/")
 SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "Mangesh Raut Portfolio")
 
-# Models
+# Models - single provider
 MODELS = [
-    {"id": "google/gemini-2.0-flash-exp:free", "name": "Gemini 2.0 Flash (Free)", "priority": 1},
-    {"id": "google/gemini-2.0-flash-001", "name": "Gemini 2.0 Flash", "priority": 2},
-    {"id": "google/gemini-2.0-pro-exp-02-05:free", "name": "Gemini 2.0 Pro", "priority": 3}
+    {"id": "x-ai/grok-4.1-fast:free", "name": "Grok 4.1 Fast (Free)", "priority": 1}
 ]
-DEFAULT_MODEL = "google/gemini-2.0-flash-exp:free"
+DEFAULT_MODEL = "x-ai/grok-4.1-fast:free"
 
 # Portfolio Data
 PORTFOLIO_SUMMARY = {
