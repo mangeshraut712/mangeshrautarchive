@@ -43,12 +43,9 @@ SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "Mangesh Raut Portfolio")
 MODELS = [
     {"id": "google/gemini-2.0-flash-001", "name": "Gemini 2.0 Flash", "priority": 1},
     {"id": "google/gemini-2.0-flash-exp:free", "name": "Gemini 2.0 Flash Exp", "priority": 2},
-    {"id": "mistralai/mistral-nemo:free", "name": "Mistral Nemo", "priority": 3},
-    {"id": "qwen/qwen3-coder:free", "name": "Qwen3 Coder", "priority": 4},
-    {"id": "meta-llama/llama-3.3-70b-instruct:free", "name": "Llama 3.3", "priority": 5},
-    {"id": "tngtech/deepseek-r1t2-chimera:free", "name": "DeepSeek R1", "priority": 6}
+    {"id": "google/gemini-2.0-pro-exp-02-05:free", "name": "Gemini 2.0 Pro", "priority": 3}
 ]
-DEFAULT_MODEL = MODELS[0]["id"]
+DEFAULT_MODEL = "google/gemini-2.0-flash-001"
 
 # Portfolio Data
 PORTFOLIO_SUMMARY = {
