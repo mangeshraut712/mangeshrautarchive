@@ -188,13 +188,13 @@ class GitHubProjects {
           <!-- Actions -->
           <div class="flex items-center gap-3 pt-3 border-t border-border">
             <a href="${repo.html_url}" target="_blank" 
-               class="text-accent hover:text-accent text-sm font-medium flex items-center gap-1 transition-all duration-300 hover:gap-2">
+               class="project-action-btn text-sm">
               <i class="fab fa-github"></i>
               <span>View Code</span>
             </a>
             ${homepage ? `
               <a href="${homepage}" target="_blank" 
-                 class="text-accent hover:text-accent text-sm font-medium flex items-center gap-1 transition-all duration-300 hover:gap-2">
+                 class="project-action-btn text-sm">
                 <i class="fas fa-external-link-alt"></i>
                 <span>Live Demo</span>
               </a>

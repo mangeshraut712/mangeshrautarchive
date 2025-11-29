@@ -986,12 +986,7 @@ class DebugRunner {
 
         // Create game wrapper
         const gameWrapper = document.createElement('div');
-        gameWrapper.style.cssText = `
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        `;
+        gameWrapper.className = 'debug-runner-wrapper';
 
         // Initialize and add canvas
         const canvas = this.init();
@@ -999,24 +994,14 @@ class DebugRunner {
 
         // Mobile-friendly quick controls
         const mobileControls = document.createElement('div');
-        mobileControls.style.cssText = `
-            display: ${window.innerWidth <= 1024 ? 'grid' : 'none'};
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            width: 100%;
-            max-width: 480px;
-        `;
+        mobileControls.className = 'debug-runner-mobile-controls';
+        if (window.innerWidth <= 1024) {
+            mobileControls.classList.add('is-active');
+        }
         const jumpBtn = document.createElement('button');
         jumpBtn.textContent = 'Tap to Jump';
-        jumpBtn.style.cssText = `
-            background: #00ff41;
-            color: #000;
-            border: none;
-            padding: 12px;
-            font-weight: 700;
-            border-radius: 10px;
-            box-shadow: 0 6px 16px rgba(0, 255, 65, 0.35);
-        `;
+        jumpBtn.type = 'button';
+        jumpBtn.className = 'debug-game-btn debug-game-btn--jump';
         jumpBtn.onclick = () => {
             if (!this.gameRunning) return;
             this.jump();
@@ -1024,15 +1009,8 @@ class DebugRunner {
 
         const duckBtn = document.createElement('button');
         duckBtn.textContent = 'Hold to Duck';
-        duckBtn.style.cssText = `
-            background: #111;
-            color: #00ff41;
-            border: 1px solid #00ff41;
-            padding: 12px;
-            font-weight: 700;
-            border-radius: 10px;
-            box-shadow: 0 6px 16px rgba(0, 255, 65, 0.2);
-        `;
+        duckBtn.type = 'button';
+        duckBtn.className = 'debug-game-btn debug-game-btn--duck';
         duckBtn.onmousedown = duckBtn.ontouchstart = (e) => {
             e.preventDefault();
             if (!this.gameRunning) return;
@@ -1049,7 +1027,7 @@ class DebugRunner {
         gameWrapper.appendChild(mobileControls);
 
         const syncMobileControls = () => {
-            mobileControls.style.display = window.innerWidth <= 1024 ? 'grid' : 'none';
+            mobileControls.classList.toggle('is-active', window.innerWidth <= 1024);
         };
         window.addEventListener('resize', syncMobileControls, { passive: true });
         syncMobileControls();
@@ -1057,33 +1035,22 @@ class DebugRunner {
         // Add start button
         const startBtn = document.createElement('button');
         startBtn.textContent = '▶ START GAME';
-        startBtn.style.cssText = `
-            background: #00ff41;
-            color: black;
-            border: none;
-            padding: 12px 30px;
-            font-size: 18px;
-            font-family: monospace;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
-        `;
-        startBtn.onmouseover = () => {
-            startBtn.style.background = '#00cc33';
-            startBtn.style.boxShadow = '0 0 25px rgba(0, 255, 65, 0.8)';
+        startBtn.type = 'button';
+        startBtn.className = 'debug-game-btn debug-game-btn--start';
+        const markRunning = () => {
+            startBtn.textContent = '🎮 PLAYING...';
+            startBtn.disabled = true;
+            startBtn.classList.add('is-running');
         };
-        startBtn.onmouseout = () => {
-            startBtn.style.background = '#00ff41';
-            startBtn.style.boxShadow = '0 0 15px rgba(0, 255, 65, 0.5)';
+        const markReady = (label = '▶ START GAME') => {
+            startBtn.textContent = label;
+            startBtn.disabled = false;
+            startBtn.classList.remove('is-running');
         };
         startBtn.onclick = () => {
             if (!this.gameRunning) {
                 this.start();
-                startBtn.textContent = '🎮 PLAYING...';
-                startBtn.disabled = true;
-                startBtn.style.opacity = '0.5';
+                markRunning();
             }
         };
 
@@ -1091,9 +1058,7 @@ class DebugRunner {
         const originalStop = this.stop.bind(this);
         this.stop = () => {
             originalStop();
-            startBtn.textContent = '🔄 RESTART';
-            startBtn.disabled = false;
-            startBtn.style.opacity = '1';
+            markReady('🔄 RESTART');
         };
 
         // Handle space key to start/restart
@@ -1105,9 +1070,7 @@ class DebugRunner {
                 } else {
                     this.start();
                 }
-                startBtn.textContent = '🎮 PLAYING...';
-                startBtn.disabled = true;
-                startBtn.style.opacity = '0.5';
+                markRunning();
             }
         };
         document.addEventListener('keydown', handleSpace);

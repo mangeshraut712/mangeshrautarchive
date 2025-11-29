@@ -1,0 +1,769 @@
+/* ========================================
+   Projects Section - Enhanced Design
+   ======================================== */
+
+/* Projects Section Background */
+#projects {
+    background: var(--bg-primary);
+}
+
+html.dark #projects {
+    background: #000000;
+}
+
+html:not(.dark) #projects {
+    background: #ffffff;
+}
+
+/* Projects Stats Dashboard */
+#projects-stats {
+    margin-bottom: 3rem;
+}
+
+#projects-stats .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .stat-card {
+    background: #18181b;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+html.dark .stat-card:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0071e3, #2997ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+html.dark .stat-value {
+    background: linear-gradient(135deg, #2997ff, #0071e3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Search and Filter Section */
+.search-filter-container {
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.search-filter-wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+#project-search {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    border-radius: 980px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#project-search:focus {
+    outline: none;
+    border-color: #0071e3;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+html.dark #project-search {
+    background: #18181b;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+html.dark #project-search:focus {
+    border-color: #2997ff;
+    box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Projects Grid */
+#github-projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Project Card */
+.project-card {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+}
+
+html.dark .project-card {
+    background: #18181b;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+
+html.dark .project-card:hover {
+    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.55);
+}
+
+/* Project Card Header */
+.project-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+html.dark .project-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.project-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.project-icon {
+    font-size: 1.5rem;
+}
+
+.project-description {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Project Card Body */
+.project-body {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Project Stats */
+.project-stats {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.project-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.project-stat i {
+    font-size: 1rem;
+}
+
+/* Project Language */
+.project-language {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.language-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Project Tags */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.project-tag {
+    padding: 0.375rem 0.75rem;
+    background: rgba(0, 113, 227, 0.1);
+    color: #0071e3;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(0, 113, 227, 0.2);
+}
+
+html.dark .project-tag {
+    background: rgba(41, 151, 255, 0.1);
+    color: #2997ff;
+    border-color: rgba(41, 151, 255, 0.2);
+}
+
+/* Project Card Footer */
+.project-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 0.75rem;
+}
+
+html.dark .project-footer {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Loading State */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border-color);
+    border-top-color: #0071e3;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+html.dark .loading-spinner {
+    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: #2997ff;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    #projects-stats .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #github-projects-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #projects-stats .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+
+    .search-filter-wrapper {
+        flex-direction: column;
+    }
+
+    .search-input-wrapper {
+        min-width: 100%;
+    }
+
+    .filter-controls {
+        flex-direction: column;
+    }
+
+    #language-filter,
+    #sort-toggle {
+        width: 100%;
+    }
+
+    #github-projects-container {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .project-card {
+        margin: 0;
+    }
+}
+
+/* ========================================
+   Theme-Aware Text Colors
+   ======================================== */
+
+/* Projects Section - Light Mode */
+html:not(.dark) #projects h2,
+html:not(.dark) #projects h3,
+html:not(.dark) #projects h4 {
+    color: #1d1d1f !important;
+}
+
+html:not(.dark) #projects p,
+html:not(.dark) #projects span,
+html:not(.dark) #projects div {
+    color: #1d1d1f !important;
+}
+
+html:not(.dark) #projects .text-secondary,
+html:not(.dark) #projects .opacity-75,
+html:not(.dark) #projects .opacity-60,
+html:not(.dark) #projects .opacity-80 {
+    color: #6e6e73 !important;
+}
+
+html:not(.dark) .project-title {
+    color: #1d1d1f !important;
+}
+
+html:not(.dark) .project-description {
+    color: #6e6e73 !important;
+}
+
+html:not(.dark) .stat-label {
+    color: #6e6e73 !important;
+}
+
+html:not(.dark) .project-stats {
+    color: #6e6e73 !important;
+}
+
+html:not(.dark) .project-language {
+    color: #1d1d1f !important;
+}
+
+/* Projects Section - Dark Mode */
+html.dark #projects h2,
+html.dark #projects h3,
+html.dark #projects h4 {
+    color: #f5f5f7 !important;
+}
+
+html.dark #projects p {
+    color: #d1d1d6 !important;
+}
+
+html.dark #projects span,
+html.dark #projects div {
+    color: #d1d1d6 !important;
+}
+
+html.dark #projects .text-secondary,
+html.dark #projects .opacity-75,
+html.dark #projects .opacity-60,
+html.dark #projects .opacity-80 {
+    color: #86868b !important;
+}
+
+html.dark .project-title {
+    color: #f5f5f7 !important;
+}
+
+html.dark .project-description {
+    color: #a1a1a6 !important;
+}
+
+html.dark .stat-label {
+    color: #86868b !important;
+}
+
+html.dark .project-stats {
+    color: #86868b !important;
+}
+
+html.dark .project-language {
+    color: #d1d1d6 !important;
+}
+
+/* Search Input Text Colors */
+html:not(.dark) #project-search {
+    color: #1d1d1f !important;
+}
+
+html.dark #project-search {
+    color: #f5f5f7 !important;
+}
+
+html:not(.dark) #project-search::placeholder {
+    color: #6e6e73 !important;
+}
+
+html.dark #project-search::placeholder {
+    color: #86868b !important;
+}
+
+/* Loading Text */
+html:not(.dark) .loading-container p {
+    color: #6e6e73 !important;
+}
+
+html.dark .loading-container p {
+    color: #86868b !important;
+}
+
+/* Search Icon Color */
+html:not(.dark) .search-icon {
+    color: #6e6e73 !important;
+}
+
+html.dark .search-icon {
+    color: #86868b !important;
+}
+
+/* Project Card Specific Elements */
+html:not(.dark) .project-card h3 {
+    color: #1d1d1f !important;
+}
+
+html:not(.dark) .project-card p {
+    color: #6e6e73 !important;
+}
+
+html.dark .project-card h3 {
+    color: #f5f5f7 !important;
+}
+
+html.dark .project-card p {
+    color: #a1a1a6 !important;
+}
+
+/* Stat Card Text */
+html:not(.dark) .stat-card .stat-label {
+    color: #6e6e73 !important;
+}
+
+html.dark .stat-card .stat-label {
+    color: #86868b !important;
+}
+
+/* Project Tags */
+html:not(.dark) .project-tag {
+    color: #0071e3 !important;
+}
+
+html.dark .project-tag {
+    color: #2997ff !important;
+}
+
+/* Ensure all text in cards is visible */
+html:not(.dark) .education-card,
+html:not(.dark) .education-card * {
+    color: #1d1d1f !important;
+}
+
+html.dark .education-card,
+html.dark .education-card * {
+    color: #d1d1d6 !important;
+}
+
+/* Override for secondary text in cards */
+html:not(.dark) .education-card .text-sm.opacity-80,
+html:not(.dark) .education-card .text-xs.opacity-60,
+html:not(.dark) .education-card .text-xs.opacity-50 {
+    color: #6e6e73 !important;
+}
+
+html.dark .education-card .text-sm.opacity-80,
+html.dark .education-card .text-xs.opacity-60,
+html.dark .education-card .text-xs.opacity-50 {
+    color: #86868b !important;
+}
+
+/* Project Card Headings */
+html:not(.dark) .education-card h3 {
+    color: #1d1d1f !important;
+}
+
+html.dark .education-card h3 {
+    color: #f5f5f7 !important;
+}
+
+/* Icon Colors */
+html:not(.dark) .project-icon {
+    color: #0071e3 !important;
+}
+
+html.dark .project-icon {
+    color: #2997ff !important;
+}
+
+/* Star and Fork Icons */
+html:not(.dark) .fas.fa-star,
+html:not(.dark) .fas.fa-code-branch {
+    color: #6e6e73 !important;
+}
+
+html.dark .fas.fa-star,
+html.dark .fas.fa-code-branch {
+    color: #86868b !important;
+}
+
+/* Yellow star icon should stay yellow */
+.text-yellow-500 {
+    color: #eab308 !important;
+}
+
+/* Give project icons some color pop */
+html:not(.dark) #projects .fas.fa-code-branch {
+    color: #8b5cf6 !important;
+}
+
+html.dark #projects .fas.fa-code-branch {
+    color: #c084fc !important;
+}
+
+html:not(.dark) #projects .fab.fa-github,
+html:not(.dark) #projects .fas.fa-external-link-alt {
+    color: #181717 !important;
+}
+
+html.dark #projects .fab.fa-github,
+html.dark #projects .fas.fa-external-link-alt {
+    color: #f5f5f7 !important;
+}
+
+/* External link accent pop */
+html:not(.dark) #projects .fas.fa-external-link-alt {
+    color: #0071e3 !important;
+}
+
+html.dark #projects .fas.fa-external-link-alt {
+    color: #5ac8fa !important;
+}
+
+/* ========================================
+   BUTTON STYLES - Unified Apple Design
+   ======================================== */
+
+/* Shared Button Properties for Consistency */
+.project-action-btn,
+.projects-view-all-btn,
+#sort-toggle,
+#language-filter {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1.5rem !important;
+    background: #0071e3 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 980px !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3) !important;
+    /* Slightly stronger shadow */
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+    -webkit-font-smoothing: antialiased !important;
+    border: 1px solid transparent !important;
+}
+
+/* Hover Effects - Lift and Glow */
+.project-action-btn:hover,
+.projects-view-all-btn:hover,
+#sort-toggle:hover,
+#language-filter:hover {
+    background: #0077ed !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+    /* Enhanced glow */
+}
+
+/* Active/Press Effects */
+.project-action-btn:active,
+.projects-view-all-btn:active,
+#sort-toggle:active,
+#language-filter:active {
+    transform: translateY(0) scale(0.98) !important;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3) !important;
+}
+
+/* Icon and Text Colors */
+.project-action-btn i,
+.project-action-btn span,
+.projects-view-all-btn i,
+.projects-view-all-btn span,
+#sort-toggle i,
+#sort-toggle span {
+    color: #ffffff !important;
+}
+
+/* Dark Mode Adjustments */
+html.dark .project-action-btn,
+html.dark .projects-view-all-btn,
+html.dark #sort-toggle,
+html.dark #language-filter {
+    background: #0071e3 !important;
+    /* Keep consistent Apple Blue */
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4) !important;
+}
+
+html.dark .project-action-btn:hover,
+html.dark .projects-view-all-btn:hover,
+html.dark #sort-toggle:hover,
+html.dark #language-filter:hover {
+    background: #2997ff !important;
+    /* Lighter blue on hover in dark mode */
+    box-shadow: 0 8px 24px rgba(41, 151, 255, 0.5) !important;
+    /* Stronger glow */
+}
+
+/* Specific Adjustments for Language Filter (Select) */
+#language-filter {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 0.65em auto !important;
+    padding-right: 2.5rem !important;
+    min-width: 160px !important;
+}
+
+#language-filter:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.4) !important;
+}
+
+/* Dark mode: keep the accent pill with white text */
+html.dark #language-filter {
+    background: #0a84ff !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 6px 14px rgba(10, 132, 255, 0.25) !important;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+}
+
+html.dark #language-filter:hover,
+html.dark #language-filter:focus {
+    background: #2997ff !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 8px 18px rgba(41, 151, 255, 0.32) !important;
+}
+
+/* Specific Adjustments for View All Button */
+.projects-view-all-btn {
+    padding: 1rem 3rem !important;
+    /* Larger padding for CTA */
+    font-size: 1.125rem !important;
+    /* Larger font */
+    margin-top: 2rem !important;
+    box-shadow: 0 8px 20px rgba(0, 113, 227, 0.3) !important;
+}
+
+.projects-view-all-btn:hover {
+    box-shadow: 0 12px 28px rgba(0, 113, 227, 0.5) !important;
+}
+
+/* Search Input - Improved */
+#project-search {
+    width: 100% !important;
+    padding: 0.875rem 1rem 0.875rem 3rem !important;
+    border-radius: 980px !important;
+    border: 1px solid var(--border-color) !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    font-size: 1rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#project-search:focus {
+    outline: none !important;
+    border-color: #0071e3 !important;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1) !important;
+}
+
+html.dark #project-search {
+    background: #18181b !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark #project-search:focus {
+    border-color: #2997ff !important;
+    box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.1) !important;
+}
+
+/* Force Green Status Badge */
+#projects .education-status,
+#projects .education-status span {
+    color: #ffffff !important;
+}

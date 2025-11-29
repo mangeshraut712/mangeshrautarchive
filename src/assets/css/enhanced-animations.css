@@ -1,0 +1,577 @@
+/* ========================================
+   Enhanced Animations for All Pages
+   Modern, Smooth, Apple-Inspired
+   ======================================== */
+
+/* Fade In Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scale Animations */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scaleInBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Slide Animations */
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Rotate Animations */
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-10deg) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0) scale(1);
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Glow Animation */
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(0, 113, 227, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(0, 113, 227, 0.6);
+    }
+}
+
+/* ========================================
+   Card Animations
+   ======================================== */
+
+/* All Cards - Base Animation */
+.education-card,
+.award-card,
+.recommendation-card,
+.about-highlight-card,
+.blog-card,
+.project-card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+/* Staggered Card Animations */
+.education-card:nth-child(1),
+.award-card:nth-child(1),
+.recommendation-card:nth-child(1),
+.about-highlight-card:nth-child(1),
+.blog-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.education-card:nth-child(2),
+.award-card:nth-child(2),
+.recommendation-card:nth-child(2),
+.about-highlight-card:nth-child(2),
+.blog-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.education-card:nth-child(3),
+.award-card:nth-child(3),
+.recommendation-card:nth-child(3),
+.about-highlight-card:nth-child(3),
+.blog-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.education-card:nth-child(4),
+.award-card:nth-child(4),
+.recommendation-card:nth-child(4),
+.about-highlight-card:nth-child(4),
+.blog-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.education-card:nth-child(5),
+.recommendation-card:nth-child(5),
+.blog-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.education-card:nth-child(6),
+.recommendation-card:nth-child(6),
+.blog-card:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+/* Card Hover Animations */
+.education-card,
+.award-card,
+.recommendation-card,
+.about-highlight-card,
+.blog-card,
+.project-card {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.education-card:hover,
+.award-card:hover,
+.recommendation-card:hover,
+.about-highlight-card:hover,
+.blog-card:hover,
+.project-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* ========================================
+   Section Animations
+   ======================================== */
+
+/* Section Headers */
+section h2 {
+    animation: fadeInDown 0.8s ease-out backwards;
+}
+
+section p.text-center {
+    animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+/* ========================================
+   Timeline Animations (Education & Experience)
+   ======================================== */
+
+.education-item,
+.experience-card {
+    animation: fadeInRight 0.7s ease-out backwards;
+}
+
+.education-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.education-item:nth-child(2) {
+    animation-delay: 0.25s;
+}
+
+.education-item:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.education-item:nth-child(4) {
+    animation-delay: 0.55s;
+}
+
+/* Timeline Icons */
+.education-icon,
+.award-icon,
+.about-highlight-icon {
+    animation: scaleInBounce 0.6s ease-out backwards;
+}
+
+/* ========================================
+   Button Animations
+   ======================================== */
+
+.btn,
+.btn-secondary,
+.project-action-btn,
+.blog-read-btn,
+.hero-cta {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover,
+.btn-secondary:hover,
+.project-action-btn:hover,
+.blog-read-btn:hover,
+.hero-cta:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active,
+.btn-secondary:active,
+.project-action-btn:active,
+.blog-read-btn:active,
+.hero-cta:active {
+    transform: translateY(0);
+}
+
+/* ========================================
+   Image Animations
+   ======================================== */
+
+.profile-image,
+.about-image,
+img[data-animate] {
+    animation: scaleIn 0.8s ease-out backwards;
+}
+
+/* ========================================
+   Stats & Numbers Animation
+   ======================================== */
+
+.hero-stat,
+.stat-value,
+#stat-repos,
+#stat-stars,
+#stat-forks,
+#stat-languages {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.hero-stat:nth-child(1) {
+    animation-delay: 0.5s;
+}
+
+.hero-stat:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.hero-stat:nth-child(3) {
+    animation-delay: 0.7s;
+}
+
+/* ========================================
+   Social Links Animation
+   ======================================== */
+
+.hero-social-link,
+.footer-social-link,
+.contact-social-links a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-social-link:hover,
+.footer-social-link:hover,
+.contact-social-links a:hover {
+    transform: translateY(-4px) scale(1.1);
+}
+
+/* ========================================
+   Tag Animations
+   ======================================== */
+
+.blog-tag,
+.project-tag,
+.skill-tag {
+    animation: fadeIn 0.5s ease-out backwards;
+    transition: all 0.2s ease;
+}
+
+.blog-tag:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.blog-tag:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.blog-tag:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.blog-tag:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.blog-tag:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.blog-tag:hover,
+.project-tag:hover,
+.skill-tag:hover {
+    transform: scale(1.1);
+}
+
+/* ========================================
+   Modal Animations
+   ======================================== */
+
+.blog-modal-container {
+    animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.blog-modal-overlay {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* ========================================
+   Loading Animations
+   ======================================== */
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* ========================================
+   Scroll Reveal Animations
+   ======================================== */
+
+[data-animate="fade-up"] {
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+
+[data-animate="fade-down"] {
+    animation: fadeInDown 0.8s ease-out backwards;
+}
+
+[data-animate="fade-left"] {
+    animation: fadeInLeft 0.8s ease-out backwards;
+}
+
+[data-animate="fade-right"] {
+    animation: fadeInRight 0.8s ease-out backwards;
+}
+
+[data-animate="zoom-in"] {
+    animation: scaleIn 0.8s ease-out backwards;
+}
+
+[data-animate="tilt-in"] {
+    animation: rotateIn 0.8s ease-out backwards;
+}
+
+/* Animation Delays */
+[data-animate-delay="100"] {
+    animation-delay: 0.1s;
+}
+
+[data-animate-delay="140"] {
+    animation-delay: 0.14s;
+}
+
+[data-animate-delay="180"] {
+    animation-delay: 0.18s;
+}
+
+[data-animate-delay="200"] {
+    animation-delay: 0.2s;
+}
+
+[data-animate-delay="220"] {
+    animation-delay: 0.22s;
+}
+
+[data-animate-delay="260"] {
+    animation-delay: 0.26s;
+}
+
+[data-animate-delay="300"] {
+    animation-delay: 0.3s;
+}
+
+[data-animate-delay="340"] {
+    animation-delay: 0.34s;
+}
+
+[data-animate-delay="380"] {
+    animation-delay: 0.38s;
+}
+
+[data-animate-delay="400"] {
+    animation-delay: 0.4s;
+}
+
+[data-animate-delay="420"] {
+    animation-delay: 0.42s;
+}
+
+[data-animate-delay="460"] {
+    animation-delay: 0.46s;
+}
+
+[data-animate-delay="500"] {
+    animation-delay: 0.5s;
+}
+
+/* ========================================
+   Smooth Transitions
+   ======================================== */
+
+* {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   Reduce Motion for Accessibility
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   Performance Optimizations
+   ======================================== */
+
+.education-card,
+.award-card,
+.recommendation-card,
+.about-highlight-card,
+.blog-card,
+.project-card,
+.education-item {
+    will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes */
+.education-card:hover,
+.award-card:hover,
+.recommendation-card:hover,
+.about-highlight-card:hover,
+.blog-card:hover,
+.project-card:hover {
+    will-change: auto;
+}

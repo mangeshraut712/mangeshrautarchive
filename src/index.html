@@ -13,6 +13,7 @@
   <meta name="apple-touch-fullscreen" content="yes" />
   <title>Mangesh Raut - Software Engineer</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script>
     // Suppress Tailwind CDN production warning for portfolio
     const originalWarn = console.warn;
@@ -37,6 +38,18 @@
   <link rel="stylesheet" href="assets/css/dark-mode-cards.css" />
   <link rel="stylesheet" href="assets/css/chatbot-complete.css" />
   <link rel="stylesheet" href="assets/css/fixes-2025.css" />
+  <link rel="stylesheet" href="assets/css/animations-2025.css" />
+  <link rel="stylesheet" href="assets/css/publications.css" />
+  <link rel="stylesheet" href="assets/css/recommendations.css" />
+  <link rel="stylesheet" href="assets/css/awards.css" />
+  <link rel="stylesheet" href="assets/css/education.css" />
+  <link rel="stylesheet" href="assets/css/experience.css" />
+  <link rel="stylesheet" href="assets/css/homepage.css" />
+  <link rel="stylesheet" href="assets/css/about.css" />
+  <link rel="stylesheet" href="assets/css/blog.css" />
+  <link rel="stylesheet" href="assets/css/projects.css" />
+  <link rel="stylesheet" href="assets/css/enhanced-animations.css" />
+  <link rel="stylesheet" href="assets/css/theme-background-fix.css" />
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
 
   <!-- Chatbot iMessage Style - Complete Redesign -->
@@ -713,6 +726,30 @@
 </head>
 
 <body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
+  <!-- Search Overlay -->
+  <div id="search-overlay">
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search" autocomplete="off">
+        <button id="search-close" aria-label="Close search">&times;</button>
+      </div>
+      <div id="search-results"></div>
+      <div class="search-hint">
+        Press <kbd>Esc</kbd> to close
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Clip Animation -->
+  <div class="bg-clip-container">
+    <div class="bg-clip-col"></div>
+    <div class="bg-clip-col"></div>
+    <div class="bg-clip-col"></div>
+    <div class="bg-clip-col"></div>
+    <div class="bg-clip-col"></div>
+  </div>
+
   <nav class="global-nav" aria-label="Primary navigation" data-animate="fade-down" data-animate-duration="650">
     <div class="nav-container">
       <div class="nav-left" data-animate="fade-right" data-animate-delay="120" data-animate-duration="720">
@@ -739,6 +776,9 @@
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
       </div>
       <div class="nav-actions" data-animate="fade-left" data-animate-delay="260" data-animate-duration="700">
+        <button id="search-toggle" class="theme-toggle-nav mr-4" aria-label="Search">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
         <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle theme">
           <i id="theme-toggle-icon" class="fas fa-moon" aria-hidden="true"></i>
           <span class="sr-only">Toggle theme</span>
@@ -768,58 +808,81 @@
   </div>
   <main id="main-content">
     <!-- Home Section -->
-    <section id="home" class="py-20" data-animate="zoom-in" data-animate-duration="1100" data-animate-parallax="0.08">
+    <section id="home" class="py-20 home-hero" data-animate="zoom-in" data-animate-duration="1100"
+      data-animate-parallax="0.08">
       <div class="container-fluid">
         <div class="max-w-4xl mx-auto text-center" data-animate="fade-up" data-animate-delay="120">
+          <!-- Profile Image -->
           <div class="mb-12" data-animate="zoom-in" data-animate-delay="160">
-            <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-light mx-auto mb-8"
-              data-animate="zoom-in" data-animate-delay="200">
-              <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="w-full h-full object-cover"
-                data-animate="zoom-in" data-animate-delay="260" />
+            <div class="profile-image-wrapper mx-auto mb-8" data-animate="zoom-in" data-animate-delay="200">
+              <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" data-animate="zoom-in"
+                data-animate-delay="260" />
+              <div class="profile-ring"></div>
             </div>
           </div>
-          <h2 data-animate="fade-up" data-animate-delay="300">Mangesh Raut</h2>
-          <h1 data-animate="fade-up" data-animate-delay="340">Software Engineer</h1>
-          <p class="mx-auto mb-10 max-w-2xl" data-animate="fade-up" data-animate-delay="380">
-            Welcome! Explore my journey in crafting innovative software
-            solutions.
-          </p>
-          <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="btn btn-secondary"
-            data-animate="zoom-in" data-animate-delay="420">Download Resume</a>
 
+          <!-- Name and Title -->
+          <h2 class="text-reveal hero-name" data-animate="fade-up" data-animate-delay="300">Mangesh Raut</h2>
+          <h1 class="text-reveal hero-title" data-animate="fade-up" data-animate-delay="340">Software Developer Engineer
+          </h1>
+
+          <!-- Description -->
+          <p class="hero-description mx-auto mb-8 max-w-2xl" data-animate="fade-up" data-animate-delay="380">
+            Welcome! Explore my journey in crafting innovative software solutions with expertise in Full-Stack
+            Development, Cloud Technologies, and Machine Learning.
+          </p>
+
+          <!-- Social Links -->
+          <!-- CTA Button -->
+          <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf"
+            class="btn btn-secondary btn-beam hero-cta" data-animate="zoom-in" data-animate-delay="420">
+            <i class="fas fa-download"></i>
+            Download Resume
+          </a>
         </div>
       </div>
     </section>
     <!-- About Section -->
-    <section id="about" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900">
+    <section id="about" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
       <div class="container">
         <h2 data-animate="fade-down">About Me</h2>
-        <div class="flex flex-col md:flex-row items-center gap-12">
-          <div class="flex-shrink-0 w-80 text-center" data-animate="zoom-in" data-animate-delay="140">
-            <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation"
-              class="w-full h-80 object-cover rounded-xl shadow-light" data-animate="zoom-in"
-              data-animate-delay="180" />
+
+        <div class="about-content">
+          <!-- Main Content -->
+          <div class="about-main" data-animate="fade-up" data-animate-delay="100">
+            <div class="about-image-wrapper" data-animate="zoom-in" data-animate-delay="140">
+              <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" />
+              <div class="about-image-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>MS in Computer Science</span>
+              </div>
+            </div>
+
+            <div class="about-text" data-animate="fade-left" data-animate-delay="180">
+              <h3 class="about-intro-title">Hello! I'm Mangesh Raut</h3>
+              <p class="about-intro-text">
+                A passionate <strong>Software Engineer</strong> with 5+ years of experience in building scalable,
+                high-performance applications. I specialize in <strong>full-stack development</strong>, <strong>cloud
+                  technologies</strong>, and <strong>machine learning</strong>.
+              </p>
+
+              <p class="about-description">
+                Currently enhancing energy analytics tools at <strong>Customized Energy Solutions</strong>, where I've
+                achieved a 40% efficiency gain through innovative solutions. My journey includes optimizing legacy
+                systems, deploying cloud infrastructure, and implementing AI-driven features that deliver real business
+                value.
+              </p>
+
+              <p class="about-description">
+                I'm driven by the challenge of solving complex problems and creating software that makes a difference.
+                Whether it's reducing latency, improving code quality, or implementing cutting-edge ML models, I bring
+                dedication and technical excellence to every project.
+              </p>
+            </div>
           </div>
-          <div class="flex-1" data-animate="fade-left" data-animate-delay="200">
-            <p class="mb-8 leading-relaxed" data-animate="fade-up" data-animate-delay="220">
-              Software Engineer skilled in full-stack development (Java,
-              Python, AngularJS) and cloud solutions (AWS, Docker). Currently
-              enhancing energy analytics tools at Customized Energy Solutions,
-              achieving a 40% efficiency gain.
-            </p>
-            <p class="mb-8 leading-relaxed" data-animate="fade-up" data-animate-delay="260">
-              Previously honed expertise in network engineering (35% latency
-              reduction at Harshwardhan Enterprises) and Java development (20%
-              code optimization at IoasiZ). Eager to leverage hands-on
-              experience with scalable systems, CI/CD pipelines, and machine
-              learning to drive innovation.
-            </p>
-            <p class="leading-relaxed" data-animate="fade-up" data-animate-delay="300">
-              Passionate about creating scalable software solutions that drive
-              business impact. Experienced in modern development practices
-              including DevOps, containerization, and AI integration.
-            </p>
-          </div>
+
+          <!-- Highlights Grid -->
+          <div class="about-highlights" data-animate="fade-up" data-animate-delay="220"></div>
         </div>
       </div>
     </section>
@@ -827,6 +890,25 @@
     <section id="skills" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="950">
       <div class="container">
         <h2 data-animate="fade-down">Skills & Technologies</h2>
+
+        <!-- Tech Stack Marquee -->
+        <div class="marquee-container mb-12">
+          <div class="marquee-content">
+            <div class="marquee-item"><i class="fab fa-java"></i></div>
+            <div class="marquee-item"><i class="fab fa-python"></i></div>
+            <div class="marquee-item"><i class="fab fa-js"></i></div>
+            <div class="marquee-item"><i class="fab fa-react"></i></div>
+            <div class="marquee-item"><i class="fab fa-angular"></i></div>
+            <div class="marquee-item"><i class="fab fa-node"></i></div>
+            <div class="marquee-item"><i class="fab fa-aws"></i></div>
+            <div class="marquee-item"><i class="fab fa-docker"></i></div>
+            <div class="marquee-item"><i class="fas fa-database"></i></div>
+            <div class="marquee-item"><i class="fab fa-git-alt"></i></div>
+            <div class="marquee-item"><i class="fab fa-linux"></i></div>
+            <div class="marquee-item"><i class="fab fa-html5"></i></div>
+            <div class="marquee-item"><i class="fab fa-css3-alt"></i></div>
+          </div>
+        </div>
 
         <!-- Interactive Skills Visualization Container -->
         <div id="skills-container" class="max-w-6xl mx-auto">
@@ -856,7 +938,7 @@
 
           <!-- Customized Energy Solutions -->
           <div
-            class="education-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Software Engineer</h3>
@@ -908,7 +990,7 @@
 
           <!-- IoasiZ -->
           <div
-            class="education-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Software Engineer</h3>
@@ -959,7 +1041,7 @@
 
           <!-- Harshwardhan Enterprises -->
           <div
-            class="education-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Network Engineer</h3>
@@ -1015,7 +1097,7 @@
 
           <!-- Aramark -->
           <div
-            class="education-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Database Administrator</h3>
@@ -1062,7 +1144,7 @@
 
           <!-- Drexel University -->
           <div
-            class="education-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
+            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">Database Administrator</h3>
@@ -1109,7 +1191,7 @@
 
           <!-- Drexel University COVID-19 Service -->
           <div
-            class="education-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+            class="education-card flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
             <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
               <div>
                 <h3 class="text-xl font-bold">COVID-19 Testing Assistant and Vaccination Team</h3>
@@ -1177,13 +1259,10 @@
               </div>
             </div>
             <div class="flex gap-2">
-              <select id="language-filter"
-                class="px-4 py-3 rounded-xl border border-border bg-primary focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all duration-300">
+              <select id="language-filter" class="project-action-btn text-sm">
                 <option value="">All Languages</option>
               </select>
-              <button id="sort-toggle"
-                class="px-6 py-3 rounded-xl border border-border bg-primary hover:bg-accent hover:text-white hover:border-accent transition-all duration-300 flex items-center gap-2"
-                title="Toggle sort order">
+              <button id="sort-toggle" class="project-action-btn text-sm" title="Toggle sort order">
                 <i class="fas fa-sort"></i>
                 <span class="hidden md:inline">Sort</span>
               </button>
@@ -1220,192 +1299,316 @@
     <section id="education" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="950">
       <div class="container">
         <h2 data-animate="fade-down">Education</h2>
-        <div class="max-w-6xl mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Master of Science in Computer Science
-                  </h3>
-                  <p class="text-accent font-medium mb-4">
-                    Drexel University
-                  </p>
-                  <p class="text-sm opacity-75 mb-4">Philadelphia, PA</p>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="text-sm opacity-60">Sep 2021 - Jun 2023</div>
-                  <span
-                    class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree
-                    Earned</span>
-                </div>
-              </div>
-            </div>
 
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Bachelor of Engineering
-                  </h3>
-                  <p class="text-accent font-medium mb-4">
-                    JSPM's Rajarshi Shahu College of Engineering
+        <div class="education-timeline">
+          <!-- Education Item 1 -->
+          <article class="education-item" data-animate="fade-up" data-animate-delay="100">
+            <div class="education-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="education-content">
+              <div class="education-header">
+                <div class="education-title-group">
+                  <h3 class="education-degree">Master of Science in Computer Science</h3>
+                  <p class="education-institution">Drexel University</p>
+                  <p class="education-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Philadelphia, PA
                   </p>
-                  <p class="text-sm opacity-75 mb-4">Pune, India</p>
                 </div>
-                <div class="flex items-center justify-between">
-                  <div class="text-sm opacity-60">Jun 2017 - Jun 2020</div>
-                  <span
-                    class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree
-                    Earned</span>
+                <div class="education-meta">
+                  <span class="education-badge completed">Degree Earned</span>
+                  <p class="education-period">
+                    <i class="fas fa-calendar"></i>
+                    Sep 2021 - Jun 2023
+                  </p>
                 </div>
               </div>
             </div>
+          </article>
 
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Diploma in Computer Engineering
-                  </h3>
-                  <p class="text-accent font-medium mb-4">
-                    Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
+          <!-- Education Item 2 -->
+          <article class="education-item" data-animate="fade-up" data-animate-delay="140">
+            <div class="education-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="education-content">
+              <div class="education-header">
+                <div class="education-title-group">
+                  <h3 class="education-degree">Bachelor of Engineering</h3>
+                  <p class="education-institution">JSPM's Rajarshi Shahu College of Engineering</p>
+                  <p class="education-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Pune, India
                   </p>
-                  <p class="text-sm opacity-75 mb-4">Akurdi, Pune</p>
                 </div>
-                <div class="flex items-center justify-between">
-                  <div class="text-sm opacity-60">Jun 2014 - Jun 2017</div>
-                  <span
-                    class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree
-                    Earned</span>
+                <div class="education-meta">
+                  <span class="education-badge completed">Degree Earned</span>
+                  <p class="education-period">
+                    <i class="fas fa-calendar"></i>
+                    Jun 2017 - Jun 2020
+                  </p>
                 </div>
               </div>
             </div>
+          </article>
 
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Secondary School Certificate
-                  </h3>
-                  <p class="text-accent font-medium mb-4">
-                    Modern High School
+          <!-- Education Item 3 -->
+          <article class="education-item" data-animate="fade-up" data-animate-delay="180">
+            <div class="education-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="education-content">
+              <div class="education-header">
+                <div class="education-title-group">
+                  <h3 class="education-degree">Diploma in Computer Engineering</h3>
+                  <p class="education-institution">Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic</p>
+                  <p class="education-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Akurdi, Pune
                   </p>
-                  <p class="text-sm opacity-75 mb-4">India</p>
                 </div>
-                <div class="flex items-center justify-between">
-                  <div class="text-sm opacity-60">Jun 2013 - Jun 2014</div>
-                  <span
-                    class="education-status bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Degree
-                    Earned</span>
+                <div class="education-meta">
+                  <span class="education-badge completed">Degree Earned</span>
+                  <p class="education-period">
+                    <i class="fas fa-calendar"></i>
+                    Jun 2014 - Jun 2017
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
+
+          <!-- Education Item 4 -->
+          <article class="education-item" data-animate="fade-up" data-animate-delay="220">
+            <div class="education-icon">
+              <i class="fas fa-school"></i>
+            </div>
+            <div class="education-content">
+              <div class="education-header">
+                <div class="education-title-group">
+                  <h3 class="education-degree">Secondary School Certificate</h3>
+                  <p class="education-institution">Modern High School</p>
+                  <p class="education-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    India
+                  </p>
+                </div>
+                <div class="education-meta">
+                  <span class="education-badge completed">Degree Earned</span>
+                  <p class="education-period">
+                    <i class="fas fa-calendar"></i>
+                    Jun 2013 - Jun 2014
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- Publications Section -->
-    <section id="publications" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
+    <section id="publications" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900">
       <div class="container">
-        <h2 data-animate="fade-down">Publications</h2>
-        <div class="flex flex-col md:flex-row items-center gap-8">
-          <div class="flex-shrink-0 w-56 text-center" data-animate="zoom-in" data-animate-delay="140">
-            <a href="assets/files/RTFERS paper.pdf" target="_blank" class="block">
-              <div
-                class="w-full h-56 bg-primary rounded-xl shadow-light flex items-center justify-center hover:shadow-lg transition-shadow duration-300"
-                data-animate="tilt-in" data-animate-delay="180">
-                <div class="text-center">
-                  <i class="fas fa-file-pdf text-4xl text-accent mb-2"></i>
-                  <p class="text-sm opacity-75">Click to View PDF</p>
-                </div>
+        <h2 data-animate="fade-down">Recent Publications</h2>
+
+        <div class="publications-divider"></div>
+
+        <div class="publications-grid">
+          <!-- Publication Card -->
+          <article class="publication-card" data-animate="tilt-in" data-animate-delay="140" data-animate-duration="900">
+            <div class="publication-header">
+              <div class="publication-meta">
+                <span class="publication-category">Methods and Algorithms</span>
+                <span class="publication-separator">|</span>
+                <span class="publication-venue">IJFGCN 2020</span>
               </div>
-            </a>
-          </div>
-          <div class="flex-1" data-animate="fade-left" data-animate-delay="220">
-            <h3 class="mb-4" data-animate="fade-up" data-animate-delay="240">"Real-Time Face Emotion Recognition System"
+            </div>
+
+            <h3 class="publication-title">
+              Real-Time Face Emotion Recognition System
             </h3>
-            <p class="mb-6 text-sm opacity-75" data-animate="fade-up" data-animate-delay="260">
-              Published in International Journal of Future Generation
-              Communication and Networking Vol. 13, No. 3, (2020), pp.
-              3306-3313, ISSN · Jun 15, 2020
-            </p>
-            <p class="mb-6 leading-relaxed" data-animate="fade-up" data-animate-delay="300">
-              This paper will give brief knowledge about Face detection and
-              recognition algorithms (Approaches). There are a few approaches
-              that will be helpful to detect faces from the static or binary
-              frame.
-            </p>
-            <p class="leading-relaxed" data-animate="fade-up" data-animate-delay="320">
-              The Paper will review the algorithm that is being used for
-              detecting faces and will give information about the following
-              algorithms: elastic bunch map graphing, principal component
-              analysis (PCA), protomorphic approach, and cascading technique.
-            </p>
-          </div>
+
+            <div class="publication-authors">
+              Mangesh Raut*, Research Team
+            </div>
+
+            <div class="publication-footer">
+              <div class="publication-info">
+                <p class="publication-journal">
+                  International Journal of Future Generation Communication and Networking
+                </p>
+                <p class="publication-details">
+                  Vol. 13, No. 3, (2020), pp. 3306-3313 • ISSN • Jun 15, 2020
+                </p>
+              </div>
+              <a href="assets/files/RTFERS paper.pdf" target="_blank" class="publication-read-btn">
+                Read paper
+              </a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
     <!-- Awards Section -->
-    <section id="awards" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900">
+    <section id="awards" class="fade-in py-20 bg-white" data-animate="fade-up" data-animate-duration="900">
       <div class="container">
         <h2 data-animate="fade-down">Honors & Awards</h2>
-        <div class="max-w-6xl mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Greatest Achievement in MSCS
-                  </h3>
-                  <p class="text-accent font-medium mb-4">
-                    Drexel University
-                  </p>
-                  <p class="text-sm opacity-75 mb-4">
-                    Issued by Academic Advisor • March 2022
-                  </p>
-                  <p class="leading-relaxed">
-                    In Winter 2022 at Drexel University, I achieved a
-                    remarkable academic turnaround. Overcoming previous
-                    challenges and maintaining a 1.90 GPA, I demonstrated
-                    exceptional perseverance by achieving an outstanding 3.91
-                    GPA, showcasing my commitment to academic excellence and
-                    personal growth.
-                  </p>
-                </div>
-              </div>
-            </div>
 
-            <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex-1">
-                  <h3 class="text-xl font-semibold mb-3">
-                    Student of the Year
-                  </h3>
-                  <p class="text-accent font-medium mb-4">
-                    Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
-                  </p>
-                  <p class="text-sm opacity-75 mb-4">
-                    Issued by Head of Department • June 2015
-                  </p>
-                  <p class="leading-relaxed">
-                    Recognized with the prestigious "Student of the Year"
-                    award at my polytechnic institution. This honor recognized
-                    my dedication and outstanding performance in both academic
-                    studies and extracurricular activities, reflecting my
-                    commitment to holistic excellence.
-                  </p>
-                </div>
+        <div class="awards-grid">
+          <!-- Award Card 1 -->
+          <article class="award-card" data-animate="fade-up" data-animate-delay="100">
+            <div class="award-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="award-content">
+              <h3 class="award-title">Greatest Achievement in MSCS</h3>
+              <div class="award-meta">
+                <p class="award-institution">Drexel University</p>
+                <p class="award-date">
+                  <i class="fas fa-calendar-alt"></i>
+                  March 2022
+                </p>
+                <p class="award-issuer">
+                  <i class="fas fa-user-tie"></i>
+                  Issued by Academic Advisor
+                </p>
+              </div>
+              <p class="award-description">
+                In Winter 2022 at Drexel University, I achieved a remarkable academic turnaround. Overcoming previous
+                challenges and maintaining a 1.90 GPA, I demonstrated exceptional perseverance by achieving an
+                outstanding 3.91 GPA, showcasing my commitment to academic excellence and personal growth.
+              </p>
+            </div>
+          </article>
+
+          <!-- Award Card 2 -->
+          <article class="award-card" data-animate="fade-up" data-animate-delay="140">
+            <div class="award-icon">
+              <i class="fas fa-medal"></i>
+            </div>
+            <div class="award-content">
+              <h3 class="award-title">Student of the Year</h3>
+              <div class="award-meta">
+                <p class="award-institution">Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic</p>
+                <p class="award-date">
+                  <i class="fas fa-calendar-alt"></i>
+                  June 2015
+                </p>
+                <p class="award-issuer">
+                  <i class="fas fa-user-tie"></i>
+                  Issued by Head of Department
+                </p>
+              </div>
+              <p class="award-description">
+                Recognized with the prestigious "Student of the Year" award at my polytechnic institution. This honor
+                recognized my dedication and outstanding performance in both academic studies and extracurricular
+                activities, reflecting my commitment to holistic excellence.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section id="recommendations" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900">
+      <div class="container">
+        <h2 data-animate="fade-down">Recommendations</h2>
+
+        <div class="recommendations-grid">
+          <!-- Recommendation Cards -->
+          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="100">
+            <div class="recommendation-quote">
+              <i class="fas fa-quote-left quote-icon"></i>
+              <p class="recommendation-text">
+                “Mangesh is a highly committed and technically skilled individual with a strong foundation in both
+                hardware and software. I had the opportunity to witness his growth first-hand as he pursued and
+                completed his Computer Science degree at Drexel University. His sincerity, problem-solving mindset, and
+                eagerness to contribute make him an asset to any team. I strongly recommend him for any challenging
+                technical role.”
+              </p>
+            </div>
+            <div class="recommendation-author">
+              <div class="author-avatar">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="author-info">
+                <h4 class="author-name">Stephen Fernands</h4>
+                <p class="author-title">President</p>
+                <p class="author-company">Customized Energy Solutions</p>
               </div>
             </div>
-          </div>
+          </article>
+
+          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="140">
+            <div class="recommendation-quote">
+              <i class="fas fa-quote-left quote-icon"></i>
+              <p class="recommendation-text">
+                “Mangesh played a key role in helping us modernize several legacy systems. His ability to quickly
+                understand complex architectures and implement innovative solutions significantly improved our
+                operational efficiency. What stood out most was his collaborative spirit—team members frequently sought
+                his insights when tackling difficult technical problems. His contributions elevated the performance and
+                culture of our engineering team.”
+              </p>
+            </div>
+            <div class="recommendation-author">
+              <div class="author-avatar">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="author-info">
+                <h4 class="author-name">Venkat Krishna</h4>
+                <p class="author-title">Tech Lead</p>
+                <p class="author-company">IoasiZ</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="180">
+            <div class="recommendation-quote">
+              <i class="fas fa-quote-left quote-icon"></i>
+              <p class="recommendation-text">
+                “Mangesh is an exceptionally dedicated professional who consistently delivers beyond expectations. His
+                work on optimizing and stabilizing our network infrastructure resulted in noticeable performance
+                improvements. His attention to detail, strong technical knowledge, and calm approach under pressure make
+                him a dependable engineer.”
+              </p>
+            </div>
+            <div class="recommendation-author">
+              <div class="author-avatar">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="author-info">
+                <h4 class="author-name">Rakesh Kamble</h4>
+                <p class="author-title">Director</p>
+                <p class="author-company">Harshwardhan Enterprises</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="recommendation-card" data-animate="fade-up" data-animate-delay="220">
+            <div class="recommendation-quote">
+              <i class="fas fa-quote-left quote-icon"></i>
+              <p class="recommendation-text">
+                “Mangesh distinguished himself as a student employee who always took initiative and approached problems
+                with a learner’s mindset. His eagerness to help others and his steady improvement throughout his
+                academic journey demonstrated his resilience and strong work ethic. He has the qualities of a future
+                leader.”
+              </p>
+            </div>
+            <div class="recommendation-author">
+              <div class="author-avatar">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="author-info">
+                <h4 class="author-name">Lavella Kirkland</h4>
+                <p class="author-title">Manager</p>
+                <p class="author-company">Aramark</p>
+              </div>
+            </div>
+          </article>
+
         </div>
       </div>
     </section>
@@ -1416,7 +1619,7 @@
         <div class="max-w-6xl mx-auto">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1441,7 +1644,7 @@
             </div>
 
             <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1466,7 +1669,7 @@
             </div>
 
             <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1491,7 +1694,7 @@
             </div>
 
             <div
-              class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
+              class="education-card flashlight-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
               <div class="flex flex-col h-full">
                 <div class="flex-1">
                   <h3 class="text-xl font-semibold mb-3">
@@ -1542,7 +1745,6 @@
         </div>
       </div>
     </section>
-
     <section id="contact" class="fade-in py-20 bg-gray-100" data-animate="fade-up" data-animate-duration="900"
       data-animate-parallax="0.04">
       <div class="container">
@@ -1598,56 +1800,102 @@
                   <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-4">
                     Follow Me
                   </h4>
-                  <div class="flex space-x-6">
-                    <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank"
-                      class="hover:opacity-75 transition-opacity">
-                      <i class="fab fa-instagram"></i>
+                  <ul class="wrapper justify-start pl-0 ml-0">
+                    <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" aria-label="Facebook">
+                      <li class="icon facebook">
+                        <span class="tooltip">Facebook</span>
+                        <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
+                          </path>
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
-                      class="hover:opacity-75 transition-opacity">
-                      <i class="fab fa-facebook-f"></i>
+                    <a href="https://github.com/mangeshraut712" target="_blank" aria-label="Github">
+                      <li class="icon github">
+                        <span class="tooltip">Github</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path
+                            d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
-                      class="hover:opacity-75 transition-opacity">
-                      <i class="fab fa-linkedin-in"></i>
+                    <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" aria-label="Instagram">
+                      <li class="icon instagram">
+                        <span class="tooltip">Instagram</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor"
+                          class="bi bi-instagram" viewBox="0 0 16 16">
+                          <path
+                            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
+                          </path>
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://github.com/mangeshraut712" target="_blank"
-                      class="hover:opacity-75 transition-opacity">
-                      <i class="fab fa-github"></i>
+                    <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" aria-label="Linkedin">
+                      <li class="icon linkedin">
+                        <span class="tooltip">Linkedin</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                          <path d="M8 11l0 5" />
+                          <path d="M8 8l0 .01" />
+                          <path d="M12 16l0 -5" />
+                          <path d="M16 16v-3a2 2 0 0 0 -4 0" />
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://www.youtube.com/@mangeshraut71298" target="_blank"
-                      class="hover:opacity-75 transition-opacity">
-                      <i class="fab fa-youtube"></i>
+                    <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" aria-label="YouTube">
+                      <li class="icon youtube">
+                        <span class="tooltip">YouTube</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor"
+                          viewBox="0 0 576 512">
+                          <path
+                            d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://x.com/mrcommando712" target="_blank"
-                      class="follow-link hover:opacity-75 transition-opacity">
-                      <i class="fa-brands fa-x-twitter"></i>
+                    <a href="https://x.com/mrcommando712" target="_blank" aria-label="X">
+                      <li class="icon x">
+                        <span class="tooltip">X</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                          <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank"
-                      class="hover:opacity-75 transition-opacity" title="Wix Portfolio">
-                      <i class="fas fa-globe"></i>
+                    <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" aria-label="LeetCode">
+                      <li class="icon leetcode">
+                        <span class="tooltip">LeetCode</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
+                          <path
+                            d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+                        </svg>
+                      </li>
                     </a>
-                    <a href="https://leetcode.com/u/mangeshraut712/" target="_blank"
-                      class="hover:opacity-75 transition-opacity" title="LeetCode Profile">
-                      <i class="fas fa-code"></i>
-                    </a>
-                  </div>
-                  <div class="mt-6 pt-6 border-t border-border">
-                    <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">
-                      Support Me
-                    </h4>
-                    <p class="mb-3 opacity-75">
-                      If you like my work, consider buying me a coffee!
-                    </p>
-                    <a href="https://www.buymeacoffee.com/xzvwsqf84xy" target="_blank"
-                      class="text-yellow-500 hover:text-yellow-600 hover:opacity-75 transition-all">
-                      <i class="fas fa-coffee mr-2"></i>Buy Me a Coffee
-                    </a>
-                  </div>
+                  </ul>
                 </div>
+              </div>
+              <div class="mt-6 pt-6 border-t border-border">
+                <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">
+                  Support Me
+                </h4>
+                <p class="mb-3 opacity-75">
+                  If you like my work, consider buying me a coffee!
+                </p>
+                <a href="https://www.buymeacoffee.com/xzvwsqf84xy" target="_blank"
+                  class="text-yellow-500 hover:text-yellow-600 hover:opacity-75 transition-all">
+                  <i class="fas fa-coffee mr-2"></i>Buy Me a Coffee
+                </a>
               </div>
             </div>
           </div>
+
           <div class="col-lg-6" data-animate="fade-left" data-animate-delay="200">
             <div class="contact-form-card bg-primary border border-border rounded-2xl shadow-light"
               data-animate="fade-up" data-animate-delay="240">
@@ -1688,28 +1936,23 @@
     <!-- ═══════════════════════════════════════════════════════════
          DEBUG RUNNER GAME - Always Visible
          ═══════════════════════════════════════════════════════════ -->
-    <section id="debug-runner-section" class="section bg-black dark:bg-black py-16">
+    <section id="debug-runner-section" class="section py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-8">
-          <h2 class="text-4xl font-bold mb-4"
-            style="color: #00ff41; font-family: monospace; text-shadow: 0 0 10px #00ff41;">
+        <div class="text-center mb-8 debug-runner-copy">
+          <h2 class="debug-runner-title text-4xl font-bold mb-4">
             🐛 DEBUG RUNNER 🏃‍♂️
           </h2>
-          <p class="text-lg" style="color: #00ff41; font-family: monospace;">
+          <p class="debug-runner-subtitle text-lg">
             Jump over bugs, merge conflicts, and production fires! Collect coffee for speed boosts! ☕
           </p>
-          <p class="text-sm mt-2" style="color: #888; font-family: monospace;">
-            Press <kbd
-              style="background: #333; padding: 2px 6px; border-radius: 3px; border: 1px solid #555;">SPACE</kbd> to
-            start •
-            <kbd style="background: #333; padding: 2px 6px; border-radius: 3px; border: 1px solid #555;">↑</kbd> Jump •
-            <kbd style="background: #333; padding: 2px 6px; border-radius: 3px; border: 1px solid #555;">↓</kbd> Duck
+          <p class="debug-runner-meta text-sm mt-2 debug-shortcuts">
+            Press <kbd>SPACE</kbd> to start • <kbd>↑</kbd> Jump • <kbd>↓</kbd> Duck
           </p>
-          <p class="text-sm mt-2" style="color: #9fb3c8; font-family: monospace;">
-            Mobile: Tap canvas or Jump button to leap • Swipe/hold down or Duck button to duck.
+          <p class="debug-runner-meta text-sm mt-2">
+            Mobile: Tap canvas or Jump button to leap • Hold Duck to slide.
           </p>
         </div>
-        <div id="debug-runner-container" class="flex justify-center"></div>
+        <div id="debug-runner-container" class="flex justify-center card-elevated"></div>
       </div>
     </section>
 
@@ -1721,40 +1964,83 @@
           <div class="mb-4 md:mb-0">
             <p class="text-black dark:text-white">&copy; 2025 Mangesh Raut. All rights reserved.</p>
           </div>
-          <div class="flex space-x-6">
-            <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" class="footer-social-link"
-              aria-label="Instagram" rel="noopener noreferrer">
-              <i class="fab fa-instagram"></i>
+          <ul class="wrapper">
+            <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" aria-label="Facebook">
+              <li class="icon facebook">
+                <span class="tooltip">Facebook</span>
+                <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
+                  </path>
+                </svg>
+              </li>
             </a>
-            <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" class="footer-social-link"
-              aria-label="Facebook" rel="noopener noreferrer">
-              <i class="fab fa-facebook-f"></i>
+            <a href="https://github.com/mangeshraut712" target="_blank" aria-label="Github">
+              <li class="icon github">
+                <span class="tooltip">Github</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+                </svg>
+              </li>
             </a>
-            <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="footer-social-link"
-              aria-label="LinkedIn" rel="noopener noreferrer">
-              <i class="fab fa-linkedin-in"></i>
+            <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" aria-label="Instagram">
+              <li class="icon instagram">
+                <span class="tooltip">Instagram</span>
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
+                  </path>
+                </svg>
+              </li>
             </a>
-            <a href="https://github.com/mangeshraut712" target="_blank" class="footer-social-link" aria-label="GitHub"
-              rel="noopener noreferrer">
-              <i class="fab fa-github"></i>
+            <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" aria-label="Linkedin">
+              <li class="icon linkedin">
+                <span class="tooltip">Linkedin</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M8 11l0 5" />
+                  <path d="M8 8l0 .01" />
+                  <path d="M12 16l0 -5" />
+                  <path d="M16 16v-3a2 2 0 0 0 -4 0" />
+                </svg>
+              </li>
             </a>
-            <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="footer-social-link"
-              aria-label="YouTube" rel="noopener noreferrer">
-              <i class="fab fa-youtube"></i>
+            <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" aria-label="YouTube">
+              <li class="icon youtube">
+                <span class="tooltip">YouTube</span>
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512">
+                  <path
+                    d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
+                </svg>
+              </li>
             </a>
-            <a href="https://x.com/mrcommando712" target="_blank" class="footer-social-link" aria-label="X (Twitter)"
-              rel="noopener noreferrer">
-              <i class="fa-brands fa-x-twitter"></i>
+            <a href="https://x.com/mrcommando712" target="_blank" aria-label="X">
+              <li class="icon x">
+                <span class="tooltip">X</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                </svg>
+              </li>
             </a>
-            <a href="https://mangeshraut71298.wixsite.com/mangeshrautarchive" target="_blank" class="footer-social-link"
-              aria-label="Website" rel="noopener noreferrer">
-              <i class="fas fa-globe"></i>
+            <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" aria-label="LeetCode">
+              <li class="icon leetcode">
+                <span class="tooltip">LeetCode</span>
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+                </svg>
+              </li>
             </a>
-            <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" class="footer-social-link"
-              aria-label="LeetCode Profile" rel="noopener noreferrer">
-              <i class="fas fa-code"></i>
-            </a>
-          </div>
+          </ul>
         </div>
       </div>
     </footer>
@@ -1871,6 +2157,9 @@
 
     <!-- Blog Loader Module -->
     <script type="module" src="js/modules/blog-loader.js"></script>
+
+    <!-- Advanced Animations Module -->
+    <script type="module" src="js/modules/animations-2025.js"></script>
     <script type="module">
       // Initialize Skills Visualization
       document.addEventListener('DOMContentLoaded', () => {
@@ -1971,6 +2260,9 @@
         }
       });
     </script>
+
+    <!-- Search Functionality -->
+    <script src="js/modules/search.js" type="module"></script>
 </body>
 
 </html>

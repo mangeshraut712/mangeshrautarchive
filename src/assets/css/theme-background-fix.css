@@ -1,0 +1,154 @@
+/* ========================================
+   Light Mode Background Fix
+   Force all sections to white in light mode
+   ======================================== */
+
+/* Light Mode - All Sections White Background */
+html:not(.dark) section,
+html:not(.dark) #home,
+html:not(.dark) #about,
+html:not(.dark) #skills,
+html:not(.dark) #experience,
+html:not(.dark) #projects,
+html:not(.dark) #education,
+html:not(.dark) #awards,
+html:not(.dark) #publications,
+html:not(.dark) #recommendations,
+html:not(.dark) #blog,
+html:not(.dark) #contact {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Light Mode - Body Background */
+html:not(.dark) body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Light Mode - Main Content */
+html:not(.dark) main,
+html:not(.dark) #main-content {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Light Mode - Remove gray backgrounds */
+html:not(.dark) .bg-gray-100,
+html:not(.dark) .bg-gray-50,
+html:not(.dark) .bg-secondary {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+}
+
+/* Dark Mode - Keep black backgrounds */
+html.dark section,
+html.dark #home,
+html.dark #about,
+html.dark #skills,
+html.dark #experience,
+html.dark #projects,
+html.dark #education,
+html.dark #awards,
+html.dark #publications,
+html.dark #recommendations,
+html.dark #blog,
+html.dark #contact {
+    background: #000000 !important;
+    background-color: #000000 !important;
+}
+
+html.dark body {
+    background: #000000 !important;
+    background-color: #000000 !important;
+}
+
+html.dark main,
+html.dark #main-content {
+    background: #000000 !important;
+    background-color: #000000 !important;
+}
+
+/* Ensure cards have proper backgrounds */
+/* Ensure cards have proper backgrounds */
+html:not(.dark) .education-card,
+html:not(.dark) .award-card,
+html:not(.dark) .recommendation-card,
+html:not(.dark) .about-highlight-card,
+html:not(.dark) .blog-card {
+    background: #ffffff !important;
+}
+
+html.dark .education-card,
+html.dark .award-card,
+html.dark .recommendation-card,
+html.dark .about-highlight-card,
+html.dark .blog-card {
+    background: #18181b !important;
+}
+
+/* Text colors for light mode */
+html:not(.dark) section h2,
+html:not(.dark) section h3,
+html:not(.dark) section p {
+    color: #1d1d1f !important;
+}
+
+html:not(.dark) .text-secondary {
+    color: #6e6e73 !important;
+}
+
+/* Text colors for dark mode */
+html.dark section h2,
+html.dark section h3 {
+    color: #f5f5f7 !important;
+}
+
+html.dark section p {
+    color: #d1d1d6 !important;
+}
+
+html.dark .text-secondary {
+    color: #86868b !important;
+}
+
+/* ========================================
+   Footer Background Fix
+   ======================================== */
+
+/* Light Mode Footer */
+html:not(.dark) footer {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) footer p,
+html:not(.dark) footer span,
+html:not(.dark) footer a {
+    color: #1d1d1f !important;
+}
+
+html:not(.dark) footer .text-secondary {
+    color: #6e6e73 !important;
+}
+
+/* Dark Mode Footer */
+html.dark footer {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark footer p,
+html.dark footer span {
+    color: #d1d1d6 !important;
+}
+
+html.dark footer a {
+    color: #f5f5f7 !important;
+}
+
+html.dark footer .text-secondary {
+    color: #86868b !important;
+}

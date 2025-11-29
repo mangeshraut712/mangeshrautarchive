@@ -103,121 +103,128 @@
 
 /* Dark Mode Master Theme - Using Modern CSS Architecture */
 @supports selector(:has()) {
-  html:has(body.dark-trigger) {
-    color-scheme: dark only;
-  }
+    html:has(body.dark-trigger) {
+        color-scheme: dark only;
+    }
 }
 
 html.dark {
-  /* Advanced Color System - HSL Based Dark Mode Palette */
+    /* Advanced Color System - HSL Based Dark Mode Palette (Apple Event Theme) */
 
-  /* Dynamic Dark Mode Color Tokens using modern CSS variables */
-  --color-dark-bg-primary: hsl(0, 0%, 0%);
-  --color-dark-bg-secondary: hsl(210, 10%, 15%);
-  --color-dark-bg-tertiary: hsl(210, 8%, 20%);
-  --color-dark-surface: hsl(210, 10%, 10%);
+    /* Dynamic Dark Mode Color Tokens using modern CSS variables */
+    --color-dark-bg-primary: #020518;
+    /* Deep Navy Blue from Apple Event */
+    --color-dark-bg-secondary: #0b0e1e;
+    /* Slightly lighter navy */
+    --color-dark-bg-tertiary: #15192b;
+    --color-dark-surface: #0a0d20;
 
-  /* Advanced Text Hierarchy for Dark Mode */
-  --text-primary-dark: hsl(0, 0%, 98%);
-  --text-secondary-dark: hsl(210, 8%, 70%);
-  --text-tertiary-dark: hsl(210, 8%, 50%);
-  --text-accent-dark: hsl(210, 95%, 55%);
+    /* Advanced Text Hierarchy for Dark Mode */
+    --text-primary-dark: #ffffff;
+    --text-secondary-dark: #a1a1a6;
+    --text-tertiary-dark: #86868b;
+    --text-accent-dark: #2997ff;
+    /* Apple Blue */
 
-  /* Modern Border System with HSL Alpha */
-  --border-dark-primary: hsl(210, 10%, 25%);
-  --border-dark-secondary: hsl(210, 10%, 30%);
-  --border-dark-accent: hsl(210, 95%, 45%, 0.6);
+    /* Modern Border System with HSL Alpha */
+    --border-dark-primary: rgba(255, 255, 255, 0.1);
+    --border-dark-secondary: rgba(255, 255, 255, 0.15);
+    --border-dark-accent: rgba(41, 151, 255, 0.5);
 
-  /* Advanced Shadow System using Color-mix and OKLCH */
-  --shadow-dark-sm: 0 1px 2px hsl(0, 0%, 0%, 0.4), 0 1px 4px hsl(210, 95%, 45%, 0.1);
-  --shadow-dark-md: 0 8px 16px hsl(0, 0%, 0%, 0.5), 0 4px 12px hsl(210, 95%, 45%, 0.15);
-  --shadow-dark-lg: 0 16px 32px hsl(0, 0%, 0%, 0.6), 0 8px 24px hsl(210, 95%, 45%, 0.2);
-  --shadow-dark-xl: 0 32px 64px hsl(0, 0%, 0%, 0.7), 0 16px 48px hsl(210, 95%, 45%, 0.25);
+    /* Advanced Shadow System using Color-mix and OKLCH */
+    --shadow-dark-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-dark-md: 0 8px 16px rgba(0, 0, 0, 0.6);
+    --shadow-dark-lg: 0 16px 32px rgba(0, 0, 0, 0.7);
+    --shadow-dark-xl: 0 32px 64px rgba(0, 0, 0, 0.8);
 
-  /* Automated Theme Switching using CSS Container Queries */
-  --text-primary: var(--text-primary-dark);
-  --text-secondary: var(--text-secondary-dark);
-  --text-accent: var(--text-accent-dark);
-  --bg-primary: var(--color-dark-bg-primary);
-  --bg-secondary: var(--color-dark-bg-secondary);
-  --border-color: var(--border-dark-primary);
+    /* Automated Theme Switching using CSS Container Queries */
+    --text-primary: var(--text-primary-dark);
+    --text-secondary: var(--text-secondary-dark);
+    --text-accent: var(--text-accent-dark);
+    --bg-primary: var(--color-dark-bg-primary);
+    --bg-secondary: var(--color-dark-bg-secondary);
+    --border-color: var(--border-dark-primary);
 
-  /* Component-Level Dark Mode Variables */
-  --nav-bg: hsla(240, 6%, 12%, 0.82);
-  --nav-text: #f5f5f7;
-  --nav-border: hsla(0, 0%, 100%, 0.12);
-  --nav-hover: #5ac8fa;
-  --nav-icon-hover-bg: hsla(210, 95%, 70%, 0.16);
+    /* Component-Level Dark Mode Variables */
+    --nav-bg: rgba(2, 5, 24, 0.8);
+    /* Matches new bg */
+    --nav-text: #f5f5f7;
+    --nav-border: rgba(255, 255, 255, 0.1);
+    --nav-hover: #2997ff;
+    --nav-icon-hover-bg: rgba(41, 151, 255, 0.1);
 
-  /* Modern Button System - Using CSS Var() and calc() */
-  --btn-primary-dark: hsl(210, 95%, 50%);
-  --btn-primary-hover-dark: hsl(210, 95%, 60%);
-  --btn-secondary-dark: hsl(210, 95%, 50%, 0.1);
-  --btn-secondary-border-dark: hsl(210, 95%, 50%, 0.3);
+    /* Modern Button System - Apple Style */
+    --btn-primary-dark: #0071e3;
+    /* Apple Button Blue */
+    --btn-primary-hover-dark: #0077ed;
+    --btn-secondary-dark: #0071e3;
+    /* Make secondary button also blue for the "Shop" look */
+    --btn-secondary-border-dark: transparent;
+    --btn-text-primary: #ffffff;
 
-  /* Advanced Card System for Dark Mode */
-  --card-bg-dark: hsl(210, 10%, 12%);
-  --card-border-dark: hsl(210, 10%, 25%);
-  --card-shadow-dark: var(--shadow-dark-lg);
+    /* Advanced Card System for Dark Mode */
+    --card-bg-dark: #0b0e1e;
+    --card-border-dark: rgba(255, 255, 255, 0.1);
+    --card-shadow-dark: var(--shadow-dark-lg);
 
-  /* Project Cards - Advanced Dark Mode Implementation */
-  --project-card-bg: var(--card-bg-dark);
-  --project-card-border: var(--card-border-dark);
-  --project-card-shadow: var(--shadow-dark-lg);
-  --project-card-hover-shadow: var(--shadow-dark-xl);
-  --project-card-tag-bg: hsl(210, 95%, 50%, 0.15);
-  --project-card-tag-border: hsl(210, 95%, 50%, 0.3);
-  --project-card-link-text: hsl(210, 95%, 55%);
-  --project-card-link-hover-text: hsl(210, 95%, 70%);
+    /* Project Cards - Advanced Dark Mode Implementation */
+    --project-card-bg: var(--card-bg-dark);
+    --project-card-border: var(--card-border-dark);
+    --project-card-shadow: var(--shadow-dark-lg);
+    --project-card-hover-shadow: var(--shadow-dark-xl);
+    --project-card-tag-bg: rgba(41, 151, 255, 0.1);
+    --project-card-tag-border: rgba(41, 151, 255, 0.2);
+    --project-card-link-text: #2997ff;
+    --project-card-link-hover-text: #5ac8fa;
 
-  /* Modern Glassmorphism Effects */
-  --glass-bg: hsl(210, 10%, 8%, 0.8);
-  --glass-border: hsl(210, 10%, 25%, 0.6);
-  --glass-backdrop: blur(20px) saturate(180%);
+    /* Modern Glassmorphism Effects */
+    --glass-bg: rgba(2, 5, 24, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-backdrop: blur(20px) saturate(180%);
 
-  /* Footer tokens */
-  --footer-bg: #000000;
-  --footer-border: rgba(255, 255, 255, 0.08);
-  --footer-text: #f5f5f7;
-  --footer-link: #d2d2d7;
-  --footer-link-hover: #5ac8fa;
+    /* Footer tokens */
+    --footer-bg: #020518;
+    --footer-border: rgba(255, 255, 255, 0.1);
+    --footer-text: #f5f5f7;
+    --footer-link: #d2d2d7;
+    --footer-link-hover: #2997ff;
 
-  /* Advanced Body Background - Using CSS Layer Blending */
-  background:
-    radial-gradient(circle at 20% 50%, hsl(210, 95%, 50%, 0.05), transparent 50%),
-    radial-gradient(circle at 80% 20%, hsl(210, 95%, 45%, 0.03), transparent 50%),
-    radial-gradient(circle at 40% 80%, hsl(210, 100%, 40%, 0.04), transparent 50%),
-    hsl(210, 10%, 5%);
+    /* Advanced Body Background - Apple Event Gradient */
+    background: radial-gradient(circle at 50% 0%, #1b2744 0%, #020518 100%);
 
-  /* Modern Animation Timing */
-  --animation-fast: cubic-bezier(0.4, 0.0, 0.2, 1);
-  --animation-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Modern Animation Timing */
+    --animation-fast: cubic-bezier(0.4, 0.0, 0.2, 1);
+    --animation-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-  /* CSS Container Query Support for Component-Level Responsiveness */
-  container-type: inline-size;
+    /* CSS Container Query Support for Component-Level Responsiveness */
+    container-type: inline-size;
 
-  /* Advanced CSS Features */
-  color-scheme: dark;
+    /* Advanced CSS Features */
+    color-scheme: dark;
 
-  /* Optimized Scroll Behavior - Apple Style */
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+    /* Optimized Scroll Behavior - Apple Style */
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
 }
 
 /* Dark Mode Body Enhancement - Using Modern CSS Selectors */
 html.dark body {
-  background: inherit; /* Inherit from html element */
-  color: var(--text-primary-dark);
+    background: inherit;
+    /* Inherit from html element */
+    color: var(--text-primary-dark);
 
-  /* Modern Prefers-Contrast Support */
-  @media (prefers-contrast: high) {
-    --text-primary-dark: hsl(0, 0%, 100%);
-    --text-secondary-dark: hsl(0, 0%, 95%);
-  }
+    /* Modern Prefers-Contrast Support */
+    @media (prefers-contrast: high) {
+        --text-primary-dark: hsl(0, 0%, 100%);
+        --text-secondary-dark: hsl(0, 0%, 95%);
+    }
 }
-html.dark body { /* Override individual state selectors that might conflict */
-    background-color: #000000; /* Black body background for dark mode */
+
+html.dark body {
+    /* Override individual state selectors that might conflict */
+    background-color: #000000;
+    /* Black body background for dark mode */
 }
 
 /* Apple's precise design system */
@@ -231,7 +238,8 @@ body {
     font-size: 17px;
     line-height: 1.5;
     color: var(--text-primary);
-    background: transparent; /* Allow sections to show their own backgrounds */
+    background: transparent;
+    /* Allow sections to show their own backgrounds */
     overflow-x: hidden;
     margin: 0;
     padding: 0;
@@ -296,7 +304,8 @@ p {
     max-width: 68ch;
 }
 
-strong, b {
+strong,
+b {
     font-weight: 600;
 }
 
@@ -309,50 +318,71 @@ a {
 
 a:hover {
     color: var(--text-accent);
-    text-decoration: none; /* Remove underline on hover for a cleaner look */
+    text-decoration: none;
+    /* Remove underline on hover for a cleaner look */
 }
 
 .dark a {
-    color: #2997ff; /* Apple's vibrant blue for links */
-}
-.dark a:hover {
-    color: #66b5ff; /* Lighter blue on hover */
+    color: #2997ff;
+    /* Apple's vibrant blue for links */
 }
 
-/* Buttons */
+.dark a:hover {
+    color: #66b5ff;
+    /* Lighter blue on hover */
+}
+
+/* Buttons - Apple Style with Blue Background and White Text */
 .btn {
     display: inline-block;
     font-size: 1.125rem;
-    font-weight: 400;
+    font-weight: 500;
     padding: 0.75rem 1.5rem;
-    border-radius: 1rem;
-    background: var(--btn-primary);
-    color: var(--btn-text-primary);
+    border-radius: 980px;
+    /* Pill shape like homepage */
+    background: #0071e3 !important;
+    /* Apple Blue */
+    color: #ffffff !important;
+    /* White text */
     border: none;
-    transition: background-color 0.25s ease, transform 0.25s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }
 
 .btn:hover {
-    background: var(--btn-primary-hover);
-    transform: translateY(-1px);
+    background: #0077ed !important;
+    /* Lighter blue on hover */
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+    color: #ffffff !important;
 }
 
 .btn-secondary {
-    background: transparent;
-    color: var(--text-accent);
-    border: 1px solid var(--border-color);
-    padding: 0.5625rem 1.125rem;
+    background: #0071e3 !important;
+    /* Same blue as primary */
+    color: #ffffff !important;
+    /* White text */
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 980px;
+    /* Pill shape */
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }
 
 .btn-secondary:hover {
-    background: rgba(0, 112, 224, 0.1);
-    color: var(--text-accent);
+    background: #0077ed !important;
+    /* Lighter blue on hover */
+    color: #ffffff !important;
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
 }
 
 .btn-active {
-    background: var(--btn-primary);
-    color: var(--btn-text-primary);
+    background: #0071e3 !important;
+    color: #ffffff !important;
 }
 
 
@@ -363,8 +393,10 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: hsla(0, 0%, 100%, 0.9); /* Slightly more opaque with new bg color */
-    backdrop-filter: blur(12px); /* Increased blur */
+    background: hsla(0, 0%, 100%, 0.9);
+    /* Slightly more opaque with new bg color */
+    backdrop-filter: blur(12px);
+    /* Increased blur */
     z-index: 100;
     display: flex;
     flex-direction: column;
@@ -372,7 +404,8 @@ a:hover {
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0s linear 0.3s; /* Smoother transition */
+    transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0s linear 0.3s;
+    /* Smoother transition */
     overflow-y: auto;
 }
 
@@ -390,10 +423,13 @@ body.menu-open {
     position: absolute;
     top: 25px;
     right: 25px;
-    font-size: 2.2rem; /* Larger close icon */
-    font-weight: 300; /* Lighter weight for a modern feel */
+    font-size: 2.2rem;
+    /* Larger close icon */
+    font-weight: 300;
+    /* Lighter weight for a modern feel */
     color: var(--nav-text);
-    background: transparent; /* No background */
+    background: transparent;
+    /* No background */
     border: none;
     cursor: pointer;
     padding: 12px;
@@ -403,81 +439,109 @@ body.menu-open {
 
 .menu-close-button:hover {
     color: var(--nav-hover);
-    transform: rotate(90deg); /* Add a subtle rotation on hover */
+    transform: rotate(90deg);
+    /* Add a subtle rotation on hover */
 }
 
 .overlay-nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.8rem; /* Increased gap */
+    gap: 1.8rem;
+    /* Increased gap */
     padding: 2rem;
 }
 
 .overlay-nav-link {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 2rem; /* Larger font size for overlay links */
-    font-weight: 600; /* Bolder links */
+    font-size: 2rem;
+    /* Larger font size for overlay links */
+    font-weight: 600;
+    /* Bolder links */
     color: var(--nav-text);
     text-decoration: none;
     transition: color 0.2s ease, transform 0.2s ease;
     padding: 0.6rem 0;
 }
+
 .overlay-nav-link:hover {
     color: var(--nav-hover);
     text-decoration: none;
-    transform: translateX(5px); /* Slight move effect on hover */
+    transform: translateX(5px);
+    /* Slight move effect on hover */
 }
 
 /* Buttons */
 .button-primary {
     display: inline-block;
-    padding: 12px 28px; /* Increased padding */
+    padding: 12px 28px;
+    /* Increased padding */
     background-color: #0071e3;
     color: #fff;
-    font-size: 1rem; /* Relative font size */
-    font-weight: 500; /* Medium weight */
-    border-radius: 12px; /* Modern rounded corners */
-    border: 1px solid transparent; /* Transparent border initially */
+    font-size: 1rem;
+    /* Relative font size */
+    font-weight: 500;
+    /* Medium weight */
+    border-radius: 12px;
+    /* Modern rounded corners */
+    border: 1px solid transparent;
+    /* Transparent border initially */
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Subtle shadow */
 }
+
 .button-primary:hover {
-    background-color: #005bb5; /* Darker blue */
+    background-color: #005bb5;
+    /* Darker blue */
     border-color: transparent;
     text-decoration: none;
     color: #fff;
-    transform: translateY(-2px); /* Slight lift */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Enhanced shadow on hover */
+    transform: translateY(-2px);
+    /* Slight lift */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Enhanced shadow on hover */
 }
+
 .button-primary:active {
     transform: translateY(0px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .button-secondary {
     display: inline-block;
-    padding: 12px 28px; /* Increased padding */
+    padding: 12px 28px;
+    /* Increased padding */
     background-color: transparent;
     color: #0071e3;
-    font-size: 1rem; /* Relative font size */
-    font-weight: 500; /* Medium weight */
-    border-radius: 12px; /* Modern rounded corners */
-    border: 1px solid #c0c0c5; /* Lighter border */
+    font-size: 1rem;
+    /* Relative font size */
+    font-weight: 500;
+    /* Medium weight */
+    border-radius: 12px;
+    /* Modern rounded corners */
+    border: 1px solid #c0c0c5;
+    /* Lighter border */
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
     text-decoration: none;
 }
+
 .button-secondary:hover {
-    background-color: rgba(0, 113, 227, 0.05); /* Lighter hover background */
+    background-color: rgba(0, 113, 227, 0.05);
+    /* Lighter hover background */
     border-color: #0071e3;
-    color: #005bb5; /* Darker blue on hover */
+    color: #005bb5;
+    /* Darker blue on hover */
     text-decoration: none;
-    transform: translateY(-2px); /* Slight lift */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Subtle shadow on hover */
+    transform: translateY(-2px);
+    /* Slight lift */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    /* Subtle shadow on hover */
 }
+
 .button-secondary:active {
     transform: translateY(0px);
     box-shadow: none;
@@ -506,10 +570,12 @@ section#home {
     margin-bottom: 2rem;
     animation-delay: 1s;
 }
+
 #home h1 {
     margin-bottom: 1.5rem;
     animation-delay: 1.5s;
 }
+
 #home p {
     margin-bottom: 2.5rem;
     animation-delay: 2.5s;
@@ -571,13 +637,17 @@ section#contact {
 }
 
 @media (min-width: 834px) {
-    .container-fluid, .container {
+
+    .container-fluid,
+    .container {
         padding: 0 44px;
     }
 }
 
 @media (min-width: 1024px) {
-    .container-fluid, .container {
+
+    .container-fluid,
+    .container {
         padding: 0 68px;
     }
 }
@@ -620,7 +690,10 @@ section#contact {
     .row {
         margin: 0;
     }
-    .col-12, .col-lg-6, .col-lg-4 {
+
+    .col-12,
+    .col-lg-6,
+    .col-lg-4 {
         flex: 0 0 100%;
         width: 100%;
         padding: 0;
@@ -839,6 +912,7 @@ section#contact {
     .nav-container {
         gap: 24px;
     }
+
     .nav-links {
         gap: 24px;
     }
@@ -848,9 +922,11 @@ section#contact {
     .nav-container {
         gap: 16px;
     }
+
     .nav-links {
         display: none;
     }
+
     .menu-toggle-button {
         display: inline-flex;
         align-items: center;
@@ -872,6 +948,7 @@ section#contact {
     z-index: 1000;
     transition: transform 0.3s ease;
 }
+
 #chat-toggle:hover {
     transform: scale(1.1);
 }
@@ -881,7 +958,8 @@ section#contact {
     bottom: 6rem;
     right: 2rem;
     width: 90%;
-    max-width: 28rem; /* 448px */
+    max-width: 28rem;
+    /* 448px */
     max-height: 70vh;
     z-index: 1000;
     opacity: 0;
@@ -898,7 +976,8 @@ section#contact {
 
 
 #chat-widget .chat-header h3 {
-    margin-bottom: 0; /* Override default h3 margin */
+    margin-bottom: 0;
+    /* Override default h3 margin */
 }
 
 #chat-messages {
@@ -928,14 +1007,17 @@ section#contact {
 }
 
 .message-bubble.user {
-    background-color: #d1d5db; /* gray-300 */
-    color: #1f2937; /* gray-800 */
+    background-color: #d1d5db;
+    /* gray-300 */
+    color: #1f2937;
+    /* gray-800 */
     border-bottom-right-radius: 0.25rem;
     margin-left: auto;
 }
 
 .message-bubble.bot {
-    background-color: #3b82f6; /* blue-500 */
+    background-color: #3b82f6;
+    /* blue-500 */
     color: white;
     border-bottom-left-radius: 0.25rem;
 }
@@ -947,22 +1029,28 @@ section#contact {
 #chat-send {
     transition: background-color 0.2s ease-in-out;
 }
+
 #chat-send:hover i {
     transform: scale(1.1);
 }
 
 
 /* Responsive adjustments for chat widget */
-@media (max-width: 500px) { /* max-w-md is 32rem = 512px, so this is for smaller than typical "md" */
+@media (max-width: 500px) {
+
+    /* max-w-md is 32rem = 512px, so this is for smaller than typical "md" */
     #chat-widget {
         right: 5%;
         width: 90%;
     }
 }
+
 section h2 {
-    font-size: 2.8rem; /* Matches h2 definition */
+    font-size: 2.8rem;
+    /* Matches h2 definition */
     letter-spacing: -0.02em;
-    margin-bottom: 4.5rem; /* More space below section titles */
+    margin-bottom: 4.5rem;
+    /* More space below section titles */
     text-align: center;
 }
 
@@ -1107,15 +1195,18 @@ html.dark .global-nav .theme-toggle-nav i {
 .project-card a.text-accent {
     color: var(--text-accent) !important;
     font-weight: 600;
-    text-decoration: none; /* Clean look without underlines */
+    text-decoration: none;
+    /* Clean look without underlines */
     transition: all 0.3s ease;
 }
 
 .project-card .row a:hover,
 .project-card a.text-accent:hover {
     color: var(--text-accent) !important;
-    opacity: 0.8; /* Subtle visual feedback */
-    transform: translateY(-1px); /* Subtle lift effect */
+    opacity: 0.8;
+    /* Subtle visual feedback */
+    transform: translateY(-1px);
+    /* Subtle lift effect */
 }
 
 /* Project Action Links - View Project, Live Demo */
@@ -1193,34 +1284,42 @@ html.dark .global-nav .theme-toggle-nav i {
 /* Experience/Education Lists */
 .timeline-item {
     position: relative;
-    border-left: 3px solid #d0d0d5; /* Slightly thicker border */
-    padding-left: 2rem; /* Increased padding */
+    border-left: 3px solid #d0d0d5;
+    /* Slightly thicker border */
+    padding-left: 2rem;
+    /* Increased padding */
 }
-.timeline-item > div {
+
+.timeline-item>div {
     background-color: var(--bg-primary);
     padding: 2rem;
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     border: 1px solid var(--border-color);
 }
+
 .timeline-item h3 {
     font-size: 1.4rem;
     color: var(--text-primary);
 }
+
 .timeline-item h4 {
     font-size: 1.05rem;
     color: var(--text-primary);
     margin-bottom: 0.8rem;
 }
+
 .timeline-item ul {
     font-size: 0.95rem;
     color: var(--text-secondary);
     list-style-position: outside;
     padding-left: 1.2rem;
 }
+
 .timeline-item ul li {
     margin-bottom: 0.3rem;
 }
+
 .timeline-item .date-badge {
     color: var(--text-secondary);
     font-size: 0.9rem;
@@ -1312,6 +1411,22 @@ html.dark .global-nav .theme-toggle-nav i {
     justify-content: center;
     align-items: center;
     margin-top: 0.5rem;
+    background: #0071e3 !important;
+    color: #ffffff !important;
+    border-radius: 980px;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    cursor: pointer;
+}
+
+.contact-submit:hover {
+    background: #0077ed !important;
+    color: #ffffff !important;
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
 }
 
 @media (min-width: 640px) {
@@ -1323,60 +1438,85 @@ html.dark .global-nav .theme-toggle-nav i {
 }
 
 .contact-social-links {
-    margin-top: 2.5rem; /* Increased margin */
+    margin-top: 2.5rem;
+    /* Increased margin */
     display: flex;
-    gap: 1.8rem; /* Increased gap */
+    gap: 1.8rem;
+    /* Increased gap */
     align-items: center;
 }
+
 .contact-social-links a {
-    color: #555558; /* Softer icon color */
-    font-size: 1.4rem; /* Larger icons */
+    color: #555558;
+    /* Softer icon color */
+    font-size: 1.4rem;
+    /* Larger icons */
     transition: color 0.2s ease, transform 0.2s ease;
 }
+
 .contact-social-links a:hover {
-    color: #0071e3; /* Primary blue on hover */
-    transform: scale(1.1); /* Slight scale effect */
+    color: #0071e3;
+    /* Primary blue on hover */
+    transform: scale(1.1);
+    /* Slight scale effect */
 }
+
 .contact-social-links img {
-    width: 22px; /* Slightly larger image icons */
+    width: 22px;
+    /* Slightly larger image icons */
     height: 22px;
     object-fit: contain;
-    filter: grayscale(30%) contrast(90%); /* Less aggressive filter */
+    filter: grayscale(30%) contrast(90%);
+    /* Less aggressive filter */
     opacity: 0.8;
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
     vertical-align: middle;
 }
+
 .contact-social-links a:hover img {
     filter: grayscale(0%) contrast(100%);
     opacity: 1;
-    transform: scale(1.1); /* Slight scale effect */
+    transform: scale(1.1);
+    /* Slight scale effect */
 }
 
 
 /* Footer - Professional Design with Clean Color Scheme */
 footer {
-    background: linear-gradient(180deg, var(--footer-bg) 0%, #0c0c0f 100%);
-    color: var(--footer-text); /* High contrast text on black */
-    border-top: 1px solid var(--footer-border); /* Subtle edge highlight */
-    padding-top: 2.5rem; /* Comfortable padding */
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    /* High contrast text on black */
+    border-top: 1px solid var(--footer-border);
+    /* Subtle edge highlight */
+    padding-top: 2.5rem;
+    /* Comfortable padding */
     padding-bottom: 2.5rem;
 }
+
 footer a {
-    color: var(--footer-link); /* Soft silver link color */
+    color: var(--footer-link);
+    /* Soft silver link color */
     transition: color 0.2s ease;
 }
+
 footer a:hover {
-    color: var(--footer-link-hover); /* Apple accent blue on hover */
+    color: var(--footer-link-hover);
+    /* Apple accent blue on hover */
     text-decoration: none;
 }
-footer .fab, footer .fas {
-     font-size: 1.4rem;
-     color: currentColor;
-     transition: color 0.2s ease, transform 0.2s ease;
+
+footer .fab,
+footer .fas {
+    font-size: 1.4rem;
+    color: currentColor;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
-footer a:hover .fab, footer a:hover .fas {
+
+footer a:hover .fab,
+footer a:hover .fas {
     transform: scale(1.1);
 }
+
 footer img {
     width: 22px;
     height: 22px;
@@ -1385,11 +1525,12 @@ footer img {
     transition: filter 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
     vertical-align: middle;
 }
+
 footer a:hover img {
     filter: none;
     opacity: 0.85;
     transform: scale(1.1);
- }
+}
 
 /* CONTACT & FOOTER - ORIGINAL BRAND COLORFUL ICONS */
 
@@ -1398,93 +1539,165 @@ footer a:hover img {
 .contact-social-links .fa-brands.fa-facebook-f,
 .contact-social-links a[href*="facebook.com"] i.fa-brands,
 .contact-social-links a[href*="facebook.com"] .fa-brands.fa-facebook {
-    color: #1877f2 !important; /* Original Facebook Blue */
+    color: #1877f2 !important;
+    /* Original Facebook Blue */
     font-weight: 400;
 }
+
 .contact-social-links .fa-brands.fa-instagram,
 .contact-social-links a[href*="instagram.com"] i.fa-brands {
-    color: #e4405f !important; /* Original Instagram Pink */
+    color: #e4405f !important;
+    /* Original Instagram Pink */
     font-weight: 400;
 }
+
 .contact-social-links .fa-brands.fa-linkedin,
 .contact-social-links .fa-brands.fa-linkedin-in,
 .contact-social-links a[href*="linkedin.com"] i.fa-brands {
-    color: #0077b5 !important; /* Original LinkedIn Blue */
+    color: #0077b5 !important;
+    /* Original LinkedIn Blue */
     font-weight: 400;
 }
+
 .contact-social-links .fa-brands.fa-github,
 .contact-social-links a[href*="github.com"] i.fa-brands {
-    color: #181717 !important; /* Original GitHub Dark */
+    color: #181717 !important;
+    /* Original GitHub Dark */
     font-weight: 400;
 }
+
 .contact-social-links .fa-brands.fa-youtube,
 .contact-social-links a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000 !important; /* Original YouTube Red */
+    color: #ff0000 !important;
+    /* Original YouTube Red */
     font-weight: 400;
 }
+
 .contact-social-links .fa-brands.fa-x-twitter,
 .contact-social-links .fa-brands.fa-twitter,
 .contact-social-links a[href*="x.com"] i.fa-brands,
 .contact-social-links a[href*="twitter.com"] i.fa-brands {
-    color: #000000 !important; /* Original Twitter/X Black */
+    color: #000000 !important;
+    /* Original Twitter/X Black */
     font-weight: 400;
 }
+
 .contact-social-links .fa-solid.fa-globe,
 .contact-social-links a[href*="wixsite.com"] i.fa-solid,
 .contact-social-links a[href*="portfolio"] .fa-solid.fa-globe {
-    color: #0077b5 !important; /* LinkedIn Blue for Web Links */
+    color: #0077b5 !important;
+    /* LinkedIn Blue for Web Links */
     font-weight: 900;
 }
+
 .contact-social-links .fa-solid.fa-code,
 .contact-social-links a[href*="leetcode.com"] i.fa-solid {
-    color: #61dafb !important; /* React Blue for LeetCode */
+    color: #61dafb !important;
+    /* React Blue for LeetCode */
     font-weight: 900;
+}
+
+/* Licenses & Certifications - Colorful icons stay vivid */
+#certifications .fas.fa-code {
+    color: #f97316 !important; /* orange */
+}
+#certifications .fas.fa-brain {
+    color: #a855f7 !important; /* purple */
+}
+#certifications .fas.fa-rocket {
+    color: #22c55e !important; /* green */
+}
+#certifications .fas.fa-leaf {
+    color: #10b981 !important; /* emerald */
+}
+#certifications .fas.fa-database {
+    color: #0ea5e9 !important; /* sky */
+}
+#certifications .fas.fa-shield-alt {
+    color: #ef4444 !important; /* red */
+}
+#certifications .fas.fa-robot {
+    color: #facc15 !important; /* amber */
+}
+#certifications .fas.fa-network-wired {
+    color: #6366f1 !important; /* indigo */
+}
+#certifications .fas.fa-search {
+    color: #0891b2 !important; /* teal */
+}
+#certifications .fas.fa-chart-line {
+    color: #10b981 !important; /* green */
+}
+#certifications .fas.fa-ad {
+    color: #f43f5e !important; /* pink */
 }
 
 /* Footer - Original Brand Colors (matching Contact Section) */
 footer i.fa-brands.fa-facebook,
 footer i.fa-brands.fa-facebook-f,
 footer a[href*="facebook.com"] i.fa-brands {
-    color: #0a84ff !important; /* Bright Facebook blue for dark background */
+    color: #0a84ff !important;
+    /* Bright Facebook blue for dark background */
     font-weight: 400;
 }
+
 footer i.fa-brands.fa-instagram,
 footer a[href*="instagram.com"] i.fa-brands {
-    color: #ff375f !important; /* Vibrant Instagram pink */
+    color: #ff375f !important;
+    /* Vibrant Instagram pink */
     font-weight: 400;
 }
+
 footer i.fa-brands.fa-linkedin,
 footer i.fa-brands.fa-linkedin-in,
 footer a[href*="linkedin.com"] i.fa-brands {
-    color: #0a66c2 !important; /* LinkedIn primary blue */
+    color: #0a66c2 !important;
+    /* LinkedIn primary blue */
     font-weight: 400;
 }
+
 footer i.fa-brands.fa-github,
 footer a[href*="github.com"] i.fa-brands {
-    color: #f5f5f7 !important; /* Light GitHub mark for visibility */
+    color: #f5f5f7 !important;
+    /* Light GitHub mark for visibility */
     font-weight: 400;
 }
+
 footer i.fa-brands.fa-youtube,
 footer a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000 !important; /* Original YouTube Red */
+    color: #ff0000 !important;
+    /* Original YouTube Red */
     font-weight: 400;
 }
+
 footer i.fa-brands.fa-x-twitter,
 footer i.fa-brands.fa-twitter,
 footer a[href*="x.com"] i.fa-brands,
 footer a[href*="twitter.com"] i.fa-brands {
-    color: #1da1f2 !important; /* Twitter airy blue */
+    color: #1da1f2 !important;
+    /* Twitter airy blue */
     font-weight: 400;
 }
+
 footer i.fa-solid.fa-globe,
 footer a[href*="wixsite.com"] .fa-solid.fa-globe {
-    color: #5ac8fa !important; /* Aqua blue accent */
+    color: #5ac8fa !important;
+    /* Aqua blue accent */
     font-weight: 900;
 }
+
 footer i.fa-solid.fa-code,
 footer a[href*="leetcode.com"] .fa-solid.fa-code {
-    color: #61dafb !important; /* React Blue for LeetCode */
+    color: #61dafb !important;
+    /* React Blue for LeetCode */
     font-weight: 900;
+}
+
+/* Keep social icon brand colors vivid in light mode (contact + footer) */
+html:not(.dark) .contact-social-links i,
+html:not(.dark) footer i {
+    color: inherit !important;
+    opacity: 1 !important;
 }
 
 
@@ -1582,11 +1795,13 @@ footer a[href*="leetcode.com"] .fa-solid.fa-code {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .apple-reveal,
     [data-animate],
     .fade-in {
         transition: none !important;
     }
+
     .apple-reveal.is-queued,
     [data-animate].is-queued,
     .fade-in.is-queued {
@@ -1608,15 +1823,19 @@ footer a[href*="leetcode.com"] .fa-solid.fa-code {
     from {
         width: 0;
     }
+
     to {
         width: 100%;
     }
 }
 
 @keyframes blink-caret {
-    from, to {
+
+    from,
+    to {
         border-color: var(--text-primary);
     }
+
     50% {
         border-color: transparent;
     }
@@ -1631,7 +1850,7 @@ footer a[href*="leetcode.com"] .fa-solid.fa-code {
 #home img:hover {
     transform: scale(1.05);
     filter: grayscale(0%) contrast(1.2);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Subtle Gradient Background for Home */
@@ -1642,24 +1861,36 @@ footer a[href*="leetcode.com"] .fa-solid.fa-code {
 
 /* Responsive adjustments for smaller screens if needed */
 @media (max-width: 768px) {
-    h1 { font-size: 2.8rem; }
-    h2 { font-size: 2.2rem; }
-    h3 { font-size: 1.5rem; }
+    h1 {
+        font-size: 2.8rem;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
 
     .project-card h3 {
         font-size: 1.25rem;
     }
+
     .project-card p {
         font-size: 0.95rem;
     }
 
     .overlay-nav-link {
-        font-size: 1.8rem; /* Adjust for smaller screens */
+        font-size: 1.8rem;
+        /* Adjust for smaller screens */
     }
 
     .contact-input {
-        padding: 12px 16px; /* Adjust padding for smaller screens */
+        padding: 12px 16px;
+        /* Adjust padding for smaller screens */
     }
+
     .contact-card,
     .contact-form-card {
         padding: 1.5rem;
@@ -1671,9 +1902,11 @@ footer a[href*="leetcode.com"] .fa-solid.fa-code {
     #contact .row {
         grid-template-columns: 1fr;
     }
+
     .contact-form-grid {
         grid-template-columns: 1fr;
     }
+
     .contact-submit {
         width: 100%;
     }
@@ -1715,7 +1948,8 @@ html.dark footer a:hover {
 
 /* Additional Light Mode Safety Overrides */
 section:hover {
-    background: inherit; /* Prevent interference */
+    background: inherit;
+    /* Prevent interference */
 }
 
 /* Ensure theme consistency on page load */
@@ -1795,7 +2029,8 @@ html.dark .project-card a.text-accent:hover {
 /* Mobile-first approach - optimize for mobile, enhance for desktop */
 @media (max-width: 767px) {
     html {
-        font-size: 14px; /* Smaller base font for mobile */
+        font-size: 14px;
+        /* Smaller base font for mobile */
     }
 
     body {
@@ -1805,13 +2040,15 @@ html.dark .project-card a.text-accent:hover {
 
     /* Mobile Navigation */
     .global-nav {
-        height: 48px; /* Smaller on mobile */
+        height: 48px;
+        /* Smaller on mobile */
         padding: 0 16px;
     }
 
     .nav-container {
         height: 100%;
-        gap: 12px; /* Tighter spacing */
+        gap: 12px;
+        /* Tighter spacing */
     }
 
     .nav-logo img {
@@ -1820,7 +2057,8 @@ html.dark .project-card a.text-accent:hover {
     }
 
     .nav-links {
-        display: none !important; /* Hide desktop nav on mobile */
+        display: none !important;
+        /* Hide desktop nav on mobile */
     }
 
     .nav-left {
@@ -1841,18 +2079,21 @@ html.dark .project-card a.text-accent:hover {
     button,
     .btn,
     a[role="button"] {
-        min-height: 44px; /* Apple recommended minimum */
+        min-height: 44px;
+        /* Apple recommended minimum */
         min-width: 44px;
     }
 
     /* Mobile Typography */
     h1 {
-        font-size: 2.5rem; /* Base: 40px on mobile */
+        font-size: 2.5rem;
+        /* Base: 40px on mobile */
         line-height: 1.1;
     }
 
     h2 {
-        font-size: 1.75rem; /* Base: 28px on mobile */
+        font-size: 1.75rem;
+        /* Base: 28px on mobile */
         letter-spacing: -0.02em;
         margin-bottom: 2rem;
     }
@@ -1891,7 +2132,8 @@ html.dark .project-card a.text-accent:hover {
 
     /* Home Section Mobile */
     .home-element {
-        opacity: 0; /* Remove fading for better mobile performance */
+        opacity: 0;
+        /* Remove fading for better mobile performance */
     }
 
     #home .mb-12.home-element {
@@ -1911,15 +2153,18 @@ html.dark .project-card a.text-accent:hover {
     #home p {
         font-size: 1.125rem;
         margin-bottom: 1.5rem;
-        max-width: none; /* Remove restrictive width on mobile */
+        max-width: none;
+        /* Remove restrictive width on mobile */
     }
 
     /* Mobile Profile Image */
     #home img {
         width: 200px;
         height: 200px;
-        filter: none; /* Remove filters for better mobile performance */
-        transition: none; /* Remove transitions */
+        filter: none;
+        /* Remove filters for better mobile performance */
+        transition: none;
+        /* Remove transitions */
     }
 
     #home img:hover {
@@ -1933,7 +2178,8 @@ html.dark .project-card a.text-accent:hover {
     .btn-secondary {
         font-size: 1rem;
         padding: 0.75rem 1.5rem;
-        width: 100%; /* Full width on mobile */
+        width: 100%;
+        /* Full width on mobile */
         margin-bottom: 1rem;
     }
 
@@ -1946,7 +2192,7 @@ html.dark .project-card a.text-accent:hover {
     /* Mobile Cards */
     .education-card,
     .project-card,
-    .timeline-item > div {
+    .timeline-item>div {
         padding: 1.5rem;
         margin-bottom: 1rem;
         border-radius: 16px;
@@ -1954,14 +2200,16 @@ html.dark .project-card a.text-accent:hover {
 
     /* Mobile Project Grid */
     .project-grid {
-        grid-template-columns: 1fr; /* Single column */
+        grid-template-columns: 1fr;
+        /* Single column */
         gap: 1.5rem;
         padding: 0;
     }
 
     /* Contact Form Layout */
     .contact-input {
-        font-size: 16px; /* Prevent zoom on iOS */
+        font-size: 16px;
+        /* Prevent zoom on iOS */
         padding: 12px 16px;
     }
 
@@ -2017,6 +2265,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== TABLET DESIGN ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
+
     /* Tablet-specific styles */
     .container,
     .container-fluid {
@@ -2029,7 +2278,8 @@ html.dark .project-card a.text-accent:hover {
     }
 
     .nav-links {
-        display: none !important; /* Still hide on tablets to save space */
+        display: none !important;
+        /* Still hide on tablets to save space */
     }
 
     h1 {
@@ -2041,7 +2291,8 @@ html.dark .project-card a.text-accent:hover {
     }
 
     .project-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns on tablets */
         gap: 2rem;
     }
 
@@ -2049,6 +2300,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== DESKTOP ENHANCEMENTS ===== */
 @media (min-width: 1024px) {
+
     /* Desktop navigation - show full nav */
     .nav-links {
         display: flex !important;
@@ -2071,6 +2323,7 @@ html.dark .project-card a.text-accent:hover {
 /* ===== iOS SPECIFIC OPTIMIZATIONS ===== */
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
+
     /* iOS Safari touch targets */
     button,
     .btn,
@@ -2104,6 +2357,7 @@ html.dark .project-card a.text-accent:hover {
 /* ===== ANDROID SPECIFIC OPTIMIZATIONS ===== */
 /* Android Chrome specific fixes */
 @supports not (-webkit-touch-callout: none) {
+
     /* Android Chrome touch improvements */
     * {
         -webkit-tap-highlight-color: rgba(0, 113, 227, 0.1);
@@ -2125,7 +2379,9 @@ html.dark .project-card a.text-accent:hover {
 }
 
 /* ===== HIGH RESOLUTION DISPLAYS ===== */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
     /* Retina display optimizations */
     .nav-logo img {
         image-rendering: -webkit-optimize-contrast;
@@ -2142,6 +2398,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== ACCESSIBILITY ENHANCEMENTS ===== */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -2164,16 +2421,17 @@ html.dark .project-card a.text-accent:hover {
 /* ===== PERFORMANCE OPTIMIZATIONS ===== */
 /* Reduce complexity on mobile for better performance */
 @media (max-width: 767px) {
+
     /* Disable heavy shadows on mobile */
     .project-card,
     .education-card,
-    .timeline-item > div {
+    .timeline-item>div {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     html.dark .project-card,
     html.dark .education-card,
-    html.dark .timeline-item > div {
+    html.dark .timeline-item>div {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
@@ -2190,6 +2448,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== PRINT STYLES ===== */
 @media print {
+
     .global-nav,
     .theme-toggle-nav,
     footer {
@@ -2217,208 +2476,289 @@ html.dark .project-card a.text-accent:hover {
 /* ===== SKILLS & TECHNOLOGIES ICONS IN DARK MODE - ORIGINAL COLORS ===== */
 
 /* Programming Languages - Perfect Brand Colors */
-.fa-solid.fa-code, .fas.fa-code {
-    color: hsl(199, 100%, 55%) !important; /* React blue for general coding */
+.fa-solid.fa-code,
+.fas.fa-code {
+    color: hsl(199, 100%, 55%) !important;
+    /* React blue for general coding */
     font-weight: 900;
 }
 
 /* JavaScript & TypeScript - Official Colors */
-.fa-brands.fa-js, .fa-brands.fa-square-js, .fab.fa-js, .fab.fa-js-square {
-    color: hsl(54, 91%, 58%) !important; /* JavaScript yellow */
+.fa-brands.fa-js,
+.fa-brands.fa-square-js,
+.fab.fa-js,
+.fab.fa-js-square {
+    color: hsl(54, 91%, 58%) !important;
+    /* JavaScript yellow */
     font-weight: 400;
-    background: linear-gradient(45deg, hsl(54, 91%, 58%), hsl(0, 0%, 80%)); /* Gradient for 3D effect */
+    background: linear-gradient(45deg, hsl(54, 91%, 58%), hsl(0, 0%, 80%));
+    /* Gradient for 3D effect */
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.fa-brands.fa-node-js, .fab.fa-node-js {
-    color: hsl(118, 48%, 43%) !important; /* Node.js green */
+.fa-brands.fa-node-js,
+.fab.fa-node-js {
+    color: hsl(118, 48%, 43%) !important;
+    /* Node.js green */
     font-weight: 400;
 }
 
-.fa-brands.fa-react, .fab.fa-react {
-    color: hsl(199, 100%, 55%) !important; /* React blue */
+.fa-brands.fa-react,
+.fab.fa-react {
+    color: hsl(199, 100%, 55%) !important;
+    /* React blue */
     font-weight: 400;
 }
 
 /* Frameworks & Libraries */
-.fa-brands.fa-java, .fab.fa-java {
-    color: hsl(12, 85%, 52%) !important; /* Java red */
+.fa-brands.fa-java,
+.fab.fa-java {
+    color: hsl(12, 85%, 52%) !important;
+    /* Java red */
     font-weight: 400;
 }
 
-.fa-brands.fa-spring, .fab.fa-spring {
-    color: hsl(99, 43%, 47%) !important; /* Spring green */
+.fa-brands.fa-spring,
+.fab.fa-spring {
+    color: hsl(99, 43%, 47%) !important;
+    /* Spring green */
     font-weight: 400;
 }
 
-.fa-brands.fa-angular, .fab.fa-angular {
-    color: hsl(0, 84%, 60%) !important; /* Angular red */
+.fa-brands.fa-angular,
+.fab.fa-angular {
+    color: hsl(0, 84%, 60%) !important;
+    /* Angular red */
     font-weight: 400;
 }
 
-.fa-solid.fa-brain, .fas.fa-brain {
-    color: hsl(259, 100%, 70%) !important; /* Purple for AI/ML */
+.fa-solid.fa-brain,
+.fas.fa-brain {
+    color: hsl(259, 100%, 70%) !important;
+    /* Purple for AI/ML */
     font-weight: 900;
     animation: brainPulse 2s infinite;
 }
 
-.fa-solid.fa-robot, .fas.fa-robot {
-    color: hsl(188, 100%, 50%) !important; /* Cyan for robotics/AI */
+.fa-solid.fa-robot,
+.fas.fa-robot {
+    color: hsl(188, 100%, 50%) !important;
+    /* Cyan for robotics/AI */
     font-weight: 900;
 }
 
 /* Cloud & DevOps - Precise Brand Colors */
-.fa-brands.fa-aws, .fab.fa-aws {
-    color: hsl(32, 100%, 50%) !important; /* AWS orange */
+.fa-brands.fa-aws,
+.fab.fa-aws {
+    color: hsl(32, 100%, 50%) !important;
+    /* AWS orange */
     font-weight: 400;
 }
 
-.fa-brands.fa-docker, .fab.fa-docker {
-    color: hsl(203, 87%, 53%) !important; /* Docker blue */
+.fa-brands.fa-docker,
+.fab.fa-docker {
+    color: hsl(203, 87%, 53%) !important;
+    /* Docker blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-jenkins, .fab.fa-jenkins {
-    color: hsl(5, 76%, 45%) !important; /* Jenkins red */
+.fa-brands.fa-jenkins,
+.fab.fa-jenkins {
+    color: hsl(5, 76%, 45%) !important;
+    /* Jenkins red */
     font-weight: 400;
 }
 
 /* Development Tools */
-.fa-solid.fa-gear, .fa-solid.fa-cogs, .fas.fa-cogs {
-    color: hsl(233, 47%, 71%) !important; /* Indigo for DevOps tools */
+.fa-solid.fa-gear,
+.fa-solid.fa-cogs,
+.fas.fa-cogs {
+    color: hsl(233, 47%, 71%) !important;
+    /* Indigo for DevOps tools */
     font-weight: 900;
     animation: spin 4s linear infinite;
 }
 
-.fa-solid.fa-code-branch, .fas.fa-code-branch {
-    color: hsl(160, 84%, 39%) !important; /* Emerald for git/terraform */
+.fa-solid.fa-code-branch,
+.fas.fa-code-branch {
+    color: hsl(160, 84%, 39%) !important;
+    /* Emerald for git/terraform */
     font-weight: 900;
 }
 
-.fa-brands.fa-git-alt, .fa-brands.fa-git, .fab.fa-git {
-    color: hsl(15, 86%, 50%) !important; /* Git orange */
+.fa-brands.fa-git-alt,
+.fa-brands.fa-git,
+.fab.fa-git {
+    color: hsl(15, 86%, 50%) !important;
+    /* Git orange */
     font-weight: 400;
 }
 
 /* Databases - Perfect Colors */
-.fa-solid.fa-database, .fas.fa-database {
-    color: hsl(162, 84%, 39%) !important; /* Green for databases */
+.fa-solid.fa-database,
+.fas.fa-database {
+    color: hsl(162, 84%, 39%) !important;
+    /* Green for databases */
     font-weight: 900;
 }
 
-.fa-brands.fa-mysql, .fab.fa-mysql {
-    color: hsl(204, 64%, 44%) !important; /* MySQL blue */
+.fa-brands.fa-mysql,
+.fab.fa-mysql {
+    color: hsl(204, 64%, 44%) !important;
+    /* MySQL blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-postgresql, .fab.fa-postgresql {
-    color: hsl(215, 79%, 51%) !important; /* PostgreSQL blue */
+.fa-brands.fa-postgresql,
+.fab.fa-postgresql {
+    color: hsl(215, 79%, 51%) !important;
+    /* PostgreSQL blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-mongodb, .fab.fa-mongodb {
-    color: hsl(114, 55%, 55%) !important; /* MongoDB green */
+.fa-brands.fa-mongodb,
+.fab.fa-mongodb {
+    color: hsl(114, 55%, 55%) !important;
+    /* MongoDB green */
     font-weight: 400;
 }
 
-.fa-brands.fa-redis, .fab.fa-redis {
-    color: hsl(0, 71%, 51%) !important; /* Redis red */
+.fa-brands.fa-redis,
+.fab.fa-redis {
+    color: hsl(0, 71%, 51%) !important;
+    /* Redis red */
     font-weight: 400;
 }
 
 /* Analysis & Search */
-.fa-solid.fa-magnifying-glass, .fa-solid.fa-search, .fas.fa-search {
-    color: hsl(220, 13%, 50%) !important; /* Cool gray */
+.fa-solid.fa-magnifying-glass,
+.fa-solid.fa-search,
+.fas.fa-search {
+    color: hsl(220, 13%, 50%) !important;
+    /* Cool gray */
     font-weight: 900;
 }
 
-.fa-solid.fa-network-wired, .fas.fa-network-wired {
-    color: hsl(192, 95%, 51%) !important; /* Sky blue for networking */
+.fa-solid.fa-network-wired,
+.fas.fa-network-wired {
+    color: hsl(192, 95%, 51%) !important;
+    /* Sky blue for networking */
     font-weight: 900;
 }
 
-.fa-brands.fa-microsoft, .fab.fa-microsoft {
-    color: hsl(195, 100%, 47%) !important; /* Microsoft blue */
+.fa-brands.fa-microsoft,
+.fab.fa-microsoft {
+    color: hsl(195, 100%, 47%) !important;
+    /* Microsoft blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-google, .fab.fa-google {
-    color: hsl(217, 89%, 61%) !important; /* Google blue */
+.fa-brands.fa-google,
+.fab.fa-google {
+    color: hsl(217, 89%, 61%) !important;
+    /* Google blue */
     font-weight: 400;
 }
 
 /* Modern Tech - Vibrant Colors */
-.fa-solid.fa-leaf, .fas.fa-leaf {
-    color: hsl(142, 76%, 36%) !important; /* Modern green */
+.fa-solid.fa-leaf,
+.fas.fa-leaf {
+    color: hsl(142, 76%, 36%) !important;
+    /* Modern green */
     font-weight: 900;
     filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.3));
 }
 
-.fa-solid.fa-shield, .fa-solid.fa-shield-alt, .fas.fa-shield-alt {
-    color: hsl(0, 71%, 51%) !important; /* Red for security */
+.fa-solid.fa-shield,
+.fa-solid.fa-shield-alt,
+.fas.fa-shield-alt {
+    color: hsl(0, 71%, 51%) !important;
+    /* Red for security */
     font-weight: 900;
     filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.2));
 }
 
-.fa-solid.fa-chart-line, .fas.fa-chart-line {
-    color: hsl(38, 92%, 50%) !important; /* Amber for analytics */
+.fa-solid.fa-chart-line,
+.fas.fa-chart-line {
+    color: hsl(38, 92%, 50%) !important;
+    /* Amber for analytics */
     font-weight: 900;
 }
 
 /* Latest Font Awesome Features */
-.fa-solid.fa-laptop-code, .fas.fa-laptop-code {
-    color: hsl(259, 100%, 70%) !important; /* Purple for coding laptops */
+.fa-solid.fa-laptop-code,
+.fas.fa-laptop-code {
+    color: hsl(259, 100%, 70%) !important;
+    /* Purple for coding laptops */
     font-weight: 900;
 }
 
-.fa-solid.fa-server, .fas.fa-server {
-    color: hsl(218, 19%, 35%) !important; /* Gray for servers */
+.fa-solid.fa-server,
+.fas.fa-server {
+    color: hsl(218, 19%, 35%) !important;
+    /* Gray for servers */
     font-weight: 900;
 }
 
-.fa-solid.fa-cloud, .fas.fa-cloud {
-    color: hsl(233, 47%, 71%) !important; /* Indigo for cloud */
+.fa-solid.fa-cloud,
+.fas.fa-cloud {
+    color: hsl(233, 47%, 71%) !important;
+    /* Indigo for cloud */
     font-weight: 900;
 }
 
-.fa-solid.fa-spinner, .fas.fa-spinner {
-    color: hsl(188, 100%, 50%) !important; /* Cyan for loading */
+.fa-solid.fa-spinner,
+.fas.fa-spinner {
+    color: hsl(188, 100%, 50%) !important;
+    /* Cyan for loading */
     font-weight: 900;
 }
 
 /* Certifications & Achievement Icons */
-.fa-solid.fa-certificate, .fas.fa-certificate {
-    color: hsl(267, 84%, 73%) !important; /* Purple for certifications */
+.fa-solid.fa-certificate,
+.fas.fa-certificate {
+    color: hsl(267, 84%, 73%) !important;
+    /* Purple for certifications */
     font-weight: 900;
 }
 
-.fa-solid.fa-trophy, .fas.fa-trophy {
-    color: hsl(45, 93%, 47%) !important; /* Gold for awards */
+.fa-solid.fa-trophy,
+.fas.fa-trophy {
+    color: hsl(45, 93%, 47%) !important;
+    /* Gold for awards */
     font-weight: 900;
     filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
 }
 
 /* Project & Demo Links */
-.fa-solid.fa-external-link-alt, .fa-solid.fa-external-link, .fas.fa-external-link {
-    color: hsl(217, 91%, 60%) !important; /* Blue for external links */
+.fa-solid.fa-external-link-alt,
+.fa-solid.fa-external-link,
+.fas.fa-external-link {
+    color: hsl(217, 91%, 60%) !important;
+    /* Blue for external links */
     font-weight: 900;
 }
 
-.fa-solid.fa-globe, .fas.fa-globe {
-    color: hsl(160, 84%, 39%) !important; /* Emerald for web/live demo */
+.fa-solid.fa-globe,
+.fas.fa-globe {
+    color: hsl(160, 84%, 39%) !important;
+    /* Emerald for web/live demo */
     font-weight: 900;
 }
 
-.fa-brands.fa-github, .fab.fa-github {
-    color: hsl(0, 0%, 10%) !important; /* GitHub dark */
+.fa-brands.fa-github,
+.fab.fa-github {
+    color: hsl(0, 0%, 10%) !important;
+    /* GitHub dark */
     font-weight: 400;
     transition: all 0.3s ease;
 }
 
 .fa-brands.fa-github:hover {
-    color: hsl(0, 0%, 100%) !important; /* White on hover */
+    color: hsl(0, 0%, 100%) !important;
+    /* White on hover */
     background: linear-gradient(135deg, #6b7280, #374151);
     -webkit-background-clip: text;
     background-clip: text;
@@ -2426,13 +2766,17 @@ html.dark .project-card a.text-accent:hover {
 }
 
 /* Resume Download */
-.fa-solid.fa-download, .fas.fa-download {
-    color: hsl(162, 84%, 39%) !important; /* Green for download */
+.fa-solid.fa-download,
+.fas.fa-download {
+    color: hsl(162, 84%, 39%) !important;
+    /* Green for download */
     font-weight: 900;
 }
 
-.fa-solid.fa-file-pdf, .fas.fa-file-pdf {
-    color: hsl(0, 76%, 63%) !important; /* Red for PDF */
+.fa-solid.fa-file-pdf,
+.fas.fa-file-pdf {
+    color: hsl(0, 76%, 63%) !important;
+    /* Red for PDF */
     font-weight: 900;
 }
 
@@ -2442,18 +2786,23 @@ html.dark .project-card a.text-accent:hover {
     font-weight: 900 !important;
 }
 
-.fa-solid.fa-cpp, .fa.fa-cpp, .fas.fa-cpp {
+.fa-solid.fa-cpp,
+.fa.fa-cpp,
+.fas.fa-cpp {
     color: hsl(207, 100%, 47%) !important;
     font-weight: 900 !important;
 }
 
-.fa-solid.fa-cpp, .fa-solid.fa-c-plus-plus {
+.fa-solid.fa-cpp,
+.fa-solid.fa-c-plus-plus {
     color: hsl(207, 100%, 47%) !important;
     font-weight: 900;
 }
 
-.fa-brands.fa-swift, .fab.fa-swift {
-    color: hsl(19, 88%, 61%) !important; /* Swift orange */
+.fa-brands.fa-swift,
+.fab.fa-swift {
+    color: hsl(19, 88%, 61%) !important;
+    /* Swift orange */
     font-weight: 400;
 }
 
@@ -2462,245 +2811,341 @@ html.dark .project-card a.text-accent:hover {
     font-weight: 400;
 }
 
-.fa-brands.fa-c-plus-plus, .fab.fa-c-plus-plus {
+.fa-brands.fa-c-plus-plus,
+.fab.fa-c-plus-plus {
     color: hsl(207, 100%, 47%) !important;
     font-weight: 400;
 }
 
 /* FIXED C and C++ Icon Classes - Proper Font Awesome Support */
-.fa.fa-c, .fas.fa-c, .fa-solid.fa-c {
-    color: hsl(207, 100%, 47%) !important; /* Proper C language blue */
+.fa.fa-c,
+.fas.fa-c,
+.fa-solid.fa-c {
+    color: hsl(207, 100%, 47%) !important;
+    /* Proper C language blue */
     font-weight: 900 !important;
 }
 
-.fa.fa-cpp, .fas.fa-cpp, .fa-solid.fa-cpp,
-.fa.fa-c-plus-plus, .fas.fa-c-plus-plus, .fa-solid.fa-c-plus-plus {
-    color: hsl(207, 100%, 47%) !important; /* Proper C++ language blue */
+.fa.fa-cpp,
+.fas.fa-cpp,
+.fa-solid.fa-cpp,
+.fa.fa-c-plus-plus,
+.fas.fa-c-plus-plus,
+.fa-solid.fa-c-plus-plus {
+    color: hsl(207, 100%, 47%) !important;
+    /* Proper C++ language blue */
     font-weight: 900 !important;
 }
 
 /* Advanced Tech Icons */
-.fa-solid.fa-layer-group, .fas.fa-layer-group {
-    color: hsl(38, 92%, 50%) !important; /* Amber for layers/Deep Learning */
+.fa-solid.fa-layer-group,
+.fas.fa-layer-group {
+    color: hsl(38, 92%, 50%) !important;
+    /* Amber for layers/Deep Learning */
     font-weight: 900;
 }
 
-.fa-solid.fa-brain-circuit, .fas.fa-brain-circuit {
-    color: hsl(259, 100%, 70%) !important; /* Purple for neural networks */
+.fa-solid.fa-brain-circuit,
+.fas.fa-brain-circuit {
+    color: hsl(259, 100%, 70%) !important;
+    /* Purple for neural networks */
     font-weight: 900;
     animation: brainPulse 3s infinite;
 }
 
-.fa-solid.fa-chart-simple, .fas.fa-chart-simple {
-    color: hsl(162, 84%, 39%) !important; /* Green for analytics */
+.fa-solid.fa-chart-simple,
+.fas.fa-chart-simple {
+    color: hsl(162, 84%, 39%) !important;
+    /* Green for analytics */
     font-weight: 900;
 }
 
 /* ===== ORIGINAL ICON SYSTEM - Latest Font Awesome 6.6.0+ ===== */
 
 /* Programming Languages - Perfect Brand Colors */
-.fa-solid.fa-code, .fas.fa-code {
-    color: #61dafb; /* React blue for general coding */
+.fa-solid.fa-code,
+.fas.fa-code {
+    color: #61dafb;
+    /* React blue for general coding */
     font-weight: 900;
 }
 
 /* JavaScript & TypeScript - Official Colors */
-.fa-brands.fa-js, .fa-brands.fa-square-js, .fab.fa-js, .fab.fa-js-square {
-    color: #f7df1e; /* JavaScript yellow */
+.fa-brands.fa-js,
+.fa-brands.fa-square-js,
+.fab.fa-js,
+.fab.fa-js-square {
+    color: #f7df1e;
+    /* JavaScript yellow */
     font-weight: 400;
-    background: linear-gradient(45deg, #f7df1e, #f0c); /* Gradient for 3D effect */
+    background: linear-gradient(45deg, #f7df1e, #f0c);
+    /* Gradient for 3D effect */
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.fa-brands.fa-node-js, .fab.fa-node-js {
-    color: #339933; /* Node.js green */
+.fa-brands.fa-node-js,
+.fab.fa-node-js {
+    color: #339933;
+    /* Node.js green */
     font-weight: 400;
 }
 
-.fa-brands.fa-react, .fab.fa-react {
-    color: #61dafb; /* React blue */
+.fa-brands.fa-react,
+.fab.fa-react {
+    color: #61dafb;
+    /* React blue */
     font-weight: 400;
 }
 
 /* Frameworks & Libraries */
-.fa-brands.fa-java, .fab.fa-java {
-    color: #ee4c2c; /* Java red */
+.fa-brands.fa-java,
+.fab.fa-java {
+    color: #ee4c2c;
+    /* Java red */
     font-weight: 400;
 }
 
-.fa-brands.fa-spring, .fab.fa-spring {
-    color: #6db33f; /* Spring green */
+.fa-brands.fa-spring,
+.fab.fa-spring {
+    color: #6db33f;
+    /* Spring green */
     font-weight: 400;
 }
 
-.fa-brands.fa-angular, .fab.fa-angular {
-    color: #dd0031; /* Angular red */
+.fa-brands.fa-angular,
+.fab.fa-angular {
+    color: #dd0031;
+    /* Angular red */
     font-weight: 400;
 }
 
-.fa-solid.fa-brain, .fas.fa-brain {
-    color: #8b5cf6; /* Purple for AI/ML */
+.fa-solid.fa-brain,
+.fas.fa-brain {
+    color: #8b5cf6;
+    /* Purple for AI/ML */
     font-weight: 900;
     animation: brainPulse 2s infinite;
 }
 
-.fa-solid.fa-robot, .fas.fa-robot {
-    color: #06b6d4; /* Cyan for robotics/AI */
+.fa-solid.fa-robot,
+.fas.fa-robot {
+    color: #06b6d4;
+    /* Cyan for robotics/AI */
     font-weight: 900;
 }
 
 /* Cloud & DevOps - Precise Brand Colors */
-.fa-brands.fa-aws, .fab.fa-aws {
-    color: #ff9900; /* AWS orange */
+.fa-brands.fa-aws,
+.fab.fa-aws {
+    color: #ff9900;
+    /* AWS orange */
     font-weight: 400;
 }
 
-.fa-brands.fa-docker, .fab.fa-docker {
-    color: #2496ed; /* Docker blue */
+.fa-brands.fa-docker,
+.fab.fa-docker {
+    color: #2496ed;
+    /* Docker blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-jenkins, .fab.fa-jenkins {
-    color: #d73b15; /* Jenkins red */
+.fa-brands.fa-jenkins,
+.fab.fa-jenkins {
+    color: #d73b15;
+    /* Jenkins red */
     font-weight: 400;
 }
 
 /* Development Tools */
-.fa-solid.fa-gear, .fa-solid.fa-cogs, .fas.fa-cogs {
-    color: #6366f1; /* Indigo for DevOps tools */
+.fa-solid.fa-gear,
+.fa-solid.fa-cogs,
+.fas.fa-cogs {
+    color: #6366f1;
+    /* Indigo for DevOps tools */
     font-weight: 900;
     animation: spin 4s linear infinite;
 }
 
-.fa-solid.fa-code-branch, .fas.fa-code-branch {
-    color: #10b981; /* Emerald for git/terraform */
+.fa-solid.fa-code-branch,
+.fas.fa-code-branch {
+    color: #10b981;
+    /* Emerald for git/terraform */
     font-weight: 900;
 }
 
-.fa-brands.fa-git-alt, .fa-brands.fa-git, .fab.fa-git {
-    color: #f4511e; /* Git orange */
+.fa-brands.fa-git-alt,
+.fa-brands.fa-git,
+.fab.fa-git {
+    color: #f4511e;
+    /* Git orange */
     font-weight: 400;
 }
 
 /* Databases - Perfect Colors */
-.fa-solid.fa-database, .fas.fa-database {
-    color: #059669; /* Green for databases */
+.fa-solid.fa-database,
+.fas.fa-database {
+    color: #059669;
+    /* Green for databases */
     font-weight: 900;
 }
 
-.fa-brands.fa-mysql, .fab.fa-mysql {
-    color: #4479a1; /* MySQL blue */
+.fa-brands.fa-mysql,
+.fab.fa-mysql {
+    color: #4479a1;
+    /* MySQL blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-postgresql, .fab.fa-postgresql {
-    color: #4169e1; /* PostgreSQL blue */
+.fa-brands.fa-postgresql,
+.fab.fa-postgresql {
+    color: #4169e1;
+    /* PostgreSQL blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-mongodb, .fab.fa-mongodb {
-    color: #47a248; /* MongoDB green */
+.fa-brands.fa-mongodb,
+.fab.fa-mongodb {
+    color: #47a248;
+    /* MongoDB green */
     font-weight: 400;
 }
 
-.fa-brands.fa-redis, .fab.fa-redis {
-    color: #dc2626; /* Redis red */
+.fa-brands.fa-redis,
+.fab.fa-redis {
+    color: #dc2626;
+    /* Redis red */
     font-weight: 400;
 }
 
 /* Analysis & Search */
-.fa-solid.fa-magnifying-glass, .fa-solid.fa-search, .fas.fa-search {
-    color: #6b7280; /* Cool gray */
+.fa-solid.fa-magnifying-glass,
+.fa-solid.fa-search,
+.fas.fa-search {
+    color: #6b7280;
+    /* Cool gray */
     font-weight: 900;
 }
 
-.fa-solid.fa-network-wired, .fas.fa-network-wired {
-    color: #0ea5e9; /* Sky blue for networking */
+.fa-solid.fa-network-wired,
+.fas.fa-network-wired {
+    color: #0ea5e9;
+    /* Sky blue for networking */
     font-weight: 900;
 }
 
-.fa-brands.fa-microsoft, .fab.fa-microsoft {
-    color: #00a4ef; /* Microsoft blue */
+.fa-brands.fa-microsoft,
+.fab.fa-microsoft {
+    color: #00a4ef;
+    /* Microsoft blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-google, .fab.fa-google {
-    color: #4285f4; /* Google blue */
+.fa-brands.fa-google,
+.fab.fa-google {
+    color: #4285f4;
+    /* Google blue */
     font-weight: 400;
 }
 
 /* Modern Tech - Vibrant Colors */
-.fa-solid.fa-leaf, .fas.fa-leaf {
-    color: #16a34a; /* Modern green */
+.fa-solid.fa-leaf,
+.fas.fa-leaf {
+    color: #16a34a;
+    /* Modern green */
     font-weight: 900;
     filter: drop-shadow(0 0 4px rgba(22, 163, 74, 0.3));
 }
 
-.fa-solid.fa-shield, .fa-solid.fa-shield-alt, .fas.fa-shield-alt {
-    color: #dc2626; /* Red for security */
+.fa-solid.fa-shield,
+.fa-solid.fa-shield-alt,
+.fas.fa-shield-alt {
+    color: #dc2626;
+    /* Red for security */
     font-weight: 900;
     filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.2));
 }
 
-.fa-solid.fa-chart-line, .fas.fa-chart-line {
-    color: #f59e0b; /* Amber for analytics */
+.fa-solid.fa-chart-line,
+.fas.fa-chart-line {
+    color: #f59e0b;
+    /* Amber for analytics */
     font-weight: 900;
 }
 
 /* Latest Font Awesome Features */
-.fa-solid.fa-laptop-code, .fas.fa-laptop-code {
-    color: #8b5cf6; /* Purple for coding laptops */
+.fa-solid.fa-laptop-code,
+.fas.fa-laptop-code {
+    color: #8b5cf6;
+    /* Purple for coding laptops */
     font-weight: 900;
 }
 
-.fa-solid.fa-server, .fas.fa-server {
-    color: #374151; /* Gray for servers */
+.fa-solid.fa-server,
+.fas.fa-server {
+    color: #374151;
+    /* Gray for servers */
     font-weight: 900;
 }
 
-.fa-solid.fa-cloud, .fas.fa-cloud {
-    color: #6366f1; /* Indigo for cloud */
+.fa-solid.fa-cloud,
+.fas.fa-cloud {
+    color: #6366f1;
+    /* Indigo for cloud */
     font-weight: 900;
 }
 
-.fa-solid.fa-spinner, .fas.fa-spinner {
-    color: #06b6d4; /* Cyan for loading */
+.fa-solid.fa-spinner,
+.fas.fa-spinner {
+    color: #06b6d4;
+    /* Cyan for loading */
     font-weight: 900;
 }
 
 /* Certifications & Achievement Icons */
-.fa-solid.fa-certificate, .fas.fa-certificate {
-    color: #a855f7; /* Purple for certifications */
+.fa-solid.fa-certificate,
+.fas.fa-certificate {
+    color: #a855f7;
+    /* Purple for certifications */
     font-weight: 900;
 }
 
-.fa-solid.fa-trophy, .fas.fa-trophy {
-    color: #fbbf24; /* Gold for awards */
+.fa-solid.fa-trophy,
+.fas.fa-trophy {
+    color: #fbbf24;
+    /* Gold for awards */
     font-weight: 900;
     filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
 }
 
 /* Project & Demo Links */
-.fa-solid.fa-external-link-alt, .fa-solid.fa-external-link, .fas.fa-external-link {
-    color: #3b82f6; /* Blue for external links */
+.fa-solid.fa-external-link-alt,
+.fa-solid.fa-external-link,
+.fas.fa-external-link {
+    color: #3b82f6;
+    /* Blue for external links */
     font-weight: 900;
 }
 
-.fa-solid.fa-globe, .fas.fa-globe {
-    color: #10b981; /* Emerald for web/live demo */
+.fa-solid.fa-globe,
+.fas.fa-globe {
+    color: #10b981;
+    /* Emerald for web/live demo */
     font-weight: 900;
 }
 
-.fa-brands.fa-github, .fab.fa-github {
-    color: #181717; /* GitHub dark */
+.fa-brands.fa-github,
+.fab.fa-github {
+    color: #181717;
+    /* GitHub dark */
     font-weight: 400;
     transition: all 0.3s ease;
 }
 
 .fa-brands.fa-github:hover {
-    color: #ffffff; /* White on hover */
+    color: #ffffff;
+    /* White on hover */
     background: linear-gradient(135deg, #6b7280, #374151);
     -webkit-background-clip: text;
     background-clip: text;
@@ -2708,112 +3153,159 @@ html.dark .project-card a.text-accent:hover {
 }
 
 /* Resume Download */
-.fa-solid.fa-download, .fas.fa-download {
-    color: #059669; /* Green for download */
+.fa-solid.fa-download,
+.fas.fa-download {
+    color: #059669;
+    /* Green for download */
     font-weight: 900;
 }
 
-.fa-solid.fa-file-pdf, .fas.fa-file-pdf {
-    color: #ef4444; /* Red for PDF */
+.fa-solid.fa-file-pdf,
+.fas.fa-file-pdf {
+    color: #ef4444;
+    /* Red for PDF */
     font-weight: 900;
 }
 
 /* Theme Toggle - Perfect Mode Switching */
-.theme-toggle-nav i.fa-moon, .fas.fa-moon {
-    color: #fbbf24; /* Gold for moon */
+.theme-toggle-nav i.fa-moon,
+.fas.fa-moon {
+    color: #fbbf24;
+    /* Gold for moon */
     font-weight: 900;
     text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 }
+
 .fa-moon {
     font-family: "Font Awesome 6 Free";
 }
 
 html.dark .theme-toggle-nav i.fa-moon {
-    color: #fbbf24; /* Keep visible in dark mode */
+    color: #fbbf24;
+    /* Keep visible in dark mode */
 }
 
 .zone-toggle-nav i.fa-sun,
 .fa.fa-sun,
 .fas.fa-sun {
-    color: #f97316; /* Orange for sun */
+    color: #f97316;
+    /* Orange for sun */
     font-weight: 900;
     text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
 }
+
 .fa-sun {
     font-family: "Font Awesome 6 Free";
 }
 
-.fa-solid.fa-magic, .fas.fa-magic {
-    color: #a855f7; /* Purple for magic/settings */
+.fa-solid.fa-magic,
+.fas.fa-magic {
+    color: #a855f7;
+    /* Purple for magic/settings */
     font-weight: 900;
 }
 
 /* Chat & Communication */
-.fa-solid.fa-comment-dots, .fas.fa-comment-dots {
-    color: #3b82f6; /* Blue for chat */
+.fa-solid.fa-comment-dots,
+.fas.fa-comment-dots {
+    color: #3b82f6;
+    /* Blue for chat */
     font-weight: 900;
 }
 
-.fa-solid.fa-paper-plane, .fas.fa-paper-plane {
-    color: #10b981; /* Green for send */
+.fa-solid.fa-paper-plane,
+.fas.fa-paper-plane {
+    color: #10b981;
+    /* Green for send */
     font-weight: 900;
 }
 
-.fa-solid.fa-microphone, .fas.fa-microphone {
-    color: #ef4444; /* Red for microphone */
+.fa-solid.fa-microphone,
+.fas.fa-microphone {
+    color: #ef4444;
+    /* Red for microphone */
     font-weight: 900;
 }
 
-.fa-solid.fa-times, .fas.fa-times {
-    color: #6b7280; /* Gray for close */
+.fa-solid.fa-times,
+.fas.fa-times {
+    color: #6b7280;
+    /* Gray for close */
     font-weight: 900;
 }
 
 /* Keyframe animations for beautiful effects */
 @keyframes brainPulse {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.2) drop-shadow(0 0 8px rgba(139, 92, 246, 0.6)); }
+
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.2) drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+    }
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Contact Information Icons */
-.fa-solid.fa-envelope, .fas.fa-envelope {
-    color: #3b82f6; /* Blue for email */
+.fa-solid.fa-envelope,
+.fas.fa-envelope {
+    color: #3b82f6;
+    /* Blue for email */
     font-weight: 900;
 }
 
-.fa-brands.fa-whatsapp, .fab.fa-whatsapp {
-    color: #25d366; /* WhatsApp green */
+.fa-brands.fa-whatsapp,
+.fab.fa-whatsapp {
+    color: #25d366;
+    /* WhatsApp green */
     font-weight: 400;
 }
 
-.fa-solid.fa-phone, .fa-solid.fa-mobile-alt, .fas.fa-mobile-alt {
-    color: #6366f1; /* Indigo for phone */
+.fa-solid.fa-phone,
+.fa-solid.fa-mobile-alt,
+.fas.fa-mobile-alt {
+    color: #6366f1;
+    /* Indigo for phone */
     font-weight: 900;
 }
 
-.fa-solid.fa-map-marker-alt, .fas.fa-map-marker-alt {
-    color: #ef4444; /* Red for location */
+.fa-solid.fa-map-marker-alt,
+.fas.fa-map-marker-alt {
+    color: #ef4444;
+    /* Red for location */
     font-weight: 900;
 }
 
-.fa-solid.fa-globe, .fas.fa-globe {
-    color: #06b6d4; /* Cyan for web links */
+.fa-solid.fa-globe,
+.fas.fa-globe {
+    color: #06b6d4;
+    /* Cyan for web links */
     font-weight: 900;
 }
 
-.fa-solid.fa-coffee, .fas.fa-coffee {
-    color: #92400e; /* Brown for coffee */
+.fa-solid.fa-coffee,
+.fas.fa-coffee {
+    color: #92400e;
+    /* Brown for coffee */
     font-weight: 900;
 }
 
 /* Tech Stack Specific - Latest App Icons */
-.fa-brands.fa-swift, .fab.fa-swift {
-    color: #fa7343; /* Swift orange */
+.fa-brands.fa-swift,
+.fab.fa-swift {
+    color: #fa7343;
+    /* Swift orange */
     font-weight: 400;
 }
 
@@ -2824,51 +3316,68 @@ html.dark .theme-toggle-nav i.fa-moon {
     -webkit-text-fill-color: transparent;
 }
 
-.fa-brands.fa-python, .fab.fa-python {
-    color: #3776ab; /* Python blue */
+.fa-brands.fa-python,
+.fab.fa-python {
+    color: #3776ab;
+    /* Python blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-c-plus-plus, .fab.fa-c-plus-plus {
-    color: #00599c; /* C++ blue */
+.fa-brands.fa-c-plus-plus,
+.fab.fa-c-plus-plus {
+    color: #00599c;
+    /* C++ blue */
     font-weight: 400;
 }
 
-.fa-brands.fa-c, .fab.fa-c {
-    color: #a8b9cc; /* C language blue-gray */
+.fa-brands.fa-c,
+.fab.fa-c {
+    color: #a8b9cc;
+    /* C language blue-gray */
     font-weight: 400;
 }
 
 /* Advanced Tech Icons */
-.fa-solid.fa-layer-group, .fas.fa-layer-group {
-    color: #f59e0b; /* Amber for layers/Deep Learning */
+.fa-solid.fa-layer-group,
+.fas.fa-layer-group {
+    color: #f59e0b;
+    /* Amber for layers/Deep Learning */
     font-weight: 900;
 }
 
-.fa-solid.fa-brain-circuit, .fas.fa-brain-circuit {
-    color: #8b5cf6; /* Purple for neural networks */
+.fa-solid.fa-brain-circuit,
+.fas.fa-brain-circuit {
+    color: #8b5cf6;
+    /* Purple for neural networks */
     font-weight: 900;
     animation: brainPulse 3s infinite;
 }
 
-.fa-solid.fa-chart-simple, .fas.fa-chart-simple {
-    color: #059669; /* Green for analytics */
+.fa-solid.fa-chart-simple,
+.fas.fa-chart-simple {
+    color: #059669;
+    /* Green for analytics */
     font-weight: 900;
 }
 
-.fa-brands.fa-figma, .fab.fa-figma {
-    color: #f24e1e; /* Figma orange */
+.fa-brands.fa-figma,
+.fab.fa-figma {
+    color: #f24e1e;
+    /* Figma orange */
     font-weight: 400;
 }
 
-.fa-brands.fa-vscode, .fab.fa-vscode {
-    color: #007acc; /* VS Code blue */
+.fa-brands.fa-vscode,
+.fab.fa-vscode {
+    color: #007acc;
+    /* VS Code blue */
     font-weight: 400;
 }
 
 /* Experience Checkmarks - Updated */
 .timeline-item svg {
-    color: #10b981; /* Emerald for success/checkmarks */
+    color: #10b981;
+    /* Emerald for success/checkmarks */
     background: rgba(16, 185, 129, 0.1);
     border-radius: 50%;
     padding: 4px;
@@ -2879,85 +3388,110 @@ html.dark .timeline-item svg {
 }
 
 /* Social Media Icons - Updated */
-.fa-brands.fa-facebook, .fa-brands.fa-facebook-f, .fab.fa-facebook-f {
+.fa-brands.fa-facebook,
+.fa-brands.fa-facebook-f,
+.fab.fa-facebook-f {
     color: #1877f2;
     font-weight: 400;
 }
 
-.fa-brands.fa-instagram, .fab.fa-instagram {
+.fa-brands.fa-instagram,
+.fab.fa-instagram {
     color: #e4405f;
     font-weight: 400;
 }
 
-.fa-brands.fa-linkedin, .fa-brands.fa-linkedin-in, .fab.fa-linkedin-in {
+.fa-brands.fa-linkedin,
+.fa-brands.fa-linkedin-in,
+.fab.fa-linkedin-in {
     color: #0077b5;
     font-weight: 400;
 }
 
-.fa-brands.fa-github, .fab.fa-github {
+.fa-brands.fa-github,
+.fab.fa-github {
     color: #181717;
     font-weight: 400;
 }
 
-.fa-brands.fa-youtube, .fab.fa-youtube {
+.fa-brands.fa-youtube,
+.fab.fa-youtube {
     color: #ff0000;
     font-weight: 400;
 }
 
-.fa-brands.fa-x-twitter, .fa-brands.fa-twitter, .fab.fa-twitter, .fab.fa-x-twitter {
+.fa-brands.fa-x-twitter,
+.fa-brands.fa-twitter,
+.fab.fa-twitter,
+.fab.fa-x-twitter {
     color: #000000;
     font-weight: 400;
 }
 
-.fa-solid.fa-globe, .fas.fa-globe {
+.fa-solid.fa-globe,
+.fas.fa-globe {
     color: #0077b5;
     font-weight: 900;
 }
 
-.fa-solid.fa-code, .fas.fa-code {
+.fa-solid.fa-code,
+.fas.fa-code {
     color: #61dafb;
     font-weight: 900;
 }
 
 /* PDF and File Icons */
-.fa-solid.fa-file-pdf, .fas.fa-file-pdf {
+.fa-solid.fa-file-pdf,
+.fas.fa-file-pdf {
     color: #dc2626;
     font-weight: 900;
 }
 
 /* Envelope and Contact Icons */
-.fa-solid.fa-envelope, .fas.fa-envelope {
+.fa-solid.fa-envelope,
+.fas.fa-envelope {
     color: #6b7280;
     font-weight: 900;
 }
 
-.fa-brands.fa-whatsapp, .fab.fa-whatsapp {
+.fa-brands.fa-whatsapp,
+.fab.fa-whatsapp {
     color: #25d366;
     font-weight: 400;
 }
 
-.fa-solid.fa-mobile-screen-button, .fa-solid.fa-mobile, .fa-solid.fa-mobile-alt, .fas.fa-mobile-alt {
+.fa-solid.fa-mobile-screen-button,
+.fa-solid.fa-mobile,
+.fa-solid.fa-mobile-alt,
+.fas.fa-mobile-alt {
     color: #6b7280;
     font-weight: 900;
 }
 
-.fa-solid.fa-location-dot, .fa-solid.fa-map-marker-alt, .fas.fa-map-marker-alt {
+.fa-solid.fa-location-dot,
+.fa-solid.fa-map-marker-alt,
+.fas.fa-map-marker-alt {
     color: #ef4444;
     font-weight: 900;
 }
 
 /* Chatbot Icons */
-.fa-solid.fa-comments, .fa-solid.fa-comment-dots, .fas.fa-comment-dots {
+.fa-solid.fa-comments,
+.fa-solid.fa-comment-dots,
+.fas.fa-comment-dots {
     color: #ffffff;
     font-weight: 900;
 }
 
-.fa-solid.fa-xmark, .fa-solid.fa-times, .fas.fa-times {
+.fa-solid.fa-xmark,
+.fa-solid.fa-times,
+.fas.fa-times {
     color: #ffffff;
     font-weight: 900;
 }
 
-.fa-solid.fa-microphone, .fas.fa-microphone {
+.fa-solid.fa-microphone,
+.fas.fa-microphone {
     color: #ffffff;
     font-weight: 900;
 }
@@ -2968,12 +3502,14 @@ html.dark .timeline-item svg {
     font-weight: 900;
 }
 
-.fa-solid.fa-cpp, .fa-solid.fa-c-plus-plus {
+.fa-solid.fa-cpp,
+.fa-solid.fa-c-plus-plus {
     color: #00599c;
     font-weight: 900;
 }
 
-.fa-brands.fa-swift, .fab.fa-swift {
+.fa-brands.fa-swift,
+.fab.fa-swift {
     color: #fa7343;
     font-weight: 400;
 }
@@ -3046,8 +3582,13 @@ html.dark .timeline-item svg {
 }
 
 /* Universial Fallback */
-.fa, .fas, .far, .fab,
-.fa-solid, .fa-regular, .fa-brands {
+.fa,
+.fas,
+.far,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
     font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif;
     font-style: normal;
     -moz-osx-font-smoothing: grayscale;
@@ -3059,43 +3600,64 @@ html.dark .timeline-item svg {
 }
 
 /* Dark Mode Icon Visibility Fixes - Enhanced Social Media Branding */
-html.dark .fa-brands.fa-facebook, html.dark .fab.fa-facebook,
-html.dark .fa-brands.fa-facebook-f, html.dark .fab.fa-facebook-f {
-    color: #4267b2 !important; /* Lighter Facebook blue for dark mode */
+html.dark .fa-brands.fa-facebook,
+html.dark .fab.fa-facebook,
+html.dark .fa-brands.fa-facebook-f,
+html.dark .fab.fa-facebook-f {
+    color: #4267b2 !important;
+    /* Lighter Facebook blue for dark mode */
 }
 
-html.dark .fa-brands.fa-instagram, html.dark .fab.fa-instagram {
-    color: #e95950 !important; /* Brighter Instagram pink for dark mode */
+html.dark .fa-brands.fa-instagram,
+html.dark .fab.fa-instagram {
+    color: #e95950 !important;
+    /* Brighter Instagram pink for dark mode */
 }
 
-html.dark .fa-brands.fa-linkedin, html.dark .fab.fa-linkedin,
-html.dark .fa-brands.fa-linkedin-in, html.dark .fab.fa-linkedin-in {
-    color: #0a66c2 !important; /* LinkedIn blue remains vibrant */
+html.dark .fa-brands.fa-linkedin,
+html.dark .fab.fa-linkedin,
+html.dark .fa-brands.fa-linkedin-in,
+html.dark .fab.fa-linkedin-in {
+    color: #0a66c2 !important;
+    /* LinkedIn blue remains vibrant */
 }
 
-html.dark .fa-brands.fa-github, html.dark .fab.fa-github {
-    color: #f0f0f0 !important; /* Light grey for GitHub - clear visibility on dark backgrounds */
+html.dark .fa-brands.fa-github,
+html.dark .fab.fa-github {
+    color: #f0f0f0 !important;
+    /* Light grey for GitHub - clear visibility on dark backgrounds */
 }
 
-html.dark .fa-brands.fa-youtube, html.dark .fab.fa-youtube {
-    color: #ff0000 !important; /* YouTube red stays vibrant */
+html.dark .fa-brands.fa-youtube,
+html.dark .fab.fa-youtube {
+    color: #ff0000 !important;
+    /* YouTube red stays vibrant */
 }
 
-html.dark .fa-brands.fa-x-twitter, html.dark .fa-brands.fa-twitter,
-html.dark .fab.fa-twitter, html.dark .fab.fa-x-twitter {
-    color: #ffffff !important; /* White for X/Twitter - maximum visibility on dark backgrounds */
+html.dark .fa-brands.fa-x-twitter,
+html.dark .fa-brands.fa-twitter,
+html.dark .fab.fa-twitter,
+html.dark .fab.fa-x-twitter {
+    color: #ffffff !important;
+    /* White for X/Twitter - maximum visibility on dark backgrounds */
 }
 
-html.dark .fa-solid.fa-globe, html.dark .fas.fa-globe {
-    color: #5ac8fa !important; /* Bright cyan for web links */
+html.dark .fa-solid.fa-globe,
+html.dark .fas.fa-globe {
+    color: #5ac8fa !important;
+    /* Bright cyan for web links */
 }
 
-html.dark .fa-solid.fa-code, html.dark .fas.fa-code {
-    color: #61dafb !important; /* Bright React blue for code links */
+html.dark .fa-solid.fa-code,
+html.dark .fas.fa-code {
+    color: #61dafb !important;
+    /* Bright React blue for code links */
 }
 
-html.dark .fa-brands.fa-whatsapp, html.dark .fab.fa-whatsapp {
-    color: #25d366 !important; /* WhatsApp green stays bright */
+html.dark .fa-brands.fa-whatsapp,
+html.dark .fab.fa-whatsapp {
+    color: #25d366 !important;
+    /* WhatsApp green stays bright */
 }
 
 /* CONTACT SECTION FOLLOW ME ICONS - Dark Mode */
@@ -3103,91 +3665,107 @@ html.dark .contact-social-links .fa-brands.fa-facebook,
 html.dark .contact-social-links .fa-brands.fa-facebook-f,
 html.dark .contact-social-links a:hover .fa-brands.fa-facebook,
 html.dark .contact-social-links a:hover .fa-brands.fa-facebook-f {
-    color: #1877f2; /* Keep Facebook blue */
+    color: #1877f2 !important;
+    /* Keep Facebook blue */
 }
 
 html.dark .contact-social-links .fa-brands.fa-instagram,
 html.dark .contact-social-links a:hover .fa-brands.fa-instagram {
-    color: #e4405f; /* Keep Instagram pink */
+    color: #e4405f !important;
+    /* Keep Instagram pink */
 }
 
 html.dark .contact-social-links .fa-brands.fa-linkedin,
 html.dark .contact-social-links .fa-brands.fa-linkedin-in,
 html.dark .contact-social-links a:hover .fa-brands.fa-linkedin,
 html.dark .contact-social-links a:hover .fa-brands.fa-linkedin-in {
-    color: #0077b5; /* Keep LinkedIn blue */
+    color: #0077b5 !important;
+    /* Keep LinkedIn blue */
 }
 
 html.dark .contact-social-links .fa-brands.fa-github,
 html.dark .contact-social-links a:hover .fa-brands.fa-github {
-    color: #f0f0f0; /* GitHub light grey */
+    color: #bfc3c9 !important;
+    /* GitHub light mark for contrast */
 }
 
 html.dark .contact-social-links .fa-brands.fa-youtube,
 html.dark .contact-social-links a:hover .fa-brands.fa-youtube {
-    color: #ff0000; /* Keep YouTube red */
+    color: #ff0000 !important;
+    /* Keep YouTube red */
 }
 
 html.dark .contact-social-links .fa-brands.fa-x-twitter,
 html.dark .contact-social-links .fa-brands.fa-twitter,
 html.dark .contact-social-links a:hover .fa-brands.fa-x-twitter,
 html.dark .contact-social-links a:hover .fa-brands.fa-twitter {
-    color: #ffffff; /* Twitter white */
+    color: #1da1f2 !important;
+    /* Twitter blue */
 }
 
 html.dark .contact-social-links .fa-solid.fa-globe,
 html.dark .contact-social-links a:hover .fa-solid.fa-globe {
-    color: #0077b5; /* Globe blue */
+    color: #0077b5 !important;
+    /* Globe blue */
 }
 
 html.dark .contact-social-links .fa-solid.fa-code,
 html.dark .contact-social-links a:hover .fa-solid.fa-code {
-    color: #61dafb; /* Code cyan */
+    color: #61dafb !important;
+    /* Code cyan */
 }
 
 /* FOOTER SOCIAL ICONS - Dark Mode - Keep Original Brand Colors */
 html.dark footer i.fa-brands.fa-facebook,
 html.dark footer i.fa-brands.fa-facebook-f,
 html.dark footer a[href*="facebook.com"] i.fa-brands {
-    color: #0a84ff !important; /* Bright Facebook blue */
+    color: #0a84ff !important;
+    /* Bright Facebook blue */
 }
 
 html.dark footer i.fa-brands.fa-instagram,
 html.dark footer a[href*="instagram.com"] i.fa-brands {
-    color: #ff375f !important; /* Vibrant Instagram pink */
+    color: #ff375f !important;
+    /* Vibrant Instagram pink */
 }
 
 html.dark footer i.fa-brands.fa-linkedin,
 html.dark footer i.fa-brands.fa-linkedin-in,
 html.dark footer a[href*="linkedin.com"] i.fa-brands {
-    color: #0a66c2 !important; /* LinkedIn blue */
+    color: #0a66c2 !important;
+    /* LinkedIn blue */
 }
 
 html.dark footer i.fa-brands.fa-github,
 html.dark footer a[href*="github.com"] i.fa-brands {
-    color: #f5f5f7 !important; /* Light GitHub mark */
+    color: #f5f5f7 !important;
+    /* Light GitHub mark */
 }
 
 html.dark footer i.fa-brands.fa-youtube,
 html.dark footer a[href*="youtube.com"] i.fa-brands {
-    color: #ff0000 !important; /* Original YouTube Red */
+    color: #ff0000 !important;
+    /* Original YouTube Red */
 }
 
 html.dark footer i.fa-brands.fa-x-twitter,
 html.dark footer i.fa-brands.fa-twitter,
 html.dark footer a[href*="x.com"] i.fa-brands,
 html.dark footer a[href*="twitter.com"] i.fa-brands {
-    color: #1da1f2 !important; /* Twitter blue */
+    color: #1da1f2 !important;
+    /* Twitter blue */
 }
 
 html.dark footer i.fa-solid.fa-globe,
 html.dark footer a[href*="wixsite.com"] .fa-solid.fa-globe {
-    color: #5ac8fa !important; /* Aqua blue accent */
+    color: #5ac8fa !important;
+    /* Aqua blue accent */
 }
 
 html.dark footer i.fa-solid.fa-code,
 html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
-    color: #61dafb !important; /* React Blue for LeetCode */
+    color: #61dafb !important;
+    /* React Blue for LeetCode */
 }
 
 
@@ -3199,19 +3777,24 @@ html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
     font-weight: 700;
     letter-spacing: -0.025em;
 }
+
 .education-card h4 {
     color: var(--text-primary);
     font-weight: 600;
 }
+
 .education-card p,
 .education-card ul li {
     color: var(--text-secondary);
     line-height: 1.6;
 }
+
 .education-card .date-badge {
     color: var(--text-secondary);
     background-color: var(--bg-secondary);
 }
+
+/* Education status badge styling centralized in fixes-2025.css */
 
 /* Updated Card Design - Latest Technology */
 .education-card {
@@ -3219,12 +3802,13 @@ html.dark footer a[href*="leetcode.com"] .fa-solid.fa-code {
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .education-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* For Dark Mode Overrides */
@@ -3232,15 +3816,18 @@ html.dark .education-card {
     background: var(--bg-primary);
     border-color: var(--border-color);
 }
+
 html.dark .education-card h3,
 html.dark .education-card h4,
 html.dark .education-card h5 {
     color: var(--text-primary);
 }
+
 html.dark .education-card p,
 html.dark .education-card ul li {
     color: var(--text-secondary);
 }
+
 html.dark .education-card .date-badge {
     color: var(--text-secondary);
     background-color: rgba(255, 255, 255, 0.08);
@@ -3248,11 +3835,14 @@ html.dark .education-card .date-badge {
 
 /* Overlay menu */
 .dark .overlay-menu {
-    background: hsla(240, 8%, 10%, 0.92); /* Use body color with opacity */
+    background: hsla(240, 8%, 10%, 0.92);
+    /* Use body color with opacity */
 }
+
 .dark .overlay-nav-link {
     color: var(--nav-text);
 }
+
 .dark .overlay-nav-link:hover {
     color: var(--nav-hover);
 }
@@ -3261,15 +3851,19 @@ html.dark .education-card .date-badge {
 .dark footer {
     background: linear-gradient(180deg, #000000 0%, #0c0c0f 100%);
     color: #f5f5f7;
-    border-top-color: rgba(255,255,255,0.08);
+    border-top-color: rgba(255, 255, 255, 0.08);
 }
+
 .dark footer a {
     color: #d2d2d7;
 }
+
 .dark footer a:hover {
     color: #5ac8fa;
 }
-.dark footer .fab, .dark footer .fas {
+
+.dark footer .fab,
+.dark footer .fas {
     color: currentColor;
 }
 
@@ -3279,10 +3873,19 @@ html.dark .education-card .date-badge {
 }
 
 @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
+
 .dark #chat-widget,
 .dark #chat-toggle {
     background-color: var(--bg-primary);
@@ -3290,26 +3893,33 @@ html.dark .education-card .date-badge {
     border: 1px solid var(--border-color);
     box-shadow: var(--project-card-shadow);
 }
+
 .dark #chat-widget .bg-blue-500 {
     background-color: var(--text-accent);
 }
+
 .dark #chat-widget .bg-gray-200 {
     background-color: rgba(255, 255, 255, 0.12);
     color: var(--text-primary);
 }
+
 .dark #chat-widget .bg-white {
     background-color: var(--bg-primary);
     color: var(--text-primary);
 }
+
 .dark .chat-header h3 {
     color: var(--text-primary);
 }
+
 .dark .chat-header p {
     color: var(--text-secondary);
 }
+
 .dark #chat-messages {
     background-color: var(--bg-secondary);
 }
+
 .dark .message-bubble.user {
     background-color: rgba(255, 255, 255, 0.12);
     color: var(--text-primary);
@@ -3321,6 +3931,7 @@ html.dark .education-card .date-badge {
     color: var(--text-primary);
     border-color: var(--border-color);
 }
+
 .dark .contact-input:focus {
     border-color: #2997ff;
     box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.3);
@@ -3338,19 +3949,23 @@ html.dark .education-card .date-badge {
     color: var(--color-white);
     font-weight: 600;
 }
+
 .dark .button-primary:hover {
     background-color: #66b5ff;
 }
+
 .dark .button-secondary {
     background-color: transparent;
     color: #2997ff;
     border-color: #3a3a3c;
 }
+
 .dark .button-secondary:hover {
     background-color: rgba(41, 151, 255, 0.15);
     color: #66b5ff;
     border-color: #2997ff;
 }
+
 #chatbot-toggle {
     position: fixed !important;
     bottom: clamp(20px, 4vh, 48px) !important;
@@ -3371,10 +3986,567 @@ html.dark .education-card .date-badge {
         bottom: clamp(16px, 6vw, 32px) !important;
         right: clamp(16px, 6vw, 32px) !important;
     }
+
     #chatbot-widget {
         bottom: calc(clamp(16px, 6vw, 32px) + 72px) !important;
         right: clamp(12px, 4vw, 24px) !important;
         left: clamp(12px, 4vw, 24px) !important;
         width: auto !important;
     }
+}
+
+/* ═══════════════════════════════════════════════════════════
+     NEW SOCIAL FOOTER STYLES
+     ═══════════════════════════════════════════════════════════ */
+
+:root {
+    --bg-footer-social: #f8f8ff;
+    --x-color: #0F1419;
+    --facebook-color: #1877f2;
+    --github-color: #24292E;
+    --instagram-color: #e4405f;
+    --linkedin-color: #0177B5;
+    --youtube-color: #FF0000;
+    --wix-color: #0C6FD5;
+    /* Wix Blue */
+    --leetcode-color: #FFA116;
+}
+
+/* Scoped to wrapper to avoid breaking body */
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0 auto;
+    justify-content: center;
+    /* Center the icons */
+    padding: 1rem 0;
+    /* Add some padding */
+}
+
+.wrapper a {
+    text-decoration: none;
+    /* Remove underline from links */
+    color: inherit;
+}
+
+.wrapper .icon {
+    position: relative;
+    border-radius: 50%;
+    width: 3.125rem;
+    height: 3.125rem;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    background: #fff;
+    /* Ensure icons have background */
+}
+
+/* Dark mode support for icons */
+html.dark .wrapper .icon {
+    background: #2c2c2e;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+.wrapper .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 0.875rem;
+    background: #fff;
+    color: #000;
+    /* Fixed text color for tooltip */
+    padding: 5px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: #fff;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.wrapper .icon:hover span,
+.wrapper .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* Default Colorful Icons */
+.wrapper .facebook {
+    color: var(--facebook-color);
+}
+
+.wrapper .x {
+    color: var(--x-color);
+}
+
+.wrapper .github {
+    color: var(--github-color);
+}
+
+.wrapper .instagram {
+    color: var(--instagram-color);
+}
+
+.wrapper .linkedin {
+    color: var(--linkedin-color);
+}
+
+.wrapper .youtube {
+    color: var(--youtube-color);
+}
+
+.wrapper .leetcode {
+    color: var(--leetcode-color);
+}
+
+/* Hover effects - keep background change but ensure text is white */
+.wrapper .facebook:hover,
+.wrapper .facebook:hover .tooltip,
+.wrapper .facebook:hover .tooltip::before {
+    background: var(--facebook-color);
+    color: #fff;
+}
+
+.wrapper .x:hover,
+.wrapper .x:hover .tooltip,
+.wrapper .x:hover .tooltip::before {
+    background: var(--x-color);
+    color: #fff;
+}
+
+.wrapper .github:hover,
+.wrapper .github:hover .tooltip,
+.wrapper .github:hover .tooltip::before {
+    background: var(--github-color);
+    color: #fff;
+}
+
+.wrapper .instagram:hover,
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before {
+    background: var(--instagram-color);
+    color: #fff;
+}
+
+.wrapper .linkedin:hover,
+.wrapper .linkedin:hover .tooltip,
+.wrapper .linkedin:hover .tooltip::before {
+    background: var(--linkedin-color);
+    color: #fff;
+}
+
+.wrapper .youtube:hover,
+.wrapper .youtube:hover .tooltip,
+.wrapper .youtube:hover .tooltip::before {
+    background: var(--youtube-color);
+    color: #fff;
+}
+
+.wrapper .leetcode:hover,
+.wrapper .leetcode:hover .tooltip,
+.wrapper .leetcode:hover .tooltip::before {
+    background: var(--leetcode-color);
+    color: #fff;
+}
+
+/* Fix Hero Text Visibility */
+#home h2.text-reveal {
+    color: var(--text-primary);
+    /* Ensure it uses the primary text color which adapts to theme */
+}
+
+/* Apple Event Style Button Override - Theme Aware */
+.btn.btn-secondary.btn-beam {
+    background-color: #0071e3 !important;
+    color: #ffffff !important;
+    border-radius: 980px;
+    padding: 12px 32px;
+    font-weight: 500;
+    font-size: 17px;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.btn.btn-secondary.btn-beam:hover {
+    background-color: #0077ed !important;
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+    color: #ffffff !important;
+}
+
+/* Ensure button text is white in dark mode */
+html.dark .btn.btn-secondary.btn-beam {
+    color: #ffffff !important;
+}
+
+/* Theme Aware Hero Text - CRITICAL VISIBILITY FIX */
+#home h2.text-reveal,
+#home h1.text-reveal {
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+}
+
+/* Dark Mode Specifics for Hero */
+html.dark #home h2.text-reveal,
+html.dark #home h1.text-reveal {
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+html.dark #home p {
+    color: #a1a1a6 !important;
+    font-size: 21px;
+    font-weight: 400;
+}
+
+/* Light Mode Specifics for Hero */
+html:not(.dark) #home h2.text-reveal,
+html:not(.dark) #home h1.text-reveal {
+    color: #000000 !important;
+    text-shadow: none;
+}
+
+html:not(.dark) #home p {
+    color: #1d1d1f;
+    font-size: 21px;
+    font-weight: 400;
+}
+
+/* Ensure Background is correct and theme aware */
+html.dark body {
+    background: radial-gradient(circle at 50% 0%, #1b2744 0%, #020518 100%) !important;
+    background-attachment: fixed;
+}
+
+html:not(.dark) body {
+    background: #ffffff;
+}
+
+/* Search Overlay Styles - Apple Inspired Theme Aware */
+#search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    z-index: 10000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+#search-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+html.dark #search-overlay {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+html:not(.dark) #search-overlay {
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.search-container {
+    width: 90%;
+    max-width: 680px;
+    position: relative;
+}
+
+.search-input-wrapper {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+#search-input {
+    width: 100%;
+    padding: 16px 60px 16px 56px;
+    font-size: 17px;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-primary);
+    outline: none;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    transition: border-color 0.2s ease;
+}
+
+#search-input:focus {
+    border-bottom-color: var(--text-accent);
+}
+
+html.dark #search-input {
+    color: #f5f5f7;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+html:not(.dark) #search-input {
+    color: #1d1d1f;
+    border-bottom-color: #d2d2d7;
+}
+
+#search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+#search-close {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+    border-radius: 50%;
+}
+
+#search-close:hover {
+    background: rgba(128, 128, 128, 0.1);
+    color: var(--text-primary);
+}
+
+.search-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+html.dark .search-section-title {
+    color: #86868b;
+}
+
+html:not(.dark) .search-section-title {
+    color: #6e6e73;
+}
+
+#search-results {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding: 0;
+}
+
+#search-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+#search-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#search-results::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.search-result-item {
+    padding: 12px 16px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.search-result-item:hover {
+    background: var(--bg-secondary);
+}
+
+html.dark .search-result-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+html:not(.dark) .search-result-item:hover {
+    background: #f5f5f7;
+}
+
+.search-result-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.search-result-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-title {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+html.dark .search-result-title {
+    color: #f5f5f7;
+}
+
+html:not(.dark) .search-result-title {
+    color: #1d1d1f;
+}
+
+.search-result-title .highlight {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.search-result-section {
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+html.dark .search-result-section {
+    color: #86868b;
+}
+
+html:not(.dark) .search-result-section {
+    color: #6e6e73;
+}
+
+.search-suggestions {
+    margin-top: 24px;
+}
+
+.search-no-results {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-secondary);
+}
+
+.search-no-results-icon {
+    font-size: 48px;
+    opacity: 0.3;
+    margin-bottom: 16px;
+}
+
+.search-no-results-text {
+    font-size: 17px;
+    font-weight: 400;
+}
+
+/* Keyboard shortcut hint */
+.search-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.search-hint kbd {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    font-family: inherit;
+    font-size: 12px;
+}
+
+/* Animation for search results */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-result-item {
+    animation: slideInUp 0.2s ease forwards;
+}
+
+.search-result-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.search-result-item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.search-result-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.search-result-item:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.search-result-item:nth-child(5) {
+    animation-delay: 0.25s;
 }
