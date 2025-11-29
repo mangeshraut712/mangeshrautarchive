@@ -7,10 +7,10 @@ from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from datetime import datetime
-from fastapi.responses import JSONResponse
+import asyncio
 
 # Initialize FastAPI
 app = FastAPI()
@@ -132,6 +132,7 @@ class ChatRequest(BaseModel):
     message: str
     messages: Optional[List[Dict[str, str]]] = []
     context: Optional[Dict[str, Any]] = {}
+    stream: bool = False
 
 # Helper Functions
 def get_cache_key(message: str, type_: str) -> str:
@@ -243,6 +244,47 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
     
     return None
 
+async def call_openrouter_stream(model: str, messages: List[Dict]):
+    if not OPENROUTER_API_KEY:
+        yield json.dumps({"error": "OpenRouter API key not configured"}) + "\n"
+        return
+
+    async with httpx.AsyncClient() as client:
+        try:
+            async with client.stream(
+                "POST",
+                API_URL,
+                headers={
+                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": SITE_URL,
+                    "X-Title": SITE_TITLE
+                },
+                json={
+                    "model": model,
+                    "messages": messages,
+                    "temperature": 0.7,
+                    "max_tokens": 1000,
+                    "stream": True
+                },
+                timeout=30.0
+            ) as response:
+                response.raise_for_status()
+                async for line in response.aiter_lines():
+                    if line.startswith("data: "):
+                        data = line[6:]
+                        if data == "[DONE]":
+                            break
+                        try:
+                            json_data = json.loads(data)
+                            content = json_data["choices"][0]["delta"].get("content", "")
+                            if content:
+                                yield json.dumps({"chunk": content}) + "\n"
+                        except:
+                            continue
+        except Exception as e:
+            yield json.dumps({"error": str(e)}) + "\n"
+
 async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
     if not OPENROUTER_API_KEY:
         raise Exception("OpenRouter API key not configured")
@@ -300,12 +342,13 @@ async def chat_endpoint(request: ChatRequest):
         category = get_category(type_)
         wants_linkedin = is_linkedin_query(message)
         
-        # Cache Check
-        cache_key = get_cache_key(message, type_)
-        cached = get_cached_response(cache_key)
-        if cached:
-            cached["cached"] = True
-            return cached
+        # Cache Check (Only for non-streaming)
+        if not request.stream:
+            cache_key = get_cache_key(message, type_)
+            cached = get_cached_response(cache_key)
+            if cached:
+                cached["cached"] = True
+                return cached
             
         # Joke Command
         if 'joke' in message.lower() or 'funny' in message.lower():
@@ -339,7 +382,14 @@ async def chat_endpoint(request: ChatRequest):
             
         conversation = [system_message] + (request.messages or []) + [user_message]
         
-        # Call OpenRouter
+        # Streaming Response
+        if request.stream:
+            return StreamingResponse(
+                call_openrouter_stream(DEFAULT_MODEL, conversation),
+                media_type="application/x-ndjson"
+            )
+        
+        # Standard Response (Fallback or explicit non-stream)
         # Try models in sequence
         last_error = None
         for model_info in MODELS:
@@ -385,7 +435,6 @@ async def chat_endpoint(request: ChatRequest):
             "runtime": "0ms"
         }
 
-# Health Check & Status
 @app.get("/api/health")
 async def health_check():
     """Comprehensive health check for the API."""
@@ -413,7 +462,6 @@ async def status_endpoint():
     return await health_check()
 
 # Serve Static Files (Frontend) for Local Development
-# Note: On Vercel, static files are handled by the platform, this is for local uvicorn
 if os.getenv("VERCEL_ENV") != "production":
     try:
         app.mount("/assets", StaticFiles(directory="src/assets"), name="assets")
@@ -425,7 +473,7 @@ if os.getenv("VERCEL_ENV") != "production":
     except Exception as e:
         print(f"⚠️ Static file mounting skipped (likely on Vercel): {e}")
 
-# Root endpoint for API (if accessed directly on Vercel)
+# Root endpoint for API
 @app.get("/api")
 async def api_root():
     return {

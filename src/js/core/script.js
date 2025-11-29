@@ -288,18 +288,92 @@ class ChatUI {
                 this._showTypingIndicator();
             }
 
-            const response = await chatAssistant.ask(text, { context });
+            let assistantMessageElement = null;
+            let currentContent = '';
+
+            const response = await chatAssistant.ask(text, {
+                context,
+                onChunk: (chunk) => {
+                    // Hide typing indicator on first chunk
+                    if (features.enableTypingIndicator) {
+                        this._hideTypingIndicator();
+                    }
+
+                    // Create message element if not exists
+                    if (!assistantMessageElement) {
+                        assistantMessageElement = this._createMessageElement('', 'assistant', Date.now());
+                        this._addMessageElement(assistantMessageElement);
+                    }
+
+                    // Append content
+                    currentContent += chunk;
+                    const contentDiv = assistantMessageElement.querySelector('.message-content');
+                    if (contentDiv) {
+                        // Simple text update for streaming (markdown rendered later)
+                        contentDiv.textContent = currentContent;
+                    }
+                    this._scrollToBottom();
+                }
+            });
 
             if (features.enableTypingIndicator) {
                 this._hideTypingIndicator();
             }
 
+            // Final update with full markdown rendering and metadata
             const { content, metadata } = this._formatAssistantResponse(response);
-            const assistantMessage = this._createMessageElement(content, 'assistant', Date.now(), metadata);
-            this._addMessageElement(assistantMessage);
+
+            if (assistantMessageElement) {
+                // Update existing element
+                const contentDiv = assistantMessageElement.querySelector('.message-content');
+                if (contentDiv) {
+                    if (content?.html && features.enableMarkdownRendering) {
+                        const safeHtml = htmlSanitizer ? htmlSanitizer.sanitize(content.html) : content.html;
+                        contentDiv.innerHTML = safeHtml;
+                        if (syntaxHighlighter?.highlightElement) {
+                            contentDiv.querySelectorAll('pre code').forEach((block) => {
+                                syntaxHighlighter.highlightElement(block);
+                            });
+                        }
+                    } else {
+                        contentDiv.textContent = content?.text || content;
+                    }
+                }
+
+                // Add metadata
+                const metaChips = [];
+                if (metadata.model) metaChips.push(this._createMetaChip('model-info', metadata.model));
+                if (metadata.confidence) metaChips.push(this._createMetaChip('response-confidence', `Confidence: ${Math.round(metadata.confidence * 100)}%`));
+
+                if (metaChips.length) {
+                    let metaDiv = assistantMessageElement.querySelector('.message-metadata');
+                    if (!metaDiv) {
+                        metaDiv = document.createElement('div');
+                        metaDiv.className = 'message-metadata';
+                        assistantMessageElement.appendChild(metaDiv);
+                    }
+                    metaChips.forEach(chip => metaDiv.appendChild(chip));
+                }
+            } else {
+                // Fallback if no streaming happened (e.g. local fallback)
+                const assistantMessage = this._createMessageElement(content, 'assistant', Date.now(), metadata);
+                this._addMessageElement(assistantMessage);
+            }
 
             setTimeout(() => this._updateSuggestions(), 400);
             this._scrollToBottom();
+
+            // Text-to-Speech (Voice Output)
+            if (this.voiceOutputEnabled && 'speechSynthesis' in window) {
+                const textToSpeak = typeof content === 'string' ? content : (content.text || currentContent);
+                // Strip markdown/HTML for speech
+                const cleanText = textToSpeak.replace(/[*#`]/g, '').replace(/<[^>]*>/g, '');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+
         } catch (error) {
             console.error('Chat UI Error:', error);
             this._hideTypingIndicator();

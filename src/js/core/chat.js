@@ -309,19 +309,21 @@ class IntelligentAssistant {
         try {
             const apiUrl = buildApiUrl('/api/chat');
             console.log('🖥️ Calling API:', apiUrl);
-            console.log('📤 Request payload:', { message: query.substring(0, 50) + '...' });
+
+            const isStreaming = typeof options.onChunk === 'function';
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
+                    'Accept': isStreaming ? 'application/x-ndjson' : 'application/json',
                     'Origin': window.location.origin
                 },
                 body: JSON.stringify({
                     message: query,
                     messages: this._getConversationForServer(),
-                    context: options.context || {}
+                    context: options.context || {},
+                    stream: isStreaming
                 }),
                 signal: AbortSignal.timeout(30000)
             });
@@ -332,16 +334,58 @@ class IntelligentAssistant {
                 throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
             }
 
-            const data = await response.json();
-            console.log('✅ API response received:', {
-                source: data.source,
-                type: data.type,
-                confidence: data.confidence,
-                answerLength: data.answer?.length || 0
-            });
-            this.isReadyState = true;
+            if (isStreaming) {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullText = '';
+                let metadata = {};
 
-            return data;
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (!line.trim()) continue;
+                        try {
+                            const data = JSON.parse(line);
+                            if (data.chunk) {
+                                fullText += data.chunk;
+                                options.onChunk(data.chunk);
+                            } else if (data.error) {
+                                console.error('Stream error:', data.error);
+                            } else {
+                                // Metadata or final object
+                                Object.assign(metadata, data);
+                            }
+                        } catch (e) {
+                            console.warn('Error parsing stream chunk:', e);
+                        }
+                    }
+                }
+
+                this.isReadyState = true;
+                return {
+                    answer: fullText,
+                    source: 'OpenRouter',
+                    model: metadata.model || 'Gemini 2.0 Flash',
+                    type: 'general',
+                    confidence: 0.9,
+                    ...metadata
+                };
+            } else {
+                const data = await response.json();
+                console.log('✅ API response received:', {
+                    source: data.source,
+                    type: data.type,
+                    confidence: data.confidence,
+                    answerLength: data.answer?.length || 0
+                });
+                this.isReadyState = true;
+                return data;
+            }
 
         } catch (error) {
             console.error('❌ API call failed:', error.message);
