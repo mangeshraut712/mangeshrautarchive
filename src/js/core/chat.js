@@ -124,13 +124,15 @@ class IntelligentAssistant {
         this.conversation = [];
 
         // Determine if we can use server AI services
-        this.canUseServerAI = false;
+        this.canUseServerAI = !!localConfig.apiBaseUrl;
         if (typeof window !== 'undefined') {
             const hostname = window.location.hostname;
-            this.canUseServerAI = hostname.endsWith('.vercel.app') ||
+            this.canUseServerAI = this.canUseServerAI ||
+                hostname.endsWith('.vercel.app') ||
                 hostname === 'localhost' ||
                 hostname === '127.0.0.1' ||
-                (hostname.includes('github.io') && localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app'));
+                hostname.endsWith('mangeshraut.pro') ||
+                (hostname.includes('github.io') && localConfig.apiBaseUrl);
         }
     }
 

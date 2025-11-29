@@ -333,11 +333,15 @@ async def chat_endpoint(request: ChatRequest):
     start_time = time.time()
     print(f"📨 Received chat request: {request.message[:50]}...")
     
-    # Log Key Status
-    if OPENROUTER_API_KEY:
-        print(f"🔑 API Key present (starts with {OPENROUTER_API_KEY[:4]}...)")
-    else:
+    # Log Key Status and short-circuit if missing
+    if not OPENROUTER_API_KEY:
         print("❌ API Key MISSING in chat_endpoint")
+        raise HTTPException(
+            status_code=500,
+            detail="OpenRouter API key not configured on the server."
+        )
+    else:
+        print(f"🔑 API Key present (starts with {OPENROUTER_API_KEY[:4]}...)")
 
     try:
         message = request.message.strip()
