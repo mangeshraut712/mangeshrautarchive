@@ -356,6 +356,11 @@ class IntelligentAssistant {
                                 options.onChunk(data.chunk);
                             } else if (data.error) {
                                 console.error('Stream error:', data.error);
+                                const errorMsg = `\n\n⚠️ **System Error**: ${data.error}`;
+                                fullText += errorMsg;
+                                if (typeof options.onChunk === 'function') {
+                                    options.onChunk(errorMsg);
+                                }
                             } else {
                                 // Metadata or final object
                                 Object.assign(metadata, data);

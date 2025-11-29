@@ -242,8 +242,10 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
     return None
 
 async def call_openrouter_stream(model: str, messages: List[Dict]):
+    print(f"🔄 Streaming request to OpenRouter with model: {model}")
     if not OPENROUTER_API_KEY:
-        yield json.dumps({"error": "OpenRouter API key not configured"}) + "\n"
+        print("❌ OpenRouter API key is MISSING in call_openrouter_stream")
+        yield json.dumps({"error": "OpenRouter API key not configured. Please set OPENROUTER_API_KEY in Vercel environment variables."}) + "\n"
         return
 
     async with httpx.AsyncClient() as client:
@@ -266,7 +268,12 @@ async def call_openrouter_stream(model: str, messages: List[Dict]):
                 },
                 timeout=30.0
             ) as response:
-                response.raise_for_status()
+                if response.status_code != 200:
+                    error_text = await response.aread()
+                    print(f"❌ OpenRouter API Error {response.status_code}: {error_text.decode()}")
+                    yield json.dumps({"error": f"OpenRouter Error {response.status_code}: {error_text.decode()}"}) + "\n"
+                    return
+
                 async for line in response.aiter_lines():
                     if line.startswith("data: "):
                         data = line[6:]
@@ -280,6 +287,7 @@ async def call_openrouter_stream(model: str, messages: List[Dict]):
                         except:
                             continue
         except Exception as e:
+            print(f"❌ Stream Exception: {str(e)}")
             yield json.dumps({"error": str(e)}) + "\n"
 
 async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
@@ -323,7 +331,14 @@ async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     start_time = time.time()
+    print(f"📨 Received chat request: {request.message[:50]}...")
     
+    # Log Key Status
+    if OPENROUTER_API_KEY:
+        print(f"🔑 API Key present (starts with {OPENROUTER_API_KEY[:4]}...)")
+    else:
+        print("❌ API Key MISSING in chat_endpoint")
+
     try:
         message = request.message.strip()
         if not message:
@@ -364,7 +379,7 @@ async def chat_endpoint(request: ChatRequest):
                         "processingTime": int((time.time() - start_time) * 1000),
                         "providers": ["Joke API"]
                     }
-                    set_cached_response(cache_key, result)
+                    # set_cached_response(cache_key, result) # cache_key might be undefined if stream=True
                     return result
             except:
                 pass
@@ -408,7 +423,7 @@ async def chat_endpoint(request: ChatRequest):
                     "usage": response["usage"]
                 }
                 
-                set_cached_response(cache_key, result)
+                # set_cached_response(cache_key, result)
                 return result
                 
             except Exception as e:
