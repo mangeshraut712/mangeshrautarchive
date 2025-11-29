@@ -104,3 +104,5 @@ out
 # DynamoDB Local files
 .dynamodb/
 .vercel
+__pycache__/
+*.py[cod]
