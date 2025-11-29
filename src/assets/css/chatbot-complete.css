@@ -548,3 +548,61 @@ html.dark .chatbot-typing {
     font-size: 15px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MESSAGE ACTIONS (Copy, Speak, Retry)
+   ═══════════════════════════════════════════════════════════ */
+
+.message-actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.msg-action-btn {
+  background: transparent;
+  border: none;
+  color: #8E8E93;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.msg-action-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #007AFF;
+}
+
+html.dark .msg-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #0A84FF;
+}
+
+.msg-retry-btn {
+  margin-top: 8px;
+  background: #FF3B30;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform 0.2s;
+}
+
+.msg-retry-btn:hover {
+  transform: scale(1.05);
+  background: #FF453A;
+}

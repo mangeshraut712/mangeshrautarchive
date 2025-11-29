@@ -49,7 +49,7 @@ class ChatUI {
         this.history = [];
 
         // Voice integration properties (S2R-Inspired)
-        this.voiceOutputEnabled = true; // Default to voice enabled
+        this.voiceOutputEnabled = false; // Default to voice disabled
         this.voiceMenuVisible = false;
         this.voiceHoldTimer = null;
         this.voiceHoldTriggered = false;
@@ -278,6 +278,7 @@ class ChatUI {
 
         try {
             this.isProcessing = true;
+            this.lastUserMessage = text; // Store for retry
             if (this.elements.input) this.elements.input.value = '';
             this._hideSuggestions();
 
@@ -472,12 +473,100 @@ class ChatUI {
             metaChips.forEach((chip) => {
                 if (chip) metaDiv.appendChild(chip);
             });
+
+            // Add Action Buttons to Metadata
+            if (role === 'assistant' && !metadata.error) {
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'message-actions';
+
+                // Copy Button
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'msg-action-btn';
+                copyBtn.title = 'Copy';
+                copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                copyBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this._copyMessageText(contentDiv.textContent, copyBtn);
+                };
+                actionsDiv.appendChild(copyBtn);
+
+                // Speak Button
+                const speakBtn = document.createElement('button');
+                speakBtn.className = 'msg-action-btn';
+                speakBtn.title = 'Read Aloud';
+                speakBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+                speakBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this._speakMessage(contentDiv.textContent, speakBtn);
+                };
+                actionsDiv.appendChild(speakBtn);
+
+                metaDiv.appendChild(actionsDiv);
+            }
+
             if (metaDiv.childNodes.length) {
                 messageDiv.appendChild(metaDiv);
             }
+        } else if (role === 'assistant' && !metadata.error) {
+            // Create metadata div just for actions if no other chips
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'message-metadata';
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'message-actions';
+
+            // Copy & Speak (Same as above, simplified for brevity in this branch)
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'msg-action-btn';
+            copyBtn.innerHTML = '📋';
+            copyBtn.onclick = () => this._copyMessageText(contentDiv.textContent, copyBtn);
+            actionsDiv.appendChild(copyBtn);
+
+            metaDiv.appendChild(actionsDiv);
+            messageDiv.appendChild(metaDiv);
+        }
+
+        if (metadata.error) {
+            const retryBtn = document.createElement('button');
+            retryBtn.className = 'msg-retry-btn';
+            retryBtn.innerHTML = '🔄 Retry';
+            retryBtn.onclick = () => this._retryLastMessage();
+            messageDiv.appendChild(retryBtn);
         }
 
         return messageDiv;
+    }
+
+    _copyMessageText(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const original = btn.innerHTML;
+            btn.innerHTML = '✓';
+            setTimeout(() => btn.innerHTML = original, 2000);
+        });
+    }
+
+    _speakMessage(text, btn) {
+        if ('speechSynthesis' in window) {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                // Reset icon
+                btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+            } else {
+                const cleanText = text.replace(/[*#`]/g, '').replace(/<[^>]*>/g, '');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.onend = () => {
+                    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+                };
+                window.speechSynthesis.speak(utterance);
+                // Stop icon
+                btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+            }
+        }
+    }
+
+    _retryLastMessage() {
+        if (this.lastUserMessage) {
+            this.sendMessage(this.lastUserMessage);
+        }
     }
 
     _formatAssistantResponse(response) {
