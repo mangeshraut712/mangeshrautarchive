@@ -1,73 +1,66 @@
 # 🚀 Mangesh Raut Portfolio - Modern 2025 Edition
 
-A sleek, AI-powered portfolio website featuring dynamic GitHub integration, intelligent chatbot, and cutting-edge web technologies. Deployed on GitHub Pages with Vercel backend for seamless functionality.
+A sleek, AI-powered portfolio website featuring dynamic GitHub integration, intelligent chatbot, and cutting-edge web technologies. Built with a hybrid architecture combining the speed of static hosting with the power of serverless Python APIs.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://mangeshraut712.github.io/mangeshrautarchive/)
-[![Vercel](https://img.shields.io/badge/Vercel-Backend-black)](https://vercel.com)
-[![OpenRouter](https://img.shields.io/badge/AI-OpenRouter-blue)](https://openrouter.ai/)
-[![GitHub API](https://img.shields.io/badge/GitHub-API-black)](https://docs.github.com/en/rest)
+[![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge&logo=vercel)](https://mangeshraut.pro)
+[![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-blue?style=for-the-badge&logo=github)](https://mangeshraut712.github.io/mangeshrautarchive/)
+[![Vercel Backend](https://img.shields.io/badge/Backend-FastAPI-000000?style=for-the-badge&logo=fastapi)](https://mangeshrautarchive.vercel.app/api/health)
+[![AI Powered](https://img.shields.io/badge/AI-OpenRouter-blueviolet?style=for-the-badge&logo=openai)](https://openrouter.ai/)
 
 ---
 
 ## ✨ Key Features
 
 ### 🤖 **AI-Powered Chatbot** ("AssistMe")
-- **AI Engine**: OpenRouter API with Google Gemini 2.0 Flash
-- **Capabilities**:
-  - Portfolio Q&A (experience, skills, education)
-  - Math calculations and technical queries
-  - Time/date/timezone information
-  - Entertainment (jokes, gaming)
-  - Web search commands
-- **Response Intelligence**: Includes source, model, category, confidence, and runtime metadata
-- **Fallback Mode**: Graceful degradation when API unavailable
+- **Advanced AI Engine**: Powered by **Google Gemini 2.0 Flash** via OpenRouter API.
+- **Intelligent Capabilities**:
+  - **Portfolio Expert**: Answers questions about experience, skills, and education contextually.
+  - **Math & Logic**: Solves complex calculations and technical queries.
+  - **General Knowledge**: Provides information on world topics, history, and science.
+  - **Entertainment**: Tells jokes and engages in casual conversation.
+- **Robust Architecture**:
+  - **FastAPI Backend**: High-performance Python API on Vercel.
+  - **Smart Fallbacks**: Graceful degradation to offline mode if API is unavailable.
+  - **Response Metadata**: Displays model used, confidence score, and processing time.
+
+### 🎨 **Premium UI/UX Design**
+- **Modern Dark Mode**: **OLED-optimized solid black** (`#000000`) card backgrounds for maximum contrast and battery efficiency.
+- **Glassmorphism**: Subtle transparency and blur effects for a modern feel.
+- **Responsive Layouts**: Mobile-first design using CSS Grid and Flexbox.
+- **Smooth Animations**: Hardware-accelerated transitions and micro-interactions.
 
 ### 📊 **Dynamic GitHub Integration**
-- **Live Projects Display**: Automatically fetches and displays GitHub repositories
-- **Smart Filtering**: Search by name, filter by programming language
-- **Statistics Dashboard**: Real-time repo counts, stars, forks
-- **Performance**: Cached API calls (5-minute intervals) for optimal loading
-- **Responsive Cards**: Beautiful project showcases with live demo links
+- **Live Projects**: Automatically fetches and displays your latest repositories.
+- **Smart Filtering**: Filter projects by language (Python, Java, JavaScript) or search by name.
+- **Real-time Stats**: Displays live star counts, forks, and repository descriptions.
+- **Performance Caching**: Client-side caching to minimize API rate limits.
 
-### 📬 **Contact System**
-- **Firebase Firestore**: Secure contact form with direct database integration
-- **Real-time Validation**: Email format checking, required field enforcement
-- **User Experience**: AJAX-style submission with instant feedback
-- **Security**: Firestore rules restrict to create-only operations
-
-### 🎨 **Modern 2025 Design**
-- **Responsive First**: Mobile-optimized layout with CSS Grid/Flexbox
-- **Dark Mode**: System-aware theme switching with smooth transitions
-- **Performance**: Optimized animations, lazy loading, efficient caching
-- **Progressive Enhancement**: Works across all modern browsers
+### 📬 **Secure Contact System**
+- **Firebase Integration**: Direct-to-database message submission.
+- **Real-time Validation**: Instant feedback on form fields.
+- **Security Rules**: Write-only access ensures user data privacy.
 
 ---
 
 ## 🛠️ Technology Stack
 
-### Frontend
-- **HTML5/ES6 Modules**: Modular, semantic code structure
-- **CSS3**: Custom properties, Flexbox, Grid, animations
-- **JavaScript ES2024**: Async/await, destructuring, modern APIs
-- **Performance**: Lightweight, zero-bundle approach
+### Frontend (Static)
+- **HTML5**: Semantic structure.
+- **CSS3**: Custom properties, Flexbox, Grid, and responsive media queries.
+- **JavaScript (ES2024)**: Modern syntax, Modules, Async/Await.
+- **Hosting**: GitHub Pages (Global CDN).
 
-### Backend & APIs
-- **Express.js**: Local development server (port 3000)
-- **Vercel Serverless**: Production backend functions
-- **Firebase Firestore**: Contact message storage
-- **OpenRouter API**: AI model orchestration
-- **GitHub REST API**: Dynamic repository data
+### Backend (Serverless)
+- **Python FastAPI**: High-performance web framework for the Chatbot API.
+- **Vercel**: Serverless function deployment and edge routing.
+- **OpenRouter API**: Unified interface for LLM access.
+- **Firebase Firestore**: NoSQL database for contact form messages.
 
-### Deployment & Hosting
-- **GitHub Pages**: Static asset hosting with automated builds
-- **GitHub Actions**: CI/CD pipeline with build verification
-- **Vercel**: Serverless deployment for API endpoints
-
-### Development Tools
-- **Node.js 20+**: Server runtime and build tools
-- **npm**: Package management
-- **Git**: Version control
-- **ESLint**: Code quality (integrated)
+### DevOps & Tools
+- **Git & GitHub**: Version control and source code management.
+- **GitHub Actions**: Automated CI/CD pipelines.
+- **Vercel CLI**: Deployment and environment management.
+- **npm**: Dependency management.
 
 ---
 
@@ -75,272 +68,96 @@ A sleek, AI-powered portfolio website featuring dynamic GitHub integration, inte
 
 ```
 mangeshrautarchive/
-├── src/
-│   ├── index.html               # Main application entry point
-│   ├── assets/
-│   │   ├── css/
-│   │   │   ├── fixes-2025.css   # Core styling and responsive design
-│   │   │   ├── chatbot-complete.css  # Chatbot UI components
-│   │   │   ├── dark-mode-cards.css   # Theme-aware component styles
-│   │   │   ├── instant-performance.css  # Performance optimization styles
-│   │   │   └── style.css            # Main stylesheet
-│   │   ├── images/              # Profile photos, icons
-│   │   └── files/               # Resume PDF, research papers
-│   └── js/
-│       ├── core/
-│       │   ├── config.js        # Application configuration
-│       │   ├── script.js        # Main application initialization
-│       │   └── chat.js          # Chatbot core logic (client-side)
-│       ├── modules/
-│       │   ├── enhanced-chatbot.js    # Advanced chatbot features
-│       │   ├── github-projects.js     # GitHub API integration
-│       │   ├── contact.js             # Contact form logic
-│       │   ├── blog-loader.js         # Blog content management
-│       │   ├── blog-data.js           # Blog post data
-│       │   ├── debug-runner.js        # Development debugging tools
-│       │   ├── skills-visualization.js # Skills display components
-│       │   ├── animations.js          # Animation effects
-│       │   ├── overlay.js             # UI overlay components
-│       │   └── external-config.js     # External service configuration
-│       └── utils/
-│           ├── go-to-top.js           # Scroll-to-top functionality
-│           ├── smart-navbar.js        # Intelligent navigation
-│           └── theme.js               # Theme management system
-├── api/
-│   ├── chat.js                  # Chatbot API endpoint (Vercel-only)
-│   ├── chat-service.js          # OpenRouter integration service
-│   ├── contact.js               # Contact form API (Vercel)
-│   ├── enhanced-features.js     # Enhanced features API
-│   └── status.js                # System status API
-├── scripts/
-│   ├── build.js                 # Production build pipeline
-│   ├── local-server.js          # Express development server
-│   ├── fix-chatbot.sh           # Chatbot configuration utility
-│   ├── test-api.sh              # API integration testing
-│   ├── diagnose-firebase.js     # Firebase setup verification
-│   ├── check-firebase-config.sh # Firebase configuration helper
-│   ├── security-check.js        # Security audit tools
-│   ├── start-dev.js             # Alternative dev server starter
-│   └── run-local-server.sh      # Local server runner script
-├── .github/workflows/           # GitHub Actions CI/CD
-├── vercel.json                  # Vercel deployment configuration
-├── .gitignore                   # Version control exclusions
-├── package.json                 # Project dependencies and scripts
-└── README.md                    # This documentation
+├── src/                     # Frontend Source Code
+│   ├── index.html           # Main Entry Point
+│   ├── assets/              # Static Assets
+│   │   ├── css/             # Stylesheets (Modular CSS)
+│   │   │   ├── style.css    # Global Styles
+│   │   │   ├── dark-mode-cards.css # Dark Mode Overrides
+│   │   │   └── ...
+│   │   ├── images/          # Images & Icons
+│   │   └── files/           # Downloads (Resume)
+│   └── js/                  # JavaScript Modules
+│       ├── core/            # Core Logic (Chat, Config)
+│       ├── modules/         # Feature Modules (GitHub, Skills)
+│       └── utils/           # Utilities (Theme, Scroll)
+├── api/                     # Backend Source Code
+│   ├── index.py             # FastAPI Application Entry Point
+│   └── ...
+├── vercel.json              # Vercel Routing Configuration
+├── requirements.txt         # Python Dependencies
+├── package.json             # Node.js Dependencies
+└── README.md                # Project Documentation
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Deployment & Setup
 
-### Prerequisites
-- **Node.js** 20.9.0 or higher
-- **npm** 10.1.0 or higher
-- **Git** for version control
+### 1. Hybrid Deployment Architecture
+This project uses a hybrid approach:
+- **Frontend**: Hosted on **GitHub Pages** (served from `src/` or `docs/`).
+- **Backend**: Hosted on **Vercel** (serves `/api/*` endpoints).
 
-### Installation
+### 2. Vercel Configuration (Backend)
+The `vercel.json` file configures rewrites to route API requests to the Python backend while serving static files correctly.
 
-1. **Clone Repository**
-   ```bash
-   git clone https://github.com/mangeshraut712/mangeshrautarchive.git
-   cd mangeshrautarchive
-   npm install
-   ```
+**Environment Variables (Required in Vercel):**
+- `OPENROUTER_API_KEY`: Your OpenRouter API Key.
+- `OPENROUTER_SITE_URL`: Your site URL (e.g., `https://mangeshraut.pro`).
+- `OPENROUTER_SITE_TITLE`: Your site title.
 
-2. **Local Development**
-   ```bash
-   npm run dev
-   ```
-   Access at: http://localhost:3000
+### 3. Local Development
+To run the full stack locally:
 
-3. **Build Static Assets**
-   ```bash
-   npm run build
-   ```
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/mangeshraut712/mangeshrautarchive.git
+    cd mangeshrautarchive
+    ```
 
----
+2.  **Install Dependencies**:
+    ```bash
+    npm install          # Frontend tools
+    pip install -r requirements.txt  # Backend dependencies
+    ```
 
-## 🔧 Configuration
+3.  **Run the Server**:
+    ```bash
+    # Runs FastAPI server on localhost:8000
+    uvicorn api.index:app --reload
+    ```
 
-### Environment Variables (Vercel)
-Required for production chatbot functionality:
-
-```bash
-OPENROUTER_API_KEY=your_openrouter_api_key_here
-# Optional overrides
-OPENROUTER_MODEL=google/gemini-2.0-flash-001
-OPENROUTER_SITE_URL=https://mangeshraut712.github.io/mangeshrautarchive/
-```
-
-Set these in your Vercel dashboard under project settings.
-
-For local development, copy `.env.example` to `.env` and add your `OPENROUTER_API_KEY`. The local dev server (`npm run dev`) automatically loads `.env`, and the deployed GitHub Pages frontend will call the Vercel API (`https://mangeshrautarchive.vercel.app/api/chat`) by default.
-
-### Firebase Configuration
-Contact form requires Firebase Firestore setup:
-
-1. Create Firebase project
-2. Enable Firestore database
-3. Publish security rules (allow create on `/messages`)
-4. Update API key in `src/js/modules/contact.js`
-
-### API Keys
-- **OpenRouter**: Free API key from [openrouter.ai](https://openrouter.ai)
-- **Firebase**: Project-specific keys (safe to include in frontend)
-- **GitHub API**: Public access (no key required)
+4.  **Access the App**:
+    Open `http://localhost:8000` in your browser.
 
 ---
 
-## 📋 Development Scripts
+## 🔗 Live Links
 
-```bash
-npm run dev          # Start local development server
-npm run build        # Build for production GitHub Pages
-npm install          # Install all dependencies
-```
-
----
-
-## 🎨 Features Overview
-
-### AI Chatbot System
-- **Intelligent Fallbacks**: Continues working even if API is unavailable
-- **Context Awareness**: Understands portfolio content and navigation context
-- **Performance Optimized**: Minimal client-side bundle, server-side processing
-- **Responsive Design**: Adapts to mobile and desktop interfaces
-
-### GitHub Integration
-- **No Manual Updates**: Automatically stays current with repository changes
-- **Search & Discovery**: Find projects by technology stack or keywords
-- **Visual Analytics**: Language distribution charts and contribution graphs
-- **Zero-Maintenance**: Handles rate limiting and error conditions gracefully
-
-### Contact Form
-- **Secure by Design**: Write-only Firestore access prevents data breaches
-- **Validation**: Real-time input validation with user-friendly error messages
-- **Confirmation**: Immediate feedback on message submission status
-- **Privacy**: No read access, data remains secure in Firebase
-
-### Performance & Reliability
-- **Progressive Loading**: Components load as needed
-- **Cache Management**: Intelligent caching of API responses
-- **Error Boundaries**: Graceful failure handling
-- **Lighthouse Optimized**: 95+ scores across all metrics
+| Service | URL | Description |
+|---------|-----|-------------|
+| **Custom Domain** | [mangeshraut.pro](https://mangeshraut.pro) | Primary production URL |
+| **Vercel App** | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app/) | Backend & Alternative Frontend |
+| **GitHub Pages** | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive/) | Static Frontend Mirror |
+| **API Health** | [API Status](https://mangeshrautarchive.vercel.app/api/health) | Check Backend Status |
 
 ---
 
-## 🔍 Troubleshooting
-
-### Build Failures
-```bash
-# Check Node.js version
-node --version  # Should be 20.9+
-
-# Clear npm cache
-npm cache clean --force
-
-# Reinstall dependencies
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### API Issues
-```bash
-# Test OpenRouter connection
-node scripts/test-api.sh
-
-# Diagnose Firebase setup
-node scripts/diagnose-firebase.js
-```
-
-### GitHub Integration Problems
-- Check repository visibility (must be public)
-- Verify API rate limits (60 requests/hour unauthenticated)
-- Clear browser cache for updated GitHub data
-
----
-
-## 📦 Deployment
-
-### GitHub Pages (Frontend)
-- Automated via GitHub Actions
-- Static assets only (no server-side rendering)
-- Fast global CDN distribution
-
-### Vercel (API Backend)
-- Serverless functions for chatbot API
-- Automatic scaling and edge deployment
-- Environment variable management
-
----
-
-## 🛡️ Security Features
-
-- **CSP Headers**: Content Security Policy implementation
-- **API Rate Limiting**: Protected against abuse
-- **Input Sanitization**: XSS prevention on user inputs
-- **Firestore Rules**: Restrictive database access patterns
-- **Environment Variables**: Secure API key management
-
----
-
-## 🎯 Performance Metrics
-
-- **Load Time**: < 2 seconds first contentful paint
-- **Interaction**: < 3 seconds time to interactive
-- **Chatbot Response**: 400-800ms average latency
-- **Bundle Size**: Minimal JavaScript payload
-- **Lighthouse Score**: 95+ performance rating
-
----
-
-## 🔮 Future Enhancements
-
-- [ ] Blog section with markdown content
-- [ ] Interactive skills visualization dashboard
-- [ ] Email notifications for contact form
-- [ ] Multiple AI model options (GPT-4, Claude)
-- [ ] Chat history persistence
-- [ ] Advanced analytics and tracking
-- [ ] Resume builder integration
-- [ ] Multi-language support
+## 🎯 Performance & Optimization
+- **Lighthouse Score**: Consistently scores **95+** on Performance, Accessibility, and SEO.
+- **Zero-Bundle**: Uses native ES Modules for faster load times and no build step for dev.
+- **Efficient Caching**: API responses are cached to reduce latency and API costs.
 
 ---
 
 ## 📄 License
-
-Licensed under MIT License. See LICENSE file for details.
+Licensed under the **MIT License**. Feel free to use this code for your own portfolio!
 
 ---
 
 ## 👨‍💻 Author
-
 **Mangesh Raut**
-- Portfolio: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
-- GitHub: [@mangeshraut712](https://github.com/mangeshraut712)
-- LinkedIn: [mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
-- Email: mbr63@drexel.edu
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
----
-
-## 🙏 Acknowledgments
-
-- **Google Gemini** for AI capabilities
-- **OpenRouter** for API aggregation
-- **Firebase** for backend services
-- **Vercel** for serverless deployment
-- **GitHub** for hosting and APIs
-
----
-
-**Built with ❤️ using modern web technologies**
+- **Portfolio**: [mangeshraut.pro](https://mangeshraut.pro)
+- **GitHub**: [@mangeshraut712](https://github.com/mangeshraut712)
+- **LinkedIn**: [Mangesh Raut](https://linkedin.com/in/mangeshraut71298)
