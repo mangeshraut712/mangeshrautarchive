@@ -14,23 +14,23 @@
   bottom: 180px !important;
   right: 30px !important;
   z-index: 9996 !important;
-  
+
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  
+
   background: rgba(120, 120, 128, 0.2);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  
+
   color: #007aff;
   font-size: 20px;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  
+
   transition: all 0.3s ease;
 }
 
@@ -54,31 +54,31 @@ html.dark #scroll-to-top {
   bottom: 20px !important;
   right: 20px !important;
   z-index: 9997 !important;
-  
+
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  
+
   background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
   border: none;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 122, 255, 0.4),
     0 4px 16px rgba(0, 0, 0, 0.12);
-  
+
   color: white;
   font-size: 26px;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  
+
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #chatbot-toggle:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 122, 255, 0.5),
     0 6px 20px rgba(0, 0, 0, 0.15);
 }
@@ -92,27 +92,27 @@ html.dark #scroll-to-top {
   bottom: 100px !important;
   right: 20px !important;
   z-index: 10000 !important;
-  
+
   width: 420px;
   height: 680px;
   max-height: 85vh;
-  
+
   /* Apple Intelligence glass effect */
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(80px) saturate(180%);
   -webkit-backdrop-filter: blur(80px) saturate(180%);
-  
+
   border-radius: 28px;
   border: 0.5px solid rgba(0, 122, 255, 0.08);
-  
-  box-shadow: 
+
+  box-shadow:
     0 32px 64px rgba(0, 122, 255, 0.12),
     0 16px 32px rgba(0, 0, 0, 0.08);
-  
+
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  
+
   /* Hidden state */
   opacity: 0;
   visibility: hidden;
@@ -130,7 +130,7 @@ html.dark #scroll-to-top {
 html.dark #chatbot-widget {
   background: rgba(28, 28, 30, 0.95);
   border-color: rgba(100, 200, 255, 0.15);
-  box-shadow: 
+  box-shadow:
     0 32px 64px rgba(0, 0, 0, 0.5),
     0 0 1px rgba(10, 132, 255, 0.3);
 }
@@ -144,7 +144,7 @@ html.dark #chatbot-widget {
   background: rgba(248, 248, 248, 0.95);
   backdrop-filter: blur(40px);
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,13 +184,13 @@ html.dark .chatbot-header h3 {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  
-  background: linear-gradient(135deg, rgba(255,59,48,0.12) 0%, rgba(255,45,33,0.08) 100%);
+
+  background: linear-gradient(135deg, rgba(255, 59, 48, 0.12) 0%, rgba(255, 45, 33, 0.08) 100%);
   border: none;
   color: #FF3B30;
   font-size: 16px;
   font-weight: 600;
-  
+
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -199,7 +199,7 @@ html.dark .chatbot-header h3 {
 }
 
 html.dark .chatbot-close-btn {
-  background: linear-gradient(135deg, rgba(255,59,48,0.2) 0%, rgba(255,45,33,0.15) 100%);
+  background: linear-gradient(135deg, rgba(255, 59, 48, 0.2) 0%, rgba(255, 45, 33, 0.15) 100%);
 }
 
 .chatbot-close-btn:hover {
@@ -241,19 +241,19 @@ html.dark #chatbot-messages {
   padding: 12px 16px !important;
   border-radius: 22px !important;
   margin-bottom: 12px !important;
-  
+
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
   font-size: 16px !important;
   line-height: 1.47 !important;
   font-weight: 400 !important;
-  
+
   /* FORCE HORIZONTAL TEXT */
   word-break: normal !important;
   white-space: normal !important;
   overflow-wrap: break-word !important;
   direction: ltr !important;
   writing-mode: horizontal-tb !important;
-  
+
   display: inline-block !important;
   animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -263,63 +263,69 @@ html.dark #chatbot-messages {
     opacity: 0;
     transform: translateY(10px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-/* USER MESSAGE - Colorful Blue */
+/* USER MESSAGE - iMessage Blue */
 .user-message {
-  background: linear-gradient(135deg, #0A84FF 0%, #64D2FF 100%) !important;
+  background: #007AFF !important;
   color: #ffffff !important;
-  border-bottom-right-radius: 6px !important;
-  
+  border-radius: 20px !important;
+  border-bottom-right-radius: 4px !important;
+
   margin-left: auto !important;
   float: right !important;
   clear: both !important;
-  
-  box-shadow: 0 2px 12px rgba(10, 132, 255, 0.35) !important;
-  font-weight: 500 !important;
+
+  box-shadow: none !important;
+  font-weight: 400 !important;
+  position: relative;
 }
 
 html.dark .user-message {
-  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
+  background: #0A84FF !important;
 }
 
-/* BOT MESSAGE - BLACK text for both themes */
+/* BOT MESSAGE - iMessage Gray */
 .bot-message {
-  background: #F2F2F7 !important;
+  background: #E9E9EB !important;
   color: #000000 !important;
-  border-bottom-left-radius: 6px !important;
-  
+  border-radius: 20px !important;
+  border-bottom-left-radius: 4px !important;
+
   margin-right: auto !important;
   float: left !important;
   clear: both !important;
-  
-  box-shadow: 0 2px 12px rgba(0, 122, 255, 0.08) !important;
+
+  box-shadow: none !important;
+  position: relative;
 }
 
 html.dark .bot-message {
-  background: #E5E5EA !important;
-  color: #000000 !important;
-  box-shadow: 0 2px 12px rgba(10, 132, 255, 0.15) !important;
+  background: #262628 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
 }
 
 /* METADATA - BLACK for both themes (as requested) */
+/* METADATA - Subtle Gray */
 .message-metadata {
   font-size: 11px !important;
-  margin-top: 8px !important;
-  line-height: 1.5 !important;
+  margin-top: 4px !important;
+  line-height: 1.3 !important;
   font-weight: 400 !important;
-  
-  color: #000000 !important;
-  opacity: 0.8 !important;
+
+  color: #8E8E93 !important;
+  opacity: 1 !important;
 }
 
 html.dark .message-metadata {
-  color: #000000 !important;
-  opacity: 0.8 !important;
+  color: #98989D !important;
+  opacity: 1 !important;
 }
 
 .message-metadata div {
@@ -342,7 +348,7 @@ html.dark .message-metadata div {
   background: rgba(248, 248, 248, 0.95);
   backdrop-filter: blur(40px);
   border-top: 0.5px solid rgba(0, 0, 0, 0.06);
-  
+
   display: flex;
   gap: 10px;
   align-items: center;
@@ -361,11 +367,11 @@ html.dark #chatbot-form {
   border-radius: 22px;
   border: 1px solid rgba(0, 122, 255, 0.15);
   background: #ffffff;
-  
+
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
   font-size: 16px;
   color: #000000;
-  
+
   outline: none;
   transition: all 0.3s ease;
 }
@@ -393,11 +399,11 @@ html.dark #chatbot-input:focus {
   height: 38px;
   border-radius: 50%;
   border: none;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -432,11 +438,14 @@ html.dark #chatbot-input:focus {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4);
   }
+
   50% {
-    box-shadow: 
+    box-shadow:
       0 4px 12px rgba(255, 59, 48, 0.6),
       0 0 0 8px rgba(255, 59, 48, 0.2);
   }
@@ -484,14 +493,23 @@ html.dark .chatbot-typing {
   animation: typingDot 1.4s ease-in-out infinite;
 }
 
-.chatbot-typing span:nth-child(2) { animation-delay: 0.2s; }
-.chatbot-typing span:nth-child(3) { animation-delay: 0.4s; }
+.chatbot-typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chatbot-typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes typingDot {
-  0%, 60%, 100% {
+
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.4;
   }
+
   30% {
     transform: translateY(-8px);
     opacity: 1;
@@ -509,14 +527,14 @@ html.dark .chatbot-typing {
     width: 44px;
     height: 44px;
   }
-  
+
   #chatbot-toggle {
     bottom: 16px;
     right: 16px;
     width: 56px;
     height: 56px;
   }
-  
+
   #chatbot-widget {
     bottom: 80px;
     right: 12px;
@@ -524,7 +542,7 @@ html.dark .chatbot-typing {
     width: auto;
     height: 75vh;
   }
-  
+
   .message {
     max-width: 80%;
     font-size: 15px;

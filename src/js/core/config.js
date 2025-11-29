@@ -35,7 +35,7 @@ export const errorMessages = {
 };
 
 export const localConfig = {
-    apiBaseUrl: 'https://mangeshrautarchive.vercel.app',
+    apiBaseUrl: 'https://mangeshraut.pro',
     // Load API keys from window object (injected for localhost development)
     openaiApiKey: typeof window !== 'undefined' ? window.API_KEYS?.OPENAI_API_KEY : process.env?.OPENAI_API_KEY || '',
     grokApiKey: typeof window !== 'undefined' ? window.API_KEYS?.GROK_API_KEY : process.env?.GROK_API_KEY || '',
