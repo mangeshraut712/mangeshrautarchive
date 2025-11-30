@@ -76,6 +76,7 @@
   width: 440px;
   height: 700px;
   max-height: 85vh;
+  padding-bottom: env(safe-area-inset-bottom, 0);
 
   /* Liquid Glass Effect */
   background: rgba(255, 255, 255, 0.75);
@@ -241,11 +242,10 @@ html.dark .chatbot-close-btn:hover {
   line-height: 1.5;
   font-weight: 400;
 
-  /* CRITICAL: Perfect text rendering with proper spacing */
-  word-wrap: break-word;
-  word-break: normal !important;
+  /* Preserve spacing/line breaks while wrapping smartly */
+  white-space: pre-wrap !important;
+  word-break: break-word;
   overflow-wrap: break-word;
-  white-space: normal !important;
   word-spacing: normal !important;
 
   /* Smooth animation */
