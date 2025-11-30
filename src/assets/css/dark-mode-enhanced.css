@@ -187,10 +187,10 @@ html.dark .theme-toggle-nav:hover {
    ======================================== */
 
 html.dark .global-nav {
-    background: rgb(10 13 26 / 85%) !important;
+    background: rgba(0, 0, 0, 0.85) !important;
     border-bottom: 1px solid rgb(255 255 255 / 8%) !important;
     backdrop-filter: blur(20px) saturate(180%);
-    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 html.dark .nav-link {
