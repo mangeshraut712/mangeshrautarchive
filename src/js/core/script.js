@@ -424,8 +424,20 @@ class ChatUI {
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
 
+        // CRITICAL FIX: Proper text rendering with spacing
         if (typeof content === 'string') {
-            contentDiv.textContent = content;
+            // Normalize text: preserve spaces and line breaks
+            const normalizedText = content
+                .replace(/\r\n/g, '\n') // Normalize line endings
+                .replace(/\r/g, '\n')   // Handle old Mac line endings
+                .trim();                // Remove leading/trailing whitespace
+
+            contentDiv.textContent = normalizedText;
+
+            // Force proper text layout
+            contentDiv.style.whiteSpace = 'pre-wrap';
+            contentDiv.style.wordWrap = 'break-word';
+            contentDiv.style.overflowWrap = 'break-word';
         } else if (content?.html && features.enableMarkdownRendering) {
             const safeHtml = htmlSanitizer
                 ? htmlSanitizer.sanitize(content.html)
@@ -434,21 +446,30 @@ class ChatUI {
 
             // Highlight code blocks after insertion
             if (window.Prism) {
-                contentDiv.querySelectorAll('pre code').forEach((block) => {
-                    window.Prism.highlightElement(block);
-                    // Add copy button if ChatbotUpgrade is available
-                    if (window.chatbotUpgrade && window.chatbotUpgrade.highlightCodeBlocks) {
-                        // This might be redundant if highlightCodeBlocks does it, but let's be safe
-                        // Actually ChatbotUpgrade.highlightCodeBlocks expects a message element
-                    }
+                // Use requestAnimationFrame for smooth rendering
+                requestAnimationFrame(() => {
+                    contentDiv.querySelectorAll('pre code').forEach((block) => {
+                        window.Prism.highlightElement(block);
+                    });
                 });
             } else if (window.hljs) {
-                contentDiv.querySelectorAll('pre code').forEach((block) => {
-                    window.hljs.highlightElement(block);
+                requestAnimationFrame(() => {
+                    contentDiv.querySelectorAll('pre code').forEach((block) => {
+                        window.hljs.highlightElement(block);
+                    });
                 });
             }
         } else {
-            contentDiv.textContent = content?.text || content;
+            const textContent = content?.text || content;
+            const normalizedText = String(textContent)
+                .replace(/\r\n/g, '\n')
+                .replace(/\r/g, '\n')
+                .trim();
+
+            contentDiv.textContent = normalizedText;
+            contentDiv.style.whiteSpace = 'pre-wrap';
+            contentDiv.style.wordWrap = 'break-word';
+            contentDiv.style.overflowWrap = 'break-word';
         }
 
         messageDiv.appendChild(contentDiv);
@@ -977,11 +998,17 @@ class ChatUI {
         this._scrollToBottom();
     }
 
+
     _scrollToBottom() {
         if (!this.elements.messages) return;
-        setTimeout(() => {
-            this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
-        }, 80);
+
+        // Use requestAnimationFrame for smooth, lag-free scrolling
+        requestAnimationFrame(() => {
+            this.elements.messages.scrollTo({
+                top: this.elements.messages.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
     }
 
     _toggleWidget() {
