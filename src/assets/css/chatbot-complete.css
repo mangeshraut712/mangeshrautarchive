@@ -22,7 +22,7 @@
   position: fixed !important;
   bottom: 24px !important;
   right: 24px !important;
-  z-index: 9999 !important;
+  z-index: 2147483647 !important;
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -42,6 +42,7 @@
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
@@ -71,7 +72,7 @@
   position: fixed !important;
   bottom: 100px !important;
   right: 24px !important;
-  z-index: 9998 !important;
+  z-index: 2147483646 !important;
   width: 440px;
   height: 700px;
   max-height: 85vh;
@@ -381,6 +382,7 @@ html.dark .chatbot-typing {
 }
 
 @keyframes typingBounce {
+
   0%,
   60%,
   100% {
@@ -408,6 +410,8 @@ html.dark .chatbot-typing {
   gap: 10px;
   align-items: center;
   flex-shrink: 0;
+  position: relative;
+  z-index: 10;
 }
 
 html.dark .chatbot-input-area,
@@ -446,6 +450,7 @@ html.dark #chatbot-form {
   /* Ensure proper spacing */
   letter-spacing: normal;
   word-spacing: normal;
+  touch-action: manipulation;
 }
 
 #chatbot-input::placeholder {
@@ -549,6 +554,7 @@ html.dark .chatbot-voice-btn.listening {
 }
 
 @keyframes voicePulse {
+
   0%,
   100% {
     box-shadow: 0 4px 12px rgb(255 59 48 / 30%);
@@ -857,6 +863,7 @@ html.dark .char-count {
 }
 
 @keyframes pulse-glow {
+
   0%,
   100% {
     opacity: 1;

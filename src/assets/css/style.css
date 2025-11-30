@@ -4342,34 +4342,7 @@ html.dark .education-card .date-badge {
     border-color: #2997ff;
 }
 
-#chatbot-toggle {
-    position: fixed !important;
-    bottom: clamp(20px, 4vh, 48px) !important;
-    right: clamp(20px, 4vh, 48px) !important;
-    z-index: 2147483647 !important;
-}
 
-#chatbot-widget {
-    position: fixed !important;
-    bottom: calc(clamp(20px, 4vh, 48px) + 80px) !important;
-    right: clamp(20px, 4vh, 48px) !important;
-    z-index: 2147483646 !important;
-    max-height: calc(100vh - clamp(20px, 4vh, 48px) - 120px);
-}
-
-@media (width <=768px) {
-    #chatbot-toggle {
-        bottom: clamp(16px, 6vw, 32px) !important;
-        right: clamp(16px, 6vw, 32px) !important;
-    }
-
-    #chatbot-widget {
-        bottom: calc(clamp(16px, 6vw, 32px) + 72px) !important;
-        right: clamp(12px, 4vw, 24px) !important;
-        left: clamp(12px, 4vw, 24px) !important;
-        width: auto !important;
-    }
-}
 
 /* ═══════════════════════════════════════════════════════════
      NEW SOCIAL FOOTER STYLES

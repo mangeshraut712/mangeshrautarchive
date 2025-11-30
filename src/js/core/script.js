@@ -488,7 +488,10 @@ class ChatUI {
                 // Providers (only if different from source)
                 if (Array.isArray(metadata.providers) && metadata.providers.length) {
                     const providerText = this._formatProviders(metadata.providers);
-                    const isRedundant = metadata.source && providerText.toLowerCase().includes(metadata.source.toLowerCase());
+                    // Check if provider text is redundant (e.g. source contains provider name)
+                    const sourceLower = (metadata.source || '').toLowerCase();
+                    const providersLower = metadata.providers.map(p => p.toLowerCase());
+                    const isRedundant = providersLower.some(p => sourceLower.includes(p));
 
                     if (providerText && !isRedundant) {
                         metaChips.push(this._createMetaChip('providers-tried', providerText));
@@ -506,6 +509,9 @@ class ChatUI {
                         metaDiv = document.createElement('div');
                         metaDiv.className = 'message-metadata';
                         assistantMessageElement.appendChild(metaDiv);
+                    } else {
+                        // Clear existing metadata to prevent duplicates
+                        metaDiv.innerHTML = '';
                     }
                     metaChips.forEach(chip => metaDiv.appendChild(chip));
 
@@ -758,7 +764,8 @@ class ChatUI {
             metaChips.push(this._createMetaChip('source-detail', metadata.sourceDetail));
         }
 
-        if (metaChips.some(Boolean)) {
+        // Only add metadata if NOT streaming (streaming adds it later)
+        if (!isStreaming && metaChips.some(Boolean)) {
             const metaDiv = document.createElement('div');
             metaDiv.className = 'message-metadata';
             metaChips.forEach((chip) => {
