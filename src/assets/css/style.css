@@ -91,7 +91,7 @@
     --shadow-light: var(--shadow-sm);
 
     /* Footer tokens */
-    --footer-bg: #000;
+    --footer-bg: #fff;
     --footer-border: rgb(255 255 255 / 8%);
     --footer-text: #f5f5f7;
     --footer-link: #d2d2d7;
