@@ -498,6 +498,15 @@ class ChatUI {
             }
         }
 
+        if (metadata.tokens !== undefined) {
+            metaChips.push(this._createMetaChip('token-usage', `${metadata.tokens} tokens`));
+        }
+
+        if (metadata.tokensPerSecond !== undefined) {
+            const tps = Math.round(metadata.tokensPerSecond * 10) / 10;
+            metaChips.push(this._createMetaChip('token-speed', `${tps} tokens/s`));
+        }
+
         if (Array.isArray(metadata.providers) && metadata.providers.length) {
             const providerText = this._formatProviders(metadata.providers);
             if (providerText) {
@@ -679,6 +688,16 @@ class ChatUI {
             metadata.providers = response.providers;
         } else {
             metadata.providers = [sourceKey];
+        }
+
+        // Token metadata (if provided by OpenRouter)
+        const totalTokens = response?.usage?.total_tokens || response?.usage?.totalTokens;
+        if (typeof totalTokens === 'number') {
+            metadata.tokens = totalTokens;
+            if (metadata.processingTime && metadata.processingTime > 0) {
+                const seconds = metadata.processingTime / 1000;
+                metadata.tokensPerSecond = Math.max(0, totalTokens / seconds);
+            }
         }
 
         if (response.error) metadata.error = true;
