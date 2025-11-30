@@ -183,7 +183,7 @@ html.dark #chatbot-toggle:hover {
 }
 
 /* Mobile: Stack buttons vertically with more spacing */
-@media (width <= 768px) {
+@media (width <=768px) {
   #chatbot-toggle {
     bottom: 100px !important;
 
@@ -270,7 +270,7 @@ html.dark .menu-toggle-button {
 /* ═══════════════════════════════════════════════════════════
    MOBILE NAVBAR - Overlay Experience
    ═══════════════════════════════════════════════════════════ */
-@media (width <= 1024px) {
+@media (width <=1024px) {
   .nav-container {
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
@@ -424,7 +424,7 @@ html.dark .menu-toggle-button {
 /* ═══════════════════════════════════════════════════════════
    FOOTER - Enhanced Light/Dark Mode
    ═══════════════════════════════════════════════════════════ */
-@media (width <= 1024px) {
+@media (width <=1024px) {
   footer {
     background: rgb(255 255 255 / 80%);
     border-top: 1px solid rgb(0 0 0 / 10%);
@@ -451,7 +451,7 @@ html.dark .menu-toggle-button {
 /* ═══════════════════════════════════════════════════════════
    THEME TOGGLE BUTTON - Enhanced
    ═══════════════════════════════════════════════════════════ */
-@media (width <= 1024px) {
+@media (width <=1024px) {
   .theme-toggle-nav {
     background: transparent;
     border: 1px solid rgb(0 0 0 / 10%);
@@ -515,7 +515,7 @@ button:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE ADJUSTMENTS
    ═══════════════════════════════════════════════════════════ */
-@media (width <= 640px) {
+@media (width <=640px) {
   .footer-social-link {
     font-size: 1.1rem;
   }
@@ -529,6 +529,7 @@ button:focus-visible {
    PRINT STYLES
    ═══════════════════════════════════════════════════════════ */
 @media print {
+
   #go-to-top,
   #chatbot-toggle,
   #chatbot-widget {
@@ -550,7 +551,8 @@ button:focus-visible {
   line-height: 1.4;
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
+
   .overlay-nav a,
   .overlay-nav-link {
     font-size: 1.25rem !important;
@@ -559,7 +561,8 @@ button:focus-visible {
   }
 }
 
-@media (width <= 480px) {
+@media (width <=480px) {
+
   .overlay-nav a,
   .overlay-nav-link {
     font-size: 1.1rem !important;
@@ -803,7 +806,7 @@ html.dark .blog-read-btn:hover {
   font-size: 0.9em;
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .blog-modal-content {
     padding: 1.5rem;
   }
@@ -994,9 +997,7 @@ html.dark #debug-runner-container:hover {
   max-width: 100% !important;
   max-height: 540px;
   border-radius: 14px;
-  background: radial-gradient(circle at 30% 20%, rgb(0 122 255 / 12%), transparent 45%),
-    radial-gradient(circle at 80% 10%, rgb(0 255 130 / 10%), transparent 40%),
-    #0b0f19;
+  background: #000000;
   border: 1px solid rgb(255 255 255 / 8%);
 }
 
@@ -1097,7 +1098,7 @@ html:not(.dark) .debug-game-btn--duck {
   border-color: rgb(0 0 0 / 12%);
 }
 
-@media (width <= 1024px) {
+@media (width <=1024px) {
   #debug-runner-container {
     padding: 10px;
   }
@@ -1107,7 +1108,7 @@ html:not(.dark) .debug-game-btn--duck {
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   #debug-runner-section {
     padding-top: 60px;
     padding-bottom: 60px;

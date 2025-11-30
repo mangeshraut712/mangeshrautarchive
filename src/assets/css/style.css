@@ -4637,7 +4637,7 @@ html:not(.dark) #home p {
 
 /* Ensure Background is correct and theme aware */
 html.dark body {
-    background: radial-gradient(circle at 50% 0%, #1b2744 0%, #020518 100%) !important;
+    background: #000000 !important;
     background-attachment: fixed;
 }
 
