@@ -161,9 +161,9 @@ html.dark .chatbot-header-content h3 {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%);
+  background: #ff3b30 !important;
   border: none;
-  color: #fff;
+  color: #fff !important;
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -175,12 +175,22 @@ html.dark .chatbot-header-content h3 {
 }
 
 .chatbot-close-btn:hover {
+  background: #ff2d21 !important;
   transform: scale(1.1) rotate(90deg);
-  box-shadow: 0 6px 16px rgba(255, 59, 48, 0.4);
+  box-shadow: 0 6px 16px rgba(255, 59, 48, 0.5);
 }
 
 .chatbot-close-btn:active {
   transform: scale(0.95) rotate(90deg);
+}
+
+html.dark .chatbot-close-btn {
+  background: #ff453a !important;
+  box-shadow: 0 4px 12px rgba(255, 69, 58, 0.4);
+}
+
+html.dark .chatbot-close-btn:hover {
+  background: #ff3b30 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -462,39 +472,63 @@ html.dark #chatbot-input:focus {
 }
 
 .chatbot-send-btn {
-  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
-  color: #fff;
+  background: #007aff !important;
+  color: #fff !important;
   box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
 .chatbot-send-btn:hover {
+  background: #0051d5 !important;
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.5);
 }
 
 .chatbot-send-btn:active {
   transform: scale(0.95);
 }
 
+html.dark .chatbot-send-btn {
+  background: #0a84ff !important;
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+}
+
+html.dark .chatbot-send-btn:hover {
+  background: #409cff !important;
+}
+
 .chatbot-voice-btn {
-  background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
-  color: #fff;
+  background: #34c759 !important;
+  color: #fff !important;
   box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
   position: relative;
 }
 
 .chatbot-voice-btn:hover {
+  background: #30d158 !important;
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
+  box-shadow: 0 6px 16px rgba(52, 199, 89, 0.5);
 }
 
 .chatbot-voice-btn:active {
   transform: scale(0.95);
 }
 
+html.dark .chatbot-voice-btn {
+  background: #32d74b !important;
+  box-shadow: 0 4px 12px rgba(50, 215, 75, 0.4);
+}
+
+html.dark .chatbot-voice-btn:hover {
+  background: #30d158 !important;
+}
+
 .chatbot-voice-btn.listening {
-  background: linear-gradient(135deg, #ff3b30 0%, #ff2d55 100%);
+  background: #ff3b30 !important;
   animation: voicePulse 1.5s ease-in-out infinite;
+}
+
+html.dark .chatbot-voice-btn.listening {
+  background: #ff453a !important;
 }
 
 @keyframes voicePulse {
@@ -686,4 +720,29 @@ html.dark #scroll-to-top {
 #scroll-to-top:hover {
   opacity: 1;
   transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   S2R BADGE - Voice Button Badge
+   ═══════════════════════════════════════════════════════════ */
+
+.chatbot-voice-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #fff !important;
+  color: #34c759 !important;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 1;
+}
+
+html.dark .chatbot-voice-badge {
+  background: #fff !important;
+  color: #32d74b !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }

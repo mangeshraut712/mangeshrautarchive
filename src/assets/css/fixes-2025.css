@@ -820,52 +820,8 @@ html.dark .blog-read-btn:hover {
    LIGHT MODE THEME FIXES
    ═══════════════════════════════════════════════════════════ */
 
-/* Chatbot Light Mode Fixes */
-html:not(.dark) #chatbot-widget {
-  background: rgb(255 255 255 / 95%) !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
-  box-shadow: 0 32px 64px rgb(0 0 0 / 12%), 0 16px 32px rgb(0 0 0 / 8%) !important;
-}
-
-html:not(.dark) .chatbot-header {
-  background: rgb(248 248 248 / 98%) !important;
-  border-bottom: 1px solid rgb(0 0 0 / 8%) !important;
-}
-
-html:not(.dark) .chatbot-header h3,
-html:not(.dark) .chatbot-header p {
-  color: #000 !important;
-}
-
-html:not(.dark) #chatbot-messages {
-  background: #fff !important;
-}
-
-html:not(.dark) .user-message {
-  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%) !important;
-  color: #fff !important;
-}
-
-html:not(.dark) .assistant-message,
-html:not(.dark) .bot-message {
-  background: #E9E9EB !important;
-  color: #000 !important;
-}
-
-html:not(.dark) .message-metadata {
-  color: rgb(0 0 0 / 60%) !important;
-}
-
-html:not(.dark) .chatbot-input-area {
-  background: rgb(248 248 248 / 98%) !important;
-  border-top: 1px solid rgb(0 0 0 / 8%) !important;
-}
-
-html:not(.dark) #chatbot-input {
-  background: #fff !important;
-  color: #000 !important;
-  border: 1px solid rgb(0 0 0 / 12%) !important;
-}
+/* Chatbot Light Mode Fixes - Moved to chatbot-complete.css */
+/* All chatbot styling is now in chatbot-complete.css for consistency */
 
 :root {
   --debug-accent: #007aff;
@@ -873,21 +829,6 @@ html:not(.dark) #chatbot-input {
   --debug-surface-dark: #0b1020;
   --debug-surface-light: #f7f9fc;
   --debug-grid: rgb(255 255 255 / 6%);
-}
-
-html:not(.dark) #chatbot-input::placeholder {
-  color: rgb(0 0 0 / 40%) !important;
-}
-
-html:not(.dark) .chatbot-send-btn,
-html:not(.dark) #chatbot-voice-btn {
-  background: #007AFF !important;
-  color: #fff !important;
-}
-
-html:not(.dark) .chatbot-send-btn:hover,
-html:not(.dark) #chatbot-voice-btn:hover {
-  background: #0051D5 !important;
 }
 
 /* Debug Runner Game - Theme Aware */
