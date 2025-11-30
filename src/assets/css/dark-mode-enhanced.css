@@ -234,7 +234,7 @@ html.dark section {
 }
 
 html.dark #home {
-    background: linear-gradient(180deg, #0a0d1a 0%, #020518 100%) !important;
+    background: #000000 !important;
 }
 
 html.dark #about,
