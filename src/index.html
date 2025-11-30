@@ -854,7 +854,7 @@
       </div>
     </section>
     <!-- About Section -->
-    <section id="about" class="fade-in py-32 bg-white">
+    <section id="about" class="fade-in py-32">
       <div class="container">
         <h2>About Me</h2>
 
@@ -900,7 +900,7 @@
       </div>
     </section>
     <!-- Skills Section -->
-    <section id="skills" class="fade-in py-32 bg-white">
+    <section id="skills" class="fade-in py-32">
       <div class="container">
         <h2>Skills & Technologies</h2>
 
@@ -949,7 +949,7 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="fade-in py-32 bg-gray-100">
+    <section id="experience" class="fade-in py-32">
       <div class="container">
         <h2>Professional Experience</h2>
 
@@ -1253,7 +1253,7 @@
     </section>
 
     <!-- Projects Section - Dynamic GitHub Integration -->
-    <section id="projects" class="fade-in py-32 bg-white">
+    <section id="projects" class="fade-in py-32">
       <div class="container">
         <h2>Latest Projects</h2>
 
@@ -1348,7 +1348,7 @@
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="fade-in py-32 bg-gray-100">
+    <section id="education" class="fade-in py-32">
       <div class="container">
         <h2>Education</h2>
 
@@ -1461,7 +1461,7 @@
     </section>
 
     <!-- Publications Section -->
-    <section id="publications" class="fade-in py-32 bg-gray-100">
+    <section id="publications" class="fade-in py-32">
       <div class="container">
         <h2>Recent Publications</h2>
 
@@ -1504,7 +1504,7 @@
       </div>
     </section>
     <!-- Awards Section -->
-    <section id="awards" class="fade-in py-32 bg-white">
+    <section id="awards" class="fade-in py-32">
       <div class="container">
         <h2>Honors & Awards</h2>
 
@@ -1565,7 +1565,7 @@
     </section>
 
     <!-- Recommendations Section -->
-    <section id="recommendations" class="fade-in py-32 bg-gray-100">
+    <section id="recommendations" class="fade-in py-32">
       <div class="container">
         <h2>Recommendations</h2>
 
@@ -1674,7 +1674,7 @@
       </div>
     </section>
     <!-- Certifications Section -->
-    <section id="certifications" class="fade-in py-32 bg-white">
+    <section id="certifications" class="fade-in py-32">
       <div class="container">
         <h2>Licenses & Certifications</h2>
         <div class="certifications-grid mt-12">
@@ -1838,7 +1838,7 @@
     </section>
     <!-- Contact Section -->
     <!-- Blog Section -->
-    <section id="blog" class="fade-in py-32 bg-white">
+    <section id="blog" class="fade-in py-32">
       <div class="container">
         <h2>Technical Writings</h2>
         <p class="text-center text-secondary max-w-2xl mx-auto mb-12">
@@ -1855,7 +1855,7 @@
 
 
 
-    <section id="contact" class="fade-in py-32 bg-gray-100">
+    <section id="contact" class="fade-in py-32">
       <div class="container">
         <h2>Get In Touch</h2>
         <div class="row">
@@ -2398,6 +2398,38 @@
     <!-- Debug Runner Game Module - Easter Egg Game -->
     <script type="module" src="js/modules/debug-runner.js"></script>
 
+    <!-- Global Error Handler -->
+    <script>
+      // Global error handler to catch unhandled errors
+      window.addEventListener('error', function (event) {
+        console.error('🚨 Global Error Caught:', {
+          message: event.message,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+          error: event.error
+        });
+
+        // Prevent default error handling to avoid console spam
+        // but still log for debugging
+        return false;
+      });
+
+      // Handle unhandled promise rejections
+      window.addEventListener('unhandledrejection', function (event) {
+        console.error('🚨 Unhandled Promise Rejection:', {
+          reason: event.reason,
+          promise: event.promise
+        });
+
+        // Prevent default to avoid console spam
+        event.preventDefault();
+      });
+
+      // Log successful initialization
+      console.log('✅ Global error handlers initialized');
+    </script>
+
     <!-- Blog Loader Module -->
     <script type="module" src="js/modules/blog-loader.js"></script>
 
@@ -2512,7 +2544,8 @@
     <script src="js/modules/search.js" type="module"></script>
 
     <!-- Chatbot Upgrade 2025 Dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Marked.js already loaded in head with defer -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
