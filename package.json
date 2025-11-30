@@ -2,22 +2,36 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "dev": "node scripts/local-server.js",
+    "build:css": "npx @tailwindcss/cli -i ./src/assets/css/tailwind-input.css -o ./src/assets/css/tailwind-output.css --minify",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "node scripts/local-server.js",
+    "dev:backend": "uvicorn api.index:app --reload --port 8000",
     "security-check": "node scripts/security-check.js",
     "check-secrets": "npm run security-check",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest",
     "open": "open src/index.html"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/cli": "^4.1.17",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
     "stylelint": "^16.25.0",
     "stylelint-config-standard": "^39.0.1",
-    "dotenv": "^16.4.5"
+    "tailwindcss": "^4.1.17",
+    "vitest": "^4.0.14"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.12.2",
+    "concurrently": "^9.2.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "firebase": "^12.4.0",
+    "http-proxy-middleware": "^3.0.5",
     "limiter": "^3.0.0"
   },
   "engines": {

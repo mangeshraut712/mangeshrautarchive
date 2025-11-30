@@ -20,7 +20,7 @@ html:not(.dark) #blog {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -256,7 +256,6 @@ html.dark .blog-modal-container {
     border-radius: 50%;
     background: rgb(255 255 255 / 90%);
     backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
     border: 1px solid rgb(0 0 0 / 10%);
     box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
     cursor: pointer;
@@ -305,7 +304,6 @@ html.dark .blog-modal-container {
 
 html.dark .blog-modal-close {
     background: rgb(44 44 46 / 90%);
-    backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-color: rgb(255 255 255 / 15%);
     box-shadow: 0 8px 24px rgb(0 0 0 / 50%);
@@ -412,7 +410,7 @@ html.dark .article-title {
 }
 
 /* Responsive Design */
-@media (width <= 768px) {
+@media (width <=768px) {
     #blog-posts-container {
         grid-template-columns: 1fr;
         gap: 1.5rem;

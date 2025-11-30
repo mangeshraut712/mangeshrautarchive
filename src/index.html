@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="theme-color" content="#0071e3" />
+  <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -14,20 +15,28 @@
   <title>Mangesh Raut - Software Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <script>
-    // Suppress Tailwind CDN production warning for portfolio
-    const originalWarn = console.warn;
-    console.warn = function (message, ...args) {
-      if (message && message.includes && message.includes('cdn.tailwindcss.com should not be used in production')) {
-        return; // Suppress this specific warning
-      }
-      originalWarn.call(console, message, ...args);
-    };
 
+  <!-- JSON-LD Structured Data for SEO -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mangesh Raut",
+      "jobTitle": "Software Engineer",
+      "url": "https://mangeshraut.vercel.app",
+      "sameAs": [
+        "https://linkedin.com/in/mangeshraut71298",
+        "https://github.com/mangeshraut712"
+      ],
+      "knowsAbout": ["Java", "Python", "Spring Boot", "AngularJS", "AWS", "Machine Learning"],
+      "alumniOf": "Drexel University"
+    }
+  </script>
+
+  <script>
     // API Keys - Only OpenRouter is used (backend on Vercel)
     // Note: OpenRouter API key is stored securely in Vercel environment variables
     // Frontend doesn't need API keys - all calls go through Vercel backend
@@ -35,7 +44,7 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/tailwind-output.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
 
@@ -2323,8 +2332,8 @@
 
       <!-- Input Area -->
       <form class="chatbot-input-area" id="chatbot-form">
-        <input type="text" id="chatbot-input" placeholder="Ask me anything..." autocomplete="off"
-          aria-label="Message AssistMe" required />
+        <input type="text" id="chatbot-input" placeholder="Ask me anything..." autocomplete="off" autocorrect="off"
+          autocapitalize="off" spellcheck="false" aria-label="Message AssistMe" required />
 
         <button type="submit" class="chatbot-btn chatbot-send-btn" aria-label="Send message" title="Send message">
           <i class="fas fa-paper-plane"></i>
@@ -2570,6 +2579,32 @@
           }, 2000);
         }
       });
+    </script>
+
+    <!-- 🚀 2025 ENHANCEMENTS - Agentic AI, 3D Background, Accessibility -->
+    <script type="module" src="js/modules/agentic-actions.js"></script>
+    <script type="module" src="js/modules/3d-background.js"></script>
+    <script type="module" src="js/modules/accessibility.js"></script>
+
+    <script>
+      // Log 2025 enhancements status
+      console.log('🚀 2025 Enhancements Loading...');
+      console.log('✨ Agentic AI Actions: Enabled');
+      console.log('🎨 3D Interactive Background: Enabled');
+      console.log('♿ Accessibility Features: Enabled');
+
+      // Register Service Worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('service-worker.js')
+            .then(registration => {
+              console.log('✅ ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(err => {
+              console.log('❌ ServiceWorker registration failed: ', err);
+            });
+        });
+      }
     </script>
 </body>
 

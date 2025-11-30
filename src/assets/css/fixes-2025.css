@@ -210,7 +210,6 @@ html.dark #chatbot-toggle:hover {
 .global-nav {
   background: rgb(255 255 255 / 80%);
   backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
   border-bottom: 1px solid rgb(0 0 0 / 10%);
 }
 
@@ -299,7 +298,6 @@ html.dark .menu-toggle-button {
     border-radius: 999px !important;
     background: rgb(255 255 255 / 70%) !important;
     backdrop-filter: blur(16px) !important;
-    backdrop-filter: blur(16px) !important;
     box-shadow: 0 4px 16px rgb(0 0 0 / 8%) !important;
     color: var(--color-text-primary) !important;
     font-weight: 600 !important;
@@ -327,7 +325,6 @@ html.dark .menu-toggle-button {
 
     /* Minimal padding */
     background: rgb(255 255 255 / 98%);
-    backdrop-filter: blur(24px);
     backdrop-filter: blur(24px);
     z-index: 10002 !important;
   }
@@ -494,7 +491,7 @@ html {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border-width: 0;
 }
@@ -529,7 +526,6 @@ button:focus-visible {
    PRINT STYLES
    ═══════════════════════════════════════════════════════════ */
 @media print {
-
   #go-to-top,
   #chatbot-toggle,
   #chatbot-widget {
@@ -552,7 +548,6 @@ button:focus-visible {
 }
 
 @media (width <=768px) {
-
   .overlay-nav a,
   .overlay-nav-link {
     font-size: 1.25rem !important;
@@ -562,7 +557,6 @@ button:focus-visible {
 }
 
 @media (width <=480px) {
-
   .overlay-nav a,
   .overlay-nav-link {
     font-size: 1.1rem !important;
@@ -821,6 +815,7 @@ html.dark .blog-read-btn:hover {
    ═══════════════════════════════════════════════════════════ */
 
 /* Chatbot Light Mode Fixes - Moved to chatbot-complete.css */
+
 /* All chatbot styling is now in chatbot-complete.css for consistency */
 
 :root {
@@ -938,7 +933,7 @@ html.dark #debug-runner-container:hover {
   max-width: 100% !important;
   max-height: 540px;
   border-radius: 14px;
-  background: #000000;
+  background: #000;
   border: 1px solid rgb(255 255 255 / 8%);
 }
 

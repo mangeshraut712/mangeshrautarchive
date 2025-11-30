@@ -6,7 +6,7 @@ function applyCors(res, origin) {
     'http://localhost:8080',
     'http://127.0.0.1:8080'
   ];
-  
+
   // Check if origin matches any allowed origin or is a subdomain
   const isAllowed = allowedOrigins.some(allowed => {
     if (origin === allowed) return true;
@@ -16,14 +16,14 @@ function applyCors(res, origin) {
     }
     return false;
   });
-  
+
   if (origin && isAllowed) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   } else {
     // Default to GitHub Pages origin if no origin header or not allowed
     res.setHeader('Access-Control-Allow-Origin', 'https://mangeshraut712.github.io');
   }
-  
+
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
@@ -45,42 +45,23 @@ export default function handler(req, res) {
   }
 
   try {
-    // Check availability based on environment variables
-    const status = {
-      openrouter: {
-        available: !!process.env.OPENROUTER_API_KEY,
-      },
-      grok: {
-        available: !!(process.env.GROK_API_KEY || process.env.XAI_API_KEY),
-      },
-      anthropic: {
-        available: !!(process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY),
-      },
-      perplexity: {
-        available: !!process.env.PERPLEXITY_API_KEY,
-      },
-      gemini: {
-        available: !!process.env.GEMINI_API_KEY,
-      },
-      huggingface: {
-        available: !!process.env.HUGGINGFACE_API_KEY,
-      },
-      openai: {
-        available: !!(process.env.OPENAI_API_KEY || process.env.GPT_API_KEY),
-      },
-    };
+    // Check OpenRouter availability (only provider used)
+    const openrouterAvailable = !!process.env.OPENROUTER_API_KEY;
 
-    // Force response format compatibility
     const response = {
-      ...status,
+      status: 'ok',
+      provider: 'OpenRouter',
+      available: openrouterAvailable,
+      model: 'x-ai/grok-4.1-fast:free',
       timestamp: new Date().toISOString(),
       server: 'local',
-      version: '1.0'
+      version: '2.0',
+      environment: process.env.NODE_ENV || 'development'
     };
 
     console.log('📊 API Status Check:', {
       environment: process.env.NODE_ENV || 'development',
-      providers: Object.entries(status).map(([name, data]) => `${name}: ${data.available ? '✅' : '❌'}`),
+      openrouter: openrouterAvailable ? '✅' : '❌'
     });
 
     res.status(200).json(response);

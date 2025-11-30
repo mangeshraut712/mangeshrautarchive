@@ -17,7 +17,7 @@ html:not(.dark) #about {
 
 /* About Content Container */
 .about-content {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 3rem auto 0;
 }
 
@@ -226,7 +226,7 @@ html:not(.dark) .about-highlight-text {
 }
 
 /* Responsive Design */
-@media (width <= 1024px) {
+@media (width <=1024px) {
     .about-main {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -237,7 +237,7 @@ html:not(.dark) .about-highlight-text {
     }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
     .about-image {
         height: 350px;
     }

@@ -714,7 +714,7 @@ class DebugRunner {
                 this.ctx.stroke();
                 break;
 
-            case 'fire':
+            case 'fire': {
                 // Draw production fire as animated flame
                 const flameHeight = obstacle.height + Math.sin(Date.now() * 0.02) * 5;
                 this.ctx.fillStyle = obstacle.color;
@@ -725,6 +725,7 @@ class DebugRunner {
                 this.ctx.closePath();
                 this.ctx.fill();
                 break;
+            }
         }
     }
 

@@ -18,26 +18,13 @@ const projectRoot = resolve(__dirname, '..');
 // Middleware to parse JSON bodies, which is needed for our API
 app.use(express.json());
 
-// API Route Handler
-// This intercepts requests to /api/* and dynamically loads the corresponding
-// Vercel function from the /api directory.
-app.all('/api/:apiName', async (req, res) => {
-    const { apiName } = req.params;
-    const functionPath = join(projectRoot, 'api', `${apiName}.js`);
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
-    try {
-        // Dynamically import the handler function
-        const { default: handler } = await import(functionPath);
-        
-        // Execute the Vercel function handler with the Express request and response
-        console.log(`[Local Server] Executing API function: /api/${apiName}`);
-        await handler(req, res);
-
-    } catch (error) {
-        console.error(`[Local Server] Error loading or executing API function /api/${apiName}:`, error);
-        res.status(500).json({ error: `Could not execute function for /api/${apiName}.` });
-    }
-});
+// Proxy API requests to Python backend
+app.use('/api', createProxyMiddleware({
+    target: 'http://127.0.0.1:8000',
+    changeOrigin: true,
+}));
 
 // Serve static files from the 'src' directory
 const staticPath = join(projectRoot, 'src');

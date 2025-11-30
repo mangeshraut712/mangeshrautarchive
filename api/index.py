@@ -102,31 +102,70 @@ PORTFOLIO_SUMMARY = {
     }
 }
 
-SYSTEM_PROMPT = """You are AssistMe, an intelligent AI assistant powered by OpenRouter using advanced models like Google's Gemini 2.0 Flash, Llama 3.3, and DeepSeek.
+SYSTEM_PROMPT = """You are AssistMe, an intelligent AI assistant for Mangesh Raut's portfolio, powered by OpenRouter using Grok 4.1 Fast.
 
 Your Core Instructions:
-1. **Portfolio Expert**: You have full access to Mangesh Raut's professional background (provided below). Answer questions about his experience, skills, and projects with high accuracy.
-2. **General Knowledge**: You are a capable AI assistant. You CAN answer general questions about the world, technology, science, history, and current events (up to your knowledge cutoff).
-   - Example: If asked "Who is the CEO of Meta?", answer "Mark Zuckerberg".
-   - Example: If asked "Explain quantum computing", provide a clear explanation.
-3. **Coding Assistant**: You can write, debug, and explain code in various languages (Python, Java, JavaScript, etc.).
+1. **Portfolio Expert**: You have complete access to Mangesh Raut's professional information (provided below). Answer ALL questions about his experience, skills, projects, and background with high accuracy and detail.
+
+2. **Professional Tone**: Be friendly, professional, and enthusiastic when discussing Mangesh's qualifications and achievements.
+
+3. **Detailed Responses**: When asked about experience, skills, or projects, provide specific details, metrics, and achievements.
+
+4. **General Knowledge**: You can also answer general questions about technology, programming, and career advice.
 
 Guidelines:
-- Be professional, concise, and friendly.
-- If a question is about Mangesh, prioritize the provided LinkedIn/Portfolio data.
-- If a question is NOT about Mangesh, answer it directly using your general knowledge.
-- Do NOT say "I don't have access to real-time info" for static facts (like CEOs of major companies).
-- Keep responses under 200 words unless detailed explanation is requested.
+- **Be Specific**: Use exact numbers, dates, and achievements from the portfolio data
+- **Highlight Strengths**: Emphasize Mangesh's key skills (Java Spring Boot, Python, AWS, ML)
+- **Show Impact**: Mention quantifiable achievements (40% efficiency gains, 35% faster deployments, etc.)
+- **Be Concise**: Keep responses under 200 words unless detailed explanation is requested
+- **Be Helpful**: If asked about contact, provide email and LinkedIn
 
-CRITICAL EDUCATION INFO:
-- Mangesh's HIGHEST COMPLETED qualification is: Bachelor of Engineering in Computer Engineering (2014-2017, graduated 2017)
-- He is CURRENTLY PURSUING: Master of Science in Computer Science at Drexel University (2023-2025, expected 2025)
-- When asked about "highest qualification", say: "Bachelor's degree in Computer Engineering (completed 2017). He is currently pursuing a Master's at Drexel University."
+CRITICAL PORTFOLIO INFO:
+
+**Current Role**:
+- Software Engineer at Customized Energy Solutions (Aug 2024 - Present)
+- Key Achievements:
+  * Reduced dashboard latency by 40% through React optimization
+  * Accelerated CI/CD deployments by 35% with Jenkins automation
+  * Improved ML model accuracy by 25% for energy forecasting
+  * Architected scalable microservices with Spring Boot and AWS
+
+**Previous Role**:
+- Software Engineer at IoasiZ (Jul 2023 - Jul 2024)
+- Key Achievements:
+  * Refactored legacy codebase with 20% code reduction
+  * Resolved 50+ critical microservices bugs
+  * Integrated Redis caching for 3x faster data retrieval
+  * Improved network latency by 35%
+
+**Technical Skills**:
+- **Languages**: Java, Python, SQL, JavaScript, TypeScript
+- **Frameworks**: Spring Boot, AngularJS, React, TensorFlow, scikit-learn
+- **Cloud & DevOps**: AWS (EC2, S3, Lambda), Docker, Jenkins, Terraform
+- **Databases**: PostgreSQL, MongoDB, MySQL, Redis
+- **Tools**: Git, Jira, Tableau, Wireshark, Postman
+
+**Education**:
+- Master of Science in Computer Science - Drexel University (2023-2025, In Progress)
+- Bachelor of Engineering in Computer Engineering - Pune University (2014-2017, GPA 3.6)
+
+**Notable Projects**:
+1. Starlight Blogging Website - Angular, Flask, SQLite (100+ users)
+2. Face Emotion Recognition - Python, OpenCV, ML (95% accuracy)
+3. PC Crime Detector - Java, Database (80% breach reduction)
+
+**Contact**:
+- Email: mbr63@drexel.edu
+- LinkedIn: linkedin.com/in/mangeshraut71298
+- GitHub: github.com/mangeshraut712
+- Location: Philadelphia, PA
+
+When answering about Mangesh, be enthusiastic and highlight his strong technical background, proven track record of delivering measurable results, and expertise in full-stack development and ML.
 """
 
 # Cache
 response_cache = {}
-CACHE_DURATION = 300  # 5 minutes
+CACHE_DURATION = 300 # 5 minutes
 
 # Request Models
 class ChatRequest(BaseModel):
@@ -217,42 +256,53 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
     
     # Time
     if 'time' in lower and 'timezone' not in lower:
+        answer = f"⏰ Current time is {now.strftime('%I:%M %p')}"
         return {
-            "answer": f"⏰ Current time is {now.strftime('%I:%M %p')}",
-            "source": "Direct Command",
-            "model": "Built-in",
-            "category": "Time & Date",
+            "answer": answer,
+            "source": "Built-in",
+            "sourceLabel": "System",
+            "model": "Direct Command",
+            "category": "Utility",
             "confidence": 1.0,
             "runtime": "0ms",
-            "type": "time",
+            "type": "utility",
             "processingTime": 0,
-            "providers": ["Built-in"]
+            "providers": ["System"],
+            "charCount": len(answer),
+            "safetyScore": 1.0,
+            "timestamp": int(time.time() * 1000)
         }
     
     # Date
     if 'date' in lower or 'today' in lower:
+        answer = f"📅 Today is {now.strftime('%A, %B %d, %Y')}"
         return {
-            "answer": f"📅 Today is {now.strftime('%A, %B %d, %Y')}",
-            "source": "Direct Command",
-            "model": "Built-in",
-            "category": "Time & Date",
+            "answer": answer,
+            "source": "Built-in",
+            "sourceLabel": "System",
+            "model": "Direct Command",
+            "category": "Utility",
             "confidence": 1.0,
             "runtime": "0ms",
-            "type": "time",
+            "type": "utility",
             "processingTime": 0,
-            "providers": ["Built-in"]
+            "providers": ["System"],
+            "charCount": len(answer),
+            "safetyScore": 1.0,
+            "timestamp": int(time.time() * 1000)
         }
     
     return None
 
 async def call_openrouter_stream(model: str, messages: List[Dict]):
+    """Optimized streaming with immediate chunk forwarding for faster responses"""
     print(f"🔄 Streaming request to OpenRouter with model: {model}")
     if not OPENROUTER_API_KEY:
         print("❌ OpenRouter API key is MISSING in call_openrouter_stream")
         yield json.dumps({"error": "OpenRouter API key not configured. Please set OPENROUTER_API_KEY in Vercel environment variables."}) + "\n"
         return
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=60.0) as client:
         try:
             async with client.stream(
                 "POST",
@@ -267,10 +317,9 @@ async def call_openrouter_stream(model: str, messages: List[Dict]):
                     "model": model,
                     "messages": messages,
                     "temperature": 0.7,
-                    "max_tokens": 1000,
+                    "max_tokens": 1500,  # Increased for longer responses
                     "stream": True
-                },
-                timeout=30.0
+                }
             ) as response:
                 if response.status_code != 200:
                     error_text = await response.aread()
@@ -278,18 +327,46 @@ async def call_openrouter_stream(model: str, messages: List[Dict]):
                     yield json.dumps({"error": f"OpenRouter Error {response.status_code}: {error_text.decode()}"}) + "\n"
                     return
 
+                # Buffer for incomplete lines
+                buffer = ""
+                
+                # Process chunks immediately as they arrive
                 async for line in response.aiter_lines():
+                    if not line:
+                        continue
+                        
                     if line.startswith("data: "):
                         data = line[6:]
                         if data == "[DONE]":
                             break
                         try:
                             json_data = json.loads(data)
-                            content = json_data["choices"][0]["delta"].get("content", "")
+                            
+                            # Extract content
+                            content = json_data.get("choices", [{}])[0].get("delta", {}).get("content", "")
                             if content:
                                 yield json.dumps({"chunk": content}) + "\n"
-                        except:
+                            
+                            # Extract metadata (usage, model, etc.)
+                            metadata_update = {}
+                            
+                            if "usage" in json_data:
+                                metadata_update["usage"] = json_data["usage"]
+                                # Calculate tokens/sec if possible
+                                if "total_tokens" in json_data["usage"]:
+                                    metadata_update["tokens"] = json_data["usage"]["total_tokens"]
+                            
+                            if "model" in json_data:
+                                metadata_update["model"] = json_data["model"]
+                                
+                            if metadata_update:
+                                yield json.dumps(metadata_update) + "\n"
+                                
+                        except json.JSONDecodeError:
                             continue
+                        except (KeyError, IndexError):
+                            continue
+                            
         except Exception as e:
             print(f"❌ Stream Exception: {str(e)}")
             yield json.dumps({"error": str(e)}) + "\n"
@@ -418,6 +495,24 @@ async def chat_endpoint(request: ChatRequest):
                 response = await call_openrouter(model_info['id'], conversation)
                 
                 runtime = int((time.time() - start_time) * 1000)
+                
+                # Calculate tokens/sec if usage data available
+                tokens_per_second = None
+                total_tokens = response.get("usage", {}).get("total_tokens")
+                if total_tokens and runtime > 0:
+                    tokens_per_second = round((total_tokens / (runtime / 1000)), 2)
+                
+                # Calculate cost (approximate - $0.0001 per 1K tokens for free tier)
+                cost = None
+                if total_tokens:
+                    cost = round((total_tokens / 1000) * 0.0001, 6)
+                
+                # Character count
+                char_count = len(response["answer"]) if response.get("answer") else 0
+                
+                # Safety score (default high for OpenRouter - they filter content)
+                safety_score = 0.95  # 95% safe by default
+                
                 result = {
                     "answer": response["answer"],
                     "source": "OpenRouter",
@@ -428,8 +523,19 @@ async def chat_endpoint(request: ChatRequest):
                     "type": type_,
                     "processingTime": runtime,
                     "providers": ["OpenRouter"],
-                    "usage": response["usage"]
+                    "usage": response["usage"],
+                    "charCount": char_count,
+                    "safetyScore": safety_score,
+                    "timestamp": int(time.time() * 1000)  # Unix timestamp in ms
                 }
+                
+                # Add tokens/sec if calculated
+                if tokens_per_second:
+                    result["tokensPerSecond"] = tokens_per_second
+                
+                # Add cost if calculated
+                if cost:
+                    result["cost"] = cost
                 
                 # set_cached_response(cache_key, result)
                 return result

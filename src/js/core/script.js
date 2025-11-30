@@ -118,19 +118,29 @@ class ChatUI {
         }
 
         if (this.elements.input) {
-            this.elements.input.addEventListener('keypress', (event) => {
+            // Optimize keyboard handling - only handle Enter key
+            this.elements.input.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter' && !event.shiftKey) {
                     event.preventDefault();
                     this._handleUserInput();
                 }
             });
 
-            this.elements.input.addEventListener('input', (event) => {
-                this._handleTyping(event.target.value);
+            // REMOVED: input event listener that was causing lag
+            // The constant firing of _handleTyping on every keystroke was blocking the input
+
+            // Only update suggestions on focus, not on every keystroke
+            this.elements.input.addEventListener('focus', () => {
+                // Debounce the suggestion update
+                if (this.focusTimeout) clearTimeout(this.focusTimeout);
+                this.focusTimeout = setTimeout(() => {
+                    this._updateSuggestions();
+                }, 300);
             });
 
-            this.elements.input.addEventListener('focus', () => {
-                this._updateSuggestions();
+            // Update suggestions when user stops typing (on blur)
+            this.elements.input.addEventListener('blur', () => {
+                if (this.focusTimeout) clearTimeout(this.focusTimeout);
             });
         }
 
@@ -297,29 +307,72 @@ class ChatUI {
 
             let assistantMessageElement = null;
             let currentContent = '';
+            let pendingUpdate = false;
+            let lastScrollTime = 0;
+
+            // Real-time tokens/sec tracking
+            let streamStartTime = Date.now();
+            let totalChars = 0;
+            let liveMetadataDiv = null;
 
             const response = await chatAssistant.ask(text, {
                 context,
                 onChunk: (chunk) => {
                     // Hide typing indicator on first chunk
-                    if (features.enableTypingIndicator) {
+                    if (features.enableTypingIndicator && !assistantMessageElement) {
                         this._hideTypingIndicator();
+                        streamStartTime = Date.now(); // Reset start time on first chunk
                     }
 
                     // Create message element if not exists
                     if (!assistantMessageElement) {
-                        assistantMessageElement = this._createMessageElement('', 'assistant', Date.now());
+                        assistantMessageElement = this._createMessageElement('', 'assistant', Date.now(), {}, true);
                         this._addMessageElement(assistantMessageElement);
+
+                        // Create live metadata div for streaming stats
+                        liveMetadataDiv = document.createElement('div');
+                        liveMetadataDiv.className = 'message-metadata live-streaming';
+                        assistantMessageElement.appendChild(liveMetadataDiv);
                     }
 
-                    // Append content
+                    // Append content immediately
                     currentContent += chunk;
-                    const contentDiv = assistantMessageElement.querySelector('.message-content');
-                    if (contentDiv) {
-                        // Simple text update for streaming (markdown rendered later)
-                        contentDiv.textContent = currentContent;
+                    totalChars += chunk.length;
+
+                    // Calculate real-time tokens/sec (approx 4 chars = 1 token)
+                    const elapsedSeconds = (Date.now() - streamStartTime) / 1000;
+                    const estimatedTokens = Math.ceil(totalChars / 4);
+                    const tokensPerSecond = elapsedSeconds > 0 ? (estimatedTokens / elapsedSeconds) : 0;
+
+                    // Batch DOM updates using requestAnimationFrame for smooth 60fps
+                    if (!pendingUpdate) {
+                        pendingUpdate = true;
+                        requestAnimationFrame(() => {
+                            const contentDiv = assistantMessageElement.querySelector('.message-content');
+                            if (contentDiv) {
+                                // Update text content with typing cursor effect
+                                contentDiv.textContent = currentContent + '▊';
+
+                                // Update live metadata with real-time stats
+                                if (liveMetadataDiv && elapsedSeconds > 0.1) {
+                                    const tps = Math.round(tokensPerSecond * 10) / 10;
+                                    liveMetadataDiv.innerHTML = `
+                                        <span class="token-speed live-stat">⚡ ${tps} tok/s</span>
+                                        <span class="token-usage live-stat">🎯 ${estimatedTokens} tokens</span>
+                                        <span class="processing-time live-stat">⏱️ ${Math.round(elapsedSeconds * 10) / 10}s</span>
+                                    `;
+                                }
+
+                                // Throttle scroll updates (max 60fps)
+                                const now = Date.now();
+                                if (now - lastScrollTime > 16) { // ~60fps
+                                    this._scrollToBottom();
+                                    lastScrollTime = now;
+                                }
+                            }
+                            pendingUpdate = false;
+                        });
                     }
-                    this._scrollToBottom();
                 }
             });
 
@@ -331,9 +384,13 @@ class ChatUI {
             const { content, metadata } = this._formatAssistantResponse(response);
 
             if (assistantMessageElement) {
-                // Update existing element
+                // Update existing element - remove typing cursor first
                 const contentDiv = assistantMessageElement.querySelector('.message-content');
                 if (contentDiv) {
+                    // Remove typing cursor before final render
+                    contentDiv.textContent = currentContent;
+
+                    // Then apply markdown/HTML if available
                     if (content?.html && features.enableMarkdownRendering) {
                         const safeHtml = htmlSanitizer ? htmlSanitizer.sanitize(content.html) : content.html;
                         contentDiv.innerHTML = safeHtml;
@@ -343,14 +400,105 @@ class ChatUI {
                             });
                         }
                     } else {
-                        contentDiv.textContent = content?.text || content;
+                        contentDiv.textContent = content?.text || currentContent;
                     }
                 }
 
-                // Add metadata
+                // Add complete metadata after streaming (matching comprehensive format)
                 const metaChips = [];
-                if (metadata.model) metaChips.push(this._createMetaChip('model-info', metadata.model));
-                if (metadata.confidence) metaChips.push(this._createMetaChip('response-confidence', `Confidence: ${Math.round(metadata.confidence * 100)}%`));
+
+                // Model ID/Version
+                if (metadata.model) {
+                    metaChips.push(this._createMetaChip('model-info', `🤖 ${metadata.model}`));
+                }
+
+                // Category
+                if (metadata.category) {
+                    metaChips.push(this._createMetaChip('category-info', `📁 ${metadata.category}`));
+                }
+
+                // Source
+                if (metadata.source) {
+                    metaChips.push(this._createMetaChip('response-source', `🔌 ${metadata.source}`));
+                }
+
+                // Runtime/Latency
+                if (metadata.processingTime || metadata.runtime) {
+                    const time = this._formatProcessingTime(metadata.processingTime || metadata.runtime);
+                    if (time) {
+                        metaChips.push(this._createMetaChip('processing-time', `⏱️ ${time}`));
+                    }
+                }
+
+                // Token Usage
+                if (metadata.tokens !== undefined) {
+                    metaChips.push(this._createMetaChip('token-usage', `🎯 ${metadata.tokens} tokens`));
+                } else if (totalChars > 0) {
+                    const estimatedTokens = Math.ceil(totalChars / 4);
+                    metaChips.push(this._createMetaChip('token-usage', `🎯 ${estimatedTokens} tokens`));
+                }
+
+                // Tokens/Second
+                if (metadata.tokensPerSecond !== undefined) {
+                    const tps = Math.round(metadata.tokensPerSecond * 10) / 10;
+                    metaChips.push(this._createMetaChip('token-speed', `⚡ ${tps} tok/s`));
+                } else if (totalChars > 0 && streamStartTime) {
+                    const totalSeconds = (Date.now() - streamStartTime) / 1000;
+                    const estimatedTokens = Math.ceil(totalChars / 4);
+                    const tps = Math.round((estimatedTokens / totalSeconds) * 10) / 10;
+                    metaChips.push(this._createMetaChip('token-speed', `⚡ ${tps} tok/s`));
+                }
+
+                // Token Cost
+                if (metadata.cost !== undefined) {
+                    const costStr = typeof metadata.cost === 'number'
+                        ? `$${metadata.cost.toFixed(4)}`
+                        : metadata.cost;
+                    metaChips.push(this._createMetaChip('token-cost', `💰 ${costStr}`));
+                }
+
+                // Character Count
+                if (currentContent) {
+                    const charCount = currentContent.length;
+                    metaChips.push(this._createMetaChip('char-count', `📝 ${charCount} chars`));
+                }
+
+                // Confidence
+                if (metadata.confidence) {
+                    const confidencePercent = Math.round(metadata.confidence * 100);
+                    metaChips.push(this._createMetaChip('response-confidence', `✓ ${confidencePercent}%`));
+                }
+
+                // Safety Score
+                if (metadata.safetyScore !== undefined) {
+                    const safetyPercent = Math.round(metadata.safetyScore * 100);
+                    const safetyIcon = safetyPercent >= 90 ? '🛡️' : safetyPercent >= 70 ? '⚠️' : '🚫';
+                    metaChips.push(this._createMetaChip('safety-score', `${safetyIcon} ${safetyPercent}% safe`));
+                }
+
+                // Timestamp
+                const timestampStr = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+                metaChips.push(this._createMetaChip('timestamp', `🕐 ${timestampStr}`));
+
+                // Providers (only if different from source)
+                if (Array.isArray(metadata.providers) && metadata.providers.length) {
+                    const providerText = this._formatProviders(metadata.providers);
+                    const isRedundant = metadata.source && providerText.toLowerCase().includes(metadata.source.toLowerCase());
+
+                    if (providerText && !isRedundant) {
+                        metaChips.push(this._createMetaChip('providers-tried', providerText));
+                    }
+                }
+
+                // Remove live metadata and replace with final metadata
+                if (liveMetadataDiv) {
+                    liveMetadataDiv.remove();
+                }
 
                 if (metaChips.length) {
                     let metaDiv = assistantMessageElement.querySelector('.message-metadata');
@@ -360,6 +508,34 @@ class ChatUI {
                         assistantMessageElement.appendChild(metaDiv);
                     }
                     metaChips.forEach(chip => metaDiv.appendChild(chip));
+
+                    // Add action buttons
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'message-actions';
+
+                    // Copy Button
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'msg-action-btn';
+                    copyBtn.title = 'Copy';
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                    copyBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        this._copyMessageText(contentDiv.textContent, copyBtn);
+                    };
+                    actionsDiv.appendChild(copyBtn);
+
+                    // Speak Button
+                    const speakBtn = document.createElement('button');
+                    speakBtn.className = 'msg-action-btn';
+                    speakBtn.title = 'Read Aloud';
+                    speakBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    speakBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        this._speakMessage(contentDiv.textContent, speakBtn);
+                    };
+                    actionsDiv.appendChild(speakBtn);
+
+                    metaDiv.appendChild(actionsDiv);
                 }
             } else {
                 // Fallback if no streaming happened (e.g. local fallback)
@@ -407,7 +583,7 @@ class ChatUI {
         }, 350); // Slightly longer debounce for smoother typing
     }
 
-    _createMessageElement(content, role, timestamp, metadata = {}) {
+    _createMessageElement(content, role, timestamp, metadata = {}, isStreaming = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `${role}-message message`;
         messageDiv.dataset.timestamp = timestamp;
@@ -474,46 +650,110 @@ class ChatUI {
 
         messageDiv.appendChild(contentDiv);
 
+        // Initialize metadata chips array
         const metaChips = [];
 
-        if (metadata.type) {
-            metaChips.push(this._createMetaChip('query-type', this._formatQueryType(metadata.type)));
+        // === PRIMARY METADATA ===
+
+        // Model ID/Version
+        if (metadata.model) {
+            metaChips.push(this._createMetaChip('model-info', `🤖 ${metadata.model}`));
         }
 
+        // Category
+        if (metadata.category) {
+            metaChips.push(this._createMetaChip('category-info', `📁 ${metadata.category}`));
+        }
+
+        // Source
         if (metadata.source) {
-            metaChips.push(this._createMetaChip('response-source', `Source: ${metadata.source}`));
+            metaChips.push(this._createMetaChip('response-source', `🔌 ${metadata.source}`));
         }
 
+        // === PERFORMANCE METRICS ===
+
+        // Runtime/Latency
+        if (metadata.processingTime || metadata.runtime) {
+            const time = this._formatProcessingTime(metadata.processingTime || metadata.runtime);
+            if (time) {
+                metaChips.push(this._createMetaChip('processing-time', `⏱️ ${time}`));
+            }
+        }
+
+        // === TOKEN METRICS ===
+
+        // Token Usage
+        if (metadata.tokens !== undefined) {
+            metaChips.push(this._createMetaChip('token-usage', `🎯 ${metadata.tokens} tokens`));
+        }
+
+        // Tokens/Second (Speed)
+        if (metadata.tokensPerSecond !== undefined) {
+            const tps = Math.round(metadata.tokensPerSecond * 10) / 10;
+            metaChips.push(this._createMetaChip('token-speed', `⚡ ${tps} tok/s`));
+        }
+
+        // Token Cost (if available)
+        if (metadata.cost !== undefined) {
+            const costStr = typeof metadata.cost === 'number'
+                ? `$${metadata.cost.toFixed(4)}`
+                : metadata.cost;
+            metaChips.push(this._createMetaChip('token-cost', `💰 ${costStr}`));
+        }
+
+        // === CHARACTER COUNT ===
+
+        // Character count
+        if (content?.text || content) {
+            const textContent = content?.text || content;
+            const charCount = typeof textContent === 'string' ? textContent.length : 0;
+            if (charCount > 0) {
+                metaChips.push(this._createMetaChip('char-count', `📝 ${charCount} chars`));
+            }
+        }
+
+        // === QUALITY METRICS ===
+
+        // Confidence Score
         if (metadata.confidence !== undefined) {
             const confidenceValue = this._formatConfidence(metadata.confidence);
             if (confidenceValue) {
-                metaChips.push(this._createMetaChip('response-confidence', `Confidence: ${confidenceValue}`));
+                metaChips.push(this._createMetaChip('response-confidence', `✓ ${confidenceValue}`));
             }
         }
 
-        if (metadata.processingTime !== undefined) {
-            const processingValue = this._formatProcessingTime(metadata.processingTime);
-            if (processingValue) {
-                metaChips.push(this._createMetaChip('processing-time', processingValue));
-            }
+        // Safety/Toxicity Score
+        if (metadata.safetyScore !== undefined) {
+            const safetyPercent = Math.round(metadata.safetyScore * 100);
+            const safetyIcon = safetyPercent >= 90 ? '🛡️' : safetyPercent >= 70 ? '⚠️' : '🚫';
+            metaChips.push(this._createMetaChip('safety-score', `${safetyIcon} ${safetyPercent}% safe`));
         }
 
-        if (metadata.tokens !== undefined) {
-            metaChips.push(this._createMetaChip('token-usage', `${metadata.tokens} tokens`));
-        }
+        // === TIMESTAMP ===
 
-        if (metadata.tokensPerSecond !== undefined) {
-            const tps = Math.round(metadata.tokensPerSecond * 10) / 10;
-            metaChips.push(this._createMetaChip('token-speed', `${tps} tokens/s`));
-        }
+        // Timestamp
+        const timestampStr = new Date(timestamp).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+        metaChips.push(this._createMetaChip('timestamp', `🕐 ${timestampStr}`));
 
+        // === ADDITIONAL INFO ===
+
+        // Providers (only if different from source)
         if (Array.isArray(metadata.providers) && metadata.providers.length) {
             const providerText = this._formatProviders(metadata.providers);
-            if (providerText) {
+            // Check if provider text is just the source name
+            const isRedundant = metadata.source && providerText.toLowerCase().includes(metadata.source.toLowerCase());
+
+            if (providerText && !isRedundant) {
                 metaChips.push(this._createMetaChip('providers-tried', providerText));
             }
         }
 
+        // Source Detail
         if (metadata.sourceDetail) {
             metaChips.push(this._createMetaChip('source-detail', metadata.sourceDetail));
         }
@@ -526,7 +766,7 @@ class ChatUI {
             });
 
             // Add Action Buttons to Metadata
-            if (role === 'assistant' && !metadata.error) {
+            if (role === 'assistant' && !metadata.error && !isStreaming) {
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'message-actions';
 
@@ -552,18 +792,7 @@ class ChatUI {
                 };
                 actionsDiv.appendChild(speakBtn);
 
-                // Reaction Button (New)
-                if (window.chatbotUpgrade) {
-                    const reactBtn = document.createElement('button');
-                    reactBtn.className = 'msg-action-btn';
-                    reactBtn.title = 'React';
-                    reactBtn.innerHTML = '<i class="fas fa-smile"></i>';
-                    reactBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        window.chatbotUpgrade.toggleReactions(uniqueId);
-                    };
-                    actionsDiv.appendChild(reactBtn);
-                }
+                // Reaction button removed for cleaner UI
 
                 metaDiv.appendChild(actionsDiv);
             }
@@ -571,7 +800,7 @@ class ChatUI {
             if (metaDiv.childNodes.length) {
                 messageDiv.appendChild(metaDiv);
             }
-        } else if (role === 'assistant' && !metadata.error) {
+        } else if (role === 'assistant' && !metadata.error && !isStreaming) {
             // Create metadata div just for actions if no other chips
             const metaDiv = document.createElement('div');
             metaDiv.className = 'message-metadata';
@@ -594,17 +823,7 @@ class ChatUI {
             };
             actionsDiv.appendChild(speakBtn);
 
-            // Reaction Button
-            if (window.chatbotUpgrade) {
-                const reactBtn = document.createElement('button');
-                reactBtn.className = 'msg-action-btn';
-                reactBtn.innerHTML = '<i class="fas fa-smile"></i>';
-                reactBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    window.chatbotUpgrade.toggleReactions(uniqueId);
-                };
-                actionsDiv.appendChild(reactBtn);
-            }
+            // Reaction button removed for cleaner UI
 
             metaDiv.appendChild(actionsDiv);
             messageDiv.appendChild(metaDiv);
@@ -622,29 +841,75 @@ class ChatUI {
     }
 
     _copyMessageText(text, btn) {
-        navigator.clipboard.writeText(text).then(() => {
-            const original = btn.innerHTML;
-            btn.innerHTML = '✓';
-            setTimeout(() => btn.innerHTML = original, 2000);
-        });
+        if (!navigator.clipboard) {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+        } else {
+            navigator.clipboard.writeText(text);
+        }
+
+        // Visual feedback
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.style.background = 'linear-gradient(135deg, #34c759 0%, #30d158 100%)';
+        btn.title = 'Copied!';
+
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.background = '';
+            btn.title = 'Copy';
+        }, 2000);
     }
 
     _speakMessage(text, btn) {
-        if ('speechSynthesis' in window) {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel();
-                // Reset icon
-                btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
-            } else {
-                const cleanText = text.replace(/[*#`]/g, '').replace(/<[^>]*>/g, '');
-                const utterance = new SpeechSynthesisUtterance(cleanText);
-                utterance.onend = () => {
-                    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
-                };
-                window.speechSynthesis.speak(utterance);
-                // Stop icon
-                btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
-            }
+        if (!('speechSynthesis' in window)) {
+            alert('Text-to-speech is not supported in your browser');
+            return;
+        }
+
+        if (window.speechSynthesis.speaking) {
+            // Stop speaking
+            window.speechSynthesis.cancel();
+            btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            btn.style.background = '';
+            btn.title = 'Read Aloud';
+        } else {
+            // Start speaking
+            const cleanText = text
+                .replace(/[*#`_~]/g, '')  // Remove markdown
+                .replace(/<[^>]*>/g, '')   // Remove HTML
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')  // Remove links
+                .trim();
+
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+
+            utterance.onstart = () => {
+                btn.innerHTML = '<i class="fas fa-stop"></i>';
+                btn.style.background = 'linear-gradient(135deg, #ff3b30 0%, #ff2d21 100%)';
+                btn.title = 'Stop Speaking';
+            };
+
+            utterance.onend = () => {
+                btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                btn.style.background = '';
+                btn.title = 'Read Aloud';
+            };
+
+            utterance.onerror = () => {
+                btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                btn.style.background = '';
+                btn.title = 'Read Aloud';
+            };
+
+            window.speechSynthesis.speak(utterance);
         }
     }
 

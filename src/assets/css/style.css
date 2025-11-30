@@ -111,7 +111,7 @@ html.dark {
     /* Advanced Color System - HSL Based Dark Mode Palette (Apple Event Theme) */
 
     /* Dynamic Dark Mode Color Tokens using modern CSS variables */
-    --color-dark-bg-primary: #000000;
+    --color-dark-bg-primary: #000;
 
     /* Deep Navy Blue from Apple Event */
     --color-dark-bg-secondary: #0b0e1e;
@@ -188,14 +188,14 @@ html.dark {
     --glass-backdrop: blur(20px) saturate(180%);
 
     /* Footer tokens */
-    --footer-bg: #000000;
+    --footer-bg: #000;
     --footer-border: rgb(255 255 255 / 10%);
     --footer-text: #f5f5f7;
     --footer-link: #d2d2d7;
     --footer-link-hover: #2997ff;
 
     /* Advanced Body Background - Apple Event Gradient */
-    background: #000000;
+    background: #000;
 
     /* Modern Animation Timing */
     --animation-fast: cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -715,7 +715,7 @@ section#contact {
 
 .container {
     width: 100%;
-    max-width: 950px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 22px;
 }
@@ -793,7 +793,6 @@ section#contact {
     height: 44px;
     padding: 0 22px;
     background: var(--nav-bg);
-    backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--nav-border);
     color: var(--nav-text);
@@ -2584,9 +2583,7 @@ html.dark .project-card a.text-accent:hover {
     select,
     a[role="button"] {
         appearance: none;
-        appearance: none;
         -webkit-tap-highlight-color: rgb(0 113 227 / 10%);
-        user-select: text;
         user-select: text;
     }
 
@@ -2594,14 +2591,11 @@ html.dark .project-card a.text-accent:hover {
     input:focus,
     textarea:focus {
         user-select: text;
-        user-select: text;
-        appearance: none;
         appearance: none;
     }
 
     /* iOS Safari animation performance */
     .fade-in {
-        backface-visibility: hidden;
         backface-visibility: hidden;
     }
 }
@@ -2723,7 +2717,6 @@ html.dark .project-card a.text-accent:hover {
     .education-card,
     .project-card {
         break-inside: avoid;
-        break-inside: avoid;
     }
 }
 
@@ -2750,7 +2743,6 @@ html.dark .project-card a.text-accent:hover {
     background: linear-gradient(45deg, hsl(54deg 91% 58%), hsl(0deg 0% 80%));
 
     /* Gradient for 3D effect */
-    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -3053,7 +3045,6 @@ html.dark .project-card a.text-accent:hover {
     /* White on hover */
     background: linear-gradient(135deg, #6b7280, #374151);
     background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -3183,7 +3174,6 @@ html.dark .project-card a.text-accent:hover {
     background: linear-gradient(45deg, #f7df1e, #f0c);
 
     /* Gradient for 3D effect */
-    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -3486,7 +3476,6 @@ html.dark .project-card a.text-accent:hover {
     /* White on hover */
     background: linear-gradient(135deg, #6b7280, #374151);
     background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -3666,7 +3655,6 @@ html.dark .theme-toggle-nav i.fa-moon {
 
 .fa-brands.fa-swift {
     background: linear-gradient(135deg, #fa7343, #f90);
-    background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -4637,7 +4625,7 @@ html:not(.dark) #home p {
 
 /* Ensure Background is correct and theme aware */
 html.dark body {
-    background: #000000 !important;
+    background: #000 !important;
     background-attachment: fixed;
 }
 

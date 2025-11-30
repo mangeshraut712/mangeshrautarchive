@@ -32,7 +32,7 @@ html:not(.dark) #experience {
    ======================================== */
 
 #experience .container>div {
-    max-width: 900px;
+    max-width: 100%;
     margin: 3rem auto 0;
     position: relative;
 }
@@ -82,7 +82,7 @@ html.dark #experience .container>div::before {
 
 #experience .education-card::before {
     content: '\f0b1';
-    font-family: 'Font Awesome 6 Free';
+    font-family: 'Font Awesome 6 Free', sans-serif;
     font-weight: 900;
     position: absolute;
     left: 0;
@@ -378,7 +378,7 @@ html:not(.dark) #experience .mb-12:nth-child(5) .education-card p.text-secondary
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (width <= 768px) {
+@media (width <=768px) {
     #experience .container>div::before {
         left: 24px;
     }
@@ -437,7 +437,7 @@ html:not(.dark) #experience .mb-12:nth-child(5) .education-card p.text-secondary
     }
 }
 
-@media (width <= 480px) {
+@media (width <=480px) {
     #experience .education-card ul li {
         font-size: 0.9375rem;
     }

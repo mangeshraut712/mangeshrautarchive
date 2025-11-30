@@ -9,12 +9,12 @@
 
 html.dark {
     /* Enhanced background - Solid Black */
-    background: #000000 !important;
+    background: #000 !important;
     color: #f5f5f7;
 }
 
 html.dark body {
-    background: #000000 !important;
+    background: #000 !important;
     color: #f5f5f7;
 }
 
@@ -187,10 +187,9 @@ html.dark .theme-toggle-nav:hover {
    ======================================== */
 
 html.dark .global-nav {
-    background: rgba(0, 0, 0, 0.85) !important;
+    background: rgb(0 0 0 / 85%) !important;
     border-bottom: 1px solid rgb(255 255 255 / 8%) !important;
     backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 html.dark .nav-link {
@@ -234,7 +233,7 @@ html.dark section {
 }
 
 html.dark #home {
-    background: #000000 !important;
+    background: #000 !important;
 }
 
 html.dark #about,
@@ -330,7 +329,6 @@ html.dark .footer-social-link:hover {
 html.dark .stat-value,
 html.dark .hero-stat-value {
     background: linear-gradient(135deg, #2997ff 0%, #5ac8fa 100%) !important;
-    background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
 }
@@ -345,7 +343,7 @@ html.dark .hero-stat-label {
    ======================================== */
 
 html.dark footer {
-    background: #000000 !important;
+    background: #000 !important;
     border-top: 1px solid rgb(255 255 255 / 8%) !important;
 }
 
@@ -359,6 +357,7 @@ html.dark footer span {
    ======================================== */
 
 /* Chatbot styles moved to chatbot-complete.css */
+
 /* All chatbot styling is now in chatbot-complete.css for consistency */
 
 /* ========================================

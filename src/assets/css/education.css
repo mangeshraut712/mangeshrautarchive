@@ -17,7 +17,7 @@ html:not(.dark) #education {
 
 /* Education Timeline */
 .education-timeline {
-    max-width: 900px;
+    max-width: 100%;
     margin: 3rem auto 0;
     position: relative;
 }
@@ -207,7 +207,7 @@ html:not(.dark) .education-period {
 }
 
 /* Responsive Design */
-@media (width <= 768px) {
+@media (width <=768px) {
     .education-timeline::before {
         left: 24px;
     }

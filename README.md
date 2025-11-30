@@ -9,6 +9,40 @@ A cutting-edge, AI-powered portfolio website featuring **iMessage-style liquid g
 
 ---
 
+## 🚀 NEW: 2025 Enhancements
+
+![2025 Enhancements](/.gemini/antigravity/brain/8945a30b-d332-46e2-966c-7ab0bef12d18/enhancements_2025_showcase_1764507436075.png)
+
+This portfolio now features **three cutting-edge enhancements** that transform it into an intelligent, immersive, and accessible experience:
+
+### 🤖 **Agentic AI Integration**
+The chatbot can now **perform actions**, not just answer questions!
+- "Download your resume" → Triggers download automatically
+- "Schedule a meeting" → Opens calendar interface
+- "Go to projects" → Navigates to section with smooth scroll
+- "Copy your email" → Copies contact info to clipboard
+- **10+ action commands** with natural language detection
+
+### 🎨 **3D Interactive Background**
+Immersive particle system that responds to mouse movement
+- 100+ animated particles with dynamic connections
+- Mouse-reactive movement with repulsion field
+- Theme-aware colors (adapts to dark/light mode)
+- Smooth 60 FPS performance with auto-pause
+- Desktop-only (auto-disables on mobile)
+
+### ♿ **Full Accessibility (WCAG 2.2)**
+Complete keyboard navigation and screen reader support
+- **Keyboard Shortcuts**: `Ctrl+K` search, `Ctrl+D` theme, `Esc` close
+- **Screen Reader**: ARIA live regions and labels
+- **Focus Management**: Skip links, focus trap, visible indicators
+- **User Preferences**: Reduced motion, high contrast support
+- **WCAG 2.2 Level AA** compliant
+
+📚 **[Read Full Documentation](ENHANCEMENTS_2025.md)** | 🎯 **[Quick Start Guide](QUICKSTART_2025.md)** | 🎬 **[View Demo](src/enhancements-demo.html)**
+
+---
+
 ## ✨ Key Features
 
 ### 🤖 **Premium iMessage-Style AI Chatbot**
@@ -25,7 +59,8 @@ A cutting-edge, AI-powered portfolio website featuring **iMessage-style liquid g
 - **S2R Badge**: White background with green text for voice feature visibility
 
 #### **AI Capabilities**
-- **Advanced AI Engine**: Powered by **x-ai/grok-4.1-fast** via OpenRouter API
+- **AI Provider**: **OpenRouter** - Unified API for multiple AI models
+- **Current Model**: **x-ai/grok-4.1-fast** (Free tier)
 - **Real-Time Streaming**: Smooth, typewriter-style response streaming
 - **Portfolio Expert**: Deep knowledge of Mangesh's skills, projects, and experience
 - **Math & Logic**: Solves complex calculations and technical queries

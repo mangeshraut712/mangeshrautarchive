@@ -1,4 +1,5 @@
 import { localConfig } from './config.js';
+import { agenticActions } from '../modules/agentic-actions.js';
 
 let API_BASE = '';
 
@@ -42,47 +43,10 @@ const SOURCE_KEY_ALIASES = {
     'assistme portfolio': 'assistme-portfolio',
     'assistme chat': 'assistme',
     'assistme math': 'assistme-math',
-    'assistme math engine': 'assistme-math',
     'assistme general': 'assistme',
     'assistme utility': 'assistme-utility',
     'portfolio': 'assistme-portfolio',
     'math': 'assistme-math',
-    'openai': 'openai',
-    'openai gpt': 'openai',
-    'gpt': 'openai',
-    'gpt-4': 'openai',
-    'gpt-4o': 'openai',
-    'gpt-35-turbo': 'openai',
-    'gpt-3.5-turbo': 'openai',
-    'anthropic': 'claude',
-    'claude': 'claude',
-    'claude ai': 'claude',
-    'claude 3': 'claude',
-    'sonnet': 'claude',
-    'haiku': 'claude',
-    'grok': 'grok',
-    'xai grok': 'grok',
-    'grok ai': 'grok',
-    'x.ai': 'grok',
-    'gemini': 'gemini',
-    'google gemini': 'gemini',
-    'duckduckgo': 'duckduckgo',
-    'duck duck go': 'duckduckgo',
-    'duckduckgo search': 'duckduckgo',
-    'wikipedia': 'wikipedia',
-    'wiki': 'wikipedia',
-    'wikipedia.org': 'wikipedia',
-    'stack overflow': 'stackoverflow',
-    'stackoverflow': 'stackoverflow',
-    'offline knowledge': 'offline',
-    'offline knowledge base': 'offline',
-    'offline': 'offline',
-    'restcountries': 'country_facts',
-    'country facts': 'country_facts',
-    'perplexity': 'perplexity',
-    'perplexity ai': 'perplexity',
-    'huggingface': 'huggingface',
-    'hugging face': 'huggingface',
     'openrouter': 'openrouter',
     'open router': 'openrouter',
     'local cache': 'assistme',
@@ -95,18 +59,7 @@ const SOURCE_LABELS = {
     'assistme-math': 'AssistMe Math Engine',
     'assistme-utility': 'AssistMe Utility',
     'assistme-general': 'AssistMe',
-    'openai': 'OpenAI',
-    'grok': 'Grok (xAI)',
-    'claude': 'Claude (Anthropic)',
-    'gemini': 'Google Gemini',
-    'duckduckgo': 'DuckDuckGo',
-    'wikipedia': 'Wikipedia',
-    'stackoverflow': 'Stack Overflow',
-    'offline': 'Offline Knowledge Base',
-    'country_facts': 'REST Countries',
-    'perplexity': 'Perplexity AI',
-    'huggingface': 'Hugging Face',
-    'openrouter': 'OpenRouter'
+    'openrouter': 'OpenRouter (Grok 4.1 Fast)'
 };
 
 // Intelligent Chat Assistant with Integrated AI
@@ -231,7 +184,44 @@ class IntelligentAssistant {
             const trimmed = question.trim();
             this._pushConversation('user', trimmed);
 
-            // Process the query
+            // 🎯 NEW: Check for agentic actions first
+            const startTime = Date.now();
+            const actionResult = await agenticActions.detectAndExecute(trimmed);
+
+            if (actionResult.actionDetected) {
+                console.log('✅ Action executed:', actionResult);
+
+                const processingTime = Date.now() - startTime;
+
+                // Create response with action result and consistent metadata
+                const response = {
+                    answer: actionResult.message,
+                    type: 'action',
+                    confidence: 1.0,
+                    source: 'agentic-action',
+                    sourceLabel: 'Agentic AI',
+                    model: 'Action Handler',
+                    action: actionResult.actionName,
+                    actionResult: actionResult.result,
+                    processingTime: processingTime,
+                    runtime: `${processingTime}ms`,
+                    providers: ['Agentic AI'],
+                    category: 'Action',
+                    charCount: actionResult.message.length,
+                    safetyScore: 1.0,
+                    timestamp: Date.now()
+                };
+
+                // Add response to history
+                this.history[this.history.length - 1].response = response;
+                this.history[this.history.length - 1].processingTime = processingTime;
+
+                this._pushConversation('assistant', actionResult.message);
+
+                return response;
+            }
+
+            // Process the query normally if no action detected
             const response = await this.processQuery(trimmed, options);
 
             // Add response to history

@@ -32,7 +32,7 @@ html:not(.dark) #projects {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -96,7 +96,6 @@ html.dark .stat-icon {
     font-size: 3rem;
     font-weight: 800;
     background: linear-gradient(135deg, #0071e3, #2997ff);
-    background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 0.5rem;
@@ -105,7 +104,6 @@ html.dark .stat-icon {
 
 html.dark .stat-value {
     background: linear-gradient(135deg, #2997ff, #5ac8fa);
-    background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
@@ -123,7 +121,7 @@ html.dark .stat-value {
    ======================================== */
 
 .search-filter-container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto 3rem;
 }
 
@@ -300,7 +298,6 @@ html:not(.dark) #language-filter span {
 /* Language Filter Dropdown */
 #language-filter {
     appearance: none;
-    appearance: none;
     background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
     color: #fff !important;
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -319,7 +316,7 @@ html:not(.dark) #language-filter span {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 2.5rem;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -720,7 +717,7 @@ html.dark .loading-spinner {
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (width <= 1024px) {
+@media (width <=1024px) {
     #projects-stats .grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
@@ -732,7 +729,7 @@ html.dark .loading-spinner {
     }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
     #projects {
         padding: 3rem 0;
     }
@@ -793,7 +790,7 @@ html.dark .loading-spinner {
     }
 }
 
-@media (width <= 480px) {
+@media (width <=480px) {
     .stat-value {
         font-size: 2rem;
     }
