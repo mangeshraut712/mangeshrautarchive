@@ -61,7 +61,7 @@ html:not(.dark) #home {
 
 /* Light mode */
 html:not(.dark) .footer-social-link {
-  color: #1d1d1f;
+  color: #ffffff !important;
 }
 
 html:not(.dark) .footer-social-link:hover {
