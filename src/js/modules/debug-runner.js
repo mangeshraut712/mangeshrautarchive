@@ -1,7 +1,8 @@
 /**
- * Debug Runner - Chrome Dino Style Coding Game
- * 2025 Portfolio Upgrade - Phase 3
- * Inspired by Chrome Dino but with coding themes: bugs, coffee, Stack Overflow answers
+ * Debug Runner - Premium Coding Game
+ * 2025 Portfolio Upgrade
+ * Apple Arcade-inspired aesthetic with smooth physics and polished visuals.
+ * Enhanced with mobile controls and full theme awareness
  */
 
 class DebugRunner {
@@ -12,9 +13,9 @@ class DebugRunner {
         this.gameOver = false;
         this.score = 0;
         this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore')) || 0;
-        this.speed = 6;
+        this.speed = 8;
         this.gameLoop = null;
-        this.groundY = 300;
+        this.groundY = 320;
         this.dev = null;
         this.obstacles = [];
         this.powerUps = [];
@@ -23,1130 +24,700 @@ class DebugRunner {
         this.invincible = false;
         this.invincibleUntil = 0;
         this.coffeePower = 0;
-        this.coffeeUntil = 0;
-        this.starfield = [];
+        this.stars = [];
+        this.isMobile = this.detectMobile();
+        this.mobileControls = null;
 
-        // Assets
-        this.bgSky = '#0a0a0a';
-        this.bgGradient = null;
-        this.groundColor = '#1a1a1a';
-        this.textColor = '#00ff41';
+        // Premium Color Palette (Apple-inspired)
+        this.themes = {
+            dark: {
+                bg: '#000000',
+                ground: '#1c1c1e',
+                groundLine: '#333333',
+                text: '#ffffff',
+                textSecondary: '#86868b',
+                accent: '#0A84FF',
+                bug: '#FF453A',
+                conflict: '#FFD60A',
+                fire: '#FF9F0A',
+                coffee: '#AC8E68',
+                stackOverflow: '#F48024',
+                hero: '#ffffff',
+                heroGlow: 'rgba(255, 255, 255, 0.5)'
+            },
+            light: {
+                bg: '#f5f5f7',
+                ground: '#ffffff',
+                groundLine: '#d2d2d7',
+                text: '#1d1d1f',
+                textSecondary: '#86868b',
+                accent: '#0071e3',
+                bug: '#ff3b30',
+                conflict: '#ffcc00',
+                fire: '#ff9500',
+                coffee: '#a2845e',
+                stackOverflow: '#f48024',
+                hero: '#1d1d1f',
+                heroGlow: 'rgba(0, 0, 0, 0.2)'
+            }
+        };
 
-        this.initStarfield();
+        this.colors = this.themes.dark; // Default
+        this.updateTheme();
+        this.initStars();
     }
 
-    /**
-     * Initialize starfield background
-     */
-    initStarfield() {
-        this.starfield = [];
-        for (let i = 0; i < 100; i++) {
-            this.starfield.push({
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+            window.innerWidth <= 768;
+    }
+
+    initStars() {
+        this.stars = [];
+        for (let i = 0; i < 50; i++) {
+            this.stars.push({
                 x: Math.random() * 1200,
                 y: Math.random() * 400,
-                brightness: Math.random(),
-                twinkleSpeed: Math.random() * 0.02
+                size: Math.random() * 2,
+                opacity: Math.random()
             });
         }
     }
 
-    /**
-     * Initialize the game canvas
-     */
     init() {
-        // Create canvas with matrix-style appearance
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'debug-runner-canvas';
         this.canvas.width = 1200;
         this.canvas.height = 400;
-        this.canvas.style.background = 'black';
-        this.canvas.style.border = '2px solid #00ff41';
-        this.canvas.style.borderRadius = '4px';
-        this.canvas.style.imageRendering = 'pixelated';
-        this.canvas.style.width = '100%';
-        this.canvas.style.maxWidth = '900px';
-        this.canvas.style.height = 'auto';
-        this.canvas.style.touchAction = 'none';
+
+        // Modern Canvas Styling
+        Object.assign(this.canvas.style, {
+            background: this.colors.bg,
+            borderRadius: '16px',
+            width: '100%',
+            maxWidth: '900px',
+            height: 'auto',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+            border: `1px solid ${this.colors.groundLine}`,
+            touchAction: 'none'
+        });
 
         this.ctx = this.canvas.getContext('2d');
 
-        // Create gradient background
-        this.bgGradient = this.ctx.createLinearGradient(0, 0, 0, 400);
-        this.bgGradient.addColorStop(0, '#000011');
-        this.bgGradient.addColorStop(1, '#000000');
+        // Initialize Hero
+        this.resetHero();
 
-        // Initialize developer character
-        this.dev = {
-            x: 100,
-            y: this.groundY - 60,
-            width: 40,
-            height: 60,
-            velocityY: 0,
-            onGround: true,
-            jumpPower: 15,
-            color: '#00ff41',
-            // Developer appearance
-            head: { x: 110, y: this.groundY - 80, radius: 8 },
-            body: { x: 105, y: this.groundY - 60, width: 10, height: 30 },
-            arms: [
-                { x: 100, y: this.groundY - 50, width: 15, height: 5 }, // Left arm
-                { x: 125, y: this.groundY - 50, width: 15, height: 5 }  // Right arm
-            ],
-            legs: [
-                { x: 105, y: this.groundY - 25, width: 5, height: 20 }, // Left leg
-                { x: 115, y: this.groundY - 25, width: 5, height: 20 }  // Right leg
-            ]
-        };
-
-        // Initialize game state
-        this.gameRunning = false;
-        this.gameOver = false;
-        this.score = 0;
-        this.speed = 6;
-        this.obstacles = [];
-        this.powerUps = [];
-        this.particles = [];
-
-        // Add keyboard controls
         this.setupControls();
         this.setupTouchControls();
 
-        // Start starfield animation
-        this.animateStarfield();
+        // Always create mobile controls for better gameplay experience
+        this.createMobileControls();
+
+        // Initial Render
+        this.updateTheme();
+        this.setupThemeObserver();
+        this.render();
+        this.drawStartScreen();
 
         return this.canvas;
     }
 
-    /**
-     * Setup keyboard controls
-     */
-    setupControls() {
-        const handleKeyPress = (e) => {
-            if (!this.gameRunning) return;
+    updateTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        this.colors = isDark ? this.themes.dark : this.themes.light;
 
-            switch (e.code) {
-                case 'Space':
-                case 'ArrowUp':
-                case 'KeyW':
+        if (this.canvas) {
+            this.canvas.style.background = this.colors.bg;
+            this.canvas.style.borderColor = this.colors.groundLine;
+        }
+
+        // Update mobile controls theme
+        if (this.mobileControls) {
+            this.updateMobileControlsTheme();
+        }
+
+        // Force redraw if not running
+        if (!this.gameRunning && this.ctx) {
+            if (this.gameOver) {
+                this.drawGameOver();
+            } else {
+                this.drawStartScreen();
+            }
+        }
+    }
+
+    setupThemeObserver() {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    this.updateTheme();
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true
+        });
+    }
+
+    createMobileControls() {
+        const container = document.getElementById('debug-runner-container');
+        if (!container || !container.parentElement) return;
+
+        // Create controls wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'debug-runner-mobile-controls';
+        wrapper.style.cssText = `
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto 0;
+            padding: 0 10px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        `;
+
+        // Helper to handle interactions
+        const bindAction = (btn, action, endAction) => {
+            const start = (e) => {
+                if (e.cancelable) e.preventDefault();
+
+                // Auto-start game if not running
+                if (!this.gameRunning || this.gameOver) {
+                    this.start();
+                }
+
+                action();
+                this.vibrate(10);
+                btn.style.transform = 'scale(0.95)';
+            };
+
+            const end = (e) => {
+                if (e.cancelable) e.preventDefault();
+                if (endAction) endAction();
+                btn.style.transform = 'scale(1)';
+            };
+
+            btn.addEventListener('touchstart', start, { passive: false });
+            btn.addEventListener('mousedown', start);
+
+            btn.addEventListener('touchend', end, { passive: false });
+            btn.addEventListener('mouseup', end);
+            btn.addEventListener('mouseleave', end);
+        };
+
+        // Jump Button
+        const jumpBtn = this.createControlButton('↑ JUMP', 'jump');
+        bindAction(jumpBtn, () => this.jump());
+
+        // Duck Button
+        const duckBtn = this.createControlButton('↓ DUCK', 'duck');
+        bindAction(duckBtn, () => this.duck(), () => this.standUp());
+
+        wrapper.appendChild(jumpBtn);
+        wrapper.appendChild(duckBtn);
+
+        container.parentElement.appendChild(wrapper);
+        this.mobileControls = wrapper;
+        this.updateMobileControlsTheme();
+    }
+
+    createControlButton(text, type) {
+        const btn = document.createElement('button');
+        btn.className = `debug-game-btn debug-game-btn--${type}`;
+        btn.textContent = text;
+        btn.style.cssText = `
+            padding: 20px 24px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 800;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        `;
+
+        if (type === 'jump') {
+            btn.style.background = 'linear-gradient(135deg, #16a34a, #22d3ee)';
+            btn.style.color = '#ffffff';
+        } else {
+            btn.style.background = 'linear-gradient(135deg, #0071e3, #2997ff)';
+            btn.style.color = '#ffffff';
+        }
+
+        return btn;
+    }
+
+    updateMobileControlsTheme() {
+        if (!this.mobileControls) return;
+
+        const isDark = document.documentElement.classList.contains('dark');
+        const buttons = this.mobileControls.querySelectorAll('button');
+
+        buttons.forEach(btn => {
+            if (isDark) {
+                btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+            } else {
+                btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            }
+        });
+    }
+
+    vibrate(duration) {
+        if ('vibrate' in navigator) {
+            navigator.vibrate(duration);
+        }
+    }
+
+    resetHero() {
+        this.dev = {
+            x: 100,
+            y: this.groundY - 50,
+            width: 40,
+            height: 50,
+            velocityY: 0,
+            onGround: true,
+            jumpPower: 16,
+            rotation: 0
+        };
+    }
+
+    setupControls() {
+        const handleInput = (e) => {
+            if (e.type === 'keydown') {
+                if ((e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW')) {
                     e.preventDefault();
-                    this.jump();
-                    break;
-                case 'ArrowDown':
-                case 'KeyS':
+                    if (!this.gameRunning && !this.gameOver) {
+                        this.start();
+                    } else if (this.gameOver) {
+                        this.start();
+                    } else {
+                        this.jump();
+                    }
+                }
+                if ((e.code === 'ArrowDown' || e.code === 'KeyS') && this.gameRunning) {
                     e.preventDefault();
                     this.duck();
-                    break;
+                }
+            } else if (e.type === 'keyup') {
+                if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+                    this.standUp();
+                }
             }
         };
 
-        const handleKeyUp = (e) => {
-            if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-                this.standUp();
-            }
-        };
-
-        // Add event listeners
-        document.addEventListener('keydown', handleKeyPress);
-        document.addEventListener('keyup', handleKeyUp);
-
-        // Store for cleanup
-        this.keyListeners = { handleKeyPress, handleKeyUp };
+        document.addEventListener('keydown', handleInput);
+        document.addEventListener('keyup', handleInput);
+        this.keyHandler = handleInput;
     }
 
-    /**
-     * Touch / mobile controls
-     */
     setupTouchControls() {
-        const canvas = this.canvas;
-        if (!canvas) return;
+        let touchStartY = 0;
+        let touchStartX = 0;
 
-        let touchStartY = null;
-        let performedDuck = false;
-
-        const handleTouchStart = (e) => {
-            if (!this.gameRunning) return;
-            const touch = e.changedTouches[0];
-            touchStartY = touch.clientY;
-            performedDuck = false;
-            // Light tap triggers jump; deeper swipe handled on end
+        this.canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
-        };
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
 
-        const handleTouchEnd = (e) => {
-            if (!this.gameRunning) return;
-            const touch = e.changedTouches[0];
-            const deltaY = touch.clientY - (touchStartY ?? touch.clientY);
-
-            if (deltaY > 40) {
-                // Swipe/drag down -> duck briefly
-                performedDuck = true;
-                this.duck();
-                setTimeout(() => this.standUp(), 450);
-            } else if (!performedDuck) {
-                this.jump();
+            if (!this.gameRunning || this.gameOver) {
+                this.start();
+                this.vibrate(20);
             }
+        }, { passive: false });
 
-            touchStartY = null;
-            performedDuck = false;
+        this.canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
-        };
+        }, { passive: false });
 
-        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-        canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touchEndY = e.changedTouches[0].clientY;
+            const touchEndX = e.changedTouches[0].clientX;
+            const diffY = touchEndY - touchStartY;
+            const diffX = Math.abs(touchEndX - touchStartX);
 
-        this.touchHandlers = { handleTouchStart, handleTouchEnd };
+            if (this.gameRunning) {
+                // Prioritize vertical swipes
+                if (Math.abs(diffY) > diffX) {
+                    if (diffY < -30) { // Swipe Up
+                        this.jump();
+                        this.vibrate(10);
+                    } else if (diffY > 30) { // Swipe Down
+                        this.duck();
+                        this.vibrate(10);
+                        setTimeout(() => this.standUp(), 500);
+                    }
+                } else if (diffX < 20 && Math.abs(diffY) < 20) {
+                    // Tap
+                    this.jump();
+                    this.vibrate(10);
+                }
+            }
+        }, { passive: false });
     }
 
-    /**
-     * Start the game
-     */
     start() {
         if (this.gameRunning) return;
 
         this.gameRunning = true;
         this.gameOver = false;
         this.score = 0;
-        this.speed = 6;
+        this.speed = 8;
         this.obstacles = [];
         this.powerUps = [];
-        this.invincible = false;
-        this.coffeePower = 0;
+        this.particles = [];
+        this.resetHero();
 
-        console.log('🕹️ Debug Runner started!');
+        if (this.gameLoop) clearInterval(this.gameLoop);
         this.gameLoop = setInterval(() => this.update(), 1000 / 60);
+
+        this.vibrate(30);
+        console.log('🚀 Game Started');
     }
 
-    /**
-     * Stop the game
-     */
     stop() {
         this.gameRunning = false;
-        if (this.gameLoop) {
-            clearInterval(this.gameLoop);
-            this.gameLoop = null;
-        }
-
-        // Remove event listeners
-        if (this.keyListeners) {
-            document.removeEventListener('keydown', this.keyListeners.handleKeyPress);
-            document.removeEventListener('keyup', this.keyListeners.handleKeyUp);
-        }
-
-        console.log('🛑 Debug Runner stopped');
+        clearInterval(this.gameLoop);
+        this.vibrate([50, 100, 50]);
+        this.drawGameOver();
     }
 
-    /**
-     * Jump action
-     */
     jump() {
         if (this.dev.onGround) {
             this.dev.velocityY = -this.dev.jumpPower;
             this.dev.onGround = false;
-
-            // Add jump particles
-            for (let i = 0; i < 5; i++) {
-                this.particles.push({
-                    x: this.dev.x + 20,
-                    y: this.dev.y + 60,
-                    vx: (Math.random() - 0.5) * 4,
-                    vy: Math.random() * -2 - 1,
-                    life: 30,
-                    color: '#00ff41',
-                    type: 'dust'
-                });
-            }
+            this.createParticles(this.dev.x + 20, this.dev.y + 50, 5, '#fff');
         }
     }
 
-    /**
-     * Duck action
-     */
     duck() {
-        this.dev.height = 30; // Reduce height when ducking
-        this.dev.y = this.groundY - 30;
+        if (this.dev.onGround) {
+            this.dev.height = 25;
+            this.dev.y = this.groundY - 25;
+        }
     }
 
-    /**
-     * Stand up from duck
-     */
     standUp() {
-        this.dev.height = 60;
-        this.dev.y = this.groundY - 60;
+        this.dev.height = 50;
+        this.dev.y = this.groundY - 50;
     }
 
-    /**
-     * Main game update loop
-     */
     update() {
-        if (!this.gameRunning || this.gameOver) return;
-
-        // Update developer physics
-        this.updateDeveloper();
-
-        // Update obstacles
-        this.updateObstacles();
-
-        // Update power-ups
-        this.updatePowerUps();
-
-        // Update particles
-        this.updateParticles();
-
-        // Update power effects
-        this.updatePowerEffects();
-
-        // Check collisions
-        this.checkCollisions();
-
-        // Increment score
-        this.updateScore();
-
-        // Increase difficulty over time
-        this.updateDifficulty();
-
-        // Render everything
-        this.render();
-    }
-
-    /**
-     * Update developer physics
-     */
-    updateDeveloper() {
-        // Gravity
-        this.dev.velocityY += 0.8;
+        // Physics
+        this.dev.velocityY += 0.8; // Gravity
         this.dev.y += this.dev.velocityY;
 
-        // Ground collision
+        // Ground Collision
         if (this.dev.y >= this.groundY - this.dev.height) {
             this.dev.y = this.groundY - this.dev.height;
             this.dev.velocityY = 0;
             this.dev.onGround = true;
         }
+
+        // Speed Progression
+        this.speed += 0.001;
+
+        // Score
+        this.score++;
+        if (this.score > this.highScore) {
+            this.highScore = this.score;
+            localStorage.setItem('debugRunnerHighScore', this.highScore);
+        }
+
+        this.updateObstacles();
+        this.updatePowerUps();
+        this.updateParticles();
+        this.checkCollisions();
+
+        this.render();
     }
 
-    /**
-     * Update obstacles
-     */
     updateObstacles() {
-        // Spawn obstacles
-        if (Math.random() < 0.008) {
-            const obstacleType = Math.random();
-            if (obstacleType < 0.4) {
-                // Bug obstacle
-                this.obstacles.push({
-                    x: 1200,
-                    y: this.groundY - 20,
-                    width: 25,
-                    height: 20,
-                    type: 'bug',
-                    color: '#ff4444',
-                    speed: this.speed
-                });
-            } else if (obstacleType < 0.7) {
-                // Merge conflict obstacle
-                this.obstacles.push({
-                    x: 1200,
-                    y: this.groundY - 25,
-                    width: 35,
-                    height: 25,
-                    type: 'conflict',
-                    color: '#ffaa00',
-                    speed: this.speed
-                });
-            } else {
-                // Production fire obstacle
-                this.obstacles.push({
-                    x: 1200,
-                    y: this.groundY - 30,
-                    width: 30,
-                    height: 30,
-                    type: 'fire',
-                    color: '#ff6600',
-                    speed: this.speed
-                });
+        // Spawn Logic
+        if (Math.random() < 0.015) {
+            const type = Math.random();
+            let obstacle = { x: 1200, speed: this.speed };
+
+            if (type < 0.33) { // Bug
+                obstacle.type = 'bug';
+                obstacle.y = this.groundY - 30;
+                obstacle.width = 30;
+                obstacle.height = 30;
+                obstacle.color = this.colors.bug;
+            } else if (type < 0.66) { // Conflict
+                obstacle.type = 'conflict';
+                obstacle.y = this.groundY - 40;
+                obstacle.width = 30;
+                obstacle.height = 40;
+                obstacle.color = this.colors.conflict;
+            } else { // Fire
+                obstacle.type = 'fire';
+                obstacle.y = this.groundY - 35;
+                obstacle.width = 35;
+                obstacle.height = 35;
+                obstacle.color = this.colors.fire;
+            }
+
+            // Don't spawn if too close to another
+            const lastObs = this.obstacles[this.obstacles.length - 1];
+            if (!lastObs || (1200 - lastObs.x > 250)) {
+                this.obstacles.push(obstacle);
             }
         }
 
-        // Move obstacles
-        this.obstacles.forEach(obstacle => {
-            obstacle.x -= obstacle.speed;
-        });
-
-        // Remove off-screen obstacles
-        this.obstacles = this.obstacles.filter(obs => obs.x > -50);
+        this.obstacles.forEach(obs => obs.x -= obs.speed);
+        this.obstacles = this.obstacles.filter(obs => obs.x > -100);
     }
 
-    /**
-     * Update power-ups
-     */
     updatePowerUps() {
-        // Spawn power-ups occasionally
-        if (Math.random() < 0.003) {
-            const powerType = Math.random();
-            if (powerType < 0.5) {
-                // Coffee power-up (speed boost)
-                this.powerUps.push({
-                    x: 1200,
-                    y: 200 + Math.random() * 100,
-                    width: 20,
-                    height: 20,
-                    type: 'coffee',
-                    color: '#8B4513',
-                    speed: this.speed * 0.8 // Slower than obstacles
-                });
-            } else {
-                // Stack Overflow answer (invincibility)
-                this.powerUps.push({
-                    x: 1200,
-                    y: 150 + Math.random() * 150,
-                    width: 25,
-                    height: 25,
-                    type: 'stackoverflow',
-                    color: '#ff9900',
-                    speed: this.speed * 0.8
-                });
-            }
+        if (Math.random() < 0.002) {
+            const type = Math.random() > 0.5 ? 'coffee' : 'stackoverflow';
+            this.powerUps.push({
+                x: 1200,
+                y: this.groundY - 100 - Math.random() * 50,
+                width: 30,
+                height: 30,
+                type: type,
+                speed: this.speed * 0.8
+            });
         }
+        this.powerUps.forEach(p => p.x -= p.speed);
+        this.powerUps = this.powerUps.filter(p => p.x > -100);
 
-        // Move power-ups
-        this.powerUps.forEach(power => {
-            power.x -= power.speed;
-        });
-
-        // Remove off-screen power-ups
-        this.powerUps = this.powerUps.filter(power => power.x > -50);
+        // Powerup Timers
+        if (this.invincible) {
+            if (Date.now() > this.invincibleUntil) this.invincible = false;
+        }
     }
 
-    /**
-     * Update particles
-     */
+    createParticles(x, y, count, color) {
+        for (let i = 0; i < count; i++) {
+            this.particles.push({
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 5,
+                vy: (Math.random() - 0.5) * 5,
+                life: 1.0,
+                color: color
+            });
+        }
+    }
+
     updateParticles() {
-        this.particles.forEach(particle => {
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            particle.life--;
-
-            if (particle.type === 'dust') {
-                particle.vy += 0.1; // Gravity for dust
-            }
+        this.particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.05;
         });
-
         this.particles = this.particles.filter(p => p.life > 0);
     }
 
-    /**
-     * Update power effects
-     */
-    updatePowerEffects() {
-        // Check coffee power expiration
-        if (this.coffeePower > 0) {
-            this.coffeePower--;
-            if (this.coffeePower <= 0) {
-                this.speed /= 1.5; // Return to normal speed
-                console.log('☕ Coffee power ended');
-            }
-        }
-
-        // Check invincibility expiration
-        if (this.invincible && Date.now() > this.invincibleUntil) {
-            this.invincible = false;
-            console.log('🛡️ Invincibility ended');
-        }
-    }
-
-    /**
-     * Check collision detection
-     */
     checkCollisions() {
-        if (this.invincible) return;
+        const heroRect = { x: this.dev.x + 5, y: this.dev.y + 5, width: this.dev.width - 10, height: this.dev.height - 10 };
 
-        const devRect = {
-            x: this.dev.x,
-            y: this.dev.y,
-            width: this.dev.width,
-            height: this.dev.height
-        };
-
-        // Check obstacle collisions
-        for (const obstacle of this.obstacles) {
-            if (this.rectsCollide(devRect, obstacle)) {
-                this.gameOver = true;
-                console.log('💥 Game Over! Hit:', obstacle.type);
-                this.stop();
-                return;
+        // Obstacles
+        if (!this.invincible) {
+            for (let obs of this.obstacles) {
+                if (this.rectIntersect(heroRect, obs)) {
+                    this.gameOver = true;
+                    this.createParticles(this.dev.x, this.dev.y, 20, this.colors.bug);
+                    this.stop();
+                    return;
+                }
             }
         }
 
-        // Check power-up collisions
+        // Powerups
         for (let i = this.powerUps.length - 1; i >= 0; i--) {
-            const power = this.powerUps[i];
-            if (this.rectsCollide(devRect, power)) {
-                this.collectPowerUp(power);
-                this.powerUps.splice(i, 1);
+            if (this.rectIntersect(heroRect, this.powerUps[i])) {
+                const p = this.powerUps[i];
+                this.createParticles(p.x, p.y, 10, this.colors.accent);
 
-                // Add collection particles
-                for (let j = 0; j < 8; j++) {
-                    this.particles.push({
-                        x: power.x + power.width / 2,
-                        y: power.y + power.height / 2,
-                        vx: (Math.random() - 0.5) * 6,
-                        vy: (Math.random() - 0.5) * 6,
-                        life: 40,
-                        color: power.color,
-                        type: 'sparkle'
-                    });
+                if (p.type === 'coffee') {
+                    this.score += 500;
+                } else {
+                    this.invincible = true;
+                    this.invincibleUntil = Date.now() + 5000;
                 }
+
+                this.vibrate(15);
+                this.powerUps.splice(i, 1);
             }
         }
     }
 
-    /**
-     * Rectangle collision detection
-     */
-    rectsCollide(rect1, rect2) {
-        return rect1.x < rect2.x + rect2.width &&
-            rect1.x + rect1.width > rect2.x &&
-            rect1.y < rect2.y + rect2.height &&
-            rect1.y + rect1.height > rect2.y;
+    rectIntersect(r1, r2) {
+        return !(r2.x > r1.x + r1.width ||
+            r2.x + r2.width < r1.x ||
+            r2.y > r1.y + r1.height ||
+            r2.y + r2.height < r1.y);
     }
 
-    /**
-     * Collect power-up
-     */
-    collectPowerUp(power) {
-        switch (power.type) {
-            case 'coffee':
-                console.log('☕ Coffee power! Speed increased!');
-                if (this.coffeePower === 0) {
-                    this.speed *= 1.5;
-                    this.coffeePower = 300; // 5 seconds at 60fps
-                } else {
-                    this.coffeePower += 180; // Extend by 3 seconds
-                }
-                this.score += 50;
-                break;
-            case 'stackoverflow':
-                console.log('📚 Stack Overflow power! Invincibility!');
-                this.invincible = true;
-                this.invincibleUntil = Date.now() + 5000; // 5 seconds
-                this.score += 100;
-                break;
-        }
-    }
-
-    /**
-     * Update score
-     */
-    updateScore() {
-        const now = Date.now();
-        if (now - this.lastScoreIncrement > 100) { // Every 100ms
-            this.score += Math.floor(this.speed / 2);
-            this.lastScoreIncrement = now;
-        }
-
-        // Update high score
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            localStorage.setItem('debugRunnerHighScore', this.highScore.toString());
-        }
-    }
-
-    /**
-     * Update difficulty
-     */
-    updateDifficulty() {
-        // Gradually increase speed
-        if (this.score > 0 && this.score % 500 === 0) {
-            this.speed += 0.5;
-            console.log('⚡ Difficulty increased! Speed:', this.speed);
-        }
-    }
-
-    /**
-     * Animate starfield
-     */
-    animateStarfield() {
-        this.starfield.forEach(star => {
-            star.brightness += star.twinkleSpeed;
-            if (star.brightness > 1) star.brightness = 0;
-        });
-
-        if (this.gameRunning) {
-            setTimeout(() => this.animateStarfield(), 50);
-        }
-    }
-
-    /**
-     * Render the game
-     */
     render() {
-        // Clear canvas
-        this.ctx.fillStyle = this.bgGradient;
+        // Clear
+        this.ctx.fillStyle = this.colors.bg;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw starfield
-        this.ctx.fillStyle = 'white';
-        this.starfield.forEach(star => {
-            const alpha = star.brightness * 0.8 + 0.2;
-            this.ctx.globalAlpha = alpha;
-            this.ctx.fillRect(star.x, star.y, 1, 1);
-        });
-        this.ctx.globalAlpha = 1;
-
-        // Draw ground
-        this.ctx.fillStyle = this.groundColor;
-        this.ctx.fillRect(0, this.groundY, this.canvas.width, this.canvas.height - this.groundY);
-
-        // Draw ground lines
-        this.ctx.strokeStyle = '#333';
-        for (let x = 0; x < this.canvas.width; x += 50) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(x, this.groundY);
-            this.ctx.lineTo(x + 25, this.groundY);
-            this.ctx.stroke();
+        // Stars (only in dark mode)
+        if (this.colors.bg === '#000000') {
+            this.ctx.fillStyle = '#ffffff';
+            this.stars.forEach(star => {
+                this.ctx.globalAlpha = star.opacity;
+                this.ctx.fillRect(star.x, star.y, star.size, star.size);
+            });
+            this.ctx.globalAlpha = 1.0;
         }
 
-        // Draw developer
-        this.drawDeveloper();
+        // Ground
+        this.ctx.fillStyle = this.colors.ground;
+        this.ctx.fillRect(0, this.groundY, this.canvas.width, this.canvas.height - this.groundY);
 
-        // Draw obstacles
-        this.obstacles.forEach(obstacle => this.drawObstacle(obstacle));
+        this.ctx.strokeStyle = this.colors.groundLine;
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, this.groundY);
+        this.ctx.lineTo(this.canvas.width, this.groundY);
+        this.ctx.stroke();
 
-        // Draw power-ups
-        this.powerUps.forEach(power => this.drawPowerUp(power));
+        // Hero
+        this.ctx.save();
+        this.ctx.shadowColor = this.colors.accent;
+        this.ctx.shadowBlur = this.invincible ? 20 : 10;
+        this.ctx.fillStyle = this.invincible ? '#FFD60A' : this.colors.hero;
 
-        // Draw particles
-        this.particles.forEach(particle => this.drawParticle(particle));
-
-        // Draw UI
-        this.drawUI();
-    }
-
-    /**
-     * Draw developer character
-     */
-    drawDeveloper() {
-        this.ctx.fillStyle = this.dev.color;
-
-        // Draw developer body parts
-        const dev = this.dev;
+        const x = this.dev.x;
+        const y = this.dev.y;
+        const w = this.dev.width;
+        const h = this.dev.height;
 
         // Head
         this.ctx.beginPath();
-        this.ctx.arc(dev.head.x, dev.head.y, dev.head.radius, 0, Math.PI * 2);
+        this.ctx.arc(x + w / 2, y + 10, 10, 0, Math.PI * 2);
         this.ctx.fill();
-
-        // Eyes (simple dots)
-        this.ctx.fillStyle = 'white';
-        this.ctx.beginPath();
-        this.ctx.arc(dev.head.x - 3, dev.head.y - 2, 1.5, 0, Math.PI * 2);
-        this.ctx.arc(dev.head.x + 3, dev.head.y - 2, 1.5, 0, Math.PI * 2);
-        this.ctx.fill();
-
-        // Mouth (smile)
-        this.ctx.strokeStyle = this.dev.color;
-        this.ctx.lineWidth = 1;
-        this.ctx.beginPath();
-        this.ctx.arc(dev.head.x, dev.head.y + 1, 3, 0.2, Math.PI - 0.2);
-        this.ctx.stroke();
-
         // Body
-        this.ctx.fillStyle = '#00cccc';
-        this.ctx.fillRect(dev.body.x, dev.body.y, dev.body.width, dev.body.height);
+        this.ctx.fillRect(x, y + 20, w, h - 20);
+        // Eyes
+        this.ctx.fillStyle = this.colors.bg;
+        this.ctx.fillRect(x + w / 2 - 4, y + 8, 2, 2);
+        this.ctx.fillRect(x + w / 2 + 2, y + 8, 2, 2);
 
-        // Arms (animated)
-        const armOffset = Math.sin(Date.now() * 0.01) * 2;
-        this.ctx.fillStyle = this.dev.color;
-        dev.arms.forEach(arm => {
-            this.ctx.fillRect(arm.x, arm.y + armOffset, arm.width, arm.height);
-        });
+        this.ctx.restore();
 
-        // Legs (animated)
-        const legOffset = Math.sin(Date.now() * 0.02) * 2;
-        dev.legs.forEach(leg => {
-            this.ctx.fillRect(leg.x, leg.y + legOffset, leg.width, leg.height);
-        });
+        // Obstacles
+        this.obstacles.forEach(obs => {
+            this.ctx.fillStyle = obs.color;
+            this.ctx.shadowColor = obs.color;
+            this.ctx.shadowBlur = 10;
 
-        // Laptop outline (developer badge)
-        this.ctx.strokeStyle = '#ffff00';
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeRect(dev.x - 5, dev.y - 5, 50, 70);
-    }
-
-    /**
-     * Draw obstacle
-     */
-    drawObstacle(obstacle) {
-        // Draw obstacle based on type
-        switch (obstacle.type) {
-            case 'bug':
-                // Draw bug as red rectangle with legs
-                this.ctx.fillStyle = obstacle.color;
-                this.ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-
-                // Bug legs
-                this.ctx.fillStyle = '#880000';
-                for (let i = 0; i < 6; i++) {
-                    const legY = obstacle.y + 8 + (i % 2) * 4;
-                    const legX = obstacle.x + 2 + i * 3;
-                    this.ctx.fillRect(legX, legY, 2, 6);
-                }
-                break;
-
-            case 'conflict':
-                // Draw merge conflict as yellow triangle
-                this.ctx.fillStyle = obstacle.color;
+            if (obs.type === 'bug') {
                 this.ctx.beginPath();
-                this.ctx.moveTo(obstacle.x, obstacle.y + obstacle.height);
-                this.ctx.lineTo(obstacle.x + obstacle.width / 2, obstacle.y);
-                this.ctx.lineTo(obstacle.x + obstacle.width, obstacle.y + obstacle.height);
-                this.ctx.closePath();
+                this.ctx.arc(obs.x + obs.width / 2, obs.y + obs.height / 2, obs.width / 2, 0, Math.PI * 2);
                 this.ctx.fill();
-
-                // Conflict icon (X)
-                this.ctx.strokeStyle = 'black';
-                this.ctx.lineWidth = 2;
+            } else if (obs.type === 'conflict') {
                 this.ctx.beginPath();
-                this.ctx.moveTo(obstacle.x + 6, obstacle.y + 6);
-                this.ctx.lineTo(obstacle.x + obstacle.width - 6, obstacle.y + obstacle.height - 6);
-                this.ctx.moveTo(obstacle.x + obstacle.width - 6, obstacle.y + 6);
-                this.ctx.lineTo(obstacle.x + 6, obstacle.y + obstacle.height - 6);
-                this.ctx.stroke();
-                break;
-
-            case 'fire': {
-                // Draw production fire as animated flame
-                const flameHeight = obstacle.height + Math.sin(Date.now() * 0.02) * 5;
-                this.ctx.fillStyle = obstacle.color;
-                this.ctx.beginPath();
-                this.ctx.moveTo(obstacle.x, obstacle.y + obstacle.height);
-                this.ctx.lineTo(obstacle.x + obstacle.width / 2, obstacle.y + obstacle.height - flameHeight);
-                this.ctx.lineTo(obstacle.x + obstacle.width, obstacle.y + obstacle.height);
-                this.ctx.closePath();
+                this.ctx.moveTo(obs.x + obs.width / 2, obs.y);
+                this.ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
+                this.ctx.lineTo(obs.x, obs.y + obs.height);
                 this.ctx.fill();
-                break;
+            } else {
+                this.ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
             }
-        }
-    }
+            this.ctx.shadowBlur = 0;
+        });
 
-    /**
-     * Draw power-up
-     */
-    drawPowerUp(power) {
-        // Draw power-up based on type
-        switch (power.type) {
-            case 'coffee':
-                // Draw coffee cup
-                this.ctx.fillStyle = power.color;
-                this.ctx.fillRect(power.x, power.y, power.width - 5, power.height - 5);
-                this.ctx.fillRect(power.x + 2, power.y - 3, power.width - 9, 3); // Handle
+        // Powerups
+        this.powerUps.forEach(p => {
+            this.ctx.fillStyle = p.type === 'coffee' ? this.colors.coffee : this.colors.stackOverflow;
+            this.ctx.fillRect(p.x, p.y, p.width, p.height);
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '12px sans-serif';
+            this.ctx.fillText(p.type === 'coffee' ? '☕' : 'SO', p.x + 4, p.y + 20);
+        });
 
-                // Steam
-                this.ctx.strokeStyle = '#ffffff';
-                this.ctx.lineWidth = 1;
-                this.ctx.beginPath();
-                this.ctx.moveTo(power.x + 5, power.y - 3);
-                this.ctx.lineTo(power.x + 5, power.y - 8);
-                this.ctx.moveTo(power.x + 8, power.y - 3);
-                this.ctx.lineTo(power.x + 8, power.y - 10);
-                this.ctx.stroke();
-                break;
+        // Particles
+        this.particles.forEach(p => {
+            this.ctx.fillStyle = p.color;
+            this.ctx.globalAlpha = p.life;
+            this.ctx.fillRect(p.x, p.y, 3, 3);
+        });
+        this.ctx.globalAlpha = 1.0;
 
-            case 'stackoverflow':
-                // Draw Stack Overflow logo style (orange box with text)
-                this.ctx.fillStyle = power.color;
-                this.ctx.fillRect(power.x, power.y, power.width, power.height);
+        // UI
+        this.ctx.fillStyle = this.colors.text;
+        this.ctx.font = 'bold 30px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+        this.ctx.fillText(`SCORE: ${Math.floor(this.score / 10)}`, 30, 50);
 
-                // SO text
-                this.ctx.fillStyle = 'white';
-                this.ctx.font = '10px monospace';
-                this.ctx.fillText('SO', power.x + 5, power.y + 16);
-                break;
-        }
-    }
+        this.ctx.fillStyle = this.colors.textSecondary;
+        this.ctx.font = '20px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+        this.ctx.fillText(`HI: ${Math.floor(this.highScore / 10)}`, 30, 80);
 
-    /**
-     * Draw particle
-     */
-    drawParticle(particle) {
-        this.ctx.fillStyle = particle.color;
-        this.ctx.globalAlpha = particle.life / 40;
-
-        switch (particle.type) {
-            case 'dust':
-            case 'sparkle':
-                this.ctx.fillRect(particle.x, particle.y, 2, 2);
-                break;
-        }
-
-        this.ctx.globalAlpha = 1;
-    }
-
-    /**
-     * Draw UI elements
-     */
-    drawUI() {
-        // Draw score
-        this.ctx.fillStyle = this.textColor;
-        this.ctx.font = '24px monospace';
-        this.ctx.fillText(`SCORE: ${this.score}`, 20, 40);
-
-        // Draw high score
-        this.ctx.font = '16px monospace';
-        this.ctx.fillText(`HIGH: ${this.highScore}`, 20, 70);
-
-        // Draw speed indicator
-        this.ctx.fillText(`SPEED: ${this.speed.toFixed(1)}x`, 20, 90);
-
-        // Draw power indicators
+        // Show invincibility status
         if (this.invincible) {
-            this.ctx.fillStyle = '#ffaa00';
-            this.ctx.fillText('🛡️ INVINCIBLE', 20, 120);
-        }
-
-        if (this.coffeePower > 0) {
-            this.ctx.fillStyle = '#8B4513';
-            this.ctx.fillText('☕ CAFFEINATED', 20, 140);
-        }
-
-        // Draw instructions
-        if (!this.gameRunning && !this.gameOver) {
-            this.ctx.fillStyle = this.textColor;
-            this.ctx.font = '20px monospace';
-            this.ctx.fillText('PRESS SPACE TO START', 450, 200);
-            this.ctx.font = '14px monospace';
-            this.ctx.fillText('SPACE: JUMP  |  DOWN: DUCK', 450, 230);
-        }
-
-        // Draw game over screen
-        if (this.gameOver) {
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-            this.ctx.fillRect(300, 150, 600, 200);
-
-            this.ctx.fillStyle = '#ff4444';
-            this.ctx.font = '36px monospace';
-            this.ctx.fillText('GAME OVER', 480, 200);
-
-            this.ctx.fillStyle = this.textColor;
-            this.ctx.font = '20px monospace';
-            this.ctx.fillText(`FINAL SCORE: ${this.score}`, 470, 240);
-            this.ctx.fillText('PRESS SPACE TO RESTART', 420, 280);
+            this.ctx.fillStyle = '#FFD60A';
+            this.ctx.font = 'bold 16px -apple-system';
+            this.ctx.fillText('⚡ INVINCIBLE', this.canvas.width - 150, 50);
         }
     }
 
-    /**
-     * Create game popup/modal
-     */
-    createGameModal() {
-        // Create modal overlay
-        const modal = document.createElement('div');
-        modal.id = 'debug-runner-modal';
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            backdrop-filter: blur(5px);
-        `;
+    drawStartScreen() {
+        this.ctx.fillStyle = this.colors.bg === '#000000' ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Create close button
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = '×';
-        closeBtn.style.cssText = `
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            background: none;
-            border: none;
-            color: #00ff41;
-            cursor: pointer;
-            padding: 10px;
-        `;
-        closeBtn.onclick = () => this.closeGame();
+        this.ctx.fillStyle = this.colors.text;
+        this.ctx.font = 'bold 60px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText("DEBUG RUNNER", this.canvas.width / 2, this.canvas.height / 2 - 30);
 
-        // Create game container
-        const gameContainer = document.createElement('div');
-        gameContainer.style.cssText = `
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        `;
+        this.ctx.font = '30px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+        this.ctx.fillStyle = this.colors.accent;
+        const startText = this.isMobile ? "Tap to Start" : "Press Space or Tap to Start";
+        this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 30);
 
-        // Title
-        const title = document.createElement('h2');
-        title.textContent = '🐛 DEBUG RUNNER 🏃‍♂️';
-        title.style.cssText = `
-            color: #00ff41;
-            font-family: monospace;
-            font-size: 32px;
-            margin: 0;
-            text-shadow: 0 0 10px #00ff41;
-        `;
+        if (this.isMobile) {
+            this.ctx.font = '18px -apple-system';
+            this.ctx.fillStyle = this.colors.textSecondary;
+            this.ctx.fillText("Swipe ↑ to Jump • Swipe ↓ to Duck", this.canvas.width / 2, this.canvas.height / 2 + 70);
+        }
 
-        // Game canvas container
-        const canvasContainer = document.createElement('div');
-        canvasContainer.style.cssText = `
-            position: relative;
-            border: 3px solid #00ff41;
-            border-radius: 8px;
-            padding: 10px;
-            background: #111;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-        `;
-
-        // Initialize and add canvas
-        const canvas = this.init();
-        canvasContainer.appendChild(canvas);
-
-        // Add everything to modal
-        gameContainer.appendChild(title);
-        gameContainer.appendChild(canvasContainer);
-        modal.appendChild(closeBtn);
-        modal.appendChild(gameContainer);
-
-        return modal;
+        this.ctx.textAlign = 'left';
     }
 
-    /**
-     * Show the game
-     */
-    showGame() {
-        const modal = this.createGameModal();
-        document.body.appendChild(modal);
+    drawGameOver() {
+        this.ctx.fillStyle = this.colors.bg === '#000000' ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.85)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Focus the modal
-        modal.focus();
+        this.ctx.fillStyle = this.colors.bug;
+        this.ctx.font = 'bold 70px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.canvas.height / 2 - 30);
 
-        // Handle escape key
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') {
-                this.closeGame();
-                document.removeEventListener('keydown', handleEscape);
-            }
-        };
-        document.addEventListener('keydown', handleEscape);
+        this.ctx.fillStyle = this.colors.text;
+        this.ctx.font = '40px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+        this.ctx.fillText(`Score: ${Math.floor(this.score / 10)}`, this.canvas.width / 2, this.canvas.height / 2 + 30);
 
-        // Store modal reference for cleanup
-        this.currentModal = modal;
-
-        console.log('🎮 Debug Runner game launched!');
-    }
-
-    /**
-     * Close the game
-     */
-    closeGame() {
-        if (this.gameRunning) {
-            this.stop();
-        }
-
-        if (this.currentModal) {
-            this.currentModal.remove();
-            this.currentModal = null;
-        }
-
-        console.log('🎮 Debug Runner game closed');
-    }
-
-    /**
-     * Restart the game
-     */
-    restart() {
-        if (this.gameOver) {
-            this.gameOver = false;
-            this.score = 0;
-            this.speed = 6;
-            this.obstacles = [];
-            this.powerUps = [];
-            this.invincible = false;
-            this.coffeePower = 0;
-            this.dev.y = this.groundY - 60;
-            this.dev.velocityY = 0;
-            this.dev.onGround = true;
-            this.start();
-        }
-    }
-
-    /**
-     * Mount game to a container element (always visible mode)
-     */
-    mountToContainer(containerId) {
-        const container = document.getElementById(containerId);
-        if (!container) {
-            console.error(`Container #${containerId} not found`);
-            return;
-        }
-
-        // Create game wrapper
-        const gameWrapper = document.createElement('div');
-        gameWrapper.className = 'debug-runner-wrapper';
-
-        // Initialize and add canvas
-        const canvas = this.init();
-        gameWrapper.appendChild(canvas);
-
-        // Mobile-friendly quick controls
-        const mobileControls = document.createElement('div');
-        mobileControls.className = 'debug-runner-mobile-controls';
-        if (window.innerWidth <= 1024) {
-            mobileControls.classList.add('is-active');
-        }
-        const jumpBtn = document.createElement('button');
-        jumpBtn.textContent = 'Tap to Jump';
-        jumpBtn.type = 'button';
-        jumpBtn.className = 'debug-game-btn debug-game-btn--jump';
-        jumpBtn.onclick = () => {
-            if (!this.gameRunning) return;
-            this.jump();
-        };
-
-        const duckBtn = document.createElement('button');
-        duckBtn.textContent = 'Hold to Duck';
-        duckBtn.type = 'button';
-        duckBtn.className = 'debug-game-btn debug-game-btn--duck';
-        duckBtn.onmousedown = duckBtn.ontouchstart = (e) => {
-            e.preventDefault();
-            if (!this.gameRunning) return;
-            this.duck();
-        };
-        duckBtn.onmouseup = duckBtn.onmouseleave = duckBtn.ontouchend = () => {
-            if (!this.gameRunning) return;
-            this.standUp();
-        };
-
-        mobileControls.appendChild(jumpBtn);
-        mobileControls.appendChild(duckBtn);
-
-        gameWrapper.appendChild(mobileControls);
-
-        const syncMobileControls = () => {
-            mobileControls.classList.toggle('is-active', window.innerWidth <= 1024);
-        };
-        window.addEventListener('resize', syncMobileControls, { passive: true });
-        syncMobileControls();
-
-        // Add start button
-        const startBtn = document.createElement('button');
-        startBtn.textContent = '▶ START GAME';
-        startBtn.type = 'button';
-        startBtn.className = 'debug-game-btn debug-game-btn--start';
-        const markRunning = () => {
-            startBtn.textContent = '🎮 PLAYING...';
-            startBtn.disabled = true;
-            startBtn.classList.add('is-running');
-        };
-        const markReady = (label = '▶ START GAME') => {
-            startBtn.textContent = label;
-            startBtn.disabled = false;
-            startBtn.classList.remove('is-running');
-        };
-        startBtn.onclick = () => {
-            if (!this.gameRunning) {
-                this.start();
-                markRunning();
-            }
-        };
-
-        // Add restart handler for when game ends
-        const originalStop = this.stop.bind(this);
-        this.stop = () => {
-            originalStop();
-            markReady('🔄 RESTART');
-        };
-
-        // Handle space key to start/restart
-        const handleSpace = (e) => {
-            if (e.code === 'Space' && !this.gameRunning) {
-                e.preventDefault();
-                if (this.gameOver) {
-                    this.restart();
-                } else {
-                    this.start();
-                }
-                markRunning();
-            }
-        };
-        document.addEventListener('keydown', handleSpace);
-
-        gameWrapper.appendChild(startBtn);
-        container.appendChild(gameWrapper);
-
-        console.log('🎮 Debug Runner mounted to container:', containerId);
+        this.ctx.fillStyle = this.colors.textSecondary;
+        this.ctx.font = '24px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+        const restartText = this.isMobile ? "Tap to Restart" : "Press Space or Tap to Restart";
+        this.ctx.fillText(restartText, this.canvas.width / 2, this.canvas.height / 2 + 70);
+        this.ctx.textAlign = 'left';
     }
 }
 
-
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DebugRunner;
-}
-
-// Auto-initialize for both container mount and Easter egg activation
+// Auto-initialize
 document.addEventListener('DOMContentLoaded', () => {
-    // Create global game instance
-    window.debugRunner = new DebugRunner();
-
-    // Mount to container if it exists (always visible mode)
     const container = document.getElementById('debug-runner-container');
     if (container) {
-        window.debugRunner.mountToContainer('debug-runner-container');
-        console.log('🎮 Debug Runner mounted to page!');
+        const game = new DebugRunner();
+        const canvas = game.init();
+        container.appendChild(canvas);
     }
-
-    // Easter egg activation: Ctrl+Shift+G (still works for modal)
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.shiftKey && e.key === 'G') {
-            e.preventDefault();
-            if (window.debugRunner && !container) {
-                // Only show modal if not already mounted to container
-                window.debugRunner.showGame();
-            }
-        }
-    });
-
-    // Offline mode suggestion (like Chrome Dino)
-    window.addEventListener('offline', () => {
-        // Show offline message and suggest game
-        if (window.debugRunner && !window.debugRunner.currentModal && !container) {
-            setTimeout(() => {
-                const offlineMsg = document.createElement('div');
-                offlineMsg.id = 'offline-msg';
-                offlineMsg.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        background: rgba(0,0,0,0.9);
-                        color: #00ff41;
-                        padding: 15px 20px;
-                        border-radius: 8px;
-                        border: 1px solid #00ff41;
-                        font-family: monospace;
-                        z-index: 10001;
-                        cursor: pointer;
-                    " onclick="this.remove(); window.debugRunner.showGame();">
-                        🌐 OFFLINE - Press <kbd>Ctrl+Shift+G</kbd> to play Debug Runner!
-                    </div>
-                `;
-                document.body.appendChild(offlineMsg);
-
-                // Auto remove after 5 seconds
-                setTimeout(() => {
-                    if (offlineMsg.parentNode) {
-                        offlineMsg.remove();
-                    }
-                }, 5000);
-            }, 1000);
-        }
-    });
-
-    console.log('🐛 Debug Runner ready! ' + (container ? 'Scroll down to play!' : 'Press Ctrl+Shift+G to play'));
 });

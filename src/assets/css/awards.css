@@ -3,16 +3,14 @@
    ======================================== */
 
 /* Awards Section Background */
+
+/* Awards Section Background */
 #awards {
-    background: var(--bg-primary);
+    background: #fff !important;
 }
 
 html.dark #awards {
-    background: #000;
-}
-
-html:not(.dark) #awards {
-    background: #fff;
+    background: #000 !important;
 }
 
 /* Awards Grid */
@@ -34,8 +32,8 @@ html:not(.dark) #awards {
 
 /* Award Card */
 .award-card {
-    background: var(--bg-primary);
-    border-radius: 16px;
+    background: #fff !important;
+    border-radius: 20px;
     padding: 2rem;
     border: 1px solid var(--border-color);
     box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
@@ -50,7 +48,7 @@ html:not(.dark) #awards {
 }
 
 html.dark .award-card {
-    background: #000;
+    background: #000 !important;
     border-color: rgb(255 255 255 / 10%);
     box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }

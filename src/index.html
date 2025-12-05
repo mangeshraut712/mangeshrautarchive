@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="theme-color" content="#0071e3" />
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -44,688 +47,47 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
-  <link rel="stylesheet" href="assets/css/tailwind-output.css" />
+  <link rel="stylesheet" href="assets/css/tailwind-output.css?v=2025" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=1764949000" />
+  <link rel="stylesheet" href="assets/css/global-improvements.css?v=1764873955" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=1764877200" />
+  <link rel="stylesheet" href="assets/css/contact.css?v=1764884200" />
 
-  <link rel="stylesheet" href="assets/css/dark-mode-cards.css" />
-  <link rel="stylesheet" href="assets/css/chatbot-complete.css" />
-  <link rel="stylesheet" href="assets/css/fixes-2025.css" />
+  <!-- Performance-Optimized Animations -->
+  <link rel="stylesheet" href="assets/css/animations.css?v=1764949000" />
 
-  <link rel="stylesheet" href="assets/css/publications.css" />
-  <link rel="stylesheet" href="assets/css/recommendations.css" />
-  <link rel="stylesheet" href="assets/css/awards.css" />
-  <link rel="stylesheet" href="assets/css/education.css" />
-  <link rel="stylesheet" href="assets/css/experience.css" />
-  <link rel="stylesheet" href="assets/css/calendar.css" />
-  <link rel="stylesheet" href="assets/css/theme-background-fix.css" />
+  <link rel="stylesheet" href="assets/css/publications.css?v=1764871088" />
+  <link rel="stylesheet" href="assets/css/education.css?v=1764876541" />
+  <link rel="stylesheet" href="assets/css/skills.css?v=1764876541" />
+  <link rel="stylesheet" href="assets/css/certifications.css?v=1764876541" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=1764876541" />
+  <link rel="stylesheet" href="assets/css/experience.css?v=1764877980" />
+  <link rel="stylesheet" href="assets/css/calendar.css?v=2025" />
 
   <!-- Prism.js for Code Highlighting -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
-  <link rel="stylesheet" href="assets/css/certifications.css" />
-  <link rel="stylesheet" href="assets/css/homepage.css" />
-  <link rel="stylesheet" href="assets/css/about.css" />
-  <link rel="stylesheet" href="assets/css/blog.css" />
-  <link rel="stylesheet" href="assets/css/projects.css" />
+  <link rel="stylesheet" href="assets/css/calendar.css?v=clean" />
+  <link rel="stylesheet" href="assets/css/contact.css?v=2025" />
+  <link rel="stylesheet" href="assets/css/posts.css?v=2025" />
+  <link rel="stylesheet" href="assets/css/about.css?v=2025" />
+  <link rel="stylesheet" href="assets/css/blog.css?v=1764878179" />
+  <link rel="stylesheet" href="assets/css/projects-v2.css?v=1764878179" />
+  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=1764908500" />
+  <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css?v=1764878179" />
+  <link rel="stylesheet" href="assets/css/recommendations.css?v=1764878179" />
+  <link rel="stylesheet" href="assets/css/awards.css?v=1764878179" />
 
-  <!-- Enhanced Dark Mode Theme -->
-  <link rel="stylesheet" href="assets/css/dark-mode-enhanced.css" />
 
-  <!-- Contact Page Mobile Fix - Must be last to override all other styles -->
-  <link rel="stylesheet" href="assets/css/contact-mobile-fix.css" />
+
+
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
 
   <!-- Chatbot iMessage Style - Complete Redesign -->
-  <style>
-    /* ═══════════════════════════════════════════════════════════
-         VOICE CONTROL MENU
-         ═══════════════════════════════════════════════════════════ */
-
-    .voice-control-menu {
-      position: absolute;
-      bottom: 70px;
-      right: 10px;
-      width: 280px;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-      padding: 16px;
-      z-index: 1001;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s ease;
-      pointer-events: none;
-    }
-
-    .voice-control-menu:not(.hidden) {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: all;
-    }
-
-    .voice-menu-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .voice-menu-header h4 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-
-    .voice-menu-close {
-      background: none;
-      border: none;
-      color: #86868b;
-      cursor: pointer;
-      padding: 4px;
-      transition: color 0.2s;
-    }
-
-    .voice-menu-close:hover {
-      color: #1d1d1f;
-    }
-
-    .voice-menu-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .voice-menu-option {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
-
-    .voice-menu-option:hover {
-      background: rgba(0, 0, 0, 0.03);
-    }
-
-    .voice-menu-option label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      cursor: pointer;
-      font-size: 14px;
-      color: #1d1d1f;
-    }
-
-    .voice-menu-option input[type="checkbox"] {
-      width: 42px;
-      height: 24px;
-      cursor: pointer;
-    }
-
-    .voice-menu-divider {
-      height: 1px;
-      background: rgba(0, 0, 0, 0.1);
-      margin: 4px 0;
-    }
-
-    .voice-menu-action {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-      padding: 10px 12px;
-      background: none;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      font-size: 14px;
-      color: #1d1d1f;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .voice-menu-action:hover {
-      background: rgba(0, 0, 0, 0.05);
-      border-color: rgba(0, 0, 0, 0.2);
-    }
-
-    html.dark .voice-control-menu {
-      background: rgba(30, 30, 30, 0.98);
-    }
-
-    html.dark .voice-menu-header h4,
-    html.dark .voice-menu-option label,
-    html.dark .voice-menu-action {
-      color: #f5f5f7;
-    }
-
-    html.dark .voice-menu-header,
-    html.dark .voice-menu-divider {
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    html.dark .voice-menu-action {
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    html.dark .voice-menu-action:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         IMPROVED MESSAGE CARD UI
-         ═══════════════════════════════════════════════════════════ */
-
-    .message {
-      margin: 12px 0;
-      animation: slideIn 0.3s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .user-message .message-content {
-      background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
-      color: white;
-      padding: 12px 16px;
-      border-radius: 18px;
-      max-width: 75%;
-      margin-left: auto;
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
-      word-wrap: break-word;
-    }
-
-    .assistant-message .message-content {
-      background: rgba(0, 0, 0, 0.05);
-      color: #1d1d1f;
-      padding: 14px 18px;
-      border-radius: 18px;
-      max-width: 80%;
-      margin-right: auto;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      word-wrap: break-word;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    .system-message .message-content {
-      background: rgba(255, 149, 0, 0.1);
-      color: #ff9500;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      text-align: center;
-      margin: 8px auto;
-      max-width: 90%;
-      border: 1px solid rgba(255, 149, 0, 0.2);
-    }
-
-    html.dark .assistant-message .message-content {
-      background: rgba(255, 255, 255, 0.08);
-      color: #f5f5f7;
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    html.dark .system-message .message-content {
-      background: rgba(255, 149, 0, 0.15);
-      color: #ffb340;
-      border-color: rgba(255, 149, 0, 0.3);
-    }
-
-    .message-metadata {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-      font-size: 11px;
-      opacity: 0.7;
-    }
-
-    .message-metadata span {
-      background: rgba(0, 0, 0, 0.05);
-      padding: 2px 8px;
-      border-radius: 8px;
-      font-size: 10px;
-    }
-
-    html.dark .message-metadata span {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         CHATBOT TOGGLE - CSS handled in external file
-         ═══════════════════════════════════════════════════════════ */
-
-    /* ═══════════════════════════════════════════════════════════
-         CHATBOT WIDGET - Centered Right, iMessage Style
-         ═══════════════════════════════════════════════════════════ */
-
-    #chatbot-widget,
-    div[id="chatbot-widget"] {
-      position: fixed !important;
-      top: 45% !important;
-      right: 30px !important;
-      transform: translateY(0) scale(0.95) !important;
-      z-index: 9999 !important;
-
-      width: 380px !important;
-      height: 600px !important;
-      max-height: 85vh !important;
-
-      /* iMessage Glass Effect */
-      background: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(40px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
-
-      border-radius: 16px !important;
-      border: 0.5px solid rgba(0, 0, 0, 0.08) !important;
-
-      box-shadow:
-        0 32px 64px rgba(0, 0, 0, 0.15),
-        0 16px 32px rgba(0, 0, 0, 0.1),
-        0 0 1px rgba(0, 0, 0, 0.1) !important;
-
-      display: flex !important;
-      flex-direction: column !important;
-      overflow: hidden !important;
-
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    }
-
-    #chatbot-widget.active,
-    #chatbot-widget:not(.hidden) {
-      transform: translateY(-50%) scale(1) !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    html.dark #chatbot-widget {
-      background: rgba(28, 28, 30, 0.95) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         HEADER - iMessage Style
-         ═══════════════════════════════════════════════════════════ */
-
-    .chatbot-header {
-      padding: 16px 20px !important;
-      background: rgba(247, 247, 247, 0.8) !important;
-      border-bottom: 0.5px solid rgba(0, 0, 0, 0.08) !important;
-      backdrop-filter: blur(20px) !important;
-
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      flex-shrink: 0 !important;
-    }
-
-    html.dark .chatbot-header {
-      background: rgba(44, 44, 46, 0.8) !important;
-      border-bottom-color: rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .chatbot-header-content {
-      flex: 1 !important;
-      text-align: center !important;
-    }
-
-    .chatbot-header h2,
-    .chatbot-header h3 {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif !important;
-      font-size: 16px !important;
-      font-weight: 600 !important;
-      color: #1d1d1f !important;
-      margin: 0 !important;
-      letter-spacing: -0.2px !important;
-    }
-
-    html.dark .chatbot-header h2,
-    html.dark .chatbot-header h3 {
-      color: #f5f5f7 !important;
-    }
-
-    .chatbot-header p {
-      font-size: 12px !important;
-      font-weight: 400 !important;
-      color: #86868b !important;
-      margin: 2px 0 0 0 !important;
-    }
-
-    html.dark .chatbot-header p {
-      color: #98989d !important;
-    }
-
-    .chatbot-close-btn {
-      position: absolute !important;
-      left: 16px !important;
-      width: 30px !important;
-      height: 30px !important;
-      border-radius: 50% !important;
-      background: rgba(120, 120, 128, 0.12) !important;
-      border: none !important;
-      color: #86868b !important;
-      font-size: 16px !important;
-
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-
-      cursor: pointer !important;
-      transition: all 0.2s ease !important;
-    }
-
-    .chatbot-close-btn:hover {
-      background: rgba(120, 120, 128, 0.2) !important;
-      color: #000000 !important;
-      transform: scale(1.05) !important;
-    }
-
-    html.dark .chatbot-close-btn:hover {
-      color: #ffffff !important;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         MESSAGES - iMessage Bubbles
-         ═══════════════════════════════════════════════════════════ */
-
-    #chatbot-messages {
-      flex: 1 !important;
-      overflow-y: auto !important;
-      padding: 16px !important;
-      background: rgba(255, 255, 255, 0.5) !important;
-
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 8px !important;
-    }
-
-    html.dark #chatbot-messages {
-      background: rgba(0, 0, 0, 0.2) !important;
-    }
-
-    /* Scrollbar */
-    #chatbot-messages::-webkit-scrollbar {
-      width: 4px !important;
-    }
-
-    #chatbot-messages::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.2) !important;
-      border-radius: 2px !important;
-    }
-
-    html.dark #chatbot-messages::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2) !important;
-    }
-
-    /* Message Bubbles - AGGRESSIVE FIX FOR HORIZONTAL TEXT */
-    .message {
-      max-width: 70% !important;
-      padding: 10px 14px !important;
-      border-radius: 18px !important;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
-      font-size: 15px !important;
-      line-height: 1.4 !important;
-
-      /* FORCE HORIZONTAL - AGGRESSIVE */
-      word-wrap: break-word !important;
-      word-break: normal !important;
-      white-space: normal !important;
-      overflow-wrap: break-word !important;
-      writing-mode: horizontal-tb !important;
-      text-orientation: mixed !important;
-      direction: ltr !important;
-      unicode-bidi: normal !important;
-      display: inline-block !important;
-
-      animation: messageSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    }
-
-    @keyframes messageSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px) scale(0.9);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    /* User Messages (Simple Blue, Right) */
-    .user-message {
-      background: #007aff !important;
-      color: white !important;
-      margin-left: auto !important;
-      border-bottom-right-radius: 4px !important;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
-      font-weight: 400 !important;
-    }
-
-    /* Bot Messages (Gray, Left) */
-    .bot-message {
-      background: #e9e9eb !important;
-      color: #000000 !important;
-      margin-right: auto !important;
-      border-bottom-left-radius: 4px !important;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-    }
-
-    html.dark .bot-message {
-      background: #3a3a3c !important;
-      color: #ffffff !important;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         INPUT AREA - iMessage Style
-         ═══════════════════════════════════════════════════════════ */
-
-    .chatbot-input-area,
-    #chatbot-form {
-      padding: 12px 16px !important;
-      background: rgba(247, 247, 247, 0.8) !important;
-      border-top: 0.5px solid rgba(0, 0, 0, 0.08) !important;
-      backdrop-filter: blur(20px) !important;
-
-      display: flex !important;
-      gap: 8px !important;
-      align-items: center !important;
-      flex-shrink: 0 !important;
-    }
-
-    html.dark .chatbot-input-area,
-    html.dark #chatbot-form {
-      background: rgba(28, 28, 30, 0.8) !important;
-      border-top-color: rgba(255, 255, 255, 0.08) !important;
-    }
-
-    #chatbot-input {
-      flex: 1 !important;
-      padding: 10px 14px !important;
-      border-radius: 18px !important;
-      border: 1px solid rgba(0, 0, 0, 0.1) !important;
-      background: white !important;
-
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
-      font-size: 15px !important;
-      color: #1d1d1f !important;
-
-      outline: none !important;
-      transition: border-color 0.2s ease !important;
-    }
-
-    #chatbot-input:focus {
-      border-color: #007aff !important;
-    }
-
-    #chatbot-input::placeholder {
-      color: #86868b !important;
-    }
-
-    html.dark #chatbot-input {
-      background: #2c2c2e !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: #f5f5f7 !important;
-    }
-
-    html.dark #chatbot-input::placeholder {
-      color: #98989d !important;
-    }
-
-    /* Buttons */
-    .chatbot-btn,
-    .chatbot-send-btn,
-    .chatbot-voice-btn {
-      width: 34px !important;
-      height: 34px !important;
-      border-radius: 50% !important;
-      border: none !important;
-
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-
-      cursor: pointer !important;
-      transition: all 0.2s ease !important;
-      flex-shrink: 0 !important;
-    }
-
-    .chatbot-send-btn,
-    .chatbot-btn[type="submit"] {
-      background: #007aff !important;
-      color: white !important;
-      font-size: 14px !important;
-    }
-
-    .chatbot-send-btn:hover {
-      background: #0051d5 !important;
-      transform: scale(1.05) !important;
-    }
-
-    .chatbot-voice-btn,
-    #chatbot-voice-btn {
-      background: #34c759 !important;
-      color: white !important;
-      font-size: 14px !important;
-      position: relative !important;
-    }
-
-    .chatbot-voice-btn:hover {
-      background: #30d158 !important;
-      transform: scale(1.05) !important;
-    }
-
-    .chatbot-voice-badge {
-      position: absolute !important;
-      top: -3px !important;
-      right: -3px !important;
-      background: white !important;
-      color: #34c759 !important;
-      font-size: 8px !important;
-      font-weight: 700 !important;
-      padding: 2px 4px !important;
-      border-radius: 8px !important;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         MOBILE RESPONSIVE
-         ═══════════════════════════════════════════════════════════ */
-
-    @media (max-width: 768px) {
-      #chatbot-toggle {
-        bottom: 20px !important;
-        right: 20px !important;
-        width: 56px !important;
-        height: 56px !important;
-      }
-
-      #chatbot-widget {
-        top: 50% !important;
-        right: 16px !important;
-        left: 16px !important;
-        width: auto !important;
-        height: 70vh !important;
-        max-height: 600px !important;
-      }
-    }
-
-    @media (max-width: 480px) {
-      #chatbot-widget {
-        height: 80vh !important;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-         LOADING ANIMATION
-         ═══════════════════════════════════════════════════════════ */
-
-    .chatbot-typing {
-      display: inline-flex !important;
-      gap: 4px !important;
-      padding: 10px 14px !important;
-      background: #e9e9eb !important;
-      border-radius: 18px !important;
-      margin-right: auto !important;
-    }
-
-    html.dark .chatbot-typing {
-      background: #3a3a3c !important;
-    }
-
-    .chatbot-typing span {
-      width: 8px !important;
-      height: 8px !important;
-      border-radius: 50% !important;
-      background: #86868b !important;
-      animation: typingDot 1.4s infinite !important;
-    }
-
-    .chatbot-typing span:nth-child(2) {
-      animation-delay: 0.2s !important;
-    }
-
-    .chatbot-typing span:nth-child(3) {
-      animation-delay: 0.4s !important;
-    }
-
-    @keyframes typingDot {
-
-      0%,
-      60%,
-      100% {
-        transform: translateY(0);
-        opacity: 0.4;
-      }
-
-      30% {
-        transform: translateY(-6px);
-        opacity: 1;
-      }
-    }
-  </style>
+  <!-- Chatbot Styles -->
+  <link rel="stylesheet" href="assets/css/chatbot.css?v=1764950000" />
 
   <!-- Chatbot JavaScript (Minimal - CSS handles styling) -->
   <script>
@@ -757,7 +119,9 @@
       <div class="search-input-wrapper">
         <i class="fas fa-search search-icon"></i>
         <input type="text" id="search-input" placeholder="Search" autocomplete="off">
-        <button id="search-close" aria-label="Close search">&times;</button>
+        <button id="search-close" class="premium-close-btn" aria-label="Close search">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
       <div id="search-results"></div>
       <div class="search-hint">
@@ -766,17 +130,9 @@
     </div>
   </div>
 
-  <!-- Background Clip Animation -->
-
-
   <nav class="global-nav" aria-label="Primary navigation">
     <div class="nav-container">
       <div class="nav-left">
-        <button id="menu-btn" class="menu-toggle-button" type="button" aria-label="Open navigation menu"
-          aria-controls="overlay-menu" aria-expanded="false">
-          <span class="menu-icon" aria-hidden="true"></span>
-          <span class="menu-label">Menu</span>
-        </button>
         <a class="nav-logo" href="#home" aria-label="Mangesh Raut home">
           <img src="assets/images/profile-icon.png" alt="Mangesh Raut" />
         </a>
@@ -792,7 +148,7 @@
         <a href="#awards" class="nav-link" role="menuitem">Awards</a>
         <a href="#recommendations" class="nav-link" role="menuitem">Recommendations</a>
         <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
-        <a href="#blog" class="nav-link" role="menuitem">Blog</a>
+        <a href="#blog" class="nav-link" role="menuitem">Blogs</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
         <a href="#debug-runner-section" class="nav-link" role="menuitem">Game</a>
       </div>
@@ -804,30 +160,78 @@
           <i id="theme-toggle-icon" class="fas fa-moon" aria-hidden="true"></i>
           <span class="sr-only">Toggle theme</span>
         </button>
+        <button id="menu-btn" class="menu-toggle-button" type="button" aria-label="Open navigation menu"
+          aria-controls="overlay-menu" aria-expanded="false">
+          <i class="fas fa-bars" style="font-size: 24px; color: var(--nav-text);"></i>
+        </button>
       </div>
     </div>
   </nav>
 
   <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true"
     aria-label="Site navigation">
-    <button id="menu-close" class="menu-close-button" type="button" aria-label="Close navigation menu">
-      &times;
+    <button id="close-menu-btn" class="premium-close-btn" type="button" aria-label="Close navigation menu">
+      <i class="fas fa-times"></i>
     </button>
-    <nav class="overlay-nav" aria-label="Mobile navigation">
-      <a href="#home" class="overlay-nav-link">Home</a>
-      <a href="#about" class="overlay-nav-link">About</a>
-      <a href="#skills" class="overlay-nav-link">Skills</a>
-      <a href="#experience" class="overlay-nav-link">Experience</a>
-      <a href="#projects" class="overlay-nav-link">Projects</a>
-      <a href="#education" class="overlay-nav-link">Education</a>
-      <a href="#publications" class="overlay-nav-link">Publications</a>
-      <a href="#awards" class="overlay-nav-link">Awards</a>
-      <a href="#recommendations" class="overlay-nav-link">Recommendations</a>
-      <a href="#certifications" class="overlay-nav-link">Certifications</a>
-      <a href="#blog" class="overlay-nav-link">Blog</a>
-      <a href="#contact" class="overlay-nav-link">Contact</a>
-      <a href="#debug-runner-section" class="overlay-nav-link">Game</a>
-    </nav>
+
+    <div class="overlay-menu-content">
+      <!-- unified single list for compactness -->
+      <div class="menu-grid">
+        <a href="#home" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-home"></i></div>
+          <span>Home</span>
+        </a>
+        <a href="#about" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-user"></i></div>
+          <span>About</span>
+        </a>
+        <a href="#skills" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-laptop-code"></i></div>
+          <span>Skills</span>
+        </a>
+        <a href="#experience" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-briefcase"></i></div>
+          <span>Experience</span>
+        </a>
+        <a href="#projects" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-code"></i></div>
+          <span>Projects</span>
+        </a>
+        <a href="#education" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-graduation-cap"></i></div>
+          <span>Education</span>
+        </a>
+        <a href="#publications" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-book"></i></div>
+          <span>Publications</span>
+        </a>
+        <a href="#awards" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-trophy"></i></div>
+          <span>Awards</span>
+        </a>
+        <a href="#recommendations" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-star"></i></div>
+          <span>Recommendations</span>
+        </a>
+        <a href="#certifications" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-certificate"></i></div>
+          <span>Certifications</span>
+        </a>
+        <a href="#blog" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-rss"></i></div>
+          <span>Blogs</span>
+        </a>
+        <a href="#contact" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-envelope"></i></div>
+          <span>Contact</span>
+        </a>
+        <a href="#debug-runner-section" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-gamepad"></i></div>
+          <span>Game</span>
+        </a>
+      </div>
+    </div>
+  </div>
   </div>
   <main id="main-content">
     <!-- Home Section -->
@@ -914,32 +318,6 @@
         <h2>Skills & Technologies</h2>
 
         <!-- Tech Stack Marquee -->
-        <div class="marquee-container mb-12">
-          <div class="marquee-content">
-            <div class="marquee-item"><i class="fab fa-java text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-python text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-js text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-react text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-angular text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-node text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-aws text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-docker text-4xl"></i></div>
-            <div class="marquee-item"><i class="fas fa-database text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-git-alt text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-linux text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-html5 text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-css3-alt text-4xl"></i></div>
-            <!-- Duplicate for seamless loop -->
-            <div class="marquee-item"><i class="fab fa-java text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-python text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-js text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-react text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-angular text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-node text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-aws text-4xl"></i></div>
-            <div class="marquee-item"><i class="fab fa-docker text-4xl"></i></div>
-          </div>
-        </div>
 
         <!-- Interactive Skills Visualization Container -->
         <div id="skills-container" class="max-w-6xl mx-auto">
@@ -962,301 +340,285 @@
       <div class="container">
         <h2>Professional Experience</h2>
 
-        <!-- Full-Time Employment -->
-        <div class="mb-12">
-          <h3 class="text-2xl font-bold mb-8 text-center text-accent">Full-Time Employment</h3>
+        <div class="experience-timeline">
+
+          <!-- Full-Time Employment -->
+          <div class="timeline-section-header">
+            <h3>Full-Time Employment</h3>
+          </div>
 
           <!-- Customized Energy Solutions -->
-          <div
-            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold">Software Engineer</h3>
-                <p class="text-accent font-semibold">Customized Energy Solutions - Philadelphia, PA</p>
-              </div>
-              <span
-                class="inline-block px-3 py-1 mt-2 md:mt-0 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                Aug 2024 – Aug 2025
-              </span>
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="fas fa-laptop-code"></i>
             </div>
-            <ul class="space-y-3 text-secondary">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Full-Stack Development:</strong> Built energy analytics dashboards using Java Spring
-                  Boot
-                  (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API
-                  optimization</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Cloud DevOps:</strong> Orchestrated AWS Lambda/EC2 workflows with Terraform IaC,
-                  accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Machine Learning:</strong> Enhanced demand forecasting accuracy by 25% using
-                  Python-based
-                  LSTM models (TensorFlow) with feature engineering</span>
-              </li>
-            </ul>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Java Spring
-                Boot</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">AngularJS</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">AWS</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">TensorFlow</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Terraform</span>
+            <div class="experience-content">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                <div>
+                  <h3 class="text-xl">Software Engineer</h3>
+                  <span class="text-accent">Customized Energy Solutions - Philadelphia, PA</span>
+                </div>
+                <span class="experience-date-badge">Aug 2024 – Aug 2025</span>
+              </div>
+              <ul class="space-y-3">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Full-Stack Development:</strong> Built energy analytics dashboards using Java Spring
+                    Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API
+                    optimization</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Cloud DevOps:</strong> Orchestrated AWS Lambda/EC2 workflows with Terraform IaC,
+                    accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Machine Learning:</strong> Enhanced demand forecasting accuracy by 25% using
+                    Python-based LSTM models (TensorFlow) with feature engineering</span>
+                </li>
+              </ul>
+              <div class="experience-tags">
+                <span class="experience-tag">Java Spring Boot</span>
+                <span class="experience-tag">AngularJS</span>
+                <span class="experience-tag">AWS</span>
+                <span class="experience-tag">TensorFlow</span>
+                <span class="experience-tag">Terraform</span>
+              </div>
             </div>
           </div>
 
           <!-- IoasiZ -->
-          <div
-            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold">Software Engineer</h3>
-                <p class="text-accent font-semibold">IoasiZ - Piscataway, NJ</p>
-              </div>
-              <span
-                class="inline-block px-3 py-1 mt-2 md:mt-0 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                Jul 2023 – Jul 2024
-              </span>
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="fas fa-code-branch"></i>
             </div>
-            <ul class="space-y-3 text-secondary">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>System Modernization:</strong> Refactored legacy Java monoliths into modular services
-                  using Spring Framework, cutting code redundancy by 20% (SOLID principles)</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Distributed Systems:</strong> Resolved 50+ bugs in microservices architecture, boosting
-                  sprint efficiency by 15% via JUnit/Mockito test suites</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Performance Optimization:</strong> Integrated Redis caching for inventory APIs,
-                  achieving
-                  30% faster response times through query tuning</span>
-              </li>
-            </ul>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Java</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Spring
-                Framework</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Microservices</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Redis</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">JUnit</span>
+            <div class="experience-content">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                <div>
+                  <h3 class="text-xl">Software Engineer</h3>
+                  <span class="text-accent">IoasiZ - Piscataway, NJ</span>
+                </div>
+                <span class="experience-date-badge">Jul 2023 – Jul 2024</span>
+              </div>
+              <ul class="space-y-3">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>System Modernization:</strong> Refactored legacy Java monoliths into modular services
+                    using Spring Framework, cutting code redundancy by 20% (SOLID principles)</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Distributed Systems:</strong> Resolved 50+ bugs in microservices architecture, boosting
+                    sprint efficiency by 15% via JUnit/Mockito test suites</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Performance Optimization:</strong> Integrated Redis caching for inventory APIs,
+                    achieving 30% faster response times through query tuning</span>
+                </li>
+              </ul>
+              <div class="experience-tags">
+                <span class="experience-tag">Java</span>
+                <span class="experience-tag">Spring Framework</span>
+                <span class="experience-tag">Microservices</span>
+                <span class="experience-tag">Redis</span>
+                <span class="experience-tag">JUnit</span>
+              </div>
             </div>
           </div>
 
           <!-- Harshwardhan Enterprises -->
-          <div
-            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold">Network Engineer</h3>
-                <p class="text-accent font-semibold">Harshwardhan Enterprises - Pune, India</p>
-              </div>
-              <span
-                class="inline-block px-3 py-1 mt-2 md:mt-0 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                Jun 2020 – Jun 2021
-              </span>
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="fas fa-network-wired"></i>
             </div>
-            <ul class="space-y-3 text-secondary">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Network Optimization:</strong> Deployed Cisco ASR 9000 routers with OSPF/BGP protocols,
-                  slashing latency by 35% in enterprise WANs</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Troubleshooting:</strong> Resolved 500+ connectivity issues via Wireshark analysis,
-                  achieving 90% SLA compliance for client networks</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Scripting:</strong> Created Python-based monitoring tools, reducing manual diagnostics
-                  by
-                  50%</span>
-              </li>
-            </ul>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Cisco ASR 9000</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">OSPF/BGP</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Wireshark</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Python</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Network
-                Security</span>
+            <div class="experience-content">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                <div>
+                  <h3 class="text-xl">Network Engineer</h3>
+                  <span class="text-accent">Harshwardhan Enterprises - Pune, India</span>
+                </div>
+                <span class="experience-date-badge">Jun 2020 – Jun 2021</span>
+              </div>
+              <ul class="space-y-3">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Network Optimization:</strong> Deployed Cisco ASR 9000 routers with OSPF/BGP protocols,
+                    slashing latency by 35% in enterprise WANs</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Troubleshooting:</strong> Resolved 500+ connectivity issues via Wireshark analysis,
+                    achieving 90% SLA compliance for client networks</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Scripting:</strong> Created Python-based monitoring tools, reducing manual diagnostics
+                    by 50%</span>
+                </li>
+              </ul>
+              <div class="experience-tags">
+                <span class="experience-tag">Cisco ASR 9000</span>
+                <span class="experience-tag">OSPF/BGP</span>
+                <span class="experience-tag">Wireshark</span>
+                <span class="experience-tag">Python</span>
+                <span class="experience-tag">Network Security</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Internship -->
-        <div class="mb-12">
-          <h3 class="text-2xl font-bold mb-8 text-center text-accent">Internship</h3>
+          <!-- Internship Section Header -->
+          <div class="timeline-section-header">
+            <h3>Internship</h3>
+          </div>
 
           <!-- Aramark -->
-          <div
-            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold">Database Administrator</h3>
-                <p class="text-accent font-semibold">Aramark - Philadelphia, PA</p>
-              </div>
-              <span
-                class="inline-block px-3 py-1 mt-2 md:mt-0 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                Jun 2022 – Jun 2023
-              </span>
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="fas fa-database"></i>
             </div>
-            <ul class="space-y-3 text-secondary">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>AWS Automation:</strong> Developed Python scripts to manage event inventory systems on
-                  AWS, reducing manual errors by 25% for 200+ events</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Data Migration:</strong> Transitioned 3+ legacy databases to AWS RDS, improving
-                  scalability for high-traffic event analytics</span>
-              </li>
-            </ul>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">AWS</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Python</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">AWS RDS</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Database
-                Administration</span>
+            <div class="experience-content">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                <div>
+                  <h3 class="text-xl">Database Administrator</h3>
+                  <span class="text-accent">Aramark - Philadelphia, PA</span>
+                </div>
+                <span class="experience-date-badge">Jun 2022 – Jun 2023</span>
+              </div>
+              <ul class="space-y-3">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>AWS Automation:</strong> Developed Python scripts to manage event inventory systems on
+                    AWS, reducing manual errors by 25% for 200+ events</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Data Migration:</strong> Transitioned 3+ legacy databases to AWS RDS, improving
+                    scalability for high-traffic event analytics</span>
+                </li>
+              </ul>
+              <div class="experience-tags">
+                <span class="experience-tag">AWS</span>
+                <span class="experience-tag">Python</span>
+                <span class="experience-tag">AWS RDS</span>
+                <span class="experience-tag">Database Administration</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Part-Time Work -->
-        <div class="mb-12">
-          <h3 class="text-2xl font-bold mb-8 text-center text-accent">Part-Time Work</h3>
+          <!-- Part-Time Section Header -->
+          <div class="timeline-section-header">
+            <h3>Part-Time Work</h3>
+          </div>
 
           <!-- Drexel University -->
-          <div
-            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300 mb-8">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold">Database Administrator</h3>
-                <p class="text-accent font-semibold">Drexel University - Philadelphia, PA</p>
-              </div>
-              <span
-                class="inline-block px-3 py-1 mt-2 md:mt-0 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                Sep 2021 – May 2022
-              </span>
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="fas fa-university"></i>
             </div>
-            <ul class="space-y-3 text-secondary">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>SQL & Compliance:</strong> Maintained HIPAA-compliant MySQL databases for 5K+ student
-                  records, ensuring 99.9% accuracy with constraint-driven validation</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-accent mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor"
-                  viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <span><strong>Reporting Tools:</strong> Streamlined data workflows using Tableau and Excel, cutting
-                  report generation time by 20% for administrative teams</span>
-              </li>
-            </ul>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">MySQL</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">HIPAA
-                Compliance</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Tableau</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Excel</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">SQL</span>
+            <div class="experience-content">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                <div>
+                  <h3 class="text-xl">Database Administrator</h3>
+                  <span class="text-accent">Drexel University - Philadelphia, PA</span>
+                </div>
+                <span class="experience-date-badge">Sep 2021 – May 2022</span>
+              </div>
+              <ul class="space-y-3">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>SQL & Compliance:</strong> Maintained HIPAA-compliant MySQL databases for 5K+ student
+                    records, ensuring 99.9% accuracy with constraint-driven validation</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span><strong>Reporting Tools:</strong> Streamlined data workflows using Tableau and Excel, cutting
+                    report generation time by 20% for administrative teams</span>
+                </li>
+              </ul>
+              <div class="experience-tags">
+                <span class="experience-tag">MySQL</span>
+                <span class="experience-tag">HIPAA Compliance</span>
+                <span class="experience-tag">Tableau</span>
+                <span class="experience-tag">Excel</span>
+                <span class="experience-tag">SQL</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Volunteer Work -->
-        <div class="mb-12">
-          <h3 class="text-2xl font-bold mb-8 text-center text-accent">Volunteer Work</h3>
+          <!-- Volunteer Section Header -->
+          <div class="timeline-section-header">
+            <h3>Volunteer Work</h3>
+          </div>
 
-          <!-- Drexel University COVID-19 Service -->
-          <div
-            class="education-card gemini-flashlight-card bg-primary rounded-xl p-6 shadow-light hover:shadow-xl transition-all duration-300">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold">COVID-19 Testing Assistant and Vaccination Team</h3>
-                <p class="text-accent font-semibold">Drexel University - Philadelphia, PA</p>
-              </div>
-              <span
-                class="inline-block px-3 py-1 mt-2 md:mt-0 bg-accent/10 text-accent rounded-full text-sm font-medium">
-                Jan 2022
-              </span>
+          <!-- Drexel COVID -->
+          <div class="experience-item">
+            <div class="experience-icon">
+              <i class="fas fa-hands-helping"></i>
             </div>
-            <p class="text-secondary mb-4 leading-relaxed">
-              As a dedicated volunteer and essential team member at Drexel University, I played a crucial role in
-              supporting the university's COVID-19 vaccination efforts. My responsibilities included ensuring smooth,
-              organized processes for individuals seeking vaccination, maintaining safety protocols, and providing
-              exceptional support during this critical time.
-            </p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Healthcare
-                Support</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Safety
-                Protocols</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">Community
-                Service</span>
-              <span class="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">COVID-19
-                Response</span>
+            <div class="experience-content">
+              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                <div>
+                  <h3 class="text-xl">COVID-19 Testing Assistant</h3>
+                  <span class="text-accent">Drexel University - Philadelphia, PA</span>
+                </div>
+                <span class="experience-date-badge">Jan 2022</span>
+              </div>
+              <p class="mb-4 leading-relaxed">
+                As a dedicated volunteer and essential team member at Drexel University, I played a crucial role in
+                supporting the university's COVID-19 vaccination efforts. My responsibilities included ensuring smooth,
+                organized processes for individuals seeking vaccination, maintaining safety protocols, and providing
+                exceptional support during this critical time.
+              </p>
+              <div class="experience-tags">
+                <span class="experience-tag">Healthcare Support</span>
+                <span class="experience-tag">Safety Protocols</span>
+                <span class="experience-tag">Community Service</span>
+                <span class="experience-tag">COVID-19 Response</span>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -1269,75 +631,67 @@
         <!-- Projects Stats Dashboard -->
         <div class="max-w-6xl mx-auto mb-12" id="projects-stats">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div
-              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
-              <div
-                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-blue-500 to-cyan-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+            <div class="stat-card group">
+              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-code"></i>
               </div>
-              <div class="text-3xl font-bold text-accent mb-1" id="stat-repos">--</div>
-              <div class="text-sm opacity-75 font-medium">Repositories</div>
+              <div class="stat-value" id="stat-repos">--</div>
+              <div class="stat-label">Repositories</div>
             </div>
-            <div
-              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
-              <div
-                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-yellow-400 to-orange-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+            <div class="stat-card group">
+              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-star"></i>
               </div>
-              <div class="text-3xl font-bold text-accent mb-1" id="stat-stars">--</div>
-              <div class="text-sm opacity-75 font-medium">Total Stars</div>
+              <div class="stat-value" id="stat-stars">--</div>
+              <div class="stat-label">Total Stars</div>
             </div>
-            <div
-              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
-              <div
-                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-purple-500 to-pink-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+            <div class="stat-card group">
+              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-code-branch"></i>
               </div>
-              <div class="text-3xl font-bold text-accent mb-1" id="stat-forks">--</div>
-              <div class="text-sm opacity-75 font-medium">Total Forks</div>
+              <div class="stat-value" id="stat-forks">--</div>
+              <div class="stat-label">Total Forks</div>
             </div>
-            <div
-              class="stat-card bg-primary rounded-xl p-6 text-center shadow-light hover:shadow-xl transition-all duration-300 group">
-              <div
-                class="stat-icon mb-3 text-4xl bg-gradient-to-br from-green-400 to-emerald-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+            <div class="stat-card group">
+              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
                 <i class="fas fa-language"></i>
               </div>
-              <div class="text-3xl font-bold text-accent mb-1" id="stat-languages">--</div>
-              <div class="text-sm opacity-75 font-medium">Languages</div>
+              <div class="stat-value" id="stat-languages">--</div>
+              <div class="stat-label">Languages</div>
             </div>
           </div>
         </div>
 
         <!-- Search and Filter -->
-        <div class="max-w-6xl mx-auto mb-8">
-          <div class="flex flex-col md:flex-row gap-4">
-            <div class="flex-1">
-              <div class="relative">
-                <input type="text" id="project-search" placeholder="Search projects..."
-                  class="w-full px-4 py-3 pl-12 rounded-xl border border-border bg-primary focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all duration-300" />
-                <i
-                  class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary opacity-50"></i>
-              </div>
+        <!-- Search and Filter -->
+        <!-- Search and Filter (Redesigned) -->
+        <div class="proj-search-container">
+          <div class="proj-search-bar">
+            <div class="proj-input-group">
+              <span class="proj-search-icon-wrapper">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" id="project-search" class="proj-search-input" placeholder="Search projects..." />
             </div>
-            <div class="flex gap-2">
-              <select id="language-filter" class="project-action-btn text-sm">
-                <option value="">All Languages</option>
-              </select>
-              <button id="sort-toggle" class="project-action-btn text-sm" title="Toggle sort order">
-                <i class="fas fa-sort"></i>
-                <span class="hidden md:inline">Sort</span>
-              </button>
-            </div>
+          </div>
+
+          <div class="proj-filter-group">
+            <select id="language-filter" class="proj-filter-select">
+              <option value="">All Languages</option>
+            </select>
+            <button id="sort-toggle" class="proj-sort-btn" title="Toggle sort order">
+              <span id="sort-text">Sort</span>
+            </button>
           </div>
         </div>
 
         <!-- Projects Grid -->
         <div class="max-w-6xl mx-auto">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="github-projects-container">
+          <div id="github-projects-container">
             <!-- Projects will be dynamically loaded here -->
             <div class="col-span-full flex items-center justify-center py-12">
               <div class="text-center">
-                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent mb-4"></div>
+                <div class="loading-spinner mb-4 mx-auto"></div>
                 <p class="text-secondary">Loading projects from GitHub...</p>
               </div>
             </div>
@@ -1504,7 +858,9 @@
                   Vol. 13, No. 3, (2020), pp. 3306-3313 • ISSN • Jun 15, 2020
                 </p>
               </div>
-              <a href="assets/files/RTFERS paper.pdf" target="_blank" class="publication-read-btn">
+              <a href="assets/files/RTFERS paper.pdf" target="_blank" class="publication-read-btn"
+                style="color: #fff !important; -webkit-text-fill-color: #fff !important;">
+                <i class="fas fa-file-pdf"></i>
                 Read paper
               </a>
             </div>
@@ -1867,324 +1223,356 @@
     <section id="contact" class="fade-in py-32">
       <div class="container">
         <h2>Get In Touch</h2>
-        <div class="row">
-          <div class="col-lg-6 mb-12 lg:mb-0">
-            <div class="contact-card bg-primary border border-border rounded-2xl shadow-light">
-              <h3 class="mb-6">Contact Information</h3>
-              <p class="mb-8">
-                Feel free to reach out via email or connect on social media.
-              </p>
-              <div class="space-y-4">
-                <div>
-                  <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">
-                    Email
-                  </h4>
-                  <p class="mb-4 text-base">
-                    <i class="fas fa-envelope mr-3 text-accent"></i><a href="mailto:mbr63@drexel.edu"
-                      class="hover:underline">mbr63@drexel.edu</a>
-                  </p>
-                  <p class="text-base">
-                    <i class="fas fa-envelope mr-3 text-accent"></i><a href="mailto:mbr63drexel@gmail.com"
-                      class="hover:underline">mbr63drexel@gmail.com</a>
-                  </p>
-                </div>
-                <div>
-                  <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">
-                    Phone
-                  </h4>
-                  <p class="mb-4 text-base">
-                    <i class="fab fa-whatsapp mr-3 text-green-500"></i>+917276819090 (whatsapp)
-                  </p>
-                  <p class="text-base">
-                    <i class="fas fa-mobile-alt mr-3 text-accent"></i>+1 (609)
-                    505 3500
-                  </p>
-                </div>
-                <div>
-                  <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-2">
-                    Location
-                  </h4>
-                  <p class="mb-4 text-base">
-                    <i class="fas fa-map-marker-alt mr-3 text-accent"></i>🇮🇳
-                    Pune, MH, India
-                  </p>
-                  <p class="text-base">
-                    <i class="fas fa-map-marker-alt mr-3 text-accent"></i>🇺🇸
-                    Philadelphia, PA, USA
-                  </p>
-                </div>
-                <div class="pt-4">
-                  <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-4">
-                    Follow Me
-                  </h4>
-                  <ul class="wrapper justify-start pl-0 ml-0">
-                    <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" aria-label="Facebook">
-                      <li class="icon facebook">
-                        <span class="tooltip">Facebook</span>
-                        <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
-                          </path>
-                        </svg>
-                      </li>
-                    </a>
-                    <a href="https://github.com/mangeshraut712" target="_blank" aria-label="Github">
-                      <li class="icon github">
-                        <span class="tooltip">Github</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path
-                            d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-                        </svg>
-                      </li>
-                    </a>
-                    <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" aria-label="Instagram">
-                      <li class="icon instagram">
-                        <span class="tooltip">Instagram</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor"
-                          class="bi bi-instagram" viewBox="0 0 16 16">
-                          <path
-                            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
-                          </path>
-                        </svg>
-                      </li>
-                    </a>
-                    <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" aria-label="Linkedin">
-                      <li class="icon linkedin">
-                        <span class="tooltip">Linkedin</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                          <path d="M8 11l0 5" />
-                          <path d="M8 8l0 .01" />
-                          <path d="M12 16l0 -5" />
-                          <path d="M16 16v-3a2 2 0 0 0 -4 0" />
-                        </svg>
-                      </li>
-                    </a>
-                    <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" aria-label="YouTube">
-                      <li class="icon youtube">
-                        <span class="tooltip">YouTube</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor"
-                          viewBox="0 0 576 512">
-                          <path
-                            d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
-                        </svg>
-                      </li>
-                    </a>
-                    <a href="https://x.com/mrcommando712" target="_blank" aria-label="X">
-                      <li class="icon x">
-                        <span class="tooltip">X</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                          <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-                        </svg>
-                      </li>
-                    </a>
-                    <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" aria-label="LeetCode">
-                      <li class="icon leetcode">
-                        <span class="tooltip">LeetCode</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
-                          <path
-                            d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
-                        </svg>
-                      </li>
-                    </a>
-                  </ul>
+        <div class="contact-grid">
+          <!-- Column 1: All Contact Sections in ONE Card -->
+          <div class="contact-column">
+            <div class="contact-card contact-info-all">
+              <!-- Contact Information -->
+              <div class="contact-section">
+                <h3>Contact Information</h3>
+                <p class="contact-description">
+                  Feel free to reach out via email or connect on social media.
+                </p>
+
+                <div class="contact-info-group">
+                  <!-- Email -->
+                  <div class="contact-item">
+                    <span class="contact-label">Email</span>
+                    <div class="contact-link-wrapper">
+                      <a href="mailto:mbr63@drexel.edu" class="contact-link-item">
+                        <div class="icon-box blue">
+                          <i class="fas fa-envelope"></i>
+                        </div>
+                        <span class="link-text">mbr63@drexel.edu</span>
+                      </a>
+                      <a href="mailto:mbr63drexel@gmail.com" class="contact-link-item">
+                        <div class="icon-box blue">
+                          <i class="fas fa-envelope"></i>
+                        </div>
+                        <span class="link-text">mbr63drexel@gmail.com</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Phone -->
+                  <div class="contact-item">
+                    <span class="contact-label">Phone</span>
+                    <div class="contact-link-wrapper">
+                      <a href="https://wa.me/917276819090" target="_blank" class="contact-link-item">
+                        <div class="icon-box green">
+                          <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <span class="link-text">+91 727 681 9090 (WhatsApp)</span>
+                      </a>
+                      <a href="tel:+16095053500" class="contact-link-item">
+                        <div class="icon-box blue">
+                          <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <span class="link-text">+1 (609) 505-3500</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Location -->
+                  <div class="contact-item">
+                    <span class="contact-label">Location</span>
+                    <div class="contact-link-wrapper">
+                      <a href="https://www.google.com/maps/place/Pune,+Maharashtra,+India" target="_blank"
+                        class="contact-link-item">
+                        <div class="icon-box purple">
+                          <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <span class="link-text">Pune, MH, India 🇮🇳</span>
+                      </a>
+                      <a href="https://www.google.com/maps/place/Philadelphia,+PA,+USA" target="_blank"
+                        class="contact-link-item">
+                        <div class="icon-box purple">
+                          <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <span class="link-text">Philadelphia, PA, USA 🇺🇸</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="mt-6 pt-6 border-t border-border flex justify-between items-center">
+
+              <!-- Support Me -->
+              <div class="contact-section support-section">
                 <div>
-                  <h4 class="font-medium text-sm uppercase tracking-wider opacity-75 mb-3">
-                    Support Me
-                  </h4>
-                  <p class="mb-4 opacity-75 text-sm">
-                    If you like my work, consider buying me a coffee!
-                  </p>
-                  <a href="https://www.buymeacoffee.com/mangeshraut" target="_blank" style="color: black !important;"
-                    class="inline-flex items-center px-4 py-2 bg-[#FFDD00] text-black font-semibold rounded-lg hover:bg-[#FFEA00] transition-all transform hover:scale-105 shadow-sm text-sm support-btn-animate">
-                    <i class="fas fa-mug-hot mr-2"></i>Buy Me a Coffee
+                  <h3>Support Me</h3>
+                  <p class="contact-description">If you like my work, consider buying me a coffee!</p>
+                  <a href="https://www.buymeacoffee.com/mangeshraut" target="_blank" class="support-coffee-btn">
+                    <i class="fas fa-mug-hot"></i>Buy Me a Coffee
                   </a>
                 </div>
-                <div class="ml-4">
-                  <img src="assets/images/ganesh.jpg" alt="Lord Ganesh"
-                    class="w-20 h-20 rounded-lg object-cover shadow-md ganesh-animate">
+                <div>
+                  <img src="assets/images/ganesh.jpg?v=2025" alt="Lord Ganesh" class="ganesh-img"
+                    title="🕉️ Om Gan Ganapataye Namah">
                 </div>
               </div>
-            </div>
 
-            <!-- Dream Companies Marquee -->
-            <div class="mt-8">
-              <h3 class="text-lg font-bold mb-4 text-primary">Dream Companies</h3>
-              <div
-                class="dream-companies-marquee relative overflow-hidden bg-secondary/30 rounded-xl py-4 border border-border">
-                <div class="marquee-track flex items-center gap-8">
-                  <!-- Logos (Duplicated for seamless loop) -->
-                  <!-- Set 1 -->
-                  <img src="https://logo.clearbit.com/nvidia.com" alt="Nvidia"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Nvidia">
-                  <img src="https://logo.clearbit.com/apple.com" alt="Apple"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Apple">
-                  <img src="https://logo.clearbit.com/google.com" alt="Google"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Google">
-                  <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Microsoft">
-                  <img src="https://logo.clearbit.com/amazon.com" alt="Amazon"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Amazon">
-                  <img src="https://logo.clearbit.com/meta.com" alt="Meta"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Meta">
-                  <img src="https://logo.clearbit.com/tesla.com" alt="Tesla"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Tesla">
-                  <img src="https://logo.clearbit.com/netflix.com" alt="Netflix"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Netflix">
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Adobe_Corporate_logo.svg/512px-Adobe_Corporate_logo.svg.png"
-                    alt="Adobe" class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Adobe">
-                  <img src="https://logo.clearbit.com/intel.com" alt="Intel"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Intel">
+              <!-- Follow Me -->
+              <div class="contact-section">
+                <h3>Follow Me</h3>
+                <p class="contact-description">Connect with me on social media platforms.</p>
+                <ul class="wrapper justify-start pl-0 ml-0 gap-4 flex-wrap">
+                  <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" aria-label="Facebook">
+                    <li class="icon facebook">
+                      <span class="tooltip">Facebook</span>
+                      <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
+                        </path>
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://github.com/mangeshraut712" target="_blank" aria-label="Github">
+                    <li class="icon github">
+                      <span class="tooltip">Github</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                          d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" aria-label="Instagram">
+                    <li class="icon instagram">
+                      <span class="tooltip">Instagram</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram"
+                        viewBox="0 0 16 16">
+                        <path
+                          d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
+                        </path>
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" aria-label="Linkedin">
+                    <li class="icon linkedin">
+                      <span class="tooltip">Linkedin</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                        <path d="M8 11l0 5" />
+                        <path d="M8 8l0 .01" />
+                        <path d="M12 16l0 -5" />
+                        <path d="M16 16v-3a2 2 0 0 0 -4 0" />
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" aria-label="YouTube">
+                    <li class="icon youtube">
+                      <span class="tooltip">YouTube</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512">
+                        <path
+                          d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://x.com/mrcommando712" target="_blank" aria-label="X">
+                    <li class="icon x">
+                      <span class="tooltip">X</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                        <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                      </svg>
+                    </li>
+                  </a>
+                  <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" aria-label="LeetCode">
+                    <li class="icon leetcode">
+                      <span class="tooltip">LeetCode</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                          d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+                      </svg>
+                    </li>
+                  </a>
+                </ul>
+              </div>
 
-                  <!-- Set 2 (Duplicate) -->
-                  <img src="https://logo.clearbit.com/nvidia.com" alt="Nvidia"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Nvidia">
-                  <img src="https://logo.clearbit.com/apple.com" alt="Apple"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Apple">
-                  <img src="https://logo.clearbit.com/google.com" alt="Google"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Google">
-                  <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Microsoft">
-                  <img src="https://logo.clearbit.com/amazon.com" alt="Amazon"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Amazon">
-                  <img src="https://logo.clearbit.com/meta.com" alt="Meta"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Meta">
-                  <img src="https://logo.clearbit.com/tesla.com" alt="Tesla"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Tesla">
-                  <img src="https://logo.clearbit.com/netflix.com" alt="Netflix"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Netflix">
-                  <img src="https://logo.clearbit.com/adobe.com" alt="Adobe"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Adobe">
-                  <img src="https://logo.clearbit.com/intel.com" alt="Intel"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Intel">
+              <!-- Dream Companies -->
+              <div class="contact-section">
+                <h3>Dream Companies</h3>
+                <div class="dream-companies-marquee">
+                  <div class="dream-companies-track">
+                    <!-- First set -->
+                    <div class="dream-company-item" title="Apple">
+                      <img src="https://logo.clearbit.com/apple.com" alt="Apple" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Google">
+                      <img src="https://logo.clearbit.com/google.com" alt="Google" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Microsoft">
+                      <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Amazon">
+                      <img src="https://logo.clearbit.com/amazon.com" alt="Amazon" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Meta">
+                      <img src="https://logo.clearbit.com/meta.com" alt="Meta" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Tesla">
+                      <img src="https://logo.clearbit.com/tesla.com" alt="Tesla" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Netflix">
+                      <img src="https://logo.clearbit.com/netflix.com" alt="Netflix" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Adobe">
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Adobe_Corporate_Logo.png/200px-Adobe_Corporate_Logo.png"
+                        alt="Adobe" class="company-logo">
+                    </div>
+                    <!-- Duplicate set for seamless scroll -->
+                    <div class="dream-company-item" title="Apple">
+                      <img src="https://logo.clearbit.com/apple.com" alt="Apple" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Google">
+                      <img src="https://logo.clearbit.com/google.com" alt="Google" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Microsoft">
+                      <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Amazon">
+                      <img src="https://logo.clearbit.com/amazon.com" alt="Amazon" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Meta">
+                      <img src="https://logo.clearbit.com/meta.com" alt="Meta" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Tesla">
+                      <img src="https://logo.clearbit.com/tesla.com" alt="Tesla" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Netflix">
+                      <img src="https://logo.clearbit.com/netflix.com" alt="Netflix" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Adobe">
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Adobe_Corporate_Logo.png/200px-Adobe_Corporate_Logo.png"
+                        alt="Adobe" class="company-logo">
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Dream Cars Marquee -->
-            <div class="mt-8">
-              <h3 class="text-lg font-bold mb-4 text-primary">Dream Cars</h3>
-              <div
-                class="dream-companies-marquee relative overflow-hidden bg-secondary/30 rounded-xl py-4 border border-border">
-                <div class="marquee-track flex items-center gap-8">
-                  <!-- Logos (Duplicated for seamless loop) -->
-                  <!-- Set 1 -->
-                  <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Mercedes-Benz">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png"
-                    alt="BMW" class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="BMW">
-                  <img src="https://logo.clearbit.com/audi.com" alt="Audi"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Audi">
-                  <img src="assets/images/rolls-royce.png" alt="Rolls-Royce"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform bg-white rounded-md p-1"
-                    title="Rolls-Royce">
-                  <img src="https://logo.clearbit.com/porsche.com" alt="Porsche"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Porsche">
-                  <img src="https://logo.clearbit.com/lexus.com" alt="Lexus"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lexus">
-                  <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Land Rover">
-                  <img src="https://logo.clearbit.com/bentleymotors.com" alt="Bentley"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Bentley">
-                  <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Jaguar">
-                  <img src="https://logo.clearbit.com/volvocars.com" alt="Volvo"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Volvo">
-                  <img src="assets/images/aston-martin.png" alt="Aston Martin"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Aston Martin">
-                  <img src="https://logo.clearbit.com/ferrari.com" alt="Ferrari"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Ferrari">
-                  <img src="https://logo.clearbit.com/lamborghini.com" alt="Lamborghini"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lamborghini">
-
-                  <!-- Set 2 (Duplicate) -->
-                  <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Mercedes-Benz">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png"
-                    alt="BMW" class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="BMW">
-                  <img src="https://logo.clearbit.com/audi.com" alt="Audi"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Audi">
-                  <img src="assets/images/rolls-royce.png" alt="Rolls-Royce"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform bg-white rounded-md p-1"
-                    title="Rolls-Royce">
-                  <img src="https://logo.clearbit.com/porsche.com" alt="Porsche"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Porsche">
-                  <img src="https://logo.clearbit.com/lexus.com" alt="Lexus"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lexus">
-                  <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Land Rover">
-                  <img src="https://logo.clearbit.com/bentleymotors.com" alt="Bentley"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Bentley">
-                  <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Jaguar">
-                  <img src="https://logo.clearbit.com/volvocars.com" alt="Volvo"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Volvo">
-                  <img src="https://logo.clearbit.com/astonmartin.com" alt="Aston Martin"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Aston Martin">
-                  <img src="https://logo.clearbit.com/ferrari.com" alt="Ferrari"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Ferrari">
-                  <img src="https://logo.clearbit.com/lamborghini.com" alt="Lamborghini"
-                    class="h-8 w-auto grayscale-0 hover:scale-110 transition-transform" title="Lamborghini">
+              <!-- Dream Cars -->
+              <div class="contact-section">
+                <h3>Dream Cars</h3>
+                <div class="dream-cars-marquee">
+                  <div class="dream-cars-track">
+                    <!-- First set -->
+                    <div class="dream-car-item" title="Mercedes-Benz">
+                      <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="BMW">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png"
+                        alt="BMW" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Audi">
+                      <img src="https://logo.clearbit.com/audi.com" alt="Audi" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Rolls-Royce">
+                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Porsche">
+                      <img src="https://logo.clearbit.com/porsche.com" alt="Porsche" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Lexus">
+                      <img src="https://logo.clearbit.com/lexus.com" alt="Lexus" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Land Rover">
+                      <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Bentley">
+                      <img src="https://logo.clearbit.com/bentleymotors.com" alt="Bentley" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Jaguar">
+                      <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Aston Martin">
+                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo">
+                    </div>
+                    <!-- Duplicate set for seamless scroll -->
+                    <div class="dream-car-item" title="Mercedes-Benz">
+                      <img src="https://logo.clearbit.com/mercedes-benz.com" alt="Mercedes-Benz" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="BMW">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png"
+                        alt="BMW" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Audi">
+                      <img src="https://logo.clearbit.com/audi.com" alt="Audi" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Rolls-Royce">
+                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Porsche">
+                      <img src="https://logo.clearbit.com/porsche.com" alt="Porsche" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Lexus">
+                      <img src="https://logo.clearbit.com/lexus.com" alt="Lexus" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Land Rover">
+                      <img src="https://logo.clearbit.com/landrover.com" alt="Land Rover" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Bentley">
+                      <img src="https://logo.clearbit.com/bentleymotors.com" alt="Bentley" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Jaguar">
+                      <img src="https://logo.clearbit.com/jaguar.com" alt="Jaguar" class="car-logo">
+                    </div>
+                    <div class="dream-car-item" title="Aston Martin">
+                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-6">
-            <div class="contact-form-card bg-primary border border-border rounded-2xl shadow-light">
-              <h3 class="mb-6">Send a Message</h3>
+          <!-- Column 2: Send a Message + Calendar (Two Separate Cards) -->
+          <div class="contact-column">
+            <!-- Send a Message Card -->
+            <div class="contact-card">
+              <h3>Send a Message</h3>
               <form id="contact-form" class="contact-form">
-                <div class="contact-form-grid grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                  <div class="contact-form-field">
-                    <label for="name" class="sr-only">Your Name</label>
-                    <input type="text" id="name" name="name" autocomplete="name" placeholder="Your Name"
-                      class="contact-input py-2" required />
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" class="contact-input" required>
                   </div>
-                  <div class="contact-form-field">
-                    <label for="email" class="sr-only">Your Email</label>
-                    <input type="email" id="email" name="email" autocomplete="email" placeholder="Your Email"
-                      class="contact-input py-2" required />
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Your Email" class="contact-input" required>
                   </div>
                 </div>
-                <div class="contact-form-field mb-3">
-                  <label for="subject" class="sr-only">Subject</label>
-                  <input type="text" id="subject" name="subject" autocomplete="off" placeholder="Subject"
-                    class="contact-input py-2" required />
+                <div class="form-group">
+                  <label for="subject" class="form-label">Subject</label>
+                  <input type="text" id="subject" name="subject" placeholder="Project Inquiry" class="contact-input"
+                    required>
                 </div>
-                <div class="contact-form-field mb-4">
-                  <label for="message" class="sr-only">Message</label>
-                  <textarea id="message" name="message" autocomplete="off" rows="3" placeholder="Message"
-                    class="contact-input contact-textarea py-2" required></textarea>
+                <div class="form-group">
+                  <label for="message" class="form-label">Message</label>
+                  <textarea id="message" name="message" placeholder="Tell me about your project..."
+                    class="contact-input" required></textarea>
                 </div>
-                <div class="text-center">
-                  <button type="submit" class="btn contact-submit w-full md:w-auto px-8">
-                    Send Message
-                  </button>
-                </div>
+                <button type="submit" class="btn w-full" style="margin-top: 1rem;">
+                  Send Message <i class="fas fa-paper-plane ml-2"></i>
+                </button>
               </form>
             </div>
 
-            <!-- Calendar Widget -->
-            <div id="calendar-container"
-              class="calendar-card bg-primary border border-border rounded-2xl shadow-light p-3 mt-6">
-              <!-- Calendar will be injected here by calendar.js -->
+            <!-- Calendar & Reminders Widget -->
+            <div class="calendar-wrapper-clean" style="width: 100%;">
+              <div id="calendar-widget"></div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
 
     <!-- ═══════════════════════════════════════════════════════════
          DEBUG RUNNER GAME - Always Visible
@@ -2332,14 +1720,12 @@
 
       <!-- Input Area -->
       <form class="chatbot-input-area" id="chatbot-form">
-        <input type="text" id="chatbot-input" placeholder="Ask me anything..." autocomplete="off" autocorrect="off"
-          autocapitalize="off" spellcheck="false" aria-label="Message AssistMe" required />
-
-        <button type="submit" class="chatbot-btn chatbot-send-btn" aria-label="Send message" title="Send message">
+        <textarea id="chatbot-input" placeholder="Ask me anything..." rows="1" autocomplete="off" autocorrect="off"
+          spellcheck="true" aria-label="Chat message input" style="resize: none; overflow: hidden;"></textarea>
+        <button type="submit" class="chatbot-btn chatbot-send-btn" aria-label="Send message">
           <i class="fas fa-paper-plane"></i>
         </button>
-        <button type="button" class="chatbot-btn chatbot-voice-btn" id="chatbot-voice-btn" aria-label="Voice input"
-          title="Voice input">
+        <button type="button" class="chatbot-btn chatbot-voice-btn" id="chatbot-voice-btn" aria-label="Voice input">
           <i class="fas fa-microphone"></i>
           <span class="chatbot-voice-badge">S2R</span>
         </button>
@@ -2395,6 +1781,9 @@
     <!-- Enhanced Chatbot Module - Voice + Context -->
     <script type="module" src="js/modules/enhanced-chatbot.js"></script>
 
+    <!-- Chatbot Debug & Fix Script -->
+    <script src="js/utils/chatbot-debug.js"></script>
+
     <!-- Original Chatbot Engine -->
     <script type="module" src="js/core/script.js"></script>
 
@@ -2402,10 +1791,13 @@
     <script type="module" src="js/modules/github-projects.js"></script>
 
     <!-- Skills Visualization Module -->
-    <script type="module" src="js/modules/skills-visualization.js"></script>
+    <script type="module" src="js/modules/skills-visualization.js?v=1764885800"></script>
 
     <!-- Debug Runner Game Module - Easter Egg Game -->
     <script type="module" src="js/modules/debug-runner.js"></script>
+
+    <!-- Performance-Optimized Scroll Animations -->
+    <script src="js/modules/scroll-animations.js"></script>
 
     <!-- Global Error Handler -->
     <script>
@@ -2512,8 +1904,25 @@
 
         // Sort toggle
         let sortAscending = false;
-        document.getElementById('sort-toggle').addEventListener('click', () => {
+        const sortToggle = document.getElementById('sort-toggle');
+        const sortText = document.getElementById('sort-text');
+
+        // Add icon if missing
+        if (!sortToggle.querySelector('i')) {
+          const icon = document.createElement('i');
+          icon.className = 'fas fa-sort-amount-down';
+          sortToggle.insertBefore(icon, sortText);
+        }
+
+        sortToggle.addEventListener('click', () => {
           sortAscending = !sortAscending;
+
+          // Update Icon
+          const icon = sortToggle.querySelector('i');
+          if (icon) {
+            icon.className = sortAscending ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down';
+          }
+
           const sorted = [...allProjects].sort((a, b) => {
             const dateA = new Date(a.updated_at);
             const dateB = new Date(b.updated_at);
@@ -2564,22 +1973,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
     <!-- Chatbot Upgrade Module -->
-    <script type="module" src="js/modules/chatbot-upgrade-2025.js"></script>
 
-    <script>
-      // Initialize Chatbot Upgrade
-      window.addEventListener('load', () => {
-        if (window.chatbotUpgrade) {
-          console.log('✅ Chatbot Upgrade 2025 Active');
-          // Show smart suggestions after a delay
-          setTimeout(() => {
-            if (window.chatbotUpgrade.showSmartSuggestions) {
-              window.chatbotUpgrade.showSmartSuggestions();
-            }
-          }, 2000);
-        }
-      });
-    </script>
+
+
 
     <!-- 🚀 2025 ENHANCEMENTS - Agentic AI, 3D Background, Accessibility -->
     <script type="module" src="js/modules/agentic-actions.js"></script>
@@ -2595,15 +1991,46 @@
 
       // Register Service Worker for PWA
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('service-worker.js')
-            .then(registration => {
-              console.log('✅ ServiceWorker registration successful with scope: ', registration.scope);
-            })
-            .catch(err => {
-              console.log('❌ ServiceWorker registration failed: ', err);
+        const host = window.location.hostname;
+        const disableSW = /no-sw=1/.test(window.location.search);
+        const isLocal = host === 'localhost' || host === '127.0.0.1';
+
+        // Unregister all service workers on localhost
+        if (isLocal) {
+          navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(registration => {
+              registration.unregister();
+              console.log('🗑️ ServiceWorker unregistered for local development');
             });
-        });
+          });
+
+          // Clear all caches
+          if ('caches' in window) {
+            caches.keys().then(cacheNames => {
+              cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+                console.log('🗑️ Cache cleared:', cacheName);
+              });
+            });
+          }
+
+          console.log('ℹ️ ServiceWorker disabled for local development. Add ?no-sw=0 to force register.');
+        } else {
+          const shouldRegister = !disableSW;
+
+          if (shouldRegister) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                  console.log('✅ ServiceWorker registration successful with scope: ', registration.scope);
+                  registration.update().catch(() => { });
+                })
+                .catch(err => {
+                  console.log('❌ ServiceWorker registration failed: ', err);
+                });
+            });
+          }
+        }
       }
     </script>
 </body>

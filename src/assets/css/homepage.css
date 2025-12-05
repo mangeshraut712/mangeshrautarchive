@@ -3,19 +3,43 @@
    ======================================== */
 
 /* Hero Section */
+
+/* Hero Section */
 .home-hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    background: var(--bg-primary);
+    padding-top: 60px;
+
+    /* Account for navbar */
+    padding-bottom: 40px;
+
+    /* Fixes from 2025 update */
+    background-image: none;
+    background-attachment: scroll;
+
+    /* Performance */
+    contain: layout;
+}
+
+html.dark .home-hero {
+    background: #000;
+}
+
+html:not(.dark) .home-hero {
+    background: var(--bg-primary);
 }
 
 /* Profile Image with Ring */
 .profile-image-wrapper {
     position: relative;
-    width: 256px;
-    height: 256px;
+    width: 220px;
+
+    /* Slightly smaller for better balance */
+    height: 220px;
 }
 
 .profile-image {
@@ -52,7 +76,7 @@
 
 /* Hero Name */
 .hero-name {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     display: block;
@@ -61,13 +85,16 @@
 
 /* Hero Title */
 .hero-title {
-    font-size: 3rem;
+    font-size: 3.5rem;
+
+    /* Balanced size */
     font-weight: 800;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     color: var(--text-primary);
     text-shadow: 0 2px 6px rgb(0 0 0 / 12%);
     display: block;
     text-align: center;
+    line-height: 1.1;
 }
 
 html.dark .hero-title {
@@ -81,8 +108,10 @@ html.dark .hero-title {
 
 /* Hero Description */
 .hero-description {
-    font-size: 1.125rem;
-    line-height: 1.8;
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
     color: var(--text-secondary);
 }
 
@@ -115,6 +144,10 @@ html:not(.dark) .hero-description {
     font-size: 1.25rem;
     transition: all 0.3s ease;
     text-decoration: none;
+
+    /* Performance */
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .hero-social-link:hover {
@@ -126,13 +159,15 @@ html:not(.dark) .hero-description {
 }
 
 html.dark .hero-social-link {
-    background: #000;
+    background: #1c1c1e;
     border-color: rgb(255 255 255 / 10%);
+    color: #f5f5f7;
 }
 
 html.dark .hero-social-link:hover {
-    background: #2997ff;
-    border-color: #2997ff;
+    background: #0a84ff;
+    border-color: #0a84ff;
+    color: #fff;
 }
 
 /* Hero CTA Button */
@@ -141,7 +176,7 @@ html.dark .hero-social-link:hover {
     align-items: center;
     gap: 0.75rem;
     font-size: 1.125rem;
-    padding: 1rem 2rem !important;
+    padding: 1rem 2rem;
     margin-bottom: 3rem;
 }
 
@@ -159,7 +194,7 @@ html.dark .hero-social-link:hover {
 
 .marquee-content {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     width: max-content;
     animation: marquee-slide 35s linear infinite;
 }
@@ -173,14 +208,123 @@ html.dark .hero-social-link:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
-    color: var(--text-secondary);
-    transition: color 0.2s ease, transform 0.2s ease;
+    font-size: 1.5rem;
+
+    /* REMOVED: color: var(--text-secondary); */
+    transition: transform 0.2s ease;
 }
 
 .marquee-item:hover {
-    color: var(--text-primary);
     transform: translateY(-2px);
+}
+
+/* ========================================
+   MARQUEE ICON COLORS (ORIGINAL COLORS)
+   ======================================== */
+
+.marquee-item .fa-java {
+    color: #007396 !important;
+}
+
+.marquee-item .fa-python {
+    color: #3776AB !important;
+}
+
+.marquee-item .fa-js {
+    color: #F7DF1E !important;
+}
+
+.marquee-item .fa-react {
+    color: #61DAFB !important;
+}
+
+.marquee-item .fa-angular {
+    color: #DD0031 !important;
+}
+
+.marquee-item .fa-node {
+    color: #393 !important;
+}
+
+.marquee-item .fa-aws {
+    color: #F90 !important;
+}
+
+.marquee-item .fa-docker {
+    color: #2496ED !important;
+}
+
+.marquee-item .fa-database {
+    color: #0071e3 !important;
+}
+
+.marquee-item .fa-git-alt {
+    color: #F05032 !important;
+}
+
+.marquee-item .fa-linux {
+    color: #FCC624 !important;
+}
+
+.marquee-item .fa-html5 {
+    color: #E34F26 !important;
+}
+
+.marquee-item .fa-css3-alt {
+    color: #1572B6 !important;
+}
+
+/* Ensure they stay colorful in Dark Mode */
+html.dark .marquee-item .fa-java {
+    color: #007396 !important;
+}
+
+html.dark .marquee-item .fa-python {
+    color: #3776AB !important;
+}
+
+html.dark .marquee-item .fa-js {
+    color: #F7DF1E !important;
+}
+
+html.dark .marquee-item .fa-react {
+    color: #61DAFB !important;
+}
+
+html.dark .marquee-item .fa-angular {
+    color: #DD0031 !important;
+}
+
+html.dark .marquee-item .fa-node {
+    color: #393 !important;
+}
+
+html.dark .marquee-item .fa-aws {
+    color: #F90 !important;
+}
+
+html.dark .marquee-item .fa-docker {
+    color: #2496ED !important;
+}
+
+html.dark .marquee-item .fa-database {
+    color: #0071e3 !important;
+}
+
+html.dark .marquee-item .fa-git-alt {
+    color: #F05032 !important;
+}
+
+html.dark .marquee-item .fa-linux {
+    color: #FCC624 !important;
+}
+
+html.dark .marquee-item .fa-html5 {
+    color: #E34F26 !important;
+}
+
+html.dark .marquee-item .fa-css3-alt {
+    color: #1572B6 !important;
 }
 
 @keyframes marquee-slide {
@@ -239,25 +383,56 @@ html:not(.dark) .hero-stat-label {
 
 /* Responsive Design */
 @media (width <=768px) {
+    .home-hero {
+        padding-top: 140px;
+
+        /* Increased further to clear navbar */
+        padding-bottom: 140px;
+        min-height: 100dvh;
+        align-items: flex-start;
+    }
+
     .profile-image-wrapper {
-        width: 192px;
-        height: 192px;
+        width: 160px !important;
+        height: 160px !important;
+        min-width: 160px !important;
+        min-height: 160px !important;
+        margin-bottom: 1.5rem;
+        flex-shrink: 0;
+        border-radius: 50%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+
+        /* Ensure content stays inside */
+    }
+
+    .profile-image {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50%;
     }
 
     .hero-name {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 2.25rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
     }
 
     .hero-description {
         font-size: 1rem;
+        padding: 0 1rem;
+        margin-bottom: 2rem;
     }
 
     .hero-social-links {
         gap: 0.75rem;
+        margin-bottom: 2rem;
     }
 
     .hero-social-link {
@@ -269,6 +444,7 @@ html:not(.dark) .hero-stat-label {
     .hero-stats {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        margin-bottom: 2rem;
     }
 
     .hero-stat-value {
@@ -277,7 +453,9 @@ html:not(.dark) .hero-stat-label {
 
     .hero-cta {
         font-size: 1rem;
-        padding: 0.875rem 1.5rem !important;
+        padding: 0.875rem 1.5rem;
+        width: 100%;
+        max-width: 300px;
     }
 }
 

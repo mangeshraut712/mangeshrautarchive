@@ -64,13 +64,11 @@ const SOURCE_LABELS = {
 
 // Intelligent Chat Assistant with Integrated AI
 class IntelligentAssistant {
-    constructor(options = {}) {
+    constructor(_options = {}) {
         this.cache = null;
         this.isReadyState = false;
         this.defaultGreetings = [
-            "Hello! I'm AssistMe, Mangesh Raut's AI assistant. I can help with his portfolio, math problems, general knowledge, and more.",
-            "Hi there! I'm here to help you learn about Mangesh's work and answer questions.",
-            "Welcome! Feel free to ask about Mangesh's experience, skills, or any technical topics."
+            "Hello! I'm AssistMe, Mangesh's AI portfolio assistant. I can walk you through his projects, experience, and technical skills. How can I help you today?"
         ];
         this.processing = false;
         this.history = [];
@@ -89,7 +87,7 @@ class IntelligentAssistant {
         }
     }
 
-    async initialize() {
+    async initialize(_options = {}) {
         // For GitHub Pages deployment, work offline only to avoid CORS issues
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
 
@@ -237,7 +235,7 @@ class IntelligentAssistant {
 
         } catch (error) {
             console.error('Error processing query:', error);
-            const fallback = this.generateFallbackResponse(question, error);
+            const fallback = this.handleError(question, error);
             const fallbackText = this._extractAnswerText(fallback);
             if (fallbackText) {
                 this._pushConversation('assistant', fallbackText);
@@ -392,7 +390,7 @@ class IntelligentAssistant {
         }
     }
 
-    async callClientService(query) {
+    async callClientService(_query) {
         // Return null to skip client-side processing
         // All processing is now handled server-side
         return null;
@@ -515,7 +513,15 @@ class IntelligentAssistant {
             return result;
         }
 
-        if (lower.includes('portfolio') || lower.includes('work')) {
+        if (lower.includes('experience') || lower.includes('employment')) {
+            result.answer = 'Mangesh is currently a Software Engineer at IoasiZ, building scalable microservices. Previously, he worked at Aramark as a Student Software Engineer, optimizing cloud resources and automating workflows.';
+            result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+            return result;
+        }
+
+        if (lower.includes('portfolio') || lower.includes('work') || lower.includes('experience')) {
             result.answer = 'Mangesh is a Software Engineer specializing in Java Spring Boot, AngularJS, AWS, and machine learning. Check out his GitHub: github.com/mangeshraut712';
             result.type = 'portfolio';
             result.source = 'assistme-portfolio';
@@ -531,11 +537,51 @@ class IntelligentAssistant {
             return result;
         }
 
+        if (lower.includes('java')) {
+            result.answer = 'Mangesh has extensive experience with Java, particularly Spring Boot. He refactored legacy monoliths into microservices at IoasiZ and built energy analytics dashboards using Java backend.';
+            result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+            return result;
+        }
+
+        if (lower.includes('aws') || lower.includes('cloud')) {
+            result.answer = 'Mangesh is skilled in AWS services like Lambda, EC2, and RDS. He automated workflows using Terraform and Python, and managed cloud infrastructure at Aramark and IoasiZ.';
+            result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+            return result;
+        }
+
+        if (lower.includes('machine learning') || lower.includes('ml') || lower.includes('ai')) {
+            result.answer = 'Mangesh has worked on Machine Learning projects, including demand forecasting using LSTM models (TensorFlow) and other Python-based data science initiatives.';
+            result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+            return result;
+        }
+
+        if (lower.includes('education') || lower.includes('university') || lower.includes('degree')) {
+            result.answer = 'Mangesh holds a Master of Science in Computer Science from Drexel University (GPA 3.76) and a Bachelor of Engineering in Computer Engineering from Savitribai Phule Pune University.';
+            result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+            return result;
+        }
+
+        if (lower.includes('code') || lower.includes('github') || lower.includes('project')) {
+            result.answer = 'You can explore Mangesh\'s code on GitHub. He has projects demonstrating Microservices, AWS integration, and Machine Learning. Visit: github.com/mangeshraut712';
+            result.type = 'portfolio';
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+            return result;
+        }
+
         result.answer = 'I\'m here to help! Ask me about Mangesh\'s skills, experience, or general questions.';
         return result;
     }
 
-    generateFallbackResponse(query, error) {
+    handleError(_query, _error) {
         const fallbackResponses = [
             "I'm experiencing some technical difficulties. Please try again in a moment.",
             "Sorry, I couldn't process that right now. Feel free to try a different question!",
@@ -768,10 +814,11 @@ class IntelligentAssistant {
 
     getSuggestions() {
         const suggestions = [
-            "Tell me about your skills",
-            "What projects have you worked on?",
-            "Calculate 25 * 15",
-            "Convert 100 Celsius to Fahrenheit"
+            "Tell me about Mangesh's experience",
+            "Show me Java projects",
+            "What are Mangesh's AWS skills?",
+            "Explain his machine learning work",
+            "Tell me about his education"
         ];
 
         // Add recent topics

@@ -1,0 +1,219 @@
+/* ==========================================================================
+   UNIFIED MOBILE BUTTON STYLES - Apple Design System
+   Consistent button styling across all sections for mobile viewport
+   ========================================================================== */
+
+@media (width <= 768px) {
+    /* ==========================================================================
+       UNIVERSAL BUTTON STYLES
+       ========================================================================== */
+
+    /* All primary action buttons */
+    .publication-read-btn,
+    .blog-read-btn,
+    .project-link,
+    .btn-primary,
+    .cta-button,
+    .contact-submit,
+    button[type="submit"],
+    a.btn,
+    .action-btn {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.75rem 1.25rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, sans-serif !important;
+        font-size: 0.9375rem !important;
+
+        /* 15px */
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        letter-spacing: -0.01em !important;
+        color: #fff !important;
+        -webkit-text-fill-color: #fff !important;
+        background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+        border: none !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgb(0 113 227 / 30%) !important;
+        cursor: pointer !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        min-height: 44px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        text-decoration: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    /* Hover state */
+    .publication-read-btn:hover,
+    .blog-read-btn:hover,
+    .project-link:hover,
+    .btn-primary:hover,
+    .cta-button:hover,
+    .contact-submit:hover,
+    button[type="submit"]:hover,
+    a.btn:hover,
+    .action-btn:hover {
+        background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 16px rgb(0 113 227 / 40%) !important;
+        color: #fff !important;
+        -webkit-text-fill-color: #fff !important;
+    }
+
+    /* Active state */
+    .publication-read-btn:active,
+    .blog-read-btn:active,
+    .project-link:active,
+    .btn-primary:active,
+    .cta-button:active,
+    .contact-submit:active,
+    button[type="submit"]:active,
+    a.btn:active,
+    .action-btn:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 8px rgb(0 113 227 / 30%) !important;
+    }
+
+    /* Visited state */
+    .publication-read-btn:visited,
+    .blog-read-btn:visited,
+    .project-link:visited,
+    a.btn:visited {
+        color: #fff !important;
+        -webkit-text-fill-color: #fff !important;
+    }
+
+    /* Button icons */
+    .publication-read-btn i,
+    .blog-read-btn i,
+    .project-link i,
+    .btn-primary i,
+    .cta-button i,
+    .action-btn i {
+        font-size: 1rem !important;
+        color: #fff !important;
+    }
+
+    /* ==========================================================================
+       SECONDARY BUTTONS (Outline Style)
+       ========================================================================== */
+
+    .btn-secondary,
+    .btn-outline {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.75rem 1.25rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, sans-serif !important;
+        font-size: 0.9375rem !important;
+        font-weight: 600 !important;
+        color: #0071e3 !important;
+        background: transparent !important;
+        border: 2px solid #0071e3 !important;
+        border-radius: 12px !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        box-sizing: border-box !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .btn-secondary:hover,
+    .btn-outline:hover {
+        background: rgb(0 113 227 / 10%) !important;
+        border-color: #0077ed !important;
+    }
+
+    /* Dark mode button adjustments */
+    html.dark .publication-read-btn,
+    html.dark .blog-read-btn,
+    html.dark .project-link,
+    html.dark .btn-primary,
+    html.dark .cta-button,
+    html.dark button[type="submit"] {
+        background: linear-gradient(135deg, #2997ff 0%, #0a84ff 100%) !important;
+        box-shadow: 0 4px 12px rgb(41 151 255 / 30%) !important;
+    }
+
+    html.dark .publication-read-btn:hover,
+    html.dark .blog-read-btn:hover,
+    html.dark .project-link:hover,
+    html.dark .btn-primary:hover,
+    html.dark .cta-button:hover,
+    html.dark button[type="submit"]:hover {
+        background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%) !important;
+        box-shadow: 0 6px 16px rgb(41 151 255 / 40%) !important;
+    }
+
+    html.dark .btn-secondary,
+    html.dark .btn-outline {
+        color: #2997ff !important;
+        border-color: #2997ff !important;
+    }
+
+    html.dark .btn-secondary:hover,
+    html.dark .btn-outline:hover {
+        background: rgb(41 151 255 / 10%) !important;
+    }
+
+    /* ==========================================================================
+       SPECIFIC SECTION OVERRIDES
+       ========================================================================== */
+
+    /* Projects section buttons */
+    .project-card .btn,
+    .project-card a[href*="github"] {
+        width: 100% !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* Contact form submit */
+    #contact form button[type="submit"] {
+        margin-top: 1rem !important;
+    }
+
+    /* Hero CTA buttons */
+    .hero-cta,
+    .home-hero .btn {
+        width: 100% !important;
+        max-width: 320px !important;
+        margin: 0 auto !important;
+    }
+
+    /* Blog read more buttons */
+    .blog-card .blog-read-btn {
+        margin-top: 1rem !important;
+    }
+
+    /* ==========================================================================
+       BUTTON CONTAINERS
+       ========================================================================== */
+
+    /* Stack buttons vertically on mobile */
+    .button-group,
+    .btn-group,
+    .action-buttons {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        width: 100% !important;
+    }
+
+    /* ==========================================================================
+       TYPOGRAPHY CONSISTENCY
+       ========================================================================== */
+
+    /* Ensure all button text is readable */
+    button,
+    .btn,
+    a.button {
+        -webkit-font-smoothing: antialiased !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        text-rendering: optimizelegibility !important;
+    }
+}

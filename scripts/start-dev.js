@@ -6,7 +6,7 @@ import { exec } from 'child_process';
 console.log('🚀 Starting development environment...\n');
 
 // Start the HTTP server
-const serverProcess = exec('node scripts/local-server.js', (error, stdout, stderr) => {
+exec('node scripts/local-server.js', (error, stdout, _stderr) => {
   if (error) {
     console.error(`Server error: ${error}`);
     return;
@@ -19,7 +19,7 @@ setTimeout(() => {
   console.log('🌐 Opening browser...\n');
 
   // Try to open browser (works on macOS, may need adjustment for other OS)
-  exec('open http://localhost:3000 || xdg-open http://localhost:3000 || start http://localhost:3000 || echo "Please open http://localhost:3000 in your browser"', (error, stdout, stderr) => {
+  exec('open http://localhost:3000 || xdg-open http://localhost:3000 || start http://localhost:3000 || echo "Please open http://localhost:3000 in your browser"', (error, _stdout, _stderr) => {
     if (error) {
       console.log('📋 Please manually open: http://localhost:3000');
     }

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache - Mangesh Raut Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧹 Clear Cache & Reload</h1>
+
+        <div id="status" class="status info">
+            Checking service worker status...
+        </div>
+
+        <div id="instructions">
+            <h3>What this page does:</h3>
+            <ul>
+                <li>Unregisters all service workers</li>
+                <li>Clears all caches</li>
+                <li>Clears local storage</li>
+                <li>Clears session storage</li>
+                <li>Redirects to fresh homepage</li>
+            </ul>
+        </div>
+
+        <button onclick="clearEverything()">🚀 Clear All & Reload</button>
+        <button onclick="window.location.href='/'" class="btn-secondary">← Back to Home</button>
+
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <strong>Manual Steps (if needed):</strong>
+            <ol style="margin-top: 10px;">
+                <li>Press <code>Cmd + Option + I</code> (Mac) or <code>F12</code> (Windows)</li>
+                <li>Go to <strong>Application</strong> tab</li>
+                <li>Click <strong>Clear storage</strong></li>
+                <li>Click <strong>Clear site data</strong></li>
+                <li>Close and reopen the tab</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function clearEverything() {
+            const statusDiv = document.getElementById('status');
+
+            try {
+                statusDiv.className = 'status info';
+                statusDiv.textContent = '🔄 Clearing service workers...';
+
+                // Unregister all service workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                    }
+                    console.log('✅ Service workers unregistered');
+                }
+
+                statusDiv.textContent = '🔄 Clearing caches...';
+
+                // Clear all caches
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(
+                        cacheNames.map(cacheName => caches.delete(cacheName))
+                    );
+                    console.log('✅ Caches cleared');
+                }
+
+                statusDiv.textContent = '🔄 Clearing storage...';
+
+                // Clear local storage
+                localStorage.clear();
+
+                // Clear session storage
+                sessionStorage.clear();
+
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ All caches cleared! Redirecting to fresh homepage in 2 seconds...';
+
+                // Redirect to homepage with cache-busting parameter
+                setTimeout(() => {
+                    window.location.href = '/?v=' + Date.now();
+                }, 2000);
+
+            } catch (error) {
+                statusDiv.className = 'status warning';
+                statusDiv.textContent = '⚠️ Error: ' + error.message + '. Try manual steps below.';
+                console.error('Error clearing cache:', error);
+            }
+        }
+
+        // Check service worker status on load
+        window.addEventListener('load', async () => {
+            const statusDiv = document.getElementById('status');
+
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                if (registrations.length > 0) {
+                    statusDiv.className = 'status warning';
+                    statusDiv.textContent = `⚠️ Found ${registrations.length} active service worker(s). Click "Clear All & Reload" to remove them.`;
+                } else {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ No service workers found. You can proceed to the homepage.';
+                }
+            } else {
+                statusDiv.className = 'status info';
+                statusDiv.textContent = 'ℹ️ Service workers not supported in this browser.';
+            }
+        });
+    </script>
+</body>
+
+</html>

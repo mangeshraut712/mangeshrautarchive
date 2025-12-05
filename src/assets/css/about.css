@@ -12,7 +12,7 @@ html.dark #about {
 }
 
 html:not(.dark) #about {
-    background: #fff;
+    background: var(--bg-primary);
 }
 
 /* About Content Container */
@@ -156,7 +156,7 @@ html:not(.dark) .about-description {
 
 .about-highlight-card {
     background: var(--bg-secondary);
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 2rem;
     border: 1px solid var(--border-color);
     box-shadow: 0 8px 20px rgb(0 0 0 / 8%);

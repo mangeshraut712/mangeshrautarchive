@@ -32,10 +32,11 @@
         function scrollToTop(e) {
             e.preventDefault();
 
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            // Try multiple scroll targets to ensure it works
+            const options = { top: 0, behavior: 'smooth' };
+            window.scrollTo(options);
+            document.documentElement.scrollTo(options);
+            document.body.scrollTo(options);
 
             // Focus on the top of the page for accessibility
             document.body.focus();

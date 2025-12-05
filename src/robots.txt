@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
-Sitemap: https://mangeshraut.vercel.app/sitemap.xml
+Sitemap: https://mangeshraut.pro/sitemap.xml

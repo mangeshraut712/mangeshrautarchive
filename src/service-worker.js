@@ -1,34 +1,49 @@
-const CACHE_NAME = 'mangesh-portfolio-v1';
-const ASSETS_TO_CACHE = [
-    './',
-    './index.html',
-    './assets/css/style.css',
-    './assets/css/chatbot-complete.css',
-    './js/core/script.js',
-    './js/core/chat.js',
-    // Add other core assets here as needed
+const CACHE_VERSION = 'v5.0.0-FORCE-CLEAR-1764874021';
+const CACHE_NAME = `mangesh-portfolio-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
+
+// Core assets to cache immediately
+const CORE_ASSETS = [
+    '/',
+    '/index.html',
+    '/manifest.json',
+    '/assets/css/style.css',
+    '/assets/css/tailwind-output.css',
+    '/assets/images/profile-icon.png',
+    '/assets/images/profile.jpg'
+];
+
+// External resources to cache at runtime
+const EXTERNAL_RESOURCES = [
+    'https://fonts.googleapis.com',
+    'https://fonts.gstatic.com',
+    'https://cdnjs.cloudflare.com',
+    'https://cdn.jsdelivr.net'
 ];
 
 // Install Event - Cache Core Assets
 self.addEventListener('install', (event) => {
+    console.log('[SW] Installing service worker...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[Service Worker] Caching core assets');
-                return cache.addAll(ASSETS_TO_CACHE);
+                console.log('[SW] Caching core assets');
+                return cache.addAll(CORE_ASSETS);
             })
             .then(() => self.skipWaiting())
+            .catch((err) => console.error('[SW] Cache installation failed:', err))
     );
 });
 
 // Activate Event - Cleanup Old Caches
 self.addEventListener('activate', (event) => {
+    console.log('[SW] Activating service worker...');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('[Service Worker] Removing old cache:', cacheName);
+                    if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+                        console.log('[SW] Removing old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
@@ -37,40 +52,75 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Fetch Event - Network First, Fallback to Cache
-// This ensures users always get the latest version if online, but works offline too.
+// Fetch Event - Stale-While-Revalidate Strategy
 self.addEventListener('fetch', (event) => {
-    // Skip cross-origin requests (like OpenRouter API)
-    if (!event.request.url.startsWith(self.location.origin)) {
+    const { request } = event;
+    const url = new URL(request.url);
+
+    // Skip cross-origin requests except fonts and CDN resources
+    if (url.origin !== self.location.origin &&
+        !EXTERNAL_RESOURCES.some(ext => url.href.startsWith(ext))) {
         return;
     }
 
-    // For API requests, don't cache
-    if (event.request.url.includes('/api/')) {
+    // Skip API requests
+    if (url.pathname.startsWith('/api/')) {
         return;
     }
 
-    event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                // Check if we received a valid response
-                if (!response || response.status !== 200 || response.type !== 'basic') {
-                    return response;
-                }
-
-                // Clone the response to put one in the cache
-                const responseToCache = response.clone();
-
-                caches.open(CACHE_NAME)
-                    .then((cache) => {
-                        cache.put(event.request, responseToCache);
+    // Network-first for HTML
+    if (request.headers.get('Accept').includes('text/html')) {
+        event.respondWith(
+            fetch(request)
+                .then((response) => {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(request, responseClone);
                     });
+                    return response;
+                })
+                .catch(() => caches.match(request))
+        );
+        return;
+    }
 
-                return response;
-            })
-            .catch(() => {
-                // If network fails, try cache
-                return caches.match(event.request);
+    // Cache-first for static assets (CSS, JS, images, fonts)
+    if (request.url.match(/\.(css|js|png|jpg|jpeg|svg|webp|woff2|woff|ttf)$/)) {
+        event.respondWith(
+            caches.match(request)
+                .then((cachedResponse) => {
+                    if (cachedResponse) {
+                        return cachedResponse;
+                    }
+                    return fetch(request).then((response) => {
+                        if (response.status === 200) {
+                            const responseClone = response.clone();
+                            caches.open(RUNTIME_CACHE).then((cache) => {
+                                cache.put(request, responseClone);
+                            });
+                        }
+                        return response;
+                    });
+                })
+        );
+        return;
+    }
+
+    // Stale-while-revalidate for everything else
+    event.respondWith(
+        caches.match(request)
+            .then((cachedResponse) => {
+                const fetchPromise = fetch(request)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            const responseClone = response.clone();
+                            caches.open(RUNTIME_CACHE).then((cache) => {
+                                cache.put(request, responseClone);
+                            });
+                        }
+                        return response;
+                    });
+                return cachedResponse || fetchPromise;
             })
     );
 });

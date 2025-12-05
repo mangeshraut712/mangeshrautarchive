@@ -1,0 +1,360 @@
+/* ═══════════════════════════════════════════════════════════
+   DEBUG RUNNER - MOBILE-OPTIMIZED APPLE STYLE
+   iOS Arcade-inspired game design
+   ═══════════════════════════════════════════════════════════ */
+
+/* Debug Runner Container - Mobile First */
+#debug-runner-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0 auto;
+    background: transparent;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Canvas - Responsive & Touch-Friendly */
+#debug-runner-canvas {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 16px;
+    background: var(--game-bg, #000);
+    box-shadow: 0 12px 40px rgb(0 0 0 / 20%);
+}
+
+/* Mobile Controls - Apple Arcade Style */
+.debug-runner-mobile-controls {
+    position: fixed;
+    bottom: max(20px, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    padding: 12px 20px;
+    background: rgb(255 255 255 / 85%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 15%);
+    z-index: 1000;
+    border: 1px solid rgb(0 0 0 / 5%);
+}
+
+html.dark .debug-runner-mobile-controls {
+    background: rgb(28 28 30 / 85%);
+    border: 1px solid rgb(255 255 255 / 10%);
+}
+
+/* Control Buttons - iOS Style */
+.mobile-control-jump,
+.mobile-control-duck {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0071e3 0%, #0077ed 100%);
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgb(0 113 227 / 40%);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.mobile-control-jump {
+    background: linear-gradient(135deg, #30d158 0%, #28cd4f 100%);
+    box-shadow: 0 4px 16px rgb(48 209 88 / 40%);
+}
+
+.mobile-control-duck {
+    background: linear-gradient(135deg, #ff9f0a 0%, #f80 100%);
+    box-shadow: 0 4px 16px rgb(255 159 10 / 40%);
+}
+
+/* Active State */
+.mobile-control-jump:active,
+.mobile-control-duck:active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+
+html.dark .mobile-control-jump {
+    background: linear-gradient(135deg, #32d760 0%, #2ac150 100%);
+}
+
+html.dark .mobile-control-duck {
+    background: linear-gradient(135deg, #ff9f0a 0%, #f80 100%);
+}
+
+/* Game Text - Apple San Francisco Font */
+.debug-runner-copy,
+.debug-runner-title,
+.debug-runner-subtitle,
+.debug-runner-meta {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.debug-runner-title {
+    background: linear-gradient(135deg, #0071e3, #2997ff);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+html.dark .debug-runner-title {
+    background: linear-gradient(135deg, #58a6ff, #79c0ff);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.debug-runner-subtitle {
+    color: #1d1d1f;
+    opacity: 0.8;
+}
+
+html.dark .debug-runner-subtitle {
+    color: #f5f5f7;
+    opacity: 0.8;
+}
+
+.debug-runner-meta {
+    color: #86868b;
+}
+
+html.dark .debug-runner-meta {
+    color: #98989d;
+}
+
+/* Keyboard Shortcuts - Apple Style */
+.debug-shortcuts kbd {
+    display: inline-block;
+    padding: 4px 8px;
+    background: rgb(0 0 0 / 5%);
+    border: 1px solid rgb(0 0 0 / 10%);
+    border-radius: 6px;
+    font-family: "SF Mono", Monaco, "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+html.dark .debug-shortcuts kbd {
+    background: rgb(255 255 255 / 10%);
+    border: 1px solid rgb(255 255 255 / 15%);
+    color: #f5f5f7;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN - MOBILE FIRST
+   ═══════════════════════════════════════════════════════════ */
+
+/* Mobile (Portrait) */
+@media (width <=768px) {
+    #debug-runner-container {
+        padding: 0;
+        border-radius: 12px;
+    }
+
+    #debug-runner-canvas {
+        border-radius: 12px;
+        max-height: 400px;
+    }
+
+    .debug-runner-mobile-controls {
+        bottom: max(16px, env(safe-area-inset-bottom));
+        gap: 14px;
+        padding: 10px 16px;
+        border-radius: 20px;
+    }
+
+    .mobile-control-jump,
+    .mobile-control-duck {
+        width: 56px;
+        height: 56px;
+        font-size: 1.1rem;
+    }
+
+    .debug-runner-title {
+        font-size: 2rem !important;
+    }
+
+    .debug-runner-subtitle {
+        font-size: 1rem !important;
+    }
+
+    .debug-runner-meta {
+        font-size: 0.85rem !important;
+    }
+
+    /* Hide desktop keyboard shortcuts on mobile */
+    .debug-shortcuts {
+        display: none;
+    }
+}
+
+/* Small Mobile (iPhone SE, etc.) */
+@media (width <=380px) {
+    #debug-runner-canvas {
+        max-height: 300px;
+        border-radius: 8px;
+    }
+
+    .debug-runner-mobile-controls {
+        bottom: max(12px, env(safe-area-inset-bottom));
+        gap: 12px;
+        padding: 8px 14px;
+    }
+
+    .mobile-control-jump,
+    .mobile-control-duck {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .debug-runner-title {
+        font-size: 1.75rem !important;
+    }
+}
+
+/* Tablet & Desktop */
+@media (width >=769px) {
+    #debug-runner-container {
+        max-width: 900px;
+    }
+
+    #debug-runner-canvas {
+        max-width: 900px;
+        max-height: 600px;
+    }
+
+    /* Keep mobile controls visible on desktop for better gameplay */
+    .debug-runner-mobile-controls {
+        display: flex;
+
+        /* Always visible */
+        bottom: max(30px, env(safe-area-inset-bottom));
+        padding: 14px 24px;
+        gap: 20px;
+    }
+
+    /* Larger buttons on desktop */
+    .mobile-control-jump,
+    .mobile-control-duck {
+        width: 72px;
+        height: 72px;
+        font-size: 1.3rem;
+    }
+}
+
+/* Landscape Mobile */
+@media (width <=768px) and (orientation: landscape) {
+    #debug-runner-canvas {
+        max-height: 250px;
+    }
+
+    .debug-runner-mobile-controls {
+        bottom: max(10px, env(safe-area-inset-bottom));
+        padding: 8px 14px;
+    }
+
+    .mobile-control-jump,
+    .mobile-control-duck {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS - SMOOTH & PREMIUM
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes buttonPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.mobile-control-jump:not(:active),
+.mobile-control-duck:not(:active) {
+    animation: buttonPulse 2s ease-in-out infinite;
+}
+
+/* Prevent animation during active state */
+.mobile-control-jump:active,
+.mobile-control-duck:active {
+    animation: none;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════ */
+
+/* Focus States */
+.mobile-control-jump:focus-visible,
+.mobile-control-duck:focus-visible {
+    outline: 3px solid rgb(0 113 227 / 50%);
+    outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .mobile-control-jump,
+    .mobile-control-duck,
+    #debug-runner-canvas {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE ENHANCEMENTS
+   ═══════════════════════════════════════════════════════════ */
+
+html.dark #debug-runner-canvas {
+    box-shadow: 0 12px 40px rgb(0 0 0 / 50%);
+}
+
+html.dark .debug-runner-mobile-controls {
+    box-shadow: 0 10px 30px rgb(0 0 0 / 40%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PERFORMANCE OPTIMIZATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+#debug-runner-canvas {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.debug-runner-mobile-controls {
+    will-change: transform, opacity;
+    transform: translateX(-50%) translateZ(0);
+}
+
+.mobile-control-jump,
+.mobile-control-duck {
+    will-change: transform;
+    transform: translateZ(0);
+}

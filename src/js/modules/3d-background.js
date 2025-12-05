@@ -81,10 +81,37 @@ export class Interactive3DBackground {
     }
 
     /**
-     * Initialize particle system
+     * Initialize particle system and cache the particle image
      */
     initParticles() {
         this.particles = [];
+
+        // Cache particle image to avoid creating gradients every frame
+        this.particleCache = document.createElement('canvas');
+        this.particleCache.width = 20;
+        this.particleCache.height = 20;
+        const ctx = this.particleCache.getContext('2d');
+
+        // Draw cached particle
+        const centerX = 10;
+        const centerY = 10;
+        const radius = 2;
+
+        // Core
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Glow
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 4);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 4, 0, Math.PI * 2);
+        ctx.fill();
 
         for (let i = 0; i < this.options.particleCount; i++) {
             this.particles.push({
@@ -209,8 +236,11 @@ export class Interactive3DBackground {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Get theme colors
-        const particleColor = this.isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.6)';
-        const connectionColor = this.isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
+        const isDark = this.isDarkMode;
+        const connectionColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
+
+        // Optimization: Use squared distance to avoid Math.sqrt
+        const connectionDistSq = this.options.connectionDistance * this.options.connectionDistance;
 
         // Draw connections
         if (this.options.enableConnections) {
@@ -218,17 +248,19 @@ export class Interactive3DBackground {
             this.ctx.lineWidth = 1;
 
             for (let i = 0; i < this.particles.length; i++) {
+                const p1 = this.particles[i];
                 for (let j = i + 1; j < this.particles.length; j++) {
-                    const dx = this.particles[i].x - this.particles[j].x;
-                    const dy = this.particles[i].y - this.particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const p2 = this.particles[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const distSq = dx * dx + dy * dy;
 
-                    if (distance < this.options.connectionDistance) {
-                        const opacity = 1 - (distance / this.options.connectionDistance);
+                    if (distSq < connectionDistSq) {
+                        const opacity = 1 - (distSq / connectionDistSq);
                         this.ctx.globalAlpha = opacity * 0.3;
                         this.ctx.beginPath();
-                        this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
-                        this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
+                        this.ctx.moveTo(p1.x, p1.y);
+                        this.ctx.lineTo(p2.x, p2.y);
                         this.ctx.stroke();
                     }
                 }
@@ -236,26 +268,33 @@ export class Interactive3DBackground {
             this.ctx.globalAlpha = 1;
         }
 
-        // Draw particles
-        this.particles.forEach(particle => {
-            this.ctx.fillStyle = particleColor;
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            this.ctx.fill();
+        // Draw particles using cached image
+        const particleOpacity = isDark ? 0.8 : 0.6;
+        this.ctx.globalAlpha = particleOpacity;
+        // Simple fix: Check theme and set filter or use different cache?
+        // Let's just draw circles for light mode if cache doesn't work well, 
+        // OR create two caches.
 
-            // Add glow effect
-            const gradient = this.ctx.createRadialGradient(
-                particle.x, particle.y, 0,
-                particle.x, particle.y, particle.radius * 3
-            );
-            gradient.addColorStop(0, this.isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)');
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        if (!isDark) {
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            for (let i = 0; i < this.particles.length; i++) {
+                const p = this.particles[i];
+                this.ctx.beginPath();
+                this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+        } else {
+            // Dark mode - use glowing white cache
+            for (let i = 0; i < this.particles.length; i++) {
+                const p = this.particles[i];
+                // Draw cached image centered at particle position
+                // Scale based on radius
+                const size = p.radius * 6; // Scale factor
+                this.ctx.drawImage(this.particleCache, p.x - size / 2, p.y - size / 2, size, size);
+            }
+        }
 
-            this.ctx.fillStyle = gradient;
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.radius * 3, 0, Math.PI * 2);
-            this.ctx.fill();
-        });
+        this.ctx.globalAlpha = 1;
     }
 
     /**

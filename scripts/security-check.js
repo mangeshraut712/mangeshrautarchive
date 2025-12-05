@@ -48,9 +48,9 @@ class SecurityChecker {
     shouldSkipFile(filePath) {
         const relativePath = relative(PROJECT_ROOT, filePath);
         return this.skipFiles.has(relativePath) ||
-               this.skipFiles.has(relativePath.split('/')[0] + '/') ||
-               filePath.includes('.git/') ||
-               filePath.includes('node_modules/');
+            this.skipFiles.has(relativePath.split('/')[0] + '/') ||
+            filePath.includes('.git/') ||
+            filePath.includes('node_modules/');
     }
 
     checkFile(filePath) {
@@ -71,7 +71,7 @@ class SecurityChecker {
             }
 
             return found;
-        } catch (error) {
+        } catch {
             return null; // File couldn't be read
         }
     }
@@ -111,7 +111,7 @@ class SecurityChecker {
             const findings = this.checkFile(fullPath);
 
             // Filter out obvious false positives (comments, safe demo code)
-            const realFindings = findings?.filter(f => {
+            const realFindings = findings?.filter(_f => {
                 const content = readFileSync(fullPath, 'utf8');
                 const lines = content.split('\n');
                 // Skip this finding if it's in a comment or marked as revoked

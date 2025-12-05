@@ -22,7 +22,8 @@ async function injectApiKeys() {
         appTitle: process.env.OPENROUTER_APP_TITLE || '',
 
         // Other configuration
-        selectedModel: process.env.OPENROUTER_MODEL || 'deepseek/deepseek-chat-v3-0324:free'
+        // Keep only the requested Grok model for deployments
+        selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast:free'
     };
 
     // Create build config JSON file

@@ -50,7 +50,7 @@ class PortfolioSearch {
 
         sections.forEach(({ selector, type, icon }) => {
             const elements = document.querySelectorAll(selector);
-            elements.forEach((element, index) => {
+            elements.forEach((element, _index) => {
                 const title = element.querySelector('h3, h4, h5')?.textContent || '';
                 const description = Array.from(element.querySelectorAll('p')).map(p => p.textContent).join(' ') || '';
 

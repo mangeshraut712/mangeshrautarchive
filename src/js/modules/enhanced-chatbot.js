@@ -265,7 +265,7 @@ class EnhancedChatbot {
             'machine learning': 'Describe Mangesh\'s machine learning projects and experience',
 
             // Education queries
-            'education': 'Tell me about Mangesh\'s education at Stevens Institute of Technology',
+            'education': 'Tell me about Mangesh\'s education at Drexel University',
             'degree': 'What degree does Mangesh have?',
 
             // Skills queries
@@ -288,33 +288,27 @@ class EnhancedChatbot {
      */
     addSuggestedPrompts() {
         const suggestedPrompts = [
-            "Tell me about Mangesh's experience",
-            "Show me Java projects",
-            "What are Mangesh's AWS skills?",
-            "Explain his machine learning work",
-            "Tell me about his education"
+            { text: "Tell me about Mangesh's experience", icon: "👨‍💻", label: "Experience" },
+            { text: "Show me Java projects", icon: "☕", label: "Java Projects" },
+            { text: "What are Mangesh's AWS skills?", icon: "☁️", label: "AWS Skills" },
+            { text: "Explain his machine learning work", icon: "🤖", label: "ML Work" },
+            { text: "Tell me about his education", icon: "🎓", label: "Education" }
         ];
 
         // Add to chatbot UI (if container exists)
         const messagesContainer = document.getElementById('chatbot-messages');
         if (messagesContainer && messagesContainer.children.length === 0) {
             const promptsHTML = `
-        <div class="suggested-prompts" style="padding: 1rem; text-align: center;">
-          <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+        <div class="suggested-prompts-container">
+          <p class="suggested-prompts-label">
             Try asking:
           </p>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+          <div class="suggested-prompts-grid">
             ${suggestedPrompts.map(prompt => `
               <button class="suggested-prompt-btn"
-                      style="padding: 0.5rem 1rem;
-                             background: var(--bg-secondary);
-                             border: 1px solid var(--border-color);
-                             border-radius: 1rem;
-                             font-size: 0.8125rem;
-                             cursor: pointer;
-                             transition: all 0.2s ease;"
-                      onclick="document.getElementById('chatbot-input').value = '${prompt}'; document.querySelector('.chatbot-send-btn').click();">
-                ${prompt}
+                      onclick="document.getElementById('chatbot-input').value = '${prompt.text}'; document.querySelector('.chatbot-send-btn').click();">
+                <span style="font-size: 1.2em;">${prompt.icon}</span>
+                <span>${prompt.label}</span>
               </button>
             `).join('')}
           </div>

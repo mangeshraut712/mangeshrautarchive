@@ -4,7 +4,7 @@
  */
 
 let lastScrollTop = 0;
-let scrollThreshold = 10;
+
 let isScrolling;
 
 function handleSmartNavbar() {

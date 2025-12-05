@@ -61,45 +61,47 @@ class SkillsVisualization {
   }
 
   /**
-   * Create skill card HTML - Compact Version
+   * Create skill badge HTML - Ultra Compact Version
    */
-  createSkillCard(skill, index) {
+  createSkillBadge(skill, index) {
     const percentage = skill.level;
-    const delay = index * 30; // Faster stagger
+    const delay = index * 50; // Stagger animation
 
     return `
-      <div class="skill-card group compact-card">
-        <div class="flex items-center gap-3">
-            <div class="skill-icon text-xl" style="color: ${skill.color}">
-              <i class="${skill.icon}"></i>
+      <div class="skill-badge group" style="animation-delay: ${delay}ms">
+        <div class="skill-badge-icon" style="color: ${skill.color}; background: ${skill.color}15; border-color: ${skill.color}30;">
+          <i class="${skill.icon}"></i>
+        </div>
+        <div class="skill-badge-content">
+          <div class="skill-badge-name">${skill.name}</div>
+          <div class="skill-badge-level">
+            <div class="skill-badge-bar">
+              <div class="skill-badge-progress" style="width: ${percentage}%; background: ${skill.color}"></div>
             </div>
-            <div class="flex-1">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="skill-name font-medium text-sm">${skill.name}</span>
-                    <span class="skill-percentage text-xs font-bold opacity-70" style="color: ${skill.color}">${percentage}%</span>
-                </div>
-                <div class="skill-bar-container h-1.5">
-                    <div class="skill-bar" style="width: ${percentage}%; background: ${skill.color}"></div>
-                </div>
-            </div>
+            <span class="skill-badge-percentage">${percentage}%</span>
+          </div>
         </div>
       </div>
     `;
   }
 
   /**
-   * Create category section - Compact Grid
+   * Create category section - Infinite Marquee
    */
-  createCategorySection(category, skills, categoryIndex) {
-    const skillsHTML = skills.map((skill, index) => this.createSkillCard(skill, index)).join('');
+  createCategorySection(category, skills, _categoryIndex) {
+    // Duplicate skills for seamless loop
+    const skillsList = [...skills, ...skills, ...skills]; // Triple for smoother loop on wide screens
+    const skillsHTML = skillsList.map((skill, index) => this.createSkillBadge(skill, index)).join('');
 
     return `
       <div class="skill-category mb-8">
-        <h3 class="text-lg font-bold mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-          <span class="text-primary">${category}</span>
+        <h3 class="text-xl font-bold mb-4 text-primary pb-2">
+          ${category}
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          ${skillsHTML}
+        <div class="skill-scroll-container">
+          <div class="skill-scroll-wrapper">
+            ${skillsHTML}
+          </div>
         </div>
       </div>
     `;
@@ -123,99 +125,15 @@ class SkillsVisualization {
 
     // Add CSS styles
     this.injectStyles();
-
-
   }
 
   /**
-   * Inject CSS styles
+   * Inject CSS styles - Marquee Design
    */
   injectStyles() {
-    if (document.getElementById('skills-visualization-styles')) return;
-
-    const styles = `
-      <style id="skills-visualization-styles">
-        .skill-card {
-          padding: 1rem;
-          background: rgba(255, 255, 255, 0.8);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-radius: 16px;
-          border: 1px solid rgba(0, 0, 0, 0.05);
-          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        }
-
-        html.dark .skill-card {
-          background: #000000;
-          border-color: rgba(255, 255, 255, 0.1);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .skill-card:hover {
-          transform: translateY(-4px) scale(1.02);
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-          border-color: var(--color-accent);
-          z-index: 10;
-        }
-
-        html.dark .skill-card:hover {
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
-          background: #000000;
-        }
-
-        .skill-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          background: rgba(0,0,0,0.03);
-          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        html.dark .skill-icon {
-           background: rgba(255,255,255,0.05);
-        }
-
-        .skill-card:hover .skill-icon {
-          transform: scale(1.15) rotate(5deg);
-        }
-
-        .skill-bar-container {
-          background: rgba(0, 0, 0, 0.05);
-          border-radius: 999px;
-          overflow: hidden;
-          height: 6px;
-        }
-
-        html.dark .skill-bar-container {
-          background: rgba(255, 255, 255, 0.1);
-        }
-
-        .skill-bar {
-          height: 100%;
-          border-radius: 999px;
-          transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .skill-bar::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-          transform: translateX(-100%);
-
-      </style>
-    `;
-
-    document.head.insertAdjacentHTML('beforeend', styles);
+    // Styles have been migrated to src/assets/css/skills.css
+    // This removes conflicts and duplication as requested.
+    // The class names and structure remain the same.
   }
 
   /**

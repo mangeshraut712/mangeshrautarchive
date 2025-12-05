@@ -3,16 +3,14 @@
    ======================================== */
 
 /* Blog Section Background */
+
+/* Blog Section Background */
 #blog {
-    background: var(--bg-primary);
+    background: #fff !important;
 }
 
 html.dark #blog {
-    background: #000;
-}
-
-html:not(.dark) #blog {
-    background: #fff;
+    background: #000 !important;
 }
 
 /* Blog Posts Container */
@@ -26,8 +24,8 @@ html:not(.dark) #blog {
 
 /* Blog Card */
 .blog-card {
-    background: var(--bg-secondary);
-    border-radius: 16px;
+    background: #fff !important;
+    border-radius: 20px;
     border: 1px solid var(--border-color);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -42,7 +40,7 @@ html:not(.dark) #blog {
 }
 
 html.dark .blog-card {
-    background: #000;
+    background: #000 !important;
     border-color: rgb(255 255 255 / 10%);
     box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
@@ -166,7 +164,7 @@ html.dark .blog-tag {
     width: 100%;
     padding: 0.875rem 1.5rem;
     background: #0071e3;
-    color: #fff !important;
+    color: #fff;
     border: none;
     border-radius: 12px;
     font-size: 0.9375rem;
@@ -183,12 +181,12 @@ html.dark .blog-tag {
 .blog-read-btn:hover {
     background: #0077ed;
     transform: translateX(4px);
-    color: #fff !important;
+    color: #fff;
 }
 
 .blog-read-btn i {
     transition: transform 0.3s ease;
-    color: #fff !important;
+    color: #fff;
 }
 
 .blog-read-btn:hover i {
@@ -197,16 +195,16 @@ html.dark .blog-tag {
 
 html.dark .blog-read-btn {
     background: #2997ff;
-    color: #fff !important;
+    color: #fff;
 }
 
 html.dark .blog-read-btn:hover {
     background: #0071e3;
-    color: #fff !important;
+    color: #fff;
 }
 
 html.dark .blog-read-btn i {
-    color: #fff !important;
+    color: #fff;
 }
 
 /* Blog Modal */

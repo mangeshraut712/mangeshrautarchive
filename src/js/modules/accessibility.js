@@ -711,23 +711,69 @@ export class AccessibilityEnhancer {
      * Create accessibility toolbar
      */
     createAccessibilityToolbar() {
+        // Inject styles for the toolbar
+        const style = document.createElement('style');
+        style.textContent = `
+            .a11y-toolbar {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 0.5rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 9998;
+                display: flex;
+                gap: 0.5rem;
+                transition: all 0.3s ease;
+            }
+            
+            .a11y-toolbar button {
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 0.5rem;
+                cursor: pointer;
+                font-size: 1.2rem;
+                transition: all 0.2s;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .a11y-toolbar button:hover {
+                transform: scale(1.1);
+                background: #f5f5f7;
+            }
+
+            html.dark .a11y-toolbar {
+                background: rgba(28, 28, 30, 0.95);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            html.dark .a11y-toolbar button {
+                background: #2c2c2e;
+                border-color: #3a3a3c;
+                color: #fff;
+            }
+
+            /* Mobile adjustments */
+            @media (max-width: 768px) {
+                .a11y-toolbar {
+                    display: none !important; /* Hide on mobile to prevent overlap */
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
         const toolbar = document.createElement('div');
         toolbar.className = 'a11y-toolbar';
         toolbar.setAttribute('role', 'toolbar');
         toolbar.setAttribute('aria-label', 'Accessibility tools');
-        toolbar.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 0.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 9998;
-            display: flex;
-            gap: 0.5rem;
-        `;
 
         const buttons = [
             { icon: '⌨️', label: 'Keyboard shortcuts', action: () => this.showKeyboardShortcuts() },
@@ -739,22 +785,7 @@ export class AccessibilityEnhancer {
             const button = document.createElement('button');
             button.textContent = btn.icon;
             button.setAttribute('aria-label', btn.label);
-            button.style.cssText = `
-                background: white;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 0.5rem;
-                cursor: pointer;
-                font-size: 1.2rem;
-                transition: all 0.2s;
-            `;
             button.addEventListener('click', btn.action);
-            button.addEventListener('mouseenter', () => {
-                button.style.transform = 'scale(1.1)';
-            });
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'scale(1)';
-            });
             toolbar.appendChild(button);
         });
 

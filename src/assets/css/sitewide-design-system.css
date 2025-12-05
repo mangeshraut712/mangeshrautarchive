@@ -1,0 +1,592 @@
+/* ========================================
+   SITEWIDE DESIGN SYSTEM - SOLID THEME & BLUE BUTTONS
+   Enforces Solid White/Black Theme & Apple Blue Buttons Globally
+   ======================================== */
+
+/* ========================================
+   1. GLOBAL BUTTON STYLES - APPLE BLUE
+   ======================================== */
+
+/* Target ALL buttons across the site to ensure they are BLUE */
+.btn,
+button,
+.contact-submit,
+.project-link,
+.read-more-btn,
+.hero-btn,
+.about-btn,
+.download-btn,
+.submit-btn,
+a.button,
+.cta-button {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 16px rgb(0 113 227 / 30%) !important;
+}
+
+/* Hover State */
+.btn:hover,
+button:hover,
+.contact-submit:hover,
+.project-link:hover,
+.read-more-btn:hover,
+.hero-btn:hover,
+.about-btn:hover,
+.download-btn:hover,
+.submit-btn:hover,
+a.button:hover,
+.cta-button:hover {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgb(0 113 227 / 40%) !important;
+}
+
+/* Specific override for any red buttons */
+.btn-red,
+.btn-danger,
+.btn-error {
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+
+    /* Force Blue */
+}
+
+/* ========================================
+   BUY ME A COFFEE BUTTON - APPLE YELLOW EXCEPTION
+   ======================================== */
+.support-coffee-btn {
+    background: #FFD60A !important;
+
+    /* Apple Yellow */
+    color: #000 !important;
+
+    /* Solid Black Text */
+    border: none !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgb(255 214 10 / 30%) !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.5rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+}
+
+.support-coffee-btn:hover {
+    background: #FD3 !important;
+
+    /* Lighter Yellow */
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgb(255 214 10 / 40%) !important;
+    color: #000 !important;
+}
+
+/* Ensure it stays Yellow/Black in Dark Mode */
+html.dark .support-coffee-btn {
+    background: #FFD60A !important;
+    color: #000 !important;
+}
+
+html.dark .support-coffee-btn:hover {
+    background: #FD3 !important;
+    color: #000 !important;
+}
+
+/* ========================================
+   GLOBAL SELECTION & CARET STYLES
+   Fixes "vertical line" issue on double click
+   ======================================== */
+
+::selection {
+    background-color: rgb(0 113 227 / 30%) !important;
+
+    /* Apple Blue with opacity */
+    color: inherit !important;
+}
+
+html.dark ::selection {
+    background-color: rgb(41 151 255 / 30%) !important;
+    color: inherit !important;
+}
+
+/* Hide caret on non-editable elements to prevent "vertical line" artifact */
+body {
+    caret-color: transparent !important;
+}
+
+input,
+textarea,
+[contenteditable] {
+    caret-color: #0071e3 !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark [contenteditable] {
+    caret-color: #2997ff !important;
+}
+
+/* ========================================
+   2. GLOBAL CARD STYLES - SOLID THEME
+   ======================================== */
+
+/* Target ALL cards across the site - COMPREHENSIVE LIST */
+.card,
+.project-card,
+.experience-card,
+.education-card,
+.publication-card,
+.award-card,
+.recommendation-card,
+.certification-card,
+.blog-card,
+.contact-card,
+.contact-form-card,
+.stat-card,
+.skill-card,
+.skill-badge,
+/* Added */
+.about-card,
+.about-highlight-card,
+/* Added */
+.education-content,
+/* Added */
+.experience-content,
+/* Added */
+.timeline-content,
+.service-card,
+.feature-card,
+.testimonial-card,
+.pricing-card,
+.team-card,
+.info-card,
+.detail-card,
+.summary-card,
+.glass-card,
+.glass,
+.overlay-card,
+.modal-content,
+.popup-content,
+.dropdown-menu,
+.sidebar,
+.panel {
+    background: #fff !important;
+
+    /* Force solid white */
+    color: #000 !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    box-shadow: 0 4px 24px rgb(0 0 0 / 5%) !important;
+    border-radius: 20px !important;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    backdrop-filter: none !important;
+}
+
+/* Dark Mode - Solid Black */
+html.dark .card,
+html.dark .project-card,
+html.dark .experience-card,
+html.dark .education-card,
+html.dark .publication-card,
+html.dark .award-card,
+html.dark .recommendation-card,
+html.dark .certification-card,
+html.dark .blog-card,
+html.dark .contact-card,
+html.dark .contact-form-card,
+html.dark .stat-card,
+html.dark .skill-card,
+html.dark .skill-badge,
+/* Added */
+html.dark .about-card,
+html.dark .about-highlight-card,
+/* Added */
+html.dark .education-content,
+/* Added */
+html.dark .experience-content,
+/* Added */
+html.dark .timeline-content,
+html.dark .service-card,
+html.dark .feature-card,
+html.dark .testimonial-card,
+html.dark .pricing-card,
+html.dark .team-card,
+html.dark .info-card,
+html.dark .detail-card,
+html.dark .summary-card,
+html.dark .glass-card,
+html.dark .glass,
+html.dark .overlay-card,
+html.dark .modal-content,
+html.dark .popup-content,
+html.dark .dropdown-menu,
+html.dark .sidebar,
+html.dark .panel {
+    background: #000 !important;
+
+    /* Force solid black */
+    color: #fff !important;
+    border: 1px solid rgb(255 255 255 / 15%) !important;
+    box-shadow: 0 4px 24px rgb(0 0 0 / 40%) !important;
+}
+
+/* Hover Effects */
+.card:hover,
+.project-card:hover,
+.experience-card:hover,
+.education-card:hover,
+.publication-card:hover,
+.award-card:hover,
+.recommendation-card:hover,
+.certification-card:hover,
+.blog-card:hover,
+.contact-card:hover,
+.contact-form-card:hover,
+.stat-card:hover,
+.skill-card:hover,
+.about-card:hover,
+.timeline-content:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 16px 48px rgb(0 0 0 / 10%) !important;
+    border-color: rgb(0 113 227 / 30%) !important;
+}
+
+html.dark .card:hover,
+html.dark .project-card:hover,
+html.dark .experience-card:hover,
+html.dark .education-card:hover,
+html.dark .publication-card:hover,
+html.dark .award-card:hover,
+html.dark .recommendation-card:hover,
+html.dark .certification-card:hover,
+html.dark .blog-card:hover,
+html.dark .contact-card:hover,
+html.dark .contact-form-card:hover,
+html.dark .stat-card:hover,
+html.dark .skill-card:hover,
+html.dark .about-card:hover,
+html.dark .timeline-content:hover {
+    box-shadow: 0 20px 60px rgb(0 0 0 / 60%) !important;
+    border-color: rgb(41 151 255 / 40%) !important;
+}
+
+/* ========================================
+   3. TYPOGRAPHY - SOLID COLORS
+   ======================================== */
+
+/* Headings inside cards */
+.card h3,
+.project-card h3,
+.experience-card h3,
+.education-card h3,
+.publication-card h3,
+.award-card h3,
+.contact-card h3,
+.contact-form-card h3,
+.skill-card h3 {
+    color: #000 !important;
+}
+
+html.dark .card h3,
+html.dark .project-card h3,
+html.dark .experience-card h3,
+html.dark .education-card h3,
+html.dark .publication-card h3,
+html.dark .award-card h3,
+html.dark .contact-card h3,
+html.dark .contact-form-card h3,
+html.dark .skill-card h3 {
+    color: #fff !important;
+}
+
+/* Paragraphs inside cards */
+.card p,
+.project-card p,
+.experience-card p,
+.education-card p,
+.publication-card p,
+.award-card p,
+.contact-card p,
+.contact-form-card p {
+    color: #1d1d1f !important;
+}
+
+html.dark .card p,
+html.dark .project-card p,
+html.dark .experience-card p,
+.education-card p,
+html.dark .publication-card p,
+html.dark .award-card p,
+html.dark .contact-card p,
+html.dark .contact-form-card p {
+    color: #f5f5f7 !important;
+}
+
+/* ========================================
+   4. INPUTS - SOLID THEME
+   ======================================== */
+
+input,
+textarea,
+.contact-input,
+.contact-textarea {
+    background-color: #f5f5f7 !important;
+    color: #000 !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark .contact-input,
+html.dark .contact-textarea {
+    background-color: #1c1c1e !important;
+    color: #fff !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+input:focus,
+textarea:focus {
+    background-color: #fff !important;
+    border-color: #0071e3 !important;
+    box-shadow: 0 0 0 4px rgb(0 113 227 / 10%) !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus {
+    background-color: #000 !important;
+    border-color: #2997ff !important;
+    box-shadow: 0 0 0 4px rgb(41 151 255 / 15%) !important;
+}
+
+/* ========================================
+   5. SECTIONS & GLOBAL BACKGROUNDS - SOLID
+   ======================================== */
+
+html,
+body,
+main,
+section,
+header,
+footer,
+.container,
+.wrapper {
+    background: #fff !important;
+}
+
+html.dark,
+html.dark body,
+html.dark main,
+html.dark section,
+html.dark header,
+html.dark footer,
+html.dark .container,
+html.dark .wrapper {
+    background: #000 !important;
+}
+
+section:nth-child(even) {
+    background: #fff !important;
+}
+
+html.dark section:nth-child(even) {
+    background: #000 !important;
+}
+
+/* ========================================
+   6. NAVBAR TOGGLES - RESET BACKGROUND
+   ======================================== */
+.theme-toggle-nav,
+#theme-toggle,
+.search-toggle,
+#search-toggle {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    color: inherit !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Separate rule for menu toggle to avoid forcing display: flex */
+.menu-toggle-button {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    color: inherit !important;
+    width: 32px !important;
+    height: 32px !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html.dark .theme-toggle-nav,
+html.dark #theme-toggle,
+html.dark .search-toggle,
+html.dark #search-toggle,
+html.dark .menu-toggle-button {
+    border-color: rgb(255 255 255 / 20%) !important;
+    color: #fff !important;
+}
+
+.theme-toggle-nav:hover,
+.search-toggle:hover {
+    background: rgb(0 0 0 / 5%) !important;
+    transform: none !important;
+}
+
+html.dark .theme-toggle-nav:hover,
+html.dark .search-toggle:hover {
+    background: rgb(255 255 255 / 10%) !important;
+}
+
+/* ========================================
+   7. GLOBAL TYPOGRAPHY ENFORCEMENT
+   ======================================== */
+
+/* Light Mode: Dark Text */
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+span,
+div,
+a {
+    color: #1d1d1f;
+
+    /* Default Dark Gray */
+}
+
+/* Dark Mode: Light Text */
+html.dark body,
+html.dark p,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark li,
+html.dark span,
+html.dark div,
+html.dark a {
+    color: #f5f5f7;
+
+    /* Default Light Gray */
+}
+
+/* Blue Accents (Links, etc) */
+a,
+.link,
+.text-blue {
+    color: #0071e3 !important;
+}
+
+html.dark a,
+html.dark .link,
+html.dark .text-blue {
+    color: #2997ff !important;
+}
+
+/* Exclude buttons from text color override */
+.btn,
+button,
+.project-tag,
+.badge {
+    color: #fff !important;
+
+    /* Keep buttons white text */
+}
+
+/* Exclude specific text elements that need to be gray */
+.text-secondary,
+.text-muted,
+.date,
+.meta {
+    color: #6e6e73 !important;
+}
+
+html.dark .text-secondary,
+html.dark .text-muted,
+html.dark .date,
+html.dark .meta {
+    color: #86868b !important;
+}
+
+/* ========================================
+   NUCLEAR THEME ENFORCEMENT
+   Final override to ensure no grey backgrounds persist
+   ======================================== */
+
+html,
+body,
+main,
+section,
+header,
+footer,
+.wrapper,
+.container,
+.page-wrapper {
+    background-color: #fff !important;
+}
+
+html.dark,
+html.dark body,
+html.dark main,
+html.dark section,
+html.dark header,
+html.dark footer,
+html.dark .wrapper,
+html.dark .container,
+html.dark .page-wrapper {
+    background-color: #000 !important;
+}
+
+/* Force Cards to be Solid */
+.card,
+.project-card,
+.experience-content,
+.education-content,
+.skill-badge,
+.about-highlight-card,
+.stat-card {
+    background-color: #fff !important;
+    backdrop-filter: none !important;
+}
+
+html.dark .card,
+html.dark .project-card,
+html.dark .experience-content,
+html.dark .education-content,
+html.dark .skill-badge,
+html.dark .about-highlight-card,
+html.dark .stat-card {
+    background-color: #000 !important;
+    backdrop-filter: none !important;
+}
+
+/* Remove any potential section borders/separators */
+section {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+
+/* Ensure no pseudo-elements create grey bars */
+section::before,
+section::after {
+    display: none !important;
+}

@@ -221,53 +221,60 @@ export class AgenticActionHandler {
         }
     }
 
-    async downloadResume(match) {
-        // Create a resume download link
-        const resumeData = this.generateResumeData();
-
-        // Try to find existing resume file first
+    async downloadResume(_match) {
+        // Correct resume file paths in the project
         const resumeLinks = [
-            '/assets/documents/resume.pdf',
-            '/assets/resume.pdf',
-            '/resume.pdf'
+            '/assets/files/Mangesh_Raut_Resume.pdf',  // Primary location
+            '/api/resume',  // API endpoint
+            'assets/files/Mangesh_Raut_Resume.pdf',  // Relative path
+            '../assets/files/Mangesh_Raut_Resume.pdf'  // Parent relative
         ];
 
-        // Check if any resume file exists
+        // Try each path
         let resumeFound = false;
         for (const link of resumeLinks) {
             try {
                 const response = await fetch(link, { method: 'HEAD' });
                 if (response.ok) {
-                    window.open(link, '_blank');
+                    // Open in new tab for download
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = link;
+                    downloadLink.download = 'Mangesh_Raut_Resume.pdf';
+                    downloadLink.target = '_blank';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+
                     resumeFound = true;
-                    break;
+
+                    return {
+                        success: true,
+                        message: '✅ Resume download initiated! Check your downloads folder.',
+                        action: 'download_resume',
+                        file: link
+                    };
                 }
-            } catch (e) {
-                // Continue to next link
+            } catch (error) {
+                console.log(`Failed to fetch from ${link}:`, error);
+                continue;
             }
         }
 
+        // If no PDF found, provide alternative
         if (!resumeFound) {
-            // Generate a text-based resume as fallback
-            const blob = new Blob([resumeData], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Mangesh_Raut_Resume.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            return {
+                success: false,
+                message: '📄 Resume PDF not found. Please:\n\n1. Click the "Download Resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut.pro',
+                action: 'download_resume',
+                alternative: {
+                    email: 'mbr63@drexel.edu',
+                    website: 'https://mangeshraut.pro'
+                }
+            };
         }
-
-        return {
-            success: true,
-            message: '✅ Resume download initiated! Check your downloads folder.',
-            action: 'download_resume'
-        };
     }
 
-    async scheduleMeeting(match) {
+    async scheduleMeeting(_match) {
         // Navigate to contact section and open calendar
         const contactSection = document.querySelector('#contact');
         if (contactSection) {
@@ -291,7 +298,7 @@ export class AgenticActionHandler {
         };
     }
 
-    async openContactForm(match) {
+    async openContactForm(_match) {
         const contactSection = document.querySelector('#contact');
         if (contactSection) {
             contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -319,7 +326,7 @@ export class AgenticActionHandler {
         };
     }
 
-    async copyContactInfo(match) {
+    async copyContactInfo(_match) {
         const contactInfo = {
             email: 'mbr63@drexel.edu',
             linkedin: 'linkedin.com/in/mangeshraut71298',
@@ -336,7 +343,7 @@ export class AgenticActionHandler {
                 action: 'copy_contact',
                 data: contactInfo
             };
-        } catch (error) {
+        } catch {
             return {
                 success: false,
                 message: '❌ Failed to copy. Here\'s the info:\n\n' + text,
@@ -387,8 +394,6 @@ export class AgenticActionHandler {
             // Try to filter projects
             setTimeout(() => {
                 const projectCards = document.querySelectorAll('.project-card, [class*="project"]');
-                let foundCount = 0;
-
                 projectCards.forEach(card => {
                     const text = card.textContent.toLowerCase();
                     const techLower = technology.toLowerCase();
@@ -396,7 +401,6 @@ export class AgenticActionHandler {
                     if (text.includes(techLower)) {
                         card.style.display = 'block';
                         card.style.animation = 'fadeIn 0.5s ease';
-                        foundCount++;
                     } else {
                         card.style.opacity = '0.3';
                     }
@@ -453,7 +457,7 @@ export class AgenticActionHandler {
         };
     }
 
-    async showAvailability(match) {
+    async showAvailability(_match) {
         // Navigate to calendar
         const calendarSection = document.querySelector('#calendar-container');
         if (calendarSection) {
@@ -474,7 +478,7 @@ export class AgenticActionHandler {
         };
     }
 
-    async toggleTheme(match) {
+    async toggleTheme(_match) {
         const themeToggle = document.querySelector('#theme-toggle');
         if (themeToggle) {
             themeToggle.click();

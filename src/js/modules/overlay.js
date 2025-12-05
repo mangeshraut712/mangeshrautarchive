@@ -3,7 +3,7 @@ const DEFAULT_NAV_OFFSET_SELECTOR = 'nav';
 export function initOverlayMenu(options = {}) {
     const {
         menuButtonId = 'menu-btn',
-        closeButtonId = 'menu-close',
+        closeButtonId = 'close-menu-btn',
         menuId = 'overlay-menu',
         documentRef = document
     } = options;
@@ -65,7 +65,7 @@ export function initOverlayMenu(options = {}) {
 
 export function initOverlayNavigation(options = {}) {
     const {
-        linkSelector = '.overlay-nav-link',
+        linkSelector = '.menu-item',
         offsetSelector = DEFAULT_NAV_OFFSET_SELECTOR,
         closeClass = 'menu-open',
         documentRef = document

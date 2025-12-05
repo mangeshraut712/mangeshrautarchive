@@ -1,5 +1,6 @@
 import { intelligentAssistant as chatAssistant } from './chat.js';
 import { ui as uiConfig, features, chat as chatConfig, errorMessages } from './config.js';
+import { ModernInputHandler } from './modern-input.js';
 
 import ExternalApiKeys from '../modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
@@ -71,6 +72,14 @@ class ChatUI {
             this.elements.toggleButton.setAttribute('aria-expanded', this._isWidgetOpen().toString());
         }
 
+        // Initialize modern input handler (2025 tech)
+        if (this.elements.input) {
+            this.modernInput = new ModernInputHandler(
+                this.elements.input,
+                () => this._handleUserInput()
+            );
+        }
+
         this._bindEvents();
         this._initializeFeatures();
         this._showWelcomeMessage();
@@ -117,32 +126,8 @@ class ChatUI {
             });
         }
 
-        if (this.elements.input) {
-            // Optimize keyboard handling - only handle Enter key
-            this.elements.input.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' && !event.shiftKey) {
-                    event.preventDefault();
-                    this._handleUserInput();
-                }
-            });
-
-            // REMOVED: input event listener that was causing lag
-            // The constant firing of _handleTyping on every keystroke was blocking the input
-
-            // Only update suggestions on focus, not on every keystroke
-            this.elements.input.addEventListener('focus', () => {
-                // Debounce the suggestion update
-                if (this.focusTimeout) clearTimeout(this.focusTimeout);
-                this.focusTimeout = setTimeout(() => {
-                    this._updateSuggestions();
-                }, 300);
-            });
-
-            // Update suggestions when user stops typing (on blur)
-            this.elements.input.addEventListener('blur', () => {
-                if (this.focusTimeout) clearTimeout(this.focusTimeout);
-            });
-        }
+        // Modern input handler takes care of keyboard events
+        // No need for manual keydown/input listeners anymore
 
         if (this.elements.clearButton) {
             this.elements.clearButton.addEventListener('click', () => {
@@ -307,13 +292,10 @@ class ChatUI {
 
             let assistantMessageElement = null;
             let currentContent = '';
-            let pendingUpdate = false;
-            let lastScrollTime = 0;
 
-            // Real-time tokens/sec tracking
-            let streamStartTime = Date.now();
-            let totalChars = 0;
-            let liveMetadataDiv = null;
+            // Ultra-fast rendering with minimal DOM manipulation
+            let rafId = null;
+            const streamStartTime = Date.now();
 
             const response = await chatAssistant.ask(text, {
                 context,
@@ -321,58 +303,34 @@ class ChatUI {
                     // Hide typing indicator on first chunk
                     if (features.enableTypingIndicator && !assistantMessageElement) {
                         this._hideTypingIndicator();
-                        streamStartTime = Date.now(); // Reset start time on first chunk
                     }
 
-                    // Create message element if not exists
+                    // Create message element once
                     if (!assistantMessageElement) {
                         assistantMessageElement = this._createMessageElement('', 'assistant', Date.now(), {}, true);
                         this._addMessageElement(assistantMessageElement);
-
-                        // Create live metadata div for streaming stats
-                        liveMetadataDiv = document.createElement('div');
-                        liveMetadataDiv.className = 'message-metadata live-streaming';
-                        assistantMessageElement.appendChild(liveMetadataDiv);
                     }
 
-                    // Append content immediately
+                    // Accumulate content
                     currentContent += chunk;
-                    totalChars += chunk.length;
 
-                    // Calculate real-time tokens/sec (approx 4 chars = 1 token)
-                    const elapsedSeconds = (Date.now() - streamStartTime) / 1000;
-                    const estimatedTokens = Math.ceil(totalChars / 4);
-                    const tokensPerSecond = elapsedSeconds > 0 ? (estimatedTokens / elapsedSeconds) : 0;
+                    // Cancel previous frame if still pending
+                    if (rafId) cancelAnimationFrame(rafId);
 
-                    // Batch DOM updates using requestAnimationFrame for smooth 60fps
-                    if (!pendingUpdate) {
-                        pendingUpdate = true;
-                        requestAnimationFrame(() => {
-                            const contentDiv = assistantMessageElement.querySelector('.message-content');
-                            if (contentDiv) {
-                                // Update text content with typing cursor effect
-                                contentDiv.textContent = currentContent + '▊';
+                    // Ultra-fast rendering - single RAF per chunk
+                    rafId = requestAnimationFrame(() => {
+                        const contentDiv = assistantMessageElement.querySelector('.message-content');
+                        if (contentDiv) {
+                            // Direct text update - fastest possible
+                            contentDiv.textContent = currentContent + '▊';
 
-                                // Update live metadata with real-time stats
-                                if (liveMetadataDiv && elapsedSeconds > 0.1) {
-                                    const tps = Math.round(tokensPerSecond * 10) / 10;
-                                    liveMetadataDiv.innerHTML = `
-                                        <span class="token-speed live-stat">⚡ ${tps} tok/s</span>
-                                        <span class="token-usage live-stat">🎯 ${estimatedTokens} tokens</span>
-                                        <span class="processing-time live-stat">⏱️ ${Math.round(elapsedSeconds * 10) / 10}s</span>
-                                    `;
-                                }
-
-                                // Throttle scroll updates (max 60fps)
-                                const now = Date.now();
-                                if (now - lastScrollTime > 16) { // ~60fps
-                                    this._scrollToBottom();
-                                    lastScrollTime = now;
-                                }
+                            // Efficient scroll - only when needed
+                            if (this.elements.messages.scrollHeight - this.elements.messages.scrollTop < this.elements.messages.clientHeight + 100) {
+                                this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
                             }
-                            pendingUpdate = false;
-                        });
-                    }
+                        }
+                        rafId = null;
+                    });
                 }
             });
 
@@ -406,6 +364,7 @@ class ChatUI {
 
                 // Add complete metadata after streaming (matching comprehensive format)
                 const metaChips = [];
+                const totalChars = currentContent?.length || 0;
 
                 // Model ID/Version
                 if (metadata.model) {
@@ -498,11 +457,7 @@ class ChatUI {
                     }
                 }
 
-                // Remove live metadata and replace with final metadata
-                if (liveMetadataDiv) {
-                    liveMetadataDiv.remove();
-                }
-
+                // Add final metadata after streaming completes
                 if (metaChips.length) {
                     let metaDiv = assistantMessageElement.querySelector('.message-metadata');
                     if (!metaDiv) {
@@ -689,17 +644,12 @@ class ChatUI {
         // === TOKEN METRICS ===
 
         // Token Usage
-        if (metadata.tokens !== undefined) {
+        // Token Usage (Real value from API)
+        if (metadata.tokens !== undefined && metadata.tokens > 0) {
             metaChips.push(this._createMetaChip('token-usage', `🎯 ${metadata.tokens} tokens`));
         }
 
-        // Tokens/Second (Speed)
-        if (metadata.tokensPerSecond !== undefined) {
-            const tps = Math.round(metadata.tokensPerSecond * 10) / 10;
-            metaChips.push(this._createMetaChip('token-speed', `⚡ ${tps} tok/s`));
-        }
-
-        // Token Cost (if available)
+        // Token Cost (if available from API)
         if (metadata.cost !== undefined) {
             const costStr = typeof metadata.cost === 'number'
                 ? `$${metadata.cost.toFixed(4)}`

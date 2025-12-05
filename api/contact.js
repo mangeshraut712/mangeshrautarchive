@@ -10,14 +10,14 @@ function applyCors(req, res) {
         'http://localhost',
         'http://127.0.0.1'
     ];
-    
+
     const origin = req.headers.origin || req.headers.referer || '';
     const isAllowed = allowedOrigins.some(allowed => origin.startsWith(allowed));
-    
+
     if (isAllowed) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
-    
+
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Max-Age', '86400');
@@ -27,7 +27,7 @@ function applyCors(req, res) {
 // Save to Firestore using REST API
 async function saveToFirestoreREST(data) {
     const apiKey = process.env.GEMINI_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY;
-    
+
     if (!apiKey) {
         throw new Error('No Firebase API key found in environment variables');
     }
@@ -35,7 +35,7 @@ async function saveToFirestoreREST(data) {
     const projectId = 'mangeshrautarchive';
     const databaseId = '(default)'; // Using default database
     const collectionId = 'messages';
-    
+
     // Firebase REST API endpoint
     const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${databaseId}/documents/${collectionId}?key=${apiKey}`;
 
@@ -69,27 +69,27 @@ async function saveToFirestoreREST(data) {
             console.error('❌ Firestore REST API error:');
             console.error('Status:', response.status);
             console.error('Response:', errorText);
-            
+
             let errorMessage = 'Firestore API error';
             try {
                 const errorJson = JSON.parse(errorText);
                 errorMessage = errorJson.error?.message || errorText;
-            } catch (e) {
+            } catch {
                 errorMessage = errorText;
             }
-            
+
             throw new Error(`Firestore API error (${response.status}): ${errorMessage}`);
         }
 
         const result = await response.json();
         console.log('✅ Firestore response:', JSON.stringify(result, null, 2));
-        
+
         // Extract document ID from name field (format: projects/.../documents/messages/{id})
         const docId = result.name.split('/').pop();
         console.log('📝 Document ID:', docId);
-        
+
         return { id: docId };
-        
+
     } catch (error) {
         console.error('❌ Fetch error:', error.message);
         throw error;
@@ -106,9 +106,9 @@ module.exports = async (req, res) => {
 
     // Only allow POST
     if (req.method !== 'POST') {
-        return res.status(405).json({ 
-            success: false, 
-            error: 'Method not allowed. Use POST.' 
+        return res.status(405).json({
+            success: false,
+            error: 'Method not allowed. Use POST.'
         });
     }
 
@@ -162,10 +162,10 @@ module.exports = async (req, res) => {
         console.error('❌ Server error:', error);
         console.error('Error message:', error.message);
         console.error('Error stack:', error.stack);
-        
+
         // Check for specific Firebase errors
         let errorMessage = 'Failed to send message. Please try again or email mbr63@drexel.edu';
-        
+
         if (error.message.includes('PERMISSION_DENIED')) {
             errorMessage = 'Database permission denied. Please check Firestore rules.';
         } else if (error.message.includes('NOT_FOUND')) {
@@ -173,7 +173,7 @@ module.exports = async (req, res) => {
         } else if (error.message.includes('API key')) {
             errorMessage = 'Firebase API key issue. Please check environment variables.';
         }
-        
+
         return res.status(500).json({
             success: false,
             error: errorMessage,

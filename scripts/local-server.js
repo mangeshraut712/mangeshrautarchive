@@ -26,6 +26,16 @@ app.use('/api', createProxyMiddleware({
     changeOrigin: true,
 }));
 
+// Cache-busting middleware for development
+app.use((req, res, next) => {
+    // Disable caching for all requests in development
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+    next();
+});
+
 // Serve static files from the 'src' directory
 const staticPath = join(projectRoot, 'src');
 app.use(express.static(staticPath));

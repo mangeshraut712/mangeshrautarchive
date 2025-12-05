@@ -1,0 +1,1508 @@
+/* ==========================================================================
+   APPLE PREMIUM DESIGN SYSTEM OVERRIDES
+   "Wow" Factor, Glassmorphism, and Advanced Animations
+   ========================================================================== */
+
+/* 1. Global Card Styles - SOLID */
+.project-card,
+.experience-content,
+.education-card,
+.stat-card,
+.blog-card,
+.publication-card,
+.award-card,
+.recommendation-card,
+.cert-card {
+    background: #fff !important;
+    backdrop-filter: none !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+        background 0.4s ease !important;
+}
+
+/* Make skill category transparent to blend with section */
+.skill-category {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+html.dark .project-card,
+html.dark .experience-content,
+html.dark .education-card,
+html.dark .stat-card,
+html.dark .blog-card,
+html.dark .publication-card,
+html.dark .award-card,
+html.dark .recommendation-card,
+html.dark .cert-card {
+    background: #000 !important;
+    border: 1px solid rgb(255 255 255 / 15%) !important;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
+}
+
+/* Hover Effects - Lift & Glow */
+.project-card:hover,
+.experience-content:hover,
+.education-card:hover,
+.blog-card:hover,
+.publication-card:hover,
+.award-card:hover,
+.recommendation-card:hover,
+.cert-card:hover {
+    transform: translateY(-8px) scale(1.01) !important;
+    box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
+    background: #fff !important;
+    border-color: rgb(0 113 227 / 30%) !important;
+}
+
+html.dark .project-card:hover,
+html.dark .experience-content:hover,
+html.dark .education-card:hover,
+html.dark .blog-card:hover,
+html.dark .publication-card:hover,
+html.dark .award-card:hover,
+html.dark .recommendation-card:hover,
+html.dark .cert-card:hover {
+    background: #000 !important;
+    box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
+    border-color: rgb(41 151 255 / 40%) !important;
+}
+
+/* 2. Typography - SF Pro / Modern */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+li {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, sans-serif !important;
+    letter-spacing: -0.01em !important;
+}
+
+h2 {
+    letter-spacing: -0.02em !important;
+}
+
+/* 2.1 Global Section Headings - Unified Style */
+#about h2,
+#skills h2,
+#experience h2,
+#education h2,
+#projects h2,
+#publications h2,
+#awards h2,
+#recommendations h2,
+#blog h2,
+#contact h2,
+#certifications h2,
+#debug-runner-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem) !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    margin-bottom: 3rem !important;
+    background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+
+    /* Fallback */
+}
+
+html.dark #about h2,
+html.dark #skills h2,
+html.dark #experience h2,
+html.dark #education h2,
+html.dark #projects h2,
+html.dark #publications h2,
+html.dark #awards h2,
+html.dark #recommendations h2,
+html.dark #blog h2,
+html.dark #contact h2,
+html.dark #certifications h2,
+html.dark #debug-runner-section h2 {
+    background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* 3. Section Backgrounds - SOLID WHITE/BLACK */
+#projects,
+#experience,
+#education,
+#skills,
+#blog,
+#contact,
+#publications,
+#awards,
+#recommendations,
+#certifications,
+#debug-runner-section {
+    background: #fff !important;
+    background-image: none !important;
+    background-color: #fff !important;
+    opacity: 1 !important;
+}
+
+html.dark #projects,
+html.dark #experience,
+html.dark #education,
+html.dark #skills,
+html.dark #blog,
+html.dark #contact,
+html.dark #publications,
+html.dark #awards,
+html.dark #recommendations,
+html.dark #certifications,
+html.dark #debug-runner-section {
+    background: #000 !important;
+    background-image: none !important;
+    background-color: #000 !important;
+    opacity: 1 !important;
+}
+
+/* 4. Buttons - Apple Style */
+.btn,
+button,
+.project-action-btn,
+.projects-view-all-btn {
+    border-radius: 980px !important;
+
+    /* Pill shape */
+    font-weight: 500 !important;
+    letter-spacing: -0.01em !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+/* 5. Premium Search & Mobile Menu */
+
+/* Premium Close Button */
+.premium-close-btn {
+    width: 40px;
+    height: 40px;
+    background: #0071e3 !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: none !important;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgb(0 113 227 / 40%) !important;
+    transition: transform 0.2s ease, background 0.2s ease !important;
+    z-index: 10002;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.premium-close-btn:hover {
+    background: #0077ed !important;
+    transform: translateY(-50%) scale(1.1) !important;
+}
+
+html.dark .premium-close-btn {
+    background: #0a84ff !important;
+    box-shadow: 0 4px 12px rgb(10 132 255 / 50%) !important;
+}
+
+/* Search Input - Premium Box Style */
+#search-input {
+    background: transparent !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    border-radius: 12px !important;
+    padding: 16px 50px !important;
+
+    /* Space for icons */
+    font-size: 1.1rem !important;
+    height: 56px !important;
+}
+
+html.dark #search-input {
+    border-color: rgb(255 255 255 / 20%) !important;
+    color: #fff !important;
+}
+
+#search-input:focus {
+    border-color: #0071e3 !important;
+    box-shadow: 0 0 0 4px rgb(0 113 227 / 10%) !important;
+}
+
+html.dark #search-input:focus {
+    border-color: #0a84ff !important;
+    box-shadow: 0 0 0 4px rgb(10 132 255 / 20%) !important;
+}
+
+/* Mobile Menu - Premium Grid Layout */
+.overlay-menu-content {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 80px;
+
+    /* Space for close button */
+    padding-bottom: 40px;
+}
+
+.menu-section {
+    margin-bottom: 2.5rem;
+}
+
+.menu-section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #86868b;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    padding-left: 0.5rem;
+}
+
+html.dark .menu-section-title {
+    color: #98989d;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 16px;
+    background: rgb(0 0 0 / 3%);
+    color: #1d1d1f;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+html.dark .menu-item {
+    background: rgb(255 255 255 / 8%);
+    color: #f5f5f7;
+}
+
+.menu-item:hover {
+    background: #0071e3;
+    color: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgb(0 113 227 / 25%);
+}
+
+html.dark .menu-item:hover {
+    background: #0a84ff;
+    box-shadow: 0 8px 20px rgb(10 132 255 / 40%);
+}
+
+.menu-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Adjust Close Button Position for Menu */
+#close-menu-btn {
+    top: 24px !important;
+    right: 24px !important;
+    transform: none !important;
+
+    /* Override search close transform */
+}
+
+#close-menu-btn:hover {
+    transform: scale(1.1) !important;
+}
+
+/* Mobile Adjustments */
+@media (width <= 640px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+
+        /* Stack on mobile */
+    }
+
+    .menu-item {
+        padding: 1rem;
+        background: transparent;
+
+        /* Cleaner on mobile */
+        border-bottom: 1px solid rgb(0 0 0 / 5%);
+        border-radius: 0;
+    }
+
+    html.dark .menu-item {
+        background: transparent;
+        border-bottom: 1px solid rgb(255 255 255 / 10%);
+    }
+
+    .menu-item:hover {
+        background: rgb(0 113 227 / 10%);
+        color: #0071e3;
+        transform: none;
+        box-shadow: none;
+    }
+
+    html.dark .menu-item:hover {
+        background: rgb(10 132 255 / 15%);
+        color: #0a84ff;
+    }
+
+    #search-overlay {
+        padding-top: 0 !important;
+        align-items: flex-start !important;
+        background: rgb(255 255 255 / 98%) !important;
+    }
+
+    html.dark #search-overlay {
+        background: rgb(0 0 0 / 95%) !important;
+    }
+
+    .search-container {
+        width: 100% !important;
+        padding: 20px;
+        margin-top: 0;
+    }
+
+    #search-input {
+        background: rgb(0 0 0 / 5%) !important;
+        border: none !important;
+    }
+
+    html.dark #search-input {
+        background: rgb(255 255 255 / 10%) !important;
+    }
+}
+
+/* 6. Desktop Navbar Optimization (Fit all links) */
+@media (width >= 1151px) {
+    .nav-links {
+        gap: 18px !important;
+
+        /* Adjusted gap */
+        font-size: 15px !important;
+
+        /* Larger font as requested */
+        font-weight: 400 !important;
+
+        /* Regular weight (Apple style) */
+        width: auto !important;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .nav-container {
+        max-width: 100% !important;
+
+        /* Full width */
+        padding: 0 32px !important;
+        gap: 20px !important;
+    }
+
+    .nav-link {
+        padding: 4px 0 !important;
+        letter-spacing: -0.01em !important;
+        opacity: 0.8;
+        transition: opacity 0.2s ease !important;
+    }
+
+    .nav-link:hover {
+        opacity: 1 !important;
+    }
+}
+
+/* 7. Mobile Menu Improvements (Absolute Compact Top) */
+#close-menu-btn {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 10005 !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgb(240 240 240 / 60%) !important;
+    color: #1d1d1f !important;
+    backdrop-filter: blur(10px);
+    border: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: none !important;
+}
+
+html.dark #close-menu-btn {
+    background: rgb(60 60 60 / 60%) !important;
+    color: #fff !important;
+}
+
+#close-menu-btn:hover {
+    transform: rotate(90deg);
+}
+
+.overlay-menu-content {
+    padding: 10px 0 80px !important;
+
+    /* Minimal Top Padding (10px) */
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    /* Top Align */
+    overflow-y: auto !important;
+}
+
+/* Menu Background */
+.overlay-menu {
+    background: rgb(255 255 255 / 96%) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    display: flex !important;
+    align-items: flex-start !important;
+
+    /* Top Align */
+    justify-content: center !important;
+}
+
+html.dark .overlay-menu {
+    background: rgb(0 0 0 / 96%) !important;
+}
+
+/* Remove Section Styles */
+.menu-section,
+.menu-section-title {
+    display: none !important;
+}
+
+/* Detailed List Layout */
+.menu-grid {
+    display: flex;
+    flex-direction: column;
+    background: transparent !important;
+
+    /* No Card Background */
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 85% !important;
+
+    /* Slightly wider for readability */
+    max-width: 340px !important;
+    margin: 0 auto !important;
+}
+
+html.dark .menu-grid {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Enhanced Menu Items (Absolute Compact) */
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 4px 0 !important;
+
+    /* 4px Padding */
+    gap: 12px;
+    text-align: left;
+    text-decoration: none !important;
+    transition: opacity 0.2s !important;
+    border: none !important;
+    border-bottom: 0.5px solid rgb(0 0 0 / 8%) !important;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 28px !important;
+
+    /* Min Height 28px */
+    width: 100% !important;
+}
+
+.menu-item:last-child {
+    border-bottom: none !important;
+}
+
+html.dark .menu-item {
+    background: transparent !important;
+    border-bottom: 0.5px solid rgb(255 255 255 / 10%) !important;
+}
+
+.menu-item:hover,
+.menu-item:active {
+    background: transparent !important;
+    opacity: 0.6;
+}
+
+html.dark .menu-item:hover,
+html.dark .menu-item:active {
+    background: transparent !important;
+    opacity: 0.6;
+}
+
+/* Menu Icons */
+.premium-menu-icon {
+    font-size: 14px !important;
+
+    /* Micro Icon */
+    color: #007aff !important;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: transparent !important;
+    border: none !important;
+    flex-shrink: 0;
+}
+
+.premium-menu-icon i {
+    font-style: normal !important;
+    color: #007aff !important;
+}
+
+html.dark .premium-menu-icon,
+html.dark .premium-menu-icon i {
+    color: #0490ff !important;
+}
+
+.menu-item span {
+    font-size: 0.9rem !important;
+
+    /* Readable Micro Text */
+    font-weight: 500;
+    color: #1d1d1f;
+    text-decoration: none !important;
+    flex-grow: 1;
+}
+
+html.dark .menu-item span {
+    color: #fff;
+}
+
+/* Calendar Card - Premium Style */
+.calendar-card {
+    background: #fff !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease !important;
+}
+
+html.dark .calendar-card {
+    background: #000 !important;
+    border: 1px solid rgb(255 255 255 / 15%) !important;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
+}
+
+.calendar-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
+}
+
+html.dark .calendar-card:hover {
+    box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
+}
+
+/* 8. Fix Rogue Vertical Line */
+body::before,
+body::after,
+html::before,
+html::after,
+#main-content::before,
+#main-content::after,
+.wrapper::before,
+.wrapper::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+    width: 0 !important;
+    background: transparent !important;
+}
+
+/* 9. Schedule Meeting Card */
+.schedule-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    height: 100%;
+    min-height: 400px;
+
+    /* Match form height roughly */
+}
+
+.schedule-icon {
+    font-size: 3.5rem;
+    color: #0071e3;
+    margin-bottom: 1.5rem;
+    background: rgb(0 113 227 / 10%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+html.dark .schedule-icon {
+    color: #0a84ff;
+    background: rgb(10 132 255 / 15%);
+}
+
+.schedule-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.schedule-text {
+    color: #86868b;
+    margin-bottom: 2rem;
+    max-width: 320px;
+    line-height: 1.5;
+}
+
+html.dark .schedule-text {
+    color: #a1a1a6;
+}
+
+/* ========================================
+   11. WWDC 2025 iOS 26 Calendar Widget
+   Premium Pro Design - Solid & Clean
+   ======================================== */
+
+/* Fix Duplicate Layout: Reset parent card if it contains the widget */
+.calendar-card:has(.ios-widget-wrapper),
+.calendar-card.compact-widget {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    min-height: auto !important;
+}
+
+.ios-widget-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: #fff !important;
+
+    /* Solid White - Matching Contact Card */
+    border-radius: 16px !important;
+
+    /* Match Contact Card Radius */
+    overflow: hidden;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+
+    /* Match Contact Card Border */
+    box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
+
+    /* Match Contact Card Shadow */
+    transition: transform 0.3s ease;
+}
+
+html.dark .ios-widget-wrapper {
+    background: #000 !important;
+
+    /* Solid Black */
+    border: 1px solid rgb(255 255 255 / 15%) !important;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
+}
+
+.ios-widget-wrapper:hover {
+    transform: translateY(-5px);
+
+    /* Match Global Card Hover */
+    box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
+}
+
+/* Calendar Section */
+.ios-calendar-section {
+    padding: 24px !important;
+    border-bottom: 1px solid rgb(0 0 0 / 5%);
+}
+
+html.dark .ios-calendar-section {
+    border-bottom: 1px solid rgb(255 255 255 / 10%);
+}
+
+.ios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px !important;
+
+    /* More breathing room */
+}
+
+.ios-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.month-title {
+    font-size: 1.5rem !important;
+
+    /* Big, Bold Title */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    background: none;
+    -webkit-text-fill-color: initial;
+    background-clip: border-box;
+}
+
+html.dark .month-title {
+    color: #f5f5f7;
+}
+
+.ios-btn {
+    background: rgb(0 0 0 / 5%);
+    border: none;
+    color: #1d1d1f;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+html.dark .ios-btn {
+    background: rgb(255 255 255 / 10%);
+    color: #f5f5f7;
+}
+
+.ios-btn:hover {
+    background: rgb(0 0 0 / 10%);
+    transform: scale(1.05);
+}
+
+html.dark .ios-btn:hover {
+    background: rgb(255 255 255 / 20%);
+}
+
+.today-btn {
+    color: #007aff !important;
+    background: rgb(0 122 255 / 10%) !important;
+    width: auto !important;
+    padding: 0 12px !important;
+    font-weight: 600;
+    border-radius: 16px !important;
+}
+
+.today-btn:hover {
+    background: rgb(0 122 255 / 20%) !important;
+}
+
+.ios-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #86868b;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+html.dark .ios-weekdays {
+    color: #a1a1a6;
+}
+
+.ios-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+
+    /* Removing gap, using fixed size cells centered in grid */
+    row-gap: 8px;
+}
+
+/* Interactive Day Cells - Pop Effect */
+.day-cell {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem !important;
+    font-weight: 500;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Bouncy spring */
+    color: inherit;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.day-cell:hover:not(.empty, .selected, .today) {
+    background: rgb(0 0 0 / 5%);
+    transform: scale(1.15);
+
+    /* Zoom effect */
+    z-index: 2;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+}
+
+html.dark .day-cell:hover:not(.empty, .selected, .today) {
+    background: rgb(255 255 255 / 15%);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+}
+
+.day-cell:active:not(.empty) {
+    transform: scale(0.9);
+}
+
+/* Today Pulse */
+.day-cell.today {
+    background: #ff3b30;
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
+    animation: gentle-pulse 3s infinite;
+}
+
+@keyframes gentle-pulse {
+    0%,
+    100% {
+        box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 8px 20px rgb(255 59 48 / 60%);
+        transform: scale(1.05);
+    }
+}
+
+/* Selected State */
+.day-cell.selected {
+    background: #007aff;
+    color: white !important;
+    font-weight: 700;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgb(0 122 255 / 40%);
+}
+
+/* Reminder Checkmark Animation */
+.reminder-checkbox::after {
+    content: '✓';
+    color: white !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    transform: scale(0);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reminder-item.completed .reminder-checkbox::after {
+    transform: scale(1);
+
+    /* Pop in */
+}
+
+/* Completed Item Text Fade */
+.reminder-item.completed .reminder-text,
+.reminder-item.completed .reminder-meta {
+    opacity: 0.5 !important;
+    transition: opacity 0.3s ease;
+}
+
+/* Button Tactile Feel */
+.ios-btn:active,
+.ios-btn-small:active,
+.today-btn:active {
+    transform: scale(0.92) !important;
+}
+
+/* Add Event Button - Make is shine */
+.ios-btn-small {
+    position: relative;
+    overflow: hidden;
+}
+
+.ios-btn-small:hover {
+    background: rgb(0 122 255 / 15%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgb(0 122 255 / 15%);
+}
+
+.event-dot {
+    width: 5px;
+    height: 5px;
+    background: #007aff;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+    opacity: 0.9;
+}
+
+.day-cell.today .event-dot {
+    background: white;
+}
+
+html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
+    background: #0a84ff;
+}
+
+/* Sunday Column Styling */
+.ios-weekdays span:first-child,
+.day-cell:nth-child(7n + 1) {
+    color: #ff3b30;
+}
+
+.day-cell.today:nth-child(7n+1),
+.day-cell.selected:nth-child(7n+1) {
+    color: white !important;
+}
+
+/* =================================================================
+   NEW REMINDERS DESIGN: "INTELLIGENT CARDS" (COMPACT)
+   ================================================================= */
+.ios-reminders-section {
+    padding: 16px 20px !important;
+
+    /* Reduced section padding */
+    background: transparent !important;
+    border-top: 1px solid rgb(0 0 0 / 6%) !important;
+}
+
+html.dark .ios-reminders-section {
+    border-top: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+.reminders-title {
+    font-size: 1rem !important;
+
+    /* Smaller Header */
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+
+    /* Compact margin */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #1d1d1f !important;
+}
+
+html.dark .reminders-title {
+    color: #f5f5f7 !important;
+}
+
+/* New Button Fix (Solid Blue - Like Tick) */
+.ios-btn-small {
+    height: 32px !important;
+    font-size: 0.9rem !important;
+    color: #fff !important;
+
+    /* White Text */
+    background: #007aff !important;
+
+    /* Solid Blue */
+    padding: 0 16px !important;
+    border-radius: 16px !important;
+    border: none !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    transition: all 0.2s !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    box-shadow: 0 4px 12px rgb(0 122 255 / 30%) !important;
+
+    /* Glow */
+}
+
+.ios-btn-small:hover {
+    background: #0056b3 !important;
+
+    /* Darker Blue */
+    color: #fff !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 16px rgb(0 122 255 / 40%) !important;
+}
+
+.ios-btn-small:active {
+    transform: scale(0.95) !important;
+}
+
+/* Edit Button (Pencil) */
+.edit-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 5%);
+    color: #86868b;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.8rem;
+    margin-right: 8px;
+
+    /* Space from tick */
+    opacity: 0;
+
+    /* Hidden by default */
+}
+
+.reminder-card:hover .edit-btn {
+    opacity: 1;
+
+    /* Show on hover */
+}
+
+.edit-btn:hover {
+    background: #007aff;
+    color: white;
+}
+
+html.dark .edit-btn {
+    background: rgb(255 255 255 / 10%);
+    color: #a1a1a6;
+}
+
+/* Card Grid container */
+.reminder-cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px !important;
+
+    /* Tight Grid */
+}
+
+/* Individual Card - Compact */
+.reminder-card {
+    position: relative;
+    background: #fff !important;
+
+    /* Solid White */
+    border-radius: 12px !important;
+
+    /* Tighter radius */
+    padding: 10px 12px !important;
+
+    /* Compact Padding */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
+
+    /* Shadow needed for visibility on white */
+    border: 1px solid rgb(0 0 0 / 5%) !important;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    min-height: 50px;
+}
+
+html.dark .reminder-card {
+    background: #000 !important;
+
+    /* Solid Black */
+    border: 1px solid rgb(255 255 255 / 15%) !important;
+
+    /* Border for visibility */
+    box-shadow: 0 4px 12px rgb(0 0 0 / 50%) !important;
+}
+
+/* Hover Effect */
+.reminder-card:hover {
+    transform: scale(1.02);
+    z-index: 2;
+    box-shadow: 0 8px 16px rgb(0 0 0 / 12%) !important;
+}
+
+html.dark .reminder-card:hover {
+    border-color: rgb(255 255 255 / 30%) !important;
+    box-shadow: 0 8px 24px rgb(255 255 255 / 10%) !important;
+}
+
+/* Accent Strip (Left Color Bar) */
+.card-accent-strip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px !important;
+
+    /* Thinner strip */
+    background: #86868b;
+}
+
+/* Accent Colors */
+.reminder-card.accent-blue .card-accent-strip {
+    background: #007aff;
+}
+
+.reminder-card.accent-red .card-accent-strip {
+    background: #ff3b30;
+}
+
+.reminder-card.accent-orange .card-accent-strip {
+    background: #ff9500;
+}
+
+.reminder-card.accent-green .card-accent-strip {
+    background: #34c759;
+}
+
+/* Completed State */
+.reminder-card.completed {
+    opacity: 0.7;
+
+    /* Less dim */
+    background: #f5f5f7 !important;
+    box-shadow: none !important;
+}
+
+html.dark .reminder-card.completed {
+    background: #151516 !important;
+}
+
+.reminder-card.completed .card-title {
+    text-decoration: line-through;
+    color: #86868b !important;
+}
+
+.reminder-card.completed .card-accent-strip {
+    background: #d1d1d6 !important;
+}
+
+/* Content Area */
+.card-content {
+    flex: 1;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px !important;
+
+    /* Tight spacing title/meta */
+}
+
+/* Header Row (Time + Tag) */
+.card-header-flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem !important;
+
+    /* Smaller meta */
+    font-weight: 600;
+    color: #86868b;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.card-time i {
+    margin-right: 3px;
+    font-size: 0.9em;
+}
+
+.card-tag {
+    background: rgb(0 0 0 / 5%);
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+
+html.dark .card-tag {
+    background: rgb(255 255 255 / 10%);
+}
+
+/* Title */
+.card-title {
+    font-size: 0.9rem !important;
+
+    /* Compact Title */
+    font-weight: 600 !important;
+    color: #1d1d1f;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    /* One line title for compactness? Or remove if wrapping needed */
+}
+
+html.dark .card-title {
+    color: #fff;
+}
+
+/* Action Area (Check Circle) */
+.card-action-area {
+    margin-left: 12px;
+}
+
+.status-circle {
+    width: 24px !important;
+
+    /* Smaller Circle */
+    height: 24px !important;
+    border-radius: 50%;
+    border: 2px solid #d1d1d6;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: transparent;
+}
+
+html.dark .status-circle {
+    border-color: #636366;
+}
+
+.reminder-card:hover .status-circle {
+    border-color: #007aff;
+    background: rgb(0 122 255 / 5%);
+}
+
+.reminder-card.completed .status-circle {
+    background: #007aff;
+    border-color: #007aff;
+    color: white;
+}
+
+.status-circle i {
+    font-size: 11px !important;
+
+    /* Smaller tick */
+    display: block;
+
+    /* Ensure visible */
+}
+
+/* AI Suggestion - Card Style */
+.ai-suggestion {
+    margin-top: 1.5rem;
+    background: linear-gradient(135deg, rgb(0 122 255 / 10%), rgb(88 86 214 / 10%)) !important;
+    border: 1px solid rgb(0 122 255 / 20%) !important;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #007aff;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.ai-suggestion:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgb(0 122 255 / 20%);
+}
+
+html.dark .ai-suggestion {
+    color: #0a84ff;
+    border-color: rgb(10 132 255 / 30%) !important;
+}
+
+/* 5. Tags - Refined Pills */
+.project-tag,
+.experience-tag,
+.skill-tag {
+    /* Slightly rounded rects are more modern than full pills for tags sometimes, but let's stick to pills for consistency */
+    border-radius: 980px !important;
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border: 1px solid transparent !important;
+}
+
+/* 6. Specific Section Improvements */
+
+/* Projects */
+.project-card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.project-footer {
+    background: transparent !important;
+    border-top: 1px solid rgb(0 0 0 / 5%) !important;
+}
+
+html.dark .project-footer {
+    border-top: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+/* Experience Timeline */
+.experience-timeline::before {
+    width: 2px !important;
+    background: rgb(0 113 227 / 30%) !important;
+
+    /* More subtle line */
+}
+
+html.dark .experience-timeline::before {
+    background: rgb(41 151 255 / 30%) !important;
+}
+
+.experience-icon {
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 100%), 0 4px 12px rgb(0 113 227 / 30%) !important;
+    background: #0071e3 !important;
+}
+
+html.dark .experience-icon {
+    box-shadow: 0 0 0 4px rgb(0 0 0 / 100%), 0 4px 12px rgb(41 151 255 / 30%) !important;
+    background: #2997ff !important;
+}
+
+/* Skills */
+
+/* Skills - Adjusted Container */
+.skill-category {
+    background: transparent !important;
+
+    /* Let badges float */
+    border: none !important;
+    padding: 20px 0 !important;
+}
+
+/* Premium Skill Badge */
+#skills-container .skill-badge,
+.skill-badge {
+    background: #fff !important;
+
+    /* Solid White */
+    backdrop-filter: none !important;
+    border: 1px solid rgb(0 0 0 / 8%) !important;
+    border-radius: 16px !important;
+    padding: 12px 20px !important;
+    gap: 12px !important;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 4%) !important;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    min-width: 140px;
+    justify-content: center;
+}
+
+html.dark #skills-container .skill-badge,
+html.dark .skill-badge {
+    background: #000 !important;
+
+    /* Solid Black */
+    border: 1px solid rgb(255 255 255 / 15%) !important;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 50%) !important;
+}
+
+/* Badge Hover */
+#skills-container .skill-badge:hover,
+.skill-badge:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 12px 24px rgb(0 0 0 / 12%) !important;
+    background: #f5f5f7 !important;
+
+    /* Off-white hover */
+    z-index: 10;
+}
+
+html.dark #skills-container .skill-badge:hover,
+html.dark .skill-badge:hover {
+    background: #1c1c1e !important;
+
+    /* Dark Grey hover */
+    box-shadow: 0 12px 24px rgb(255 255 255 / 10%) !important;
+    border-color: rgb(255 255 255 / 30%) !important;
+}
+
+/* Badge Text */
+.skill-name {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    color: #1d1d1f !important;
+}
+
+html.dark .skill-name {
+    color: #f5f5f7 !important;
+}
+
+/* Badge Icon */
+.skill-icon {
+    width: 28px !important;
+    height: 28px !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 2px 4px rgb(0 0 0 / 10%));
+}
+
+/* Contact Form */
+.contact-form-container {
+    background: rgb(255 255 255 / 70%) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 24px !important;
+    border: 1px solid rgb(255 255 255 / 50%) !important;
+}
+
+html.dark .contact-form-container {
+    background: rgb(28 28 30 / 60%) !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+input,
+textarea {
+    background: rgb(255 255 255 / 50%) !important;
+    border: 1px solid rgb(0 0 0 / 10%) !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease !important;
+}
+
+html.dark input,
+html.dark textarea {
+    background: rgb(0 0 0 / 30%) !important;
+    border: 1px solid rgb(255 255 255 / 10%) !important;
+    color: #fff !important;
+}
+
+input:focus,
+textarea:focus {
+    background: rgb(255 255 255 / 90%) !important;
+    border-color: #0071e3 !important;
+    box-shadow: 0 0 0 4px rgb(0 113 227 / 15%) !important;
+    outline: none !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus {
+    background: rgb(0 0 0 / 60%) !important;
+    border-color: #2997ff !important;
+    box-shadow: 0 0 0 4px rgb(41 151 255 / 15%) !important;
+}

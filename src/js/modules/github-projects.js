@@ -146,81 +146,67 @@ class GitHubProjects {
   /**
    * Create project card HTML
    */
-  createProjectCard(repo, index) {
+  createProjectCard(repo, _index) {
     const language = repo.language || 'Unknown';
     const languageColor = this.getLanguageColor(language);
     const description = repo.description || 'No description available';
     const stars = repo.stargazers_count || 0;
     const forks = repo.forks_count || 0;
-    const updated = this.formatDate(repo.updated_at);
+    // const updated = this.formatDate(repo.updated_at);
     const homepage = repo.homepage;
 
     return `
-      <div class="education-card bg-primary rounded-2xl p-6 shadow-light hover:shadow-xl transition-all duration-300 group">
-        <div class="flex flex-col h-full">
-          <!-- Header -->
-          <div class="flex items-start justify-between mb-3">
-            <div class="flex-1">
-              <h3 class="text-xl font-semibold mb-2 group-hover:text-accent transition-colors duration-300">
-                ${repo.name}
-              </h3>
-              ${repo.topics && repo.topics.length > 0 ? `
-                <div class="flex flex-wrap gap-1 mb-2">
-                  ${repo.topics.slice(0, 3).map(topic => `
-                    <span class="px-2 py-0.5 bg-accent/5 text-accent text-xs rounded-full border border-accent/20">
-                      ${topic}
-                    </span>
-                  `).join('')}
-                </div>
-              ` : ''}
-            </div>
+      <div class="project-card group">
+        <div class="project-header">
+          <h3 class="project-title">
+            <i class="fas fa-book-bookmark project-icon text-accent"></i>
+            ${repo.name}
+          </h3>
+          <p class="project-description">
+            ${description.length > 100 ? description.substring(0, 100) + '...' : description}
+          </p>
+        </div>
+
+        <div class="project-body">
+          <div class="project-stats">
             ${stars > 0 ? `
-              <div class="flex items-center gap-1 text-sm opacity-80 font-medium">
-                <i class="fas fa-star text-yellow-400 drop-shadow-sm"></i>
+              <div class="project-stat">
+                <i class="fas fa-star"></i>
                 <span>${stars}</span>
+              </div>
+            ` : ''}
+            ${forks > 0 ? `
+              <div class="project-stat">
+                <i class="fas fa-code-branch"></i>
+                <span>${forks}</span>
               </div>
             ` : ''}
           </div>
 
-          <!-- Description -->
-          <p class="text-sm opacity-80 mb-4 leading-tight flex-1">
-            ${description.length > 120 ? description.substring(0, 120) + '...' : description}
-          </p>
-
-          <!-- Language & Stats -->
-          <div class="flex items-center justify-between mb-4 text-xs opacity-60">
-            <div class="flex items-center gap-3">
-              ${language !== 'Unknown' ? `
-                <div class="flex items-center gap-1">
-                  <span class="w-3 h-3 rounded-full" style="background-color: ${languageColor}"></span>
-                  <span>${language}</span>
-                </div>
-              ` : ''}
-              ${forks > 0 ? `
-                <div class="flex items-center gap-1">
-                  <i class="fas fa-code-branch"></i>
-                  <span>${forks}</span>
-                </div>
-              ` : ''}
-            </div>
-            <span class="text-xs opacity-50">Updated ${updated}</span>
-          </div>
-
-          <!-- Actions -->
-          <div class="flex items-center gap-3 pt-3 border-t border-border">
-            <a href="${repo.html_url}" target="_blank" 
-               class="project-action-btn btn-github text-sm">
-              <i class="fab fa-github"></i>
-              <span>View Code</span>
-            </a>
-            ${homepage ? `
-              <a href="${homepage}" target="_blank" 
-                 class="project-action-btn btn-demo text-sm">
-                <i class="fas fa-external-link-alt"></i>
-                <span>Live Demo</span>
-              </a>
+          <div class="project-tags">
+            ${language !== 'Unknown' ? `
+              <div class="project-language">
+                <span class="language-dot" style="background-color: ${languageColor}"></span>
+                ${language}
+              </div>
             ` : ''}
+            ${repo.topics && repo.topics.length > 0 ? repo.topics.slice(0, 2).map(topic => `
+              <span class="project-tag">${topic}</span>
+            `).join('') : ''}
           </div>
+        </div>
+
+        <div class="project-footer">
+          <a href="${repo.html_url}" target="_blank" class="project-action-btn btn-github">
+            <i class="fab fa-github"></i>
+            <span>Code</span>
+          </a>
+          ${homepage ? `
+            <a href="${homepage}" target="_blank" class="project-action-btn btn-demo">
+              <i class="fas fa-external-link-alt"></i>
+              <span>Live Demo</span>
+            </a>
+          ` : ''}
         </div>
       </div>
     `;
@@ -240,7 +226,7 @@ class GitHubProjects {
     container.innerHTML = `
       <div class="col-span-full flex items-center justify-center py-12">
         <div class="text-center">
-          <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent mb-4"></div>
+          <div class="loading-spinner mb-4 mx-auto"></div>
           <p class="text-secondary">Loading projects from GitHub...</p>
         </div>
       </div>
@@ -313,7 +299,7 @@ class GitHubProjects {
 
 
 
-    } catch (error) {
+    } catch {
       container.innerHTML = `
         <div class="col-span-full text-center py-12">
           <i class="fas fa-exclamation-triangle text-6xl text-red-500 opacity-20 mb-4"></i>
@@ -339,9 +325,9 @@ class GitHubProjects {
     };
 
     // Count languages
-    repos.forEach(repo => {
-      if (repo.language) {
-        stats.languages[repo.language] = (stats.languages[repo.language] || 0) + 1;
+    repos.forEach((project, _index) => {
+      if (project.language) {
+        stats.languages[project.language] = (stats.languages[project.language] || 0) + 1;
       }
     });
 
