@@ -92,6 +92,7 @@ html.dark .chatbot-header {
     font-weight: 700;
     background: var(--ai-glow);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.02em;
     filter: drop-shadow(0 0 10px rgba(46, 136, 249, 0.3));
@@ -437,7 +438,8 @@ html.dark .chatbot-voice-btn {
    ═══════════════════════════════════════════════════════════ */
 #chatbot-toggle {
     position: fixed;
-    bottom: 30px;
+    bottom: 110px;
+    /* Positioned above the "go to top" button */
     right: 30px;
     width: 64px;
     height: 64px;

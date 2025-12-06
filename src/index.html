@@ -57,11 +57,11 @@
   <!-- Performance-Optimized Animations -->
   <link rel="stylesheet" href="assets/css/animations.css?v=1764949000" />
 
-  <link rel="stylesheet" href="assets/css/publications.css?v=1764871088" />
-  <link rel="stylesheet" href="assets/css/education.css?v=1764876541" />
-  <link rel="stylesheet" href="assets/css/skills.css?v=1764876541" />
-  <link rel="stylesheet" href="assets/css/certifications.css?v=1764876541" />
-  <link rel="stylesheet" href="assets/css/homepage.css?v=1764876541" />
+  <link rel="stylesheet" href="assets/css/publications.css?v=2025-fix-5" />
+  <link rel="stylesheet" href="assets/css/education.css?v=2025-fix-5" />
+  <link rel="stylesheet" href="assets/css/skills.css?v=2025-fix-5" />
+  <link rel="stylesheet" href="assets/css/certifications.css?v=2025-fix-5" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=2025-fix-5" />
   <link rel="stylesheet" href="assets/css/experience.css?v=1764877980" />
   <link rel="stylesheet" href="assets/css/calendar.css?v=2025" />
 
@@ -252,7 +252,8 @@
 
           <!-- Name and Title -->
           <h2 class="hero-name">Mangesh Raut</h2>
-          <h1 class="hero-title">Software Developer Engineer</h1>
+          <h1 class="hero-title" style="font-size: 1.75rem !important; font-weight: 600 !important;">Software Developer
+            Engineer</h1>
 
           <!-- Description -->
           <p class="hero-description mx-auto mb-8 max-w-2xl">
@@ -1696,77 +1697,50 @@
     </button>
 
     <!-- ═══════════════════════════════════════════════════════════
-         ASSISTME CHATBOT (Fixed - No Conflicts)
+         APPLE INTELLIGENCE CHATBOT 2025
          ═══════════════════════════════════════════════════════════ -->
 
-    <!-- Toggle Button -->
-    <button id="chatbot-toggle" type="button" aria-label="Open AssistMe chat" aria-haspopup="dialog"
-      aria-controls="chatbot-widget" aria-expanded="false">
-      <i class="fas fa-comment-dots"></i>
+    <!-- Chatbot Toggle Button -->
+    <button id="chatbot-toggle" type="button" aria-label="Open AI Assistant">
+      <i class="fas fa-sparkles"></i>
     </button>
 
     <!-- Chatbot Widget -->
-    <div id="chatbot-widget" class="hidden" role="dialog" aria-label="AssistMe chat window" aria-hidden="true">
+    <div id="chatbot-widget" class="hidden" role="dialog" aria-label="Apple Intelligence chat window">
       <!-- Header -->
       <div class="chatbot-header">
         <div class="chatbot-header-content">
-          <h3>AssistMe</h3>
-          <p>AI Assistant</p>
+          <h3 class="chatbot-title">Apple Intelligence</h3>
+          <p>Mangesh's AI Assistant</p>
         </div>
-        <button class="chatbot-close-btn" aria-label="Close chat" title="Close Chat">
+        <button class="chatbot-close-btn" aria-label="Close chat">
           <i class="fas fa-times"></i>
         </button>
       </div>
 
       <!-- Messages Area -->
-      <div id="chatbot-messages" aria-live="polite" aria-atomic="false"></div>
-
-      <!-- Input Area -->
-      <form class="chatbot-input-area" id="chatbot-form">
-        <textarea id="chatbot-input" placeholder="Ask me anything..." rows="1" autocomplete="off" autocorrect="off"
-          spellcheck="true" aria-label="Chat message input" style="resize: none; overflow: hidden;"></textarea>
-        <button type="submit" class="chatbot-btn chatbot-send-btn" aria-label="Send message">
-          <i class="fas fa-paper-plane"></i>
-        </button>
-        <button type="button" class="chatbot-btn chatbot-voice-btn" id="chatbot-voice-btn" aria-label="Voice input">
-          <i class="fas fa-microphone"></i>
-          <span class="chatbot-voice-badge">S2R</span>
-        </button>
-      </form>
-
-      <!-- Voice Control Menu -->
-      <div id="voice-control-menu" class="voice-control-menu hidden" aria-hidden="true">
-        <div class="voice-menu-header">
-          <h4>Voice Settings</h4>
-          <button id="voice-mode-close" class="voice-menu-close" aria-label="Close voice menu">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="voice-menu-options">
-          <div class="voice-menu-option">
-            <label for="voice-output-toggle">
-              <i class="fas fa-volume-up"></i>
-              <span>Voice Responses</span>
-            </label>
-            <input type="checkbox" id="voice-output-toggle" checked />
+      <div id="chatbot-messages" aria-live="polite">
+        <!-- Welcome message -->
+        <div class="message assistant-message">
+          <div class="message-content">
+            Hello! I'm Mangesh's advanced AI assistant. How can I help you navigate his portfolio today?
           </div>
-          <div class="voice-menu-option">
-            <label for="continuous-mode-toggle">
-              <i class="fas fa-infinity"></i>
-              <span>Continuous Listening</span>
-            </label>
-            <input type="checkbox" id="continuous-mode-toggle" />
-          </div>
-          <div class="voice-menu-divider"></div>
-          <button class="voice-menu-action" id="stop-voice-btn">
-            <i class="fas fa-stop-circle"></i>
-            <span>Stop Voice Mode</span>
-          </button>
-          <button class="voice-menu-action" id="mute-voice-btn">
-            <i class="fas fa-volume-mute"></i>
-            <span>Mute All Audio</span>
-          </button>
         </div>
+      </div>
+
+      <!-- Input Container -->
+      <div class="chatbot-input-container">
+        <form id="chatbot-form">
+          <div class="input-wrapper">
+            <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn">
+              <i class="fas fa-microphone"></i>
+            </button>
+            <textarea id="chatbot-input" placeholder="Ask anything..." rows="1" autocomplete="off"></textarea>
+            <button type="submit" class="chatbot-send-btn">
+              <i class="fas fa-arrow-up"></i>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
     <!-- END CHATBOT -->

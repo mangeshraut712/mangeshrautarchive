@@ -40,10 +40,11 @@ html:not(.dark) .home-hero {
 /* Profile Image with Ring */
 .profile-image-wrapper {
     position: relative;
-    width: 220px;
-
-    /* Slightly smaller for better balance */
-    height: 220px;
+    width: 160px;
+    /* Reduced from 220px to fit content better */
+    height: 160px;
+    margin-bottom: 24px !important;
+    /* Tighter spacing */
 }
 
 .profile-image {
@@ -80,57 +81,77 @@ html:not(.dark) .home-hero {
 
 /* Hero Name */
 .hero-name {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1.25rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
     display: block;
     text-align: center;
-    letter-spacing: -0.01em;
-    color: #1d1d1f;
-    /* Force Black in Default/Light */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #0071e3 !important;
+    /* Apple Blue Accent in Light Mode */
 }
 
 /* Hero Title */
 .hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    /* Much more compact - approximately 28px */
+    font-weight: 600;
+    margin-bottom: 1.25rem;
     display: block;
     text-align: center;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 
-    /* Default / Light Mode */
-    color: #1d1d1f;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* Minimal shadow */
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    /* Default / Light Mode - Clean Black */
+    color: #1d1d1f !important;
+    text-shadow: none !important;
 }
 
 /* Hero Description */
 .hero-description {
-    font-size: 1.25rem;
-    max-width: 700px;
-    margin: 0 auto 2rem;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
     line-height: 1.5;
-    font-weight: 450;
-    color: #424245;
-    /* Dark grey for better readability */
+    font-weight: 400;
+    color: #424245 !important;
 }
 
 /* DARK MODE OVERRIDES */
 html.dark .hero-name {
-    color: #f5f5f7;
+    color: #2997ff !important;
+    /* Lighter Blue for Dark Mode */
 }
 
 html.dark .hero-title {
-    color: #ffffff;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
-    /* Glowing effect */
+    color: #ffffff !important;
+    text-shadow: none !important;
+    /* Clean White */
 }
 
 html.dark .hero-description {
-    color: #a1a1a6;
+    color: #a1a1a6 !important;
+}
+
+/* Responsive Adjustments */
+@media (width <=768px) {
+    .hero-title {
+        font-size: 1.5rem !important;
+        /* Compact on mobile too */
+    }
+
+    .hero-name {
+        font-size: 1rem !important;
+    }
+
+    .profile-image-wrapper {
+        width: 120px !important;
+        height: 120px !important;
+    }
 }
 
 /* Hero Social Links */
