@@ -130,8 +130,17 @@ class IntelligentAssistant {
             return false;
         }
 
+        // If API_BASE is explicitly configured, trust it and enable server AI
+        if (API_BASE && API_BASE.length > 0) {
+            console.log('✅ API Base configured:', API_BASE);
+            console.log('   Enabling server AI optimistically (will verify on first request)');
+            this.canUseServerAI = true;
+            this.isReadyState = true;
+            return true;
+        }
+
+        // Fallback: Try health check for legacy compatibility
         try {
-            // Test server connectivity - try lightweight health first, then status
             console.log('🖥️ Testing server connectivity...');
             const tryEndpoint = async (path, timeoutMs) => {
                 const res = await fetch(buildApiUrl(path), {
@@ -147,18 +156,21 @@ class IntelligentAssistant {
 
             if (healthy) {
                 console.log('✅ Server connectivity test successful');
+                this.canUseServerAI = true;
                 this.isReadyState = true;
                 return true;
             }
 
-            console.warn('Server connectivity test failed');
-            return false;
+            console.warn('⚠️ Server connectivity test failed - will try API calls anyway');
+            this.canUseServerAI = true; // Try anyway
+            this.isReadyState = true;
+            return true; // Optimistic
 
         } catch (error) {
-            console.warn('Server initialization failed - running offline mode:', error.message);
-            console.log('Falling back to offline mode due to server unavailability');
-            this.isReadyState = true; // Still set as ready for local processing
-            return false; // Return false to indicate offline mode
+            console.warn('Server initialization failed - enabling optimistic mode:', error.message);
+            this.canUseServerAI = true; // Try anyway
+            this.isReadyState = true;
+            return true; // Optimistic
         }
     }
 
