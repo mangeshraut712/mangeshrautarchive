@@ -705,8 +705,10 @@ html.dark #chatbot-input {
 @media (min-width: 769px) {
     #chatbot-widget {
         width: 420px !important;
-        height: 620px !important;
-        bottom: 220px !important;
+        height: 650px !important;
+        /* Enlarge vertical space: reduce gap from top (250px buffer) and move close to toggle */
+        max-height: calc(100vh - 250px) !important;
+        bottom: 190px !important;
         right: 30px !important;
         left: auto !important;
         top: auto !important;

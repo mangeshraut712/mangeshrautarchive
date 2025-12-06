@@ -14,13 +14,17 @@ if (typeof window !== 'undefined') {
         }
         // Use DEPLOYED API for Vercel production
         else if (hostname.endsWith('.vercel.app')) {
-            API_BASE = `https://${hostname}`;
+            API_BASE = ''; // Use relative paths on Vercel
         }
         // Use custom API base if configured
         else if (api.baseUrl) {
             API_BASE = api.baseUrl;
         }
-        // Otherwise, no API_BASE means offline mode for GitHub Pages
+        // Custom Domain or GitHub Pages - Fallback to Vercel Backend
+        else {
+            console.log('🌍 Detected production environment, binding to Vercel backend...');
+            API_BASE = 'https://mangeshrautarchive.vercel.app';
+        }
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
     API_BASE = `https://${process.env.VERCEL_URL}`;
@@ -107,9 +111,9 @@ class IntelligentAssistant {
             console.log('Protocol:', window.location.protocol);
             console.log('API Base URL:', api.baseUrl);
 
-            // Check if using Vercel Check
-            if (api.baseUrl && api.baseUrl.includes('vercel.app')) {
-                console.log('✅ Vercel API configured - hybrid mode enabled');
+            // Check if API_BASE is configured (which it should be now)
+            if (API_BASE && (API_BASE.includes('vercel.app') || API_BASE.startsWith('http'))) {
+                console.log('✅ Remote API configured - hybrid mode enabled');
                 this.canUseServerAI = true;
                 this.isReadyState = true;
                 return true; // API is available
@@ -138,8 +142,8 @@ class IntelligentAssistant {
                 return res.ok;
             };
 
-            const healthy = await tryEndpoint('/api/health', 3000)
-                .catch(() => false) || await tryEndpoint('/api/status', 5000).catch(() => false);
+            const healthy = await tryEndpoint('/api/health', 15000)
+                .catch(() => false) || await tryEndpoint('/api/status', 15000).catch(() => false);
 
             if (healthy) {
                 console.log('✅ Server connectivity test successful');

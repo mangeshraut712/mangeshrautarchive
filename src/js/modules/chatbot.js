@@ -248,6 +248,17 @@ class AppleIntelligenceChatbot {
             // Remove typing cursor
             contentDiv.textContent = fullText;
 
+            // Fallback: If streaming yielded no text, use the direct answer (crucial for Agentic Actions or Offline Mode)
+            if (!fullText && response && (response.answer || response.content)) {
+                fullText = response.answer || response.content;
+
+                if (response.html) {
+                    contentDiv.innerHTML = response.html;
+                } else {
+                    contentDiv.textContent = fullText;
+                }
+            }
+
             // Extract metadata
             const runtime = Date.now() - startTime;
             metadata = {

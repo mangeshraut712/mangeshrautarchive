@@ -53,9 +53,9 @@ html.dark .birthday-notification {
 }
 
 /* Desktop Overrides: Top Right */
-@media screen and (width >= 769px) {
+@media screen and (width >=769px) {
     .birthday-notification {
-        top: 24px;
+        top: 110px;
         right: 24px;
         left: auto;
         transform: translateX(120%);
@@ -374,6 +374,7 @@ html.dark .birthday-notification {
 }
 
 @keyframes pulse {
+
     0%,
     100% {
         transform: translateX(-50%) translateY(0) scale(1);
@@ -518,6 +519,7 @@ html.dark .birthday-celebration {
 }
 
 @keyframes bgShift {
+
     0%,
     100% {
         background-position: 0% 50%;
@@ -550,6 +552,7 @@ html.dark .birthday-celebration {
 }
 
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0);
@@ -575,6 +578,7 @@ html.dark .birthday-celebration {
 }
 
 @keyframes shimmer {
+
     0%,
     100% {
         background-position: 0% 50%;
@@ -631,6 +635,7 @@ html.dark .birthday-celebration {
 }
 
 @keyframes rotate {
+
     0%,
     100% {
         transform: rotate(-5deg) scale(1);
@@ -642,6 +647,7 @@ html.dark .birthday-celebration {
 }
 
 @keyframes shadowPulse {
+
     0%,
     100% {
         filter: drop-shadow(0 10px 30px rgb(0 0 0 / 30%));
@@ -688,6 +694,7 @@ html.dark .birthday-continue-btn {
 }
 
 @keyframes btnPulse {
+
     0%,
     100% {
         transform: scale(1);
@@ -814,6 +821,7 @@ html.dark .birthday-continue-btn:hover {
 }
 
 @keyframes balloonFloat {
+
     0%,
     100% {
         transform: translateY(0) rotate(-5deg);
@@ -884,6 +892,7 @@ html.dark .birthday-continue-btn:hover {
 }
 
 @keyframes sparkleFloat {
+
     0%,
     100% {
         opacity: 0;
@@ -923,7 +932,7 @@ html.dark .birthday-continue-btn:hover {
    RESPONSIVE DESIGN
    ═══════════════════════════════════════════════════════════ */
 
-@media (width <= 768px) {
+@media (width <=768px) {
     .birthday-notification {
         max-width: calc(100% - 20px);
         padding: 12px 16px;
@@ -962,6 +971,7 @@ html.dark .birthday-continue-btn:hover {
    ═══════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+
     .birthday-notification,
     .birthday-celebration,
     .confetti,

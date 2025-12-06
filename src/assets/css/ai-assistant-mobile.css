@@ -7,13 +7,14 @@
     /* Widget - Full Viewport */
     #chatbot-widget {
         position: fixed !important;
-        inset: 0 !important;
-        /* Top, Right, Bottom, Left: 0 */
-        width: 100% !important;
-        height: 100dvh !important;
+        inset: 12px !important;
+        /* Padding from screen edges */
+        width: auto !important;
+        height: auto !important;
         max-height: none !important;
-        border-radius: 0 !important;
+        border-radius: 24px !important;
         margin: 0 !important;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2), 0 0 0 100vmax rgba(0, 0, 0, 0.45) !important;
         z-index: 99999 !important;
         display: flex !important;
         flex-direction: column !important;
