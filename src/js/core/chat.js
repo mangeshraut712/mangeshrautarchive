@@ -290,15 +290,17 @@ class IntelligentAssistant {
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
         const canCallServerAPI = this.canUseServerAI ||
             (hostname.includes('github.io') &&
-                api.baseUrl &&
-                api.baseUrl.includes('vercel.app'));
+                API_BASE &&
+                API_BASE.includes('vercel.app'));
 
         if (!canCallServerAPI) {
-            console.log('🔄 Skipping server API call - GitHub Pages running in hybrid mode');
+            console.log('🔄 Skipping server API call - offline mode or no API configured');
+            console.log('   canUseServerAI:', this.canUseServerAI);
+            console.log('   API_BASE:', API_BASE);
             return null;
         }
 
-        console.log('📡 API Base URL:', api.baseUrl);
+        console.log('📡 API Base URL:', API_BASE);
 
         try {
             const apiUrl = buildApiUrl('/api/chat');

@@ -59,6 +59,15 @@ API_URL = "https://openrouter.ai/api/v1/chat/completions"
 SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
 SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
 
+# Startup logging
+print("=" * 60)
+print("🚀 AssistMe API Starting...")
+print(f"   Environment: {os.getenv('VERCEL_ENV', 'local')}")
+print(f"   API Key Configured: {'✅ Yes' if OPENROUTER_API_KEY else '❌ NO - WILL FAIL!'}")
+print(f"   Default Model: {OPENROUTER_MODEL}")
+print(f"   Site URL: {SITE_URL}")
+print("=" * 60)
+
 # Rate Limiting
 rate_limit_store = defaultdict(list)
 RATE_LIMIT_REQUESTS = 20  # requests per window
@@ -743,3 +752,7 @@ if os.getenv("VERCEL_ENV") != "production":
         app.mount("/", StaticFiles(directory="src", html=True), name="static")
     except Exception as e:
         print(f"⚠️ Static files skipped: {e}")
+
+# Vercel Serverless Handler
+# This is required for Vercel's Python runtime to work with FastAPI
+handler = app
