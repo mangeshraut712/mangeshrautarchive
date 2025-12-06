@@ -712,154 +712,141 @@ html.dark .chatbot-send-btn:hover {
 
 
 /* ═══════════════════════════════════════════════════════════
-   RESPONSIVE - MOBILE OPTIMIZED
+   RESPONSIVE - MOBILE OPTIMIZED (MATCHING PREMIUM TEST)
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
     #chatbot-widget {
-        width: calc(100% - 12px);
-        height: calc(100vh - 70px);
-        /* Larger window, less margin from navbar */
-        max-height: calc(100vh - 70px);
-        bottom: 6px;
-        right: 6px;
-        left: 6px;
-        border-radius: 20px;
-        transform-origin: bottom center;
+        /* Full screen with padding on all 4 sides */
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+        width: auto;
+        height: auto;
+        max-height: none;
+        border-radius: 24px;
+        transform-origin: center;
     }
 
     #chatbot-toggle {
-        bottom: 20px;
-        right: 20px;
+        bottom: 24px;
+        right: 24px;
         width: 56px;
-        /* Slightly smaller for mobile */
         height: 56px;
         font-size: 24px;
     }
 
-    /* Compact Header for Mobile */
+    /* Header - Clean and spacious */
     .chatbot-header {
-        padding: 12px 16px;
-        /* Reduced from 16px */
+        padding: 20px 24px;
         min-height: auto;
     }
 
     .chatbot-header-content h3 {
-        font-size: 16px;
-        /* Smaller title */
-        margin: 0;
+        font-size: 18px;
+        margin: 0 0 4px 0;
     }
 
     .chatbot-header-content p {
-        font-size: 12px;
-        /* Smaller subtitle */
+        font-size: 14px;
         margin: 0;
+        opacity: 0.8;
     }
 
     .chatbot-close-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
     }
 
     .chatbot-title {
-        font-size: 16px;
+        font-size: 18px;
     }
 
-    /* Mobile Input Container - Compact */
+    /* Input Container - Spacious */
     .chatbot-input-container {
-        padding: 10px 12px;
-        /* Reduced padding */
-        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        padding: 16px 20px;
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
 
-    /* Mobile Input Wrapper - Optimized */
+    /* Input Wrapper - Premium feel */
     .input-wrapper {
-        gap: 6px;
-        /* Smaller gap */
-        padding: 5px 8px;
-        /* Tighter padding */
-        border-radius: 22px;
+        gap: 12px;
+        padding: 8px 12px;
+        border-radius: 28px;
     }
 
-    /* Mobile Textarea - Properly Sized */
+    /* Textarea - Comfortable */
     #chatbot-input {
         font-size: 16px !important;
-        /* Prevent iOS zoom */
-        padding: 10px 6px;
-        /* Reduced padding */
-        min-height: 18px;
-        max-height: 70px;
-        /* Smaller max height */
-        line-height: 1.4;
+        padding: 12px 8px;
+        min-height: 24px;
+        max-height: 100px;
+        line-height: 1.5;
     }
 
-    /* Mobile Buttons - Properly Sized */
+    /* Buttons - Proper sizing */
     .chatbot-voice-btn {
-        width: 36px;
-        /* Smaller voice button */
-        height: 36px;
-        font-size: 16px;
-        flex-shrink: 0;
-    }
-
-    .chatbot-send-btn {
-        width: 36px;
-        /* Fixed width, not stretching */
-        height: 36px;
+        width: 40px;
+        height: 40px;
         font-size: 18px;
         flex-shrink: 0;
     }
 
-    /* Messages area - More space */
-    #chatbot-messages {
-        padding: 12px;
-        /* Reduced padding for more space */
+    .chatbot-send-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        flex-shrink: 0;
     }
 
-    /* Message bubbles - Mobile optimized */
+    /* Messages area - Spacious */
+    #chatbot-messages {
+        padding: 20px;
+    }
+
+    /* Message bubbles */
     .user-message,
     .assistant-message {
-        max-width: 88%;
-        /* Slightly wider */
-        font-size: 15px;
+        max-width: 85%;
+        font-size: 16px;
     }
 
     .message-content {
-        padding: 12px 16px !important;
-        /* Smaller padding */
-        font-size: 15px !important;
+        padding: 14px 18px !important;
+        font-size: 16px !important;
     }
 
-    /* Metadata chips - Smaller on mobile */
+    /* Metadata chips */
     .message-metadata {
-        gap: 4px;
-        margin-top: 6px;
+        gap: 6px;
+        margin-top: 8px;
     }
 
     .meta-chip {
-        font-size: 10px;
-        padding: 3px 8px;
+        font-size: 11px;
+        padding: 4px 10px;
     }
 
-    /* Action buttons - Smaller on mobile */
+    /* Action buttons */
     .msg-action-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 11px;
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
     }
 
     /* Typing indicator */
     .typing-indicator {
-        padding: 8px 12px;
+        padding: 10px 14px;
     }
 }
 
 /* Tablet adjustments */
 @media (min-width: 769px) and (max-width: 1024px) {
     #chatbot-widget {
-        width: 360px;
-        height: 520px;
-        /* Slightly larger */
+        width: 380px;
+        height: 560px;
         bottom: 180px;
     }
 
@@ -869,11 +856,11 @@ html.dark .chatbot-send-btn:hover {
     }
 
     .chatbot-header {
-        padding: 16px 18px;
+        padding: 18px 20px;
     }
 
     .input-wrapper {
-        padding: 7px 11px;
+        padding: 8px 12px;
     }
 
     #chatbot-input {
@@ -883,23 +870,20 @@ html.dark .chatbot-send-btn:hover {
 
     .chatbot-voice-btn,
     .chatbot-send-btn {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
     }
 }
 
 /* Desktop - Larger window */
 @media (min-width: 1025px) {
     #chatbot-widget {
-        width: 400px;
-        /* Slightly larger */
-        height: 580px;
-        /* Increased from 550px */
+        width: 420px;
+        height: 600px;
         bottom: 190px;
     }
 
     .chatbot-header {
-        padding: 16px 20px;
-        /* Reduced from 18px 20px */
+        padding: 20px 24px;
     }
 }
