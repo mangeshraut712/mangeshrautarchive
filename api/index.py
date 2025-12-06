@@ -732,6 +732,19 @@ async def health_alias():
     return await health_check()
 
 
+@app.get("/api/test")
+async def test_endpoint():
+    """Test endpoint to verify API configuration"""
+    return {
+        "status": "ok",
+        "message": "Backend is running!",
+        "api_key_configured": bool(OPENROUTER_API_KEY),
+        "api_key_length": len(OPENROUTER_API_KEY) if OPENROUTER_API_KEY else 0,
+        "default_model": DEFAULT_MODEL,
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
+
+
 @app.get("/api")
 async def api_root():
     return {
