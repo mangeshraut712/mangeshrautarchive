@@ -457,6 +457,10 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                             "type": "done",
                             "full_content": full_content,
                             "metadata": {
+                                "model": model,
+                                "source": "OpenRouter",
+                                "sourceLabel": f"OpenRouter ({model.split('/')[-1]})",
+                                "category": "AI Response",
                                 "char_count": len(full_content),
                                 "tokens_estimate": tokens_estimate,
                                 "elapsed_ms": int(elapsed * 1000),
