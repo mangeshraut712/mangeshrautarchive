@@ -65,6 +65,8 @@ mangeshrautarchive/
 - ✅ **Context Awareness** - Remembers conversation history
 - ✅ **Mobile Optimized** - Full-screen on mobile devices
 - ✅ **Theme Adaptive** - Matches website theme
+- ✅ **Premium UI** - Apple Intelligence inspired design
+- ✅ **Smart Input** - Floating pill interface
 
 ### Animations
 - ✅ **Scroll Animations** - Intersection Observer-based
@@ -236,5 +238,5 @@ MIT License - feel free to use for your own portfolio!
 ---
 
 **Last Updated**: December 2025  
-**Version**: 3.0.0  
+**Version**: 3.1.0  
 **Status**: Production Ready ✅

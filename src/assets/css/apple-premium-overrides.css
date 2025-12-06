@@ -897,7 +897,6 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
 }
 
 @keyframes gentle-pulse {
-
     0%,
     100% {
         box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
@@ -1518,8 +1517,9 @@ html.dark textarea:focus {
     background: linear-gradient(135deg, #FFD700, #FDB931) !important;
     color: #000 !important;
     font-weight: 800 !important;
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4) !important;
+    box-shadow: 0 4px 12px rgb(255 215 0 / 40%) !important;
     border-radius: 50% !important;
+
     /* Circle like iOS selected state */
     position: relative;
     z-index: 10;
@@ -1529,7 +1529,7 @@ html.dark textarea:focus {
 
 html.dark .day-cell.mangesh-birthday {
     border: 2px solid #000 !important;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6) !important;
+    box-shadow: 0 4px 15px rgb(255 215 0 / 60%) !important;
 }
 
 /* Apple Logo Dot */
@@ -1544,11 +1544,11 @@ html.dark .day-cell.mangesh-birthday {
 /* Gold Accent for Reminder Card */
 .reminder-card.accent-gold {
     border-left: 4px solid #FFD700 !important;
-    background: linear-gradient(to right, rgba(255, 215, 0, 0.05), transparent) !important;
+    background: linear-gradient(to right, rgb(255 215 0 / 5%), transparent) !important;
 }
 
 .reminder-card.accent-gold .card-tag {
-    background: rgba(255, 215, 0, 0.2) !important;
+    background: rgb(255 215 0 / 20%) !important;
     color: #B8860B !important;
 }
 
@@ -1558,10 +1558,10 @@ html.dark .day-cell.mangesh-birthday {
 
 .reminder-card.accent-gold:hover {
     border-color: #FDB931 !important;
-    background: linear-gradient(to right, rgba(255, 215, 0, 0.15), transparent) !important;
+    background: linear-gradient(to right, rgb(255 215 0 / 15%), transparent) !important;
 }
 
 html.dark .reminder-card.accent-gold .card-tag {
     color: #FFD700 !important;
-    background: rgba(255, 215, 0, 0.15) !important;
+    background: rgb(255 215 0 / 15%) !important;
 }

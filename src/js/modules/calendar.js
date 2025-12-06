@@ -17,7 +17,7 @@ export class CalendarWidget {
   init() {
     if (!this.container) return;
     this.render();
-    this.attachEvents();
+    this.bindEvents();
   }
 
   render() {

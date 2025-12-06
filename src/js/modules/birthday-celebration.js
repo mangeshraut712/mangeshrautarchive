@@ -296,7 +296,7 @@ class BirthdayCelebration {
             g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
             o.start();
             o.stop(ctx.currentTime + 0.5);
-        } catch (e) { }
+        } catch { /* ignore */ }
     }
 }
 

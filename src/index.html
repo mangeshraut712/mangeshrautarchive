@@ -63,14 +63,16 @@
   <link rel="stylesheet" href="assets/css/certifications.css?v=2025-fix-5" />
   <link rel="stylesheet" href="assets/css/homepage.css?v=2025-fix-5" />
   <link rel="stylesheet" href="assets/css/experience.css?v=1764877980" />
-  <link rel="stylesheet" href="assets/css/calendar.css?v=2025" />
+
 
   <!-- Prism.js for Code Highlighting -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
-  <link rel="stylesheet" href="assets/css/calendar.css?v=clean" />
   <link rel="stylesheet" href="assets/css/contact.css?v=2025" />
-  <link rel="stylesheet" href="assets/css/posts.css?v=2025" />
+  <link rel="stylesheet" href="assets/css/calendar.css?v=clean" />
+  <link rel="stylesheet" href="assets/css/ai-assistant.css?v=2025-new" />
+  <link rel="stylesheet" href="assets/css/ai-assistant-mobile.css?v=2025-new" />
+
   <link rel="stylesheet" href="assets/css/about.css?v=2025" />
   <link rel="stylesheet" href="assets/css/blog.css?v=1764878179" />
   <link rel="stylesheet" href="assets/css/projects-v2.css?v=1764878179" />
@@ -84,10 +86,6 @@
 
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
-
-  <!-- Chatbot iMessage Style - Complete Redesign -->
-  <!-- Chatbot Styles -->
-  <link rel="stylesheet" href="assets/css/chatbot.css?v=1764950000" />
 
   <!-- 🎉 Birthday Celebration Styles -->
   <link rel="stylesheet" href="assets/css/birthday-celebration.css?v=1765002000" />
@@ -106,7 +104,7 @@
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" as="script">
   <link rel="preload" href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" as="script">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lru-cache@10/dist/index.min.js" defer></script>
+
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.0/purify.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
@@ -1545,22 +1543,24 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your Name" class="contact-input" required>
+                    <input type="text" id="name" name="name" placeholder="Your Name" class="contact-input"
+                      autocomplete="name" required>
                   </div>
                   <div class="form-group">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Your Email" class="contact-input" required>
+                    <input type="email" id="email" name="email" placeholder="Your Email" class="contact-input"
+                      autocomplete="email" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="subject" class="form-label">Subject</label>
                   <input type="text" id="subject" name="subject" placeholder="Project Inquiry" class="contact-input"
-                    required>
+                    autocomplete="off" required>
                 </div>
                 <div class="form-group">
                   <label for="message" class="form-label">Message</label>
                   <textarea id="message" name="message" placeholder="Tell me about your project..."
-                    class="contact-input" required></textarea>
+                    class="contact-input" autocomplete="off" required></textarea>
                 </div>
                 <button type="submit" class="btn w-full" style="margin-top: 1rem;">
                   Send Message <i class="fas fa-paper-plane ml-2"></i>

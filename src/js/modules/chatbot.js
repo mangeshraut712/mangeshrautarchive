@@ -27,8 +27,8 @@ class AppleIntelligenceChatbot {
         const maxAttempts = 50;
 
         const checkAPI = () => {
-            if (window.intelligentAssistant) {
-                this.chatAPI = window.intelligentAssistant;
+            if (window.chatAssistant) {
+                this.chatAPI = window.chatAssistant;
                 console.log('✅ Chat API connected');
                 return true;
             }
@@ -50,7 +50,7 @@ class AppleIntelligenceChatbot {
     }
 
     initializeElements() {
-        return {
+        const elements = {
             widget: document.getElementById('chatbot-widget'),
             toggle: document.getElementById('chatbot-toggle'),
             closeBtn: document.querySelector('.chatbot-close-btn'),
@@ -60,6 +60,47 @@ class AppleIntelligenceChatbot {
             sendBtn: document.querySelector('.chatbot-send-btn'),
             voiceBtn: document.getElementById('chatbot-voice-btn')
         };
+
+        // Create Shadow Div for smooth resizing
+        if (elements.input && !this.shadowDiv) {
+            this.shadowDiv = document.createElement('div');
+            this.shadowDiv.style.position = 'absolute';
+            this.shadowDiv.style.visibility = 'hidden';
+            this.shadowDiv.style.height = 'auto';
+            this.shadowDiv.style.width = elements.input.clientWidth + 'px';
+            this.shadowDiv.style.whiteSpace = 'pre-wrap';
+            this.shadowDiv.style.wordWrap = 'break-word';
+            this.shadowDiv.style.overflow = 'hidden';
+
+            // Copy critical styles
+            const computed = window.getComputedStyle(elements.input);
+            this.shadowDiv.style.fontFamily = computed.fontFamily;
+            this.shadowDiv.style.fontSize = computed.fontSize;
+            this.shadowDiv.style.lineHeight = computed.lineHeight;
+            this.shadowDiv.style.padding = computed.padding;
+            this.shadowDiv.style.boxSizing = computed.boxSizing;
+            this.shadowDiv.style.border = computed.border;
+
+            document.body.appendChild(this.shadowDiv);
+        }
+
+        return elements;
+    }
+
+    autoResizeTextarea(textarea) {
+        if (!textarea || !this.shadowDiv) return;
+
+        // Sync width in case of window resize
+        this.shadowDiv.style.width = textarea.clientWidth + 'px';
+
+        // Copy text (add space for newline accuracy)
+        this.shadowDiv.textContent = textarea.value + '\u200b';
+
+        // Get height from shadow
+        const maxHeight = 120; // Matches CSS max-height
+        const newHeight = Math.min(this.shadowDiv.scrollHeight, maxHeight);
+
+        textarea.style.height = `${Math.max(newHeight, 24)}px`; // Min height constraint
     }
 
     bindEvents() {
@@ -68,24 +109,21 @@ class AppleIntelligenceChatbot {
 
         this.elements.form?.addEventListener('submit', (e) => {
             e.preventDefault();
+            e.stopImmediatePropagation();
+            console.log('Chatbot submit captured');
             this.handleSendMessage();
         });
 
-        // Optimized input handling with requestAnimationFrame
-        let resizeScheduled = false;
+        // Direct input handling for immediate response
         this.elements.input?.addEventListener('input', () => {
-            if (!resizeScheduled) {
-                resizeScheduled = true;
-                requestAnimationFrame(() => {
-                    this.autoResizeTextarea(this.elements.input);
-                    resizeScheduled = false;
-                });
-            }
+            this.autoResizeTextarea(this.elements.input);
         });
 
         this.elements.input?.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
+                e.stopImmediatePropagation();
+                console.log('Chatbot Enter captured');
                 this.handleSendMessage();
             }
         });
@@ -118,6 +156,7 @@ class AppleIntelligenceChatbot {
     }
 
     openWidget() {
+        document.body.classList.add('chatbot-open');
         this.elements.widget?.classList.remove('hidden');
         this.elements.widget?.classList.add('visible');
         this.isOpen = true;
@@ -128,20 +167,14 @@ class AppleIntelligenceChatbot {
     }
 
     closeWidget() {
+        document.body.classList.remove('chatbot-open');
         this.elements.widget?.classList.remove('visible');
         this.elements.widget?.classList.add('hidden');
         this.isOpen = false;
     }
 
     addWelcomeMessage() {
-        const existingMessages = this.elements.messages?.querySelectorAll('.message');
-        if (!existingMessages || existingMessages.length === 0) {
-            this.addMessage(
-                "Hello! I'm Mangesh's advanced AI assistant. How can I help you navigate his portfolio today?",
-                'assistant',
-                { skipMetadata: true }
-            );
-        }
+        // Welcome message disabled by user request
     }
 
     async handleSendMessage() {
@@ -437,7 +470,7 @@ class AppleIntelligenceChatbot {
         return "I can help you learn more about Mangesh's skills, experience, projects, and education. Feel free to ask me anything about his portfolio!";
     }
 
-    addMessage(text, role, options = {}) {
+    addMessage(text, role, _options = {}) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${role}-message`;
 
@@ -472,22 +505,6 @@ class AppleIntelligenceChatbot {
     scrollToBottom() {
         if (this.elements.messages) {
             this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
-        }
-    }
-
-    autoResizeTextarea(textarea) {
-        if (!textarea) return;
-
-        // Reset height to auto to get accurate scrollHeight
-        textarea.style.height = 'auto';
-
-        // Calculate new height (max 100px on desktop, 100px on mobile)
-        const maxHeight = window.innerWidth <= 768 ? 100 : 100;
-        const newHeight = Math.min(textarea.scrollHeight, maxHeight);
-
-        // Only update if height changed (prevents unnecessary reflows)
-        if (textarea.style.height !== `${newHeight}px`) {
-            textarea.style.height = `${newHeight}px`;
         }
     }
 

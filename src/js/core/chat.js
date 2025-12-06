@@ -1,4 +1,4 @@
-import { localConfig } from './config.js';
+import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
 
 let API_BASE = '';
@@ -17,8 +17,8 @@ if (typeof window !== 'undefined') {
             API_BASE = `https://${hostname}`;
         }
         // Use custom API base if configured
-        else if (localConfig.apiBaseUrl) {
-            API_BASE = localConfig.apiBaseUrl;
+        else if (api.baseUrl) {
+            API_BASE = api.baseUrl;
         }
         // Otherwise, no API_BASE means offline mode for GitHub Pages
     }
@@ -75,7 +75,7 @@ class IntelligentAssistant {
         this.conversation = [];
 
         // Determine if we can use server AI services
-        this.canUseServerAI = !!localConfig.apiBaseUrl;
+        this.canUseServerAI = !!api.baseUrl;
         if (typeof window !== 'undefined') {
             const hostname = window.location.hostname;
             this.canUseServerAI = this.canUseServerAI ||
@@ -83,7 +83,7 @@ class IntelligentAssistant {
                 hostname === 'localhost' ||
                 hostname === '127.0.0.1' ||
                 hostname.endsWith('mangeshraut.pro') ||
-                (hostname.includes('github.io') && localConfig.apiBaseUrl);
+                (hostname.includes('github.io') && api.baseUrl);
         }
     }
 
@@ -105,10 +105,10 @@ class IntelligentAssistant {
             console.log('🤖 GitHub Pages detected - checking API availability...');
             console.log('Current hostname:', hostname);
             console.log('Protocol:', window.location.protocol);
-            console.log('API Base URL:', localConfig.apiBaseUrl);
+            console.log('API Base URL:', api.baseUrl);
 
-            // GitHub Pages can still use Vercel API if configured
-            if (localConfig.apiBaseUrl && localConfig.apiBaseUrl.includes('vercel.app')) {
+            // Check if using Vercel Check
+            if (api.baseUrl && api.baseUrl.includes('vercel.app')) {
                 console.log('✅ Vercel API configured - hybrid mode enabled');
                 this.canUseServerAI = true;
                 this.isReadyState = true;
@@ -286,15 +286,15 @@ class IntelligentAssistant {
         const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
         const canCallServerAPI = this.canUseServerAI ||
             (hostname.includes('github.io') &&
-                localConfig.apiBaseUrl &&
-                localConfig.apiBaseUrl.includes('vercel.app'));
+                api.baseUrl &&
+                api.baseUrl.includes('vercel.app'));
 
         if (!canCallServerAPI) {
             console.log('🔄 Skipping server API call - GitHub Pages running in hybrid mode');
             return null;
         }
 
-        console.log('📡 API Base URL:', localConfig.apiBaseUrl);
+        console.log('📡 API Base URL:', api.baseUrl);
 
         try {
             const apiUrl = buildApiUrl('/api/chat');

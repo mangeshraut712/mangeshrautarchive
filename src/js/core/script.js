@@ -82,19 +82,17 @@ class ChatUI {
 
         this._bindEvents();
         this._initializeFeatures();
-        this._showWelcomeMessage();
+        // this._showWelcomeMessage(); // Disabled to prevent duplicate messages
     }
 
     _initializeElements() {
+        // Updated to ignore 'chatbot-*' IDs which are now handled by chatbot.js
         const form = document.getElementById('chat-form') ||
-            document.getElementById('portfolio-chat-form') ||
-            document.getElementById('chatbot-form');
+            document.getElementById('portfolio-chat-form');
         const input = document.getElementById('message-input') ||
-            document.getElementById('portfolio-chat-input') ||
-            document.getElementById('chatbot-input');
+            document.getElementById('portfolio-chat-input');
         const messages = document.getElementById('chat-messages') ||
-            document.getElementById('portfolio-chat-messages') ||
-            document.getElementById('chatbot-messages');
+            document.getElementById('portfolio-chat-messages');
 
         return {
             form,
@@ -103,14 +101,10 @@ class ChatUI {
             clearButton: document.getElementById('clear-chat'),
             suggestions: null,
             status: null,
-            widget: document.getElementById('portfolio-chat-widget') ||
-                document.getElementById('chatbot-widget'),
-            toggleButton: document.getElementById('portfolio-chat-toggle') ||
-                document.getElementById('chatbot-toggle'),
-            closeButton: document.getElementById('portfolio-chat-close') ||
-                document.querySelector('.chatbot-close-btn'),
-            voiceButton: document.getElementById('portfolio-voice-input') ||
-                document.getElementById('chatbot-voice-btn'),
+            widget: document.getElementById('portfolio-chat-widget'),
+            toggleButton: document.getElementById('portfolio-chat-toggle'),
+            closeButton: document.getElementById('portfolio-chat-close'),
+            voiceButton: document.getElementById('portfolio-voice-input'),
             voiceMenu: document.getElementById('voice-control-menu'),
             voiceMenuClose: document.getElementById('voice-mode-close'),
             voiceOutputToggle: document.getElementById('voice-output-toggle'),
@@ -249,22 +243,11 @@ class ChatUI {
     }
 
     async _handleUserInput() {
-        const text = this.elements.input?.value.trim();
-
-        let context = {};
-        if (window.enhancedChatbot && typeof window.enhancedChatbot.getPageContext === 'function') {
-            try {
-                context = window.enhancedChatbot.getPageContext();
-                console.log('🧠 Context attached to message:', context);
-            } catch (e) {
-                console.warn('Failed to get context:', e);
-            }
-        }
-
-        await this.sendMessage(text, context);
+        // Legacy handler disabled
     }
 
     async sendMessage(text, context = {}) {
+        /* Legacy logic removed
         if (this.isProcessing) return;
 
         if (!chatAssistant.isReady()) {
@@ -531,6 +514,7 @@ class ChatUI {
         } finally {
             this.isProcessing = false;
         }
+        */
     }
 
     _handleTyping(value) {
@@ -1218,13 +1202,7 @@ class ChatUI {
     }
 
     _showWelcomeMessage() {
-        const welcomeMessage = this._createMessageElement(
-            chatConfig.defaultGreeting,
-            'assistant',
-            Date.now(),
-            { welcome: true }
-        );
-        this._addMessageElement(welcomeMessage);
+        // Legacy disabled
     }
 
     _addMessageElement(element) {
@@ -1253,55 +1231,16 @@ class ChatUI {
     }
 
     _toggleWidget() {
-        if (!this.elements.widget) return;
-        if (this._isWidgetOpen()) {
-            this._closeWidget();
-        } else {
-            this._openWidget();
-        }
+        // Legacy disabled
     }
 
     _openWidget() {
-        if (!this.elements.widget) return;
-        this.elements.widget.classList.remove('hidden');
-        this.elements.widget.classList.add('visible');
-        this.elements.widget.setAttribute('aria-hidden', 'false');
-        if (this.elements.toggleButton) {
-            this.elements.toggleButton.setAttribute('aria-expanded', 'true');
-            this.elements.toggleButton.classList.add('active');
-        }
-        if (!chatAssistant.isReady()) {
-            chatAssistant.initialize().catch((error) => {
-                console.warn('Assistant initialization failed while opening widget:', error);
-            });
-        }
-        setTimeout(() => this.elements.input?.focus(), 150);
+        // Legacy disabled
     }
 
     _closeWidget() {
-        if (!this.elements.widget) return;
-        this.hideVoiceMenu();
-
-        // First remove focus from any elements inside the widget
-        if (document.activeElement && this.elements.widget.contains(document.activeElement)) {
-            document.activeElement.blur();
-        }
-
-        // Then hide the widget
-        this.elements.widget.classList.add('hidden');
-        this.elements.widget.setAttribute('aria-hidden', 'true');
-
-        if (this.elements.toggleButton) {
-            this.elements.toggleButton.setAttribute('aria-expanded', 'false');
-            this.elements.toggleButton.classList.remove('active');
-            // Use setTimeout to avoid focus issues
-            setTimeout(() => {
-                if (this.elements.toggleButton) {
-                    this.elements.toggleButton.focus();
-                }
-            }, 100);
-        }
     }
+
 
     _isWidgetOpen() {
         return !!(this.elements.widget && !this.elements.widget.classList.contains('hidden'));

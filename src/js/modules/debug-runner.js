@@ -292,6 +292,9 @@ class DebugRunner {
 
     setupControls() {
         const handleInput = (e) => {
+            // Ignore if typing in an input or textarea
+            if (['INPUT', 'TEXTAREA', 'SELECT', 'CONTENTEDITABLE'].includes(e.target.tagName)) return;
+
             if (e.type === 'keydown') {
                 if ((e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW')) {
                     e.preventDefault();

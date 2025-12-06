@@ -12,10 +12,8 @@
     justify-content: center;
     position: relative;
     background: var(--bg-primary);
-    padding-top: 60px;
 
     /* Account for navbar */
-    padding-bottom: 40px;
 
     /* Fixes from 2025 update */
     background-image: none;
@@ -41,9 +39,11 @@ html:not(.dark) .home-hero {
 .profile-image-wrapper {
     position: relative;
     width: 160px;
+
     /* Reduced from 220px to fit content better */
     height: 160px;
     margin-bottom: 24px !important;
+
     /* Tighter spacing */
 }
 
@@ -89,12 +89,14 @@ html:not(.dark) .home-hero {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #0071e3 !important;
+
     /* Apple Blue Accent in Light Mode */
 }
 
 /* Hero Title */
 .hero-title {
     font-size: 1.75rem;
+
     /* Much more compact - approximately 28px */
     font-weight: 600;
     margin-bottom: 1.25rem;
@@ -124,12 +126,14 @@ html:not(.dark) .home-hero {
 /* DARK MODE OVERRIDES */
 html.dark .hero-name {
     color: #2997ff !important;
+
     /* Lighter Blue for Dark Mode */
 }
 
 html.dark .hero-title {
-    color: #ffffff !important;
+    color: #fff !important;
     text-shadow: none !important;
+
     /* Clean White */
 }
 
@@ -141,6 +145,7 @@ html.dark .hero-description {
 @media (width <=768px) {
     .hero-title {
         font-size: 1.5rem !important;
+
         /* Compact on mobile too */
     }
 
@@ -416,6 +421,7 @@ html:not(.dark) .hero-stat-label {
 @media (width <=768px) {
     .home-hero {
         padding-top: 160px;
+
         /* Increased for mobile notification clearance */
 
         /* Increased further to clear navbar */
@@ -493,7 +499,6 @@ html:not(.dark) .hero-stat-label {
 
 /* Animation Enhancements */
 @keyframes float {
-
     0%,
     100% {
         transform: translateY(0);
