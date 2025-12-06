@@ -32,7 +32,7 @@ export const chat = {
     welcomeDelay: 500,
     suggestionsLimit: 6,
     historyRetentionHours: 72, // 3 days
-    model: 'x-ai/grok-2-1212', // Default OpenRouter model
+    model: 'x-ai/grok-4.1-fast', // Default OpenRouter model
     streaming: true,
     temperature: 0.7,
     maxTokens: 2000
