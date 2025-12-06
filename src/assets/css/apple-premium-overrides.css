@@ -329,7 +329,7 @@ html.dark .menu-item:hover {
 }
 
 /* Mobile Adjustments */
-@media (width <= 640px) {
+@media (width <=640px) {
     .menu-grid {
         grid-template-columns: 1fr;
 
@@ -389,7 +389,7 @@ html.dark .menu-item:hover {
 }
 
 /* 6. Desktop Navbar Optimization (Fit all links) */
-@media (width >= 1151px) {
+@media (width >=1151px) {
     .nav-links {
         gap: 18px !important;
 
@@ -897,6 +897,7 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
 }
 
 @keyframes gentle-pulse {
+
     0%,
     100% {
         box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
@@ -1505,4 +1506,62 @@ html.dark textarea:focus {
     background: rgb(0 0 0 / 60%) !important;
     border-color: #2997ff !important;
     box-shadow: 0 0 0 4px rgb(41 151 255 / 15%) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   12. SPECIAL EVENT: MANGESH'S BIRTHDAY (Dec 7)
+   Premium Gold Styling for Calendar
+   ═══════════════════════════════════════════════════════════ */
+
+/* Special Day Cell */
+.day-cell.mangesh-birthday {
+    background: linear-gradient(135deg, #FFD700, #FDB931) !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4) !important;
+    border-radius: 50% !important;
+    /* Circle like iOS selected state */
+    position: relative;
+    z-index: 10;
+    transform: scale(1.1);
+    border: 2px solid #fff !important;
+}
+
+html.dark .day-cell.mangesh-birthday {
+    border: 2px solid #000 !important;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6) !important;
+}
+
+/* Apple Logo Dot */
+.birthday-dot {
+    position: absolute;
+    bottom: 2px;
+    font-size: 10px;
+    line-height: 1;
+    color: #000;
+}
+
+/* Gold Accent for Reminder Card */
+.reminder-card.accent-gold {
+    border-left: 4px solid #FFD700 !important;
+    background: linear-gradient(to right, rgba(255, 215, 0, 0.05), transparent) !important;
+}
+
+.reminder-card.accent-gold .card-tag {
+    background: rgba(255, 215, 0, 0.2) !important;
+    color: #B8860B !important;
+}
+
+.reminder-card.accent-gold .card-time i {
+    color: #FFD700 !important;
+}
+
+.reminder-card.accent-gold:hover {
+    border-color: #FDB931 !important;
+    background: linear-gradient(to right, rgba(255, 215, 0, 0.15), transparent) !important;
+}
+
+html.dark .reminder-card.accent-gold .card-tag {
+    color: #FFD700 !important;
+    background: rgba(255, 215, 0, 0.15) !important;
 }

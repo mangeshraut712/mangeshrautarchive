@@ -6,6 +6,7 @@ export class CalendarWidget {
 
     // "Smart" Reminders Data
     this.reminders = [
+      { id: 999, text: "Mangesh's Birthday 🎂", time: "Dec 7", tag: "Special", color: "gold", completed: false },
       { id: 1, text: "Review Portfolio Design", time: "10:00 AM", tag: "Design", color: "blue", completed: false },
       { id: 2, text: "Email Mangesh", time: "2:00 PM", tag: "Urgent", color: "red", completed: false },
       { id: 3, text: "AI Model Training", time: "4:30 PM", tag: "Dev", color: "purple", completed: false },
@@ -63,12 +64,19 @@ export class CalendarWidget {
     // Days
     for (let i = 1; i <= daysInMonth; i++) {
       const isToday = (i === today && month === new Date().getMonth() && year === new Date().getFullYear());
+      const isBirthday = (month === 11 && i === 7); // Dec 7
       const hasEvent = [5, 12, 18, 25].includes(i); // Dummy events
 
+      let classes = 'day-cell';
+      if (isToday) classes += ' today';
+      if (isBirthday) classes += ' mangesh-birthday';
+      else if (hasEvent) classes += ' has-event';
+
       html += `
-        <span class="day-cell ${isToday ? 'today' : ''} ${hasEvent ? 'has-event' : ''}" data-day="${i}">
+        <span class="${classes}" data-day="${i}" ${isBirthday ? 'title="Mangesh\'s Birthday 🎂"' : ''}>
           ${i}
-          ${hasEvent ? '<div class="event-dot"></div>' : ''}
+          ${hasEvent && !isBirthday ? '<div class="event-dot"></div>' : ''}
+          ${isBirthday ? '<div class="birthday-dot"></div>' : ''}
         </span>`;
     }
 
