@@ -1,6 +1,6 @@
 /**
  * Apple Intelligence Chatbot 2025
- * Clean, modern implementation with no legacy code
+ * Integrated with FastAPI backend, streaming responses, and full metadata
  */
 
 class AppleIntelligenceChatbot {
@@ -8,14 +8,45 @@ class AppleIntelligenceChatbot {
         this.elements = this.initializeElements();
         this.isOpen = false;
         this.isProcessing = false;
+        this.chatAPI = null;
 
         if (!this.elements.widget || !this.elements.toggle) {
             console.error('Chatbot elements not found');
             return;
         }
 
+        // Wait for chat API to be available
+        this.waitForChatAPI();
         this.bindEvents();
         this.addWelcomeMessage();
+    }
+
+    async waitForChatAPI() {
+        // Wait for the intelligentAssistant to be available from script.js
+        let attempts = 0;
+        const maxAttempts = 50;
+
+        const checkAPI = () => {
+            if (window.intelligentAssistant) {
+                this.chatAPI = window.intelligentAssistant;
+                console.log('✅ Chat API connected');
+                return true;
+            }
+            return false;
+        };
+
+        if (checkAPI()) return;
+
+        // Poll for API availability
+        const interval = setInterval(() => {
+            attempts++;
+            if (checkAPI() || attempts >= maxAttempts) {
+                clearInterval(interval);
+                if (!this.chatAPI) {
+                    console.warn('⚠️ Chat API not available, using fallback');
+                }
+            }
+        }, 100);
     }
 
     initializeElements() {
@@ -32,24 +63,18 @@ class AppleIntelligenceChatbot {
     }
 
     bindEvents() {
-        // Toggle button
         this.elements.toggle?.addEventListener('click', () => this.toggleWidget());
-
-        // Close button
         this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
 
-        // Form submission
         this.elements.form?.addEventListener('submit', (e) => {
             e.preventDefault();
             this.handleSendMessage();
         });
 
-        // Auto-resize textarea
         this.elements.input?.addEventListener('input', (e) => {
             this.autoResizeTextarea(e.target);
         });
 
-        // Enter key to send (Shift+Enter for new line)
         this.elements.input?.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -57,12 +82,10 @@ class AppleIntelligenceChatbot {
             }
         });
 
-        // Voice button (placeholder for future implementation)
         this.elements.voiceBtn?.addEventListener('click', () => {
             this.handleVoiceInput();
         });
 
-        // Close on outside click
         document.addEventListener('click', (e) => {
             if (this.isOpen &&
                 !this.elements.widget.contains(e.target) &&
@@ -71,7 +94,6 @@ class AppleIntelligenceChatbot {
             }
         });
 
-        // Close on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.closeWidget();
@@ -92,7 +114,6 @@ class AppleIntelligenceChatbot {
         this.elements.widget?.classList.add('visible');
         this.isOpen = true;
 
-        // Focus input
         setTimeout(() => {
             this.elements.input?.focus();
         }, 300);
@@ -105,12 +126,12 @@ class AppleIntelligenceChatbot {
     }
 
     addWelcomeMessage() {
-        // Welcome message is already in HTML, but we can add more if needed
         const existingMessages = this.elements.messages?.querySelectorAll('.message');
         if (!existingMessages || existingMessages.length === 0) {
             this.addMessage(
                 "Hello! I'm Mangesh's advanced AI assistant. How can I help you navigate his portfolio today?",
-                'assistant'
+                'assistant',
+                { skipMetadata: true }
             );
         }
     }
@@ -134,40 +155,252 @@ class AppleIntelligenceChatbot {
         // Show typing indicator
         this.showTypingIndicator();
 
+        const startTime = Date.now();
+
         try {
-            // Get AI response
-            const response = await this.getAIResponse(text);
-
-            // Remove typing indicator
-            this.hideTypingIndicator();
-
-            // Add AI response
-            this.addMessage(response, 'assistant');
+            if (this.chatAPI && typeof this.chatAPI.ask === 'function') {
+                // Use the real API with streaming
+                await this.streamAIResponse(text, startTime);
+            } else {
+                // Fallback response
+                await this.simulateTyping(this.getFallbackResponse(text), startTime);
+            }
         } catch (error) {
             console.error('Error getting AI response:', error);
             this.hideTypingIndicator();
             this.addMessage(
                 "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
-                'assistant'
+                'assistant',
+                { error: true }
             );
         } finally {
             this.isProcessing = false;
         }
     }
 
-    async getAIResponse(userMessage) {
-        // Try to use the existing chat API if available
-        if (window.intelligentAssistant && typeof window.intelligentAssistant.ask === 'function') {
-            try {
-                const response = await window.intelligentAssistant.ask(userMessage);
-                return response.content?.text || response.content || response;
-            } catch (error) {
-                console.error('AI API error:', error);
-            }
+    async streamAIResponse(userMessage, startTime) {
+        this.hideTypingIndicator();
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message assistant-message';
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = '';
+
+        messageDiv.appendChild(contentDiv);
+        this.elements.messages?.appendChild(messageDiv);
+        this.scrollToBottom();
+
+        let fullText = '';
+        let metadata = {};
+
+        try {
+            const response = await this.chatAPI.ask(userMessage, {
+                onChunk: (chunk) => {
+                    fullText += chunk;
+                    contentDiv.textContent = fullText + '▊';
+                    this.scrollToBottom();
+                }
+            });
+
+            // Remove typing cursor
+            contentDiv.textContent = fullText;
+
+            // Extract metadata
+            const runtime = Date.now() - startTime;
+            metadata = {
+                source: response.metadata?.source || response.source || 'AI',
+                model: response.metadata?.model || response.model || 'Unknown',
+                category: response.metadata?.category || 'General',
+                runtime: runtime,
+                tokens: response.metadata?.tokens || Math.ceil(fullText.length / 4),
+                tokensPerSecond: response.metadata?.tokensPerSecond || (Math.ceil(fullText.length / 4) / (runtime / 1000)),
+                cost: response.metadata?.cost,
+                confidence: response.metadata?.confidence,
+                timestamp: new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                })
+            };
+
+            // Add metadata and action buttons
+            this.addMetadataAndActions(messageDiv, contentDiv, metadata);
+
+        } catch (error) {
+            console.error('Streaming error:', error);
+            contentDiv.textContent = fullText || "I encountered an error. Please try again.";
+        }
+    }
+
+    async simulateTyping(text, startTime) {
+        this.hideTypingIndicator();
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message assistant-message';
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+
+        messageDiv.appendChild(contentDiv);
+        this.elements.messages?.appendChild(messageDiv);
+
+        // Simulate streaming
+        for (let i = 0; i < text.length; i++) {
+            contentDiv.textContent = text.substring(0, i + 1) + '▊';
+            this.scrollToBottom();
+            await new Promise(r => setTimeout(r, 20));
         }
 
-        // Fallback to simple responses
-        return this.getFallbackResponse(userMessage);
+        contentDiv.textContent = text;
+
+        const metadata = {
+            source: 'Local',
+            model: 'Fallback',
+            category: 'Portfolio',
+            runtime: Date.now() - startTime,
+            tokens: Math.ceil(text.length / 4),
+            timestamp: new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            })
+        };
+
+        this.addMetadataAndActions(messageDiv, contentDiv, metadata);
+    }
+
+    addMetadataAndActions(messageDiv, contentDiv, metadata) {
+        // Create metadata container
+        const metaContainer = document.createElement('div');
+        metaContainer.className = 'message-metadata';
+
+        // Add metadata chips
+        const chips = [];
+
+        if (metadata.model) {
+            chips.push(this.createChip('🤖', metadata.model, 'model'));
+        }
+
+        if (metadata.source) {
+            chips.push(this.createChip('🔌', metadata.source, 'source'));
+        }
+
+        if (metadata.category) {
+            chips.push(this.createChip('📁', metadata.category, 'category'));
+        }
+
+        if (metadata.runtime) {
+            const timeStr = metadata.runtime < 1000
+                ? `${metadata.runtime}ms`
+                : `${(metadata.runtime / 1000).toFixed(2)}s`;
+            chips.push(this.createChip('⏱️', timeStr, 'runtime'));
+        }
+
+        if (metadata.tokens) {
+            chips.push(this.createChip('🎯', `${metadata.tokens} tokens`, 'tokens'));
+        }
+
+        if (metadata.tokensPerSecond) {
+            chips.push(this.createChip('⚡', `${Math.round(metadata.tokensPerSecond)} tok/s`, 'speed'));
+        }
+
+        if (metadata.cost) {
+            const costStr = typeof metadata.cost === 'number'
+                ? `$${metadata.cost.toFixed(4)}`
+                : metadata.cost;
+            chips.push(this.createChip('💰', costStr, 'cost'));
+        }
+
+        if (metadata.confidence) {
+            const conf = Math.round(metadata.confidence * 100);
+            chips.push(this.createChip('✓', `${conf}%`, 'confidence'));
+        }
+
+        if (metadata.timestamp) {
+            chips.push(this.createChip('🕐', metadata.timestamp, 'timestamp'));
+        }
+
+        chips.forEach(chip => metaContainer.appendChild(chip));
+
+        // Add action buttons
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'message-actions';
+
+        // Copy button
+        const copyBtn = this.createActionButton('fa-copy', 'Copy', () => {
+            this.copyText(contentDiv.textContent, copyBtn);
+        });
+        actionsDiv.appendChild(copyBtn);
+
+        // Speak button
+        const speakBtn = this.createActionButton('fa-volume-up', 'Speak', () => {
+            this.speakText(contentDiv.textContent, speakBtn);
+        });
+        actionsDiv.appendChild(speakBtn);
+
+        metaContainer.appendChild(actionsDiv);
+        messageDiv.appendChild(metaContainer);
+    }
+
+    createChip(icon, text, type) {
+        const chip = document.createElement('span');
+        chip.className = `meta-chip meta-chip-${type}`;
+        chip.innerHTML = `${icon} ${text}`;
+        return chip;
+    }
+
+    createActionButton(iconClass, title, onClick) {
+        const btn = document.createElement('button');
+        btn.className = 'msg-action-btn';
+        btn.title = title;
+        btn.innerHTML = `<i class="fas ${iconClass}"></i>`;
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            onClick();
+        };
+        return btn;
+    }
+
+    copyText(text, button) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            button.classList.add('success');
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('success');
+            }, 2000);
+        }).catch(err => {
+            console.error('Copy failed:', err);
+        });
+    }
+
+    speakText(text, button) {
+        if ('speechSynthesis' in window) {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                button.innerHTML = '<i class="fas fa-volume-up"></i>';
+                button.classList.remove('speaking');
+            } else {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+
+                button.innerHTML = '<i class="fas fa-stop"></i>';
+                button.classList.add('speaking');
+
+                utterance.onend = () => {
+                    button.innerHTML = '<i class="fas fa-volume-up"></i>';
+                    button.classList.remove('speaking');
+                };
+
+                window.speechSynthesis.speak(utterance);
+            }
+        }
     }
 
     getFallbackResponse(message) {
@@ -196,7 +429,7 @@ class AppleIntelligenceChatbot {
         return "I can help you learn more about Mangesh's skills, experience, projects, and education. Feel free to ask me anything about his portfolio!";
     }
 
-    addMessage(text, role) {
+    addMessage(text, role, options = {}) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${role}-message`;
 
@@ -207,7 +440,6 @@ class AppleIntelligenceChatbot {
         messageDiv.appendChild(contentDiv);
         this.elements.messages?.appendChild(messageDiv);
 
-        // Scroll to bottom
         this.scrollToBottom();
     }
 
@@ -239,13 +471,12 @@ class AppleIntelligenceChatbot {
         if (!textarea) return;
 
         textarea.style.height = 'auto';
-        const newHeight = Math.min(textarea.scrollHeight, 120); // Max 120px
+        const newHeight = Math.min(textarea.scrollHeight, 100);
         textarea.style.height = newHeight + 'px';
     }
 
     handleVoiceInput() {
-        // Placeholder for voice input functionality
-        this.addMessage("Voice input feature coming soon!", 'assistant');
+        this.addMessage("Voice input feature coming soon!", 'assistant', { skipMetadata: true });
     }
 }
 
