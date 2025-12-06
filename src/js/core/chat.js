@@ -8,22 +8,17 @@ if (typeof window !== 'undefined') {
         API_BASE = window.APP_CONFIG.apiBaseUrl;
     } else {
         const hostname = window.location.hostname || '';
-        // Use LOCAL API if running on localhost with local server
-        if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            API_BASE = ''; // This will use relative paths to local server
+        const port = window.location.port || '';
+
+        // If running on localhost:8000, assume local backend is running
+        if ((hostname === 'localhost' || hostname === '127.0.0.1') && port === '8000') {
+            API_BASE = ''; // Use relative paths for local backend
+            console.log('🏠 Local backend detected on port 8000');
         }
-        // Use DEPLOYED API for Vercel production
-        else if (hostname.endsWith('.vercel.app')) {
-            API_BASE = ''; // Use relative paths on Vercel
-        }
-        // Use custom API base if configured
-        else if (api.baseUrl) {
-            API_BASE = api.baseUrl;
-        }
-        // Custom Domain or GitHub Pages - Fallback to Vercel Backend
+        // For ALL other cases (Vercel, GitHub Pages, localhost:3000, etc.), use Vercel backend
         else {
-            console.log('🌍 Detected production environment, binding to Vercel backend...');
             API_BASE = 'https://mangeshrautarchive.vercel.app';
+            console.log('🌐 Using Vercel backend:', API_BASE);
         }
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {

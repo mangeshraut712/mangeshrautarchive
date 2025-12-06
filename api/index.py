@@ -31,15 +31,22 @@ app = FastAPI(
 # Add GZip compression for better performance
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# CORS Configuration
+# CORS Configuration - Allow all deployment environments
 origins = [
+    # Production domains
     "https://mangeshraut712.github.io",
     "https://mangeshraut.pro",
     "https://mangeshrautarchive.vercel.app",
+    
+    # Development
     "http://localhost:3000",
     "http://localhost:8000",
+    "http://localhost:5173",  # Vite default
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+    
+    # Allow all for development (remove in strict production)
     "*",
 ]
 
@@ -734,14 +741,23 @@ async def health_alias():
 
 @app.get("/api/test")
 async def test_endpoint():
-    """Test endpoint to verify API configuration"""
+    """Test endpoint to verify API configuration (API key is masked for security)"""
+    # Mask API key - only show first 4 and last 4 characters
+    masked_key = "Not configured"
+    if OPENROUTER_API_KEY:
+        if len(OPENROUTER_API_KEY) > 8:
+            masked_key = f"{OPENROUTER_API_KEY[:4]}...{OPENROUTER_API_KEY[-4:]}"
+        else:
+            masked_key = "***"
+    
     return {
         "status": "ok",
         "message": "Backend is running!",
         "api_key_configured": bool(OPENROUTER_API_KEY),
-        "api_key_length": len(OPENROUTER_API_KEY) if OPENROUTER_API_KEY else 0,
+        "api_key_masked": masked_key,
         "default_model": DEFAULT_MODEL,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "environment": os.getenv("VERCEL_ENV", "local")
     }
 
 
