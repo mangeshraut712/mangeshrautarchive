@@ -733,9 +733,10 @@ html.dark .chatbot-send-btn:hover {
         transform-origin: center !important;
     }
 
-    /* Toggle button */
+    /* Toggle button - Higher to avoid go-to-top overlap */
     #chatbot-toggle {
-        bottom: 28px !important;
+        bottom: 100px !important;
+        /* Above go-to-top button */
         right: 28px !important;
         width: 56px !important;
         height: 56px !important;
