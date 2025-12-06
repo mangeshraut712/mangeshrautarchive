@@ -354,18 +354,35 @@ class IntelligentAssistant {
                         if (!line.trim()) continue;
                         try {
                             const data = JSON.parse(line);
-                            if (data.chunk) {
+
+                            // Handle chunk data (backend sends {type: "chunk", content: "..."})
+                            if (data.type === 'chunk' && data.content) {
+                                fullText += data.content;
+                                options.onChunk(data.content);
+                            }
+                            // Legacy format support
+                            else if (data.chunk) {
                                 fullText += data.chunk;
                                 options.onChunk(data.chunk);
-                            } else if (data.error) {
+                            }
+                            // Handle errors
+                            else if (data.error || data.type === 'error') {
                                 console.error('Stream error:', data.error);
                                 const errorMsg = `\n\n⚠️ **System Error**: ${data.error}`;
                                 fullText += errorMsg;
                                 if (typeof options.onChunk === 'function') {
                                     options.onChunk(errorMsg);
                                 }
-                            } else {
-                                // Metadata or final object
+                            }
+                            // Handle completion
+                            else if (data.type === 'done') {
+                                Object.assign(metadata, data.metadata || {});
+                                if (data.full_content && !fullText) {
+                                    fullText = data.full_content;
+                                }
+                            }
+                            // Other metadata
+                            else {
                                 Object.assign(metadata, data);
                             }
                         } catch (e) {
