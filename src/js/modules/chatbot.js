@@ -71,8 +71,16 @@ class AppleIntelligenceChatbot {
             this.handleSendMessage();
         });
 
-        this.elements.input?.addEventListener('input', (e) => {
-            this.autoResizeTextarea(e.target);
+        // Optimized input handling with requestAnimationFrame
+        let resizeScheduled = false;
+        this.elements.input?.addEventListener('input', () => {
+            if (!resizeScheduled) {
+                resizeScheduled = true;
+                requestAnimationFrame(() => {
+                    this.autoResizeTextarea(this.elements.input);
+                    resizeScheduled = false;
+                });
+            }
         });
 
         this.elements.input?.addEventListener('keydown', (e) => {
@@ -470,9 +478,17 @@ class AppleIntelligenceChatbot {
     autoResizeTextarea(textarea) {
         if (!textarea) return;
 
+        // Reset height to auto to get accurate scrollHeight
         textarea.style.height = 'auto';
-        const newHeight = Math.min(textarea.scrollHeight, 100);
-        textarea.style.height = newHeight + 'px';
+
+        // Calculate new height (max 100px on desktop, 100px on mobile)
+        const maxHeight = window.innerWidth <= 768 ? 100 : 100;
+        const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+
+        // Only update if height changed (prevents unnecessary reflows)
+        if (textarea.style.height !== `${newHeight}px`) {
+            textarea.style.height = `${newHeight}px`;
+        }
     }
 
     handleVoiceInput() {
