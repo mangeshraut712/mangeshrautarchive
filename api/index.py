@@ -765,7 +765,3 @@ if os.getenv("VERCEL_ENV") != "production":
         app.mount("/", StaticFiles(directory="src", html=True), name="static")
     except Exception as e:
         print(f"⚠️ Static files skipped: {e}")
-
-# Vercel Serverless Handler
-# This is required for Vercel's Python runtime to work with FastAPI
-handler = app
