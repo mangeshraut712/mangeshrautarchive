@@ -21,6 +21,10 @@
     background-image: none;
     background-attachment: scroll;
 
+    /* Improved spacing for fixed header + notification */
+    padding-top: 100px;
+    padding-bottom: 60px;
+
     /* Performance */
     contain: layout;
 }
@@ -81,29 +85,26 @@ html:not(.dark) .home-hero {
     margin-bottom: 0.5rem;
     display: block;
     text-align: center;
+    letter-spacing: -0.01em;
+    color: #1d1d1f;
+    /* Force Black in Default/Light */
 }
 
 /* Hero Title */
 .hero-title {
     font-size: 3.5rem;
-
-    /* Balanced size */
     font-weight: 800;
     margin-bottom: 1rem;
-    color: var(--text-primary);
-    text-shadow: 0 2px 6px rgb(0 0 0 / 12%);
     display: block;
     text-align: center;
-    line-height: 1.1;
-}
+    line-height: 1.05;
+    letter-spacing: -0.025em;
 
-html.dark .hero-title {
-    color: #fff;
-    text-shadow: 0 4px 16px rgb(0 0 0 / 50%);
-}
-
-.hero-name {
-    color: var(--text-primary);
+    /* Default / Light Mode */
+    color: #1d1d1f;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Minimal shadow */
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 /* Hero Description */
@@ -111,16 +112,25 @@ html.dark .hero-title {
     font-size: 1.25rem;
     max-width: 700px;
     margin: 0 auto 2rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
+    line-height: 1.5;
+    font-weight: 450;
+    color: #424245;
+    /* Dark grey for better readability */
+}
+
+/* DARK MODE OVERRIDES */
+html.dark .hero-name {
+    color: #f5f5f7;
+}
+
+html.dark .hero-title {
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
+    /* Glowing effect */
 }
 
 html.dark .hero-description {
-    color: #d1d1d6;
-}
-
-html:not(.dark) .hero-description {
-    color: #6e6e73;
+    color: #a1a1a6;
 }
 
 /* Hero Social Links */
@@ -384,7 +394,8 @@ html:not(.dark) .hero-stat-label {
 /* Responsive Design */
 @media (width <=768px) {
     .home-hero {
-        padding-top: 140px;
+        padding-top: 160px;
+        /* Increased for mobile notification clearance */
 
         /* Increased further to clear navbar */
         padding-bottom: 140px;
@@ -461,6 +472,7 @@ html:not(.dark) .hero-stat-label {
 
 /* Animation Enhancements */
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0);
