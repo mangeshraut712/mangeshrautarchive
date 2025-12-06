@@ -507,9 +507,10 @@ html.dark .chatbot-voice-btn {
     #chatbot-toggle {
         bottom: 20px;
         right: 20px;
-        width: 56px;
-        height: 56px;
-        font-size: 24px;
+        width: 60px;
+        /* Larger for better touch target */
+        height: 60px;
+        font-size: 26px;
     }
 
     .chatbot-header {
@@ -526,14 +527,41 @@ html.dark .chatbot-voice-btn {
     }
 
     .input-wrapper {
-        gap: 8px;
+        gap: 6px;
+        padding: 8px;
+        /* Slightly larger padding */
     }
 
+    /* Larger touch targets for mobile */
     .chatbot-voice-btn,
     .chatbot-send-btn {
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        /* Increased from 40px */
+        height: 48px;
+        font-size: 20px;
+        /* Larger icons */
+    }
+
+    /* Better mobile input */
+    #chatbot-input {
         font-size: 16px;
+        /* Prevent iOS zoom */
+        padding: 14px 16px;
+        /* More padding for easier typing */
+        min-height: 48px;
+        /* Comfortable touch target */
+    }
+
+    /* Messages area padding */
+    #chatbot-messages {
+        padding: 16px;
+    }
+
+    /* Message bubbles */
+    .user-message,
+    .assistant-message {
+        max-width: 85%;
+        /* Slightly wider on mobile */
     }
 }
 
@@ -543,5 +571,10 @@ html.dark .chatbot-voice-btn {
         width: 360px;
         height: 500px;
         bottom: 180px;
+    }
+
+    #chatbot-toggle {
+        width: 60px;
+        height: 60px;
     }
 }
