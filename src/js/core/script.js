@@ -5,6 +5,7 @@ import { ModernInputHandler } from './modern-input.js';
 import ExternalApiKeys from '../modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
 import initContactForm from '../modules/contact.js';
+import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
 
 
@@ -1656,6 +1657,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expose for external modules (like enhanced-chatbot.js)
     window.chatUI = chatUI;
     window.chatAssistant = chatAssistant;
+
+    // Initialize Vercel Web Analytics
+    initializeVercelAnalytics();
 
     console.log('✅ ChatUI initialized and ready');
 });
