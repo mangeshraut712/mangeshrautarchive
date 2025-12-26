@@ -201,3 +201,42 @@ html.dark .certification-date {
 html.dark .certification-date i {
     color: #2997ff !important;
 }
+
+/* ============================================
+   CERTIFICATION LOGOS - DARK MODE HANDLING
+   ============================================ */
+
+/* Apple logo - Black logo needs inversion in dark mode */
+html.dark .certification-logo[alt="Apple"] {
+    filter: invert(1);
+}
+
+/* IBM logo - Blue logo, slight brightness boost */
+html.dark .certification-logo[alt="IBM"] {
+    filter: brightness(1.3);
+}
+
+/* HackerRank - Green logo, keep original */
+html.dark .certification-logo[alt="HackerRank"] {
+    filter: brightness(1.1);
+}
+
+/* Google - Colorful logo, keep original */
+html.dark .certification-logo[alt="Google"] {
+    filter: brightness(1.05);
+}
+
+/* Cisco - Blue logo, slight boost */
+html.dark .certification-logo[alt="Cisco"] {
+    filter: brightness(1.2);
+}
+
+/* Microsoft - Colorful logo, keep original */
+html.dark .certification-logo[alt="Microsoft"] {
+    filter: brightness(1.05);
+}
+
+/* Spoken Tutorial - May have dark elements */
+html.dark .certification-logo[alt="Spoken Tutorial"] {
+    filter: brightness(1.3) contrast(1.1);
+}

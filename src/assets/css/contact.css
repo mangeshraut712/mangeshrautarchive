@@ -479,7 +479,7 @@ html.dark .ganesh-img {
 }
 
 /* Desktop Adjustments */
-@media (width >= 1024px) {
+@media (width >=1024px) {
     .ganesh-img {
         width: 150px !important;
 
@@ -507,6 +507,7 @@ html.dark .ganesh-img {
 
 /* Float Animation */
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0);
@@ -557,6 +558,7 @@ html.dark .ganesh-img {
 }
 
 @keyframes pulse-glow {
+
     0%,
     100% {
         box-shadow: 0 4px 12px rgb(255 165 0 / 40%);
@@ -741,133 +743,210 @@ html.dark .contact-info-all .contact-section {
 }
 
 /* ----------------------------------------
-   Dream Companies & Cars - Marquee Animation
+   Dream Companies & Cars - Simple Clean Logos
    ---------------------------------------- */
 
-/* Dream Companies Marquee */
-.dream-companies-marquee {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    position: relative;
-    margin: 0.75rem 0 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.dream-companies-track {
-    display: flex;
-    gap: 2.5rem;
-    align-items: center;
-    width: max-content;
-    animation: marquee-scroll 30s linear infinite;
-}
-
-.dream-companies-track:hover {
-    animation-play-state: paused;
-}
-
-.dream-company-item {
-    flex-shrink: 0;
+/* Dream Section Headers */
+.contact-section h3 {
+    font-size: 1.1rem !important;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    gap: 0.5rem;
 }
 
-.dream-company-item:hover {
-    transform: scale(1.15) translateY(-3px);
-}
-
-/* Company Logo Images */
-.company-logo {
-    height: 36px;
-    width: auto;
-    max-width: 140px;
-    object-fit: contain;
-    transition: all 0.3s ease;
-    filter: grayscale(0) brightness(1);
-    background: transparent;
-}
-
-/* Dark mode - keep logos colorful and visible */
-html.dark .company-logo {
-    filter: brightness(1.2) contrast(1.1) grayscale(0);
-}
-
-.dream-company-item:hover .company-logo {
-    transform: scale(1.05);
-    filter: brightness(1.1) drop-shadow(0 4px 8px rgb(0 122 255 / 30%));
-}
-
-html.dark .dream-company-item:hover .company-logo {
-    filter: brightness(1.3) contrast(1.2) drop-shadow(0 4px 8px rgb(10 132 255 / 40%));
-}
-
-/* Dream Cars Marquee */
+/* Marquee Container */
+.dream-companies-marquee,
 .dream-cars-marquee {
     width: 100%;
     max-width: 100%;
     overflow: hidden;
     position: relative;
-    margin: 0.75rem 0 0;
-    padding: 0;
+    margin: 0.5rem 0 0;
+    padding: 0.75rem 0;
     box-sizing: border-box;
+    /* Elegant fade edges */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
+/* Scrolling Track */
+.dream-companies-track,
 .dream-cars-track {
     display: flex;
-    gap: 2.5rem;
+    gap: 3rem;
     align-items: center;
     width: max-content;
     animation: marquee-scroll 35s linear infinite;
 }
 
+.dream-companies-track:hover,
 .dream-cars-track:hover {
     animation-play-state: paused;
 }
 
+/* Simple Logo Items - No Cards */
+.dream-company-item,
 .dream-car-item {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.dream-company-item:hover,
 .dream-car-item:hover {
-    transform: scale(1.15) translateY(-3px);
+    transform: scale(1.15) translateY(-2px);
 }
 
-/* Car Logo Images */
+/* Logo Images - Clean and Visible */
+.company-logo,
 .car-logo {
-    height: 36px;
+    height: 40px;
     width: auto;
-    max-width: 140px;
+    max-width: 120px;
     object-fit: contain;
     transition: all 0.3s ease;
-    filter: grayscale(0) brightness(1);
-    background: transparent;
+    opacity: 1;
+    border: none !important;
+    outline: none !important;
 }
 
-/* Dark mode - keep logos colorful and visible */
+/* Hover - Enhanced */
+.dream-company-item:hover .company-logo,
+.dream-car-item:hover .car-logo {
+    opacity: 1;
+    filter: drop-shadow(0 4px 12px rgb(0 0 0 / 20%));
+}
+
+/* ============================================
+   LIGHT MODE - Ensure Visibility
+   ============================================ */
+
+/* Apple - Black logo needs slight transparency to be visible but not harsh */
+.dream-company-item[title="Apple"] .company-logo {
+    opacity: 0.9;
+}
+
+/* All other logos keep their brand colors - Google, Microsoft, Netflix, Adobe, Meta, Amazon, Tesla */
+
+/* ============================================
+   DARK MODE - Keep Original Colors Visible
+   ============================================ */
+
+/* Default dark mode - all logos keep original colors with slight brightness boost */
+html.dark .company-logo,
 html.dark .car-logo {
-    filter: brightness(1.2) contrast(1.1) grayscale(0);
+    opacity: 1;
+    filter: brightness(1.15);
 }
 
-/* Special handling for Rolls Royce - invert in dark mode for better visibility */
-html.dark .dream-car-item[title="Rolls-Royce"] .car-logo {
+html.dark .dream-company-item:hover .company-logo,
+html.dark .dream-car-item:hover .car-logo {
+    opacity: 1;
+    filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 25%));
+}
+
+/* Apple logo is pure black - needs inversion in dark mode */
+html.dark .dream-company-item[title="Apple"] .company-logo {
     filter: brightness(0) invert(1);
 }
 
-.dream-car-item:hover .car-logo {
-    transform: scale(1.05);
-    filter: brightness(1.1) drop-shadow(0 4px 8px rgb(0 122 255 / 30%));
+html.dark .dream-company-item[title="Apple"]:hover .company-logo {
+    filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
 }
 
-html.dark .dream-car-item:hover .car-logo {
-    filter: brightness(1.3) contrast(1.2) drop-shadow(0 4px 8px rgb(10 132 255 / 40%));
+/* Amazon - Invert the dark text, keep orange arrow colorful using hue adjustment */
+html.dark .dream-company-item[title="Amazon"] .company-logo {
+    filter: invert(1) hue-rotate(180deg) brightness(1.2);
 }
+
+html.dark .dream-company-item[title="Amazon"]:hover .company-logo {
+    filter: invert(1) hue-rotate(180deg) brightness(1.3) drop-shadow(0 4px 12px rgb(255 153 0 / 50%));
+}
+
+/* Meta - Invert dark text, adjust hue to keep blue visible */
+html.dark .dream-company-item[title="Meta"] .company-logo {
+    filter: invert(1) hue-rotate(180deg) brightness(1.1);
+}
+
+html.dark .dream-company-item[title="Meta"]:hover .company-logo {
+    filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 4px 12px rgb(0 129 251 / 50%));
+}
+
+/* Tesla - Red wordmark, keep visible */
+html.dark .dream-company-item[title="Tesla"] .company-logo {
+    filter: brightness(1.2);
+}
+
+html.dark .dream-company-item[title="Tesla"]:hover .company-logo {
+    filter: brightness(1.3) drop-shadow(0 4px 12px rgb(232 33 39 / 50%));
+}
+
+/* Netflix - Red wordmark, ensure fully visible */
+html.dark .dream-company-item[title="Netflix"] .company-logo {
+    filter: brightness(1.2);
+}
+
+html.dark .dream-company-item[title="Netflix"]:hover .company-logo {
+    filter: brightness(1.3) drop-shadow(0 4px 12px rgb(229 9 20 / 50%));
+}
+
+/* Adobe - Red A logo, keep vibrant */
+html.dark .dream-company-item[title="Adobe"] .company-logo {
+    filter: brightness(1.1);
+}
+
+html.dark .dream-company-item[title="Adobe"]:hover .company-logo {
+    filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 0 0 / 50%));
+}
+
+/* ============================================
+   CAR LOGOS - Theme Handling
+   ============================================ */
+
+/* Jaguar - Green leaper, may have dark elements */
+html.dark .dream-car-item[title="Jaguar"] .car-logo {
+    filter: brightness(1.3);
+}
+
+html.dark .dream-car-item[title="Jaguar"]:hover .car-logo {
+    filter: brightness(1.4) drop-shadow(0 4px 12px rgb(0 255 0 / 30%));
+}
+
+/* Aston Martin - Dark wings logo with silver/gold accents */
+html.dark .dream-car-item[title="Aston Martin"] .car-logo {
+    filter: brightness(1.5) contrast(1.2);
+}
+
+html.dark .dream-car-item[title="Aston Martin"]:hover .car-logo {
+    filter: brightness(1.6) contrast(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
+}
+
+/* Rolls-Royce - Dark logo needs full inversion for visibility in dark mode */
+html.dark .dream-car-item[title="Rolls-Royce"] .car-logo {
+    filter: invert(1) brightness(1);
+}
+
+html.dark .dream-car-item[title="Rolls-Royce"]:hover .car-logo {
+    filter: invert(1) brightness(1.1) drop-shadow(0 4px 12px rgb(255 255 255 / 40%));
+}
+
+/* Other car logos - colorful, keep original */
+/* BMW - blue/white roundel */
+/* Mercedes-Benz - silver three-pointed star */
+/* Audi - silver four rings */
+/* Porsche - colorful crest */
+/* Lexus - silver L */
+/* Land Rover - green */
+/* Bentley - silver wings */
+/* Rolls-Royce - Already generated with good contrast */
 
 /* Marquee Animation */
 @keyframes marquee-scroll {
@@ -880,23 +959,40 @@ html.dark .dream-car-item:hover .car-logo {
     }
 }
 
-/* Mobile Responsive */
+/* Tablet */
+@media (width <=1024px) {
+
+    .dream-companies-track,
+    .dream-cars-track {
+        gap: 2.5rem;
+        animation-duration: 30s;
+    }
+
+    .company-logo,
+    .car-logo {
+        height: 36px;
+        max-width: 100px;
+    }
+}
+
+/* Mobile */
 @media (width <=768px) {
+
     .dream-companies-marquee,
     .dream-cars-marquee {
         margin: 0.25rem 0 0;
-        overflow: hidden;
+        padding: 0.5rem 0;
     }
 
     .dream-companies-track,
     .dream-cars-track {
-        gap: 1.5rem;
-        animation-duration: 20s;
+        gap: 2rem;
+        animation-duration: 25s;
     }
 
     .company-logo,
     .car-logo {
         height: 32px;
-        max-width: 120px;
+        max-width: 90px;
     }
 }
