@@ -5004,9 +5004,9 @@ footer p {
 #go-to-top {
     position: fixed;
     bottom: 28px;
-    right: 30px;
-    width: 64px;
-    height: 64px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
     background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
     color: #fff;
     border: none;
@@ -5015,7 +5015,7 @@ footer p {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     box-shadow: 0 4px 12px rgb(0 122 255 / 30%);
     opacity: 0;
     visibility: hidden;

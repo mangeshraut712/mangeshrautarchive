@@ -26,14 +26,14 @@
    ═══════════════════════════════════════════════════════════ */
 #chatbot-widget {
     position: fixed;
-    bottom: 180px;
-    /* Positioned above the toggle button (100px + 64px + 16px spacing) */
-    right: 32px;
+    bottom: 168px;
+    /* Positioned above the toggle button (96px + 56px + 16px spacing) */
+    right: 24px;
     width: 380px;
     /* Slightly more compact */
     height: 550px;
     /* Reduced height */
-    max-height: calc(100vh - 230px);
+    max-height: calc(100vh - 220px);
     /* Ensure it doesn't overlap navbar */
 
     /* Glassmorphism 2.0 */
@@ -652,16 +652,16 @@ html.dark #chatbot-input {
    ═══════════════════════════════════════════════════════════ */
 #chatbot-toggle {
     position: fixed;
-    bottom: 100px;
-    /* Positioned UP - above go-to-top button */
-    right: 30px;
-    width: 64px;
-    height: 64px;
+    bottom: 96px;
+    /* Positioned UP - above go-to-top button (28 + 56 + 12 spacing) */
+    right: 24px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: conic-gradient(from 180deg at 50% 50%, #2E88F9 0deg, #F93B30 72deg, #F9D030 144deg, #30D158 216deg, #2E88F9 360deg);
     border: 1px solid rgb(255 255 255 / 20%);
     color: white;
-    font-size: 28px;
+    font-size: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -701,10 +701,10 @@ html.dark #chatbot-input {
     #chatbot-widget {
         width: 420px !important;
         height: 650px !important;
-        /* Enlarge vertical space: reduce gap from top and position above toggle */
-        max-height: calc(100vh - 230px) !important;
-        bottom: 180px !important;
-        right: 30px !important;
+        /* Enlarge vertical space: position above toggle */
+        max-height: calc(100vh - 220px) !important;
+        bottom: 168px !important;
+        right: 24px !important;
         left: auto !important;
         top: auto !important;
         border-radius: 24px !important;
