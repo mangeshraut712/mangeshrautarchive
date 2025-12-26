@@ -31,10 +31,10 @@
     right: 24px;
     width: 380px;
     /* Slightly more compact */
-    height: 550px;
-    /* Reduced height */
-    max-height: calc(100vh - 220px);
-    /* Ensure it doesn't overlap navbar */
+    height: 500px;
+    /* Reduced height to prevent navbar overlap */
+    max-height: calc(100vh - 280px);
+    /* Ensure it doesn't overlap navbar (56px) + toggle area (168px) + safe margin */
 
     /* Glassmorphism 2.0 */
     background: var(--ai-bg-light);
@@ -699,10 +699,10 @@ html.dark #chatbot-input {
 /* Tablet & Desktop Adjustments */
 @media (min-width: 769px) {
     #chatbot-widget {
-        width: 420px !important;
-        height: 650px !important;
-        /* Enlarge vertical space: position above toggle */
-        max-height: calc(100vh - 220px) !important;
+        width: 400px !important;
+        height: 520px !important;
+        /* Reduced height to prevent navbar overlap */
+        max-height: calc(100vh - 280px) !important;
         bottom: 168px !important;
         right: 24px !important;
         left: auto !important;
