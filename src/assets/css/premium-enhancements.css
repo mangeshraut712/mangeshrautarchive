@@ -524,22 +524,24 @@ html.dark .cert-card:hover {
 
 @media (max-width: 768px) {
 
+    /* Match sizes for both floating buttons on mobile */
     #go-to-top,
     #chatbot-toggle {
-        width: 48px;
-        height: 48px;
-        font-size: 1.1rem;
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 1.25rem !important;
     }
 
-    /* Ensure they don't overlap */
+    /* Go-to-top at BOTTOM (lower position) */
     #go-to-top {
-        bottom: 80px !important;
-        right: 16px !important;
+        bottom: 24px !important;
+        right: 20px !important;
     }
 
+    /* Chatbot toggle at TOP (higher position, above go-to-top) */
     #chatbot-toggle {
-        bottom: 16px !important;
-        right: 16px !important;
+        bottom: 96px !important;
+        right: 20px !important;
     }
 }
 

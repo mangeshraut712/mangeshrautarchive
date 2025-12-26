@@ -26,18 +26,14 @@
    ═══════════════════════════════════════════════════════════ */
 #chatbot-widget {
     position: fixed;
-    bottom: 190px;
-
-    /* Positioned above the toggle button (110px + 64px + 16px spacing) */
+    bottom: 180px;
+    /* Positioned above the toggle button (100px + 64px + 16px spacing) */
     right: 32px;
     width: 380px;
-
     /* Slightly more compact */
     height: 550px;
-
     /* Reduced height */
-    max-height: calc(100vh - 250px);
-
+    max-height: calc(100vh - 230px);
     /* Ensure it doesn't overlap navbar */
 
     /* Glassmorphism 2.0 */
@@ -656,9 +652,8 @@ html.dark #chatbot-input {
    ═══════════════════════════════════════════════════════════ */
 #chatbot-toggle {
     position: fixed;
-    bottom: 110px;
-
-    /* Positioned above */
+    bottom: 100px;
+    /* Positioned UP - above go-to-top button */
     right: 30px;
     width: 64px;
     height: 64px;
@@ -706,9 +701,9 @@ html.dark #chatbot-input {
     #chatbot-widget {
         width: 420px !important;
         height: 650px !important;
-        /* Enlarge vertical space: reduce gap from top (250px buffer) and move close to toggle */
-        max-height: calc(100vh - 250px) !important;
-        bottom: 190px !important;
+        /* Enlarge vertical space: reduce gap from top and position above toggle */
+        max-height: calc(100vh - 230px) !important;
+        bottom: 180px !important;
         right: 30px !important;
         left: auto !important;
         top: auto !important;

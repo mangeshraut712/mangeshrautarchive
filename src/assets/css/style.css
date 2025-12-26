@@ -863,6 +863,7 @@ section#contact {
 }
 
 @media (width >=834px) {
+
     .container-fluid,
     .container {
         padding: 0 44px;
@@ -870,6 +871,7 @@ section#contact {
 }
 
 @media (width >=1024px) {
+
     .container-fluid,
     .container {
         padding: 0 68px;
@@ -930,36 +932,39 @@ section#contact {
     left: 0;
     right: 0;
     width: 100%;
-    height: 55px;
-
-    /* Increased height */
-    padding: 0 32px;
+    height: 56px;
+    padding: 0 40px;
     background: var(--nav-bg);
-    backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(25px) saturate(200%);
     border-bottom: 1px solid var(--nav-border);
     color: var(--nav-text);
-    box-shadow: inset 0 -1px 0 var(--nav-border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), inset 0 -1px 0 var(--nav-border);
     z-index: 1000;
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     box-sizing: border-box;
+}
+
+/* Premium glassmorphism effect for navbar */
+html.dark .global-nav {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -1px 0 var(--nav-border);
 }
 
 .nav-container {
     width: 100%;
-    max-width: 1280px;
+    max-width: 1400px;
     height: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
 }
 
 .nav-left,
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
 }
 
 .nav-actions {
@@ -970,30 +975,32 @@ section#contact {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .nav-logo img {
-    height: 32px;
+    height: 36px;
     width: auto;
     display: block;
+    border-radius: 8px;
 }
 
 .nav-links {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 28px;
-    font-size: 15px;
-
-    /* Increased font size */
-    font-weight: 400;
-
-    /* Regular weight for cleaner Apple look */
+    gap: 32px;
+    font-size: 14px;
+    font-weight: 500;
     letter-spacing: -0.01em;
-
-    /* Tighter tracking */
     width: 100%;
 }
 
@@ -1210,6 +1217,7 @@ html.dark .nav-link:focus-visible {
 /* Fix footer padding on mobile */
 @media (width <=768px) {
     footer .max-w-6xl {
+
         /* Mobile Navbar Fixes */
         @media (width <=768px) {
             .global-nav {
@@ -1305,6 +1313,7 @@ section,
 
 /* Mobile Global Padding */
 @media (width <=768px) {
+
     section,
     .page-section {
         padding: 60px 0;
@@ -2432,6 +2441,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== TABLET DESIGN ===== */
 @media (width >=768px) and (width <=1023px) {
+
     /* Tablet-specific styles */
     .container,
     .container-fluid {
@@ -2468,6 +2478,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== DESKTOP ENHANCEMENTS ===== */
 @media (width >=1024px) {
+
     /* Desktop navigation - show full nav */
     .nav-links {
         display: flex;
@@ -2491,6 +2502,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
+
     /* iOS Safari touch targets */
     button,
     .btn,
@@ -2520,6 +2532,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* Android Chrome specific fixes */
 @supports not (-webkit-touch-callout: none) {
+
     /* Android Chrome touch improvements */
     * {
         -webkit-tap-highlight-color: rgb(0 113 227 / 10%);
@@ -2544,6 +2557,7 @@ html.dark .project-card a.text-accent:hover {
 /* stylelint-disable-next-line media-feature-name-no-unknown */
 @media (min-device-pixel-ratio: 2),
 (resolution >=192dpi) {
+
     /* Retina display optimizations */
     .nav-logo img {
         image-rendering: -webkit-optimize-contrast;
@@ -2560,6 +2574,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== ACCESSIBILITY ENHANCEMENTS ===== */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -2583,6 +2598,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* Reduce complexity on mobile for better performance */
 @media (width <=767px) {
+
     /* Disable heavy shadows on mobile */
     .project-card,
     .education-card,
@@ -2609,6 +2625,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== PRINT STYLES ===== */
 @media print {
+
     .global-nav,
     .theme-toggle-nav,
     footer {
@@ -3487,6 +3504,7 @@ html.dark .theme-toggle-nav i.fa-moon {
 
 /* Keyframe animations for beautiful effects */
 @keyframes brainPulse {
+
     0%,
     100% {
         filter: brightness(1);
@@ -4882,6 +4900,7 @@ html:not(.dark) .search-result-section {
 }
 
 @keyframes float-image {
+
     0%,
     100% {
         transform: translateY(0);
@@ -4985,9 +5004,9 @@ footer p {
 #go-to-top {
     position: fixed;
     bottom: 28px;
-    right: 28px;
-    width: 56px;
-    height: 56px;
+    right: 30px;
+    width: 64px;
+    height: 64px;
     background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
     color: #fff;
     border: none;
@@ -4996,7 +5015,7 @@ footer p {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     box-shadow: 0 4px 12px rgb(0 122 255 / 30%);
     opacity: 0;
     visibility: hidden;
@@ -5031,12 +5050,10 @@ html.dark #go-to-top:hover {
 
 @media (width <=768px) {
     #go-to-top {
-        bottom: 20px;
-
-        /* Moved down to swap with chatbot */
+        bottom: 24px;
         right: 20px;
-        width: 52px;
-        height: 52px;
+        width: 56px;
+        height: 56px;
     }
 }
 
