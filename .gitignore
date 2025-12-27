@@ -106,3 +106,4 @@ out
 .vercel
 __pycache__/
 *.py[cod]
+venv/
