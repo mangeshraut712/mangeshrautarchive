@@ -1,6 +1,6 @@
 /**
  * Apple Intelligence Chatbot 2025
- * Integrated with FastAPI backend, streaming responses, and full metadata
+ * Enhanced with streaming responses, Markdown support, voice input, and metadata
  */
 
 class AppleIntelligenceChatbot {
@@ -9,6 +9,8 @@ class AppleIntelligenceChatbot {
         this.isOpen = false;
         this.isProcessing = false;
         this.chatAPI = null;
+        this.recognition = null;
+        this.isListening = false;
 
         if (!this.elements.widget || !this.elements.toggle) {
             console.error('Chatbot elements not found');
@@ -17,6 +19,7 @@ class AppleIntelligenceChatbot {
 
         // Wait for chat API to be available
         this.waitForChatAPI();
+        this.initVoiceRecognition();
         this.bindEvents();
         this.addWelcomeMessage();
     }
@@ -47,6 +50,56 @@ class AppleIntelligenceChatbot {
                 }
             }
         }, 100);
+    }
+
+    initVoiceRecognition() {
+        // Modern Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            this.recognition = new SpeechRecognition();
+            this.recognition.continuous = false;
+            this.recognition.interimResults = true;
+            this.recognition.lang = 'en-US';
+
+            this.recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+
+                if (this.elements.input) {
+                    this.elements.input.value = transcript;
+                    this.autoResizeTextarea(this.elements.input);
+                }
+
+                // If final result, submit
+                if (event.results[0].isFinal) {
+                    this.handleSendMessage();
+                }
+            };
+
+            this.recognition.onend = () => {
+                this.isListening = false;
+                this.updateVoiceButtonState();
+            };
+
+            this.recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                this.isListening = false;
+                this.updateVoiceButtonState();
+            };
+        }
+    }
+
+    updateVoiceButtonState() {
+        if (this.elements.voiceBtn) {
+            if (this.isListening) {
+                this.elements.voiceBtn.classList.add('listening');
+                this.elements.voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+            } else {
+                this.elements.voiceBtn.classList.remove('listening');
+                this.elements.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            }
+        }
     }
 
     initializeElements() {
@@ -174,7 +227,21 @@ class AppleIntelligenceChatbot {
     }
 
     addWelcomeMessage() {
-        // Welcome message disabled by user request
+        // Welcome message with AI branding
+        setTimeout(() => {
+            if (this.elements.messages && this.elements.messages.children.length === 0) {
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'message assistant-message welcome-message';
+                welcomeDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="welcome-icon">✨</div>
+                        <div class="welcome-title">Hi, I'm Mangesh's AI Assistant</div>
+                        <div class="welcome-subtitle">Ask me anything about his skills, experience, or projects!</div>
+                    </div>
+                `;
+                this.elements.messages.appendChild(welcomeDiv);
+            }
+        }, 500);
     }
 
     async handleSendMessage() {
@@ -520,7 +587,24 @@ class AppleIntelligenceChatbot {
     }
 
     handleVoiceInput() {
-        this.addMessage("Voice input feature coming soon!", 'assistant', { skipMetadata: true });
+        if (!this.recognition) {
+            this.addMessage("Voice input is not supported in your browser. Please try Chrome or Edge.", 'assistant');
+            return;
+        }
+
+        if (this.isListening) {
+            this.recognition.stop();
+            this.isListening = false;
+        } else {
+            try {
+                this.recognition.start();
+                this.isListening = true;
+            } catch (error) {
+                console.error('Voice recognition error:', error);
+                this.addMessage("Unable to start voice input. Please check microphone permissions.", 'assistant');
+            }
+        }
+        this.updateVoiceButtonState();
     }
 }
 

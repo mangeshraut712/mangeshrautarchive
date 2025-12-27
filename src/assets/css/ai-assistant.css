@@ -691,6 +691,80 @@ html.dark #chatbot-input {
     filter: drop-shadow(0 2px 4px rgb(0 0 0 / 20%));
 }
 
+/* ═══════════════════════════════════════════════════════════
+   2025 ENHANCEMENTS - WELCOME MESSAGE & VOICE INPUT
+   ═══════════════════════════════════════════════════════════ */
+
+/* Welcome Message Styling */
+.welcome-message .message-content {
+    text-align: center;
+    padding: 24px 20px !important;
+}
+
+.welcome-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    animation: welcomePulse 2s ease-in-out infinite;
+}
+
+@keyframes welcomePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.welcome-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+html.dark .welcome-title {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.welcome-subtitle {
+    font-size: 14px;
+    color: #86868b;
+    line-height: 1.4;
+}
+
+html.dark .welcome-subtitle {
+    color: #a1a1a6;
+}
+
+/* Voice Button Active/Listening State */
+.chatbot-voice-btn.listening {
+    background: #FF3B30 !important;
+    animation: voicePulse 1s ease-in-out infinite;
+}
+
+@keyframes voicePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.4);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 12px rgba(255, 59, 48, 0);
+    }
+}
 
 /* ═══════════════════════════════════════════════════════════
    MOBILE STYLES MOVED TO src/assets/css/chatbot-mobile.css
