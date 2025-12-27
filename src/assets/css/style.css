@@ -932,14 +932,13 @@ section#contact {
     left: 0;
     right: 0;
     width: 100%;
-    height: 56px;
-    padding: 0 48px;
-    background: var(--nav-bg);
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border-bottom: 1px solid var(--nav-border);
-    color: var(--nav-text);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.03);
+    height: 52px;
+    padding: 0 clamp(20px, 4vw, 48px);
+    background: rgba(251, 251, 253, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+    color: #1d1d1f;
     z-index: 1000;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     box-sizing: border-box;
@@ -947,29 +946,32 @@ section#contact {
 
 /* Premium glassmorphism effect for navbar - Dark Mode */
 html.dark .global-nav {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.15);
+    background: rgba(29, 29, 31, 0.92);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    color: #f5f5f7;
 }
 
 .nav-container {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1200px;
     height: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
-    gap: 24px;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-.nav-left,
+.nav-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
-}
-
-.nav-actions {
-    justify-content: flex-end;
+    gap: 6px;
     flex-shrink: 0;
 }
 
@@ -977,20 +979,21 @@ html.dark .global-nav {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .nav-logo:hover {
     transform: scale(1.05);
-    opacity: 0.9;
+    opacity: 0.85;
 }
 
 .nav-logo img {
-    height: 36px;
-    width: auto;
+    height: 32px;
+    width: 32px;
+    object-fit: cover;
     display: block;
     border-radius: 8px;
 }
@@ -999,11 +1002,12 @@ html.dark .global-nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 32px;
-    font-size: 14px;
-    font-weight: 500;
+    gap: 28px;
+    font-size: 13px;
+    font-weight: 400;
     letter-spacing: -0.01em;
-    width: 100%;
+    flex: 1;
+    max-width: 900px;
 }
 
 /* ... existing styles ... */
@@ -1040,52 +1044,41 @@ html.dark .global-nav {
 
 .nav-link {
     position: relative;
-    color: #1d1d1f;
-
-    /* Black in light mode */
+    color: rgba(0, 0, 0, 0.8);
     text-decoration: none;
-    transition: color 0.3s ease, opacity 0.2s ease;
-    padding: 4px 2px;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    padding: 6px 0;
     white-space: nowrap;
-    opacity: 0.9;
-
-    /* Slightly visible by default */
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
 }
 
 .nav-link:hover {
-    opacity: 1;
-    color: #0071e3;
-
-    /* Blue on hover */
+    color: rgba(0, 0, 0, 1);
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
-    left: 0;
-    bottom: -3px;
+    left: 50%;
+    bottom: 2px;
     width: 0;
-    height: 2px;
-
-    /* Slightly thicker underline */
-    background-color: #0071e3;
-
-    /* Blue underline */
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link:focus-visible {
-    color: #0071e3;
-
-    /* Blue on hover/focus */
+    height: 1.5px;
+    background: linear-gradient(90deg, #0071e3, #2997ff);
+    transition: all 0.25s ease;
+    transform: translateX(-50%);
+    border-radius: 1px;
 }
 
 .nav-link:hover::after,
 .nav-link:focus-visible::after {
     width: 100%;
+}
 
-    /* Full underline on hover */
+.nav-link:hover,
+.nav-link:focus-visible {
+    color: #0071e3;
 }
 
 .nav-link:focus-visible {
@@ -1094,59 +1087,58 @@ html.dark .global-nav {
 
 /* Dark Mode Navbar Links */
 html.dark .nav-link {
-    color: #fff;
-
-    /* White in dark mode */
-    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 html.dark .nav-link:hover {
-    opacity: 1;
-    color: #0a84ff;
-
-    /* Brighter blue for dark mode */
+    color: rgba(255, 255, 255, 1);
 }
 
 html.dark .nav-link::after {
-    background-color: #0a84ff;
-
-    /* Brighter blue underline for dark mode */
+    background: linear-gradient(90deg, #2997ff, #5ac8fa);
 }
 
 html.dark .nav-link:hover,
 html.dark .nav-link:focus-visible {
-    color: #0a84ff;
+    color: #2997ff;
 }
 
+/* Theme Toggle - Apple Minimal Style */
 .theme-toggle-nav {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    border: 1px solid var(--nav-border);
+    border: none;
     background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-    font-size: 15px;
-    color: var(--nav-text);
-    opacity: 0.9;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .theme-toggle-nav:hover,
 .theme-toggle-nav:focus-visible {
-    background: var(--nav-icon-hover-bg);
-    border-color: var(--nav-hover);
-    transform: scale(1.08);
-    color: var(--nav-hover);
-    opacity: 1;
+    background: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.85);
+    transform: scale(1.05);
     outline: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .theme-toggle-nav {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+html.dark .theme-toggle-nav:hover,
+html.dark .theme-toggle-nav:focus-visible {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .theme-toggle-nav i {
-    font-size: 15px;
+    font-size: 14px;
     color: currentcolor;
 }
 
