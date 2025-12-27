@@ -473,14 +473,11 @@ html.dark .contact-link-item:hover .link-text {
 }
 
 .support-donation-card {
-    background: linear-gradient(135deg, #fff9e6 0%, #fff5cc 50%, #ffefb3 100%);
+    background: #ffffff;
     border-radius: 20px;
     padding: 1.5rem 1.75rem;
-    border: 2px solid #ffd54f;
-    box-shadow:
-        0 4px 20px rgb(255 183 77 / 20%),
-        0 0 40px rgb(255 213 79 / 10%),
-        inset 0 1px 0 rgb(255 255 255 / 80%);
+    border: 1px solid rgb(0 0 0 / 8%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 6%);
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -489,59 +486,37 @@ html.dark .contact-link-item:hover .link-text {
     overflow: hidden;
 }
 
-/* Animated gradient border */
+/* Subtle accent gradient on left border */
 .support-donation-card::before {
     content: '';
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #ffd54f, #ffb74d, #ff9800, #ffb74d, #ffd54f);
-    background-size: 400% 400%;
-    z-index: -1;
-    border-radius: 22px;
-    animation: gradientBorder 4s ease infinite;
-    opacity: 0.6;
-}
-
-@keyframes gradientBorder {
-
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #FFDD00 0%, #FBB034 50%, #FF9800 100%);
+    border-radius: 4px 0 0 4px;
 }
 
 html.dark .support-donation-card {
-    background: linear-gradient(135deg, #1a1400 0%, #2d2200 50%, #3d2e00 100%);
-    border: 2px solid #805300;
-    box-shadow:
-        0 4px 25px rgb(255 152 0 / 25%),
-        0 0 60px rgb(255 152 0 / 15%),
-        inset 0 1px 0 rgb(255 255 255 / 5%);
-}
-
-html.dark .support-donation-card::before {
-    background: linear-gradient(45deg, #805300, #ff8f00, #ffa000, #ff8f00, #805300);
-    opacity: 0.4;
+    background: #000000;
+    border: 1px solid rgb(255 255 255 / 10%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
 }
 
 .support-donation-card:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-4px);
     box-shadow:
-        0 8px 30px rgb(255 183 77 / 35%),
-        0 0 50px rgb(255 213 79 / 20%);
+        0 12px 32px rgb(0 0 0 / 12%),
+        0 0 0 1px rgb(255 183 77 / 30%);
+    border-color: rgb(255 183 77 / 50%);
 }
 
 html.dark .support-donation-card:hover {
     box-shadow:
-        0 8px 35px rgb(255 152 0 / 40%),
-        0 0 70px rgb(255 152 0 / 20%);
+        0 12px 40px rgb(0 0 0 / 60%),
+        0 0 0 1px rgb(255 152 0 / 40%);
+    border-color: rgb(255 152 0 / 50%);
 }
 
 /* Compact Header - Horizontal Layout */
@@ -641,10 +616,8 @@ html.dark .donation-header h3 {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #ff9800;
-    box-shadow:
-        0 4px 15px rgb(255 152 0 / 40%),
-        0 0 25px rgb(255 193 7 / 30%);
+    border: 3px solid rgb(0 0 0 / 10%);
+    box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
     position: relative;
     z-index: 2;
     transition: all 0.3s ease;
@@ -652,8 +625,8 @@ html.dark .donation-header h3 {
 }
 
 html.dark .ganesh-blessing-img {
-    border-color: rgb(255 255 255 / 20%);
-    box-shadow: 0 8px 24px rgb(0 0 0 / 40%);
+    border-color: rgb(255 255 255 / 15%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 50%);
 }
 
 .ganesh-blessing-img:hover {
@@ -709,14 +682,14 @@ html.dark .ganesh-blessing-img {
 
 .blessing-text {
     font-size: 0.85rem;
-    color: #8b5a2b;
+    color: #6e6e73;
     margin: 0;
     line-height: 1.4;
     font-weight: 500;
 }
 
 html.dark .blessing-text {
-    color: #ffcc80;
+    color: #a1a1a6;
 }
 
 /* Donation Description */
