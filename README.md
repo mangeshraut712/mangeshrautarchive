@@ -10,11 +10,11 @@
 
 ## 🌟 Live Deployments
 
-- **Primary (Google AI Challenge)**: [mangesh-portfolio-api-us-central1](https://mangesh-portfolio-api-us-central1.run.app) (Example Cloud Run)
-- **Vercel**: [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)
-- **GitHub Pages**: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
+- **Primary Submission (Google Cloud Run)**: [Antigravity Intelligence Live](https://mangesh-portfolio-api-q3kdyzhwba-uc.a.run.app)
+- **Frontend Mirror (Vercel)**: [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)
+- **Static Mirror (GitHub Pages)**: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
 
-All deployments share the same Python backend (now supporting Google Gemini) for AI chatbot functionality.
+*All deployments are natively integrated with the Gemini 2.0 Flash technical partner backend.*
 
 ---
 
@@ -94,22 +94,21 @@ All deployments share the same Python backend (now supporting Google Gemini) for
 ┌─────────────────────────────────────────────────────────────────┐
 │                        BACKEND LAYER                            │
 ├─────────────────────────────────────────────────────────────────┤
-│  FastAPI on Vercel Serverless (Python)                          │
-│  • Endpoint: https://mangeshrautarchive.vercel.app/api/chat     │
-│  • CORS: Configured for all deployment domains                  │
-│  • Rate Limiting: 20 requests/60s per IP                        │
-│  • Session Memory: 10 messages, 1-hour TTL                      │
+│  FastAPI on Google Cloud Run (Python 3.11)                      │
+│  • Endpoint: /api/chat                                          │
+│  • High-Performance GZip Compression                            │
+│  • Intelligent Session Memory & Rate Limiting                   │
 └─────────────────────────────────────────────────────────────────┘
-                              ↓
-                    Calls OpenRouter API
-                              ↓
+                               ↓
+                   Native Google AI SDK Calls
+                               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │                          AI LAYER                               │
 ├─────────────────────────────────────────────────────────────────┤
 │  Google Generative AI (Gemini)                                  │
-│  • Model: gemini-2.0-flash-exp                                  │
-│  • Streaming: Native Python SDK                                 │
-│  • Context: Antigravity Technical Persona + Portfolio Data      │
+│  • Model: gemini-2.0-flash-exp (Fast & Precise)                │
+│  • Persona: Antigravity Technical Partner                       │
+│  • Knowledge: Deeply embedded Portfolio Technical Context        │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -126,9 +125,9 @@ All deployments share the same Python backend (now supporting Google Gemini) for
 ## 🚀 Quick Start
 
 ### **Prerequisites**
-- Node.js 18+ (for development server)
-- Python 3.9+ (for local backend testing)
-- OpenRouter API Key ([Get one here](https://openrouter.ai/keys))
+- Node.js 20+ (for developer tools)
+- Python 3.11+ (for technical backend)
+- Google AI API Key ([Google AI Studio](https://aistudio.google.com/))
 
 ### **1. Clone Repository**
 ```bash
@@ -145,10 +144,9 @@ pip install -r requirements.txt
 ### **3. Configure Environment**
 Create `.env` file:
 ```env
-OPENROUTER_API_KEY=sk-or-v1-your-key-here
-OPENROUTER_MODEL=x-ai/grok-4.1-fast
-OPENROUTER_SITE_URL=https://mangeshraut.pro
-OPENROUTER_SITE_TITLE=AssistMe AI Assistant
+GOOGLE_API_KEY=your_gemini_api_key_here
+PORT=8080
+VERCEL_ENV=development
 ```
 
 ### **4. Run Development Server**
@@ -200,15 +198,12 @@ The chatbot has deep knowledge of:
 - Automatic send on completion
 - Browser compatibility: Chrome, Edge, Safari
 
-#### **5. Metadata Display**
-Each response shows:
-- 🤖 **Model**: x-ai/grok-4.1-fast
-- 🌐 **Source**: OpenRouter
-- 📂 **Category**: AI Response
-- ⏱️ **Latency**: Response time in ms
-- 🔢 **Tokens**: Prompt + completion count
-- ⚡ **Throughput**: Tokens per second
-- 💰 **Cost**: Estimated API cost
+Each response provides elite technical transparency:
+- 🤖 **Agent**: Antigravity Intelligence
+- 🧠 **Engine**: gemini-2.0-flash-exp
+- 📂 **Context**: Portfolio Knowledge Base
+- ⏱️ **Latency**: Millisecond-precision heartbeat
+- 🔢 **Tokens**: Full prompt/completion transparency
 
 ### **Chatbot Configuration**
 
