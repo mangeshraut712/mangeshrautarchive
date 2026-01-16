@@ -33,18 +33,18 @@
 /* Mobile Controls - Apple Arcade Style */
 .debug-runner-mobile-controls {
     position: fixed;
-    bottom: max(20px, env(safe-area-inset-bottom));
+    bottom: max(32px, env(safe-area-inset-bottom));
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 16px;
-    padding: 12px 20px;
-    background: rgb(255 255 255 / 85%);
-    backdrop-filter: blur(20px) saturate(180%);
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgb(0 0 0 / 15%);
+    gap: 24px;
+    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px) saturate(200%);
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
     z-index: 1000;
-    border: 1px solid rgb(0 0 0 / 5%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 html.dark .debug-runner-mobile-controls {
@@ -55,33 +55,32 @@ html.dark .debug-runner-mobile-controls {
 /* Control Buttons - iOS Style */
 .mobile-control-jump,
 .mobile-control-duck {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0071e3 0%, #0077ed 100%);
-    color: #fff;
-    border: none;
-    font-size: 1.2rem;
-    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 16px rgb(0 113 227 / 40%);
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: none;
+    color: white;
     cursor: pointer;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-control-jump {
-    background: linear-gradient(135deg, #30d158 0%, #28cd4f 100%);
-    box-shadow: 0 4px 16px rgb(48 209 88 / 40%);
+    background: linear-gradient(145deg, #34c759, #28cd41);
+    box-shadow: 0 8px 24px rgba(52, 199, 89, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
 .mobile-control-duck {
-    background: linear-gradient(135deg, #ff9f0a 0%, #f80 100%);
-    box-shadow: 0 4px 16px rgb(255 159 10 / 40%);
+    background: linear-gradient(145deg, #ff9500, #ff8000);
+    box-shadow: 0 8px 24px rgba(255, 149, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
 /* Active State */
@@ -285,6 +284,7 @@ html.dark .debug-shortcuts kbd {
    ═══════════════════════════════════════════════════════════ */
 
 @keyframes buttonPulse {
+
     0%,
     100% {
         transform: scale(1);
@@ -319,6 +319,7 @@ html.dark .debug-shortcuts kbd {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
+
     .mobile-control-jump,
     .mobile-control-duck,
     #debug-runner-canvas {

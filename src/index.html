@@ -1605,23 +1605,38 @@
     <!-- ═══════════════════════════════════════════════════════════
          DEBUG RUNNER GAME - Always Visible
          ═══════════════════════════════════════════════════════════ -->
-    <section id="debug-runner-section" class="fade-in py-32">
-      <div class="container">
-        <h2 class="debug-runner-title">
-          🐛 Debug Runner 🏃‍♂️
-        </h2>
-        <div class="text-center mb-8 debug-runner-copy">
-          <p class="debug-runner-subtitle text-lg">
-            Jump over bugs, merge conflicts, and production fires! Collect coffee for speed boosts! ☕
+    <section id="debug-runner-section" class="fade-in py-32 bg-gray-50 dark:bg-[#09090b]">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <div class="text-center mb-12">
+          <h2 class="text-5xl font-extrabold mb-6 tracking-tight gradient-text">
+            <span class="inline-block animate-bounce mr-2">🐛</span>
+            Debug Runner
+            <span class="inline-block animate-pulse ml-2">🏃‍♂️</span>
+          </h2>
+          <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Master the production environment! Jump over <span class="premium-badge">bugs</span>,
+            dodge <span class="premium-badge">merge conflicts</span>, and survive
+            <span class="premium-badge">production fires</span>.
+            Grab <span class="text-yellow-600 font-bold">coffee</span> for extreme speed boosts! ☕
           </p>
-          <p class="debug-runner-meta text-sm mt-2 debug-shortcuts">
-            Press <kbd>SPACE</kbd> to start • <kbd>↑</kbd> Jump • <kbd>↓</kbd> Duck
-          </p>
-          <p class="debug-runner-meta text-sm mt-2">
-            Mobile: Tap canvas or Jump button to leap • Hold Duck to slide.
-          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm font-medium">
+            <span
+              class="px-4 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-full shadow-sm">
+              <kbd class="font-mono text-blue-600">SPACE</kbd> to start
+            </span>
+            <span
+              class="px-4 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-full shadow-sm">
+              <kbd class="font-mono text-blue-600">↑</kbd> Jump
+            </span>
+            <span
+              class="px-4 py-2 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-full shadow-sm">
+              <kbd class="font-mono text-blue-600">↓</kbd> Duck
+            </span>
+          </div>
         </div>
-        <div id="debug-runner-container" class="flex justify-center card-elevated"></div>
+        <div id="debug-runner-container"
+          class="relative group rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-gray-900 transition-all duration-500 hover:scale-[1.01]">
+        </div>
       </div>
     </section>
 

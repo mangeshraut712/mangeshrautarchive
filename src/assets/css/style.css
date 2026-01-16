@@ -4479,7 +4479,9 @@ html.dark .wrapper .icon {
     background: #2c2c2e;
     box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
 
-    /* color: #fff; Removed to allow brand colors */
+    background: #1c1c1e;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Ensure GitHub and X are white in dark mode for visibility */
@@ -4490,22 +4492,21 @@ html.dark .wrapper .x {
 
 .wrapper .tooltip {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.875rem;
-    background: #fff;
-    color: #000;
+    top: -45px;
+    font-size: 12px;
+    background: #1d1d1f;
+    color: #fff;
     padding: 6px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-    white-space: nowrap;
-    z-index: 100;
-    box-shadow: 0 8px 16px rgb(0 0 0 / 15%);
+}
+
+html.dark .wrapper .tooltip {
+    background: #fff;
+    color: #1d1d1f;
 }
 
 .wrapper .tooltip::before {
@@ -4514,20 +4515,10 @@ html.dark .wrapper .x {
     height: 8px;
     width: 8px;
     background: inherit;
-    top: -3px;
+    bottom: -3px;
     left: 50%;
     transform: translate(-50%) rotate(45deg);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.wrapper .icon:hover .tooltip {
-    top: 125%;
-
-    /* Force position below icon */
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(-50%);
 }
 
 /* Icon Hover Animation - Premium Pop Effect */
@@ -4535,14 +4526,20 @@ html.dark .wrapper .x {
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.wrapper .icon:hover {
-    transform: translateY(-8px) scale(1.1);
-    box-shadow: 0 12px 24px rgb(0 0 0 / 20%);
+.wrapper .icon:hover .tooltip {
+    top: -55px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
-.wrapper .icon:hover span,
-.wrapper .icon:hover .tooltip {
-    text-shadow: 0 -1px 0 rgb(0 0 0 / 10%);
+.wrapper .icon:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+html.dark .wrapper .icon:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 /* Default Colorful Icons */
@@ -5208,6 +5205,61 @@ html.dark #go-to-top:hover {
         width: 56px;
         height: 56px;
     }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PREMIUM UI UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+
+.gradient-text {
+    background: linear-gradient(135deg, #0071e3 0%, #2997ff 50%, #5ac8fa 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.premium-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(0, 113, 227, 0.08);
+    color: #0071e3;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 600;
+    border: 1px solid rgba(0, 113, 227, 0.15);
+}
+
+html.dark .premium-badge {
+    background: rgba(41, 151, 255, 0.12);
+    color: #2997ff;
+    border-color: rgba(41, 151, 255, 0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER ENHANCEMENTS
+   ═══════════════════════════════════════════════════════════ */
+
+footer {
+    background-color: #fbfbfd !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+    padding: 80px 0 40px !important;
+}
+
+html.dark footer {
+    background-color: #050505 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+footer .max-w-6xl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+#debug-runner-section {
+    padding-bottom: 120px !important;
 }
 
 /* FINAL MOBILE OVERRIDES - Menu Button Visibility */
