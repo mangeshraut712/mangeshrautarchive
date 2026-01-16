@@ -14,6 +14,7 @@ class DebugRunner {
         this.score = 0;
         this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore')) || 0;
         this.speed = 8;
+        this.level = 1;
         this.gameLoop = null;
         this.groundY = 320;
         this.dev = null;
@@ -25,8 +26,12 @@ class DebugRunner {
         this.invincibleUntil = 0;
         this.coffeePower = 0;
         this.stars = [];
+        this.codeSnippets = [];
+        this.screenShake = 0;
+        this.trail = [];
         this.isMobile = this.detectMobile();
         this.mobileControls = null;
+        this.frame = 0;
 
         // Premium Color Palette (Apple-inspired)
         this.themes = {
@@ -79,7 +84,20 @@ class DebugRunner {
                 x: Math.random() * 1200,
                 y: Math.random() * 400,
                 size: Math.random() * 2,
-                opacity: Math.random()
+                opacity: Math.random(),
+                speed: Math.random() * 0.5
+            });
+        }
+
+        this.codeSnippets = [];
+        const snippets = ['{ }', '01', '=>', 'git', 'push', 'merge', '++'];
+        for (let i = 0; i < 15; i++) {
+            this.codeSnippets.push({
+                x: Math.random() * 1200,
+                y: Math.random() * 300,
+                text: snippets[Math.floor(Math.random() * snippets.length)],
+                opacity: Math.random() * 0.3,
+                speed: Math.random() * 1 + 0.5
             });
         }
     }
@@ -436,12 +454,40 @@ class DebugRunner {
             localStorage.setItem('debugRunnerHighScore', this.highScore);
         }
 
+        // Level Up Logic
+        const newLevel = Math.floor(this.score / 1000) + 1;
+        if (newLevel > this.level) {
+            this.level = newLevel;
+            this.speed += 1;
+            this.screenShake = 20;
+            this.createParticles(this.canvas.width / 2, this.canvas.height / 2, 30, this.colors.accent);
+            this.showLevelMessageUntil = Date.now() + 2000;
+        }
+
         this.updateObstacles();
         this.updatePowerUps();
         this.updateParticles();
+        this.updateTrail();
         this.checkCollisions();
 
+        this.frame++;
+        if (this.screenShake > 0) this.screenShake -= 1;
+
         this.render();
+    }
+
+    updateTrail() {
+        if (this.gameRunning) {
+            this.trail.push({
+                x: this.dev.x,
+                y: this.dev.y,
+                w: this.dev.width,
+                h: this.dev.height,
+                opacity: 0.5
+            });
+            if (this.trail.length > 5) this.trail.shift();
+            this.trail.forEach(t => t.opacity -= 0.1);
+        }
     }
 
     updateObstacles() {
@@ -531,6 +577,7 @@ class DebugRunner {
         if (!this.invincible) {
             for (let obs of this.obstacles) {
                 if (this.rectIntersect(heroRect, obs)) {
+                    this.screenShake = 15;
                     this.gameOver = true;
                     this.createParticles(this.dev.x, this.dev.y, 20, this.colors.bug);
                     this.stop();
@@ -566,16 +613,36 @@ class DebugRunner {
     }
 
     render() {
+        this.ctx.save();
+
+        // Screen Shake
+        if (this.screenShake > 0) {
+            const dx = (Math.random() - 0.5) * this.screenShake;
+            const dy = (Math.random() - 0.5) * this.screenShake;
+            this.ctx.translate(dx, dy);
+        }
+
         // Clear
         this.ctx.fillStyle = this.colors.bg;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Stars (only in dark mode)
+        // Stars & Background Layer
         if (this.colors.bg === '#000000') {
             this.ctx.fillStyle = '#ffffff';
             this.stars.forEach(star => {
                 this.ctx.globalAlpha = star.opacity;
                 this.ctx.fillRect(star.x, star.y, star.size, star.size);
+                star.x -= star.speed;
+                if (star.x < 0) star.x = 1200;
+            });
+
+            this.codeSnippets.forEach(snip => {
+                this.ctx.fillStyle = this.colors.accent;
+                this.ctx.globalAlpha = snip.opacity;
+                this.ctx.font = '14px monospace';
+                this.ctx.fillText(snip.text, snip.x, snip.y);
+                snip.x -= snip.speed;
+                if (snip.x < -100) snip.x = 1200;
             });
             this.ctx.globalAlpha = 1.0;
         }
@@ -591,6 +658,14 @@ class DebugRunner {
         this.ctx.lineTo(this.canvas.width, this.groundY);
         this.ctx.stroke();
 
+        // Hero Trail
+        this.trail.forEach(t => {
+            this.ctx.globalAlpha = t.opacity;
+            this.ctx.fillStyle = this.invincible ? '#FFD60A' : this.colors.hero;
+            this.ctx.fillRect(t.x, t.y + 20, t.w, t.h - 20);
+        });
+        this.ctx.globalAlpha = 1.0;
+
         // Hero
         this.ctx.save();
         this.ctx.shadowColor = this.colors.accent;
@@ -602,12 +677,25 @@ class DebugRunner {
         const w = this.dev.width;
         const h = this.dev.height;
 
+        // Animate legs based on frame
+        const legOffset = Math.sin(this.frame * 0.2) * 10;
+
         // Head
         this.ctx.beginPath();
         this.ctx.arc(x + w / 2, y + 10, 10, 0, Math.PI * 2);
         this.ctx.fill();
         // Body
-        this.ctx.fillRect(x, y + 20, w, h - 20);
+        this.ctx.fillRect(x, y + 20, w, h - 25);
+
+        // Legs (Arcade Style)
+        if (this.dev.onGround) {
+            this.ctx.fillRect(x + 5, y + h - 5 + legOffset, 10, 5);
+            this.ctx.fillRect(x + w - 15, y + h - 5 - legOffset, 10, 5);
+        } else {
+            this.ctx.fillRect(x + 5, y + h - 10, 10, 10);
+            this.ctx.fillRect(x + w - 15, y + h - 10, 10, 10);
+        }
+
         // Eyes
         this.ctx.fillStyle = this.colors.bg;
         this.ctx.fillRect(x + w / 2 - 4, y + 8, 2, 2);
@@ -669,6 +757,22 @@ class DebugRunner {
             this.ctx.font = 'bold 16px -apple-system';
             this.ctx.fillText('⚡ INVINCIBLE', this.canvas.width - 150, 50);
         }
+
+        // Level Up Message
+        if (this.showLevelMessageUntil && Date.now() < this.showLevelMessageUntil) {
+            this.ctx.save();
+            this.ctx.fillStyle = this.colors.accent;
+            this.ctx.font = 'bold 40px -apple-system';
+            this.ctx.textAlign = 'center';
+            this.ctx.shadowColor = this.colors.accent;
+            this.ctx.shadowBlur = 15;
+            this.ctx.fillText(`LEVEL ${this.level}`, this.canvas.width / 2, 150);
+            this.ctx.font = '20px -apple-system';
+            this.ctx.fillText('SPEED INCREASED!', this.canvas.width / 2, 190);
+            this.ctx.restore();
+        }
+
+        this.ctx.restore(); // Final restore from shake translate
     }
 
     drawStartScreen() {

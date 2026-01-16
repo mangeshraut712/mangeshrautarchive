@@ -3,18 +3,26 @@
    iOS Arcade-inspired game design
    ═══════════════════════════════════════════════════════════ */
 
-/* Debug Runner Container - Mobile First */
+/* Debug Runner Container - 2026 Premium Alignment */
 #debug-runner-container {
     width: 100%;
-    max-width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 24px;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;
-    margin: 0 auto;
-    background: transparent;
-    border-radius: 16px;
-    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+html.dark #debug-runner-container {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+#debug-runner-container:hover {
+    box-shadow: 0 40px 80px -20px rgba(0, 113, 227, 0.15);
 }
 
 /* Canvas - Responsive & Touch-Friendly */
@@ -83,11 +91,35 @@ html.dark .debug-runner-mobile-controls {
     box-shadow: 0 8px 24px rgba(255, 149, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* Active State */
+/* Active State & Press Feel */
 .mobile-control-jump:active,
-.mobile-control-duck:active {
-    transform: scale(0.9);
-    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+.mobile-control-duck:active,
+.debug-game-btn:active {
+    transform: translateY(4px) scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.9);
+}
+
+/* Extension for Game Buttons */
+.debug-game-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.debug-game-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+}
+
+.debug-game-btn:hover::after {
+    left: 150%;
 }
 
 html.dark .mobile-control-jump {
