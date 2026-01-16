@@ -612,10 +612,40 @@ html.dark .footer-solid {
     color: #f5f5f7;
 }
 
-.footer-solid::before,
-.footer-solid::after,
-.footer-solid .bg-blob {
-    display: none !important;
+.footer-nav-link {
+    color: #86868b;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+}
+
+.footer-nav-link:hover {
+    color: #0071e3;
+    transform: translateX(4px);
+}
+
+html.dark .footer-nav-link {
+    color: #98989d;
+}
+
+html.dark .footer-nav-link:hover {
+    color: #0a84ff;
+}
+
+.footer-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width 0.3s ease;
+}
+
+.footer-nav-link:hover::after {
+    width: 100%;
 }
 
 .footer-brand img {
@@ -686,7 +716,7 @@ html.dark #debug-runner-section {
 .reward-item {
     background: #fff;
     border: 1px solid #d2d2d7;
-    padding: 2rem;
+    padding: 1.75rem;
     border-radius: 24px;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     width: 100%;
@@ -695,59 +725,124 @@ html.dark #debug-runner-section {
     gap: 1.5rem;
     text-align: left;
     position: relative;
+    cursor: pointer;
 }
 
 html.dark .reward-item {
-    background: #000;
-    border-color: #333;
+    background: #111;
+    border-color: #222;
 }
 
 .reward-item:hover:not(.locked) {
-    transform: translateY(-8px);
+    transform: translateY(-5px);
     border-color: #0071e3;
-    box-shadow: 0 20px 40px rgba(0, 113, 227, 0.1);
+    background: #fbfbfd;
+    box-shadow: 0 15px 30px rgba(0, 113, 227, 0.1);
 }
 
 html.dark .reward-item:hover:not(.locked) {
     border-color: #0c84ff;
-    box-shadow: 0 20px 40px rgba(12, 132, 255, 0.15);
+    background: #1a1a1c;
+    box-shadow: 0 15px 30px rgba(12, 132, 255, 0.15);
 }
 
 .reward-item.locked {
-    opacity: 0.6;
-    filter: grayscale(1);
-    cursor: not-allowed;
+    opacity: 0.7;
+    cursor: default;
 }
 
 .reward-icon-box {
-    width: 54px;
-    height: 54px;
-    border-radius: 14px;
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    border-radius: 16px;
     background: #f5f5f7;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     position: relative;
+    color: #1d1d1f;
 }
 
 html.dark .reward-icon-box {
     background: #2c2c2e;
+    color: #f5f5f7;
 }
 
 .lock-icon {
     position: absolute;
-    top: -5px;
-    right: -5px;
-    font-size: 0.8rem;
+    top: -6px;
+    right: -6px;
+    font-size: 0.7rem;
     background: #1d1d1f;
     color: #fff;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid #fff;
+    z-index: 2;
+}
+
+html.dark .lock-icon {
+    background: #fff;
+    color: #000;
+    border-color: #111;
+}
+
+.reward-info {
+    flex-grow: 1;
+}
+
+.reward-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+}
+
+.reward-status {
+    font-size: 0.85rem;
+    color: #0071e3;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+html.dark .reward-status {
+    color: #0a84ff;
+}
+
+.reward-item.locked .reward-status {
+    color: #86868b;
+}
+
+.reward-action {
+    color: #d2d2d7;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.reward-item:hover:not(.locked) .reward-action {
+    transform: translateX(4px);
+    color: #0071e3;
+}
+
+.reward-item.unlocked .reward-icon-box {
+    background: #eef7ff;
+    color: #0071e3;
+}
+
+html.dark .reward-item.unlocked .reward-icon-box {
+    background: #072e54;
+    color: #0a84ff;
+}
+
+.reward-item.unlocked .lock-icon {
+    display: none;
 }
 
 .reward-info h4 {

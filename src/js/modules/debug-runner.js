@@ -191,8 +191,6 @@ class DebugRunner {
                 }
 
                 action();
-                e.preventDefault();
-                startAction();
                 btn.style.transform = 'scale(0.92)';
             };
             const end = (e) => {

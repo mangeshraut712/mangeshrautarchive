@@ -58,15 +58,15 @@ html.dark .debug-runner-mobile-controls {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: #0071e3;
+    background: #1c1c1e;
     color: #fff;
-    border: none;
-    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgb(0 113 227 / 30%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     touch-action: manipulation;
@@ -74,29 +74,22 @@ html.dark .debug-runner-mobile-controls {
     user-select: none;
 }
 
-.mobile-control-jump {
+.mobile-control-jump:hover {
     background: #34c759;
-    box-shadow: 0 8px 20px rgb(52 199 89 / 30%);
+    box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
+    border-color: #34c759;
 }
 
-.mobile-control-duck {
+.mobile-control-duck:hover {
     background: #0071e3;
-    box-shadow: 0 8px 15px rgb(0 113 227 / 30%);
+    box-shadow: 0 0 20px rgba(0, 113, 227, 0.4);
+    border-color: #0071e3;
 }
 
-/* Active State */
-.mobile-control-jump:active,
-.mobile-control-duck:active {
-    transform: scale(0.9);
-    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
-}
-
-html.dark .mobile-control-jump {
-    background: #34c759;
-}
-
+html.dark .mobile-control-jump,
 html.dark .mobile-control-duck {
-    background: #0071e3;
+    background: #000;
+    border-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Game Text - Apple San Francisco Font */

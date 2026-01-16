@@ -1656,34 +1656,34 @@
               </div>
             </div>
 
-            <div id="unlocked-docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div id="unlocked-docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
               <!-- Documentation Item 1 (Locked) -->
-              <div class="reward-item locked group cursor-pointer" id="reward-arch">
-                <div class="reward-icon-box shadow-sm group-hover:shadow-md transition-shadow">
+              <div class="reward-item locked group" id="reward-arch">
+                <div class="reward-icon-box">
                   <i class="fas fa-lock lock-icon"></i>
-                  <i class="fas fa-layer-group doc-icon text-2xl"></i>
+                  <i class="fas fa-layer-group doc-icon"></i>
                 </div>
                 <div class="reward-info">
-                  <h4 class="text-lg font-bold">System Architecture</h4>
-                  <p class="text-blue-600 dark:text-blue-400 font-bold">Unlock at 500 points</p>
+                  <h4 class="reward-title">System Architecture</h4>
+                  <p class="reward-status">Unlock at 500 points</p>
                 </div>
-                <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                  <i class="fas fa-chevron-right text-gray-300"></i>
+                <div class="reward-action">
+                  <i class="fas fa-chevron-right"></i>
                 </div>
               </div>
 
               <!-- Documentation Item 2 (Locked) -->
-              <div class="reward-item locked group cursor-pointer" id="reward-api">
-                <div class="reward-icon-box shadow-sm group-hover:shadow-md transition-shadow">
+              <div class="reward-item locked group" id="reward-api">
+                <div class="reward-icon-box">
                   <i class="fas fa-lock lock-icon"></i>
-                  <i class="fas fa-code-branch doc-icon text-2xl"></i>
+                  <i class="fas fa-code-branch doc-icon"></i>
                 </div>
                 <div class="reward-info">
-                  <h4 class="text-lg font-bold">API Strategy 2026</h4>
-                  <p class="text-blue-600 dark:text-blue-400 font-bold">Unlock at 1000 points</p>
+                  <h4 class="reward-title">API Strategy 2026</h4>
+                  <p class="reward-status">Unlock at 1000 points</p>
                 </div>
-                <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-                  <i class="fas fa-chevron-right text-gray-300"></i>
+                <div class="reward-action">
+                  <i class="fas fa-chevron-right"></i>
                 </div>
               </div>
             </div>
@@ -1692,53 +1692,67 @@
       </div>
     </section>
 
-    <footer class="footer-solid pt-24 pb-12 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-black">
-      <div class="container mx-auto px-4">
-        <div class="flex flex-col items-center">
-          <!-- Logo/Brand -->
-          <div class="footer-brand mb-10 text-center">
-            <div class="mb-4 inline-block">
-              <img src="assets/images/logo.png" alt="Mangesh Raut" class="w-10 h-10 object-contain dark:invert">
-            </div>
-            <h2 class="text-xl font-bold tracking-tight">Mangesh Raut</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Expert Software Engineer • Technical Partner</p>
-          </div>
+    <footer class="footer-solid border-t border-gray-100 dark:border-white/5 py-20">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
 
-          <!-- Social Links -->
-          <div class="footer-social-links flex justify-center gap-6 mb-12">
-            <a href="https://github.com/mangeshraut712" target="_blank" class="footer-social-link-new"
-              aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="https://linkedin.com/in/mangeshraut71298" target="_blank" class="footer-social-link-new"
-              aria-label="LinkedIn">
-              <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://twitter.com/mangeshraut712" target="_blank" class="footer-social-link-new"
-              aria-label="Twitter">
-              <i class="fab fa-x-twitter"></i>
-            </a>
-            <a href="https://youtube.com/@mangeshraut712" target="_blank" class="footer-social-link-new"
-              aria-label="YouTube">
-              <i class="fab fa-youtube"></i>
-            </a>
-          </div>
-
-          <!-- Bottom Bar -->
-          <div
-            class="w-full pt-8 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p class="text-xs font-medium text-gray-400 dark:text-gray-500">
-              &copy; 2026 Mangesh Raut. Philadelphia, PA
-            </p>
-            <div class="flex items-center gap-8">
-              <a href="#about"
-                class="text-xs font-semibold text-gray-500 hover:text-blue-600 transition-colors">About</a>
-              <a href="#projects"
-                class="text-xs font-semibold text-gray-500 hover:text-blue-600 transition-colors">Projects</a>
-              <a href="#contact"
-                class="text-xs font-semibold text-gray-500 hover:text-blue-600 transition-colors">Contact</a>
+          <!-- Column 1: Brand -->
+          <div class="lg:col-span-5">
+            <div class="footer-brand">
+              <div class="flex items-center gap-4 mb-6">
+                <img src="assets/images/logo.png" alt="Logo" class="w-10 h-10 object-contain dark:invert">
+                <h2 class="text-2xl font-bold tracking-tight">Antigravity Intelligence</h2>
+              </div>
+              <p class="text-lg text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-8">
+                Engineering high-performance agentic AI systems and technical architectures for the 2026 digital
+                frontier.
+              </p>
+              <div class="footer-social-links flex gap-4">
+                <a href="https://github.com/mangeshraut712" target="_blank" class="footer-social-link-new"
+                  aria-label="GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/mangeshraut71298" target="_blank" class="footer-social-link-new"
+                  aria-label="LinkedIn">
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://twitter.com/mangeshraut712" target="_blank" class="footer-social-link-new"
+                  aria-label="X">
+                  <i class="fab fa-x-twitter"></i>
+                </a>
+              </div>
             </div>
           </div>
+
+          <!-- Column 2: Navigation -->
+          <div class="lg:col-span-4 lg:pl-12">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-8">Navigation
+            </h3>
+            <ul class="space-y-4">
+              <li><a href="#about" class="footer-nav-link text-lg font-medium">About Mangesh</a></li>
+              <li><a href="#projects" class="footer-nav-link text-lg font-medium">Technical Portfolio</a></li>
+              <li><a href="#experience" class="footer-nav-link text-lg font-medium">Experience</a></li>
+              <li><a href="#contact" class="footer-nav-link text-lg font-medium">Get in Touch</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Status -->
+          <div class="lg:col-span-3">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-8">Presence</h3>
+            <div class="space-y-6">
+              <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-sm font-semibold">Available for Technical Partnerships</span>
+              </div>
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                <i class="fas fa-map-marker-alt"></i> Philadelphia, PA, USA
+              </p>
+              <p class="text-xs text-gray-400 dark:text-gray-600 pt-4 border-t border-gray-100 dark:border-white/5">
+                © 2026 Mangesh Raut. Built with Gemini 2.0 Flash.
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </footer>
