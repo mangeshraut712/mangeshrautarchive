@@ -73,7 +73,7 @@ class ChatUI {
             this.elements.toggleButton.setAttribute('aria-expanded', this._isWidgetOpen().toString());
         }
 
-        // Initialize modern input handler (2026 tech)
+        // Initialize modern input handler (2025 tech)
         if (this.elements.input) {
             this.modernInput = new ModernInputHandler(
                 this.elements.input,
@@ -1011,19 +1011,19 @@ class ChatUI {
     _formatSourceLabel(sourceKey, type = 'general') {
         if (!sourceKey) {
             return type === 'portfolio'
-                ? 'Antigravity Intelligence Portfolio'
+                ? 'AssistMe Portfolio'
                 : type === 'math'
-                    ? 'Antigravity Intelligence Math Engine'
-                    : 'Antigravity Intelligence';
+                    ? 'AssistMe Math Engine'
+                    : 'AssistMe';
         }
 
         const normalized = this._normalizeSourceKey(sourceKey);
         const map = {
-            'antigravity': 'Antigravity Intelligence',
-            'antigravity-portfolio': 'Antigravity Intelligence Portfolio',
-            'antigravity-general': 'Antigravity Intelligence',
-            'antigravity-math': 'Antigravity Intelligence Math Engine',
-            'antigravity-utility': 'Antigravity Intelligence Utility',
+            'assistme': 'AssistMe',
+            'assistme-portfolio': 'AssistMe Portfolio',
+            'assistme-general': 'AssistMe',
+            'assistme-math': 'AssistMe Math Engine',
+            'assistme-utility': 'AssistMe Utility',
             'openai': 'OpenAI',
             'grok': 'Grok (xAI)',
             'claude': 'Claude (Anthropic)',
@@ -1043,7 +1043,7 @@ class ChatUI {
         }
 
         const words = normalized.split(/[-_]/g).filter(Boolean);
-        if (!words.length) return 'Antigravity Intelligence';
+        if (!words.length) return 'AssistMe';
         return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
 
@@ -1051,11 +1051,11 @@ class ChatUI {
         if (!value && value !== 0) return '';
         const lowered = String(value).trim().toLowerCase();
         const aliasMap = {
-            'antigravity server': 'antigravity',
-            'antigravity client': 'antigravity',
-            'antigravity portfolio': 'antigravity-portfolio',
-            'portfolio': 'antigravity-portfolio',
-            'antigravity math': 'antigravity-math',
+            'assistme server': 'assistme',
+            'assistme client': 'assistme',
+            'assistme portfolio': 'assistme-portfolio',
+            'portfolio': 'assistme-portfolio',
+            'assistme math': 'assistme-math',
             'gpt': 'openai',
             'gpt-4': 'openai',
             'gpt-4o': 'openai',
@@ -1634,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Configure global settings
-    window.Antigravity IntelligenceConfig = Object.freeze({
+    window.AssistMeConfig = Object.freeze({
         externalApis: ExternalApiKeys
     });
 

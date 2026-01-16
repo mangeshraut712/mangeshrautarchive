@@ -58,38 +58,45 @@ html.dark .debug-runner-mobile-controls {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: #1c1c1e;
+    background: linear-gradient(135deg, #0071e3 0%, #0077ed 100%);
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.9rem;
+    border: none;
+    font-size: 1.2rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgb(0 113 227 / 40%);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 }
 
-.mobile-control-jump:hover {
-    background: #34c759;
-    box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
-    border-color: #34c759;
+.mobile-control-jump {
+    background: linear-gradient(135deg, #30d158 0%, #28cd4f 100%);
+    box-shadow: 0 4px 16px rgb(48 209 88 / 40%);
 }
 
-.mobile-control-duck:hover {
-    background: #0071e3;
-    box-shadow: 0 0 20px rgba(0, 113, 227, 0.4);
-    border-color: #0071e3;
+.mobile-control-duck {
+    background: linear-gradient(135deg, #ff9f0a 0%, #f80 100%);
+    box-shadow: 0 4px 16px rgb(255 159 10 / 40%);
 }
 
-html.dark .mobile-control-jump,
+/* Active State */
+.mobile-control-jump:active,
+.mobile-control-duck:active {
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+
+html.dark .mobile-control-jump {
+    background: linear-gradient(135deg, #32d760 0%, #2ac150 100%);
+}
+
 html.dark .mobile-control-duck {
-    background: #000;
-    border-color: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, #ff9f0a 0%, #f80 100%);
 }
 
 /* Game Text - Apple San Francisco Font */
@@ -103,16 +110,10 @@ html.dark .mobile-control-duck {
 }
 
 .debug-runner-title {
-    display: block;
-    width: fit-content;
-    margin: 0 auto 1.5rem auto;
-    text-align: center;
     background: linear-gradient(135deg, #0071e3, #2997ff);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    font-size: 2.5rem;
-    font-weight: 800;
 }
 
 html.dark .debug-runner-title {
@@ -137,12 +138,6 @@ html.dark .debug-runner-subtitle {
 
 html.dark .debug-runner-meta {
     color: #98989d;
-}
-
-.debug-runner-copy {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
 }
 
 /* Keyboard Shortcuts - Apple Style */
@@ -248,28 +243,22 @@ html.dark .debug-shortcuts kbd {
         max-height: 600px;
     }
 
-    /* Game pad style on desktop */
+    /* Keep mobile controls visible on desktop for better gameplay */
     .debug-runner-mobile-controls {
         display: flex;
-        position: static;
-        transform: none;
-        margin: 2rem auto 0;
-        justify-content: center;
-        background: transparent;
-        box-shadow: none;
-        border: none;
-        gap: 40px;
+
+        /* Always visible */
+        bottom: max(30px, env(safe-area-inset-bottom));
+        padding: 14px 24px;
+        gap: 20px;
     }
 
     /* Larger buttons on desktop */
     .mobile-control-jump,
     .mobile-control-duck {
-        width: 140px;
-        height: 54px;
-        border-radius: 14px;
-        font-size: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        width: 72px;
+        height: 72px;
+        font-size: 1.3rem;
     }
 }
 
@@ -296,7 +285,6 @@ html.dark .debug-shortcuts kbd {
    ═══════════════════════════════════════════════════════════ */
 
 @keyframes buttonPulse {
-
     0%,
     100% {
         transform: scale(1);
@@ -331,7 +319,6 @@ html.dark .debug-shortcuts kbd {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-
     .mobile-control-jump,
     .mobile-control-duck,
     #debug-runner-canvas {

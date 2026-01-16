@@ -15,7 +15,7 @@ if (typeof window !== 'undefined') {
             API_BASE = ''; // Use relative paths for local backend
             console.log('🏠 Local backend detected on port 8000');
         }
-        // For ALL other cases (Cloud Run, GitHub Pages, Vercel, etc.), use Cloud Run backend
+        // For ALL other cases (Cloud Run, GitHub Pages, localhost:3000, etc.), use Cloud Run backend
         else {
             API_BASE = 'https://mangesh-portfolio-api-q3kdyzhwba-uc.a.run.app';
             console.log('🌐 Using Cloud Run backend:', API_BASE);
@@ -36,33 +36,29 @@ function buildApiUrl(path) {
 }
 
 const SOURCE_KEY_ALIASES = {
-    'antigravity': 'antigravity',
-    'antigravity server': 'antigravity',
-    'antigravity client': 'antigravity',
-    'antigravity portfolio': 'antigravity-portfolio',
-    'antigravity chat': 'antigravity',
-    'antigravity math': 'antigravity-math',
-    'antigravity general': 'antigravity',
-    'antigravity utility': 'antigravity-utility',
-    'portfolio': 'antigravity-portfolio',
-    'math': 'antigravity-math',
+    'assistme': 'assistme',
+    'assistme server': 'assistme',
+    'assistme client': 'assistme',
+    'assistme portfolio': 'assistme-portfolio',
+    'assistme chat': 'assistme',
+    'assistme math': 'assistme-math',
+    'assistme general': 'assistme',
+    'assistme utility': 'assistme-utility',
+    'portfolio': 'assistme-portfolio',
+    'math': 'assistme-math',
     'openrouter': 'openrouter',
     'open router': 'openrouter',
-    'local cache': 'antigravity',
-    'cached': 'antigravity',
-    'google ai': 'google-ai',
-    'google': 'google-ai',
-    'gemini': 'google-ai'
+    'local cache': 'assistme',
+    'cached': 'assistme'
 };
 
 const SOURCE_LABELS = {
-    'antigravity': 'Antigravity Intelligence',
-    'antigravity-portfolio': 'Antigravity Intelligence',
-    'antigravity-math': 'Antigravity Intelligence',
-    'antigravity-utility': 'Antigravity Intelligence',
-    'antigravity-general': 'Antigravity Intelligence',
-    'openrouter': 'OpenRouter (Grok 4.1 Fast)',
-    'google-ai': 'Google AI (Gemini 2.0 Flash)'
+    'assistme': 'AssistMe Portfolio',
+    'assistme-portfolio': 'AssistMe Portfolio',
+    'assistme-math': 'AssistMe Math Engine',
+    'assistme-utility': 'AssistMe Utility',
+    'assistme-general': 'AssistMe',
+    'openrouter': 'OpenRouter (Grok 4.1 Fast)'
 };
 
 // Intelligent Chat Assistant with Integrated AI
@@ -71,7 +67,7 @@ class IntelligentAssistant {
         this.cache = null;
         this.isReadyState = false;
         this.defaultGreetings = [
-            "Hello! I am **Antigravity**, Mangesh's specialized AI technical partner. I can provide deep insights into his distributed systems architecture, technical wins, and 2026 vision. How can I assist you?"
+            "Hello! I'm AssistMe, Mangesh's AI portfolio assistant. I can walk you through his projects, experience, and technical skills. How can I help you today?"
         ];
         this.processing = false;
         this.history = [];
@@ -211,14 +207,14 @@ class IntelligentAssistant {
                     answer: actionResult.message,
                     type: 'action',
                     confidence: 1.0,
-                    source: 'technical-engine',
-                    sourceLabel: 'Expert System',
+                    source: 'agentic-action',
+                    sourceLabel: 'Agentic AI',
                     model: 'Action Handler',
                     action: actionResult.actionName,
                     actionResult: actionResult.result,
                     processingTime: processingTime,
                     runtime: `${processingTime}ms`,
-                    providers: ['Mangesh Raut Portfolio'],
+                    providers: ['Agentic AI'],
                     category: 'Action',
                     charCount: actionResult.message.length,
                     safetyScore: 1.0,
@@ -462,7 +458,7 @@ class IntelligentAssistant {
         if (!payload) return null;
 
         if (typeof payload === 'string') {
-            const defaultKey = this.normalizeSourceKey(defaultSource) || 'antigravity-general';
+            const defaultKey = this.normalizeSourceKey(defaultSource) || 'assistme-general';
             return {
                 answer: payload,
                 type: 'general',
@@ -493,8 +489,8 @@ class IntelligentAssistant {
         };
 
         if (this.isGenericFallback(result.answer)) {
-            result.source = 'antigravity-general';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-general', result.type);
+            result.source = 'assistme-general';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-general', result.type);
             result.providers = [];
             if (typeof result.confidence === 'number') {
                 result.confidence = Math.min(result.confidence, 0.25);
@@ -531,8 +527,8 @@ class IntelligentAssistant {
             answer: '',
             type: 'general',
             confidence: 0.3,
-            source: 'antigravity-general',
-            sourceLabel: this.getSourceLabelForKey('antigravity-general', 'general'),
+            source: 'assistme-general',
+            sourceLabel: this.getSourceLabelForKey('assistme-general', 'general'),
             sourceMessage: '',
             providers: []
         };
@@ -542,72 +538,72 @@ class IntelligentAssistant {
         if (lower.includes('hello') || lower.includes('hi')) {
             result.answer = this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)];
             result.type = 'greeting';
-            result.source = 'antigravity-utility';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-utility', 'utility');
+            result.source = 'assistme-utility';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-utility', 'utility');
             return result;
         }
 
         if (lower.includes('experience') || lower.includes('employment')) {
             result.answer = 'Mangesh is currently a Software Engineer at IoasiZ, building scalable microservices. Previously, he worked at Aramark as a Student Software Engineer, optimizing cloud resources and automating workflows.';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('portfolio') || lower.includes('work') || lower.includes('experience')) {
             result.answer = 'Mangesh is a Software Engineer specializing in Java Spring Boot, AngularJS, AWS, and machine learning. Check out his GitHub: github.com/mangeshraut712';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('contact') || lower.includes('email')) {
             result.answer = 'You can reach Mangesh at mbr63@drexel.edu or connect on LinkedIn: linkedin.com/in/mangeshraut71298';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('java')) {
             result.answer = 'Mangesh has extensive experience with Java, particularly Spring Boot. He refactored legacy monoliths into microservices at IoasiZ and built energy analytics dashboards using Java backend.';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('aws') || lower.includes('cloud')) {
             result.answer = 'Mangesh is skilled in AWS services like Lambda, EC2, and RDS. He automated workflows using Terraform and Python, and managed cloud infrastructure at Aramark and IoasiZ.';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('machine learning') || lower.includes('ml') || lower.includes('ai')) {
             result.answer = 'Mangesh has worked on Machine Learning projects, including demand forecasting using LSTM models (TensorFlow) and other Python-based data science initiatives.';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('education') || lower.includes('university') || lower.includes('degree')) {
             result.answer = 'Mangesh holds a Master of Science in Computer Science from Drexel University (GPA 3.76) and a Bachelor of Engineering in Computer Engineering from Savitribai Phule Pune University.';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
         if (lower.includes('code') || lower.includes('github') || lower.includes('project')) {
             result.answer = 'You can explore Mangesh\'s code on GitHub. He has projects demonstrating Microservices, AWS integration, and Machine Learning. Visit: github.com/mangeshraut712';
             result.type = 'portfolio';
-            result.source = 'antigravity-portfolio';
-            result.sourceLabel = this.getSourceLabelForKey('antigravity-portfolio', 'portfolio');
+            result.source = 'assistme-portfolio';
+            result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
             return result;
         }
 
@@ -626,8 +622,8 @@ class IntelligentAssistant {
             answer: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
             type: 'fallback',
             confidence: 0.2,
-            source: 'antigravity-general',
-            sourceLabel: this.getSourceLabelForKey('antigravity-general', 'general'),
+            source: 'assistme-general',
+            sourceLabel: this.getSourceLabelForKey('assistme-general', 'general'),
             sourceMessage: '',
             providers: []
         };
@@ -647,22 +643,22 @@ class IntelligentAssistant {
     getSourceLabelForKey(sourceKey, type = 'general') {
         const normalized = this.normalizeSourceKey(sourceKey);
         if (!normalized) {
-            if (type === 'portfolio') return SOURCE_LABELS['antigravity-portfolio'];
-            if (type === 'math') return SOURCE_LABELS['antigravity-math'];
-            if (type === 'utility') return SOURCE_LABELS['antigravity-utility'];
-            return SOURCE_LABELS['antigravity-general'];
+            if (type === 'portfolio') return SOURCE_LABELS['assistme-portfolio'];
+            if (type === 'math') return SOURCE_LABELS['assistme-math'];
+            if (type === 'utility') return SOURCE_LABELS['assistme-utility'];
+            return SOURCE_LABELS['assistme-general'];
         }
 
         if (SOURCE_LABELS[normalized]) {
             return SOURCE_LABELS[normalized];
         }
 
-        if (normalized === 'antigravity' && type === 'portfolio') {
-            return SOURCE_LABELS['antigravity-portfolio'];
+        if (normalized === 'assistme' && type === 'portfolio') {
+            return SOURCE_LABELS['assistme-portfolio'];
         }
 
         const words = normalized.split(/[-_]/g).filter(Boolean);
-        if (!words.length) return SOURCE_LABELS['antigravity-general'];
+        if (!words.length) return SOURCE_LABELS['assistme-general'];
 
         return words
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -680,8 +676,8 @@ class IntelligentAssistant {
         if (lower.includes('(source: wikipedia')) return 'wikipedia';
         if (lower.includes('(source: duckduckgo')) return 'duckduckgo';
         if (lower.includes('(source: stack overflow')) return 'stackoverflow';
-        if (lower.includes('source: portfolio')) return 'antigravity-portfolio';
-        if (lower.includes('source: linkedin')) return 'antigravity-portfolio';
+        if (lower.includes('source: portfolio')) return 'assistme-portfolio';
+        if (lower.includes('source: linkedin')) return 'assistme-portfolio';
         if (lower.includes('offline knowledge')) return 'offline';
         if (lower.includes('restcountries')) return 'country_facts';
 
@@ -689,7 +685,7 @@ class IntelligentAssistant {
     }
 
     identifySource(payload, defaultSource = 'AssistMe') {
-        const defaultKey = this.normalizeSourceKey(defaultSource) || 'antigravity-general';
+        const defaultKey = this.normalizeSourceKey(defaultSource) || 'assistme-general';
 
         let key = this.normalizeSourceKey(payload?.source);
         if (!key && payload?.origin) {
@@ -726,21 +722,21 @@ class IntelligentAssistant {
 
         if (!key) {
             if (payload?.type === 'portfolio') {
-                key = 'antigravity-portfolio';
+                key = 'assistme-portfolio';
             } else if (payload?.type === 'math') {
-                key = 'antigravity-math';
+                key = 'assistme-math';
             } else if (payload?.type === 'utility') {
-                key = 'antigravity-utility';
+                key = 'assistme-utility';
             } else if (payload?.type === 'general' || payload?.type === 'factual' || payload?.type === 'definition') {
-                key = defaultKey || 'antigravity-general';
+                key = defaultKey || 'assistme-general';
             } else {
-                key = defaultKey || 'antigravity-general';
+                key = defaultKey || 'assistme-general';
             }
         }
 
         const answerText = payload?.answer ?? payload?.text ?? '';
         if (this.isGenericFallback(answerText)) {
-            key = 'antigravity-general';
+            key = 'assistme-general';
         }
 
         const label = this.getSourceLabelForKey(key, payload?.type);

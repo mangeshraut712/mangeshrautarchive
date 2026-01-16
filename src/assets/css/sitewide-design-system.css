@@ -454,42 +454,37 @@ html.dark .search-toggle:hover {
 /* Light Mode: Dark Text */
 body,
 p,
-li,
-span,
-div,
-a {
-    color: #1d1d1f;
-    font-family: 'Inter', -apple-system, sans-serif;
-}
-
 h1,
 h2,
 h3,
 h4,
 h5,
-h6 {
-    font-family: 'Outfit', sans-serif;
+h6,
+li,
+span,
+div,
+a {
     color: #1d1d1f;
-    letter-spacing: -0.02em;
+
+    /* Default Dark Gray */
 }
 
 /* Dark Mode: Light Text */
 html.dark body,
 html.dark p,
-html.dark li,
-html.dark span,
-html.dark div,
-html.dark a {
-    color: #f5f5f7;
-}
-
 html.dark h1,
 html.dark h2,
 html.dark h3,
 html.dark h4,
 html.dark h5,
-html.dark h6 {
+html.dark h6,
+html.dark li,
+html.dark span,
+html.dark div,
+html.dark a {
     color: #f5f5f7;
+
+    /* Default Light Gray */
 }
 
 /* Blue Accents (Links, etc) */
@@ -594,299 +589,4 @@ section {
 section::before,
 section::after {
     display: none !important;
-}
-
-/* ========================================
-   FOOTER SOLID - 2026 DESIGN
-   ======================================== */
-.footer-solid {
-    background: #fff !important;
-    color: #1d1d1f;
-    width: 100%;
-    position: relative;
-    z-index: 10;
-    padding-bottom: 120px;
-    /* Space for floating buttons */
-}
-
-html.dark .footer-solid {
-    background: #000 !important;
-    color: #f5f5f7;
-}
-
-.footer-nav-link {
-    color: #86868b;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-block;
-    position: relative;
-}
-
-.footer-nav-link:hover {
-    color: #0071e3;
-    transform: translateX(4px);
-}
-
-html.dark .footer-nav-link {
-    color: #98989d;
-}
-
-html.dark .footer-nav-link:hover {
-    color: #0a84ff;
-}
-
-.footer-nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: currentColor;
-    transition: width 0.3s ease;
-}
-
-.footer-nav-link:hover::after {
-    width: 100%;
-}
-
-.footer-brand img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
-}
-
-html.dark .footer-brand img {
-    filter: invert(1) drop-shadow(0 4px 10px rgba(255, 255, 255, 0.1));
-}
-
-.footer-brand h2 {
-    color: #1d1d1f;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-html.dark .footer-brand h2 {
-    color: #f5f5f7;
-}
-
-.footer-social-link-new {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #f5f5f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1d1d1f;
-    font-size: 1.25rem;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    text-decoration: none;
-}
-
-html.dark .footer-social-link-new {
-    background: #1c1c1e;
-    color: #f5f5f7;
-}
-
-.footer-social-link-new:hover {
-    background: #0071e3;
-    color: #fff;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 10px 25px rgb(0 113 227 / 40%);
-}
-
-html.dark .footer-social-link-new:hover {
-    background: #0a84ff;
-    box-shadow: 0 10px 25px rgb(10 132 255 / 40%);
-}
-
-/* ========================================
-   GAME SECTION IMPROVEMENTS
-   ======================================== */
-#debug-runner-section {
-    background: #fff !important;
-    position: relative;
-    overflow: hidden;
-}
-
-html.dark #debug-runner-section {
-    background: #000 !important;
-}
-
-.debug-runner-title {
-    font-size: 3rem !important;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
-}
-
-.debug-runner-subtitle {
-    font-size: 1.25rem !important;
-    font-weight: 500;
-    color: #86868b;
-}
-
-.reward-item {
-    background: #fff;
-    border: 1px solid #d2d2d7;
-    padding: 1.75rem;
-    border-radius: 24px;
-    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    text-align: left;
-    position: relative;
-    cursor: pointer;
-}
-
-html.dark .reward-item {
-    background: #111;
-    border-color: #222;
-}
-
-.reward-item:hover:not(.locked) {
-    transform: translateY(-5px);
-    border-color: #0071e3;
-    background: #fbfbfd;
-    box-shadow: 0 15px 30px rgba(0, 113, 227, 0.1);
-}
-
-html.dark .reward-item:hover:not(.locked) {
-    border-color: #0c84ff;
-    background: #1a1a1c;
-    box-shadow: 0 15px 30px rgba(12, 132, 255, 0.15);
-}
-
-.reward-item.locked {
-    opacity: 0.7;
-    cursor: default;
-}
-
-.reward-icon-box {
-    width: 60px;
-    height: 60px;
-    min-width: 60px;
-    border-radius: 16px;
-    background: #f5f5f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    position: relative;
-    color: #1d1d1f;
-}
-
-html.dark .reward-icon-box {
-    background: #2c2c2e;
-    color: #f5f5f7;
-}
-
-.lock-icon {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    font-size: 0.7rem;
-    background: #1d1d1f;
-    color: #fff;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #fff;
-    z-index: 2;
-}
-
-html.dark .lock-icon {
-    background: #fff;
-    color: #000;
-    border-color: #111;
-}
-
-.reward-info {
-    flex-grow: 1;
-}
-
-.reward-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    letter-spacing: -0.01em;
-}
-
-.reward-status {
-    font-size: 0.85rem;
-    color: #0071e3;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-html.dark .reward-status {
-    color: #0a84ff;
-}
-
-.reward-item.locked .reward-status {
-    color: #86868b;
-}
-
-.reward-action {
-    color: #d2d2d7;
-    font-size: 1rem;
-    transition: transform 0.3s ease;
-}
-
-.reward-item:hover:not(.locked) .reward-action {
-    transform: translateX(4px);
-    color: #0071e3;
-}
-
-.reward-item.unlocked .reward-icon-box {
-    background: #eef7ff;
-    color: #0071e3;
-}
-
-html.dark .reward-item.unlocked .reward-icon-box {
-    background: #072e54;
-    color: #0a84ff;
-}
-
-.reward-item.unlocked .lock-icon {
-    display: none;
-}
-
-.reward-info h4 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    letter-spacing: -0.01em;
-}
-
-.reward-info p {
-    font-size: 0.9rem;
-    color: #0071e3;
-    font-weight: 600;
-}
-
-html.dark .reward-info p {
-    color: #0a84ff;
-}
-
-.reward-item.locked .reward-info p {
-    color: #86868b;
-}
-
-.reward-item.unlocked .reward-icon-box {
-    background: #eef7ff;
-    color: #0071e3;
-}
-
-html.dark .reward-item.unlocked .reward-icon-box {
-    background: #072e54;
-    color: #0a84ff;
 }
