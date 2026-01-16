@@ -1644,33 +1644,46 @@
           </div>
 
           <!-- Unlocked Documentation / Rewards -->
-          <div id="game-rewards" class="mt-20">
-            <div class="flex items-center justify-between mb-8">
-              <h3 class="text-2xl font-bold">Technical Unlockables</h3>
-              <span class="text-sm font-semibold text-blue-600">Play to reveal architectural secrets</span>
+          <div id="game-rewards" class="mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div>
+                <h3 class="text-3xl font-bold tracking-tight">Technical Unlockables</h3>
+                <p class="text-gray-500 mt-2">Earn points to decrypt architectural blueprints</p>
+              </div>
+              <div
+                class="px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold border border-blue-100 dark:border-blue-800/30">
+                <i class="fas fa-gamepad mr-2"></i> Play to Reveal Secrets
+              </div>
             </div>
-            <div id="unlocked-docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div id="unlocked-docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <!-- Documentation Item 1 (Locked) -->
-              <div class="reward-item locked hover:scale-[1.02]" id="reward-arch">
-                <div class="reward-icon-box">
+              <div class="reward-item locked group cursor-pointer" id="reward-arch">
+                <div class="reward-icon-box shadow-sm group-hover:shadow-md transition-shadow">
                   <i class="fas fa-lock lock-icon"></i>
-                  <i class="fas fa-sitemap doc-icon"></i>
+                  <i class="fas fa-layer-group doc-icon text-2xl"></i>
                 </div>
                 <div class="reward-info">
-                  <h4>System Architecture</h4>
-                  <p>Unlock at 500 points</p>
+                  <h4 class="text-lg font-bold">System Architecture</h4>
+                  <p class="text-blue-600 dark:text-blue-400 font-bold">Unlock at 500 points</p>
+                </div>
+                <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
+                  <i class="fas fa-chevron-right text-gray-300"></i>
                 </div>
               </div>
 
               <!-- Documentation Item 2 (Locked) -->
-              <div class="reward-item locked hover:scale-[1.02]" id="reward-api">
-                <div class="reward-icon-box">
+              <div class="reward-item locked group cursor-pointer" id="reward-api">
+                <div class="reward-icon-box shadow-sm group-hover:shadow-md transition-shadow">
                   <i class="fas fa-lock lock-icon"></i>
-                  <i class="fas fa-terminal doc-icon"></i>
+                  <i class="fas fa-code-branch doc-icon text-2xl"></i>
                 </div>
                 <div class="reward-info">
-                  <h4>API Strategy 2026</h4>
-                  <p>Unlock at 1000 points</p>
+                  <h4 class="text-lg font-bold">API Strategy 2026</h4>
+                  <p class="text-blue-600 dark:text-blue-400 font-bold">Unlock at 1000 points</p>
+                </div>
+                <div class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
+                  <i class="fas fa-chevron-right text-gray-300"></i>
                 </div>
               </div>
             </div>
@@ -1679,10 +1692,20 @@
       </div>
     </section>
 
-    <footer class="footer-solid py-16 border-t border-gray-100 dark:border-white/10">
-      <div class="container mx-auto px-4 text-center">
-        <div class="footer-content">
-          <div class="footer-social-links flex justify-center gap-6 mb-10">
+    <footer class="footer-solid pt-24 pb-12 border-t border-gray-100 dark:border-white/10 bg-white dark:bg-black">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col items-center">
+          <!-- Logo/Brand -->
+          <div class="footer-brand mb-10 text-center">
+            <div class="mb-4 inline-block">
+              <img src="assets/images/logo.png" alt="Mangesh Raut" class="w-10 h-10 object-contain dark:invert">
+            </div>
+            <h2 class="text-xl font-bold tracking-tight">Mangesh Raut</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Expert Software Engineer • Technical Partner</p>
+          </div>
+
+          <!-- Social Links -->
+          <div class="footer-social-links flex justify-center gap-6 mb-12">
             <a href="https://github.com/mangeshraut712" target="_blank" class="footer-social-link-new"
               aria-label="GitHub">
               <i class="fab fa-github"></i>
@@ -1700,13 +1723,21 @@
               <i class="fab fa-youtube"></i>
             </a>
           </div>
-          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
-            &copy; 2026 Mangesh Raut. All rights reserved.
-          </p>
-          <div class="mt-4 flex justify-center gap-6 text-xs text-gray-400">
-            <span>Philadelphia, PA</span>
-            <span>•</span>
-            <span>Software Engineer</span>
+
+          <!-- Bottom Bar -->
+          <div
+            class="w-full pt-8 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-xs font-medium text-gray-400 dark:text-gray-500">
+              &copy; 2026 Mangesh Raut. Philadelphia, PA
+            </p>
+            <div class="flex items-center gap-8">
+              <a href="#about"
+                class="text-xs font-semibold text-gray-500 hover:text-blue-600 transition-colors">About</a>
+              <a href="#projects"
+                class="text-xs font-semibold text-gray-500 hover:text-blue-600 transition-colors">Projects</a>
+              <a href="#contact"
+                class="text-xs font-semibold text-gray-500 hover:text-blue-600 transition-colors">Contact</a>
+            </div>
           </div>
         </div>
       </div>
@@ -1983,53 +2014,54 @@
     <script type="module" src="js/modules/accessibility.js"></script>
     <script type="module" src="js/modules/premium-enhancements.js"></script>
 
-    console.log('🚀 2026 Portfolio Loading...');
-    console.log('✨ System Initialization: Complete');
-    console.log('♿ Accessibility Features: Enabled');
+    <script type="module">
+      console.log('🚀 2026 Portfolio Loading...');
+      console.log('✨ System Initialization: Complete');
+      console.log('♿ Accessibility Features: Enabled');
 
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-    const host = window.location.hostname;
-    const disableSW = /no-sw=1/.test(window.location.search);
-    const isLocal = host === 'localhost' || host === '127.0.0.1';
+      // Register Service Worker for PWA
+      if ('serviceWorker' in navigator) {
+        const host = window.location.hostname;
+        const disableSW = /no-sw=1/.test(window.location.search);
+        const isLocal = host === 'localhost' || host === '127.0.0.1';
 
-    // Unregister all service workers on localhost
-    if (isLocal) {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-    registrations.forEach(registration => {
-    registration.unregister();
-    console.log('🗑️ ServiceWorker unregistered for local development');
-    });
-    });
+        // Unregister all service workers on localhost
+        if (isLocal) {
+          navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(registration => {
+              registration.unregister();
+              console.log('🗑️ ServiceWorker unregistered for local development');
+            });
+          });
 
-    // Clear all caches
-    if ('caches' in window) {
-    caches.keys().then(cacheNames => {
-    cacheNames.forEach(cacheName => {
-    caches.delete(cacheName);
-    console.log('🗑️ Cache cleared:', cacheName);
-    });
-    });
-    }
+          // Clear all caches
+          if ('caches' in window) {
+            caches.keys().then(cacheNames => {
+              cacheNames.forEach(cacheName => {
+                caches.delete(cacheName);
+                console.log('🗑️ Cache cleared:', cacheName);
+              });
+            });
+          }
 
-    console.log('ℹ️ ServiceWorker disabled for local development. Add ?no-sw=0 to force register.');
-    } else {
-    const shouldRegister = !disableSW;
+          console.log('ℹ️ ServiceWorker disabled for local development. Add ?no-sw=0 to force register.');
+        } else {
+          const shouldRegister = !disableSW;
 
-    if (shouldRegister) {
-    window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js')
-    .then(registration => {
-    console.log('✅ ServiceWorker registration successful with scope: ', registration.scope);
-    registration.update().catch(() => { });
-    })
-    .catch(err => {
-    console.log('❌ ServiceWorker registration failed: ', err);
-    });
-    });
-    }
-    }
-    }
+          if (shouldRegister) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                  console.log('✅ ServiceWorker registration successful with scope: ', registration.scope);
+                  registration.update().catch(() => { });
+                })
+                .catch(err => {
+                  console.log('❌ ServiceWorker registration failed: ', err);
+                });
+            });
+          }
+        }
+      }
     </script>
 </body>
 

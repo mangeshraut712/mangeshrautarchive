@@ -595,17 +595,35 @@ section::before,
 section::after {
     display: none !important;
 }
+
 /* ========================================
    FOOTER SOLID - 2026 DESIGN
    ======================================== */
 .footer-solid {
-    background: #fff;
+    background: #fff !important;
     color: #1d1d1f;
+    width: 100%;
+    position: relative;
+    z-index: 10;
 }
 
 html.dark .footer-solid {
-    background: #000;
+    background: #000 !important;
     color: #f5f5f7;
+}
+
+.footer-solid::before,
+.footer-solid::after,
+.footer-solid .bg-blob {
+    display: none !important;
+}
+
+.footer-brand img {
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+}
+
+html.dark .footer-brand img {
+    filter: invert(1) drop-shadow(0 4px 10px rgba(255, 255, 255, 0.1));
 }
 
 .footer-social-link-new {
@@ -643,13 +661,13 @@ html.dark .footer-social-link-new:hover {
    GAME SECTION IMPROVEMENTS
    ======================================== */
 #debug-runner-section {
-    background: #fbfbfd;
+    background: #fff !important;
     position: relative;
     overflow: hidden;
 }
 
 html.dark #debug-runner-section {
-    background: #0a0a0b;
+    background: #000 !important;
 }
 
 .debug-runner-title {
@@ -668,19 +686,31 @@ html.dark #debug-runner-section {
 .reward-item {
     background: #fff;
     border: 1px solid #d2d2d7;
-    padding: 1.5rem;
-    border-radius: 20px;
-    transition: all 0.4s ease;
-    width: 280px;
+    padding: 2rem;
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    width: 100%;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
     text-align: left;
+    position: relative;
 }
 
 html.dark .reward-item {
-    background: #1c1c1e;
+    background: #000;
     border-color: #333;
+}
+
+.reward-item:hover:not(.locked) {
+    transform: translateY(-8px);
+    border-color: #0071e3;
+    box-shadow: 0 20px 40px rgba(0, 113, 227, 0.1);
+}
+
+html.dark .reward-item:hover:not(.locked) {
+    border-color: #0c84ff;
+    box-shadow: 0 20px 40px rgba(12, 132, 255, 0.15);
 }
 
 .reward-item.locked {
@@ -721,13 +751,32 @@ html.dark .reward-icon-box {
 }
 
 .reward-info h4 {
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 700;
     margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
 }
 
 .reward-info p {
-    font-size: 0.875rem;
-    color: #dc3545;
+    font-size: 0.9rem;
+    color: #0071e3;
     font-weight: 600;
+}
+
+html.dark .reward-info p {
+    color: #0a84ff;
+}
+
+.reward-item.locked .reward-info p {
+    color: #86868b;
+}
+
+.reward-item.unlocked .reward-icon-box {
+    background: #eef7ff;
+    color: #0071e3;
+}
+
+html.dark .reward-item.unlocked .reward-icon-box {
+    background: #072e54;
+    color: #0a84ff;
 }

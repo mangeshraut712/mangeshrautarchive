@@ -191,12 +191,12 @@ class DebugRunner {
                 }
 
                 action();
-                this.vibrate(10);
-                btn.style.transform = 'scale(0.95)';
+                e.preventDefault();
+                startAction();
+                btn.style.transform = 'scale(0.92)';
             };
-
             const end = (e) => {
-                if (e.cancelable) e.preventDefault();
+                e.preventDefault();
                 if (endAction) endAction();
                 btn.style.transform = 'scale(1)';
             };
@@ -210,11 +210,15 @@ class DebugRunner {
         };
 
         // Jump Button
-        const jumpBtn = this.createControlButton('↑ JUMP', 'jump');
+        const jumpBtn = document.createElement('button');
+        jumpBtn.className = 'mobile-control-jump';
+        jumpBtn.innerHTML = '<i class="fas fa-arrow-up mr-2"></i> JUMP';
         bindAction(jumpBtn, () => this.jump());
 
         // Duck Button
-        const duckBtn = this.createControlButton('↓ DUCK', 'duck');
+        const duckBtn = document.createElement('button');
+        duckBtn.className = 'mobile-control-duck';
+        duckBtn.innerHTML = '<i class="fas fa-arrow-down mr-2"></i> DUCK';
         bindAction(duckBtn, () => this.duck(), () => this.standUp());
 
         wrapper.appendChild(jumpBtn);
@@ -222,54 +226,8 @@ class DebugRunner {
 
         container.parentElement.appendChild(wrapper);
         this.mobileControls = wrapper;
-        this.updateMobileControlsTheme();
     }
 
-    createControlButton(text, type) {
-        const btn = document.createElement('button');
-        btn.className = `debug-game-btn debug-game-btn--${type}`;
-        btn.textContent = text;
-        btn.style.cssText = `
-            padding: 20px 24px;
-            border-radius: 16px;
-            border: none;
-            font-weight: 800;
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        `;
-
-        if (type === 'jump') {
-            btn.style.background = 'linear-gradient(135deg, #16a34a, #22d3ee)';
-            btn.style.color = '#ffffff';
-        } else {
-            btn.style.background = 'linear-gradient(135deg, #0071e3, #2997ff)';
-            btn.style.color = '#ffffff';
-        }
-
-        return btn;
-    }
-
-    updateMobileControlsTheme() {
-        if (!this.mobileControls) return;
-
-        const isDark = document.documentElement.classList.contains('dark');
-        const buttons = this.mobileControls.querySelectorAll('button');
-
-        buttons.forEach(btn => {
-            if (isDark) {
-                btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-            } else {
-                btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-            }
-        });
-    }
 
     vibrate(duration) {
         if ('vibrate' in navigator) {
