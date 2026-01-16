@@ -1268,7 +1268,7 @@ html.dark .theme-toggle-nav:focus-visible {
 /* Chatbot styles moved to chatbot-complete.css */
 
 /* ============================================================
-   2025 THEME CONSISTENCY OVERRIDES
+   2026 THEME CONSISTENCY OVERRIDES
    - Solid white light mode, solid black dark mode
    - Unified cards and buttons
    - Chatbot controls color-coded (red close, blue send, green mic)
@@ -4252,7 +4252,7 @@ html.dark .contact-social-links a:hover .fa-solid.fa-code {
     background-color: var(--bg-secondary);
 }
 
-/* Education status badge styling centralized in fixes-2025.css */
+/* Education status badge styling centralized in fixes-2026.css */
 
 /* Updated Card Design - Latest Technology */
 .education-card {

@@ -1,6 +1,6 @@
 /**
  * Debug Runner - Premium Coding Game
- * 2025 Portfolio Upgrade
+ * 2026 Portfolio Upgrade
  * Apple Arcade-inspired aesthetic with smooth physics and polished visuals.
  * Enhanced with mobile controls and full theme awareness
  */

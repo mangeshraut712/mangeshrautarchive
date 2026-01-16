@@ -1,7 +1,7 @@
 /**
  * Skills Visualization Module
  * Interactive skill cards with proficiency levels and categories
- * 2025 Portfolio Enhancement
+ * 2026 Portfolio Enhancement
  */
 
 class SkillsVisualization {

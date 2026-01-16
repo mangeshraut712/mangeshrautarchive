@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * PREMIUM ENHANCEMENTS MODULE - 2025 Edition
+ * PREMIUM ENHANCEMENTS MODULE - 2026 Edition
  * Advanced interactions, animations, and visual polish
  * ═══════════════════════════════════════════════════════════════════
  */

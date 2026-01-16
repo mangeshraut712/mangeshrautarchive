@@ -73,7 +73,7 @@ class ChatUI {
             this.elements.toggleButton.setAttribute('aria-expanded', this._isWidgetOpen().toString());
         }
 
-        // Initialize modern input handler (2025 tech)
+        // Initialize modern input handler (2026 tech)
         if (this.elements.input) {
             this.modernInput = new ModernInputHandler(
                 this.elements.input,

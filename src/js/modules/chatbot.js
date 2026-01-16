@@ -1,5 +1,5 @@
 /**
- * Apple Intelligence Chatbot 2025
+ * Apple Intelligence Chatbot 2026
  * Enhanced with streaming responses, Markdown support, voice input, and metadata
  */
 

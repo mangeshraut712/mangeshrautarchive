@@ -113,7 +113,7 @@ class BirthdayCelebration {
     }
 
     /* ═══════════════════════════════════════════════════════════
-       CANVAS PHYSICS ENGINE (The 2025 Upgrade)
+       CANVAS PHYSICS ENGINE (The 2026 Upgrade)
        ═══════════════════════════════════════════════════════════ */
     showBirthdayCelebration() {
         const celebrated = sessionStorage.getItem('birthday-celebrated');

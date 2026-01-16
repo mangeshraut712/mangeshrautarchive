@@ -1,5 +1,5 @@
 /**
- * 3D Interactive Background - 2025 Enhancement
+ * 3D Interactive Background - 2026 Enhancement
  * Creates an immersive 3D particle system that responds to mouse movement
  * Uses Three.js for WebGL rendering
  * 

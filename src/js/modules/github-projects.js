@@ -1,7 +1,7 @@
 /**
  * GitHub Projects Dynamic Loader
  * Fetches and displays latest repositories from GitHub API
- * 2025 Portfolio Enhancement
+ * 2026 Portfolio Enhancement
  */
 
 class GitHubProjects {
