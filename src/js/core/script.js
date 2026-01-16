@@ -1011,19 +1011,19 @@ class ChatUI {
     _formatSourceLabel(sourceKey, type = 'general') {
         if (!sourceKey) {
             return type === 'portfolio'
-                ? 'AssistMe Portfolio'
+                ? 'Antigravity Intelligence Portfolio'
                 : type === 'math'
-                    ? 'AssistMe Math Engine'
-                    : 'AssistMe';
+                    ? 'Antigravity Intelligence Math Engine'
+                    : 'Antigravity Intelligence';
         }
 
         const normalized = this._normalizeSourceKey(sourceKey);
         const map = {
-            'assistme': 'AssistMe',
-            'assistme-portfolio': 'AssistMe Portfolio',
-            'assistme-general': 'AssistMe',
-            'assistme-math': 'AssistMe Math Engine',
-            'assistme-utility': 'AssistMe Utility',
+            'antigravity': 'Antigravity Intelligence',
+            'antigravity-portfolio': 'Antigravity Intelligence Portfolio',
+            'antigravity-general': 'Antigravity Intelligence',
+            'antigravity-math': 'Antigravity Intelligence Math Engine',
+            'antigravity-utility': 'Antigravity Intelligence Utility',
             'openai': 'OpenAI',
             'grok': 'Grok (xAI)',
             'claude': 'Claude (Anthropic)',
@@ -1043,7 +1043,7 @@ class ChatUI {
         }
 
         const words = normalized.split(/[-_]/g).filter(Boolean);
-        if (!words.length) return 'AssistMe';
+        if (!words.length) return 'Antigravity Intelligence';
         return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
 
@@ -1051,11 +1051,11 @@ class ChatUI {
         if (!value && value !== 0) return '';
         const lowered = String(value).trim().toLowerCase();
         const aliasMap = {
-            'assistme server': 'assistme',
-            'assistme client': 'assistme',
-            'assistme portfolio': 'assistme-portfolio',
-            'portfolio': 'assistme-portfolio',
-            'assistme math': 'assistme-math',
+            'antigravity server': 'antigravity',
+            'antigravity client': 'antigravity',
+            'antigravity portfolio': 'antigravity-portfolio',
+            'portfolio': 'antigravity-portfolio',
+            'antigravity math': 'antigravity-math',
             'gpt': 'openai',
             'gpt-4': 'openai',
             'gpt-4o': 'openai',
@@ -1634,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Configure global settings
-    window.AssistMeConfig = Object.freeze({
+    window.Antigravity IntelligenceConfig = Object.freeze({
         externalApis: ExternalApiKeys
     });
 
