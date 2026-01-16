@@ -6,8 +6,8 @@
 /* Debug Runner Container - 2026 Premium Alignment */
 #debug-runner-container {
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 900px !important;
+    margin: 0 auto !important;
     background: rgba(0, 0, 0, 0.02);
     border-radius: 24px;
     overflow: hidden;
@@ -40,19 +40,33 @@ html.dark #debug-runner-container {
 
 /* Mobile Controls - Apple Arcade Style */
 .debug-runner-mobile-controls {
-    position: fixed;
-    bottom: max(32px, env(safe-area-inset-bottom));
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    /* Default to relative for flow */
+    margin: 40px auto 0 !important;
     display: flex;
+    justify-content: center;
     gap: 24px;
     padding: 16px 32px;
     background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(25px) saturate(200%);
     border-radius: 40px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-    z-index: 1000;
+    z-index: 100;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+}
+
+/* Fixed positioning ONLY on small mobile screens */
+@media (width <=768px) {
+    .debug-runner-mobile-controls {
+        position: fixed;
+        bottom: max(32px, env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0 !important;
+        width: 90%;
+        max-width: none;
+    }
 }
 
 html.dark .debug-runner-mobile-controls {
@@ -274,14 +288,16 @@ html.dark .debug-shortcuts kbd {
         max-height: 600px;
     }
 
-    /* Keep mobile controls visible on desktop for better gameplay */
+    /* Keep mobile controls visible and centered on desktop */
     .debug-runner-mobile-controls {
         display: flex;
-
-        /* Always visible */
-        bottom: max(30px, env(safe-area-inset-bottom));
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin: 40px auto 0 !important;
         padding: 14px 24px;
-        gap: 20px;
+        gap: 32px;
     }
 
     /* Larger buttons on desktop */

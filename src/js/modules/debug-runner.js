@@ -111,12 +111,11 @@ class DebugRunner {
         // Modern Canvas Styling
         Object.assign(this.canvas.style, {
             background: this.colors.bg,
-            borderRadius: '16px',
+            display: 'block',
+            margin: '0 auto',
             width: '100%',
-            maxWidth: '900px',
+            maxWidth: '100%',
             height: 'auto',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-            border: `1px solid ${this.colors.groundLine}`,
             touchAction: 'none'
         });
 
@@ -186,14 +185,13 @@ class DebugRunner {
         const wrapper = document.createElement('div');
         wrapper.className = 'debug-runner-mobile-controls';
         wrapper.style.cssText = `
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
             width: 100%;
-            max-width: 600px;
-            margin: 20px auto 0;
-            padding: 0 10px;
-            box-sizing: border-box;
+            max-width: 900px;
+            margin: 40px auto 0;
             position: relative;
             z-index: 10;
         `;
