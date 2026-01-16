@@ -1,9 +1,9 @@
 /**
- * Apple Intelligence Chatbot 2025
- * Enhanced with streaming responses, Markdown support, voice input, and metadata
+ * Gemini Intelligence Chatbot 2026
+ * Enhanced with Gemini 2.0 Flash, streaming responses, and agentic actions
  */
 
-class AppleIntelligenceChatbot {
+class GeminiIntelligenceChatbot {
     constructor() {
         this.elements = this.initializeElements();
         this.isOpen = false;
@@ -611,10 +611,10 @@ class AppleIntelligenceChatbot {
 // Initialize chatbot when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        window.appleIntelligenceChatbot = new AppleIntelligenceChatbot();
+        window.geminiIntelligenceChatbot = new GeminiIntelligenceChatbot();
     });
 } else {
-    window.appleIntelligenceChatbot = new AppleIntelligenceChatbot();
+    window.geminiIntelligenceChatbot = new GeminiIntelligenceChatbot();
 }
 
-export default AppleIntelligenceChatbot;
+export default GeminiIntelligenceChatbot;

@@ -28,11 +28,11 @@ export const features = {
 };
 
 export const chat = {
-    defaultGreeting: "👋 Hello! I'm AssistMe, your intelligent assistant. I can help you learn about Mangesh Raut's experience, skills, projects, and answer any technical questions. How can I assist you today?",
+    defaultGreeting: "👋 Hello! I'm Antigravity, your elite 2026 technical partner. I can architect solutions, explain Mangesh's technical wins, and provide deep insights into his engineering journey. How can I assist you today?",
     welcomeDelay: 500,
     suggestionsLimit: 6,
     historyRetentionHours: 72, // 3 days
-    model: 'x-ai/grok-4.1-fast', // Default OpenRouter model
+    model: 'google/gemini-2.0-flash-exp', // Primary model for Google AI Portfolio Challenge 2026
     streaming: true,
     temperature: 0.7,
     maxTokens: 2000

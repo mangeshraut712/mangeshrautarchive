@@ -1,5 +1,5 @@
 /**
- * Agentic AI Actions - 2025 Enhancement
+ * Agentic AI Actions - 2026 Enhancement
  * Transforms the chatbot from passive Q&A to active agent that performs actions
  * 
  * Features:

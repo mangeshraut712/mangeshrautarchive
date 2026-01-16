@@ -1463,6 +1463,119 @@ section h2 {
     text-align: center;
 }
 
+/* Hero Visualization */
+.hero-viz-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.profile-image-wrapper {
+    position: relative;
+    z-index: 10;
+}
+
+/* Game Rewards */
+.reward-item {
+    background: var(--card-surface-light);
+    border: 1px solid var(--card-border-light);
+    padding: 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    width: 280px;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    opacity: 0.6;
+    filter: grayscale(1);
+    margin: 0 auto;
+}
+
+.reward-item.unlocked {
+    opacity: 1;
+    filter: grayscale(0);
+    border-color: #34c759;
+    box-shadow: 0 0 20px rgba(52, 199, 89, 0.2);
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.reward-icon-box {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f2f2f7;
+    border-radius: 12px;
+}
+
+html.dark .reward-icon-box {
+    background: #1c1c1e;
+}
+
+.reward-item.unlocked .reward-icon-box {
+    background: rgba(52, 199, 89, 0.1);
+}
+
+.lock-icon {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 14px;
+    color: #8e8e93;
+    background: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .lock-icon {
+    background: #1c1c1e;
+    color: #8e8e93;
+}
+
+.reward-item.unlocked .lock-icon {
+    display: none;
+}
+
+.reward-info h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.reward-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #8e8e93;
+    text-align: left;
+}
+
+.reward-item.unlocked .reward-info p {
+    color: #34c759;
+    font-weight: 600;
+}
+
+.doc-icon {
+    font-size: 20px;
+    color: #0071e3;
+}
+
+.reward-item.unlocked .doc-icon {
+    color: #34c759;
+}
+
 /* Projects Grid - Enhanced Apple-inspired Design with Superior Light Mode Visibility */
 .project-grid {
     display: grid;
@@ -1522,14 +1635,48 @@ section h2 {
 .project-card p {
     font-size: 1rem;
     line-height: 1.65;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
     color: var(--text-secondary);
     font-weight: 400;
+}
+
+/* Project Wins Styling */
+.project-wins {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.win-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(52, 199, 89, 0.1);
+    color: #34c759;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+html.dark .win-tag {
+    background: rgba(48, 209, 88, 0.15);
+    color: #30d158;
+    border: 1px solid rgba(48, 209, 88, 0.3);
+}
+
+.win-tag i {
+    font-size: 0.7rem;
 }
 
 /* Project Tags - Enhanced Visibility and Contrast */
 .project-card .project-tags {
     margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .project-card .project-tags .tag {

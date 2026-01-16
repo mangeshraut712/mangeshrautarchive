@@ -144,16 +144,55 @@ class GitHubProjects {
   }
 
   /**
+   * Get custom metadata for priority projects
+   */
+  getProjectMetadata(repoName) {
+    const metadata = {
+      'AssistMe-VirtualAssistant': {
+        description: 'Intelligent desktop assistant with voice control and LLM integration.',
+        wins: ['90% Command Accuracy', 'Low-Latency Audio', 'Plugin Architecture']
+      },
+      'Bug-Reporting-System': {
+        description: 'Enterprise bug tracker with real-time updates and RBAC.',
+        wins: ['Concurrent Locking', 'WebSocket Support', 'Secure RBAC']
+      },
+      'Real-Time-Face-Emotion-Recognition-System': {
+        description: 'CNN-based emotion detection from live video streams.',
+        wins: ['94.5% Accuracy', '<15ms Inference', '60 FPS Processing']
+      },
+      'Crime-Investigation-System': {
+        description: 'Secure centralized case management for law enforcement.',
+        wins: ['AES-256 Encryption', 'Scalable Schema', '80% Less Paperwork']
+      },
+      'mangeshrautarchive': {
+        description: 'Next-gen AI portfolio with agentic capabilities and 3D effects.',
+        wins: ['60 tok/sec Streaming', '3D Interactive UX', 'Agentic UI Control']
+      },
+      'Starlight-Blogging-Website': {
+        description: 'Modern blogging platform with markdown and SEO optimization.',
+        wins: ['100 Lighthouse Score', 'Real-time Markdown', 'JWT Security']
+      }
+    };
+    return metadata[repoName] || null;
+  }
+
+  /**
    * Create project card HTML
    */
   createProjectCard(repo, _index) {
+    const meta = this.getProjectMetadata(repo.name);
     const language = repo.language || 'Unknown';
     const languageColor = this.getLanguageColor(language);
-    const description = repo.description || 'No description available';
+    const description = meta ? meta.description : (repo.description || 'No description available');
     const stars = repo.stargazers_count || 0;
     const forks = repo.forks_count || 0;
-    // const updated = this.formatDate(repo.updated_at);
     const homepage = repo.homepage;
+
+    const winsHtml = meta ? `
+      <div class="project-wins">
+        ${meta.wins.map(win => `<span class="win-tag"><i class="fas fa-check-circle"></i> ${win}</span>`).join('')}
+      </div>
+    ` : '';
 
     return `
       <div class="project-card group">
@@ -163,8 +202,9 @@ class GitHubProjects {
             ${repo.name}
           </h3>
           <p class="project-description">
-            ${description.length > 100 ? description.substring(0, 100) + '...' : description}
+            ${description}
           </p>
+          ${winsHtml}
         </div>
 
         <div class="project-body">

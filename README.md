@@ -1,19 +1,20 @@
-# 🚀 Mangesh Raut - Premium Portfolio Website
+# 🚀 Antigravity - Premium AI Engineering Portfolio 2026
 
-> **FINAL PREMIUM CHATBOT AND WEBSITE** - Restore Point  
-> AI-Powered Portfolio with Apple Intelligence-Inspired Chatbot
+> **Antigravity** is more than a portfolio; it's a technical partner designed for the **Google AI 2026 Challenge**. 
+> Powered by Google Gemini 2.0 Flash, it represents the next generation of agentic engineering showcases.
 
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-success)]()
-[![AI](https://img.shields.io/badge/AI-Grok%204.1%20Fast-blue)]()
-[![Deployment](https://img.shields.io/badge/Deployed-Vercel%20%2B%20GitHub%20Pages-black)]()
+[![AI](https://img.shields.io/badge/AI-Google%20Gemini%202.0%20Flash-blue)]()
+[![Challenge](https://img.shields.io/badge/Challenge-Google%20AI%202026-yellow)]()
+[![Branding](https://img.shields.io/badge/Persona-Antigravity-orange)]()
 
 ## 🌟 Live Deployments
 
-- **Primary**: [mangeshraut.pro](https://mangeshraut.pro) (Custom Domain)
+- **Primary (Google AI Challenge)**: [mangesh-portfolio-api-us-central1](https://mangesh-portfolio-api-us-central1.run.app) (Example Cloud Run)
 - **Vercel**: [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)
 - **GitHub Pages**: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
 
-All deployments share the same Vercel FastAPI backend for AI chatbot functionality.
+All deployments share the same Python backend (now supporting Google Gemini) for AI chatbot functionality.
 
 ---
 
@@ -40,12 +41,13 @@ All deployments share the same Vercel FastAPI backend for AI chatbot functionali
 - ✅ **Smooth Animations** - 60fps GPU-accelerated transitions
 - ✅ **Accessibility** - WCAG 2.1 AA compliant, keyboard navigation
 
-### 🤖 **AI Chatbot (Apple Intelligence Style)**
-- ✅ **OpenRouter Integration** - Powered by xAI Grok 4.1 Fast
+### 🤖 **Antigravity Intelligence**
+- ✅ **Google Gemini 2.0 Flash** - Elite performance and technical depth
+- ✅ **Antigravity Persona** - Precise, visionary, and architectural technical partner
 - ✅ **Real-Time Streaming** - Token-by-token response display
 - ✅ **Voice Input (S2R)** - Speech-to-text with visual feedback
-- ✅ **Context Memory** - Session-based conversation history
-- ✅ **Portfolio Expert** - Deep knowledge of Mangesh's background, skills, projects
+- ✅ **Portfolio Memory** - Session-based conversation history
+- ✅ **Engineering Win Focus** - Deep dives into architectural decisions
 - ✅ **Mobile Full-Screen** - Immersive chat experience on mobile
 - ✅ **Metadata Display** - Model info, tokens, latency, cost tracking
 - ✅ **Copy & Speak** - Text-to-speech and clipboard integration
@@ -104,10 +106,10 @@ All deployments share the same Vercel FastAPI backend for AI chatbot functionali
 ┌─────────────────────────────────────────────────────────────────┐
 │                          AI LAYER                               │
 ├─────────────────────────────────────────────────────────────────┤
-│  OpenRouter API (https://openrouter.ai)                         │
-│  • Model: x-ai/grok-4.1-fast                                    │
-│  • Streaming: Server-Sent Events (SSE)                          │
-│  • Context: Portfolio data + conversation history               │
+│  Google Generative AI (Gemini)                                  │
+│  • Model: gemini-2.0-flash-exp                                  │
+│  • Streaming: Native Python SDK                                 │
+│  • Context: Antigravity Technical Persona + Portfolio Data      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -232,21 +234,26 @@ SYSTEM_PROMPT = f"""You are AssistMe, an advanced AI assistant for Mangesh Raut'
 
 ## 🌐 Deployment
 
-### **Vercel (Primary - Recommended)**
+### **Google Cloud Run (Recommended for Challenge)**
 
-1. **Connect Repository**
+This project is optimized for the **Google AI "New Year, New You" Portfolio Challenge**.
+
+1. **Prerequisites**
+   - Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+   - Login: `gcloud auth login`
+   - Set project: `gcloud config set project [YOUR_PROJECT_ID]`
+
+2. **Deploy using Script**
    ```bash
-   vercel --prod
+   chmod +x deploy-cloud-run.sh
+   ./deploy-cloud-run.sh
    ```
 
-2. **Set Environment Variables**
-   - Go to Vercel Dashboard → Project → Settings → Environment Variables
-   - Add `OPENROUTER_API_KEY` with your key
-   - Add `OPENROUTER_MODEL` = `x-ai/grok-4.1-fast`
+3. **Set Environment Variables**
+   Go to Google Cloud Console → Cloud Run → Your Service → Edit & Deploy New Revision:
+   - `GOOGLE_API_KEY`: Your Gemini API Key from [Google AI Studio](https://aistudio.google.com/)
 
-3. **Deploy**
-   - Push to `main` branch triggers auto-deployment
-   - Or manually: `vercel --prod`
+### **Vercel (Alternative)**
 
 ### **GitHub Pages (Secondary)**
 
@@ -617,6 +624,6 @@ Software Engineer | Full-Stack Developer | AI/ML Engineer
 
 ---
 
-**Last Updated**: December 6, 2025  
-**Version**: 4.0.0 - Final Premium Release  
-**Status**: ✅ Production Ready | 🚀 Fully Deployed | 🤖 AI-Powered
+**Last Updated**: January 16, 2026  
+**Version**: 6.0.0 - Antigravity Technical Partner Upgrade  
+**Status**: ✅ Production Ready | 🚀 Competition Submission | 🤖 Gemini-Native

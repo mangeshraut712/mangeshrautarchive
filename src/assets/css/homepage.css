@@ -32,7 +32,8 @@ html.dark .home-hero {
 }
 
 html:not(.dark) .home-hero {
-    background: var(--bg-primary);
+    background: #fff;
+    padding-top: 140px;
 }
 
 /* Profile Image with Ring */
@@ -499,6 +500,7 @@ html:not(.dark) .hero-stat-label {
 
 /* Animation Enhancements */
 @keyframes float {
+
     0%,
     100% {
         transform: translateY(0);
@@ -509,7 +511,3 @@ html:not(.dark) .hero-stat-label {
     }
 }
 
-.profile-image-wrapper {
-    animation: float 3s ease-in-out infinite;
-    will-change: transform;
-}

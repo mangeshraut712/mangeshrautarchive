@@ -110,10 +110,16 @@ html.dark .mobile-control-duck {
 }
 
 .debug-runner-title {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 1.5rem auto;
+    text-align: center;
     background: linear-gradient(135deg, #0071e3, #2997ff);
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    font-size: 2.5rem;
+    font-weight: 800;
 }
 
 html.dark .debug-runner-title {
@@ -138,6 +144,12 @@ html.dark .debug-runner-subtitle {
 
 html.dark .debug-runner-meta {
     color: #98989d;
+}
+
+.debug-runner-copy {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 /* Keyboard Shortcuts - Apple Style */
@@ -243,14 +255,17 @@ html.dark .debug-shortcuts kbd {
         max-height: 600px;
     }
 
-    /* Keep mobile controls visible on desktop for better gameplay */
+    /* Game pad style on desktop */
     .debug-runner-mobile-controls {
         display: flex;
-
-        /* Always visible */
-        bottom: max(30px, env(safe-area-inset-bottom));
-        padding: 14px 24px;
-        gap: 20px;
+        position: static;
+        transform: none;
+        margin: 2rem auto 0;
+        justify-content: center;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        gap: 40px;
     }
 
     /* Larger buttons on desktop */
@@ -285,6 +300,7 @@ html.dark .debug-shortcuts kbd {
    ═══════════════════════════════════════════════════════════ */
 
 @keyframes buttonPulse {
+
     0%,
     100% {
         transform: scale(1);
@@ -319,6 +335,7 @@ html.dark .debug-shortcuts kbd {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
+
     .mobile-control-jump,
     .mobile-control-duck,
     #debug-runner-canvas {

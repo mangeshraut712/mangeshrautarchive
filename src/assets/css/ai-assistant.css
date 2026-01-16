@@ -1,5 +1,5 @@
 /* 
-    Apple Intelligence 2025 - Ultra Premium Chatbot
+   ✨ Gemini Intelligence 2026 - Ultra Premium Chatbot
    Design System: Glassmorphism 2.0, Vivid Gradients, SF Pro
 */
 
@@ -12,9 +12,9 @@
     --ai-border-dark: rgb(255 255 255 / 10%);
     --ai-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
 
-    /* Apple Intelligence Gradient */
-    --ai-gradient: linear-gradient(135deg, #30CFD0 0%, #330867 100%);
-    --ai-glow: conic-gradient(from 180deg at 50% 50%, #2E88F9 0deg, #F93B30 72deg, #F9D030 144deg, #30D158 216deg, #2E88F9 360deg);
+    /* Gemini Intelligence Gradient */
+    --ai-gradient: linear-gradient(135deg, #1A73E8 0%, #0D47A1 100%);
+    --ai-glow: conic-gradient(from 180deg at 50% 50%, #4285F4 0deg, #EA4335 72deg, #FBBC05 144deg, #34A853 216deg, #4285F4 360deg);
     --ai-font: -apple-system, blinkmacsystemfont, "SF Pro Display", "SF Pro Text", sans-serif;
     --ai-primary: #007aff;
     --ai-text-light: #1d1d1f;
@@ -74,7 +74,7 @@ html.dark #chatbot-widget {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HEADER - APPLE INTELLIGENCE GLOW (COMPACT)
+   HEADER - GEMINI INTELLIGENCE GLOW (COMPACT)
    ═══════════════════════════════════════════════════════════ */
 .chatbot-header {
     padding: 18px 20px;
@@ -512,7 +512,7 @@ html.dark .msg-action-btn.speaking {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   INPUT AREA - APPLE INTELLIGENCE PREMIUM DESIGN
+   INPUT AREA - GEMINI INTELLIGENCE PREMIUM DESIGN
    ═══════════════════════════════════════════════════════════ */
 
 /* Container */

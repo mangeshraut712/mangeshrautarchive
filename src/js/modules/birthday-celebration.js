@@ -1,7 +1,7 @@
 /**
- *  MANGESH'S BIRTHDAY SYSTEM 2025
+ *  MANGESH'S BIRTHDAY SYSTEM 2026
  * Engine: Canvas Physics Particle System
- * Design: Apple Design 2025
+ * Design: Apple Design 2026
  */
 
 class BirthdayCelebration {
@@ -28,7 +28,7 @@ class BirthdayCelebration {
 
     init() {
         if (this.testMode) {
-            console.log('🧪 TEST MODE: 2025 Engine Active');
+            console.log('🧪 TEST MODE: 2026 Engine Active');
             setTimeout(() => this.showBirthdayCelebration(), 500);
             return;
         }

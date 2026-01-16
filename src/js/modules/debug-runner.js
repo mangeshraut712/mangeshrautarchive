@@ -440,8 +440,33 @@ class DebugRunner {
         this.updatePowerUps();
         this.updateParticles();
         this.checkCollisions();
+        this.checkMilestones();
 
         this.render();
+    }
+
+    checkMilestones() {
+        const score = Math.floor(this.score / 10);
+
+        if (score >= 500) {
+            const archReward = document.getElementById('reward-arch');
+            if (archReward && archReward.classList.contains('locked')) {
+                archReward.classList.remove('locked');
+                archReward.classList.add('unlocked');
+                archReward.querySelector('p').textContent = '🔓 Click to Open';
+                this.vibrate([100, 50, 100]);
+            }
+        }
+
+        if (score >= 1000) {
+            const apiReward = document.getElementById('reward-api');
+            if (apiReward && apiReward.classList.contains('locked')) {
+                apiReward.classList.remove('locked');
+                apiReward.classList.add('unlocked');
+                apiReward.querySelector('p').textContent = '🔓 Click to Open';
+                this.vibrate([100, 50, 100]);
+            }
+        }
     }
 
     updateObstacles() {

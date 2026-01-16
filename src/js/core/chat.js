@@ -15,10 +15,10 @@ if (typeof window !== 'undefined') {
             API_BASE = ''; // Use relative paths for local backend
             console.log('🏠 Local backend detected on port 8000');
         }
-        // For ALL other cases (Vercel, GitHub Pages, localhost:3000, etc.), use Vercel backend
+        // For ALL other cases (Cloud Run, GitHub Pages, Vercel, etc.), use Cloud Run backend
         else {
-            API_BASE = 'https://mangeshrautarchive.vercel.app';
-            console.log('🌐 Using Vercel backend:', API_BASE);
+            API_BASE = 'https://mangesh-portfolio-api-239037094122.us-central1.run.app';
+            console.log('🌐 Using Cloud Run backend:', API_BASE);
         }
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
@@ -49,7 +49,10 @@ const SOURCE_KEY_ALIASES = {
     'openrouter': 'openrouter',
     'open router': 'openrouter',
     'local cache': 'assistme',
-    'cached': 'assistme'
+    'cached': 'assistme',
+    'google ai': 'google-ai',
+    'google': 'google-ai',
+    'gemini': 'google-ai'
 };
 
 const SOURCE_LABELS = {
@@ -58,7 +61,8 @@ const SOURCE_LABELS = {
     'assistme-math': 'AssistMe Math Engine',
     'assistme-utility': 'AssistMe Utility',
     'assistme-general': 'AssistMe',
-    'openrouter': 'OpenRouter (Grok 4.1 Fast)'
+    'openrouter': 'OpenRouter (Grok 4.1 Fast)',
+    'google-ai': 'Google AI (Gemini 2.0 Flash)'
 };
 
 // Intelligent Chat Assistant with Integrated AI
@@ -67,7 +71,7 @@ class IntelligentAssistant {
         this.cache = null;
         this.isReadyState = false;
         this.defaultGreetings = [
-            "Hello! I'm AssistMe, Mangesh's AI portfolio assistant. I can walk you through his projects, experience, and technical skills. How can I help you today?"
+            "Hello! I am **Antigravity**, Mangesh's specialized AI technical partner. I can provide deep insights into his distributed systems architecture, technical wins, and 2026 vision. How can I assist you?"
         ];
         this.processing = false;
         this.history = [];
@@ -207,14 +211,14 @@ class IntelligentAssistant {
                     answer: actionResult.message,
                     type: 'action',
                     confidence: 1.0,
-                    source: 'agentic-action',
-                    sourceLabel: 'Agentic AI',
+                    source: 'technical-engine',
+                    sourceLabel: 'Expert System',
                     model: 'Action Handler',
                     action: actionResult.actionName,
                     actionResult: actionResult.result,
                     processingTime: processingTime,
                     runtime: `${processingTime}ms`,
-                    providers: ['Agentic AI'],
+                    providers: ['Mangesh Raut Portfolio'],
                     category: 'Action',
                     charCount: actionResult.message.length,
                     safetyScore: 1.0,

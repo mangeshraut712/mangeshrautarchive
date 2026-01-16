@@ -1,41 +1,39 @@
 /**
  * Blog Data Module
  * Stores technical articles and insights for the portfolio
- * Updated for 2025 with trending topics
+ * Updated for 2026 with Google AI Challenge insights
  */
 
 export const blogPosts = [
-    {
-        id: 'apple-ecosystem-excellence-2025',
-        title: 'Apple\'s Ecosystem: The Perfect Harmony of Software and Hardware',
-        summary: 'Exploring how Apple\'s vertical integration and meticulous attention to detail creates an unmatched user experience across devices, from iPhone to Mac.',
-        date: '2025-01-20',
-        tags: ['Apple', 'Hardware', 'Software', 'Design'],
-        readTime: '8 min read',
-        content: `
-# Apple's Ecosystem: The Perfect Harmony of Software and Hardware
+  {
+    id: 'google-ai-ecosystem-2026',
+    title: 'Google\'s AI Ecosystem: The Future of Intelligence is Multimodal',
+    summary: 'Exploring how Google\'s Gemini 2.0 Flash and seamless integration across Android and Workspace is redefining personal and professional productivity in 2026.',
+    date: '2026-01-10',
+    tags: ['Google AI', 'Gemini', 'Android', 'Multimodal'],
+    readTime: '8 min read',
+    content: `
+# Google's AI Ecosystem: The Future of Intelligence is Multimodal
 
-In the tech industry, few companies have mastered the art of vertical integration like Apple. Their ability to control both hardware and software creates an ecosystem that's greater than the sum of its parts.
+In 2026, Google has reached a new pinnacle of AI integration. The "New Year, New You" initiative highlights how Gemini 2.0 Flash is no longer just a chatbot, but a foundational layer of our digital lives.
 
 ## The Vertical Integration Advantage
 
-Unlike competitors who rely on third-party components and operating systems, Apple designs everything in-house:
+Unlike competitors who rely on fragmented hardware and software stacks, Google designs its flagship experience with deep integration:
 
 **Hardware Excellence:**
-- **Apple Silicon**: M3, M4 chips built on 3nm process
-- **Neural Engine**: 16-core AI accelerator
-- **Unified Memory Architecture**: Blazing-fast data access
-- **ProMotion Displays**: Adaptive 120Hz refresh rates
+- **Google Tensor G6**: The world's first chip designed entirely for on-device multimodal AI.
+- **Titan M3 Security**: Protecting your private AI context with hardware-level encryption.
+- **Pixel Neural Engine**: Enabling real-time video generation and 3D scene understanding.
 
 **Software Optimization:**
-- **macOS Sonoma**: Optimized for Apple Silicon
-- **iOS 18**: Seamless integration with Apple Intelligence
-- **Continuity**: Handoff, Universal Clipboard, AirDrop
-- **iCloud**: Synchronized across all devices
+- **Android 17**: Built from the ground up for agentic workflows.
+- **Gemini 2.0 Flash**: Blazing-fast inference with native multimodal support.
+- **Workspace AI**: Seamless collaboration across Docs, Sheets, and Slides.
 
 ## The Quality Philosophy
 
-Apple's commitment to quality is evident in every detail:
+Google's commitment to quality is evident in every detail:
 
 ### Build Quality
 - **Premium Materials**: Aerospace-grade aluminum, ceramic shield
@@ -44,81 +42,82 @@ Apple's commitment to quality is evident in every detail:
 - **Sustainability**: 100% recycled aluminum in many products
 
 ### Software Refinement
-- **Privacy First**: On-device processing, App Tracking Transparency
+- **Privacy First**: On-device processing, Private Compute Core
 - **Performance**: Apps launch instantly, animations are buttery smooth
 - **Accessibility**: Industry-leading features for all users
-- **Security**: Secure Enclave, Face ID, regular updates
+- **Security**: Titan Security, Regular Pixel Updates
 
 ## The Ecosystem Effect
 
-The magic happens when you use multiple Apple devices:
+The magic happens when you use multiple Google services:
 
 \`\`\`
-iPhone → AirDrop photo → Mac → Edit in Final Cut → 
-AirPlay to Apple TV → Control with Apple Watch
+Pixel → Google Photos → Chrome → Edit in Workspace → 
+Cast to Google TV → Control with Pixel Watch
 \`\`\`
 
 **Real-World Benefits:**
-- Copy on iPhone, paste on Mac (Universal Clipboard)
-- Answer iPhone calls on Mac or iPad
-- Unlock Mac with Apple Watch
-- Continuity Camera: Use iPhone as webcam
-- AirPods automatically switch between devices
+- Copy on Pixel, paste on Chromebook (Cross-device Copy Paste)
+- Answer calls on your Pixel Tablet
+- Unlock Chromebook with Pixel
+- Phone Hub: Access your phone's apps from your Chromebook
+- Pixel Buds automatically switch between devices
 
 ## Developer Experience
 
-As a developer, Apple's ecosystem is a joy to work with:
+As a developer, Google's ecosystem is a joy to work with:
 
-**Xcode & Swift:**
-\`\`\`swift
-// SwiftUI makes beautiful UIs effortless
-struct ContentView: View {
-    var body: some View {
-        VStack {
-            Text("Hello, World!")
-                .font(.largeTitle)
-            Button("Tap Me") {
-                // Action
-            }
-        }
-    }
+**Android Studio & Firebase:**
+\`\`\`dart
+// Flutter and Android Studio make beautiful multimodal apps effortless
+class GeminiApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: GeminiView(
+          onInput: (prompt) => handleAI(prompt),
+        ),
+      ),
+    );
+  }
 }
 \`\`\`
 
-**TestFlight**: Seamless beta distribution
-**App Store**: Reach 1.8 billion active devices
-**Apple Developer Tools**: Instruments, Reality Composer, Create ML
+**Play Console**: Seamless beta distribution
+**Play Store**: Reach billions of active devices
+**Android Developer Tools**: Profilers, Layout Inspector, Gemini in Android Studio
 
 ## The Competition
 
-While Android offers more customization and Windows more flexibility, neither matches Apple's cohesive experience. The difference is in the details:
+While Android offers more customization and Windows more flexibility, neither matches Google's cohesive experience. The difference is in the details:
 
-- **Android**: Fragmentation across manufacturers
+- **Others**: Fragmentation across manufacturers
 - **Windows**: Hardware inconsistencies
-- **Apple**: Controlled, optimized, refined
+- **Google**: Integrated, AI-first, optimized
 
 ## Why It Matters
 
-In my development work, using Apple's ecosystem has:
+In my development work, using Google's ecosystem has:
 - **Increased productivity by 40%**: Seamless device switching
 - **Reduced debugging time**: Consistent hardware/software
 - **Enhanced creativity**: Tools that just work
 
 ## The Future
 
-With Apple Vision Pro, spatial computing, and continued AI integration, Apple's ecosystem is only getting stronger. The company's focus on privacy, performance, and user experience sets the standard for the entire industry.
+With Project Astra, spatial computing, and continued Gemini integration, Google's ecosystem is only getting stronger. The company's focus on privacy, performance, and user experience sets the standard for the entire industry.
 
-**Bottom Line**: Apple doesn't just make products—they create an experience. And that experience, refined over decades, is why millions choose to stay within the ecosystem.
+**Bottom Line**: Google doesn't just make products—they create intelligence. And that experience, refined over decades, is why the "New Year, New You" challenge is the ultimate way to start 2026.
         `
-    },
-    {
-        id: 'nvidia-ai-dominance-2025',
-        title: 'How NVIDIA Became the Undisputed Leader in AI Computing',
-        summary: 'The remarkable journey of NVIDIA from gaming GPUs to AI powerhouse, dominating the $2 trillion market with CUDA, H100 chips, and strategic vision.',
-        date: '2025-02-15',
-        tags: ['NVIDIA', 'AI', 'Hardware', 'GPU'],
-        readTime: '9 min read',
-        content: `
+  },
+  {
+    id: 'nvidia-ai-dominance-2025',
+    title: 'How NVIDIA Became the Undisputed Leader in AI Computing',
+    summary: 'The remarkable journey of NVIDIA from gaming GPUs to AI powerhouse, dominating the $2 trillion market with CUDA, H100 chips, and strategic vision.',
+    date: '2025-02-15',
+    tags: ['NVIDIA', 'AI', 'Hardware', 'GPU'],
+    readTime: '9 min read',
+    content: `
 # How NVIDIA Became the Undisputed Leader in AI Computing
 
 NVIDIA's transformation from a gaming graphics card company to a $2+ trillion AI powerhouse is one of the most remarkable stories in tech history. Here's how they did it.
@@ -253,15 +252,15 @@ It wasn't luck—it was:
 
 As AI continues to transform every industry, NVIDIA's position only strengthens. They're not just #1—they're in a league of their own.
         `
-    },
-    {
-        id: 'ai-models-global-race-2025',
-        title: 'The Global AI Race: Leading Models and Countries Shaping the Future',
-        summary: 'Analyzing the competition between cutting-edge AI models (Gemini 3 Pro, Grok 4.1, Claude 4.5, GPT-5.1) and how USA, China, Europe, and others are positioning themselves in the AI revolution.',
-        date: '2025-03-25',
-        tags: ['AI', 'LLM', 'Geopolitics', 'Technology'],
-        readTime: '10 min read',
-        content: `
+  },
+  {
+    id: 'ai-models-global-race-2025',
+    title: 'The Global AI Race: Leading Models and Countries Shaping the Future',
+    summary: 'Analyzing the competition between cutting-edge AI models (Gemini 3 Pro, Grok 4.1, Claude 4.5, GPT-5.1) and how USA, China, Europe, and others are positioning themselves in the AI revolution.',
+    date: '2025-03-25',
+    tags: ['AI', 'LLM', 'Geopolitics', 'Technology'],
+    readTime: '10 min read',
+    content: `
 # The Global AI Race: Leading Models and Countries Shaping the Future
 
 The AI landscape in 2025 is defined by fierce competition between frontier models and a geopolitical race for AI supremacy. Let's break down the key players.
@@ -495,15 +494,15 @@ The AI race is far from over. While the US leads in frontier models, China's cat
 
 As a developer, I'm excited to have multiple world-class models to choose from. Competition drives innovation, and we're all benefiting from this global AI race.
         `
-    },
-    {
-        id: 'ai-code-editors-revolution-2025',
-        title: 'The AI Code Editor Revolution: VS Code, Cursor, Windsurf, and Antigravity',
-        summary: 'Comparing the next generation of AI-powered code editors that are transforming how developers write code, from traditional VS Code to cutting-edge Antigravity.',
-        date: '2025-04-18',
-        tags: ['AI', 'Developer Tools', 'IDE', 'Productivity'],
-        readTime: '9 min read',
-        content: `
+  },
+  {
+    id: 'ai-code-editors-revolution-2025',
+    title: 'The AI Code Editor Revolution: VS Code, Cursor, Windsurf, and Antigravity',
+    summary: 'Comparing the next generation of AI-powered code editors that are transforming how developers write code, from traditional VS Code to cutting-edge Antigravity.',
+    date: '2025-04-18',
+    tags: ['AI', 'Developer Tools', 'IDE', 'Productivity'],
+    readTime: '9 min read',
+    content: `
 # The AI Code Editor Revolution: VS Code, Cursor, Windsurf, and Antigravity
 
 The way we write code is undergoing a fundamental transformation. AI-powered code editors are not just autocomplete on steroids—they're intelligent pair programmers that understand context, intent, and best practices.
@@ -763,5 +762,5 @@ Try them all, find what works for you, and embrace the AI revolution. The develo
 
 **The future of coding is here. And it's powered by AI.**
         `
-    }
+  }
 ];

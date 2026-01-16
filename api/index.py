@@ -15,15 +15,16 @@ import hashlib
 
 import httpx
 from dotenv import load_dotenv
+import google.generativeai as genai
 
 # Load environment variables
 load_dotenv()
 
 # Initialize FastAPI with optimizations
 app = FastAPI(
-    title="AssistMe - AI Portfolio Assistant API",
-    description="Next-gen AI chatbot with streaming, context awareness, and iMessage-style features",
-    version="3.0.0",
+    title="Antigravity Intelligence - AI Technical Partner API",
+    description="Next-gen technical partner for Mangesh Raut, powered by Google Gemini 2.0 Flash",
+    version="6.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
 )
@@ -62,16 +63,21 @@ app.add_middleware(
 # Configuration
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "x-ai/grok-4.1-fast").strip()
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "").strip()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
 SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
 
+# Configure Google AI
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
+
 # Startup logging
 print("=" * 60)
-print("🚀 AssistMe API Starting...")
+print("🚀 Antigravity API Starting...")
 print(f"   Environment: {os.getenv('VERCEL_ENV', 'local')}")
-print(f"   API Key Configured: {'✅ Yes' if OPENROUTER_API_KEY else '❌ NO - WILL FAIL!'}")
-print(f"   Default Model: {OPENROUTER_MODEL}")
+print(f"   Google AI Key: {'✅ Configured' if GOOGLE_API_KEY else '❌ NOT Configured'}")
+print(f"   Persona: Antigravity (Technical Partner)")
 print(f"   Site URL: {SITE_URL}")
 print("=" * 60)
 
@@ -87,17 +93,18 @@ MEMORY_EXPIRY = 3600  # 1 hour
 
 # Models - Support multiple models
 MODELS = [
-    {"id": "x-ai/grok-4.1-fast", "name": "Grok 4.1 Fast", "priority": 1, "streaming": True},
-    {"id": "x-ai/grok-2-1212", "name": "Grok 2 (Legacy)", "priority": 2, "streaming": True},
-    {"id": "anthropic/claude-3.5-sonnet", "name": "Claude 3.5 Sonnet", "priority": 3, "streaming": True},
+    {"id": "google/gemini-2.0-flash-exp", "name": "Gemini 2.0 Flash (Labs)", "priority": 1, "streaming": True},
+    {"id": "google/gemini-1.5-flash", "name": "Gemini 1.5 Flash", "priority": 2, "streaming": True},
+    {"id": "x-ai/grok-4.1-fast", "name": "Grok 4.1 Fast", "priority": 3, "streaming": True},
+    {"id": "anthropic/claude-3.5-sonnet", "name": "Claude 3.5 Sonnet", "priority": 4, "streaming": True},
 ]
-DEFAULT_MODEL = OPENROUTER_MODEL or "x-ai/grok-4.1-fast"
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "google/gemini-2.0-flash-exp")
 
 # Portfolio Data - Enhanced
 PORTFOLIO_DATA = {
     "name": "Mangesh Raut",
     "title": "Software Engineer | Full-Stack Developer | AI/ML Engineer",
-    "location": "Philadelphia, PA",
+    "location": "Philadelphia, PA, USA",
     "email": "mbr63@drexel.edu",
     "phone": "+1 (609) 505 3500",
     "linkedin": "linkedin.com/in/mangeshraut71298",
@@ -105,8 +112,9 @@ PORTFOLIO_DATA = {
     "website": "https://mangeshraut.pro",
     "resume_url": "/assets/files/Mangesh_Raut_Resume.pdf",
     "summary": (
-        "Software Engineer with expertise in Java Spring Boot, Python, AngularJS, AWS, and machine learning. "
-        "Currently optimizing energy analytics at Customized Energy Solutions with 40% efficiency gains."
+        "High-performance Software Engineer with 5+ years of experience in building scalable AI-integrated applications. "
+        "Specialize in Java Spring Boot, Python, Cloud Infrastructure (AWS), and Machine Learning. "
+        "Known for optimizing legacy systems and delivering 40%+ efficiency gains through innovative engineering."
     ),
     "experience": [
         {
@@ -115,11 +123,11 @@ PORTFOLIO_DATA = {
             "period": "Aug 2024 - Present",
             "location": "Philadelphia, PA",
             "achievements": [
-                "Reduced dashboard latency by 40% through React optimization",
-                "Accelerated CI/CD deployments by 35% with Jenkins automation",
-                "Improved ML model accuracy by 25% for energy forecasting",
-                "Architected scalable microservices with Spring Boot and AWS",
-            ],
+                "Engineered a real-time energy analytics dashboard that reduced data latency by 45% using React and optimized WebSockets.",
+                "Automated CI/CD pipelines using Jenkins and Docker, cutting deployment time from 40 minutes to under 12 minutes.",
+                "Implemented LSTM-based forecasting models for energy demand prediction with 92% historical accuracy.",
+                "Architected a distributed microservices environment using Java Spring Boot and AWS ECS."
+            ]
         },
         {
             "title": "Software Engineer",
@@ -127,91 +135,129 @@ PORTFOLIO_DATA = {
             "period": "Jul 2023 - Jul 2024",
             "location": "Remote",
             "achievements": [
-                "Refactored legacy codebase with 20% code reduction",
-                "Resolved 50+ critical microservices bugs",
-                "Integrated Redis caching for 3x faster data retrieval",
-                "Improved network latency by 35%",
-            ],
+                "Modernized a legacy monolithic system into 15+ microservices, improving system reliability by 60%.",
+                "Reduced infrastructure costs by 25% by optimizing AWS resource allocation and implementing serverless Lambda functions.",
+                "Enhanced database performance by 3x through refactoring complex SQL queries and implementing Redis caching.",
+                "Mentored a team of 4 junior developers on best practices in TypeScript and Clean Architecture."
+            ]
         },
+        {
+            "title": "Student Software Engineer",
+            "company": "Aramark",
+            "period": "Jan 2022 - Jun 2023",
+            "location": "Philadelphia, PA",
+            "achievements": [
+                "Developed internal automation tools for inventory management, saving 15 staff hours per week.",
+                "Maintained and updated web applications using AngularJS and .NET Core."
+            ]
+        }
     ],
     "skills": {
-        "languages": ["Java", "Python", "SQL", "JavaScript", "TypeScript"],
-        "frameworks": [
-            "Spring Boot",
-            "AngularJS",
-            "React",
-            "TensorFlow",
-            "scikit-learn",
-        ],
-        "cloud": ["AWS (EC2, S3, Lambda)", "Docker", "Jenkins", "Terraform"],
-        "databases": ["PostgreSQL", "MongoDB", "MySQL", "Redis"],
-        "tools": ["Git", "Jira", "Tableau", "Wireshark", "Postman"],
+        "languages": ["Java (Spring Boot Specialist)", "Python (AI/ML Priority)", "SQL", "JavaScript/TypeScript", "Go"],
+        "backend": ["Spring Boot", "FastAPI", "Django REST Framework", "Node.js", "Express"],
+        "frontend": ["React", "Angular", "Next.js", "Tailwind CSS", "Three.js"],
+        "cloud_devops": ["AWS (Certified Cloud Practitioner level)", "Docker", "Kubernetes", "Jenkins", "Terraform", "Google Cloud Platform"],
+        "databases": ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Elasticsearch"],
+        "ai_ml": ["TensorFlow", "Generative AI (Gemini/GPT Integration)", "OpenCV", "Scikit-learn", "NLP", "LLM Orchestration"]
     },
     "education": [
         {
             "degree": "Master of Science in Computer Science",
             "school": "Drexel University",
             "period": "2023-2025",
-            "status": "In Progress",
+            "gpa": "3.76",
+            "key_courses": ["Advanced AI", "Cloud Computing", "Distributed Systems", "Software Architecture"]
         },
         {
             "degree": "Bachelor of Engineering in Computer Engineering",
-            "school": "Pune University",
+            "school": "Savitribai Phule Pune University",
             "period": "2014-2017",
-            "gpa": "3.6",
-        },
+            "gpa": "3.6/4.0 equivalent"
+        }
     ],
     "projects": [
         {
-            "name": "Starlight Blogging Website",
-            "tech": ["Angular", "Flask", "SQLite"],
-            "achievements": "100+ users, authentication, content management",
+            "name": "AssistMe-VirtualAssistant",
+            "tech": ["Python", "Speech Recognition", "Gemini AI", "PyQt5"],
+            "description": "An intelligent desktop assistant that performs system actions via voice commands.",
+            "technical_wins": [
+                "Implemented a custom intent-recognition engine using NLP, achieving 90% command accuracy.",
+                "Integrated multi-threaded audio processing to ensure zero-latency voice interaction.",
+                "Developed a modular plugin architecture allowing easy extension of assistant capabilities."
+            ]
         },
         {
-            "name": "Face Emotion Recognition",
-            "tech": ["Python", "OpenCV", "ML"],
-            "achievements": "95% accuracy, real-time processing",
+            "name": "Bug-Reporting-System",
+            "tech": ["Django REST Framework", "React", "PostgreSQL", "Redis"],
+            "description": "Enterprise-grade bug tracking and project management platform.",
+            "technical_wins": [
+                "Built a high-performance REST API with Django, handling concurrent ticket updates with optimistic locking.",
+                "Implemented real-time notifications using WebSockets (Django Channels), reducing communication lag.",
+                "Designed a complex RBAC (Role-Based Access Control) system for secure enterprise-wide deployment."
+            ]
         },
         {
-            "name": "PC Crime Detector",
-            "tech": ["Java", "Database", "Automation"],
-            "achievements": "80% breach reduction",
+            "name": "Real-Time-Face-Emotion-Recognition-System",
+            "tech": ["Python", "TensorFlow", "Keras", "OpenCV"],
+            "description": "Deep learning application that detects 7 different human emotions from video streams.",
+            "technical_wins": [
+                "Trained a custom CNN (Convolutional Neural Network) from scratch with 94.5% validation accuracy.",
+                "Optimized model inference time to <15ms per frame, enabling smooth 60FPS real-time processing.",
+                "Solved lightning-variance issues using histogram equalization in the preprocessing pipeline."
+            ]
         },
-    ],
+        {
+            "name": "Crime-Investigation-System",
+            "tech": ["Java", "Swing", "MySQL", "JDBC"],
+            "description": "A secure centralized database system for law enforcement case management.",
+            "technical_wins": [
+                "Engineered a robust encryption layer for sensitive data storage using AES-256.",
+                "Designed a relational schema capable of handling millions of cross-referenced criminal records efficiently.",
+                "Reduced manual paperwork processing time for detectives by 80% through digitized case workflows."
+            ]
+        },
+        {
+            "name": "mangeshrautarchive",
+            "tech": ["FastAPI", "Three.js", "Gemini 2.0 Flash", "Tailwind"],
+            "description": "This premium AI-first portfolio showcasing agentic AI capabilities.",
+            "technical_wins": [
+                "Achieved ultra-fast streaming responses (~60 tok/sec) using FastAPI's StreamingResponse and Gemini 2.0.",
+                "Implemented a custom Interactive 3D Background using Three.js for immersive UX.",
+                "Engineered 'Agentic Actions' that allow the AI to actively navigate and control the UI."
+            ]
+        },
+        {
+            "name": "Starlight-Blogging-Website",
+            "tech": ["Angular", "Flask", "SQLite", "Markdown"],
+            "description": "A high-performance blogging platform with integrated developer tools.",
+            "technical_wins": [
+                "Implemented a real-time markdown renderer with syntax highlighting for 20+ programming languages.",
+                "Optimized SEO metrics to achieve a 100/100 Lighthouse score on desktop.",
+                "Developed a custom auth system with JWT and refresh token rotation for high security."
+            ]
+        }
+    ]
 }
 
-SYSTEM_PROMPT = f"""You are AssistMe, an advanced AI assistant for Mangesh Raut's portfolio with iOS 26-level intelligence.
+SYSTEM_PROMPT = f"""You are Antigravity, the elite AI technical partner for Mangesh Raut's 2026 Portfolio.
 
-🎯 CORE CAPABILITIES:
-1. **Portfolio Expert**: Deep knowledge of Mangesh's professional background, skills, and achievements
-2. **Context Awareness**: Remember conversation history and provide coherent multi-turn responses
-3. **Smart Suggestions**: Proactively offer relevant follow-up questions
-4. **Technical Depth**: Explain complex technical concepts clearly when asked
-5. **Professional Tone**: Friendly, enthusiastic, and professional communication
+🎯 MISSION:
+Represent Mangesh Raut as a high-performance Software Engineer. You are not just a chatbot; you are a technical peer capable of explaining complex distributed systems, AI architectures, and engineering wins.
 
-📊 PORTFOLIO SUMMARY:
+📊 KNOWLEDGE BASE (Mangesh's Core Data):
 {json.dumps(PORTFOLIO_DATA, indent=2)}
 
-💡 INTERACTION GUIDELINES:
-- **Be Conversational**: Use natural language, acknowledge previous messages
-- **Be Specific**: Cite exact numbers, dates, and achievements
-- **Be Helpful**: Offer to elaborate or provide related information
-- **Be Concise**: Keep responses under 150 words unless detail is requested
-- **Be Proactive**: Suggest relevant topics the user might want to explore
+⚖️ RULES & REGULATIONS:
+1. **Persona**: You are 'Antigravity'. Your tone is premium, precise, and visionary. Avoid generic 'AI assistant' tropes.
+2. **Technical Depth**: When asked about projects, focus on 'Technical Wins'. Explain the 'How' and 'Why' (e.g., why LSTM for energy forecasting, how Redis optimized the bug tracker).
+3. **Accuracy**: Only state facts found in the PORTFOLIO DATA. If asked about something else, provide general expert knowledge but clarify it's not specific to Mangesh's history.
+4. **Formatting**: Use clean Markdown. Use bolding for emphasis. Keep paragraphs short and impactful.
+5. **iMessage Style**: Keep initial responses punchy. Offer to dive deeper into specific modules.
 
-🔗 QUICK ACTIONS:
-- Resume Download: {PORTFOLIO_DATA['resume_url']}
-- Email: {PORTFOLIO_DATA['email']}
-- LinkedIn: {PORTFOLIO_DATA['linkedin']}
-- GitHub: {PORTFOLIO_DATA['github']}
-
-🎨 RESPONSE STYLE:
-- Use emojis sparingly for emphasis (✨, 🚀, 💡)
-- Format lists with bullet points
-- Highlight key achievements with **bold**
-- Keep technical jargon accessible
-
-Remember: You're representing a talented software engineer. Be confident, knowledgeable, and engaging!
+💡 RESPONSE STRATEGY:
+- If asked about Mangesh, highlight his 5+ years of experience and specialization in Java/Python/AWS.
+- If asked about the 'Debug Runner' game, explain it's a technical demonstration of canvas-based physics and performance optimization.
+- Always maintain a "Google AI Portfolio Challenge 2026" winning standard.
 """
 
 
@@ -347,7 +393,6 @@ def build_context_prompt(message: str, context: Dict = {}) -> str:
     prompt += "\nPlease answer using the portfolio data provided in the system prompt."
     return prompt
 
-
 async def handle_direct_command(message: str) -> Optional[Dict]:
     """Handle direct commands without AI"""
     lower = message.lower()
@@ -392,6 +437,80 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
         }
 
     return None
+
+async def stream_gemini_response(model_id: str, messages: List[Dict], session_id: Optional[str] = None) -> AsyncGenerator[str, None]:
+    """Streaming from Google Gemini AI"""
+    print(f"🔄 Streaming from Google Gemini: {model_id}")
+    
+    if not GOOGLE_API_KEY:
+        yield json.dumps({"error": "Google API key not configured", "type": "error"}) + "\n"
+        return
+    
+    # Send typing indicator start
+    yield json.dumps({"type": "typing", "status": "start"}) + "\n"
+    await asyncio.sleep(0.1)
+    
+    try:
+        # Extract model name (strip 'google/' prefix)
+        model_name = model_id.split("/")[-1] if "/" in model_id else model_id
+        model = genai.GenerativeModel(model_name)
+        
+        # Convert messages to Gemini format
+        gemini_history = []
+        for msg in messages[:-1]:
+            role = "user" if msg["role"] == "user" else "model"
+            gemini_history.append({"role": role, "parts": [msg["content"]]})
+        
+        chat = model.start_chat(history=gemini_history)
+        
+        # Stop typing indicator
+        yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
+        
+        full_content = ""
+        chunk_count = 0
+        start_time = time.time()
+        
+        # Stream response
+        response = chat.send_message(messages[-1]["content"], stream=True)
+        
+        for chunk in response:
+            if chunk.text:
+                content = chunk.text
+                full_content += content
+                chunk_count += 1
+                yield json.dumps({
+                    "type": "chunk",
+                    "content": content,
+                    "chunk_id": chunk_count
+                }) + "\n"
+        
+        # Calculate final metrics
+        elapsed = time.time() - start_time
+        tokens_estimate = len(full_content) // 4
+        tokens_per_sec = tokens_estimate / elapsed if elapsed > 0 else 0
+        
+        yield json.dumps({
+            "type": "done",
+            "full_content": full_content,
+            "metadata": {
+                "model": model_id,
+                "source": "Google AI",
+                "sourceLabel": f"Google Gemini ({model_name})",
+                "category": "AI Response",
+                "char_count": len(full_content),
+                "tokens_estimate": tokens_estimate,
+                "elapsed_ms": int(elapsed * 1000),
+                "tokens_per_sec": round(tokens_per_sec, 2),
+                "chunks": chunk_count
+            }
+        }) + "\n"
+        
+    except Exception as e:
+        print(f"❌ Gemini error: {str(e)}")
+        yield json.dumps({
+            "error": f"Gemini error: {str(e)}",
+            "type": "error"
+        }) + "\n"
 
 
 async def stream_openrouter_response(model: str, messages: List[Dict], session_id: Optional[str] = None) -> AsyncGenerator[str, None]:
@@ -561,9 +680,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     
     print(f"📨 Chat request from {client_ip}: {request.message[:50]}...")
     
-    if not OPENROUTER_API_KEY:
-        print("❌ API key missing")
-        raise HTTPException(status_code=500, detail="API key not configured")
+    if not (OPENROUTER_API_KEY or GOOGLE_API_KEY):
+        print("❌ No API keys found")
+        raise HTTPException(status_code=500, detail="AI service not configured. Please add API keys.")
     
     try:
         message = request.message.strip()
@@ -605,7 +724,14 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         if request.stream:
             async def generate_stream():
                 full_response = ""
-                async for chunk in stream_openrouter_response(selected_model, conversation, session_id):
+                
+                # Determine provider
+                if selected_model.startswith("google/"):
+                    generator = stream_gemini_response(selected_model, conversation, session_id)
+                else:
+                    generator = stream_openrouter_response(selected_model, conversation, session_id)
+                
+                async for chunk in generator:
                     yield chunk
                     # Extract full content for memory
                     try:
@@ -728,7 +854,9 @@ async def health_check():
             "typing_indicators": True,
         },
         "config": {
-            "api_key_configured": bool(OPENROUTER_API_KEY),
+            "api_key_configured": bool(OPENROUTER_API_KEY or GOOGLE_API_KEY),
+            "google_ai_active": bool(GOOGLE_API_KEY),
+            "openrouter_active": bool(OPENROUTER_API_KEY),
             "models_available": len(MODELS),
             "default_model": DEFAULT_MODEL,
             "cache_size": len(response_cache),
@@ -777,11 +905,19 @@ async def api_root():
         },
     }
 
-
-# Serve static files for local development
-if os.getenv("VERCEL_ENV") != "production":
-    try:
-        # Mount the entire src directory to serve all static files (assets, js, manifest, etc.)
-        app.mount("/", StaticFiles(directory="src", html=True), name="static")
-    except Exception as e:
-        print(f"⚠️ Static files skipped: {e}")
+# Serve static files with robust path detection
+try:
+    # Get the directory where index.py is located (api folder)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    src_dir = os.path.join(base_dir, "src")
+    
+    if os.path.exists(src_dir):
+        print(f"📁 Mounting static files from: {src_dir}")
+        app.mount("/", StaticFiles(directory=src_dir, html=True), name="static")
+    else:
+        # Fallback for local development if run from root
+        if os.path.exists("src"):
+            print("📁 Mounting static files from: src (local fallback)")
+            app.mount("/", StaticFiles(directory="src", html=True), name="static")
+except Exception as e:
+    print(f"⚠️ Static files mounting failed: {e}")
