@@ -227,21 +227,29 @@ class AppleIntelligenceChatbot {
     }
 
     addWelcomeMessage() {
-        // Welcome message with AI branding
+        // Welcome message with AI branding and 2026 animations
         setTimeout(() => {
             if (this.elements.messages && this.elements.messages.children.length === 0) {
                 const welcomeDiv = document.createElement('div');
                 welcomeDiv.className = 'message assistant-message welcome-message';
                 welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-icon">✨</div>
-                        <div class="welcome-title">Hi, I'm Mangesh's AI Assistant</div>
-                        <div class="welcome-subtitle">Ask me anything about his skills, experience, or projects!</div>
+                        <div class="welcome-header">
+                            <span class="welcome-chip">Neural Assistant 4.0</span>
+                            <span class="welcome-status">Online</span>
+                        </div>
+                        <div class="welcome-title">Hi, I'm AssistMe.</div>
+                        <div class="welcome-subtitle">I'm your gateway to Mangesh's professional expertise, AI projects, and technical leadership.</div>
+                        <div class="welcome-chips">
+                            <button class="welcome-action-chip" onclick="window.chatAssistant.ask('Who is Mangesh?')">👨‍🔬 Profile</button>
+                            <button class="welcome-action-chip" onclick="window.chatAssistant.ask('Show AI projects')">🤖 AI Work</button>
+                            <button class="welcome-action-chip" onclick="window.chatAssistant.ask('Download Resume')">📄 Resume</button>
+                        </div>
                     </div>
                 `;
                 this.elements.messages.appendChild(welcomeDiv);
             }
-        }, 500);
+        }, 800);
     }
 
     async handleSendMessage() {
@@ -304,6 +312,7 @@ class AppleIntelligenceChatbot {
         let metadata = {};
 
         try {
+            messageDiv.classList.add('streaming');
             const response = await this.chatAPI.ask(userMessage, {
                 onChunk: (chunk) => {
                     fullText += chunk;
@@ -311,6 +320,7 @@ class AppleIntelligenceChatbot {
                     this.scrollToBottom();
                 }
             });
+            messageDiv.classList.remove('streaming');
 
             // Remove typing cursor
             contentDiv.textContent = fullText;
