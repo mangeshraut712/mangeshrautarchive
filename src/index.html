@@ -1773,7 +1773,7 @@
     <script src="js/utils/theme.js"></script>
     <script src="js/utils/go-to-top.js"></script>
     <script type="module">
-      importerlayNavigation } from './js/modules/overlay.js';
+      import { initOverlayMenu, initOverlayNavigation } from './js/modules/overlay.js';
       initOverlayMenu();
       initOverlayNavigation({ offsetSelector: '.global-nav' });
     </script>
@@ -1849,7 +1849,7 @@
       });
     </script>
     <script type="module">
-      /i    document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener('DOMContentLoaded', async () => {
         const githubProjects = new GitHubProjects('mangeshraut712');
 
         // Load and render projects (all 8 curated projects)
@@ -2028,7 +2028,7 @@
                 .catch(err => {
                   console.log('❌ ServiceWorker registration failed: ', err);
                 });
-    
+            });
           }
         }
       }

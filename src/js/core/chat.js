@@ -15,10 +15,15 @@ if (typeof window !== 'undefined') {
             API_BASE = ''; // Use relative paths for local backend
             console.log('🏠 Local backend detected on port 8000');
         }
-        // For ALL other cases (Cloud Run, GitHub Pages, localhost:3000, etc.), use Cloud Run backend
+        // Cloud Run domain - for Google AI Challenge 2026
+        else if (hostname.includes('run.app')) {
+            API_BASE = ''; // Use relative paths on Cloud Run
+            console.log('🌐 Running on Cloud Run (contest mode)');
+        }
+        // For ALL other cases (GitHub Pages, Vercel preview, localhost:3000), use Vercel backend
         else {
-            API_BASE = 'https://mangesh-portfolio-api-q3kdyzhwba-uc.a.run.app';
-            console.log('🌐 Using Cloud Run backend:', API_BASE);
+            API_BASE = 'https://mangeshrautarchive.vercel.app';
+            console.log('🌐 Using Vercel backend:', API_BASE);
         }
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
