@@ -17,7 +17,7 @@ if (typeof window !== 'undefined') {
         }
         // For ALL other cases (Cloud Run, GitHub Pages, Vercel, etc.), use Cloud Run backend
         else {
-            API_BASE = 'https://mangesh-portfolio-api-239037094122.us-central1.run.app';
+            API_BASE = 'https://mangesh-portfolio-api-q3kdyzhwba-uc.a.run.app';
             console.log('🌐 Using Cloud Run backend:', API_BASE);
         }
     }
