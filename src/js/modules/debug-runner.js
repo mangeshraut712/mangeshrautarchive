@@ -446,9 +446,7 @@ class DebugRunner {
     }
 
     checkMilestones() {
-        const score = Math.floor(this.score / 10);
-
-        if (score >= 500) {
+        if (this.score >= 500) {
             const archReward = document.getElementById('reward-arch');
             if (archReward && archReward.classList.contains('locked')) {
                 archReward.classList.remove('locked');
@@ -458,7 +456,7 @@ class DebugRunner {
             }
         }
 
-        if (score >= 1000) {
+        if (this.score >= 1000) {
             const apiReward = document.getElementById('reward-api');
             if (apiReward && apiReward.classList.contains('locked')) {
                 apiReward.classList.remove('locked');
