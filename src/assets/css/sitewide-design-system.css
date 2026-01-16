@@ -605,6 +605,8 @@ section::after {
     width: 100%;
     position: relative;
     z-index: 10;
+    padding-bottom: 120px;
+    /* Space for floating buttons */
 }
 
 html.dark .footer-solid {
@@ -649,11 +651,24 @@ html.dark .footer-nav-link:hover {
 }
 
 .footer-brand img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
 }
 
 html.dark .footer-brand img {
     filter: invert(1) drop-shadow(0 4px 10px rgba(255, 255, 255, 0.1));
+}
+
+.footer-brand h2 {
+    color: #1d1d1f;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+html.dark .footer-brand h2 {
+    color: #f5f5f7;
 }
 
 .footer-social-link-new {

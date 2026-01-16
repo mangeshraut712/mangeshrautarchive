@@ -711,48 +711,50 @@ export class AccessibilityEnhancer {
      * Create accessibility toolbar
      */
     createAccessibilityToolbar() {
-        // Inject styles for the toolbar
         const style = document.createElement('style');
         style.textContent = `
             .a11y-toolbar {
                 position: fixed;
-                bottom: 20px;
-                left: 20px;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 0.5rem;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                bottom: 32px;
+                left: 24px;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                padding: 8px;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                border: 1px solid rgba(0, 0, 0, 0.05);
                 z-index: 9998;
                 display: flex;
-                gap: 0.5rem;
-                transition: all 0.3s ease;
+                gap: 6px;
+                transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
             }
             
             .a11y-toolbar button {
-                background: white;
-                border: 1px solid #ddd;
-                border-radius: 8px;
+                background: #f5f5f7;
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
                 padding: 0.5rem;
                 cursor: pointer;
-                font-size: 1.2rem;
-                transition: all 0.2s;
-                width: 40px;
-                height: 40px;
+                font-size: 1.1rem;
+                transition: all 0.2s ease;
+                width: 44px;
+                height: 44px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
             .a11y-toolbar button:hover {
-                transform: scale(1.1);
-                background: #f5f5f7;
+                transform: scale(1.08);
+                background: #fff;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             }
 
             html.dark .a11y-toolbar {
-                background: rgba(28, 28, 30, 0.95);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(28, 28, 30, 0.9);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.08);
             }
 
             html.dark .a11y-toolbar button {
@@ -760,11 +762,15 @@ export class AccessibilityEnhancer {
                 border-color: #3a3a3c;
                 color: #fff;
             }
+            
+            html.dark .a11y-toolbar button:hover {
+                background: #3a3a3c;
+            }
 
-            /* Mobile adjustments */
-            @media (max-width: 768px) {
+            /* Hide on small devices to avoid clutter */
+            @media (max-width: 1024px) {
                 .a11y-toolbar {
-                    display: none !important; /* Hide on mobile to prevent overlap */
+                    display: none !important;
                 }
             }
         `;
