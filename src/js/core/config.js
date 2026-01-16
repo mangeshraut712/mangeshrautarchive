@@ -28,14 +28,14 @@ export const features = {
 };
 
 export const chat = {
-    defaultGreeting: "👋 Hello! I'm AssistMe, your intelligent AI assistant for Mangesh Raut's portfolio. I can help you explore his experience, skills, projects, and achievements. How can I assist you today?",
-    welcomeDelay: 500,
+    defaultGreeting: "👋 Hey there! I'm **AssistMe**, Mangesh's elite AI assistant for 2026. I can provide deep insights into his technical expertise, projects, and engineering achievements. Ask me anything about:\n\n• 🚀 **Experience** at Customized Energy Solutions\n• 💻 **Tech Stack**: Java, Python, Spring Boot, AWS\n• 🤖 **AI/ML Projects** & Research\n• 🎓 **Education** at Drexel University\n\nHow can I assist you today?",
+    welcomeDelay: 400,
     suggestionsLimit: 6,
-    historyRetentionHours: 72, // 3 days
-    model: 'x-ai/grok-4.1-fast', // Primary model via OpenRouter
+    historyRetentionHours: 168, // 7 days for better context
+    model: 'x-ai/grok-4.1-fast', // Premium model via OpenRouter 2026
     streaming: true,
     temperature: 0.7,
-    maxTokens: 2000
+    maxTokens: 2500
 };
 
 export const errorMessages = {
