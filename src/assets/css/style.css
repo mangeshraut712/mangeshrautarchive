@@ -4492,7 +4492,8 @@ html.dark .wrapper .x {
 
 .wrapper .tooltip {
     position: absolute;
-    top: -45px;
+    top: -55px;
+    z-index: 1001;
     font-size: 12px;
     background: #1d1d1f;
     color: #fff;
@@ -4527,15 +4528,15 @@ html.dark .wrapper .tooltip {
 }
 
 .wrapper .icon:hover .tooltip {
-    top: -55px;
+    top: -65px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 }
 
 .wrapper .icon:hover {
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 html.dark .wrapper .icon:hover {
@@ -5220,14 +5221,19 @@ html.dark #go-to-top:hover {
 }
 
 .premium-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    background: rgba(0, 113, 227, 0.08);
-    color: #0071e3;
-    border-radius: 6px;
-    font-size: 0.9em;
-    font-weight: 600;
-    border: 1px solid rgba(0, 113, 227, 0.15);
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 2px 12px !important;
+    background: rgba(0, 113, 227, 0.08) !important;
+    color: #0071e3 !important;
+    border: 1px solid rgba(0, 113, 227, 0.15) !important;
+    border-radius: 8px !important;
+    font-size: 0.85em !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    vertical-align: baseline !important;
+    margin: 0 2px !important;
+    white-space: nowrap !important;
 }
 
 html.dark .premium-badge {
