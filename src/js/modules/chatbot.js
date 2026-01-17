@@ -242,21 +242,29 @@ class AppleIntelligenceChatbot {
                 welcomeDiv.innerHTML = `
                     <div class="message-content">
                         <div class="welcome-header">
-                            <span class="welcome-chip">Neural Assistant 4.0</span>
-                            <span class="welcome-status">Online</span>
+                            <span class="welcome-chip">🧠 Powered by Grok 4.1</span>
+                            <span class="welcome-status">● Online</span>
                         </div>
-                        <div class="welcome-title">Hi, I'm AssistMe.</div>
-                        <div class="welcome-subtitle">I'm your gateway to Mangesh's professional expertise, AI projects, and technical leadership.</div>
+                        <div class="welcome-title">Hi, I'm AssistMe!</div>
+                        <div class="welcome-subtitle">Your intelligent guide to Mangesh's portfolio. I can help with:</div>
+                        <div class="welcome-capabilities">
+                            <span class="capability-tag">💼 Career History</span>
+                            <span class="capability-tag">🛠️ Technical Skills</span>
+                            <span class="capability-tag">🚀 Projects</span>
+                            <span class="capability-tag">📚 Education</span>
+                        </div>
                         <div class="welcome-chips">
-                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Who is Mangesh?')">👨‍🔬 Profile</button>
-                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Show AI projects')">🤖 AI Work</button>
-                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Tell me about your experience')">💼 Experience</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Who is Mangesh Raut?')">👨‍💻 About Mangesh</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('What are Mangesh\\'s top projects?')">🚀 Projects</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('What skills does Mangesh have?')">🛠️ Skills</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Tell me about Mangesh\\'s work experience')">💼 Experience</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('How can I contact Mangesh?')">📧 Contact</button>
                         </div>
                     </div>
                 `;
                 this.elements.messages.appendChild(welcomeDiv);
             }
-        }, 800);
+        }, 600);
     }
 
     async handleSendMessage() {

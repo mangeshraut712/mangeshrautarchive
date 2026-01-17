@@ -88,8 +88,8 @@
   <!-- Game Section & Social Media Fixes -->
   <link rel="stylesheet" href="assets/css/game-section-fix.css" />
 
-  <!-- Game Premium Edition -->
-  <link rel="stylesheet" href="assets/css/game-premium.css" />
+  <!-- Game 2026 Aligned Edition -->
+  <link rel="stylesheet" href="assets/css/game-2026.css" />
 
 
 
@@ -1615,117 +1615,80 @@
 
 
     <!-- ═══════════════════════════════════════════════════════════
-         DEBUG RUNNER GAME - Premium Edition
+         DEBUG RUNNER GAME SECTION
          ═══════════════════════════════════════════════════════════ -->
-    <section id="debug-runner-section" class="game-section-premium">
-      <div class="game-section-inner">
-        <!-- Animated Background Elements -->
-        <div class="game-bg-glow game-bg-glow-1"></div>
-        <div class="game-bg-glow game-bg-glow-2"></div>
+    <section id="debug-runner-section" class="fade-in py-32">
+      <div class="container">
+        <!-- Section Header - Matches other sections -->
+        <h2>Debug Runner</h2>
+        <p class="section-subtitle">The Developer's Challenge - Navigate through the chaos of production!</p>
 
-        <div class="container mx-auto px-4 max-w-6xl relative z-10">
-          <!-- Header with Premium Badge -->
-          <div class="text-center mb-12">
-            <div class="game-badge">
-              <span class="game-badge-icon">🎮</span>
-              <span class="game-badge-text">ARCADE MODE</span>
-              <span class="game-badge-year">Premium</span>
-            </div>
+        <!-- Game Controls -->
+        <div class="game-controls-wrapper">
+          <div class="game-control-item">
+            <kbd class="game-kbd">SPACE</kbd>
+            <span class="game-kbd-action">Start Game</span>
+          </div>
+          <div class="game-control-item">
+            <kbd class="game-kbd">↑</kbd>
+            <span class="game-kbd-action">Jump</span>
+          </div>
+          <div class="game-control-item">
+            <kbd class="game-kbd">↓</kbd>
+            <span class="game-kbd-action">Duck</span>
+          </div>
+        </div>
 
-            <h2 class="game-title">
-              <span class="game-title-main">Debug Runner</span>
-              <span class="game-title-sub">The Developer's Challenge</span>
-            </h2>
-
-            <p class="game-description">
-              Navigate through the chaos of production! Dodge bugs, leap over merge conflicts,
-              and collect coffee power-ups to achieve the highest score.
-            </p>
+        <!-- Game Area -->
+        <div class="game-area">
+          <!-- Game Canvas -->
+          <div class="game-canvas-wrapper">
+            <div id="debug-runner-container"></div>
           </div>
 
-          <!-- Control Keys - Floating Cards -->
-          <div class="game-controls-row">
-            <div class="game-control-premium">
-              <div class="game-control-key">
-                <span>SPACE</span>
-              </div>
-              <div class="game-control-info">
-                <span class="game-control-action">START</span>
-                <span class="game-control-hint">Begin your run</span>
-              </div>
+          <!-- Stats Panel -->
+          <div class="game-stats-panel">
+            <div class="game-stat-box">
+              <span class="game-stat-emoji">🏆</span>
+              <span class="game-stat-title">High Score</span>
+              <span class="game-stat-num" id="game-high-score">0</span>
             </div>
-
-            <div class="game-control-premium">
-              <div class="game-control-key arrow">
-                <span>↑</span>
-              </div>
-              <div class="game-control-info">
-                <span class="game-control-action">JUMP</span>
-                <span class="game-control-hint">Leap over obstacles</span>
-              </div>
-            </div>
-
-            <div class="game-control-premium">
-              <div class="game-control-key arrow">
-                <span>↓</span>
-              </div>
-              <div class="game-control-info">
-                <span class="game-control-action">DUCK</span>
-                <span class="game-control-hint">Slide under dangers</span>
-              </div>
+            <div class="game-stat-box">
+              <span class="game-stat-emoji">⚡</span>
+              <span class="game-stat-title">Speed</span>
+              <span class="game-stat-num" id="game-speed">1.0x</span>
             </div>
           </div>
+        </div>
 
-          <!-- Game Canvas Area -->
-          <div class="game-stage">
-            <div class="game-stage-frame">
-              <div id="debug-runner-container" class="game-canvas-container"></div>
-            </div>
-
-            <!-- Side Stats -->
-            <div class="game-side-info">
-              <div class="game-stat-card">
-                <span class="game-stat-icon">🏆</span>
-                <span class="game-stat-label">High Score</span>
-                <span class="game-stat-value" id="game-high-score">0</span>
-              </div>
-              <div class="game-stat-card">
-                <span class="game-stat-icon">⚡</span>
-                <span class="game-stat-label">Speed</span>
-                <span class="game-stat-value" id="game-speed">1x</span>
-              </div>
+        <!-- Game Legend -->
+        <div class="game-legend-row">
+          <div class="legend-card">
+            <span class="legend-emoji">🐛</span>
+            <div class="legend-info">
+              <strong>Bugs</strong>
+              <span>Jump to avoid</span>
             </div>
           </div>
-
-          <!-- Power-ups Legend -->
-          <div class="game-legend">
-            <div class="game-legend-item">
-              <div class="game-legend-icon bug">🐛</div>
-              <div class="game-legend-text">
-                <span class="legend-name">Bugs</span>
-                <span class="legend-desc">Jump to avoid</span>
-              </div>
+          <div class="legend-card">
+            <span class="legend-emoji">⚔️</span>
+            <div class="legend-info">
+              <strong>Merge Conflicts</strong>
+              <span>Duck to dodge</span>
             </div>
-            <div class="game-legend-item">
-              <div class="game-legend-icon conflict">⚔️</div>
-              <div class="game-legend-text">
-                <span class="legend-name">Merge Conflicts</span>
-                <span class="legend-desc">Duck to dodge</span>
-              </div>
+          </div>
+          <div class="legend-card">
+            <span class="legend-emoji">☕</span>
+            <div class="legend-info">
+              <strong>Coffee</strong>
+              <span>Speed boost!</span>
             </div>
-            <div class="game-legend-item">
-              <div class="game-legend-icon coffee">☕</div>
-              <div class="game-legend-text">
-                <span class="legend-name">Coffee</span>
-                <span class="legend-desc">Speed boost!</span>
-              </div>
-            </div>
-            <div class="game-legend-item">
-              <div class="game-legend-icon fire">🔥</div>
-              <div class="game-legend-text">
-                <span class="legend-name">Prod Fire</span>
-                <span class="legend-desc">Instant game over</span>
-              </div>
+          </div>
+          <div class="legend-card">
+            <span class="legend-emoji">🔥</span>
+            <div class="legend-info">
+              <strong>Prod Fire</strong>
+              <span>Game over!</span>
             </div>
           </div>
         </div>

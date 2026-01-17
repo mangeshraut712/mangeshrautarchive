@@ -477,7 +477,7 @@ def generate_local_response(query: str) -> Dict:
     
     # Projects
     if "project" in query:
-        projects_list = "\n".join([f"• **{p['name']}**: {p['description']}" for p in PORTFOLIO_DATA["projects"][:3]])
+        projects_list = "\n".join([f"• **{p['name']}**: {p['achievements']}" for p in PORTFOLIO_DATA["projects"][:3]])
         return {
             "answer": f"🚀 **Key Projects**:\n{projects_list}",
             "category": "Projects"
@@ -486,13 +486,13 @@ def generate_local_response(query: str) -> Dict:
     # Contact
     if "contact" in query or "email" in query or "hiring" in query or "hire" in query:
         return {
-            "answer": f"📫 **Contact Information**:\n• **Email**: {PORTFOLIO_DATA['contact']['email']}\n• **Phone**: {PORTFOLIO_DATA['contact']['phone']}\n• **LinkedIn**: {PORTFOLIO_DATA['linkedin']}\n• **GitHub**: {PORTFOLIO_DATA['github']}",
+            "answer": f"📫 **Contact Information**:\n• **Email**: {PORTFOLIO_DATA['email']}\n• **Phone**: {PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {PORTFOLIO_DATA['linkedin']}\n• **GitHub**: {PORTFOLIO_DATA['github']}",
             "category": "Contact"
         }
     
     # Experience
     if "experience" in query or "job" in query or "work" in query:
-        exp_list = "\n".join([f"• **{e['role']}** at {e['company']} ({e['period']})" for e in PORTFOLIO_DATA["experience"][:3]])
+        exp_list = "\n".join([f"• **{e['title']}** at {e['company']} ({e['period']})" for e in PORTFOLIO_DATA["experience"][:3]])
         return {
             "answer": f"💼 **Professional Experience**:\n{exp_list}",
             "category": "Experience"
@@ -500,7 +500,7 @@ def generate_local_response(query: str) -> Dict:
     
     # Education
     if "education" in query or "degree" in query or "university" in query or "college" in query:
-        edu_list = "\n".join([f"• **{e['degree']}** - {e['institution']} ({e['year']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
+        edu_list = "\n".join([f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
         return {
             "answer": f"🎓 **Education**:\n{edu_list}" if edu_list else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
             "category": "Education"

@@ -15,29 +15,29 @@
     "open": "open src/index.html"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@tailwindcss/cli": "^4.1.17",
-    "dotenv": "^16.6.1",
-    "eslint": "^9.39.1",
-    "globals": "^16.5.0",
-    "sharp": "^0.33.1",
-    "stylelint": "^16.25.0",
-    "stylelint-config-standard": "^39.0.1",
-    "tailwindcss": "^4.1.17",
-    "vitest": "^4.0.14"
+    "@eslint/js": "*",
+    "@tailwindcss/cli": "*",
+    "dotenv": "*",
+    "eslint": "*",
+    "globals": "*",
+    "sharp": "*",
+    "stylelint": "*",
+    "stylelint-config-standard": "*",
+    "tailwindcss": "*",
+    "vitest": "*"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.5.0",
-    "axios": "^1.12.2",
-    "concurrently": "^9.2.1",
-    "cors": "^2.8.5",
-    "express": "^5.2.1",
-    "firebase": "^12.4.0",
-    "http-proxy-middleware": "^3.0.5",
-    "limiter": "^3.0.0"
+    "@vercel/analytics": "*",
+    "axios": "*",
+    "concurrently": "*",
+    "cors": "*",
+    "express": "*",
+    "firebase": "*",
+    "http-proxy-middleware": "*",
+    "limiter": "*"
   },
   "engines": {
-    "node": "^20",
-    "npm": "^10"
+    "node": ">=20",
+    "npm": ">=10"
   }
 }
