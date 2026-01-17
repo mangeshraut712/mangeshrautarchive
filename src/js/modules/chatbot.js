@@ -3,6 +3,8 @@
  * Enhanced with streaming responses, Markdown support, voice input, and metadata
  */
 
+import { privacyDashboard } from './privacy-dashboard.js';
+
 class AppleIntelligenceChatbot {
     constructor() {
         this.elements = this.initializeElements();
@@ -107,6 +109,7 @@ class AppleIntelligenceChatbot {
             widget: document.getElementById('chatbot-widget'),
             toggle: document.getElementById('chatbot-toggle'),
             closeBtn: document.querySelector('.chatbot-close-btn'),
+            privacyBtn: document.getElementById('chatbot-privacy-btn'),
             form: document.getElementById('chatbot-form'),
             input: document.getElementById('chatbot-input'),
             messages: document.getElementById('chatbot-messages'),
@@ -159,6 +162,10 @@ class AppleIntelligenceChatbot {
     bindEvents() {
         this.elements.toggle?.addEventListener('click', () => this.toggleWidget());
         this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
+        this.elements.privacyBtn?.addEventListener('click', () => {
+            console.log('🛡️ Opening Privacy Dashboard');
+            privacyDashboard.open();
+        });
 
         this.elements.form?.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -241,9 +248,9 @@ class AppleIntelligenceChatbot {
                         <div class="welcome-title">Hi, I'm AssistMe.</div>
                         <div class="welcome-subtitle">I'm your gateway to Mangesh's professional expertise, AI projects, and technical leadership.</div>
                         <div class="welcome-chips">
-                            <button class="welcome-action-chip" onclick="window.chatAssistant.ask('Who is Mangesh?')">👨‍🔬 Profile</button>
-                            <button class="welcome-action-chip" onclick="window.chatAssistant.ask('Show AI projects')">🤖 AI Work</button>
-                            <button class="welcome-action-chip" onclick="window.chatAssistant.ask('Download Resume')">📄 Resume</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Who is Mangesh?')">👨‍🔬 Profile</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Show AI projects')">🤖 AI Work</button>
+                            <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Tell me about your experience')">💼 Experience</button>
                         </div>
                     </div>
                 `;
@@ -322,25 +329,34 @@ class AppleIntelligenceChatbot {
             });
             messageDiv.classList.remove('streaming');
 
-            // Remove typing cursor
-            contentDiv.textContent = fullText;
-
-            // Fallback: If streaming yielded no text, use the direct answer (crucial for Agentic Actions or Offline Mode)
+            // Fallback: If streaming yielded no text, use the direct answer
             if (!fullText && response && (response.answer || response.content)) {
                 fullText = response.answer || response.content;
+            }
 
-                if (response.html) {
-                    contentDiv.innerHTML = response.html;
-                } else {
-                    contentDiv.textContent = fullText;
+            // Final fallback for completely empty responses
+            if (!fullText) {
+                fullText = "I received an empty response. Please try asking again.";
+                contentDiv.textContent = fullText;
+                metadata.error = true;
+            } else {
+                // Render markdown to beautiful HTML
+                const renderedHTML = this.renderMarkdown(fullText);
+                contentDiv.innerHTML = renderedHTML;
+
+                // Apply syntax highlighting to code blocks
+                if (window.Prism) {
+                    contentDiv.querySelectorAll('pre code').forEach((block) => {
+                        window.Prism.highlightElement(block);
+                    });
                 }
             }
 
             // Extract metadata
             const runtime = Date.now() - startTime;
             metadata = {
-                source: response.metadata?.source || response.source || 'AI',
-                model: response.metadata?.model || response.model || 'Unknown',
+                source: response.metadata?.source || response.source || 'Neural API',
+                model: response.metadata?.model || response.model || 'Grok 4.1 Fast',
                 category: response.metadata?.category || 'General',
                 runtime: runtime,
                 tokens: response.metadata?.tokens || Math.ceil(fullText.length / 4),
@@ -362,6 +378,99 @@ class AppleIntelligenceChatbot {
             console.error('Streaming error:', error);
             contentDiv.textContent = fullText || "I encountered an error. Please try again.";
         }
+    }
+
+    /**
+     * Render markdown to clean HTML for beautiful responses
+     */
+    renderMarkdown(text) {
+        // Use marked.js if available
+        if (window.marked) {
+            try {
+                // Configure marked for clean output
+                window.marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    headerIds: false,
+                    mangle: false
+                });
+
+                let html = window.marked.parse(text);
+
+                // Sanitize if DOMPurify is available
+                if (window.DOMPurify) {
+                    html = window.DOMPurify.sanitize(html, {
+                        ALLOWED_TAGS: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'a', 'ul', 'ol', 'li',
+                            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote',
+                            'table', 'thead', 'tbody', 'tr', 'th', 'td', 'hr', 'span', 'div'],
+                        ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'id']
+                    });
+                }
+
+                return html;
+            } catch (e) {
+                console.warn('Markdown parsing failed, using fallback:', e);
+            }
+        }
+
+        // Fallback: Simple markdown to HTML conversion
+        return this.simpleMarkdownToHTML(text);
+    }
+
+    /**
+     * Simple fallback markdown renderer
+     */
+    simpleMarkdownToHTML(text) {
+        let html = text
+            // Escape HTML first
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+
+            // Headers (## Heading)
+            .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+            .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+            .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+
+            // Bold (**text** or __text__)
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/__(.+?)__/g, '<strong>$1</strong>')
+
+            // Italic (*text* or _text_)
+            .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+            .replace(/_([^_]+)_/g, '<em>$1</em>')
+
+            // Links [text](url)
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+
+            // Inline code `code`
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+
+            // Bullet points
+            .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
+
+            // Numbered lists
+            .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+
+            // Paragraphs (double newlines)
+            .replace(/\n\n/g, '</p><p>')
+
+            // Single line breaks
+            .replace(/\n/g, '<br>');
+
+        // Wrap in paragraph
+        html = '<p>' + html + '</p>';
+
+        // Wrap consecutive <li> in <ul>
+        html = html.replace(/(<li>.*?<\/li>)(\s*<li>)/g, '$1$2');
+        html = html.replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>');
+        html = html.replace(/<\/ul>\s*<ul>/g, '');
+
+        // Clean up empty paragraphs
+        html = html.replace(/<p><\/p>/g, '');
+        html = html.replace(/<p>\s*<br>\s*<\/p>/g, '');
+
+        return html;
     }
 
     async simulateTyping(text, startTime) {
@@ -615,6 +724,30 @@ class AppleIntelligenceChatbot {
             }
         }
         this.updateVoiceButtonState();
+    }
+
+    /**
+     * Public method to programmatically ask a question
+     * Used by welcome action chips and external integrations
+     */
+    ask(question) {
+        if (!question || typeof question !== 'string') return;
+
+        // Open chatbot if not already open
+        if (!this.isOpen) {
+            this.openWidget();
+        }
+
+        // Set the input value and trigger send
+        if (this.elements.input) {
+            this.elements.input.value = question;
+            this.autoResizeTextarea(this.elements.input);
+        }
+
+        // Small delay to ensure widget is open
+        setTimeout(() => {
+            this.handleSendMessage();
+        }, this.isOpen ? 0 : 300);
     }
 }
 

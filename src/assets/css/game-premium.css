@@ -1,0 +1,544 @@
+/* ═══════════════════════════════════════════════════════════
+   DEBUG RUNNER GAME - PREMIUM EDITION CSS
+   Modern, immersive gaming experience
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+    --game-surface: var(--card-surface-light);
+    --game-border: var(--card-border-light);
+    --game-text: var(--text-primary);
+    --game-muted: var(--text-secondary);
+    --game-accent: var(--nav-hover);
+    --game-shadow: var(--shadow-md);
+    --game-shadow-strong: var(--shadow-lg);
+    --game-frame-bg: var(--card-surface-light);
+    --game-frame-border: var(--card-border-light);
+    --game-content-max: 980px;
+    --game-glow-opacity-min: 0;
+    --game-glow-opacity-max: 0;
+}
+
+html.dark {
+    --game-shadow: var(--shadow-dark-md);
+    --game-shadow-strong: var(--shadow-dark-lg);
+    --game-glow-opacity-min: 0;
+    --game-glow-opacity-max: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1. SECTION CONTAINER
+   ═══════════════════════════════════════════════════════════ */
+.game-section-premium {
+    position: relative;
+    padding: 80px 0 100px;
+    background: var(--card-surface-light);
+    overflow: hidden;
+}
+
+.game-section-inner {
+    position: relative;
+}
+
+/* Animated Background Glows */
+.game-bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: var(--game-glow-opacity-min);
+    pointer-events: none;
+    animation: glowPulse 8s ease-in-out infinite;
+    display: none;
+}
+
+.game-bg-glow-1 {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(135deg, #0071e3, #5856d6);
+    top: -200px;
+    left: -200px;
+    animation-delay: 0s;
+}
+
+.game-bg-glow-2 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, #30d158, #34c759);
+    bottom: -150px;
+    right: -150px;
+    animation-delay: 4s;
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: var(--game-glow-opacity-min);
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: var(--game-glow-opacity-max);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. GAME BADGE
+   ═══════════════════════════════════════════════════════════ */
+.game-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: color-mix(in srgb, var(--game-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--game-accent) 35%, transparent);
+    border-radius: 100px;
+    margin-bottom: 24px;
+}
+
+.game-badge-icon {
+    font-size: 24px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.game-badge-text {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--game-accent);
+}
+
+.game-badge-year {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, var(--game-accent), color-mix(in srgb, var(--game-accent) 60%, #5ac8fa 40%));
+    color: #fff;
+    border-radius: 20px;
+}
+
+/* Override global section heading styles for this section */
+#debug-runner-section h2 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: var(--game-text) !important;
+}
+
+#debug-runner-section h2::after {
+    content: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. GAME TITLE
+   ═══════════════════════════════════════════════════════════ */
+.game-title {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.game-title-main {
+    font-size: clamp(40px, 8vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg,
+            var(--game-text) 0%,
+            color-mix(in srgb, var(--game-text) 55%, var(--game-muted) 45%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.game-title-sub {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--game-muted);
+    letter-spacing: 0.02em;
+}
+
+.game-description {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--game-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. CONTROL KEYS - SIGNATURE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+.game-controls-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: min(100%, var(--game-content-max));
+    margin: 0 auto 40px;
+    flex-wrap: wrap;
+}
+
+.game-control-premium {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--game-surface);
+    border: 1px solid var(--game-border);
+    border-radius: 20px;
+    box-shadow: var(--game-shadow);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.game-control-premium:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--game-shadow-strong);
+    border-color: color-mix(in srgb, var(--game-border) 40%, var(--game-accent) 60%);
+}
+
+.game-control-key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    height: 48px;
+    padding: 0 16px;
+    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.game-control-key span {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+}
+
+.game-control-key.arrow {
+    min-width: 48px;
+    padding: 0;
+}
+
+.game-control-key.arrow span {
+    font-size: 22px;
+}
+
+.game-control-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.game-control-action {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--game-text);
+    letter-spacing: 0.02em;
+}
+
+.game-control-hint {
+    font-size: 12px;
+    color: var(--game-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. GAME STAGE - CANVAS AREA
+   ═══════════════════════════════════════════════════════════ */
+.game-stage {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    width: min(100%, var(--game-content-max));
+    margin: 0 auto 48px;
+}
+
+.game-stage-frame {
+    flex: 1;
+    max-width: 800px;
+    padding: 20px;
+    background: var(--game-frame-bg);
+    border: 1px solid var(--game-frame-border);
+    border-radius: 28px;
+    box-shadow: var(--game-shadow-strong);
+}
+
+.game-canvas-container {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card-surface-light);
+    border: 1px solid var(--card-border-light);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 6%);
+}
+
+/* Mobile Controls */
+.debug-runner-mobile-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 720px;
+    margin: 28px auto 0;
+    padding: 14px 18px;
+    background: var(--game-surface);
+    border: 1px solid var(--game-border);
+    border-radius: 999px;
+    box-shadow: var(--game-shadow-strong);
+    backdrop-filter: blur(18px) saturate(160%);
+}
+
+html.dark .debug-runner-mobile-controls {
+    background: var(--game-surface);
+}
+
+.debug-game-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 18px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    color: #fff;
+    box-shadow: 0 8px 20px rgb(0 0 0 / 18%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.debug-game-btn--jump {
+    background: linear-gradient(135deg, #34c759, #30d158);
+}
+
+.debug-game-btn--duck {
+    background: linear-gradient(135deg, var(--button-blue-start), var(--button-blue-end));
+}
+
+html.dark .debug-game-btn {
+    box-shadow: 0 8px 20px rgb(0 0 0 / 45%);
+}
+
+.debug-game-btn:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--game-accent) 70%, #fff 30%);
+    outline-offset: 2px;
+}
+
+.debug-game-btn:active {
+    transform: translateY(2px) scale(0.98);
+    filter: brightness(0.95);
+}
+
+/* Side Stats Panel */
+.game-side-info {
+    display: none;
+    /* Hide on mobile, show on larger screens */
+    flex-direction: column;
+    gap: 16px;
+    min-width: 140px;
+}
+
+@media (min-width: 1024px) {
+    .game-side-info {
+        display: flex;
+    }
+}
+
+.game-stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    background: var(--game-surface);
+    border: 1px solid var(--game-border);
+    border-radius: 20px;
+    box-shadow: var(--game-shadow);
+}
+
+.game-stat-icon {
+    font-size: 28px;
+}
+
+.game-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--game-muted);
+}
+
+.game-stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--game-text);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   6. GAME LEGEND - POWER-UPS
+   ═══════════════════════════════════════════════════════════ */
+.game-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    width: min(100%, var(--game-content-max));
+    margin: 0 auto;
+}
+
+.game-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--game-surface);
+    border: 1px solid var(--game-border);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.game-legend-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--game-shadow-strong);
+    border-color: color-mix(in srgb, var(--game-border) 50%, var(--game-accent) 50%);
+}
+
+.game-legend-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    border-radius: 12px;
+}
+
+.game-legend-icon.bug {
+    background: linear-gradient(135deg, #ff3b30, #ff6b6b);
+}
+
+.game-legend-icon.conflict {
+    background: linear-gradient(135deg, #ff9500, #ffcc00);
+}
+
+.game-legend-icon.coffee {
+    background: linear-gradient(135deg, #8b4513, #d2691e);
+}
+
+.game-legend-icon.fire {
+    background: linear-gradient(135deg, #ff2d55, #ff6b35);
+}
+
+.game-legend-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.legend-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--game-text);
+}
+
+.legend-desc {
+    font-size: 12px;
+    color: var(--game-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   7. RESPONSIVE ADJUSTMENTS
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .game-section-premium {
+        padding: 60px 0 80px;
+    }
+
+    .game-stage {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .game-controls-row {
+        gap: 12px;
+    }
+
+    .game-control-premium {
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .game-control-key {
+        min-width: 50px;
+        height: 40px;
+    }
+
+    .game-control-key span {
+        font-size: 13px;
+    }
+
+    .game-stage-frame {
+        padding: 12px;
+        border-radius: 20px;
+    }
+
+    .game-legend {
+        gap: 10px;
+    }
+
+    .game-legend-item {
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
+    .game-legend-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .debug-runner-mobile-controls {
+        margin-top: 20px;
+        padding: 12px 14px;
+        gap: 12px;
+        border-radius: 24px;
+    }
+
+    .debug-game-btn {
+        font-size: 12px;
+        padding: 12px 14px;
+        letter-spacing: 0.06em;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. CANVAS STYLING (Override)
+   ═══════════════════════════════════════════════════════════ */
+#debug-runner-section #debug-runner-canvas {
+    border-radius: 12px !important;
+    background: var(--card-surface-light) !important;
+}

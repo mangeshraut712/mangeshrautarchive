@@ -1,5 +1,5 @@
 import { intelligentAssistant as chatAssistant } from './chat.js';
-import { ui as uiConfig, features, chat as chatConfig, errorMessages } from './config.js';
+import { ui as uiConfig, features } from './config.js';
 import { ModernInputHandler } from './modern-input.js';
 
 import ExternalApiKeys from '../modules/external-config.js';
@@ -13,11 +13,6 @@ import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 const markdownLib = (typeof window !== 'undefined' && window.marked)
     ? window.marked
     : (typeof marked !== 'undefined' ? marked : null);
-
-// Prefer Prism, fallback to hljs
-const syntaxHighlighter = (typeof window !== 'undefined' && window.Prism)
-    ? window.Prism
-    : ((typeof window !== 'undefined' && window.hljs) ? window.hljs : null);
 
 const htmlSanitizer = (typeof window !== 'undefined' && window.DOMPurify)
     ? window.DOMPurify
@@ -247,7 +242,7 @@ class ChatUI {
         // Legacy handler disabled
     }
 
-    async sendMessage(text, context = {}) {
+    async sendMessage(text, _context = {}) {
         /* Legacy logic removed
         if (this.isProcessing) return;
 
@@ -282,7 +277,7 @@ class ChatUI {
             const streamStartTime = Date.now();
 
             const response = await chatAssistant.ask(text, {
-                context,
+                context: _context,
                 onChunk: (chunk) => {
                     // Hide typing indicator on first chunk
                     if (features.enableTypingIndicator && !assistantMessageElement) {

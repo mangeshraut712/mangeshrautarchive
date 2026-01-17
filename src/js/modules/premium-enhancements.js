@@ -165,12 +165,7 @@
         if (prefersReducedMotion) return;
 
         const sections = document.querySelectorAll('section');
-        let lastScrollY = window.scrollY;
-
         function updateSections() {
-            const scrollY = window.scrollY;
-            const direction = scrollY > lastScrollY ? 'down' : 'up';
-
             sections.forEach(section => {
                 const rect = section.getBoundingClientRect();
                 const inView = rect.top < window.innerHeight && rect.bottom > 0;
@@ -181,7 +176,6 @@
                 }
             });
 
-            lastScrollY = scrollY;
         }
 
         let ticking = false;
@@ -422,7 +416,7 @@
         // Optional enhancements
         initSmoothSections();
         initTypingEffect();
-        // initHoverSounds(); // Disabled by default
+        initHoverSounds(); // Enabled only when localStorage flag is present
 
         console.log('✨ Premium enhancements initialized');
     }

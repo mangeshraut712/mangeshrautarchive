@@ -1,6 +1,6 @@
-const CACHE_VERSION = 'v5.0.0-FORCE-CLEAR-1764874021';
-const CACHE_NAME = `mangesh-portfolio-${CACHE_VERSION}`;
-const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
+const CACHE_TAG = 'portfolio-cache';
+const CACHE_NAME = `mangesh-portfolio-${CACHE_TAG}`;
+const RUNTIME_CACHE = `runtime-${CACHE_TAG}`;
 
 // Core assets to cache immediately
 const CORE_ASSETS = [

@@ -1001,10 +1001,10 @@ html.dark .global-nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 24px;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 450;
+    letter-spacing: 0;
     flex: 1 1 auto;
 }
 
@@ -1055,14 +1055,14 @@ html.dark .global-nav {
 
 .nav-link {
     position: relative;
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.88);
     text-decoration: none;
     transition: color 0.2s ease, opacity 0.2s ease;
-    padding: 6px 0;
+    padding: 8px 0;
     white-space: nowrap;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0;
+    font-size: 14px;
+    font-weight: 450;
+    letter-spacing: 0.01em;
 }
 
 .nav-link:hover {
@@ -4492,7 +4492,7 @@ html.dark .wrapper .x {
 
 .wrapper .tooltip {
     position: absolute;
-    top: -55px;
+    top: -40px;
     z-index: 1001;
     font-size: 12px;
     background: #1d1d1f;
@@ -4528,7 +4528,7 @@ html.dark .wrapper .tooltip {
 }
 
 .wrapper .icon:hover .tooltip {
-    top: -65px;
+    top: -48px;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -5253,7 +5253,7 @@ footer {
 }
 
 html.dark footer {
-    background-color: #050505 !important;
+    background-color: #000000 !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 

@@ -1,0 +1,648 @@
+/**
+ * Privacy Dashboard & Personal Intelligence Controls
+ * 
+ * Features:
+ * - Data integration toggles (GitHub, Calendar, etc.)
+ * - Privacy settings and consent management
+ * - Memory/history controls
+ * - GDPR compliance tools (export/delete data)
+ * - Preference customization
+ */
+
+export class PrivacyDashboard {
+    constructor() {
+        this.settings = this.loadSettings();
+        this.isOpen = false;
+        this.createDashboard();
+    }
+
+    loadSettings() {
+        const defaults = {
+            github_integration: false,
+            calendar_integration: false,
+            memory_enabled: true,
+            memory_retention: '30days',
+            response_length: 'balanced',
+            technical_level: 'intermediate',
+            communication_style: 'professional'
+        };
+
+        try {
+            const saved = localStorage.getItem('assistme_privacy_settings');
+            return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+        } catch {
+            return defaults;
+        }
+    }
+
+    saveSettings() {
+        try {
+            localStorage.setItem('assistme_privacy_settings', JSON.stringify(this.settings));
+            this.syncWithBackend();
+        } catch (error) {
+            console.error('Failed to save privacy settings:', error);
+        }
+    }
+
+    async syncWithBackend() {
+        try {
+            const response = await fetch('/api/personalization/preferences', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    preferences: {
+                        response_length: this.settings.response_length,
+                        technical_level: this.settings.technical_level,
+                        communication_style: this.settings.communication_style
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                console.warn('Failed to sync preferences with backend');
+            }
+        } catch (error) {
+            console.error('Error syncing preferences:', error);
+        }
+    }
+
+    createDashboard() {
+        const dashboard = document.createElement('div');
+        dashboard.id = 'privacy-dashboard';
+        dashboard.className = 'privacy-dashboard hidden';
+        dashboard.innerHTML = `
+            <div class="privacy-overlay"></div>
+            <div class="privacy-panel">
+                <div class="privacy-header">
+                    <h2>🛡️ Privacy & Personalization</h2>
+                    <button class="close-btn" aria-label="Close">×</button>
+                </div>
+
+                <div class="privacy-content">
+                    <!-- Data Integrations -->
+                    <section class="privacy-section">
+                        <h3>🔗 Data Integrations</h3>
+                        <p class="section-desc">Connect apps to enhance AI responses with personal context</p>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>GitHub Integration</strong>
+                                <p>Access live repository data and code statistics</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="github-integration" ${this.settings.github_integration ? 'checked' : ''}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item disabled">
+                            <div class="setting-info">
+                                <strong>Google Calendar</strong>
+                                <p>Schedule meetings and check availability</p>
+                                <span class="badge">Coming Soon</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="calendar-integration" disabled>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <!-- Memory Settings -->
+                    <section class="privacy-section">
+                        <h3>🧠 Memory & History</h3>
+                        <p class="section-desc">Control how AI remembers your conversations</p>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <strong>Conversation Memory</strong>
+                                <p>Remember context across sessions for better responses</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="memory-enabled" ${this.settings.memory_enabled ? 'checked' : ''}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <label for="memory-retention">
+                                <strong>Memory Retention</strong>
+                            </label>
+                            <select id="memory-retention" class="setting-select">
+                                <option value="session" ${this.settings.memory_retention === 'session' ? 'selected' : ''}>Current session only</option>
+                                <option value="7days" ${this.settings.memory_retention === '7days' ? 'selected' : ''}>7 days</option>
+                                <option value="30days" ${this.settings.memory_retention === '30days' ? 'selected' : ''}>30 days</option>
+                                <option value="forever" ${this.settings.memory_retention === 'forever' ? 'selected' : ''}>Until manually cleared</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <!-- Personalization -->
+                    <section class="privacy-section">
+                        <h3>✨ AI Personalization</h3>
+                        <p class="section-desc">Customize how AI communicates with you</p>
+                        
+                        <div class="setting-item">
+                            <label for="response-length">
+                                <strong>Response Length</strong>
+                            </label>
+                            <select id="response-length" class="setting-select">
+                                <option value="concise" ${this.settings.response_length === 'concise' ? 'selected' : ''}>Concise (50-100 words)</option>
+                                <option value="balanced" ${this.settings.response_length === 'balanced' ? 'selected' : ''}>Balanced (100-150 words)</option>
+                                <option value="detailed" ${this.settings.response_length === 'detailed' : ''
+    }> Detailed(150 + words)</option >
+                            </select >
+                        </div >
+
+                        <div class="setting-item">
+                            <label for="technical-level">
+                                <strong>Technical Level</strong>
+                            </label>
+                            <select id="technical-level" class="setting-select">
+                                <option value="beginner" ${this.settings.technical_level === 'beginner' ? 'selected' : ''}>Beginner (explain concepts)</option>
+                                <option value="intermediate" ${this.settings.technical_level === 'intermediate' ? 'selected' : ''}>Intermediate (some jargon OK)</option>
+                                <option value="expert" ${this.settings.technical_level === 'expert' ? 'selected' : ''}>Expert (full technical detail)</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <label for="communication-style">
+                                <strong>Communication Style</strong>
+                            </label>
+                            <select id="communication-style" class="setting-select">
+                                <option value="casual" ${this.settings.communication_style === 'casual' ? 'selected' : ''}>Casual & Friendly</option>
+                                <option value="professional" ${this.settings.communication_style === 'professional' ? 'selected' : ''}>Professional</option>
+                                <option value="formal" ${this.settings.communication_style === 'formal' ? 'selected' : ''}>Formal</option>
+                            </select>
+                        </div>
+                    </section >
+
+                    < !--Data Management-- >
+    <section class="privacy-section">
+        <h3>📊 Data Management</h3>
+        <p class="section-desc">GDPR-compliant data controls (your rights)</p>
+
+        <div class="data-actions">
+            <button class="data-btn" id="export-data-btn">
+                <span class="icon">⬇️</span>
+                Export My Data
+            </button>
+            <button class="data-btn danger" id="delete-data-btn">
+                <span class="icon">🗑️</span>
+                Delete All Data
+            </button>
+        </div>
+    </section>
+                </div >
+
+    <div class="privacy-footer">
+        <button class="btn-secondary" id="cancel-btn">Cancel</button>
+        <button class="btn-primary" id="save-btn">Save Changes</button>
+    </div>
+            </div >
+    `;
+
+        document.body.appendChild(dashboard);
+        this.attachEventListeners();
+        this.applyStyles();
+    }
+
+    attachEventListeners() {
+        const dashboard = document.getElementById('privacy-dashboard');
+
+        // Open/Close
+        dashboard.querySelector('.close-btn').addEventListener('click', () => this.close());
+        dashboard.querySelector('.privacy-overlay').addEventListener('click', () => this.close());
+        dashboard.querySelector('#cancel-btn').addEventListener('click', () => this.close());
+
+        // Save button
+        dashboard.querySelector('#save-btn').addEventListener('click', () => {
+            this.updateSettingsFromUI();
+            this.saveSettings();
+            this.close();
+            this.showToast('✅ Settings saved successfully!');
+        });
+
+        // Data export
+        dashboard.querySelector('#export-data-btn').addEventListener('click', () => {
+            this.exportUserData();
+        });
+
+        // Data deletion
+        dashboard.querySelector('#delete-data-btn').addEventListener('click', () => {
+            this.confirmDeleteData();
+        });
+
+        // Real-time toggle feedback
+        dashboard.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
+            toggle.addEventListener('change', (e) => {
+                this.settings[e.target.id.replace('-', '_')] = e.target.checked;
+            });
+        });
+    }
+
+    updateSettingsFromUI() {
+        const dashboard = document.getElementById('privacy-dashboard');
+        
+        this.settings.github_integration = dashboard.querySelector('#github-integration').checked;
+        this.settings.memory_enabled = dashboard.querySelector('#memory-enabled').checked;
+        this.settings.memory_retention = dashboard.querySelector('#memory-retention').value;
+        this.settings.response_length = dashboard.querySelector('#response-length').value;
+        this.settings.technical_level = dashboard.querySelector('#technical-level').value;
+        this.settings.communication_style = dashboard.querySelector('#communication-style').value;
+    }
+
+    async exportUserData() {
+        try {
+            const response = await fetch('/api/personalization/export');
+            if (!response.ok) throw new Error('Export failed');
+            
+            const data = await response.json();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `assistme - data -export -${ new Date().toISOString().split('T')[0] }.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            this.showToast('✅ Data exported successfully!');
+        } catch (error) {
+            this.showToast('❌ Export failed. Please try again.');
+            console.error('Export error:', error);
+        }
+    }
+
+    confirmDeleteData() {
+        const confirmed = confirm(
+            '⚠️ WARNING: This will permanently delete ALL your data including:\n\n' +
+            '• Conversation history\n' +
+            '• Preferences\n' +
+            '• Personalization settings\n\n' +
+            'This action cannot be undone. Continue?'
+        );
+
+        if (confirmed) {
+            this.deleteAllData();
+        }
+    }
+
+    async deleteAllData() {
+        try {
+            localStorage.removeItem('assistme_privacy_settings');
+            localStorage.removeItem('assistme_session_id');
+            
+            await fetch('/api/personalization/delete', { method: 'DELETE' });
+            
+            this.showToast('✅ All data deleted. Refreshing page...');
+            setTimeout(() => window.location.reload(), 2000);
+        } catch (error) {
+            this.showToast('❌ Deletion failed. Please try again.');
+            console.error('Delete error:', error);
+        }
+    }
+
+    open() {
+        const dashboard = document.getElementById('privacy-dashboard');
+        dashboard.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        this.isOpen = true;
+    }
+
+    close() {
+        const dashboard = document.getElementById('privacy-dashboard');
+        dashboard.classList.add('hidden');
+        document.body.style.overflow = '';
+        this.isOpen = false;
+    }
+
+    showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'privacy-toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    applyStyles() {
+        if (document.getElementById('privacy-dashboard-styles')) return;
+
+        const style = document.createElement('style');
+        style.id = 'privacy-dashboard-styles';
+        style.textContent = `
+    .privacy - dashboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z - index: 10000;
+    display: flex;
+    align - items: center;
+    justify - content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+            .privacy - dashboard.hidden {
+    display: none;
+}
+
+            .privacy - overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop - filter: blur(8px);
+}
+
+            .privacy - panel {
+    position: relative;
+    background: white;
+    width: 90 %;
+    max - width: 600px;
+    max - height: 90vh;
+    border - radius: 16px;
+    box - shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex - direction: column;
+    animation: slideUp 0.3s ease;
+}
+
+@media(prefers - color - scheme: dark) {
+                .privacy - panel {
+        background: #1d1d1f;
+        color: #f5f5f7;
+    }
+}
+
+            .privacy - header {
+    padding: 1.5rem;
+    border - bottom: 1px solid #e5e5e7;
+    display: flex;
+    align - items: center;
+    justify - content: space - between;
+}
+
+            .privacy - header h2 {
+    margin: 0;
+    font - size: 1.5rem;
+    font - weight: 600;
+}
+
+            .close - btn {
+    background: none;
+    border: none;
+    font - size: 2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+            .close - btn:hover {
+    opacity: 1;
+}
+
+            .privacy - content {
+    padding: 1.5rem;
+    overflow - y: auto;
+    flex: 1;
+}
+
+            .privacy - section {
+    margin - bottom: 2rem;
+}
+
+            .privacy - section h3 {
+    margin: 0 0 0.5rem 0;
+    font - size: 1.1rem;
+    font - weight: 600;
+}
+
+            .section - desc {
+    color: #666;
+    font - size: 0.9rem;
+    margin: 0 0 1rem 0;
+}
+
+            .setting - item {
+    display: flex;
+    align - items: center;
+    justify - content: space - between;
+    padding: 1rem;
+    border - radius: 8px;
+    background: #f5f5f7;
+    margin - bottom: 0.75rem;
+}
+
+@media(prefers - color - scheme: dark) {
+                .setting - item {
+        background: #2d2d2f;
+    }
+}
+
+            .setting - item.disabled {
+    opacity: 0.5;
+}
+
+            .setting - info {
+    flex: 1;
+}
+
+            .setting - info strong {
+    display: block;
+    margin - bottom: 0.25rem;
+}
+
+            .setting - info p {
+    margin: 0;
+    font - size: 0.85rem;
+    color: #666;
+}
+
+            .badge {
+    display: inline - block;
+    padding: 0.25rem 0.5rem;
+    background: #007aff;
+    color: white;
+    border - radius: 4px;
+    font - size: 0.75rem;
+    margin - top: 0.5rem;
+}
+
+            .toggle -switch {
+    position: relative;
+    display: inline - block;
+    width: 48px;
+    height: 28px;
+}
+
+    .toggle -switch input {
+                opacity: 0;
+width: 0;
+height: 0;
+            }
+
+            .toggle - slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background - color: #ccc;
+    transition: 0.3s;
+    border - radius: 28px;
+}
+
+            .toggle - slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background - color: white;
+    transition: 0.3s;
+    border - radius: 50 %;
+}
+
+input: checked + .toggle - slider {
+    background - color: #007aff;
+}
+
+input: checked + .toggle - slider:before {
+    transform: translateX(20px);
+}
+
+            .setting - select {
+    width: 100 %;
+    padding: 0.75rem;
+    border: 1px solid #e5e5e7;
+    border - radius: 8px;
+    background: white;
+    font - size: 0.95rem;
+    cursor: pointer;
+    margin - top: 0.5rem;
+}
+
+            .data - actions {
+    display: flex;
+    gap: 1rem;
+}
+
+            .data - btn {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid #e5e5e7;
+    border - radius: 8px;
+    background: white;
+    cursor: pointer;
+    font - size: 0.95rem;
+    transition: all 0.2s;
+    display: flex;
+    align - items: center;
+    justify - content: center;
+    gap: 0.5rem;
+}
+
+            .data - btn:hover {
+    background: #f5f5f7;
+    transform: translateY(-2px);
+}
+
+            .data - btn.danger {
+    color: #ff3b30;
+    border - color: #ff3b30;
+}
+
+            .data - btn.danger:hover {
+    background: #fff5f5;
+}
+
+            .privacy - footer {
+    padding: 1rem 1.5rem;
+    border - top: 1px solid #e5e5e7;
+    display: flex;
+    gap: 1rem;
+    justify - content: flex - end;
+}
+
+            .btn - secondary, .btn - primary {
+    padding: 0.75rem 1.5rem;
+    border - radius: 8px;
+    font - size: 1rem;
+    font - weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+            .btn - secondary {
+    background: transparent;
+    border: 1px solid #e5e5e7;
+    color: #1d1d1f;
+}
+
+            .btn - primary {
+    background: #007aff;
+    border: none;
+    color: white;
+}
+
+            .btn - primary:hover {
+    background: #0051d5;
+    transform: translateY(-2px);
+}
+
+            .privacy - toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50 %;
+    transform: translateX(-50 %) translateY(100px);
+    background: #1d1d1f;
+    color: white;
+    padding: 1rem 2rem;
+    border - radius: 8px;
+    box - shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z - index: 10001;
+    transition: transform 0.3s ease;
+}
+
+            .privacy - toast.show {
+    transform: translateX(-50 %) translateY(0);
+}
+
+@keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+}
+
+@keyframes slideUp {
+                from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+                to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+`;
+
+        document.head.appendChild(style);
+    }
+
+    getSettings() {
+        return { ...this.settings };
+    }
+}
+
+// Export singleton instance
+export const privacyDashboard = new PrivacyDashboard();

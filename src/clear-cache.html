@@ -178,9 +178,9 @@
                 statusDiv.className = 'status success';
                 statusDiv.textContent = '✅ All caches cleared! Redirecting to fresh homepage in 2 seconds...';
 
-                // Redirect to homepage with cache-busting parameter
+                // Redirect to homepage after cache clear
                 setTimeout(() => {
-                    window.location.href = '/?v=' + Date.now();
+                    window.location.href = '/?refresh=true';
                 }, 2000);
 
             } catch (error) {

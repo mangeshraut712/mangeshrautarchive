@@ -86,8 +86,6 @@ class HeroVisualization {
     animate() {
         this.ctx.clearRect(0, 0, this.width, this.height);
 
-        const time = Date.now() * 0.001;
-
         // Draw connections to center
         this.nodes.forEach(node => {
             // Update position (floating orbit)

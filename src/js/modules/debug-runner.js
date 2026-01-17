@@ -1,6 +1,6 @@
 /**
  * Debug Runner - Premium Coding Game
- * 2026 Portfolio Upgrade
+ * Portfolio Upgrade
  * Apple Arcade-inspired aesthetic with smooth physics and polished visuals.
  * Enhanced with mobile controls and full theme awareness
  */
@@ -32,6 +32,10 @@ class DebugRunner {
         this.isMobile = this.detectMobile();
         this.mobileControls = null;
         this.frame = 0;
+        this.highScoreDisplay = document.getElementById('game-high-score');
+        this.speedDisplay = document.getElementById('game-speed');
+        this.lastUiHighScore = null;
+        this.lastUiSpeed = null;
 
         // Premium Color Palette (Apple-inspired)
         this.themes = {
@@ -51,9 +55,9 @@ class DebugRunner {
                 heroGlow: 'rgba(255, 255, 255, 0.5)'
             },
             light: {
-                bg: '#f5f5f7',
+                bg: '#ffffff',
                 ground: '#ffffff',
-                groundLine: '#d2d2d7',
+                groundLine: '#e5e5e7',
                 text: '#1d1d1f',
                 textSecondary: '#86868b',
                 accent: '#0071e3',
@@ -135,6 +139,7 @@ class DebugRunner {
         this.setupThemeObserver();
         this.render();
         this.drawStartScreen();
+        this.updateSideStats();
 
         return this.canvas;
     }
@@ -146,11 +151,6 @@ class DebugRunner {
         if (this.canvas) {
             this.canvas.style.background = this.colors.bg;
             this.canvas.style.borderColor = this.colors.groundLine;
-        }
-
-        // Update mobile controls theme
-        if (this.mobileControls) {
-            this.updateMobileControlsTheme();
         }
 
         // Force redraw if not running
@@ -184,17 +184,6 @@ class DebugRunner {
         // Create controls wrapper
         const wrapper = document.createElement('div');
         wrapper.className = 'debug-runner-mobile-controls';
-        wrapper.style.cssText = `
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 32px;
-            width: 100%;
-            max-width: 900px;
-            margin: 40px auto 0;
-            position: relative;
-            z-index: 10;
-        `;
 
         // Helper to handle interactions
         const bindAction = (btn, action, endAction) => {
@@ -238,53 +227,31 @@ class DebugRunner {
 
         container.parentElement.appendChild(wrapper);
         this.mobileControls = wrapper;
-        this.updateMobileControlsTheme();
     }
 
     createControlButton(text, type) {
         const btn = document.createElement('button');
         btn.className = `debug-game-btn debug-game-btn--${type}`;
+        btn.type = 'button';
         btn.textContent = text;
-        btn.style.cssText = `
-            padding: 20px 24px;
-            border-radius: 16px;
-            border: none;
-            font-weight: 800;
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        `;
-
-        if (type === 'jump') {
-            btn.style.background = 'linear-gradient(135deg, #16a34a, #22d3ee)';
-            btn.style.color = '#ffffff';
-        } else {
-            btn.style.background = 'linear-gradient(135deg, #0071e3, #2997ff)';
-            btn.style.color = '#ffffff';
-        }
+        btn.setAttribute('aria-label', text);
 
         return btn;
     }
 
-    updateMobileControlsTheme() {
-        if (!this.mobileControls) return;
+    updateSideStats() {
+        const highScoreValue = Math.floor(this.highScore / 10);
+        if (this.highScoreDisplay && this.lastUiHighScore !== highScoreValue) {
+            this.highScoreDisplay.textContent = highScoreValue;
+            this.lastUiHighScore = highScoreValue;
+        }
 
-        const isDark = document.documentElement.classList.contains('dark');
-        const buttons = this.mobileControls.querySelectorAll('button');
-
-        buttons.forEach(btn => {
-            if (isDark) {
-                btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-            } else {
-                btn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-            }
-        });
+        const speedMultiplier = Math.max(1, this.speed / 8);
+        const speedLabel = `${speedMultiplier.toFixed(1)}x`;
+        if (this.speedDisplay && this.lastUiSpeed !== speedLabel) {
+            this.speedDisplay.textContent = speedLabel;
+            this.lastUiSpeed = speedLabel;
+        }
     }
 
     vibrate(duration) {
@@ -395,6 +362,7 @@ class DebugRunner {
         this.powerUps = [];
         this.particles = [];
         this.resetHero();
+        this.updateSideStats();
 
         if (this.gameLoop) clearInterval(this.gameLoop);
         this.gameLoop = setInterval(() => this.update(), 1000 / 60);
@@ -471,6 +439,7 @@ class DebugRunner {
         this.frame++;
         if (this.screenShake > 0) this.screenShake -= 1;
 
+        this.updateSideStats();
         this.render();
     }
 

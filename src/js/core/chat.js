@@ -1,29 +1,41 @@
 import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
 
+// ============================================================================
+// API CONFIGURATION - Unified Backend Strategy
+// ============================================================================
+// All frontends use the Vercel backend which has API keys configured.
+// This ensures consistent behavior across localhost, GitHub Pages, and previews.
+// ============================================================================
+
 let API_BASE = '';
+
+// Primary Backend: Vercel (has OPENROUTER_API_KEY configured)
+const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
 
 if (typeof window !== 'undefined') {
     if (window.APP_CONFIG?.apiBaseUrl) {
+        // Allow override via config
         API_BASE = window.APP_CONFIG.apiBaseUrl;
+        console.log('⚙️ Using custom API base:', API_BASE);
     } else {
         const hostname = window.location.hostname || '';
-        const port = window.location.port || '';
 
-        // If running on localhost:8000, assume local backend is running
-        if ((hostname === 'localhost' || hostname === '127.0.0.1') && port === '8000') {
-            API_BASE = ''; // Use relative paths for local backend
-            console.log('🏠 Local backend detected on port 8000');
+        // Cloud Run deployment - use relative paths (self-hosted backend)
+        if (hostname.includes('run.app')) {
+            API_BASE = ''; // Cloud Run serves both frontend and backend
+            console.log('🌐 Running on Cloud Run (self-hosted mode)');
         }
-        // Cloud Run domain - for Google AI Challenge 2026
-        else if (hostname.includes('run.app')) {
-            API_BASE = ''; // Use relative paths on Cloud Run
-            console.log('🌐 Running on Cloud Run (contest mode)');
+        // Vercel deployment - use relative paths
+        else if (hostname.includes('vercel.app')) {
+            API_BASE = ''; // Vercel serves both frontend and backend
+            console.log('🌐 Running on Vercel (self-hosted mode)');
         }
-        // For ALL other cases (GitHub Pages, Vercel preview, localhost:3000), use Vercel backend
+        // ALL other cases (localhost, GitHub Pages, custom domain)
+        // Use Vercel backend which has API keys configured
         else {
-            API_BASE = 'https://mangeshrautarchive.vercel.app';
-            console.log('🌐 Using Vercel backend:', API_BASE);
+            API_BASE = VERCEL_BACKEND;
+            console.log('🔗 Using Vercel backend (API keys configured):', API_BASE);
         }
     }
 } else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
@@ -347,18 +359,24 @@ class IntelligentAssistant {
                 const decoder = new TextDecoder();
                 let fullText = '';
                 let metadata = {};
+                let buffer = '';
 
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
 
-                    const chunk = decoder.decode(value, { stream: true });
-                    const lines = chunk.split('\n');
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+
+                    // Keep the last partial line if it doesn't end with a newline
+                    buffer = buffer.endsWith('\n') ? '' : lines.pop();
 
                     for (const line of lines) {
-                        if (!line.trim()) continue;
+                        const trimmed = line.trim();
+                        if (!trimmed) continue;
+
                         try {
-                            const data = JSON.parse(line);
+                            const data = JSON.parse(trimmed);
 
                             // Handle chunk data (backend sends {type: "chunk", content: "..."})
                             if (data.type === 'chunk' && data.content) {
@@ -373,7 +391,7 @@ class IntelligentAssistant {
                             // Handle errors
                             else if (data.error || data.type === 'error') {
                                 console.error('Stream error:', data.error);
-                                const errorMsg = `\n\n⚠️ **System Error**: ${data.error}`;
+                                const errorMsg = `\n\n**Neural Interrupt**: ${data.error || 'Connection lost.'}`;
                                 fullText += errorMsg;
                                 if (typeof options.onChunk === 'function') {
                                     options.onChunk(errorMsg);

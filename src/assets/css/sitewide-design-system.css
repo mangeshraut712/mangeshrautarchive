@@ -372,7 +372,7 @@ section,
 header,
 footer,
 .container,
-.wrapper {
+.page-wrapper {
     background: #fff !important;
 }
 
@@ -383,8 +383,14 @@ html.dark section,
 html.dark header,
 html.dark footer,
 html.dark .container,
-html.dark .wrapper {
+html.dark .page-wrapper {
     background: #000 !important;
+}
+
+/* Social icons wrapper should be transparent */
+html.dark ul.wrapper,
+html.dark footer .wrapper {
+    background: transparent !important;
 }
 
 section:nth-child(even) {
@@ -536,7 +542,6 @@ main,
 section,
 header,
 footer,
-.wrapper,
 .container,
 .page-wrapper {
     background-color: #fff !important;
@@ -548,7 +553,6 @@ html.dark main,
 html.dark section,
 html.dark header,
 html.dark footer,
-html.dark .wrapper,
 html.dark .container,
 html.dark .page-wrapper {
     background-color: #000 !important;
