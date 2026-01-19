@@ -46,7 +46,7 @@ gcloud run deploy $SERVICE_NAME \
     --platform managed \
     --region $REGION \
     --allow-unauthenticated \
-    --set-env-vars="VERCEL_ENV=production" \
+    --set-env-vars="CLOUD_RUN_ENV=production" \
     --labels dev-tutorial=devnewyear2026
 
 # 4. Get the URL

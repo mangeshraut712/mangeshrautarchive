@@ -20,7 +20,7 @@ COPY . .
 EXPOSE 8080
 
 # Environment variables for production
-ENV VERCEL_ENV=production
+ENV CLOUD_RUN_ENV=production
 ENV PYTHONUNBUFFERED=1
 
 # Command to run the application using uvicorn
