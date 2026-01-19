@@ -1,14 +1,14 @@
 <div align="center">
-
+  
 # 🚀 Mangesh Raut — AI-Powered Portfolio
 
 **Next-Generation Software Engineer Portfolio with Neural AI Assistant**
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-mangeshraut.pro-0071e3?style=for-the-badge)](https://mangeshraut.pro)
-[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel)](https://mangeshrautarchive.vercel.app)
-[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Active-181717?style=for-the-badge&logo=github)](https://mangeshraut712.github.io/mangeshrautarchive/)
+[![Contest Entry](https://img.shields.io/badge/🏆_Contest-devnewyear2026-ff6b6b?style=for-the-badge)](https://dev.to/t/devnewyear2026)
+[![Live Demo](https://img.shields.io/badge/🌐_Cloud_Run-Deployed-0071e3?style=for-the-badge)](https://mangesh-portfolio-api-239037094122.us-central1.run.app)
+[![Vercel](https://img.shields.io/badge/Vercel-Active-000000?style=for-the-badge&logo=vercel)](https://mangeshrautarchive.vercel.app)
 
-*A premium full-stack portfolio featuring AssistMe AI, glassmorphism design, and 2026-grade user experience*
+*Official Submission for the **"New Year, New You" Portfolio Challenge** by Google AI & DEV.to (2026)*
 
 </div>
 
@@ -51,9 +51,9 @@
 
 ### AI & Intelligence
 ```
-├── Grok 4.1 Fast (Primary Model)
-├── Gemini 2.0 Flash (Fallback)
-├── Claude 3.5 Sonnet (Fallback)
+├── Antigravity (AI-First Development)
+├── Gemini 2.0 Flash (Secondary Intelligence)
+├── Grok 4.1 Fast (Primary Context)
 ├── Streaming Responses (NDJSON)
 ├── Conversation Memory
 └── Agentic Actions System
@@ -61,13 +61,13 @@
 
 ### DevOps & Tooling
 ```
-├── Node.js 20+ / npm 10+
-├── Vitest (Testing)
-├── ESLint + Stylelint (Linting)
-├── Sharp (Image Optimization)
+├── Google Cloud Run (Production Host)
 ├── Docker (Containerization)
-├── Vercel / Cloud Run (Deployment)
-└── GitHub Actions (CI/CD)
+├── Vercel (Development/Preview)
+├── Node.js 20+ / npm 10+
+├── Vitest (Testing Engine)
+├── ESLint + Stylelint (Linting)
+└── GitHub Actions (CI/CD Pipeline)
 ```
 
 ---
@@ -193,7 +193,7 @@ npm run build:css       # Rebuild Tailwind CSS only
 | **Production** | [mangeshraut.pro](https://mangeshraut.pro) | Primary |
 | **Vercel** | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app) | Frontend + API |
 | **GitHub Pages** | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive/) | Static Mirror |
-| **Cloud Run** | [mangesh-portfolio-api](https://mangesh-portfolio-api-q3kdyzhwba-uc.a.run.app) | Container |
+| **Cloud Run** | [mangesh-portfolio-api](https://mangesh-portfolio-api-239037094122.us-central1.run.app) | Production |
 
 ---
 
