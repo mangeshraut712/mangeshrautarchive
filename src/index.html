@@ -681,9 +681,7 @@
           </div>
         </div>
 
-        <!-- Search and Filter -->
-        <!-- Search and Filter -->
-        <!-- Search and Filter (Redesigned) -->
+        <!-- Projects Search and Filter -->
         <div class="proj-search-container">
           <div class="proj-search-bar">
             <div class="proj-input-group">
@@ -1855,10 +1853,8 @@
     <script type="module" src="js/modules/contact.js"></script>
 
     <!-- Apple Intelligence Chatbot - Clean Implementation -->
-    <script type="module" src="js/modules/chatbot.js?v=20260119"></script>
-
-    <!-- Core Chat Engine (for AI responses) -->
-    <script type="module" src="js/core/script.js?v=20260119"></script>
+    <script type="module" src="js/modules/chatbot.js?v=20260119-v2"></script>
+    <script type="module" src="js/core/script.js?v=20260119-v2"></script>
 
     <!-- GitHub Projects Dynamic Loader -->
     <script type="module" src="js/modules/github-projects.js"></script>
@@ -1917,14 +1913,12 @@
 
     <!-- Animations disabled for performance -->
     <script type="module">
-      // Inion
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize Skills Visualization
         const skillsViz = new SkillsVisualization();
         skillsViz.render('skills-container');
-      });
-    </script>
-    <script type="module">
-      document.addEventListener('DOMContentLoaded', async () => {
+
+        // Initialize GitHub Projects
         const githubProjects = new GitHubProjects('mangeshraut712');
 
         // Load and render projects (all 8 curated projects)
