@@ -4,348 +4,232 @@
 
 ### *Next-Generation Developer Portfolio with Intelligent AI Assistant*
 
-[![Cloud Run](https://img.shields.io/badge/🌐_Live_Demo-Google_Cloud_Run-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://mangesh-portfolio-api-239037094122.us-central1.run.app)
-[![Dev.to Contest](https://img.shields.io/badge/🏆_Winner-Dev.to_2026-ff6b6b?style=for-the-badge&logo=devdotto&logoColor=white)](https://dev.to/t/devnewyear2026)
+[![Live Portfolio](https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logoColor=white)](https://mangeshraut.pro)
+[![GitHub](https://img.shields.io/badge/GitHub-Pages-181717?style=for-the-badge&logo=github)](https://mangeshraut712.github.io/mangeshrautarchive/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/mangeshraut712/mangeshrautarchive?style=for-the-badge&logo=github)](https://github.com/mangeshraut712/mangeshrautarchive)
 
-**[View Live Demo](https://mangesh-portfolio-api-239037094122.us-central1.run.app)** • **[Documentation](#-documentation)** • **[Features](#-features)** • **[Installation](#-quick-start)**
+**[View Live Demo](https://mangeshraut.pro)** • **[Features](#-key-features)** • **[Tech Stack](#️-tech-stack)** • **[Quick Start](#-quick-start)**
 
 ---
 
-### 💡 A Premium Full-Stack Portfolio Featuring
-
-**🧠 AI Assistant (AssistMe)** • **🎮 Interactive Canvas Game** • **📊 Live GitHub Integration** • **🎨 Glassmorphism UI** • **⚡ 95+ Lighthouse Score**
+<img src="https://img.shields.io/badge/Built_with-❤️_in_Philadelphia-ff6b6b?style=flat-square" alt="Built with love" />
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 📖 Table of Contents
 
-- [Overview](#-overview)
-- [Live Demo](#-live-demo)
-- [Features](#-features)
+- [About](#-about)
+- [Key Features](#-key-features)
+- [Live Demos](#-live-demos)
 - [Tech Stack](#️-tech-stack)
-- [Architecture](#-architecture)
 - [Quick Start](#-quick-start)
-- [Documentation](#-documentation)
+- [Project Structure](#-project-structure)
+- [Scripts](#-available-scripts)
 - [Performance](#-performance)
-- [Security](#-security)
 - [Contributing](#-contributing)
 - [License](#-license)
+- [Contact](#-connect-with-me)
 
 ---
 
-## 🌟 Overview
+## 🌟 About
 
-This portfolio is not just a static website—it's an **intelligent, interactive experience** that showcases modern web development practices and cutting-edge AI integration. Built as an official entry for the **"New Year, New You" 2026 Portfolio Challenge** by Google AI and DEV.to, this project demonstrates the future of personal developer portfolios.
+This is my **personal portfolio website** — not just a static resume, but an **intelligent, interactive experience** that showcases modern full-stack development. It features a real-time AI chatbot assistant, live GitHub integration, an interactive canvas game, and a premium glassmorphism UI design.
 
-### Why This Portfolio Stands Out
+Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and deployed on multiple platforms for maximum reliability and performance.
 
-- 🤖 **Conversational AI** — Real-time streaming chatbot with context awareness
-- 🎯 **Agentic UX** — AI can control the website (change themes, navigate, download resume)
-- 🎮 **Hidden Game** — Fully functional HTML5 Canvas game (Debug Runner)
-- 📱 **Responsive Design** — Flawless experience on mobile, tablet, and desktop
-- ⚡ **Performance First** — 95+ Lighthouse scores across all metrics
-- 🔒 **Privacy-Focused** — No tracking, full GDPR compliance
+<div align="center">
 
----
+### 💡 Project Highlights
 
-## 🌐 Live Demo
+| 🧠 AI Assistant | 🎮 Hidden Game | 📊 Live Data | 🎨 Premium UI |
+|:---------------:|:--------------:|:------------:|:-------------:|
+| Real-time streaming chatbot with context awareness | Debug Runner - Canvas game | GitHub API integration | Apple-inspired glassmorphism |
 
-### Primary Deployment (Google Cloud Run)
-**Production:** [https://mangesh-portfolio-api-239037094122.us-central1.run.app](https://mangesh-portfolio-api-239037094122.us-central1.run.app)
+</div>
 
-### Alternative Deployments
-- **Vercel:** [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)
-- **GitHub Pages:** [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
-- **Custom Domain:** [mangeshraut.pro](https://mangeshraut.pro)
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-### 🧠 AssistMe — Neural AI Assistant
+### 🧠 AssistMe — Intelligent AI Assistant
 
 <details>
-<summary><b>Click to explore AI capabilities</b></summary>
+<summary><b>🤖 Click to explore AI capabilities</b></summary>
 
-The crown jewel of this portfolio is **AssistMe**, an AI-powered chatbot that goes beyond simple Q&A:
+<br/>
 
-- **🔄 Real-Time Streaming** — Watch responses appear character-by-character
-- **💾 Conversation Memory** — Maintains context across multiple questions
-- **🎤 Voice Input** — Speak your questions using Web Speech API
-- **🔊 Voice Output** — Hear responses via text-to-speech
-- **🎯 Agentic Actions** — Can execute commands:
-  - Toggle dark/light theme
-  - Download resume PDF
-  - Navigate to specific sections
-  - Show/hide UI elements
-- **📊 Live Metadata** — View model info, tokens, and latency
-- **🛡️ Privacy Dashboard** — Full control over your data
-- **📴 Offline Mode** — Intelligent fallback when disconnected
+The centerpiece of this portfolio is **AssistMe**, an AI-powered chatbot that goes beyond simple Q&A:
 
-**Powered By:** Grok 4.1 Fast (Primary) + Gemini 2.0 Flash (Secondary)
+- **🔄 Real-Time Streaming** — Watch responses appear character-by-character like ChatGPT
+- **💾 Conversation Memory** — Maintains context across multiple questions and answers
+- **🎤 Voice Input** — Speak your questions using the Web Speech API
+- **🔊 Voice Output** — Hear responses via built-in text-to-speech
+- **🎯 Agentic Actions** — The AI can actually control the website:
+  - Toggle between dark and light themes
+  - Download my resume PDF
+  - Navigate to specific portfolio sections
+  - Show/hide UI elements on command
+- **📊 Live Metadata** — See AI model info, token count, and response latency
+- **🛡️ Privacy Dashboard** — Complete control over your conversation data
+- **📴 Offline Mode** — Smart fallback responses when the API is unavailable
+
+**Technology:** Powered by Grok 4.1 Fast (primary) and Gemini 2.0 Flash (fallback)
 
 </details>
 
 ### 🎮 Debug Runner — Interactive Canvas Game
 
 <details>
-<summary><b>Click to explore game features</b></summary>
+<summary><b>🕹️ Click to explore game features</b></summary>
 
-A fully functional **HTML5 Canvas** retro-style game built from scratch:
+<br/>
 
-- ⚡ **60 FPS animations** with optimized rendering
-- 📱 **Touch controls** for mobile devices
-- 🎯 **Score tracking** and local storage
-- 🎨 **Pixel-perfect graphics** with custom sprites
-- 🔊 **Sound effects** (optional)
-- 🏆 **Difficulty progression** system
+A fully functional **HTML5 Canvas** retro-style arcade game built from scratch:
 
-**Location:** Navigate to the "Game" section in the portfolio
+- ⚡ **60 FPS Performance** — Smooth animations with optimized rendering
+- 📱 **Mobile Touch Controls** — Play on any device with responsive touch input
+- 🎯 **Score Tracking** — Local storage persists your high scores
+- 🎨 **Pixel Art Graphics** — Retro aesthetic with custom sprite sheets
+- 🏆 **Progressive Difficulty** — Game gets harder as you advance
+
+**Location:** Navigate to the "Game" section in the portfolio to discover this hidden easter egg!
 
 </details>
 
 ### 📊 Live GitHub Integration
 
 <details>
-<summary><b>Click to explore GitHub features</b></summary>
+<summary><b>💻 Click to explore GitHub features</b></summary>
 
-Real-time project showcase that never gets stale:
+<br/>
 
-- 🔄 **Auto-updating** — Pulls latest repos from GitHub API
-- 🔍 **Smart Filtering** — Excludes forks, sorts by last updated
-- 📈 **Live Stats** — Stars, forks, languages in real-time
-- 🎨 **Beautiful Cards** — Glassmorphism design with hover effects
-- 🔖 **Topic Tags** — Dynamic technology badges
-- ⚡ **Cached for Speed** — Smart caching with 5-minute TTL
+Real-time project showcase that automatically stays current:
+
+- 🔄 **Auto-Updating** — Fetches latest repositories from GitHub API on every visit
+- 🔍 **Smart Filtering** — Automatically excludes forked repos, sorts by last updated
+- 📈 **Live Statistics** — Real-time star counts, fork counts, and primary languages
+- 🎨 **Beautiful Cards** — Glassmorphism design with smooth hover animations
+- 🔖 **Dynamic Tags** — Topic badges automatically pulled from repository metadata
+- ⚡ **Intelligent Caching** — 5-minute cache prevents API rate limiting
+
+**Implementation:** Custom JavaScript module with GitHub REST API integration
 
 </details>
 
 ### 🎨 Premium Design System
 
 <details>
-<summary><b>Click to explore design details</b></summary>
+<summary><b>🖌️ Click to explore design details</b></summary>
+
+<br/>
 
 **Apple-Inspired Glassmorphism:**
-- ✨ Frosted glass effects with backdrop blur
-- 🌈 Neural network gradient animations
-- 🎭 Smooth 60fps transitions
-- 🌓 Automatic dark/light theme detection
-- 📐 Mobile-first responsive grid
-- ♿ WCAG 2.2 AA accessibility compliance
+- ✨ Frosted glass effects with advanced backdrop blur
+- 🌈 Neural network-style gradient animations
+- 🎭 Buttery-smooth 60fps CSS transitions
+- 🌓 Automatic dark/light theme based on system preferences
+- 📐 Mobile-first responsive design (breakpoints at 640px, 768px, 1024px)
+- ♿ **WCAG 2.2 AA** accessibility compliance with full keyboard navigation
 
-**Typography:**
-- Primary: Inter (Google Fonts)
-- Accent: SF Pro Display
-- Monospace: SF Mono / JetBrains Mono
+**Typography Choices:**
+- **Primary Font:** Inter (Google Fonts) — Modern, highly readable
+- **Display Font:** SF Pro Display — Apple's premium typeface
+- **Monospace:** SF Mono / JetBrains Mono for code snippets
+
+**Color System:**
+- Light mode: Clean whites with subtle blue accents
+- Dark mode: Deep blacks with vibrant neon highlights
+- Consistent 8px spacing grid throughout
 
 </details>
 
-### 📱 Complete Portfolio Sections
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
-| Section | Description | Highlights |
-|---------|-------------|------------|
-| **Hero** | Dynamic introduction | Animated background, CTA buttons |
-| **About** | Personal bio | Social links, philosophy |
-| **Experience** | Career timeline | Achievement metrics, company logos |
-| **Skills** | Technical proficiency | Category badges, visualizations |
-| **Projects** | Portfolio showcase | Live GitHub data, filtering |
-| **Education** | Academic background | Degrees, certifications, awards |
-| **Publications** | Research & writing | Papers, articles, blog posts |
-| **Contact** | Get in touch | Firebase form, social icons |
-| **Game** | Debug Runner | Hidden easter egg |
+---
+
+## 🌐 Live Demos
+
+### Primary Website
+🚀 **[mangeshraut.pro](https://mangeshraut.pro)** — Main portfolio (custom domain)
+
+### Alternative Deployments
+- 📄 **[GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/)** — Static mirror
+- ⚡ **[Vercel](https://mangeshrautarchive.vercel.app)** — Edge deployment
+
+> **Note:** All deployments are identical in functionality. The custom domain offers the best performance and SEO.
+
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend Architecture
+<div align="center">
 
-```
-┌─────────────────────────────────────────────┐
-│           HTML5 + Semantic Markup            │
-│  ┌─────────────────────────────────────┐   │
-│  │     CSS3 + Tailwind CSS 4.x          │   │
-│  │  • Glassmorphism System              │   │
-│  │  • 30+ Modular Stylesheets           │   │
-│  │  • Custom Design Tokens              │   │
-│  └─────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────┐   │
-│  │   JavaScript ES2024+ (Modules)       │   │
-│  │  • 27 JS Files (Core + Modules)      │   │
-│  │  • Async/Await Architecture          │   │
-│  │  • State Management                  │   │
-│  └─────────────────────────────────────┘   │
-└─────────────────────────────────────────────┘
-```
+### Frontend
 
-**Key Libraries:**
-- 🎨 **Prism.js** — Syntax highlighting
-- 🎭 **Font Awesome 6.x** — Icon system
-- 🎤 **Web Speech API** — Voice interactions
-- 📊 **Canvas API** — Game rendering
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-### Backend Architecture
+### Backend
 
-```python
-┌─────────────────────────────────────────────┐
-│        Python 3.12+ Backend (FastAPI)        │
-│  ┌─────────────────────────────────────┐   │
-│  │     FastAPI (ASGI Framework)         │   │
-│  │  • Async request handling            │   │
-│  │  • Streaming responses (NDJSON)      │   │
-│  │  • Pydantic validation               │   │
-│  └─────────────────────────────────────┘   │
-│  ┌─────────────────────────────────────┐   │
-│  │    AI Integration Layer              │   │
-│  │  • OpenRouter API Gateway            │   │
-│  │  • Multi-model support               │   │
-│  │  • Conversation memory               │   │
-│  └─────────────────────────────────────┘   │
-└─────────────────────────────────────────────┘
-```
-
-**Dependencies:**
-- ⚡ **Uvicorn** — Lightning-fast ASGI server
-- 🌐 **httpx** — Async HTTP client
-- 🔒 **python-dotenv** — Environment management
-- 📝 **Pydantic** — Data validation
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Uvicorn](https://img.shields.io/badge/Uvicorn-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white)
 
 ### AI & Intelligence
 
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **Development** | Google Antigravity | AI-first IDE, rapid prototyping |
-| **Primary AI** | Grok 4.1 Fast | Real-time conversational responses |
-| **Secondary AI** | Gemini 2.0 Flash | Fallback, specialized queries |
-| **Gateway** | OpenRouter API | Model routing and load balancing |
-| **Memory** | Custom Python System | Multi-turn conversation context |
+![OpenAI](https://img.shields.io/badge/Grok_4.1-412991?style=for-the-badge&logo=openai&logoColor=white)
+![Google](https://img.shields.io/badge/Gemini_2.0-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
-### DevOps & Infrastructure
+### DevOps & Tools
 
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
+</div>
+
+### Detailed Stack
+
+**Frontend Architecture:**
 ```
-┌──────────────────────────────────────────┐
-│           Production Pipeline             │
-├──────────────────────────────────────────┤
-│  🐳 Docker (Containerization)            │
-│  ☁️  Google Cloud Run (Serverless)       │
-│  🔄 GitHub Actions (CI/CD)               │
-│  📊 Vercel Analytics (Monitoring)        │
-│  🔍 ESLint + Stylelint (Code Quality)    │
-│  🧪 Vitest (Testing Framework)           │
-└──────────────────────────────────────────┘
-```
-
----
-
-## 🏗 Architecture
-
-### Project Structure
-
-```
-mangeshrautarchive/
-│
-├── 📁 api/                           # Backend (Python/FastAPI)
-│   ├── index.py                       # Main API application
-│   ├── memory_manager.py              # Conversation memory
-│   ├── integrations/
-│   │   └── github_connector.py        # GitHub API integration
-│   └── __init__.py
-│
-├── 📁 src/                           # Frontend Source
-│   ├── index.html                     # Main entry point (102KB)
-│   ├── manifest.json                  # PWA manifest
-│   ├── service-worker.js              # Offline support
-│   │
-│   ├── 📁 assets/
-│   │   ├── 📁 css/                   # Stylesheets (30 files)
-│   │   │   ├── style.css              # Core styles (108KB)
-│   │   │   ├── ai-assistant.css       # Chatbot UI (34KB)
-│   │   │   ├── sitewide-design-system.css
-│   │   │   ├── glassmorphism.css
-│   │   │   └── [27 more files...]
-│   │   │
-│   │   ├── 📁 images/                # Optimized assets
-│   │   │   ├── profile-icon.png
-│   │   │   ├── portfolio-preview.png
-│   │   │   └── [8 more files...]
-│   │   │
-│   │   └── 📁 files/                 # Downloadable resources
-│   │       └── resume.pdf
-│   │
-│   └── 📁 js/                        # JavaScript (27 files)
-│       ├── 📁 core/                  # Core functionality (5 files)
-│       │   ├── script.js              # Main app orchestrator
-│       │   ├── chat.js                # AI integration engine
-│       │   ├── config.js              # Global configuration
-│       │   ├── modern-input.js        # Input handling
-│       │   └── api.js                 # API client
-│       │
-│       ├── 📁 modules/               # Feature modules (20 files)
-│       │   ├── chatbot.js             # AssistMe chatbot UI
-│       │   ├── agentic-actions.js     # AI action handlers
-│       │   ├── debug-runner.js        # Canvas game engine
-│       │   ├── github-projects.js     # GitHub integration
-│       │   ├── accessibility.js       # A11y features
-│       │   ├── privacy-dashboard.js   # Privacy controls
-│       │   ├── 3d-background.js       # WebGL background
-│       │   └── [13 more files...]
-│       │
-│       └── 📁 utils/                 # Utility functions (2 files)
-│           ├── helpers.js
-│           └── validators.js
-│
-├── 📁 scripts/                       # Build & Dev Scripts
-│   ├── build.js                       # Production build
-│   ├── local-server.js                # Dev server (port 3000)
-│   ├── optimize-images.js             # Image optimization
-│   └── security-check.js              # Secrets scanner
-│
-├── 📁 .github/workflows/             # CI/CD Pipelines
-│   └── deploy.yml
-│
-├── 📄 package.json                    # Node.js config
-├── 📄 requirements.txt                # Python dependencies
-├── 📄 Dockerfile                      # Container definition
-├── 📄 vercel.json                     # Vercel deployment config
-├── 📄 .env.example                    # Environment template
-└── 📄 README.md                       # You are here!
+├── HTML5 — Semantic markup with SEO optimization
+├── CSS3 — 30+ modular stylesheets (108KB core styles)
+├── JavaScript ES2024+ — 27 modular files (core + features)
+├── Tailwind CSS 4.x — Utility-first styling system
+├── Prism.js — Syntax highlighting for code blocks
+├── Font Awesome 6.x — Comprehensive icon library
+└── Web Speech API — Voice input/output capabilities
 ```
 
-### Data Flow Architecture
+**Backend Architecture:**
+```python
+├── Python 3.12+ — Modern Python with type hints
+├── FastAPI — High-performance async web framework
+├── Uvicorn — Lightning-fast ASGI server
+├── httpx — Async HTTP client for API calls
+├── Pydantic — Data validation and settings management
+└── python-dotenv — Environment configuration
+```
 
+**AI Integration:**
 ```
-┌─────────────┐
-│   Browser   │
-│  (Frontend) │
-└──────┬──────┘
-       │
-       │ HTTPS Request
-       ▼
-┌─────────────────┐         ┌──────────────┐
-│   Static CDN    │ ◄──────►│  Cloud Run   │
-│  (Vercel/GH)    │         │   Backend    │
-└─────────────────┘         └──────┬───────┘
-                                   │
-                     ┌─────────────┴──────────────┐
-                     │                            │
-                     ▼                            ▼
-              ┌─────────────┐            ┌──────────────┐
-              │ OpenRouter  │            │   GitHub     │
-              │   AI API    │            │     API      │
-              └─────────────┘            └──────────────┘
-                     │
-        ┌────────────┼────────────┐
-        │            │            │
-        ▼            ▼            ▼
-   ┌────────┐  ┌─────────┐  ┌─────────┐
-   │ Grok   │  │ Gemini  │  │ Claude  │
-   │  4.1   │  │   2.0   │  │   3.5   │
-   └────────┘  └─────────┘  └─────────┘
+├── OpenRouter API — Multi-model AI gateway
+├── Grok 4.1 Fast — Primary conversational AI (xAI)
+├── Gemini 2.0 Flash — Secondary AI model (Google)
+├── Streaming NDJSON — Real-time response delivery
+└── Custom Memory Manager — Conversation context retention
 ```
+
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
@@ -353,196 +237,189 @@ mangeshrautarchive/
 
 ### Prerequisites
 
-Ensure you have the following installed:
-- ✅ **Node.js** 20+ and **npm** 10+
-- ✅ **Python** 3.12+
-- ✅ **Git** (for cloning)
-- 🔑 **OpenRouter API Key** (optional, for full AI features)
+Make sure you have these installed before starting:
 
-### Installation
+- **Node.js** 20+ and **npm** 10+
+- **Python** 3.12+
+- **Git** for version control
+- 🔑 **OpenRouter API Key** (optional, for AI chatbot features)
+
+### Installation Steps
 
 ```bash
-# 1. Clone the repository
+# 1️⃣ Clone the repository
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
 
-# 2. Install Node.js dependencies
+# 2️⃣ Install Node.js dependencies
 npm install
 
-# 3. Install Python dependencies
+# 3️⃣ Install Python dependencies
 pip install -r requirements.txt
 
-# 4. Set up environment variables
+# 4️⃣ Set up environment variables
 cp .env.example .env
-# Edit .env and add your OPENROUTER_API_KEY (if using AI features)
-```
+# Edit .env and add your OPENROUTER_API_KEY (if you want AI features)
 
-### Running Locally
-
-#### Option 1: Full Stack (Recommended)
-```bash
+# 5️⃣ Start the development servers
 npm run dev
 ```
-This starts:
-- Frontend server on `http://localhost:3000`
-- Backend API on `http://localhost:8000`
 
-#### Option 2: Frontend Only
+This will start:
+- **Frontend** on `http://localhost:3000`
+- **Backend API** on `http://localhost:8000`
+
+### Alternative: Run Servers Separately
+
 ```bash
+# Frontend only (port 3000)
 npm run dev:frontend
-```
-Visit `http://localhost:3000`
 
-#### Option 3: Backend Only
-```bash
+# Backend only (port 8000)
 npm run dev:backend
 ```
-API available at `http://localhost:8000`
 
-### Building for Production
+### Production Build
 
 ```bash
-# Build all assets
+# Build optimized production assets
 npm run build
 
-# Build Tailwind CSS only
+# Rebuild Tailwind CSS only
 npm run build:css
 ```
 
-### Running Tests
-
-```bash
-# Run test suite
-npm test
-
-# Run linting
-npm run lint
-
-# Auto-fix linting issues
-npm run lint:fix
-```
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
-## 📚 Documentation
+## 📂 Project Structure
 
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
-```bash
-# API Keys
-OPENROUTER_API_KEY=your_openrouter_api_key_here
-
-# Optional: Google AI (if using Gemini directly)
-GOOGLE_API_KEY=your_google_api_key_here
-
-# Environment
-NODE_ENV=development
-CLOUD_RUN_ENV=local
+```
+mangeshrautarchive/
+│
+├── 📁 api/                          # Backend (Python/FastAPI)
+│   ├── index.py                      # Main API application
+│   ├── memory_manager.py             # Conversation memory system
+│   └── integrations/
+│       └── github_connector.py       # GitHub API wrapper
+│
+├── 📁 src/                          # Frontend Source
+│   ├── index.html                    # Main entry point (102KB)
+│   ├── manifest.json                 # PWA configuration
+│   ├── service-worker.js             # Offline support
+│   │
+│   ├── 📁 assets/
+│   │   ├── 📁 css/                  # Stylesheets (30 files)
+│   │   │   ├── style.css             # Core styles (108KB)
+│   │   │   ├── ai-assistant.css      # Chatbot UI (34KB)
+│   │   │   └── ...                   # Component-specific styles
+│   │   │
+│   │   ├── 📁 images/               # Optimized images
+│   │   └── 📁 files/                # Downloadable resources (resume)
+│   │
+│   └── 📁 js/                       # JavaScript (27 files)
+│       ├── 📁 core/                 # Core functionality
+│       │   ├── script.js             # Main orchestrator
+│       │   ├── chat.js               # AI integration
+│       │   ├── config.js             # Configuration
+│       │   └── ...
+│       │
+│       ├── 📁 modules/              # Feature modules (20 files)
+│       │   ├── chatbot.js            # AI assistant UI
+│       │   ├── debug-runner.js       # Canvas game engine
+│       │   ├── github-projects.js    # GitHub integration
+│       │   └── ...
+│       │
+│       └── 📁 utils/                # Utility functions
+│
+├── 📁 scripts/                      # Build & Dev Scripts
+│   ├── build.js                      # Production build
+│   ├── local-server.js               # Dev server
+│   └── ...
+│
+├── 📁 .github/workflows/            # CI/CD
+│   └── deploy.yml                    # GitHub Pages deployment
+│
+├── 📄 package.json                   # Node.js dependencies
+├── 📄 requirements.txt               # Python dependencies
+├── 📄 Dockerfile                     # Container definition
+├── 📄 vercel.json                    # Vercel config
+└── 📄 README.md                      # You are here!
 ```
 
-### Available Scripts
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
+
+---
+
+## 📜 Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start full development stack (frontend + backend) |
-| `npm run dev:frontend` | Start frontend server only (port 3000) |
-| `npm run dev:backend` | Start Python backend only (port 8000) |
-| `npm run build` | Build production assets |
-| `npm run build:css` | Compile Tailwind CSS |
-| `npm run lint` | Run ESLint checks |
-| `npm run lint:fix` | Auto-fix linting issues |
-| `npm run test` | Run Vitest test suite |
-| `npm run optimize-images` | Optimize image assets |
-| `npm run security-check` | Scan for exposed secrets |
+| `npm run dev` | 🚀 Start full stack (frontend + backend) |
+| `npm run dev:frontend` | 🎨 Start frontend server only (port 3000) |
+| `npm run dev:backend` | 🔧 Start Python backend only (port 8000) |
+| `npm run build` | 📦 Build production assets |
+| `npm run build:css` | 🎨 Compile Tailwind CSS |
+| `npm run lint` | 🔍 Run ESLint code quality checks |
+| `npm run lint:fix` | ✨ Auto-fix linting issues |
+| `npm test` | 🧪 Run Vitest test suite |
+| `npm run optimize-images` | 🖼️ Optimize image assets |
+| `npm run security-check` | 🔒 Scan for exposed secrets |
 
-### Deployment
-
-#### Deploy to Google Cloud Run
-
-```bash
-# Build and deploy
-./deploy-cloud-run.sh
-
-# Or manually:
-gcloud run deploy mangesh-portfolio-api \
-  --source . \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --labels dev-tutorial=devnewyear2026
-```
-
-#### Deploy to Vercel
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
 ## ⚡ Performance
 
+<div align="center">
+
 ### Lighthouse Scores
 
-| Metric | Score | Details |
-|--------|-------|---------|
-| **Performance** | 95+ | Optimized assets, lazy loading, CDN |
-| **Accessibility** | 100 | WCAG 2.2 AA compliant, ARIA labels |
-| **Best Practices** | 100 | HTTPS, secure headers, no console errors |
-| **SEO** | 100 | Semantic HTML, meta tags, structured data |
+| Metric | Score | Status |
+|--------|-------|--------|
+| **Performance** | 95+ | 🟢 Excellent |
+| **Accessibility** | 100 | 🟢 Perfect |
+| **Best Practices** | 100 | 🟢 Perfect |
+| **SEO** | 100 | 🟢 Perfect |
 
-### Key Optimizations
+</div>
 
-- ⚡ **Code Splitting** — Modular JavaScript with dynamic imports
-- 🖼️ **Image Optimization** — WebP format, responsive images
-- 🎨 **CSS Minification** — Production builds are minified
-- 📦 **Asset Compression** — Gzip/Brotli compression
-- 🚀 **CDN Delivery** — Static assets served via Vercel Edge Network
-- 💾 **Smart Caching** — Service Worker with cache-first strategy
+### Optimization Techniques
 
----
+- ✅ **Lazy Loading** — Images and components load on-demand
+- ✅ **Code Splitting** — Modular JavaScript architecture
+- ✅ **Asset Optimization** — WebP images, minified CSS/JS
+- ✅ **CDN Delivery** — Static assets served via edge network
+- ✅ **Caching Strategy** — Service worker with smart cache-first approach
+- ✅ **Zero Layout Shift** — Proper image dimensions and placeholders
 
-## 🔒 Security
-
-### Security Features
-
-- ✅ **No Tracking Cookies** — Privacy-first design, GDPR compliant
-- ✅ **CORS Configured** — Secure cross-origin requests
-- ✅ **Rate Limiting** — 20 requests/minute per IP on backend
-- ✅ **Input Validation** — Pydantic schemas on all API endpoints
-- ✅ **Secrets Scanning** — Automated credential detection
-- ✅ **HTTPS Only** — All deployments enforce TLS
-- ✅ **CSP Headers** — Content Security Policy implemented
-- ✅ **XSS Protection** — Input sanitization and output encoding
-
-### Reporting Vulnerabilities
-
-If you discover a security vulnerability, please email: **mbr63@drexel.edu**
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+Contributions, issues, and feature requests are welcome! Feel free to check out the [issues page](https://github.com/mangeshraut712/mangeshrautarchive/issues).
+
+### How to Contribute
 
 1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+2. **Create** your feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add some amazing feature'`)
 4. **Push** to the branch (`git push origin feature/amazing-feature`)
 5. **Open** a Pull Request
 
-### Code Style
+### Code Style Guidelines
 
 - Follow existing code formatting
 - Run `npm run lint:fix` before committing
-- Write meaningful commit messages
-- Add tests for new features
+- Write clear, descriptive commit messages
+- Add comments for complex logic
+- Update documentation for new features
+
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
@@ -550,68 +427,55 @@ Contributions are welcome! Here's how you can help:
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-### Attribution
-
-- **AI Models:** Grok (xAI), Gemini (Google), Claude (Anthropic)
-- **Icons:** Font Awesome
-- **Fonts:** Inter (Google Fonts), SF Pro (Apple)
-- **Syntax Highlighting:** Prism.js
+You're free to use this code for your own portfolio, but please:
+- Give appropriate credit
+- Don't claim it as entirely your own work
+- Modify it to make it unique to you
 
 ---
 
-## 👨‍💻 Author
+## 💬 Connect with Me
 
 <div align="center">
 
 ### **Mangesh Raut**
 
-*Software Engineer | Full-Stack Developer | AI/ML Engineer*
+*Software Engineer | Full-Stack Developer | AI/ML Enthusiast*
 
-[![Website](https://img.shields.io/badge/🌐_Website-mangeshraut.pro-0071e3?style=flat-square)](https://mangeshraut.pro)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/mangeshraut71298)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/mangeshraut712)
-[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=flat-square&logo=gmail)](mailto:mbr63@drexel.edu)
-[![Dev.to](https://img.shields.io/badge/Dev.to-Follow-0A0A0A?style=flat-square&logo=devdotto)](https://dev.to/mangeshraut712)
+[![Portfolio](https://img.shields.io/badge/🌐_Portfolio-mangeshraut.pro-0071e3?style=for-the-badge)](https://mangeshraut.pro)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/mangeshraut71298)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github)](https://github.com/mangeshraut712)
+[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail)](mailto:mbr63@drexel.edu)
 
-**Currently:** Software Engineer @ Customized Energy Solutions  
-**Education:** M.S. Computer Science @ Drexel University (2025)  
+**Current Position:** Software Engineer @ Customized Energy Solutions  
+**Education:** M.S. Computer Science @ Drexel University (Expected 2025)  
 **Location:** Philadelphia, PA, USA 🇺🇸
 
 </div>
 
 ---
 
-## 🌟 Acknowledgments
+## 🙏 Acknowledgments
 
-Special thanks to:
+Built with amazing open-source tools:
 
-- **Google AI** — For Antigravity and Gemini API
-- **DEV Community** — For hosting the "New Year, New You" challenge
-- **xAI** — For the incredible Grok model
-- **Vercel** — For seamless deployment platform
-- **Open Source Community** — For the amazing tools and libraries
-
----
-
-## 📈 Project Stats
-
-![GitHub repo size](https://img.shields.io/github/repo-size/mangeshraut712/mangeshrautarchive?style=flat-square)
-![GitHub language count](https://img.shields.io/github/languages/count/mangeshraut712/mangeshrautarchive?style=flat-square)
-![GitHub top language](https://img.shields.io/github/languages/top/mangeshraut712/mangeshrautarchive?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/mangeshraut712/mangeshrautarchive?style=flat-square)
+- **FastAPI** — Modern Python web framework
+- **Tailwind CSS** — Utility-first CSS framework
+- **Font Awesome** — Icon library
+- **Prism.js** — Syntax highlighting
+- **OpenRouter** — AI model gateway
+- **xAI & Google** — For incredible AI models
 
 ---
 
 <div align="center">
 
-### 🎯 **[Try the Live Demo Now →](https://mangesh-portfolio-api-239037094122.us-central1.run.app)**
+### ⭐ If you found this project helpful, please give it a star!
 
 ---
 
-*Built with ❤️ in Philadelphia using Google Antigravity, Gemini 2.0, and Grok 4.1*
+**© 2026 Mangesh Raut • Built with ❤️ in Philadelphia**
 
-**© 2026 Mangesh Raut. All Rights Reserved.**
-
-⭐ **If you like this project, please star it on GitHub!** ⭐
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 </div>
