@@ -75,7 +75,7 @@ const SOURCE_LABELS = {
     'assistme-math': 'AssistMe Math Engine',
     'assistme-utility': 'AssistMe Utility',
     'assistme-general': 'AssistMe',
-    'openrouter': 'OpenRouter (Grok 4.1 Fast)'
+    'openrouter': 'OpenRouter AI'
 };
 
 // Intelligent Chat Assistant with Integrated AI

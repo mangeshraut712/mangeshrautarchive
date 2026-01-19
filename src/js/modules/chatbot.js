@@ -242,7 +242,7 @@ class AppleIntelligenceChatbot {
                 welcomeDiv.innerHTML = `
                     <div class="message-content">
                         <div class="welcome-header">
-                            <span class="welcome-chip">🧠 Powered by Grok 4.1</span>
+                            <span class="welcome-chip">🧠 Neural AI</span>
                             <span class="welcome-status">● Online</span>
                         </div>
                         <div class="welcome-title">Hi, I'm AssistMe!</div>
@@ -364,7 +364,7 @@ class AppleIntelligenceChatbot {
             const runtime = Date.now() - startTime;
             metadata = {
                 source: response.metadata?.source || response.source || 'Neural API',
-                model: response.metadata?.model || response.model || 'Grok 4.1 Fast',
+                model: response.metadata?.model || response.model || 'AI Model',
                 category: response.metadata?.category || 'General',
                 runtime: runtime,
                 tokens: response.metadata?.tokens || Math.ceil(fullText.length / 4),
