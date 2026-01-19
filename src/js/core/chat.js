@@ -424,7 +424,11 @@ class IntelligentAssistant {
                     ...metadata
                 };
             } else {
-                const data = await response.json();
+                const text = await response.text();
+                if (!text) {
+                    throw new Error('Empty response from server');
+                }
+                const data = JSON.parse(text);
                 console.log('✅ API response received:', {
                     source: data.source,
                     type: data.type,

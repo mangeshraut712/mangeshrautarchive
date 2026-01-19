@@ -49,7 +49,11 @@ class GitHubProjects {
         throw new Error(`GitHub API error: ${response.status}`);
       }
 
-      const repos = await response.json();
+      const text = await response.text();
+      if (!text) {
+        throw new Error('Empty response from GitHub API');
+      }
+      const repos = JSON.parse(text);
 
       // Filter out forked repos and sort by updated date
       const filteredRepos = repos
