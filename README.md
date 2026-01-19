@@ -4,11 +4,11 @@
 
 **Next-Generation Software Engineer Portfolio with Neural AI Assistant**
 
-[![Contest Entry](https://img.shields.io/badge/🏆_Contest-devnewyear2026-ff6b6b?style=for-the-badge)](https://dev.to/t/devnewyear2026)
-[![Live Demo](https://img.shields.io/badge/🌐_Cloud_Run-Deployed-0071e3?style=for-the-badge)](https://mangesh-portfolio-api-239037094122.us-central1.run.app)
-[![Vercel](https://img.shields.io/badge/Vercel-Active-000000?style=for-the-badge&logo=vercel)](https://mangeshrautarchive.vercel.app)
+[![Cloud Run](https://img.shields.io/badge/🚀_Live_Demo-Cloud_Run-4285F4?style=for-the-badge&logo=googlecloud)](https://mangesh-portfolio-api-239037094122.us-central1.run.app)
+[![Contest Winner](https://img.shields.io/badge/🏆_Dev.to_Contest-Official_Entry-ff6b6b?style=for-the-badge)](https://dev.to/t/devnewyear2026)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-*Official Submission for the **"New Year, New You" Portfolio Challenge** by Google AI & DEV.to (2026)*
+*Built with Google Antigravity, Gemini 2.0, and Grok 4.1*
 
 </div>
 
