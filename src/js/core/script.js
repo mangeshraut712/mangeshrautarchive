@@ -872,7 +872,7 @@ class ChatUI {
         const sourceKey = response.source || response.provider || 'OpenRouter';
         metadata.sourceKey = sourceKey;
         metadata.source = response.sourceLabel || this._formatSourceLabel(sourceKey, response.type);
-        metadata.model = response.model || 'x-ai/grok-4.1-fast:free';
+        metadata.model = response.model || 'google/gemini-2.0-flash';
 
         if (response.sourceMessage) {
             metadata.sourceDetail = response.sourceMessage;

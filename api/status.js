@@ -52,7 +52,7 @@ export default function handler(req, res) {
       status: 'ok',
       provider: 'OpenRouter',
       available: openrouterAvailable,
-      model: 'x-ai/grok-4.1-fast:free',
+      model: 'google/gemini-2.0-flash',
       timestamp: new Date().toISOString(),
       server: 'local',
       version: '2.0',
