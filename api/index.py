@@ -1100,10 +1100,14 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
     }
 
 
-# Serve static files for local development
-if os.getenv("VERCEL_ENV") != "production":
+# Serve static files for local development and Cloud Run
+# Only skip for Vercel where static files are handled by the framework
+vercel_env = os.getenv("VERCEL_ENV")
+if vercel_env != "production":
     try:
         # Mount the entire src directory to serve all static files (assets, js, manifest, etc.)
         app.mount("/", StaticFiles(directory="src", html=True), name="static")
+        print("📁 Static files mounted from /src directory")
     except Exception as e:
         print(f"⚠️ Static files skipped: {e}")
+
