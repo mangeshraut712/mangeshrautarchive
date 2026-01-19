@@ -246,13 +246,7 @@ class AppleIntelligenceChatbot {
                             <span class="welcome-status">● Online</span>
                         </div>
                         <div class="welcome-title">Hi, I'm AssistMe!</div>
-                        <div class="welcome-subtitle">Your intelligent guide to Mangesh's portfolio. I can help with:</div>
-                        <div class="welcome-capabilities">
-                            <span class="capability-tag">💼 Career History</span>
-                            <span class="capability-tag">🛠️ Technical Skills</span>
-                            <span class="capability-tag">🚀 Projects</span>
-                            <span class="capability-tag">📚 Education</span>
-                        </div>
+                        <div class="welcome-subtitle">Your intelligent guide to Mangesh's portfolio. Ask me anything!</div>
                         <div class="welcome-chips">
                             <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Who is Mangesh Raut?')">👨‍💻 About Mangesh</button>
                             <button class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('What are Mangesh\\'s top projects?')">🚀 Projects</button>
