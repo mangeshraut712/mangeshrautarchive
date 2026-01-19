@@ -242,7 +242,7 @@ class AppleIntelligenceChatbot {
                 welcomeDiv.innerHTML = `
                     <div class="message-content">
                         <div class="welcome-header">
-                            <span class="welcome-chip">🧠 Powered by Google AI</span>
+                            <span class="welcome-chip">🧠 AI Assistant</span>
                             <span class="welcome-status">● Online</span>
                         </div>
                         <div class="welcome-title">Hi, I'm AssistMe!</div>
@@ -364,7 +364,7 @@ class AppleIntelligenceChatbot {
             const runtime = Date.now() - startTime;
             metadata = {
                 source: response.metadata?.source || response.source || 'Neural API',
-                model: response.metadata?.model || response.model || 'Gemini 2.0 Flash',
+                model: response.metadata?.model || response.model || 'AI Model',
                 category: response.metadata?.category || 'General',
                 runtime: runtime,
                 tokens: response.metadata?.tokens || Math.ceil(fullText.length / 4),

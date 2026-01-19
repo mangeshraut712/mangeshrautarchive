@@ -65,7 +65,7 @@ app.add_middleware(
 
 # Configuration
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-2.0-flash").strip()
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "x-ai/grok-4.1-fast").strip()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
 SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
@@ -96,11 +96,11 @@ MEMORY_EXPIRY = 3600  # 1 hour
 
 # Models - Support multiple models
 MODELS = [
-    {"id": "google/gemini-2.0-flash", "name": "Gemini 2.0 Flash", "priority": 1, "streaming": True},
-    {"id": "google/gemini-pro", "name": "Gemini Pro", "priority": 2, "streaming": True},
+    {"id": "x-ai/grok-4.1-fast", "name": "Grok 4.1 Fast", "priority": 1, "streaming": True},
+    {"id": "x-ai/grok-2-1212", "name": "Grok 2 (Legacy)", "priority": 2, "streaming": True},
     {"id": "anthropic/claude-3.5-sonnet", "name": "Claude 3.5 Sonnet", "priority": 3, "streaming": True},
 ]
-DEFAULT_MODEL = OPENROUTER_MODEL or "google/gemini-2.0-flash"
+DEFAULT_MODEL = OPENROUTER_MODEL or "x-ai/grok-4.1-fast"
 
 # Portfolio Data - Enhanced
 PORTFOLIO_DATA = {
