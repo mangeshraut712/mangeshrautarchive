@@ -75,7 +75,7 @@ const SOURCE_LABELS = {
     'assistme-math': 'AssistMe Math Engine',
     'assistme-utility': 'AssistMe Utility',
     'assistme-general': 'AssistMe',
-    'openrouter': 'OpenRouter AI'
+    'openrouter': 'Google Gemini'
 };
 
 // Intelligent Chat Assistant with Integrated AI
