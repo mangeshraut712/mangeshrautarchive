@@ -1,0 +1,40 @@
+name: Production Monitoring (Chrome + Lighthouse)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 14 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    name: 📈 Monitor Production Health
+    runs-on: ubuntu-latest
+    env:
+      PRODUCTION_URL: ${{ vars.PRODUCTION_URL || 'https://mangeshraut.pro' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Lighthouse desktop monitoring gate
+        run: node scripts/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=desktop --min-performance=90 --min-accessibility=90 --min-best-practices=90 --min-seo=90
+
+      - name: Lighthouse mobile monitoring gate
+        run: node scripts/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=mobile --min-performance=90 --min-accessibility=90 --min-best-practices=90 --min-seo=90
+
+      - name: Upload monitoring artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-monitoring-artifacts
+          path: artifacts/lighthouse

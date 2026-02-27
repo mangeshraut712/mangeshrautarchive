@@ -2,6 +2,8 @@ import os
 import json
 import time
 import asyncio
+import secrets
+import re
 from typing import List, Optional, Dict, Any, AsyncGenerator
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,32 +37,28 @@ app = FastAPI(
 # Add GZip compression for better performance
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# CORS Configuration - Allow all deployment environments
+# CORS Configuration — explicit origins only (no wildcard with credentials)
 origins = [
     # Production domains
     "https://mangeshraut712.github.io",
     "https://mangeshraut.pro",
     "https://mangeshrautarchive.vercel.app",
-    
     # Development
     "http://localhost:3000",
     "http://localhost:8000",
-    "http://localhost:5173",  # Vite default
+    "http://localhost:5173",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
-    
-    # Allow all for development (remove in strict production)
-    "*",
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+    expose_headers=["X-Session-ID"],
 )
 
 # Configuration
@@ -161,11 +159,12 @@ PORTFOLIO_DATA = {
             "degree": "Master of Science in Computer Science",
             "school": "Drexel University",
             "period": "2023-2025",
-            "status": "In Progress",
+            "gpa": "3.76",
+            "status": "Completed",
         },
         {
             "degree": "Bachelor of Engineering in Computer Engineering",
-            "school": "Pune University",
+            "school": "Savitribai Phule Pune University",
             "period": "2014-2017",
             "gpa": "3.6",
         },
@@ -186,8 +185,50 @@ PORTFOLIO_DATA = {
             "tech": ["Java", "Database", "Automation"],
             "achievements": "80% breach reduction",
         },
+        {
+            "name": "AI Portfolio (This Website)",
+            "tech": ["HTML/CSS/JS", "FastAPI", "OpenRouter", "Vercel"],
+            "achievements": "AI chatbot, agentic actions, PWA, 3D animations",
+        },
+        {
+            "name": "Energy Demand Forecasting",
+            "tech": ["Python", "TensorFlow", "LSTM", "AWS"],
+            "achievements": "25% ML accuracy improvement, time-series forecasting",
+        },
+        {
+            "name": "Microservices E-Commerce Platform",
+            "tech": ["Java", "Spring Boot", "Docker", "Redis"],
+            "achievements": "3x faster data retrieval, 50+ bug fixes, microservices architecture",
+        },
+        {
+            "name": "DevVit Reddit Game",
+            "tech": ["TypeScript", "Devvit SDK", "WASM"],
+            "achievements": "Hackathon submission, browser-based game on Reddit",
+        },
+        {
+            "name": "Sarvam AI Cookbook",
+            "tech": ["Next.js", "Python", "Sarvam API"],
+            "achievements": "Showcase of Indian-language AI models and examples",
+        },
+    ],
+    "publications": [
+        {
+            "title": "Analysis of Machine Learning Algorithms for Network Intrusion Detection",
+            "venue": "IEEE Conference",
+            "year": "2024",
+        },
+    ],
+    "certifications": [
+        "AWS Cloud Practitioner",
+        "Oracle Certified Java SE Programmer",
+        "TensorFlow Developer Certificate",
+    ],
+    "awards": [
+        "Dean's List — Drexel University (3 semesters)",
+        "Best Project Award — Pune University CS Department",
     ],
 }
+
 
 SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code.
 
@@ -198,8 +239,12 @@ You're an intelligent, conversational AI that answers any question with clarity 
 - Software Engineer at Customized Energy Solutions (Philadelphia, PA)
 - Full-Stack Developer with Java Spring Boot, Python, React, Angular expertise
 - AI/ML Engineer with TensorFlow and scikit-learn experience
-- MS in Computer Science from Drexel University (in progress)
+- MS in Computer Science from Drexel University (Completed 2025, GPA 3.76)
+- BE in Computer Engineering from Savitribai Phule Pune University (2014-2017, GPA 3.6)
 - Key achievements: 40% dashboard latency reduction, 35% faster CI/CD, 25% ML accuracy improvement
+- Published: IEEE paper on ML algorithms for network intrusion detection (2024)
+- Certifications: AWS Cloud Practitioner, Oracle Certified Java SE, TensorFlow Developer
+- Awards: Dean's List (Drexel, 3 semesters), Best Project Award (Pune University)
 
 ## Response Style — Write Naturally
 
@@ -210,7 +255,7 @@ CRITICAL: Write naturally flowing prose. Avoid excessive formatting.
 
 His notable achievements include reducing dashboard latency by 40% through React optimization and improving ML forecasting accuracy by 25% using TensorFlow. Previously at IoasiZ, he implemented Redis caching that delivered 3x faster data retrieval.
 
-He's pursuing his Master's in Computer Science at Drexel University. Interested in his AI projects or work experience?"
+He completed his Master's in Computer Science at Drexel University with a 3.76 GPA. Interested in his AI projects or work experience?"
 
 ❌ BAD Response Style (Avoid This):
 "**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **40%** efficiency gains at **Customized Energy Solutions**. **Key Achievements**: - Reduced dashboard latency **40%** via React..."
@@ -327,8 +372,12 @@ CACHE_DURATION = 300  # 5 minutes
 
 
 # Helper Functions
-def get_cache_key(message: str) -> str:
-    return f"chat:{message.strip().lower()[:100]}"
+def get_cache_key(message: str, session_id: Optional[str] = None) -> str:
+    """Session-aware cache key so personalised context isn't shared between users."""
+    base = message.strip().lower()[:100]
+    if session_id:
+        return f"chat:{session_id[:8]}:{base}"
+    return f"chat:anon:{base}"
 
 
 def get_cached_response(cache_key: str):
@@ -360,6 +409,102 @@ def set_cached_response(cache_key: str, response: Dict):
         )
         for k in sorted_keys[:50]:
             del response_cache[k]
+
+
+# Prompt injection guard — patterns that attempt to hijack system behaviour
+_INJECTION_PATTERNS = [
+    re.compile(r"ignore (all |previous |prior )?instructions?", re.I),
+    re.compile(r"you are now", re.I),
+    re.compile(r"forget (everything|all|your|previous)", re.I),
+    re.compile(r"(system prompt|system message|hidden instructions)", re.I),
+    re.compile(r"act as (a |an )?(different|new|another)", re.I),
+    re.compile(r"disregard (your|all|any|previous)", re.I),
+    re.compile(r"pretend (you are|to be)", re.I),
+    re.compile(r"jailbreak", re.I),
+    re.compile(r"DAN mode", re.I),
+    re.compile(r"<\|.*?\|>", re.I),  # Token injection attempts
+]
+
+def is_prompt_injection(message: str) -> bool:
+    """Detect common prompt injection attacks."""
+    return any(p.search(message) for p in _INJECTION_PATTERNS)
+
+
+# ─────────────────────────────────────────────
+# Structured error envelope helper
+# ─────────────────────────────────────────────
+
+def api_error(code: str, message: str, status: int = 400, retry_after: Optional[int] = None) -> HTTPException:
+    """
+    Return a uniform error envelope:
+      { "error": { "code": "...", "message": "...", "retryAfter": N } }
+    All endpoints should raise this instead of bare HTTPException.
+    """
+    detail = {"error": {"code": code, "message": message}}
+    if retry_after is not None:
+        detail["error"]["retryAfter"] = retry_after
+    return HTTPException(status_code=status, detail=detail)
+
+
+# ─────────────────────────────────────────────
+# Adaptive LLM parameters by query intent
+# ─────────────────────────────────────────────
+
+_FACTUAL_KEYWORDS = re.compile(
+    r"\b(experience|education|skills|projects|contact|resume|cv|location|company|university|degree|gpa|certification|achievement|publication)\b",
+    re.I,
+)
+_CREATIVE_KEYWORDS = re.compile(
+    r"\b(write|poem|story|joke|imagine|creative|design|idea|brainstorm)\b",
+    re.I,
+)
+
+
+def adaptive_llm_params(message: str) -> dict:
+    """
+    Return temperature + max_tokens tuned to the detected query intent.
+      - Factual / portfolio queries  → low temp (precise, less hallucination)
+      - Creative / generative queries → high temp (expressive)
+      - Default / general             → balanced
+    """
+    if _FACTUAL_KEYWORDS.search(message):
+        return {"temperature": 0.3, "max_tokens": 1200, "top_p": 0.85}
+    if _CREATIVE_KEYWORDS.search(message):
+        return {"temperature": 0.85, "max_tokens": 1800, "top_p": 0.95}
+    return {"temperature": 0.7, "max_tokens": 1500, "top_p": 0.9}
+
+
+# ─────────────────────────────────────────────
+# GitHub proxy cache (server-side, 10 min TTL)
+# ─────────────────────────────────────────────
+
+_github_proxy_cache: Dict[str, Any] = {}
+GITHUB_PROXY_TTL = 600  # 10 minutes
+GITHUB_PAT = os.getenv("GITHUB_PAT", "").strip()  # Optional fine-grained PAT
+
+
+async def fetch_github_repos_cached(username: str) -> list:
+    """Fetch GitHub repos with 10-min server-side cache and optional PAT auth."""
+    cache_key = f"gh_repos:{username}"
+    entry = _github_proxy_cache.get(cache_key)
+    if entry and time.time() - entry["ts"] < GITHUB_PROXY_TTL:
+        return entry["data"]
+
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    if GITHUB_PAT:
+        headers["Authorization"] = f"Bearer {GITHUB_PAT}"
+
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        resp = await client.get(
+            f"https://api.github.com/users/{username}/repos",
+            params={"per_page": 100, "sort": "updated"},
+            headers=headers,
+        )
+        resp.raise_for_status()
+        repos = resp.json()
+
+    _github_proxy_cache[cache_key] = {"data": repos, "ts": time.time()}
+    return repos
 
 
 def is_resume_query(message: str) -> bool:
@@ -413,23 +558,8 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
             "runtime": "0ms",
         }
 
-    # Skills instant response
-    if any(k in lower for k in ["skill", "stack", "language", "tech"]):
-        skills = ", ".join(PORTFOLIO_DATA["skills"]["languages"] + PORTFOLIO_DATA["skills"]["frameworks"][:3])
-        return {
-            "answer": (
-                f"🛠️ Mangesh's core technical stack includes **{skills}**, along with deep expertise in "
-                f"**AWS**, **Docker**, and **Microservices** architecture.\n\n"
-                "Would you like to see a specific project where he applied these?"
-            ),
-            "source": "Neural-Direct",
-            "model": "System 4.0",
-            "category": "Skills",
-            "confidence": 1.0,
-            "runtime": "0ms",
-        }
-
     # Date
+
     if "date" in lower or "today" in lower:
         return {
             "answer": f"📅 Today is {now.strftime('%A, %B %d, %Y')}. It's a great day to hire a Software Engineer!",
@@ -606,10 +736,10 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                     json={
                         "model": model,
                         "messages": messages,
-                        "temperature": 0.7,
-                        "max_tokens": 1500,
                         "stream": True,
-                        "top_p": 0.9,
+                        **adaptive_llm_params(
+                            next((m["content"] for m in reversed(messages) if m.get("role") == "user"), "")
+                        ),
                     },
                 ) as response:
                     if response.status_code != 200:
@@ -732,14 +862,15 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     """Enhanced chat endpoint with memory, rate limiting, and streaming"""
     start_time = time.time()
     client_ip = get_client_ip(req)
-    
-    # Rate limiting
+
+    # Rate limiting — use structured error envelope
     if not check_rate_limit(client_ip):
-        raise HTTPException(
-            status_code=429,
-            detail="Rate limit exceeded. Please wait a moment before trying again."
+        raise api_error(
+            code="RATE_LIMITED",
+            message="You've sent too many requests. Please wait a moment before trying again.",
+            status=429,
+            retry_after=RATE_LIMIT_WINDOW,
         )
-    
     print(f"📨 Chat request from {client_ip}: {request.message[:50]}...")
     
     if not OPENROUTER_API_KEY:
@@ -761,19 +892,33 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         message = request.message.strip()
         if not message:
             raise HTTPException(status_code=400, detail="Message cannot be empty")
-        
-        # Generate session ID if not provided
-        session_id = request.session_id or hashlib.md5(
-            f"{client_ip}{time.time()}".encode()
-        ).hexdigest()[:16]
+
+        # Prompt injection guard
+        if is_prompt_injection(message):
+            print(f"🛡️  Prompt injection detected from {client_ip}: {message[:80]}")
+            return {
+                "answer": "I noticed your message contains instructions that try to change my behaviour. I'm here to help you learn about Mangesh's portfolio — feel free to ask me anything about that!",
+                "source": "Security",
+                "model": "Guard",
+                "type": "blocked",
+                "confidence": 1.0,
+                "runtime": "0ms",
+            }
+
+        # Generate session ID if not provided — use cryptographically secure random token
+        session_id = request.session_id or secrets.token_hex(8)
         
         # Check for direct commands
         direct_response = await handle_direct_command(message)
         if direct_response:
             return direct_response
         
-        # Get conversation history
-        history = get_session_memory(session_id) if request.session_id else []
+        # Get conversation history: prefer client-provided messages, fallback to server session memory
+        if request.messages:
+            # Ensure it's max N messages to prevent payload explosion
+            history = request.messages[-MAX_MEMORY_MESSAGES * 2:]
+        else:
+            history = get_session_memory(session_id) if request.session_id else []
         
         # Build conversation with context
         system_message = {"role": "system", "content": SYSTEM_PROMPT}
@@ -840,9 +985,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         # Update memory
         if session_id:
             update_session_memory(session_id, message, response["answer"])
-        
-        # Cache the response
-        cache_key = get_cache_key(message)
+
+        # Cache the response (session-aware key to avoid cross-user pollution)
+        cache_key = get_cache_key(message, session_id)
         set_cached_response(cache_key, result)
         
         return result
@@ -960,14 +1105,152 @@ async def test_endpoint():
 @app.get("/api")
 async def api_root():
     return {
-        "message": "Mangesh Raut Portfolio API v2.0",
+        "message": "Mangesh Raut Portfolio API v3.0",
         "endpoints": {
             "chat": "/api/chat",
+            "contact": "/api/contact",
             "resume": "/api/resume",
             "health": "/api/health",
+            "github_repos": "/api/github/repos/public",
             "docs": "/api/docs",
         },
     }
+
+
+# ============================================================
+# GITHUB PROXY  — server-side cache + optional PAT auth
+# Replaces the direct browser → api.github.com call in
+# github-projects.js which is limited to 60 req/hr unauthenticated.
+# With GITHUB_PAT set this endpoint allows 5000 req/hr.
+# ============================================================
+
+@app.get("/api/github/repos/public")
+async def github_repos_proxy(
+    username: str = "mangeshraut712",
+    sort: str = "updated",
+    limit: int = 20,
+    no_forks: bool = True,
+):
+    """
+    Browser-safe proxy for GitHub repos.
+    - Applies server-side 10-min cache (no per-IP budget burned)
+    - Optionally authenticates with GITHUB_PAT env var (5000 req/hr)
+    - Returns only the fields the frontend needs (strips sensitive data)
+    """
+    try:
+        repos = await fetch_github_repos_cached(username)
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 403:
+            raise api_error("GITHUB_RATE_LIMITED", "GitHub API rate limit hit. Try again in a few minutes.", 503)
+        if exc.response.status_code == 404:
+            raise api_error("GITHUB_USER_NOT_FOUND", f"GitHub user '{username}' not found.", 404)
+        raise api_error("GITHUB_ERROR", f"GitHub API returned {exc.response.status_code}.", 502)
+    except httpx.RequestError as exc:
+        raise api_error("GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503)
+
+    # Sort
+    sort_key = {"updated": "pushed_at", "created": "created_at", "stars": "stargazers_count"}.get(sort, "pushed_at")
+    repos.sort(key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count"))
+
+    # Filter forks
+    if no_forks:
+        repos = [r for r in repos if not r.get("fork", False)]
+
+    # Strip unnecessary fields and return lean objects
+    def slim(r: dict) -> dict:
+        return {
+            "name": r.get("name"),
+            "full_name": r.get("full_name"),
+            "description": r.get("description"),
+            "homepage": r.get("homepage"),
+            "html_url": r.get("html_url"),
+            "language": r.get("language"),
+            "topics": r.get("topics", []),
+            "stargazers_count": r.get("stargazers_count", 0),
+            "forks_count": r.get("forks_count", 0),
+            "open_issues_count": r.get("open_issues_count", 0),
+            "watchers_count": r.get("watchers_count", 0),
+            "size": r.get("size", 0),
+            "license": r.get("license"),
+            "default_branch": r.get("default_branch", "main"),
+            "updated_at": r.get("updated_at"),
+            "created_at": r.get("created_at"),
+            "pushed_at": r.get("pushed_at"),
+            "fork": r.get("fork", False),
+            "archived": r.get("archived", False),
+        }
+
+    slim_repos = [slim(r) for r in repos[:limit]]
+
+    rate_header = "authenticated (5000 req/hr)" if GITHUB_PAT else "unauthenticated (60 req/hr)"
+    return {
+        "success": True,
+        "username": username,
+        "count": len(slim_repos),
+        "data": slim_repos,
+        "cache_ttl_seconds": GITHUB_PROXY_TTL,
+        "rate_mode": rate_header,
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+    }
+
+
+# ============================================================
+# CONTACT FORM ENDPOINT  (replaces dead-code api/contact.js)
+# ============================================================
+
+class ContactMessage(BaseModel):
+    name: str = Field(..., min_length=1, max_length=100)
+    email: str = Field(..., min_length=5, max_length=200)
+    subject: str = Field(..., min_length=1, max_length=200)
+    message: str = Field(..., min_length=1, max_length=2000)
+
+
+@app.post("/api/contact")
+async def send_contact_message(payload: ContactMessage, req: Request):
+    """Save contact form submission to Firestore via REST API."""
+    # Basic email validation
+    email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+    if not email_re.match(payload.email):
+        raise HTTPException(status_code=400, detail="Invalid email address")
+
+    firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv("FIREBASE_API_KEY")
+    if not firebase_api_key:
+        raise HTTPException(status_code=503, detail="Contact service not configured. Please email mbr63@drexel.edu directly.")
+
+    project_id = "mangeshrautarchive"
+    url = (
+        f"https://firestore.googleapis.com/v1/projects/{project_id}"
+        f"/databases/(default)/documents/messages?key={firebase_api_key}"
+    )
+
+    doc_fields = {
+        "fields": {
+            "name": {"stringValue": payload.name.strip()},
+            "email": {"stringValue": payload.email.strip()},
+            "subject": {"stringValue": payload.subject.strip()},
+            "message": {"stringValue": payload.message.strip()},
+            "timestamp": {"timestampValue": datetime.utcnow().isoformat() + "Z"},
+            "userAgent": {"stringValue": req.headers.get("user-agent", "Unknown")},
+            "submittedFrom": {"stringValue": req.headers.get("referer") or req.headers.get("origin") or "Direct"},
+        }
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.post(url, json=doc_fields)
+
+        if not resp.is_success:
+            error_body = resp.text
+            print(f"❌ Firestore error {resp.status_code}: {error_body}")
+            raise HTTPException(status_code=502, detail="Failed to save message. Please try again or email mbr63@drexel.edu.")
+
+        doc_id = resp.json().get("name", "").split("/")[-1]
+        print(f"✅ Contact message saved: {doc_id} from {payload.email}")
+        return {"success": True, "message": "Message sent successfully!", "id": doc_id}
+
+    except httpx.RequestError as exc:
+        print(f"❌ Network error saving contact: {exc}")
+        raise HTTPException(status_code=503, detail="Network error. Please try again.")
 
 
 # ====================================================================================

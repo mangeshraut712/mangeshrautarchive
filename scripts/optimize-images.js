@@ -1,17 +1,21 @@
 #!/usr/bin/env node
-
 /**
  * Image Optimization Script
  * Converts images to WebP format and generates responsive variants
  * Run: node scripts/optimize-images.js
  */
 
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+import sharp from 'sharp';
+import { existsSync, mkdirSync, statSync, readdirSync } from 'fs';
+import { join, basename, extname } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const INPUT_DIR = path.join(__dirname, '../src/assets/images');
-const OUTPUT_DIR = path.join(__dirname, '../src/assets/images/optimized');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const INPUT_DIR = join(__dirname, '../src/assets/images');
+const OUTPUT_DIR = join(__dirname, '../src/assets/images/optimized');
 
 // Responsive image sizes
 const SIZES = [
@@ -26,8 +30,8 @@ const WEBP_QUALITY = 85;
 const JPEG_QUALITY = 85;
 
 // Ensure output directory exists
-if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+if (!existsSync(OUTPUT_DIR)) {
+    mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 
 /**
@@ -48,8 +52,8 @@ async function convertToWebP(inputPath, outputPath, width = null) {
             .webp({ quality: WEBP_QUALITY })
             .toFile(outputPath);
 
-        const stats = fs.statSync(outputPath);
-        console.log(`✅ Created: ${path.basename(outputPath)} (${(stats.size / 1024).toFixed(2)} KB)`);
+        const stats = statSync(outputPath);
+        console.log(`✅ Created: ${basename(outputPath)} (${(stats.size / 1024).toFixed(2)} KB)`);
     } catch (error) {
         console.error(`❌ Error converting ${inputPath}:`, error.message);
     }
@@ -60,7 +64,7 @@ async function convertToWebP(inputPath, outputPath, width = null) {
  */
 async function optimizeImage(inputPath, outputPath, width = null) {
     try {
-        const ext = path.extname(inputPath).toLowerCase();
+        const ext = extname(inputPath).toLowerCase();
         let pipeline = sharp(inputPath);
 
         if (width) {
@@ -80,8 +84,8 @@ async function optimizeImage(inputPath, outputPath, width = null) {
                 .toFile(outputPath);
         }
 
-        const stats = fs.statSync(outputPath);
-        console.log(`✅ Optimized: ${path.basename(outputPath)} (${(stats.size / 1024).toFixed(2)} KB)`);
+        const stats = statSync(outputPath);
+        console.log(`✅ Optimized: ${basename(outputPath)} (${(stats.size / 1024).toFixed(2)} KB)`);
     } catch (error) {
         console.error(`❌ Error optimizing ${inputPath}:`, error.message);
     }
@@ -93,7 +97,7 @@ async function optimizeImage(inputPath, outputPath, width = null) {
 async function processImages() {
     console.log('🚀 Starting image optimization...\n');
 
-    const files = fs.readdirSync(INPUT_DIR);
+    const files = readdirSync(INPUT_DIR);
     const imageFiles = files.filter(file =>
         /\.(jpg|jpeg|png)$/i.test(file)
     );
@@ -106,19 +110,19 @@ async function processImages() {
     console.log(`📸 Found ${imageFiles.length} images to process\n`);
 
     for (const file of imageFiles) {
-        const inputPath = path.join(INPUT_DIR, file);
-        const baseName = path.basename(file, path.extname(file));
+        const inputPath = join(INPUT_DIR, file);
+        const baseName = basename(file, extname(file));
 
         console.log(`\n📷 Processing: ${file}`);
 
         // Generate WebP versions at different sizes
         for (const size of SIZES) {
-            const webpPath = path.join(OUTPUT_DIR, `${baseName}${size.suffix}.webp`);
+            const webpPath = join(OUTPUT_DIR, `${baseName}${size.suffix}.webp`);
             await convertToWebP(inputPath, webpPath, size.width);
         }
 
         // Generate original format optimized version
-        const optimizedPath = path.join(OUTPUT_DIR, file);
+        const optimizedPath = join(OUTPUT_DIR, file);
         await optimizeImage(inputPath, optimizedPath);
     }
 
@@ -133,7 +137,7 @@ async function processImages() {
  * Generate HTML usage examples
  */
 function generateUsageExamples(sampleFile) {
-    const baseName = path.basename(sampleFile, path.extname(sampleFile));
+    const baseName = basename(sampleFile, extname(sampleFile));
 
     console.log('\n📝 Example HTML usage:\n');
     console.log('<!-- Responsive WebP with fallback -->');

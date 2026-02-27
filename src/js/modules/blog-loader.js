@@ -21,18 +21,27 @@ class BlogLoader {
 
     renderPosts() {
         this.container.innerHTML = blogPosts.map(post => `
-            <article class="blog-card" data-id="${post.id}">
+            <article class="blog-card apple-3d-project" data-id="${post.id}">
                 <div class="blog-card-content">
                     <div class="blog-meta">
                         <span class="blog-date">${this.formatDate(post.date)}</span>
                         <span class="blog-read-time">${post.readTime}</span>
                     </div>
                     <h3 class="blog-title">${post.title}</h3>
-                    <p class="blog-summary">${post.summary}</p>
-                    <div class="blog-tags">
+                    
+                    <!-- Apple Intelligence TL;DR -->
+                    <div class="apple-tldr">
+                        <div class="tldr-header">
+                            <i class="fas fa-sparkles text-accent" style="margin-right: 6px;"></i> 
+                            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-accent);">AI Summary</span>
+                        </div>
+                        <p class="tldr-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-secondary); margin-bottom: 0;">${post.summary}</p>
+                    </div>
+
+                    <div class="blog-tags" style="margin-top: 1rem;">
                         ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
                     </div>
-                    <button class="blog-read-btn" onclick="window.blogLoader.openPost('${post.id}')">
+                    <button class="blog-read-btn" onclick="window.blogLoader.openPost('${post.id}')" style="margin-top: auto;">
                         Read Article <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -125,6 +134,12 @@ class BlogLoader {
 }
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+const initBlogLoader = () => {
     window.blogLoader = new BlogLoader();
-});
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlogLoader);
+} else {
+    initBlogLoader();
+}

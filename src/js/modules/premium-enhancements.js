@@ -10,6 +10,8 @@
 
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lowPowerDevice = (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
 
     /**
      * 1. SCROLL PROGRESS INDICATOR
@@ -158,9 +160,58 @@
     }
 
     /**
-     * 5. SMOOTH SECTION TRANSITIONS
+     * 5. SMOOTH SECTION TRANSITIONS & PARALLAX
      * Adds parallax-like effect on scroll
      */
+    function initParallax() {
+        if (prefersReducedMotion) return;
+        const parallaxElements = Array.from(document.querySelectorAll('[data-parallax="scroll"]'));
+        if (!parallaxElements.length) return;
+
+        const parallaxConfig = parallaxElements.map(el => ({
+            el,
+            speed: parseFloat(el.dataset.parallaxSpeed) || 0.06,
+            maxShift: parseFloat(el.dataset.parallaxMax) || 18
+        }));
+
+        let ticking = false;
+
+        function updateParallax() {
+            const disableParallax = window.innerWidth <= 900;
+            const viewportCenter = window.innerHeight * 0.5;
+
+            parallaxConfig.forEach(({ el, speed, maxShift }) => {
+                if (disableParallax) {
+                    el.style.transform = 'translate3d(0, 0, 0)';
+                    return;
+                }
+
+                const rect = el.getBoundingClientRect();
+                if (rect.bottom < -120 || rect.top > window.innerHeight + 120) {
+                    el.style.transform = 'translate3d(0, 0, 0)';
+                    return;
+                }
+
+                const elementCenter = rect.top + rect.height * 0.5;
+                const delta = (viewportCenter - elementCenter) * speed;
+                const clamped = Math.max(-maxShift, Math.min(maxShift, delta));
+                el.style.transform = `translate3d(0, ${clamped.toFixed(2)}px, 0)`;
+            });
+
+            ticking = false;
+        }
+
+        const onParallaxTick = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(updateParallax);
+        };
+
+        window.addEventListener('scroll', onParallaxTick, { passive: true });
+        window.addEventListener('resize', onParallaxTick, { passive: true });
+        updateParallax();
+    }
+
     function initSmoothSections() {
         if (prefersReducedMotion) return;
 
@@ -280,30 +331,40 @@
      * 10. CARD TILT EFFECT
      * 3D tilt on hover for cards
      */
+    function applyTiltToElement(card) {
+        if (prefersReducedMotion || lowPowerDevice || card.dataset.tiltInitialized) return;
+        card.dataset.tiltInitialized = "true";
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = -((y - centerY) / 20);
+            const rotateY = ((x - centerX) / 20);
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            card.style.transition = 'none';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+        });
+
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'transform 0.1s ease-out';
+        });
+    }
+
     function initCardTilt() {
         if (prefersReducedMotion) return;
 
-        const cards = document.querySelectorAll('.project-card, .blog-card');
-
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
+        const cards = document.querySelectorAll('.project-card, .blog-card, .apple-3d-project');
+        cards.forEach(applyTiltToElement);
     }
 
     /**
@@ -368,6 +429,7 @@
      * Highlights current section in navigation
      */
     function initActiveNavHighlight() {
+        if (window.__smartNavbarHandlesDynamicIsland) return;
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link, .menu-item');
 
@@ -394,6 +456,8 @@
         sections.forEach(section => sectionObserver.observe(section));
     }
 
+
+
     /**
      * INITIALIZE ALL ENHANCEMENTS
      */
@@ -405,20 +469,25 @@
         initImageLoading();
         initSmoothAnchors();
         initActiveNavHighlight();
+        if (!lowPowerDevice) {
+            initParallax();
+        }
 
         // Premium effects (only on desktop)
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 768 && !lowPowerDevice) {
             initMagneticButtons();
             initCardTilt();
             initCursorSpotlight();
         }
 
         // Optional enhancements
-        initSmoothSections();
+        if (!lowPowerDevice) {
+            initSmoothSections();
+        }
         initTypingEffect();
         initHoverSounds(); // Enabled only when localStorage flag is present
 
-        console.log('✨ Premium enhancements initialized');
+        console.log(`✨ Premium enhancements initialized${lowPowerDevice ? ' (low-power mode)' : ''}`);
     }
 
     // Run when DOM is ready
@@ -428,13 +497,15 @@
         init();
     }
 
-    // Expose for debugging
+    // Expose for debugging and dynamic elements
     window.PremiumEnhancements = {
         init,
         initScrollProgress,
         initSkillCounters,
         initMagneticButtons,
-        initCardTilt
+        initCardTilt,
+        applyTiltToElement,
+        initParallax
     };
 
 })();

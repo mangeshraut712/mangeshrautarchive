@@ -4,7 +4,15 @@ import globals from "globals";
 export default [
     js.configs.recommended,
     {
-        ignores: ["dist/**", "build/**", "node_modules/**", "src/assets/**"]
+        ignores: [
+            "dist/**",
+            "build/**",
+            "node_modules/**",
+            "src/assets/**",
+            "artifacts/**",
+            "test-results/**",
+            "playwright-report/**"
+        ]
     },
     // Browser Code (src)
     {

@@ -301,9 +301,28 @@ class BirthdayCelebration {
 }
 
 // Global Initialization
-document.addEventListener('DOMContentLoaded', () => new BirthdayCelebration());
+const initBirthdaySystem = () => {
+    const today = new Date().toDateString();
+    if (!window.__birthdaySystem || window.__birthdaySystemDate !== today) {
+        window.__birthdaySystem = new BirthdayCelebration();
+        window.__birthdaySystemDate = today;
+    }
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBirthdaySystem);
+} else {
+    initBirthdaySystem();
+}
+
+if (!window.__birthdayVisibilityBound) {
+    window.__birthdayVisibilityBound = true;
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) initBirthdaySystem();
+    });
+}
+
 if (!window.BirthdayCelebration) window.BirthdayCelebration = BirthdayCelebration;
-document.addEventListener('visibilitychange', () => !document.hidden && new BirthdayCelebration());
 
 
 

@@ -2,20 +2,41 @@
  * GitHub Projects Dynamic Loader
  * Fetches and displays latest repositories from GitHub API
  * 2026 Portfolio Enhancement
+ *
+ * GitHub API calls now go through the backend proxy at /api/github/repos
+ * which applies server-side 10-min caching and optional PAT auth (5000 req/hr).
+ * Direct browser → GitHub is only used as a fallback.
  */
 
 class GitHubProjects {
   constructor(username = 'mangeshraut712') {
     this.username = username;
-    this.apiUrl = `https://api.github.com/users/${username}/repos`;
+    // Backend proxy — preferred (server-side cache + optional auth)
+    this.proxyUrl = 'https://mangeshrautarchive.vercel.app/api/github/repos';
+    // Direct GitHub — fallback only (60 req/hr unauthenticated)
+    this.directApiUrl = `https://api.github.com/users/${username}/repos`;
     this.cache = null;
     this.cacheTime = null;
-    this.cacheDuration = 5 * 60 * 1000; // 5 minutes
+    this.cacheDuration = 10 * 60 * 1000; // 10 minutes — matches server TTL
     this.localCacheKey = `github_repos_${username}`;
+    this.featuredProjectOrder = [
+      'mangeshrautarchive',
+      'AssistMe-VirtualAssistant',
+      'Bug-Reporting-System',
+      'ces-ltd.com',
+      'kashishbeautyparlour',
+      'Real-Time-Face-Emotion-Recognition-System',
+      'Crime-Investigation-System',
+      'Starlight-Blogging-Website'
+    ];
+    this.showcaseExcludes = new Set([
+      this.username.toLowerCase(),
+      '.github'
+    ]);
   }
 
   /**
-   * Fetch repositories from GitHub API
+   * Fetch repositories from the backend proxy (preferred) or GitHub directly (fallback).
    */
   async fetchRepositories() {
     // 1) In-memory cache
@@ -38,45 +59,58 @@ class GitHubProjects {
       console.warn('Local cache read failed:', err);
     }
 
+    // 3) Try backend proxy first (server-side cache + optional PAT auth)
+    let rawRepos = null;
     try {
-      const response = await fetch(`${this.apiUrl}?per_page=100&sort=updated`, {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json'
+      const proxyResp = await fetch(
+        `${this.proxyUrl}?username=${this.username}&limit=100&no_forks=false`,
+        { headers: { 'Accept': 'application/json' } }
+      );
+      if (proxyResp.ok) {
+        const data = await proxyResp.json();
+        if (data.success && Array.isArray(data.data)) {
+          rawRepos = data.data;
+          console.log(`✅ GitHub repos via backend proxy (${data.rate_mode})`);
         }
-      });
-
-      if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status}`);
       }
-
-      const text = await response.text();
-      if (!text) {
-        throw new Error('Empty response from GitHub API');
-      }
-      const repos = JSON.parse(text);
-
-      // Filter out forked repos and sort by updated date
-      const filteredRepos = repos
-        .filter(repo => !repo.fork)
-        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-
-      // Cache the results
-      this.cache = filteredRepos;
-      this.cacheTime = Date.now();
-      try {
-        localStorage.setItem(this.localCacheKey, JSON.stringify({
-          repos: filteredRepos,
-          timestamp: this.cacheTime
-        }));
-      } catch (err) {
-        console.warn('Local cache write failed:', err);
-      }
-
-      return filteredRepos;
-    } catch (error) {
-      console.error('Error fetching GitHub repositories:', error);
-      return [];
+    } catch (err) {
+      console.warn('⚠️ Backend proxy unavailable, trying GitHub directly:', err.message);
     }
+
+    // 4) Fallback: direct GitHub API
+    if (!rawRepos) {
+      try {
+        const response = await fetch(
+          `${this.directApiUrl}?per_page=100&sort=updated`,
+          { headers: { 'Accept': 'application/vnd.github.v3+json' } }
+        );
+        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+        rawRepos = await response.json();
+        console.log('ℹ️ GitHub repos loaded directly (unauthenticated, 60 req/hr)');
+      } catch (err) {
+        console.error('Error fetching GitHub repositories:', err);
+        return [];
+      }
+    }
+
+    // Filter forks, sort by updated date
+    const filteredRepos = rawRepos
+      .filter(repo => !repo.fork)
+      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+    // Update caches
+    this.cache = filteredRepos;
+    this.cacheTime = Date.now();
+    try {
+      localStorage.setItem(this.localCacheKey, JSON.stringify({
+        repos: filteredRepos,
+        timestamp: this.cacheTime
+      }));
+    } catch (err) {
+      console.warn('Local cache write failed:', err);
+    }
+
+    return filteredRepos;
   }
 
   /**
@@ -104,6 +138,18 @@ class GitHubProjects {
       'default': '#6e7681'
     };
     return colors[language] || colors.default;
+  }
+
+  /**
+   * Escape text for safe HTML insertion.
+   */
+  escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
   }
 
   /**
@@ -148,109 +194,260 @@ class GitHubProjects {
   }
 
   /**
-   * Get custom metadata for priority projects
+   * Format to a human readable absolute date.
    */
-  getProjectMetadata(repoName) {
-    const metadata = {
-      'AssistMe-VirtualAssistant': {
-        description: 'Intelligent desktop assistant with voice control and LLM integration.',
-        wins: ['90% Command Accuracy', 'Low-Latency Audio', 'Plugin Architecture']
-      },
-      'Bug-Reporting-System': {
-        description: 'Enterprise bug tracker with real-time updates and RBAC.',
-        wins: ['Concurrent Locking', 'WebSocket Support', 'Secure RBAC']
-      },
-      'Real-Time-Face-Emotion-Recognition-System': {
-        description: 'CNN-based emotion detection from live video streams.',
-        wins: ['94.5% Accuracy', '<15ms Inference', '60 FPS Processing']
-      },
-      'Crime-Investigation-System': {
-        description: 'Secure centralized case management for law enforcement.',
-        wins: ['AES-256 Encryption', 'Scalable Schema', '80% Less Paperwork']
-      },
-      'mangeshrautarchive': {
-        description: 'Next-gen AI portfolio with agentic capabilities and 3D effects.',
-        wins: ['60 tok/sec Streaming', '3D Interactive UX', 'Agentic UI Control']
-      },
-      'Starlight-Blogging-Website': {
-        description: 'Modern blogging platform with markdown and SEO optimization.',
-        wins: ['100 Lighthouse Score', 'Real-time Markdown', 'JWT Security']
-      }
-    };
-    return metadata[repoName] || null;
+  formatAbsoluteDate(dateString) {
+    if (!dateString) return 'Unknown';
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return 'Unknown';
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }).format(date);
+  }
+
+  normalizeHomepageUrl(homepage) {
+    if (!homepage) return '';
+    const value = String(homepage).trim();
+    if (!value) return '';
+
+    const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+    try {
+      const parsed = new URL(withProtocol);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '';
+      return parsed.toString();
+    } catch {
+      return '';
+    }
+  }
+
+  getTopics(repo) {
+    if (!Array.isArray(repo?.topics)) return [];
+    return repo.topics
+      .map((topic) => String(topic || '').trim().toLowerCase())
+      .filter(Boolean);
+  }
+
+  getRepoAgeDays(dateString) {
+    if (!dateString) return Number.POSITIVE_INFINITY;
+    const ts = new Date(dateString).getTime();
+    if (Number.isNaN(ts)) return Number.POSITIVE_INFINITY;
+    const diff = Date.now() - ts;
+    return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+  }
+
+  getShowcaseScore(repo) {
+    const stars = repo.stargazers_count || 0;
+    const forks = repo.forks_count || 0;
+    const watchers = repo.watchers_count || 0;
+    const topics = this.getTopics(repo);
+    const updatedAgeDays = this.getRepoAgeDays(repo.updated_at);
+
+    const freshness = Math.max(0, 100 - Math.min(updatedAgeDays, 180) * 0.55);
+    const traction = Math.min(100, stars * 18 + forks * 24 + watchers * 6);
+    const completeness = Math.min(
+      100,
+      (repo.description ? 34 : 0) +
+      (repo.language ? 20 : 0) +
+      (topics.length ? Math.min(topics.length, 4) * 9 : 0) +
+      (repo.homepage ? 26 : 0) +
+      (repo.license?.spdx_id ? 10 : 0)
+    );
+
+    const score = Math.round(freshness * 0.42 + traction * 0.28 + completeness * 0.30);
+    return { score, freshness, traction, completeness, updatedAgeDays };
+  }
+
+  getMomentumLabel(repo, showcaseScore) {
+    const hasDemo = Boolean(this.normalizeHomepageUrl(repo.homepage));
+    const stars = repo.stargazers_count || 0;
+    const forks = repo.forks_count || 0;
+    const updatedAgeDays = showcaseScore.updatedAgeDays;
+
+    if (updatedAgeDays <= 14 && hasDemo) return { label: 'Launch Ready', tone: 'launch' };
+    if (updatedAgeDays <= 30 && (stars + forks >= 3)) return { label: 'High Momentum', tone: 'momentum' };
+    if (updatedAgeDays <= 60) return { label: 'Actively Maintained', tone: 'active' };
+    if (stars + forks >= 5) return { label: 'Validated Build', tone: 'validated' };
+    return { label: 'Stable Archive', tone: 'stable' };
+  }
+
+  buildAiInsight(repo, showcaseScore) {
+    const topics = this.getTopics(repo);
+    const hasDemo = Boolean(this.normalizeHomepageUrl(repo.homepage));
+    const updated = this.formatDate(repo.updated_at);
+    const stars = repo.stargazers_count || 0;
+    const forks = repo.forks_count || 0;
+    const traction = stars + forks;
+
+    const signals = [];
+    signals.push(`Updated ${updated}`);
+    if (hasDemo) signals.push('live demo available');
+    if (topics.length) signals.push(`${Math.min(topics.length, 4)} tagged capabilities`);
+    if (traction > 0) signals.push(`${traction} public engagement signals`);
+
+    const confidenceBand = showcaseScore.score >= 72
+      ? 'strong'
+      : showcaseScore.score >= 52
+        ? 'balanced'
+        : 'emerging';
+
+    return `AI brief: ${signals.join(' · ')}. Quality signal: ${confidenceBand} (${showcaseScore.score}/100).`;
+  }
+
+  isRepositoryShowcaseReady(repo) {
+    if (!repo || repo.fork || repo.archived) return false;
+    const name = String(repo.name || '').trim().toLowerCase();
+    if (!name || this.showcaseExcludes.has(name)) return false;
+
+    const description = String(repo.description || '').trim().toLowerCase();
+    const isProfileReadme = description.includes('profile readme');
+    const hasSignal =
+      Boolean(repo.description) ||
+      Boolean(this.normalizeHomepageUrl(repo.homepage)) ||
+      (repo.stargazers_count || 0) > 0 ||
+      (repo.forks_count || 0) > 0 ||
+      this.getTopics(repo).length > 0;
+
+    if (!hasSignal) return false;
+    if (isProfileReadme && !repo.homepage) return false;
+    return true;
+  }
+
+  getShowcaseRepos(repos, limit = 12) {
+    if (!Array.isArray(repos) || repos.length === 0) return [];
+    const eligible = repos.filter((repo) => this.isRepositoryShowcaseReady(repo));
+    if (eligible.length === 0) return [];
+
+    const featuredMap = new Map(this.featuredProjectOrder.map((name, index) => [name, index]));
+
+    const scored = eligible
+      .map((repo) => {
+        const showcase = this.getShowcaseScore(repo);
+        return {
+          ...repo,
+          __showcase: showcase
+        };
+      })
+      .sort((a, b) => {
+        const aFeatured = featuredMap.has(a.name);
+        const bFeatured = featuredMap.has(b.name);
+        if (aFeatured && bFeatured) return featuredMap.get(a.name) - featuredMap.get(b.name);
+        if (aFeatured) return -1;
+        if (bFeatured) return 1;
+        if (b.__showcase.score !== a.__showcase.score) return b.__showcase.score - a.__showcase.score;
+        return new Date(b.updated_at) - new Date(a.updated_at);
+      });
+
+    return scored.slice(0, limit);
   }
 
   /**
    * Create project card HTML
    */
   createProjectCard(repo, _index) {
-    const meta = this.getProjectMetadata(repo.name);
+    const showcase = repo.__showcase || this.getShowcaseScore(repo);
     const language = repo.language || 'Unknown';
     const languageColor = this.getLanguageColor(language);
-    const description = meta ? meta.description : (repo.description || 'No description available');
+    const description = repo.description || 'No repository description provided yet.';
     const stars = repo.stargazers_count || 0;
     const forks = repo.forks_count || 0;
-    const homepage = repo.homepage;
-
-    const winsHtml = meta ? `
-      <div class="project-wins">
-        ${meta.wins.map(win => `<span class="win-tag"><i class="fas fa-check-circle"></i> ${win}</span>`).join('')}
-      </div>
-    ` : '';
+    const openIssues = repo.open_issues_count || 0;
+    const homepage = this.normalizeHomepageUrl(repo.homepage);
+    const updatedRelative = this.formatDate(repo.updated_at);
+    const updatedAbsolute = this.formatAbsoluteDate(repo.updated_at);
+    const repoPath = repo.full_name || `${this.username}/${repo.name}`;
+    const repoLicense = repo.license?.spdx_id || '';
+    const repoSize = Number.isFinite(repo.size) ? repo.size : '';
+    const repoBranch = repo.default_branch || '';
+    const aiInsight = this.buildAiInsight(repo, showcase);
+    const safeName = this.escapeHtml(repo.name);
+    const safeRepoPath = this.escapeHtml(repoPath);
+    const safeDescription = this.escapeHtml(description);
+    const safeLanguage = this.escapeHtml(language);
+    const safeRepoUrl = this.escapeHtml(repo.html_url);
+    const safeHomepage = homepage ? this.escapeHtml(homepage) : '';
+    const hasDemo = Boolean(homepage);
+    const spatialTarget = safeRepoUrl;
+    const topicsJson = this.escapeHtml(JSON.stringify(this.getTopics(repo)));
+    const updatedAt = this.escapeHtml(repo.updated_at || '');
+    const createdAt = this.escapeHtml(repo.created_at || '');
+    const pushedAt = this.escapeHtml(repo.pushed_at || '');
+    const safeUpdatedRelative = this.escapeHtml(updatedRelative);
+    const safeUpdatedAbsolute = this.escapeHtml(updatedAbsolute);
+    const safeInsight = this.escapeHtml(aiInsight);
+    const safeScore = this.escapeHtml(showcase.score);
+    const safeLicense = this.escapeHtml(repoLicense);
+    const safeBranch = this.escapeHtml(repoBranch);
+    const safeRepoSize = this.escapeHtml(repoSize);
+    const safeOpenIssues = this.escapeHtml(openIssues);
+    const topics = this.getTopics(repo);
 
     return `
-      <div class="project-card group">
+      <div class="project-card apple-3d-project group">
         <div class="project-header">
-          <h3 class="project-title">
-            <i class="fas fa-book-bookmark project-icon text-accent"></i>
-            ${repo.name}
-          </h3>
-          <p class="project-description">
-            ${description}
-          </p>
-          ${winsHtml}
-        </div>
-
-        <div class="project-body">
-          <div class="project-stats">
-            ${stars > 0 ? `
-              <div class="project-stat">
-                <i class="fas fa-star"></i>
-                <span>${stars}</span>
-              </div>
-            ` : ''}
-            ${forks > 0 ? `
-              <div class="project-stat">
-                <i class="fas fa-code-branch"></i>
-                <span>${forks}</span>
-              </div>
-            ` : ''}
+          <div class="project-head-top">
+            <h3 class="project-title">
+              <span class="project-title-text">${safeName}</span>
+            </h3>
+            <span class="project-repo-updated" title="Updated ${safeUpdatedAbsolute}">
+              <i class="fas fa-clock"></i>
+              ${safeUpdatedRelative}
+            </span>
           </div>
-
+          <p class="project-description">${safeDescription}</p>
           <div class="project-tags">
             ${language !== 'Unknown' ? `
               <div class="project-language">
                 <span class="language-dot" style="background-color: ${languageColor}"></span>
-                ${language}
+                ${safeLanguage}
               </div>
             ` : ''}
-            ${repo.topics && repo.topics.length > 0 ? repo.topics.slice(0, 2).map(topic => `
-              <span class="project-tag">${topic}</span>
+            ${topics.length > 0 ? topics.slice(0, 2).map(topic => `
+              <span class="project-tag">${this.escapeHtml(topic)}</span>
             `).join('') : ''}
+            ${stars > 0 ? `<span class="project-star-badge"><i class="fas fa-star"></i> ${stars}</span>` : ''}
           </div>
         </div>
 
         <div class="project-footer">
-          <a href="${repo.html_url}" target="_blank" class="project-action-btn btn-github">
-            <i class="fab fa-github"></i>
-            <span>Code</span>
-          </a>
-          ${homepage ? `
-            <a href="${homepage}" target="_blank" class="project-action-btn btn-demo">
-              <i class="fas fa-external-link-alt"></i>
+          <button
+            type="button"
+            class="project-action-btn btn-ar"
+            data-project-name="${safeName}"
+            data-project-full-name="${safeRepoPath}"
+            data-project-url="${spatialTarget}"
+            data-project-demo-url="${safeHomepage}"
+            data-project-repo-url="${safeRepoUrl}"
+            data-project-updated-at="${updatedAt}"
+            data-project-created-at="${createdAt}"
+            data-project-stars="${stars}"
+            data-project-forks="${forks}"
+            data-project-open-issues="${safeOpenIssues}"
+            data-project-watchers="${this.escapeHtml(repo.watchers_count || stars)}"
+            data-project-size-kb="${safeRepoSize}"
+            data-project-license="${safeLicense}"
+            data-project-default-branch="${safeBranch}"
+            data-project-pushed-at="${pushedAt}"
+            data-project-score="${safeScore}"
+            data-project-language="${safeLanguage}"
+            data-project-topics="${topicsJson}"
+            data-project-ai-insight="${safeInsight}"
+            aria-label="Open ${safeName} spatial view">
+            <i class="fas fa-cube"></i>
+            <span>Spatial</span>
+          </button>
+          ${hasDemo ? `
+            <a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open live demo for ${safeName}">
+              <i class="fas fa-arrow-up-right-from-square"></i>
               <span>Live Demo</span>
             </a>
-          ` : ''}
+          ` : `
+            <a href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="View ${safeName} on GitHub">
+              <i class="fab fa-github"></i>
+              <span>GitHub</span>
+            </a>
+          `}
         </div>
       </div>
     `;
@@ -278,71 +475,30 @@ class GitHubProjects {
 
     try {
       const repos = await this.fetchRepositories();
+      const showcaseRepos = this.getShowcaseRepos(repos, limit);
 
-      if (repos.length === 0) {
+      if (showcaseRepos.length === 0) {
         container.innerHTML = `
           <div class="col-span-full text-center py-12">
             <i class="fas fa-folder-open text-6xl text-accent opacity-20 mb-4"></i>
-            <p class="text-secondary">No repositories found</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Priority projects list (curated selection)
-      const priorityProjects = [
-        'mangeshrautarchive',
-        'AssistMe-VirtualAssistant',
-        'Bug-Reporting-System',
-        'ces-ltd.com',
-        'kashishbeautyparlour',
-        'Real-Time-Face-Emotion-Recognition-System',
-        'Crime-Investigation-System',
-        'Starlight-Blogging-Website'
-      ];
-
-      // Filter for priority projects (all 8, with or without demos)
-      let filteredRepos = repos.filter(repo => {
-        return priorityProjects.includes(repo.name);
-      });
-
-      // Sort by priority order
-      filteredRepos.sort((a, b) => {
-        const indexA = priorityProjects.indexOf(a.name);
-        const indexB = priorityProjects.indexOf(b.name);
-        return indexA - indexB;
-      });
-
-      // If we don't have enough priority projects, add other projects with demos as fallback
-      if (filteredRepos.length < limit) {
-        const otherReposWithDemos = repos.filter(repo => {
-          const notInPriority = !priorityProjects.includes(repo.name);
-          const hasDemo = repo.homepage && repo.homepage.trim() !== '';
-          return notInPriority && hasDemo;
-        });
-        filteredRepos = [...filteredRepos, ...otherReposWithDemos];
-      }
-
-      if (filteredRepos.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full text-center py-12">
-            <i class="fas fa-folder-open text-6xl text-accent opacity-20 mb-4"></i>
-            <p class="text-secondary">No priority projects found</p>
+            <p class="text-secondary">No showcase-ready repositories found</p>
           </div>
         `;
         return;
       }
 
       // Render project cards
-      const projectsHTML = filteredRepos
-        .slice(0, limit)
+      const projectsHTML = showcaseRepos
         .map((repo, index) => this.createProjectCard(repo, index))
         .join('');
 
       container.innerHTML = projectsHTML;
 
-
-
+      // Apply 3D tilt to new cards
+      if (window.PremiumEnhancements && window.PremiumEnhancements.applyTiltToElement) {
+        const newCards = container.querySelectorAll('.apple-3d-project');
+        newCards.forEach(card => window.PremiumEnhancements.applyTiltToElement(card));
+      }
     } catch {
       container.innerHTML = `
         <div class="col-span-full text-center py-12">
@@ -379,10 +535,8 @@ class GitHubProjects {
   }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = GitHubProjects;
+if (typeof window !== 'undefined') {
+  window.GitHubProjects = GitHubProjects;
 }
 
-// Make available globally
-window.GitHubProjects = GitHubProjects;
+export default GitHubProjects;

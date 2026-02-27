@@ -209,7 +209,13 @@ export class CalendarWidget {
 }
 
 // Auto-init
-document.addEventListener('DOMContentLoaded', () => {
+const initCalendarWidget = () => {
   const widget = new CalendarWidget('calendar-widget');
   widget.init();
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCalendarWidget);
+} else {
+  initCalendarWidget();
+}

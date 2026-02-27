@@ -33,6 +33,40 @@
     /* Prevent overflow */
 }
 
+/* Keep right-column cards contained and aligned within Contact */
+#contact .contact-grid {
+    align-items: start;
+}
+
+#contact .contact-column {
+    align-items: stretch;
+}
+
+#contact .contact-column>* {
+    width: 100%;
+    max-width: 100%;
+}
+
+.calendar-wrapper-clean {
+    width: 100%;
+    min-width: 0;
+    margin-top: 0.25rem;
+}
+
+#calendar-widget {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Prevent reminders from growing into the next section on desktop */
+@media (width >=1024px) {
+    #contact #calendar-widget .reminders-scroll-area {
+        max-height: 320px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
 /* ----------------------------------------
    Contact Page Specific Overrides
    ---------------------------------------- */
@@ -250,6 +284,88 @@ html.dark .contact-link-item:hover {
 
 html.dark .contact-link-item:hover .link-text {
     color: #0a84ff;
+}
+
+/* ----------------------------------------
+   AssistMe Contact CTA
+   ---------------------------------------- */
+.contact-assistme-card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem !important;
+    border: 1px solid rgb(0 122 255 / 18%) !important;
+    background: linear-gradient(160deg, rgb(0 122 255 / 5%), rgb(0 122 255 / 2%)) !important;
+}
+
+html.dark .contact-assistme-card {
+    border-color: rgb(10 132 255 / 28%) !important;
+    background: linear-gradient(160deg, rgb(10 132 255 / 16%), rgb(10 132 255 / 6%)) !important;
+}
+
+.contact-assistme-icon {
+    width: 72px !important;
+    height: 72px !important;
+    font-size: 2rem !important;
+    margin-bottom: 1.25rem;
+}
+
+.contact-assistme-card h3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.contact-assistme-card .contact-description {
+    max-width: 420px;
+    margin-bottom: 1rem !important;
+    line-height: 1.6;
+}
+
+.contact-assistme-btn {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 0.8rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #007aff 0%, #005fd1 100%);
+    box-shadow: 0 8px 24px rgb(0 122 255 / 28%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-assistme-btn:hover,
+.contact-assistme-btn:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgb(0 122 255 / 34%);
+    outline: none;
+}
+
+.contact-assistme-btn:active {
+    transform: translateY(0);
+}
+
+html.dark .contact-assistme-btn {
+    background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+    box-shadow: 0 8px 24px rgb(10 132 255 / 30%);
+}
+
+.contact-assistme-note {
+    margin-top: 0.65rem;
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    color: #6e6e73;
+}
+
+html.dark .contact-assistme-note {
+    color: #a1a1a6;
 }
 
 /* ----------------------------------------
@@ -955,13 +1071,13 @@ html.dark .compact-calendar {
    Unified Contact Card Sections
    ---------------------------------------- */
 .contact-info-all .contact-section {
-    padding-bottom: 0.4rem;
-    margin-bottom: 0.4rem;
-    border-bottom: 1px solid rgb(0 0 0 / 3%);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
 }
 
 html.dark .contact-info-all .contact-section {
-    border-bottom-color: rgb(255 255 255 / 3%);
+    border-bottom-color: rgb(255 255 255 / 10%);
 }
 
 .contact-info-all .contact-section:last-child {
@@ -971,15 +1087,39 @@ html.dark .contact-info-all .contact-section {
 }
 
 .contact-info-all .contact-section h3 {
-    margin-bottom: 0.3rem;
-    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.05rem;
     font-weight: 600;
 }
 
 .contact-info-all .contact-section .contact-description {
-    margin-bottom: 0.3rem;
-    font-size: 0.75rem;
-    line-height: 1.4;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.follow-section {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(0 0 0 / 6%);
+}
+
+html.dark .follow-section {
+    border-top-color: rgb(255 255 255 / 10%);
+}
+
+#contact .contact-social-wrapper.wrapper {
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+    padding: 0 !important;
+    justify-content: flex-start !important;
+}
+
+@media (max-width: 768px) {
+    #contact .contact-social-wrapper.wrapper {
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
 }
 
 /* ----------------------------------------

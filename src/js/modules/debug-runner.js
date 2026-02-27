@@ -787,11 +787,17 @@ class DebugRunner {
 }
 
 // Auto-initialize
-document.addEventListener('DOMContentLoaded', () => {
+const initDebugRunner = () => {
     const container = document.getElementById('debug-runner-container');
     if (container) {
         const game = new DebugRunner();
         const canvas = game.init();
         container.appendChild(canvas);
     }
-});
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDebugRunner);
+} else {
+    initDebugRunner();
+}

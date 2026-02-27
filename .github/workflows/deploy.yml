@@ -1,9 +1,11 @@
-name: Deploy to GitHub Pages
+name: CI → Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch: # Allow manual trigger
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,8 +17,71 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  # ─────────────────────────────────────────
+  # Quality Gates (run on every push & PR)
+  # ─────────────────────────────────────────
+  quality:
+    name: 🔍 Quality Gates
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: 🔒 Security — scan for exposed API keys
+        run: npm run security-check
+
+      - name: 🧹 Lint — ESLint code quality check
+        run: npm run lint
+
+      - name: 🧪 Tests — Vitest unit tests
+        run: npm test
+
+      - name: 🌐 Setup Chrome for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: ✅ Chrome smoke tests
+        run: npm run qa:smoke
+
+      - name: ♿ Chrome accessibility baseline
+        run: npm run qa:a11y
+
+      - name: ⚡ Lighthouse desktop gate
+        run: npm run qa:lighthouse:desktop
+
+      - name: 📱 Lighthouse mobile gate
+        run: npm run qa:lighthouse:mobile
+
+      - name: 📦 Upload QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-qa-artifacts
+          path: |
+            artifacts/playwright-report
+            artifacts/lighthouse
+
+      - name: 🐍 Python — lint with flake8
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install flake8 && flake8 api/ --max-line-length=120 --ignore=E501,W503
+
+  # ─────────────────────────────────────────
+  # Build & Deploy (main branch only)
+  # ─────────────────────────────────────────
+  build:
+    name: 📦 Build
+    runs-on: ubuntu-latest
+    needs: quality
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
 
@@ -30,17 +95,16 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --prefer-offline
 
-      - name: Build for production
+      - name: 🏗️ Build for production
         run: npm run build
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Public config only — NO API keys in build output
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
+          OPENROUTER_MODEL: x-ai/grok-4.1-fast
           NODE_ENV: production
-          # Force environment variables to be available during build
-          VITE_OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -48,6 +112,9 @@ jobs:
           path: ./dist
 
   deploy:
+    name: 🚀 Deploy to GitHub Pages
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -57,3 +124,36 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  post_deploy_validation:
+    name: 🧪 Post-Deploy Chrome Validation
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Setup Chrome for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run post-deploy smoke + baseline accessibility
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: npm run qa:postdeploy
+
+      - name: Upload post-deploy QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: post-deploy-chrome-artifacts
+          path: |
+            artifacts/playwright-report

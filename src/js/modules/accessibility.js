@@ -109,6 +109,12 @@ export class AccessibilityEnhancer {
      * Add skip links for quick navigation
      */
     addSkipLinks() {
+        const existingSkipLinks = document.querySelector('.skip-links');
+        if (existingSkipLinks) {
+            this.skipLinks = Array.from(existingSkipLinks.querySelectorAll('a.skip-link'));
+            return;
+        }
+
         const skipLinksContainer = document.createElement('div');
         skipLinksContainer.className = 'skip-links';
         skipLinksContainer.setAttribute('role', 'navigation');
@@ -805,13 +811,19 @@ export class AccessibilityEnhancer {
 
 // Auto-initialize
 if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', () => {
+    const initAccessibility = () => {
         const a11y = new AccessibilityEnhancer();
         a11y.init();
 
         // Make available globally
         window.a11y = a11y;
-    });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAccessibility);
+    } else {
+        initAccessibility();
+    }
 }
 
 export default AccessibilityEnhancer;

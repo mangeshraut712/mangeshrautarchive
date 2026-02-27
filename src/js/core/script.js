@@ -4,7 +4,6 @@ import { ModernInputHandler } from './modern-input.js';
 
 import ExternalApiKeys from '../modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
-import initContactForm from '../modules/contact.js';
 import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
 
@@ -1614,19 +1613,32 @@ class ChatUI {
     }
 }
 
+function initContactChatbotCTA(documentRef = document) {
+    const ctaButton = documentRef.getElementById('contact-chatbot-cta');
+    if (!ctaButton || ctaButton.dataset.chatbotBound === 'true') return;
+
+    ctaButton.dataset.chatbotBound = 'true';
+    ctaButton.addEventListener('click', () => {
+        const prompt = 'I want to contact Mangesh about a project opportunity.';
+        if (window.appleIntelligenceChatbot && typeof window.appleIntelligenceChatbot.ask === 'function') {
+            window.appleIntelligenceChatbot.ask(prompt);
+            return;
+        }
+
+        const toggle = documentRef.getElementById('chatbot-toggle');
+        toggle?.click();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize core functionality
     initOverlayMenu();
     initOverlayNavigation();
-    initSmoothScroll();
+    initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');
 
 
 
-    try {
-        initContactForm();
-    } catch (error) {
-        console.error('Failed to initialize contact form:', error);
-    }
+    initContactChatbotCTA();
 
     // Configure global settings
     window.AssistMeConfig = Object.freeze({

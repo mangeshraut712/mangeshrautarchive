@@ -15,7 +15,6 @@ API_KEYS.txt
 js/config.local.js
 src/js/config.local.js
 config.local.js
-config.local.js
 
 # Build outputs
 dist/
@@ -43,6 +42,9 @@ pids
 
 # Coverage directory used by tools like istanbul
 coverage/
+artifacts/
+test-results/
+playwright-report/
 
 # nyc test coverage
 .nyc_output
@@ -60,8 +62,15 @@ temp/
 # Optional npm cache directory
 .npm
 
+# Local npm override/config artifacts
+.npmcache/
+.npmrc
+
 # Optional eslint cache
 .eslintcache
+
+# Local husky scaffolding created by npm prepare in some environments
+.husky/
 
 # Microbundle cache
 .rpt2_cache/
@@ -107,3 +116,7 @@ out
 __pycache__/
 *.py[cod]
 venv/
+
+
+#Ignore cursor AI rules
+.cursor/rules/codacy.mdc

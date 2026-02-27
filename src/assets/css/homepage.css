@@ -39,10 +39,10 @@ html:not(.dark) .home-hero {
 /* Profile Image with Ring */
 .profile-image-wrapper {
     position: relative;
-    width: 160px;
+    width: 110px;
 
     /* Reduced from 220px to fit content better */
-    height: 160px;
+    height: 110px;
     margin-bottom: 24px !important;
 
     /* Tighter spacing */
@@ -154,8 +154,8 @@ html.dark .hero-description {
     }
 
     .profile-image-wrapper {
-        width: 120px !important;
-        height: 120px !important;
+        width: 96px !important;
+        height: 96px !important;
     }
 }
 
@@ -431,10 +431,10 @@ html:not(.dark) .hero-stat-label {
     }
 
     .profile-image-wrapper {
-        width: 160px !important;
-        height: 160px !important;
-        min-width: 160px !important;
-        min-height: 160px !important;
+        width: 88px !important;
+        height: 88px !important;
+        min-width: 88px !important;
+        min-height: 88px !important;
         margin-bottom: 1.5rem;
         flex-shrink: 0;
         border-radius: 50%;

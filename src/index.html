@@ -15,13 +15,44 @@
   <meta name="HandheldFriendly" content="True" />
   <meta name="format-detection" content="telephone=yes" />
   <meta name="apple-touch-fullscreen" content="yes" />
+  <meta name="description"
+    content="Mangesh Raut portfolio: software engineer with expertise in full-stack development, cloud, and AI/ML." />
+  <style>
+    .skip-links {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10001;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translateY(-200%);
+      padding: 0.75rem 1rem;
+      background: #005fcc;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 0 0 10px 0;
+      font-weight: 700;
+      transition: transform 0.2s ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .footer-copy {
+      color: #1d1d1f;
+    }
+
+    html.dark .footer-copy {
+      color: #f5f5f7;
+    }
+  </style>
   <title>Mangesh Raut | Expert Software Engineer | Technical Leadership</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- JSON-LD Structured Data for SEO -->
   <script type="application/ld+json">
@@ -48,89 +79,55 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
+  <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="assets/css/tailwind-output.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print"
+    onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  </noscript>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/global-improvements.css" />
   <link rel="stylesheet" href="assets/css/sitewide-design-system.css" />
-  <link rel="stylesheet" href="assets/css/contact.css" />
+  <link rel="stylesheet" href="assets/css/contact.css" media="print" onload="this.media='all'" />
 
   <!-- Performance-Optimized Animations -->
   <link rel="stylesheet" href="assets/css/animations.css" />
 
-  <link rel="stylesheet" href="assets/css/publications.css" />
-  <link rel="stylesheet" href="assets/css/education.css" />
-  <link rel="stylesheet" href="assets/css/skills.css" />
-  <link rel="stylesheet" href="assets/css/certifications.css" />
+  <link rel="stylesheet" href="assets/css/publications.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/education.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/skills.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/certifications.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/homepage.css" />
-  <link rel="stylesheet" href="assets/css/experience.css" />
+  <link rel="stylesheet" href="assets/css/experience.css" media="print" onload="this.media='all'" />
 
+  <link rel="stylesheet" href="assets/css/calendar.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/ai-assistant.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/ai-assistant-mobile.css" media="print" onload="this.media='all'" />
 
-  <!-- Prism.js for Code Highlighting -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-
-  <!-- Contact styles already loaded above -->
-  <link rel="stylesheet" href="assets/css/calendar.css" />
-  <link rel="stylesheet" href="assets/css/ai-assistant.css" />
-  <link rel="stylesheet" href="assets/css/ai-assistant-mobile.css" />
-
-  <link rel="stylesheet" href="assets/css/about.css" />
-  <link rel="stylesheet" href="assets/css/blog.css" />
-  <link rel="stylesheet" href="assets/css/projects-v2.css" />
-  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" />
-  <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css" />
-  <link rel="stylesheet" href="assets/css/recommendations.css" />
-  <link rel="stylesheet" href="assets/css/awards.css" />
-
-  <!-- Typography System - Responsive Font Scaling -->
+  <link rel="stylesheet" href="assets/css/about.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/blog.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/recommendations.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/awards.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/typography-system.css" />
-
-  <!-- Game Section & Social Media Fixes -->
-  <link rel="stylesheet" href="assets/css/game-section-fix.css" />
-
-  <!-- Game 2026 Aligned Edition -->
-  <link rel="stylesheet" href="assets/css/game-2026.css" />
-
-
-
-
+  <link rel="stylesheet" href="assets/css/game-section-fix.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/game-2026.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/premium-enhancements.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/birthday-celebration.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/projects-showcase-2026.css" media="print" onload="this.media='all'" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
-
-  <!-- ✨ Premium Enhancements -->
-  <link rel="stylesheet" href="assets/css/premium-enhancements.css" />
-
-  <!-- 🎉 Birthday Celebration Styles -->
-  <link rel="stylesheet" href="assets/css/birthday-celebration.css" />
-
-  <!-- Chatbot JavaScript (Minimal - CSS handles styling) -->
-  <script>
-    // Removed JavaScript styling - now using advanced CSS with CSS variables
-    // CSS automatically adapts to html.dark class changes
-    document.addEventListener('DOMContentLoaded', function () {
-      console.log('🎨 Chatbot styles loaded from external CSS');
-      console.log('⚙️ Chatbot functionality handled by script.js module');
-    });
-  </script>
-
-  <!-- Added CDN links for external libraries with preload -->
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" as="script">
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/marked/marked.min.js" as="script">
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.0/purify.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
-
-
-
-  <!-- Vercel Web Analytics -->
-  <script defer src="https://cdn.vercel-analytics.com/script.js"></script>
-  <!-- Vercel Web Analytics -->
 
 </head>
 
 <body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
+  <div class="skip-links" role="navigation" aria-label="Skip links">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#global-nav" class="skip-link">Skip to navigation</a>
+    <a href="#contact" class="skip-link">Skip to contact</a>
+  </div>
   <!-- Search Overlay -->
   <div id="search-overlay">
     <div class="search-container">
@@ -148,11 +145,12 @@
     </div>
   </div>
 
-  <nav class="global-nav dynamic-island" aria-label="Primary navigation">
+  <nav id="global-nav" class="global-nav dynamic-island" aria-label="Primary navigation">
     <div class="nav-container">
       <div class="nav-left">
         <a class="nav-logo" href="#home" aria-label="Mangesh Raut home">
-          <img src="assets/images/profile-icon.png" alt="Mangesh Raut" />
+          <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32" loading="eager"
+            fetchpriority="high" />
         </a>
       </div>
       <div class="nav-links scrollable-nav" role="menubar">
@@ -168,7 +166,7 @@
         <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
         <a href="#blog" class="nav-link" role="menuitem">Blogs</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
-        <a href="#game" class="nav-link" role="menuitem">Game</a>
+        <a href="#debug-runner-section" class="nav-link" role="menuitem">Game</a>
       </div>
       <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav" aria-label="Search">
@@ -186,7 +184,7 @@
     </div>
   </nav>
 
-  <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true"
+  <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true" inert
     aria-label="Site navigation">
     <button id="close-menu-btn" class="premium-close-btn" type="button" aria-label="Close navigation menu">
       <i class="fas fa-times"></i>
@@ -208,12 +206,32 @@
           <span>Skills</span>
         </a>
         <a href="#experience" class="menu-item">
-          <div class="premium-menu-icon"><i class="fas fa-route"></i></div>
-          <span>Journey</span>
+          <div class="premium-menu-icon"><i class="fas fa-briefcase"></i></div>
+          <span>Experience</span>
         </a>
         <a href="#projects" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-code"></i></div>
           <span>Projects</span>
+        </a>
+        <a href="#education" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-graduation-cap"></i></div>
+          <span>Education</span>
+        </a>
+        <a href="#publications" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-book"></i></div>
+          <span>Publications</span>
+        </a>
+        <a href="#awards" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-trophy"></i></div>
+          <span>Awards</span>
+        </a>
+        <a href="#recommendations" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-star"></i></div>
+          <span>Recommendations</span>
+        </a>
+        <a href="#certifications" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-certificate"></i></div>
+          <span>Certifications</span>
         </a>
         <a href="#blog" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-rss"></i></div>
@@ -230,38 +248,56 @@
       </div>
     </div>
   </div>
-  </div>
   <main id="main-content">
     <!-- Home Section -->
-    <section id="home" class="py-32 home-hero">
+    <section id="home" class="hero-section hero-hero">
       <div class="container-fluid">
-        <div class="max-w-4xl mx-auto text-center">
-          <!-- Profile Image -->
-          <div class="mb-12">
-            <div class="profile-image-wrapper mx-auto mb-8">
-              <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" fetchpriority="high"
-                loading="eager" />
-              <div class="profile-ring"></div>
+        <div class="max-w-5xl mx-auto text-center">
+          <div class="hero-layout-wrapper">
+            <div class="hero-image-block mb-20">
+              <div class="profile-image-wrapper mx-auto">
+                <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" width="320" height="320"
+                  fetchpriority="high" loading="eager" decoding="async" />
+                <div class="profile-ring"></div>
+              </div>
+            </div>
+
+            <div class="hero-text-block home-hero-text">
+              <div class="hero-header mb-12">
+                <h2 class="hero-name">Mangesh Raut</h2>
+                <h1 class="hero-title">Software Development Engineer</h1>
+
+                <!-- Vibe Coder Badge -->
+                <div class="vibe-coder-badge-wrapper">
+                  <span class="vibe-coder-badge">
+                    <i class="fas fa-bolt"></i>
+                    Vibe Coder
+                  </span>
+                </div>
+              </div>
+
+              <div class="hero-body mb-16">
+                <p class="hero-description mx-auto max-w-3xl">
+                  Building scalable, production-ready software that solves real business problems.
+                  Focused on clean architecture, strong performance, and seamless user experience.
+                </p>
+              </div>
+
+              <div class="hero-footer">
+                <div class="hero-actions">
+                  <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="btn hero-cta"
+                    aria-label="Download Resume">
+                    <i class="fas fa-download mr-2"></i>
+                    Download Resume
+                  </a>
+                  <a href="#projects" class="btn hero-cta" aria-label="View Projects">
+                    <i class="fas fa-rocket mr-2"></i>
+                    View Projects
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-
-          <!-- Name and Title -->
-          <h2 class="hero-name">Mangesh Raut</h2>
-          <h1 class="hero-title" style="font-size: 1.75rem !important; font-weight: 600 !important;">Software Developer
-            Engineer</h1>
-
-          <!-- Description -->
-          <p class="hero-description mx-auto mb-8 max-w-2xl">
-            Welcome! Explore my journey in crafting innovative software solutions with expertise in Full-Stack
-            Development, Cloud Technologies, and Machine Learning.
-          </p>
-
-          <!-- CTA Button -->
-          <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf"
-            class="btn btn-secondary hero-cta">
-            <i class="fas fa-download"></i>
-            Download Resume
-          </a>
         </div>
       </div>
     </section>
@@ -273,10 +309,10 @@
         <div class="about-content">
           <!-- Main Content -->
           <div class="about-main">
-            <div class="about-image-wrapper">
-              <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image"
-                loading="lazy" />
-              <div class="about-image-badge">
+            <div class="about-image-wrapper" data-parallax="scroll" data-parallax-speed="0.06" data-parallax-max="14">
+              <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="1200"
+                height="1200" loading="lazy" decoding="async" fetchpriority="low" />
+              <div class="about-image-badge" data-parallax="scroll" data-parallax-speed="0.03" data-parallax-max="8">
                 <i class="fas fa-graduation-cap"></i>
                 <span>MS in Computer Science</span>
               </div>
@@ -626,63 +662,44 @@
     <section id="projects" class="fade-in py-32">
       <div class="container">
         <h2>Latest Projects</h2>
+        <p class="section-subtitle">Curated open-source work from GitHub — real code, real impact.</p>
 
-        <!-- Projects Stats Dashboard -->
-        <div class="max-w-6xl mx-auto mb-12" id="projects-stats">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="stat-card group">
-              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-code"></i>
-              </div>
-              <div class="stat-value" id="stat-repos">--</div>
-              <div class="stat-label">Repositories</div>
+
+
+        <!-- GitHub Activity Overview -->
+        <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
+          <div class="activity-overview-inner">
+            <div class="activity-stat-item">
+              <span class="activity-stat-value" id="stat-repos">--</span>
+              <span class="activity-stat-label">Public Repos</span>
             </div>
-            <div class="stat-card group">
-              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-star"></i>
-              </div>
-              <div class="stat-value" id="stat-stars">--</div>
-              <div class="stat-label">Total Stars</div>
+            <div class="activity-stat-divider"></div>
+            <div class="activity-stat-item">
+              <span class="activity-stat-value" id="stat-stars">--</span>
+              <span class="activity-stat-label">Total Stars</span>
             </div>
-            <div class="stat-card group">
-              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-code-branch"></i>
-              </div>
-              <div class="stat-value" id="stat-forks">--</div>
-              <div class="stat-label">Total Forks</div>
+            <div class="activity-stat-divider"></div>
+            <div class="activity-stat-item">
+              <span class="activity-stat-value" id="stat-forks">--</span>
+              <span class="activity-stat-label">Total Forks</span>
             </div>
-            <div class="stat-card group">
-              <div class="stat-icon group-hover:scale-110 transition-transform duration-300">
-                <i class="fas fa-language"></i>
-              </div>
-              <div class="stat-value" id="stat-languages">--</div>
-              <div class="stat-label">Languages</div>
+            <div class="activity-stat-divider"></div>
+            <div class="activity-stat-item">
+              <span class="activity-stat-value" id="stat-languages">--</span>
+              <span class="activity-stat-label">Languages</span>
+            </div>
+            <div class="activity-overview-link">
+              <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
+                class="activity-github-link">
+                <i class="fab fa-github"></i>
+                <span>View Profile</span>
+                <i class="fas fa-arrow-up-right-from-square" style="font-size:0.7em;opacity:0.6"></i>
+              </a>
             </div>
           </div>
         </div>
 
-        <!-- Projects Search and Filter -->
-        <div class="proj-search-container">
-          <div class="proj-search-bar">
-            <div class="proj-input-group">
-              <span class="proj-search-icon-wrapper">
-                <i class="fas fa-search"></i>
-              </span>
-              <input type="text" id="project-search" class="proj-search-input" placeholder="Search projects..." />
-            </div>
-          </div>
-
-          <div class="proj-filter-group">
-            <select id="language-filter" class="proj-filter-select">
-              <option value="">All Languages</option>
-            </select>
-            <button id="sort-toggle" class="proj-sort-btn" title="Toggle sort order">
-              <span id="sort-text">Sort</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Projects Grid -->
+        <!-- Projects Grid — 8 curated projects, 2 rows -->
         <div class="max-w-6xl mx-auto">
           <div id="github-projects-container">
             <!-- Projects will be dynamically loaded here -->
@@ -695,15 +712,8 @@
           </div>
         </div>
 
-        <!-- View All Button -->
-        <div class="text-center mt-12">
-          <a href="https://github.com/mangeshraut712?tab=repositories" target="_blank" class="projects-view-all-btn"
-            rel="noopener noreferrer">
-            <i class="fab fa-github"></i>
-            <span>View All on GitHub</span>
-            <i class="fas fa-external-link-alt text-sm"></i>
-          </a>
-        </div>
+
+
       </div>
     </section>
 
@@ -855,8 +865,8 @@
                   Vol. 13, No. 3, (2020), pp. 3306-3313 • ISSN • Jun 15, 2020
                 </p>
               </div>
-              <a href="assets/files/RTFERS paper.pdf" target="_blank" class="publication-read-btn"
-                style="color: #fff !important; -webkit-text-fill-color: #fff !important;">
+              <a href="assets/files/RTFERS paper.pdf" target="_blank" rel="noopener noreferrer"
+                class="publication-read-btn" style="color: #fff !important; -webkit-text-fill-color: #fff !important;">
                 <i class="fas fa-file-pdf"></i>
                 Read paper
               </a>
@@ -950,7 +960,7 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h4 class="author-name">Stephen Fernands</h4>
+                <h3 class="author-name">Stephen Fernands</h3>
                 <p class="author-title">President</p>
                 <p class="author-company">Customized Energy Solutions</p>
               </div>
@@ -976,7 +986,7 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h4 class="author-name">Venkat Krishna</h4>
+                <h3 class="author-name">Venkat Krishna</h3>
                 <p class="author-title">Tech Lead</p>
                 <p class="author-company">IoasiZ</p>
               </div>
@@ -1000,7 +1010,7 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h4 class="author-name">Rakesh Kamble</h4>
+                <h3 class="author-name">Rakesh Kamble</h3>
                 <p class="author-title">Director</p>
                 <p class="author-company">Harshwardhan Enterprises</p>
               </div>
@@ -1024,7 +1034,7 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h4 class="author-name">Lavella Kirkland</h4>
+                <h3 class="author-name">Lavella Kirkland</h3>
                 <p class="author-title">Manager</p>
                 <p class="author-company">Aramark</p>
               </div>
@@ -1032,7 +1042,6 @@
           </article>
         </div>
 
-      </div>
       </div>
     </section>
     <!-- Certifications Section -->
@@ -1044,9 +1053,8 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/HackerRank_Icon-1000px.png/120px-HackerRank_Icon-1000px.png"
-                  class="certification-logo" alt="HackerRank">
+                <img src="assets/images/certifications/hackerrank.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="HackerRank">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Software Engineer</h3>
@@ -1063,9 +1071,8 @@
             <span class="certification-category">Marketing</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/80px-Apple_logo_black.svg.png"
-                  class="certification-logo" alt="Apple">
+                <img src="assets/images/certifications/apple.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="Apple">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Search Ads</h3>
@@ -1081,9 +1088,8 @@
             <span class="certification-category">AI</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/80px-Google_%22G%22_logo.svg.png"
-                  class="certification-logo" alt="Google">
+                <img src="assets/images/certifications/google.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="Google">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Prompt Design in Vertex AI</h3>
@@ -1099,9 +1105,8 @@
             <span class="certification-category">Data</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png"
-                  class="certification-logo" alt="IBM">
+                <img src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="IBM">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Data Fundamentals</h3>
@@ -1117,9 +1122,8 @@
             <span class="certification-category">Security</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png"
-                  class="certification-logo" alt="IBM">
+                <img src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="IBM">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Cybersecurity Fundamentals</h3>
@@ -1135,9 +1139,8 @@
             <span class="certification-category">Networking</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/200px-Cisco_logo_blue_2016.svg.png"
-                  class="certification-logo" alt="Cisco">
+                <img src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="Cisco">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Networking Basics</h3>
@@ -1154,9 +1157,8 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/150px-Microsoft_logo_%282012%29.svg.png"
-                  class="certification-logo" alt="Microsoft">
+                <img src="assets/images/certifications/microsoft.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="Microsoft">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">JavaScript Programming</h3>
@@ -1173,9 +1175,8 @@
             <span class="certification-category">Networking</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/200px-Cisco_logo_blue_2016.svg.png"
-                  class="certification-logo" alt="Cisco">
+                <img src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="Cisco">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">CCNP Certification</h3>
@@ -1192,9 +1193,8 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="https://spoken-tutorial.org/static/images/common/logo-spoken-tutorials.png"
-                  class="certification-logo" alt="Spoken Tutorial"
-                  onerror="this.src='https://ui-avatars.com/api/?name=ST&background=random'">
+                <img src="assets/images/profile-icon.png" class="certification-logo" width="40" height="40"
+                  loading="lazy" decoding="async" alt="Spoken Tutorial">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">C Language</h3>
@@ -1225,9 +1225,6 @@
         </div>
       </div>
     </section>
-
-
-
     <section id="contact" class="fade-in py-32">
       <div class="container">
         <h2>Get In Touch</h2>
@@ -1266,7 +1263,8 @@
                   <div class="contact-item">
                     <span class="contact-label">Phone</span>
                     <div class="contact-link-wrapper">
-                      <a href="https://wa.me/917276819090" target="_blank" class="contact-link-item">
+                      <a href="https://wa.me/917276819090" target="_blank" rel="noopener noreferrer"
+                        class="contact-link-item">
                         <div class="icon-box green">
                           <i class="fab fa-whatsapp"></i>
                         </div>
@@ -1286,14 +1284,14 @@
                     <span class="contact-label">Location</span>
                     <div class="contact-link-wrapper">
                       <a href="https://www.google.com/maps/place/Pune,+Maharashtra,+India" target="_blank"
-                        class="contact-link-item">
+                        rel="noopener noreferrer" class="contact-link-item">
                         <div class="icon-box purple">
                           <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <span class="link-text">Pune, MH, India 🇮🇳</span>
                       </a>
                       <a href="https://www.google.com/maps/place/Philadelphia,+PA,+USA" target="_blank"
-                        class="contact-link-item">
+                        rel="noopener noreferrer" class="contact-link-item">
                         <div class="icon-box purple">
                           <i class="fas fa-map-marker-alt"></i>
                         </div>
@@ -1331,25 +1329,21 @@
               </div>
 
               <!-- Follow Me -->
-              <div class="contact-section"
-                style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.05);">
+              <div class="contact-section follow-section">
                 <h3>Follow Me</h3>
                 <p class="contact-description">Connect with me on social media platforms.</p>
-                <!-- 2 lines of space before social icons -->
-                <div style="height: 48px;"></div>
-                <ul class="wrapper justify-start pl-0 ml-0 gap-4 flex-wrap">
-                  <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" aria-label="Facebook">
-                    <li class="icon facebook">
+                <ul class="wrapper contact-social-wrapper justify-start pl-0 ml-0 gap-4 flex-wrap">
+                  <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
+                      rel="noopener noreferrer" aria-label="Facebook">
                       <span class="tooltip">Facebook</span>
                       <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
                         </path>
                       </svg>
-                    </li>
-                  </a>
-                  <a href="https://github.com/mangeshraut712" target="_blank" aria-label="Github">
-                    <li class="icon github">
+                    </a></li>
+                  <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
+                      rel="noopener noreferrer" aria-label="Github">
                       <span class="tooltip">Github</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1357,10 +1351,9 @@
                         <path
                           d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
                       </svg>
-                    </li>
-                  </a>
-                  <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" aria-label="Instagram">
-                    <li class="icon instagram">
+                    </a></li>
+                  <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank"
+                      rel="noopener noreferrer" aria-label="Instagram">
                       <span class="tooltip">Instagram</span>
                       <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram"
                         viewBox="0 0 16 16">
@@ -1368,10 +1361,9 @@
                           d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
                         </path>
                       </svg>
-                    </li>
-                  </a>
-                  <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" aria-label="Linkedin">
-                    <li class="icon linkedin">
+                    </a></li>
+                  <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
+                      rel="noopener noreferrer" aria-label="Linkedin">
                       <span class="tooltip">Linkedin</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1382,19 +1374,17 @@
                         <path d="M12 16l0 -5" />
                         <path d="M16 16v-3a2 2 0 0 0 -4 0" />
                       </svg>
-                    </li>
-                  </a>
-                  <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" aria-label="YouTube">
-                    <li class="icon youtube">
+                    </a></li>
+                  <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank"
+                      rel="noopener noreferrer" aria-label="YouTube">
                       <span class="tooltip">YouTube</span>
                       <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512">
                         <path
                           d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
                       </svg>
-                    </li>
-                  </a>
-                  <a href="https://x.com/mrcommando712" target="_blank" aria-label="X">
-                    <li class="icon x">
+                    </a></li>
+                  <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"
+                      aria-label="X">
                       <span class="tooltip">X</span>
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1402,17 +1392,15 @@
                         <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
                         <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
                       </svg>
-                    </li>
-                  </a>
-                  <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" aria-label="LeetCode">
-                    <li class="icon leetcode">
+                    </a></li>
+                  <li class="icon leetcode"><a href="https://leetcode.com/u/mangeshraut712/" target="_blank"
+                      rel="noopener noreferrer" aria-label="LeetCode">
                       <span class="tooltip">LeetCode</span>
                       <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
                         <path
                           d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
                       </svg>
-                    </li>
-                  </a>
+                    </a></li>
                 </ul>
               </div>
 
@@ -1423,53 +1411,69 @@
                   <div class="dream-companies-track">
                     <!-- First set -->
                     <div class="dream-company-item" title="Apple">
-                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo">
+                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Google">
-                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo">
+                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
-                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo">
+                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Amazon">
-                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo">
+                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Meta">
-                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo">
+                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Tesla">
-                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo">
+                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Netflix">
-                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo">
+                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Adobe">
-                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo">
+                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <!-- Duplicate set for seamless scroll -->
                     <div class="dream-company-item" title="Apple">
-                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo">
+                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Google">
-                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo">
+                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
-                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo">
+                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Amazon">
-                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo">
+                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Meta">
-                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo">
+                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Tesla">
-                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo">
+                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Netflix">
-                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo">
+                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Adobe">
-                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo">
+                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                   </div>
                 </div>
@@ -1482,65 +1486,85 @@
                   <div class="dream-cars-track">
                     <!-- First set -->
                     <div class="dream-car-item" title="Mercedes-Benz">
-                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo">
+                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="BMW">
-                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo">
+                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Audi">
-                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo">
+                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Rolls-Royce">
-                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo">
+                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Porsche">
-                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo">
+                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Lexus">
-                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo">
+                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Land Rover">
-                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo">
+                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Bentley">
-                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo">
+                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Jaguar">
-                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo">
+                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Aston Martin">
-                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo">
+                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
+                        height="85" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <!-- Duplicate set for seamless scroll -->
                     <div class="dream-car-item" title="Mercedes-Benz">
-                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo">
+                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="BMW">
-                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo">
+                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Audi">
-                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo">
+                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Rolls-Royce">
-                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo">
+                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Porsche">
-                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo">
+                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Lexus">
-                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo">
+                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Land Rover">
-                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo">
+                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Bentley">
-                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo">
+                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Jaguar">
-                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo">
+                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Aston Martin">
-                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo">
+                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
+                        height="85" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                   </div>
                 </div>
@@ -1551,31 +1575,27 @@
           <!-- Column 2: Send a Message + Calendar (Two Separate Cards) -->
           <div class="contact-column">
             <!-- Contact via AssistMe Card -->
-            <div class="contact-card contact-assistme-card"
-              style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4rem 2rem;">
-              <div class="icon-box blue"
-                style="width: 80px; height: 80px; border-radius: 50%; font-size: 2.5rem; margin-bottom: 2rem;">
+            <div class="contact-card contact-assistme-card">
+              <div class="icon-box blue contact-assistme-icon">
                 <i class="fas fa-robot"></i>
               </div>
-              <h3 style="font-size: 2rem; margin-bottom: 1rem;">Let's Talk!</h3>
-              <p class="contact-description"
-                style="max-width: 400px; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6;">
-                Static forms are a thing of the past. Share your hiring needs or project scope directly with my AI
-                Assistant for an instant, intelligent interaction.
+              <h3>Let's Talk!</h3>
+              <p class="contact-description">
+                Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
               </p>
-              <button id="contact-chatbot-cta" type="button" class="btn" style="padding: 16px 32px; font-size: 1.1rem;">
-                <i class="fas fa-message" style="margin-right: 12px;"></i>
+              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
+                <i class="fas fa-message"></i>
                 Open AssistMe Flow
               </button>
+              <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
             </div>
 
             <!-- Calendar & Reminders Widget -->
-            <div class="calendar-wrapper-clean" style="width: 100%;">
+            <div class="calendar-wrapper-clean">
               <div id="calendar-widget"></div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </section>
 
@@ -1666,18 +1686,17 @@
         <!-- Social Icons First (Centered) -->
         <div class="flex justify-center mb-6">
           <ul class="wrapper">
-            <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" aria-label="Facebook">
-              <li class="icon facebook">
+            <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
+                rel="noopener noreferrer" aria-label="Facebook">
                 <span class="tooltip">Facebook</span>
                 <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
                   </path>
                 </svg>
-              </li>
-            </a>
-            <a href="https://github.com/mangeshraut712" target="_blank" aria-label="Github">
-              <li class="icon github">
+              </a></li>
+            <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
+                rel="noopener noreferrer" aria-label="Github">
                 <span class="tooltip">Github</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1685,10 +1704,9 @@
                   <path
                     d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
                 </svg>
-              </li>
-            </a>
-            <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" aria-label="Instagram">
-              <li class="icon instagram">
+              </a></li>
+            <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank"
+                rel="noopener noreferrer" aria-label="Instagram">
                 <span class="tooltip">Instagram</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram"
                   viewBox="0 0 16 16">
@@ -1696,10 +1714,9 @@
                     d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
                   </path>
                 </svg>
-              </li>
-            </a>
-            <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" aria-label="Linkedin">
-              <li class="icon linkedin">
+              </a></li>
+            <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
+                rel="noopener noreferrer" aria-label="Linkedin">
                 <span class="tooltip">Linkedin</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1710,19 +1727,17 @@
                   <path d="M12 16l0 -5" />
                   <path d="M16 16v-3a2 2 0 0 0 -4 0" />
                 </svg>
-              </li>
-            </a>
-            <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" aria-label="YouTube">
-              <li class="icon youtube">
+              </a></li>
+            <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank"
+                rel="noopener noreferrer" aria-label="YouTube">
                 <span class="tooltip">YouTube</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512">
                   <path
                     d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
                 </svg>
-              </li>
-            </a>
-            <a href="https://x.com/mrcommando712" target="_blank" aria-label="X">
-              <li class="icon x">
+              </a></li>
+            <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"
+                aria-label="X">
                 <span class="tooltip">X</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1730,25 +1745,22 @@
                   <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
                   <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
                 </svg>
-              </li>
-            </a>
-            <a href="https://leetcode.com/u/mangeshraut712/" target="_blank" aria-label="LeetCode">
-              <li class="icon leetcode">
+              </a></li>
+            <li class="icon leetcode"><a href="https://leetcode.com/u/mangeshraut712/" target="_blank"
+                rel="noopener noreferrer" aria-label="LeetCode">
                 <span class="tooltip">LeetCode</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
                   <path
                     d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
                 </svg>
-              </li>
-            </a>
+              </a></li>
           </ul>
         </div>
 
         <!-- Copyright Below (Centered) -->
         <div class="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
-          <p class="text-black dark:text-white text-sm">&copy; <span id="current-year"></span> Mangesh Raut. All rights
+          <p class="footer-copy text-sm">&copy; <span id="current-year"></span> Mangesh Raut. All rights
             reserved.</p>
-          <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
         </div>
       </div>
     </footer>
@@ -1801,11 +1813,11 @@
       <div class="chatbot-input-container">
         <form id="chatbot-form">
           <div class="input-wrapper">
-            <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn">
+            <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn" aria-label="Use voice input">
               <i class="fas fa-microphone"></i>
             </button>
             <textarea id="chatbot-input" placeholder="Ask anything..." rows="1" autocomplete="off"></textarea>
-            <button type="submit" class="chatbot-send-btn">
+            <button type="submit" class="chatbot-send-btn" aria-label="Send message">
               <i class="fas fa-arrow-up"></i>
             </button>
           </div>
@@ -1817,263 +1829,8 @@
     <script type="module" src="js/utils/smart-navbar.js"></script>
     <script src="js/utils/theme.js"></script>
     <script src="js/utils/go-to-top.js"></script>
-    <script type="module">
-      import { initOverlayMenu, initOverlayNavigation } from './js/modules/overlay.js';
-      initOverlayMenu();
-      initOverlayNavigation({ offsetSelector: '.global-nav' });
-    </script>
-    <script type="module" src="js/modules/contact.js"></script>
-
-    <!-- Apple Intelligence Chatbot - Clean Implementation -->
-    <script type="module" src="js/modules/chatbot.js?v=20260119-v2"></script>
-    <script type="module" src="js/core/script.js?v=20260119-v2"></script>
-
-    <!-- GitHub Projects Dynamic Loader -->
-    <script type="module" src="js/modules/github-projects.js"></script>
-
-    <!-- Skills Visualization Module -->
-    <script type="module" src="js/modules/skills-visualization.js"></script>
-
-    <!-- Debug Runner Game Module - Easter Egg Game -->
-    <script type="module" src="js/modules/debug-runner.js"></script>
-
-    <!-- Performance-Optimized Scroll Animations -->
+    <script type="module" src="js/core/bootstrap.js"></script>
     <script src="js/modules/scroll-animations.js"></script>
-
-    <!-- 🎉 Birthday Celebration Module -->
-    <script type="module" src="js/modules/birthday-celebration.js"></script>
-
-    <!-- Global Error Handler -->
-    <script>
-      // Global error hand unhandled errors
-      window.addEventListener('error', function (event) {
-        console.error('🚨 Global Error Caught:', {
-          message: event.message,
-          filename: event.filename,
-          lineno: event.lineno,
-          colno: event.colno,
-          error: event.error
-        });
-
-        // Prevent default error handling to avoid console spam
-        // but still log for debugging
-        return false;
-      });
-
-      // Handle unhandled promise rejections
-      window.addEventListener('unhandledrejection', function (event) {
-        console.error('🚨 Unhandled Promise Rejection:', {
-          reason: event.reason,
-          promise: event.promise
-        });
-
-        // Prevent default to avoid console spam
-        event.preventDefault();
-      });
-
-      // Log successful initialization
-      console.log('✅ Global error handlers initialized');
-    </script>
-
-    <!-- Blog Loader Module -->
-    <script type="module" src="js/modules/blog-loader.js"></script>
-
-    <!-- Calendar Module -->
-    <script type="module" src="js/modules/calendar.js"></script>
-
-    <!-- Advanced Animations Module -->
-
-    <!-- Animations disabled for performance -->
-    <script type="module">
-      document.addEventListener('DOMContentLoaded', async () => {
-        // Initialize Skills Visualization
-        const skillsViz = new SkillsVisualization();
-        skillsViz.render('skills-container');
-
-        // Initialize GitHub Projects
-        const githubProjects = new GitHubProjects('mangeshraut712');
-
-        // Load and render projects (all 8 curated projects)
-        await githubProjects.renderProjects('github-projects-container', 8);
-
-        // Update stats
-        const stats = await githubProjects.getStats();
-        document.getElementById('stat-repos').textContent = stats.totalRepos;
-        document.getElementById('stat-stars').textContent = stats.totalStars;
-        document.getElementById('stat-forks').textContent = stats.totalForks;
-        document.getElementById('stat-languages').textContent = Object.keys(stats.languages).length;
-
-        // Populate language filter
-        const languageFilter = document.getElementById('language-filter');
-        Object.keys(stats.languages)
-          .sort()
-          .forEach(lang => {
-            const option = document.createElement('option');
-            option.value = lang;
-            option.textContent = `${lang} (${stats.languages[lang]})`;
-            languageFilter.appendChild(option);
-          });
-
-        // Search functionality
-        const searchInput = document.getElementById('project-search');
-        const container = document.getElementById('github-projects-container');
-        let allProjects = [];
-
-        // Store all projects for filtering
-        const repos = await githubProjects.fetchRepositories();
-        allProjects = repos;
-
-        // Search handler
-        searchInput.addEventListener('input', (e) => {
-          const searchTerm = e.target.value.toLowerCase();
-          const selectedLang = languageFilter.value;
-
-          const filtered = allProjects.filter(repo => {
-            const matchesSearch = repo.name.toLowerCase().includes(searchTerm) ||
-              (repo.description && repo.description.toLowerCase().includes(searchTerm));
-            const matchesLang = !selectedLang || repo.language === selectedLang;
-            return matchesSearch && matchesLang;
-          });
-
-          renderFilteredProjects(filtered);
-        });
-
-        // Language filter handler
-        languageFilter.addEventListener('change', () => {
-          searchInput.dispatchEvent(new Event('input'));
-        });
-
-        // Sort toggle
-        let sortAscending = false;
-        const sortToggle = document.getElementById('sort-toggle');
-        const sortText = document.getElementById('sort-text');
-
-        // Add icon if missing
-        if (!sortToggle.querySelector('i')) {
-          const icon = document.createElement('i');
-          icon.className = 'fas fa-sort-amount-down';
-          sortToggle.insertBefore(icon, sortText);
-        }
-
-        sortToggle.addEventListener('click', () => {
-          sortAscending = !sortAscending;
-
-          // Update Icon
-          const icon = sortToggle.querySelector('i');
-          if (icon) {
-            icon.className = sortAscending ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down';
-          }
-
-          const sorted = [...allProjects].sort((a, b) => {
-            const dateA = new Date(a.updated_at);
-            const dateB = new Date(b.updated_at);
-            return sortAscending ? dateA - dateB : dateB - dateA;
-          });
-          allProjects = sorted;
-          searchInput.dispatchEvent(new Event('input'));
-        });
-
-        function renderFilteredProjects(projects) {
-          if (projects.length === 0) {
-            container.innerHTML = `
-              <div class="col-span-full text-center py-12">
-                <i class="fas fa-search text-6xl text-accent opacity-20 mb-4"></i>
-                <p class="text-secondary">No projects found matching your criteria</p>
-              </div>
-            `;
-            return;
-          }
-
-          const projectsHTML = projects
-            .slice(0, 12)
-            .map((repo, index) => githubProjects.createProjectCard(repo, index))
-            .join('');
-
-          container.innerHTML = projectsHTML;
-
-          // Trigger animations if available
-          if (window.initAnimations) {
-            window.initAnimations();
-          }
-        }
-      });
-    </script>
-
-    <!-- Search Functionality -->
-    <script src="js/modules/search.js" type="module"></script>
-
-    <!-- Chatbot Upgrade Dependencies -->
-    <!-- Marked.js already loaded in head with defer -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-
-    <!-- Chatbot Upgrade Module -->
-
-
-
-
-    <!-- 🚀 Enhancements - Agentic AI, 3D Background, Accessibility -->
-    <script type="module" src="js/modules/agentic-actions.js"></script>
-    <script type="module" src="js/modules/3d-background.js"></script>
-    <script type="module" src="js/modules/accessibility.js"></script>
-    <script type="module" src="js/modules/premium-enhancements.js"></script>
-
-    <script>
-      // Log enhancements during startup.
-      console.log('✨ Agentic AI Actions: Enabled');
-      console.log('🎨 3D Interactive Background: Enabled');
-      console.log('♿ Accessibility Features: Enabled');
-
-      // Register Service Worker for PWA
-      if ('serviceWorker' in navigator) {
-        const host = window.location.hostname;
-        const disableSW = /no-sw=1/.test(window.location.search);
-        const isLocal = host === 'localhost' || host === '127.0.0.1';
-
-        // Unregister all service workers on localhost
-        if (isLocal) {
-          navigator.serviceWorker.getRegistrations().then(registrations => {
-            registrations.forEach(registration => {
-              registration.unregister();
-              console.log('🗑️ ServiceWorker unregistered for local development');
-            });
-          });
-
-          // Clear all caches
-          if ('caches' in window) {
-            caches.keys().then(cacheNames => {
-              cacheNames.forEach(cacheName => {
-                caches.delete(cacheName);
-                console.log('🗑️ Cache cleared:', cacheName);
-              });
-            });
-          }
-
-          console.log('ℹ️ ServiceWorker disabled for local development. Add ?no-sw=0 to force register.');
-        } else {
-          const shouldRegister = !disableSW;
-
-          if (shouldRegister) {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register('service-worker.js')
-                .then(registration => {
-                  console.log('✅ ServiceWorker registration successful with scope: ', registration.scope);
-                  registration.update().catch(() => { });
-                })
-                .catch(err => {
-                  console.log('❌ ServiceWorker registration failed: ', err);
-                });
-            });
-          }
-        }
-      }
-    </script>
 </body>
 
 </html>

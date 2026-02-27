@@ -434,14 +434,19 @@ export class CursorFollower3D {
 
 // Auto-initialize on DOM ready
 if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', () => {
-        // Only initialize on desktop (not mobile)
-        if (window.innerWidth > 768) {
+    const init3DBackground = () => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const lowPowerDevice = (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+            (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+
+        // Only initialize on desktop where motion effects are acceptable
+        if (window.innerWidth > 768 && !prefersReducedMotion) {
             const background3D = new Interactive3DBackground({
-                particleCount: 80,
+                particleCount: lowPowerDevice ? 36 : 64,
                 particleSize: 2,
-                connectionDistance: 120,
-                mouseInfluence: 100
+                connectionDistance: lowPowerDevice ? 90 : 120,
+                mouseInfluence: lowPowerDevice ? 70 : 100,
+                enableConnections: !lowPowerDevice
             });
             background3D.init();
 
@@ -452,7 +457,13 @@ if (typeof window !== 'undefined') {
             // Make available globally for debugging
             window.background3D = background3D;
         }
-    });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init3DBackground);
+    } else {
+        init3DBackground();
+    }
 }
 
 export default Interactive3DBackground;

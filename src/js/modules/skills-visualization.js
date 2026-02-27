@@ -166,8 +166,14 @@ if (typeof module !== 'undefined' && module.exports) {
 window.SkillsVisualization = SkillsVisualization;
 
 // Auto-initialize if container exists
-document.addEventListener('DOMContentLoaded', () => {
+const initSkillsVisualization = () => {
   if (document.getElementById('skills-container')) {
     new SkillsVisualization().render('skills-container');
   }
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSkillsVisualization);
+} else {
+  initSkillsVisualization();
+}

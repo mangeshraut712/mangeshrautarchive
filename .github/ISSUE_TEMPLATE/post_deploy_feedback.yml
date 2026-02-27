@@ -1,0 +1,85 @@
+name: Post-Deploy Feedback
+about: Report production bugs, usability issues, or regressions after release
+labels: [post-deploy, feedback]
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feedback category
+      options:
+        - Bug
+        - Usability
+        - Performance
+        - Accessibility
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Sev-1 (outage/security/data loss)
+        - Sev-2 (critical feature broken)
+        - Sev-3 (non-blocking issue)
+    validations:
+      required: true
+
+  - type: input
+    id: release_sha
+    attributes:
+      label: Release commit SHA
+      description: Commit currently deployed when the issue was observed
+      placeholder: e.g. a1b2c3d
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Clear description of the observed behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include exact path and user actions
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser version
+      placeholder: e.g. Chrome 145.0.7632.117
+    validations:
+      required: true
+
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Attach screenshots, logs, and links to CI artifacts if available

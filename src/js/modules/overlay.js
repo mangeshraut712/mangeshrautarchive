@@ -25,6 +25,7 @@ export function initOverlayMenu(options = {}) {
         if (body.classList.contains('menu-open')) return;
         body.classList.add('menu-open');
         overlayMenu.setAttribute('aria-hidden', 'false');
+        overlayMenu.removeAttribute('inert');
         menuToggle.setAttribute('aria-expanded', 'true');
     };
 
@@ -32,6 +33,7 @@ export function initOverlayMenu(options = {}) {
         if (!body.classList.contains('menu-open')) return;
         body.classList.remove('menu-open');
         overlayMenu.setAttribute('aria-hidden', 'true');
+        overlayMenu.setAttribute('inert', '');
         menuToggle.setAttribute('aria-expanded', 'false');
         if (typeof menuToggle.focus === 'function') {
             menuToggle.focus();
@@ -77,6 +79,9 @@ export function initOverlayNavigation(options = {}) {
     const body = documentRef.body;
 
     links.forEach((link) => {
+        if (link.dataset.overlayNavBound === 'true') return;
+        link.dataset.overlayNavBound = 'true';
+
         link.addEventListener('click', (event) => {
             const href = link.getAttribute('href');
             if (!href || !href.startsWith('#')) return;
@@ -91,6 +96,7 @@ export function initOverlayNavigation(options = {}) {
             const overlayMenu = documentRef.getElementById('overlay-menu');
             if (overlayMenu) {
                 overlayMenu.setAttribute('aria-hidden', 'true');
+                overlayMenu.setAttribute('inert', '');
             }
             const menuToggle = documentRef.getElementById('menu-btn');
             if (menuToggle) {
@@ -118,6 +124,9 @@ export function initSmoothScroll(selector = 'a[href^="#"]', options = {}) {
     if (!links.length) return;
 
     links.forEach((link) => {
+        if (link.dataset.smoothScrollBound === 'true') return;
+        link.dataset.smoothScrollBound = 'true';
+
         link.addEventListener('click', (event) => {
             const href = link.getAttribute('href');
             if (!href || href === '#') return;

@@ -37,8 +37,7 @@ class PortfolioSearch {
     indexContent() {
         // Index all searchable content from the page
         const sections = [
-            // Projects render as education-card via GitHub module
-            { selector: '[id="projects"] .education-card', type: 'Project', icon: 'fa-code' },
+            { selector: '[id="projects"] .project-card, [id="projects"] .education-card', type: 'Project', icon: 'fa-code' },
             { selector: '[id="skills"] .skill-card', type: 'Skill', icon: 'fa-laptop-code' },
             { selector: '[id="experience"] .timeline-item', type: 'Experience', icon: 'fa-briefcase' },
             { selector: '[id="education"] .education-card', type: 'Education', icon: 'fa-graduation-cap' },
@@ -55,23 +54,27 @@ class PortfolioSearch {
                 const description = Array.from(element.querySelectorAll('p')).map(p => p.textContent).join(' ') || '';
 
                 // Generic tags
-                let tags = Array.from(element.querySelectorAll('.tag, .skill-tag, .tech-tag'))
+                let tags = Array.from(element.querySelectorAll('.tag, .skill-tag, .tech-tag, .project-tag'))
                     .map(tag => tag.textContent)
                     .join(' ');
 
                 // Specific handling for GitHub Projects (dynamic content)
                 if (type === 'Project') {
-                    // Extract topics (they have rounded-full and border classes)
-                    const topics = Array.from(element.querySelectorAll('span.rounded-full.border'))
+                    // Extract topics from both legacy and current card styles.
+                    const topics = Array.from(element.querySelectorAll('span.rounded-full.border, .project-tag'))
                         .map(t => t.textContent.trim());
 
                     // Extract language (usually next to a colored dot)
                     // We look for the text content in the language section
-                    const languageContainer = element.querySelector('.flex.items-center.gap-3');
-                    if (languageContainer) {
+                    const languageCandidates = [
+                        element.querySelector('.project-language'),
+                        element.querySelector('.flex.items-center.gap-3')
+                    ];
+                    languageCandidates.forEach((languageContainer) => {
+                        if (!languageContainer) return;
                         const langText = languageContainer.textContent.trim();
                         if (langText) topics.push(langText);
-                    }
+                    });
 
                     if (topics.length > 0) {
                         tags += ' ' + topics.join(' ');

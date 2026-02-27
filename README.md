@@ -26,6 +26,7 @@
 - [Tech Stack](#️-tech-stack)
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
+- [Project Analysis](#-project-analysis-cross-checked-february-26-2026)
 - [Scripts](#-available-scripts)
 - [Performance](#-performance)
 - [Contributing](#-contributing)
@@ -78,7 +79,7 @@ The centerpiece of this portfolio is **AssistMe**, an AI-powered chatbot that go
 - **🛡️ Privacy Dashboard** — Complete control over your conversation data
 - **📴 Offline Mode** — Smart fallback responses when the API is unavailable
 
-**Technology:** Powered by Grok 4.1 Fast (primary) and Gemini 2.0 Flash (fallback)
+**Technology:** OpenRouter-backed multi-model chat (default: Grok 4.1 Fast), with configurable model selection and local fallback responses when remote AI is unavailable.
 
 </details>
 
@@ -115,7 +116,8 @@ Real-time project showcase that automatically stays current:
 - 📈 **Live Statistics** — Real-time star counts, fork counts, and primary languages
 - 🎨 **Beautiful Cards** — Glassmorphism design with smooth hover animations
 - 🔖 **Dynamic Tags** — Topic badges automatically pulled from repository metadata
-- ⚡ **Intelligent Caching** — 5-minute cache prevents API rate limiting
+- ⚡ **Intelligent Caching** — 10-minute client + server cache window to reduce API pressure
+- 🛡️ **Backend Proxy First** — Uses `/api/github/repos/public` first, then direct GitHub API fallback
 
 **Implementation:** Custom JavaScript module with GitHub REST API integration
 
@@ -186,8 +188,9 @@ Real-time project showcase that automatically stays current:
 
 ### AI & Intelligence
 
-![OpenAI](https://img.shields.io/badge/Grok_4.1-412991?style=for-the-badge&logo=openai&logoColor=white)
-![Google](https://img.shields.io/badge/Gemini_2.0-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![OpenRouter](https://img.shields.io/badge/OpenRouter-Multi--Model-0EA5E9?style=for-the-badge)
+![xAI](https://img.shields.io/badge/xAI-Grok_4.1_Fast-111111?style=for-the-badge)
+![Anthropic](https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge)
 
 ### DevOps & Tools
 
@@ -203,7 +206,7 @@ Real-time project showcase that automatically stays current:
 ```
 ├── HTML5 — Semantic markup with SEO optimization
 ├── CSS3 — 30+ modular stylesheets (108KB core styles)
-├── JavaScript ES2024+ — 27 modular files (core + features)
+├── JavaScript ES2024+ — 34 modular files (core + modules + services + components)
 ├── Tailwind CSS 4.x — Utility-first styling system
 ├── Prism.js — Syntax highlighting for code blocks
 ├── Font Awesome 6.x — Comprehensive icon library
@@ -223,10 +226,10 @@ Real-time project showcase that automatically stays current:
 **AI Integration:**
 ```
 ├── OpenRouter API — Multi-model AI gateway
-├── Grok 4.1 Fast — Primary conversational AI (xAI)
-├── Gemini 2.0 Flash — Secondary AI model (Google)
+├── Default Model — x-ai/grok-4.1-fast (configurable via OPENROUTER_MODEL)
+├── Alternate Models — x-ai/grok-2-1212 and anthropic/claude-3.5-sonnet
 ├── Streaming NDJSON — Real-time response delivery
-└── Custom Memory Manager — Conversation context retention
+└── Local fallback + session memory — resilient behavior when API is unavailable
 ```
 
 [↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
@@ -295,6 +298,8 @@ npm run build:css
 
 ## 📂 Project Structure
 
+Detailed conventions live in [`docs/PROJECT_STRUCTURE.md`](docs/PROJECT_STRUCTURE.md).
+
 ```
 mangeshrautarchive/
 │
@@ -318,8 +323,9 @@ mangeshrautarchive/
 │   │   ├── 📁 images/               # Optimized images
 │   │   └── 📁 files/                # Downloadable resources (resume)
 │   │
-│   └── 📁 js/                       # JavaScript (27 files)
+│   └── 📁 js/                       # JavaScript (34 files)
 │       ├── 📁 core/                 # Core functionality
+│       │   ├── bootstrap.js          # Startup wiring (lazy modules, SW, project showcase init)
 │       │   ├── script.js             # Main orchestrator
 │       │   ├── chat.js               # AI integration
 │       │   ├── config.js             # Configuration
@@ -330,6 +336,9 @@ mangeshrautarchive/
 │       │   ├── debug-runner.js       # Canvas game engine
 │       │   ├── github-projects.js    # GitHub integration
 │       │   └── ...
+│       │
+│       ├── 📁 services/             # Shared services (streaming, voice, markdown, analytics)
+│       ├── 📁 components/           # UI building blocks (message, chips, typing indicator)
 │       │
 │       └── 📁 utils/                # Utility functions
 │
@@ -352,6 +361,30 @@ mangeshrautarchive/
 
 ---
 
+## 🔍 Project Analysis (Cross-Checked: February 26, 2026)
+
+### What was cross-checked
+- `README.md` claims vs. live implementation in `src/js/modules/chatbot.js`, `src/js/core/chat.js`, `src/js/modules/github-projects.js`, and `api/index.py`
+- AI model configuration, streaming behavior, fallback mode, module structure counts, and GitHub cache strategy
+
+### Current architecture findings
+- Chat stack is **hybrid and resilient**: frontend streams chunks, backend supports multi-model OpenRouter calls, and local fallback is active when APIs fail.
+- Chatbot UX includes **follow-up chips**, **retry on failures**, **clear chat**, **voice input/output**, and **message metadata chips**.
+- GitHub integration is **proxy-first** with **10-minute caching** and direct API fallback.
+- Frontend JS structure includes explicit `components/` and `services/` layers in addition to core and modules.
+
+### Chatbot improvement status
+- ✅ Contextual follow-up suggestions after AI responses
+- ✅ Clear-chat reset from header controls
+- ✅ Retry action for failed responses
+- ✅ Unique typing indicator ID to avoid collisions
+- ✅ Focus management improvements for accessibility
+- ✅ Metadata visibility (model/source/runtime/token speed) per assistant message
+
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
+
+---
+
 ## 📜 Available Scripts
 
 | Command | Description |
@@ -363,9 +396,26 @@ mangeshrautarchive/
 | `npm run build:css` | 🎨 Compile Tailwind CSS |
 | `npm run lint` | 🔍 Run ESLint code quality checks |
 | `npm run lint:fix` | ✨ Auto-fix linting issues |
+| `npm run lint:css` | 🧹 Run Stylelint across CSS |
+| `npm run check` | ✅ Run JS lint + tests |
 | `npm test` | 🧪 Run Vitest test suite |
+| `npm run qa:smoke` | 🌐 Playwright smoke tests on Chrome |
+| `npm run qa:a11y` | ♿ Axe accessibility baseline on Chrome |
+| `npm run qa:lighthouse:desktop` | ⚡ Lighthouse desktop gate |
+| `npm run qa:lighthouse:mobile` | 📱 Lighthouse mobile gate |
+| `npm run qa:postdeploy` | 🧪 Smoke + a11y check against deployed URL (`PLAYWRIGHT_BASE_URL`) |
+| `npm run qa:chrome` | 🧭 Full Chrome QA gate (smoke + a11y + perf) |
+| `npm run qa:prod-ready` | 🛡️ Full pre-release gate |
 | `npm run optimize-images` | 🖼️ Optimize image assets |
 | `npm run security-check` | 🔒 Scan for exposed secrets |
+| `npm run audit:css-duplicates` | 🔎 Report duplicate CSS selectors |
+
+Chrome QA runbook and report template:
+- `docs/testing/CHROME_QA_RUNBOOK.md`
+- `docs/testing/CHROME_TEST_MATRIX.md`
+- `docs/testing/RELEASE_TEST_REPORT_TEMPLATE.md`
+- `docs/testing/POST_DEPLOYMENT_FEEDBACK_LOOP.md`
+- `docs/testing/README.md`
 
 [↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
@@ -448,7 +498,7 @@ You're free to use this code for your own portfolio, but please:
 [![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail)](mailto:mbr63@drexel.edu)
 
 **Current Position:** Software Engineer @ Customized Energy Solutions  
-**Education:** M.S. Computer Science @ Drexel University (Expected 2025)  
+**Education:** M.S. Computer Science @ Drexel University (Completed 2025)  
 **Location:** Philadelphia, PA, USA 🇺🇸
 
 </div>
