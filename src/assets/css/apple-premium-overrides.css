@@ -2127,14 +2127,16 @@ html.dark section h2 {
     margin-bottom: 2rem !important;
 }
 
-/* Grid Spacing Refinement - De-congestion Phase 2 */
+/* Grid Spacing Refinement - keep native grid/timeline layouts intact */
 .recommendations-grid,
 .awards-grid,
 .certifications-grid,
-.publications-grid,
-.education-timeline {
-    display: grid !important;
+.publications-grid {
     gap: clamp(1.5rem, 3vh, 2.5rem) !important;
+}
+
+.education-timeline {
+    display: block !important;
 }
 
 @media (min-width: 900px) {
