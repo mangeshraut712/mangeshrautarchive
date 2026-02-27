@@ -92,8 +92,8 @@ Primary checklist and critical cases are maintained in:
 - `npm run qa:prod-ready` passes
 - No unresolved Sev-1/Sev-2 defects
 - Lighthouse thresholds:
-  - Desktop: Perf >= 85, A11y/BP/SEO >= 95
-  - Mobile: Perf >= 55, A11y/BP/SEO >= 95
+  - Desktop: Perf/A11y/BP/SEO >= 90
+  - Mobile: Perf/A11y/BP/SEO >= 90
 
 ### Verification workflow
 

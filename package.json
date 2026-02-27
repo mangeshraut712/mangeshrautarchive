@@ -26,6 +26,7 @@
     "qa:prod-ready": "npm run security-check && npm run lint && npm test && npm run qa:chrome",
     "check": "npm run lint && npm run test",
     "audit:css-duplicates": "node scripts/find-css-duplicates.js",
+    "clean": "node scripts/clean.js",
     "open": "open src/index.html",
     "pre-commit": "npm run security-check && npm run lint"
   },

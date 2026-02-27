@@ -26,9 +26,9 @@
 - [Tech Stack](#️-tech-stack)
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
-- [Project Analysis](#-project-analysis-cross-checked-february-26-2026)
+- [Engineering Docs](#-engineering-docs)
 - [Scripts](#-available-scripts)
-- [Performance](#-performance)
+- [Quality Gates](#-quality--performance-gates)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Contact](#-connect-with-me)
@@ -255,7 +255,7 @@ git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
 
 # 2️⃣ Install Node.js dependencies
-npm install
+npm ci
 
 # 3️⃣ Install Python dependencies
 pip install -r requirements.txt
@@ -300,86 +300,49 @@ npm run build:css
 
 Detailed conventions live in [`docs/PROJECT_STRUCTURE.md`](docs/PROJECT_STRUCTURE.md).
 
-```
+```text
 mangeshrautarchive/
-│
-├── 📁 api/                          # Backend (Python/FastAPI)
-│   ├── index.py                      # Main API application
-│   ├── memory_manager.py             # Conversation memory system
-│   └── integrations/
-│       └── github_connector.py       # GitHub API wrapper
-│
-├── 📁 src/                          # Frontend Source
-│   ├── index.html                    # Main entry point (102KB)
-│   ├── manifest.json                 # PWA configuration
-│   ├── service-worker.js             # Offline support
-│   │
-│   ├── 📁 assets/
-│   │   ├── 📁 css/                  # Stylesheets (30 files)
-│   │   │   ├── style.css             # Core styles (108KB)
-│   │   │   ├── ai-assistant.css      # Chatbot UI (34KB)
-│   │   │   └── ...                   # Component-specific styles
-│   │   │
-│   │   ├── 📁 images/               # Optimized images
-│   │   └── 📁 files/                # Downloadable resources (resume)
-│   │
-│   └── 📁 js/                       # JavaScript (34 files)
-│       ├── 📁 core/                 # Core functionality
-│       │   ├── bootstrap.js          # Startup wiring (lazy modules, SW, project showcase init)
-│       │   ├── script.js             # Main orchestrator
-│       │   ├── chat.js               # AI integration
-│       │   ├── config.js             # Configuration
-│       │   └── ...
-│       │
-│       ├── 📁 modules/              # Feature modules (20 files)
-│       │   ├── chatbot.js            # AI assistant UI
-│       │   ├── debug-runner.js       # Canvas game engine
-│       │   ├── github-projects.js    # GitHub integration
-│       │   └── ...
-│       │
-│       ├── 📁 services/             # Shared services (streaming, voice, markdown, analytics)
-│       ├── 📁 components/           # UI building blocks (message, chips, typing indicator)
-│       │
-│       └── 📁 utils/                # Utility functions
-│
-├── 📁 scripts/                      # Build & Dev Scripts
-│   ├── build.js                      # Production build
-│   ├── local-server.js               # Dev server
-│   └── ...
-│
-├── 📁 .github/workflows/            # CI/CD
-│   └── deploy.yml                    # GitHub Pages deployment
-│
-├── 📄 package.json                   # Node.js dependencies
-├── 📄 requirements.txt               # Python dependencies
-├── 📄 Dockerfile                     # Container definition
-├── 📄 vercel.json                    # Vercel config
-└── 📄 README.md                      # You are here!
+├── api/                        # FastAPI backend + serverless handlers
+├── src/                        # Frontend source
+│   ├── assets/                 # CSS, images, icons, downloadable files
+│   └── js/
+│       ├── core/               # App bootstrap + orchestration
+│       ├── modules/            # Feature modules
+│       ├── services/           # Shared runtime services
+│       ├── components/         # Reusable UI components
+│       └── utils/              # Small focused helpers
+├── scripts/                    # Build/dev/QA/security scripts
+├── tests/e2e/                  # Playwright smoke + a11y + post-deploy checks
+├── docs/
+│   ├── README.md               # Documentation index
+│   ├── PROJECT_STRUCTURE.md    # Folder and ownership conventions
+│   └── testing/                # Chrome QA runbooks/templates
+├── .github/workflows/          # CI/CD and monitoring workflows
+├── package.json                # Node scripts/dependencies
+├── package-lock.json           # Reproducible npm installs (required by npm ci)
+├── .dockerignore               # Pruned Docker build context
+└── requirements.txt            # Python dependencies
 ```
+
+### Structure Rules
+
+- Keep startup wiring in `src/js/core/bootstrap.js`.
+- Add product behavior under `src/js/modules/*`.
+- Keep shared primitives in `src/js/services/*` and UI pieces in `src/js/components/*`.
+- Keep generated output (`dist/`, `artifacts/`, `test-results/`) out of commits.
 
 [↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
-## 🔍 Project Analysis (Cross-Checked: February 26, 2026)
+## 🧭 Engineering Docs
 
-### What was cross-checked
-- `README.md` claims vs. live implementation in `src/js/modules/chatbot.js`, `src/js/core/chat.js`, `src/js/modules/github-projects.js`, and `api/index.py`
-- AI model configuration, streaming behavior, fallback mode, module structure counts, and GitHub cache strategy
-
-### Current architecture findings
-- Chat stack is **hybrid and resilient**: frontend streams chunks, backend supports multi-model OpenRouter calls, and local fallback is active when APIs fail.
-- Chatbot UX includes **follow-up chips**, **retry on failures**, **clear chat**, **voice input/output**, and **message metadata chips**.
-- GitHub integration is **proxy-first** with **10-minute caching** and direct API fallback.
-- Frontend JS structure includes explicit `components/` and `services/` layers in addition to core and modules.
-
-### Chatbot improvement status
-- ✅ Contextual follow-up suggestions after AI responses
-- ✅ Clear-chat reset from header controls
-- ✅ Retry action for failed responses
-- ✅ Unique typing indicator ID to avoid collisions
-- ✅ Focus management improvements for accessibility
-- ✅ Metadata visibility (model/source/runtime/token speed) per assistant message
+- `docs/README.md` — Documentation index
+- `docs/PROJECT_STRUCTURE.md` — Source layout and ownership rules
+- `docs/testing/CHROME_QA_RUNBOOK.md` — Chrome environment + release verification flow
+- `docs/testing/CHROME_TEST_MATRIX.md` — Functional/perf/security/usability checklist
+- `docs/testing/RELEASE_TEST_REPORT_TEMPLATE.md` — Release sign-off template
+- `docs/testing/POST_DEPLOYMENT_FEEDBACK_LOOP.md` — Post-release intake + triage loop
 
 [↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
@@ -400,6 +363,7 @@ mangeshrautarchive/
 | `npm run check` | ✅ Run JS lint + tests |
 | `npm test` | 🧪 Run Vitest test suite |
 | `npm run qa:smoke` | 🌐 Playwright smoke tests on Chrome |
+| `npm run qa:smoke:mobile` | 📱 Playwright smoke tests on Mobile Chrome emulation |
 | `npm run qa:a11y` | ♿ Axe accessibility baseline on Chrome |
 | `npm run qa:lighthouse:desktop` | ⚡ Lighthouse desktop gate |
 | `npm run qa:lighthouse:mobile` | 📱 Lighthouse mobile gate |
@@ -408,7 +372,8 @@ mangeshrautarchive/
 | `npm run qa:prod-ready` | 🛡️ Full pre-release gate |
 | `npm run optimize-images` | 🖼️ Optimize image assets |
 | `npm run security-check` | 🔒 Scan for exposed secrets |
-| `npm run audit:css-duplicates` | 🔎 Report duplicate CSS selectors |
+| `npm run audit:css-duplicates` | 🔎 Report exact duplicate CSS rule blocks |
+| `npm run clean` | 🧽 Remove generated build/test artifacts and Python caches |
 
 Chrome QA runbook and report template:
 - `docs/testing/CHROME_QA_RUNBOOK.md`
@@ -421,22 +386,23 @@ Chrome QA runbook and report template:
 
 ---
 
-## ⚡ Performance
+## 🧪 Quality & Performance Gates
 
-<div align="center">
+Release readiness is validated by executable gates (not static README snapshots):
 
-### Lighthouse Scores
+- `npm run qa:smoke`
+- `npm run qa:a11y`
+- `npm run qa:lighthouse:desktop`
+- `npm run qa:lighthouse:mobile`
+- `npm run qa:chrome`
+- `npm run qa:prod-ready`
 
-| Metric | Score | Status |
-|--------|-------|--------|
-| **Performance** | 95+ | 🟢 Excellent |
-| **Accessibility** | 100 | 🟢 Perfect |
-| **Best Practices** | 100 | 🟢 Perfect |
-| **SEO** | 100 | 🟢 Perfect |
+Current configured Lighthouse release floor:
 
-</div>
+- Desktop: Perf/A11y/Best Practices/SEO `>= 90`
+- Mobile: Perf/A11y/Best Practices/SEO `>= 90`
 
-### Optimization Techniques
+### Performance Practices
 
 - ✅ **Lazy Loading** — Images and components load on-demand
 - ✅ **Code Splitting** — Modular JavaScript architecture

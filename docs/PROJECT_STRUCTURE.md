@@ -9,6 +9,7 @@ This repository is organized by runtime boundary first (backend vs frontend), th
 - `scripts/`: Build/dev/maintenance scripts.
 - `docs/`: Engineering documentation and contributor guides.
   - `docs/testing/`: Chrome QA runbooks, release checklists, and templates.
+- `.dockerignore`: Keeps Docker build context small for faster container builds.
 
 ## Frontend Layout (`src/`)
 
@@ -36,4 +37,5 @@ This repository is organized by runtime boundary first (backend vs frontend), th
 1. Run `npm run lint` before commit.
 2. Run `npm run lint:css` after CSS edits.
 3. Run `npm run build` after structural changes.
-4. Keep generated/local artifacts out of git (`.npmcache/`, `.npmrc`, local cache dirs).
+4. Run `npm run clean` periodically to clear generated artifacts.
+5. Keep generated/local artifacts out of git (`.npmcache/`, `.npmrc`, local cache dirs).

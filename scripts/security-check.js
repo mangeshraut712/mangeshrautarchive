@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { join, relative } from 'path';
+import { dirname, extname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,7 +10,6 @@ const PROJECT_ROOT = join(__dirname, '..');
 
 class SecurityChecker {
     constructor() {
-        // Patterns that indicate potentially exposed secrets
         this.secrets = [
             { pattern: /sk-[a-zA-Z0-9_]{20,}/g, name: 'OpenAI API Key' },
             { pattern: /xai-[a-zA-Z0-9]{40,}/g, name: 'Grok API Key' },
@@ -23,78 +21,155 @@ class SecurityChecker {
             { pattern: /ghp_[a-zA-Z0-9]{36}/g, name: 'GitHub Personal Access Token' }
         ];
 
-        // Files to always check
+        // High-risk files are checked first to fail fast.
         this.alwaysCheck = [
             'src/index.html',
-            'src/js/script.js',
-            'server.js'
+            'src/js/core/script.js',
+            'src/js/core/bootstrap.js',
+            'api/contact.js',
+            'api/index.py'
         ];
 
-        // Files to skip entirely
+        this.skipDirectories = new Set([
+            '.git',
+            'node_modules',
+            '.vscode',
+            '.next',
+            '.cursor',
+            '.npmcache',
+            'dist',
+            'build',
+            'coverage',
+            'artifacts',
+            'test-results',
+            'playwright-report',
+            '__pycache__',
+            'venv'
+        ]);
+
         this.skipFiles = new Set([
-            '.git/',
-            'node_modules/',
-            '.vscode/',
-            '.next/',
-            'dist/',
-            'build/',
             '.env',
             'API_KEYS.txt',
             'src/js/config.local.js',
             'config.local.js'
         ]);
+
+        this.maxFileSizeBytes = 2 * 1024 * 1024;
+        this.allowedExtensions = new Set([
+            '.cjs',
+            '.css',
+            '.env',
+            '.html',
+            '.js',
+            '.json',
+            '.jsx',
+            '.md',
+            '.mjs',
+            '.py',
+            '.sh',
+            '.ts',
+            '.tsx',
+            '.txt',
+            '.xml',
+            '.yaml',
+            '.yml'
+        ]);
+    }
+
+    toRelativePath(filePath) {
+        return relative(PROJECT_ROOT, filePath).replace(/\\/g, '/');
     }
 
     shouldSkipFile(filePath) {
-        const relativePath = relative(PROJECT_ROOT, filePath);
-        return this.skipFiles.has(relativePath) ||
-            this.skipFiles.has(relativePath.split('/')[0] + '/') ||
-            filePath.includes('.git/') ||
-            filePath.includes('node_modules/');
+        const relativePath = this.toRelativePath(filePath);
+        const firstPathSegment = relativePath.split('/')[0];
+
+        if (this.skipFiles.has(relativePath)) {
+            return true;
+        }
+
+        return this.skipDirectories.has(firstPathSegment);
+    }
+
+    shouldScanExtension(filePath) {
+        const extension = extname(filePath).toLowerCase();
+        // Scan extensionless files too.
+        return extension === '' || this.allowedExtensions.has(extension);
     }
 
     checkFile(filePath) {
         try {
+            if (!this.shouldScanExtension(filePath)) {
+                return [];
+            }
+
+            const fileStats = statSync(filePath);
+            if (fileStats.size > this.maxFileSizeBytes) {
+                return [];
+            }
+
             const content = readFileSync(filePath, 'utf8');
+            const lines = content.split(/\r?\n/);
             const found = [];
 
             for (const secret of this.secrets) {
-                const matches = content.match(secret.pattern);
-                if (matches) {
+                let matchesCount = 0;
+
+                for (const line of lines) {
+                    if (line.includes('REVOKED:')) {
+                        continue;
+                    }
+
+                    const matches = line.match(secret.pattern);
+                    if (matches) {
+                        matchesCount += matches.length;
+                    }
+                }
+
+                if (matchesCount > 0) {
                     found.push({
                         type: secret.name,
                         pattern: secret.pattern.source,
-                        matches: matches.length,
-                        file: relative(PROJECT_ROOT, filePath)
+                        matches: matchesCount,
+                        file: this.toRelativePath(filePath)
                     });
                 }
             }
 
             return found;
         } catch {
-            return null; // File couldn't be read
+            return null;
         }
     }
 
-    scanDirectory(dir, results = []) {
-        const items = readdirSync(dir);
+    scanDirectory(dir, results = [], scannedFiles = new Set()) {
+        const items = readdirSync(dir, { withFileTypes: true });
 
         for (const item of items) {
-            const fullPath = join(dir, item);
+            const fullPath = join(dir, item.name);
 
             if (this.shouldSkipFile(fullPath)) {
                 continue;
             }
 
-            const stat = statSync(fullPath);
+            if (item.isDirectory()) {
+                this.scanDirectory(fullPath, results, scannedFiles);
+                continue;
+            }
 
-            if (stat.isDirectory()) {
-                this.scanDirectory(fullPath, results);
-            } else if (stat.isFile()) {
-                const findings = this.checkFile(fullPath);
-                if (findings && findings.length > 0) {
-                    results.push(...findings);
-                }
+            if (!item.isFile()) {
+                continue;
+            }
+
+            const relativePath = this.toRelativePath(fullPath);
+            if (scannedFiles.has(relativePath)) {
+                continue;
+            }
+
+            scannedFiles.add(relativePath);
+            const findings = this.checkFile(fullPath);
+            if (findings && findings.length > 0) {
+                results.push(...findings);
             }
         }
 
@@ -104,34 +179,27 @@ class SecurityChecker {
     run() {
         console.log('🔍 Running security check for exposed API keys...\n');
 
-        // Always check critical files first
-        const criticalFindings = [];
+        const findings = [];
+        const scannedFiles = new Set();
+
         for (const file of this.alwaysCheck) {
             const fullPath = join(PROJECT_ROOT, file);
-            const findings = this.checkFile(fullPath);
+            const relativePath = this.toRelativePath(fullPath);
+            scannedFiles.add(relativePath);
 
-            // Filter out obvious false positives (comments, safe demo code)
-            const realFindings = findings?.filter(_f => {
-                const content = readFileSync(fullPath, 'utf8');
-                const lines = content.split('\n');
-                // Skip this finding if it's in a comment or marked as revoked
-                return !lines.some(line => line.includes('// REVOKED:') || line.includes('# REVOKED:'));
-            }) || [];
-
-            if (realFindings && realFindings.length > 0) {
-                criticalFindings.push(...realFindings);
+            const fileFindings = this.checkFile(fullPath);
+            if (fileFindings && fileFindings.length > 0) {
+                findings.push(...fileFindings);
             }
         }
 
-        // Scan all files
-        const allFindings = this.scanDirectory(PROJECT_ROOT);
+        this.scanDirectory(PROJECT_ROOT, findings, scannedFiles);
 
-        if (criticalFindings.length > 0 || allFindings.length > 0) {
+        if (findings.length > 0) {
             console.error('🚨 SECURITY RISK: Exposed API keys detected!\n');
             console.error('Found:');
 
-            const all = [...criticalFindings, ...allFindings];
-            for (const finding of all) {
+            for (const finding of findings) {
                 console.error(`  ❌ ${finding.type}: ${finding.matches} match(es) in ${finding.file}`);
             }
 
@@ -143,13 +211,12 @@ class SecurityChecker {
             console.error('\n📞 Emergency: Check provider dashboards and revoke keys now!');
 
             process.exit(1);
-        } else {
-            console.log('✅ No exposed API keys detected in codebase.');
-            console.log('🔒 All secrets appear to be properly secured.');
         }
+
+        console.log('✅ No exposed API keys detected in codebase.');
+        console.log('🔒 All secrets appear to be properly secured.');
     }
 }
 
-// Run the checker
 const checker = new SecurityChecker();
 checker.run();

@@ -506,10 +506,6 @@ html.dark .contact-form button[type="submit"]:hover {
     line-height: 1.4;
 }
 
-html.dark .contact-description {
-    color: #a1a1a6;
-}
-
 .contact-info-group {
     display: flex;
     flex-direction: column;
@@ -867,18 +863,6 @@ html.dark .donation-description {
     box-shadow:
         0 8px 25px rgb(255 152 0 / 55%),
         0 0 40px rgb(255 213 79 / 30%);
-}
-
-.support-coffee-btn.premium:hover::before {
-    left: 100%;
-}
-
-.support-coffee-btn.premium .arrow-icon {
-    transition: transform 0.3s ease;
-}
-
-.support-coffee-btn.premium:hover .arrow-icon {
-    transform: translateX(4px);
 }
 
 .support-coffee-btn.premium:hover::before {
