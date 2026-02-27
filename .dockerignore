@@ -1,0 +1,30 @@
+# VCS
+.git
+.gitignore
+
+# Node / frontend local artifacts
+node_modules
+dist
+artifacts
+test-results
+playwright-report
+.npmcache
+.npmrc
+
+# Python local artifacts
+__pycache__
+*.py[cod]
+venv
+.venv
+
+# Local env/config
+.env
+.env.*
+API_KEYS.txt
+config.local.js
+src/js/config.local.js
+
+# Editor / OS junk
+.DS_Store
+.vscode
+.idea
