@@ -131,15 +131,16 @@ function stabilizeScrollToSection(sectionId) {
   window.addEventListener('mousedown', cancelTimers, { passive: true, once: true });
   window.addEventListener('keydown', cancelTimers, { passive: true, once: true });
 
-  // Sections above target can expand during lazy load; re-align target after layout settles.
-  const checkpoints = [140, 320, 600, 1000];
+  // Sections above target can expand during lazy load; keep re-aligning for a longer window.
+  // CI runs and slower devices often finish project/content inflation after 1s.
+  const checkpoints = [120, 280, 480, 760, 1100, 1500, 1900, 2300, 2700];
   checkpoints.forEach(delay => {
     const timerId = window.setTimeout(() => {
       const target = document.getElementById(sectionId);
       if (!target || !state.nav) return;
       if (window.location.hash.replace('#', '').trim() !== sectionId) return;
 
-      const expectedTop = 72; // Predict compact state navbar height + spacing
+      const expectedTop = (state.nav.offsetHeight || 60) + 12;
       const delta = target.getBoundingClientRect().top - expectedTop;
       if (Math.abs(delta) <= 8) return;
 
@@ -157,7 +158,7 @@ function scrollToSection(sectionId) {
   const target = document.getElementById(sectionId);
   if (!target || !state.nav) return;
 
-  const navOffset = 72; // Stable offset for predicting the collapsed compact navbar
+  const navOffset = (state.nav.offsetHeight || 60) + 12;
   const top = target.getBoundingClientRect().top + window.scrollY - navOffset;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
