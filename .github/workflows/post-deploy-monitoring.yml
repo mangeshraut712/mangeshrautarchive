@@ -13,7 +13,7 @@ jobs:
     name: 📈 Monitor Production Health
     runs-on: ubuntu-latest
     env:
-      PRODUCTION_URL: ${{ vars.PRODUCTION_URL || 'https://mangeshraut.pro' }}
+      PRODUCTION_URL: 'https://mangeshraut.pro'
     steps:
       - uses: actions/checkout@v4
 
