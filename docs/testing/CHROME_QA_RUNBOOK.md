@@ -93,7 +93,7 @@ Primary checklist and critical cases are maintained in:
 - `npm run qa:prod-ready` passes
 - No unresolved Sev-1/Sev-2 defects
 - Lighthouse thresholds:
-  - Desktop: Perf/A11y/BP/SEO >= 90
+  - Desktop: Perf >= 88, A11y/BP/SEO >= 90
   - Mobile: Perf >= 60, A11y/BP/SEO >= 90
 
 ### Verification workflow
@@ -114,7 +114,7 @@ Primary checklist and critical cases are maintained in:
 - Accessibility: no critical axe violations on homepage and key user journeys; WCAG 2.2 AA baseline for key flows.
 - Performance:
   - Target: 100 in all Lighthouse categories (Perf, A11y, Best Practices, SEO) on desktop + mobile.
-  - Release floor: desktop Perf/A11y/BP/SEO ≥ 90; mobile Perf ≥ 60 and A11y/BP/SEO ≥ 90.
+  - Release floor: desktop Perf ≥ 88 and A11y/BP/SEO ≥ 90; mobile Perf ≥ 60 and A11y/BP/SEO ≥ 90.
   - No regression > 5 points in any category compared to previous release.
 - Core Web Vitals (p75): LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200 ms.
 

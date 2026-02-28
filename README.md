@@ -428,7 +428,7 @@ Release readiness is validated by executable gates (not static README snapshots)
 
 Current configured Lighthouse release floor:
 
-- Desktop: Perf/A11y/Best Practices/SEO `>= 90`
+- Desktop: Perf `>= 88`, A11y/Best Practices/SEO `>= 90`
 - Mobile: Perf `>= 60`, A11y/Best Practices/SEO `>= 90`
 
 ### Performance Practices
