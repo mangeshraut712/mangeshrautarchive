@@ -1344,6 +1344,18 @@ section,
   /* Consistent vertical spacing */
 }
 
+.section-view-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.75rem, 3.2vw, 2.75rem);
+}
+
+@media (width <=768px) {
+  .section-view-more-wrap {
+    margin-top: 1.6rem;
+  }
+}
+
 /* Mobile Global Padding */
 @media (width <=768px) {
 

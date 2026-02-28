@@ -771,7 +771,7 @@ class ProjectXR {
     topClose.type = 'button';
     topClose.className = 'project-xr-top-close';
     topClose.setAttribute('aria-label', 'Close spatial detail card');
-    topClose.innerHTML = '<i class="fas fa-xmark"></i>';
+    topClose.innerHTML = '<i class="fas fa-arrow-left"></i>';
     const headActions = this.documentRef.createElement('div');
     headActions.className = 'project-xr-head-actions';
     headActions.appendChild(updatedChip);
@@ -832,12 +832,6 @@ class ProjectXR {
     const actions = this.documentRef.createElement('div');
     actions.className = 'project-xr-actions';
 
-    const close = this.documentRef.createElement('button');
-    close.type = 'button';
-    close.className = 'project-xr-action-secondary project-xr-btn-close';
-    close.innerHTML = '<i class="fas fa-xmark"></i> Close';
-    actions.appendChild(close);
-
     const effectiveRepoUrl = repoUrl || primaryUrl;
     if (this.isSafeHttpUrl(effectiveRepoUrl)) {
       const ghBtn = this.documentRef.createElement('a');
@@ -873,7 +867,7 @@ class ProjectXR {
     this.documentRef.body.appendChild(root);
     this.previousBodyOverflow = this.documentRef.body.style.overflow;
     this.documentRef.body.style.overflow = 'hidden';
-    close.focus();
+    topClose.focus();
 
     const onEsc = event => {
       if (event.key === 'Escape') this.closeFallbackModal();
@@ -881,7 +875,6 @@ class ProjectXR {
     root.addEventListener('click', event => {
       if (event.target === root) this.closeFallbackModal();
     });
-    close.addEventListener('click', () => this.closeFallbackModal());
     topClose.addEventListener('click', () => this.closeFallbackModal());
     this.documentRef.addEventListener('keydown', onEsc);
 

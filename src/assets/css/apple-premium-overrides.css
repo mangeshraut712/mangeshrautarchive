@@ -2193,8 +2193,8 @@ html.dark #home.hero-section.hero-hero {
 }
 
 #home.hero-section .profile-image-wrapper {
-  width: clamp(92px, 10vw, 116px) !important;
-  height: clamp(92px, 10vw, 116px) !important;
+  width: clamp(124px, 13vw, 172px) !important;
+  height: clamp(124px, 13vw, 172px) !important;
   margin: 0 auto !important;
 }
 
@@ -2254,8 +2254,8 @@ html.dark #home.hero-section.hero-hero {
   }
 
   #home.hero-section .profile-image-wrapper {
-    width: 88px !important;
-    height: 88px !important;
+    width: 112px !important;
+    height: 112px !important;
   }
 
   #home.hero-section .hero-name {

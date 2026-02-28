@@ -121,6 +121,10 @@ function clearStabilizeTimers() {
   state.stabilizeTimers = [];
 }
 
+function getSectionOffset() {
+  return (state.nav?.offsetHeight || 60) + 12;
+}
+
 function stabilizeScrollToSection(sectionId) {
   clearStabilizeTimers();
 
@@ -131,18 +135,17 @@ function stabilizeScrollToSection(sectionId) {
   window.addEventListener('mousedown', cancelTimers, { passive: true, once: true });
   window.addEventListener('keydown', cancelTimers, { passive: true, once: true });
 
-  // Sections above target can expand during lazy load; keep re-aligning for a longer window.
-  // CI runs and slower devices often finish project/content inflation after 1s.
-  const checkpoints = [120, 280, 480, 760, 1100, 1500, 1900, 2300, 2700];
+  // Sections above target can expand during lazy load; re-align across early + late reflow phases.
+  const checkpoints = [220, 700, 1250, 1850, 2450];
   checkpoints.forEach(delay => {
     const timerId = window.setTimeout(() => {
       const target = document.getElementById(sectionId);
       if (!target || !state.nav) return;
       if (window.location.hash.replace('#', '').trim() !== sectionId) return;
 
-      const expectedTop = (state.nav.offsetHeight || 60) + 12;
+      const expectedTop = getSectionOffset();
       const delta = target.getBoundingClientRect().top - expectedTop;
-      if (Math.abs(delta) <= 8) return;
+      if (Math.abs(delta) <= 22) return;
 
       window.scrollBy({
         top: delta,
@@ -158,7 +161,7 @@ function scrollToSection(sectionId) {
   const target = document.getElementById(sectionId);
   if (!target || !state.nav) return;
 
-  const navOffset = (state.nav.offsetHeight || 60) + 12;
+  const navOffset = getSectionOffset();
   const top = target.getBoundingClientRect().top + window.scrollY - navOffset;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
