@@ -1,4 +1,4 @@
-const CACHE_TAG = 'portfolio-cache-v2026022601';
+const CACHE_TAG = 'portfolio-cache-v2026030101';
 const CACHE_NAME = `mangesh-portfolio-${CACHE_TAG}`;
 const RUNTIME_CACHE = `runtime-${CACHE_TAG}`;
 
@@ -7,8 +7,6 @@ const CORE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/assets/css/style.css',
-  '/assets/css/tailwind-output.css',
   '/assets/images/profile-icon.png',
   '/assets/images/profile.jpg',
 ];
@@ -60,6 +58,11 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
+  const accept = request.headers.get('Accept') || '';
+
+  if (request.method !== 'GET') {
+    return;
+  }
 
   // Skip cross-origin requests except fonts and CDN resources
   if (
@@ -74,15 +77,25 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Network-first for HTML
-  if (request.headers.get('Accept').includes('text/html')) {
+  // Never cache the service worker script itself.
+  if (url.pathname.endsWith('/service-worker.js')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
+  // Network-first for app shell assets that change frequently.
+  const isHtmlRequest = accept.includes('text/html');
+  const isStyleOrScript = request.destination === 'style' || request.destination === 'script';
+  if (isHtmlRequest || isStyleOrScript) {
     event.respondWith(
       fetch(request)
         .then(response => {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(request, responseClone);
-          });
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(request, responseClone);
+            });
+          }
           return response;
         })
         .catch(() => caches.match(request))
@@ -90,8 +103,8 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first for static assets (CSS, JS, images, fonts)
-  if (request.url.match(/\.(css|js|png|jpg|jpeg|svg|webp|woff2|woff|ttf)$/)) {
+  // Cache-first for static media assets
+  if (request.url.match(/\.(png|jpg|jpeg|svg|webp|woff2|woff|ttf)$/)) {
     event.respondWith(
       caches.match(request).then(cachedResponse => {
         if (cachedResponse) {
