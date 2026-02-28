@@ -1375,7 +1375,20 @@ html.dark .project-xr-status {
 
 @media (max-width: 680px) {
   #projects .activity-overview-inner {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr !important;
+  }
+
+  .activity-overview {
+    padding: 1rem !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .activity-github-graph-container,
+  #projects .github-graph-scroll {
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
   #projects .proj-controls-group {
@@ -1410,24 +1423,5 @@ html.dark .project-xr-status {
 
   .project-xr-updated-chip {
     align-self: flex-start;
-  }
-}
-
-@media (max-width: 480px) {
-  #projects .activity-overview-inner {
-    grid-template-columns: 1fr !important;
-  }
-
-  .activity-overview {
-    padding: 1rem !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-  }
-
-  .activity-github-graph-container,
-  #projects .github-graph-scroll {
-    max-width: 100% !important;
-    width: 100% !important;
   }
 }
