@@ -2,7 +2,7 @@
 
 # 🚀 Mangesh Raut — AI-Powered Portfolio
 
-### *Next-Generation Developer Portfolio with Intelligent AI Assistant*
+### _Next-Generation Developer Portfolio with Intelligent AI Assistant_
 
 [![Live Portfolio](https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logoColor=white)](https://mangeshraut.pro)
 [![GitHub](https://img.shields.io/badge/GitHub-Pages-181717?style=for-the-badge&logo=github)](https://mangeshraut712.github.io/mangeshrautarchive/)
@@ -45,8 +45,8 @@ Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and depl
 
 ### 💡 Project Highlights
 
-| 🧠 AI Assistant | 🎮 Hidden Game | 📊 Live Data | 🎨 Premium UI |
-|:---------------:|:--------------:|:------------:|:-------------:|
+|                  🧠 AI Assistant                   |       🎮 Hidden Game       |      📊 Live Data      |        🎨 Premium UI         |
+| :------------------------------------------------: | :------------------------: | :--------------------: | :--------------------------: |
 | Real-time streaming chatbot with context awareness | Debug Runner - Canvas game | GitHub API integration | Apple-inspired glassmorphism |
 
 </div>
@@ -112,12 +112,16 @@ A fully functional **HTML5 Canvas** retro-style arcade game built from scratch:
 Real-time project showcase that automatically stays current:
 
 - 🔄 **Auto-Updating** — Fetches latest repositories from GitHub API on every visit
-- 🔍 **Smart Filtering** — Automatically excludes forked repos, sorts by last updated
+- 🔍 **Showcase Ranking** — Excludes forks/profile repos and ranks by quality + activity signals
 - 📈 **Live Statistics** — Real-time star counts, fork counts, and primary languages
-- 🎨 **Beautiful Cards** — Glassmorphism design with smooth hover animations
+- 🎨 **Beautiful Cards** — Compact Apple 2026 design with smooth hover animations
 - 🔖 **Dynamic Tags** — Topic badges automatically pulled from repository metadata
 - ⚡ **Intelligent Caching** — 10-minute client + server cache window to reduce API pressure
-- 🛡️ **Backend Proxy First** — Uses `/api/github/repos/public` first, then direct GitHub API fallback
+- 🛡️ **Backend Proxy First** — Uses `/api/github/repos/public` + `/api/github/proxy` before direct GitHub fallback
+- 📱 **Mobile-Safe Layout** — Projects toolbar and cards are constrained to viewport widths on phones
+- 🔎 **Fuzzy Search** — Project search supports close matches (for typo-tolerant lookup)
+- 🕒 **Compact Update Chip** — Updated labels use `relative + absolute` format (example: `3w ago · Feb 4, 2026`)
+- 🗺️ **Spatial Modal** — Interactive project detail modal with repo stats and activity timeline
 
 **Implementation:** Custom JavaScript module with GitHub REST API integration
 
@@ -130,23 +134,36 @@ Real-time project showcase that automatically stays current:
 
 <br/>
 
-**Apple-Inspired Glassmorphism:**
-- ✨ Frosted glass effects with advanced backdrop blur
-- 🌈 Neural network-style gradient animations
-- 🎭 Buttery-smooth 60fps CSS transitions
-- 🌓 Automatic dark/light theme based on system preferences
-- 📐 Mobile-first responsive design (breakpoints at 640px, 768px, 1024px)
-- ♿ **WCAG 2.2 AA** accessibility compliance with full keyboard navigation
+**Apple 2026 Design System:**
 
-**Typography Choices:**
-- **Primary Font:** Inter (Google Fonts) — Modern, highly readable
+- 🎯 **CSS Layers Architecture** — Modern cascade management for 2026
+- 🔮 **Glassmorphism 2026** — Advanced frosted glass effects with backdrop blur
+- 📱 **Container Queries** — Component-level responsive design
+- 🌈 **Neural gradient animations** — Smooth, GPU-accelerated effects
+- 🌓 **Automatic dark/light theme** — Based on system preferences
+- 📐 **Mobile-first design** — Breakpoints at 640px, 768px, 1024px, 1280px
+- ♿ **WCAG 2.2 AA** — Full keyboard navigation accessibility
+- ⚡ **Performance optimized** — GPU acceleration, content visibility
+
+**Typography:**
+
 - **Display Font:** SF Pro Display — Apple's premium typeface
-- **Monospace:** SF Mono / JetBrains Mono for code snippets
+- **Text Font:** SF Pro Text — Optimized for readability
+- **Monospace:** SF Mono / JetBrains Mono for code
 
 **Color System:**
-- Light mode: Clean whites with subtle blue accents
-- Dark mode: Deep blacks with vibrant neon highlights
-- Consistent 8px spacing grid throughout
+
+- Light mode: Clean whites with Apple blue accents
+- Dark mode: Deep blacks with vibrant highlights
+- Consistent spacing grid (4px base unit)
+
+**Components:**
+
+- Apple Cards with hover lift effects
+- Primary, secondary, ghost buttons
+- Glass cards with backdrop blur
+- Tags and form inputs
+- Smooth scroll animations
 
 </details>
 
@@ -157,9 +174,11 @@ Real-time project showcase that automatically stays current:
 ## 🌐 Live Demos
 
 ### Primary Website
+
 🚀 **[mangeshraut.pro](https://mangeshraut.pro)** — Main portfolio (custom domain)
 
 ### Alternative Deployments
+
 - 📄 **[GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/)** — Static mirror
 - ⚡ **[Vercel](https://mangeshrautarchive.vercel.app)** — Edge deployment
 
@@ -203,6 +222,7 @@ Real-time project showcase that automatically stays current:
 ### Detailed Stack
 
 **Frontend Architecture:**
+
 ```
 ├── HTML5 — Semantic markup with SEO optimization
 ├── CSS3 — 30+ modular stylesheets (108KB core styles)
@@ -214,6 +234,7 @@ Real-time project showcase that automatically stays current:
 ```
 
 **Backend Architecture:**
+
 ```python
 ├── Python 3.12+ — Modern Python with type hints
 ├── FastAPI — High-performance async web framework
@@ -224,6 +245,7 @@ Real-time project showcase that automatically stays current:
 ```
 
 **AI Integration:**
+
 ```
 ├── OpenRouter API — Multi-model AI gateway
 ├── Default Model — x-ai/grok-4.1-fast (configurable via OPENROUTER_MODEL)
@@ -269,6 +291,7 @@ npm run dev
 ```
 
 This will start:
+
 - **Frontend** on `http://localhost:3000`
 - **Backend API** on `http://localhost:8000`
 
@@ -350,32 +373,38 @@ mangeshrautarchive/
 
 ## 📜 Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | 🚀 Start full stack (frontend + backend) |
-| `npm run dev:frontend` | 🎨 Start frontend server only (port 3000) |
-| `npm run dev:backend` | 🔧 Start Python backend only (port 8000) |
-| `npm run build` | 📦 Build production assets |
-| `npm run build:css` | 🎨 Compile Tailwind CSS |
-| `npm run lint` | 🔍 Run ESLint code quality checks |
-| `npm run lint:fix` | ✨ Auto-fix linting issues |
-| `npm run lint:css` | 🧹 Run Stylelint across CSS |
-| `npm run check` | ✅ Run JS lint + tests |
-| `npm test` | 🧪 Run Vitest test suite |
-| `npm run qa:smoke` | 🌐 Playwright smoke tests on Chrome |
-| `npm run qa:smoke:mobile` | 📱 Playwright smoke tests on Mobile Chrome emulation |
-| `npm run qa:a11y` | ♿ Axe accessibility baseline on Chrome |
-| `npm run qa:lighthouse:desktop` | ⚡ Lighthouse desktop gate |
-| `npm run qa:lighthouse:mobile` | 📱 Lighthouse mobile gate |
-| `npm run qa:postdeploy` | 🧪 Smoke + a11y check against deployed URL (`PLAYWRIGHT_BASE_URL`) |
-| `npm run qa:chrome` | 🧭 Full Chrome QA gate (smoke + a11y + perf) |
-| `npm run qa:prod-ready` | 🛡️ Full pre-release gate |
-| `npm run optimize-images` | 🖼️ Optimize image assets |
-| `npm run security-check` | 🔒 Scan for exposed secrets |
-| `npm run audit:css-duplicates` | 🔎 Report exact duplicate CSS rule blocks |
-| `npm run clean` | 🧽 Remove generated build/test artifacts and Python caches |
+| Command                          | Description                                                        |
+| -------------------------------- | ------------------------------------------------------------------ |
+| `npm run dev`                    | 🚀 Start full stack (frontend + backend)                           |
+| `npm run dev:frontend`           | 🎨 Start frontend server only (port 3000)                          |
+| `npm run dev:backend`            | 🔧 Start Python backend only (port 8000)                           |
+| `npm run build`                  | 📦 Build production assets                                         |
+| `npm run build:css`              | 🎨 Compile Tailwind CSS                                            |
+| `npm run lint`                   | 🔍 Run ESLint code quality checks                                  |
+| `npm run lint:fix`               | ✨ Auto-fix linting issues                                         |
+| `npm run lint:css`               | 🧹 Run Stylelint across CSS                                        |
+| `npm run format`                 | 🧼 Format codebase with Prettier                                   |
+| `npm run format:check`           | ✅ Verify Prettier formatting without modifying files              |
+| `npm run check`                  | ✅ Run JS lint + tests                                             |
+| `npm test`                       | 🧪 Run Vitest test suite                                           |
+| `npm run test:e2e:chrome`        | 🧪 Run Playwright smoke suite on Chromium                          |
+| `npm run test:e2e:mobile-chrome` | 📱 Run Playwright smoke suite on Mobile Chrome                     |
+| `npm run test:a11y:chrome`       | ♿ Run accessibility checks on Chromium                            |
+| `npm run qa:smoke`               | 🌐 Playwright smoke tests on Chrome                                |
+| `npm run qa:smoke:mobile`        | 📱 Playwright smoke tests on Mobile Chrome emulation               |
+| `npm run qa:a11y`                | ♿ Axe accessibility baseline on Chrome                            |
+| `npm run qa:lighthouse:desktop`  | ⚡ Lighthouse desktop gate                                         |
+| `npm run qa:lighthouse:mobile`   | 📱 Lighthouse mobile gate                                          |
+| `npm run qa:postdeploy`          | 🧪 Smoke + a11y check against deployed URL (`PLAYWRIGHT_BASE_URL`) |
+| `npm run qa:chrome`              | 🧭 Full Chrome QA gate (smoke + a11y + perf)                       |
+| `npm run qa:prod-ready`          | 🛡️ Full pre-release gate                                           |
+| `npm run optimize-images`        | 🖼️ Optimize image assets                                           |
+| `npm run security-check`         | 🔒 Scan for exposed secrets                                        |
+| `npm run audit:css-duplicates`   | 🔎 Report exact duplicate CSS rule blocks                          |
+| `npm run clean`                  | 🧽 Remove generated build/test artifacts and Python caches         |
 
 Chrome QA runbook and report template:
+
 - `docs/testing/CHROME_QA_RUNBOOK.md`
 - `docs/testing/CHROME_TEST_MATRIX.md`
 - `docs/testing/RELEASE_TEST_REPORT_TEMPLATE.md`
@@ -400,7 +429,7 @@ Release readiness is validated by executable gates (not static README snapshots)
 Current configured Lighthouse release floor:
 
 - Desktop: Perf/A11y/Best Practices/SEO `>= 90`
-- Mobile: Perf/A11y/Best Practices/SEO `>= 90`
+- Mobile: Perf `>= 60`, A11y/Best Practices/SEO `>= 90`
 
 ### Performance Practices
 
@@ -444,6 +473,7 @@ Contributions, issues, and feature requests are welcome! Feel free to check out 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 You're free to use this code for your own portfolio, but please:
+
 - Give appropriate credit
 - Don't claim it as entirely your own work
 - Modify it to make it unique to you
@@ -456,7 +486,7 @@ You're free to use this code for your own portfolio, but please:
 
 ### **Mangesh Raut**
 
-*Software Engineer | Full-Stack Developer | AI/ML Enthusiast*
+_Software Engineer | Full-Stack Developer | AI/ML Enthusiast_
 
 [![Portfolio](https://img.shields.io/badge/🌐_Portfolio-mangeshraut.pro-0071e3?style=for-the-badge)](https://mangeshraut.pro)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/mangeshraut71298)

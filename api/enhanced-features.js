@@ -18,7 +18,7 @@ export async function getWeather(city = 'Philadelphia') {
     answer: `🌤️ Weather in ${city}: ${condition}, ${temp}°F\n\n💡 Tip: This is simulated data. For real weather, integrate OpenWeatherMap API.`,
     category: 'Weather',
     confidence: 0.5,
-    source: 'Simulated'
+    source: 'Simulated',
   };
 }
 
@@ -34,14 +34,14 @@ export async function getJoke() {
       answer: `😄 ${data.setup}\n\n${data.punchline}`,
       category: 'Entertainment',
       confidence: 1.0,
-      source: 'Joke API'
+      source: 'Joke API',
     };
   } catch {
     return {
       answer: "😄 Why don't programmers like nature? It has too many bugs! 🐛",
       category: 'Entertainment',
       confidence: 0.7,
-      source: 'Fallback'
+      source: 'Fallback',
     };
   }
 }
@@ -61,14 +61,14 @@ export async function getNASAAPOD() {
       answer: `🚀 NASA Astronomy Picture of the Day:\n\n📷 ${data.title}\n\n${data.explanation?.substring(0, 200)}...\n\n🔗 View: ${data.url}`,
       category: 'Space & Astronomy',
       confidence: 1.0,
-      source: 'NASA API'
+      source: 'NASA API',
     };
   } catch {
     return {
-      answer: "🚀 NASA APOD service is currently unavailable. Please try again later.",
+      answer: '🚀 NASA APOD service is currently unavailable. Please try again later.',
       category: 'Space & Astronomy',
       confidence: 0.3,
-      source: 'Error'
+      source: 'Error',
     };
   }
 }
@@ -82,27 +82,31 @@ export async function getNewsHeadlines() {
 
   if (!API_KEY) {
     return {
-      answer: "📰 News API is not configured. Add NEWS_API_KEY to environment variables.\n\n💡 Get a free key at: newsapi.org",
+      answer:
+        '📰 News API is not configured. Add NEWS_API_KEY to environment variables.\n\n💡 Get a free key at: newsapi.org',
       category: 'News',
       confidence: 0.3,
-      source: 'Config'
+      source: 'Config',
     };
   }
 
   try {
-    const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${API_KEY}`);
+    const response = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${API_KEY}`
+    );
     const data = await response.json();
 
     if (data.articles && data.articles.length > 0) {
-      const headlines = data.articles.slice(0, 3).map((article, i) =>
-        `${i + 1}. ${article.title}`
-      ).join('\n\n');
+      const headlines = data.articles
+        .slice(0, 3)
+        .map((article, i) => `${i + 1}. ${article.title}`)
+        .join('\n\n');
 
       return {
         answer: `📰 Top Headlines:\n\n${headlines}`,
         category: 'News',
         confidence: 1.0,
-        source: 'NewsAPI'
+        source: 'NewsAPI',
       };
     }
   } catch {
@@ -110,10 +114,11 @@ export async function getNewsHeadlines() {
   }
 
   return {
-    answer: "📰 Latest news headlines:\n\n1. Breaking: Technology sector shows strong growth\n2. AI advancements continue to reshape industries\n3. Global markets remain optimistic\n\n💡 Configure NEWS_API_KEY for real headlines.",
+    answer:
+      '📰 Latest news headlines:\n\n1. Breaking: Technology sector shows strong growth\n2. AI advancements continue to reshape industries\n3. Global markets remain optimistic\n\n💡 Configure NEWS_API_KEY for real headlines.',
     category: 'News',
     confidence: 0.5,
-    source: 'Simulated'
+    source: 'Simulated',
   };
 }
 
@@ -126,15 +131,16 @@ export async function getRedditPosts(subreddit = 'AskReddit') {
     const data = await response.json();
 
     if (data.data && data.data.children) {
-      const posts = data.data.children.slice(0, 3).map((post, i) =>
-        `${i + 1}. ${post.data.title} (${post.data.ups} ⬆️)`
-      ).join('\n\n');
+      const posts = data.data.children
+        .slice(0, 3)
+        .map((post, i) => `${i + 1}. ${post.data.title} (${post.data.ups} ⬆️)`)
+        .join('\n\n');
 
       return {
         answer: `🔴 Top posts from r/${subreddit}:\n\n${posts}`,
         category: 'Social Media',
         confidence: 1.0,
-        source: 'Reddit API'
+        source: 'Reddit API',
       };
     }
   } catch {
@@ -142,7 +148,7 @@ export async function getRedditPosts(subreddit = 'AskReddit') {
       answer: `🔴 Unable to fetch Reddit posts from r/${subreddit}. The subreddit might be private or unavailable.`,
       category: 'Social Media',
       confidence: 0.3,
-      source: 'Error'
+      source: 'Error',
     };
   }
 }
@@ -160,14 +166,14 @@ export function handleWebCommand(message) {
         answer: `🔍 Opening Google search for: "${query}"\n\n🔗 https://www.google.com/search?q=${encodeURIComponent(query)}\n\n💡 Click the link above to open in a new tab.`,
         category: 'Web Command',
         confidence: 1.0,
-        source: 'Web Command'
+        source: 'Web Command',
       };
     }
     return {
       answer: `🔍 Google.com\n\n🔗 https://www.google.com\n\n💡 Click to open Google.`,
       category: 'Web Command',
       confidence: 1.0,
-      source: 'Web Command'
+      source: 'Web Command',
     };
   }
 
@@ -178,14 +184,14 @@ export function handleWebCommand(message) {
         answer: `📺 Opening YouTube search for: "${query}"\n\n🔗 https://www.youtube.com/results?search_query=${encodeURIComponent(query)}\n\n💡 Click the link above to open in a new tab.`,
         category: 'Web Command',
         confidence: 1.0,
-        source: 'Web Command'
+        source: 'Web Command',
       };
     }
     return {
       answer: `📺 YouTube.com\n\n🔗 https://www.youtube.com\n\n💡 Click to open YouTube.`,
       category: 'Web Command',
       confidence: 1.0,
-      source: 'Web Command'
+      source: 'Web Command',
     };
   }
 
@@ -208,7 +214,7 @@ export function calculateMath(expression) {
       answer: `🔢 ${expression} = ${result}`,
       category: 'Mathematics',
       confidence: 1.0,
-      source: 'Calculator'
+      source: 'Calculator',
     };
   } catch {
     return null;
@@ -222,5 +228,5 @@ export default {
   getNewsHeadlines,
   getRedditPosts,
   handleWebCommand,
-  calculateMath
+  calculateMath,
 };

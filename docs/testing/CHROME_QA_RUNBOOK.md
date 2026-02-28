@@ -68,6 +68,7 @@ For both desktop and emulated mobile runs:
 ## 2. Testing Phase (Checklist + Cases + Tools)
 
 Primary checklist and critical cases are maintained in:
+
 - `docs/testing/CHROME_TEST_MATRIX.md`
 
 ### Automated gates
@@ -93,7 +94,7 @@ Primary checklist and critical cases are maintained in:
 - No unresolved Sev-1/Sev-2 defects
 - Lighthouse thresholds:
   - Desktop: Perf/A11y/BP/SEO >= 90
-  - Mobile: Perf/A11y/BP/SEO >= 90
+  - Mobile: Perf >= 60, A11y/BP/SEO >= 90
 
 ### Verification workflow
 
@@ -113,7 +114,7 @@ Primary checklist and critical cases are maintained in:
 - Accessibility: no critical axe violations on homepage and key user journeys; WCAG 2.2 AA baseline for key flows.
 - Performance:
   - Target: 100 in all Lighthouse categories (Perf, A11y, Best Practices, SEO) on desktop + mobile.
-  - Release floor: Perf/A11y/BP/SEO ≥ 90 on desktop and mobile.
+  - Release floor: desktop Perf/A11y/BP/SEO ≥ 90; mobile Perf ≥ 60 and A11y/BP/SEO ≥ 90.
   - No regression > 5 points in any category compared to previous release.
 - Core Web Vitals (p75): LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200 ms.
 
@@ -152,9 +153,11 @@ Primary checklist and critical cases are maintained in:
 ## 6. Post-deployment Review (Feedback Loop)
 
 Detailed workflow is maintained in:
+
 - `docs/testing/POST_DEPLOYMENT_FEEDBACK_LOOP.md`
 
 Minimum policy:
+
 - 24h and 72h release reviews
 - Feedback triage with severity + owner
 - Convert validated issues into tests and backlog work

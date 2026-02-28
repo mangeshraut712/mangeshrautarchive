@@ -19,158 +19,158 @@
  */
 
 class AnalyticsService {
-    constructor() {
-        // Attempt to grab Vercel Analytics track function
-        // It may be injected by the Vercel runtime or <script> tag
-        this._track = null;
-        this._queue = [];
-        this._initialized = false;
+  constructor() {
+    // Attempt to grab Vercel Analytics track function
+    // It may be injected by the Vercel runtime or <script> tag
+    this._track = null;
+    this._queue = [];
+    this._initialized = false;
 
-        // Defer init to next tick so the Vercel script has time to load
-        setTimeout(() => this._init(), 500);
+    // Defer init to next tick so the Vercel script has time to load
+    setTimeout(() => this._init(), 500);
+  }
+
+  _init() {
+    // Window-injected version (Vercel CDN script)
+    if (typeof window !== 'undefined' && window.va) {
+      this._track = (...args) => window.va('event', ...args);
+      this._initialized = true;
+    }
+    // npm package version (if imported in build)
+    else if (typeof window !== 'undefined' && window.__vercel_insights_track) {
+      this._track = window.__vercel_insights_track;
+      this._initialized = true;
     }
 
-    _init() {
-        // Window-injected version (Vercel CDN script)
-        if (typeof window !== 'undefined' && window.va) {
-            this._track = (...args) => window.va('event', ...args);
-            this._initialized = true;
-        }
-        // npm package version (if imported in build)
-        else if (typeof window !== 'undefined' && window.__vercel_insights_track) {
-            this._track = window.__vercel_insights_track;
-            this._initialized = true;
-        }
-
-        // Flush queued events
-        if (this._initialized && this._queue.length) {
-            this._queue.forEach(([name, props]) => this._sendEvent(name, props));
-            this._queue = [];
-        }
+    // Flush queued events
+    if (this._initialized && this._queue.length) {
+      this._queue.forEach(([name, props]) => this._sendEvent(name, props));
+      this._queue = [];
     }
+  }
 
-    _sendEvent(name, properties = {}) {
-        if (!this._track) {
-            // Queue for when analytics loads, or silently drop
-            this._queue.push([name, properties]);
-            return;
-        }
-        try {
-            this._track(name, {
-                ...properties,
-                timestamp: new Date().toISOString(),
-            });
-        } catch (err) {
-            // Never let analytics crash the app
-            console.debug('[Analytics] track failed:', err.message);
-        }
+  _sendEvent(name, properties = {}) {
+    if (!this._track) {
+      // Queue for when analytics loads, or silently drop
+      this._queue.push([name, properties]);
+      return;
     }
-
-    // ─────────────────────────────────────────────
-    // Portfolio-specific events
-    // ─────────────────────────────────────────────
-
-    /**
-     * User asked a question in the chatbot.
-     * @param {string} question  Raw question text (truncated to 100 chars for privacy)
-     * @param {string} intent    Inferred intent category (e.g. 'skills', 'projects', 'contact')
-     * @param {string} model     AI model that responded
-     */
-    chatQuestion(question, intent = 'unknown', model = 'unknown') {
-        this._sendEvent('chatbot_question', {
-            question_preview: String(question).slice(0, 100),
-            intent,
-            model,
-        });
+    try {
+      this._track(name, {
+        ...properties,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (err) {
+      // Never let analytics crash the app
+      console.debug('[Analytics] track failed:', err.message);
     }
+  }
 
-    /**
-     * AI responded to a question.
-     * @param {string} intent
-     * @param {number} latencyMs   Response time in milliseconds
-     * @param {boolean} streamed   Whether response was streamed
-     */
-    chatResponse(intent = 'unknown', latencyMs = 0, streamed = true) {
-        this._sendEvent('chatbot_response', {
-            intent,
-            latency_ms: Math.round(latencyMs),
-            streamed,
-        });
-    }
+  // ─────────────────────────────────────────────
+  // Portfolio-specific events
+  // ─────────────────────────────────────────────
 
-    /**
-     * User viewed a portfolio section.
-     * @param {string} section  e.g. 'experience', 'projects', 'skills', 'contact'
-     */
-    sectionView(section) {
-        this._sendEvent('section_view', { section });
-    }
+  /**
+   * User asked a question in the chatbot.
+   * @param {string} question  Raw question text (truncated to 100 chars for privacy)
+   * @param {string} intent    Inferred intent category (e.g. 'skills', 'projects', 'contact')
+   * @param {string} model     AI model that responded
+   */
+  chatQuestion(question, intent = 'unknown', model = 'unknown') {
+    this._sendEvent('chatbot_question', {
+      question_preview: String(question).slice(0, 100),
+      intent,
+      model,
+    });
+  }
 
-    /**
-     * User submitted the contact form.
-     * @param {'success'|'error'} outcome
-     * @param {string} [errorCode]   Error code if outcome is 'error'
-     */
-    contactFormSubmit(outcome, errorCode = null) {
-        this._sendEvent('contact_form_submit', {
-            outcome,
-            ...(errorCode ? { error_code: errorCode } : {}),
-        });
-    }
+  /**
+   * AI responded to a question.
+   * @param {string} intent
+   * @param {number} latencyMs   Response time in milliseconds
+   * @param {boolean} streamed   Whether response was streamed
+   */
+  chatResponse(intent = 'unknown', latencyMs = 0, streamed = true) {
+    this._sendEvent('chatbot_response', {
+      intent,
+      latency_ms: Math.round(latencyMs),
+      streamed,
+    });
+  }
 
-    /** User clicked the resume download button. */
-    resumeDownload() {
-        this._sendEvent('resume_download', {});
-    }
+  /**
+   * User viewed a portfolio section.
+   * @param {string} section  e.g. 'experience', 'projects', 'skills', 'contact'
+   */
+  sectionView(section) {
+    this._sendEvent('section_view', { section });
+  }
 
-    /**
-     * User toggled the color theme.
-     * @param {'dark'|'light'} newTheme
-     */
-    themeToggle(newTheme) {
-        this._sendEvent('theme_toggle', { theme: newTheme });
-    }
+  /**
+   * User submitted the contact form.
+   * @param {'success'|'error'} outcome
+   * @param {string} [errorCode]   Error code if outcome is 'error'
+   */
+  contactFormSubmit(outcome, errorCode = null) {
+    this._sendEvent('contact_form_submit', {
+      outcome,
+      ...(errorCode ? { error_code: errorCode } : {}),
+    });
+  }
 
-    /**
-     * User used voice I/O.
-     * @param {'input'|'output'} direction
-     */
-    voiceUsed(direction) {
-        this._sendEvent('voice_used', { direction });
-    }
+  /** User clicked the resume download button. */
+  resumeDownload() {
+    this._sendEvent('resume_download', {});
+  }
 
-    /**
-     * GitHub projects section loaded successfully.
-     * @param {number} repoCount  Number of repos displayed
-     * @param {'proxy'|'direct'|'cache'} source  How repos were fetched
-     */
-    githubProjectsLoaded(repoCount, source = 'proxy') {
-        this._sendEvent('github_projects_loaded', {
-            repo_count: repoCount,
-            source,
-        });
-    }
+  /**
+   * User toggled the color theme.
+   * @param {'dark'|'light'} newTheme
+   */
+  themeToggle(newTheme) {
+    this._sendEvent('theme_toggle', { theme: newTheme });
+  }
 
-    /**
-     * User clicked a project card.
-     * @param {string} projectName
-     * @param {'github'|'live'} linkType
-     */
-    projectClick(projectName, linkType = 'github') {
-        this._sendEvent('project_click', {
-            project: String(projectName).slice(0, 80),
-            link_type: linkType,
-        });
-    }
+  /**
+   * User used voice I/O.
+   * @param {'input'|'output'} direction
+   */
+  voiceUsed(direction) {
+    this._sendEvent('voice_used', { direction });
+  }
 
-    /**
-     * Generic custom event — use for any one-off tracking.
-     * @param {string} name
-     * @param {Record<string, string|number|boolean>} [props]
-     */
-    track(name, props = {}) {
-        this._sendEvent(name, props);
-    }
+  /**
+   * GitHub projects section loaded successfully.
+   * @param {number} repoCount  Number of repos displayed
+   * @param {'proxy'|'direct'|'cache'} source  How repos were fetched
+   */
+  githubProjectsLoaded(repoCount, source = 'proxy') {
+    this._sendEvent('github_projects_loaded', {
+      repo_count: repoCount,
+      source,
+    });
+  }
+
+  /**
+   * User clicked a project card.
+   * @param {string} projectName
+   * @param {'github'|'live'} linkType
+   */
+  projectClick(projectName, linkType = 'github') {
+    this._sendEvent('project_click', {
+      project: String(projectName).slice(0, 80),
+      link_type: linkType,
+    });
+  }
+
+  /**
+   * Generic custom event — use for any one-off tracking.
+   * @param {string} name
+   * @param {Record<string, string|number|boolean>} [props]
+   */
+  track(name, props = {}) {
+    this._sendEvent(name, props);
+  }
 }
 
 // Singleton export

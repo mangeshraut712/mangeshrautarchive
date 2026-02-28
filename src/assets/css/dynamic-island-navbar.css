@@ -1,0 +1,535 @@
+/**
+ * Apple-Inspired Dynamic Island Navbar
+ * Matches apple.com navigation behavior exactly
+ */
+
+/* ============================================
+   BASE NAVBAR - Fixed at top like Apple
+   ============================================ */
+
+.global-nav.dynamic-island {
+  --island-font:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', Inter, sans-serif;
+  --island-height: 52px;
+  --island-height-compact: 46px;
+  --island-side-pad: 48px;
+  --island-side-pad-compact: 40px;
+  --island-link-size: 13px;
+  --island-link-weight: 400;
+  --island-link-gap: 32px;
+  --island-link-gap-compact: 22px;
+  --island-link-color: rgba(29, 29, 31, 0.88);
+  --island-link-color-active: #000;
+  --island-link-color-hover: #0071e3;
+  --island-link-underline: #0071e3;
+  --island-link-active-bg: rgba(0, 113, 227, 0.1);
+  --island-control-size: 34px;
+  --island-control-size-compact: 30px;
+  --island-control-icon-size: 15px;
+  --island-control-color: rgba(29, 29, 31, 0.86);
+  --island-control-border: rgba(0, 0, 0, 0.08);
+  --island-control-bg: rgba(255, 255, 255, 0);
+  --island-control-bg-hover: rgba(0, 0, 0, 0.06);
+}
+
+html.dark .global-nav.dynamic-island {
+  --island-link-color: rgba(255, 255, 255, 0.92);
+  --island-link-color-active: #fff;
+  --island-link-color-hover: #4ea1ff;
+  --island-link-underline: #4ea1ff;
+  --island-link-active-bg: rgba(78, 161, 255, 0.2);
+  --island-control-color: rgba(255, 255, 255, 0.94);
+  --island-control-border: rgba(255, 255, 255, 0.18);
+  --island-control-bg: rgba(255, 255, 255, 0);
+  --island-control-bg-hover: rgba(255, 255, 255, 0.12);
+}
+
+.global-nav.dynamic-island {
+  /* Fixed positioning at very top */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--island-height);
+  padding: 0 var(--island-side-pad);
+  z-index: 1000;
+
+  /* Apple-style background - solid initially */
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+
+  /* Subtle bottom border */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  /* Smooth transitions */
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    height 0.24s ease,
+    padding 0.24s ease,
+    transform 0.28s ease;
+
+  /* Contain layout */
+  contain: layout style paint;
+  font-family: var(--island-font) !important;
+  color: var(--island-link-color) !important;
+  isolation: isolate;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Dark mode variant */
+html.dark .global-nav.dynamic-island {
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.global-nav.dynamic-island.is-hidden {
+  transform: translateY(-100%);
+}
+
+@media (min-width: 1151px) {
+  .global-nav.dynamic-island.is-compact {
+    height: var(--island-height-compact);
+    padding-inline: var(--island-side-pad-compact);
+  }
+
+  #global-nav.global-nav.dynamic-island.is-compact {
+    height: var(--island-height-compact) !important;
+    padding-inline: var(--island-side-pad-compact) !important;
+  }
+
+  #global-nav.global-nav.dynamic-island.is-compact .nav-links {
+    gap: var(--island-link-gap-compact) !important;
+  }
+
+  #global-nav.global-nav.dynamic-island.is-compact .theme-toggle-nav,
+  #global-nav.global-nav.dynamic-island.is-compact .menu-toggle-button,
+  #global-nav.global-nav.dynamic-island.is-compact #search-toggle,
+  #global-nav.global-nav.dynamic-island.is-compact #theme-toggle,
+  #global-nav.global-nav.dynamic-island.is-compact #menu-btn {
+    width: var(--island-control-size-compact) !important;
+    height: var(--island-control-size-compact) !important;
+    min-width: var(--island-control-size-compact) !important;
+    min-height: var(--island-control-size-compact) !important;
+  }
+}
+
+/* ============================================
+   SCROLLED STATE - Enhanced glassmorphism
+   ============================================ */
+
+.global-nav.dynamic-island.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+}
+
+html.dark .global-nav.dynamic-island.scrolled {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+/* ============================================
+   NAV CONTAINER
+   ============================================ */
+
+.global-nav.dynamic-island .nav-container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* ============================================
+   LOGO
+   ============================================ */
+
+.global-nav.dynamic-island .nav-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.global-nav.dynamic-island .nav-logo:hover {
+  transform: scale(1.05);
+  opacity: 0.85;
+}
+
+.global-nav.dynamic-island .nav-logo img {
+  height: 32px;
+  width: 32px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+/* ============================================
+   NAV LINKS - Apple-style centered links
+   ============================================ */
+
+.global-nav.dynamic-island .nav-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--island-link-gap);
+  font-size: var(--island-link-size) !important;
+  font-weight: var(--island-link-weight) !important;
+  letter-spacing: -0.01em !important;
+  flex: 1 1 auto;
+  font-family: var(--island-font) !important;
+}
+
+/* Individual nav links - Apple style */
+.global-nav.dynamic-island .nav-link {
+  position: relative;
+  padding: 8px 0 !important;
+  font-size: var(--island-link-size) !important;
+  font-weight: var(--island-link-weight) !important;
+  letter-spacing: -0.01em !important;
+  color: var(--island-link-color) !important;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    padding 0.2s ease;
+  white-space: nowrap;
+  text-transform: none !important;
+  font-family: var(--island-font) !important;
+  border-radius: 999px;
+}
+
+html.dark .global-nav.dynamic-island .nav-link {
+  color: var(--island-link-color) !important;
+}
+
+#global-nav.global-nav.dynamic-island .nav-link {
+  color: var(--island-link-color) !important;
+}
+
+html.dark #global-nav.global-nav.dynamic-island .nav-link {
+  color: var(--island-link-color) !important;
+}
+
+/* Active state */
+.global-nav.dynamic-island .nav-link.active {
+  color: var(--island-link-color-active) !important;
+  font-weight: 500 !important;
+  background: var(--island-link-active-bg);
+  padding-inline: 10px !important;
+}
+
+html.dark .global-nav.dynamic-island .nav-link.active {
+  color: var(--island-link-color-active) !important;
+}
+
+#global-nav.global-nav.dynamic-island .nav-link.active {
+  color: var(--island-link-color-active) !important;
+}
+
+html.dark #global-nav.global-nav.dynamic-island .nav-link.active {
+  color: var(--island-link-color-active) !important;
+}
+
+/* Hover effect */
+.global-nav.dynamic-island .nav-link:hover {
+  color: var(--island-link-color-hover) !important;
+}
+
+html.dark .global-nav.dynamic-island .nav-link:hover {
+  color: var(--island-link-color-hover) !important;
+}
+
+/* Active indicator - subtle underline */
+.global-nav.dynamic-island .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: 1px;
+  background: var(--island-link-underline);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.global-nav.dynamic-island .nav-link:hover::after,
+.global-nav.dynamic-island .nav-link.active::after {
+  transform: scaleX(1);
+}
+
+html.dark .global-nav.dynamic-island .nav-link::after {
+  background: var(--island-link-underline);
+}
+
+/* ============================================
+   NAV ACTIONS (Search, Theme, Menu)
+   ============================================ */
+
+.global-nav.dynamic-island .nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Theme toggle button */
+.global-nav.dynamic-island .theme-toggle-nav,
+.global-nav.dynamic-island .menu-toggle-button,
+.global-nav.dynamic-island #search-toggle,
+.global-nav.dynamic-island #theme-toggle,
+.global-nav.dynamic-island #menu-btn {
+  width: var(--island-control-size) !important;
+  height: var(--island-control-size) !important;
+  min-width: var(--island-control-size) !important;
+  min-height: var(--island-control-size) !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--island-control-border) !important;
+  background: var(--island-control-bg) !important;
+  color: var(--island-control-color) !important;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--island-control-icon-size) !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  font-family: var(--island-font) !important;
+  line-height: 1 !important;
+}
+
+.global-nav.dynamic-island .menu-toggle-button,
+.global-nav.dynamic-island #menu-btn {
+  display: none !important;
+}
+
+html.dark .global-nav.dynamic-island .theme-toggle-nav,
+html.dark .global-nav.dynamic-island .menu-toggle-button,
+html.dark .global-nav.dynamic-island #search-toggle,
+html.dark .global-nav.dynamic-island #theme-toggle,
+html.dark .global-nav.dynamic-island #menu-btn {
+  color: var(--island-control-color) !important;
+}
+
+#global-nav.global-nav.dynamic-island #search-toggle,
+#global-nav.global-nav.dynamic-island #theme-toggle,
+#global-nav.global-nav.dynamic-island #menu-btn {
+  color: var(--island-control-color) !important;
+}
+
+html.dark #global-nav.global-nav.dynamic-island #search-toggle,
+html.dark #global-nav.global-nav.dynamic-island #theme-toggle,
+html.dark #global-nav.global-nav.dynamic-island #menu-btn {
+  color: var(--island-control-color) !important;
+}
+
+.global-nav.dynamic-island .theme-toggle-nav:hover,
+.global-nav.dynamic-island .menu-toggle-button:hover,
+.global-nav.dynamic-island #search-toggle:hover,
+.global-nav.dynamic-island #theme-toggle:hover,
+.global-nav.dynamic-island #menu-btn:hover {
+  background: var(--island-control-bg-hover) !important;
+  color: var(--island-link-color-active) !important;
+  border-color: rgb(0 113 227 / 28%) !important;
+}
+
+html.dark .global-nav.dynamic-island .theme-toggle-nav:hover,
+html.dark .global-nav.dynamic-island .menu-toggle-button:hover,
+html.dark .global-nav.dynamic-island #search-toggle:hover,
+html.dark .global-nav.dynamic-island #theme-toggle:hover,
+html.dark .global-nav.dynamic-island #menu-btn:hover {
+  background: var(--island-control-bg-hover) !important;
+  color: var(--island-link-color-active) !important;
+  border-color: rgb(78 161 255 / 35%) !important;
+}
+
+.global-nav.dynamic-island .theme-toggle-nav:active,
+.global-nav.dynamic-island .menu-toggle-button:active,
+.global-nav.dynamic-island #search-toggle:active,
+.global-nav.dynamic-island #theme-toggle:active,
+.global-nav.dynamic-island #menu-btn:active {
+  transform: scale(0.92);
+}
+
+.global-nav.dynamic-island .theme-toggle-nav i,
+.global-nav.dynamic-island .menu-toggle-button i,
+.global-nav.dynamic-island #search-toggle i,
+.global-nav.dynamic-island #theme-toggle i,
+.global-nav.dynamic-island #menu-btn i {
+  color: currentcolor !important;
+  font-size: var(--island-control-icon-size) !important;
+  line-height: 1 !important;
+  pointer-events: none;
+}
+
+.global-nav.dynamic-island .menu-toggle-icon {
+  transition: transform 0.22s ease;
+}
+
+.global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
+  background: var(--island-control-bg-hover) !important;
+  color: var(--island-link-color-active) !important;
+  border-color: rgb(0 113 227 / 28%) !important;
+}
+
+html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
+  border-color: rgb(78 161 255 / 35%) !important;
+}
+
+.global-nav.dynamic-island #menu-btn[aria-expanded='true'] .menu-toggle-icon {
+  transform: rotate(90deg);
+}
+
+/* ============================================
+   SCROLLABLE NAV RAIL (Desktop)
+   ============================================ */
+
+.global-nav.dynamic-island .nav-links.scrollable-nav {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 20px,
+    black calc(100% - 20px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 20px,
+    black calc(100% - 20px),
+    transparent 100%
+  );
+  padding: 0 20px;
+}
+
+.global-nav.dynamic-island .nav-links.scrollable-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 1400px) {
+  .global-nav.dynamic-island {
+    --island-side-pad: 32px;
+  }
+
+  .global-nav.dynamic-island .nav-links {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 1150px) {
+  .global-nav.dynamic-island {
+    --island-side-pad: 24px;
+  }
+
+  .global-nav.dynamic-island {
+    --island-control-size: 36px;
+    --island-control-icon-size: 15px;
+  }
+
+  .global-nav.dynamic-island .nav-container {
+    gap: 16px;
+  }
+
+  .global-nav.dynamic-island .nav-links {
+    display: none;
+  }
+
+  .global-nav.dynamic-island .menu-toggle-button,
+  .global-nav.dynamic-island #menu-btn {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .global-nav.dynamic-island {
+    --island-height: 48px;
+    --island-side-pad: 16px;
+    --island-control-size: 36px;
+    --island-control-icon-size: 14px;
+  }
+
+  .global-nav.dynamic-island .nav-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .global-nav.dynamic-island .nav-logo img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .global-nav.dynamic-island .nav-actions {
+    gap: 8px;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .global-nav.dynamic-island,
+  .global-nav.dynamic-island * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .global-nav.dynamic-island {
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom-width: 2px;
+  }
+
+  html.dark .global-nav.dynamic-island {
+    background: rgba(0, 0, 0, 0.98);
+  }
+}
+
+.global-nav.dynamic-island .nav-link:focus-visible,
+.global-nav.dynamic-island .theme-toggle-nav:focus-visible,
+.global-nav.dynamic-island .menu-toggle-button:focus-visible,
+.global-nav.dynamic-island #search-toggle:focus-visible,
+.global-nav.dynamic-island #theme-toggle:focus-visible,
+.global-nav.dynamic-island #menu-btn:focus-visible {
+  outline: 2px solid var(--island-link-color-hover);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgb(0 113 227 / 14%);
+}
+
+html.dark .global-nav.dynamic-island .nav-link:focus-visible,
+html.dark .global-nav.dynamic-island .theme-toggle-nav:focus-visible,
+html.dark .global-nav.dynamic-island .menu-toggle-button:focus-visible,
+html.dark .global-nav.dynamic-island #search-toggle:focus-visible,
+html.dark .global-nav.dynamic-island #theme-toggle:focus-visible,
+html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
+  outline-color: var(--island-link-color-hover);
+  box-shadow: 0 0 0 4px rgb(78 161 255 / 20%);
+}

@@ -79,6 +79,15 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
+  <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
   <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="assets/css/tailwind-output.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print"
@@ -101,13 +110,14 @@
   <link rel="stylesheet" href="assets/css/homepage.css" />
   <link rel="stylesheet" href="assets/css/experience.css" media="print" onload="this.media='all'" />
 
-  <link rel="stylesheet" href="assets/css/calendar.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/ai-assistant.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/ai-assistant-mobile.css" media="print" onload="this.media='all'" />
 
   <link rel="stylesheet" href="assets/css/about.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/blog.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" />
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css" />
   <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/recommendations.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/awards.css" media="print" onload="this.media='all'" />
@@ -178,7 +188,7 @@
         </button>
         <button id="menu-btn" class="menu-toggle-button" type="button" aria-label="Open navigation menu"
           aria-controls="overlay-menu" aria-expanded="false">
-          <i class="fas fa-bars" style="font-size: 24px; color: var(--nav-text);"></i>
+          <i class="fas fa-bars menu-toggle-icon" aria-hidden="true"></i>
         </button>
       </div>
     </div>
@@ -661,59 +671,101 @@
     <!-- Projects Section - Dynamic GitHub Integration -->
     <section id="projects" class="fade-in py-32">
       <div class="container">
-        <h2>Latest Projects</h2>
-        <p class="section-subtitle">Curated open-source work from GitHub — real code, real impact.</p>
+        <h2>Project Showcase</h2>
+        <p class="section-subtitle">Apple-grade software craftsmanship with live GitHub activity signals.</p>
 
+        <div id="projects-showcase-shell" class="projects-showcase-shell">
+          <!-- GitHub Activity Overview -->
+          <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
+            <div class="activity-overview-head">
+              <div class="activity-overview-title-wrap">
+                <p class="activity-eyebrow">GitHub Activity</p>
+                <h3 class="activity-title">Live engineering momentum</h3>
+              </div>
+              <p id="projects-activity-caption" class="projects-activity-caption">
+                Syncing repository stars, forks, commits, and contributors...
+              </p>
+            </div>
 
+            <div class="activity-overview-inner">
+              <div class="activity-stat-item">
+                <span class="activity-stat-value" id="stat-repos">--</span>
+                <span class="activity-stat-label">Public Repos</span>
+              </div>
+              <div class="activity-stat-item">
+                <span class="activity-stat-value" id="stat-stars">--</span>
+                <span class="activity-stat-label">Stars</span>
+              </div>
+              <div class="activity-stat-item">
+                <span class="activity-stat-value" id="stat-forks">--</span>
+                <span class="activity-stat-label">Forks</span>
+              </div>
+              <div class="activity-stat-item">
+                <span class="activity-stat-value" id="stat-commits">--</span>
+                <span class="activity-stat-label">Commits (30d)</span>
+              </div>
+              <div class="activity-stat-item">
+                <span class="activity-stat-value" id="stat-contributors">--</span>
+                <span class="activity-stat-label">Contributors</span>
+              </div>
+              <div class="activity-stat-item">
+                <span class="activity-stat-value" id="stat-languages">--</span>
+                <span class="activity-stat-label">Languages</span>
+              </div>
+            </div>
 
-        <!-- GitHub Activity Overview -->
-        <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
-          <div class="activity-overview-inner">
-            <div class="activity-stat-item">
-              <span class="activity-stat-value" id="stat-repos">--</span>
-              <span class="activity-stat-label">Public Repos</span>
+            <div class="activity-github-graph-container">
+              <h4 class="graph-title">Contributions in the last year</h4>
+              <div class="github-graph-scroll">
+                <picture>
+                  <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/4fa5ff/mangeshraut712">
+                  <source media="(prefers-color-scheme: light)"
+                    srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
+                  <img src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github chart"
+                    class="github-graph-svg">
+                </picture>
+              </div>
             </div>
-            <div class="activity-stat-divider"></div>
-            <div class="activity-stat-item">
-              <span class="activity-stat-value" id="stat-stars">--</span>
-              <span class="activity-stat-label">Total Stars</span>
+          </div>
+
+          <!-- Project Search & Filter -->
+          <div class="proj-search-container flex flex-col md:flex-row gap-4 justify-between items-center mb-10 w-full">
+            <div class="proj-input-group flex items-center flex-1 rounded-full px-5 py-3 w-full max-w-2xl">
+              <i class="fas fa-search text-secondary mr-3 text-lg opacity-60"></i>
+              <input type="text" id="project-search-input"
+                class="proj-search-input w-full bg-transparent border-none outline-none font-medium"
+                placeholder="Search projects by name, tag, or language (supports close matches)..." aria-label="Search projects">
             </div>
-            <div class="activity-stat-divider"></div>
-            <div class="activity-stat-item">
-              <span class="activity-stat-value" id="stat-forks">--</span>
-              <span class="activity-stat-label">Total Forks</span>
-            </div>
-            <div class="activity-stat-divider"></div>
-            <div class="activity-stat-item">
-              <span class="activity-stat-value" id="stat-languages">--</span>
-              <span class="activity-stat-label">Languages</span>
-            </div>
-            <div class="activity-overview-link">
+            <div class="proj-controls-group flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+              <select id="project-sort-select"
+                class="proj-filter-select rounded-full px-5 py-3 outline-none cursor-pointer font-medium appearance-none min-w-[180px]"
+                aria-label="Sort projects">
+                <option value="popularity">Sort by Popularity</option>
+                <option value="date">Sort by Date</option>
+                <option value="name">Sort by Name</option>
+                <option value="language">Sort by Language</option>
+              </select>
               <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
-                class="activity-github-link">
-                <i class="fab fa-github"></i>
-                <span>View Profile</span>
-                <i class="fas fa-arrow-up-right-from-square" style="font-size:0.7em;opacity:0.6"></i>
+                class="btn projects-view-all-btn flex items-center justify-center gap-2 font-medium"
+                aria-label="Visit GitHub profile">
+                <i class="fab fa-github text-lg"></i> Visit GitHub Profile
               </a>
             </div>
           </div>
-        </div>
 
-        <!-- Projects Grid — 8 curated projects, 2 rows -->
-        <div class="max-w-6xl mx-auto">
-          <div id="github-projects-container">
-            <!-- Projects will be dynamically loaded here -->
-            <div class="col-span-full flex items-center justify-center py-12">
-              <div class="text-center">
-                <div class="loading-spinner mb-4 mx-auto"></div>
-                <p class="text-secondary">Loading projects from GitHub...</p>
+          <!-- Projects Grid -->
+          <div class="max-w-6xl mx-auto w-full">
+            <div id="github-projects-container" class="projects-grid-shell">
+              <!-- Projects will be dynamically loaded here -->
+              <div class="col-span-full flex items-center justify-center py-12">
+                <div class="text-center">
+                  <div class="loading-spinner mb-4 mx-auto"></div>
+                  <p class="text-secondary">Loading projects from GitHub...</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-
-
       </div>
     </section>
 

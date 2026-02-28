@@ -6,11 +6,46 @@ export class CalendarWidget {
 
     // "Smart" Reminders Data
     this.reminders = [
-      { id: 999, text: "Mangesh's Birthday 🎂", time: "Dec 7", tag: "Special", color: "gold", completed: false },
-      { id: 1, text: "Review Portfolio Design", time: "10:00 AM", tag: "Design", color: "blue", completed: false },
-      { id: 2, text: "Email Mangesh", time: "2:00 PM", tag: "Urgent", color: "red", completed: false },
-      { id: 3, text: "AI Model Training", time: "4:30 PM", tag: "Dev", color: "purple", completed: false },
-      { id: 4, text: "Team Sync", time: "Tomorrow", tag: "Work", color: "green", completed: false }
+      {
+        id: 999,
+        text: "Mangesh's Birthday 🎂",
+        time: 'Dec 7',
+        tag: 'Special',
+        color: 'gold',
+        completed: false,
+      },
+      {
+        id: 1,
+        text: 'Review Portfolio Design',
+        time: '10:00 AM',
+        tag: 'Design',
+        color: 'blue',
+        completed: false,
+      },
+      {
+        id: 2,
+        text: 'Email Mangesh',
+        time: '2:00 PM',
+        tag: 'Urgent',
+        color: 'red',
+        completed: false,
+      },
+      {
+        id: 3,
+        text: 'AI Model Training',
+        time: '4:30 PM',
+        tag: 'Dev',
+        color: 'purple',
+        completed: false,
+      },
+      {
+        id: 4,
+        text: 'Team Sync',
+        time: 'Tomorrow',
+        tag: 'Work',
+        color: 'green',
+        completed: false,
+      },
     ];
   }
 
@@ -21,10 +56,21 @@ export class CalendarWidget {
   }
 
   render() {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
-    const days = ["S", "M", "T", "W", "T", "F", "S"];
+    const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
     const year = this.date.getFullYear();
     const month = this.date.getMonth();
@@ -63,8 +109,9 @@ export class CalendarWidget {
 
     // Days
     for (let i = 1; i <= daysInMonth; i++) {
-      const isToday = (i === today && month === new Date().getMonth() && year === new Date().getFullYear());
-      const isBirthday = (month === 11 && i === 7); // Dec 7
+      const isToday =
+        i === today && month === new Date().getMonth() && year === new Date().getFullYear();
+      const isBirthday = month === 11 && i === 7; // Dec 7
       const hasEvent = [5, 12, 18, 25].includes(i); // Dummy events
 
       let classes = 'day-cell';
@@ -95,7 +142,9 @@ export class CalendarWidget {
           
           <div class="reminders-scroll-area">
             <div class="reminder-cards-grid">
-              ${this.reminders.map(r => `
+              ${this.reminders
+                .map(
+                  r => `
                 <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${r.color}" data-id="${r.id}">
                   <div class="card-accent-strip"></div>
                   <div class="card-content">
@@ -114,7 +163,9 @@ export class CalendarWidget {
                     </button>
                   </div>
                 </div>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
           </div>
           
@@ -140,7 +191,7 @@ export class CalendarWidget {
     // Reminder Toggle (Target new Card class)
     this.container.querySelectorAll('.reminder-card').forEach(item => {
       // Toggle Complete on Card Click
-      item.onclick = (e) => {
+      item.onclick = e => {
         // Ignore if clicking buttons inside
         if (e.target.closest('.edit-btn')) return;
 
@@ -155,13 +206,13 @@ export class CalendarWidget {
       // Edit Button Logic
       const editBtn = item.querySelector('.edit-btn');
       if (editBtn) {
-        editBtn.onclick = (e) => {
+        editBtn.onclick = e => {
           e.stopPropagation(); // Stop card click
           const id = parseInt(item.dataset.id);
           const reminder = this.reminders.find(r => r.id === id);
           if (reminder) {
-            const newText = prompt("Update Reminder:", reminder.text);
-            if (newText !== null && newText.trim() !== "") {
+            const newText = prompt('Update Reminder:', reminder.text);
+            if (newText !== null && newText.trim() !== '') {
               reminder.text = newText;
               this.render();
             }
@@ -176,11 +227,11 @@ export class CalendarWidget {
       newBtn.onclick = () => {
         const newReminder = {
           id: Date.now(),
-          text: "New Reminder",
-          time: "Now",
-          color: ["blue", "red", "orange", "green"][Math.floor(Math.random() * 4)],
-          tag: "Inbox",
-          completed: false
+          text: 'New Reminder',
+          time: 'Now',
+          color: ['blue', 'red', 'orange', 'green'][Math.floor(Math.random() * 4)],
+          tag: 'Inbox',
+          completed: false,
         };
         this.reminders.unshift(newReminder); // Add to top
         this.render();
@@ -192,7 +243,11 @@ export class CalendarWidget {
       day.addEventListener('click', () => {
         this.container.querySelectorAll('.day-cell').forEach(d => d.classList.remove('selected'));
         day.classList.add('selected');
-        this.selectedDate = new Date(this.date.getFullYear(), this.date.getMonth(), parseInt(day.dataset.day));
+        this.selectedDate = new Date(
+          this.date.getFullYear(),
+          this.date.getMonth(),
+          parseInt(day.dataset.day)
+        );
       });
     });
   }

@@ -9,62 +9,62 @@
 
 /* Contact Grid Layout */
 .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem !important;
-    margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem !important;
+  margin-top: 1.5rem;
 }
 
 /* Desktop: Two columns side by side */
 @media (width >=1024px) {
-    .contact-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem !important;
-    }
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem !important;
+  }
 }
 
 /* Contact Column */
 .contact-column {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
 
-    /* Prevent overflow */
+  /* Prevent overflow */
 }
 
 /* Keep right-column cards contained and aligned within Contact */
 #contact .contact-grid {
-    align-items: start;
+  align-items: start;
 }
 
 #contact .contact-column {
-    align-items: stretch;
+  align-items: stretch;
 }
 
-#contact .contact-column>* {
-    width: 100%;
-    max-width: 100%;
+#contact .contact-column > * {
+  width: 100%;
+  max-width: 100%;
 }
 
 .calendar-wrapper-clean {
-    width: 100%;
-    min-width: 0;
-    margin-top: 0.25rem;
+  width: 100%;
+  min-width: 0;
+  margin-top: 0.25rem;
 }
 
 #calendar-widget {
-    width: 100%;
-    min-width: 0;
+  width: 100%;
+  min-width: 0;
 }
 
 /* Prevent reminders from growing into the next section on desktop */
 @media (width >=1024px) {
-    #contact #calendar-widget .reminders-scroll-area {
-        max-height: 320px;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-    }
+  #contact #calendar-widget .reminders-scroll-area {
+    max-height: 320px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 }
 
 /* ----------------------------------------
@@ -73,1037 +73,1037 @@
 
 /* Contact card customizations (base styles in sitewide-design-system.css) */
 .contact-card {
-    padding: 1.25rem !important;
-    border-radius: 16px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
+  padding: 1.25rem !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 .contact-card * {
-    box-sizing: border-box !important;
+  box-sizing: border-box !important;
 }
 
 .contact-card h3 {
-    font-size: 1.5rem !important;
-    margin-bottom: 1rem !important;
-    font-weight: 600;
+  font-size: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  font-weight: 600;
 }
 
 .contact-description {
-    font-size: 0.9rem !important;
-    color: #6e6e73;
-    margin-bottom: 1rem !important;
-    line-height: 1.5;
+  font-size: 0.9rem !important;
+  color: #6e6e73;
+  margin-bottom: 1rem !important;
+  line-height: 1.5;
 }
 
 html.dark .contact-description {
-    color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 /* ----------------------------------------
    Contact Info Items (Email, Phone, Loc)
    ---------------------------------------- */
 .contact-info-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .contact-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .contact-label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-weight: 700;
-    color: #86868b;
-    margin-left: 0;
-    margin-bottom: 0.25rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+  color: #86868b;
+  margin-left: 0;
+  margin-bottom: 0.25rem;
 }
 
 .contact-link-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .contact-link-item {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.5rem;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    color: #1d1d1f;
-    font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: #1d1d1f;
+  font-size: 0.85rem;
 }
 
 html.dark .contact-link-item {
-    color: #f5f5f7;
+  color: #f5f5f7;
 }
 
 .contact-link-item:hover {
-    background: rgb(0 0 0 / 4%);
-    transform: translateX(3px);
+  background: rgb(0 0 0 / 4%);
+  transform: translateX(3px);
 }
 
 html.dark .contact-link-item:hover {
-    background: rgb(255 255 255 / 6%);
+  background: rgb(255 255 255 / 6%);
 }
 
 .contact-link-item i {
-    font-size: 1rem;
-    width: 20px;
-    text-align: center;
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
 }
 
 .link-text {
-    font-weight: 500;
-    font-size: 0.85rem;
+  font-weight: 500;
+  font-size: 0.85rem;
 }
 
 /* Icon Boxes */
 
 /* Icon Boxes - Apple Style Refined */
 .icon-box {
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem !important;
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    flex-shrink: 0;
-    cursor: pointer;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem !important;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 /* Email - Blue */
 .icon-box.blue {
-    background: rgb(0 122 255 / 10%) !important;
-    color: #007aff !important;
-    box-shadow: none !important;
+  background: rgb(0 122 255 / 10%) !important;
+  color: #007aff !important;
+  box-shadow: none !important;
 }
 
 /* Phone - Green */
 .icon-box.green {
-    background: rgb(52 199 89 / 10%) !important;
-    color: #34c759 !important;
-    box-shadow: none !important;
+  background: rgb(52 199 89 / 10%) !important;
+  color: #34c759 !important;
+  box-shadow: none !important;
 }
 
 /* Location - Red (Replacing Purple) */
 .icon-box.purple,
 .icon-box.location {
-    background: rgb(255 59 48 / 10%) !important;
-    color: #ff3b30 !important;
-    box-shadow: none !important;
+  background: rgb(255 59 48 / 10%) !important;
+  color: #ff3b30 !important;
+  box-shadow: none !important;
 }
 
 /* Dark Mode Adjustments */
 html.dark .icon-box.blue {
-    background: rgb(10 132 255 / 15%) !important;
-    color: #0a84ff !important;
+  background: rgb(10 132 255 / 15%) !important;
+  color: #0a84ff !important;
 }
 
 html.dark .icon-box.green {
-    background: rgb(48 209 88 / 15%) !important;
-    color: #30d158 !important;
+  background: rgb(48 209 88 / 15%) !important;
+  color: #30d158 !important;
 }
 
 html.dark .icon-box.purple,
 html.dark .icon-box.location {
-    background: rgb(255 69 58 / 15%) !important;
-    color: #ff453a !important;
+  background: rgb(255 69 58 / 15%) !important;
+  color: #ff453a !important;
 }
 
 /* Hover Effects - Premium Pop with Glow */
 .contact-link-item:hover .icon-box {
-    transform: scale(1.15) rotate(5deg);
+  transform: scale(1.15) rotate(5deg);
 }
 
 .contact-link-item:hover .icon-box.blue {
-    background: #007aff !important;
-    color: #fff !important;
-    box-shadow:
-        0 4px 15px rgb(0 122 255 / 40%),
-        0 0 20px rgb(0 122 255 / 25%) !important;
+  background: #007aff !important;
+  color: #fff !important;
+  box-shadow:
+    0 4px 15px rgb(0 122 255 / 40%),
+    0 0 20px rgb(0 122 255 / 25%) !important;
 }
 
 .contact-link-item:hover .icon-box.green {
-    background: #34c759 !important;
-    color: #fff !important;
-    box-shadow:
-        0 4px 15px rgb(52 199 89 / 40%),
-        0 0 20px rgb(52 199 89 / 25%) !important;
+  background: #34c759 !important;
+  color: #fff !important;
+  box-shadow:
+    0 4px 15px rgb(52 199 89 / 40%),
+    0 0 20px rgb(52 199 89 / 25%) !important;
 }
 
 .contact-link-item:hover .icon-box.purple,
 .contact-link-item:hover .icon-box.location {
-    background: #ff3b30 !important;
-    color: #fff !important;
-    box-shadow:
-        0 4px 15px rgb(255 59 48 / 40%),
-        0 0 20px rgb(255 59 48 / 25%) !important;
+  background: #ff3b30 !important;
+  color: #fff !important;
+  box-shadow:
+    0 4px 15px rgb(255 59 48 / 40%),
+    0 0 20px rgb(255 59 48 / 25%) !important;
 }
 
 /* Contact Link Item - Improved Hover */
 .contact-link-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.6rem 0.75rem;
-    border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    text-decoration: none;
-    color: #1d1d1f;
-    font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+  color: #1d1d1f;
+  font-size: 0.9rem;
 }
 
 html.dark .contact-link-item {
-    color: #f5f5f7;
+  color: #f5f5f7;
 }
 
 .contact-link-item:hover {
-    background: rgb(0 0 0 / 5%);
-    transform: translateX(4px);
+  background: rgb(0 0 0 / 5%);
+  transform: translateX(4px);
 }
 
 html.dark .contact-link-item:hover {
-    background: rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 8%);
 }
 
 .contact-link-item:hover .link-text {
-    color: #007aff;
+  color: #007aff;
 }
 
 html.dark .contact-link-item:hover .link-text {
-    color: #0a84ff;
+  color: #0a84ff;
 }
 
 /* ----------------------------------------
    AssistMe Contact CTA
    ---------------------------------------- */
 .contact-assistme-card {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 2rem 1.5rem !important;
-    border: 1px solid rgb(0 122 255 / 18%) !important;
-    background: linear-gradient(160deg, rgb(0 122 255 / 5%), rgb(0 122 255 / 2%)) !important;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem !important;
+  border: 1px solid rgb(0 122 255 / 18%) !important;
+  background: linear-gradient(160deg, rgb(0 122 255 / 5%), rgb(0 122 255 / 2%)) !important;
 }
 
 html.dark .contact-assistme-card {
-    border-color: rgb(10 132 255 / 28%) !important;
-    background: linear-gradient(160deg, rgb(10 132 255 / 16%), rgb(10 132 255 / 6%)) !important;
+  border-color: rgb(10 132 255 / 28%) !important;
+  background: linear-gradient(160deg, rgb(10 132 255 / 16%), rgb(10 132 255 / 6%)) !important;
 }
 
 .contact-assistme-icon {
-    width: 72px !important;
-    height: 72px !important;
-    font-size: 2rem !important;
-    margin-bottom: 1.25rem;
+  width: 72px !important;
+  height: 72px !important;
+  font-size: 2rem !important;
+  margin-bottom: 1.25rem;
 }
 
 .contact-assistme-card h3 {
-    margin-bottom: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
 }
 
 .contact-assistme-card .contact-description {
-    max-width: 420px;
-    margin-bottom: 1rem !important;
-    line-height: 1.6;
+  max-width: 420px;
+  margin-bottom: 1rem !important;
+  line-height: 1.6;
 }
 
 .contact-assistme-btn {
-    width: 100%;
-    border: none;
-    border-radius: 14px;
-    padding: 0.8rem 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    font-size: 0.92rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: #fff;
-    background: linear-gradient(135deg, #007aff 0%, #005fd1 100%);
-    box-shadow: 0 8px 24px rgb(0 122 255 / 28%);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #007aff 0%, #005fd1 100%);
+  box-shadow: 0 8px 24px rgb(0 122 255 / 28%);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .contact-assistme-btn:hover,
 .contact-assistme-btn:focus-visible {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 26px rgb(0 122 255 / 34%);
-    outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgb(0 122 255 / 34%);
+  outline: none;
 }
 
 .contact-assistme-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 html.dark .contact-assistme-btn {
-    background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
-    box-shadow: 0 8px 24px rgb(10 132 255 / 30%);
+  background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+  box-shadow: 0 8px 24px rgb(10 132 255 / 30%);
 }
 
 .contact-assistme-note {
-    margin-top: 0.65rem;
-    margin-bottom: 0;
-    font-size: 0.8rem;
-    color: #6e6e73;
+  margin-top: 0.65rem;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+  color: #6e6e73;
 }
 
 html.dark .contact-assistme-note {
-    color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 /* ----------------------------------------
    Contact Form
    ---------------------------------------- */
 .contact-form {
-    margin-top: 0.5rem !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+  margin-top: 0.5rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem !important;
-    margin-bottom: 0.65rem !important;
-    width: 100% !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem !important;
+  margin-bottom: 0.65rem !important;
+  width: 100% !important;
 }
 
 @media (width <=640px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-group {
-    margin-bottom: 0.65rem !important;
-    width: 100% !important;
+  margin-bottom: 0.65rem !important;
+  width: 100% !important;
 }
 
 .form-label {
-    display: none !important;
+  display: none !important;
 }
 
 .contact-input {
-    width: 100% !important;
-    padding: 0.75rem 0.9rem !important;
-    background: #fff !important;
+  width: 100% !important;
+  padding: 0.75rem 0.9rem !important;
+  background: #fff !important;
 
-    /* Solid White */
-    border: 1px solid rgb(0 0 0 / 15%) !important;
+  /* Solid White */
+  border: 1px solid rgb(0 0 0 / 15%) !important;
 
-    /* Slightly stronger border for visibility */
-    border-radius: 12px !important;
-    font-size: 0.9rem !important;
-    line-height: 1.5 !important;
-    transition: all 0.2s ease;
-    box-shadow: none !important;
+  /* Slightly stronger border for visibility */
+  border-radius: 12px !important;
+  font-size: 0.9rem !important;
+  line-height: 1.5 !important;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
 
-    /* Remove shadow to look cleaner on solid bg */
-    color: #1d1d1f;
-    box-sizing: border-box !important;
-    max-width: 100% !important;
+  /* Remove shadow to look cleaner on solid bg */
+  color: #1d1d1f;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
 }
 
 .contact-input::placeholder {
-    color: #86868b;
-    font-weight: 400;
+  color: #86868b;
+  font-weight: 400;
 }
 
 .contact-input:focus {
-    outline: none;
-    border-color: #0071e3 !important;
-    box-shadow: 0 0 0 3px rgb(0 113 227 / 10%) !important;
+  outline: none;
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 3px rgb(0 113 227 / 10%) !important;
 }
 
 html.dark .contact-input {
-    background: #000 !important;
+  background: #000 !important;
 
-    /* Solid Black */
-    border-color: rgb(255 255 255 / 20%) !important;
+  /* Solid Black */
+  border-color: rgb(255 255 255 / 20%) !important;
 
-    /* Stronger border for dark mode */
-    color: #fff !important;
+  /* Stronger border for dark mode */
+  color: #fff !important;
 }
 
 html.dark .contact-input::placeholder {
-    color: #86868b;
+  color: #86868b;
 }
 
 html.dark .contact-input:focus {
-    border-color: #0a84ff;
-    box-shadow: 0 0 0 3px rgb(10 132 255 / 15%);
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 3px rgb(10 132 255 / 15%);
 }
 
 textarea.contact-input {
-    min-height: 100px !important;
-    max-height: 150px !important;
-    resize: vertical;
-    font-family: inherit;
-    line-height: 1.6 !important;
+  min-height: 100px !important;
+  max-height: 150px !important;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6 !important;
 }
 
 /* Submit Button */
-.contact-form button[type="submit"] {
-    margin-top: 0.75rem !important;
-    padding: 0.75rem 2rem !important;
-    font-size: 0.95rem !important;
-    font-weight: 600;
-    border-radius: 50px !important;
-    background: linear-gradient(135deg, #007aff 0%, #0051d5 100%) !important;
-    color: white !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgb(0 122 255 / 30%) !important;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
+.contact-form button[type='submit'] {
+  margin-top: 0.75rem !important;
+  padding: 0.75rem 2rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 600;
+  border-radius: 50px !important;
+  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgb(0 122 255 / 30%) !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-.contact-form button[type="submit"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgb(0 122 255 / 40%) !important;
+.contact-form button[type='submit']:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgb(0 122 255 / 40%) !important;
 }
 
-.contact-form button[type="submit"]:active {
-    transform: translateY(0);
+.contact-form button[type='submit']:active {
+  transform: translateY(0);
 }
 
-html.dark .contact-form button[type="submit"] {
-    background: linear-gradient(135deg, #0a84ff 0%, #06c 100%) !important;
-    box-shadow: 0 4px 12px rgb(10 132 255 / 40%) !important;
+html.dark .contact-form button[type='submit'] {
+  background: linear-gradient(135deg, #0a84ff 0%, #06c 100%) !important;
+  box-shadow: 0 4px 12px rgb(10 132 255 / 40%) !important;
 }
 
-html.dark .contact-form button[type="submit"]:hover {
-    box-shadow: 0 6px 20px rgb(10 132 255 / 50%) !important;
+html.dark .contact-form button[type='submit']:hover {
+  box-shadow: 0 6px 20px rgb(10 132 255 / 50%) !important;
 }
 
 .contact-description {
-    color: #6e6e73;
-    font-size: 0.85rem;
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
+  color: #6e6e73;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
 }
 
 .contact-info-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem !important;
 }
 
 .contact-item {
-    margin-bottom: 0.4rem !important;
+  margin-bottom: 0.4rem !important;
 }
 
 .contact-item:last-child {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .contact-label {
-    display: block;
-    font-size: 0.65rem !important;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #6e6e73;
-    margin-bottom: 0.2rem !important;
+  display: block;
+  font-size: 0.65rem !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6e6e73;
+  margin-bottom: 0.2rem !important;
 }
 
 html.dark .contact-label {
-    color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 .contact-link-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem !important;
 }
 
 /* ----------------------------------------
    Social & Support Sections
    ---------------------------------------- */
 .social-section {
-    margin-top: 0.5rem !important;
-    padding-top: 0.5rem !important;
-    border-top: 1px solid rgb(0 0 0 / 6%);
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem !important;
+  border-top: 1px solid rgb(0 0 0 / 6%);
 }
 
 html.dark .social-section {
-    border-top: 1px solid rgb(255 255 255 / 10%);
+  border-top: 1px solid rgb(255 255 255 / 10%);
 }
 
 /* Refined Hover Styles - Blue Text, No Background */
 .contact-link-item:hover {
-    background: transparent !important;
-    transform: translateX(4px);
-    color: #007aff !important;
+  background: transparent !important;
+  transform: translateX(4px);
+  color: #007aff !important;
 }
 
 .contact-link-item:hover .link-text {
-    color: #007aff !important;
+  color: #007aff !important;
 }
 
 html.dark .contact-link-item:hover {
-    background: transparent !important;
-    color: #0a84ff !important;
+  background: transparent !important;
+  color: #0a84ff !important;
 }
 
 html.dark .contact-link-item:hover .link-text {
-    color: #0a84ff !important;
+  color: #0a84ff !important;
 }
 
 /* ----------------------------------------
    PREMIUM DONATION CARD - 2026 Redesign
    ---------------------------------------- */
 .support-section {
-    margin-top: 1.5rem !important;
-    padding: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    display: block !important;
+  margin-top: 1.5rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  display: block !important;
 }
 
 .support-donation-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 1.5rem 1.75rem;
-    border: 1px solid rgb(0 0 0 / 8%);
-    box-shadow: 0 4px 20px rgb(0 0 0 / 6%);
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    overflow: hidden;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid rgb(0 0 0 / 8%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 6%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 /* Subtle accent gradient on left border */
 .support-donation-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, #FFDD00 0%, #FBB034 50%, #FF9800 100%);
-    border-radius: 4px 0 0 4px;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #ffdd00 0%, #fbb034 50%, #ff9800 100%);
+  border-radius: 4px 0 0 4px;
 }
 
 html.dark .support-donation-card {
-    background: #000000;
-    border: 1px solid rgb(255 255 255 / 10%);
-    box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
+  background: #000000;
+  border: 1px solid rgb(255 255 255 / 10%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
 }
 
 .support-donation-card:hover {
-    transform: translateY(-4px);
-    box-shadow:
-        0 12px 32px rgb(0 0 0 / 12%),
-        0 0 0 1px rgb(255 183 77 / 30%);
-    border-color: rgb(255 183 77 / 50%);
+  transform: translateY(-4px);
+  box-shadow:
+    0 12px 32px rgb(0 0 0 / 12%),
+    0 0 0 1px rgb(255 183 77 / 30%);
+  border-color: rgb(255 183 77 / 50%);
 }
 
 html.dark .support-donation-card:hover {
-    box-shadow:
-        0 12px 40px rgb(0 0 0 / 60%),
-        0 0 0 1px rgb(255 152 0 / 40%);
-    border-color: rgb(255 152 0 / 50%);
+  box-shadow:
+    0 12px 40px rgb(0 0 0 / 60%),
+    0 0 0 1px rgb(255 152 0 / 40%);
+  border-color: rgb(255 152 0 / 50%);
 }
 
 /* Compact Header - Horizontal Layout */
 .donation-compact-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .donation-info {
-    flex: 1;
+  flex: 1;
 }
 
 .donation-info h3 {
-    font-size: 1.15rem !important;
-    font-weight: 700;
-    margin: 0 0 0.35rem 0 !important;
-    color: #1d1d1f;
-    letter-spacing: -0.01em;
+  font-size: 1.15rem !important;
+  font-weight: 700;
+  margin: 0 0 0.35rem 0 !important;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
 }
 
 html.dark .donation-info h3 {
-    color: #fff8e1;
+  color: #fff8e1;
 }
 
 /* Donation Header */
 .donation-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .donation-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1rem;
-    box-shadow: 0 4px 12px rgb(255 107 107 / 30%);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgb(255 107 107 / 30%);
 }
 
 .donation-header h3 {
-    flex: 1;
-    font-size: 1.1rem !important;
-    font-weight: 700;
-    margin: 0 !important;
-    color: #1d1d1f;
+  flex: 1;
+  font-size: 1.1rem !important;
+  font-weight: 700;
+  margin: 0 !important;
+  color: #1d1d1f;
 }
 
 html.dark .donation-header h3 {
-    color: #f5f5f7;
+  color: #f5f5f7;
 }
 
 .donate-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.5rem 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 20px;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgb(102 126 234 / 30%);
-    transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgb(102 126 234 / 30%);
+  transition: all 0.3s ease;
 }
 
 .donate-badge:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgb(102 126 234 / 50%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgb(102 126 234 / 50%);
 }
 
 /* Blessing Section with Ganesh */
 .blessing-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    text-align: center;
-    padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 1rem 0;
 }
 
 .ganesh-glow-container {
-    position: relative;
-    width: 70px;
-    height: 70px;
-    flex-shrink: 0;
+  position: relative;
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
 }
 
 .ganesh-blessing-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid rgb(0 0 0 / 10%);
-    box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
-    position: relative;
-    z-index: 2;
-    transition: all 0.3s ease;
-    animation: blessingFloat 4s ease-in-out infinite;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgb(0 0 0 / 10%);
+  box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  animation: blessingFloat 4s ease-in-out infinite;
 }
 
 html.dark .ganesh-blessing-img {
-    border-color: rgb(255 255 255 / 15%);
-    box-shadow: 0 4px 20px rgb(0 0 0 / 50%);
+  border-color: rgb(255 255 255 / 15%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 50%);
 }
 
 .ganesh-blessing-img:hover {
-    transform: scale(1.1) rotate(5deg);
-    animation-play-state: paused;
+  transform: scale(1.1) rotate(5deg);
+  animation-play-state: paused;
 }
 
 .glow-ring {
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
-    opacity: 0.5;
-    z-index: 1;
-    animation: glowSpin 5s linear infinite;
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
+  opacity: 0.5;
+  z-index: 1;
+  animation: glowSpin 5s linear infinite;
 }
 
 @keyframes glowSpin {
-    from {
-        transform: rotate(0deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1) rotate(0deg);
+  }
 
-    0%,
-    100% {
-        opacity: 0.4;
-        transform: scale(1) rotate(0deg);
-    }
-
-    50% {
-        opacity: 0.7;
-        transform: scale(1.05) rotate(180deg);
-    }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05) rotate(180deg);
+  }
 }
 
 @keyframes blessingFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
 
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .blessing-text {
-    font-size: 0.85rem;
-    color: #6e6e73;
-    margin: 0;
-    line-height: 1.4;
-    font-weight: 500;
+  font-size: 0.85rem;
+  color: #6e6e73;
+  margin: 0;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
 html.dark .blessing-text {
-    color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 /* Donation Description */
 .donation-description {
-    font-size: 0.85rem;
-    color: #6e6e73;
-    text-align: center;
-    line-height: 1.5;
-    margin: 0;
+  font-size: 0.85rem;
+  color: #6e6e73;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
 }
 
 html.dark .donation-description {
-    color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 /* Premium Coffee Button */
 .support-coffee-btn.premium {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 0.85rem 1.5rem;
-    background: linear-gradient(135deg, #FFDD00 0%, #FBB034 50%, #FF9800 100%);
-    color: #000000 !important;
-    font-weight: 700;
-    font-size: 0.95rem;
-    border-radius: 14px;
-    text-decoration: none;
-    box-shadow:
-        0 4px 15px rgb(255 152 0 / 45%),
-        0 0 25px rgb(255 213 79 / 20%),
-        inset 0 1px 0 rgb(255 255 255 / 40%);
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    overflow: hidden;
-    letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, #ffdd00 0%, #fbb034 50%, #ff9800 100%);
+  color: #000000 !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow:
+    0 4px 15px rgb(255 152 0 / 45%),
+    0 0 25px rgb(255 213 79 / 20%),
+    inset 0 1px 0 rgb(255 255 255 / 40%);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
 }
 
 .support-coffee-btn.premium span,
 .support-coffee-btn.premium i {
-    color: #000000 !important;
-    position: relative;
-    z-index: 1;
+  color: #000000 !important;
+  position: relative;
+  z-index: 1;
 }
 
 .support-coffee-btn.premium::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 50%), transparent);
-    transition: left 0.6s;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 50%), transparent);
+  transition: left 0.6s;
 }
 
 .support-coffee-btn.premium:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow:
-        0 8px 25px rgb(255 152 0 / 55%),
-        0 0 40px rgb(255 213 79 / 30%);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 8px 25px rgb(255 152 0 / 55%),
+    0 0 40px rgb(255 213 79 / 30%);
 }
 
 .support-coffee-btn.premium:hover::before {
-    left: 100%;
+  left: 100%;
 }
 
 .support-coffee-btn.premium:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 32px rgb(255 176 52 / 50%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 32px rgb(255 176 52 / 50%);
 }
 
 .support-coffee-btn.premium .arrow-icon {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .support-coffee-btn.premium:hover .arrow-icon {
-    transform: translateX(4px);
+  transform: translateX(4px);
 }
 
 /* Support Stats */
 .support-stats {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgb(0 0 0 / 5%);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(0 0 0 / 5%);
 }
 
 html.dark .support-stats {
-    border-top-color: rgb(255 255 255 / 8%);
+  border-top-color: rgb(255 255 255 / 8%);
 }
 
 .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.75rem;
-    color: #86868b;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #86868b;
 }
 
 .stat-item i {
-    font-size: 0.7rem;
-    color: #ff6b6b;
+  font-size: 0.7rem;
+  color: #ff6b6b;
 }
 
 html.dark .stat-item {
-    color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 /* Desktop Adjustments */
 @media (min-width: 1024px) {
-    .support-donation-card {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1.25rem 1.75rem;
-    }
+  .support-donation-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.75rem;
+  }
 
-    .donation-compact-header {
-        flex: 1;
-    }
+  .donation-compact-header {
+    flex: 1;
+  }
 
-    .ganesh-glow-container {
-        width: 64px;
-        height: 64px;
-    }
+  .ganesh-glow-container {
+    width: 64px;
+    height: 64px;
+  }
 
-    .support-coffee-btn.premium {
-        flex-shrink: 0;
-    }
+  .support-coffee-btn.premium {
+    flex-shrink: 0;
+  }
 }
 
 /* Mobile Layout */
 @media (max-width: 768px) {
-    .support-donation-card {
-        padding: 1rem 1.25rem;
-    }
+  .support-donation-card {
+    padding: 1rem 1.25rem;
+  }
 
-    .ganesh-glow-container {
-        width: 54px;
-        height: 54px;
-    }
+  .ganesh-glow-container {
+    width: 54px;
+    height: 54px;
+  }
 
-    .donation-info h3 {
-        font-size: 0.95rem !important;
-    }
+  .donation-info h3 {
+    font-size: 0.95rem !important;
+  }
 
-    .blessing-text {
-        font-size: 0.75rem;
-    }
+  .blessing-text {
+    font-size: 0.75rem;
+  }
 }
 
 /* Social Links - Force Left Alignment on Desktop, Center on Mobile */
 .wrapper {
-    justify-content: flex-start !important;
+  justify-content: flex-start !important;
 }
 
 @media (width <=768px) {
-    .wrapper {
-        justify-content: center !important;
-    }
+  .wrapper {
+    justify-content: center !important;
+  }
 }
 
 /* ----------------------------------------
    Compact Calendar Override
    ---------------------------------------- */
 .compact-calendar {
-    margin-top: 1rem !important;
-    border: 1px solid rgb(0 0 0 / 5%);
-    padding: 1.25rem !important;
-    border-radius: 16px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
+  margin-top: 1rem !important;
+  border: 1px solid rgb(0 0 0 / 5%);
+  padding: 1.25rem !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 html.dark .compact-calendar {
-    border: 1px solid rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 10%);
 }
 
 .compact-calendar .calendar-title h3 {
-    font-size: 1.1rem !important;
-    margin-bottom: 0.5rem !important;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+  font-size: 1.1rem !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .compact-calendar .calendar-today-info {
-    font-size: 0.8rem !important;
+  font-size: 0.8rem !important;
 }
 
 .compact-calendar .calendar-header {
-    padding: 0 !important;
-    padding-bottom: 0.75rem !important;
-    margin-bottom: 0.75rem !important;
+  padding: 0 !important;
+  padding-bottom: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
 }
 
 .compact-calendar .calendar-nav {
-    gap: 0.5rem !important;
+  gap: 0.5rem !important;
 }
 
 .compact-calendar .calendar-nav button {
-    width: 36px !important;
-    height: 36px !important;
-    font-size: 0.9rem !important;
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 0.9rem !important;
 }
 
 .compact-calendar .calendar-nav button.today-btn {
-    padding: 0 0.75rem !important;
-    font-size: 0.8rem !important;
-    border-radius: 18px !important;
+  padding: 0 0.75rem !important;
+  font-size: 0.8rem !important;
+  border-radius: 18px !important;
 }
 
 .compact-calendar .calendar-day-header {
-    font-size: 0.7rem !important;
-    margin-bottom: 0.5rem !important;
+  font-size: 0.7rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .compact-calendar .calendar-grid {
-    gap: 0.5rem !important;
+  gap: 0.5rem !important;
 }
 
 .compact-calendar .calendar-day {
-    font-size: 0.9rem !important;
-    min-height: 40px !important;
-    aspect-ratio: 1;
+  font-size: 0.9rem !important;
+  min-height: 40px !important;
+  aspect-ratio: 1;
 }
 
 .compact-calendar .event-dot {
-    width: 4px !important;
-    height: 4px !important;
-    bottom: 4px !important;
+  width: 4px !important;
+  height: 4px !important;
+  bottom: 4px !important;
 }
 
 .compact-calendar .calendar-footer {
-    margin-top: 1rem !important;
-    padding-top: 0.75rem !important;
+  margin-top: 1rem !important;
+  padding-top: 0.75rem !important;
 }
 
 .compact-calendar .calendar-stats {
-    font-size: 0.75rem !important;
-    margin-bottom: 0.5rem !important;
+  font-size: 0.75rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .compact-calendar .event-legend {
-    gap: 0.75rem !important;
-    font-size: 0.75rem !important;
+  gap: 0.75rem !important;
+  font-size: 0.75rem !important;
 }
 
 /* ----------------------------------------
    Unified Contact Card Sections
    ---------------------------------------- */
 .contact-info-all .contact-section {
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgb(0 0 0 / 6%);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
 }
 
 html.dark .contact-info-all .contact-section {
-    border-bottom-color: rgb(255 255 255 / 10%);
+  border-bottom-color: rgb(255 255 255 / 10%);
 }
 
 .contact-info-all .contact-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .contact-info-all .contact-section h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.05rem;
-    font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 .contact-info-all .contact-section .contact-description {
-    margin-bottom: 0.6rem;
-    font-size: 0.85rem;
-    line-height: 1.5;
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .follow-section {
-    margin-top: 1.25rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgb(0 0 0 / 6%);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(0 0 0 / 6%);
 }
 
 html.dark .follow-section {
-    border-top-color: rgb(255 255 255 / 10%);
+  border-top-color: rgb(255 255 255 / 10%);
 }
 
 #contact .contact-social-wrapper.wrapper {
-    margin-top: 0.75rem !important;
-    margin-bottom: 0.75rem !important;
-    padding: 0 !important;
-    justify-content: flex-start !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+  padding: 0 !important;
+  justify-content: flex-start !important;
 }
 
 @media (max-width: 768px) {
-    #contact .contact-social-wrapper.wrapper {
-        justify-content: center !important;
-        margin-bottom: 0.5rem !important;
-    }
+  #contact .contact-social-wrapper.wrapper {
+    justify-content: center !important;
+    margin-bottom: 0.5rem !important;
+  }
 }
 
 /* ----------------------------------------
@@ -1112,81 +1112,87 @@ html.dark .follow-section {
 
 /* Dream Section Headers */
 .contact-section h3 {
-    font-size: 1.1rem !important;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  font-size: 1.1rem !important;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Marquee Container */
 .dream-companies-marquee,
 .dream-cars-marquee {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    position: relative;
-    margin: 0.5rem 0 0;
-    padding: 0.75rem 0;
-    box-sizing: border-box;
-    /* Elegant fade edges */
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin: 0.5rem 0 0;
+  padding: 0.75rem 0;
+  box-sizing: border-box;
+  /* Elegant fade edges */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
 /* Scrolling Track */
 .dream-companies-track,
 .dream-cars-track {
-    display: flex;
-    gap: 3rem;
-    align-items: center;
-    width: max-content;
-    animation: marquee-scroll 35s linear infinite;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  width: max-content;
+  animation: marquee-scroll 35s linear infinite;
 }
 
 .dream-companies-track:hover,
 .dream-cars-track:hover {
-    animation-play-state: paused;
+  animation-play-state: paused;
 }
 
 /* Simple Logo Items - No Cards */
 .dream-company-item,
 .dream-car-item {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .dream-company-item:hover,
 .dream-car-item:hover {
-    transform: scale(1.15) translateY(-2px);
+  transform: scale(1.15) translateY(-2px);
 }
 
 /* Logo Images - Clean and Visible */
 .company-logo,
 .car-logo {
-    height: 40px;
-    width: auto;
-    max-width: 120px;
-    object-fit: contain;
-    transition: all 0.3s ease;
-    opacity: 1;
-    border: none !important;
-    outline: none !important;
+  height: 40px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  opacity: 1;
+  border: none !important;
+  outline: none !important;
 }
 
 /* Hover - Enhanced */
 .dream-company-item:hover .company-logo,
 .dream-car-item:hover .car-logo {
-    opacity: 1;
-    filter: drop-shadow(0 4px 12px rgb(0 0 0 / 20%));
+  opacity: 1;
+  filter: drop-shadow(0 4px 12px rgb(0 0 0 / 20%));
 }
 
 /* ============================================
@@ -1194,8 +1200,8 @@ html.dark .follow-section {
    ============================================ */
 
 /* Apple - Black logo needs slight transparency to be visible but not harsh */
-.dream-company-item[title="Apple"] .company-logo {
-    opacity: 0.9;
+.dream-company-item[title='Apple'] .company-logo {
+  opacity: 0.9;
 }
 
 /* All other logos keep their brand colors - Google, Microsoft, Netflix, Adobe, Meta, Amazon, Tesla */
@@ -1207,68 +1213,68 @@ html.dark .follow-section {
 /* Default dark mode - all logos keep original colors with slight brightness boost */
 html.dark .company-logo,
 html.dark .car-logo {
-    opacity: 1;
-    filter: brightness(1.15);
+  opacity: 1;
+  filter: brightness(1.15);
 }
 
 html.dark .dream-company-item:hover .company-logo,
 html.dark .dream-car-item:hover .car-logo {
-    opacity: 1;
-    filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 25%));
+  opacity: 1;
+  filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 25%));
 }
 
 /* Apple logo is pure black - needs inversion in dark mode */
-html.dark .dream-company-item[title="Apple"] .company-logo {
-    filter: brightness(0) invert(1);
+html.dark .dream-company-item[title='Apple'] .company-logo {
+  filter: brightness(0) invert(1);
 }
 
-html.dark .dream-company-item[title="Apple"]:hover .company-logo {
-    filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
+html.dark .dream-company-item[title='Apple']:hover .company-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
 }
 
 /* Amazon - Invert the dark text, keep orange arrow colorful using hue adjustment */
-html.dark .dream-company-item[title="Amazon"] .company-logo {
-    filter: invert(1) hue-rotate(180deg) brightness(1.2);
+html.dark .dream-company-item[title='Amazon'] .company-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.2);
 }
 
-html.dark .dream-company-item[title="Amazon"]:hover .company-logo {
-    filter: invert(1) hue-rotate(180deg) brightness(1.3) drop-shadow(0 4px 12px rgb(255 153 0 / 50%));
+html.dark .dream-company-item[title='Amazon']:hover .company-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.3) drop-shadow(0 4px 12px rgb(255 153 0 / 50%));
 }
 
 /* Meta - Invert dark text, adjust hue to keep blue visible */
-html.dark .dream-company-item[title="Meta"] .company-logo {
-    filter: invert(1) hue-rotate(180deg) brightness(1.1);
+html.dark .dream-company-item[title='Meta'] .company-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.1);
 }
 
-html.dark .dream-company-item[title="Meta"]:hover .company-logo {
-    filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 4px 12px rgb(0 129 251 / 50%));
+html.dark .dream-company-item[title='Meta']:hover .company-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 4px 12px rgb(0 129 251 / 50%));
 }
 
 /* Tesla - Red wordmark, keep visible */
-html.dark .dream-company-item[title="Tesla"] .company-logo {
-    filter: brightness(1.2);
+html.dark .dream-company-item[title='Tesla'] .company-logo {
+  filter: brightness(1.2);
 }
 
-html.dark .dream-company-item[title="Tesla"]:hover .company-logo {
-    filter: brightness(1.3) drop-shadow(0 4px 12px rgb(232 33 39 / 50%));
+html.dark .dream-company-item[title='Tesla']:hover .company-logo {
+  filter: brightness(1.3) drop-shadow(0 4px 12px rgb(232 33 39 / 50%));
 }
 
 /* Netflix - Red wordmark, ensure fully visible */
-html.dark .dream-company-item[title="Netflix"] .company-logo {
-    filter: brightness(1.2);
+html.dark .dream-company-item[title='Netflix'] .company-logo {
+  filter: brightness(1.2);
 }
 
-html.dark .dream-company-item[title="Netflix"]:hover .company-logo {
-    filter: brightness(1.3) drop-shadow(0 4px 12px rgb(229 9 20 / 50%));
+html.dark .dream-company-item[title='Netflix']:hover .company-logo {
+  filter: brightness(1.3) drop-shadow(0 4px 12px rgb(229 9 20 / 50%));
 }
 
 /* Adobe - Red A logo, keep vibrant */
-html.dark .dream-company-item[title="Adobe"] .company-logo {
-    filter: brightness(1.1);
+html.dark .dream-company-item[title='Adobe'] .company-logo {
+  filter: brightness(1.1);
 }
 
-html.dark .dream-company-item[title="Adobe"]:hover .company-logo {
-    filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 0 0 / 50%));
+html.dark .dream-company-item[title='Adobe']:hover .company-logo {
+  filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 0 0 / 50%));
 }
 
 /* ============================================
@@ -1276,30 +1282,30 @@ html.dark .dream-company-item[title="Adobe"]:hover .company-logo {
    ============================================ */
 
 /* Jaguar - Green leaper, may have dark elements */
-html.dark .dream-car-item[title="Jaguar"] .car-logo {
-    filter: brightness(1.3);
+html.dark .dream-car-item[title='Jaguar'] .car-logo {
+  filter: brightness(1.3);
 }
 
-html.dark .dream-car-item[title="Jaguar"]:hover .car-logo {
-    filter: brightness(1.4) drop-shadow(0 4px 12px rgb(0 255 0 / 30%));
+html.dark .dream-car-item[title='Jaguar']:hover .car-logo {
+  filter: brightness(1.4) drop-shadow(0 4px 12px rgb(0 255 0 / 30%));
 }
 
 /* Aston Martin - Dark wings logo with silver/gold accents */
-html.dark .dream-car-item[title="Aston Martin"] .car-logo {
-    filter: brightness(1.5) contrast(1.2);
+html.dark .dream-car-item[title='Aston Martin'] .car-logo {
+  filter: brightness(1.5) contrast(1.2);
 }
 
-html.dark .dream-car-item[title="Aston Martin"]:hover .car-logo {
-    filter: brightness(1.6) contrast(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
+html.dark .dream-car-item[title='Aston Martin']:hover .car-logo {
+  filter: brightness(1.6) contrast(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
 }
 
 /* Rolls-Royce - Dark logo needs full inversion for visibility in dark mode */
-html.dark .dream-car-item[title="Rolls-Royce"] .car-logo {
-    filter: invert(1) brightness(1);
+html.dark .dream-car-item[title='Rolls-Royce'] .car-logo {
+  filter: invert(1) brightness(1);
 }
 
-html.dark .dream-car-item[title="Rolls-Royce"]:hover .car-logo {
-    filter: invert(1) brightness(1.1) drop-shadow(0 4px 12px rgb(255 255 255 / 40%));
+html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
+  filter: invert(1) brightness(1.1) drop-shadow(0 4px 12px rgb(255 255 255 / 40%));
 }
 
 /* Other car logos - colorful, keep original */
@@ -1314,49 +1320,47 @@ html.dark .dream-car-item[title="Rolls-Royce"]:hover .car-logo {
 
 /* Marquee Animation */
 @keyframes marquee-scroll {
-    0% {
-        transform: translateX(0);
-    }
+  0% {
+    transform: translateX(0);
+  }
 
-    100% {
-        transform: translateX(-50%);
-    }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Tablet */
 @media (width <=1024px) {
+  .dream-companies-track,
+  .dream-cars-track {
+    gap: 2.5rem;
+    animation-duration: 30s;
+  }
 
-    .dream-companies-track,
-    .dream-cars-track {
-        gap: 2.5rem;
-        animation-duration: 30s;
-    }
-
-    .company-logo,
-    .car-logo {
-        height: 36px;
-        max-width: 100px;
-    }
+  .company-logo,
+  .car-logo {
+    height: 36px;
+    max-width: 100px;
+  }
 }
 
 /* Mobile */
 @media (width <=768px) {
+  .dream-companies-marquee,
+  .dream-cars-marquee {
+    margin: 0.25rem 0 0;
+    padding: 0.5rem 0;
+  }
 
-    .dream-companies-marquee,
-    .dream-cars-marquee {
-        margin: 0.25rem 0 0;
-        padding: 0.5rem 0;
-    }
+  .dream-companies-track,
+  .dream-cars-track {
+    gap: 2rem;
+    animation-duration: 25s;
+  }
 
-    .dream-companies-track,
-    .dream-cars-track {
-        gap: 2rem;
-        animation-duration: 25s;
-    }
-
-    .company-logo,
-    .car-logo {
-        height: 32px;
-        max-width: 90px;
-    }
+  .company-logo,
+  .car-logo {
+    height: 32px;
+    max-width: 90px;
+  }
 }

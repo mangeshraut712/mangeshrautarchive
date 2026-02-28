@@ -6,21 +6,23 @@ import { blogPosts } from './blog-data.js';
  */
 
 class BlogLoader {
-    constructor() {
-        this.container = document.getElementById('blog-posts-container');
-        this.modal = null;
-        this.init();
-    }
+  constructor() {
+    this.container = document.getElementById('blog-posts-container');
+    this.modal = null;
+    this.init();
+  }
 
-    init() {
-        if (!this.container) return;
+  init() {
+    if (!this.container) return;
 
-        this.renderPosts();
-        this.createModal();
-    }
+    this.renderPosts();
+    this.createModal();
+  }
 
-    renderPosts() {
-        this.container.innerHTML = blogPosts.map(post => `
+  renderPosts() {
+    this.container.innerHTML = blogPosts
+      .map(
+        post => `
             <article class="blog-card apple-3d-project" data-id="${post.id}">
                 <div class="blog-card-content">
                     <div class="blog-meta">
@@ -46,17 +48,19 @@ class BlogLoader {
                     </button>
                 </div>
             </article>
-        `).join('');
-    }
+        `
+      )
+      .join('');
+  }
 
-    formatDate(dateString) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-    }
+  formatDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  }
 
-    createModal() {
-        // Create modal HTML structure
-        const modalHTML = `
+  createModal() {
+    // Create modal HTML structure
+    const modalHTML = `
             <div id="blog-modal" class="blog-modal hidden" aria-hidden="true">
                 <div class="blog-modal-overlay"></div>
                 <div class="blog-modal-container">
@@ -68,33 +72,33 @@ class BlogLoader {
             </div>
         `;
 
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        this.modal = document.getElementById('blog-modal');
-        const closeBtn = this.modal.querySelector('.blog-modal-close');
-        const overlay = this.modal.querySelector('.blog-modal-overlay');
+    this.modal = document.getElementById('blog-modal');
+    const closeBtn = this.modal.querySelector('.blog-modal-close');
+    const overlay = this.modal.querySelector('.blog-modal-overlay');
 
-        const closeModal = () => this.closeModal();
+    const closeModal = () => this.closeModal();
 
-        closeBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', closeModal);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
-                closeModal();
-            }
-        });
-    }
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
 
-    openPost(id) {
-        const post = blogPosts.find(p => p.id === id);
-        if (!post) return;
+  openPost(id) {
+    const post = blogPosts.find(p => p.id === id);
+    if (!post) return;
 
-        const modalBody = document.getElementById('blog-modal-body');
+    const modalBody = document.getElementById('blog-modal-body');
 
-        // Convert markdown-like content to HTML (simple parser)
-        const htmlContent = this.parseContent(post.content);
+    // Convert markdown-like content to HTML (simple parser)
+    const htmlContent = this.parseContent(post.content);
 
-        modalBody.innerHTML = `
+    modalBody.innerHTML = `
             <header class="article-header">
                 <div class="article-meta">
                     <span>${this.formatDate(post.date)}</span> • <span>${post.readTime}</span>
@@ -109,37 +113,37 @@ class BlogLoader {
             </div>
         `;
 
-        this.modal.classList.remove('hidden');
-        this.modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
+    this.modal.classList.remove('hidden');
+    this.modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
 
-    closeModal() {
-        this.modal.classList.add('hidden');
-        this.modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-    }
+  closeModal() {
+    this.modal.classList.add('hidden');
+    this.modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
 
-    parseContent(content) {
-        // Simple Markdown parser
-        return content
-            .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-            .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-            .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-            .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-            .replace(/`([^`]+)`/gim, '<code>$1</code>')
-            .replace(/```([\s\S]*?)```/gm, '<pre><code>$1</code></pre>')
-            .replace(/\n/gim, '<br>');
-    }
+  parseContent(content) {
+    // Simple Markdown parser
+    return content
+      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/gim, '<code>$1</code>')
+      .replace(/```([\s\S]*?)```/gm, '<pre><code>$1</code></pre>')
+      .replace(/\n/gim, '<br>');
+  }
 }
 
 // Initialize
 const initBlogLoader = () => {
-    window.blogLoader = new BlogLoader();
+  window.blogLoader = new BlogLoader();
 };
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBlogLoader);
+  document.addEventListener('DOMContentLoaded', initBlogLoader);
 } else {
-    initBlogLoader();
+  initBlogLoader();
 }

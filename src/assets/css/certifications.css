@@ -3,203 +3,203 @@
    ======================================== */
 
 #certifications {
-    background: #fff !important;
-    padding: 4rem 0 !important;
+  background: #fff !important;
+  padding: 4rem 0 !important;
 }
 
 html.dark #certifications {
-    background: #000 !important;
+  background: #000 !important;
 }
 
 /* Grid Layout - More Columns */
 .certifications-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
-    gap: 1.5rem !important;
-    margin-top: 2rem !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-top: 2rem !important;
 }
 
 /* Card Design - Compact */
 .certification-card {
-    background: #fff !important;
-    border: 1px solid rgb(0 0 0 / 10%) !important;
-    border-radius: 20px !important;
-    padding: 2rem !important;
+  background: #fff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border-radius: 20px !important;
+  padding: 2rem !important;
 
-    /* Standard padding */
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    position: relative !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 16px rgb(0 0 0 / 5%) !important;
-    height: auto !important;
-    min-height: 200px !important;
+  /* Standard padding */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 5%) !important;
+  height: auto !important;
+  min-height: 200px !important;
 
-    /* Reduced min-height */
+  /* Reduced min-height */
 }
 
 /* Dark Mode */
 html.dark .certification-card {
-    background: #000 !important;
-    border-color: rgb(255 255 255 / 15%) !important;
-    box-shadow: 0 4px 16px rgb(0 0 0 / 40%) !important;
+  background: #000 !important;
+  border-color: rgb(255 255 255 / 15%) !important;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 40%) !important;
 }
 
 /* Hover Effect */
 .certification-card:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 12px 32px rgb(0 0 0 / 10%) !important;
-    border-color: rgb(0 113 227 / 30%) !important;
+  transform: translateY(-6px) !important;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 10%) !important;
+  border-color: rgb(0 113 227 / 30%) !important;
 }
 
 html.dark .certification-card:hover {
-    box-shadow: 0 16px 40px rgb(0 0 0 / 60%) !important;
-    border-color: rgb(41 151 255 / 40%) !important;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 60%) !important;
+  border-color: rgb(41 151 255 / 40%) !important;
 }
 
 /* Gradient Top Bar */
 .certification-card::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 3px !important;
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 3px !important;
 
-    /* Thinner bar */
-    background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa) !important;
-    opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
+  /* Thinner bar */
+  background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
 }
 
 .certification-card:hover::before {
-    opacity: 1 !important;
+  opacity: 1 !important;
 }
 
 /* Category Badge - Compact */
 .certification-category {
-    display: inline-block !important;
-    padding: 0.25rem 0.6rem !important;
-    background: rgb(0 113 227 / 10%) !important;
-    color: #0071e3 !important;
-    font-size: 0.7rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    border-radius: 100px !important;
-    margin-bottom: 1rem !important;
-    align-self: flex-start !important;
+  display: inline-block !important;
+  padding: 0.25rem 0.6rem !important;
+  background: rgb(0 113 227 / 10%) !important;
+  color: #0071e3 !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 100px !important;
+  margin-bottom: 1rem !important;
+  align-self: flex-start !important;
 }
 
 html.dark .certification-category {
-    background: rgb(41 151 255 / 15%) !important;
-    color: #2997ff !important;
+  background: rgb(41 151 255 / 15%) !important;
+  color: #2997ff !important;
 }
 
 /* Header - Compact */
 .certification-header {
-    display: flex !important;
-    align-items: center !important;
+  display: flex !important;
+  align-items: center !important;
 
-    /* Center align items */
-    gap: 0.75rem !important;
-    margin-bottom: 1rem !important;
+  /* Center align items */
+  gap: 0.75rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .certification-logo-container {
-    width: 40px !important;
+  width: 40px !important;
 
-    /* Smaller logo */
-    height: 40px !important;
-    border-radius: 10px !important;
-    background: #fff !important;
-    border: 1px solid rgb(0 0 0 / 10%) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 6px !important;
-    flex-shrink: 0 !important;
+  /* Smaller logo */
+  height: 40px !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 6px !important;
+  flex-shrink: 0 !important;
 }
 
 html.dark .certification-logo-container {
-    background: #1c1c1e !important;
-    border-color: rgb(255 255 255 / 10%) !important;
+  background: #1c1c1e !important;
+  border-color: rgb(255 255 255 / 10%) !important;
 }
 
 .certification-logo {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
 }
 
 .certification-info {
-    flex: 1 !important;
+  flex: 1 !important;
 }
 
 .certification-title {
-    font-size: 1rem !important;
+  font-size: 1rem !important;
 
-    /* Smaller title */
-    font-weight: 700 !important;
-    color: #000 !important;
-    margin-bottom: 0.15rem !important;
-    line-height: 1.3 !important;
+  /* Smaller title */
+  font-weight: 700 !important;
+  color: #000 !important;
+  margin-bottom: 0.15rem !important;
+  line-height: 1.3 !important;
 }
 
 html.dark .certification-title {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .certification-issuer {
-    font-size: 0.85rem !important;
+  font-size: 0.85rem !important;
 
-    /* Smaller issuer */
-    color: #6e6e73 !important;
-    font-weight: 500 !important;
+  /* Smaller issuer */
+  color: #6e6e73 !important;
+  font-weight: 500 !important;
 }
 
 html.dark .certification-issuer {
-    color: #a1a1a6 !important;
+  color: #a1a1a6 !important;
 }
 
 /* Details/Date - Compact */
 .certification-details {
-    margin-top: auto !important;
-    padding-top: 1rem !important;
-    border-top: 1px solid rgb(0 0 0 / 6%) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
+  margin-top: auto !important;
+  padding-top: 1rem !important;
+  border-top: 1px solid rgb(0 0 0 / 6%) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
 }
 
 html.dark .certification-details {
-    border-top-color: rgb(255 255 255 / 10%) !important;
+  border-top-color: rgb(255 255 255 / 10%) !important;
 }
 
 .certification-date {
-    font-size: 0.8rem !important;
+  font-size: 0.8rem !important;
 
-    /* Smaller date */
-    color: #6e6e73 !important;
-    font-weight: 500 !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.4rem !important;
+  /* Smaller date */
+  color: #6e6e73 !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
 }
 
 html.dark .certification-date {
-    color: #a1a1a6 !important;
+  color: #a1a1a6 !important;
 }
 
 .certification-date i {
-    color: #0071e3 !important;
-    font-size: 0.9rem !important;
+  color: #0071e3 !important;
+  font-size: 0.9rem !important;
 }
 
 html.dark .certification-date i {
-    color: #2997ff !important;
+  color: #2997ff !important;
 }
 
 /* ============================================
@@ -207,36 +207,36 @@ html.dark .certification-date i {
    ============================================ */
 
 /* Apple logo - Black logo needs inversion in dark mode */
-html.dark .certification-logo[alt="Apple"] {
-    filter: invert(1);
+html.dark .certification-logo[alt='Apple'] {
+  filter: invert(1);
 }
 
 /* IBM logo - Blue logo, slight brightness boost */
-html.dark .certification-logo[alt="IBM"] {
-    filter: brightness(1.3);
+html.dark .certification-logo[alt='IBM'] {
+  filter: brightness(1.3);
 }
 
 /* HackerRank - Green logo, keep original */
-html.dark .certification-logo[alt="HackerRank"] {
-    filter: brightness(1.1);
+html.dark .certification-logo[alt='HackerRank'] {
+  filter: brightness(1.1);
 }
 
 /* Google - Colorful logo, keep original */
-html.dark .certification-logo[alt="Google"] {
-    filter: brightness(1.05);
+html.dark .certification-logo[alt='Google'] {
+  filter: brightness(1.05);
 }
 
 /* Cisco - Blue logo, slight boost */
-html.dark .certification-logo[alt="Cisco"] {
-    filter: brightness(1.2);
+html.dark .certification-logo[alt='Cisco'] {
+  filter: brightness(1.2);
 }
 
 /* Microsoft - Colorful logo, keep original */
-html.dark .certification-logo[alt="Microsoft"] {
-    filter: brightness(1.05);
+html.dark .certification-logo[alt='Microsoft'] {
+  filter: brightness(1.05);
 }
 
 /* Spoken Tutorial - May have dark elements */
-html.dark .certification-logo[alt="Spoken Tutorial"] {
-    filter: brightness(1.3) contrast(1.1);
+html.dark .certification-logo[alt='Spoken Tutorial'] {
+  filter: brightness(1.3) contrast(1.1);
 }

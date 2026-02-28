@@ -4,14 +4,18 @@ function applyCors(res, origin) {
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://localhost:8080',
-    'http://127.0.0.1:8080'
+    'http://127.0.0.1:8080',
   ];
 
   // Check if origin matches any allowed origin or is a subdomain
   const isAllowed = allowedOrigins.some(allowed => {
     if (origin === allowed) return true;
     // Allow subpaths of GitHub Pages
-    if (allowed === 'https://mangeshraut712.github.io' && origin && origin.startsWith('https://mangeshraut712.github.io')) {
+    if (
+      allowed === 'https://mangeshraut712.github.io' &&
+      origin &&
+      origin.startsWith('https://mangeshraut712.github.io')
+    ) {
       return true;
     }
     return false;
@@ -26,7 +30,10 @@ function applyCors(res, origin) {
 
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, X-Requested-With, Accept');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, Origin, X-Requested-With, Accept'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'false');
   res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight for 24 hours
 }
@@ -56,12 +63,12 @@ export default function handler(req, res) {
       timestamp: new Date().toISOString(),
       server: 'local',
       version: '2.0',
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
     };
 
     console.log('📊 API Status Check:', {
       environment: process.env.NODE_ENV || 'development',
-      openrouter: openrouterAvailable ? '✅' : '❌'
+      openrouter: openrouterAvailable ? '✅' : '❌',
     });
 
     res.status(200).json(response);
@@ -70,7 +77,7 @@ export default function handler(req, res) {
     res.status(500).json({
       error: 'Internal server error',
       message: 'Status check failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 }

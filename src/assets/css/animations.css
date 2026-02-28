@@ -9,130 +9,130 @@
 
 /* 1. FADE-IN ON SCROLL - Cards, Content Blocks */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-40px);
-    }
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes fadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(40px);
-    }
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* 2. SECTION HEADING REVEAL */
 @keyframes headingReveal {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-        letter-spacing: 0.1em;
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+    letter-spacing: 0.1em;
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        letter-spacing: -0.02em;
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: -0.02em;
+  }
 }
 
 /* 3. HERO SECTION ENTRANCE */
 @keyframes heroFadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* 5. NEURAL REVEAL - Chatbot, AI Chips */
 @keyframes neuralReveal {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(10px);
-    }
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
 
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* 5. TIMELINE PROGRESS */
 @keyframes timelineProgress {
-    from {
-        height: 0;
-        opacity: 0;
-    }
+  from {
+    height: 0;
+    opacity: 0;
+  }
 
-    to {
-        height: 100%;
-        opacity: 1;
-    }
+  to {
+    height: 100%;
+    opacity: 1;
+  }
 }
 
 /* 6. IMAGE FADE-IN */
 @keyframes imageFade {
-    from {
-        opacity: 0;
-        filter: blur(4px);
-    }
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
 
-    to {
-        opacity: 1;
-        filter: blur(0);
-    }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -141,15 +141,15 @@
 
 /* Scroll-triggered animations (use with Intersection Observer) */
 .animate-on-scroll {
-    opacity: 0;
+  opacity: 0;
 }
 
 .animate-on-scroll.animate-in {
-    animation: fadeInUp 0.6s ease-out forwards;
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 /* Cards - Projects, Experience, Education, etc. */
-.project-card.animate-in,
+.showcase-project-card.animate-in,
 .experience-content.animate-in,
 .education-card.animate-in,
 .publication-card.animate-in,
@@ -157,83 +157,83 @@
 .blog-card.animate-in,
 .recommendation-card.animate-in,
 .cert-card.animate-in {
-    animation: fadeInUp 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation: fadeInUp 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 /* Section Headings */
 section h2.animate-in {
-    animation: headingReveal 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation: headingReveal 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 /* Stagger delays for cards */
-.project-card:nth-child(1),
+.showcase-project-card:nth-child(1),
 .experience-content:nth-child(1),
 .blog-card:nth-child(1) {
-    animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
-.project-card:nth-child(2),
+.showcase-project-card:nth-child(2),
 .experience-content:nth-child(2),
 .blog-card:nth-child(2) {
-    animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
-.project-card:nth-child(3),
+.showcase-project-card:nth-child(3),
 .experience-content:nth-child(3),
 .blog-card:nth-child(3) {
-    animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
-.project-card:nth-child(4),
+.showcase-project-card:nth-child(4),
 .blog-card:nth-child(4) {
-    animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
-.project-card:nth-child(5),
+.showcase-project-card:nth-child(5),
 .blog-card:nth-child(5) {
-    animation-delay: 0.5s;
+  animation-delay: 0.5s;
 }
 
-.project-card:nth-child(6),
+.showcase-project-card:nth-child(6),
 .blog-card:nth-child(6) {
-    animation-delay: 0.6s;
+  animation-delay: 0.6s;
 }
 
 /* Skill badges stagger */
 .skill-badge.animate-in {
-    animation: skillBadgeEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation: skillBadgeEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 
 .skill-badge:nth-child(1) {
-    animation-delay: 0.05s;
+  animation-delay: 0.05s;
 }
 
 .skill-badge:nth-child(2) {
-    animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
 .skill-badge:nth-child(3) {
-    animation-delay: 0.15s;
+  animation-delay: 0.15s;
 }
 
 .skill-badge:nth-child(4) {
-    animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 .skill-badge:nth-child(5) {
-    animation-delay: 0.25s;
+  animation-delay: 0.25s;
 }
 
 .skill-badge:nth-child(6) {
-    animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
 .skill-badge:nth-child(7) {
-    animation-delay: 0.35s;
+  animation-delay: 0.35s;
 }
 
 .skill-badge:nth-child(8) {
-    animation-delay: 0.4s;
+  animation-delay: 0.4s;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -246,32 +246,33 @@ section h2.animate-in {
 button:not(.chatbot-close-btn, #go-to-top, #chatbot-toggle),
 a.btn,
 .cta-button {
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.3s ease,
-        background 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    background 0.3s ease;
 }
 
 .btn:hover,
 .project-action-btn:hover,
 .projects-view-all-btn:hover,
 .cta-button:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 24px rgb(0 113 227 / 25%);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 24px rgb(0 113 227 / 25%);
 }
 
 .btn:active,
 .project-action-btn:active,
 .projects-view-all-btn:active,
 .cta-button:active {
-    transform: translateY(-1px) scale(0.98);
-    box-shadow: 0 4px 12px rgb(0 113 227 / 15%);
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 4px 12px rgb(0 113 227 / 15%);
 }
 
 /* Dark mode button shadows */
 html.dark .btn:hover,
 html.dark .project-action-btn:hover,
 html.dark .projects-view-all-btn:hover {
-    box-shadow: 0 12px 24px rgb(10 132 255 / 30%);
+  box-shadow: 0 12px 24px rgb(10 132 255 / 30%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -280,40 +281,40 @@ html.dark .projects-view-all-btn:hover {
 
 /* Hero content */
 .hero-content {
-    animation: heroFadeIn 1s ease-out forwards;
+  animation: heroFadeIn 1s ease-out forwards;
 }
 
 /* Profile image */
 .profile-image,
 .hero-image,
 img.rounded-full {
-    animation: heroFadeIn 1.2s ease-out 0.2s backwards;
+  animation: heroFadeIn 1.2s ease-out 0.2s backwards;
 }
 
 /* Hero title */
 .hero-title,
 .home-head h1 {
-    animation: fadeInUp 0.8s ease-out 0.3s backwards;
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
 }
 
 /* Hero subtitle */
 .hero-subtitle,
 .home-head h2,
 .home-head p {
-    animation: fadeInUp 0.8s ease-out 0.5s backwards;
+  animation: fadeInUp 0.8s ease-out 0.5s backwards;
 }
 
 /* Hero buttons */
 .hero-buttons,
 .cta-buttons {
-    animation: fadeInUp 0.8s ease-out 0.7s backwards;
+  animation: fadeInUp 0.8s ease-out 0.7s backwards;
 }
 
 /* ═══════════════════════════════════════════════════════════
    CARD HOVER ENHANCEMENTS
    ═══════════════════════════════════════════════════════════ */
 
-.project-card,
+.showcase-project-card,
 .experience-content,
 .education-card,
 .blog-card,
@@ -321,14 +322,15 @@ img.rounded-full {
 .award-card,
 .recommendation-card,
 .cert-card {
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-        box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Enhanced hover with subtle 3D effect */
-.project-card:hover,
+.showcase-project-card:hover,
 .blog-card:hover {
-    transform: translateY(-8px) scale(1.01) perspective(1000px) rotateY(2deg);
+  transform: translateY(-8px) scale(1.01) perspective(1000px) rotateY(2deg);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -336,37 +338,37 @@ img.rounded-full {
    ═══════════════════════════════════════════════════════════ */
 
 .timeline-line {
-    position: relative;
+  position: relative;
 }
 
 .timeline-line::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    width: 2px;
-    height: 0;
-    background: linear-gradient(180deg, #0071e3, #2997ff);
-    animation: timelineProgress 1.5s ease-out forwards;
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg, #0071e3, #2997ff);
+  animation: timelineProgress 1.5s ease-out forwards;
 }
 
 html.dark .timeline-line::before {
-    background: linear-gradient(180deg, #0a84ff, #58a6ff);
+  background: linear-gradient(180deg, #0a84ff, #58a6ff);
 }
 
 /* ═══════════════════════════════════════════════════════════
    LAZY LOAD IMAGE FADE
    ═══════════════════════════════════════════════════════════ */
 
-img[loading="lazy"] {
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
+img[loading='lazy'] {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
 }
 
-img[loading="lazy"].loaded,
+img[loading='lazy'].loaded,
 img.loaded {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -374,20 +376,20 @@ img.loaded {
    ═══════════════════════════════════════════════════════════ */
 
 .animate-on-scroll,
-.project-card,
+.showcase-project-card,
 .experience-content,
 .education-card,
 .blog-card,
 .btn,
 .hero-content {
-    will-change: transform, opacity;
-    transform: translateZ(0);
-    backface-visibility: hidden;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Remove will-change after animation completes */
 .animate-in {
-    will-change: auto;
+  will-change: auto;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -395,34 +397,33 @@ img.loaded {
    ═══════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
+  /* Disable all custom animations */
+  .animate-on-scroll,
+  .showcase-project-card,
+  .experience-content,
+  .education-card,
+  section h2,
+  .hero-content,
+  .skill-badge {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 
-    /* Disable all custom animations */
-    .animate-on-scroll,
-    .project-card,
-    .experience-content,
-    .education-card,
-    section h2,
-    .hero-content,
-    .skill-badge {
-        animation: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-    }
-
-    /* Keep essential transitions but make them instant */
-    .btn:hover,
-    .nav-link:hover {
-        transition-duration: 0.01ms !important;
-    }
+  /* Keep essential transitions but make them instant */
+  .btn:hover,
+  .nav-link:hover {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -431,19 +432,18 @@ img.loaded {
 
 /* Reduce animations on low-end devices */
 @media (prefers-reduced-motion: no-preference) and (width <=768px) {
+  /* Faster animations on mobile */
+  .animate-on-scroll.animate-in,
+  .showcase-project-card.animate-in,
+  section h2.animate-in {
+    animation-duration: 0.4s !important;
+  }
 
-    /* Faster animations on mobile */
-    .animate-on-scroll.animate-in,
-    .project-card.animate-in,
-    section h2.animate-in {
-        animation-duration: 0.4s !important;
-    }
-
-    /* Remove complex transforms on mobile */
-    .project-card:hover,
-    .blog-card:hover {
-        transform: translateY(-4px) scale(1.01);
-    }
+  /* Remove complex transforms on mobile */
+  .showcase-project-card:hover,
+  .blog-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -451,13 +451,12 @@ img.loaded {
    ═══════════════════════════════════════════════════════════ */
 
 @media print {
-
-    *,
-    *::before,
-    *::after {
-        animation: none !important;
-        transition: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-    }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

@@ -1,6 +1,6 @@
 /**
  * Privacy Dashboard & Personal Intelligence Controls
- * 
+ *
  * Features:
  * - Data integration toggles (GitHub, Calendar, etc.)
  * - Privacy settings and consent management
@@ -10,67 +10,67 @@
  */
 
 export class PrivacyDashboard {
-    constructor() {
-        this.settings = this.loadSettings();
-        this.isOpen = false;
-        this.createDashboard();
+  constructor() {
+    this.settings = this.loadSettings();
+    this.isOpen = false;
+    this.createDashboard();
+  }
+
+  loadSettings() {
+    const defaults = {
+      github_integration: false,
+      calendar_integration: false,
+      memory_enabled: true,
+      memory_retention: '30days',
+      response_length: 'balanced',
+      technical_level: 'intermediate',
+      communication_style: 'professional',
+    };
+
+    try {
+      const saved = localStorage.getItem('assistme_privacy_settings');
+      return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+    } catch {
+      return defaults;
     }
+  }
 
-    loadSettings() {
-        const defaults = {
-            github_integration: false,
-            calendar_integration: false,
-            memory_enabled: true,
-            memory_retention: '30days',
-            response_length: 'balanced',
-            technical_level: 'intermediate',
-            communication_style: 'professional'
-        };
-
-        try {
-            const saved = localStorage.getItem('assistme_privacy_settings');
-            return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
-        } catch {
-            return defaults;
-        }
+  saveSettings() {
+    try {
+      localStorage.setItem('assistme_privacy_settings', JSON.stringify(this.settings));
+      this.syncWithBackend();
+    } catch (error) {
+      console.error('Failed to save privacy settings:', error);
     }
+  }
 
-    saveSettings() {
-        try {
-            localStorage.setItem('assistme_privacy_settings', JSON.stringify(this.settings));
-            this.syncWithBackend();
-        } catch (error) {
-            console.error('Failed to save privacy settings:', error);
-        }
+  async syncWithBackend() {
+    try {
+      const response = await fetch('/api/personalization/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          preferences: {
+            response_length: this.settings.response_length,
+            technical_level: this.settings.technical_level,
+            communication_style: this.settings.communication_style,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        console.warn('Failed to sync preferences with backend');
+      }
+    } catch (error) {
+      console.error('Error syncing preferences:', error);
     }
+  }
 
-    async syncWithBackend() {
-        try {
-            const response = await fetch('/api/personalization/preferences', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    preferences: {
-                        response_length: this.settings.response_length,
-                        technical_level: this.settings.technical_level,
-                        communication_style: this.settings.communication_style
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                console.warn('Failed to sync preferences with backend');
-            }
-        } catch (error) {
-            console.error('Error syncing preferences:', error);
-        }
-    }
-
-    createDashboard() {
-        const dashboard = document.createElement('div');
-        dashboard.id = 'privacy-dashboard';
-        dashboard.className = 'privacy-dashboard hidden';
-        dashboard.innerHTML = `
+  createDashboard() {
+    const dashboard = document.createElement('div');
+    dashboard.id = 'privacy-dashboard';
+    dashboard.className = 'privacy-dashboard hidden';
+    dashboard.innerHTML = `
             <div class="privacy-overlay"></div>
             <div class="privacy-panel">
                 <div class="privacy-header">
@@ -201,140 +201,142 @@ export class PrivacyDashboard {
             </div >
     `;
 
-        document.body.appendChild(dashboard);
-        this.attachEventListeners();
-        this.applyStyles();
+    document.body.appendChild(dashboard);
+    this.attachEventListeners();
+    this.applyStyles();
+  }
+
+  attachEventListeners() {
+    const dashboard = document.getElementById('privacy-dashboard');
+
+    // Open/Close
+    dashboard.querySelector('.close-btn').addEventListener('click', () => this.close());
+    dashboard.querySelector('.privacy-overlay').addEventListener('click', () => this.close());
+    dashboard.querySelector('#cancel-btn').addEventListener('click', () => this.close());
+
+    // Save button
+    dashboard.querySelector('#save-btn').addEventListener('click', () => {
+      this.updateSettingsFromUI();
+      this.saveSettings();
+      this.close();
+      this.showToast('✅ Settings saved successfully!');
+    });
+
+    // Data export
+    dashboard.querySelector('#export-data-btn').addEventListener('click', () => {
+      this.exportUserData();
+    });
+
+    // Data deletion
+    dashboard.querySelector('#delete-data-btn').addEventListener('click', () => {
+      this.confirmDeleteData();
+    });
+
+    // Real-time toggle feedback
+    dashboard.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
+      toggle.addEventListener('change', e => {
+        this.settings[e.target.id.replace('-', '_')] = e.target.checked;
+      });
+    });
+  }
+
+  updateSettingsFromUI() {
+    const dashboard = document.getElementById('privacy-dashboard');
+
+    this.settings.github_integration = dashboard.querySelector('#github-integration').checked;
+    this.settings.memory_enabled = dashboard.querySelector('#memory-enabled').checked;
+    this.settings.memory_retention = dashboard.querySelector('#memory-retention').value;
+    this.settings.response_length = dashboard.querySelector('#response-length').value;
+    this.settings.technical_level = dashboard.querySelector('#technical-level').value;
+    this.settings.communication_style = dashboard.querySelector('#communication-style').value;
+  }
+
+  async exportUserData() {
+    try {
+      const response = await fetch('/api/personalization/export');
+      if (!response.ok) throw new Error('Export failed');
+
+      const data = await response.json();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: 'application/json',
+      });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `assistme - data -export -${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+      this.showToast('✅ Data exported successfully!');
+    } catch (error) {
+      this.showToast('❌ Export failed. Please try again.');
+      console.error('Export error:', error);
     }
+  }
 
-    attachEventListeners() {
-        const dashboard = document.getElementById('privacy-dashboard');
+  confirmDeleteData() {
+    const confirmed = confirm(
+      '⚠️ WARNING: This will permanently delete ALL your data including:\n\n' +
+        '• Conversation history\n' +
+        '• Preferences\n' +
+        '• Personalization settings\n\n' +
+        'This action cannot be undone. Continue?'
+    );
 
-        // Open/Close
-        dashboard.querySelector('.close-btn').addEventListener('click', () => this.close());
-        dashboard.querySelector('.privacy-overlay').addEventListener('click', () => this.close());
-        dashboard.querySelector('#cancel-btn').addEventListener('click', () => this.close());
-
-        // Save button
-        dashboard.querySelector('#save-btn').addEventListener('click', () => {
-            this.updateSettingsFromUI();
-            this.saveSettings();
-            this.close();
-            this.showToast('✅ Settings saved successfully!');
-        });
-
-        // Data export
-        dashboard.querySelector('#export-data-btn').addEventListener('click', () => {
-            this.exportUserData();
-        });
-
-        // Data deletion
-        dashboard.querySelector('#delete-data-btn').addEventListener('click', () => {
-            this.confirmDeleteData();
-        });
-
-        // Real-time toggle feedback
-        dashboard.querySelectorAll('input[type="checkbox"]').forEach(toggle => {
-            toggle.addEventListener('change', (e) => {
-                this.settings[e.target.id.replace('-', '_')] = e.target.checked;
-            });
-        });
+    if (confirmed) {
+      this.deleteAllData();
     }
+  }
 
-    updateSettingsFromUI() {
-        const dashboard = document.getElementById('privacy-dashboard');
-        
-        this.settings.github_integration = dashboard.querySelector('#github-integration').checked;
-        this.settings.memory_enabled = dashboard.querySelector('#memory-enabled').checked;
-        this.settings.memory_retention = dashboard.querySelector('#memory-retention').value;
-        this.settings.response_length = dashboard.querySelector('#response-length').value;
-        this.settings.technical_level = dashboard.querySelector('#technical-level').value;
-        this.settings.communication_style = dashboard.querySelector('#communication-style').value;
+  async deleteAllData() {
+    try {
+      localStorage.removeItem('assistme_privacy_settings');
+      localStorage.removeItem('assistme_session_id');
+
+      await fetch('/api/personalization/delete', { method: 'DELETE' });
+
+      this.showToast('✅ All data deleted. Refreshing page...');
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (error) {
+      this.showToast('❌ Deletion failed. Please try again.');
+      console.error('Delete error:', error);
     }
+  }
 
-    async exportUserData() {
-        try {
-            const response = await fetch('/api/personalization/export');
-            if (!response.ok) throw new Error('Export failed');
-            
-            const data = await response.json();
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `assistme - data -export -${ new Date().toISOString().split('T')[0] }.json`;
-            link.click();
-            
-            URL.revokeObjectURL(url);
-            this.showToast('✅ Data exported successfully!');
-        } catch (error) {
-            this.showToast('❌ Export failed. Please try again.');
-            console.error('Export error:', error);
-        }
-    }
+  open() {
+    const dashboard = document.getElementById('privacy-dashboard');
+    dashboard.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    this.isOpen = true;
+  }
 
-    confirmDeleteData() {
-        const confirmed = confirm(
-            '⚠️ WARNING: This will permanently delete ALL your data including:\n\n' +
-            '• Conversation history\n' +
-            '• Preferences\n' +
-            '• Personalization settings\n\n' +
-            'This action cannot be undone. Continue?'
-        );
+  close() {
+    const dashboard = document.getElementById('privacy-dashboard');
+    dashboard.classList.add('hidden');
+    document.body.style.overflow = '';
+    this.isOpen = false;
+  }
 
-        if (confirmed) {
-            this.deleteAllData();
-        }
-    }
+  showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'privacy-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-    async deleteAllData() {
-        try {
-            localStorage.removeItem('assistme_privacy_settings');
-            localStorage.removeItem('assistme_session_id');
-            
-            await fetch('/api/personalization/delete', { method: 'DELETE' });
-            
-            this.showToast('✅ All data deleted. Refreshing page...');
-            setTimeout(() => window.location.reload(), 2000);
-        } catch (error) {
-            this.showToast('❌ Deletion failed. Please try again.');
-            console.error('Delete error:', error);
-        }
-    }
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
 
-    open() {
-        const dashboard = document.getElementById('privacy-dashboard');
-        dashboard.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        this.isOpen = true;
-    }
+  applyStyles() {
+    if (document.getElementById('privacy-dashboard-styles')) return;
 
-    close() {
-        const dashboard = document.getElementById('privacy-dashboard');
-        dashboard.classList.add('hidden');
-        document.body.style.overflow = '';
-        this.isOpen = false;
-    }
-
-    showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'privacy-toast';
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        setTimeout(() => toast.classList.add('show'), 10);
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-    applyStyles() {
-        if (document.getElementById('privacy-dashboard-styles')) return;
-
-        const style = document.createElement('style');
-        style.id = 'privacy-dashboard-styles';
-        style.textContent = `
+    const style = document.createElement('style');
+    style.id = 'privacy-dashboard-styles';
+    style.textContent = `
     .privacy-dashboard {
     position: fixed;
     top: 0;
@@ -635,12 +637,12 @@ input: checked + .toggle-slider:before {
 }
 `;
 
-        document.head.appendChild(style);
-    }
+    document.head.appendChild(style);
+  }
 
-    getSettings() {
-        return { ...this.settings };
-    }
+  getSettings() {
+    return { ...this.settings };
+  }
 }
 
 // Export singleton instance

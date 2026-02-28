@@ -14,25 +14,25 @@
 .cta-button,
 .action-btn,
 .download-btn,
-button[type="submit"],
-input[type="submit"] {
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    color: #fff !important;
-    border: 2px solid transparent;
-    border-radius: 16px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgb(0 113 227 / 30%);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    position: relative;
-    overflow: hidden;
+button[type='submit'],
+input[type='submit'] {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  color: #fff !important;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgb(0 113 227 / 30%);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn::before,
@@ -40,14 +40,14 @@ input[type="submit"] {
 .btn-secondary::before,
 .hero-cta::before,
 .cta-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
-    transition: left 0.5s;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
+  transition: left 0.5s;
 }
 
 .btn:hover::before,
@@ -55,7 +55,7 @@ input[type="submit"] {
 .btn-secondary:hover::before,
 .hero-cta:hover::before,
 .cta-button:hover::before {
-    left: 100%;
+  left: 100%;
 }
 
 .btn:hover,
@@ -65,9 +65,9 @@ input[type="submit"] {
 .cta-button:hover,
 .action-btn:hover,
 .download-btn:hover {
-    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 6px 24px rgb(41 151 255 / 40%);
-    transform: translateY(-2px);
+  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  box-shadow: 0 6px 24px rgb(41 151 255 / 40%);
+  transform: translateY(-2px);
 }
 
 html.dark .btn,
@@ -75,8 +75,8 @@ html.dark .btn-primary,
 html.dark .btn-secondary,
 html.dark .hero-cta,
 html.dark .cta-button {
-    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-    color: #fff !important;
+  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  color: #fff !important;
 }
 
 html.dark .btn:hover,
@@ -84,8 +84,8 @@ html.dark .btn-primary:hover,
 html.dark .btn-secondary:hover,
 html.dark .hero-cta:hover,
 html.dark .cta-button:hover {
-    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
-    box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
+  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
 }
 
 /* ========================================
@@ -100,36 +100,36 @@ html.dark .cta-button:hover {
 .publication-card,
 .recommendation-card,
 .blog-card {
-    padding: 2rem;
-    border-radius: 20px;
-    border: 2px solid rgb(0 0 0 / 6%);
-    background: #fff;
-    box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    overflow: hidden;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgb(0 0 0 / 6%);
+  background: #fff;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .card::before,
 .skill-card::before,
 .experience-card::before,
 .education-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .card:hover::before,
 .skill-card:hover::before,
 .experience-card:hover::before,
 .education-card:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 .card:hover,
@@ -140,9 +140,9 @@ html.dark .cta-button:hover {
 .publication-card:hover,
 .recommendation-card:hover,
 .blog-card:hover {
-    transform: translateY(-8px);
-    border-color: rgb(0 113 227 / 20%);
-    box-shadow: 0 16px 48px rgb(0 0 0 / 12%);
+  transform: translateY(-8px);
+  border-color: rgb(0 113 227 / 20%);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 12%);
 }
 
 html.dark .card,
@@ -153,9 +153,9 @@ html.dark .award-card,
 html.dark .publication-card,
 html.dark .recommendation-card,
 html.dark .blog-card {
-    background: #000;
-    border-color: rgb(255 255 255 / 10%);
-    box-shadow: 0 12px 40px rgb(0 0 0 / 50%);
+  background: #000;
+  border-color: rgb(255 255 255 / 10%);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 50%);
 }
 
 html.dark .card:hover,
@@ -166,53 +166,55 @@ html.dark .award-card:hover,
 html.dark .publication-card:hover,
 html.dark .recommendation-card:hover,
 html.dark .blog-card:hover {
-    border-color: rgb(41 151 255 / 30%);
-    box-shadow: 0 20px 60px rgb(0 0 0 / 60%), 0 0 0 1px rgb(41 151 255 / 20%) inset;
+  border-color: rgb(41 151 255 / 30%);
+  box-shadow:
+    0 20px 60px rgb(0 0 0 / 60%),
+    0 0 0 1px rgb(41 151 255 / 20%) inset;
 }
 
 /* ========================================
    GLOBAL INPUT FIELD STANDARDIZATION
    ======================================== */
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="url"],
-input[type="search"],
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='url'],
+input[type='search'],
 textarea,
 select {
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    border: 2px solid transparent;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    width: 100%;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
-    outline: none;
-    border-color: #0071e3;
-    box-shadow: 0 0 0 4px rgb(0 113 227 / 10%);
+  outline: none;
+  border-color: #0071e3;
+  box-shadow: 0 0 0 4px rgb(0 113 227 / 10%);
 }
 
 html.dark input,
 html.dark textarea,
 html.dark select {
-    background: rgb(255 255 255 / 5%);
-    border-color: rgb(255 255 255 / 10%);
-    color: #f5f5f7;
+  background: rgb(255 255 255 / 5%);
+  border-color: rgb(255 255 255 / 10%);
+  color: #f5f5f7;
 }
 
 html.dark input:focus,
 html.dark textarea:focus,
 html.dark select:focus {
-    border-color: #2997ff;
-    box-shadow: 0 0 0 4px rgb(41 151 255 / 15%);
+  border-color: #2997ff;
+  box-shadow: 0 0 0 4px rgb(41 151 255 / 15%);
 }
 
 /* ========================================
@@ -220,12 +222,12 @@ html.dark select:focus {
    ======================================== */
 
 section {
-    background: #fff;
-    padding: 5rem 0;
+  background: #fff;
+  padding: 5rem 0;
 }
 
 html.dark section {
-    background: #000;
+  background: #000;
 }
 
 /* ========================================
@@ -238,30 +240,30 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
 }
 
 h1 {
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 h2 {
-    font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3rem);
 }
 
 h3 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
 h4 {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
 }
 
 p {
-    line-height: 1.7;
-    margin-bottom: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
 }
 
 /* ========================================
@@ -270,12 +272,14 @@ p {
 
 i,
 .icon {
-    transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .icon:hover,
 i:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 /* ========================================
@@ -283,22 +287,24 @@ i:hover {
    ======================================== */
 
 img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
 }
 
 .logo,
 .company-logo,
 .certification-logo {
-    object-fit: contain;
-    transition: transform 0.3s ease, filter 0.3s ease;
+  object-fit: contain;
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
 }
 
 .logo:hover,
 .company-logo:hover,
 .certification-logo:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* ========================================
@@ -306,17 +312,17 @@ img {
    ======================================== */
 
 .section-padding {
-    padding: 5rem 0;
+  padding: 5rem 0;
 }
 
 .container-padding {
-    padding: 0 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .card-spacing {
-    gap: 2.5rem;
+  gap: 2.5rem;
 }
 
 /* ========================================
@@ -324,49 +330,49 @@ img {
    ======================================== */
 
 @media (width <=768px) {
-    section {
-        padding: 3rem 0;
-    }
+  section {
+    padding: 3rem 0;
+  }
 
-    .container-padding {
-        padding: 0 1rem;
-    }
+  .container-padding {
+    padding: 0 1rem;
+  }
 
-    .btn,
-    .btn-primary,
-    .btn-secondary {
-        padding: 0.875rem 1.5rem;
-        font-size: 0.9375rem;
-    }
+  .btn,
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+  }
 
-    .card,
-    .skill-card,
-    .experience-card,
-    .education-card {
-        padding: 1.5rem;
-    }
+  .card,
+  .skill-card,
+  .experience-card,
+  .education-card {
+    padding: 1.5rem;
+  }
 
-    h1 {
-        font-size: 2rem;
-    }
+  h1 {
+    font-size: 2rem;
+  }
 
-    h2 {
-        font-size: 1.75rem;
-    }
+  h2 {
+    font-size: 1.75rem;
+  }
 }
 
 @media (width <=480px) {
-    .btn,
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        justify-content: center;
-    }
+  .btn,
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
 
-    .card,
-    .skill-card,
-    .experience-card,
-    .education-card {
-        padding: 1.25rem;
-    }
+  .card,
+  .skill-card,
+  .experience-card,
+  .education-card {
+    padding: 1.25rem;
+  }
 }

@@ -4,7 +4,10 @@ import time
 import asyncio
 import secrets
 import re
+import shutil
+import subprocess
 from typing import List, Optional, Dict, Any, AsyncGenerator
+from urllib.parse import unquote
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -481,6 +484,8 @@ def adaptive_llm_params(message: str) -> dict:
 _github_proxy_cache: Dict[str, Any] = {}
 GITHUB_PROXY_TTL = 600  # 10 minutes
 GITHUB_PAT = os.getenv("GITHUB_PAT", "").strip()  # Optional fine-grained PAT
+_github_api_proxy_cache: Dict[str, Any] = {}
+GITHUB_API_PROXY_TTL = 180  # 3 minutes for endpoint-level GitHub API proxy
 
 
 async def fetch_github_repos_cached(username: str) -> list:
@@ -500,11 +505,118 @@ async def fetch_github_repos_cached(username: str) -> list:
             params={"per_page": 100, "sort": "updated"},
             headers=headers,
         )
-        resp.raise_for_status()
-        repos = resp.json()
+        if resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
+            try:
+                gh_run = subprocess.run(
+                    ["gh", "api", f"users/{username}/repos?per_page=100&sort=updated"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    timeout=12,
+                )
+                repos = json.loads(gh_run.stdout) if gh_run.stdout else []
+            except Exception:
+                resp.raise_for_status()
+                repos = resp.json()
+        else:
+            resp.raise_for_status()
+            repos = resp.json()
 
     _github_proxy_cache[cache_key] = {"data": repos, "ts": time.time()}
     return repos
+
+
+@app.get("/api/github/proxy")
+async def github_api_proxy(path: str):
+    """
+    Lightweight GitHub API passthrough for repo/user endpoints.
+    Used by frontend modules to avoid browser-level rate limits and keep
+    GitHub data consistent through a single server-side source of truth.
+    """
+    if not path or not path.strip():
+        raise HTTPException(status_code=400, detail="Missing required query param: path")
+
+    normalized_path = unquote(path.strip())
+    if not normalized_path.startswith("/"):
+        normalized_path = f"/{normalized_path}"
+
+    if len(normalized_path) > 1000:
+        raise HTTPException(status_code=400, detail="Path is too long")
+
+    allowed_prefixes = ("/repos/", "/users/")
+    if not normalized_path.startswith(allowed_prefixes):
+        raise HTTPException(status_code=400, detail="Only /repos/* and /users/* paths are allowed")
+
+    cache_key = f"gh_proxy:{normalized_path}"
+    cached = _github_api_proxy_cache.get(cache_key)
+    if cached and time.time() - cached["ts"] < GITHUB_API_PROXY_TTL:
+        resp = JSONResponse(status_code=cached["status"], content=cached["data"])
+        for key, value in cached["headers"].items():
+            if value:
+                resp.headers[key] = value
+        return resp
+
+    target_url = f"https://api.github.com{normalized_path}"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "AssistMe-GitHub-Proxy/1.0",
+    }
+    if GITHUB_PAT:
+        headers["Authorization"] = f"Bearer {GITHUB_PAT}"
+
+    try:
+        async with httpx.AsyncClient(timeout=12.0) as client:
+            github_resp = await client.get(target_url, headers=headers)
+    except httpx.RequestError as exc:
+        raise HTTPException(status_code=503, detail=f"GitHub request failed: {str(exc)}")
+
+    # Local-dev rescue path: use authenticated `gh api` when direct API is rate-limited
+    # and PAT is not configured. This keeps data accurate during local development.
+    if github_resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
+        try:
+            gh_path = normalized_path.lstrip("/")
+            gh_run = subprocess.run(
+                ["gh", "api", gh_path],
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=12,
+            )
+            gh_payload = json.loads(gh_run.stdout) if gh_run.stdout else {}
+            proxy_response = JSONResponse(status_code=200, content=gh_payload)
+            _github_api_proxy_cache[cache_key] = {
+                "ts": time.time(),
+                "status": 200,
+                "data": gh_payload,
+                "headers": {},
+            }
+            return proxy_response
+        except Exception:
+            # Fall back to normal GitHub API error payload below.
+            pass
+
+    try:
+        payload = github_resp.json()
+    except ValueError:
+        payload = {"message": github_resp.text}
+
+    passthrough_headers = {}
+    for key in ("link", "x-ratelimit-limit", "x-ratelimit-remaining", "x-ratelimit-reset"):
+        value = github_resp.headers.get(key)
+        if value:
+            passthrough_headers[key] = value
+
+    _github_api_proxy_cache[cache_key] = {
+        "ts": time.time(),
+        "status": github_resp.status_code,
+        "data": payload,
+        "headers": passthrough_headers,
+    }
+
+    response = JSONResponse(status_code=github_resp.status_code, content=payload)
+    for key, value in passthrough_headers.items():
+        response.headers[key] = value
+    return response
 
 
 def is_resume_query(message: str) -> bool:
@@ -1170,6 +1282,7 @@ async def github_repos_proxy(
             "forks_count": r.get("forks_count", 0),
             "open_issues_count": r.get("open_issues_count", 0),
             "watchers_count": r.get("watchers_count", 0),
+            "subscribers_count": r.get("subscribers_count", 0),
             "size": r.get("size", 0),
             "license": r.get("license"),
             "default_branch": r.get("default_branch", "main"),
@@ -1393,4 +1506,3 @@ if vercel_env != "production":
         print("📁 Static files mounted from /src directory")
     except Exception as e:
         print(f"⚠️ Static files skipped: {e}")
-

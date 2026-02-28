@@ -1,18 +1,18 @@
 {
-    "name": "Mangesh Raut | Software Engineer",
-    "short_name": "Mangesh Raut",
-    "start_url": "./index.html",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#007aff",
-    "description": "Portfolio of Mangesh Raut - Software Engineer specializing in Java, Python, and Full-Stack Development.",
-    "orientation": "any",
-    "icons": [
-        {
-            "src": "assets/icons/icon.svg",
-            "sizes": "any",
-            "type": "image/svg+xml",
-            "purpose": "any maskable"
-        }
-    ]
+  "name": "Mangesh Raut | Software Engineer",
+  "short_name": "Mangesh Raut",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007aff",
+  "description": "Portfolio of Mangesh Raut - Software Engineer specializing in Java, Python, and Full-Stack Development.",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

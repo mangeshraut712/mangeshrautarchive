@@ -7,8 +7,9 @@
 export const blogPosts = [
   {
     id: 'google-ai-ecosystem-2026',
-    title: 'Google\'s AI Ecosystem: The Future of Intelligence is Multimodal',
-    summary: 'Exploring how Google\'s Gemini 2.0 Flash and seamless integration across Android and Workspace is redefining personal and professional productivity in 2026.',
+    title: "Google's AI Ecosystem: The Future of Intelligence is Multimodal",
+    summary:
+      "Exploring how Google's Gemini 2.0 Flash and seamless integration across Android and Workspace is redefining personal and professional productivity in 2026.",
     date: '2026-01-10',
     tags: ['Google AI', 'Gemini', 'Android', 'Multimodal'],
     readTime: '8 min read',
@@ -108,12 +109,13 @@ In my development work, using Google's ecosystem has:
 With Project Astra, spatial computing, and continued Gemini integration, Google's ecosystem is only getting stronger. The company's focus on privacy, performance, and user experience sets the standard for the entire industry.
 
 **Bottom Line**: Google doesn't just make products—they create intelligence. And that experience, refined over decades, is why the "New Year, New You" challenge is the ultimate way to start 2026.
-        `
+        `,
   },
   {
     id: 'openclaw-revolution-2026',
     title: 'OpenClaw: The Open-Source Frontier of Agentic Intelligence',
-    summary: 'How OpenClaw is decentralizing powerful AI agents, providing a robust, community-driven alternative to proprietary models in early 2026.',
+    summary:
+      'How OpenClaw is decentralizing powerful AI agents, providing a robust, community-driven alternative to proprietary models in early 2026.',
     date: '2026-01-28',
     tags: ['OpenClaw', 'Open Source', 'AI Agents', 'Decentralization'],
     readTime: '7 min read',
@@ -175,12 +177,13 @@ Following its initial alpha in December 2025, OpenClaw has quickly become the "L
 3. **The Claw Market**: A decentralized repository where developers share specialized agent skills.
 
 **The Verdict**: OpenClaw isn't just a model; it's a movement toward democratic intelligence. As we move further into 2026, the ability to own your intelligence is becoming more valuable than the intelligence itself.
-    `
+    `,
   },
   {
     id: 'wispr-flow-dictation-2026',
     title: 'Wispr Flow: Redefining Human-Computer Interaction through Speech',
-    summary: 'A deep dive into Wispr Flow’s breakthrough in low-latency, context-aware dictation that makes voice commands feel like thought-speed execution.',
+    summary:
+      'A deep dive into Wispr Flow’s breakthrough in low-latency, context-aware dictation that makes voice commands feel like thought-speed execution.',
     date: '2026-02-09',
     tags: ['Wispr Flow', 'HCI', 'Voice AI', 'Productivity'],
     readTime: '6 min read',
@@ -227,12 +230,13 @@ Wispr Flow isn't limited to the desktop. Its seamless transition from **iPhone 1
 - **Obsidian Support**: Brainstorming technical notes at the speed of conversation.
 
 **Conclusion**: The keyboard is no longer the bottleneck of human creativity. Wispr Flow has moved voice from a "handicap feature" to the ultimate power-user tool of 2026.
-    `
+    `,
   },
   {
     id: 'nvidia-ai-dominance-2026',
     title: 'How NVIDIA Became the Undisputed Leader in AI Computing',
-    summary: 'The remarkable journey of NVIDIA from gaming GPUs to AI powerhouse, dominating the $2 trillion market with CUDA, H100 chips, and strategic vision.',
+    summary:
+      'The remarkable journey of NVIDIA from gaming GPUs to AI powerhouse, dominating the $2 trillion market with CUDA, H100 chips, and strategic vision.',
     date: '2026-02-15',
     tags: ['NVIDIA', 'AI', 'Hardware', 'GPU'],
     readTime: '9 min read',
@@ -370,12 +374,13 @@ It wasn't luck—it was:
 **The Verdict**: NVIDIA didn't just participate in the AI revolution—they enabled it. Their GPUs are the picks and shovels of the AI gold rush, and they're selling to everyone.
 
 As AI continues to transform every industry, NVIDIA's position only strengthens. They're not just #1—they're in a league of their own.
-        `
+        `,
   },
   {
     id: 'ai-models-global-race-2026',
     title: 'The Global AI Race: Leading Models and Countries Shaping the Future',
-    summary: 'Analyzing the competition between cutting-edge AI models (Gemini 3 Pro, Grok 4.1, Claude 4.5, GPT-5.1) and how USA, China, Europe, and others are positioning themselves in the AI revolution.',
+    summary:
+      'Analyzing the competition between cutting-edge AI models (Gemini 3 Pro, Grok 4.1, Claude 4.5, GPT-5.1) and how USA, China, Europe, and others are positioning themselves in the AI revolution.',
     date: '2026-02-22',
     tags: ['AI', 'LLM', 'Geopolitics', 'Technology'],
     readTime: '10 min read',
@@ -633,12 +638,13 @@ The AI race is far from over. While the US leads in frontier models, China's cat
 **The Losers**: Those who ignore AI or over-regulate it.
 
 As a developer, I'm excited to have multiple world-class models to choose from. Competition drives innovation, and we're all benefiting from this global AI race.
-        `
+        `,
   },
   {
     id: 'ai-code-editors-revolution-2026',
     title: 'The AI Code Editor Revolution: VS Code, Cursor, Windsurf, and Antigravity',
-    summary: 'Comparing the next generation of AI-powered code editors that are transforming how developers write code, from traditional VS Code to cutting-edge Antigravity.',
+    summary:
+      'Comparing the next generation of AI-powered code editors that are transforming how developers write code, from traditional VS Code to cutting-edge Antigravity.',
     date: '2026-02-25',
     tags: ['AI', 'Developer Tools', 'IDE', 'Productivity'],
     readTime: '9 min read',
@@ -924,6 +930,6 @@ We're living through the most exciting time in developer tooling history. AI cod
 Try them all, find what works for you, and embrace the AI revolution. The developers who adapt will 10x their output. Those who resist will be left behind.
 
 **The future of coding is here. And it's powered by AI.**
-        `
-  }
+        `,
+  },
 ];

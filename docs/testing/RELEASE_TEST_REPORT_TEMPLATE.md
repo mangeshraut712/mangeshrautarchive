@@ -66,9 +66,9 @@
 
 ## Defects
 
-| ID | Severity | Description | Owner | Status | ETA |
-| --- | --- | --- | --- | --- | --- |
-| | | | | | |
+| ID  | Severity | Description | Owner | Status | ETA |
+| --- | -------- | ----------- | ----- | ------ | --- |
+|     |          |             |       |        |     |
 
 ## Risks / Waivers
 

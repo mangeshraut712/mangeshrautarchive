@@ -65,9 +65,7 @@
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   
   # Preload Headers for Critical Resources
-  Header add Link "</core/css/variables.css>; rel=preload; as=style"
   Header add Link "</assets/css/style.css>; rel=preload; as=style"
-  Header add Link "</js/core/script.js>; rel=preload; as=script"
 </IfModule>
 
 # Enable HTTP/2 Server Push (if supported)

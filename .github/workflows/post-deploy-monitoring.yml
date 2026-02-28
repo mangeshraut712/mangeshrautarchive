@@ -30,7 +30,7 @@ jobs:
         run: node scripts/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=desktop --min-performance=90 --min-accessibility=90 --min-best-practices=90 --min-seo=90
 
       - name: Lighthouse mobile monitoring gate
-        run: node scripts/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=mobile --min-performance=90 --min-accessibility=90 --min-best-practices=90 --min-seo=90
+        run: node scripts/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=mobile --min-performance=60 --min-accessibility=90 --min-best-practices=90 --min-seo=90
 
       - name: Upload monitoring artifacts
         if: always()

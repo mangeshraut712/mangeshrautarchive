@@ -3,41 +3,41 @@
    ======================================== */
 
 #publications {
-    background: #fff !important;
-    padding: 4rem 0 !important;
+  background: #fff !important;
+  padding: 4rem 0 !important;
 }
 
 html.dark #publications {
-    background: #000 !important;
+  background: #000 !important;
 }
 
 /* Section Title */
 #publications h2 {
-    font-size: clamp(2rem, 4vw, 3rem) !important;
-    font-weight: 800 !important;
-    text-align: center !important;
-    margin-bottom: 2rem !important;
-    background: linear-gradient(135deg, #0071e3, #2997ff) !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+  margin-bottom: 2rem !important;
+  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }
 
 html.dark #publications h2 {
-    background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
+  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }
 
 /* Divider */
 .publications-divider {
-    width: 100% !important;
-    height: 1px !important;
-    background: rgb(0 0 0 / 10%) !important;
-    margin: 2rem 0 !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: rgb(0 0 0 / 10%) !important;
+  margin: 2rem 0 !important;
 }
 
 html.dark .publications-divider {
-    background: rgb(255 255 255 / 15%) !important;
+  background: rgb(255 255 255 / 15%) !important;
 }
 
 /* ========================================
@@ -45,29 +45,29 @@ html.dark .publications-divider {
    ======================================== */
 
 .publication-card {
-    background: #fff !important;
-    border: 1px solid rgb(0 0 0 / 10%) !important;
-    border-radius: 20px !important;
-    padding: 2rem !important;
-    box-shadow: 0 4px 24px rgb(0 0 0 / 5%) !important;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  background: #fff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border-radius: 20px !important;
+  padding: 2rem !important;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 5%) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 html.dark .publication-card {
-    background: #000 !important;
-    border-color: rgb(255 255 255 / 15%) !important;
-    box-shadow: 0 4px 24px rgb(0 0 0 / 40%) !important;
+  background: #000 !important;
+  border-color: rgb(255 255 255 / 15%) !important;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 40%) !important;
 }
 
 .publication-card:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 16px 48px rgb(0 0 0 / 10%) !important;
-    border-color: rgb(0 113 227 / 30%) !important;
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 48px rgb(0 0 0 / 10%) !important;
+  border-color: rgb(0 113 227 / 30%) !important;
 }
 
 html.dark .publication-card:hover {
-    box-shadow: 0 20px 60px rgb(0 0 0 / 60%) !important;
-    border-color: rgb(41 151 255 / 40%) !important;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 60%) !important;
+  border-color: rgb(41 151 255 / 40%) !important;
 }
 
 /* ========================================
@@ -76,58 +76,58 @@ html.dark .publication-card:hover {
 
 /* Category */
 .publication-category {
-    color: #0071e3 !important;
-    font-size: 0.85rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+  color: #0071e3 !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
 }
 
 html.dark .publication-category {
-    color: #58a6ff !important;
+  color: #58a6ff !important;
 }
 
 /* Title */
 .publication-title {
-    font-size: 1.5rem !important;
-    font-weight: 700 !important;
-    color: #000 !important;
-    margin: 1rem 0 !important;
-    line-height: 1.3 !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+  margin: 1rem 0 !important;
+  line-height: 1.3 !important;
 }
 
 html.dark .publication-title {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 /* Authors */
 .publication-authors {
-    font-size: 1rem !important;
-    color: #1d1d1f !important;
-    margin-bottom: 1.5rem !important;
+  font-size: 1rem !important;
+  color: #1d1d1f !important;
+  margin-bottom: 1.5rem !important;
 }
 
 html.dark .publication-authors {
-    color: #f5f5f7 !important;
+  color: #f5f5f7 !important;
 }
 
 /* Journal Info */
 .publication-journal {
-    font-weight: 600 !important;
-    color: #1d1d1f !important;
+  font-weight: 600 !important;
+  color: #1d1d1f !important;
 }
 
 html.dark .publication-journal {
-    color: #f5f5f7 !important;
+  color: #f5f5f7 !important;
 }
 
 .publication-details {
-    color: #6e6e73 !important;
-    font-size: 0.9rem !important;
+  color: #6e6e73 !important;
+  font-size: 0.9rem !important;
 }
 
 html.dark .publication-details {
-    color: #86868b !important;
+  color: #86868b !important;
 }
 
 /* ========================================
@@ -135,92 +135,92 @@ html.dark .publication-details {
    ======================================== */
 
 .publication-read-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0.75rem 1.5rem !important;
-    border-radius: 12px !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-    cursor: pointer !important;
-    gap: 0.5rem !important;
-    background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-    color: #fff !important;
-    border: none !important;
-    box-shadow: 0 4px 16px rgb(0 113 227 / 35%) !important;
-    letter-spacing: -0.01em !important;
-    -webkit-text-fill-color: #fff !important;
-    text-shadow: none !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 12px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  cursor: pointer !important;
+  gap: 0.5rem !important;
+  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 0 4px 16px rgb(0 113 227 / 35%) !important;
+  letter-spacing: -0.01em !important;
+  -webkit-text-fill-color: #fff !important;
+  text-shadow: none !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .publication-read-btn:hover {
-    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-    transform: translateY(-3px) scale(1.02) !important;
-    box-shadow: 0 8px 24px rgb(0 113 227 / 45%) !important;
-    color: #fff !important;
-    -webkit-text-fill-color: #fff !important;
+  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 45%) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 .publication-read-btn:active {
-    transform: translateY(-1px) scale(1) !important;
+  transform: translateY(-1px) scale(1) !important;
 }
 
 .publication-read-btn:visited {
-    color: #fff !important;
-    -webkit-text-fill-color: #fff !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 /* Icon styling */
 .publication-read-btn i {
-    font-size: 1rem !important;
-    color: #fff !important;
+  font-size: 1rem !important;
+  color: #fff !important;
 }
 
 /* Responsive - Mobile Optimization */
 @media (width <= 768px) {
-    .publication-card {
-        padding: 1.25rem !important;
-        overflow: hidden !important;
-    }
+  .publication-card {
+    padding: 1.25rem !important;
+    overflow: hidden !important;
+  }
 
-    .publication-footer {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 0.75rem !important;
-        margin-top: 1rem !important;
-        padding: 0 !important;
-    }
+  .publication-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+    margin-top: 1rem !important;
+    padding: 0 !important;
+  }
 
-    .publication-read-btn {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0.65rem 1rem !important;
-        font-size: 0.875rem !important;
-        justify-content: center !important;
-        min-height: 42px !important;
-        border-radius: 10px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-    }
+  .publication-read-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.875rem !important;
+    justify-content: center !important;
+    min-height: 42px !important;
+    border-radius: 10px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
 
-    .publication-read-btn i {
-        font-size: 0.9rem !important;
-    }
+  .publication-read-btn i {
+    font-size: 0.9rem !important;
+  }
 
-    .publication-title {
-        font-size: 1.15rem !important;
-        line-height: 1.3 !important;
-    }
+  .publication-title {
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+  }
 
-    .publication-authors {
-        font-size: 0.875rem !important;
-    }
+  .publication-authors {
+    font-size: 0.875rem !important;
+  }
 
-    .publication-details {
-        font-size: 0.8rem !important;
-    }
+  .publication-details {
+    font-size: 0.8rem !important;
+  }
 }

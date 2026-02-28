@@ -9,7 +9,7 @@
 
 // ESM-compatible export for Vercel Node.js runtime
 export default async function handler(req, res) {
-    // Redirect all traffic to the Python API which handles /api/contact
-    res.setHeader('Location', '/api/contact');
-    res.status(308).end();
+  // Redirect all traffic to the Python API which handles /api/contact
+  res.setHeader('Location', '/api/contact');
+  res.status(308).end();
 }

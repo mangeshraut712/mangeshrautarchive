@@ -27,11 +27,11 @@ async function run(name, contextOpts) {
     await page.waitForTimeout(200);
     await el.screenshot({ path: `${out}/${name}-${sec}.png` });
 
-    const info = await el.evaluate((node) => {
+    const info = await el.evaluate(node => {
       const cs = getComputedStyle(node);
       const r = node.getBoundingClientRect();
       const children = [...node.querySelectorAll('*')];
-      const tooWide = children.filter((c) => {
+      const tooWide = children.filter(c => {
         const cr = c.getBoundingClientRect();
         return cr.right - r.right > 2 || cr.left < r.left - 2;
       }).length;
@@ -42,7 +42,7 @@ async function run(name, contextOpts) {
         height: Math.round(r.height),
         bg: cs.backgroundColor,
         overflowX: cs.overflowX,
-        tooWide
+        tooWide,
       };
     });
 
