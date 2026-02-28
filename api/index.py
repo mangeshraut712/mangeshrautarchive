@@ -14,9 +14,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import defaultdict
-import hashlib
 
 import httpx
 from dotenv import load_dotenv
@@ -76,13 +75,13 @@ print("=" * 60)
 print("🚀 AssistMe API Starting...")
 print(f"   Environment: {os.getenv('VERCEL_ENV', 'local')}")
 if OPENROUTER_API_KEY:
-    print(f"   API Key: ✅ Configured (OpenRouter)")
+    print("   API Key: ✅ Configured (OpenRouter)")
     print(f"   Model: {OPENROUTER_MODEL}")
 else:
-    print(f"   API Key: ⚠️  Not configured")
-    print(f"   Mode: 🧠 Local Intelligence (Offline Fallback Active)")
+    print("   API Key: ⚠️  Not configured")
+    print("   Mode: 🧠 Local Intelligence (Offline Fallback Active)")
 print(f"   Site URL: {SITE_URL}")
-print(f"   Docs: http://localhost:8000/api/docs")
+print("   Docs: http://localhost:8000/api/docs")
 print("=" * 60)
 
 # Rate Limiting
@@ -304,11 +303,13 @@ class ChatRequest(BaseModel):
     stream: bool = True
     session_id: Optional[str] = None  # For conversation memory
     model: Optional[str] = None  # Allow model selection
-    
+
+
 class MessageReaction(BaseModel):
     message_id: str
     reaction: str  # emoji reaction
-    
+
+
 class TypingIndicator(BaseModel):
     session_id: str
     is_typing: bool
@@ -322,6 +323,7 @@ def get_client_ip(request: Request) -> str:
         return forwarded.split(",")[0]
     return request.client.host if request.client else "unknown"
 
+
 def check_rate_limit(client_id: str) -> bool:
     """Check if client has exceeded rate limit"""
     now = time.time()
@@ -330,24 +332,26 @@ def check_rate_limit(client_id: str) -> bool:
         timestamp for timestamp in rate_limit_store[client_id]
         if now - timestamp < RATE_LIMIT_WINDOW
     ]
-    
+
     if len(rate_limit_store[client_id]) >= RATE_LIMIT_REQUESTS:
         return False
-    
+
     rate_limit_store[client_id].append(now)
     return True
+
 
 def get_session_memory(session_id: str) -> List[Dict[str, str]]:
     """Get conversation history for session"""
     if session_id not in conversation_memory:
         return []
-    
+
     memory = conversation_memory[session_id]
     if time.time() - memory.get("last_access", 0) > MEMORY_EXPIRY:
         del conversation_memory[session_id]
         return []
-    
+
     return memory.get("messages", [])
+
 
 def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
     """Update conversation memory"""
@@ -357,15 +361,15 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
             "created": time.time(),
             "last_access": time.time()
         }
-    
+
     memory = conversation_memory[session_id]
     memory["messages"].append({"role": "user", "content": user_msg})
     memory["messages"].append({"role": "assistant", "content": assistant_msg})
-    
+
     # Keep only last N messages
     if len(memory["messages"]) > MAX_MEMORY_MESSAGES * 2:
         memory["messages"] = memory["messages"][-MAX_MEMORY_MESSAGES * 2:]
-    
+
     memory["last_access"] = time.time()
 
 
@@ -427,6 +431,7 @@ _INJECTION_PATTERNS = [
     re.compile(r"DAN mode", re.I),
     re.compile(r"<\|.*?\|>", re.I),  # Token injection attempts
 ]
+
 
 def is_prompt_injection(message: str) -> bool:
     """Detect common prompt injection attacks."""
@@ -685,29 +690,33 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
     return None
 
 
-
 def generate_local_response(query: str) -> Dict:
     """Generate a meaningful response based on portfolio data without using an LLM."""
     query = query.lower().strip()
-    
+
     # Greetings
     if any(g in query for g in ["hello", "hi", "hey", "greetings"]):
         return {
-            "answer": f"👋 Hello! I'm AssistMe, running in **Local Dev Mode**. I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
-            "category": "Greeting"
+            "answer": "👋 Hello! I'm AssistMe, running in **Local Dev Mode**. I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
+            "category": "Greeting",
         }
-    
+
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
         return {
-            "answer": f"👨‍💻 **{PORTFOLIO_DATA['name']}** is a {PORTFOLIO_DATA['title']} based in {PORTFOLIO_DATA['location']}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
-            "category": "About"
-        }
-    
+            "answer": f"👨‍💻 **{
+                PORTFOLIO_DATA['name']}** is a {
+                PORTFOLIO_DATA['title']} based in {
+                PORTFOLIO_DATA['location']}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
+            "category": "About"}
+
     # Resume/CV
     if "resume" in query or "cv" in query:
-        return {"answer": f"📄 You can download Mangesh's resume here: {PORTFOLIO_DATA['resume_url']}", "category": "Resume"}
-    
+        return {
+            "answer": f"📄 You can download Mangesh's resume here: {
+                PORTFOLIO_DATA['resume_url']}",
+            "category": "Resume"}
+
     # Skills
     if "skill" in query or "stack" in query or "tech" in query or "language" in query:
         langs = ", ".join(PORTFOLIO_DATA["skills"]["languages"])
@@ -716,7 +725,7 @@ def generate_local_response(query: str) -> Dict:
             "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}\n• **Cloud**: AWS, Docker, Kubernetes\n• **Databases**: PostgreSQL, MongoDB, Redis",
             "category": "Skills"
         }
-    
+
     # Projects
     if "project" in query:
         projects_list = "\n".join([f"• **{p['name']}**: {p['achievements']}" for p in PORTFOLIO_DATA["projects"][:3]])
@@ -724,72 +733,77 @@ def generate_local_response(query: str) -> Dict:
             "answer": f"🚀 **Key Projects**:\n{projects_list}",
             "category": "Projects"
         }
-    
+
     # Contact
     if "contact" in query or "email" in query or "hiring" in query or "hire" in query:
         return {
-            "answer": f"📫 **Contact Information**:\n• **Email**: {PORTFOLIO_DATA['email']}\n• **Phone**: {PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {PORTFOLIO_DATA['linkedin']}\n• **GitHub**: {PORTFOLIO_DATA['github']}",
-            "category": "Contact"
-        }
-    
+            "answer": f"📫 **Contact Information**:\n• **Email**: {
+                PORTFOLIO_DATA['email']}\n• **Phone**: {
+                PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {
+                PORTFOLIO_DATA['linkedin']}\n• **GitHub**: {
+                    PORTFOLIO_DATA['github']}",
+            "category": "Contact"}
+
     # Experience
     if "experience" in query or "job" in query or "work" in query:
-        exp_list = "\n".join([f"• **{e['title']}** at {e['company']} ({e['period']})" for e in PORTFOLIO_DATA["experience"][:3]])
+        exp_list = "\n".join(
+            [f"• **{e['title']}** at {e['company']} ({e['period']})" for e in PORTFOLIO_DATA["experience"][:3]])
         return {
             "answer": f"💼 **Professional Experience**:\n{exp_list}",
             "category": "Experience"
         }
-    
+
     # Education
     if "education" in query or "degree" in query or "university" in query or "college" in query:
-        edu_list = "\n".join([f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
+        edu_list = "\n".join(
+            [f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
         return {
             "answer": f"🎓 **Education**:\n{edu_list}" if edu_list else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
-            "category": "Education"
-        }
-    
+            "category": "Education"}
+
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
         return {
-            "answer": f"🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Architected microservices handling **100+ concurrent users**",
-            "category": "Achievements"
+            "answer": "🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Architected microservices handling **100+ concurrent users**",
+            "category": "Achievements",
         }
-        
+
     # Default fallback
     return {
         "answer": "👋 I'm running in **Local Dev Mode** (no API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
-        "category": "System"
+        "category": "System",
     }
 
 
-async def stream_openrouter_response(model: str, messages: List[Dict], session_id: Optional[str] = None) -> AsyncGenerator[str, None]:
+async def stream_openrouter_response(
+        model: str, messages: List[Dict], session_id: Optional[str] = None) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
     print(f"🔄 Streaming from OpenRouter: {model}")
-    
+
     if not OPENROUTER_API_KEY:
         print("⚠️ No API Key found - activating Local Intelligence Fallback")
         # yield json.dumps({"error": "API key not configured", "type": "error"}) + "\n"
-        
+
         # Determine user message
         user_msg = ""
         for m in reversed(messages):
             if m.get("role") == "user":
                 user_msg = m.get("content", "")
                 break
-        
+
         # Generate local response
         fallback = generate_local_response(user_msg)
-        
+
         # Simulate typing
         yield json.dumps({"type": "typing", "status": "start"}) + "\n"
-        await asyncio.sleep(0.6) # Simulate 'thought' time
+        await asyncio.sleep(0.6)  # Simulate 'thought' time
         yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
-        
+
         # Stream the fallback response
         full_text = fallback["answer"]
         chunk_size = 4
         current_pos = 0
-        
+
         while current_pos < len(full_text):
             chunk = full_text[current_pos:current_pos + chunk_size]
             current_pos += chunk_size
@@ -798,8 +812,8 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                 "content": chunk,
                 "chunk_id": current_pos // chunk_size
             }) + "\n"
-            await asyncio.sleep(0.02) # Simulate typing speed
-            
+            await asyncio.sleep(0.02)  # Simulate typing speed
+
         # Send done signal
         yield json.dumps({
             "type": "done",
@@ -815,23 +829,23 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
             }
         }) + "\n"
         return
-    
+
     # Send typing indicator start
     yield json.dumps({"type": "typing", "status": "start"}) + "\n"
-    
+
     max_retries = 2
     retry_count = 0
     full_content = ""
     chunk_count = 0
     start_time = time.time()
-    
+
     while retry_count <= max_retries:
         if retry_count > 0:
             print(f"🔄 Retrying stream (attempt {retry_count}/{max_retries})...")
-            # Adjust messages to include what we already have if possible, 
+            # Adjust messages to include what we already have if possible,
             # but usually for chat we just want to restart or continue if the API supports it.
             # OpenRouter doesn't easily support "continue", so we just retry the whole thing.
-            full_content = "" 
+            full_content = ""
             chunk_count = 0
 
         try:
@@ -862,21 +876,21 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                             "type": "error"
                         }) + "\n"
                         return
-                    
+
                     # Stop typing indicator only once
                     if retry_count == 0:
                         yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
-                    
+
                     async for line in response.aiter_lines():
                         if not line or not line.startswith("data: "):
                             continue
-                        
+
                         data = line[6:]
                         if data == "[DONE]":
                             elapsed = time.time() - start_time
                             tokens_estimate = len(full_content) // 4
                             tokens_per_sec = tokens_estimate / elapsed if elapsed > 0 else 0
-                            
+
                             yield json.dumps({
                                 "type": "done",
                                 "full_content": full_content,
@@ -892,8 +906,8 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                                     "chunks": chunk_count
                                 }
                             }) + "\n"
-                            return # Success!
-                        
+                            return  # Success!
+
                         try:
                             json_data = json.loads(data)
                             content = (
@@ -901,7 +915,7 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                                 .get("delta", {})
                                 .get("content", "")
                             )
-                            
+
                             if content:
                                 full_content += content
                                 chunk_count += 1
@@ -910,9 +924,9 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                                     "content": content,
                                     "chunk_id": chunk_count
                                 }) + "\n"
-                        except:
+                        except BaseException:
                             continue
-            
+
             # If we reach here without return, the stream ended unexpectedly but without an exception
             retry_count += 1
             await asyncio.sleep(0.5)
@@ -926,7 +940,7 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                     "type": "error"
                 }) + "\n"
             else:
-                await asyncio.sleep(1) # Wait before retry
+                await asyncio.sleep(1)  # Wait before retry
         except Exception as e:
             print(f"❌ Critical stream error: {str(e)}")
             yield json.dumps({
@@ -934,6 +948,8 @@ async def stream_openrouter_response(model: str, messages: List[Dict], session_i
                 "type": "error"
             }) + "\n"
             return
+
+
 async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
     """Non-streaming API call"""
     if not OPENROUTER_API_KEY:
@@ -984,7 +1000,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             retry_after=RATE_LIMIT_WINDOW,
         )
     print(f"📨 Chat request from {client_ip}: {request.message[:50]}...")
-    
+
     if not OPENROUTER_API_KEY:
         print("⚠️ No API key - using Local Intelligence fallback")
         # Use local fallback instead of throwing error
@@ -999,7 +1015,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "runtime": f"{int(elapsed * 1000)}ms",
             "type": "local"
         }
-    
+
     try:
         message = request.message.strip()
         if not message:
@@ -1019,37 +1035,37 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
         # Generate session ID if not provided — use cryptographically secure random token
         session_id = request.session_id or secrets.token_hex(8)
-        
+
         # Check for direct commands
         direct_response = await handle_direct_command(message)
         if direct_response:
             return direct_response
-        
+
         # Get conversation history: prefer client-provided messages, fallback to server session memory
         if request.messages:
             # Ensure it's max N messages to prevent payload explosion
             history = request.messages[-MAX_MEMORY_MESSAGES * 2:]
         else:
             history = get_session_memory(session_id) if request.session_id else []
-        
+
         # Build conversation with context
         system_message = {"role": "system", "content": SYSTEM_PROMPT}
-        
+
         # Add context awareness
         if request.context:
             context_prompt = build_context_prompt(message, request.context)
             user_message = {"role": "user", "content": context_prompt}
         else:
             user_message = {"role": "user", "content": message}
-        
+
         # Build full conversation: system + history + new message
         conversation = [system_message] + history + [user_message]
-        
+
         # Select model
         selected_model = request.model or DEFAULT_MODEL
         if selected_model not in [m["id"] for m in MODELS]:
             selected_model = DEFAULT_MODEL
-        
+
         # Streaming response
         if request.stream:
             async def generate_stream():
@@ -1061,13 +1077,13 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                         data = json.loads(chunk)
                         if data.get("type") == "done":
                             full_response = data.get("full_content", "")
-                    except:
+                    except BaseException:
                         pass
-                
+
                 # Update memory after streaming completes
                 if full_response and session_id:
                     update_session_memory(session_id, message, full_response)
-            
+
             return StreamingResponse(
                 generate_stream(),
                 media_type="application/x-ndjson",
@@ -1077,11 +1093,11 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                     "X-Session-ID": session_id
                 },
             )
-        
+
         # Non-streaming response
         response = await call_openrouter(selected_model, conversation)
         runtime = int((time.time() - start_time) * 1000)
-        
+
         result = {
             "answer": response["answer"],
             "source": "OpenRouter",
@@ -1093,7 +1109,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "usage": response.get("usage"),
             "timestamp": int(time.time() * 1000),
         }
-        
+
         # Update memory
         if session_id:
             update_session_memory(session_id, message, response["answer"])
@@ -1101,9 +1117,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         # Cache the response (session-aware key to avoid cross-user pollution)
         cache_key = get_cache_key(message, session_id)
         set_cached_response(cache_key, result)
-        
+
         return result
-    
+
     except HTTPException:
         raise
     except Exception as e:
@@ -1126,10 +1142,12 @@ async def get_models():
         "current": OPENROUTER_MODEL or DEFAULT_MODEL
     }
 
+
 @app.post("/api/typing")
 async def typing_indicator(indicator: TypingIndicator):
     """Handle typing indicators (for future WebSocket support)"""
     return {"status": "received", "session_id": indicator.session_id}
+
 
 @app.get("/api/conversation/{session_id}")
 async def get_conversation(session_id: str):
@@ -1141,12 +1159,14 @@ async def get_conversation(session_id: str):
         "count": len(history)
     }
 
+
 @app.delete("/api/conversation/{session_id}")
 async def clear_conversation(session_id: str):
     """Clear conversation history"""
     if session_id in conversation_memory:
         del conversation_memory[session_id]
     return {"status": "cleared", "session_id": session_id}
+
 
 @app.get("/api/resume")
 async def get_resume():
@@ -1202,7 +1222,7 @@ async def test_endpoint():
             masked_key = f"{OPENROUTER_API_KEY[:4]}...{OPENROUTER_API_KEY[-4:]}"
         else:
             masked_key = "***"
-    
+
     return {
         "status": "ok",
         "message": "Backend is running!",
@@ -1257,7 +1277,7 @@ async def github_repos_proxy(
         if exc.response.status_code == 404:
             raise api_error("GITHUB_USER_NOT_FOUND", f"GitHub user '{username}' not found.", 404)
         raise api_error("GITHUB_ERROR", f"GitHub API returned {exc.response.status_code}.", 502)
-    except httpx.RequestError as exc:
+    except httpx.RequestError:
         raise api_error("GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503)
 
     # Sort
@@ -1328,7 +1348,9 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 
     firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv("FIREBASE_API_KEY")
     if not firebase_api_key:
-        raise HTTPException(status_code=503, detail="Contact service not configured. Please email mbr63@drexel.edu directly.")
+        raise HTTPException(
+            status_code=503,
+            detail="Contact service not configured. Please email mbr63@drexel.edu directly.")
 
     project_id = "mangeshrautarchive"
     url = (
@@ -1355,7 +1377,8 @@ async def send_contact_message(payload: ContactMessage, req: Request):
         if not resp.is_success:
             error_body = resp.text
             print(f"❌ Firestore error {resp.status_code}: {error_body}")
-            raise HTTPException(status_code=502, detail="Failed to save message. Please try again or email mbr63@drexel.edu.")
+            raise HTTPException(status_code=502,
+                                detail="Failed to save message. Please try again or email mbr63@drexel.edu.")
 
         doc_id = resp.json().get("name", "").split("/")[-1]
         print(f"✅ Contact message saved: {doc_id} from {payload.email}")
@@ -1374,19 +1397,19 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 async def get_github_profile(username: str = "mangeshraut712"):
     """
     Get live GitHub profile and activity summary
-    
+
     Returns:
         - User profile
-        - Repository statistics  
+        - Repository statistics
         - Most popular projects
         - Language breakdown
     """
     try:
         activity = await github_connector.get_user_activity_summary(username)
-        
+
         if 'error' in activity:
             raise HTTPException(status_code=404, detail=activity['error'])
-            
+
         return {
             "success": True,
             "data": activity,
@@ -1406,7 +1429,7 @@ async def get_github_repos(
 ):
     """
     Get user's GitHub repositories with optional filtering
-    
+
     Args:
         username: GitHub username
         sort: Sort by 'updated', 'created', 'stars'
@@ -1418,7 +1441,7 @@ async def get_github_repos(
             repos = await github_connector.search_user_repos(username, search)
         else:
             repos = await github_connector.get_repositories(username, sort=sort, max_repos=limit)
-            
+
         return {
             "success": True,
             "count": len(repos),
@@ -1447,7 +1470,7 @@ async def update_user_preferences(
 ):
     """
     Update user preferences (GDPR compliant)
-    
+
     Body:
         {
             "user_id": "optional",
@@ -1462,9 +1485,9 @@ async def update_user_preferences(
     try:
         user_id = preferences.get('user_id', get_client_ip(request))
         prefs = preferences.get('preferences', {})
-        
+
         memory_manager.update_preferences(user_id, prefs)
-        
+
         return {
             "success": True,
             "message": "Preferences updated successfully",
@@ -1479,15 +1502,15 @@ async def update_user_preferences(
 async def get_personalized_greeting(request: Request, user_id: Optional[str] = None):
     """
     Get personalized greeting based on user history
-    
+
     Returns context-aware greeting with personalization
     """
     if not user_id:
         user_id = get_client_ip(request)
-        
+
     greeting = memory_manager.get_personalized_greeting(user_id)
     context = memory_manager.get_context_for_user(user_id)
-    
+
     return {
         "success": True,
         "greeting": greeting,
