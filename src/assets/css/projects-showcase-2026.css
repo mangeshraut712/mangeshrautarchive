@@ -119,7 +119,7 @@ html.dark #projects #projects-stats .stat-label {
   gap: clamp(0.95rem, 1.8vw, 1.45rem);
 }
 
-#projects .projects-showcase-shell > * {
+#projects .projects-showcase-shell>* {
   min-width: 0;
 }
 
@@ -1415,6 +1415,19 @@ html.dark .project-xr-status {
 
 @media (max-width: 480px) {
   #projects .activity-overview-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+  }
+
+  .activity-overview {
+    padding: 1rem !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .activity-github-graph-container,
+  #projects .github-graph-scroll {
+    max-width: 100% !important;
+    width: 100% !important;
   }
 }

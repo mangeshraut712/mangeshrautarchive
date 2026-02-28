@@ -420,8 +420,8 @@ html:not(.dark) .hero-stat-label {
 /* Responsive Design */
 @media (width <=768px) {
   .home-hero {
-    padding-top: 130px;
-    padding-bottom: 80px;
+    padding-top: 100px;
+    padding-bottom: 60px;
     min-height: auto;
     align-items: flex-start;
   }

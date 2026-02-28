@@ -157,7 +157,7 @@ html.dark #debug-runner-canvas {
     justify-content: center;
     gap: 16px;
     margin-top: 20px;
-    padding: 16px;
+    padding: 16px 16px 64px 16px;
     width: 100%;
   }
 
@@ -219,12 +219,16 @@ html.dark #debug-runner-canvas {
 
 /* Show on touch devices regardless of screen size */
 @media (hover: none) and (pointer: coarse) {
+  .game-controls-wrapper {
+    display: none !important;
+  }
+
   .debug-runner-mobile-controls {
     display: flex !important;
     justify-content: center;
     gap: 16px;
     margin-top: 20px;
-    padding: 16px;
+    padding: 16px 16px 64px 16px;
     width: 100%;
   }
 }
@@ -375,8 +379,7 @@ html.dark .legend-emoji {
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .game-controls-wrapper {
-    gap: 12px;
-    margin-bottom: 32px;
+    display: none !important;
   }
 
   .game-control-item {
