@@ -124,8 +124,15 @@ function clearStabilizeTimers() {
 function stabilizeScrollToSection(sectionId) {
   clearStabilizeTimers();
 
+  // Cancel timers instantly if the user starts manually scrolling or interacting
+  const cancelTimers = () => clearStabilizeTimers();
+  window.addEventListener('wheel', cancelTimers, { passive: true, once: true });
+  window.addEventListener('touchstart', cancelTimers, { passive: true, once: true });
+  window.addEventListener('mousedown', cancelTimers, { passive: true, once: true });
+  window.addEventListener('keydown', cancelTimers, { passive: true, once: true });
+
   // Sections above target can expand during lazy load; re-align target after layout settles.
-  const checkpoints = [140, 320, 620, 1000, 1600, 2100, 3000, 4200, 5600];
+  const checkpoints = [140, 320, 600, 1000];
   checkpoints.forEach(delay => {
     const timerId = window.setTimeout(() => {
       const target = document.getElementById(sectionId);
