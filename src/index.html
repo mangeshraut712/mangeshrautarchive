@@ -1101,7 +1101,7 @@
     <section id="certifications" class="fade-in py-32">
       <div class="container">
         <h2>Licenses & Certifications</h2>
-        <div class="certifications-grid mt-12">
+        <div id="certifications-grid" class="certifications-grid mt-12">
           <div class="certification-card">
             <span class="certification-category">Programming</span>
             <div class="certification-header">
@@ -1260,6 +1260,11 @@
           </div>
 
         </div>
+        <div class="mt-12 w-full" style="display: flex; justify-content: center;">
+          <button class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
+            onclick="document.getElementById('certifications-grid').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
+            More <i class="fas fa-chevron-down"></i></button>
+        </div>
       </div>
     </section>
     <!-- Contact Section -->
@@ -1275,6 +1280,11 @@
           <div class="flex justify-center p-12">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
           </div>
+        </div>
+        <div class="mt-12 w-full" style="display: flex; justify-content: center;">
+          <button class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
+            onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
+            More <i class="fas fa-chevron-down"></i></button>
         </div>
       </div>
     </section>

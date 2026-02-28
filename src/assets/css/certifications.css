@@ -240,3 +240,30 @@ html.dark .certification-logo[alt='Microsoft'] {
 html.dark .certification-logo[alt='Spoken Tutorial'] {
   filter: brightness(1.3) contrast(1.1);
 }
+
+/* ============================================
+   ROW LIMITING - View More Logic (2 Rows)
+   ============================================ */
+
+.certifications-grid:not(.expanded) .certification-card {
+  display: none !important;
+}
+
+/* Mobile: 1 col -> 2 items = 2 rows */
+.certifications-grid:not(.expanded) .certification-card:nth-child(-n+2) {
+  display: flex !important;
+}
+
+/* Tablet: typically 2 cols -> 4 items = 2 rows */
+@media (min-width: 650px) {
+  .certifications-grid:not(.expanded) .certification-card:nth-child(-n+4) {
+    display: flex !important;
+  }
+}
+
+/* Desktop: typically 3 cols -> 6 items = 2 rows */
+@media (min-width: 950px) {
+  .certifications-grid:not(.expanded) .certification-card:nth-child(-n+6) {
+    display: flex !important;
+  }
+}

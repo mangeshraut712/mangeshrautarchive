@@ -432,3 +432,30 @@ html.dark .article-title {
     font-size: 2rem;
   }
 }
+
+/* ========================================
+   ROW LIMITING - View More Logic (1 Row)
+   ======================================== */
+
+#blog-posts-container:not(.expanded) .blog-card {
+  display: none !important;
+}
+
+/* Mobile: 1 column -> 1 row = 1 item */
+#blog-posts-container:not(.expanded) .blog-card:nth-child(-n+1) {
+  display: flex !important;
+}
+
+/* Tablet: typically 2 columns -> 1 row = 2 items */
+@media (min-width: 768px) {
+  #blog-posts-container:not(.expanded) .blog-card:nth-child(-n+2) {
+    display: flex !important;
+  }
+}
+
+/* Desktop: typically 3 columns -> 1 row = 3 items */
+@media (min-width: 1100px) {
+  #blog-posts-container:not(.expanded) .blog-card:nth-child(-n+3) {
+    display: flex !important;
+  }
+}
