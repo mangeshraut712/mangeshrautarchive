@@ -525,3 +525,20 @@ Built with amazing open-source tools:
 [↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 </div>
+
+---
+
+<!-- codex:project-diagram:start -->
+
+## Project Diagram
+
+```mermaid
+flowchart LR
+    A["Browser"] --> B["Frontend App"]
+    B --> C["API / Serverless"]
+    C --> D["Deploy"]
+```
+
+_High-level flow of the deployed web experience and supporting services._
+
+<!-- codex:project-diagram:end -->
