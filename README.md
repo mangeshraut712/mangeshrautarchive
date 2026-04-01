@@ -33,9 +33,12 @@ A next-generation portfolio showcasing cutting-edge web technologies, AI integra
 - [🚀 Getting Started](#-getting-started)
 - [📂 Project Structure](#-project-structure)
 - [🤝 Connect](#-connect)
+- [❓ FAQ](#-faq)
+- [🔧 Troubleshooting](#-troubleshooting)
 - [📝 Changelog](#-changelog)
 - [🙏 Acknowledgments](#-acknowledgments)
 - [📄 License](#-license)
+- [📊 Project Stats](#-project-stats)
 
 ---
 
@@ -142,52 +145,6 @@ _Database administration and cloud migration_
 ![Lighthouse](https://img.shields.io/badge/Lighthouse-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white)
 
 </div>
-
----
-
-## ✨ Experience
-
-**Software Engineer** at Customized Energy Solutions • Philadelphia, PA • Aug 2024 – Present
-
-- Optimized energy analytics dashboards with **40% latency reduction** using React and Spring Boot
-- Accelerated CI/CD pipelines by **35%** through Docker and Jenkins automation
-- Enhanced ML forecasting accuracy by **25%** using TensorFlow and LSTM models
-- Architected microservices handling **100+ concurrent users** with AWS Lambda/EC2
-
-**Software Engineer** at IoasiZ • Remote • Jul 2023 – Jul 2024
-
-- Refactored legacy Java monoliths to modular services, reducing code redundancy by **20%**
-- Resolved **50+ critical bugs** in microservices architecture, improving sprint efficiency by **15%**
-- Integrated Redis caching for **3x faster** data retrieval in inventory systems
-
----
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-### Languages & Frameworks
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-
-### Cloud & Infrastructure
-
-![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=k8s&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-
-### AI & Data
-
-![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![OpenRouter](https://img.shields.io/badge/OpenRouter-000000?style=for-the-badge&logo=openai&logoColor=white)
 
 ### Quality & Testing
 
@@ -525,25 +482,6 @@ mangeshrautarchive/
 
 ---
 
-## 📈 Analytics & Monitoring
-
-Real-time performance monitoring and user analytics:
-
-### Performance Metrics
-
-- **Page Load:** <1.5s average across all devices
-- **Time to Interactive:** <3s for full functionality
-- **Bundle Size:** <200KB gzipped JavaScript
-- **Lighthouse Score:** 100/100 Mobile, 95/100 Desktop
-
-### User Experience
-
-- **Accessibility Score:** 95+ on all pages
-- **SEO Score:** 100 with structured data
-- **PWA Score:** 100 with offline capabilities
-
----
-
 ## 🤝 Connect
 
 <div align="center">
@@ -551,9 +489,7 @@ Real-time performance monitoring and user analytics:
 **Mangesh Raut**  
 _Software Engineer • Philadelphia, PA_
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-mangeshraut.pro-0071e3?style=for-the-badge&logo=apple)](https://mangeshraut.pro)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/mangeshraut71298)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github)](https://github.com/mangeshraut712)
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail)](mailto:mbr63@drexel.edu)
 [![X/Twitter](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/mangeshraut712)
 
@@ -594,10 +530,8 @@ A: Critical CSS inlining, lazy loading, GPU-accelerated animations, service work
 **Q: Can I contribute?**  
 A: Yes! Fork the repo, make improvements, and submit a PR. Focus areas: performance, accessibility, new features.
 
-**Q: How to run locally?**  
+**Q: How to run locally?**
 A: Clone the repo, install dependencies with `npm ci` and `pip install -r requirements.txt`, then run `npm run dev`.
-
-[↑ Back to Top](#mangesh-raut)
 
 [↑ Back to Top](#mangesh-raut)
 
@@ -659,8 +593,6 @@ A: Clone the repo, install dependencies with `npm ci` and `pip install -r requir
 
 [↑ Back to Top](#mangesh-raut)
 
-[↑ Back to Top](#mangesh-raut)
-
 ---
 
 ## 📝 Changelog
@@ -696,8 +628,6 @@ A: Clone the repo, install dependencies with `npm ci` and `pip install -r requir
 
 [↑ Back to Top](#mangesh-raut)
 
-[↑ Back to Top](#mangesh-raut)
-
 ---
 
 ## 🙏 Acknowledgments
@@ -726,8 +656,6 @@ A: Clone the repo, install dependencies with `npm ci` and `pip install -r requir
 
 [↑ Back to Top](#mangesh-raut)
 
-[↑ Back to Top](#mangesh-raut)
-
 ---
 
 ## 📄 License
@@ -749,8 +677,6 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 ```
-
-[↑ Back to Top](#mangesh-raut)
 
 [↑ Back to Top](#mangesh-raut)
 
