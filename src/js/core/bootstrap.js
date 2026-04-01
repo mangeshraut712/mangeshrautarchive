@@ -1,1 +1,404 @@
-import{initProjectShowcase}from"../modules/projects-showcase.js";import ExternalApiKeys from"../modules/external-config.js";import{initOverlayMenu,initOverlayNavigation,initSmoothScroll}from"../modules/overlay.js";import{initializeVercelAnalytics}from"../modules/vercel-analytics.js";const RUNTIME_MODULES=["../modules/agentic-actions.js","../modules/accessibility.js","../modules/premium-enhancements.js","../modules/birthday-celebration.js"],SECTION_MODULES=[{sectionId:"skills",modulePath:"../modules/skills-visualization.js"},{sectionId:"blog",modulePath:"../modules/blog-loader.js"},{sectionId:"contact",modulePath:"../modules/calendar.js"},{sectionId:"debug-runner-section",modulePath:"../modules/debug-runner.js"}];function createModuleLoader(e){let o=!1,t=null;return{load:async()=>!!o||(t||(t=import(e).then(()=>(o=!0,!0)).catch(o=>(console.warn(`Lazy load failed for ${e}`,o),!1)).finally(()=>{t=null}),t)),isLoaded:()=>o}}const chatbotLoader=createModuleLoader("../modules/chatbot.js"),searchLoader=createModuleLoader("../modules/search.js");function initFooterYear(){const e=document.getElementById("current-year");e&&(e.textContent=String((new Date).getFullYear()))}function initGlobalErrorHandlers(){window.__portfolioErrorHandlersBound||(window.__portfolioErrorHandlersBound=!0,window.addEventListener("error",e=>{console.error("Global error caught:",{message:e.message,filename:e.filename,lineno:e.lineno,colno:e.colno,error:e.error})}),window.addEventListener("unhandledrejection",e=>{console.error("Unhandled Promise rejection:",{reason:e.reason,promise:e.promise}),e.preventDefault()}))}function initContactChatbotCTA(e,o=document){const t=o.getElementById("contact-chatbot-cta");t&&"true"!==t.dataset.chatbotBound&&(t.dataset.chatbotBound="true",t.addEventListener("click",async()=>{await e.load();if(window.appleIntelligenceChatbot&&"function"==typeof window.appleIntelligenceChatbot.ask)return void window.appleIntelligenceChatbot.ask("I want to contact Mangesh about a project opportunity.");const t=o.getElementById("chatbot-toggle");t?.click()}))}function bindInteractionModuleLoader(e,o,t=!0,n=document){const r=n.getElementById(e);r&&"true"!==r.dataset.lazyModuleBound&&(r.dataset.lazyModuleBound="true",r.addEventListener("click",async e=>{if(o.isLoaded())return;e.preventDefault(),e.stopImmediatePropagation(),e.stopPropagation();await o.load()&&t&&requestAnimationFrame(()=>{r.click()})},{capture:!0}))}function initOnDemandModules(){bindInteractionModuleLoader("chatbot-toggle",chatbotLoader,!0),bindInteractionModuleLoader("search-toggle",searchLoader,!0),bindSearchShortcutLoader(searchLoader)}function runWhenIdle(e,o=1500){"requestIdleCallback"in window?window.requestIdleCallback(()=>e(),{timeout:o}):setTimeout(e,o)}function bindSearchShortcutLoader(e,o=document){"true"!==o.body?.dataset.searchShortcutBound&&(o.body&&(o.body.dataset.searchShortcutBound="true"),o.addEventListener("keydown",async t=>{if(!(("k"===t.key||"K"===t.key)&&(t.metaKey||t.ctrlKey))||e.isLoaded())return;t.preventDefault();await e.load()&&requestAnimationFrame(()=>{o.getElementById("search-toggle")?.click()})},{capture:!0}))}async function loadModule(e){try{await import(e)}catch(o){console.warn(`Lazy load failed for ${e}`,o)}}function lazyLoadSectionModule(e,o,t="300px 0px"){const n=document.getElementById(e);if(!n)return;let r=!1,a=null;const i=`#${e}`,c=()=>{r||(r=!0,a&&a.disconnect(),window.removeEventListener("hashchange",s),loadModule(o))},s=()=>{window.location.hash===i&&c()};if(window.location.hash!==i)return"IntersectionObserver"in window?(a=new IntersectionObserver(e=>{e.some(e=>e.isIntersecting)&&c()},{rootMargin:t}),a.observe(n),void window.addEventListener("hashchange",s)):void c();c()}function initLazyModules(){window.__portfolioLazyModulesBound||(window.__portfolioLazyModulesBound=!0,window.addEventListener("load",()=>{const e=()=>{RUNTIME_MODULES.forEach(e=>{loadModule(e)}),window.innerWidth>1024&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches&&loadModule("../modules/3d-background.js")};let o=!1;const t=()=>{o||(o=!0,runWhenIdle(e,600))};["pointerdown","keydown","touchstart","scroll"].forEach(e=>{window.addEventListener(e,t,{once:!0,passive:"keydown"!==e,capture:!0})}),setTimeout(t,12e3),SECTION_MODULES.forEach(({sectionId:e,modulePath:o})=>{lazyLoadSectionModule(e,o)})},{once:!0}))}function initProjectShowcaseOnDemand(){const e=document.getElementById("projects");let o=!1;const t=()=>{o||(o=!0,initProjectShowcase().catch(e=>{console.error("Project showcase init failed:",e)}))};if(e)if("#projects"!==window.location.hash){if("IntersectionObserver"in window){let o=null;const n=()=>{"#projects"===window.location.hash&&(t(),o?.disconnect(),window.removeEventListener("hashchange",n))};return o=new IntersectionObserver(e=>{e.some(e=>e.isIntersecting)&&(t(),o?.disconnect(),window.removeEventListener("hashchange",n))},{rootMargin:"350px 0px"}),o.observe(e),void window.addEventListener("hashchange",n)}runWhenIdle(t,2e3)}else t();else runWhenIdle(t,2e3)}function initServiceWorker(){if(!("serviceWorker"in navigator))return;const e=window.location.hostname,o=/no-sw=1/.test(window.location.search);if("localhost"===e||"127.0.0.1"===e){if("1"===sessionStorage.getItem("local-sw-cleanup-done"))return;return navigator.serviceWorker.getRegistrations().then(e=>{e.forEach(e=>{e.unregister(),console.log("ServiceWorker unregistered for local development")})}),"caches"in window&&caches.keys().then(e=>{e.forEach(e=>{caches.delete(e)})}),void sessionStorage.setItem("local-sw-cleanup-done","1")}o||window.addEventListener("load",()=>{navigator.serviceWorker.register("service-worker.js").then(e=>{console.log("ServiceWorker registration successful with scope:",e.scope),e.update().catch(()=>{})}).catch(e=>{console.log("ServiceWorker registration failed:",e)})},{once:!0})}async function initBootstrap(){initFooterYear(),initGlobalErrorHandlers(),initOverlayMenu(),initOverlayNavigation(),initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)'),initOnDemandModules(),initContactChatbotCTA(chatbotLoader),window.AssistMeConfig=Object.freeze({externalApis:ExternalApiKeys}),window.addEventListener("load",()=>{runWhenIdle(()=>{initializeVercelAnalytics().catch(e=>{console.warn("Vercel analytics init skipped:",e)})},2500)},{once:!0}),initLazyModules(),initServiceWorker(),initProjectShowcaseOnDemand()}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",()=>{initBootstrap().catch(e=>{console.error("Core bootstrap failed:",e)})},{once:!0}):initBootstrap().catch(e=>{console.error("Core bootstrap failed:",e)});
+import { initProjectShowcase } from '../modules/projects-showcase.js';
+import ExternalApiKeys from '../modules/external-config.js';
+import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
+import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
+
+const RUNTIME_MODULES = [
+  '../modules/agentic-actions.js',
+  '../modules/accessibility.js',
+  '../modules/premium-enhancements.js',
+  '../modules/birthday-celebration.js',
+];
+
+const SECTION_MODULES = [
+  { sectionId: 'about', modulePath: '../modules/profile-insights.js' },
+  { sectionId: 'skills', modulePath: '../modules/skills-visualization.js' },
+  { sectionId: 'blog', modulePath: '../modules/blog-loader.js' },
+  { sectionId: 'contact', modulePath: '../modules/calendar.js' },
+  { sectionId: 'debug-runner-section', modulePath: '../modules/debug-runner.js' },
+];
+
+function createModuleLoader(modulePath) {
+  let loaded = false;
+  let pendingPromise = null;
+
+  return {
+    async load() {
+      if (loaded) return true;
+
+      if (!pendingPromise) {
+        pendingPromise = import(modulePath)
+          .then(() => {
+            loaded = true;
+            return true;
+          })
+          .catch(error => {
+            console.warn(`Lazy load failed for ${modulePath}`, error);
+            return false;
+          })
+          .finally(() => {
+            pendingPromise = null;
+          });
+      }
+
+      return pendingPromise;
+    },
+    isLoaded() {
+      return loaded;
+    },
+  };
+}
+
+const chatbotLoader = createModuleLoader('../modules/chatbot.js');
+const searchLoader = createModuleLoader('../modules/search.js');
+
+function initFooterYear() {
+  const yearElement = document.getElementById('current-year');
+  if (yearElement) {
+    yearElement.textContent = String(new Date().getFullYear());
+  }
+}
+
+function initGlobalErrorHandlers() {
+  if (window.__portfolioErrorHandlersBound) return;
+
+  window.__portfolioErrorHandlersBound = true;
+
+  window.addEventListener('error', event => {
+    console.error('Global error caught:', {
+      message: event.message,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+      error: event.error,
+    });
+  });
+
+  window.addEventListener('unhandledrejection', event => {
+    console.error('Unhandled Promise rejection:', {
+      reason: event.reason,
+      promise: event.promise,
+    });
+    event.preventDefault();
+  });
+}
+
+function initContactChatbotCTA(loader, root = document) {
+  const button = root.getElementById('contact-chatbot-cta');
+  if (!button || button.dataset.chatbotBound === 'true') return;
+
+  button.dataset.chatbotBound = 'true';
+  button.addEventListener('click', async () => {
+    await loader.load();
+
+    if (window.appleIntelligenceChatbot && typeof window.appleIntelligenceChatbot.ask === 'function') {
+      window.appleIntelligenceChatbot.ask('I want to contact Mangesh about a project opportunity.');
+      return;
+    }
+
+    root.getElementById('chatbot-toggle')?.click();
+  });
+}
+
+function bindInteractionModuleLoader(elementId, loader, replayClick = true, root = document) {
+  const element = root.getElementById(elementId);
+  if (!element || element.dataset.lazyModuleBound === 'true') return;
+
+  element.dataset.lazyModuleBound = 'true';
+  element.addEventListener(
+    'click',
+    async event => {
+      if (loader.isLoaded()) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+
+      const didLoad = await loader.load();
+      if (didLoad && replayClick) {
+        requestAnimationFrame(() => {
+          element.click();
+        });
+      }
+    },
+    { capture: true }
+  );
+}
+
+function bindSearchShortcutLoader(loader, root = document) {
+  if (root.body?.dataset.searchShortcutBound === 'true') return;
+
+  if (root.body) {
+    root.body.dataset.searchShortcutBound = 'true';
+  }
+
+  root.addEventListener(
+    'keydown',
+    async event => {
+      const shortcutPressed = (event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey);
+      if (!shortcutPressed || loader.isLoaded()) return;
+
+      event.preventDefault();
+      const didLoad = await loader.load();
+      if (didLoad) {
+        requestAnimationFrame(() => {
+          root.getElementById('search-toggle')?.click();
+        });
+      }
+    },
+    { capture: true }
+  );
+}
+
+function initOnDemandModules() {
+  bindInteractionModuleLoader('chatbot-toggle', chatbotLoader, true);
+  bindInteractionModuleLoader('search-toggle', searchLoader, true);
+  bindSearchShortcutLoader(searchLoader);
+}
+
+function runWhenIdle(callback, timeout = 1500) {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => callback(), { timeout });
+    return;
+  }
+
+  window.setTimeout(callback, timeout);
+}
+
+async function loadModule(modulePath) {
+  try {
+    await import(modulePath);
+  } catch (error) {
+    console.warn(`Lazy load failed for ${modulePath}`, error);
+  }
+}
+
+function lazyLoadSectionModule(sectionId, modulePath, rootMargin = '300px 0px') {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+
+  let loaded = false;
+  let observer = null;
+  const hashTarget = `#${sectionId}`;
+
+  const cleanup = () => {
+    observer?.disconnect();
+    observer = null;
+    window.removeEventListener('hashchange', onHashChange);
+  };
+
+  const load = () => {
+    if (loaded) return;
+    loaded = true;
+    cleanup();
+    loadModule(modulePath);
+  };
+
+  const onHashChange = () => {
+    if (window.location.hash === hashTarget) {
+      load();
+    }
+  };
+
+  if (window.location.hash === hashTarget) {
+    load();
+    return;
+  }
+
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        load();
+      }
+    }, { rootMargin });
+
+    observer.observe(section);
+    window.addEventListener('hashchange', onHashChange);
+    return;
+  }
+
+  load();
+}
+
+function initLazyModules() {
+  if (window.__portfolioLazyModulesBound) return;
+
+  window.__portfolioLazyModulesBound = true;
+
+  window.addEventListener(
+    'load',
+    () => {
+      const loadRuntimeModules = () => {
+        RUNTIME_MODULES.forEach(modulePath => {
+          loadModule(modulePath);
+        });
+
+        if (window.innerWidth > 1024 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          loadModule('../modules/3d-background.js');
+        }
+      };
+
+      let runtimeTriggered = false;
+      const triggerRuntimeModules = () => {
+        if (runtimeTriggered) return;
+        runtimeTriggered = true;
+        runWhenIdle(loadRuntimeModules, 600);
+      };
+
+      ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
+        window.addEventListener(eventName, triggerRuntimeModules, {
+          once: true,
+          passive: eventName !== 'keydown',
+          capture: true,
+        });
+      });
+
+      window.setTimeout(triggerRuntimeModules, 12000);
+
+      SECTION_MODULES.forEach(({ sectionId, modulePath }) => {
+        lazyLoadSectionModule(sectionId, modulePath);
+      });
+    },
+    { once: true }
+  );
+}
+
+function initProjectShowcaseOnDemand() {
+  const projectsSection = document.getElementById('projects');
+  let initialized = false;
+
+  const loadProjects = () => {
+    if (initialized) return;
+    initialized = true;
+
+    initProjectShowcase().catch(error => {
+      console.error('Project showcase init failed:', error);
+    });
+  };
+
+  if (!projectsSection) {
+    runWhenIdle(loadProjects, 2000);
+    return;
+  }
+
+  if (window.location.hash === '#projects') {
+    loadProjects();
+    return;
+  }
+
+  if ('IntersectionObserver' in window) {
+    let observer = null;
+    const onHashChange = () => {
+      if (window.location.hash === '#projects') {
+        loadProjects();
+        observer?.disconnect();
+        window.removeEventListener('hashchange', onHashChange);
+      }
+    };
+
+    observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        loadProjects();
+        observer?.disconnect();
+        window.removeEventListener('hashchange', onHashChange);
+      }
+    }, { rootMargin: '350px 0px' });
+
+    observer.observe(projectsSection);
+    window.addEventListener('hashchange', onHashChange);
+    return;
+  }
+
+  runWhenIdle(loadProjects, 2000);
+}
+
+function initServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+
+  const hostname = window.location.hostname;
+  const disableServiceWorker = /no-sw=1/.test(window.location.search);
+
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    if (sessionStorage.getItem('local-sw-cleanup-done') === '1') return;
+
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      registrations.forEach(registration => {
+        registration.unregister();
+        console.log('ServiceWorker unregistered for local development');
+      });
+    });
+
+    if ('caches' in window) {
+      caches.keys().then(cacheNames => {
+        cacheNames.forEach(cacheName => {
+          caches.delete(cacheName);
+        });
+      });
+    }
+
+    sessionStorage.setItem('local-sw-cleanup-done', '1');
+    return;
+  }
+
+  if (disableServiceWorker) return;
+
+  window.addEventListener(
+    'load',
+    () => {
+      navigator.serviceWorker
+        .register('service-worker.js')
+        .then(registration => {
+          console.log('ServiceWorker registration successful with scope:', registration.scope);
+          registration.update().catch(() => {});
+        })
+        .catch(error => {
+          console.log('ServiceWorker registration failed:', error);
+        });
+    },
+    { once: true }
+  );
+}
+
+async function initBootstrap() {
+  initFooterYear();
+  initGlobalErrorHandlers();
+  initOverlayMenu();
+  initOverlayNavigation();
+  initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');
+  initOnDemandModules();
+  initContactChatbotCTA(chatbotLoader);
+
+  window.AssistMeConfig = Object.freeze({ externalApis: ExternalApiKeys });
+
+  window.addEventListener(
+    'load',
+    () => {
+      runWhenIdle(() => {
+        initializeVercelAnalytics().catch(error => {
+          console.warn('Vercel analytics init skipped:', error);
+        });
+      }, 2500);
+    },
+    { once: true }
+  );
+
+  initLazyModules();
+  initServiceWorker();
+  initProjectShowcaseOnDemand();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+      initBootstrap().catch(error => {
+        console.error('Core bootstrap failed:', error);
+      });
+    },
+    { once: true }
+  );
+} else {
+  initBootstrap().catch(error => {
+    console.error('Core bootstrap failed:', error);
+  });
+}
