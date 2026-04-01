@@ -1,1 +1,652 @@
-class GitHubProjects{constructor(t="mangeshraut712"){this.username=t,this.proxyCandidates=["/api/github/repos/public","/api/github/repos","https://mangeshrautarchive.vercel.app/api/github/repos/public","https://mangeshrautarchive.vercel.app/api/github/repos"],this.directApiUrl=`https://api.github.com/users/${t}/repos`,this.cache=null,this.cacheTime=null,this.cacheDuration=6e5,this.localCacheKey=`github_repos_${t}`,this.repoSchemaVersion=2,this.activityCacheDuration=9e5,this.activityStoragePrefix=`github_repo_activity_${t}_`,this.activitySchemaVersion=2,this.repoActivityCache=new Map,this.featuredProjectOrder=["mangeshrautarchive","AssistMe-VirtualAssistant","Bug-Reporting-System","ces-ltd.com","kashishbeautyparlour","Real-Time-Face-Emotion-Recognition-System","Crime-Investigation-System","Starlight-Blogging-Website"],this.showcaseExcludes=new Set([this.username.toLowerCase(),".github"])}normalizeRepoShape(t={}){const e=Number(t.stargazers_count??t.stars??0),a=Number(t.forks_count??t.forks??0),s=Number(t.subscribers_count??t.watchers_count??t.watchers??0),r=Number(t.open_issues_count??t.open_issues??0),n=Number(t.size??0),i=t.license,o="string"==typeof i?{spdx_id:i}:i||null;return{...t,stargazers_count:Number.isFinite(e)?e:0,forks_count:Number.isFinite(a)?a:0,watchers_count:Number.isFinite(s)?s:0,open_issues_count:Number.isFinite(r)?r:0,size:Number.isFinite(n)?n:0,topics:Array.isArray(t.topics)?t.topics:[],license:o,fork:Boolean(t.fork),archived:Boolean(t.archived)}}async fetchRepositories(t=!1){if(t&&(this.cache=null,this.cacheTime=null,localStorage.removeItem(this.localCacheKey)),this.cache&&this.cacheTime&&Date.now()-this.cacheTime<this.cacheDuration)return this.cache;try{const t=localStorage.getItem(this.localCacheKey);if(t){const{repos:e,timestamp:a,version:s}=JSON.parse(t);if(s===this.repoSchemaVersion&&e&&a&&Date.now()-a<this.cacheDuration)return this.cache=e,this.cacheTime=a,e}}catch(t){console.warn("Local cache read failed:",t)}let e=null;for(const t of this.proxyCandidates)try{const a=await fetch(`${t}?username=${this.username}&limit=100&no_forks=false`,{headers:{Accept:"application/json"}});if(!a.ok){console.warn(`Proxy ${t} returned ${a.status}`);continue}const s=await a.json();if(s.success&&Array.isArray(s.data)){console.log(`✅ GitHub repos via proxy ${t}`),e=s.data;break}}catch(e){console.warn(`Proxy ${t} failed:`,e.message)}if(!e)try{const t=await fetch(`${this.directApiUrl}?per_page=100&sort=updated`,{headers:{Accept:"application/vnd.github.v3+json"}});if(!t.ok)throw new Error(`GitHub API error: ${t.status}`);e=await t.json(),console.log("ℹ️ GitHub repos loaded directly (unauthenticated mode)")}catch(t){console.error("Error fetching GitHub repositories:",t);const e=localStorage.getItem(this.localCacheKey);if(e)try{const{repos:a}=JSON.parse(e);if(a&&a.length>0)return console.warn("Using stale cache due to API error:",t.message),a}catch{}return[]}const a=(Array.isArray(e)?e.map(t=>this.normalizeRepoShape(t)):[]).sort((t,e)=>new Date(e.updated_at)-new Date(t.updated_at));this.cache=a,this.cacheTime=Date.now();try{localStorage.setItem(this.localCacheKey,JSON.stringify({version:this.repoSchemaVersion,repos:a,timestamp:this.cacheTime}))}catch(t){console.warn("Local cache write failed:",t)}return a}getLanguageColor(t){const e={JavaScript:"#f1e05a",TypeScript:"#3178c6",Python:"#3572A5",Java:"#b07219",Swift:"#ffac45",HTML:"#e34c26",CSS:"#563d7c","C++":"#f34b7d",C:"#555555",Go:"#00ADD8",Rust:"#dea584",PHP:"#4F5D95",Ruby:"#701516","Jupyter Notebook":"#DA5B0B",Shell:"#89e051",Dart:"#00B4AB",Kotlin:"#A97BFF",default:"#6e7681"};return e[t]||e.default}escapeHtml(t){return String(t??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;")}formatCompactNumber(t){const e=Number(t);return Number.isFinite(e)?e<1e3?String(e):e<1e6?`${(e/1e3).toFixed(1).replace(".0","")}k`:`${(e/1e6).toFixed(1).replace(".0","")}m`:"--"}formatDate(t){const e=new Date(t),a=new Date,s=Math.max(0,a-e),r=Math.ceil(s/864e5);if(0===r)return"Today";if(1===r)return"Yesterday";if(r<7)return`${r} day${1===r?"":"s"} ago`;if(r<30){const t=Math.floor(r/7);return`${t} week${1===t?"":"s"} ago`}if(r<365){const t=Math.floor(r/30);return`${t} month${1===t?"":"s"} ago`}const n=Math.floor(r/365);return`${n} year${1===n?"":"s"} ago`}formatRelativeDateCompact(t){if(!t)return"unknown";const e=new Date(t).getTime();if(!Number.isFinite(e))return"unknown";const a=Math.max(0,Date.now()-e),s=36e5,r=864e5,n=7*r,i=30*r,o=365*r;return a<s?"now":a<r?`${Math.floor(a/s)}h ago`:a<n?`${Math.floor(a/r)}d ago`:a<i?`${Math.floor(a/n)}w ago`:a<o?`${Math.floor(a/i)}mo ago`:`${Math.floor(a/o)}y ago`}formatAbsoluteDate(t){if(!t)return"Unknown";const e=new Date(t);return Number.isNaN(e.getTime())?"Unknown":new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",year:"numeric"}).format(e)}normalizeHomepageUrl(t){if(!t)return"";const e=String(t).trim();if(!e)return"";const a=/^https?:\/\//i.test(e)?e:`https://${e}`;try{const t=new URL(a);return"http:"!==t.protocol&&"https:"!==t.protocol?"":t.toString()}catch{return""}}getTopics(t){return Array.isArray(t?.topics)?t.topics.map(t=>String(t||"").trim().toLowerCase()).filter(Boolean):[]}getRepoAgeDays(t){if(!t)return Number.POSITIVE_INFINITY;const e=new Date(t).getTime();if(Number.isNaN(e))return Number.POSITIVE_INFINITY;const a=Date.now()-e;return Math.max(0,Math.floor(a/864e5))}getShowcaseScore(t){const e=t.stargazers_count||0,a=t.forks_count||0,s=t.watchers_count||0,r=this.getTopics(t),n=this.getRepoAgeDays(t.updated_at),i=Math.max(0,100-.55*Math.min(n,180)),o=Math.min(100,18*e+24*a+6*s),c=Math.min(100,(t.description?34:0)+(t.language?20:0)+(r.length?9*Math.min(r.length,4):0)+(t.homepage?26:0)+(t.license?.spdx_id?10:0));return{score:Math.round(.42*i+.28*o+.3*c),freshness:i,traction:o,completeness:c,updatedAgeDays:n}}buildAiInsight(t,e){const a=this.getTopics(t),s=Boolean(this.normalizeHomepageUrl(t.homepage)),r=this.formatDate(t.updated_at),n=(t.stargazers_count||0)+(t.forks_count||0),i=[];i.push(`Updated ${r}`),s&&i.push("live demo available"),a.length&&i.push(`${Math.min(a.length,4)} tagged capabilities`),n>0&&i.push(`${n} public engagement signals`);const o=e.score>=72?"strong":e.score>=52?"balanced":"emerging";return`AI brief: ${i.join(" · ")}. Quality signal: ${o} (${e.score}/100).`}isRepositoryShowcaseReady(t){if(!t||t.fork||t.archived)return!1;const e=String(t.name||"").trim().toLowerCase();if(!e||this.showcaseExcludes.has(e))return!1;const a=String(t.description||"").trim().toLowerCase().includes("profile readme");return!!(Boolean(t.description)||Boolean(this.normalizeHomepageUrl(t.homepage))||(t.stargazers_count||0)>0||(t.forks_count||0)>0||this.getTopics(t).length>0)&&!(a&&!t.homepage)}getShowcaseRepos(t,e=12){if(!Array.isArray(t)||0===t.length)return[];const a=t.filter(t=>this.isRepositoryShowcaseReady(t));if(0===a.length)return[];const s=new Map(this.featuredProjectOrder.map((t,e)=>[t,e]));return a.map(t=>({...t,__showcase:this.getShowcaseScore(t)})).sort((t,e)=>{const a=s.has(t.name),r=s.has(e.name);return a&&r?s.get(t.name)-s.get(e.name):a?-1:r?1:e.__showcase.score!==t.__showcase.score?e.__showcase.score-t.__showcase.score:new Date(e.updated_at)-new Date(t.updated_at)}).slice(0,e)}extractRepoIdentity(t){const e=String(t?.full_name||"").trim();if(e.includes("/")){const[t,a]=e.split("/");return{fullName:e,owner:t,name:a}}const a=String(t?.html_url||"").trim();if(a)try{const t=new URL(a).pathname.split("/").filter(Boolean);if(t.length>=2)return{fullName:`${t[0]}/${t[1]}`,owner:t[0],name:t[1]}}catch{return null}return null}getActivityStorageKey(t){const e=String(t||"").toLowerCase().replace(/[^a-z0-9_-]/g,"_");return`${this.activityStoragePrefix}${e}`}readRepoActivityCache(t){if(!t)return null;const e=this.repoActivityCache.get(t);if(e&&Date.now()-e.timestamp<this.activityCacheDuration)return e.data;try{const e=this.getActivityStorageKey(t),a=localStorage.getItem(e);if(!a)return null;const s=JSON.parse(a);return s?.data&&s?.timestamp?s?.version!==this.activitySchemaVersion||Date.now()-s.timestamp>=this.activityCacheDuration?null:(this.repoActivityCache.set(t,s),s.data):null}catch{return null}}writeRepoActivityCache(t,e){if(!t||!e)return;const a={timestamp:Date.now(),version:this.activitySchemaVersion,data:e};this.repoActivityCache.set(t,a);try{const e=this.getActivityStorageKey(t);localStorage.setItem(e,JSON.stringify(a))}catch{}}parseCommitDate(t){return t?.commit?.author?.date||t?.commit?.committer?.date||""}buildGitHubProxyUrl(t){try{const e=new URL(t);if("https://api.github.com"!==e.origin)return"";const a=`${e.pathname}${e.search||""}`;return`/api/github/proxy?path=${encodeURIComponent(a)}`}catch{return""}}async fetchJson(t,e={}){const a=this.buildGitHubProxyUrl(t);if(a)try{const t=await fetch(a,{headers:{Accept:"application/json"}});if(t.ok)return await t.json()}catch{}try{const a=await fetch(t,{headers:e});return a.ok?await a.json():null}catch{return null}}async fetchJsonWithMeta(t,e={}){const a=this.buildGitHubProxyUrl(t),s=async t=>{const a=await fetch(t,{headers:e}),s=a.headers.get("link")||"",r=a.ok?await a.json():null;return{ok:a.ok,status:a.status,link:s,data:r}};if(a)try{const t=await s(a);if(t.ok||404===t.status)return t}catch{}try{return await s(t)}catch{return{ok:!1,status:0,link:"",data:null}}}getLastPageFromLink(t=""){if(!t)return null;const e=t.split(",").map(t=>t.trim()).filter(Boolean),a=e.find(t=>t.includes('rel="last"')),s=e.find(t=>t.includes('rel="next"')),r=a||s;if(!r)return null;const n=r.match(/[?&]page=(\d+)/);if(!n)return null;const i=Number.parseInt(n[1],10);return Number.isFinite(i)&&i>0?i:null}toFiniteMetric(t){if(null==t||""===t)return null;const e=Number(t);return Number.isFinite(e)?e:null}getPopularityScore(t){const e=t.__activity||{};return 5*Number(t.stargazers_count||0)+7*Number(t.forks_count||0)+2*Number(t.watchers_count||0)+4*Number(e.commits30d||0)+3*Number(e.contributors||0)+Number(t.__showcase?.score||0)}async fetchRepoActivity(t){const e=this.extractRepoIdentity(t);if(!e)return{commits30d:null,commitSample:0,contributors:null,latestCommitAt:t?.pushed_at||t?.updated_at||"",unavailable:!0};const a=this.readRepoActivityCache(e.fullName);if(a)return a;const s={Accept:"application/vnd.github+json"},r=`https://api.github.com/repos/${e.owner}/${e.name}`,n=new Date(Date.now()-2592e6).toISOString(),[i,o]=await Promise.all([this.fetchJsonWithMeta(`${r}/commits?per_page=1&since=${encodeURIComponent(n)}`,s),this.fetchJsonWithMeta(`${r}/contributors?per_page=1&anon=1`,s)]),c=Array.isArray(i.data)?i.data:null,l=Array.isArray(o.data)?o.data:null;let u=null,p=t?.pushed_at||t?.updated_at||"";if(i.ok&&c)if(0===c.length)u=0;else{u=this.getLastPageFromLink(i.link)||c.length,p=this.parseCommitDate(c[0])||p}let h=null;if(o.ok&&l)if(0===l.length)h=0;else{h=this.getLastPageFromLink(o.link)||l.length}const m=null===u&&null===h,d={commits30d:u,commitSample:Number.isFinite(u)?u:0,contributors:h,latestCommitAt:p,unavailable:m};return this.writeRepoActivityCache(e.fullName,d),d}async hydrateReposWithActivity(t=[]){return Array.isArray(t)&&0!==t.length?(await Promise.all(t.map(async t=>{if(!t||t.__activityLoaded)return;const e=await this.fetchRepoActivity(t);t.__activity=e,t.__activityLoaded=!0})),t):t}createProjectCard(t,e){const a=t.__showcase||this.getShowcaseScore(t),s=t.language||"Unknown",r=this.getLanguageColor(s),n=t.description||"No repository description provided yet.",i=Number(t.stargazers_count||0),o=Number(t.forks_count||0),c=Number(t.open_issues_count||0),l=Number(t.watchers_count||0),u=t.__activity||{},p=this.toFiniteMetric(u.commits30d),h=this.toFiniteMetric(u.contributors),m=u.latestCommitAt||t.pushed_at||t.updated_at||"",d=this.normalizeHomepageUrl(t.homepage),g=Boolean(d),f=this.formatRelativeDateCompact(t.updated_at),y=this.formatAbsoluteDate(t.updated_at),b=`${f} · ${y}`,w=t.full_name||`${this.username}/${t.name}`,_=t.license?.spdx_id||"",$=Number.isFinite(t.size)?t.size:"",v=t.default_branch||"",j=this.buildAiInsight(t,a),S=this.escapeHtml(t.name),N=this.escapeHtml(w),k=this.escapeHtml(n),A=this.escapeHtml(s),C=this.escapeHtml(t.html_url),D=g?this.escapeHtml(d):"",H=this.escapeHtml(y),x=this.escapeHtml(b),R=this.escapeHtml(j),P=this.escapeHtml(a.score),M=this.escapeHtml(_),T=this.escapeHtml(v),L=this.escapeHtml($),I=this.escapeHtml(c),F=this.getTopics(t),z=this.escapeHtml(JSON.stringify(F)),U=this.escapeHtml(t.updated_at||""),B=this.escapeHtml(t.created_at||""),E=this.escapeHtml(t.pushed_at||""),G=this.escapeHtml(m),O=null===p?"--":this.formatCompactNumber(p),J=null===h?"--":this.formatCompactNumber(h);return`\n      <article class="showcase-project-card apple-3d-project group" aria-label="${S} project card">\n        <div class="project-header">\n          <div class="project-head-top">\n            <div class="project-title-wrap">\n              <h3 class="project-title">\n                <span class="project-title-text">${S}</span>\n              </h3>\n              <a class="project-repo-link" href="${C}" target="_blank" rel="noopener noreferrer" aria-label="Open ${S} repository on GitHub">\n                ${N}\n              </a>\n            </div>\n            <span class="project-repo-updated" title="Updated ${H}">\n              <i class="fas fa-clock"></i>\n              ${x}\n            </span>\n          </div>\n\n          <p class="project-description">${k||"No description available"}</p>\n\n          <div class="project-signal-row">\n            <span class="project-signal-pill" title="Stars">\n              <i class="fas fa-star"></i>${this.formatCompactNumber(i)}\n            </span>\n            <span class="project-signal-pill" title="Forks">\n              <i class="fas fa-code-fork"></i>${this.formatCompactNumber(o)}\n            </span>\n            <span class="project-signal-pill" title="Commits in last 30 days">\n              <i class="fas fa-code-commit"></i>${O}\n            </span>\n            <span class="project-signal-pill" title="Contributors">\n              <i class="fas fa-users"></i>${J}\n            </span>\n            <span class="project-signal-score">Signal ${P}/100</span>\n          </div>\n\n          <div class="project-tags">\n            ${"Unknown"!==s?`\n              <span class="project-language">\n                <span class="language-dot" style="background-color: ${r}"></span>\n                ${A}\n              </span>\n            `:""}\n            ${F.length>0?F.slice(0,3).map(t=>`<span class="project-tag">${this.escapeHtml(t)}</span>`).join(""):""}\n          </div>\n        </div>\n\n        <div class="project-footer">\n          <button\n            type="button"\n            class="project-action-btn btn-ar"\n            data-project-name="${S}"\n            data-project-full-name="${N}"\n            data-project-url="${C}"\n            data-project-demo-url="${D}"\n            data-project-repo-url="${C}"\n            data-project-updated-at="${U}"\n            data-project-created-at="${B}"\n            data-project-stars="${i}"\n            data-project-forks="${o}"\n            data-project-open-issues="${I}"\n            data-project-watchers="${l}"\n            data-project-size-kb="${L}"\n            data-project-license="${M}"\n            data-project-default-branch="${T}"\n            data-project-pushed-at="${E}"\n            data-project-last-commit-at="${G}"\n            data-project-commits-30d="${null===p?"":p}"\n            data-project-contributors="${null===h?"":h}"\n            data-project-score="${P}"\n            data-project-language="${A}"\n            data-project-topics="${z}"\n            data-project-ai-insight="${R}"\n            aria-label="Open ${S} spatial detail card"\n          >\n            <i class="fas fa-cube"></i>\n            <span>Spatial View</span>\n          </button>\n\n          ${g?`<a href="${D}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open demo website for ${S}">\n                <i class="fas fa-arrow-up-right-from-square"></i>\n                <span>Demo Website</span>\n              </a>`:`<button type="button" class="project-action-btn btn-demo is-disabled" disabled aria-disabled="true" aria-label="Demo unavailable for ${S}">\n                <i class="fas fa-link-slash"></i>\n                <span>Demo Unavailable</span>\n              </button>`}\n        </div>\n      </article>\n    `}async renderProjects(t="github-projects-container",e=12){const a=document.getElementById(t);if(a){a.innerHTML='\n      <div class="col-span-full flex items-center justify-center py-12">\n        <div class="text-center">\n          <div class="loading-spinner mb-4 mx-auto"></div>\n          <p class="text-secondary">Loading projects from GitHub...</p>\n        </div>\n      </div>\n    ';try{const t=await this.fetchRepositories(),s=this.getShowcaseRepos(t,e);if(0===s.length)return void(a.innerHTML='\n          <div class="col-span-full text-center py-12">\n            <i class="fas fa-folder-open text-6xl text-accent opacity-20 mb-4"></i>\n            <p class="text-secondary">No showcase-ready repositories found</p>\n          </div>\n        ');await this.hydrateReposWithActivity(s);const r=s.map((t,e)=>this.createProjectCard(t,e)).join("");if(a.innerHTML=r,window.PremiumEnhancements&&window.PremiumEnhancements.applyTiltToElement){a.querySelectorAll(".apple-3d-project").forEach(t=>window.PremiumEnhancements.applyTiltToElement(t))}}catch{a.innerHTML='\n        <div class="col-span-full text-center py-12">\n          <i class="fas fa-exclamation-triangle text-6xl text-red-500 opacity-20 mb-4"></i>\n          <p class="text-secondary">Failed to load projects. Please try again later.</p>\n        </div>\n      '}}else console.error(`Container with id "${t}" not found`)}async getStats(){const t=await this.fetchRepositories(),e={totalRepos:t.length,totalStars:t.reduce((t,e)=>t+Number(e.stargazers_count||0),0),totalForks:t.reduce((t,e)=>t+Number(e.forks_count||0),0),languages:{},mostStarred:[...t].sort((t,e)=>Number(e.stargazers_count||0)-Number(t.stargazers_count||0))[0],recentlyUpdated:t[0]};return t.forEach(t=>{t.language&&(e.languages[t.language]=(e.languages[t.language]||0)+1)}),e}async searchRepos(t){if(!t||0===t.trim().length)return[];const e=await this.fetchRepositories(),a=t.toLowerCase().trim();return e.filter(t=>{const e=t.name?.toLowerCase().includes(a),s=t.description?.toLowerCase().includes(a),r=t.topics?.some(t=>t?.toLowerCase().includes(a)),n=t.language?.toLowerCase().includes(a);return e||s||r||n})}sortRepos(t,e="updated"){const a=[...t];switch(e){case"stars":a.sort((t,e)=>(e.stargazers_count||0)-(t.stargazers_count||0));break;case"forks":a.sort((t,e)=>(e.forks_count||0)-(t.forks_count||0));break;case"name":a.sort((t,e)=>(t.name||"").localeCompare(e.name||""));break;case"created":a.sort((t,e)=>new Date(e.created_at||0)-new Date(t.created_at||0));break;default:a.sort((t,e)=>new Date(e.updated_at||0)-new Date(t.updated_at||0))}return a}async getSearchableProjects(){return(await this.fetchRepositories()).map(t=>({type:"GitHub Project",title:t.name,description:t.description||"",url:t.html_url,stars:t.stargazers_count||0,forks:t.forks_count||0,language:t.language,topics:t.topics||[],updated:t.updated_at}))}}"undefined"!=typeof window&&(window.GitHubProjects=GitHubProjects);export default GitHubProjects;
+/* eslint-disable no-empty, no-unused-vars */ class GitHubProjects {
+  constructor(t = 'mangeshraut712') {
+    ((this.username = t),
+      (this.proxyCandidates = [
+        '/api/github/repos/public',
+        '/api/github/repos',
+        'https://mangeshrautarchive.vercel.app/api/github/repos/public',
+        'https://mangeshrautarchive.vercel.app/api/github/repos',
+      ]),
+      (this.directApiUrl = `https://api.github.com/users/${t}/repos`),
+      (this.cache = null),
+      (this.cacheTime = null),
+      (this.cacheDuration = 6e5),
+      (this.localCacheKey = `github_repos_${t}`),
+      (this.repoSchemaVersion = 2),
+      (this.activityCacheDuration = 9e5),
+      (this.activityStoragePrefix = `github_repo_activity_${t}_`),
+      (this.activitySchemaVersion = 2),
+      (this.repoActivityCache = new Map()),
+      (this.featuredProjectOrder = [
+        'mangeshrautarchive',
+        'AssistMe-VirtualAssistant',
+        'Bug-Reporting-System',
+        'ces-ltd.com',
+        'kashishbeautyparlour',
+        'Real-Time-Face-Emotion-Recognition-System',
+        'Crime-Investigation-System',
+        'Starlight-Blogging-Website',
+      ]),
+      (this.showcaseExcludes = new Set([this.username.toLowerCase(), '.github'])));
+  }
+  normalizeRepoShape(t = {}) {
+    const e = Number(t.stargazers_count ?? t.stars ?? 0),
+      a = Number(t.forks_count ?? t.forks ?? 0),
+      s = Number(t.subscribers_count ?? t.watchers_count ?? t.watchers ?? 0),
+      r = Number(t.open_issues_count ?? t.open_issues ?? 0),
+      n = Number(t.size ?? 0),
+      i = t.license,
+      o = 'string' == typeof i ? { spdx_id: i } : i || null;
+    return {
+      ...t,
+      stargazers_count: Number.isFinite(e) ? e : 0,
+      forks_count: Number.isFinite(a) ? a : 0,
+      watchers_count: Number.isFinite(s) ? s : 0,
+      open_issues_count: Number.isFinite(r) ? r : 0,
+      size: Number.isFinite(n) ? n : 0,
+      topics: Array.isArray(t.topics) ? t.topics : [],
+      license: o,
+      fork: Boolean(t.fork),
+      archived: Boolean(t.archived),
+    };
+  }
+  async fetchRepositories(t = !1) {
+    if (
+      (t &&
+        ((this.cache = null), (this.cacheTime = null), localStorage.removeItem(this.localCacheKey)),
+      this.cache && this.cacheTime && Date.now() - this.cacheTime < this.cacheDuration)
+    )
+      return this.cache;
+    try {
+      const t = localStorage.getItem(this.localCacheKey);
+      if (t) {
+        const { repos: e, timestamp: a, version: s } = JSON.parse(t);
+        if (s === this.repoSchemaVersion && e && a && Date.now() - a < this.cacheDuration)
+          return ((this.cache = e), (this.cacheTime = a), e);
+      }
+    } catch (t) {
+      console.warn('Local cache read failed:', t);
+    }
+    let e = null;
+    for (const t of this.proxyCandidates)
+      try {
+        const a = await fetch(`${t}?username=${this.username}&limit=100&no_forks=false`, {
+          headers: { Accept: 'application/json' },
+        });
+        if (!a.ok) {
+          console.warn(`Proxy ${t} returned ${a.status}`);
+          continue;
+        }
+        const s = await a.json();
+        if (s.success && Array.isArray(s.data)) {
+          (console.log(`✅ GitHub repos via proxy ${t}`), (e = s.data));
+          break;
+        }
+      } catch (e) {
+        console.warn(`Proxy ${t} failed:`, e.message);
+      }
+    if (!e)
+      try {
+        const t = await fetch(`${this.directApiUrl}?per_page=100&sort=updated`, {
+          headers: { Accept: 'application/vnd.github.v3+json' },
+        });
+        if (!t.ok) throw new Error(`GitHub API error: ${t.status}`);
+        ((e = await t.json()),
+          console.log('ℹ️ GitHub repos loaded directly (unauthenticated mode)'));
+      } catch (t) {
+        console.error('Error fetching GitHub repositories:', t);
+        const e = localStorage.getItem(this.localCacheKey);
+        if (e)
+          try {
+            const { repos: a } = JSON.parse(e);
+            if (a && a.length > 0)
+              return (console.warn('Using stale cache due to API error:', t.message), a);
+          } catch {}
+        return [];
+      }
+    const a = (Array.isArray(e) ? e.map(t => this.normalizeRepoShape(t)) : []).sort(
+      (t, e) => new Date(e.updated_at) - new Date(t.updated_at)
+    );
+    ((this.cache = a), (this.cacheTime = Date.now()));
+    try {
+      localStorage.setItem(
+        this.localCacheKey,
+        JSON.stringify({ version: this.repoSchemaVersion, repos: a, timestamp: this.cacheTime })
+      );
+    } catch (t) {
+      console.warn('Local cache write failed:', t);
+    }
+    return a;
+  }
+  getLanguageColor(t) {
+    const e = {
+      JavaScript: '#f1e05a',
+      TypeScript: '#3178c6',
+      Python: '#3572A5',
+      Java: '#b07219',
+      Swift: '#ffac45',
+      HTML: '#e34c26',
+      CSS: '#563d7c',
+      'C++': '#f34b7d',
+      C: '#555555',
+      Go: '#00ADD8',
+      Rust: '#dea584',
+      PHP: '#4F5D95',
+      Ruby: '#701516',
+      'Jupyter Notebook': '#DA5B0B',
+      Shell: '#89e051',
+      Dart: '#00B4AB',
+      Kotlin: '#A97BFF',
+      default: '#6e7681',
+    };
+    return e[t] || e.default;
+  }
+  escapeHtml(t) {
+    return String(t ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+  formatCompactNumber(t) {
+    const e = Number(t);
+    return Number.isFinite(e)
+      ? e < 1e3
+        ? String(e)
+        : e < 1e6
+          ? `${(e / 1e3).toFixed(1).replace('.0', '')}k`
+          : `${(e / 1e6).toFixed(1).replace('.0', '')}m`
+      : '--';
+  }
+  formatDate(t) {
+    const e = new Date(t),
+      a = new Date(),
+      s = Math.max(0, a - e),
+      r = Math.ceil(s / 864e5);
+    if (0 === r) return 'Today';
+    if (1 === r) return 'Yesterday';
+    if (r < 7) return `${r} day${1 === r ? '' : 's'} ago`;
+    if (r < 30) {
+      const t = Math.floor(r / 7);
+      return `${t} week${1 === t ? '' : 's'} ago`;
+    }
+    if (r < 365) {
+      const t = Math.floor(r / 30);
+      return `${t} month${1 === t ? '' : 's'} ago`;
+    }
+    const n = Math.floor(r / 365);
+    return `${n} year${1 === n ? '' : 's'} ago`;
+  }
+  formatRelativeDateCompact(t) {
+    if (!t) return 'unknown';
+    const e = new Date(t).getTime();
+    if (!Number.isFinite(e)) return 'unknown';
+    const a = Math.max(0, Date.now() - e),
+      s = 36e5,
+      r = 864e5,
+      n = 7 * r,
+      i = 30 * r,
+      o = 365 * r;
+    return a < s
+      ? 'now'
+      : a < r
+        ? `${Math.floor(a / s)}h ago`
+        : a < n
+          ? `${Math.floor(a / r)}d ago`
+          : a < i
+            ? `${Math.floor(a / n)}w ago`
+            : a < o
+              ? `${Math.floor(a / i)}mo ago`
+              : `${Math.floor(a / o)}y ago`;
+  }
+  formatAbsoluteDate(t) {
+    if (!t) return 'Unknown';
+    const e = new Date(t);
+    return Number.isNaN(e.getTime())
+      ? 'Unknown'
+      : new Intl.DateTimeFormat('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }).format(e);
+  }
+  normalizeHomepageUrl(t) {
+    if (!t) return '';
+    const e = String(t).trim();
+    if (!e) return '';
+    const a = /^https?:\/\//i.test(e) ? e : `https://${e}`;
+    try {
+      const t = new URL(a);
+      return 'http:' !== t.protocol && 'https:' !== t.protocol ? '' : t.toString();
+    } catch {
+      return '';
+    }
+  }
+  getTopics(t) {
+    return Array.isArray(t?.topics)
+      ? t.topics
+          .map(t =>
+            String(t || '')
+              .trim()
+              .toLowerCase()
+          )
+          .filter(Boolean)
+      : [];
+  }
+  getRepoAgeDays(t) {
+    if (!t) return Number.POSITIVE_INFINITY;
+    const e = new Date(t).getTime();
+    if (Number.isNaN(e)) return Number.POSITIVE_INFINITY;
+    const a = Date.now() - e;
+    return Math.max(0, Math.floor(a / 864e5));
+  }
+  getShowcaseScore(t) {
+    const e = t.stargazers_count || 0,
+      a = t.forks_count || 0,
+      s = t.watchers_count || 0,
+      r = this.getTopics(t),
+      n = this.getRepoAgeDays(t.updated_at),
+      i = Math.max(0, 100 - 0.55 * Math.min(n, 180)),
+      o = Math.min(100, 18 * e + 24 * a + 6 * s),
+      c = Math.min(
+        100,
+        (t.description ? 34 : 0) +
+          (t.language ? 20 : 0) +
+          (r.length ? 9 * Math.min(r.length, 4) : 0) +
+          (t.homepage ? 26 : 0) +
+          (t.license?.spdx_id ? 10 : 0)
+      );
+    return {
+      score: Math.round(0.42 * i + 0.28 * o + 0.3 * c),
+      freshness: i,
+      traction: o,
+      completeness: c,
+      updatedAgeDays: n,
+    };
+  }
+  buildAiInsight(t, e) {
+    const a = this.getTopics(t),
+      s = Boolean(this.normalizeHomepageUrl(t.homepage)),
+      r = this.formatDate(t.updated_at),
+      n = (t.stargazers_count || 0) + (t.forks_count || 0),
+      i = [];
+    (i.push(`Updated ${r}`),
+      s && i.push('live demo available'),
+      a.length && i.push(`${Math.min(a.length, 4)} tagged capabilities`),
+      n > 0 && i.push(`${n} public engagement signals`));
+    const o = e.score >= 72 ? 'strong' : e.score >= 52 ? 'balanced' : 'emerging';
+    return `AI brief: ${i.join(' · ')}. Quality signal: ${o} (${e.score}/100).`;
+  }
+  isRepositoryShowcaseReady(t) {
+    if (!t || t.fork || t.archived) return !1;
+    const e = String(t.name || '')
+      .trim()
+      .toLowerCase();
+    if (!e || this.showcaseExcludes.has(e)) return !1;
+    const a = String(t.description || '')
+      .trim()
+      .toLowerCase()
+      .includes('profile readme');
+    return (
+      !!(
+        Boolean(t.description) ||
+        Boolean(this.normalizeHomepageUrl(t.homepage)) ||
+        (t.stargazers_count || 0) > 0 ||
+        (t.forks_count || 0) > 0 ||
+        this.getTopics(t).length > 0
+      ) && !(a && !t.homepage)
+    );
+  }
+  getShowcaseRepos(t, e = 12) {
+    if (!Array.isArray(t) || 0 === t.length) return [];
+    const a = t.filter(t => this.isRepositoryShowcaseReady(t));
+    if (0 === a.length) return [];
+    const s = new Map(this.featuredProjectOrder.map((t, e) => [t, e]));
+    return a
+      .map(t => ({ ...t, __showcase: this.getShowcaseScore(t) }))
+      .sort((t, e) => {
+        const a = s.has(t.name),
+          r = s.has(e.name);
+        return a && r
+          ? s.get(t.name) - s.get(e.name)
+          : a
+            ? -1
+            : r
+              ? 1
+              : e.__showcase.score !== t.__showcase.score
+                ? e.__showcase.score - t.__showcase.score
+                : new Date(e.updated_at) - new Date(t.updated_at);
+      })
+      .slice(0, e);
+  }
+  extractRepoIdentity(t) {
+    const e = String(t?.full_name || '').trim();
+    if (e.includes('/')) {
+      const [t, a] = e.split('/');
+      return { fullName: e, owner: t, name: a };
+    }
+    const a = String(t?.html_url || '').trim();
+    if (a)
+      try {
+        const t = new URL(a).pathname.split('/').filter(Boolean);
+        if (t.length >= 2) return { fullName: `${t[0]}/${t[1]}`, owner: t[0], name: t[1] };
+      } catch {
+        return null;
+      }
+    return null;
+  }
+  getActivityStorageKey(t) {
+    const e = String(t || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]/g, '_');
+    return `${this.activityStoragePrefix}${e}`;
+  }
+  readRepoActivityCache(t) {
+    if (!t) return null;
+    const e = this.repoActivityCache.get(t);
+    if (e && Date.now() - e.timestamp < this.activityCacheDuration) return e.data;
+    try {
+      const e = this.getActivityStorageKey(t),
+        a = localStorage.getItem(e);
+      if (!a) return null;
+      const s = JSON.parse(a);
+      return s?.data && s?.timestamp
+        ? s?.version !== this.activitySchemaVersion ||
+          Date.now() - s.timestamp >= this.activityCacheDuration
+          ? null
+          : (this.repoActivityCache.set(t, s), s.data)
+        : null;
+    } catch {
+      return null;
+    }
+  }
+  writeRepoActivityCache(t, e) {
+    if (!t || !e) return;
+    const a = { timestamp: Date.now(), version: this.activitySchemaVersion, data: e };
+    this.repoActivityCache.set(t, a);
+    try {
+      const e = this.getActivityStorageKey(t);
+      localStorage.setItem(e, JSON.stringify(a));
+    } catch {}
+  }
+  parseCommitDate(t) {
+    return t?.commit?.author?.date || t?.commit?.committer?.date || '';
+  }
+  buildGitHubProxyUrl(t) {
+    try {
+      const e = new URL(t);
+      if ('https://api.github.com' !== e.origin) return '';
+      const a = `${e.pathname}${e.search || ''}`;
+      return `/api/github/proxy?path=${encodeURIComponent(a)}`;
+    } catch {
+      return '';
+    }
+  }
+  async fetchJson(t, e = {}) {
+    const a = this.buildGitHubProxyUrl(t);
+    if (a)
+      try {
+        const t = await fetch(a, { headers: { Accept: 'application/json' } });
+        if (t.ok) return await t.json();
+      } catch {}
+    try {
+      const a = await fetch(t, { headers: e });
+      return a.ok ? await a.json() : null;
+    } catch {
+      return null;
+    }
+  }
+  async fetchJsonWithMeta(t, e = {}) {
+    const a = this.buildGitHubProxyUrl(t),
+      s = async t => {
+        const a = await fetch(t, { headers: e }),
+          s = a.headers.get('link') || '',
+          r = a.ok ? await a.json() : null;
+        return { ok: a.ok, status: a.status, link: s, data: r };
+      };
+    if (a)
+      try {
+        const t = await s(a);
+        if (t.ok || 404 === t.status) return t;
+      } catch {}
+    try {
+      return await s(t);
+    } catch {
+      return { ok: !1, status: 0, link: '', data: null };
+    }
+  }
+  getLastPageFromLink(t = '') {
+    if (!t) return null;
+    const e = t
+        .split(',')
+        .map(t => t.trim())
+        .filter(Boolean),
+      a = e.find(t => t.includes('rel="last"')),
+      s = e.find(t => t.includes('rel="next"')),
+      r = a || s;
+    if (!r) return null;
+    const n = r.match(/[?&]page=(\d+)/);
+    if (!n) return null;
+    const i = Number.parseInt(n[1], 10);
+    return Number.isFinite(i) && i > 0 ? i : null;
+  }
+  toFiniteMetric(t) {
+    if (null == t || '' === t) return null;
+    const e = Number(t);
+    return Number.isFinite(e) ? e : null;
+  }
+  getPopularityScore(t) {
+    const e = t.__activity || {};
+    return (
+      5 * Number(t.stargazers_count || 0) +
+      7 * Number(t.forks_count || 0) +
+      2 * Number(t.watchers_count || 0) +
+      4 * Number(e.commits30d || 0) +
+      3 * Number(e.contributors || 0) +
+      Number(t.__showcase?.score || 0)
+    );
+  }
+  async fetchRepoActivity(t) {
+    const e = this.extractRepoIdentity(t);
+    if (!e)
+      return {
+        commits30d: null,
+        commitSample: 0,
+        contributors: null,
+        latestCommitAt: t?.pushed_at || t?.updated_at || '',
+        unavailable: !0,
+      };
+    const a = this.readRepoActivityCache(e.fullName);
+    if (a) return a;
+    const s = { Accept: 'application/vnd.github+json' },
+      r = `https://api.github.com/repos/${e.owner}/${e.name}`,
+      n = new Date(Date.now() - 2592e6).toISOString(),
+      [i, o] = await Promise.all([
+        this.fetchJsonWithMeta(`${r}/commits?per_page=1&since=${encodeURIComponent(n)}`, s),
+        this.fetchJsonWithMeta(`${r}/contributors?per_page=1&anon=1`, s),
+      ]),
+      c = Array.isArray(i.data) ? i.data : null,
+      l = Array.isArray(o.data) ? o.data : null;
+    let u = null,
+      p = t?.pushed_at || t?.updated_at || '';
+    if (i.ok && c)
+      if (0 === c.length) u = 0;
+      else {
+        ((u = this.getLastPageFromLink(i.link) || c.length), (p = this.parseCommitDate(c[0]) || p));
+      }
+    let h = null;
+    if (o.ok && l)
+      if (0 === l.length) h = 0;
+      else {
+        h = this.getLastPageFromLink(o.link) || l.length;
+      }
+    const m = null === u && null === h,
+      d = {
+        commits30d: u,
+        commitSample: Number.isFinite(u) ? u : 0,
+        contributors: h,
+        latestCommitAt: p,
+        unavailable: m,
+      };
+    return (this.writeRepoActivityCache(e.fullName, d), d);
+  }
+  async hydrateReposWithActivity(t = []) {
+    return Array.isArray(t) && 0 !== t.length
+      ? (await Promise.all(
+          t.map(async t => {
+            if (!t || t.__activityLoaded) return;
+            const e = await this.fetchRepoActivity(t);
+            ((t.__activity = e), (t.__activityLoaded = !0));
+          })
+        ),
+        t)
+      : t;
+  }
+  createProjectCard(t, e) {
+    const a = t.__showcase || this.getShowcaseScore(t),
+      s = t.language || 'Unknown',
+      r = this.getLanguageColor(s),
+      n = t.description || 'No repository description provided yet.',
+      i = Number(t.stargazers_count || 0),
+      o = Number(t.forks_count || 0),
+      c = Number(t.open_issues_count || 0),
+      l = Number(t.watchers_count || 0),
+      u = t.__activity || {},
+      p = this.toFiniteMetric(u.commits30d),
+      h = this.toFiniteMetric(u.contributors),
+      m = u.latestCommitAt || t.pushed_at || t.updated_at || '',
+      d = this.normalizeHomepageUrl(t.homepage),
+      g = Boolean(d),
+      f = this.formatRelativeDateCompact(t.updated_at),
+      y = this.formatAbsoluteDate(t.updated_at),
+      b = `${f} · ${y}`,
+      w = t.full_name || `${this.username}/${t.name}`,
+      _ = t.license?.spdx_id || '',
+      $ = Number.isFinite(t.size) ? t.size : '',
+      v = t.default_branch || '',
+      j = this.buildAiInsight(t, a),
+      S = this.escapeHtml(t.name),
+      N = this.escapeHtml(w),
+      k = this.escapeHtml(n),
+      A = this.escapeHtml(s),
+      C = this.escapeHtml(t.html_url),
+      D = g ? this.escapeHtml(d) : '',
+      H = this.escapeHtml(y),
+      x = this.escapeHtml(b),
+      R = this.escapeHtml(j),
+      P = this.escapeHtml(a.score),
+      M = this.escapeHtml(_),
+      T = this.escapeHtml(v),
+      L = this.escapeHtml($),
+      I = this.escapeHtml(c),
+      F = this.getTopics(t),
+      z = this.escapeHtml(JSON.stringify(F)),
+      U = this.escapeHtml(t.updated_at || ''),
+      B = this.escapeHtml(t.created_at || ''),
+      E = this.escapeHtml(t.pushed_at || ''),
+      G = this.escapeHtml(m),
+      O = null === p ? '--' : this.formatCompactNumber(p),
+      J = null === h ? '--' : this.formatCompactNumber(h);
+    return `\n      <article class="showcase-project-card apple-3d-project group" aria-label="${S} project card">\n        <div class="project-header">\n          <div class="project-head-top">\n            <div class="project-title-wrap">\n              <h3 class="project-title">\n                <span class="project-title-text">${S}</span>\n              </h3>\n              <a class="project-repo-link" href="${C}" target="_blank" rel="noopener noreferrer" aria-label="Open ${S} repository on GitHub">\n                ${N}\n              </a>\n            </div>\n            <span class="project-repo-updated" title="Updated ${H}">\n              <i class="fas fa-clock"></i>\n              ${x}\n            </span>\n          </div>\n\n          <p class="project-description">${k || 'No description available'}</p>\n\n          <div class="project-signal-row">\n            <span class="project-signal-pill" title="Stars">\n              <i class="fas fa-star"></i>${this.formatCompactNumber(i)}\n            </span>\n            <span class="project-signal-pill" title="Forks">\n              <i class="fas fa-code-fork"></i>${this.formatCompactNumber(o)}\n            </span>\n            <span class="project-signal-pill" title="Commits in last 30 days">\n              <i class="fas fa-code-commit"></i>${O}\n            </span>\n            <span class="project-signal-pill" title="Contributors">\n              <i class="fas fa-users"></i>${J}\n            </span>\n            <span class="project-signal-score">Signal ${P}/100</span>\n          </div>\n\n          <div class="project-tags">\n            ${'Unknown' !== s ? `\n              <span class="project-language">\n                <span class="language-dot" style="background-color: ${r}"></span>\n                ${A}\n              </span>\n            ` : ''}\n            ${
+      F.length > 0
+        ? F.slice(0, 3)
+            .map(t => `<span class="project-tag">${this.escapeHtml(t)}</span>`)
+            .join('')
+        : ''
+    }\n          </div>\n        </div>\n\n        <div class="project-footer">\n          <button\n            type="button"\n            class="project-action-btn btn-ar"\n            data-project-name="${S}"\n            data-project-full-name="${N}"\n            data-project-url="${C}"\n            data-project-demo-url="${D}"\n            data-project-repo-url="${C}"\n            data-project-updated-at="${U}"\n            data-project-created-at="${B}"\n            data-project-stars="${i}"\n            data-project-forks="${o}"\n            data-project-open-issues="${I}"\n            data-project-watchers="${l}"\n            data-project-size-kb="${L}"\n            data-project-license="${M}"\n            data-project-default-branch="${T}"\n            data-project-pushed-at="${E}"\n            data-project-last-commit-at="${G}"\n            data-project-commits-30d="${null === p ? '' : p}"\n            data-project-contributors="${null === h ? '' : h}"\n            data-project-score="${P}"\n            data-project-language="${A}"\n            data-project-topics="${z}"\n            data-project-ai-insight="${R}"\n            aria-label="Open ${S} spatial detail card"\n          >\n            <i class="fas fa-cube"></i>\n            <span>Spatial View</span>\n          </button>\n\n          ${g ? `<a href="${D}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open demo website for ${S}">\n                <i class="fas fa-arrow-up-right-from-square"></i>\n                <span>Demo Website</span>\n              </a>` : `<button type="button" class="project-action-btn btn-demo is-disabled" disabled aria-disabled="true" aria-label="Demo unavailable for ${S}">\n                <i class="fas fa-link-slash"></i>\n                <span>Demo Unavailable</span>\n              </button>`}\n        </div>\n      </article>\n    `;
+  }
+  async renderProjects(t = 'github-projects-container', e = 12) {
+    const a = document.getElementById(t);
+    if (a) {
+      a.innerHTML =
+        '\n      <div class="col-span-full flex items-center justify-center py-12">\n        <div class="text-center">\n          <div class="loading-spinner mb-4 mx-auto"></div>\n          <p class="text-secondary">Loading projects from GitHub...</p>\n        </div>\n      </div>\n    ';
+      try {
+        const t = await this.fetchRepositories(),
+          s = this.getShowcaseRepos(t, e);
+        if (0 === s.length)
+          return void (a.innerHTML =
+            '\n          <div class="col-span-full text-center py-12">\n            <i class="fas fa-folder-open text-6xl text-accent opacity-20 mb-4"></i>\n            <p class="text-secondary">No showcase-ready repositories found</p>\n          </div>\n        ');
+        await this.hydrateReposWithActivity(s);
+        const r = s.map((t, e) => this.createProjectCard(t, e)).join('');
+        if (
+          ((a.innerHTML = r),
+          window.PremiumEnhancements && window.PremiumEnhancements.applyTiltToElement)
+        ) {
+          a.querySelectorAll('.apple-3d-project').forEach(t =>
+            window.PremiumEnhancements.applyTiltToElement(t)
+          );
+        }
+      } catch {
+        a.innerHTML =
+          '\n        <div class="col-span-full text-center py-12">\n          <i class="fas fa-exclamation-triangle text-6xl text-red-500 opacity-20 mb-4"></i>\n          <p class="text-secondary">Failed to load projects. Please try again later.</p>\n        </div>\n      ';
+      }
+    } else console.error(`Container with id "${t}" not found`);
+  }
+  async getStats() {
+    const t = await this.fetchRepositories(),
+      e = {
+        totalRepos: t.length,
+        totalStars: t.reduce((t, e) => t + Number(e.stargazers_count || 0), 0),
+        totalForks: t.reduce((t, e) => t + Number(e.forks_count || 0), 0),
+        languages: {},
+        mostStarred: [...t].sort(
+          (t, e) => Number(e.stargazers_count || 0) - Number(t.stargazers_count || 0)
+        )[0],
+        recentlyUpdated: t[0],
+      };
+    return (
+      t.forEach(t => {
+        t.language && (e.languages[t.language] = (e.languages[t.language] || 0) + 1);
+      }),
+      e
+    );
+  }
+  async searchRepos(t) {
+    if (!t || 0 === t.trim().length) return [];
+    const e = await this.fetchRepositories(),
+      a = t.toLowerCase().trim();
+    return e.filter(t => {
+      const e = t.name?.toLowerCase().includes(a),
+        s = t.description?.toLowerCase().includes(a),
+        r = t.topics?.some(t => t?.toLowerCase().includes(a)),
+        n = t.language?.toLowerCase().includes(a);
+      return e || s || r || n;
+    });
+  }
+  sortRepos(t, e = 'updated') {
+    const a = [...t];
+    switch (e) {
+      case 'stars':
+        a.sort((t, e) => (e.stargazers_count || 0) - (t.stargazers_count || 0));
+        break;
+      case 'forks':
+        a.sort((t, e) => (e.forks_count || 0) - (t.forks_count || 0));
+        break;
+      case 'name':
+        a.sort((t, e) => (t.name || '').localeCompare(e.name || ''));
+        break;
+      case 'created':
+        a.sort((t, e) => new Date(e.created_at || 0) - new Date(t.created_at || 0));
+        break;
+      default:
+        a.sort((t, e) => new Date(e.updated_at || 0) - new Date(t.updated_at || 0));
+    }
+    return a;
+  }
+  async getSearchableProjects() {
+    return (await this.fetchRepositories()).map(t => ({
+      type: 'GitHub Project',
+      title: t.name,
+      description: t.description || '',
+      url: t.html_url,
+      stars: t.stargazers_count || 0,
+      forks: t.forks_count || 0,
+      language: t.language,
+      topics: t.topics || [],
+      updated: t.updated_at,
+    }));
+  }
+}
+'undefined' != typeof window && (window.GitHubProjects = GitHubProjects);
+export default GitHubProjects;

@@ -1,1 +1,224 @@
-class BirthdayCelebration{constructor(t=!1){this.birthMonth=12,this.birthDay=7,this.birthYear=1998,this.name="Mangesh Raut",this.testMode=t,this.canvas=null,this.ctx=null,this.particles=[],this.balloons=[],this.animationId=null,this.width=window.innerWidth,this.height=window.innerHeight,this.colors=["#FF3B30","#34C759","#007AFF","#FF9500","#AF52DE","#FFD60A"],this.init()}init(){if(this.testMode)return console.log("🧪 TEST MODE: 2026 Engine Active"),void setTimeout(()=>this.showBirthdayCelebration(),500);const t=new Date,i=t.getMonth()+1,e=t.getDate();i===this.birthMonth&&e===this.birthDay-1&&this.showBirthdayNotification(),i===this.birthMonth&&e===this.birthDay&&this.showBirthdayCelebration()}calculateAge(){const t=new Date;let i=t.getFullYear()-this.birthYear;return(t.getMonth()+1<this.birthMonth||t.getMonth()+1===this.birthMonth&&t.getDate()<this.birthDay)&&i--,i}getOrdinal(t){const i=["th","st","nd","rd"],e=t%100;return t+(i[(e-20)%10]||i[e]||i[0])}showBirthdayNotification(){const t=localStorage.getItem("birthday-notification-dismissed"),i=(new Date).toDateString();if(t===i)return;const e=this.calculateAge()+1,a=document.createElement("div");a.className="birthday-notification",a.innerHTML=`\n            <div class="ios-header">\n                <div class="ios-icon-container">\n                    <div class="ios-calendar-icon">\n                        <div class="ios-calendar-header"></div>\n                        <div class="ios-calendar-date">7</div>\n                    </div>\n                </div>\n                <span class="ios-app-name">CALENDAR</span>\n                <span class="ios-time">now</span>\n            </div>\n            <div class="ios-content">\n                <div class="ios-title">Mangesh's ${this.getOrdinal(e)} Birthday</div>\n                <div class="ios-body">Tomorrow</div>\n            </div>\n        `,document.body.appendChild(a);const s=()=>{window.innerWidth>=769?a.style.transform="translateX(120%)":a.style.transform="translateX(-50%) translateY(-150%)",a.style.transition="transform 0.5s cubic-bezier(0.32, 0, 0.67, 0)",setTimeout(()=>a.remove(),500),localStorage.setItem("birthday-notification-dismissed",i)},n=window.innerWidth<769;setTimeout(()=>{a.parentNode&&s()},n?1e4:15e3),a.onclick=()=>s()}showBirthdayCelebration(){const t=sessionStorage.getItem("birthday-celebrated"),i=(new Date).toDateString();if(t===i&&!this.testMode)return;const e=this.calculateAge(),a=document.createElement("div");a.className="birthday-celebration",a.innerHTML=`\n            <div class="birthday-bg-art">\n                <div class="aurora-gradient"></div>\n            </div>\n            <canvas id="celebration-canvas"></canvas>\n            <div class="birthday-hero">\n                <div class="hero-title">Happy Birthday</div>\n                <div class="hero-subtitle">${this.name}</div>\n                <div class="hero-badge">Celebrating ${e} Years</div>\n                \n                <div class="action-area">\n                    <button class="glass-btn">Enter Portfolio</button>\n                </div>\n            </div>\n        `,document.body.appendChild(a),this.canvas=document.getElementById("celebration-canvas"),this.ctx=this.canvas.getContext("2d"),this.resize(),window.addEventListener("resize",()=>this.resize()),this.createParticles(),this.createBalloons(),this.startLoop(),this.playBirthdaySound(),a.querySelector(".glass-btn").addEventListener("click",()=>{a.style.opacity="0",a.style.transition="opacity 0.8s ease",cancelAnimationFrame(this.animationId),setTimeout(()=>a.remove(),800),sessionStorage.setItem("birthday-celebrated",i)})}resize(){this.width=window.innerWidth,this.height=window.innerHeight,this.canvas.width=this.width,this.canvas.height=this.height}createParticles(){for(let t=0;t<200;t++)this.particles.push({x:Math.random()*this.width,y:Math.random()*this.height-this.height,w:8*Math.random()+4,h:12*Math.random()+6,color:this.colors[Math.floor(Math.random()*this.colors.length)],vx:4*Math.random()-2,vy:4*Math.random()+2,angle:360*Math.random(),spinConfig:.2*Math.random()-.1})}createBalloons(){for(let t=0;t<15;t++)this.balloons.push({x:Math.random()*this.width,y:this.height+500*Math.random(),radius:15*Math.random()+30,color:this.colors[Math.floor(Math.random()*this.colors.length)],vx:0,vy:-(2*Math.random()+1),wobble:Math.random()*Math.PI*2,wobbleSpeed:.05*Math.random()+.02})}startLoop(){const t=()=>{this.ctx.clearRect(0,0,this.width,this.height),this.updateParticles(),this.updateBalloons(),this.animationId=requestAnimationFrame(t)};t()}updateParticles(){this.particles.forEach(t=>{t.y+=t.vy,t.x+=2*Math.sin(.01*t.angle),t.angle+=10*t.spinConfig,t.y>this.height&&(t.y=-20,t.x=Math.random()*this.width),this.ctx.save(),this.ctx.translate(t.x,t.y),this.ctx.rotate(t.angle*Math.PI/180),this.ctx.fillStyle=t.color,this.ctx.fill(new Path2D(`M0 0 L${t.w} 0 L${t.w} ${t.h} L0 ${t.h} Z`)),this.ctx.restore()})}updateBalloons(){this.balloons.forEach(t=>{t.y+=t.vy,t.wobble+=t.wobbleSpeed,t.x+=.5*Math.sin(t.wobble),this.ctx.beginPath(),this.ctx.moveTo(t.x,t.y+1.2*t.radius),this.ctx.quadraticCurveTo(t.x+10*Math.sin(2*t.wobble),t.y+1.2*t.radius+50,t.x,t.y+1.2*t.radius+100),this.ctx.strokeStyle="rgba(255,255,255,0.4)",this.ctx.lineWidth=1,this.ctx.stroke(),this.ctx.beginPath(),this.ctx.ellipse(t.x,t.y,t.radius,1.2*t.radius,0,0,2*Math.PI),this.ctx.fillStyle=t.color;const i=this.ctx.createRadialGradient(t.x-.3*t.radius,t.y-.3*t.radius,.1*t.radius,t.x,t.y,t.radius);i.addColorStop(0,"rgba(255,255,255,0.4)"),i.addColorStop(1,t.color),this.ctx.fillStyle=i,this.ctx.fill(),this.ctx.beginPath(),this.ctx.moveTo(t.x,t.y+1.15*t.radius),this.ctx.lineTo(t.x-4,t.y+1.25*t.radius),this.ctx.lineTo(t.x+4,t.y+1.25*t.radius),this.ctx.fillStyle=t.color,this.ctx.fill()})}playBirthdaySound(){try{const t=window.AudioContext||window.webkitAudioContext;if(!t)return;const i=new t,e=i.createOscillator(),a=i.createGain();e.connect(a),a.connect(i.destination),e.type="sine",e.frequency.setValueAtTime(523.25,i.currentTime),e.frequency.exponentialRampToValueAtTime(880,i.currentTime+.1),a.gain.setValueAtTime(.1,i.currentTime),a.gain.exponentialRampToValueAtTime(.01,i.currentTime+.5),e.start(),e.stop(i.currentTime+.5)}catch{}}}const initBirthdaySystem=()=>{const t=(new Date).toDateString();window.__birthdaySystem&&window.__birthdaySystemDate===t||(window.__birthdaySystem=new BirthdayCelebration,window.__birthdaySystemDate=t)};"loading"===document.readyState?document.addEventListener("DOMContentLoaded",initBirthdaySystem):initBirthdaySystem(),window.__birthdayVisibilityBound||(window.__birthdayVisibilityBound=!0,document.addEventListener("visibilitychange",()=>{document.hidden||initBirthdaySystem()})),window.BirthdayCelebration||(window.BirthdayCelebration=BirthdayCelebration);export default BirthdayCelebration;
+/* eslint-disable no-empty, no-unused-vars */ class BirthdayCelebration {
+  constructor(t = !1) {
+    ((this.birthMonth = 12),
+      (this.birthDay = 7),
+      (this.birthYear = 1998),
+      (this.name = 'Mangesh Raut'),
+      (this.testMode = t),
+      (this.canvas = null),
+      (this.ctx = null),
+      (this.particles = []),
+      (this.balloons = []),
+      (this.animationId = null),
+      (this.width = window.innerWidth),
+      (this.height = window.innerHeight),
+      (this.colors = ['#FF3B30', '#34C759', '#007AFF', '#FF9500', '#AF52DE', '#FFD60A']),
+      this.init());
+  }
+  init() {
+    if (this.testMode)
+      return (
+        console.log('🧪 TEST MODE: 2026 Engine Active'),
+        void setTimeout(() => this.showBirthdayCelebration(), 500)
+      );
+    const t = new Date(),
+      i = t.getMonth() + 1,
+      e = t.getDate();
+    (i === this.birthMonth && e === this.birthDay - 1 && this.showBirthdayNotification(),
+      i === this.birthMonth && e === this.birthDay && this.showBirthdayCelebration());
+  }
+  calculateAge() {
+    const t = new Date();
+    let i = t.getFullYear() - this.birthYear;
+    return (
+      (t.getMonth() + 1 < this.birthMonth ||
+        (t.getMonth() + 1 === this.birthMonth && t.getDate() < this.birthDay)) &&
+        i--,
+      i
+    );
+  }
+  getOrdinal(t) {
+    const i = ['th', 'st', 'nd', 'rd'],
+      e = t % 100;
+    return t + (i[(e - 20) % 10] || i[e] || i[0]);
+  }
+  showBirthdayNotification() {
+    const t = localStorage.getItem('birthday-notification-dismissed'),
+      i = new Date().toDateString();
+    if (t === i) return;
+    const e = this.calculateAge() + 1,
+      a = document.createElement('div');
+    ((a.className = 'birthday-notification'),
+      (a.innerHTML = `\n            <div class="ios-header">\n                <div class="ios-icon-container">\n                    <div class="ios-calendar-icon">\n                        <div class="ios-calendar-header"></div>\n                        <div class="ios-calendar-date">7</div>\n                    </div>\n                </div>\n                <span class="ios-app-name">CALENDAR</span>\n                <span class="ios-time">now</span>\n            </div>\n            <div class="ios-content">\n                <div class="ios-title">Mangesh's ${this.getOrdinal(e)} Birthday</div>\n                <div class="ios-body">Tomorrow</div>\n            </div>\n        `),
+      document.body.appendChild(a));
+    const s = () => {
+        (window.innerWidth >= 769
+          ? (a.style.transform = 'translateX(120%)')
+          : (a.style.transform = 'translateX(-50%) translateY(-150%)'),
+          (a.style.transition = 'transform 0.5s cubic-bezier(0.32, 0, 0.67, 0)'),
+          setTimeout(() => a.remove(), 500),
+          localStorage.setItem('birthday-notification-dismissed', i));
+      },
+      n = window.innerWidth < 769;
+    (setTimeout(
+      () => {
+        a.parentNode && s();
+      },
+      n ? 1e4 : 15e3
+    ),
+      (a.onclick = () => s()));
+  }
+  showBirthdayCelebration() {
+    const t = sessionStorage.getItem('birthday-celebrated'),
+      i = new Date().toDateString();
+    if (t === i && !this.testMode) return;
+    const e = this.calculateAge(),
+      a = document.createElement('div');
+    ((a.className = 'birthday-celebration'),
+      (a.innerHTML = `\n            <div class="birthday-bg-art">\n                <div class="aurora-gradient"></div>\n            </div>\n            <canvas id="celebration-canvas"></canvas>\n            <div class="birthday-hero">\n                <div class="hero-title">Happy Birthday</div>\n                <div class="hero-subtitle">${this.name}</div>\n                <div class="hero-badge">Celebrating ${e} Years</div>\n                \n                <div class="action-area">\n                    <button class="glass-btn">Enter Portfolio</button>\n                </div>\n            </div>\n        `),
+      document.body.appendChild(a),
+      (this.canvas = document.getElementById('celebration-canvas')),
+      (this.ctx = this.canvas.getContext('2d')),
+      this.resize(),
+      window.addEventListener('resize', () => this.resize()),
+      this.createParticles(),
+      this.createBalloons(),
+      this.startLoop(),
+      this.playBirthdaySound(),
+      a.querySelector('.glass-btn').addEventListener('click', () => {
+        ((a.style.opacity = '0'),
+          (a.style.transition = 'opacity 0.8s ease'),
+          cancelAnimationFrame(this.animationId),
+          setTimeout(() => a.remove(), 800),
+          sessionStorage.setItem('birthday-celebrated', i));
+      }));
+  }
+  resize() {
+    ((this.width = window.innerWidth),
+      (this.height = window.innerHeight),
+      (this.canvas.width = this.width),
+      (this.canvas.height = this.height));
+  }
+  createParticles() {
+    for (let t = 0; t < 200; t++)
+      this.particles.push({
+        x: Math.random() * this.width,
+        y: Math.random() * this.height - this.height,
+        w: 8 * Math.random() + 4,
+        h: 12 * Math.random() + 6,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+        vx: 4 * Math.random() - 2,
+        vy: 4 * Math.random() + 2,
+        angle: 360 * Math.random(),
+        spinConfig: 0.2 * Math.random() - 0.1,
+      });
+  }
+  createBalloons() {
+    for (let t = 0; t < 15; t++)
+      this.balloons.push({
+        x: Math.random() * this.width,
+        y: this.height + 500 * Math.random(),
+        radius: 15 * Math.random() + 30,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+        vx: 0,
+        vy: -(2 * Math.random() + 1),
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: 0.05 * Math.random() + 0.02,
+      });
+  }
+  startLoop() {
+    const t = () => {
+      (this.ctx.clearRect(0, 0, this.width, this.height),
+        this.updateParticles(),
+        this.updateBalloons(),
+        (this.animationId = requestAnimationFrame(t)));
+    };
+    t();
+  }
+  updateParticles() {
+    this.particles.forEach(t => {
+      ((t.y += t.vy),
+        (t.x += 2 * Math.sin(0.01 * t.angle)),
+        (t.angle += 10 * t.spinConfig),
+        t.y > this.height && ((t.y = -20), (t.x = Math.random() * this.width)),
+        this.ctx.save(),
+        this.ctx.translate(t.x, t.y),
+        this.ctx.rotate((t.angle * Math.PI) / 180),
+        (this.ctx.fillStyle = t.color),
+        this.ctx.fill(new Path2D(`M0 0 L${t.w} 0 L${t.w} ${t.h} L0 ${t.h} Z`)),
+        this.ctx.restore());
+    });
+  }
+  updateBalloons() {
+    this.balloons.forEach(t => {
+      ((t.y += t.vy),
+        (t.wobble += t.wobbleSpeed),
+        (t.x += 0.5 * Math.sin(t.wobble)),
+        this.ctx.beginPath(),
+        this.ctx.moveTo(t.x, t.y + 1.2 * t.radius),
+        this.ctx.quadraticCurveTo(
+          t.x + 10 * Math.sin(2 * t.wobble),
+          t.y + 1.2 * t.radius + 50,
+          t.x,
+          t.y + 1.2 * t.radius + 100
+        ),
+        (this.ctx.strokeStyle = 'rgba(255,255,255,0.4)'),
+        (this.ctx.lineWidth = 1),
+        this.ctx.stroke(),
+        this.ctx.beginPath(),
+        this.ctx.ellipse(t.x, t.y, t.radius, 1.2 * t.radius, 0, 0, 2 * Math.PI),
+        (this.ctx.fillStyle = t.color));
+      const i = this.ctx.createRadialGradient(
+        t.x - 0.3 * t.radius,
+        t.y - 0.3 * t.radius,
+        0.1 * t.radius,
+        t.x,
+        t.y,
+        t.radius
+      );
+      (i.addColorStop(0, 'rgba(255,255,255,0.4)'),
+        i.addColorStop(1, t.color),
+        (this.ctx.fillStyle = i),
+        this.ctx.fill(),
+        this.ctx.beginPath(),
+        this.ctx.moveTo(t.x, t.y + 1.15 * t.radius),
+        this.ctx.lineTo(t.x - 4, t.y + 1.25 * t.radius),
+        this.ctx.lineTo(t.x + 4, t.y + 1.25 * t.radius),
+        (this.ctx.fillStyle = t.color),
+        this.ctx.fill());
+    });
+  }
+  playBirthdaySound() {
+    try {
+      const t = window.AudioContext || window.webkitAudioContext;
+      if (!t) return;
+      const i = new t(),
+        e = i.createOscillator(),
+        a = i.createGain();
+      (e.connect(a),
+        a.connect(i.destination),
+        (e.type = 'sine'),
+        e.frequency.setValueAtTime(523.25, i.currentTime),
+        e.frequency.exponentialRampToValueAtTime(880, i.currentTime + 0.1),
+        a.gain.setValueAtTime(0.1, i.currentTime),
+        a.gain.exponentialRampToValueAtTime(0.01, i.currentTime + 0.5),
+        e.start(),
+        e.stop(i.currentTime + 0.5));
+    } catch {}
+  }
+}
+const initBirthdaySystem = () => {
+  const t = new Date().toDateString();
+  (window.__birthdaySystem && window.__birthdaySystemDate === t) ||
+    ((window.__birthdaySystem = new BirthdayCelebration()), (window.__birthdaySystemDate = t));
+};
+('loading' === document.readyState
+  ? document.addEventListener('DOMContentLoaded', initBirthdaySystem)
+  : initBirthdaySystem(),
+  window.__birthdayVisibilityBound ||
+    ((window.__birthdayVisibilityBound = !0),
+    document.addEventListener('visibilitychange', () => {
+      document.hidden || initBirthdaySystem();
+    })),
+  window.BirthdayCelebration || (window.BirthdayCelebration = BirthdayCelebration));
+export default BirthdayCelebration;
