@@ -39,15 +39,35 @@
    <meta property="twitter:description" content="Portfolio with 40% performance gains, real-time AI chatbot, Java Spring Boot, Python, React, AWS expertise." />
    <meta property="twitter:image" content="https://mangeshraut.pro/assets/images/profile.webp" />
 
-  <!-- Preconnect to critical origins -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-  <link rel="dns-prefetch" href="https://api.github.com" />
+   <!-- Preconnect to critical origins -->
+   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+   <link rel="dns-prefetch" href="https://api.github.com" />
+   <link rel="dns-prefetch" href="https://openrouter.ai" />
+   <link rel="dns-prefetch" href="https://vercel.app" />
+   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
-  <!-- Preload critical resources -->
+   <!-- Preload critical resources -->
   <link rel="preload" as="image" href="assets/images/profile.webp" type="image/webp" fetchpriority="high" />
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" as="style" />
-  <link rel="modulepreload" href="src/js/core/app.js" />
+
+  <!-- Critical CSS for above-the-fold content -->
+  <style>
+    /* Critical styles for initial render */
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .hero-section { min-height: 100vh; display: flex; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; }
+    .hero-content { text-align: center; color: white; max-width: 800px; margin: 0 auto; padding: 0 20px; }
+    .hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .hero-subtitle { font-size: 1.25rem; opacity: 0.9; margin-bottom: 2rem; }
+    .hero-image { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 2rem; border: 4px solid white; }
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.5rem; }
+      .hero-subtitle { font-size: 1rem; }
+      .hero-image { width: 150px; height: 150px; }
+    }
+  </style>
   <link rel="modulepreload" href="src/js/modules/theme-manager.js" />
 
   <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
@@ -2026,11 +2046,54 @@
     </div>
     <!-- END CHATBOT -->
 
-    <script type="module" src="js/utils/smart-navbar.js"></script>
+    <!-- Critical JS modules -->
+    <script type="module" src="js/core/bootstrap.js"></script>
     <script src="js/utils/theme.js" defer></script>
     <script src="js/utils/go-to-top.js" defer></script>
-    <script type="module" src="js/core/bootstrap.js"></script>
+    <script type="module" src="js/utils/smart-navbar.js"></script>
     <script src="js/modules/scroll-animations.js" defer></script>
+
+    <!-- Lazy load non-critical modules -->
+    <script type="module">
+      // Lazy load modules when user interacts
+      document.addEventListener('DOMContentLoaded', () => {
+        // Load AI assistant when user scrolls to it or clicks
+        const aiSection = document.querySelector('#ai-assistant');
+        if (aiSection) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                import('./js/modules/chatbot.js');
+                import('./js/modules/agentic-actions.js');
+                observer.disconnect();
+              }
+            });
+          });
+          observer.observe(aiSection);
+        }
+
+        // Load game when user scrolls to game section
+        const gameSection = document.querySelector('#game-section');
+        if (gameSection) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                import('./js/modules/debug-runner.js');
+                observer.disconnect();
+              }
+            });
+          });
+          observer.observe(gameSection);
+        }
+
+        // Load other modules on user interaction
+        document.addEventListener('click', () => {
+          import('./js/modules/github-projects.js');
+          import('./js/modules/skills-visualization.js');
+          import('./js/modules/premium-enhancements.js');
+        }, { once: true });
+      });
+    </script>
 </body>
 
 </html>
