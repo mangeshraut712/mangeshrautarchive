@@ -1,7 +1,6 @@
 /**
- * Spotify Now Playing Widget
+ * Spotify Now Playing Widget (Live Activity integration)
  * Polls /api/spotify for real-time track data.
- * Shows Apple-inspired glassmorphism card in the About section.
  */
 (function () {
   'use strict';
@@ -14,23 +13,28 @@
   const artistEl = document.getElementById('spotify-artist');
   const albumEl = document.getElementById('spotify-album-art');
   const fillEl = document.getElementById('spotify-progress-fill');
-  const statusEl = card.querySelector('.spotify-status');
+  const equalizerBars = card.querySelectorAll('.eq-bar');
 
   let pollTimer = null;
 
-  // Inject equalizer bars lazily (only when JS runs)
-  const logoEl = card.querySelector('.spotify-logo');
-  if (logoEl) {
-    const eq = document.createElement('div');
-    eq.className = 'spotify-equalizer';
-    eq.setAttribute('aria-hidden', 'true');
-    eq.innerHTML = '<span class="spotify-bar"></span><span class="spotify-bar"></span><span class="spotify-bar"></span>';
-    card.insertBefore(eq, logoEl.nextSibling);
+  function setIdleEq() {
+    equalizerBars.forEach(bar => {
+      bar.classList.add('eq-bar--idle');
+      bar.classList.remove('eq-bar--spotify');
+    });
+  }
+
+  function setActiveEq() {
+    equalizerBars.forEach(bar => {
+      bar.classList.remove('eq-bar--idle');
+      bar.classList.add('eq-bar--spotify');
+    });
   }
 
   function setNotPlaying() {
     card.classList.add('not-playing');
-    if (statusEl) statusEl.textContent = 'Last Played';
+    setIdleEq();
+    
     if (songEl) songEl.textContent = 'Nothing playing';
     if (artistEl) artistEl.textContent = 'Spotify';
     if (albumEl) { albumEl.src = ''; albumEl.alt = ''; }
@@ -39,7 +43,8 @@
 
   function setPlaying(data) {
     card.classList.remove('not-playing');
-    if (statusEl) statusEl.textContent = 'Now Playing';
+    setActiveEq();
+
     if (songEl) songEl.textContent = data.song || 'Unknown Track';
     if (artistEl) artistEl.textContent = data.artist || 'Unknown Artist';
     if (albumEl && data.albumArt) {
@@ -50,6 +55,8 @@
     if (fillEl && data.progress != null && data.duration != null && data.duration > 0) {
       const pct = Math.min(100, (data.progress / data.duration) * 100);
       fillEl.style.width = pct + '%';
+    } else if (fillEl) {
+       fillEl.style.width = '0%';
     }
   }
 
@@ -58,13 +65,15 @@
       const res = await fetch('/api/spotify', { signal: AbortSignal.timeout(6000) });
       if (!res.ok) { setNotPlaying(); return; }
       const data = await res.json();
+      
       if (data && data.isPlaying) {
         setPlaying(data);
       } else {
         // Show last played song if available
         if (data && data.song) {
           card.classList.add('not-playing');
-          if (statusEl) statusEl.textContent = 'Last Played';
+          setIdleEq();
+          
           if (songEl) songEl.textContent = data.song;
           if (artistEl) artistEl.textContent = data.artist || '';
           if (albumEl && data.albumArt) { albumEl.src = data.albumArt; albumEl.alt = data.song; }
