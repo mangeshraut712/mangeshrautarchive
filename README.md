@@ -144,18 +144,6 @@ _Database administration and cloud migration_
 ![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
 ![Lighthouse](https://img.shields.io/badge/Lighthouse-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white)
 
-</div>
-
-### Quality & Testing
-
-![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
-![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
-![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
-
-</div>
-
-[↑ Back to Top](#mangesh-raut)
-
 ---
 
 ## 🚀 Key Features
@@ -235,8 +223,6 @@ installButton.addEventListener('click', () => {
 });
 ```
 
-[↑ Back to Top](#mangesh-raut)
-
 ---
 
 ## ⚡ Performance Excellence
@@ -258,8 +244,6 @@ Achieving **100/100 Mobile PageSpeed** through advanced optimization techniques:
 - **Bundle Optimization:** Tree-shaking and code splitting with ESM
 - **Image Optimization:** WebP/AVIF formats with responsive loading
 - **Font Loading:** Self-hosted fonts with display swap strategy
-
-[↑ Back to Top](#mangesh-raut)
 
 ---
 
