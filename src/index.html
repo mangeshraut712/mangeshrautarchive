@@ -127,8 +127,9 @@
     .profile-ring{position:absolute;inset:-8px;border-radius:28%}
 
     /* Vibe coder badge */
-    .vibe-coder-badge-wrapper{text-align:center;margin-top:.5rem}
-    .vibe-coder-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;border-radius:980px;font-size:.75rem;font-weight:600;letter-spacing:.02em}
+    .vibe-coder-badge-wrapper{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center;margin-top:.5rem}
+    .vibe-coder-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;border-radius:980px;font-size:.75rem;font-weight:600;letter-spacing:.02em;background:rgb(0 113 227 / 8%);color:#0071e3;border:1px solid rgb(0 113 227 / 14%);box-shadow:0 8px 20px rgb(0 113 227 / 8%)}
+    html.dark .vibe-coder-badge{background:rgb(41 151 255 / 12%);color:#5ac8fa;border-color:rgb(41 151 255 / 24%);box-shadow:0 10px 24px rgb(0 0 0 / 24%)}
   </style>
 
   <!-- JSON-LD Structured Data for SEO -->
@@ -415,7 +416,7 @@
                 <h1 class="hero-title">Software Development Engineer</h1>
 
                 <!-- Vibe Coder Badge & Views Counter -->
-                <div class="vibe-coder-badge-wrapper" style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <div class="vibe-coder-badge-wrapper">
                   <span class="vibe-coder-badge">
                     <i class="fas fa-bolt"></i>
                     Vibe Coder
@@ -536,38 +537,101 @@
                     <i class="fa-solid fa-book-open" style="color: #ff9500;"></i> Reading
                   </div>
                 </div>
-                <div class="books-row">
-                  <div class="book-item">
+                <div class="books-row" title="Scroll horizontally">
+                  <div class="book-item" title="Steve Jobs">
                     <div class="book-cover-wrap">
-                      <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=200&auto=format&fit=crop" alt="The Hitchhiker's Guide" class="book-cover-img" loading="lazy">
+                      <img src="https://images.unsplash.com/photo-1544716278-e513176f20b5?q=80&w=200&auto=format&fit=crop" alt="Steve Jobs" class="book-cover-img" loading="lazy">
+                      <a href="https://books.apple.com/us/book/steve-jobs/id431617578" class="streaming-provider apple" target="_blank" title="Read on Apple Books" aria-label="Read Steve Jobs on Apple Books"><i class="fa-brands fa-apple"></i></a>
                     </div>
-                    <span class="book-title">Hitchhiker's Guide</span>
+                    <span class="book-title">Steve Jobs</span>
                   </div>
-                  <div class="book-item">
+                  <div class="book-item" title="Atomic Habits">
                     <div class="book-cover-wrap">
                       <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=200&auto=format&fit=crop" alt="Atomic Habits" class="book-cover-img" loading="lazy">
+                      <a href="https://books.apple.com/us/book/atomic-habits/id1398502251" class="streaming-provider apple" target="_blank" title="Read on Apple Books" aria-label="Read Atomic Habits on Apple Books"><i class="fa-brands fa-apple"></i></a>
                     </div>
                     <span class="book-title">Atomic Habits</span>
+                  </div>
+                  <div class="book-item" title="The Bhagavad Gita">
+                    <div class="book-cover-wrap">
+                      <img src="https://images.unsplash.com/photo-1582218947385-ffb4802cbb3f?q=80&w=200&auto=format&fit=crop" alt="The Bhagavad Gita" class="book-cover-img" loading="lazy">
+                      <a href="https://books.apple.com/us/book/the-bhagavad-gita/id1524317926" class="streaming-provider apple" target="_blank" title="Read on Apple Books" aria-label="Read Bhagavad Gita on Apple Books"><i class="fa-brands fa-apple"></i></a>
+                    </div>
+                    <span class="book-title">Bhagavad Gita</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Currently Watching Card -->
+              <!-- Series Card -->
               <div class="activity-card">
                 <div class="activity-card-header">
                   <div class="activity-card-label">
-                    <i class="fa-solid fa-tv" style="color: #0ea5d9;"></i> Watching
+                    <i class="fa-solid fa-tv" style="color: #0ea5d9;"></i> Series
                   </div>
                 </div>
-                <div class="media-row">
-                  <div class="media-poster-wrap">
-                    <img src="https://image.tmdb.org/t/p/w200/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" alt="Breaking Bad" class="media-poster-img" loading="lazy">
+                <div class="media-row" title="Scroll horizontally">
+                  <div class="media-poster-wrap" title="From">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/618/1547007.jpg" alt="From" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider prime" title="Watch on Prime">P</span>
                   </div>
-                  <div class="media-poster-wrap">
-                    <img src="https://image.tmdb.org/t/p/w200/qXDPnXhU28qQ1RtySwnP078D1E2.jpg" alt="Sillicon Valley" class="media-poster-img" loading="lazy">
+                  <div class="media-poster-wrap" title="Narcos">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/498/1246087.jpg" alt="Narcos" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider netflix" title="Watch on Netflix">N</span>
                   </div>
-                  <div class="media-poster-wrap">
-                    <img src="https://image.tmdb.org/t/p/w200/qWnJzyZwidY111P0p4f8361w9bJ.jpg" alt="The Office" class="media-poster-img" loading="lazy">
+                  <div class="media-poster-wrap" title="Crash Landing on You">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/235/588087.jpg" alt="Crash Landing on You" class="media-poster-img" loading="lazy">
+                     <span class="streaming-provider netflix" title="Watch on Netflix">N</span>
+                  </div>
+                  <div class="media-poster-wrap" title="Money Heist">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/430/1076004.jpg" alt="Money Heist" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider netflix" title="Watch on Netflix">N</span>
+                  </div>
+                  <div class="media-poster-wrap" title="Scam 1992">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/521/1304758.jpg" alt="Scam 1992" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider sony" title="Watch on Sony LIV">S</span>
+                  </div>
+                  <div class="media-poster-wrap" title="Stranger Things">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/595/1489169.jpg" alt="Stranger Things" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider netflix" title="Watch on Netflix">N</span>
+                  </div>
+                  <div class="media-poster-wrap" title="Queen of Tears">
+                    <img src="https://static.tvmaze.com/uploads/images/medium_portrait/507/1269260.jpg" alt="Queen of Tears" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider netflix" title="Watch on Netflix">N</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Movies Card -->
+              <div class="activity-card">
+                <div class="activity-card-header">
+                  <div class="activity-card-label">
+                    <i class="fa-solid fa-film" style="color: #bf5af2;"></i> Movies
+                  </div>
+                </div>
+                <div class="media-row" title="Scroll horizontally">
+                  <div class="media-poster-wrap" title="F1">
+                    <img src="https://images.unsplash.com/photo-1541348263662-e068362d4941?q=80&w=200&auto=format&fit=crop" alt="F1" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider apple" title="Watch on Apple TV+"><i class="fa-brands fa-apple"></i></span>
+                  </div>
+                  <div class="media-poster-wrap" title="KGF">
+                    <img src="https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=200&auto=format&fit=crop" alt="KGF" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider prime" title="Watch on Prime">P</span>
+                  </div>
+                  <div class="media-poster-wrap" title="Vikram">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=200&auto=format&fit=crop" alt="Vikram" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider hotstar" title="Watch on Hotstar">H</span>
+                  </div>
+                  <div class="media-poster-wrap" title="777 Charlie">
+                    <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=200&auto=format&fit=crop" alt="777 Charlie" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider prime" title="Watch on Prime">P</span>
+                  </div>
+                  <div class="media-poster-wrap" title="The Blind Side">
+                    <img src="https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=200&auto=format&fit=crop" alt="The Blind Side" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider prime" title="Watch on Prime">P</span>
+                  </div>
+                  <div class="media-poster-wrap" title="The Social Network">
+                    <img src="https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=200&auto=format&fit=crop" alt="The Social Network" class="media-poster-img" loading="lazy">
+                    <span class="streaming-provider netflix" title="Watch on Netflix">N</span>
                   </div>
                 </div>
               </div>
@@ -580,18 +644,32 @@
                   </div>
                 </div>
                 <div class="sports-list">
-                  <div class="sport-item">
-                    <span class="sport-emoji">⚽</span>
+                  <div class="sport-item" title="Cricket">
+                    <span class="sport-emoji">🏏</span>
                     <div class="sport-info">
-                      <p class="sport-name">Champions League</p>
-                      <p class="sport-detail">Real Madrid vs. Man City</p>
+                      <p class="sport-name">Cricket</p>
+                      <p class="sport-detail">Trophies & updates</p>
                     </div>
                   </div>
-                  <div class="sport-item">
+                  <div class="sport-item" title="Formula 1">
                     <span class="sport-emoji">🏎️</span>
                     <div class="sport-info">
                       <p class="sport-name">Formula 1</p>
-                      <p class="sport-detail">Upcoming: Monaco GP</p>
+                      <p class="sport-detail">Live races & results</p>
+                    </div>
+                  </div>
+                  <div class="sport-item" title="Volleyball">
+                    <span class="sport-emoji">🏐</span>
+                    <div class="sport-info">
+                      <p class="sport-name">Volleyball</p>
+                      <p class="sport-detail">Nations coverage</p>
+                    </div>
+                  </div>
+                  <div class="sport-item" title="Basketball">
+                    <span class="sport-emoji">🏀</span>
+                    <div class="sport-info">
+                      <p class="sport-name">Basketball</p>
+                      <p class="sport-detail">NBA & Highlights</p>
                     </div>
                   </div>
                 </div>
