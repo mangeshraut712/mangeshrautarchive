@@ -63,5 +63,24 @@
   "engines": {
     "node": ">=20",
     "npm": ">=10"
-  }
+  },
+  "name": "mangeshrautarchive",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">",
+  "main": "eslint.config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mangeshraut712/mangeshrautarchive.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mangeshraut712/mangeshrautarchive/issues"
+  },
+  "homepage": "https://github.com/mangeshraut712/mangeshrautarchive#readme"
 }

@@ -22,7 +22,7 @@
   <link rel="dns-prefetch" href="https://api.github.com" />
 
   <!-- Preload LCP image -->
-  <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/images/profile.webp" type="image/webp" fetchpriority="high" />
 
   <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
   <script>
@@ -297,8 +297,11 @@
           <div class="hero-layout-wrapper">
             <div class="hero-image-block mb-20">
               <div class="profile-image-wrapper mx-auto">
-                <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" width="320" height="320"
-                  fetchpriority="high" loading="eager" decoding="async" />
+                <picture>
+                  <source srcset="assets/images/profile.webp" type="image/webp" />
+                  <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" width="320" height="320"
+                    fetchpriority="high" loading="eager" decoding="async" />
+                </picture>
                 <div class="profile-ring"></div>
               </div>
             </div>
@@ -351,8 +354,11 @@
           <!-- Main Content -->
           <div class="about-main">
             <div class="about-image-wrapper" data-parallax="scroll" data-parallax-speed="0.06" data-parallax-max="14">
-              <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="1200"
-                height="1200" loading="lazy" decoding="async" fetchpriority="low" />
+              <picture>
+                <source srcset="assets/images/graduation.webp" type="image/webp" />
+                <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="600"
+                  height="600" loading="lazy" decoding="async" fetchpriority="low" />
+              </picture>
               <div class="about-image-badge" data-parallax="scroll" data-parallax-speed="0.03" data-parallax-max="8">
                 <i class="fas fa-graduation-cap"></i>
                 <span>MS in Computer Science</span>
@@ -1402,8 +1408,11 @@
                   <!-- Compact Header with Ganesh -->
                   <div class="donation-compact-header">
                     <div class="ganesh-glow-container">
-                      <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
-                        title="🕉️ Om Gan Ganapataye Namah" width="400" height="300" loading="lazy" decoding="async" fetchpriority="low">
+                      <picture>
+                        <source srcset="assets/images/ganesh.webp" type="image/webp" />
+                        <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
+                          title="🕉️ Om Gan Ganapataye Namah" width="400" height="300" loading="lazy" decoding="async" fetchpriority="low">
+                      </picture>
                       <div class="glow-ring"></div>
                     </div>
                     <div class="donation-info">
