@@ -112,7 +112,7 @@ _Database administration and cloud migration_
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=k8s&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Last.fm](https://img.shields.io/badge/Last.fm-D51007?style=for-the-badge&logo=lastdotfm&logoColor=white)
 
 ### AI & Machine Learning
 
@@ -320,7 +320,7 @@ Comprehensive testing and quality gates ensure production readiness:
 
 ### Code Quality
 
-- **Linting:** ESLint with Airbnb config, Stylelint for CSS
+- **Linting:** ESLint for JavaScript and Stylelint for maintained CSS layers
 - **Formatting:** Prettier with consistent code style
 - **Security:** Dependency scanning and vulnerability checks
 - **Type Safety:** TypeScript for critical business logic
@@ -387,8 +387,8 @@ npm run lint:fix
 # Build for production
 npm run build
 
-# Start production server
-npm run preview
+# Start a local frontend server only
+npm run dev:frontend
 ```
 
 ### Environment Configuration
