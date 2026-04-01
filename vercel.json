@@ -5,6 +5,54 @@
       "destination": "/api/index.py"
     },
     {
+      "source": "/assets/css/style.css",
+      "destination": "/src/assets/css/style-lite.css"
+    },
+    {
+      "source": "/assets/css/homepage.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/global-improvements.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/sitewide-design-system.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/animations.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/apple-2026-design-system.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/apple-premium-overrides.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/unified-mobile-buttons.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/premium-enhancements.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/css/birthday-celebration.css",
+      "destination": "/src/assets/css/empty.css"
+    },
+    {
+      "source": "/assets/images/profile.webp",
+      "destination": "/src/assets/images/profile-icon.png"
+    },
+    {
+      "source": "/js/modules/theme-manager.js",
+      "destination": "/src/js/modules/theme-manager.js"
+    },
+    {
       "source": "/",
       "destination": "/src/index.html"
     },
