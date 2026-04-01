@@ -1,55 +1,188 @@
 /**
  * Live Activity & Views Module
- * Handles the real-time view counter polling.
+ * Maintains a shared real-time portfolio reach store for all view surfaces.
  */
 (function() {
   'use strict';
 
-  const viewCountEl = document.getElementById('portfolio-view-count');
-  if (!viewCountEl) return;
+  const VIEW_EVENT_NAME = 'portfolio:views-updated';
+  const VIEW_STORAGE_KEY = 'profile-views-recorded-v1';
+  const VIEWS_ENDPOINT = '/api/profile/views';
+  const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
+  const REFRESH_INTERVAL_MS = 10000;
+  const REQUEST_TIMEOUT_MS = 8000;
 
-  async function fetchViews() {
-    try {
-      // POST the first time to increment, GET subsequently. 
-      // For simplicity, we just trigger POST on first load, GET on updates.
-      // But actually, just doing POST once per session is ideal.
-      const hasViewed = sessionStorage.getItem('hasViewedPortfolio');
-      
-      const method = hasViewed ? 'GET' : 'POST';
-      const res = await fetch('/api/views', { method });
-      
-      if (!res.ok) throw new Error('Failed to fetch views');
-      
-      const data = await res.json();
-      
-      if (data && typeof data.views === 'number') {
-        const formatViews = new Intl.NumberFormat().format(data.views);
-        viewCountEl.textContent = formatViews;
-        viewCountEl.classList.remove('loading');
-        
-        if (!hasViewed) {
-          sessionStorage.setItem('hasViewedPortfolio', 'true');
-        }
-      }
-    } catch (err) {
-      console.warn('[Views]', err);
-      // Fallback display if API fails
-      if (viewCountEl.textContent === '--') {
-         viewCountEl.textContent = '9,553';
-         viewCountEl.classList.remove('loading');
-      }
-    }
+  function formatCount(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return '--';
+    return new Intl.NumberFormat('en-US').format(number);
   }
 
-  // Fetch immediately
-  fetchViews();
+  function trimTrailingSlash(value) {
+    return String(value || '').replace(/\/+$/, '');
+  }
 
-  // Poll for live updates every 30s
-  setInterval(() => {
-    // Only fetch if tab is visible to save requests
-    if (!document.hidden) {
-      fetchViews();
+  function resolveApiBase() {
+    const configuredBase = trimTrailingSlash(window.APP_CONFIG?.apiBaseUrl);
+    if (configuredBase) return configuredBase;
+
+    const hostname = window.location.hostname || '';
+    const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname);
+    const isSelfHostedOrigin =
+      isLocalHost || hostname.endsWith('.vercel.app') || hostname.includes('run.app');
+
+    return isSelfHostedOrigin ? '' : VERCEL_BACKEND;
+  }
+
+  function buildViewsUrl(mode) {
+    return `${resolveApiBase()}${VIEWS_ENDPOINT}?mode=${encodeURIComponent(mode)}`;
+  }
+
+  function updateHeroViewCount(payload) {
+    const viewCountEl = document.getElementById('portfolio-view-count');
+    if (!viewCountEl) return;
+
+    viewCountEl.textContent = formatCount(payload?.count);
+    viewCountEl.classList.remove('loading');
+  }
+
+  function createPortfolioViewsStore() {
+    let snapshot = null;
+    let pendingRequest = null;
+    let refreshTimerId = null;
+    let started = false;
+    const subscribers = new Set();
+
+    function publish(payload) {
+      snapshot = payload;
+      updateHeroViewCount(payload);
+
+      subscribers.forEach(listener => {
+        try {
+          listener(payload);
+        } catch (error) {
+          console.warn('[Portfolio Views] subscriber failed', error);
+        }
+      });
+
+      window.dispatchEvent(new CustomEvent(VIEW_EVENT_NAME, { detail: payload }));
     }
-  }, 30000);
 
+    async function requestViews(mode) {
+      const controller = typeof AbortController === 'function' ? new AbortController() : null;
+      const timeoutId = controller
+        ? window.setTimeout(() => {
+            controller.abort();
+          }, REQUEST_TIMEOUT_MS)
+        : null;
+
+      try {
+        const response = await fetch(buildViewsUrl(mode), {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+          signal: controller?.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`View request failed with ${response.status}`);
+        }
+
+        return response.json();
+      } finally {
+        if (timeoutId) {
+          window.clearTimeout(timeoutId);
+        }
+      }
+    }
+
+    async function refresh(options = {}) {
+      const increment = options.increment === true;
+      const mode = increment ? 'increment' : 'get';
+
+      if (pendingRequest) return pendingRequest;
+
+      pendingRequest = requestViews(mode)
+        .then(payload => {
+          if (increment && payload?.success) {
+            sessionStorage.setItem(VIEW_STORAGE_KEY, '1');
+          }
+
+          publish(payload);
+          return payload;
+        })
+        .catch(error => {
+          console.warn('[Portfolio Views]', error);
+
+          if (!snapshot) {
+            publish({ success: false, count: null, mode });
+          }
+
+          return snapshot;
+        })
+        .finally(() => {
+          pendingRequest = null;
+        });
+
+      return pendingRequest;
+    }
+
+    function start() {
+      if (started) return;
+      started = true;
+
+      const shouldIncrement = sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1';
+      refresh({ increment: shouldIncrement });
+
+      refreshTimerId = window.setInterval(() => {
+        if (!document.hidden) {
+          refresh();
+        }
+      }, REFRESH_INTERVAL_MS);
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          refresh();
+        }
+      });
+
+      window.addEventListener('focus', () => {
+        refresh();
+      });
+    }
+
+    return {
+      start,
+      refresh,
+      getSnapshot() {
+        return snapshot;
+      },
+      subscribe(listener) {
+        if (typeof listener !== 'function') {
+          return () => {};
+        }
+
+        subscribers.add(listener);
+
+        if (snapshot) {
+          listener(snapshot);
+        }
+
+        return () => {
+          subscribers.delete(listener);
+        };
+      },
+      destroy() {
+        if (refreshTimerId) {
+          window.clearInterval(refreshTimerId);
+        }
+
+        subscribers.clear();
+      },
+    };
+  }
+
+  const store = window.portfolioViewsStore || createPortfolioViewsStore();
+  window.portfolioViewsStore = store;
+  store.start();
 })();

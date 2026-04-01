@@ -23,6 +23,7 @@ from dotenv import load_dotenv
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
 from api.integrations.github_connector import github_connector
+from api.profile import app as profile_signals_app
 
 # Load environment variables
 load_dotenv()
@@ -62,6 +63,8 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
     expose_headers=["X-Session-ID"],
 )
+
+app.include_router(profile_signals_app.router)
 
 # Configuration
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
@@ -1341,9 +1344,21 @@ class ContactMessage(BaseModel):
 @app.post("/api/contact")
 async def send_contact_message(payload: ContactMessage, req: Request):
     """Save contact form submission to Firestore via REST API."""
+    client_ip = get_client_ip(req)
+    if not check_rate_limit(f"contact:{client_ip}"):
+        raise HTTPException(status_code=429, detail="Too many contact attempts. Please try again later.")
+
+    name = payload.name.strip()
+    email = payload.email.strip().lower()
+    subject = payload.subject.strip()
+    message = payload.message.strip()
+
+    if not all([name, email, subject, message]):
+        raise HTTPException(status_code=400, detail="All contact fields are required.")
+
     # Basic email validation
     email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
-    if not email_re.match(payload.email):
+    if not email_re.match(email):
         raise HTTPException(status_code=400, detail="Invalid email address")
 
     firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv("FIREBASE_API_KEY")
@@ -1360,10 +1375,10 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 
     doc_fields = {
         "fields": {
-            "name": {"stringValue": payload.name.strip()},
-            "email": {"stringValue": payload.email.strip()},
-            "subject": {"stringValue": payload.subject.strip()},
-            "message": {"stringValue": payload.message.strip()},
+            "name": {"stringValue": name},
+            "email": {"stringValue": email},
+            "subject": {"stringValue": subject},
+            "message": {"stringValue": message},
             "timestamp": {"timestampValue": datetime.utcnow().isoformat() + "Z"},
             "userAgent": {"stringValue": req.headers.get("user-agent", "Unknown")},
             "submittedFrom": {"stringValue": req.headers.get("referer") or req.headers.get("origin") or "Direct"},
@@ -1381,7 +1396,7 @@ async def send_contact_message(payload: ContactMessage, req: Request):
                                 detail="Failed to save message. Please try again or email mbr63@drexel.edu.")
 
         doc_id = resp.json().get("name", "").split("/")[-1]
-        print(f"✅ Contact message saved: {doc_id} from {payload.email}")
+        print(f"✅ Contact message saved: {doc_id} from {email}")
         return {"success": True, "message": "Message sent successfully!", "id": doc_id}
 
     except httpx.RequestError as exc:

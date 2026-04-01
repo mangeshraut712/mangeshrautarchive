@@ -1,0 +1,1619 @@
+/* 
+   APPLE STABILITY & BRAND REFINEMENT AUDIT (APRIL 2026)
+   - Finalizes Apple-inspired design system
+   - Enforces Solid Black (Dark) / Solid White (Light)
+   - Standardizes Logo Fidelity
+   - Improves Music Card (Spotify) to match provided visual reference
+   - Fixes Home Hero typography for Light Mode
+*/
+
+:root {
+  --apple-blue: #0071e3;
+  --apple-blue-alt: #0077ed;
+  --apple-grey: #86868b;
+  --apple-grey-light: #f5f5f7;
+  --apple-black: #1d1d1f;
+  --apple-black-pure: #000000;
+  --apple-white-pure: #ffffff;
+}
+
+/* 1. HERO SECTION LIGHT MODE FONT COLORS (BLUE HIGHLIGHT) */
+html:not(.dark) .hero-name {
+  color: #0071e3 !important; /* Signature Apple Blue */
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+}
+
+html:not(.dark) .hero-title {
+  color: #1d1d1f !important; /* Crisp Apple Black */
+  letter-spacing: -0.02em !important;
+}
+
+html:not(.dark) .hero-description {
+  color: #424245 !important;
+}
+
+/* 2. MUSIC CARD REDESIGN (SPOTIFY COMPACT) */
+.spotify-compact {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 12px 16px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin-top: 1.5rem !important;
+  max-width: 400px !important;
+  height: 84px !important; /* Fixed height to match image ratio */
+  overflow: hidden !important;
+}
+
+html.dark .spotify-compact {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Revolving Vinyl Artwork */
+.spotify-art-wrapper {
+  position: relative !important;
+  width: 56px !important;
+  height: 56px !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 0 !important; /* Fix extra space */
+}
+
+.spotify-art {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50% !important; /* Circular */
+  object-fit: cover !important;
+  border: 4px solid #1d1d1f !important; /* Thick "Vinyl" ring */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+  animation: none; /* Initially static */
+  transition: transform 0.5s ease-in-out !important;
+  z-index: 2;
+}
+
+.is-playing .spotify-art {
+  animation: rotateMusic 6s linear infinite !important;
+}
+
+@keyframes rotateMusic {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Central Content */
+.spotify-content {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  min-width: 0 !important; /* Prevent text overflow */
+  padding: 0 !important;
+}
+
+.spotify-status-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-bottom: 2px !important;
+}
+
+.status-dot {
+  width: 7px !important;
+  height: 7px !important;
+  background: #a1a1a6 !important;
+  border-radius: 50% !important;
+}
+
+.is-playing .status-dot {
+  background: #1db954 !important;
+  box-shadow: 0 0 8px rgba(29, 185, 84, 0.4) !important;
+}
+
+.status-text {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #86868b !important;
+  text-transform: none !important;
+}
+
+.spotify-song {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: #1d1d1f !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+html.dark .spotify-song {
+  color: #ffffff !important;
+}
+
+.spotify-artist {
+  font-size: 14px !important;
+  color: #86868b !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Spotify Icon */
+.spotify-brand {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark .spotify-brand {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.spotify-brand svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: #86868b !important; /* Neutral by default */
+  transition: fill 0.2s ease !important;
+}
+
+.is-playing .spotify-brand svg {
+  fill: #1db954 !important; /* Active green */
+}
+
+/* 3. ABOUT SECTION STABILIZATION */
+.about-left-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important; /* We control this with margins */
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.about-image-wrapper {
+  margin-bottom: 0px !important;
+  transform: none !important; /* Disable parallax if it conflicts */
+  transition: transform 0.3s ease !important;
+}
+
+/* Prevent image from pushing the widget weirdly on scroll */
+#about .about-main {
+  align-items: flex-start !important;
+  min-height: 600px !important;
+}
+
+/* 4. CURRENTLY SECTION BUTTONS (APPLE STYLE) */
+.text-apple-blue {
+  color: #0071e3 !important;
+}
+
+html.dark .text-apple-blue {
+  color: #2997ff !important;
+}
+
+.shelf-actions {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 10px !important;
+  min-height: 36px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.provider-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border-radius: 980px !important;
+  padding: 6px 18px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.provider-link--apple {
+  background: #1d1d1f !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+html.dark .provider-link--apple {
+  background: #ffffff !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important;
+}
+
+.provider-link--watch {
+  background: rgba(0, 113, 227, 0.1) !important;
+  color: #0071e3 !important;
+}
+
+html.dark .provider-link--watch {
+  background: rgba(41, 151, 255, 0.15) !important;
+  color: #2997ff !important;
+}
+
+/* Final layout stability layer for navbar, about, and contact.
+   Loaded after the premium override stack to restore a coherent Apple-style layout. */
+
+#global-nav.global-nav.dynamic-island {
+  padding-inline: 20px !important;
+}
+
+#global-nav.global-nav.dynamic-island .nav-container {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 14px !important;
+  max-width: 1320px !important;
+}
+
+#global-nav.global-nav.dynamic-island .nav-links {
+  justify-content: center !important;
+  gap: clamp(10px, 1vw, 16px) !important;
+}
+
+#global-nav.global-nav.dynamic-island .nav-links.scrollable-nav {
+  overflow: visible !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  padding-inline: 0 !important;
+}
+
+#global-nav.global-nav.dynamic-island .nav-link {
+  padding: 7px 0 !important;
+  font-size: 12px !important;
+  letter-spacing: -0.01em !important;
+}
+
+@media (max-width: 1360px) {
+  #global-nav.global-nav.dynamic-island {
+    padding-inline: 16px !important;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-container {
+    gap: 12px !important;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-links {
+    gap: 10px !important;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-link {
+    font-size: 11px !important;
+  }
+}
+
+#about .container,
+#contact .container {
+  max-width: 1200px !important;
+}
+
+#about .about-content {
+  margin-top: 2.25rem !important;
+}
+
+#about .about-main {
+  display: grid !important;
+  grid-template-columns: minmax(300px, 420px) minmax(0, 1fr) !important;
+  gap: clamp(1.5rem, 4vw, 3rem) !important;
+  align-items: flex-start !important;
+}
+
+.about-left-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important; /* Reduced further to eliminate extra space */
+  width: 100% !important;
+}
+
+#about .about-image-wrapper {
+  max-width: 420px !important;
+  width: 100% !important;
+  position: relative;
+}
+
+#about .about-image {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 540px !important;
+  object-fit: cover !important;
+  border-radius: 32px !important;
+  box-shadow: 0 20px 48px rgba(0,0,0,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+html.dark #about .about-image {
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4) !important;
+  border-color: rgba(255,255,255,0.08);
+}
+
+#about .about-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  min-width: 0 !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(248,248,250,0.7)) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  padding: 2.5rem !important;
+  border-radius: 32px !important;
+  border: 1px solid rgba(255,255,255,0.6) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.06) !important;
+}
+
+html.dark #about .about-text {
+  background: linear-gradient(180deg, rgba(30,30,32,0.6), rgba(18,18,20,0.4)) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3) !important;
+}
+
+.about-section-title {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  color: #1d1d1f !important;
+  letter-spacing: -0.015em !important;
+  margin-bottom: 0.5rem !important;
+}
+
+html.dark .about-section-title {
+  color: #f5f5f7 !important;
+}
+
+.about-bullet-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+.about-bullet-list li {
+  position: relative !important;
+  padding-left: 24px !important;
+  font-size: 1.05rem !important;
+  line-height: 1.6 !important;
+  color: #424245 !important;
+  font-weight: 400 !important;
+}
+
+html.dark .about-bullet-list li {
+  color: #a1a1a6 !important;
+}
+
+.about-bullet-list li::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 10px !important;
+  width: 6px !important;
+  height: 6px !important;
+  background: #d2d2d7 !important;
+  border-radius: 50% !important;
+}
+
+html.dark .about-bullet-list li::before {
+  background: #424245 !important;
+}
+
+#about .about-highlights {
+  margin-top: 1.5rem !important;
+}
+
+#about .now-section {
+  margin-top: 2rem !important;
+  padding-top: 1.25rem !important;
+}
+
+#about .now-activity-grid {
+  align-items: start !important;
+}
+
+#contact .contact-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr) !important;
+  gap: 1.25rem !important;
+  align-items: start !important;
+  margin-top: 2rem !important;
+}
+
+#contact .contact-column {
+  gap: 1rem !important;
+}
+
+#contact .contact-card {
+  border-radius: 24px !important;
+  padding: 1.35rem !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 247, 249, 0.94)) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.dark #contact .contact-card {
+  background: linear-gradient(180deg, rgba(22, 22, 24, 0.96), rgba(8, 8, 10, 0.98)) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36) !important;
+}
+
+#contact .contact-info-all {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+#contact .contact-info-all .contact-section {
+  margin: 0 !important;
+  padding: 0 0 1rem !important;
+}
+
+#contact .contact-info-all .contact-section:last-child {
+  padding-bottom: 0 !important;
+}
+
+#contact .contact-section h3 {
+  margin-bottom: 0.55rem !important;
+  font-size: 1.02rem !important;
+}
+
+#contact .contact-description {
+  margin-bottom: 0.7rem !important;
+  line-height: 1.55 !important;
+}
+
+#contact .contact-link-item {
+  padding: 0.55rem 0.6rem !important;
+  border-radius: 14px !important;
+}
+
+#contact .contact-assistme-card {
+  min-height: 0 !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+#contact .contact-assistme-card .contact-description,
+#contact .contact-assistme-note {
+  max-width: 44ch !important;
+}
+
+#contact .contact-assistme-btn {
+  width: auto !important;
+  min-width: 220px !important;
+}
+
+#contact .calendar-wrapper-clean {
+  margin-top: 0 !important;
+}
+
+footer {
+  background: #fff !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+html.dark footer {
+  background: #000 !important;
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.global-nav.dynamic-island .nav-links.scrollable-nav {
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  padding-inline: 0 !important;
+}
+
+
+@media (max-width: 1150px) {
+  #global-nav.global-nav.dynamic-island {
+    padding-inline: 18px !important;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-links {
+    display: none !important;
+  }
+
+  #global-nav.global-nav.dynamic-island #menu-btn,
+  #global-nav.global-nav.dynamic-island .menu-toggle-button {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 900px) {
+  #about .about-main {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  #about .about-image-wrapper {
+    max-width: 520px !important;
+    margin-inline: auto !important;
+  }
+
+  #contact .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  #contact .contact-assistme-card {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  #contact .contact-assistme-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #global-nav.global-nav.dynamic-island {
+    height: 48px !important;
+    padding-inline: 14px !important;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-logo img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  #about .about-content,
+  #contact .contact-grid {
+    margin-top: 1.5rem !important;
+  }
+
+  #about .about-image {
+    border-radius: 20px !important;
+  }
+
+  #contact .contact-card {
+    border-radius: 20px !important;
+    padding: 1.05rem !important;
+  }
+
+  #contact .form-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── SOCIAL MEDIA ICONS (Footer) ─── */
+.wrapper {
+  display: inline-flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wrapper .icon {
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  margin: 0 10px;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+html.dark .wrapper .icon {
+  background: rgba(28, 28, 30, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+}
+
+.wrapper .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+  background: #fff;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #fff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon:hover span,
+.wrapper .icon:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .icon a {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper .icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Brand Colors - Official High-Fidelity Audit */
+.wrapper .facebook:hover,
+.wrapper .facebook:hover .tooltip,
+.wrapper .facebook:hover .tooltip::before {
+  background: #1877F2 !important;
+  color: #fff !important;
+}
+
+.wrapper .github:hover,
+.wrapper .github:hover .tooltip,
+.wrapper .github:hover .tooltip::before {
+  background: #181717 !important;
+  color: #fff !important;
+}
+
+.wrapper .instagram:hover,
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before {
+  background: #E4405F !important;
+  color: #fff !important;
+}
+
+.wrapper .linkedin:hover,
+.wrapper .linkedin:hover .tooltip,
+.wrapper .linkedin:hover .tooltip::before {
+  background: #0A66C2 !important;
+  color: #fff !important;
+}
+
+.wrapper .youtube:hover,
+.wrapper .youtube:hover .tooltip,
+.wrapper .youtube:hover .tooltip::before {
+  background: #FF0000 !important;
+  color: #fff !important;
+}
+
+.wrapper .x:hover,
+.wrapper .x:hover .tooltip,
+.wrapper .x:hover .tooltip::before {
+  background: #000000 !important;
+  color: #fff !important;
+}
+
+.wrapper .leetcode:hover,
+.wrapper .leetcode:hover .tooltip,
+.wrapper .leetcode:hover .tooltip::before {
+  background: #FFA116 !important;
+  color: #fff !important;
+}
+
+.wrapper .icon:hover {
+  color: #fff;
+  border-color: transparent;
+}
+
+html.dark .wrapper .icon:hover {
+  border-color: transparent;
+}
+
+#about .about-intro-title {
+  margin-bottom: 0.25rem !important;
+  font-size: clamp(2rem, 3vw, 2.5rem) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+  background: linear-gradient(90deg, #1d1d1f, #434345);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.dark #about .about-intro-title {
+  background: linear-gradient(90deg, #f5f5f7, #a1a1a6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#about .about-intro-text,
+#about .about-description {
+  margin: 0 !important;
+  color: #515154 !important;
+  line-height: 1.65 !important;
+  font-weight: 400 !important;
+  font-size: 1.05rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+html.dark #about .about-intro-text,
+html.dark #about .about-description {
+  color: #98989d !important;
+}
+
+/* ─── CONTACT SECTION THEME AUDIT ─── */
+.contact-section,
+.support-section,
+.follow-section,
+.about-section-container,
+.dream-companies-card,
+.dream-cars-card,
+#contact-page,
+.contact-page-wrapper {
+  background: #FFF !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .contact-section,
+html.dark .support-section,
+html.dark .follow-section,
+html.dark .about-section-container,
+html.dark .dream-companies-card,
+html.dark .dream-cars-card,
+html.dark #contact-page,
+html.dark .contact-page-wrapper {
+  background: #000 !important;
+  color: #f5f5f7 !important;
+}
+
+/* Force body and main containers to be solid black/white in contact context */
+#contact-page {
+  background: #FFF !important;
+}
+html.dark #contact-page {
+  background: #000 !important;
+}
+
+/* Solid background for all contact related grids and wrappers */
+.social-grid,
+.social-wrapper,
+.donation-options-wrapper,
+.dream-companies-track,
+.dream-cars-track-wrapper {
+  background: transparent !important;
+}
+
+/* ─── SUPPORT BUTTONS COLORS ─── */
+.donation-options-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 15px !important;
+  margin-top: 1.5rem !important;
+  max-width: 320px !important;
+  padding: 0 !important;
+}
+
+.donation-options-wrapper .support-coffee-btn {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  height: 50px !important;
+  font-size: 1rem !important;
+  border-radius: 12px !important;
+  margin: 0 !important;
+  justify-content: center !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.support-coffee-btn.premium.coffee {
+  background: #FFDD00 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 12px rgba(255, 221, 0, 0.2) !important;
+}
+
+.support-coffee-btn.premium.coffee:hover {
+  background: #FFD300 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(255, 221, 0, 0.3) !important;
+}
+
+.support-coffee-btn.premium.paypal {
+  background: #003087 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 48, 135, 0.2) !important;
+}
+
+.support-coffee-btn.premium.paypal svg,
+.support-coffee-btn.premium.paypal span {
+  color: #ffffff !important;
+}
+
+.support-coffee-btn.premium.paypal:hover {
+  background: #00246b !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 48, 135, 0.3) !important;
+}
+
+.support-coffee-btn.premium.cashapp {
+  background: #00D632 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 214, 50, 0.2) !important;
+}
+
+.support-coffee-btn.premium.cashapp svg,
+.support-coffee-btn.premium.cashapp span {
+  color: #ffffff !important;
+}
+
+.support-coffee-btn.premium.cashapp:hover {
+  background: #00c22d !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 214, 50, 0.3) !important;
+}
+
+.donation-options-wrapper .support-coffee-btn svg {
+  font-size: 1.25rem !important;
+}
+
+/* ─── ADDITIONAL BRAND STYLES ─── */
+/* Secondary Brand Identities */
+.wrapper .whatsapp:hover,
+.wrapper .whatsapp:hover .tooltip,
+.wrapper .whatsapp:hover .tooltip::before {
+  background: #25D366 !important;
+  color: #fff !important;
+}
+
+.wrapper .email:hover,
+.wrapper .email:hover .tooltip,
+.wrapper .email:hover .tooltip::before {
+  background: #EA4335 !important; /* Brand Identity Red */
+  color: #fff !important;
+}
+
+.wrapper .snapchat:hover,
+.wrapper .snapchat:hover .tooltip,
+.wrapper .snapchat:hover .tooltip::before {
+  background: #FFFC00 !important; /* Snapchat Yellow */
+  color: #000 !important;
+}
+
+.wrapper .snapchat:hover svg {
+  fill: #000 !important; /* Force black icon on yellow background */
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   SOLID BLACK DARK MODE AUDIT — UNIVERSAL ENFORCEMENT
+   Ensuring #000 across all sections, cards, and containers.
+   ────────────────────────────────────────────────────────────────────────── */
+
+html.dark, 
+html.dark body,
+html.dark main,
+html.dark section,
+html.dark footer,
+html.dark .container,
+html.dark #about,
+html.dark #experience,
+html.dark #skills,
+html.dark #projects,
+html.dark #publications,
+html.dark #education,
+html.dark #certifications,
+html.dark #awards,
+html.dark #recommendations,
+html.dark #blog,
+html.dark #contact,
+html.dark #github-projects,
+html.dark .about-content {
+  background-color: #000 !important;
+  background-image: none !important;
+  background: #000 !important;
+}
+
+/* Global Card Background Override for Solid Black - Using high specificity */
+html.dark .award-card,
+html.dark .blog-card,
+html.dark .cert-card,
+html.dark .education-card,
+html.dark .experience-content,
+html.dark .publication-card,
+html.dark .recommendation-card,
+html.dark .stat-card,
+html.dark .project-card,
+html.dark .showcase-project-card,
+html.dark .activity-card,
+html.dark .skill-category,
+html.dark #skills-container .skill-badge,
+html.dark .skill-badge,
+html.dark .contact-section,
+html.dark .contact-form-container,
+html.dark .support-donation-card,
+html.dark .about-live-card,
+html.dark .spotify-compact,
+html.dark .now-activity-card,
+html.dark .apple-tldr,
+html.dark .ios-widget-wrapper,
+html.dark .reminder-card,
+html.dark .calendar-card,
+html.dark .menu-grid,
+html.dark .about-highlight-card,
+html.dark .game-container-wrapper,
+html.dark .birthday-notification,
+html.dark .chatbot-header,
+html.dark .input-wrapper,
+html.dark .about-image-badge,
+html.dark #about .about-text,
+html.dark #about .about-highlight-card,
+html.dark #about .about-live-card,
+html.dark .wrapper .whatsapp,
+html.dark .wrapper .email,
+html.dark .wrapper .snapchat,
+html.dark .wrapper .instagram,
+html.dark .wrapper .linkedin,
+html.dark .wrapper .github,
+html.dark .wrapper .whatsapp,
+html.dark .wrapper .email {
+  background-color: #000 !important;
+  background: #000 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+
+/* Tighten internal music widget spacing is now handled by .spotify-compact grid */
+
+/* About Section Spacing Fixes */
+#about .about-content {
+  margin-top: 1rem !important; /* Reduced from 2.25rem */
+}
+
+.about-left-column {
+  gap: 0.5rem !important;
+}
+
+/* Remove bottom margin of about image to tighten space with widget */
+#about .about-image-wrapper {
+  margin-bottom: 0 !important;
+}
+
+/* Text visibility in solid black cards */
+html.dark .about-live-eyebrow,
+html.dark .about-live-caption,
+html.dark .about-highlight-text,
+html.dark .section-subtitle {
+  color: #a1a1a6 !important;
+}
+
+html.dark .about-live-track,
+html.dark .about-highlight-title,
+html.dark .blog-title,
+html.dark .project-card h3 {
+  color: #fff !important;
+}
+
+/* Ensure no grey sections or containers in dark mode */
+html.dark section,
+html.dark .section-content,
+html.dark .container,
+html.dark .about-main,
+html.dark .about-content,
+html.dark .about-grid,
+html.dark .experience-list,
+html.dark .blog-grid,
+html.dark .contact-wrapper,
+html.dark .contact-section,
+html.dark .support-section,
+html.dark .follow-section,
+html.dark .dream-companies-card,
+html.dark .dream-cars-card {
+  background-color: #000 !important;
+  background: #000 !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   SOLID WHITE LIGHT MODE AUDIT — ESSENTIAL ENFORCEMENT
+   Ensuring #FFF for the main background across all sections.
+   ────────────────────────────────────────────────────────────────────────── */
+
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) section,
+html:not(.dark) footer,
+html:not(.dark) .container,
+html:not(.dark) #about,
+html:not(.dark) #experience,
+html:not(.dark) #skills,
+html:not(.dark) #projects,
+html:not(.dark) #publications,
+html:not(.dark) #education,
+html:not(.dark) #certifications,
+html:not(.dark) #awards,
+html:not(.dark) #recommendations,
+html:not(.dark) #blog,
+html:not(.dark) #contact,
+html:not(.dark) .contact-section,
+html:not(.dark) .support-section,
+html:not(.dark) .follow-section,
+html:not(.dark) .dream-companies-card,
+html:not(.dark) .dream-cars-card,
+html:not(.dark) .about-main {
+  background-color: #fff !important;
+  background: #fff !important;
+}
+
+/* Maintain dark mode contrast for headers in light mode */
+html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3, html:not(.dark) h4 {
+  color: #000 !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   END AUDIT
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Force dark mode text visibility */
+html.dark .about-text p,
+html.dark .about-live-caption,
+html.dark .experience-content p,
+html.dark .blog-description {
+  color: #a1a1a6 !important;
+}
+
+/* Additional specificity for cards frequently missed */
+html.dark .about-text,
+html.dark .about-live-card,
+html.dark .spotify-compact,
+html.dark .award-card,
+html.dark .blog-card,
+html.dark .cert-card,
+html.dark .education-card,
+html.dark .experience-content,
+html.dark .publication-card,
+html.dark .recommendation-card,
+html.dark .stat-card,
+html.dark .project-card,
+html.dark .showcase-project-card,
+html.dark .activity-card {
+  background: #000 !important;
+  background-color: #000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Force deep black in dark mode for all main sections */
+html.dark, 
+html.dark body, 
+html.dark #contact,
+html.dark #about,
+html.dark #experience,
+html.dark #blog,
+html.dark #projects {
+  background: #000 !important;
+  background-color: #000 !important;
+}
+
+/* Social Links Final Spacing & Design */
+.social-wrapper {
+  margin-top: 1.5rem !important;
+  margin-bottom: 2.5rem !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+}
+
+.wrapper {
+  display: flex !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 15px !important;
+}
+
+.wrapper .icon {
+  position: relative !important;
+  background: #ffffff !important;
+  border-radius: 50% !important;
+  width: 50px !important;
+  height: 50px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .wrapper .icon {
+  background: #1c1c1e !important;
+  color: #f5f5f7 !important;
+}
+
+.wrapper .snapchat:hover {
+  background: #FFFC00 !important;
+  color: #000 !important;
+}
+
+.wrapper .icon .tooltip {
+  position: absolute !important;
+  top: 0 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 100 !important;
+}
+
+.wrapper .icon:hover .tooltip {
+  top: -50px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+
+/* 5. CONTACT SECTION STABILIZATION (EXPRESS REFINEMENT) */
+.contact-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 24px !important;
+}
+
+@media (min-width: 1024px) {
+  .contact-grid {
+    display: grid !important;
+    grid-template-columns: 1.2fr 0.8fr !important;
+    gap: 32px !important;
+    align-items: start !important;
+  }
+}
+
+.contact-section {
+  padding: 24px !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+html.dark .contact-section {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+}
+
+.contact-section h3 {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+  letter-spacing: -0.02em !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .contact-section h3 {
+  color: #ffffff !important;
+}
+
+/* Support Card Cleanup */
+.support-donation-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.support-donation-card::before { display: none !important; }
+
+/* Follow Me List Improvement */
+.contact-social-wrapper {
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin-top: 1rem !important;
+}
+
+.contact-social-wrapper .icon {
+  margin: 0 !important;
+}
+
+.contact-social-wrapper a {
+  width: 48px !important;
+  height: 48px !important;
+  background: #f5f5f7 !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #1d1d1f !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-decoration: none !important;
+}
+
+html.dark .contact-social-wrapper a {
+  background: #1d1d1f !important;
+  color: #f5f5f7 !important;
+}
+
+.contact-social-wrapper a:hover {
+  transform: scale(1.08) !important;
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3) !important;
+}
+
+/* Dream Cards */
+.dream-companies-card, .dream-cars-card {
+  overflow: hidden !important;
+}
+
+.dream-companies-marquee, .dream-cars-track-wrapper {
+  margin-top: 1rem !important;
+  opacity: 0.9 !important;
+}
+
+/* CONTACT PAGE TWO-COLUMN GRID ARCHITECTURE */
+.contact-grid {
+  display: grid !important;
+  grid-template-columns: 3fr 2fr !important; /* Left side wider than right as requested */
+  gap: 32px !important;
+  align-items: start !important;
+  margin-top: 2rem !important;
+}
+
+@media (max-width: 991px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+.contact-column.left-side, 
+.contact-column.right-side {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 28px !important;
+}
+
+/* Individual Card Styling for High Fidelity Apple Look */
+.contact-section, .contact-assistme-card {
+  background: #ffffff !important;
+  border-radius: 24px !important;
+  padding: 32px !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  margin-bottom: 0 !important;
+}
+
+html.dark .contact-section, 
+html.dark .contact-assistme-card {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.contact-section:hover, 
+.contact-assistme-card:hover {
+  transform: translateY(-8px) scale(1.01) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 113, 227, 0.3) !important;
+}
+
+html.dark .contact-section:hover, 
+html.dark .contact-assistme-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(41, 151, 255, 0.4) !important;
+}
+
+/* Social links compact optimization */
+.contact-social-wrapper {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 14px !important;
+  margin-top: 1.5rem !important;
+  justify-content: flex-start !important;
+}
+
+.contact-social-wrapper .icon a {
+  width: 52px !important;
+  height: 52px !important;
+  font-size: 1.3rem !important;
+  border-radius: 15px !important;
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.dark .contact-social-wrapper .icon a {
+  background: #1d1d1f !important;
+  color: #f5f5f7 !important;
+}
+
+.contact-social-wrapper .icon a:hover {
+  background: #0071e3 !important;
+  color: #fff !important;
+  transform: scale(1.1) !important;
+}
+/* CURATED SHELVES & SPORTS ENFORCEMENT */
+.provider-link--apple {
+  background: #1d1d1f !important;
+  color: #fff !important;
+  border-color: #1d1d1f !important;
+}
+
+html.dark .provider-link--apple {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+.provider-link span {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Sports Section Tightening */
+.sports-list {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  margin-top: 1rem !important;
+}
+
+.sport-item {
+  padding: 10px 14px !important;
+  background: rgba(142, 142, 147, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-radius: 16px !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+html.dark .sport-item {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.sport-name {
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  color: #1d1d1f !important;
+  margin: 0 !important;
+}
+
+html.dark .sport-name {
+  color: #fff !important;
+}
+
+.sport-subtitle {
+  font-size: 0.72rem !important;
+  color: #86868b !important;
+  margin: 0 !important;
+  font-weight: 400 !important;
+}
+
+html.dark .sport-subtitle {
+  color: #a1a1a6 !important;
+}
+
+.provider-link--live {
+  background: rgba(255, 45, 85, 0.1) !important;
+  color: #ff2d55 !important;
+  border-color: rgba(255, 45, 85, 0.2) !important;
+}
+
+html.dark .provider-link--live {
+  background: rgba(255, 55, 95, 0.15) !important;
+  color: #ff375f !important;
+}
+/* ──────────────────────────────────────────────────────────────────────────
+   READ/WATCH ACTION BUTTONS — HI-RES VISIBILITY FIX
+   Ensures 'Read' and 'Watch' text labels are never hidden or illegible.
+   ────────────────────────────────────────────────────────────────────────── */
+.provider-link {
+  min-width: 96px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-decoration: none !important;
+}
+
+.provider-link span {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: inherit !important;
+}
+
+.provider-link--apple {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+html.dark .provider-link--apple {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+
+/* Smooth Animation for Grid Balancing */
+.about-grid {
+  align-items: flex-start !important;
+}
+
+.about-left-column, .about-right-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 24px !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   CONTACT SECTION ARCHITECTURE — APPLE-INSPIRED GRID
+   ────────────────────────────────────────────────────────────────────────── */
+.contact-grid {
+  display: grid !important;
+  grid-template-columns: 3fr 2fr !important;
+  gap: 32px !important;
+  align-items: start !important;
+  margin-top: 3rem !important;
+}
+
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+/* Premium Card Enforcement — Solid Themes */
+.contact-section, .contact-assistme-card {
+  background: #ffffff !important;
+  border-radius: 28px !important;
+  padding: 32px !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+html.dark .contact-section, 
+html.dark .contact-assistme-card {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Dream Marquee Physics */
+.dream-companies-marquee, 
+.dream-cars-track-wrapper {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+.dream-companies-track, 
+.dream-cars-track {
+  display: flex !important;
+  gap: 40px !important;
+  width: max-content;
+  animation: dreamMarquee 45s linear infinite !important;
+}
+
+.dream-company-item, .dream-car-item {
+  opacity: 0.6;
+  filter: grayscale(1);
+  transition: all 0.4s ease;
+}
+
+html.dark .dream-company-item, 
+html.dark .dream-car-item {
+  filter: grayscale(1) invert(1);
+}
+
+.dream-company-item:hover, 
+.dream-car-item:hover {
+  opacity: 1;
+  filter: grayscale(0) invert(0) !important;
+  transform: scale(1.1);
+}
+
+@keyframes dreamMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Social Icon Chassis Refinement */
+.contact-social-wrapper {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin-top: 2rem !important;
+}
+
+.contact-social-wrapper li a {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 16px !important;
+  background: rgba(142, 142, 147, 0.08) !important;
+  color: #1d1d1f !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.4rem !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html.dark .contact-social-wrapper li a {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f5f5f7 !important;
+}
+
+.contact-social-wrapper li a:hover {
+  background: #0071e3 !important;
+  color: #fff !important;
+  transform: translateY(-5px) !important;
+}

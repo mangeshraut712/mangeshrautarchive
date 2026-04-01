@@ -178,6 +178,15 @@ Real-time project showcase with intelligent caching
 - **Rich Metadata:** Stars, forks, languages, contribution graphs
 - **Search & Filter:** Advanced project discovery with language and topic filtering
 
+### 🎵 Live Listening Shelf
+
+Apple-inspired compact media shelf with real artwork and live music fallbacks
+
+- **Primary Source:** Spotify now-playing when server credentials are configured
+- **Fallback Source:** Last.fm recent/live scrobbles via backend API
+- **Graceful Degradation:** Apple Music and YouTube Music deep links when no live source is available
+- **Real Artwork:** Book covers and movie/series posters use real external artwork instead of placeholder gradients
+
 ### 🎨 Apple 2026 Design System
 
 Premium glassmorphism UI with hardware-accelerated animations
@@ -265,12 +274,15 @@ graph TB
         F[GitHub API Proxy]
         G[Contact Form Handler]
         H[Memory Management]
+        O[Profile Signals API]
     end
 
     subgraph "External APIs"
         I[OpenRouter AI]
         J[GitHub REST API]
         K[Google Gemini]
+        P[Spotify Web API]
+        Q[Last.fm API]
     end
 
     subgraph "Infrastructure"
@@ -287,6 +299,8 @@ graph TB
     F --> J
     G --> M
     H --> M
+    O --> P
+    O --> Q
     L --> N
     M --> N
 ```
@@ -331,6 +345,8 @@ npm run qa:prod-ready  # Runs all quality gates
 - Node.js 20.0+ and npm 10.0+
 - Python 3.12+ (for FastAPI backend)
 - OpenRouter API key (optional, enables AI features)
+- Spotify API credentials (optional, enables live Spotify now-playing)
+- Last.fm API key + username (optional, enables free music fallback)
 
 ### Installation
 
@@ -353,6 +369,8 @@ cp .env.example .env.local
 # 5. Start development servers
 npm run dev
 ```
+
+`npm run dev` now auto-picks the next free frontend/backend ports if `3000` or `8000` are already in use.
 
 ### Quick Development Commands
 
@@ -386,6 +404,15 @@ NODE_ENV=development
 
 # Analytics (Optional)
 VERCEL_ANALYTICS_ID=...
+
+# Live music (Optional)
+SPOTIFY_CLIENT_ID=...
+SPOTIFY_CLIENT_SECRET=...
+SPOTIFY_REFRESH_TOKEN=...
+
+# Free music fallback (Optional)
+LASTFM_API_KEY=...
+LASTFM_USERNAME=...
 ```
 
 ### Development Commands
@@ -412,6 +439,7 @@ npm run format          # Prettier
 mangeshrautarchive/
 ├── api/                    # FastAPI backend
 │   ├── index.py           # Main API application
+│   ├── profile.py         # Portfolio reach + music/profile signals
 │   ├── memory_manager.py  # AI conversation memory
 │   └── integrations/      # External API integrations
 ├── src/                   # Frontend application
@@ -425,6 +453,7 @@ mangeshrautarchive/
 │       ├── components/  # Reusable UI components
 │       ├── services/    # API service clients
 │       └── utils/       # Utility functions
+│   └── links/           # Safe redirect wrappers for external profiles
 ├── scripts/              # Build & development tools
 ├── tests/                # Test suites
 │   └── e2e/             # End-to-end tests
@@ -485,7 +514,7 @@ _Software Engineer • Philadelphia, PA_
 ### About the Portfolio
 
 **Q: What makes this portfolio unique?**  
-A: This portfolio combines cutting-edge AI, premium design, and performance optimization. The AssistMe AI assistant can interact with the website, and it achieves 100/100 PageSpeed scores.
+A: This portfolio combines AI-assisted interaction, Apple-inspired frontend polish, real GitHub data, and a live listening shelf with Spotify/Last.fm support.
 
 **Q: How does the AI assistant work?**  
 A: AssistMe uses OpenRouter API with multiple AI models (Grok, Claude, etc.) and has context awareness, conversation memory, and agentic actions like downloading resumes or toggling themes.
@@ -507,7 +536,10 @@ A: Critical CSS inlining, lazy loading, GPU-accelerated animations, service work
 A: Yes. Fork the repo, make improvements, and submit a PR. Focus areas: performance, accessibility, and new features.
 
 **Q: How to run locally?**  
-A: Clone the repo, install dependencies with `npm ci` and `pip install -r requirements.txt`, then run `npm run dev`.
+A: Clone the repo, install dependencies with `npm ci` and `pip install -r requirements.txt`, then run `npm run dev`. If the default ports are busy, the dev runner automatically shifts to the next available ports.
+
+**Q: How does the live music card work?**  
+A: The site prefers Spotify when backend credentials are configured. If Spotify is unavailable, it can fall back to Last.fm scrobbles. Apple Music and YouTube Music are currently fallback links, not direct live playback integrations.
 
 ---
 
@@ -528,6 +560,8 @@ A: Clone the repo, install dependencies with `npm ci` and `pip install -r requir
 **Build failures:** Ensure Node.js 20+ and Python 3.12+, then run `npm run check`.
 
 **API errors:** Check Vercel logs for FastAPI backend issues.
+
+**Music card says no source connected:** Set either Spotify server credentials or `LASTFM_API_KEY` + `LASTFM_USERNAME`, then restart the backend.
 
 ### Performance Optimization
 

@@ -1,5 +1,3 @@
-const PROFILE_VIEWS_STORAGE_KEY = 'profile-views-recorded-v1';
-const VIEWS_ENDPOINT = '/api/profile/views';
 const SPOTIFY_ENDPOINT = '/api/profile/spotify';
 const SPOTIFY_REFRESH_INTERVAL_MS = 30000;
 
@@ -126,16 +124,24 @@ function updateSpotifyCard(payload) {
   artworkEl.alt = payload.title ? `${payload.title} album artwork` : 'Album artwork';
 }
 
-async function hydrateViews() {
-  const hasRecordedView = sessionStorage.getItem(PROFILE_VIEWS_STORAGE_KEY) === '1';
-  const url = `${VIEWS_ENDPOINT}?mode=${hasRecordedView ? 'get' : 'increment'}`;
-  const payload = await fetchJson(url);
+async function hydrateViewsFallback() {
+  const payload = await fetchJson('/api/profile/views?mode=get');
+  updateViewsCard(payload);
+}
 
-  if (!hasRecordedView && payload.success) {
-    sessionStorage.setItem(PROFILE_VIEWS_STORAGE_KEY, '1');
+function bindRealtimeViews() {
+  const viewsStore = window.portfolioViewsStore;
+  if (!viewsStore || typeof viewsStore.subscribe !== 'function') {
+    hydrateViewsFallback().catch(() => {
+      updateViewsCard({ success: false, count: null });
+    });
+    return;
   }
 
-  updateViewsCard(payload);
+  viewsStore.subscribe(payload => {
+    updateViewsCard(payload);
+  });
+  viewsStore.start?.();
 }
 
 async function hydrateSpotify() {
@@ -152,9 +158,7 @@ function initProfileInsights() {
   window.__profileInsightsInitialized = true;
   mount.innerHTML = createMarkup();
 
-  hydrateViews().catch(() => {
-    updateViewsCard({ success: false, count: 0 });
-  });
+  bindRealtimeViews();
 
   hydrateSpotify().catch(() => {
     updateSpotifyCard({

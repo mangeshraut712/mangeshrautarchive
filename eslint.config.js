@@ -5,6 +5,7 @@ export default [
   js.configs.recommended,
   {
     ignores: [
+      '.kilo/**',
       'dist/**',
       'build/**',
       'node_modules/**',

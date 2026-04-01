@@ -11,7 +11,6 @@ const RUNTIME_MODULES = [
 ];
 
 const SECTION_MODULES = [
-  { sectionId: 'about', modulePath: '../modules/profile-insights.js' },
   { sectionId: 'skills', modulePath: '../modules/skills-visualization.js' },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js' },
   { sectionId: 'contact', modulePath: '../modules/calendar.js' },

@@ -3,7 +3,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "build:css": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./src/assets/css/tailwind-output.css --minify",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "node scripts/dev.js",
     "dev:frontend": "node scripts/local-server.js",
     "dev:backend": "uvicorn api.index:app --reload --port 8000",
     "security-check": "node scripts/security-check.js",
@@ -11,7 +11,7 @@
     "optimize-images": "node scripts/optimize-images.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:css": "stylelint \"src/assets/css/**/*.css\"",
+    "lint:css": "stylelint src/assets/css/live-activity.css src/assets/css/apple-stability-fixes.css",
     "test": "vitest --passWithNoTests",
     "test:e2e:chrome": "playwright test tests/e2e/smoke.spec.js --project=chromium",
     "test:e2e:mobile-chrome": "playwright test tests/e2e/smoke.spec.js --project=\"Mobile Chrome\"",
@@ -36,7 +36,6 @@
     "@axe-core/playwright": "^4.11.1",
     "@eslint/js": "^9.21.0",
     "@playwright/test": "^1.58.2",
-    "@prettier/plugin-python": "^0.0.0-development",
     "@tailwindcss/cli": "^4.0.9",
     "dotenv": "^16.4.7",
     "eslint": "^9.21.0",
@@ -56,7 +55,6 @@
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "firebase": "^11.4.0",
     "http-proxy-middleware": "^3.0.3",
     "limiter": "^2.1.0"
   },

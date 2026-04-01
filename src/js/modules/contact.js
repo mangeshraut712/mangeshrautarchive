@@ -1,1 +1,150 @@
-export function initContactForm(e="contact-form",o=document){const t=o.getElementById(e);if(!t)return void console.warn("Contact form not found with ID:",e);if(t.dataset.contactInitialized)return void console.log("⚠️ Contact form already initialized, skipping");t.dataset.contactInitialized="true";let s=!1;const n=t.querySelector('button[type="submit"], .btn'),a=t.querySelectorAll("input, textarea");function r(e,o="success"){const s=t.querySelector(".contact-message");s&&s.remove();const n=document.createElement("div");n.className=`contact-message alert alert-${o}`,n.style.cssText="success"===o?"background: #dcfce7; color: #166534; padding: 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid #bbf7d0;":"background: #fee2e2; color: #dc2626; padding: 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid #fca5a5;",n.innerHTML=`<i class="fas fa-${"success"===o?"check":"exclamation"}-circle mr-2"></i>${e}`,t.insertBefore(n,t.firstChild),setTimeout(()=>{n.parentNode&&n.remove()},5e3)}if(console.log("📬 Contact form initialized (Direct Firebase)"),t.addEventListener("submit",async function(e){if(e.preventDefault(),e.stopPropagation(),console.log("🚫 Form submission prevented (no page reload)"),s)return void console.log("⚠️ Already submitting...");const o=new FormData(t),i={name:o.get("name")?.trim()||"",email:o.get("email")?.trim()||"",subject:o.get("subject")?.trim()||"",message:o.get("message")?.trim()||""};console.log("📝 Form data:",i);const c=[];if(i.name||c.push("name"),i.email||c.push("email"),i.subject||c.push("subject"),i.message||c.push("message"),c.length>0)return void r(`❌ Please fill in: ${c.join(", ")}`,"error");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.email))return void r("❌ Please enter a valid email address","error");s=!0;const l=n?.textContent||"Send Message";n&&(n.disabled=!0,n.innerHTML='<span class="spinner"></span> Sending...'),a.forEach(e=>e.disabled=!0);try{console.log("🔥 Initializing Firebase...");const{initializeApp:e}=await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"),{getFirestore:o,collection:s,addDoc:n,serverTimestamp:a}=await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"),c={apiKey:"AIzaSyDJS4ncepUtvNqtpa5mN3L1RTuURuYWTOo",authDomain:"mangeshrautarchive.firebaseapp.com",projectId:"mangeshrautarchive",storageBucket:"mangeshrautarchive.firebasestorage.app",messagingSenderId:"560373560182",appId:"1:560373560182:web:218658d0db3b1aa6c60057",measurementId:"G-YX2XQWYSCQ"};console.log("🔥 Connecting to Firebase project:",c.projectId);const l=o(e(c,"contact-form-"+Date.now()));console.log("✅ Firebase app initialized"),console.log("✅ Firestore connected to (default) database"),console.log("📬 Target collection: messages");const m={name:i.name,email:i.email,subject:i.subject,message:i.message,timestamp:a(),userAgent:navigator.userAgent,submittedFrom:window.location.href};console.log("💾 Message data prepared (ALL FIELDS):"),console.log("   📛 name:",m.name),console.log("   📧 email:",m.email),console.log("   📋 subject:",m.subject),console.log("   💬 message:",m.message),console.log("   ⏰ timestamp: [serverTimestamp]"),console.log("   🌐 userAgent:",navigator.userAgent.substring(0,50)+"..."),console.log("📤 Sending to Firestore...");const d=s(l,"messages"),g=await n(d,m);console.log("✅✅✅ MESSAGE SAVED SUCCESSFULLY! ✅✅✅"),console.log("📝 Document ID:",g.id),console.log("📊 Saved data:",{name:m.name,email:m.email,subject:m.subject,message:m.message}),console.log("🎉 View in Firebase: https://console.firebase.google.com/project/mangeshrautarchive/firestore/data/~2Fmessages~2F"+g.id),r("✅ Thank you! Your message has been sent successfully. I'll get back to you soon!"),t.reset()}catch(e){console.error("❌ Firebase error:",e),console.error("Error code:",e.code),console.error("Error message:",e.message);let o="❌ Failed to send message. ";"permission-denied"===e.code?(o+="Permission denied. Please make sure Firestore security rules allow create operations.",console.error("💡 Tip: Check security rules at https://console.firebase.google.com/project/mangeshrautarchive/firestore/rules")):e.message?.includes("Failed to fetch")?o+="Network error. Please check your internet connection.":e.message?.includes("transport")?o+="Connection error. Please try again.":o+=e.message||"Unknown error occurred.",o+=" Please email: mbr63@drexel.edu",r(o,"error")}finally{s=!1,n&&(n.disabled=!1,n.innerHTML=l),a.forEach(e=>e.disabled=!1)}},{capture:!0}),!document.querySelector("#contact-form-styles")){const e=document.createElement("style");e.id="contact-form-styles",e.textContent="\n            .spinner {\n                display: inline-block;\n                width: 12px;\n                height: 12px;\n                border: 2px solid transparent;\n                border-radius: 50%;\n                border-top-color: currentColor;\n                animation: spin 1s linear infinite;\n                margin-right: 8px;\n            }\n            @keyframes spin {\n                to { transform: rotate(360deg); }\n            }\n        ",document.head.appendChild(e)}}"undefined"!=typeof window&&("loading"===document.readyState?document.addEventListener("DOMContentLoaded",()=>{initContactForm()},{once:!0}):initContactForm());export default initContactForm;
+import { api, errorMessages } from '../core/config.js';
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function resolveContactEndpoint() {
+  const configuredBase = window.APP_CONFIG?.apiBaseUrl || api.baseUrl || '';
+  if (!configuredBase) return api.endpoints.contact;
+  return `${configuredBase.replace(/\/+$/, '')}${api.endpoints.contact}`;
+}
+
+function buildAlertMarkup(message, tone) {
+  const palette =
+    tone === 'success'
+      ? 'background:#dcfce7;color:#166534;border:1px solid #bbf7d0;'
+      : 'background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;';
+
+  return `<div style="${palette}padding:12px;border-radius:10px;margin-bottom:16px;">${message}</div>`;
+}
+
+export function initContactForm(formId = 'contact-form', root = document) {
+  const form = root.getElementById(formId);
+  if (!form || form.dataset.contactInitialized === 'true') return;
+
+  form.dataset.contactInitialized = 'true';
+
+  const submitButton = form.querySelector('button[type="submit"], .btn');
+  const fields = form.querySelectorAll('input, textarea');
+
+  function showMessage(message, tone = 'success') {
+    form.querySelector('.contact-message')?.remove();
+
+    const node = document.createElement('div');
+    node.className = 'contact-message';
+    node.innerHTML = buildAlertMarkup(message, tone);
+    form.prepend(node);
+
+    window.setTimeout(() => {
+      node.remove();
+    }, 5000);
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (submitButton?.disabled) return;
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+    const name = String(payload.name || '').trim();
+    const email = String(payload.email || '').trim();
+    const subject = String(payload.subject || '').trim();
+    const message = String(payload.message || '').trim();
+
+    const missingFields = [];
+    if (!name) missingFields.push('name');
+    if (!email) missingFields.push('email');
+    if (!subject) missingFields.push('subject');
+    if (!message) missingFields.push('message');
+
+    if (missingFields.length > 0) {
+      showMessage(`Please fill in: ${missingFields.join(', ')}`, 'error');
+      return;
+    }
+
+    if (!EMAIL_PATTERN.test(email)) {
+      showMessage('Please enter a valid email address.', 'error');
+      return;
+    }
+
+    const originalButtonText = submitButton?.innerHTML || 'Send Message';
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span class="spinner"></span> Sending...';
+    }
+
+    fields.forEach(field => {
+      field.disabled = true;
+    });
+
+    try {
+      const response = await fetch(resolveContactEndpoint(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ name, email, subject, message }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || data.success === false) {
+        const detail = data.detail || data.message || errorMessages.contactSendError;
+        showMessage(detail, 'error');
+        return;
+      }
+
+      showMessage('Thank you. Your message has been sent successfully.');
+      form.reset();
+    } catch {
+      showMessage(errorMessages.contactSendError, 'error');
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+      }
+
+      fields.forEach(field => {
+        field.disabled = false;
+      });
+    }
+  }
+
+  form.addEventListener('submit', handleSubmit, { capture: true });
+
+  if (!document.getElementById('contact-form-styles')) {
+    const style = document.createElement('style');
+    style.id = 'contact-form-styles';
+    style.textContent = `
+      .spinner {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border: 2px solid transparent;
+        border-top-color: currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initContactForm();
+    }, { once: true });
+  } else {
+    initContactForm();
+  }
+}
+
+export default initContactForm;

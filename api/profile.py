@@ -33,6 +33,9 @@ COUNTIFY_PROFILE_VIEWS_KEY = os.getenv("COUNTIFY_PROFILE_VIEWS_KEY", "mangesh-ra
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "").strip()
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "").strip()
 SPOTIFY_REFRESH_TOKEN = os.getenv("SPOTIFY_REFRESH_TOKEN", "").strip()
+LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "").strip()
+LASTFM_USERNAME = os.getenv("LASTFM_USERNAME", "").strip()
+LASTFM_API_URL = "https://ws.audioscrobbler.com/2.0/"
 SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token"
 SPOTIFY_CURRENTLY_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing"
 SPOTIFY_RECENTLY_PLAYED_URL = "https://api.spotify.com/v1/me/player/recently-played?limit=1"
@@ -66,14 +69,14 @@ async def get_profile_views(mode: str = "increment"):
             "mode": safe_mode,
             "updatedAt": iso_now(),
         }
-    except Exception as exc:
+    except Exception:
         return JSONResponse(
             status_code=200,
             content={
                 "success": False,
                 "count": 0,
                 "mode": safe_mode,
-                "message": f"View counter unavailable: {exc}",
+                "message": "View counter unavailable",
                 "updatedAt": iso_now(),
             },
         )
@@ -133,62 +136,125 @@ def normalize_spotify_item(item: dict, *, is_playing: bool, status_label: str) -
     }
 
 
+async def fetch_lastfm_recent_track() -> dict | None:
+    if not (LASTFM_API_KEY and LASTFM_USERNAME):
+        return None
+
+    payload = await fetch_json(
+        "GET",
+        LASTFM_API_URL,
+        params={
+            "method": "user.getrecenttracks",
+            "user": LASTFM_USERNAME,
+            "api_key": LASTFM_API_KEY,
+            "format": "json",
+            "limit": 1,
+        },
+    )
+
+    tracks = (payload or {}).get("recenttracks", {}).get("track") or []
+    if not tracks:
+        return {
+            "available": False,
+            "isPlaying": False,
+            "statusLabel": "Last.fm connected",
+            "title": "No scrobbles yet",
+            "artist": f"Start playing music with scrobbling enabled for {LASTFM_USERNAME}",
+            "album": "",
+            "albumArtUrl": "",
+            "trackUrl": "https://www.last.fm/user/" + LASTFM_USERNAME,
+            "updatedAt": iso_now(),
+        }
+
+    track = tracks[0]
+    image_candidates = track.get("image") or []
+    image_url = ""
+    for image in reversed(image_candidates):
+        candidate = image.get("#text", "").strip()
+        if candidate:
+            image_url = candidate
+            break
+
+    artist = track.get("artist")
+    if isinstance(artist, dict):
+        artist_name = artist.get("#text", "").strip()
+    else:
+        artist_name = str(artist or "").strip()
+
+    now_playing = str((track.get("@attr") or {}).get("nowplaying", "")).lower() == "true"
+
+    return {
+        "available": True,
+        "isPlaying": now_playing,
+        "statusLabel": "Live on Last.fm" if now_playing else "Recent via Last.fm",
+        "title": track.get("name") or "Unknown track",
+        "artist": artist_name or "Unknown artist",
+        "album": (track.get("album") or {}).get("#text", ""),
+        "albumArtUrl": image_url,
+        "trackUrl": track.get("url") or ("https://www.last.fm/user/" + LASTFM_USERNAME),
+        "updatedAt": iso_now(),
+    }
+
+
 @app.get("/api/profile/spotify")
 async def get_spotify_now_playing():
-    if not (SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN):
-        return {
-            "available": False,
-            "isPlaying": False,
-            "statusLabel": "Spotify unavailable",
-            "title": "Connect Spotify to show live listening",
-            "artist": "Set SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REFRESH_TOKEN",
-            "album": "",
-            "albumArtUrl": "",
-            "trackUrl": "https://open.spotify.com/",
-            "updatedAt": iso_now(),
-        }
+    spotify_configured = bool(SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN)
 
+    if spotify_configured:
+        try:
+            access_token = await get_spotify_access_token()
+            current_payload = await fetch_spotify_payload(SPOTIFY_CURRENTLY_PLAYING_URL, access_token)
+
+            # If Spotify is ACTIVELY playing, prioritize it
+            if current_payload and current_payload.get("item") and current_payload.get("is_playing"):
+                return normalize_spotify_item(
+                    current_payload["item"],
+                    is_playing=True,
+                    status_label="Now playing",
+                )
+            
+            # If Spotify is NOT playing (paused or idle), check Last.fm for live activity
+            lastfm_payload = await fetch_lastfm_recent_track()
+            if lastfm_payload and lastfm_payload.get("isPlaying"):
+                return lastfm_payload
+
+            # If Last.fm is NOT playing either, but we have a paused Spotify track, return that
+            if current_payload and current_payload.get("item"):
+                return normalize_spotify_item(
+                    current_payload["item"],
+                    is_playing=False,
+                    status_label="Paused on Spotify",
+                )
+
+            # Otherwise check for Spotify recently played
+            recent_payload = await fetch_spotify_payload(SPOTIFY_RECENTLY_PLAYED_URL, access_token)
+            items = (recent_payload or {}).get("items") or []
+            recent_item = items[0]["track"] if items and items[0].get("track") else None
+
+            if recent_item:
+                return normalize_spotify_item(recent_item, is_playing=False, status_label="Recently played")
+        except Exception:
+            pass
+
+    # If all Spotify logic fails or is skiped, try Last.fm recent (even if not playing)
     try:
-        access_token = await get_spotify_access_token()
-        current_payload = await fetch_spotify_payload(SPOTIFY_CURRENTLY_PLAYING_URL, access_token)
+        lastfm_payload = await fetch_lastfm_recent_track()
+        if lastfm_payload:
+            return lastfm_payload
+    except Exception:
+        pass
 
-        if current_payload and current_payload.get("item"):
-            return normalize_spotify_item(
-                current_payload["item"],
-                is_playing=bool(current_payload.get("is_playing")),
-                status_label="Now playing" if current_payload.get("is_playing") else "Paused on Spotify",
-            )
-
-        recent_payload = await fetch_spotify_payload(SPOTIFY_RECENTLY_PLAYED_URL, access_token)
-        items = (recent_payload or {}).get("items") or []
-        recent_item = items[0]["track"] if items and items[0].get("track") else None
-
-        if recent_item:
-            return normalize_spotify_item(recent_item, is_playing=False, status_label="Recently played")
-
-        return {
+    return JSONResponse(
+        status_code=200,
+        content={
             "available": False,
             "isPlaying": False,
-            "statusLabel": "Nothing recent on Spotify",
-            "title": "No recent playback found",
-            "artist": "Open Spotify and play something to light this up",
+            "statusLabel": "Music source unavailable",
+            "title": "No live music source connected",
+            "artist": "Set Spotify credentials or connect Last.fm scrobbling",
             "album": "",
             "albumArtUrl": "",
             "trackUrl": "https://open.spotify.com/",
             "updatedAt": iso_now(),
-        }
-    except Exception as exc:
-        return JSONResponse(
-            status_code=200,
-            content={
-                "available": False,
-                "isPlaying": False,
-                "statusLabel": "Spotify unavailable",
-                "title": "Live listening is temporarily offline",
-                "artist": str(exc),
-                "album": "",
-                "albumArtUrl": "",
-                "trackUrl": "https://open.spotify.com/",
-                "updatedAt": iso_now(),
-            },
-        )
+        },
+    )
