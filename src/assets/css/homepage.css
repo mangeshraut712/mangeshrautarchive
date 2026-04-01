@@ -66,18 +66,6 @@ html:not(.dark) .home-hero {
     linear-gradient(#fff, #fff) padding-box,
     linear-gradient(#fff, #fff);
   mask-composite: exclude;
-  animation: rotate 4s linear infinite;
-  will-change: transform;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Hero Name */
@@ -180,10 +168,6 @@ html.dark .hero-description {
   font-size: 1.25rem;
   transition: all 0.3s ease;
   text-decoration: none;
-
-  /* Performance */
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 .hero-social-link:hover {

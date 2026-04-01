@@ -361,9 +361,9 @@ html.dark .timeline-line::before {
    LAZY LOAD IMAGE FADE
    ═══════════════════════════════════════════════════════════ */
 
+/* Lazy load images - visible immediately, no opacity gating */
 img[loading='lazy'] {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
 }
 
 img[loading='lazy'].loaded,
@@ -375,21 +375,15 @@ img.loaded {
    HARDWARE ACCELERATION HINTS
    ═══════════════════════════════════════════════════════════ */
 
-.animate-on-scroll,
-.showcase-project-card,
-.experience-content,
-.education-card,
-.blog-card,
-.btn,
-.hero-content {
+/* Hardware acceleration - only on actively animating elements */
+.animate-on-scroll.animate-in,
+.showcase-project-card.animate-in {
   will-change: transform, opacity;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 /* Remove will-change after animation completes */
 .animate-in {
-  will-change: auto;
+  animation-fill-mode: forwards;
 }
 
 /* ═══════════════════════════════════════════════════════════

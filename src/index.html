@@ -4,9 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
   <meta name="theme-color" content="#0071e3" />
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -17,42 +14,92 @@
   <meta name="apple-touch-fullscreen" content="yes" />
   <meta name="description"
     content="Mangesh Raut portfolio: software engineer with expertise in full-stack development, cloud, and AI/ML." />
-  <style>
-    .skip-links {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 10001;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: 0;
-      top: 0;
-      transform: translateY(-200%);
-      padding: 0.75rem 1rem;
-      background: #005fcc;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 0 0 10px 0;
-      font-weight: 700;
-      transition: transform 0.2s ease;
-    }
-
-    .skip-link:focus {
-      transform: translateY(0);
-    }
-
-    .footer-copy {
-      color: #1d1d1f;
-    }
-
-    html.dark .footer-copy {
-      color: #f5f5f7;
-    }
-  </style>
   <title>Mangesh Raut | Expert Software Engineer | Technical Leadership</title>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+  <!-- Preconnect to critical origins -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+  <link rel="dns-prefetch" href="https://api.github.com" />
+
+  <!-- Preload LCP image -->
+  <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
+
+  <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <!-- CRITICAL CSS INLINED - Above-the-fold styles for instant FCP -->
+  <style>
+    /* Skip links */
+    .skip-links{position:fixed;top:0;left:0;z-index:10001}
+    .skip-link{position:absolute;left:0;top:0;transform:translateY(-200%);padding:.75rem 1rem;background:#005fcc;color:#fff;text-decoration:none;border-radius:0 0 10px 0;font-weight:700;transition:transform .2s ease}
+    .skip-link:focus{transform:translateY(0)}
+    .footer-copy{color:#1d1d1f}
+    html.dark .footer-copy{color:#f5f5f7}
+
+    /* Critical layout - prevent CLS */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+    /* Navbar critical styles */
+    .global-nav.dynamic-island{position:fixed;top:0;left:0;right:0;width:100%;height:52px;z-index:1000;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08);contain:layout style paint;display:flex;align-items:center}
+    html.dark .global-nav.dynamic-island{background:rgba(0,0,0,.92);border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav-container{width:100%;max-width:1200px;height:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 48px}
+    .nav-links{display:flex;justify-content:center;align-items:center;gap:32px;font-size:13px;flex:1 1 auto}
+    .nav-link{padding:8px 0;font-size:13px;color:rgba(29,29,31,.88);text-decoration:none;white-space:nowrap}
+    html.dark .nav-link{color:rgba(255,255,255,.92)}
+    .nav-actions{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .nav-logo{display:inline-flex;align-items:center;width:40px;height:40px;flex-shrink:0}
+    .nav-logo img{height:32px;width:32px;object-fit:cover;border-radius:8px}
+    @media(max-width:1150px){.nav-links{display:none !important}}
+    @media(max-width:768px){.global-nav.dynamic-island{height:48px}.nav-container{padding:0 16px}}
+
+    /* Hero section critical */
+    .home-hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;background:#fff;padding-top:140px;padding-bottom:60px;contain:layout}
+    html.dark .home-hero{background:#000;padding-top:100px}
+    .hero-layout-wrapper{display:flex;flex-direction:column;align-items:center}
+    .profile-image-wrapper{position:relative;width:clamp(136px,11vw,168px);height:clamp(136px,11vw,168px);margin-bottom:28px}
+    #home .profile-image{width:100%;height:100%;object-fit:cover;border-radius:25%;box-shadow:0 16px 40px rgb(0 113 227/.22),0 2px 10px rgb(0 0 0/.1);position:relative;z-index:2}
+    .hero-name{font-size:clamp(1rem,1vw + .5rem,1.25rem);font-weight:600;margin-bottom:.5rem;text-align:center;letter-spacing:2px;text-transform:uppercase;color:#0071e3}
+    .hero-title{font-size:clamp(1.5rem,2vw + .75rem,2.25rem);font-weight:700;margin-bottom:1.25rem;text-align:center;line-height:1.2;letter-spacing:-.02em;max-width:700px;margin-left:auto;margin-right:auto;color:#1d1d1f}
+    html.dark .hero-name{color:#2997ff}
+    html.dark .hero-title{color:#fff}
+    .hero-description{font-size:clamp(.9375rem,.5vw + .5rem,1.125rem);max-width:600px;margin:0 auto 2.5rem;line-height:1.65;color:#424245}
+    html.dark .hero-description{color:#a1a1a6}
+    .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+    .hero-cta{display:inline-flex;align-items:center;gap:.75rem;font-size:1.125rem;padding:1rem 2rem}
+    @media(max-width:768px){.home-hero{padding-top:100px;min-height:auto}.profile-image-wrapper{width:116px !important;height:116px !important}}
+
+    /* Button base */
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:.875rem 1.75rem;border-radius:980px;font-weight:500;font-size:.9375rem;text-decoration:none;cursor:pointer;border:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease,background .3s ease}
+
+    /* Fade-in sections - start visible to avoid CLS, animations applied later */
+    .fade-in{opacity:1}
+
+    /* Theme toggle & menu buttons */
+    .theme-toggle-nav,.menu-toggle-button,#search-toggle,#theme-toggle,#menu-btn{width:34px;height:34px;min-width:34px;min-height:34px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:transparent;color:rgba(29,29,31,.86);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;padding:0}
+    html.dark .theme-toggle-nav,html.dark .menu-toggle-button,html.dark #search-toggle,html.dark #theme-toggle,html.dark #menu-btn{color:rgba(255,255,255,.94);border-color:rgba(255,255,255,.18)}
+    .menu-toggle-button,#menu-btn{display:none !important}
+    @media(max-width:1150px){.menu-toggle-button,#menu-btn{display:flex !important}}
+
+    /* Container */
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    .container-fluid{width:100%;padding:0 24px}
+
+    /* Profile ring placeholder */
+    .profile-ring{position:absolute;inset:-8px;border-radius:28%}
+
+    /* Vibe coder badge */
+    .vibe-coder-badge-wrapper{text-align:center;margin-top:.5rem}
+    .vibe-coder-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;border-radius:980px;font-size:.75rem;font-weight:600;letter-spacing:.02em}
+  </style>
 
   <!-- JSON-LD Structured Data for SEO -->
   <script type="application/ld+json">
@@ -72,56 +119,40 @@
   </script>
 
   <script>
-    // API Keys - Only OpenRouter is used (backend on Vercel)
-    // Note: OpenRouter API key is stored securely in Vercel environment variables
-    // Frontend doesn't need API keys - all calls go through Vercel backend
-    window.API_KEYS = Object.freeze({
-      OPENROUTER_API_KEY: '' // Not used in frontend - backend only
-    });
+    window.API_KEYS = Object.freeze({ OPENROUTER_API_KEY: '' });
   </script>
-  <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
-  <script>
-    (function () {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
-  <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
+
+  <!-- Critical render-path CSS - only what's needed for first paint -->
   <link rel="stylesheet" href="assets/css/tailwind-output.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/homepage.css" />
+
+  <!-- Deferred CSS - non-critical, loaded async -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print"
     onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   </noscript>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/global-improvements.css" />
-  <link rel="stylesheet" href="assets/css/sitewide-design-system.css" />
+  <link rel="stylesheet" href="assets/css/global-improvements.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/animations.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/typography-system.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/contact.css" media="print" onload="this.media='all'" />
-
-  <!-- Performance-Optimized Animations -->
-  <link rel="stylesheet" href="assets/css/animations.css" />
-
   <link rel="stylesheet" href="assets/css/publications.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/education.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/skills.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/certifications.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/homepage.css" />
   <link rel="stylesheet" href="assets/css/experience.css" media="print" onload="this.media='all'" />
-
   <link rel="stylesheet" href="assets/css/ai-assistant.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/ai-assistant-mobile.css" media="print" onload="this.media='all'" />
-
   <link rel="stylesheet" href="assets/css/about.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/blog.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" />
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css" />
   <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/recommendations.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/awards.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/typography-system.css" />
   <link rel="stylesheet" href="assets/css/game-section-fix.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/game-2026.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/premium-enhancements.css" media="print" onload="this.media='all'" />
@@ -722,7 +753,7 @@
                   <source media="(prefers-color-scheme: light)"
                     srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
                   <img src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github chart"
-                    class="github-graph-svg">
+                    class="github-graph-svg" width="722" height="112" loading="lazy" decoding="async">
                 </picture>
               </div>
             </div>
@@ -1372,7 +1403,7 @@
                   <div class="donation-compact-header">
                     <div class="ganesh-glow-container">
                       <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
-                        title="🕉️ Om Gan Ganapataye Namah">
+                        title="🕉️ Om Gan Ganapataye Namah" width="400" height="300" loading="lazy" decoding="async" fetchpriority="low">
                       <div class="glow-ring"></div>
                     </div>
                     <div class="donation-info">
@@ -1891,9 +1922,9 @@
 
     <script type="module" src="js/utils/smart-navbar.js"></script>
     <script src="js/utils/theme.js"></script>
-    <script src="js/utils/go-to-top.js"></script>
+    <script src="js/utils/go-to-top.js" defer></script>
     <script type="module" src="js/core/bootstrap.js"></script>
-    <script src="js/modules/scroll-animations.js"></script>
+    <script src="js/modules/scroll-animations.js" defer></script>
 </body>
 
 </html>

@@ -19,9 +19,9 @@
   ExpiresByType image/x-icon "access plus 1 year"
   
   # CSS and JavaScript
-  ExpiresByType text/css "access plus 5 minutes"
-  ExpiresByType application/javascript "access plus 5 minutes"
-  ExpiresByType text/javascript "access plus 5 minutes"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
   
   # Fonts
   ExpiresByType font/woff2 "access plus 1 year"
@@ -40,7 +40,7 @@
 <IfModule mod_headers.c>
   # CSS and JS
   <FilesMatch "\.(css|js)$">
-    Header set Cache-Control "public, max-age=300, must-revalidate"
+    Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
   
   # Images

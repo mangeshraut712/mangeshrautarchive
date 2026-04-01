@@ -5416,3 +5416,22 @@ html.dark .debug-instruction-card:hover {
     z-index: 10001 !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENT VISIBILITY - Skip rendering off-screen sections
+   Massive performance improvement for mobile PageSpeed
+   ═══════════════════════════════════════════════════════════ */
+#about,
+#experience,
+#education,
+#skills,
+#publications,
+#certifications,
+#recommendations,
+#awards,
+#blog,
+#contact,
+#debug-runner-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
