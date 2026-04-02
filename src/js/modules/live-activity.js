@@ -12,6 +12,15 @@
   const REFRESH_INTERVAL_MS = 10000;
   const REQUEST_TIMEOUT_MS = 8000;
 
+  function normalizeHash(value) {
+    return String(value || '').replace(/^#/, '').trim().toLowerCase();
+  }
+
+  function isHomeSectionActive() {
+    const hash = normalizeHash(window.location.hash);
+    return hash === '' || hash === 'home';
+  }
+
   function formatCount(value) {
     const number = Number(value);
     if (!Number.isFinite(number)) return '--';
@@ -34,8 +43,8 @@
     return isSelfHostedOrigin ? '' : VERCEL_BACKEND;
   }
 
-  function buildViewsUrl(mode) {
-    return `${resolveApiBase()}${VIEWS_ENDPOINT}?mode=${encodeURIComponent(mode)}`;
+  function buildViewsUrl(mode, page = 'home') {
+    return `${resolveApiBase()}${VIEWS_ENDPOINT}?mode=${encodeURIComponent(mode)}&page=${encodeURIComponent(page)}`;
   }
 
   function updateHeroViewCount(payload) {
@@ -44,6 +53,10 @@
 
     viewCountEl.textContent = formatCount(payload?.count);
     viewCountEl.classList.remove('loading');
+  }
+
+  function isAbortLikeError(error) {
+    return error?.name === 'AbortError' || String(error?.message || '').includes('aborted');
   }
 
   function createPortfolioViewsStore() {
@@ -75,9 +88,10 @@
             controller.abort();
           }, REQUEST_TIMEOUT_MS)
         : null;
+      const page = isHomeSectionActive() ? 'home' : 'other';
 
       try {
-        const response = await fetch(buildViewsUrl(mode), {
+        const response = await fetch(buildViewsUrl(mode, page), {
           method: 'GET',
           headers: { Accept: 'application/json' },
           cache: 'no-store',
@@ -112,6 +126,10 @@
           return payload;
         })
         .catch(error => {
+          if (isAbortLikeError(error)) {
+            return snapshot;
+          }
+
           console.warn('[Portfolio Views]', error);
 
           if (!snapshot) {
@@ -131,7 +149,7 @@
       if (started) return;
       started = true;
 
-      const shouldIncrement = sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1';
+      const shouldIncrement = sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' && isHomeSectionActive();
       refresh({ increment: shouldIncrement });
 
       refreshTimerId = window.setInterval(() => {
@@ -147,6 +165,25 @@
       });
 
       window.addEventListener('focus', () => {
+        refresh();
+      });
+
+      window.addEventListener('hashchange', () => {
+        if (sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' && isHomeSectionActive()) {
+          refresh({ increment: true });
+          return;
+        }
+
+        refresh();
+      });
+
+      window.addEventListener('portfolio:sectionchange', event => {
+        const sectionId = normalizeHash(event.detail?.sectionId);
+        if (sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' && (sectionId === '' || sectionId === 'home')) {
+          refresh({ increment: true });
+          return;
+        }
+
         refresh();
       });
     }

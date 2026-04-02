@@ -500,15 +500,19 @@
                 
                 <div class="spotify-content">
                   <div class="spotify-status-row">
+                    <span class="spotify-source-info">
+                       <i id="spotify-source-icon" class="fab fa-spotify"></i>
+                       <span id="spotify-source-name">Spotify</span>
+                    </span>
                     <span id="spotify-status-dot" class="status-dot"></span>
-                    <span id="spotify-status-pill" class="status-text">Last played</span>
+                    <span id="spotify-status-pill" class="status-text">Checking</span>
                   </div>
-                  <p id="spotify-song" class="spotify-song">Spotify</p>
-                  <p id="spotify-artist" class="spotify-artist">Spotify</p>
+                  <p id="spotify-song" class="spotify-song">Syncing listening</p>
+                  <p id="spotify-artist" class="spotify-artist"></p>
                 </div>
 
-                <a id="spotify-link" href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" class="spotify-brand">
-                   <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify" width="24" height="24" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));" />
+                <a id="spotify-link" href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" class="spotify-brand" aria-label="Open track">
+                   <i class="fas fa-arrow-up-right-from-square"></i>
                 </a>
               </div>
             </div>
@@ -1498,7 +1502,7 @@
         </div>
       </div>
     </section>
-    <!-- Contact Section -->
+
     <!-- Blog Section -->
     <section id="blog" class="fade-in py-32">
       <div class="container">
@@ -1519,6 +1523,7 @@
         </div>
       </div>
     </section>
+
     <section id="contact" class="fade-in py-32">
       <div class="container">
         <h2>Get In Touch</h2>
@@ -1605,66 +1610,188 @@
                 <h3>Dream Companies</h3>
                 <div class="dream-companies-marquee">
                   <div class="dream-companies-track">
-                    <div class="dream-company-item"><img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/google.svg" alt="Google" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo"></div>
-                    <!-- Duplicates for seamless loop -->
-                    <div class="dream-company-item"><img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/google.svg" alt="Google" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo"></div>
-                    <div class="dream-company-item"><img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo"></div>
+                    <div class="dream-company-item" title="Apple">
+                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Google">
+                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Microsoft">
+                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Amazon">
+                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Meta">
+                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Tesla">
+                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Netflix">
+                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Adobe">
+                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <!-- Duplicate set for seamless scroll -->
+                    <div class="dream-company-item" title="Apple">
+                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Google">
+                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Microsoft">
+                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Amazon">
+                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Meta">
+                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Tesla">
+                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Netflix">
+                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-company-item" title="Adobe">
+                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
+                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
                   </div>
                 </div>
               </div>
 
-            <!-- Card 5: Dream Cars -->
-            <div class="contact-section dream-cars-card">
-              <h3>Dream Cars</h3>
-              <div class="dream-cars-track-wrapper">
-                <div class="dream-cars-track">
-                  <div class="dream-car-item"><img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="120"></div>
-                  <!-- Duplicates -->
-                  <div class="dream-car-item"><img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120"></div>
-                  <div class="dream-car-item"><img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="120"></div>
+              <!-- Dream Cars -->
+              <div class="contact-section">
+                <h3>Dream Cars</h3>
+                <div class="dream-cars-marquee">
+                  <div class="dream-cars-track">
+                    <!-- First set -->
+                    <div class="dream-car-item" title="Mercedes-Benz">
+                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="BMW">
+                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Audi">
+                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Rolls-Royce">
+                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Porsche">
+                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Lexus">
+                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Land Rover">
+                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Bentley">
+                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Jaguar">
+                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Aston Martin">
+                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
+                        height="85" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <!-- Duplicate set for seamless scroll -->
+                    <div class="dream-car-item" title="Mercedes-Benz">
+                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="BMW">
+                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Audi">
+                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Rolls-Royce">
+                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Porsche">
+                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Lexus">
+                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Land Rover">
+                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
+                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Bentley">
+                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Jaguar">
+                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
+                        loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                    <div class="dream-car-item" title="Aston Martin">
+                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
+                        height="85" loading="lazy" decoding="async" fetchpriority="low">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Column 2: Right Side (Action Column) -->
-          <div class="contact-column right-side" style="display: flex; flex-direction: column; gap: 24px;">
-            <!-- Let's Talk Card -->
-            <div class="contact-card contact-assistme-card" style="margin-bottom: 0 !important;">
-              <div class="icon-box blue contact-assistme-icon"><i class="fas fa-robot"></i></div>
+          <!-- Column 2: Send a Message + Calendar (Two Separate Cards) -->
+          <div class="contact-column">
+            <!-- Contact via AssistMe Card -->
+            <div class="contact-card contact-assistme-card">
+              <div class="icon-box blue contact-assistme-icon">
+                <i class="fas fa-robot"></i>
+              </div>
               <h3>Let's Talk!</h3>
-              <p class="contact-description">Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.</p>
-              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn"><i class="fas fa-message"></i> Open AssistMe Flow</button>
+              <p class="contact-description">
+                Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
+              </p>
+              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
+                <i class="fas fa-message"></i>
+                Open AssistMe Flow
+              </button>
+              <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
             </div>
 
-            <!-- Calendar Widget -->
-            <div class="calendar-wrapper-clean" style="background: transparent !important; border: none !important;">
+            <!-- Calendar & Reminders Widget -->
+            <div class="calendar-wrapper-clean">
               <div id="calendar-widget"></div>
             </div>
           </div>
@@ -1762,43 +1889,61 @@
             <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
                 rel="noopener noreferrer" aria-label="Facebook">
                 <span class="tooltip">Facebook</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.951.925-1.951 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.951.925-1.951 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                  </path>
                 </svg>
               </a></li>
             <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
                 rel="noopener noreferrer" aria-label="Github">
                 <span class="tooltip">Github</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
                 </svg>
               </a></li>
             <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank"
                 rel="noopener noreferrer" aria-label="Instagram">
                 <span class="tooltip">Instagram</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 0C8.74 0 8.33.01 7.05.07C5.77.13 4.9.33 4.14.62c-.79.3-1.45.72-2.11 1.39c-.67.66-1.08 1.32-1.39 2.11c-.3.76-.5 1.63-.55 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.07 1.28.26 2.15.55 2.91c.3.79.72 1.45 1.39 2.11c.66.67 1.32 1.08 2.11 1.39c.76.3 1.63.5 2.91.55c1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.07 2.15-.26 2.91-.55c.79-.3 1.45-.72 2.11-1.39c.67-.66 1.08-1.32 1.39-2.11c.3-.76.5-1.63.55-2.91c.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.07-1.28-.26-2.15-.55-2.91c-.3-.79-.72-1.45-1.39-2.11c-.66-.67-1.32-1.08-2.11-1.39c-.76-.3-1.63-.5-2.91-.55C15.67.01 15.26 0 12 0zm0 2.16c3.2 0 3.58.01 4.85.07c1.17.05 1.81.25 2.23.41c.56.22.96.48 1.38.9c.42.42.68.82.9 1.38c.16.42.36 1.06.41 2.23c.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.81-.41 2.23c-.22.56-.48.96-.9 1.38c-.42.42-.82.68-1.38.9c-.42.16-1.06.36-2.23.41c-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.81-.25-2.23-.41c-.56-.22-.96-.48-1.38-.9c-.42-.42-.68-.82-.9-1.38c-.16-.42-.36-1.06-.41-2.23c-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.81.41-2.23c.22-.56.48-.96.9-1.38c.42-.42.82-.68 1.38-.9c.42-.16 1.06-.36 2.23-.41c1.27-.06 1.65-.07 4.85-.07zM12 5.83a6.17 6.17 0 1 0 0 12.34a6.17 6.17 0 0 0 0-12.34zM12 16a3.83 3.83 0 1 1 0-7.66a3.83 3.83 0 0 1 0 7.66zm7.84-8.41a1.44 1.44 0 1 1-2.88 0a1.44 1.44 0 0 1 2.88 0z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
+                  </path>
                 </svg>
               </a></li>
-            <li class="icon linkedin"><a href="links/linkedin.html" target="_blank"
+            <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
                 rel="noopener noreferrer" aria-label="Linkedin">
                 <span class="tooltip">Linkedin</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                  <path d="M8 11l0 5" />
+                  <path d="M8 8l0 .01" />
+                  <path d="M12 16l0 -5" />
+                  <path d="M16 16v-3a2 2 0 0 0 -4 0" />
                 </svg>
               </a></li>
             <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank"
                 rel="noopener noreferrer" aria-label="YouTube">
                 <span class="tooltip">YouTube</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512">
+                  <path
+                    d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
                 </svg>
               </a></li>
             <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"
                 aria-label="X">
                 <span class="tooltip">X</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
                 </svg>
               </a></li>
             <li class="icon leetcode"><a href="links/leetcode.html" target="_blank"
@@ -1809,29 +1954,10 @@
                     d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
                 </svg>
               </a></li>
-            <li class="icon snapchat"><a href="https://snapchat.com/t/zCfsWY7e" target="_blank"
-                rel="noopener noreferrer" aria-label="Snapchat">
-                <span class="tooltip">Snapchat</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12.206.793c.99 0 4.347.276 5.93 3.821c.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51c.075.045.203.09.401.09c.3-.016.659-.12 1.033-.301a1 1 0 0 1 .464-.104c.182 0 .359.029.509.09c.45.149.734.479.734.838q.022.674-1.213 1.168c-.089.029-.209.075-.344.119c-.45.135-1.139.36-1.333.81c-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014c.255.044.435.27.42.509a.6.6 0 0 1-.045.225c-.24.569-1.273.988-3.146 1.271c-.059.091-.12.375-.164.57c-.029.179-.074.36-.134.553c-.076.271-.27.405-.555.405h-.03a3 3 0 0 1-.538-.074a6 6 0 0 0-1.273-.135c-.3 0-.599.015-.913.074c-.6.104-1.123.464-1.723.884c-.853.599-1.826 1.288-3.294 1.288s-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288c-.599-.42-1.107-.779-1.707-.884a7 7 0 0 0-.928-.074c-.54 0-.958.089-1.272.149a3 3 0 0 1-.54.074c-.374 0-.523-.224-.583-.42c-.061-.192-.09-.389-.135-.567c-.046-.181-.105-.494-.166-.57c-1.918-.222-2.95-.642-3.189-1.226a.6.6 0 0 1-.055-.225a.496.496.0 0 1 .42-.509c3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869c-.195-.434-.884-.658-1.332-.809a2 2 0 0 1-.346-.119c-1.107-.435-1.257-.93-1.197-1.273c.09-.479.674-.793 1.168-.793c.146 0 .27.029.383.074c.42.194.789.3 1.104.3c.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/>
-                </svg>
-              </a></li>
-            <li class="icon whatsapp"><a href="https://wa.me/917276819090" target="_blank"
-                rel="noopener noreferrer" aria-label="WhatsApp">
-                <span class="tooltip">WhatsApp</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.445 0 .081 5.363.079 11.969c0 2.112.551 4.171 1.597 5.983L0 24l6.163-1.617a11.831 11.831 0 005.883 1.564h.005c6.602 0 11.967-5.367 11.97-11.97a11.815 11.815 0 00-3.414-8.413"/>
-                </svg>
-              </a></li>
-            <li class="icon email"><a href="mailto:mbr63drexel@gmail.com" aria-label="Email">
-                <span class="tooltip">Email</span>
-                <svg viewBox="0 0 24 24" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-              </a></li>
           </ul>
         </div>
 
+        <!-- Copyright Below (Centered) -->
         <div class="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
           <p class="footer-copy text-sm">&copy; <span id="current-year"></span> Mangesh Raut. All rights
             reserved.</p>
@@ -1840,7 +1966,7 @@
     </footer>
 
     <!-- ═══════════════════════════════════════════════════════════
-         GO TO TOP BUTTON - New Feature
+         GO TO TOP BUTTON
          ═══════════════════════════════════════════════════════════ -->
     <button id="go-to-top" type="button" aria-label="Go to top" title="Go to top">
       <i class="fas fa-arrow-up"></i>
@@ -1849,27 +1975,21 @@
     <!-- ═══════════════════════════════════════════════════════════
          APPLE INTELLIGENCE CHATBOT
          ═══════════════════════════════════════════════════════════ -->
-
-    <!-- Chatbot Toggle Button -->
     <button id="chatbot-toggle" type="button" aria-label="Open AI Assistant">
       <i class="fas fa-message"></i>
     </button>
 
-    <!-- Chatbot Widget -->
     <div id="chatbot-widget" class="hidden" role="dialog" aria-label="Apple Intelligence chat window">
-      <!-- Header -->
       <div class="chatbot-header">
         <div class="chatbot-header-content">
           <h3 class="chatbot-title">AssistMe</h3>
           <p>Mangesh's AI Assistant</p>
         </div>
         <div class="chatbot-header-actions">
-          <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings"
-            title="Privacy &amp; Personal Intelligence Settings" id="chatbot-privacy-btn">
+          <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings" title="Privacy &amp; Personal Intelligence Settings" id="chatbot-privacy-btn">
             <i class="fas fa-shield-alt"></i>
           </button>
-          <button class="chatbot-settings-btn" aria-label="Clear chat" title="Clear conversation"
-            id="chatbot-clear-btn">
+          <button class="chatbot-settings-btn" aria-label="Clear chat" title="Clear conversation" id="chatbot-clear-btn">
             <i class="fas fa-trash-alt"></i>
           </button>
           <button class="chatbot-close-btn" aria-label="Close chat">
@@ -1877,13 +1997,7 @@
           </button>
         </div>
       </div>
-
-      <!-- Messages Area -->
-      <div id="chatbot-messages" aria-live="polite">
-        <!-- Welcome message will be dynamically added by chatbot.js -->
-      </div>
-
-      <!-- Input Container -->
+      <div id="chatbot-messages" aria-live="polite"></div>
       <div class="chatbot-input-container">
         <form id="chatbot-form">
           <div class="input-wrapper">
@@ -1898,9 +2012,8 @@
         </form>
       </div>
     </div>
-    <!-- END CHATBOT -->
 
-    <!-- Critical JS modules -->
+    <!-- Scripts -->
     <script type="module" src="js/core/bootstrap.js"></script>
     <script src="js/utils/theme.js" defer></script>
     <script src="js/utils/go-to-top.js" defer></script>
@@ -1910,11 +2023,8 @@
     <script src="js/modules/curated-shelves.js?v=20260401-posters3" defer></script>
     <script src="js/modules/live-activity.js?v=20260401-compact2" defer></script>
 
-    <!-- Lazy load non-critical modules -->
     <script type="module">
-      // Lazy load modules when user interacts
       document.addEventListener('DOMContentLoaded', () => {
-        // Load AI assistant when user scrolls to it or clicks
         const aiSection = document.querySelector('#ai-assistant');
         if (aiSection) {
           const observer = new IntersectionObserver((entries) => {
@@ -1929,8 +2039,7 @@
           observer.observe(aiSection);
         }
 
-        // Load game when user scrolls to game section
-        const gameSection = document.querySelector('#game-section');
+        const gameSection = document.querySelector('#debug-runner-section');
         if (gameSection) {
           const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1943,7 +2052,6 @@
           observer.observe(gameSection);
         }
 
-        // Load other modules on user interaction
         document.addEventListener('click', () => {
           import('./js/modules/github-projects.js');
           import('./js/modules/skills-visualization.js');
@@ -1952,5 +2060,4 @@
       });
     </script>
 </body>
-
 </html>

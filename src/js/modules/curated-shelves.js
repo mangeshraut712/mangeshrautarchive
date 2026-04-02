@@ -94,6 +94,21 @@
       imageUrl: 'https://upload.wikimedia.org/wikipedia/en/e/e2/Queen_of_Tears_poster.png',
       fallbackGradient: 'linear-gradient(160deg, #db2777 0%, #831843 100%)',
     },
+    {
+      title: 'Taarak Mehta Ka Ooltah Chashmah',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/e/e2/Taarak_Mehta_Ka_Ooltah_Chashmah.jpg',
+      fallbackGradient: 'linear-gradient(160deg, #f59e0b 0%, #92400e 100%)',
+    },
+    {
+      title: 'CID',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/b/b5/CID_%28Indian_TV_series%29.png',
+      fallbackGradient: 'linear-gradient(160deg, #475569 0%, #111827 100%)',
+    },
+    {
+      title: 'Mahabharat',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/d/da/Mahabharat_2013_title.jpg',
+      fallbackGradient: 'linear-gradient(160deg, #d97706 0%, #7c2d12 100%)',
+    },
   ].map(item => ({
     ...item,
     actionText: 'Watch',
@@ -126,6 +141,10 @@
     {
       title: 'The Social Network',
       imageUrl: 'https://upload.wikimedia.org/wikipedia/en/8/8c/The_Social_Network_film_poster.png',
+    },
+    {
+      title: 'Dhurandhar',
+      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/c/ce/Dhurandhar_poster.jpg',
     },
   ].map(item => ({
     ...item,

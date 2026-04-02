@@ -37,8 +37,11 @@ app = FastAPI(
     redoc_url="/api/redoc",
 )
 
-# Add GZip compression for better performance
-app.add_middleware(GZipMiddleware, minimum_size=1000)
+IS_LOCAL_ENV = os.getenv("VERCEL_ENV", "local") == "local"
+
+# Add GZip compression outside local dev to avoid noisy disconnect tracebacks
+if not IS_LOCAL_ENV:
+    app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # CORS Configuration — explicit origins only (no wildcard with credentials)
 origins = [
@@ -1431,8 +1434,11 @@ async def get_github_profile(username: str = "mangeshraut712"):
             "ai_summary": github_connector.generate_github_summary_for_ai(activity),
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
+    except HTTPException:
+        raise
+    except Exception as error:
+        print(f"GitHub profile endpoint error: {error}")
+        raise HTTPException(status_code=502, detail="GitHub activity is temporarily unavailable")
 
 
 @app.get("/api/github/repos")
@@ -1463,8 +1469,9 @@ async def get_github_repos(
             "data": repos,
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
+    except Exception as error:
+        print(f"GitHub repos endpoint error: {error}")
+        raise HTTPException(status_code=502, detail="GitHub repository data is temporarily unavailable")
 
 
 @app.get("/api/memory/stats")

@@ -169,14 +169,14 @@ Retro-style arcade game built with vanilla JavaScript
 - **Custom Graphics:** Pixel art sprites with collision detection
 - **Progressive Enhancement:** Works offline with PWA capabilities
 
-### 📊 Live GitHub Integration
+### 📊 Live GitHub Activity & Projects
 
-Real-time project showcase with intelligent caching
+Real-time engineering momentum with a compact, Apple-inspired metrics grid.
 
-- **Auto-Sync:** Fetches latest repository data on each visit
-- **Smart Caching:** 10-minute server-side cache with optional PAT authentication
-- **Rich Metadata:** Stars, forks, languages, contribution graphs
-- **Search & Filter:** Advanced project discovery with language and topic filtering
+- **Engineering Momentum Grid:** Compact display of 6 key metrics (Repos, Stars, Forks, 30d Commits, Contributors, Languages).
+- **Auto-Sync Activity:** Real-time polling (5m interval) for latest GitHub events and contributions.
+- **Smart Caching:** 10-minute server-side cache with optional GitHub PAT authentication to bypass rate limits.
+- **Advanced Project Showcase:** Intelligent search and filtering across public repositories with rich metadata.
 
 ### 🎵 Live Listening Shelf
 
@@ -189,12 +189,12 @@ Apple-inspired compact media shelf with real artwork and live music fallbacks
 
 ### 🎨 Apple 2026 Design System
 
-Premium glassmorphism UI with hardware-accelerated animations
+Premium glassmorphism UI with hardware-accelerated animations and structural minimalism.
 
-- **Advanced Glassmorphism:** Multi-layer backdrop blur with dynamic opacity
-- **GPU Acceleration:** 100% composited transforms and transitions
-- **Adaptive Theming:** Automatic dark/light mode with system preference detection
-- **Magnetic Interactions:** Subtle hover effects with physics-based animations
+- **Advanced Glassmorphism:** Multi-layer backdrop blur with dynamic opacity and iOS-style "Apple Glass" effects.
+- **Structural Minimalism:** Consolidated Contact and Footer sections for a clutter-free, professional presentation.
+- **GPU Acceleration:** 100% composited transforms and transitions for buttery-smooth 120Hz scrolling.
+- **Adaptive Theming:** Automatic dark/light mode with system preference detection and OLED-black optimizations.
 
 ### 📱 Progressive Web App
 
@@ -600,6 +600,13 @@ A: The site prefers Spotify when backend credentials are configured. If Spotify 
 ---
 
 ## 📝 Changelog
+
+### v3.1.0 (2026-04-02)
+
+- 📊 **GitHub Activity Refactor**: Implemented a compact, 6-metric Apple-inspired engineering momentum grid.
+- 🧹 **Structural Cleanup**: Consolidated redundant contact and footer sections into a single, high-fidelity experience.
+- 🎵 **Music Reliability**: Fixed Spotify/Last.fm source switching and updated scrobble logic.
+- 🚀 **Performance Stability**: Refined asset loading and eliminated legacy CSS/JS overhead.
 
 ### v3.0.0 (2026-04-01)
 

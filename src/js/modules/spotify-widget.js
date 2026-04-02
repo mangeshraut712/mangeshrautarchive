@@ -1,207 +1,160 @@
 /**
- * Spotify Now Playing Widget (Live Activity integration)
- * Polls /api/spotify for real-time track data.
+ * Compact music card.
+ * Uses /api/profile/spotify, which may be backed by Spotify directly or Last.fm fallback.
+ * The frontend keeps Spotify branding in the UI and hides backend/provider details.
  */
-(function () {
+(function() {
   'use strict';
 
-  const POLL_INTERVAL = 15000; // poll every 15s
+  const MUSIC_ENDPOINT = '/api/profile/spotify';
+  const POLL_INTERVAL_MS = 15000;
+
   const card = document.getElementById('spotify-now-playing');
   if (!card) return;
-  const SPOTIFY_ENDPOINT = '/api/profile/spotify';
 
-  const songEl = document.getElementById('spotify-song');
-  const artistEl = document.getElementById('spotify-artist');
-  const albumEl = document.getElementById('spotify-album-art');
-  const statusEl = document.getElementById('spotify-status-pill');
-  const statusDotEl = document.getElementById('spotify-status-dot');
-  const spotifyLinkEl = document.getElementById('spotify-link');
-  const equalizerBars = card.querySelectorAll('.eq-bar');
+  const elements = {
+    sourceIcon: document.getElementById('spotify-source-icon'),
+    sourceName: document.getElementById('spotify-source-name'),
+    statusDot: document.getElementById('spotify-status-dot'),
+    statusText: document.getElementById('spotify-status-pill'),
+    albumArt: document.getElementById('spotify-album-art'),
+    song: document.getElementById('spotify-song'),
+    artist: document.getElementById('spotify-artist'),
+    link: document.getElementById('spotify-link'),
+    equalizerBars: Array.from(card.querySelectorAll('.eq-bar')),
+  };
 
   let pollTimer = null;
 
-  function setIdleEq() {
-    equalizerBars.forEach(bar => {
-      bar.classList.add('eq-bar--idle');
-      bar.classList.remove('eq-bar--spotify');
+  function setEqualizer(active) {
+    elements.equalizerBars.forEach(bar => {
+      bar.classList.toggle('eq-bar--spotify', active);
+      bar.classList.toggle('eq-bar--idle', !active);
     });
   }
 
-  function setActiveEq() {
-    equalizerBars.forEach(bar => {
-      bar.classList.remove('eq-bar--idle');
-      bar.classList.add('eq-bar--spotify');
-    });
+  function setStatusDot(active) {
+    if (!elements.statusDot) return;
+    elements.statusDot.style.backgroundColor = active ? '#1DB954' : '#86868b';
+    elements.statusDot.style.boxShadow = active ? '0 0 8px rgba(29, 185, 84, 0.35)' : 'none';
   }
 
-  function setStatusLabel(label) {
-    if (statusEl) {
-      statusEl.textContent = label;
+  function setSourcePresentation() {
+    if (elements.sourceName) {
+      elements.sourceName.textContent = 'Spotify';
+    }
+
+    if (elements.sourceIcon) {
+      elements.sourceIcon.className = 'fab fa-spotify';
+      elements.sourceIcon.style.color = '#1DB954';
     }
   }
 
-  function toggleFallbackLinks(showLinks) {
-    if (!providerLinksEl) return;
-    providerLinksEl.hidden = !showLinks;
-  }
+  function renderState({
+    title = 'Nothing playing',
+    artist = '',
+    status = 'Idle',
+    albumArt = 'assets/images/profile-icon.png',
+    trackUrl = 'https://open.spotify.com/',
+    active = false,
+  }) {
+    card.classList.toggle('is-playing', active);
+    card.classList.toggle('not-playing', !active);
 
-  function setSource(source) {
-    if (!sourceNameEl || !sourceIconEl) return;
+    setSourcePresentation();
+    setEqualizer(active);
+    setStatusDot(active);
 
-    if (source === 'lastfm') {
-      sourceNameEl.textContent = 'Music';
-      sourceIconEl.className = 'fas fa-music';
-      sourceIconEl.style.color = '#ff2d55';
-      card.setAttribute('aria-label', 'Music Now Playing');
-      return;
+    if (elements.song) {
+      elements.song.textContent = title;
     }
 
-    if (source === 'none' || source === 'idle') {
-      sourceNameEl.textContent = 'Music';
-      sourceIconEl.className = 'fas fa-compact-disc'; // Neutral disc icon
-      sourceIconEl.style.color = '#8e8e93';
-      card.setAttribute('aria-label', 'No music playing');
-      return;
+    if (elements.artist) {
+      elements.artist.textContent = artist;
     }
 
-    sourceNameEl.textContent = 'Spotify';
-    sourceIconEl.className = 'fab fa-spotify';
-    sourceIconEl.style.color = '#1DB954';
-    card.setAttribute('aria-label', 'Spotify Now Playing');
-  }
+    if (elements.statusText) {
+      elements.statusText.textContent = status;
+    }
 
-  function updateProviderTargets(track = null) {
-    if (!providerLinks || !providerLinks.spotify) return;
+    if (elements.albumArt) {
+      elements.albumArt.src = albumArt;
+      elements.albumArt.alt = title ? `${title} album art` : 'Album art';
+    }
 
-    const spotifyUrl = track?.songUrl || track?.trackUrl || 'https://open.spotify.com/';
-    providerLinks.spotify.href = spotifyUrl;
-  }
-
-
-  let lastPlayedData = null;
-
-  function setStatusColor(isActive) {
-    if (!statusDotEl) return;
-    if (isActive) {
-      statusDotEl.style.backgroundColor = '#1DB954'; // Spotify Green
-      statusDotEl.style.boxShadow = '0 0 8px rgba(29, 185, 84, 0.4)';
-    } else {
-      statusDotEl.style.backgroundColor = '#86868b'; // Apple Gray
-      statusDotEl.style.boxShadow = 'none';
+    if (elements.link) {
+      elements.link.href = trackUrl;
+      elements.link.title = 'Open track';
     }
   }
 
-  function setNotPlaying() {
-    card.classList.remove('is-playing');
-    card.classList.add('not-playing');
-    setIdleEq();
-    setStatusColor(false);
-    
-    // If we have previous data, stay in "Recently Played" state instead of "Nothing Playing"
-    if (lastPlayedData) {
-      setRecent(lastPlayedData);
-      return;
+  function normalizePayload(payload) {
+    if (!payload || payload.available !== true) {
+      return {
+        title: 'Nothing playing',
+        artist: '',
+        status: 'Connect a music source',
+        albumArt: 'assets/images/profile-icon.png',
+        trackUrl: 'https://open.spotify.com/',
+        active: false,
+      };
     }
 
-    if (songEl) songEl.textContent = 'Recently played';
-    if (artistEl) artistEl.textContent = 'Spotify';
-    if (albumEl) {
-      albumEl.src = 'assets/images/profile-icon.png';
-      albumEl.alt = 'Spotify';
-    }
-    if (spotifyLinkEl) spotifyLinkEl.href = 'https://open.spotify.com/';
-    setStatusLabel('Paused');
+    return {
+      title: payload.song || payload.title || 'Unknown track',
+      artist: payload.artist || '',
+      status: payload.statusLabel || (payload.isPlaying ? 'Now playing' : 'Recently played'),
+      albumArt: payload.albumArt || payload.albumArtUrl || 'assets/images/profile-icon.png',
+      trackUrl: payload.trackUrl || 'https://open.spotify.com/',
+      active: Boolean(payload.isPlaying),
+    };
   }
 
-  function setPlaying(data) {
-    card.classList.add('is-playing');
-    card.classList.remove('not-playing');
-    setActiveEq();
-    setStatusColor(true);
-    lastPlayedData = data; // Cache for later
-
-    if (songEl) songEl.textContent = data.song || 'Unknown Track';
-    if (artistEl) artistEl.textContent = data.artist || 'Unknown Artist';
-    if (albumEl && data.albumArt) {
-      albumEl.src = data.albumArt;
-      albumEl.alt = `${data.song} album art`;
-    }
-    if (spotifyLinkEl) spotifyLinkEl.href = data.trackUrl || 'https://open.spotify.com/';
-    setStatusLabel(data.statusLabel || 'Now playing');
-    if (data.source) setSource(data.source);
-  }
-
-  function setRecent(data) {
-    card.classList.remove('is-playing');
-    card.classList.add('not-playing');
-    setIdleEq();
-    setStatusColor(false);
-
-    if (songEl) songEl.textContent = data.song || data.title || 'Recently played';
-    if (artistEl) artistEl.textContent = data.artist || '';
-    if (albumEl) {
-      albumEl.src = data.albumArt || data.albumArtUrl || 'assets/images/profile-icon.png';
-      albumEl.alt = (data.song || data.title) ? `${data.song || data.title} album art` : '';
-    }
-    if (spotifyLinkEl) spotifyLinkEl.href = data.trackUrl || 'https://open.spotify.com/';
-    setStatusLabel(data.statusLabel || 'Recently played');
-    if (data.source) setSource(data.source);
-  }
-
-  async function fetchNowPlaying() {
+  async function fetchMusicState() {
     try {
-      const res = await fetch(SPOTIFY_ENDPOINT, { signal: AbortSignal.timeout(6000) });
-      if (!res.ok) { setNotPlaying(); return; }
-      const data = await res.json();
-      
-      if (data?.available && data?.isPlaying) {
-        const playingData = {
-          song: data.title,
-          artist: data.artist,
-          albumArt: data.albumArtUrl,
-          progress: null,
-          duration: null,
-          source: (data.statusLabel || '').toLowerCase().includes('last.fm') ? 'lastfm' : 'spotify',
-          trackUrl: data.trackUrl,
-        };
-        setPlaying(playingData);
-      } else if (data?.available && data?.title) {
-        setRecent({
-          ...data,
-          source: (data.statusLabel || '').toLowerCase().includes('last.fm') ? 'lastfm' : 'spotify',
-        });
-      } else {
-        setNotPlaying();
+      const response = await fetch(MUSIC_ENDPOINT, {
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+        signal: AbortSignal.timeout(6000),
+      });
+
+      if (!response.ok) {
+        renderState(normalizePayload(null));
+        return;
       }
+
+      const payload = await response.json();
+      renderState(normalizePayload(payload));
     } catch {
-      setNotPlaying();
+      renderState(normalizePayload(null));
     }
   }
 
-  // Prime immediately so the card is populated on first load.
-  fetchNowPlaying();
-
-  // Start polling when widget enters viewport
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        fetchNowPlaying();
-        pollTimer = setInterval(fetchNowPlaying, POLL_INTERVAL);
-      } else {
-        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  function startPolling() {
+    if (pollTimer) return;
+    pollTimer = window.setInterval(() => {
+      if (!document.hidden) {
+        fetchMusicState();
       }
-    });
-  }, { threshold: 0.1 });
+    }, POLL_INTERVAL_MS);
+  }
 
-  io.observe(card);
+  function stopPolling() {
+    if (!pollTimer) return;
+    window.clearInterval(pollTimer);
+    pollTimer = null;
+  }
 
-  // Cleanup on page hide
+  fetchMusicState();
+  startPolling();
+
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-    } else {
-      fetchNowPlaying();
-      pollTimer = setInterval(fetchNowPlaying, POLL_INTERVAL);
+      stopPolling();
+      return;
     }
+
+    fetchMusicState();
+    startPolling();
   });
 })();

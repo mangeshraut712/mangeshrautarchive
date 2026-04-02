@@ -74,7 +74,7 @@ async function main() {
   const backend = spawnProcess(
     'backend',
     'zsh',
-    ['-lc', `uvicorn api.index:app --reload --port ${backendPort}`]
+    ['-lc', `uvicorn api.index:app --reload --port ${backendPort} --no-access-log`]
   );
 
   const frontend = spawnProcess(

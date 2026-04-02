@@ -155,6 +155,62 @@ function initOnDemandModules() {
   bindSearchShortcutLoader(searchLoader);
 }
 
+function initHashNavigationStabilizer(root = document) {
+  if (root.body?.dataset.hashNavStabilizerBound === 'true') return;
+  if (root.body) {
+    root.body.dataset.hashNavStabilizerBound = 'true';
+  }
+
+  let pendingTimers = [];
+
+  const clearPendingTimers = () => {
+    pendingTimers.forEach(timerId => {
+      window.clearTimeout(timerId);
+    });
+    pendingTimers = [];
+  };
+
+  const alignToHash = hashValue => {
+    const sectionId = String(hashValue || '').replace('#', '').trim();
+    if (!sectionId) return;
+
+    const section = root.getElementById(sectionId);
+    const nav = root.querySelector('.global-nav');
+    if (!section || !nav) return;
+
+    const navOffset = (nav.offsetHeight || 60) + 12;
+    const targetTop = Math.max(0, section.getBoundingClientRect().top + window.scrollY - navOffset);
+
+    if (Math.abs(window.scrollY - targetTop) > 18) {
+      window.scrollTo({ top: targetTop, behavior: 'auto' });
+    }
+  };
+
+  const scheduleAlignment = hashValue => {
+    clearPendingTimers();
+
+    [0, 180, 700, 1400, 2400].forEach(delay => {
+      const timerId = window.setTimeout(() => {
+        alignToHash(hashValue);
+      }, delay);
+
+      pendingTimers.push(timerId);
+    });
+  };
+
+  window.addEventListener('hashchange', () => {
+    scheduleAlignment(window.location.hash);
+  });
+
+  window.addEventListener('portfolio:sectionchange', event => {
+    scheduleAlignment(`#${event.detail?.sectionId || ''}`);
+  });
+
+  if (window.location.hash) {
+    scheduleAlignment(window.location.hash);
+  }
+}
+
 function runWhenIdle(callback, timeout = 1500) {
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(() => callback(), { timeout });
@@ -361,6 +417,7 @@ function initServiceWorker() {
 async function initBootstrap() {
   initFooterYear();
   initGlobalErrorHandlers();
+  initHashNavigationStabilizer();
   initOverlayMenu();
   initOverlayNavigation();
   initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');

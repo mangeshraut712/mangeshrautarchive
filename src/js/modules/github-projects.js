@@ -386,10 +386,11 @@
   async fetchJson(t, e = {}) {
     const a = this.buildGitHubProxyUrl(t);
     if (a)
-      try {
-        const t = await fetch(a, { headers: { Accept: 'application/json' } });
-        if (t.ok) return await t.json();
-      } catch {}
+      for (let s = 0; s < 2; s += 1)
+        try {
+          const s = await fetch(a, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+          if (s.ok) return await s.json();
+        } catch {}
     try {
       const a = await fetch(t, { headers: e });
       return a.ok ? await a.json() : null;
@@ -406,10 +407,11 @@
         return { ok: a.ok, status: a.status, link: s, data: r };
       };
     if (a)
-      try {
-        const t = await s(a);
-        if (t.ok || 404 === t.status) return t;
-      } catch {}
+      for (let t = 0; t < 2; t += 1)
+        try {
+          const t = await s(a);
+          if (t.ok || 404 === t.status) return t;
+        } catch {}
     try {
       return await s(t);
     } catch {

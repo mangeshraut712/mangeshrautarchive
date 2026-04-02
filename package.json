@@ -5,7 +5,7 @@
     "build:css": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./src/assets/css/tailwind-output.css --minify",
     "dev": "node scripts/dev.js",
     "dev:frontend": "node scripts/local-server.js",
-    "dev:backend": "uvicorn api.index:app --reload --port 8000",
+    "dev:backend": "uvicorn api.index:app --reload --port 8000 --no-access-log",
     "security-check": "node scripts/security-check.js",
     "check-secrets": "npm run security-check",
     "optimize-images": "node scripts/optimize-images.js",

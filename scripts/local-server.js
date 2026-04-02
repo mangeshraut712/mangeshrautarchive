@@ -1,9 +1,8 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
+import { Readable } from 'stream';
 import dotenv from 'dotenv';
-
-// Load environment variables from .env file into process.env
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,28 +11,89 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = Number.parseInt(process.env.PORT || '3000', 10);
 const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8000';
-
-// Get the project root directory
 const projectRoot = resolve(__dirname, '..');
 
-// Middleware to parse JSON bodies, which is needed for our API
-app.use(express.json());
+app.disable('x-powered-by');
+app.disable('etag');
 
-import { createProxyMiddleware } from 'http-proxy-middleware';
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-// Proxy API requests to Python backend
-app.use(
-  '/api',
-  createProxyMiddleware({
-    target: apiTarget,
-    changeOrigin: true,
-    pathRewrite: path => (path.startsWith('/api') ? path : `/api${path}`),
-  })
-);
+function buildProxyHeaders(req) {
+  const headers = new Headers();
+
+  Object.entries(req.headers).forEach(([key, value]) => {
+    if (!value) return;
+    if (['host', 'connection', 'content-length'].includes(key.toLowerCase())) return;
+
+    if (Array.isArray(value)) {
+      value.forEach(item => headers.append(key, item));
+      return;
+    }
+
+    headers.set(key, value);
+  });
+
+  return headers;
+}
+
+function buildProxyBody(req) {
+  if (['GET', 'HEAD'].includes(req.method)) {
+    return undefined;
+  }
+
+  if (req.body == null) {
+    return undefined;
+  }
+
+  const contentType = String(req.headers['content-type'] || '');
+  if (contentType.includes('application/json')) {
+    return JSON.stringify(req.body);
+  }
+
+  if (contentType.includes('application/x-www-form-urlencoded')) {
+    return new URLSearchParams(req.body).toString();
+  }
+
+  return typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+}
+
+app.use('/api', async (req, res) => {
+  const targetUrl = new URL(req.originalUrl, apiTarget);
+
+  try {
+    const upstream = await fetch(targetUrl, {
+      method: req.method,
+      headers: buildProxyHeaders(req),
+      body: buildProxyBody(req),
+      redirect: 'manual',
+    });
+
+    res.status(upstream.status);
+
+    upstream.headers.forEach((value, key) => {
+      if (['content-encoding', 'transfer-encoding', 'connection'].includes(key.toLowerCase())) {
+        return;
+      }
+      res.setHeader(key, value);
+    });
+
+    if (!upstream.body) {
+      res.end();
+      return;
+    }
+
+    Readable.fromWeb(upstream.body).pipe(res);
+  } catch (error) {
+    res.status(502).json({
+      success: false,
+      detail: `Proxy request failed: ${error.message}`,
+    });
+  }
+});
 
 // Cache-busting middleware for development
 app.use((req, res, next) => {
-  // Disable caching for all requests in development
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -43,11 +103,19 @@ app.use((req, res, next) => {
 
 // Serve static files from the 'src' directory
 const staticPath = join(projectRoot, 'src');
-app.use(express.static(staticPath));
+app.use(express.static(staticPath, {
+  etag: false,
+  lastModified: false,
+  cacheControl: false,
+}));
 
 // Serve chatbot assets so linked styles/scripts resolve correctly
 const chatbotPath = join(projectRoot, 'chatbot');
-app.use('/chatbot', express.static(chatbotPath));
+app.use('/chatbot', express.static(chatbotPath, {
+  etag: false,
+  lastModified: false,
+  cacheControl: false,
+}));
 
 app.listen(port, () => {
   console.log(`\n🚀 Local development server running!`);
