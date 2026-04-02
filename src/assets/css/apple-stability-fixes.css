@@ -1416,6 +1416,21 @@ html.dark .wrapper .icon {
 }
 
 /* 5. CONTACT SECTION STABILIZATION (EXPRESS REFINEMENT) */
+#contact .contact-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  align-items: start !important;
+  margin-top: 2rem !important;
+}
+
+@media (min-width: 1024px) {
+  #contact .contact-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr) !important;
+  }
+}
+
 .contact-grid {
   display: flex !important;
   flex-direction: column !important;
@@ -2205,11 +2220,18 @@ html.dark #contact .contact-social-wrapper .icon a {
 
 /* CONTACT + FOOTER RESTORE LAYER */
 #contact .contact-grid {
-  display: grid !important;
-  grid-template-columns: 1.2fr 0.8fr !important;
-  gap: 32px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
   align-items: start !important;
   margin-top: 2rem !important;
+}
+
+@media (min-width: 1024px) {
+  #contact .contact-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr) !important;
+  }
 }
 
 #contact .contact-column.left-side,
