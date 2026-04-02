@@ -1,0 +1,1133 @@
+- generic [active] [ref=e1]:
+  - navigation "Skip links":
+    - link "Skip to main content" [ref=e2] [cursor=pointer]:
+      - /url: "#main-content"
+    - link "Skip to navigation" [ref=e3] [cursor=pointer]:
+      - /url: "#global-nav"
+    - link "Skip to contact" [ref=e4] [cursor=pointer]:
+      - /url: "#contact"
+  - text:  
+  - navigation "Primary navigation" [ref=e5]:
+    - generic [ref=e6]:
+      - link "Mangesh Raut home" [ref=e8] [cursor=pointer]:
+        - /url: "#home"
+        - img "Mangesh Raut" [ref=e9]
+      - menubar "Primary sections" [ref=e10]:
+        - menuitem "Home" [ref=e11] [cursor=pointer]
+        - menuitem "About" [ref=e12] [cursor=pointer]
+        - menuitem "Skills" [ref=e13] [cursor=pointer]
+        - menuitem "Experience" [ref=e14] [cursor=pointer]
+        - menuitem "Projects" [ref=e15] [cursor=pointer]
+        - menuitem "Education" [ref=e16] [cursor=pointer]
+        - menuitem "Publications" [ref=e17] [cursor=pointer]
+        - menuitem "Awards" [ref=e18] [cursor=pointer]
+        - menuitem "Recommendations" [ref=e19] [cursor=pointer]
+        - menuitem "Certifications" [ref=e20] [cursor=pointer]
+        - menuitem "Blogs" [ref=e21] [cursor=pointer]
+        - menuitem "Contact" [ref=e22] [cursor=pointer]
+        - menuitem "Game" [ref=e23] [cursor=pointer]
+      - generic [ref=e24]:
+        - button "Search" [ref=e25] [cursor=pointer]:
+          - generic: 
+        - button "Toggle theme" [ref=e26] [cursor=pointer]:
+          - generic: 
+          - generic [ref=e27]: Toggle theme
+        - text: 
+  - button [ref=e28] [cursor=pointer]:
+    - generic: 
+  - main [ref=e29]:
+    - generic [ref=e33]:
+      - img "Mangesh Raut" [ref=e37]
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "Mangesh Raut" [level=2] [ref=e41]
+          - heading "Software Development Engineer" [level=1] [ref=e42]
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - generic [ref=e45]: 
+              - text: Vibe Coder
+            - generic "Total profile views" [ref=e46]:
+              - img [ref=e47]
+              - generic [ref=e50]: "45"
+        - paragraph [ref=e52]: Building scalable, production-ready software that solves real business problems. Focused on clean architecture, strong performance, and seamless user experience.
+        - generic [ref=e54]:
+          - link "Download Resume" [ref=e55] [cursor=pointer]:
+            - /url: assets/files/Mangesh_Raut_Resume.pdf
+            - generic [ref=e56]: 
+            - text: Download Resume
+          - link "View Projects" [ref=e57] [cursor=pointer]:
+            - /url: "#projects"
+            - generic [ref=e58]: 
+            - text: View Projects
+    - generic [ref=e60]:
+      - heading "About Me" [level=2] [ref=e61]
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - img "Mangesh Raut Graduation" [ref=e67]
+              - generic [ref=e68]:
+                - generic [ref=e69]: 
+                - generic [ref=e70]: MS in Computer Science
+            - generic "Music Now Playing" [ref=e71]:
+              - img "Didi (Sher-E-Baloch) album art" [ref=e73]
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - generic [ref=e76]:
+                    - generic [ref=e77]: 
+                    - generic [ref=e78]: Spotify
+                  - generic [ref=e80]: Recently played
+                - paragraph [ref=e81]: Didi (Sher-E-Baloch)
+                - paragraph [ref=e82]: Shashwat Sachdev
+              - link "Open track" [ref=e83] [cursor=pointer]:
+                - /url: https://www.last.fm/music/Shashwat+Sachdev/_/Didi+(Sher-E-Baloch)
+                - generic [ref=e84]: 
+          - generic [ref=e85]:
+            - generic [ref=e86]: Software Engineer
+            - heading "Hello! I'm Mangesh Raut" [level=3] [ref=e87]
+            - paragraph [ref=e88]:
+              - text: A passionate
+              - strong [ref=e89]: Software Engineer
+              - text: with 5+ years of experience in building scalable, high-performance applications. I specialize in
+              - strong [ref=e90]: full-stack development
+              - text: ","
+              - strong [ref=e91]: cloud technologies
+              - text: ", and"
+              - strong [ref=e92]: machine learning
+              - text: .
+            - paragraph [ref=e93]:
+              - text: Currently enhancing energy analytics tools at
+              - strong [ref=e94]: Customized Energy Solutions
+              - text: ", where I've achieved a 40% efficiency gain through innovative solutions. My journey includes optimizing legacy systems, deploying cloud infrastructure, and implementing AI-driven features that deliver real business value."
+            - paragraph [ref=e95]: I'm driven by the challenge of solving complex problems and creating software that makes a difference. Whether it's reducing latency, improving code quality, or implementing cutting-edge ML models, I bring dedication and technical excellence to every project.
+        - generic [ref=e96]:
+          - heading "Currently" [level=3] [ref=e97]: Currently
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - generic [ref=e102]:
+                - generic [ref=e103]: 
+                - text: Reading
+              - generic "Scroll horizontally" [ref=e104]:
+                - article [ref=e105]:
+                  - generic [ref=e106]:
+                    - img "Atomic Habits cover" [ref=e107]
+                    - generic:
+                      - generic: Atomic Habits
+                      - generic: James Clear
+                  - generic [ref=e108]:
+                    - paragraph [ref=e109]: Atomic Habits
+                    - paragraph [ref=e110]: James Clear
+                  - link " Read" [ref=e112] [cursor=pointer]:
+                    - /url: https://books.apple.com/us/book/atomic-habits/id1384286945
+                    - generic [ref=e113]: 
+                    - generic [ref=e114]: Read
+                - article [ref=e115]:
+                  - generic [ref=e116]:
+                    - img "Steve Jobs cover" [ref=e117]
+                    - generic:
+                      - generic: Steve Jobs
+                      - generic: Walter Isaacson
+                  - generic [ref=e118]:
+                    - paragraph [ref=e119]: Steve Jobs
+                    - paragraph [ref=e120]: Walter Isaacson
+                  - link " Read" [ref=e122] [cursor=pointer]:
+                    - /url: https://books.apple.com/us/book/steve-jobs/id431617578
+                    - generic [ref=e123]: 
+                    - generic [ref=e124]: Read
+                - article [ref=e125]:
+                  - generic [ref=e126]:
+                    - img "The Bhagavad Gita cover" [ref=e127]
+                    - generic:
+                      - generic: The Bhagavad Gita
+                      - generic: Eknath Easwaran
+                  - generic [ref=e128]:
+                    - paragraph [ref=e129]: The Bhagavad Gita
+                    - paragraph [ref=e130]: Eknath Easwaran
+                  - link " Read" [ref=e132] [cursor=pointer]:
+                    - /url: https://books.apple.com/us/book/the-bhagavad-gita/id457383796
+                    - generic [ref=e133]: 
+                    - generic [ref=e134]: Read
+                - article [ref=e135]:
+                  - generic [ref=e136]:
+                    - img "Harry Potter and the Deathly Hallows cover" [ref=e137]
+                    - generic:
+                      - generic: Harry Potter and the Deathly Hallows
+                      - generic: J.K. Rowling
+                  - generic [ref=e138]:
+                    - paragraph [ref=e139]: Harry Potter and the Deathly Hallows
+                    - paragraph [ref=e140]: J.K. Rowling
+                  - link " Read" [ref=e142] [cursor=pointer]:
+                    - /url: https://books.apple.com/us/book/harry-potter-and-the-deathly-hallows/id416550722
+                    - generic [ref=e143]: 
+                    - generic [ref=e144]: Read
+                - article [ref=e145]:
+                  - generic [ref=e146]:
+                    - img "The Bible cover" [ref=e147]
+                    - generic:
+                      - generic: The Bible
+                      - generic: Various
+                  - generic [ref=e148]:
+                    - paragraph [ref=e149]: The Bible
+                    - paragraph [ref=e150]: Various
+                  - link " Read" [ref=e152] [cursor=pointer]:
+                    - /url: https://books.apple.com/us/book/the-holy-bible-king-james-version/id360172600
+                    - generic [ref=e153]: 
+                    - generic [ref=e154]: Read
+            - generic [ref=e155]:
+              - generic [ref=e157]:
+                - generic [ref=e158]: 
+                - text: Series
+              - generic "Scroll horizontally" [ref=e159]:
+                - article [ref=e160]:
+                  - generic [ref=e161]:
+                    - img "From cover" [ref=e162]
+                    - generic:
+                      - generic: From
+                  - paragraph [ref=e164]: From
+                  - link " Watch" [ref=e166] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=From
+                    - generic [ref=e167]: 
+                    - generic [ref=e168]: Watch
+                - article [ref=e169]:
+                  - generic [ref=e170]:
+                    - img "Narcos cover" [ref=e171]
+                    - generic:
+                      - generic: Narcos
+                  - paragraph [ref=e173]: Narcos
+                  - link " Watch" [ref=e175] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Narcos
+                    - generic [ref=e176]: 
+                    - generic [ref=e177]: Watch
+                - article [ref=e178]:
+                  - generic [ref=e179]:
+                    - img "Crash Landing on You cover" [ref=e180]
+                    - generic:
+                      - generic: Crash Landing on You
+                  - paragraph [ref=e182]: Crash Landing on You
+                  - link " Watch" [ref=e184] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Crash%20Landing%20on%20You
+                    - generic [ref=e185]: 
+                    - generic [ref=e186]: Watch
+                - article [ref=e187]:
+                  - generic [ref=e188]:
+                    - img "Money Heist cover" [ref=e189]
+                    - generic:
+                      - generic: Money Heist
+                  - paragraph [ref=e191]: Money Heist
+                  - link " Watch" [ref=e193] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Money%20Heist
+                    - generic [ref=e194]: 
+                    - generic [ref=e195]: Watch
+                - article [ref=e196]:
+                  - generic [ref=e197]:
+                    - img "Scam 1992 cover" [ref=e198]
+                    - generic:
+                      - generic: Scam 1992
+                  - paragraph [ref=e200]: Scam 1992
+                  - link " Watch" [ref=e202] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Scam%201992
+                    - generic [ref=e203]: 
+                    - generic [ref=e204]: Watch
+                - article [ref=e205]:
+                  - generic [ref=e206]:
+                    - img "Stranger Things cover" [ref=e207]
+                    - generic:
+                      - generic: Stranger Things
+                  - paragraph [ref=e209]: Stranger Things
+                  - link " Watch" [ref=e211] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Stranger%20Things
+                    - generic [ref=e212]: 
+                    - generic [ref=e213]: Watch
+                - article [ref=e214]:
+                  - generic [ref=e215]:
+                    - img "Queen of Tears cover" [ref=e216]
+                    - generic [ref=e218]: Queen of Tears
+                  - paragraph [ref=e220]: Queen of Tears
+                  - link " Watch" [ref=e222] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Queen%20of%20Tears
+                    - generic [ref=e223]: 
+                    - generic [ref=e224]: Watch
+                - article [ref=e225]:
+                  - generic [ref=e226]:
+                    - img "Taarak Mehta Ka Ooltah Chashmah cover" [ref=e227]
+                    - generic [ref=e229]: Taarak Mehta Ka Ooltah Chashmah
+                  - paragraph [ref=e231]: Taarak Mehta Ka Ooltah Chashmah
+                  - link " Watch" [ref=e233] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Taarak%20Mehta%20Ka%20Ooltah%20Chashmah
+                    - generic [ref=e234]: 
+                    - generic [ref=e235]: Watch
+                - article [ref=e236]:
+                  - generic [ref=e237]:
+                    - img "CID cover" [ref=e238]
+                    - generic [ref=e240]: CID
+                  - paragraph [ref=e242]: CID
+                  - link " Watch" [ref=e244] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=CID
+                    - generic [ref=e245]: 
+                    - generic [ref=e246]: Watch
+                - article [ref=e247]:
+                  - generic [ref=e248]:
+                    - img "Mahabharat cover" [ref=e249]
+                    - generic [ref=e251]: Mahabharat
+                  - paragraph [ref=e253]: Mahabharat
+                  - link " Watch" [ref=e255] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Mahabharat
+                    - generic [ref=e256]: 
+                    - generic [ref=e257]: Watch
+            - generic [ref=e258]:
+              - generic [ref=e260]:
+                - generic [ref=e261]: 
+                - text: Movies
+              - generic "Scroll horizontally" [ref=e262]:
+                - article [ref=e263]:
+                  - generic [ref=e264]:
+                    - img "F1 cover" [ref=e265]
+                    - generic:
+                      - generic: F1
+                  - paragraph [ref=e267]: F1
+                  - link " Watch" [ref=e269] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=F1
+                    - generic [ref=e270]: 
+                    - generic [ref=e271]: Watch
+                - article [ref=e272]:
+                  - generic [ref=e273]:
+                    - img "KGF cover" [ref=e274]
+                    - generic:
+                      - generic: KGF
+                  - paragraph [ref=e276]: KGF
+                  - link " Watch" [ref=e278] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=KGF
+                    - generic [ref=e279]: 
+                    - generic [ref=e280]: Watch
+                - article [ref=e281]:
+                  - generic [ref=e282]:
+                    - img "Vikram cover" [ref=e283]
+                    - generic:
+                      - generic: Vikram
+                  - paragraph [ref=e285]: Vikram
+                  - link " Watch" [ref=e287] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Vikram
+                    - generic [ref=e288]: 
+                    - generic [ref=e289]: Watch
+                - article [ref=e290]:
+                  - generic [ref=e291]:
+                    - img "777 Charlie cover" [ref=e292]
+                    - generic:
+                      - generic: 777 Charlie
+                  - paragraph [ref=e294]: 777 Charlie
+                  - link " Watch" [ref=e296] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=777%20Charlie
+                    - generic [ref=e297]: 
+                    - generic [ref=e298]: Watch
+                - article [ref=e299]:
+                  - generic [ref=e300]:
+                    - img "The Blind Side cover" [ref=e301]
+                    - generic:
+                      - generic: The Blind Side
+                  - paragraph [ref=e303]: The Blind Side
+                  - link " Watch" [ref=e305] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=The%20Blind%20Side
+                    - generic [ref=e306]: 
+                    - generic [ref=e307]: Watch
+                - article [ref=e308]:
+                  - generic [ref=e309]:
+                    - img "The Social Network cover" [ref=e310]
+                    - generic:
+                      - generic: The Social Network
+                  - paragraph [ref=e312]: The Social Network
+                  - link " Watch" [ref=e314] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=The%20Social%20Network
+                    - generic [ref=e315]: 
+                    - generic [ref=e316]: Watch
+                - article [ref=e317]:
+                  - generic [ref=e318]:
+                    - img "Dhurandhar cover" [ref=e319]
+                    - generic:
+                      - generic: Dhurandhar
+                  - paragraph [ref=e321]: Dhurandhar
+                  - link " Watch" [ref=e323] [cursor=pointer]:
+                    - /url: https://www.justwatch.com/us/search?q=Dhurandhar
+                    - generic [ref=e324]: 
+                    - generic [ref=e325]: Watch
+            - generic [ref=e326]:
+              - generic [ref=e328]:
+                - generic [ref=e329]: 
+                - text: Following
+              - generic [ref=e330]:
+                - generic [ref=e331]:
+                  - generic [ref=e332]: 🏏
+                  - generic [ref=e333]:
+                    - paragraph [ref=e334]: IPL 2026
+                    - paragraph [ref=e335]: "Live: KKR vs SRH @ 7:30 PM"
+                  - link " Live" [ref=e337] [cursor=pointer]:
+                    - /url: https://www.iplt20.com/
+                    - generic [ref=e338]: 
+                    - generic [ref=e339]: Live
+                - generic [ref=e340]:
+                  - generic [ref=e341]: 🏎️
+                  - generic [ref=e342]:
+                    - paragraph [ref=e343]: Formula 1
+                    - paragraph [ref=e344]: "Next: Japanese GP (Suzuka)"
+                  - link " Live" [ref=e346] [cursor=pointer]:
+                    - /url: https://www.formula1.com/en/racing/2026
+                    - generic [ref=e347]: 
+                    - generic [ref=e348]: Live
+                - generic [ref=e349]:
+                  - generic [ref=e350]: 🏐
+                  - generic [ref=e351]:
+                    - paragraph [ref=e352]: Volleyball
+                    - paragraph [ref=e353]: Pro League Live
+                  - link " Live" [ref=e355] [cursor=pointer]:
+                    - /url: https://tv.volleyballworld.com/
+                    - generic [ref=e356]: 
+                    - generic [ref=e357]: Live
+                - generic [ref=e358]:
+                  - generic [ref=e359]: 🏀
+                  - generic [ref=e360]:
+                    - paragraph [ref=e361]: Basketball
+                    - paragraph [ref=e362]: NBA Playoffs 2026
+                  - link " Live" [ref=e364] [cursor=pointer]:
+                    - /url: https://www.nba.com/games
+                    - generic [ref=e365]: 
+                    - generic [ref=e366]: Live
+    - generic [ref=e368]:
+      - heading "Skills & Technologies" [level=2] [ref=e369]
+      - generic [ref=e372]:
+        - img [ref=e373]
+        - paragraph [ref=e375]: Loading interactive skills visualization...
+    - generic [ref=e377]:
+      - heading "Professional Experience" [level=2] [ref=e378]
+      - generic [ref=e379]:
+        - heading "Full-Time Employment" [level=3] [ref=e381]
+        - generic [ref=e382]:
+          - generic [ref=e384]: 
+          - generic [ref=e385]:
+            - generic [ref=e386]:
+              - generic [ref=e387]:
+                - heading "Software Engineer" [level=3] [ref=e388]
+                - generic [ref=e389]: Customized Energy Solutions - Philadelphia, PA
+              - generic [ref=e390]: Aug 2024 – Aug 2026
+            - list [ref=e391]:
+              - listitem [ref=e392]:
+                - img [ref=e393]
+                - generic [ref=e395]:
+                  - strong [ref=e396]: "Full-Stack Development:"
+                  - text: Built energy analytics dashboards using Java Spring Boot (backend) and AngularJS (frontend), reducing data rendering latency by 40% via RESTful API optimization
+              - listitem [ref=e397]:
+                - img [ref=e398]
+                - generic [ref=e400]:
+                  - strong [ref=e401]: "Cloud DevOps:"
+                  - text: Orchestrated AWS Lambda/EC2 workflows with Terraform IaC, accelerating deployment by 35% through Dockerized Jenkins CI/CD pipelines
+              - listitem [ref=e402]:
+                - img [ref=e403]
+                - generic [ref=e405]:
+                  - strong [ref=e406]: "Machine Learning:"
+                  - text: Enhanced demand forecasting accuracy by 25% using Python-based LSTM models (TensorFlow) with feature engineering
+            - generic [ref=e407]:
+              - generic [ref=e408]: Java Spring Boot
+              - generic [ref=e409]: AngularJS
+              - generic [ref=e410]: AWS
+              - generic [ref=e411]: TensorFlow
+              - generic [ref=e412]: Terraform
+        - generic [ref=e413]:
+          - generic [ref=e415]: 
+          - generic [ref=e416]:
+            - generic [ref=e417]:
+              - generic [ref=e418]:
+                - heading "Software Engineer" [level=3] [ref=e419]
+                - generic [ref=e420]: IoasiZ - Piscataway, NJ
+              - generic [ref=e421]: Jul 2023 – Jul 2024
+            - list [ref=e422]:
+              - listitem [ref=e423]:
+                - img [ref=e424]
+                - generic [ref=e426]:
+                  - strong [ref=e427]: "System Modernization:"
+                  - text: Refactored legacy Java monoliths into modular services using Spring Framework, cutting code redundancy by 20% (SOLID principles)
+              - listitem [ref=e428]:
+                - img [ref=e429]
+                - generic [ref=e431]:
+                  - strong [ref=e432]: "Distributed Systems:"
+                  - text: Resolved 50+ bugs in microservices architecture, boosting sprint efficiency by 15% via JUnit/Mockito test suites
+              - listitem [ref=e433]:
+                - img [ref=e434]
+                - generic [ref=e436]:
+                  - strong [ref=e437]: "Performance Optimization:"
+                  - text: Integrated Redis caching for inventory APIs, achieving 30% faster response times through query tuning
+            - generic [ref=e438]:
+              - generic [ref=e439]: Java
+              - generic [ref=e440]: Spring Framework
+              - generic [ref=e441]: Microservices
+              - generic [ref=e442]: Redis
+              - generic [ref=e443]: JUnit
+        - generic [ref=e444]:
+          - generic [ref=e446]: 
+          - generic [ref=e447]:
+            - generic [ref=e448]:
+              - generic [ref=e449]:
+                - heading "Network Engineer" [level=3] [ref=e450]
+                - generic [ref=e451]: Harshwardhan Enterprises - Pune, India
+              - generic [ref=e452]: Jun 2020 – Jun 2021
+            - list [ref=e453]:
+              - listitem [ref=e454]:
+                - img [ref=e455]
+                - generic [ref=e457]:
+                  - strong [ref=e458]: "Network Optimization:"
+                  - text: Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35% in enterprise WANs
+              - listitem [ref=e459]:
+                - img [ref=e460]
+                - generic [ref=e462]:
+                  - strong [ref=e463]: "Troubleshooting:"
+                  - text: Resolved 500+ connectivity issues via Wireshark analysis, achieving 90% SLA compliance for client networks
+              - listitem [ref=e464]:
+                - img [ref=e465]
+                - generic [ref=e467]:
+                  - strong [ref=e468]: "Scripting:"
+                  - text: Created Python-based monitoring tools, reducing manual diagnostics by 50%
+            - generic [ref=e469]:
+              - generic [ref=e470]: Cisco ASR 9000
+              - generic [ref=e471]: OSPF/BGP
+              - generic [ref=e472]: Wireshark
+              - generic [ref=e473]: Python
+              - generic [ref=e474]: Network Security
+        - heading "Internship" [level=3] [ref=e476]
+        - generic [ref=e477]:
+          - generic [ref=e479]: 
+          - generic [ref=e480]:
+            - generic [ref=e481]:
+              - generic [ref=e482]:
+                - heading "Database Administrator" [level=3] [ref=e483]
+                - generic [ref=e484]: Aramark - Philadelphia, PA
+              - generic [ref=e485]: Jun 2022 – Jun 2023
+            - list [ref=e486]:
+              - listitem [ref=e487]:
+                - img [ref=e488]
+                - generic [ref=e490]:
+                  - strong [ref=e491]: "AWS Automation:"
+                  - text: Developed Python scripts to manage event inventory systems on AWS, reducing manual errors by 25% for 200+ events
+              - listitem [ref=e492]:
+                - img [ref=e493]
+                - generic [ref=e495]:
+                  - strong [ref=e496]: "Data Migration:"
+                  - text: Transitioned 3+ legacy databases to AWS RDS, improving scalability for high-traffic event analytics
+            - generic [ref=e497]:
+              - generic [ref=e498]: AWS
+              - generic [ref=e499]: Python
+              - generic [ref=e500]: AWS RDS
+              - generic [ref=e501]: Database Administration
+        - heading "Part-Time Work" [level=3] [ref=e503]
+        - generic [ref=e504]:
+          - generic [ref=e506]: 
+          - generic [ref=e507]:
+            - generic [ref=e508]:
+              - generic [ref=e509]:
+                - heading "Database Administrator" [level=3] [ref=e510]
+                - generic [ref=e511]: Drexel University - Philadelphia, PA
+              - generic [ref=e512]: Sep 2021 – May 2022
+            - list [ref=e513]:
+              - listitem [ref=e514]:
+                - img [ref=e515]
+                - generic [ref=e517]:
+                  - strong [ref=e518]: "SQL & Compliance:"
+                  - text: Maintained HIPAA-compliant MySQL databases for 5K+ student records, ensuring 99.9% accuracy with constraint-driven validation
+              - listitem [ref=e519]:
+                - img [ref=e520]
+                - generic [ref=e522]:
+                  - strong [ref=e523]: "Reporting Tools:"
+                  - text: Streamlined data workflows using Tableau and Excel, cutting report generation time by 20% for administrative teams
+            - generic [ref=e524]:
+              - generic [ref=e525]: MySQL
+              - generic [ref=e526]: HIPAA Compliance
+              - generic [ref=e527]: Tableau
+              - generic [ref=e528]: Excel
+              - generic [ref=e529]: SQL
+        - heading "Volunteer Work" [level=3] [ref=e531]
+        - generic [ref=e532]:
+          - generic [ref=e534]: 
+          - generic [ref=e535]:
+            - generic [ref=e536]:
+              - generic [ref=e537]:
+                - heading "COVID-19 Testing Assistant" [level=3] [ref=e538]
+                - generic [ref=e539]: Drexel University - Philadelphia, PA
+              - generic [ref=e540]: Jan 2022
+            - paragraph [ref=e541]: As a dedicated volunteer and essential team member at Drexel University, I played a crucial role in supporting the university's COVID-19 vaccination efforts. My responsibilities included ensuring smooth, organized processes for individuals seeking vaccination, maintaining safety protocols, and providing exceptional support during this critical time.
+            - generic [ref=e542]:
+              - generic [ref=e543]: Healthcare Support
+              - generic [ref=e544]: Safety Protocols
+              - generic [ref=e545]: Community Service
+              - generic [ref=e546]: COVID-19 Response
+    - generic [ref=e548]:
+      - heading "Project Showcase" [level=2] [ref=e549]
+      - paragraph [ref=e550]: Apple-grade software craftsmanship with live GitHub activity signals.
+      - generic [ref=e551]:
+        - generic [ref=e552]:
+          - generic [ref=e553]:
+            - generic [ref=e554]:
+              - paragraph [ref=e555]: GitHub Activity
+              - heading "Live engineering momentum" [level=3] [ref=e556]
+            - paragraph [ref=e557]: Syncing repository stars, forks, commits, and contributors...
+          - generic [ref=e558]:
+            - generic [ref=e559]:
+              - generic [ref=e560]: "--"
+              - generic [ref=e561]: Public Repos
+            - generic [ref=e562]:
+              - generic [ref=e563]: "--"
+              - generic [ref=e564]: Stars
+            - generic [ref=e565]:
+              - generic [ref=e566]: "--"
+              - generic [ref=e567]: Forks
+            - generic [ref=e568]:
+              - generic [ref=e569]: "--"
+              - generic [ref=e570]: Commits (30d)
+            - generic [ref=e571]:
+              - generic [ref=e572]: "--"
+              - generic [ref=e573]: Contributors
+            - generic [ref=e574]:
+              - generic [ref=e575]: "--"
+              - generic [ref=e576]: Languages
+          - generic [ref=e577]:
+            - heading "Contributions in the last year" [level=4] [ref=e578]
+            - img "Mangesh Raut's Github chart" [ref=e581]
+        - generic [ref=e582]:
+          - generic [ref=e583]:
+            - generic [ref=e584]: 
+            - textbox "Search projects" [ref=e585]:
+              - /placeholder: Search projects by name, tag, or language (supports close matches)...
+          - generic [ref=e586]:
+            - combobox "Sort projects" [ref=e587] [cursor=pointer]:
+              - option "Sort by Popularity" [selected]
+              - option "Sort by Date"
+              - option "Sort by Name"
+              - option "Sort by Language"
+            - link "Visit GitHub profile" [ref=e588] [cursor=pointer]:
+              - /url: https://github.com/mangeshraut712
+              - generic [ref=e589]: 
+              - text: Visit GitHub Profile
+        - paragraph [ref=e594]: Loading projects from GitHub...
+    - generic [ref=e596]:
+      - heading "Education" [level=2] [ref=e597]
+      - generic [ref=e598]:
+        - article [ref=e599]:
+          - generic [ref=e601]: 
+          - generic [ref=e603]:
+            - generic [ref=e604]:
+              - heading "Master of Science in Computer Science" [level=3] [ref=e605]
+              - paragraph [ref=e606]: Drexel University
+              - paragraph [ref=e607]:
+                - generic [ref=e608]: 
+                - text: Philadelphia, PA
+            - generic [ref=e609]:
+              - generic [ref=e610]: Degree Earned
+              - paragraph [ref=e611]:
+                - generic [ref=e612]: 
+                - text: Sep 2021 - Jun 2023
+        - article [ref=e613]:
+          - generic [ref=e615]: 
+          - generic [ref=e617]:
+            - generic [ref=e618]:
+              - heading "Bachelor of Engineering" [level=3] [ref=e619]
+              - paragraph [ref=e620]: JSPM's Rajarshi Shahu College of Engineering
+              - paragraph [ref=e621]:
+                - generic [ref=e622]: 
+                - text: Pune, India
+            - generic [ref=e623]:
+              - generic [ref=e624]: Degree Earned
+              - paragraph [ref=e625]:
+                - generic [ref=e626]: 
+                - text: Jun 2017 - Jun 2020
+        - article [ref=e627]:
+          - generic [ref=e629]: 
+          - generic [ref=e631]:
+            - generic [ref=e632]:
+              - heading "Diploma in Computer Engineering" [level=3] [ref=e633]
+              - paragraph [ref=e634]: Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
+              - paragraph [ref=e635]:
+                - generic [ref=e636]: 
+                - text: Akurdi, Pune
+            - generic [ref=e637]:
+              - generic [ref=e638]: Degree Earned
+              - paragraph [ref=e639]:
+                - generic [ref=e640]: 
+                - text: Jun 2014 - Jun 2017
+        - article [ref=e641]:
+          - generic [ref=e643]: 
+          - generic [ref=e645]:
+            - generic [ref=e646]:
+              - heading "Secondary School Certificate" [level=3] [ref=e647]
+              - paragraph [ref=e648]: Modern High School
+              - paragraph [ref=e649]:
+                - generic [ref=e650]: 
+                - text: India
+            - generic [ref=e651]:
+              - generic [ref=e652]: Degree Earned
+              - paragraph [ref=e653]:
+                - generic [ref=e654]: 
+                - text: Jun 2013 - Jun 2014
+    - generic [ref=e656]:
+      - heading "Recent Publications" [level=2] [ref=e657]
+      - article [ref=e660]:
+        - generic [ref=e662]: Methods and Algorithms | IJFGCN 2020
+        - heading "Real-Time Face Emotion Recognition System" [level=3] [ref=e663]
+        - generic [ref=e664]: Mangesh Raut*, Research Team
+        - generic [ref=e665]:
+          - generic [ref=e666]:
+            - paragraph [ref=e667]: International Journal of Future Generation Communication and Networking
+            - paragraph [ref=e668]: Vol. 13, No. 3, (2020), pp. 3306-3313 • ISSN • Jun 15, 2020
+          - link " Read paper" [ref=e669] [cursor=pointer]:
+            - /url: assets/files/RTFERS paper.pdf
+            - generic [ref=e670]: 
+            - text: Read paper
+    - generic [ref=e672]:
+      - heading "Honors & Awards" [level=2] [ref=e673]
+      - generic [ref=e674]:
+        - article [ref=e675]:
+          - generic [ref=e677]: 
+          - generic [ref=e678]:
+            - heading "Greatest Achievement in MSCS" [level=3] [ref=e679]
+            - generic [ref=e680]:
+              - paragraph [ref=e681]: Drexel University
+              - paragraph [ref=e682]:
+                - generic [ref=e683]: 
+                - text: March 2022
+              - paragraph [ref=e684]:
+                - generic [ref=e685]: 
+                - text: Issued by Academic Advisor
+            - paragraph [ref=e686]: In Winter 2022 at Drexel University, I achieved a remarkable academic turnaround. Overcoming previous challenges and maintaining a 1.90 GPA, I demonstrated exceptional perseverance by achieving an outstanding 3.91 GPA, showcasing my commitment to academic excellence and personal growth.
+        - article [ref=e687]:
+          - generic [ref=e689]: 
+          - generic [ref=e690]:
+            - heading "Student of the Year" [level=3] [ref=e691]
+            - generic [ref=e692]:
+              - paragraph [ref=e693]: Dr. D.Y.Patil Pratishthans Y.B.Patil Polytechnic
+              - paragraph [ref=e694]:
+                - generic [ref=e695]: 
+                - text: June 2015
+              - paragraph [ref=e696]:
+                - generic [ref=e697]: 
+                - text: Issued by Head of Department
+            - paragraph [ref=e698]: Recognized with the prestigious "Student of the Year" award at my polytechnic institution. This honor recognized my dedication and outstanding performance in both academic studies and extracurricular activities, reflecting my commitment to holistic excellence.
+    - generic [ref=e700]:
+      - heading "Recommendations" [level=2] [ref=e701]
+      - generic [ref=e702]:
+        - article [ref=e703]:
+          - generic [ref=e704]:
+            - generic [ref=e705]: 
+            - paragraph [ref=e706]: “Mangesh is a highly committed and technically skilled individual with a strong foundation in both hardware and software. I had the opportunity to witness his growth first-hand as he pursued and completed his Computer Science degree at Drexel University. His sincerity, problem-solving mindset, and eagerness to contribute make him an asset to any team. I strongly recommend him for any challenging technical role.”
+          - generic [ref=e707]:
+            - generic [ref=e709]: 
+            - generic [ref=e710]:
+              - heading "Stephen Fernands" [level=3] [ref=e711]
+              - paragraph [ref=e712]: President
+              - paragraph [ref=e713]: Customized Energy Solutions
+        - article [ref=e714]:
+          - generic [ref=e715]:
+            - generic [ref=e716]: 
+            - paragraph [ref=e717]: “Mangesh played a key role in helping us modernize several legacy systems. His ability to quickly understand complex architectures and implement innovative solutions significantly improved our operational efficiency. What stood out most was his collaborative spirit—team members frequently sought his insights when tackling difficult technical problems. His contributions elevated the performance and culture of our engineering team.”
+          - generic [ref=e718]:
+            - generic [ref=e720]: 
+            - generic [ref=e721]:
+              - heading "Venkat Krishna" [level=3] [ref=e722]
+              - paragraph [ref=e723]: Tech Lead
+              - paragraph [ref=e724]: IoasiZ
+        - article [ref=e725]:
+          - generic [ref=e726]:
+            - generic [ref=e727]: 
+            - paragraph [ref=e728]: “Mangesh is an exceptionally dedicated professional who consistently delivers beyond expectations. His work on optimizing and stabilizing our network infrastructure resulted in noticeable performance improvements. His attention to detail, strong technical knowledge, and calm approach under pressure make him a dependable engineer.”
+          - generic [ref=e729]:
+            - generic [ref=e731]: 
+            - generic [ref=e732]:
+              - heading "Rakesh Kamble" [level=3] [ref=e733]
+              - paragraph [ref=e734]: Director
+              - paragraph [ref=e735]: Harshwardhan Enterprises
+        - article [ref=e736]:
+          - generic [ref=e737]:
+            - generic [ref=e738]: 
+            - paragraph [ref=e739]: “Mangesh distinguished himself as a student employee who always took initiative and approached problems with a learner’s mindset. His eagerness to help others and his steady improvement throughout his academic journey demonstrated his resilience and strong work ethic. He has the qualities of a future leader.”
+          - generic [ref=e740]:
+            - generic [ref=e742]: 
+            - generic [ref=e743]:
+              - heading "Lavella Kirkland" [level=3] [ref=e744]
+              - paragraph [ref=e745]: Manager
+              - paragraph [ref=e746]: Aramark
+    - generic [ref=e748]:
+      - heading "Licenses & Certifications" [level=2] [ref=e749]
+      - generic [ref=e750]:
+        - generic [ref=e751]:
+          - generic [ref=e752]: Programming
+          - generic [ref=e753]:
+            - img "HackerRank" [ref=e755]
+            - generic [ref=e756]:
+              - heading "Software Engineer" [level=3] [ref=e757]
+              - paragraph [ref=e758]: HackerRank
+          - generic [ref=e760]:
+            - generic [ref=e761]: 
+            - text: Mar 2026
+        - generic [ref=e762]:
+          - generic [ref=e763]: Marketing
+          - generic [ref=e764]:
+            - img "Apple" [ref=e766]
+            - generic [ref=e767]:
+              - heading "Search Ads" [level=3] [ref=e768]
+              - paragraph [ref=e769]: Apple
+          - generic [ref=e771]:
+            - generic [ref=e772]: 
+            - text: Nov 2024
+        - generic [ref=e773]:
+          - generic [ref=e774]: AI
+          - generic [ref=e775]:
+            - img "Google" [ref=e777]
+            - generic [ref=e778]:
+              - heading "Prompt Design in Vertex AI" [level=3] [ref=e779]
+              - paragraph [ref=e780]: Google
+          - generic [ref=e782]:
+            - generic [ref=e783]: 
+            - text: May 2024
+        - generic [ref=e784]:
+          - generic [ref=e785]: Data
+          - generic [ref=e786]:
+            - img "IBM" [ref=e788]
+            - generic [ref=e789]:
+              - heading "Data Fundamentals" [level=3] [ref=e790]
+              - paragraph [ref=e791]: IBM
+          - generic [ref=e793]:
+            - generic [ref=e794]: 
+            - text: Feb 2024
+        - generic [ref=e795]:
+          - generic [ref=e796]: Security
+          - generic [ref=e797]:
+            - img "IBM" [ref=e799]
+            - generic [ref=e800]:
+              - heading "Cybersecurity Fundamentals" [level=3] [ref=e801]
+              - paragraph [ref=e802]: IBM
+          - generic [ref=e804]:
+            - generic [ref=e805]: 
+            - text: Feb 2024
+        - generic [ref=e806]:
+          - generic [ref=e807]: Networking
+          - generic [ref=e808]:
+            - img "Cisco" [ref=e810]
+            - generic [ref=e811]:
+              - heading "Networking Basics" [level=3] [ref=e812]
+              - paragraph [ref=e813]: Cisco
+          - generic [ref=e815]:
+            - generic [ref=e816]: 
+            - text: Feb 2024
+        - text:   
+      - button "View More " [ref=e818] [cursor=pointer]:
+        - text: View More
+        - generic [ref=e819]: 
+    - generic [ref=e821]:
+      - heading "Technical Writings" [level=2] [ref=e822]
+      - paragraph [ref=e823]: Sharing insights on cloud architecture, full-stack development, and machine learning.
+      - button "View More " [ref=e827] [cursor=pointer]:
+        - text: View More
+        - generic [ref=e828]: 
+    - generic [ref=e830]:
+      - heading "Get In Touch" [level=2] [ref=e831]
+      - generic [ref=e832]:
+        - generic [ref=e833]:
+          - generic [ref=e834]:
+            - heading "Contact Information" [level=3] [ref=e835]
+            - paragraph [ref=e836]: Feel free to reach out via email or connect on social media.
+            - generic [ref=e837]:
+              - generic [ref=e838]:
+                - generic [ref=e839]: Email
+                - generic [ref=e840]:
+                  - link " mbr63@drexel.edu" [ref=e841] [cursor=pointer]:
+                    - /url: mailto:mbr63@drexel.edu
+                    - generic [ref=e843]: 
+                    - generic [ref=e844]: mbr63@drexel.edu
+                  - link " mbr63drexel@gmail.com" [ref=e845] [cursor=pointer]:
+                    - /url: mailto:mbr63drexel@gmail.com
+                    - generic [ref=e847]: 
+                    - generic [ref=e848]: mbr63drexel@gmail.com
+              - generic [ref=e849]:
+                - generic [ref=e850]: Phone
+                - generic [ref=e851]:
+                  - link " +91 727 681 9090 (WhatsApp)" [ref=e852] [cursor=pointer]:
+                    - /url: https://wa.me/917276819090
+                    - generic [ref=e854]: 
+                    - generic [ref=e855]: +91 727 681 9090 (WhatsApp)
+                  - link " +1 (609) 505-3500" [ref=e856] [cursor=pointer]:
+                    - /url: tel:+16095053500
+                    - generic [ref=e858]: 
+                    - generic [ref=e859]: +1 (609) 505-3500
+              - generic [ref=e860]:
+                - generic [ref=e861]: Location
+                - generic [ref=e862]:
+                  - link " Pune, MH, India 🇮🇳" [ref=e863] [cursor=pointer]:
+                    - /url: https://www.google.com/maps/place/Pune,+Maharashtra,+India
+                    - generic [ref=e865]: 
+                    - generic [ref=e866]: Pune, MH, India 🇮🇳
+                  - link " Philadelphia, PA, USA 🇺🇸" [ref=e867] [cursor=pointer]:
+                    - /url: https://www.google.com/maps/place/Philadelphia,+PA,+USA
+                    - generic [ref=e869]: 
+                    - generic [ref=e870]: Philadelphia, PA, USA 🇺🇸
+          - generic [ref=e872]:
+            - generic [ref=e873]:
+              - img "Lord Ganesh" [ref=e875]
+              - generic [ref=e876]:
+                - heading "Support My Work" [level=3] [ref=e877]
+                - paragraph [ref=e878]: 🙏 May Ganpati Bappa bless your journey!
+            - generic [ref=e879]:
+              - link " Buy Me a Coffee" [ref=e880] [cursor=pointer]:
+                - /url: https://buymeacoffee.com/xzvwsqf84xy
+                - generic [ref=e881]: 
+                - text: Buy Me a Coffee
+              - generic [ref=e882]:
+                - link " PayPal" [ref=e883] [cursor=pointer]:
+                  - /url: https://www.paypal.com/ncp/payment/8GBKK2AR2FPGL
+                  - generic [ref=e884]: 
+                  - text: PayPal
+                - link "$ Cash App" [ref=e885] [cursor=pointer]:
+                  - /url: https://cash.app/$MangeshRaut
+                  - generic [ref=e886]: $
+                  - text: Cash App
+          - generic [ref=e887]:
+            - heading "Follow Me" [level=3] [ref=e888]
+            - paragraph [ref=e889]: Connect with me on social media platforms.
+            - list [ref=e890]:
+              - listitem [ref=e891]:
+                - link "Facebook " [ref=e892] [cursor=pointer]:
+                  - /url: https://www.facebook.com/mangesh.raut.9674/
+                  - generic [ref=e893]: Facebook
+                  - generic [ref=e894]: 
+              - listitem [ref=e895]:
+                - link "Github " [ref=e896] [cursor=pointer]:
+                  - /url: https://github.com/mangeshraut712
+                  - generic [ref=e897]: Github
+                  - generic [ref=e898]: 
+              - listitem [ref=e899]:
+                - link "Instagram " [ref=e900] [cursor=pointer]:
+                  - /url: https://www.instagram.com/mangesh_d_charming_guy/
+                  - generic [ref=e901]: Instagram
+                  - generic [ref=e902]: 
+              - listitem [ref=e903]:
+                - link "Linkedin " [ref=e904] [cursor=pointer]:
+                  - /url: links/linkedin.html
+                  - generic [ref=e905]: Linkedin
+                  - generic [ref=e906]: 
+              - listitem [ref=e907]:
+                - link "YouTube " [ref=e908] [cursor=pointer]:
+                  - /url: https://www.youtube.com/@mangeshraut71298
+                  - generic [ref=e909]: YouTube
+                  - generic [ref=e910]: 
+              - listitem [ref=e911]:
+                - link "X " [ref=e912] [cursor=pointer]:
+                  - /url: https://x.com/mrcommando712
+                  - generic [ref=e913]: X
+                  - generic [ref=e914]: 
+              - listitem [ref=e915]:
+                - link "LeetCode " [ref=e916] [cursor=pointer]:
+                  - /url: links/leetcode.html
+                  - generic [ref=e917]: LeetCode
+                  - generic [ref=e918]: 
+              - listitem [ref=e919]:
+                - link "Snapchat " [ref=e920] [cursor=pointer]:
+                  - /url: https://snapchat.com/t/zCfsWY7e
+                  - generic [ref=e921]: Snapchat
+                  - generic [ref=e922]: 
+              - listitem [ref=e923]:
+                - link "WhatsApp " [ref=e924] [cursor=pointer]:
+                  - /url: https://wa.me/917276819090
+                  - generic [ref=e925]: WhatsApp
+                  - generic [ref=e926]: 
+              - listitem [ref=e927]:
+                - link "Email " [ref=e928] [cursor=pointer]:
+                  - /url: mailto:mbr63drexel@gmail.com
+                  - generic [ref=e929]: Email
+                  - generic [ref=e930]: 
+          - generic [ref=e931]:
+            - heading "Dream Companies" [level=3] [ref=e932]
+            - generic [ref=e934]:
+              - generic "Apple" [ref=e935]:
+                - img "Apple" [ref=e936]
+              - generic "Google" [ref=e937]:
+                - img "Google" [ref=e938]
+              - generic "Microsoft" [ref=e939]:
+                - img "Microsoft" [ref=e940]
+              - generic "Amazon" [ref=e941]:
+                - img "Amazon" [ref=e942]
+              - generic "Meta" [ref=e943]:
+                - img "Meta" [ref=e944]
+              - generic "Tesla" [ref=e945]:
+                - img "Tesla" [ref=e946]
+              - generic "Netflix" [ref=e947]:
+                - img "Netflix" [ref=e948]
+              - generic "Adobe" [ref=e949]:
+                - img "Adobe" [ref=e950]
+              - generic "Apple" [ref=e951]:
+                - img "Apple" [ref=e952]
+              - generic "Google" [ref=e953]:
+                - img "Google" [ref=e954]
+              - generic "Microsoft" [ref=e955]:
+                - img "Microsoft" [ref=e956]
+              - generic "Amazon" [ref=e957]:
+                - img "Amazon" [ref=e958]
+              - generic "Meta" [ref=e959]:
+                - img "Meta" [ref=e960]
+              - generic "Tesla" [ref=e961]:
+                - img "Tesla" [ref=e962]
+              - generic "Netflix" [ref=e963]:
+                - img "Netflix" [ref=e964]
+              - generic "Adobe" [ref=e965]:
+                - img "Adobe" [ref=e966]
+          - generic [ref=e967]:
+            - heading "Dream Cars" [level=3] [ref=e968]
+            - generic [ref=e970]:
+              - generic "Mercedes-Benz" [ref=e971]:
+                - img "Mercedes-Benz" [ref=e972]
+              - generic "BMW" [ref=e973]:
+                - img "BMW" [ref=e974]
+              - generic "Audi" [ref=e975]:
+                - img "Audi" [ref=e976]
+              - generic "Rolls-Royce" [ref=e977]:
+                - img "Rolls-Royce" [ref=e978]
+              - generic "Porsche" [ref=e979]:
+                - img "Porsche" [ref=e980]
+              - generic "Lexus" [ref=e981]:
+                - img "Lexus" [ref=e982]
+              - generic "Land Rover" [ref=e983]:
+                - img "Land Rover" [ref=e984]
+              - generic "Bentley" [ref=e985]:
+                - img "Bentley" [ref=e986]
+              - generic "Jaguar" [ref=e987]:
+                - img "Jaguar" [ref=e988]
+              - generic "Aston Martin" [ref=e989]:
+                - img "Aston Martin" [ref=e990]
+              - generic "Mercedes-Benz" [ref=e991]:
+                - img "Mercedes-Benz" [ref=e992]
+              - generic "BMW" [ref=e993]:
+                - img "BMW" [ref=e994]
+              - generic "Audi" [ref=e995]:
+                - img "Audi" [ref=e996]
+              - generic "Rolls-Royce" [ref=e997]:
+                - img "Rolls-Royce" [ref=e998]
+              - generic "Porsche" [ref=e999]:
+                - img "Porsche" [ref=e1000]
+              - generic "Lexus" [ref=e1001]:
+                - img "Lexus" [ref=e1002]
+              - generic "Land Rover" [ref=e1003]:
+                - img "Land Rover" [ref=e1004]
+              - generic "Bentley" [ref=e1005]:
+                - img "Bentley" [ref=e1006]
+              - generic "Jaguar" [ref=e1007]:
+                - img "Jaguar" [ref=e1008]
+              - generic "Aston Martin" [ref=e1009]:
+                - img "Aston Martin" [ref=e1010]
+        - generic [ref=e1012]:
+          - generic [ref=e1014] [cursor=pointer]: 
+          - heading "Let's Talk!" [level=3] [ref=e1015]
+          - paragraph [ref=e1016]: Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
+          - button " Open AssistMe Flow" [ref=e1017] [cursor=pointer]:
+            - generic [ref=e1018]: 
+            - text: Open AssistMe Flow
+          - paragraph [ref=e1019]: Email and phone options are still available in the left column.
+    - generic [ref=e1021]:
+      - heading "Debug Runner" [level=2] [ref=e1022]
+      - paragraph [ref=e1023]: The Developer's Challenge - Navigate through the chaos of production!
+      - generic [ref=e1024]:
+        - generic [ref=e1025]:
+          - generic [ref=e1026]: SPACE
+          - generic [ref=e1027]: Start Game
+        - generic [ref=e1028]:
+          - generic [ref=e1029]: ↑
+          - generic [ref=e1030]: Jump
+        - generic [ref=e1031]:
+          - generic [ref=e1032]: ↓
+          - generic [ref=e1033]: Duck
+      - generic [ref=e1037]:
+        - generic [ref=e1038]:
+          - generic [ref=e1039]: 🏆
+          - generic [ref=e1040]: High Score
+          - generic [ref=e1041]: "0"
+        - generic [ref=e1042]:
+          - generic [ref=e1043]: ⚡
+          - generic [ref=e1044]: Speed
+          - generic [ref=e1045]: 1.0x
+      - generic [ref=e1046]:
+        - generic [ref=e1047]:
+          - generic [ref=e1048]: 🐛
+          - generic [ref=e1049]:
+            - strong [ref=e1050]: Bugs
+            - generic [ref=e1051]: Jump to avoid
+        - generic [ref=e1052]:
+          - generic [ref=e1053]: ⚔️
+          - generic [ref=e1054]:
+            - strong [ref=e1055]: Merge Conflicts
+            - generic [ref=e1056]: Duck to dodge
+        - generic [ref=e1057]:
+          - generic [ref=e1058]: ☕
+          - generic [ref=e1059]:
+            - strong [ref=e1060]: Coffee
+            - generic [ref=e1061]: Speed boost!
+        - generic [ref=e1062]:
+          - generic [ref=e1063]: 🔥
+          - generic [ref=e1064]:
+            - strong [ref=e1065]: Prod Fire
+            - generic [ref=e1066]: Game over!
+    - generic [ref=e1068]:
+      - list [ref=e1070]:
+        - listitem [ref=e1071] [cursor=pointer]:
+          - link "Facebook" [ref=e1072]:
+            - /url: https://www.facebook.com/mangesh.raut.9674/
+            - generic: Facebook
+            - img [ref=e1073]
+        - listitem [ref=e1074] [cursor=pointer]:
+          - link "Github" [ref=e1075]:
+            - /url: https://github.com/mangeshraut712
+            - generic: Github
+            - img [ref=e1076]
+        - listitem [ref=e1079] [cursor=pointer]:
+          - link "Instagram" [ref=e1080]:
+            - /url: https://www.instagram.com/mangesh_d_charming_guy/
+            - generic: Instagram
+            - img [ref=e1081]
+        - listitem [ref=e1082] [cursor=pointer]:
+          - link "Linkedin" [ref=e1083]:
+            - /url: https://www.linkedin.com/in/mangeshraut71298/
+            - generic: Linkedin
+            - img [ref=e1084]
+        - listitem [ref=e1088] [cursor=pointer]:
+          - link "YouTube" [ref=e1089]:
+            - /url: https://www.youtube.com/@mangeshraut71298
+            - generic: YouTube
+            - img [ref=e1090]
+        - listitem [ref=e1092] [cursor=pointer]:
+          - link "X" [ref=e1093]:
+            - /url: https://x.com/mrcommando712
+            - generic: X
+            - img [ref=e1094]
+        - listitem [ref=e1098] [cursor=pointer]:
+          - link "LeetCode" [ref=e1099]:
+            - /url: links/leetcode.html
+            - generic: LeetCode
+            - img [ref=e1100]
+      - paragraph [ref=e1103]: © 2026 Mangesh Raut. All rights reserved.
+    - button "Open AI Assistant" [ref=e1104] [cursor=pointer]:
+      - generic [ref=e1105]: 
+    - dialog "Apple Intelligence chat window":
+      - generic:
+        - generic:
+          - heading "AssistMe" [level=3]
+          - paragraph: Mangesh's AI Assistant
+        - generic:
+          - button "Privacy & Settings":
+            - generic: 
+          - button "Clear chat":
+            - generic: 
+          - button "Close chat":
+            - generic: 
+      - generic:
+        - generic:
+          - generic:
+            - button "Use voice input":
+              - generic: 
+            - generic: Ask anything...
+            - textbox "Ask anything..."
+            - button "Send message":
+              - generic: 
+  - status [ref=e1106]
+  - toolbar "Accessibility tools" [ref=e1107]:
+    - button "Keyboard shortcuts" [ref=e1108] [cursor=pointer]: ⌨️
+    - button "Increase text size" [ref=e1109] [cursor=pointer]: 🔍
+    - button "Decrease text size" [ref=e1110] [cursor=pointer]: 🔎
