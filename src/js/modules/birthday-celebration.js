@@ -204,7 +204,9 @@ class BirthdayCelebration {
         a.gain.exponentialRampToValueAtTime(0.01, i.currentTime + 0.5),
         e.start(),
         e.stop(i.currentTime + 0.5));
-    } catch {}
+    } catch {
+      // Audio feedback is best-effort and can fail on restricted browsers.
+    }
   }
 }
 const initBirthdaySystem = () => {

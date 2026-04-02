@@ -1,0 +1,28 @@
+/* Contact overrides that must win after global Apple theme layers */
+
+#contact-chatbot-cta,
+#schedule-meeting-btn {
+  background: linear-gradient(135deg, #005bb5 0%, #0066cc 100%) !important;
+  color: #fff !important;
+}
+
+#contact-chatbot-cta span,
+#contact-chatbot-cta i,
+#schedule-meeting-btn span,
+#schedule-meeting-btn i {
+  color: inherit !important;
+}
+
+#contact-chatbot-cta:hover,
+#contact-chatbot-cta:focus-visible,
+#schedule-meeting-btn:hover,
+#schedule-meeting-btn:focus-visible {
+  background: linear-gradient(135deg, #0066cc 0%, #0074e8 100%) !important;
+  color: #fff !important;
+}
+
+.dream-companies-showcase:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 4px;
+  border-radius: 12px;
+}

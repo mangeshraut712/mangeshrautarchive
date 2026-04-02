@@ -255,7 +255,7 @@ h2 {
 }
 h2 {
   font-size: 2rem;
-  line-height: 1.0416666667;
+  line-height: 1.0417;
 }
 h3,
 p {
@@ -265,15 +265,15 @@ h3,
 h4 {
   font-size: 2rem;
   font-weight: 700;
-  line-height: 1.0834934585;
+  line-height: 1.0835;
 }
 h4 {
   font-size: 1.5rem;
   margin-bottom: 1.25rem;
 }
 h5 {
-  font-size: 1.08392rem;
-  line-height: 1.454545;
+  font-size: 1.0839rem;
+  line-height: 1.4545;
 }
 p {
   line-height: 1.5;
@@ -2144,7 +2144,7 @@ html.dark .project-card a.text-accent:hover {
 }
 .fa-moon,
 .fa-sun {
-  font-family: 'Font Awesome 6 Free';
+  font-family: 'Font Awesome 6 Free', sans-serif;
 }
 html.dark .theme-toggle-nav i.fa-moon {
   color: #fbbf24;

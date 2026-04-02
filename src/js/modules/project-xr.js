@@ -263,7 +263,9 @@ class ProjectXR {
           r = await fetch(a, { headers: { Accept: 'application/json' } });
         if (r.ok) return await r.json();
       }
-    } catch {}
+    } catch {
+      // Fall through to direct fetch when URL parsing/proxy setup is not usable.
+    }
     if (this.apiCooldownUntil > Date.now()) return null;
     try {
       const a = await fetch(e, { headers: t });

@@ -993,16 +993,55 @@ footer .wrapper .icon.whatsapp a { color: #25d366; }
 footer .wrapper .icon.email a { color: #ea4335; }
 
 /* Footer Hover Brand Colors - Enhanced */
-footer .wrapper .icon.facebook:hover a { color: #1877f2; text-shadow: 0 0 10px rgba(24, 119, 242, 0.4); }
-footer .wrapper .icon.github:hover a { color: #333; text-shadow: 0 0 10px rgba(51, 51, 51, 0.4); }
-footer .wrapper .icon.instagram:hover a { color: #e4405f; text-shadow: 0 0 10px rgba(228, 64, 95, 0.4); }
-footer .wrapper .icon.linkedin:hover a { color: #0077b5; text-shadow: 0 0 10px rgba(0, 119, 181, 0.4); }
-footer .wrapper .icon.youtube:hover a { color: #ff0000; text-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
-footer .wrapper .icon.x:hover a { color: #000; text-shadow: 0 0 10px rgba(0, 0, 0, 0.4); }
-footer .wrapper .icon.leetcode:hover a { color: #ffa500; text-shadow: 0 0 10px rgba(255, 165, 0, 0.4); }
-footer .wrapper .icon.snapchat:hover a { color: #fffc00; text-shadow: 0 0 10px rgba(255, 252, 0, 0.4); }
-footer .wrapper .icon.whatsapp:hover a { color: #25d366; text-shadow: 0 0 10px rgba(37, 211, 102, 0.4); }
-footer .wrapper .icon.email:hover a { color: #ea4335; text-shadow: 0 0 10px rgba(234, 67, 53, 0.4); }
+footer .wrapper .icon.facebook:hover a {
+  color: #1877f2;
+  text-shadow: 0 0 10px rgba(24, 119, 242, 0.4);
+}
+
+footer .wrapper .icon.github:hover a {
+  color: #333;
+  text-shadow: 0 0 10px rgba(51, 51, 51, 0.4);
+}
+
+footer .wrapper .icon.instagram:hover a {
+  color: #e4405f;
+  text-shadow: 0 0 10px rgba(228, 64, 95, 0.4);
+}
+
+footer .wrapper .icon.linkedin:hover a {
+  color: #0077b5;
+  text-shadow: 0 0 10px rgba(0, 119, 181, 0.4);
+}
+
+footer .wrapper .icon.youtube:hover a {
+  color: #ff0000;
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+}
+
+footer .wrapper .icon.x:hover a {
+  color: #000;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+footer .wrapper .icon.leetcode:hover a {
+  color: #ffa500;
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
+}
+
+footer .wrapper .icon.snapchat:hover a {
+  color: #fffc00;
+  text-shadow: 0 0 10px rgba(255, 252, 0, 0.4);
+}
+
+footer .wrapper .icon.whatsapp:hover a {
+  color: #25d366;
+  text-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
+}
+
+footer .wrapper .icon.email:hover a {
+  color: #ea4335;
+  text-shadow: 0 0 10px rgba(234, 67, 53, 0.4);
+}
 
 /* Footer Dark Mode */
 html.dark footer {
