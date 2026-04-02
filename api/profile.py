@@ -199,62 +199,61 @@ async def fetch_lastfm_recent_track() -> dict | None:
 @app.get("/api/profile/spotify")
 async def get_spotify_now_playing():
     spotify_configured = bool(SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET and SPOTIFY_REFRESH_TOKEN)
+    spotify_data = None
+    spotify_error = None
 
     if spotify_configured:
         try:
             access_token = await get_spotify_access_token()
             current_payload = await fetch_spotify_payload(SPOTIFY_CURRENTLY_PLAYING_URL, access_token)
 
-            # If Spotify is ACTIVELY playing, prioritize it
-            if current_payload and current_payload.get("item") and current_payload.get("is_playing"):
-                return normalize_spotify_item(
-                    current_payload["item"],
-                    is_playing=True,
-                    status_label="Now playing",
-                )
-            
-            # If Spotify is NOT playing (paused or idle), check Last.fm for live activity
-            lastfm_payload = await fetch_lastfm_recent_track()
-            if lastfm_payload and lastfm_payload.get("isPlaying"):
-                return lastfm_payload
-
-            # If Last.fm is NOT playing either, but we have a paused Spotify track, return that
             if current_payload and current_payload.get("item"):
-                return normalize_spotify_item(
+                spotify_data = normalize_spotify_item(
                     current_payload["item"],
-                    is_playing=False,
-                    status_label="Paused on Spotify",
+                    is_playing=bool(current_payload.get("is_playing")),
+                    status_label="Now playing" if current_payload.get("is_playing") else "Paused on Spotify",
                 )
+                spotify_data["source"] = "spotify"
+                
+                # If actually playing on Spotify, prioritize it immediately
+                if spotify_data["isPlaying"]:
+                    return spotify_data
+        except Exception as e:
+            spotify_error = str(e)
 
-            # Otherwise check for Spotify recently played
-            recent_payload = await fetch_spotify_payload(SPOTIFY_RECENTLY_PLAYED_URL, access_token)
-            items = (recent_payload or {}).get("items") or []
-            recent_item = items[0]["track"] if items and items[0].get("track") else None
-
-            if recent_item:
-                return normalize_spotify_item(recent_item, is_playing=False, status_label="Recently played")
-        except Exception:
-            pass
-
-    # If all Spotify logic fails or is skiped, try Last.fm recent (even if not playing)
+    # Check Last.fm as secondary source or fallback for Spotify paused
     try:
         lastfm_payload = await fetch_lastfm_recent_track()
         if lastfm_payload:
+            lastfm_payload["source"] = "lastfm"
+            
+            # If Last.fm is actively playing, use it over a paused Spotify
+            if lastfm_payload.get("isPlaying"):
+                return lastfm_payload
+                
+            # If Spotify was playing recently/paused, use that over Last.fm recent
+            if spotify_data:
+                return spotify_data
+                
+            # Otherwise use Last.fm recent
             return lastfm_payload
     except Exception:
         pass
 
+    # Final fallback if both fail or are empty
     return JSONResponse(
         status_code=200,
         content={
             "available": False,
             "isPlaying": False,
+            "source": "none",
             "statusLabel": "Music source unavailable",
-            "title": "No live music source connected",
+            "song": "No live music source connected",
             "artist": "Set Spotify credentials or connect Last.fm scrobbling",
             "album": "",
-            "albumArtUrl": "",
+            "albumArt": "",
             "trackUrl": "https://open.spotify.com/",
             "updatedAt": iso_now(),
+            "debug": {"spotify_configured": spotify_configured, "spotify_error": spotify_error}
         },
     )

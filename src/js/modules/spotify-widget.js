@@ -50,9 +50,17 @@
 
     if (source === 'lastfm') {
       sourceNameEl.textContent = 'Music';
-      sourceIconEl.className = 'fas fa-music'; // Generic musical look
+      sourceIconEl.className = 'fas fa-music';
       sourceIconEl.style.color = '#ff2d55';
       card.setAttribute('aria-label', 'Music Now Playing');
+      return;
+    }
+
+    if (source === 'none' || source === 'idle') {
+      sourceNameEl.textContent = 'Music';
+      sourceIconEl.className = 'fas fa-compact-disc'; // Neutral disc icon
+      sourceIconEl.style.color = '#8e8e93';
+      card.setAttribute('aria-label', 'No music playing');
       return;
     }
 
@@ -120,6 +128,7 @@
     }
     if (spotifyLinkEl) spotifyLinkEl.href = data.trackUrl || 'https://open.spotify.com/';
     setStatusLabel(data.statusLabel || 'Now playing');
+    if (data.source) setSource(data.source);
   }
 
   function setRecent(data) {
@@ -136,6 +145,7 @@
     }
     if (spotifyLinkEl) spotifyLinkEl.href = data.trackUrl || 'https://open.spotify.com/';
     setStatusLabel(data.statusLabel || 'Recently played');
+    if (data.source) setSource(data.source);
   }
 
   async function fetchNowPlaying() {
