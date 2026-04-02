@@ -244,6 +244,7 @@
   <!-- Critical render-path CSS - only what's needed for first paint -->
   <link rel="stylesheet" href="assets/css/tailwind-output.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/contact.css" />
   <link rel="stylesheet" href="assets/css/homepage.css" />
 
   <!-- Deferred CSS - non-critical, loaded async -->
@@ -258,9 +259,8 @@
   <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260401-navbar3" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/typography-system.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/contact.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/publications.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/education.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/education.css" />
   <link rel="stylesheet" href="assets/css/skills.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/certifications.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/experience.css" media="print" onload="this.media='all'" />
@@ -269,7 +269,9 @@
   <link rel="stylesheet" href="assets/css/about.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/blog.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css" media="print" onload="this.media='all'" />
+  
+  <!-- CONTACT LAYOUT OVERRIDE - LOADS LAST TO WIN -->
+  <link rel="stylesheet" href="assets/css/contact-override.css" />
   <link rel="stylesheet" href="assets/css/recommendations.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/awards.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/game-section-fix.css" media="print" onload="this.media='all'" />
@@ -1527,278 +1529,327 @@
     <section id="contact" class="fade-in py-32">
       <div class="container">
         <h2>Get In Touch</h2>
+        <p class="section-subtitle">Let's create something amazing together</p>
+        
         <div class="contact-grid">
-          <!-- Column 1: Left Side (Discovery Column) -->
-          <div class="contact-column left-side" style="display: flex; flex-direction: column; gap: 24px;">
-            <!-- Card 1: Contact Information -->
-            <div class="contact-section">
-              <h3>Contact Information</h3>
-              <p class="contact-description">Feel free to reach out via email or connect on social media.</p>
-              <div class="contact-info-group">
-                <div class="contact-item">
-                  <span class="contact-label">Email</span>
-                  <div class="contact-link-wrapper">
-                    <a href="mailto:mbr63@drexel.edu" class="contact-link-item"><div class="icon-box blue"><i class="fas fa-envelope"></i></div><span class="link-text">mbr63@drexel.edu</span></a>
-                    <a href="mailto:mbr63drexel@gmail.com" class="contact-link-item"><div class="icon-box blue"><i class="fas fa-envelope"></i></div><span class="link-text">mbr63drexel@gmail.com</span></a>
-                  </div>
+          <!-- Left Column: Information & Support -->
+          <div class="contact-column">
+            <!-- Contact Information Card -->
+            <div class="contact-card contact-info-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon email-icon">
+                  <i class="fas fa-envelope"></i>
                 </div>
-                <div class="contact-item">
-                  <span class="contact-label">Phone</span>
-                  <div class="contact-link-wrapper">
-                    <a href="https://wa.me/917276819090" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="icon-box green"><i class="fab fa-whatsapp"></i></div><span class="link-text">+91 727 681 9090 (WhatsApp)</span></a>
-                    <a href="tel:+16095053500" class="contact-link-item"><div class="icon-box blue"><i class="fas fa-mobile-alt"></i></div><span class="link-text">+1 (609) 505-3500</span></a>
+                <h3>Contact Information</h3>
+              </div>
+              <div class="contact-card-content">
+                <div class="contact-info-list">
+                  <div class="contact-info-item">
+                    <div class="contact-info-icon email-icon">
+                      <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info-details">
+                      <h4>Email</h4>
+                      <div class="contact-info-links">
+                        <a href="mailto:mbr63@drexel.edu" class="contact-link">
+                          <span>mbr63@drexel.edu</span>
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="mailto:mbr63drexel@gmail.com" class="contact-link">
+                          <span>mbr63drexel@gmail.com</span>
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="contact-item">
-                  <span class="contact-label">Location</span>
-                  <div class="contact-link-wrapper">
-                    <a href="https://www.google.com/maps/place/Pune,+Maharashtra,+India" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="icon-box purple"><i class="fas fa-map-marker-alt"></i></div><span class="link-text">Pune, MH, India 🇮🇳</span></a>
-                    <a href="https://www.google.com/maps/place/Philadelphia,+PA,+USA" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="icon-box purple"><i class="fas fa-map-marker-alt"></i></div><span class="link-text">Philadelphia, PA, USA 🇺🇸</span></a>
+                  
+                  <div class="contact-info-item">
+                    <div class="contact-info-icon phone-icon">
+                      <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-info-details">
+                      <h4>Phone</h4>
+                      <div class="contact-info-links">
+                        <a href="https://wa.me/917276819090" class="contact-link">
+                          <span>+91 727 681 9090</span>
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="tel:+16095053500" class="contact-link">
+                          <span>+1 (609) 505-3500</span>
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="contact-info-item">
+                    <div class="contact-info-icon location-icon">
+                      <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-info-details">
+                      <h4>Location</h4>
+                      <div class="contact-info-links">
+                        <a href="https://www.google.com/maps/place/Pune,+Maharashtra,+India" class="contact-link">
+                          <span>Pune, MH, India</span>
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.google.com/maps/place/Philadelphia,+PA,+USA" class="contact-link">
+                          <span>Philadelphia, PA, USA</span>
+                          <i class="fas fa-external-link-alt"></i>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Card 2: Support My Work -->
-            <div class="contact-section support-section" style="padding: 24px !important;">
-              <div class="support-donation-card">
-                <div class="donation-compact-header" style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-                  <div class="ganesh-glow-container" style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 2px solid #ff9500; box-shadow: 0 0 15px rgba(255, 149, 0, 0.3);">
-                    <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" style="width: 100%; height: 100%; object-fit: cover;">
+            <!-- Support My Work Card -->
+            <div class="contact-card support-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon support-icon">
+                  <i class="fas fa-heart"></i>
+                </div>
+                <h3>Support My Work</h3>
+              </div>
+              <div class="contact-card-content">
+                <div class="support-header">
+                  <div class="ganesh-glow-container">
+                    <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-image">
                   </div>
-                  <div class="donation-info">
-                    <h3 style="margin: 0; font-size: 1.1rem !important;">Support My Work</h3>
-                    <p style="color: #ff9500; font-weight: 600; font-size: 0.8rem; margin: 2px 0;">🙏 May Ganpati Bappa bless your journey!</p>
+                  <div class="support-info">
+                    <p class="support-blessing">🙏 May Ganpati Bappa bless your journey!</p>
+                    <p class="support-text">Your support helps me continue creating innovative solutions</p>
                   </div>
                 </div>
-                <div class="donation-options-wrapper" style="display: flex; flex-direction: column; gap: 10px;">
-                  <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer" class="support-btn bmc-premium" style="background: #FFDD00; color: #000; border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-weight: 700;">
-                    <i class="fa-solid fa-mug-hot"></i> Buy Me a Coffee
+                <div class="support-options">
+                  <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer" class="support-button coffee">
+                    <span class="support-icon-svg">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 1v3M10 1v3M14 1v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <span>Buy Me a Coffee</span>
                   </a>
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <a href="https://www.paypal.com/ncp/payment/8GBKK2AR2FPGL" target="_blank" rel="noopener noreferrer" style="background: #003087; color: #fff; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
-                      <i class="fa-brands fa-paypal"></i> PayPal
-                    </a>
-                    <a href="https://cash.app/$MangeshRaut" target="_blank" rel="noopener noreferrer" style="background: #00d632; color: #fff; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
-                      <i class="fa-solid fa-dollar-sign"></i> Cash App
-                    </a>
-                  </div>
+                  <a href="https://www.paypal.com/ncp/payment/8GBKK2AR2FPGL" target="_blank" rel="noopener noreferrer" class="support-button paypal">
+                    <span class="support-icon-svg paypal-icon">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-.313 2.02-.874 5.66a.476.476 0 0 1-.472.426z" fill="#003087"/>
+                        <path d="M18.354 6.978c-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-.313 2.02-.874 5.66a.476.476 0 0 1-.472.426H7.076a.641.641 0 0 0 .633.74h4.606c.265 0 .504-.17.578-.42l.003-.01.88-5.7.314-2.03a.95.95 0 0 1 .945-.78h2.19c4.298 0 7.664-1.747 8.647-6.797.03-.149.054-.294.077-.437-.218.01-.44.016-.664.016-2.57 0-4.578-.543-5.69-1.81.326.14.63.308.912.5z" fill="#0070E0"/>
+                      </svg>
+                    </span>
+                    <span>PayPal</span>
+                  </a>
+                  <a href="https://cash.app/$MangeshRaut" target="_blank" rel="noopener noreferrer" class="support-button cashapp">
+                    <span class="support-icon-svg cashapp-icon">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="6" width="20" height="12" rx="2" fill="#00D632"/>
+                        <text x="12" y="14" text-anchor="middle" fill="white" font-size="8" font-weight="bold">$</text>
+                      </svg>
+                    </span>
+                    <span>Cash App</span>
+                  </a>
                 </div>
               </div>
             </div>
 
-            <!-- Card 3: Follow Me -->
-            <div class="contact-section follow-section">
-              <h3>Follow Me</h3>
-              <p class="contact-description">Connect with me on social media platforms.</p>
-              <ul class="contact-social-wrapper">
-                <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" rel="noopener noreferrer"><span class="tooltip">Facebook</span><i class="fa-brands fa-facebook-f"></i></a></li>
-                <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"><span class="tooltip">Github</span><i class="fa-brands fa-github"></i></a></li>
-                <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" rel="noopener noreferrer"><span class="tooltip">Instagram</span><i class="fa-brands fa-instagram"></i></a></li>
-                <li class="icon linkedin"><a href="links/linkedin.html" target="_blank" rel="noopener noreferrer"><span class="tooltip">Linkedin</span><i class="fa-brands fa-linkedin-in"></i></a></li>
-                <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank" rel="noopener noreferrer"><span class="tooltip">YouTube</span><i class="fa-brands fa-youtube"></i></a></li>
-                <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"><span class="tooltip">X</span><i class="fa-brands fa-x-twitter"></i></a></li>
-                <li class="icon leetcode"><a href="links/leetcode.html" target="_blank" rel="noopener noreferrer"><span class="tooltip">LeetCode</span><i class="fa-solid fa-code"></i></a></li>
-                <li class="icon snapchat"><a href="https://snapchat.com/t/zCfsWY7e" target="_blank" rel="noopener noreferrer"><span class="tooltip">Snapchat</span><i class="fa-brands fa-snapchat"></i></a></li>
-                <li class="icon whatsapp"><a href="https://wa.me/917276819090" target="_blank" rel="noopener noreferrer"><span class="tooltip">WhatsApp</span><i class="fa-brands fa-whatsapp"></i></a></li>
-                <li class="icon email"><a href="mailto:mbr63drexel@gmail.com"><span class="tooltip">Email</span><i class="fa-solid fa-envelope"></i></a></li>
-              </ul>
+            <!-- Social Links Card -->
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon social-icon">
+                  <i class="fas fa-share-nodes"></i>
+                </div>
+                <h3>Follow Me</h3>
+              </div>
+              <div class="contact-card-content">
+                <p class="social-description">Connect with me on social media platforms</p>
+                <div class="social-links-grid">
+                  <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" rel="noopener noreferrer" class="social-link facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                  </a>
+                  <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer" class="social-link github">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                  </a>
+                  <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" rel="noopener noreferrer" class="social-link instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                  </a>
+                  <a href="links/linkedin.html" target="_blank" rel="noopener noreferrer" class="social-link linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                    <span>LinkedIn</span>
+                  </a>
+                  <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" rel="noopener noreferrer" class="social-link youtube">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                  </a>
+                  <a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer" class="social-link x">
+                    <i class="fab fa-x-twitter"></i>
+                    <span>X</span>
+                  </a>
+                  <a href="links/leetcode.html" target="_blank" rel="noopener noreferrer" class="social-link leetcode">
+                    <i class="fas fa-code"></i>
+                    <span>LeetCode</span>
+                  </a>
+                  <a href="https://snapchat.com/t/zCfsWY7e" target="_blank" rel="noopener noreferrer" class="social-link snapchat">
+                    <i class="fab fa-snapchat"></i>
+                    <span>Snapchat</span>
+                  </a>
+                  <a href="https://wa.me/917276819090" target="_blank" rel="noopener noreferrer" class="social-link whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
+              </div>
             </div>
 
-              <!-- Card 4: Dream Companies -->
-              <div class="contact-section dream-companies-card">
+            <!-- Dream Companies Card -->
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon dream-icon">
+                  <i class="fas fa-building"></i>
+                </div>
                 <h3>Dream Companies</h3>
-                <div class="dream-companies-marquee">
+              </div>
+              <div class="contact-card-content">
+                <div
+                  class="dream-companies-showcase"
+                  tabindex="0"
+                  role="group"
+                  aria-label="Scrollable list of dream companies"
+                >
                   <div class="dream-companies-track">
                     <div class="dream-company-item" title="Apple">
-                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Google">
-                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
-                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Amazon">
-                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Meta">
-                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Tesla">
-                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Netflix">
-                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo">
                     </div>
                     <div class="dream-company-item" title="Adobe">
-                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <!-- Duplicate set for seamless scroll -->
-                    <div class="dream-company-item" title="Apple">
-                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Google">
-                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Microsoft">
-                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Amazon">
-                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Meta">
-                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Tesla">
-                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Netflix">
-                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-company-item" title="Adobe">
-                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Dream Cars -->
-              <div class="contact-section">
-                <h3>Dream Cars</h3>
-                <div class="dream-cars-marquee">
-                  <div class="dream-cars-track">
-                    <!-- First set -->
-                    <div class="dream-car-item" title="Mercedes-Benz">
-                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="BMW">
-                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Audi">
-                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Rolls-Royce">
-                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Porsche">
-                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Lexus">
-                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Land Rover">
-                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Bentley">
-                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Jaguar">
-                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Aston Martin">
-                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
-                        height="85" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <!-- Duplicate set for seamless scroll -->
-                    <div class="dream-car-item" title="Mercedes-Benz">
-                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="BMW">
-                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Audi">
-                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Rolls-Royce">
-                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Porsche">
-                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Lexus">
-                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Land Rover">
-                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Bentley">
-                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Jaguar">
-                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
-                    </div>
-                    <div class="dream-car-item" title="Aston Martin">
-                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
-                        height="85" loading="lazy" decoding="async" fetchpriority="low">
+                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo">
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Column 2: Send a Message + Calendar (Two Separate Cards) -->
-            <div class="contact-column">
-              <!-- Contact via AssistMe Card -->
-              <div class="contact-card contact-assistme-card">
-                <div class="icon-box blue contact-assistme-icon">
-                  <i class="fas fa-robot"></i>
+            <!-- Dream Cars Card -->
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon car-icon">
+                  <i class="fas fa-car"></i>
                 </div>
-                <h3>Let's Talk!</h3>
-                <p class="contact-description">
-                  Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
-                </p>
-                <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
-                  <i class="fas fa-message"></i>
-                  Open AssistMe Flow
-                </button>
-                <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
+                <h3>Dream Cars</h3>
               </div>
+              <div class="contact-card-content">
+                <div
+                  class="dream-companies-showcase"
+                  tabindex="0"
+                  role="group"
+                  aria-label="Scrollable list of dream cars"
+                >
+                  <div class="dream-companies-track">
+                    <div class="dream-company-item" title="Aston Martin">
+                      <img src="assets/images/cars/aston-martin.svg" alt="Aston Martin" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Porsche">
+                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Bentley">
+                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Jaguar">
+                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Lexus">
+                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Mercedes-Benz">
+                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="Audi">
+                      <img src="assets/images/cars/audi.png" alt="Audi" class="company-logo">
+                    </div>
+                    <div class="dream-company-item" title="BMW">
+                      <img src="assets/images/cars/bmw.png" alt="BMW" class="company-logo">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              <!-- Calendar & Reminders Widget -->
-              <div class="calendar-wrapper-clean">
-                <div id="calendar-widget"></div>
+          <!-- Right Column: Actions -->
+          <div class="contact-column">
+            <!-- Let's Talk Card -->
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon talk-icon">
+                  <i class="fas fa-comments"></i>
+                </div>
+                <h3>Let's Talk</h3>
+              </div>
+              <div class="contact-card-content">
+                <p class="talk-description">Have a project in mind? Let's discuss how we can bring your ideas to life.</p>
+                <div class="talk-actions">
+                  <button id="contact-chatbot-cta" class="talk-button primary">
+                    <i class="fas fa-robot"></i>
+                    <span>Start Conversation</span>
+                  </button>
+                  <a href="mailto:mbr63drexel@gmail.com" class="talk-button secondary">
+                    <i class="fas fa-envelope"></i>
+                    <span>Send Email</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Meeting Card -->
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-icon calendar-icon">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Schedule Meeting</h3>
+              </div>
+              <div class="contact-card-content">
+                <p class="calendar-description">Book a time that works for you. Available for consultations, project discussions, and coffee chats.</p>
+                <div class="calendar-actions">
+                  <button id="schedule-meeting-btn" class="calendar-button primary">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Schedule Meeting</span>
+                  </button>
+                  <button id="add-reminder-btn" class="calendar-button secondary">
+                    <i class="fas fa-bell"></i>
+                    <span>Set Reminder</span>
+                  </button>
+                </div>
+                <div class="calendar-widget-container">
+                  <div id="calendar-widget"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-
 
     <!-- ═══════════════════════════════════════════════════════════
          DEBUG RUNNER GAME SECTION
@@ -1888,72 +1939,31 @@
           <ul class="wrapper">
             <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
                 rel="noopener noreferrer" aria-label="Facebook">
-                <span class="tooltip">Facebook</span>
-                <svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.951.925-1.951 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
-                  </path>
-                </svg>
-              </a></li>
+                <span class="tooltip">Facebook</span><i class="fab fa-facebook-f"></i></a></li>
             <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
                 rel="noopener noreferrer" aria-label="Github">
                 <span class="tooltip">Github</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path
-                    d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-                </svg>
-              </a></li>
+                <i class="fab fa-github"></i></a></li>
             <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank"
                 rel="noopener noreferrer" aria-label="Instagram">
                 <span class="tooltip">Instagram</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
-                  </path>
-                </svg>
-              </a></li>
+                <i class="fab fa-instagram"></i></a></li>
             <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
                 rel="noopener noreferrer" aria-label="Linkedin">
                 <span class="tooltip">Linkedin</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                  <path d="M8 11l0 5" />
-                  <path d="M8 8l0 .01" />
-                  <path d="M12 16l0 -5" />
-                  <path d="M16 16v-3a2 2 0 0 0 -4 0" />
-                </svg>
-              </a></li>
+                <i class="fab fa-linkedin-in"></i></a></li>
             <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank"
                 rel="noopener noreferrer" aria-label="YouTube">
                 <span class="tooltip">YouTube</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512">
-                  <path
-                    d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z" />
-                </svg>
-              </a></li>
+                <i class="fab fa-youtube"></i></a></li>
             <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"
                 aria-label="X">
                 <span class="tooltip">X</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-                </svg>
-              </a></li>
+                <i class="fab fa-x-twitter"></i></a></li>
             <li class="icon leetcode"><a href="links/leetcode.html" target="_blank"
                 rel="noopener noreferrer" aria-label="LeetCode">
                 <span class="tooltip">LeetCode</span>
-                <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
-                </svg>
-              </a></li>
+                <i class="fas fa-code"></i></a></li>
           </ul>
         </div>
 

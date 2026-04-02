@@ -105,7 +105,10 @@ a:hover {
   color: #fff;
   background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
   box-shadow: 0 10px 24px rgba(0, 113, 227, 0.24);
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn:hover,

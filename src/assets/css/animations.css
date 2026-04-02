@@ -1,1 +1,322 @@
-@keyframes fadeInUp{0%{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeInDown{0%{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeInLeft{0%{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}@keyframes fadeInRight{0%{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}@keyframes scaleIn{0%{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}@keyframes headingReveal{0%{opacity:0;transform:translateY(-20px);letter-spacing:.1em}to{opacity:1;transform:translateY(0);letter-spacing:-.02em}}@keyframes heroFadeIn{0%{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}@keyframes neuralReveal{0%{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}@keyframes timelineProgress{0%{transform:translateX(-50%) scaleY(0);opacity:0}to{transform:translateX(-50%) scaleY(1);opacity:1}}@keyframes imageFade{0%{opacity:0;filter:blur(4px)}to{opacity:1;filter:blur(0)}}.animate-on-scroll{opacity:0}.animate-on-scroll.animate-in{animation:fadeInUp .6s ease-out forwards}.award-card.animate-in,.blog-card.animate-in,.cert-card.animate-in,.education-card.animate-in,.experience-content.animate-in,.publication-card.animate-in,.recommendation-card.animate-in,.showcase-project-card.animate-in{animation:fadeInUp .7s cubic-bezier(.19,1,.22,1) forwards}section h2.animate-in{animation:headingReveal .8s cubic-bezier(.19,1,.22,1) forwards}.blog-card:nth-child(1),.experience-content:nth-child(1),.showcase-project-card:nth-child(1){animation-delay:.1s}.blog-card:nth-child(2),.experience-content:nth-child(2),.showcase-project-card:nth-child(2){animation-delay:.2s}.blog-card:nth-child(3),.experience-content:nth-child(3),.showcase-project-card:nth-child(3){animation-delay:.3s}.blog-card:nth-child(4),.showcase-project-card:nth-child(4){animation-delay:.4s}.blog-card:nth-child(5),.showcase-project-card:nth-child(5){animation-delay:.5s}.blog-card:nth-child(6),.showcase-project-card:nth-child(6){animation-delay:.6s}.skill-badge.animate-in{animation:skillBadgeEntrance .5s cubic-bezier(.34,1.56,.64,1) backwards}.skill-badge:nth-child(1){animation-delay:.05s}.skill-badge:nth-child(2){animation-delay:.1s}.skill-badge:nth-child(3){animation-delay:.15s}.skill-badge:nth-child(4){animation-delay:.2s}.skill-badge:nth-child(5){animation-delay:.25s}.skill-badge:nth-child(6){animation-delay:.3s}.skill-badge:nth-child(7){animation-delay:.35s}.skill-badge:nth-child(8){animation-delay:.4s}.btn,.cta-button,.project-action-btn,.projects-view-all-btn,a.btn,button:not(.chatbot-close-btn,#go-to-top,#chatbot-toggle){transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease,background .3s ease}.btn:hover,.cta-button:hover,.project-action-btn:hover,.projects-view-all-btn:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 24px rgb(0 113 227/25%)}.btn:active,.cta-button:active,.project-action-btn:active,.projects-view-all-btn:active{transform:translateY(-1px) scale(.98);box-shadow:0 4px 12px rgb(0 113 227/15%)}html.dark .btn:hover,html.dark .project-action-btn:hover,html.dark .projects-view-all-btn:hover{box-shadow:0 12px 24px rgb(10 132 255/30%)}.hero-content{animation:heroFadeIn 1s ease-out forwards}.hero-image,.profile-image,img.rounded-full{animation:heroFadeIn 1.2s ease-out .2s backwards}.hero-title,.home-head h1{animation:fadeInUp .8s ease-out .3s backwards}.hero-subtitle,.home-head h2,.home-head p{animation:fadeInUp .8s ease-out .5s backwards}.cta-buttons,.hero-buttons{animation:fadeInUp .8s ease-out .7s backwards}.award-card,.blog-card,.cert-card,.education-card,.experience-content,.publication-card,.recommendation-card,.showcase-project-card{transition:transform .4s cubic-bezier(.25,.8,.25,1),box-shadow .4s cubic-bezier(.25,.8,.25,1)}.blog-card:hover,.showcase-project-card:hover{transform:translateY(-8px) scale(1.01) perspective(1000px) rotateY(2deg)}.timeline-line{position:relative}.timeline-line::before{content:"";position:absolute;left:50%;transform-origin:top;transform:translateX(-50%) scaleY(0);top:0;width:2px;height:100%;background:linear-gradient(180deg,#0071e3,#2997ff);animation:timelineProgress 1.5s ease-out forwards}html.dark .timeline-line::before{background:linear-gradient(180deg,#0a84ff,#58a6ff)}img[loading=lazy]{transition:opacity .4s ease-in-out}img.loaded,img[loading=lazy].loaded{opacity:1}.animate-on-scroll.animate-in,.showcase-project-card.animate-in{will-change:transform,opacity}.animate-in{animation-fill-mode:forwards}@media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.animate-on-scroll,.education-card,.experience-content,.hero-content,.showcase-project-card,.skill-badge,section h2{animation:none!important;opacity:1!important;transform:none!important}*,.btn:hover,.nav-link:hover,::after,::before{transition-duration:.01ms!important}}@media print{*,::after,::before{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes headingReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+    letter-spacing: 0.1em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: -0.02em;
+  }
+}
+
+@keyframes heroFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes neuralReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes timelineProgress {
+  0% {
+    transform: translateX(-50%) scaleY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes imageFade {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.animate-on-scroll {
+  opacity: 0;
+}
+.animate-on-scroll.animate-in {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+.award-card.animate-in,
+.blog-card.animate-in,
+.cert-card.animate-in,
+.education-card.animate-in,
+.experience-content.animate-in,
+.publication-card.animate-in,
+.recommendation-card.animate-in,
+.showcase-project-card.animate-in {
+  animation: fadeInUp 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+section h2.animate-in {
+  animation: headingReveal 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+.blog-card:nth-child(1),
+.experience-content:nth-child(1),
+.showcase-project-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.blog-card:nth-child(2),
+.experience-content:nth-child(2),
+.showcase-project-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.blog-card:nth-child(3),
+.experience-content:nth-child(3),
+.showcase-project-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.blog-card:nth-child(4),
+.showcase-project-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.blog-card:nth-child(5),
+.showcase-project-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.blog-card:nth-child(6),
+.showcase-project-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.skill-badge.animate-in {
+  animation: skillBadgeEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+.skill-badge:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.skill-badge:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.skill-badge:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.skill-badge:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.skill-badge:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.skill-badge:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.skill-badge:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.skill-badge:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.btn,
+.cta-button,
+.project-action-btn,
+.projects-view-all-btn,
+a.btn,
+button:not(.chatbot-close-btn, #go-to-top, #chatbot-toggle) {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+.btn:hover,
+.cta-button:hover,
+.project-action-btn:hover,
+.projects-view-all-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 24px rgb(0 113 227/25%);
+}
+.btn:active,
+.cta-button:active,
+.project-action-btn:active,
+.projects-view-all-btn:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 4px 12px rgb(0 113 227/15%);
+}
+html.dark .btn:hover,
+html.dark .project-action-btn:hover,
+html.dark .projects-view-all-btn:hover {
+  box-shadow: 0 12px 24px rgb(10 132 255/30%);
+}
+.hero-content {
+  animation: heroFadeIn 1s ease-out forwards;
+}
+.hero-image,
+.profile-image,
+img.rounded-full {
+  animation: heroFadeIn 1.2s ease-out 0.2s backwards;
+}
+.hero-title,
+.home-head h1 {
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
+}
+.hero-subtitle,
+.home-head h2,
+.home-head p {
+  animation: fadeInUp 0.8s ease-out 0.5s backwards;
+}
+.cta-buttons,
+.hero-buttons {
+  animation: fadeInUp 0.8s ease-out 0.7s backwards;
+}
+.award-card,
+.blog-card,
+.cert-card,
+.education-card,
+.experience-content,
+.publication-card,
+.recommendation-card,
+.showcase-project-card {
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.blog-card:hover,
+.showcase-project-card:hover {
+  transform: translateY(-8px) scale(1.01) perspective(1000px) rotateY(2deg);
+}
+.timeline-line {
+  position: relative;
+}
+.timeline-line::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform-origin: top;
+  transform: translateX(-50%) scaleY(0);
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, #0071e3, #2997ff);
+  animation: timelineProgress 1.5s ease-out forwards;
+}
+html.dark .timeline-line::before {
+  background: linear-gradient(180deg, #0a84ff, #58a6ff);
+}
+img[loading='lazy'] {
+  transition: opacity 0.4s ease-in-out;
+}
+img.loaded,
+img[loading='lazy'].loaded {
+  opacity: 1;
+}
+.animate-on-scroll.animate-in,
+.showcase-project-card.animate-in {
+  will-change: transform, opacity;
+}
+.animate-in {
+  animation-fill-mode: forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::after,
+  ::before {
+    animation-duration: 0.01ms ;
+    animation-iteration-count: 1 ;
+    scroll-behavior: auto ;
+  }
+  .animate-on-scroll,
+  .education-card,
+  .experience-content,
+  .hero-content,
+  .showcase-project-card,
+  .skill-badge,
+  section h2 {
+    animation: none ;
+    opacity: 1 ;
+    transform: none ;
+  }
+  *,
+  .btn:hover,
+  .nav-link:hover,
+  ::after,
+  ::before {
+    transition-duration: 0.01ms ;
+  }
+}
+
+@media print {
+  *,
+  ::after,
+  ::before {
+    animation: none ;
+    transition: none ;
+    opacity: 1 ;
+    transform: none ;
+  }
+}

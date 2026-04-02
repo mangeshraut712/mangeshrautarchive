@@ -103,8 +103,6 @@ class GitHubConnector:
         if self._is_cached(cache_key):
             return self._get_cached_data(cache_key)
 
-        url = f"{self.base_url}/users/{username}"
-
         try:
             data = await self._fetch_json(f"/users/{username}")
 

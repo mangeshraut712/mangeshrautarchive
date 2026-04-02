@@ -83,19 +83,42 @@ function initGlobalErrorHandlers() {
 }
 
 function initContactChatbotCTA(loader, root = document) {
-  const button = root.getElementById('contact-chatbot-cta');
-  if (!button || button.dataset.chatbotBound === 'true') return;
+  // Handle both old CTA button and new chat bubble buttons
+  const buttons = [
+    root.getElementById('contact-chatbot-cta'),
+    root.getElementById('contact-chat-btn'),
+    root.getElementById('footer-chat-btn')
+  ].filter(Boolean);
 
-  button.dataset.chatbotBound = 'true';
-  button.addEventListener('click', async () => {
-    await loader.load();
+  buttons.forEach(button => {
+    if (button.dataset.chatbotBound === 'true') return;
+    button.dataset.chatbotBound = 'true';
 
-    if (window.appleIntelligenceChatbot && typeof window.appleIntelligenceChatbot.ask === 'function') {
-      window.appleIntelligenceChatbot.ask('I want to contact Mangesh about a project opportunity.');
-      return;
-    }
+    button.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await loader.load();
 
-    root.getElementById('chatbot-toggle')?.click();
+      if (window.appleIntelligenceChatbot && typeof window.appleIntelligenceChatbot.ask === 'function') {
+        window.appleIntelligenceChatbot.ask('I want to contact Mangesh about a project opportunity.');
+        return;
+      }
+
+      // Toggle chatbot widget
+      const chatbotWidget = root.getElementById('chatbot-widget');
+      const chatbotToggle = root.getElementById('chatbot-toggle');
+      
+      if (chatbotWidget) {
+        chatbotWidget.classList.remove('hidden');
+        chatbotWidget.classList.add('flex');
+        // Focus on chat input if available
+        setTimeout(() => {
+          const chatInput = chatbotWidget.querySelector('input[type="text"], textarea');
+          if (chatInput) chatInput.focus();
+        }, 100);
+      } else if (chatbotToggle) {
+        chatbotToggle.click();
+      }
+    });
   });
 }
 
@@ -162,12 +185,26 @@ function initHashNavigationStabilizer(root = document) {
   }
 
   let pendingTimers = [];
+  let pendingInterval = null;
+  let interactionAbortController = null;
+  let pendingResizeObserver = null;
 
-  const clearPendingTimers = () => {
+  const clearPendingWork = () => {
     pendingTimers.forEach(timerId => {
       window.clearTimeout(timerId);
     });
     pendingTimers = [];
+
+    if (pendingInterval) {
+      window.clearInterval(pendingInterval);
+      pendingInterval = null;
+    }
+
+    interactionAbortController?.abort();
+    interactionAbortController = null;
+
+    pendingResizeObserver?.disconnect();
+    pendingResizeObserver = null;
   };
 
   const alignToHash = hashValue => {
@@ -182,20 +219,64 @@ function initHashNavigationStabilizer(root = document) {
     const targetTop = Math.max(0, section.getBoundingClientRect().top + window.scrollY - navOffset);
 
     if (Math.abs(window.scrollY - targetTop) > 18) {
+      const html = root.documentElement;
+      const previousInlineBehavior = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto';
       window.scrollTo({ top: targetTop, behavior: 'auto' });
+      requestAnimationFrame(() => {
+        html.style.scrollBehavior = previousInlineBehavior;
+      });
     }
   };
 
-  const scheduleAlignment = hashValue => {
-    clearPendingTimers();
+  const bindInteractionCancel = () => {
+    interactionAbortController?.abort();
+    interactionAbortController = new AbortController();
 
-    [0, 180, 700, 1400, 2400].forEach(delay => {
+    ['wheel', 'touchstart', 'mousedown', 'keydown'].forEach(eventName => {
+      window.addEventListener(eventName, clearPendingWork, {
+        once: true,
+        passive: eventName !== 'keydown',
+        capture: true,
+        signal: interactionAbortController.signal,
+      });
+    });
+  };
+
+  const scheduleAlignment = hashValue => {
+    clearPendingWork();
+
+    alignToHash(hashValue);
+    bindInteractionCancel();
+
+    if ('ResizeObserver' in window) {
+      pendingResizeObserver = new ResizeObserver(() => {
+        alignToHash(hashValue);
+      });
+
+      pendingResizeObserver.observe(root.documentElement);
+      if (root.body) {
+        pendingResizeObserver.observe(root.body);
+      }
+    }
+
+    pendingInterval = window.setInterval(() => {
+      alignToHash(hashValue);
+    }, 160);
+
+    [700, 1400, 2200, 3000].forEach(delay => {
       const timerId = window.setTimeout(() => {
         alignToHash(hashValue);
       }, delay);
 
       pendingTimers.push(timerId);
     });
+
+    pendingTimers.push(
+      window.setTimeout(() => {
+        clearPendingWork();
+      }, 3200)
+    );
   };
 
   window.addEventListener('hashchange', () => {

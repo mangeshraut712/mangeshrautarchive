@@ -1,4 +1,4 @@
-/* eslint-disable no-empty, no-unused-vars */ class BirthdayCelebration {
+class BirthdayCelebration {
   constructor(t = !1) {
     ((this.birthMonth = 12),
       (this.birthDay = 7),

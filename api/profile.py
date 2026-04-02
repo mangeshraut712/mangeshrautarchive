@@ -278,7 +278,7 @@ async def get_spotify_now_playing():
                     status_label="Now playing" if current_payload.get("is_playing") else "Paused on Spotify",
                 )
                 spotify_data["source"] = "spotify"
-                
+
                 # If actually playing on Spotify, prioritize it immediately
                 if spotify_data["isPlaying"]:
                     return spotify_data
@@ -290,15 +290,15 @@ async def get_spotify_now_playing():
         lastfm_payload = await fetch_lastfm_recent_track()
         if lastfm_payload:
             lastfm_payload["source"] = "lastfm"
-            
+
             # If Last.fm is actively playing, use it over a paused Spotify
             if lastfm_payload.get("isPlaying"):
                 return lastfm_payload
-                
+
             # If Spotify was playing recently/paused, use that over Last.fm recent
             if spotify_data:
                 return spotify_data
-                
+
             # Otherwise use Last.fm recent
             return lastfm_payload
     except Exception:
@@ -321,6 +321,7 @@ async def get_spotify_now_playing():
             "debug": {"spotify_configured": spotify_configured, "spotify_error": spotify_error}
         },
     )
+
 
 @app.get("/api/profile/github/activity")
 async def get_github_activity():

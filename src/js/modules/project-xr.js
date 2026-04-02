@@ -1,4 +1,4 @@
-/* eslint-disable no-empty, no-unused-vars */ class ProjectXR {
+class ProjectXR {
   constructor(e = document) {
     ((this.documentRef = e),
       (this.arSupported = !1),
