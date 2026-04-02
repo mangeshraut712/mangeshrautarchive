@@ -24,10 +24,10 @@ jobs:
     name: 🔍 Quality Gates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -60,7 +60,7 @@ jobs:
 
       - name: 📦 Upload QA artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chrome-qa-artifacts
           path: |
@@ -68,7 +68,7 @@ jobs:
             artifacts/lighthouse
 
       - name: 🐍 Python — lint with flake8
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - run: pip install flake8 && flake8 api/ --max-line-length=120 --ignore=E501,W503
@@ -82,10 +82,10 @@ jobs:
     needs: quality
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -129,10 +129,10 @@ jobs:
     needs: deploy
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -149,7 +149,7 @@ jobs:
 
       - name: Upload post-deploy QA artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: post-deploy-chrome-artifacts
           path: |
