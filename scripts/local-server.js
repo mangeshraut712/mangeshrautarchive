@@ -58,6 +58,43 @@ function buildProxyBody(req) {
   return typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
 }
 
+function buildDevApiFallback(req, error) {
+  const pathname = new URL(req.originalUrl, 'http://localhost').pathname;
+
+  if (pathname === '/api/profile/views') {
+    return {
+      status: 200,
+      body: {
+        success: false,
+        count: 0,
+        mode: String(req.query?.mode || 'get'),
+        page: String(req.query?.page || 'home'),
+        provider: 'dev-fallback',
+        message: `Profile views unavailable during local proxy fallback: ${error.message}`,
+      },
+    };
+  }
+
+  if (pathname === '/api/profile/spotify') {
+    return {
+      status: 200,
+      body: {
+        available: false,
+        isPlaying: false,
+        statusLabel: 'Unavailable',
+        song: 'Nothing playing',
+        artist: 'Local backend unavailable',
+        album: '',
+        albumArt: '',
+        trackUrl: 'https://open.spotify.com/',
+        source: 'spotify',
+      },
+    };
+  }
+
+  return null;
+}
+
 app.use('/api', async (req, res) => {
   const targetUrl = new URL(req.originalUrl, apiTarget);
 
@@ -85,6 +122,12 @@ app.use('/api', async (req, res) => {
 
     Readable.fromWeb(upstream.body).pipe(res);
   } catch (error) {
+    const fallback = buildDevApiFallback(req, error);
+    if (fallback) {
+      res.status(fallback.status).json(fallback.body);
+      return;
+    }
+
     res.status(502).json({
       success: false,
       detail: `Proxy request failed: ${error.message}`,

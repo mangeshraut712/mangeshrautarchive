@@ -86,27 +86,27 @@
     },
     {
       title: 'Stranger Things',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Stranger_Things_logo.png',
+      imageUrl: '',
       fallbackGradient: 'linear-gradient(160deg, #7c3aed 0%, #4c1d95 100%)',
     },
     {
       title: 'Queen of Tears',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/e/e2/Queen_of_Tears_poster.png',
+      imageUrl: '',
       fallbackGradient: 'linear-gradient(160deg, #db2777 0%, #831843 100%)',
     },
     {
       title: 'Taarak Mehta Ka Ooltah Chashmah',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/e/e2/Taarak_Mehta_Ka_Ooltah_Chashmah.jpg',
+      imageUrl: '',
       fallbackGradient: 'linear-gradient(160deg, #f59e0b 0%, #92400e 100%)',
     },
     {
       title: 'CID',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/b/b5/CID_%28Indian_TV_series%29.png',
+      imageUrl: '',
       fallbackGradient: 'linear-gradient(160deg, #475569 0%, #111827 100%)',
     },
     {
       title: 'Mahabharat',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/d/da/Mahabharat_2013_title.jpg',
+      imageUrl: '',
       fallbackGradient: 'linear-gradient(160deg, #d97706 0%, #7c2d12 100%)',
     },
   ].map(item => ({
@@ -120,31 +120,31 @@
   const MOVIES_DATA = [
     {
       title: 'F1',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/3/38/F1_%282025_film%29.png',
+      imageUrl: '',
     },
     {
       title: 'KGF',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/c/cc/K.G.F_Chapter_1_poster.jpg',
+      imageUrl: '',
     },
     {
       title: 'Vikram',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/9/93/Vikram_2022_poster.jpg',
+      imageUrl: '',
     },
     {
       title: '777 Charlie',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/1/19/777_Charlie_official_poster.jpg',
+      imageUrl: '',
     },
     {
       title: 'The Blind Side',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/6/60/Blind_side_poster.jpg',
+      imageUrl: '',
     },
     {
       title: 'The Social Network',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/8/8c/The_Social_Network_film_poster.png',
+      imageUrl: '',
     },
     {
       title: 'Dhurandhar',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/en/c/ce/Dhurandhar_poster.jpg',
+      imageUrl: '',
     },
   ].map(item => ({
     ...item,
@@ -204,10 +204,12 @@
       image.removeAttribute('src');
     });
 
-    image.src = item.imageUrl;
+    if (item.imageUrl) {
+      image.src = item.imageUrl;
 
-    if (image.complete && image.naturalWidth > 0) {
-      shell.classList.add('has-image');
+      if (image.complete && image.naturalWidth > 0) {
+        shell.classList.add('has-image');
+      }
     }
 
     const fallback = document.createElement('div');
