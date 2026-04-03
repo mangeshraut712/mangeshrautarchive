@@ -914,7 +914,7 @@ async def stream_openrouter_response(
     # Send typing indicator start
     yield json.dumps({"type": "typing", "status": "start"}) + "\n"
 
-    max_retries = 2
+    max_retries = 3
     retry_count = 0
     full_content = ""
     chunk_count = 0
@@ -922,7 +922,15 @@ async def stream_openrouter_response(
 
     while retry_count <= max_retries:
         if retry_count > 0:
-            print(f"🔄 Retrying stream (attempt {retry_count}/{max_retries})...")
+            # Exponential backoff with jitter: base_delay * 2^(attempt-1) + random jitter
+            base_delay = 1.0  # 1 second base
+            delay = base_delay * (2 ** (retry_count - 1)) + (
+                secrets.randbelow(100) / 100.0
+            )  # Add up to 1s jitter
+            print(
+                f"🔄 Retrying stream (attempt {retry_count}/{max_retries}) in {delay:.1f}s..."
+            )
+            await asyncio.sleep(delay)
             # Adjust messages to include what we already have if possible,
             # but usually for chat we just want to restart or continue if the API supports it.
             # OpenRouter doesn't easily support "continue", so we just retry the whole thing.
@@ -1038,7 +1046,12 @@ async def stream_openrouter_response(
 
             # If we reach here without return, the stream ended unexpectedly but without an exception
             retry_count += 1
-            await asyncio.sleep(0.5)
+            if retry_count <= max_retries:
+                base_delay = 0.5
+                delay = base_delay * (2 ** (retry_count - 1)) + (
+                    secrets.randbelow(50) / 100.0
+                )
+                await asyncio.sleep(delay)
 
         except (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) as e:
             print(f"⚠️ Stream connection error: {str(e)}")
@@ -1054,7 +1067,11 @@ async def stream_openrouter_response(
                     + "\n"
                 )
             else:
-                await asyncio.sleep(1)  # Wait before retry
+                base_delay = 1.0
+                delay = base_delay * (2 ** (retry_count - 1)) + (
+                    secrets.randbelow(100) / 100.0
+                )
+                await asyncio.sleep(delay)
         except Exception as e:
             print(f"❌ Critical stream error: {str(e)}")
             yield (
@@ -1064,37 +1081,53 @@ async def stream_openrouter_response(
 
 
 async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
-    """Non-streaming API call"""
+    """Non-streaming API call with retry"""
     if not OPENROUTER_API_KEY:
         raise Exception("API key not configured")
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(
-            API_URL,
-            headers={
-                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": SITE_URL,
-                "X-Title": SITE_TITLE,
-            },
-            json={
-                "model": model,
-                "messages": messages,
-                "temperature": 0.7,
-                "max_tokens": 1500,
-            },
-        )
-        response.raise_for_status()
-        data = response.json()
+    max_retries = 3
+    for attempt in range(max_retries + 1):
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    API_URL,
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json",
+                        "HTTP-Referer": SITE_URL,
+                        "X-Title": SITE_TITLE,
+                    },
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "temperature": 0.7,
+                        "max_tokens": 1500,
+                    },
+                )
+                response.raise_for_status()
+                data = response.json()
 
-        if not data.get("choices"):
-            raise Exception("Invalid response")
+                if not data.get("choices"):
+                    raise Exception("Invalid response")
 
-        return {
-            "answer": data["choices"][0]["message"]["content"].strip(),
-            "usage": data.get("usage"),
-            "model": data.get("model", model),
-        }
+                return {
+                    "answer": data["choices"][0]["message"]["content"].strip(),
+                    "usage": data.get("usage"),
+                    "model": data.get("model", model),
+                }
+        except (
+            httpx.RemoteProtocolError,
+            httpx.ReadError,
+            httpx.ReadTimeout,
+            httpx.HTTPStatusError,
+        ) as e:
+            if attempt == max_retries:
+                raise
+            delay = 1.0 * (2**attempt) + (secrets.randbelow(100) / 100.0)
+            print(f"⚠️ Non-stream API error, retrying in {delay:.1f}s: {str(e)}")
+            await asyncio.sleep(delay)
+        except Exception as e:
+            raise
 
 
 # API Routes
