@@ -116,65 +116,25 @@ html.dark .skill-category h3 {
 .skill-scroll-container:hover .skill-scroll-wrapper {
   animation-play-state: paused;
 }
-#skills-container .skill-badge,
-.skill-badge,
-.skill-badge-icon {
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  will-change: transform;
-  backface-visibility: hidden;
-}
-#skills-container .skill-badge,
 .skill-badge {
   flex-shrink: 0;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background-color: #fff ;
-  background-image: none ;
-  backdrop-filter: none ;
-  border-radius: 12px;
-  border: 1px solid rgb(0 0 0/10%);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 2px 8px rgb(0 0 0/5%);
-  height: 100%;
-  perspective: 1000px;
-  animation:
-    slideInBadge 0.6s ease-out forwards,
-    gentleFloat 8s ease-in-out infinite;
-}
-html.dark #skills-container .skill-badge,
-html.dark .skill-badge {
-  background-color: #000 ;
-  background-image: none ;
-  border-color: rgb(255 255 255/15%);
-  box-shadow: 0 2px 8px rgb(0 0 0/40%);
-}
-#skills-container .skill-badge:hover,
-.skill-badge:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 32px rgb(0 0 0/15%);
-  border-color: rgb(0 113 227/40%);
-  z-index: 10;
-  background-color: #fff ;
-}
-html.dark #skills-container .skill-badge:hover,
-html.dark .skill-badge:hover {
-  box-shadow: 0 12px 32px rgb(0 0 0/60%);
-  background-color: #000 ;
+  overflow: hidden;
+  animation: slideInBadge 0.6s ease-out forwards;
 }
 .skill-badge-icon {
   justify-content: center;
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid var(--apple-border-light);
+  background: #ffffff !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 1rem;
-  animation:
-    iconFloat 6s ease-in-out infinite,
-    iconBreath 4s ease-in-out infinite;
+}
+html.dark .skill-badge-icon {
+  background: #000000 !important;
+  border-color: var(--apple-border-dark);
 }
 .skill-badge-icon::before {
   content: '';

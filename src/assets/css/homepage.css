@@ -19,19 +19,10 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  background: var(--bg-primary);
-  background-image: none;
-  background-attachment: scroll;
-  padding-top: 100px;
+  /* background managed by sitewide-design-system.css */
+  padding-top: 140px;
   padding-bottom: 60px;
   contain: layout;
-}
-html.dark .home-hero {
-  background: #000;
-}
-html:not(.dark) .home-hero {
-  background: #fff;
-  padding-top: 140px;
 }
 .profile-image-wrapper {
   position: relative;
@@ -111,36 +102,15 @@ html.dark .hero-description {
   gap: 1rem;
   margin-bottom: 2rem;
 }
+/* hero-social-link managed by sitewide-design-system.css */
 .hero-social-link {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
   font-size: 1.25rem;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-.hero-social-link:hover {
-  background: #0071e3;
-  color: #fff;
-  border-color: #0071e3;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgb(0 113 227/40%);
-}
-html.dark .hero-social-link {
-  background: #1c1c1e;
-  border-color: rgb(255 255 255/10%);
-  color: #f5f5f7;
-}
-html.dark .hero-social-link:hover {
-  background: #0a84ff;
-  border-color: #0a84ff;
-  color: #fff;
 }
 .hero-cta {
   display: inline-flex;
@@ -262,12 +232,6 @@ html.dark .hero-stat-value {
 }
 .hero-stat-label {
   font-size: 0.875rem;
-  color: var(--text-secondary);
   font-weight: 500;
 }
-html.dark .hero-stat-label {
-  color: #86868b;
-}
-html:not(.dark) .hero-stat-label {
-  color: #6e6e73;
-}
+/* color managed by sitewide-design-system.css */

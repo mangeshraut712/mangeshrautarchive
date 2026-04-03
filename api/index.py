@@ -1277,14 +1277,22 @@ async def github_repos_proxy(
     """
     try:
         repos = await fetch_github_repos_cached(username)
-    except httpx.HTTPStatusError as exc:
-        if exc.response.status_code == 403:
-            raise api_error("GITHUB_RATE_LIMITED", "GitHub API rate limit hit. Try again in a few minutes.", 503)
-        if exc.response.status_code == 404:
-            raise api_error("GITHUB_USER_NOT_FOUND", f"GitHub user '{username}' not found.", 404)
-        raise api_error("GITHUB_ERROR", f"GitHub API returned {exc.response.status_code}.", 502)
-    except httpx.RequestError:
-        raise api_error("GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503)
+    except (httpx.HTTPStatusError, httpx.RequestError) as exc:
+        # Fallback to static data if GitHub is unreachable or rate-limited
+        print(f"⚠️ GitHub API failed (falling back to static projects): {str(exc)}")
+        static_projects = []
+        for p in PORTFOLIO_DATA.get("projects", []):
+            static_projects.append({
+                "name": p.get("name"),
+                "full_name": f"{username}/{p.get('name', '').replace(' ', '-')}",
+                "description": p.get("achievements"),
+                "html_url": f"https://github.com/{username}",
+                "language": p.get("tech", [""])[0] if p.get("tech") else "Unknown",
+                "stargazers_count": 0,
+                "fork": False,
+                "updated_at": datetime.now().isoformat()
+            })
+        return static_projects
 
     # Sort
     sort_key = {"updated": "pushed_at", "created": "created_at", "stars": "stargazers_count"}.get(sort, "pushed_at")

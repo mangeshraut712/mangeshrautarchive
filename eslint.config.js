@@ -9,6 +9,7 @@ export default [
       'dist/**',
       'build/**',
       'node_modules/**',
+      'venv/**',
       'src/assets/**',
       'src/js/core/chat.js',
       'src/js/core/script.js',

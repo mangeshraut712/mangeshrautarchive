@@ -1,24 +1,6 @@
 #experience {
-  background: #fff ;
-  padding: 4rem 0 ;
-}
-html.dark #experience {
-  background: #000 ;
-}
-#experience h2,
-html.dark #experience h2 {
-  -webkit-text-fill-color: transparent ;
-  background-clip: text ;
-}
-#experience h2 {
-  font-size: clamp(2rem, 4vw, 3rem) ;
-  font-weight: 800 ;
-  text-align: center ;
-  margin-bottom: 3rem ;
-  background: linear-gradient(135deg, #0071e3, #2997ff) ;
-}
-html.dark #experience h2 {
-  background: linear-gradient(135deg, #58a6ff, #79c0ff) ;
+  /* Common background and padding now managed by sitewide-design-system.css */
+  scroll-margin-top: 100px;
 }
 .experience-timeline {
   max-width: 1000px;
@@ -94,59 +76,30 @@ html.dark .timeline-section-header h3 {
   border-color: rgb(255 255 255/15%);
 }
 .experience-content {
-  background: #fff ;
-  border: 1px solid rgb(0 0 0/10%) ;
-  border-radius: 20px ;
-  padding: 2rem ;
-  box-shadow: 0 4px 24px rgb(0 0 0/5%) ;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ;
-  position: relative;
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  padding: 2rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 html.dark .experience-content {
-  background: #000 ;
-  border-color: rgb(255 255 255/15%) ;
-  box-shadow: 0 4px 24px rgb(0 0 0/40%) ;
+  background: #000000 !important;
+  border-color: rgba(255,255,255,0.15) !important;
 }
-.experience-content:hover {
-  transform: translateX(8px) ;
-  box-shadow: 0 16px 48px rgb(0 0 0/10%) ;
-  border-color: rgb(0 113 227/30%) ;
-}
-html.dark .experience-content:hover {
-  box-shadow: 0 20px 60px rgb(0 0 0/60%) ;
-  border-color: rgb(41 151 255/40%) ;
-}
-.experience-content h3.text-xl {
-  color: #000 ;
-  font-size: 1.5rem ;
-  margin-bottom: 0.25rem ;
-  font-weight: 700 ;
-}
-html.dark .experience-content h3.text-xl {
-  color: #fff ;
-}
-.experience-content .text-accent,
+
 .experience-date-badge {
-  color: #0071e3 ;
-  font-weight: 600 ;
-  font-size: 1.1rem ;
-  margin-bottom: 1rem ;
-  display: block ;
-}
-.experience-date-badge {
-  background: rgb(0 113 227/10%) ;
-  border-radius: 100px ;
-  padding: 0.5rem 1rem ;
-  font-size: 0.85rem ;
-  display: inline-block ;
-  margin-bottom: 1.5rem ;
-}
-html.dark .experience-content .text-accent {
-  color: #58a6ff ;
+  color: var(--apple-accent) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: #ffffff !important;
+  border: 1px solid var(--apple-border-light) !important;
+  border-radius: 100px;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  margin-bottom: 1.5rem;
 }
 html.dark .experience-date-badge {
-  background: rgb(41 151 255/15%) ;
-  color: #58a6ff ;
+  background: #000000 !important;
+  border-color: var(--apple-border-dark) !important;
 }
 .experience-content ul {
   margin-top: 1rem ;
@@ -194,16 +147,16 @@ html.dark .experience-content li svg {
   margin-top: 1.5rem ;
 }
 .experience-tag {
-  background: #f5f5f7 ;
-  color: #1d1d1f ;
-  border: 1px solid rgb(0 0 0/5%) ;
-  padding: 0.4rem 0.8rem ;
-  font-size: 0.8rem ;
-  border-radius: 100px ;
-  font-weight: 500 ;
+  background: #ffffff !important;
+  color: var(--text-color-primary) !important;
+  border: 1px solid var(--apple-border-light) !important;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 100px;
+  font-weight: 500;
 }
 html.dark .experience-tag {
-  background: #1c1c1e ;
-  color: #f5f5f7 ;
-  border-color: rgb(255 255 255/10%) ;
+  background: #000000 !important;
+  color: #f5f5f7 !important;
+  border-color: var(--apple-border-dark) !important;
 }

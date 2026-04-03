@@ -94,7 +94,7 @@
     html.dark .home-hero{background:#000;padding-top:100px}
     .hero-layout-wrapper{display:flex;flex-direction:column;align-items:center}
     .profile-image-wrapper{position:relative;width:clamp(136px,11vw,168px);height:clamp(136px,11vw,168px);margin-bottom:28px}
-    #home .profile-image{width:100%;height:100%;object-fit:cover;border-radius:25%;box-shadow:0 16px 40px rgb(0 113 227/.22),0 2px 10px rgb(0 0 0/.1);position:relative;z-index:2}
+    #home .profile-image{width:100%;height:100%;object-fit:cover;border-radius:25%;box-shadow:0 8px 32px rgba(0,0,0,0.1);position:relative;z-index:2}
     .hero-name{font-size:clamp(1rem,1vw + .5rem,1.25rem);font-weight:600;margin-bottom:.5rem;text-align:center;letter-spacing:2px;text-transform:uppercase;color:#0071e3}
     .hero-title{font-size:clamp(1.5rem,2vw + .75rem,2.25rem);font-weight:700;margin-bottom:1.25rem;text-align:center;line-height:1.2;letter-spacing:-.02em;max-width:700px;margin-left:auto;margin-right:auto;color:#1d1d1f}
     html.dark .hero-name{color:#2997ff}
@@ -124,10 +124,10 @@
     /* Profile ring placeholder */
     .profile-ring{position:absolute;inset:-8px;border-radius:28%}
 
-    /* Vibe coder badge */
+    /* Vibe coder badge - Solid primary colors */
     .vibe-coder-badge-wrapper{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;text-align:center;margin-top:.5rem}
-    .vibe-coder-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;border-radius:980px;font-size:.75rem;font-weight:600;letter-spacing:.02em;background:rgb(0 113 227 / 8%);color:#0071e3;border:1px solid rgb(0 113 227 / 14%);box-shadow:0 8px 20px rgb(0 113 227 / 8%)}
-    html.dark .vibe-coder-badge{background:rgb(41 151 255 / 12%);color:#5ac8fa;border-color:rgb(41 151 255 / 24%);box-shadow:0 10px 24px rgb(0 0 0 / 24%)}
+    .vibe-coder-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;border-radius:980px;font-size:.75rem;font-weight:600;letter-spacing:.02em;background:#0071e3;color:#fff;border:1px solid transparent;box-shadow:none}
+    html.dark .vibe-coder-badge{background:#0a84ff;color:#fff;border-color:transparent;box-shadow:none}
 
     /* Current section compact override */
     #about .now-activity-grid{align-items:start}
@@ -254,7 +254,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   </noscript>
   <link rel="stylesheet" href="assets/css/global-improvements.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/sitewide-design-system.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/animations.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260401-navbar3" media="print" onload="this.media='all'" />
@@ -280,6 +279,7 @@
   <link rel="stylesheet" href="assets/css/live-activity.css?v=20260401-compact2" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/spotify-widget.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/apple-stability-fixes.css?v=20260402-final-design-v2" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css" />
   <link rel="stylesheet" href="assets/css/contact-override.css" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
@@ -298,6 +298,9 @@
       <div class="search-input-wrapper">
         <i class="fas fa-search search-icon"></i>
         <input type="text" id="search-input" placeholder="Search" autocomplete="off">
+        <button id="search-clear" class="search-clear-btn" aria-label="Clear search">
+          <i class="fas fa-times-circle"></i>
+        </button>
         <button id="search-close" class="premium-close-btn" aria-label="Close search">
           <i class="fas fa-times"></i>
         </button>

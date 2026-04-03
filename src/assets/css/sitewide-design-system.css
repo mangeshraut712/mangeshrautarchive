@@ -1,126 +1,118 @@
-.about-btn,
-.btn,
-.contact-submit,
-.cta-button,
-.download-btn,
-.hero-btn,
-.project-link,
-.read-more-btn,
-.submit-btn,
-a.button,
-button {
-  background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%) ;
-  border: 0 ;
-  font-weight: 600 ;
-  border-radius: 12px ;
-  padding: 0.75rem 1.5rem ;
-  transition: all 0.3s ease ;
-  box-shadow: 0 4px 16px rgb(0 113 227/30%) ;
+/* 
+   Apple Premium Design System - Consolidated Core v2
+   This file standardizes all UI elements across the portfolio.
+   It replaces thousands of lines of duplicated styles for cards, buttons, and sections.
+*/
+
+:root {
+  --apple-accent: #0071e3;
+  --apple-accent-hover: #0077ed;
+  --apple-bg-light: #ffffff;
+  --apple-bg-dark: #000000;
+  --apple-card-bg-light: #ffffff;
+  --apple-card-bg-dark: #000000;
+  --apple-border-light: rgba(0, 0, 0, 0.1);
+  --apple-border-dark: rgba(255, 255, 255, 0.15);
+  --apple-shadow-light: 0 4px 24px rgba(0, 0, 0, 0.04);
+  --apple-shadow-dark: 0 0 0 transparent; /* No shadow to keep it solid and clean */
+  --apple-radius: 20px;
+  --apple-radius-button: 12px;
 }
-.about-btn,
-.contact-submit,
-.cta-button,
-.download-btn,
-.hero-btn,
-.project-link,
-.read-more-btn,
-.submit-btn,
-a.button,
-html.dark .award-card h3,
-html.dark .card h3,
-html.dark .contact-card h3,
-html.dark .contact-form-card h3,
-html.dark .education-card h3,
-html.dark .experience-card h3,
-html.dark .publication-card h3,
-html.dark .skill-card h3 {
-  color: #fff ;
-}
-.about-btn:hover,
-.btn:hover,
-.contact-submit:hover,
-.cta-button:hover,
-.download-btn:hover,
-.hero-btn:hover,
-.project-link:hover,
-.read-more-btn:hover,
-.submit-btn:hover,
-a.button:hover,
-button:hover {
-  background: linear-gradient(135deg, #0077ed 0, #2997ff 100%) ;
-  transform: translateY(-2px) ;
-  box-shadow: 0 8px 24px rgb(0 113 227/40%) ;
-}
-.btn-danger,
-.btn-error,
-.btn-red {
-  background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%) ;
-}
-.support-coffee-btn {
-  border: 0 ;
-  font-weight: 700 ;
-  box-shadow: 0 4px 12px rgb(255 214 10/30%) ;
-  border-radius: 12px ;
-  padding: 0.75rem 1.5rem ;
-  display: inline-flex ;
-  align-items: center ;
-  justify-content: center ;
-  transition: all 0.3s ease ;
-}
-.support-coffee-btn:hover {
-  transform: translateY(-2px) ;
-  box-shadow: 0 6px 16px rgb(255 214 10/40%) ;
-}
-.support-coffee-btn,
-html.dark .support-coffee-btn {
-  background: #ffd60a ;
-  color: #000 ;
-}
-.support-coffee-btn:hover,
-html.dark .support-coffee-btn:hover {
-  background: #fd3 ;
-  color: #000 ;
-}
-::selection,
-html.dark ::selection {
-  background-color: rgb(0 113 227/30%) ;
-  color: inherit ;
-}
-html.dark ::selection {
-  background-color: rgb(41 151 255/30%) ;
-}
+
+/* 0. Global Typography & Container Standards */
 body {
-  caret-color: transparent ;
+  color: var(--text-color-primary);
+  background-color: var(--apple-bg-light);
 }
-[contenteditable],
-input,
-textarea {
-  caret-color: #0071e3 ;
+
+html.dark body {
+  background-color: var(--apple-bg-dark);
 }
-html.dark [contenteditable],
-html.dark input,
-html.dark textarea {
-  caret-color: #2997ff ;
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color-primary) !important;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
-.card {
-  background: #fff ;
-  color: #000 ;
-  border: 1px solid rgb(0 0 0/10%) ;
-  box-shadow: 0 4px 24px rgb(0 0 0/5%) ;
-  border-radius: 20px ;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ;
+
+.section-subtitle, 
+.text-secondary {
+  color: var(--text-color-secondary) !important;
+  margin-bottom: 2.5rem;
+  max-width: 800px;
 }
-.award-card,
-.blog-card,
-.certification-card,
-.contact-card,
-.contact-form-card,
-.education-card,
-.experience-card,
-.publication-card,
-.recommendation-card {
-  backdrop-filter: none ;
+
+.container, 
+.container-fluid {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 20px !important;
 }
+
+/* 1. Global Section Behavior */
+::selection {
+  background-color: rgba(0, 113, 227, 0.2);
+  color: inherit;
+}
+
+html.dark ::selection {
+  background-color: rgba(41, 151, 255, 0.3);
+}
+
+/* Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 113, 227, 0.4);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline-color: var(--apple-accent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section, 
+footer {
+  background-color: var(--apple-bg-light) !important;
+  padding: 5rem 0 !important;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+html.dark section,
+html.dark footer {
+  background-color: var(--apple-bg-dark) !important;
+}
+
+/* 2. Standard Card Component */
+.card,
+.about-card,
+.about-highlight-card,
 .award-card,
 .blog-card,
 .certification-card,
@@ -130,372 +122,380 @@ html.dark textarea {
 .experience-card,
 .publication-card,
 .recommendation-card,
-.stat-card {
-  background: #fff ;
-  color: #000 ;
-  border: 1px solid rgb(0 0 0/10%) ;
-  box-shadow: 0 4px 24px rgb(0 0 0/5%) ;
-  border-radius: 20px ;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ;
-}
-.skill-card {
-  backdrop-filter: none ;
-}
-.skill-badge,
-.skill-card {
-  background: #fff ;
-  color: #000 ;
-  border: 1px solid rgb(0 0 0/10%) ;
-  box-shadow: 0 4px 24px rgb(0 0 0/5%) ;
-  border-radius: 20px ;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ;
-}
-.about-card {
-  backdrop-filter: none ;
-}
-.about-card,
-.about-highlight-card,
-.detail-card,
-.dropdown-menu,
-.education-content,
+.skill-card,
+.stat-card,
 .experience-content,
-.feature-card,
-.glass,
-.glass-card,
-.info-card,
-.modal-content,
-.overlay-card,
-.panel,
-.popup-content,
-.pricing-card,
-.service-card,
-.sidebar,
-.summary-card,
-.team-card,
-.testimonial-card,
-.timeline-content {
-  background: #fff ;
-  color: #000 ;
-  border: 1px solid rgb(0 0 0/10%) ;
-  box-shadow: 0 4px 24px rgb(0 0 0/5%) ;
-  border-radius: 20px ;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) ;
+.education-content,
+.skill-badge {
+  background: var(--apple-card-bg-light) !important;
+  border: 1px solid var(--apple-border-light) !important;
+  border-radius: var(--apple-radius) !important;
+  box-shadow: var(--apple-shadow-light) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  color: var(--text-color-primary) !important;
 }
-.detail-card,
-.dropdown-menu,
-.feature-card,
-.glass,
-.glass-card,
-.info-card,
-.modal-content,
-.overlay-card,
-.panel,
-.popup-content,
-.pricing-card,
-.service-card,
-.sidebar,
-.summary-card,
-.team-card,
-.testimonial-card,
-.timeline-content {
-  backdrop-filter: none ;
-}
-html.dark .about-card,
-html.dark .about-highlight-card,
-html.dark .award-card,
-html.dark .blog-card,
+
 html.dark .card,
-html.dark .certification-card,
-html.dark .contact-card,
-html.dark .contact-form-card,
-html.dark .detail-card,
-html.dark .dropdown-menu,
-html.dark .education-card,
-html.dark .education-content,
-html.dark .experience-card,
+html.dark [class*="-card"],
 html.dark .experience-content,
-html.dark .feature-card,
-html.dark .glass,
-html.dark .glass-card,
-html.dark .info-card,
-html.dark .modal-content,
-html.dark .overlay-card,
-html.dark .panel,
-html.dark .popup-content,
-html.dark .pricing-card,
-html.dark .publication-card,
-html.dark .recommendation-card,
-html.dark .service-card,
-html.dark .sidebar,
+html.dark .education-content,
 html.dark .skill-badge,
-html.dark .skill-card,
-html.dark .stat-card,
-html.dark .summary-card,
-html.dark .team-card,
-html.dark .testimonial-card,
-html.dark .timeline-content {
-  background: #000 ;
-  color: #fff ;
-  border: 1px solid rgb(255 255 255/15%) ;
-  box-shadow: 0 4px 24px rgb(0 0 0/40%) ;
+html.dark .about-card,
+html.dark .about-highlight-card {
+  background: #000000 !important;
+  border-color: var(--apple-border-dark) !important;
+  box-shadow: none !important;
+  color: #f5f5f7 !important;
 }
-.about-card:hover,
-.award-card:hover,
-.blog-card:hover,
+
+html:not(.dark) .card,
+html:not(.dark) [class*="-card"],
+html:not(.dark) .experience-content,
+html:not(.dark) .education-content,
+html:not(.dark) .skill-badge {
+  background: #ffffff !important;
+  border-color: var(--apple-border-light) !important;
+  box-shadow: var(--apple-shadow-light) !important;
+  color: #1d1d1f !important;
+}
+
+[class*="-card"]:hover,
 .card:hover,
-.certification-card:hover,
-.contact-card:hover,
-.contact-form-card:hover,
-.education-card:hover,
-.experience-card:hover,
-.publication-card:hover,
-.recommendation-card:hover,
-.skill-card:hover,
-.stat-card:hover,
-.timeline-content:hover {
-  transform: translateY(-6px) ;
-  box-shadow: 0 16px 48px rgb(0 0 0/10%) ;
-  border-color: rgb(0 113 227/30%) ;
+.experience-content:hover,
+.education-content:hover,
+.skill-badge:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--apple-shadow-light) !important;
+  border-color: var(--apple-accent) !important;
+  border-width: 2px !important;
 }
-html.dark .about-card:hover,
-html.dark .award-card:hover,
-html.dark .blog-card:hover,
+
+html.dark [class*="-card"]:hover,
 html.dark .card:hover,
-html.dark .certification-card:hover,
-html.dark .contact-card:hover,
-html.dark .contact-form-card:hover,
-html.dark .education-card:hover,
-html.dark .experience-card:hover,
-html.dark .publication-card:hover,
-html.dark .recommendation-card:hover,
-html.dark .skill-card:hover,
-html.dark .stat-card:hover,
-html.dark .timeline-content:hover {
-  box-shadow: 0 20px 60px rgb(0 0 0/60%) ;
-  border-color: rgb(41 151 255/40%) ;
+html.dark .experience-content:hover,
+html.dark .skill-badge:hover {
+  box-shadow: var(--apple-shadow-dark) !important;
+  border-color: var(--apple-accent) !important;
+  border-width: 2px !important;
 }
-.award-card h3,
-.card h3,
-.contact-card h3,
-.contact-form-card h3,
-.education-card h3,
-.experience-card h3,
-.publication-card h3,
-.skill-card h3 {
-  color: #000 ;
+
+/* 2.1 Compact Components Standards */
+.skill-badge {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  padding: 0.65rem 1.25rem !important;
+  gap: 0.75rem !important;
+  min-width: 180px !important;
+  max-width: 240px !important;
+  height: auto !important;
+  border-radius: 14px !important;
 }
-.award-card p,
-.card p,
-.contact-card p,
-.contact-form-card p,
-.experience-card p,
-.publication-card p {
-  color: #1d1d1f ;
+
+.blog-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
 }
-.education-card p,
-html.dark .award-card p,
-html.dark .card p,
-html.dark .contact-card p,
-html.dark .contact-form-card p,
-html.dark .experience-card p,
-html.dark .publication-card p {
-  color: #f5f5f7 ;
+
+.blog-card-content {
+  padding: 1.25rem !important;
 }
-.contact-input,
-.contact-textarea,
+
+.contact-card {
+  padding: 1.5rem !important;
+  border-radius: 20px !important;
+}
+
+/* 3. Global Button Standards */
+.btn,
+.about-btn,
+.contact-submit,
+.cta-button,
+.download-btn,
+.hero-btn,
+.project-link,
+.read-more-btn,
+.submit-btn,
+.blog-read-btn,
+.hero-cta,
+.talk-button,
+.calendar-button,
+a.button,
+button:not(.search-toggle):not(.theme-toggle):not(.menu-toggle-button):not(.support-button) {
+  background: linear-gradient(135deg, #0071e3, #0a84ff) !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  font-weight: 600 !important;
+  border-radius: var(--apple-radius-button) !important;
+  padding: 0.85rem 1.75rem !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.25) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+/* Specific Support Button Brand Logic */
+.support-button.coffee { background: linear-gradient(135deg, #ffdd00, #ffaa00) !important; color: #000 !important; }
+.support-button.paypal { background: linear-gradient(135deg, #003087, #001a5c) !important; color: #fff !important; }
+.support-button.cashapp { background: linear-gradient(135deg, #00d632, #00a824) !important; color: #fff !important; }
+.support-button:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(0,0,0,0.2) !important; }
+
+.btn:hover,
+[class*="-btn"]:hover,
+[class*="-button"]:not(.search-toggle):not(.theme-toggle):hover,
+.contact-submit:hover,
+.cta-button:hover,
+a.button:hover {
+  background: linear-gradient(135deg, #0077ed, #2997ff) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.btn-secondary,
+.ghost-button,
+.talk-button.secondary,
+.calendar-button.secondary {
+  background: transparent !important;
+  border: 1px solid var(--apple-accent) !important;
+  color: var(--apple-accent) !important;
+  box-shadow: none !important;
+}
+
+html.dark .btn-secondary,
+html.dark .ghost-button,
+html.dark .talk-button.secondary {
+  color: #2997ff !important;
+  border-color: #2997ff !important;
+}
+
+.btn-secondary:hover,
+.ghost-button:hover,
+.talk-button.secondary:hover {
+  background: rgba(0, 113, 227, 0.08) !important;
+  color: var(--apple-accent-hover) !important;
+}
+
+/* Social & Hero Icons */
+.hero-social-link,
+.contact-social-wrapper .icon {
+  background: var(--apple-bg-light) !important;
+  border: 1px solid var(--apple-border-light) !important;
+  box-shadow: var(--apple-shadow-light) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.dark .hero-social-link,
+html.dark .contact-social-wrapper .icon {
+  background: #1c1c1e !important;
+  border-color: var(--apple-border-dark) !important;
+  box-shadow: var(--apple-shadow-dark) !important;
+}
+
+.hero-social-link:hover,
+.contact-social-wrapper .icon:hover {
+  transform: translateY(-4px) scale(1.05) !important;
+  background: var(--apple-accent) !important;
+  border-color: var(--apple-accent) !important;
+  color: #ffffff !important;
+}
+
+.hero-social-link:hover i,
+.contact-social-wrapper .icon:hover a,
+.contact-social-wrapper .icon:hover i {
+  color: #ffffff !important;
+}
+
+/* 4. Unified Input Styles */
 input,
-textarea {
-  background-color: #f5f5f7 ;
-  color: #000 ;
-  border: 1px solid rgb(0 0 0/10%) ;
+textarea,
+select {
+  background-color: #f5f5f7 !important;
+  color: var(--text-color-primary) !important;
+  font-family: inherit !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.2s ease !important;
 }
-html.dark .contact-input,
-html.dark .contact-textarea,
+
 html.dark input,
-html.dark textarea {
-  background-color: #1c1c1e ;
-  color: #fff ;
-  border: 1px solid rgb(255 255 255/10%) ;
+html.dark textarea,
+html.dark select {
+  background-color: #1c1c1e !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
+
 input:focus,
 textarea:focus {
-  background-color: #fff ;
-  border-color: #0071e3 ;
-  box-shadow: 0 0 0 4px rgb(0 113 227/10%) ;
+  background-color: #ffffff !important;
+  border-color: var(--apple-accent) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15) !important;
 }
+
 html.dark input:focus,
 html.dark textarea:focus {
-  background-color: #000 ;
-  border-color: #2997ff ;
-  box-shadow: 0 0 0 4px rgb(41 151 255/15%) ;
+  background-color: #000000 !important;
+  box-shadow: 0 0 0 4px rgba(41, 151, 255, 0.2) !important;
 }
-.container,
-.page-wrapper,
-body,
-footer,
-header,
-html,
-main,
-section {
-  background: #fff ;
+
+/* 5. Typography */
+.text-secondary,
+.hero-stat-label,
+.contact-description,
+.calendar-description {
+  color: var(--text-color-secondary) !important;
 }
-html.dark,
-html.dark .container,
-html.dark .page-wrapper,
-html.dark body,
-html.dark footer,
-html.dark header,
-html.dark main,
-html.dark section {
-  background: #000 ;
+
+.text-apple-blue,
+.hero-name {
+  color: var(--apple-accent) !important;
 }
-html.dark footer .wrapper,
-html.dark ul.wrapper {
-  background: 0 0 ;
+
+html.dark .text-apple-blue,
+html.dark .hero-name {
+  color: #2997ff !important;
 }
-section:nth-child(even) {
-  background: #fff ;
+
+/* Sections */
+#about, #experience, #skills, #education, #publications, #awards, #recommendations, #certifications, #blog, #contact {
+    scroll-margin-top: 80px;
 }
-html.dark section:nth-child(even) {
-  background: #000 ;
-}
-#search-toggle,
-#theme-toggle,
-.search-toggle,
-.theme-toggle-nav {
-  display: flex ;
-}
-#search-toggle,
-#theme-toggle,
-.menu-toggle-button,
-.search-toggle,
-.theme-toggle-nav {
-  background: 0 0 ;
-  box-shadow: none ;
-  padding: 0 ;
-  border: 1px solid rgb(0 0 0/10%) ;
-  color: inherit ;
-  width: 32px ;
-  height: 32px ;
-  align-items: center ;
-  justify-content: center ;
-}
-html.dark #search-toggle,
-html.dark #theme-toggle,
-html.dark .menu-toggle-button,
-html.dark .search-toggle,
-html.dark .theme-toggle-nav {
-  border-color: rgb(255 255 255/20%) ;
-  color: #fff ;
-}
-.search-toggle:hover,
-.theme-toggle-nav:hover {
-  background: rgb(0 0 0/5%) ;
-  transform: none ;
-}
-html.dark .search-toggle:hover,
-html.dark .theme-toggle-nav:hover {
-  background: rgb(255 255 255/10%) ;
-}
-body,
-div,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-li,
-p,
-span {
-  color: #1d1d1f;
-}
-html.dark body,
-html.dark div,
-html.dark h1,
-html.dark h2,
-html.dark h3,
-html.dark h4,
-html.dark h5,
-html.dark h6,
-html.dark li,
-html.dark p,
-html.dark span {
-  color: #f5f5f7;
-}
-.link,
-.text-blue,
-a {
-  color: #0071e3 ;
-}
-html.dark .link,
-html.dark .text-blue,
-html.dark a {
-  color: #2997ff ;
-}
-.badge,
-.btn,
+
+/* 6. Final Solid Monochrome Override (Enforcing Strict #FFFFFF / #000000) */
+/* This block explicitly overrides all legacy grey/off-white background tokens for minor components */
+
+/* General Tags, Badges, and Small Insets */
+.skill-icon-container, 
+.progress-bar-bg,
+.experience-type-header,
+.project-stat,
 .project-tag,
-button {
-  color: #fff ;
+.ai-summary-box,
+.apple-tldr,
+.dream-item,
+.car-item,
+.reminder-tag,
+.hero-stat-item,
+.experience-date-badge,
+.publication-tag,
+.award-date,
+.reading-list-btn,
+.now-badge,
+.activity-status,
+.certification-logo-container,
+.project-footer,
+.form-group input,
+.form-group textarea,
+.search-input-wrapper,
+.portfolio-views-chip,
+.spotify-compact,
+.activity-card,
+.about-live-card,
+.about-image-badge,
+.shelf-cover,
+.sport-emoji,
+.sport-item,
+.spotify-status-row,
+.spotify-content {
+    background-color: var(--apple-bg-light) !important;
+    border: 1px solid var(--apple-border-light) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
-.date,
-.meta,
-.text-muted,
-.text-secondary {
-  color: #6e6e73 ;
+
+html.dark .skill-icon-container, 
+html.dark .progress-bar-bg,
+html.dark .experience-type-header,
+html.dark .project-stat,
+html.dark .project-tag,
+html.dark .ai-summary-box,
+html.dark .apple-tldr,
+html.dark .dream-item,
+html.dark .car-item,
+html.dark .reminder-tag,
+html.dark .hero-stat-item,
+html.dark .experience-date-badge,
+html.dark .publication-tag,
+html.dark .award-date,
+html.dark .reading-list-btn,
+html.dark .now-badge,
+html.dark .activity-status,
+html.dark .certification-logo-container,
+html.dark .project-footer,
+html.dark .form-group input,
+html.dark .form-group textarea,
+html.dark .search-input-wrapper,
+html.dark .portfolio-views-chip,
+html.dark .spotify-compact,
+html.dark .activity-card,
+html.dark .about-live-card,
+html.dark .about-image-badge,
+html.dark .shelf-cover,
+html.dark .sport-emoji,
+html.dark .sport-item,
+html.dark .spotify-status-row,
+html.dark .spotify-content {
+    background-color: var(--apple-bg-dark) !important;
+    border: 1px solid var(--apple-border-dark) !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
-html.dark .date,
-html.dark .meta,
-html.dark .text-muted,
-html.dark .text-secondary {
-  color: #86868b ;
+
+/* Ensure progress bar fills and active badges remain visible but solid */
+.progress-bar-fill {
+    background: var(--apple-accent) !important;
 }
-.container,
-.page-wrapper,
-body,
-footer,
-header,
-html,
-main,
-section {
-  background-color: #fff ;
+
+.skill-level-text, .skill-name {
+    color: var(--text-color-primary) !important;
 }
-html.dark,
-html.dark .container,
-html.dark .page-wrapper,
-html.dark body,
-html.dark footer,
-html.dark header,
-html.dark main,
-html.dark section {
-  background-color: #000 ;
+
+/* Remove all residual gradients or glow effects on ANY pseudo-elements or specific classes */
+.hero-glow,
+.card-glow,
+.background-glow,
+.spotlight,
+.glow-effect,
+body::before,
+body::after,
+main::before,
+main::after,
+#home::before,
+#home::after,
+.profile-ring {
+    background: none !important;
+    box-shadow: none !important;
+    display: none !important;
+    content: none !important;
+    border: none !important;
 }
-.about-highlight-card,
-.card,
-.education-content,
-.experience-content,
-.skill-badge,
-.stat-card {
-  background-color: #fff ;
-  backdrop-filter: none ;
+
+/* Fix Hero section specific residuals */
+.hero-stat-item {
+    padding: 0.5rem 1rem !important;
+    border-radius: 12px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-html.dark .about-highlight-card,
-html.dark .card,
-html.dark .education-content,
-html.dark .experience-content,
-html.dark .skill-badge,
-html.dark .stat-card {
-  background-color: #000 ;
-  backdrop-filter: none ;
+
+/* Final cleanup for any off-whites showing in light mode cards */
+[class*="-card"], .card, .experience-content, .education-content {
+    background-color: #ffffff !important;
 }
-section {
-  border: 0 ;
-  outline: 0 ;
-  box-shadow: none ;
-  margin: 0 ;
-}
-section::after,
-section::before {
-  display: none ;
+
+/* Final cleanup for any dark-greys showing in dark mode cards */
+html.dark [class*="-card"], html.dark .card, html.dark .experience-content, html.dark .education-content {
+    background-color: #000000 !important;
 }

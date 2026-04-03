@@ -54,7 +54,7 @@
     "axios": "^1.7.9",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "http-proxy-middleware": "^3.0.3",
     "limiter": "^2.1.0"
   },

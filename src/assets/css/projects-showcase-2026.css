@@ -40,13 +40,11 @@ html.dark #projects .github-graph-svg {
   opacity: 0.9;
 }
 #projects {
-  background: var(--project-bg-light) ;
   display: block ;
   min-height: auto ;
+  scroll-margin-top: 100px;
 }
-html.dark #projects {
-  background: var(--project-bg-dark) ;
-}
+/* background managed by sitewide-design-system.css */
 #projects .container {
   min-width: 0;
 }
@@ -205,13 +203,13 @@ html.dark #projects .proj-search-input::placeholder {
   padding: clamp(0.95rem, 1.6vw, 1.25rem);
   border-radius: 20px;
   border: 1px solid var(--project-border-light);
-  background: linear-gradient(165deg, #fff 0, #f8fbff 100%);
-  box-shadow: 0 14px 30px rgb(15 23 42/8%);
+  background: #ffffff !important;
+  box-shadow: none !important;
 }
 html.dark #projects .projects-activity-overview {
   border-color: var(--project-border-dark);
-  background: linear-gradient(165deg, #000 0, #050a12 100%);
-  box-shadow: 0 18px 32px rgb(0 0 0/56%);
+  background: #000000 !important;
+  box-shadow: none !important;
 }
 #projects .activity-overview-head {
   display: flex;
@@ -348,16 +346,8 @@ html.dark #projects .projects-empty-state {
   flex-direction: column ;
   min-height: 355px ;
   height: 100% ;
-  border-radius: 20px ;
-  border: 1px solid var(--project-border-light) ;
-  background: linear-gradient(175deg, #fff 0, #f8fbff 100%) ;
-  color: var(--project-text-light) ;
-  box-shadow: 0 16px 34px rgb(15 23 42/9%) ;
+  /* background/border/shadow managed by sitewide-design-system.css */
   overflow: hidden ;
-  transition:
-    transform 0.24s ease,
-    box-shadow 0.24s ease,
-    border-color 0.24s ease ;
 }
 #projects #github-projects-container .showcase-project-card::after {
   content: '';
@@ -377,16 +367,7 @@ html.dark #projects .projects-empty-state {
 #projects #github-projects-container .showcase-project-card:hover::after {
   opacity: 1;
 }
-html.dark #projects #github-projects-container .showcase-project-card {
-  border-color: var(--project-border-dark) ;
-  background: linear-gradient(175deg, #000 0, #060c15 100%) ;
-  color: var(--project-text-dark) ;
-  box-shadow: var(--project-shadow-dark) ;
-}
-html.dark #projects #github-projects-container .showcase-project-card:hover {
-  border-color: rgb(123 182 255/42%) ;
-  box-shadow: var(--project-shadow-dark-hover) ;
-}
+/* Dark mode overrides handled by sitewide-design-system.css */
 #projects #github-projects-container .project-header {
   padding: 1rem 1rem 0.8rem ;
   display: flex ;
@@ -540,11 +521,11 @@ html.dark #projects #github-projects-container .project-tag {
   gap: 0.55rem ;
   padding: 0.75rem 1rem 1rem ;
   border-top: 1px solid var(--project-border-light) ;
-  background: linear-gradient(180deg, rgb(255 255 255/78%) 0, #fff 100%) ;
+  background: #ffffff !important;
 }
 html.dark #projects #github-projects-container .project-footer {
   border-top-color: var(--project-border-dark) ;
-  background: linear-gradient(180deg, rgb(255 255 255/1%) 0, #000 100%) ;
+  background: #000000 !important;
 }
 #projects #github-projects-container .project-action-btn {
   min-height: 44px ;
@@ -631,18 +612,18 @@ html.dark #projects #github-projects-container .project-action-btn:disabled {
   overflow: auto ;
   border-radius: 20px ;
   border: 1px solid var(--project-border-light) ;
-  background: linear-gradient(175deg, #fff 0, #f8fbff 100%) ;
+  background: #ffffff !important;
   color: var(--project-text-light) ;
-  box-shadow: 0 28px 58px rgb(7 10 18/30%) ;
+  box-shadow: none !important;
   padding: clamp(0.78rem, 1.5vw, 1rem) ;
   display: grid;
   gap: 0.52rem;
 }
 html.dark .project-xr-dialog {
   border-color: var(--project-border-dark) ;
-  background: linear-gradient(175deg, #000 0, #06101c 100%) ;
+  background: #000000 !important;
   color: var(--project-text-dark) ;
-  box-shadow: 0 30px 62px rgb(0 0 0/72%) ;
+  box-shadow: none !important;
 }
 .project-xr-head {
   display: flex;

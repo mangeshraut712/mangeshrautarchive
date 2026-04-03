@@ -274,7 +274,7 @@ html.dark .showcase-project-card:hover {
 }
 .experience-tag:hover {
   transform: translateY(-2px) scale(1.05);
-  background: #0071e3;
+  background: #005fb8;
   color: #fff;
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }

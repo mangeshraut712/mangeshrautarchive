@@ -626,7 +626,7 @@ html.dark .ios-btn:hover {
   text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #86868b;
+  color: #515154;
   margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -650,7 +650,7 @@ html.dark .ios-weekdays {
   cursor: pointer;
   position: relative;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: inherit;
+  color: #1d1d1f;
   width: 40px;
   height: 40px;
   margin: 0 auto;
@@ -675,7 +675,7 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   font-weight: 700;
 }
 .day-cell.today {
-  background: #ff3b30;
+  background: #d81b0e;
   box-shadow: 0 4px 12px rgb(255 59 48/40%);
   animation: gentle-pulse 3s infinite;
 }
@@ -729,7 +729,7 @@ html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
 }
 .day-cell:nth-child(7n + 1),
 .ios-weekdays span:first-child {
-  color: #ff3b30;
+  color: #c41810;
 }
 .day-cell.selected:nth-child(7n + 1),
 .day-cell.today:nth-child(7n + 1) {
