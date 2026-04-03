@@ -73,19 +73,21 @@ async function main() {
 
   const backend = spawnProcess(
     'backend',
-    'zsh',
-    ['-lc', `uvicorn api.index:app --reload --port ${backendPort} --no-access-log`]
-  );
-
-  const frontend = spawnProcess(
-    'frontend',
-    'node',
-    ['scripts/local-server.js'],
+    'bash',
+    [
+      '-c',
+      `cd /Users/mangeshraut/Downloads/mangeshrautarchive && source venv/bin/activate && uvicorn api.index:app --port ${backendPort} --no-access-log`,
+    ],
     {
-      PORT: String(frontendPort),
-      API_TARGET: `http://127.0.0.1:${backendPort}`,
+      PORT: undefined,
+      API_TARGET: undefined,
     }
   );
+
+  const frontend = spawnProcess('frontend', 'node', ['scripts/local-server.js'], {
+    PORT: String(frontendPort),
+    API_TARGET: `http://127.0.0.1:${backendPort}`,
+  });
 
   let shuttingDown = false;
 

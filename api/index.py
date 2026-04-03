@@ -6,6 +6,7 @@ import secrets
 import re
 import shutil
 import subprocess
+import base64
 from typing import List, Optional, Dict, Any, AsyncGenerator
 from urllib.parse import unquote
 from fastapi import FastAPI, HTTPException, Request
@@ -24,6 +25,7 @@ from dotenv import load_dotenv
 from api.memory_manager import memory_manager
 from api.integrations.github_connector import github_connector
 from api.profile import app as profile_signals_app
+from api import profile
 
 # Load environment variables
 load_dotenv()
@@ -63,7 +65,13 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=False,
     allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+    allow_headers=[
+        "Content-Type",
+        "Authorization",
+        "Accept",
+        "Origin",
+        "X-Requested-With",
+    ],
     expose_headers=["X-Session-ID"],
 )
 
@@ -102,9 +110,24 @@ MEMORY_EXPIRY = 3600  # 1 hour
 
 # Models - Support multiple models
 MODELS = [
-    {"id": "x-ai/grok-4.1-fast", "name": "Grok 4.1 Fast", "priority": 1, "streaming": True},
-    {"id": "x-ai/grok-2-1212", "name": "Grok 2 (Legacy)", "priority": 2, "streaming": True},
-    {"id": "anthropic/claude-3.5-sonnet", "name": "Claude 3.5 Sonnet", "priority": 3, "streaming": True},
+    {
+        "id": "x-ai/grok-4.1-fast",
+        "name": "Grok 4.1 Fast",
+        "priority": 1,
+        "streaming": True,
+    },
+    {
+        "id": "x-ai/grok-2-1212",
+        "name": "Grok 2 (Legacy)",
+        "priority": 2,
+        "streaming": True,
+    },
+    {
+        "id": "anthropic/claude-3.5-sonnet",
+        "name": "Claude 3.5 Sonnet",
+        "priority": 3,
+        "streaming": True,
+    },
 ]
 DEFAULT_MODEL = OPENROUTER_MODEL or "x-ai/grok-4.1-fast"
 
@@ -335,7 +358,8 @@ def check_rate_limit(client_id: str) -> bool:
     now = time.time()
     # Clean old entries
     rate_limit_store[client_id] = [
-        timestamp for timestamp in rate_limit_store[client_id]
+        timestamp
+        for timestamp in rate_limit_store[client_id]
         if now - timestamp < RATE_LIMIT_WINDOW
     ]
 
@@ -365,7 +389,7 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
         conversation_memory[session_id] = {
             "messages": [],
             "created": time.time(),
-            "last_access": time.time()
+            "last_access": time.time(),
         }
 
     memory = conversation_memory[session_id]
@@ -374,7 +398,7 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
 
     # Keep only last N messages
     if len(memory["messages"]) > MAX_MEMORY_MESSAGES * 2:
-        memory["messages"] = memory["messages"][-MAX_MEMORY_MESSAGES * 2:]
+        memory["messages"] = memory["messages"][-MAX_MEMORY_MESSAGES * 2 :]
 
     memory["last_access"] = time.time()
 
@@ -448,7 +472,10 @@ def is_prompt_injection(message: str) -> bool:
 # Structured error envelope helper
 # ─────────────────────────────────────────────
 
-def api_error(code: str, message: str, status: int = 400, retry_after: Optional[int] = None) -> HTTPException:
+
+def api_error(
+    code: str, message: str, status: int = 400, retry_after: Optional[int] = None
+) -> HTTPException:
     """
     Return a uniform error envelope:
       { "error": { "code": "...", "message": "...", "retryAfter": N } }
@@ -545,7 +572,9 @@ async def github_api_proxy(path: str):
     GitHub data consistent through a single server-side source of truth.
     """
     if not path or not path.strip():
-        raise HTTPException(status_code=400, detail="Missing required query param: path")
+        raise HTTPException(
+            status_code=400, detail="Missing required query param: path"
+        )
 
     normalized_path = unquote(path.strip())
     if not normalized_path.startswith("/"):
@@ -556,7 +585,9 @@ async def github_api_proxy(path: str):
 
     allowed_prefixes = ("/repos/", "/users/")
     if not normalized_path.startswith(allowed_prefixes):
-        raise HTTPException(status_code=400, detail="Only /repos/* and /users/* paths are allowed")
+        raise HTTPException(
+            status_code=400, detail="Only /repos/* and /users/* paths are allowed"
+        )
 
     cache_key = f"gh_proxy:{normalized_path}"
     cached = _github_api_proxy_cache.get(cache_key)
@@ -579,7 +610,9 @@ async def github_api_proxy(path: str):
         async with httpx.AsyncClient(timeout=12.0) as client:
             github_resp = await client.get(target_url, headers=headers)
     except httpx.RequestError as exc:
-        raise HTTPException(status_code=503, detail=f"GitHub request failed: {str(exc)}")
+        raise HTTPException(
+            status_code=503, detail=f"GitHub request failed: {str(exc)}"
+        )
 
     # Local-dev rescue path: use authenticated `gh api` when direct API is rate-limited
     # and PAT is not configured. This keeps data accurate during local development.
@@ -612,7 +645,12 @@ async def github_api_proxy(path: str):
         payload = {"message": github_resp.text}
 
     passthrough_headers = {}
-    for key in ("link", "x-ratelimit-limit", "x-ratelimit-remaining", "x-ratelimit-reset"):
+    for key in (
+        "link",
+        "x-ratelimit-limit",
+        "x-ratelimit-remaining",
+        "x-ratelimit-reset",
+    ):
         value = github_resp.headers.get(key)
         if value:
             passthrough_headers[key] = value
@@ -710,18 +748,22 @@ def generate_local_response(query: str) -> Dict:
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
         return {
-            "answer": f"👨‍💻 **{
-                PORTFOLIO_DATA['name']}** is a {
-                PORTFOLIO_DATA['title']} based in {
-                PORTFOLIO_DATA['location']}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
-            "category": "About"}
+            "answer": f"👨‍💻 **{PORTFOLIO_DATA['name']}** is a {
+                PORTFOLIO_DATA['title']
+            } based in {
+                PORTFOLIO_DATA['location']
+            }. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
+            "category": "About",
+        }
 
     # Resume/CV
     if "resume" in query or "cv" in query:
         return {
             "answer": f"📄 You can download Mangesh's resume here: {
-                PORTFOLIO_DATA['resume_url']}",
-            "category": "Resume"}
+                PORTFOLIO_DATA['resume_url']
+            }",
+            "category": "Resume",
+        }
 
     # Skills
     if "skill" in query or "stack" in query or "tech" in query or "language" in query:
@@ -729,43 +771,65 @@ def generate_local_response(query: str) -> Dict:
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
             "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}\n• **Cloud**: AWS, Docker, Kubernetes\n• **Databases**: PostgreSQL, MongoDB, Redis",
-            "category": "Skills"
+            "category": "Skills",
         }
 
     # Projects
     if "project" in query:
-        projects_list = "\n".join([f"• **{p['name']}**: {p['achievements']}" for p in PORTFOLIO_DATA["projects"][:3]])
+        projects_list = "\n".join(
+            [
+                f"• **{p['name']}**: {p['achievements']}"
+                for p in PORTFOLIO_DATA["projects"][:3]
+            ]
+        )
         return {
             "answer": f"🚀 **Key Projects**:\n{projects_list}",
-            "category": "Projects"
+            "category": "Projects",
         }
 
     # Contact
     if "contact" in query or "email" in query or "hiring" in query or "hire" in query:
         return {
             "answer": f"📫 **Contact Information**:\n• **Email**: {
-                PORTFOLIO_DATA['email']}\n• **Phone**: {
-                PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {
-                PORTFOLIO_DATA['linkedin']}\n• **GitHub**: {
-                    PORTFOLIO_DATA['github']}",
-            "category": "Contact"}
+                PORTFOLIO_DATA['email']
+            }\n• **Phone**: {PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {
+                PORTFOLIO_DATA['linkedin']
+            }\n• **GitHub**: {PORTFOLIO_DATA['github']}",
+            "category": "Contact",
+        }
 
     # Experience
     if "experience" in query or "job" in query or "work" in query:
         exp_list = "\n".join(
-            [f"• **{e['title']}** at {e['company']} ({e['period']})" for e in PORTFOLIO_DATA["experience"][:3]])
+            [
+                f"• **{e['title']}** at {e['company']} ({e['period']})"
+                for e in PORTFOLIO_DATA["experience"][:3]
+            ]
+        )
         return {
             "answer": f"💼 **Professional Experience**:\n{exp_list}",
-            "category": "Experience"
+            "category": "Experience",
         }
 
     # Education
-    if "education" in query or "degree" in query or "university" in query or "college" in query:
+    if (
+        "education" in query
+        or "degree" in query
+        or "university" in query
+        or "college" in query
+    ):
         edu_list = "\n".join(
-            [f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
+            [
+                f"• **{e['degree']}** - {e['school']} ({e['period']})"
+                for e in PORTFOLIO_DATA.get("education", [])[:2]
+            ]
+        )
         return {
-            "answer": f"🎓 **Education**:\n{edu_list}" if edu_list else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
-            "category": "Education"}
+            "answer": f"🎓 **Education**:\n{edu_list}"
+            if edu_list
+            else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
+            "category": "Education",
+        }
 
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
@@ -782,7 +846,8 @@ def generate_local_response(query: str) -> Dict:
 
 
 async def stream_openrouter_response(
-        model: str, messages: List[Dict], session_id: Optional[str] = None) -> AsyncGenerator[str, None]:
+    model: str, messages: List[Dict], session_id: Optional[str] = None
+) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
     print(f"🔄 Streaming from OpenRouter: {model}")
 
@@ -811,29 +876,39 @@ async def stream_openrouter_response(
         current_pos = 0
 
         while current_pos < len(full_text):
-            chunk = full_text[current_pos:current_pos + chunk_size]
+            chunk = full_text[current_pos : current_pos + chunk_size]
             current_pos += chunk_size
-            yield json.dumps({
-                "type": "chunk",
-                "content": chunk,
-                "chunk_id": current_pos // chunk_size
-            }) + "\n"
+            yield (
+                json.dumps(
+                    {
+                        "type": "chunk",
+                        "content": chunk,
+                        "chunk_id": current_pos // chunk_size,
+                    }
+                )
+                + "\n"
+            )
             await asyncio.sleep(0.02)  # Simulate typing speed
 
         # Send done signal
-        yield json.dumps({
-            "type": "done",
-            "full_content": full_text,
-            "metadata": {
-                "model": "Local-FastAPI",
-                "source": "Local Intelligence",
-                "sourceLabel": "Local Dev Mode",
-                "category": fallback.get("category", "General"),
-                "confidence": 1.0,
-                "tokens_estimate": len(full_text) // 4,
-                "elapsed_ms": 600
-            }
-        }) + "\n"
+        yield (
+            json.dumps(
+                {
+                    "type": "done",
+                    "full_content": full_text,
+                    "metadata": {
+                        "model": "Local-FastAPI",
+                        "source": "Local Intelligence",
+                        "sourceLabel": "Local Dev Mode",
+                        "category": fallback.get("category", "General"),
+                        "confidence": 1.0,
+                        "tokens_estimate": len(full_text) // 4,
+                        "elapsed_ms": 600,
+                    },
+                }
+            )
+            + "\n"
+        )
         return
 
     # Send typing indicator start
@@ -855,7 +930,9 @@ async def stream_openrouter_response(
             chunk_count = 0
 
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(60.0, connect=10.0)) as client:
+            async with httpx.AsyncClient(
+                timeout=httpx.Timeout(60.0, connect=10.0)
+            ) as client:
                 async with client.stream(
                     "POST",
                     API_URL,
@@ -870,17 +947,31 @@ async def stream_openrouter_response(
                         "messages": messages,
                         "stream": True,
                         **adaptive_llm_params(
-                            next((m["content"] for m in reversed(messages) if m.get("role") == "user"), "")
+                            next(
+                                (
+                                    m["content"]
+                                    for m in reversed(messages)
+                                    if m.get("role") == "user"
+                                ),
+                                "",
+                            )
                         ),
                     },
                 ) as response:
                     if response.status_code != 200:
                         error_text = await response.aread()
-                        print(f"❌ API Error {response.status_code}: {error_text.decode()}")
-                        yield json.dumps({
-                            "error": f"API Error {response.status_code}",
-                            "type": "error"
-                        }) + "\n"
+                        print(
+                            f"❌ API Error {response.status_code}: {error_text.decode()}"
+                        )
+                        yield (
+                            json.dumps(
+                                {
+                                    "error": f"API Error {response.status_code}",
+                                    "type": "error",
+                                }
+                            )
+                            + "\n"
+                        )
                         return
 
                     # Stop typing indicator only once
@@ -895,23 +986,30 @@ async def stream_openrouter_response(
                         if data == "[DONE]":
                             elapsed = time.time() - start_time
                             tokens_estimate = len(full_content) // 4
-                            tokens_per_sec = tokens_estimate / elapsed if elapsed > 0 else 0
+                            tokens_per_sec = (
+                                tokens_estimate / elapsed if elapsed > 0 else 0
+                            )
 
-                            yield json.dumps({
-                                "type": "done",
-                                "full_content": full_content,
-                                "metadata": {
-                                    "model": model,
-                                    "source": "OpenRouter",
-                                    "sourceLabel": f"OpenRouter ({model.split('/')[-1]})",
-                                    "category": "AI Response",
-                                    "char_count": len(full_content),
-                                    "tokens_estimate": tokens_estimate,
-                                    "elapsed_ms": int(elapsed * 1000),
-                                    "tokens_per_sec": round(tokens_per_sec, 2),
-                                    "chunks": chunk_count
-                                }
-                            }) + "\n"
+                            yield (
+                                json.dumps(
+                                    {
+                                        "type": "done",
+                                        "full_content": full_content,
+                                        "metadata": {
+                                            "model": model,
+                                            "source": "OpenRouter",
+                                            "sourceLabel": f"OpenRouter ({model.split('/')[-1]})",
+                                            "category": "AI Response",
+                                            "char_count": len(full_content),
+                                            "tokens_estimate": tokens_estimate,
+                                            "elapsed_ms": int(elapsed * 1000),
+                                            "tokens_per_sec": round(tokens_per_sec, 2),
+                                            "chunks": chunk_count,
+                                        },
+                                    }
+                                )
+                                + "\n"
+                            )
                             return  # Success!
 
                         try:
@@ -925,11 +1023,16 @@ async def stream_openrouter_response(
                             if content:
                                 full_content += content
                                 chunk_count += 1
-                                yield json.dumps({
-                                    "type": "chunk",
-                                    "content": content,
-                                    "chunk_id": chunk_count
-                                }) + "\n"
+                                yield (
+                                    json.dumps(
+                                        {
+                                            "type": "chunk",
+                                            "content": content,
+                                            "chunk_id": chunk_count,
+                                        }
+                                    )
+                                    + "\n"
+                                )
                         except BaseException:
                             continue
 
@@ -941,18 +1044,22 @@ async def stream_openrouter_response(
             print(f"⚠️ Stream connection error: {str(e)}")
             retry_count += 1
             if retry_count > max_retries:
-                yield json.dumps({
-                    "error": "The neural link was interrupted. Please try rephrasing or refreshing.",
-                    "type": "error"
-                }) + "\n"
+                yield (
+                    json.dumps(
+                        {
+                            "error": "The neural link was interrupted. Please try rephrasing or refreshing.",
+                            "type": "error",
+                        }
+                    )
+                    + "\n"
+                )
             else:
                 await asyncio.sleep(1)  # Wait before retry
         except Exception as e:
             print(f"❌ Critical stream error: {str(e)}")
-            yield json.dumps({
-                "error": f"Neural error: {str(e)}",
-                "type": "error"
-            }) + "\n"
+            yield (
+                json.dumps({"error": f"Neural error: {str(e)}", "type": "error"}) + "\n"
+            )
             return
 
 
@@ -1019,7 +1126,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "category": fallback.get("category", "General"),
             "confidence": 1.0,
             "runtime": f"{int(elapsed * 1000)}ms",
-            "type": "local"
+            "type": "local",
         }
 
     try:
@@ -1050,7 +1157,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         # Get conversation history: prefer client-provided messages, fallback to server session memory
         if request.messages:
             # Ensure it's max N messages to prevent payload explosion
-            history = request.messages[-MAX_MEMORY_MESSAGES * 2:]
+            history = request.messages[-MAX_MEMORY_MESSAGES * 2 :]
         else:
             history = get_session_memory(session_id) if request.session_id else []
 
@@ -1074,9 +1181,12 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
         # Streaming response
         if request.stream:
+
             async def generate_stream():
                 full_response = ""
-                async for chunk in stream_openrouter_response(selected_model, conversation, session_id):
+                async for chunk in stream_openrouter_response(
+                    selected_model, conversation, session_id
+                ):
                     yield chunk
                     # Extract full content for memory
                     try:
@@ -1096,7 +1206,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                 headers={
                     "Cache-Control": "no-cache",
                     "X-Accel-Buffering": "no",
-                    "X-Session-ID": session_id
+                    "X-Session-ID": session_id,
                 },
             )
 
@@ -1145,7 +1255,7 @@ async def get_models():
     return {
         "models": MODELS,
         "default": DEFAULT_MODEL,
-        "current": OPENROUTER_MODEL or DEFAULT_MODEL
+        "current": OPENROUTER_MODEL or DEFAULT_MODEL,
     }
 
 
@@ -1159,11 +1269,7 @@ async def typing_indicator(indicator: TypingIndicator):
 async def get_conversation(session_id: str):
     """Get conversation history for a session"""
     history = get_session_memory(session_id)
-    return {
-        "session_id": session_id,
-        "messages": history,
-        "count": len(history)
-    }
+    return {"session_id": session_id, "messages": history, "count": len(history)}
 
 
 @app.delete("/api/conversation/{session_id}")
@@ -1189,9 +1295,124 @@ async def get_resume():
 
 @app.get("/api/health")
 async def health_check():
-    """Enhanced health check endpoint"""
+    """Enhanced health check endpoint with component status checks"""
+    import asyncio
+
+    async def check_component(name: str, check_func) -> dict:
+        try:
+            result = await check_func()
+            return {"name": name, "status": "healthy", "details": result}
+        except Exception as e:
+            return {"name": name, "status": "unhealthy", "details": str(e)}
+
+    async def check_github():
+        # Check GitHub API connectivity
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                headers = {}
+                if GITHUB_PAT:
+                    headers["Authorization"] = f"Bearer {GITHUB_PAT}"
+                resp = await client.get(
+                    f"https://api.github.com/users/{profile.GITHUB_USERNAME}",
+                    headers=headers,
+                )
+                resp.raise_for_status()
+                return f"GitHub API accessible, user {profile.GITHUB_USERNAME} found"
+        except Exception as e:
+            return f"GitHub API check failed: {str(e)}"
+
+    async def check_kv():
+        if not profile.KV_REST_API_TOKEN:
+            return "KV not configured"
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                headers = {"Authorization": f"Bearer {profile.KV_REST_API_TOKEN}"}
+                resp = await client.get(
+                    f"{profile.KV_REST_API_URL}/get/{profile.PROFILE_VIEWS_KEY}",
+                    headers=headers,
+                )
+                if resp.status_code in (200, 404):  # 404 is ok if key doesn't exist
+                    return "KV/Redis accessible"
+                resp.raise_for_status()
+                return "KV/Redis accessible"
+        except Exception as e:
+            return f"KV check failed: {str(e)}"
+
+    async def check_spotify():
+        if (
+            not profile.SPOTIFY_CLIENT_ID
+            or not profile.SPOTIFY_CLIENT_SECRET
+            or not profile.SPOTIFY_REFRESH_TOKEN
+        ):
+            return "Spotify not configured"
+        try:
+            # Try to refresh token
+            auth = base64.b64encode(
+                f"{profile.SPOTIFY_CLIENT_ID}:{profile.SPOTIFY_CLIENT_SECRET}".encode()
+            ).decode()
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                resp = await client.post(
+                    profile.SPOTIFY_TOKEN_URL,
+                    data={
+                        "grant_type": "refresh_token",
+                        "refresh_token": profile.SPOTIFY_REFRESH_TOKEN,
+                    },
+                    headers={"Authorization": f"Basic {auth}"},
+                )
+                if resp.status_code == 200:
+                    return "Spotify token refresh successful"
+                return f"Spotify token refresh failed: {resp.status_code}"
+        except Exception as e:
+            return f"Spotify check failed: {str(e)}"
+
+    async def check_filesystem():
+        resume_path = "src/assets/files/Mangesh_Raut_Resume.pdf"
+        if os.path.exists(resume_path):
+            return f"Resume file exists at {resume_path}"
+        return f"Resume file missing at {resume_path}"
+
+    async def check_openrouter():
+        if not OPENROUTER_API_KEY:
+            return "OpenRouter API key not configured"
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                resp = await client.post(
+                    API_URL,
+                    json={
+                        "model": DEFAULT_MODEL,
+                        "messages": [{"role": "user", "content": "test"}],
+                        "max_tokens": 1,
+                    },
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json",
+                    },
+                )
+                if resp.status_code == 200:
+                    return "OpenRouter API accessible"
+                elif resp.status_code == 401:
+                    return "OpenRouter API key invalid"
+                else:
+                    return f"OpenRouter API error: {resp.status_code}"
+        except Exception as e:
+            return f"OpenRouter check failed: {str(e)}"
+
+    # Run all checks concurrently
+    checks = await asyncio.gather(
+        check_component("GitHub API", check_github),
+        check_component("KV/Redis", check_kv),
+        check_component("Spotify", check_spotify),
+        check_component("Filesystem", check_filesystem),
+        check_component("OpenRouter", check_openrouter),
+    )
+
+    # Determine overall status
+    overall_status = (
+        "healthy" if all(c["status"] == "healthy" for c in checks) else "degraded"
+    )
+
     return {
-        "status": "healthy",
+        "status": overall_status,
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "service": "assistme-api",
         "version": "3.0.0",
@@ -1208,8 +1429,9 @@ async def health_check():
             "default_model": DEFAULT_MODEL,
             "cache_size": len(response_cache),
             "active_sessions": len(conversation_memory),
-            "rate_limit": f"{RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s"
+            "rate_limit": f"{RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s",
         },
+        "checks": checks,
     }
 
 
@@ -1236,7 +1458,7 @@ async def test_endpoint():
         "api_key_masked": masked_key,
         "default_model": DEFAULT_MODEL,
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "environment": os.getenv("VERCEL_ENV", "local")
+        "environment": os.getenv("VERCEL_ENV", "local"),
     }
 
 
@@ -1262,6 +1484,7 @@ async def api_root():
 # With GITHUB_PAT set this endpoint allows 5000 req/hr.
 # ============================================================
 
+
 @app.get("/api/github/repos/public")
 async def github_repos_proxy(
     username: str = "mangeshraut712",
@@ -1282,21 +1505,29 @@ async def github_repos_proxy(
         print(f"⚠️ GitHub API failed (falling back to static projects): {str(exc)}")
         static_projects = []
         for p in PORTFOLIO_DATA.get("projects", []):
-            static_projects.append({
-                "name": p.get("name"),
-                "full_name": f"{username}/{p.get('name', '').replace(' ', '-')}",
-                "description": p.get("achievements"),
-                "html_url": f"https://github.com/{username}",
-                "language": p.get("tech", [""])[0] if p.get("tech") else "Unknown",
-                "stargazers_count": 0,
-                "fork": False,
-                "updated_at": datetime.now().isoformat()
-            })
+            static_projects.append(
+                {
+                    "name": p.get("name"),
+                    "full_name": f"{username}/{p.get('name', '').replace(' ', '-')}",
+                    "description": p.get("achievements"),
+                    "html_url": f"https://github.com/{username}",
+                    "language": p.get("tech", [""])[0] if p.get("tech") else "Unknown",
+                    "stargazers_count": 0,
+                    "fork": False,
+                    "updated_at": datetime.now().isoformat(),
+                }
+            )
         return static_projects
 
     # Sort
-    sort_key = {"updated": "pushed_at", "created": "created_at", "stars": "stargazers_count"}.get(sort, "pushed_at")
-    repos.sort(key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count"))
+    sort_key = {
+        "updated": "pushed_at",
+        "created": "created_at",
+        "stars": "stargazers_count",
+    }.get(sort, "pushed_at")
+    repos.sort(
+        key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count")
+    )
 
     # Filter forks
     if no_forks:
@@ -1329,7 +1560,9 @@ async def github_repos_proxy(
 
     slim_repos = [slim(r) for r in repos[:limit]]
 
-    rate_header = "authenticated (5000 req/hr)" if GITHUB_PAT else "unauthenticated (60 req/hr)"
+    rate_header = (
+        "authenticated (5000 req/hr)" if GITHUB_PAT else "unauthenticated (60 req/hr)"
+    )
     return {
         "success": True,
         "username": username,
@@ -1345,6 +1578,7 @@ async def github_repos_proxy(
 # CONTACT FORM ENDPOINT  (replaces dead-code api/contact.js)
 # ============================================================
 
+
 class ContactMessage(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     email: str = Field(..., min_length=5, max_length=200)
@@ -1357,7 +1591,9 @@ async def send_contact_message(payload: ContactMessage, req: Request):
     """Save contact form submission to Firestore via REST API."""
     client_ip = get_client_ip(req)
     if not check_rate_limit(f"contact:{client_ip}"):
-        raise HTTPException(status_code=429, detail="Too many contact attempts. Please try again later.")
+        raise HTTPException(
+            status_code=429, detail="Too many contact attempts. Please try again later."
+        )
 
     name = payload.name.strip()
     email = payload.email.strip().lower()
@@ -1372,11 +1608,14 @@ async def send_contact_message(payload: ContactMessage, req: Request):
     if not email_re.match(email):
         raise HTTPException(status_code=400, detail="Invalid email address")
 
-    firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv("FIREBASE_API_KEY")
+    firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv(
+        "FIREBASE_API_KEY"
+    )
     if not firebase_api_key:
         raise HTTPException(
             status_code=503,
-            detail="Contact service not configured. Please email mbr63@drexel.edu directly.")
+            detail="Contact service not configured. Please email mbr63@drexel.edu directly.",
+        )
 
     project_id = "mangeshrautarchive"
     url = (
@@ -1392,7 +1631,11 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             "message": {"stringValue": message},
             "timestamp": {"timestampValue": datetime.utcnow().isoformat() + "Z"},
             "userAgent": {"stringValue": req.headers.get("user-agent", "Unknown")},
-            "submittedFrom": {"stringValue": req.headers.get("referer") or req.headers.get("origin") or "Direct"},
+            "submittedFrom": {
+                "stringValue": req.headers.get("referer")
+                or req.headers.get("origin")
+                or "Direct"
+            },
         }
     }
 
@@ -1403,8 +1646,10 @@ async def send_contact_message(payload: ContactMessage, req: Request):
         if not resp.is_success:
             error_body = resp.text
             print(f"❌ Firestore error {resp.status_code}: {error_body}")
-            raise HTTPException(status_code=502,
-                                detail="Failed to save message. Please try again or email mbr63@drexel.edu.")
+            raise HTTPException(
+                status_code=502,
+                detail="Failed to save message. Please try again or email mbr63@drexel.edu.",
+            )
 
         doc_id = resp.json().get("name", "").split("/")[-1]
         print(f"✅ Contact message saved: {doc_id} from {email}")
@@ -1418,6 +1663,7 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 # ====================================================================================
 # PERSONAL INTELLIGENCE ENDPOINTS (v6.0)
 # ====================================================================================
+
 
 @app.get("/api/github/profile")
 async def get_github_profile(username: str = "mangeshraut712"):
@@ -1433,20 +1679,22 @@ async def get_github_profile(username: str = "mangeshraut712"):
     try:
         activity = await github_connector.get_user_activity_summary(username)
 
-        if 'error' in activity:
-            raise HTTPException(status_code=404, detail=activity['error'])
+        if "error" in activity:
+            raise HTTPException(status_code=404, detail=activity["error"])
 
         return {
             "success": True,
             "data": activity,
             "ai_summary": github_connector.generate_github_summary_for_ai(activity),
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
     except HTTPException:
         raise
     except Exception as error:
         print(f"GitHub profile endpoint error: {error}")
-        raise HTTPException(status_code=502, detail="GitHub activity is temporarily unavailable")
+        raise HTTPException(
+            status_code=502, detail="GitHub activity is temporarily unavailable"
+        )
 
 
 @app.get("/api/github/repos")
@@ -1454,7 +1702,7 @@ async def get_github_repos(
     username: str = "mangeshraut712",
     sort: str = "updated",
     limit: int = 10,
-    search: Optional[str] = None
+    search: Optional[str] = None,
 ):
     """
     Get user's GitHub repositories with optional filtering
@@ -1469,17 +1717,21 @@ async def get_github_repos(
         if search:
             repos = await github_connector.search_user_repos(username, search)
         else:
-            repos = await github_connector.get_repositories(username, sort=sort, max_repos=limit)
+            repos = await github_connector.get_repositories(
+                username, sort=sort, max_repos=limit
+            )
 
         return {
             "success": True,
             "count": len(repos),
             "data": repos,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as error:
         print(f"GitHub repos endpoint error: {error}")
-        raise HTTPException(status_code=502, detail="GitHub repository data is temporarily unavailable")
+        raise HTTPException(
+            status_code=502, detail="GitHub repository data is temporarily unavailable"
+        )
 
 
 @app.get("/api/memory/stats")
@@ -1489,15 +1741,12 @@ async def get_memory_stats():
     return {
         "success": True,
         "data": stats,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
 
 @app.post("/api/personalization/preferences")
-async def update_user_preferences(
-    request: Request,
-    preferences: Dict[str, Any]
-):
+async def update_user_preferences(request: Request, preferences: Dict[str, Any]):
     """
     Update user preferences (GDPR compliant)
 
@@ -1513,8 +1762,8 @@ async def update_user_preferences(
         }
     """
     try:
-        user_id = preferences.get('user_id', get_client_ip(request))
-        prefs = preferences.get('preferences', {})
+        user_id = preferences.get("user_id", get_client_ip(request))
+        prefs = preferences.get("preferences", {})
 
         memory_manager.update_preferences(user_id, prefs)
 
@@ -1522,10 +1771,12 @@ async def update_user_preferences(
             "success": True,
             "message": "Preferences updated successfully",
             "user_id": user_id,
-            "preferences": prefs
+            "preferences": prefs,
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error updating preferences: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error updating preferences: {str(e)}"
+        )
 
 
 @app.get("/api/personalization/greeting")
@@ -1545,7 +1796,7 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
         "success": True,
         "greeting": greeting,
         "context": context,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
 

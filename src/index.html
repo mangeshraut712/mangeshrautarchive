@@ -424,8 +424,15 @@
             <div class="hero-image-block mb-20">
               <div class="profile-image-wrapper mx-auto">
                 <picture>
-                  <source srcset="assets/images/profile.webp" type="image/webp" />
-                  <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" width="320" height="320"
+                  <source
+                    type="image/webp"
+                    srcset="
+                      assets/images/optimized/profile-mobile.webp 320w,
+                      assets/images/optimized/profile-tablet.webp 768w,
+                      assets/images/optimized/profile-desktop.webp 1200w,
+                      assets/images/optimized/profile-hd.webp 1920w"
+                    sizes="(max-width: 768px) 320px, (max-width: 1200px) 400px, 320px" />
+                  <img src="assets/images/optimized/profile.jpg" alt="Mangesh Raut" class="profile-image" width="320" height="320"
                     fetchpriority="high" loading="eager" decoding="async" />
                 </picture>
                 <div class="profile-ring"></div>
@@ -486,8 +493,15 @@
             <div class="about-left-column">
               <div class="about-image-wrapper" data-parallax="scroll" data-parallax-speed="0.06" data-parallax-max="14">
                 <picture>
-                  <source srcset="assets/images/graduation.webp" type="image/webp" />
-                  <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="600"
+                  <source
+                    type="image/webp"
+                    srcset="
+                      assets/images/optimized/graduation-mobile.webp 320w,
+                      assets/images/optimized/graduation-tablet.webp 768w,
+                      assets/images/optimized/graduation-desktop.webp 1200w,
+                      assets/images/optimized/graduation-hd.webp 1920w"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                  <img src="assets/images/optimized/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="600"
                     height="600" loading="lazy" decoding="async" fetchpriority="low" />
                 </picture>
                 <div class="about-image-badge" data-parallax="scroll" data-parallax-speed="0.03" data-parallax-max="8">
@@ -1601,7 +1615,17 @@
                 <div class="support-donation-card">
                   <div class="donation-compact-header">
                     <div class="ganesh-glow-container">
-                      <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img" title="🕉️ Om Gan Ganapataye Namah">
+                      <picture>
+                        <source
+                          type="image/webp"
+                          srcset="
+                            assets/images/optimized/ganesh-mobile.webp 320w,
+                            assets/images/optimized/ganesh-tablet.webp 768w,
+                            assets/images/optimized/ganesh-desktop.webp 1200w,
+                            assets/images/optimized/ganesh-hd.webp 1920w"
+                          sizes="(max-width: 768px) 100px, 150px" />
+                        <img src="assets/images/optimized/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img" title="🕉️ Om Gan Ganapataye Namah">
+                      </picture>
                       <div class="glow-ring"></div>
                     </div>
                     <div class="donation-info">
