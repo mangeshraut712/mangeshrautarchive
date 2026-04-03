@@ -44,9 +44,9 @@
   --fs-label: 0.75rem;
   --fs-caption: 0.6875rem;
   --text-primary-light: #1d1d1f;
-  --text-secondary-light: #515154;  /* Darkened from #424245 to meet higher safety margin */
-  --text-tertiary-light: #4e4e52;   /* Darkened from #515154 */
-  --text-muted-light: #4c4c4f;      /* Darkened from #6e6e73 to meet AA 4.5:1 */
+  --text-secondary-light: #515154; /* Darkened from #424245 to meet higher safety margin */
+  --text-tertiary-light: #4e4e52; /* Darkened from #515154 */
+  --text-muted-light: #4c4c4f; /* Darkened from #6e6e73 to meet AA 4.5:1 */
   --text-placeholder-light: #76767b; /* Darkened from #86868b */
   --text-color-primary: var(--text-primary-light);
   --text-color-secondary: var(--text-secondary-light);
@@ -333,9 +333,6 @@ textarea::placeholder {
 @media (min-width: 640px) and (max-width: 1023px) {
   body {
     font-size: 16px;
-  }
-  .nav-link {
-    font-size: 13px;
   }
   .overlay-nav-link {
     font-size: 20px;
