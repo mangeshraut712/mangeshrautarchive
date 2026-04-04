@@ -4,8 +4,8 @@
       (this.proxyCandidates = [
         '/api/github/repos/public',
         '/api/github/repos',
-        'https://mangeshrautarchive.vercel.app/api/github/repos/public',
-        'https://mangeshrautarchive.vercel.app/api/github/repos',
+        'https://mangeshraut.pro/api/github/repos/public',
+        'https://mangeshraut.pro/api/github/repos',
       ]),
       (this.directApiUrl = `https://api.github.com/users/${t}/repos`),
       (this.cache = null),

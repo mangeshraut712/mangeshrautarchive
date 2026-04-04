@@ -1,7 +1,7 @@
 import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
 let API_BASE = '';
-const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
+const VERCEL_BACKEND = 'https://mangeshraut.pro';
 if ('undefined' != typeof window)
   if (window.APP_CONFIG?.apiBaseUrl)
     ((API_BASE = window.APP_CONFIG.apiBaseUrl), console.log('⚙️ Using custom API base:', API_BASE));

@@ -8,7 +8,7 @@
   const VIEW_EVENT_NAME = 'portfolio:views-updated';
   const VIEW_STORAGE_KEY = 'profile-views-recorded-v1';
   const VIEWS_ENDPOINT = '/api/profile/views';
-  const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
+  const VERCEL_BACKEND = 'https://mangeshraut.pro';
   const REFRESH_INTERVAL_MS = 10000;
   const REQUEST_TIMEOUT_MS = 8000;
 

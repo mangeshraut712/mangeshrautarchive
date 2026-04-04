@@ -6,7 +6,7 @@ echo "🔍 Starting Deployment Verification..."
 echo "======================================"
 
 GITHUB_URL="https://mangeshraut712.github.io/mangeshrautarchive/"
-VERCEL_URL="https://mangeshrautarchive.vercel.app/"
+VERCEL_URL="https://mangeshraut.pro/"
 
 # Colors for output
 RED='\033[0;31m'
