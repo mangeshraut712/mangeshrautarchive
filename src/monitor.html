@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AssistMe API Health Monitor | Mangesh Raut</title>
+    <link rel="stylesheet" href="assets/css/monitor.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="monitor-body">
+    <div class="monitor-container">
+      <!-- Header Section -->
+      <header class="monitor-header">
+        <div class="monitor-title">
+          <h1>Monitor Center</h1>
+          <p>System Health & API Analytics</p>
+          <small style="color: var(--monitor-text-secondary); font-size: 0.8rem; margin-top: 4px">
+            Backend Status:
+            <span id="backend-status" style="color: var(--monitor-error)">Checking...</span>
+            <span id="monitor-activity" style="margin-left: 12px; opacity: 0.7">
+              <i class="fas fa-circle"></i> Monitoring
+            </span>
+          </small>
+        </div>
+        <div class="status-badge">
+          <div id="global-status-dot" class="status-dot"></div>
+          <span id="global-status-text">All Systems Operational</span>
+        </div>
+      </header>
+
+      <div class="monitor-grid">
+        <!-- Left Column: Manual Testing -->
+        <div class="monitor-left">
+          <div class="monitor-card">
+            <h2><i class="fas fa-flask"></i> Live Endpoint Tester</h2>
+            <form id="endpoint-test-form" class="test-form">
+              <div class="form-group">
+                <label>Method</label>
+                <select id="test-method">
+                  <option value="GET">GET - Query Resources</option>
+                  <option value="POST">POST - Create Actions</option>
+                  <option value="PUT">PUT - Update Resources</option>
+                  <option value="DELETE">DELETE - Remove Resources</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Target Endpoint Path</label>
+                <input type="text" id="test-url" placeholder="/api/chat" required />
+              </div>
+              <div class="form-group">
+                <label>Auth Bearer Token (Optional)</label>
+                <input type="text" id="test-auth" placeholder="token_here" />
+              </div>
+              <div class="form-group">
+                <label>JSON Body (Optional)</label>
+                <textarea id="test-body" rows="4" placeholder='{"message": "Hello"}'></textarea>
+              </div>
+              <button type="submit" id="btn-test" class="btn-run-test">
+                <i class="fas fa-play"></i> Run Manually
+              </button>
+            </form>
+
+            <!-- Result Display Area -->
+            <div id="test-result-area">
+              <div id="test-result-content"></div>
+              <button id="clear-results-btn" class="clear-results-btn" style="display: none">
+                <i class="fas fa-times"></i> Clear Results
+              </button>
+            </div>
+          </div>
+
+          <div class="monitor-card">
+            <h2><i class="fas fa-history"></i> Audit Trail (Recent Activity)</h2>
+            <div id="audit-logs-container" class="audit-logs">
+              <!-- Logs injected by JS -->
+              <p class="monitor-text-secondary">No recent activity detected.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Stats & Discovery -->
+        <div class="monitor-right">
+          <div class="monitor-card">
+            <h2><i class="fas fa-magnifying-glass"></i> Endpoint Discovery</h2>
+            <div id="endpoints-list" class="endpoints-list">
+              <!-- Endpoints injected by JS -->
+              <div class="loading-state">Scanning available routes...</div>
+            </div>
+          </div>
+
+          <div class="monitor-card">
+            <h2><i class="fas fa-chart-line"></i> Performance Insights</h2>
+            <div class="stat-group">
+              <div class="stat-item">
+                <span class="stat-label">Avg. Latency</span>
+                <span class="stat-value" id="stat-avg-latency">-- ms</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Uptime Rate</span>
+                <span class="stat-value" id="stat-uptime">--%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Active Routes</span>
+                <span class="stat-value" id="stat-routes-count">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="monitor-card">
+            <h2><i class="fas fa-server"></i> Deployment Health</h2>
+            <div class="deployment-status">
+              <div class="deployment-item">
+                <div class="deployment-info">
+                  <span class="deployment-name">GitHub Pages</span>
+                  <span class="deployment-url">github.io</span>
+                </div>
+                <div class="deployment-status-indicator">
+                  <div id="github-pages-dot" class="status-dot-small"></div>
+                  <span id="github-pages-status">Checking...</span>
+                </div>
+              </div>
+              <div class="deployment-item">
+                <div class="deployment-info">
+                  <span class="deployment-name">Vercel</span>
+                  <span class="deployment-url">vercel.app</span>
+                </div>
+                <div class="deployment-status-indicator">
+                  <div id="vercel-dot" class="status-dot-small"></div>
+                  <span id="vercel-status">Checking...</span>
+                </div>
+              </div>
+              <div class="deployment-sync">
+                <span class="sync-label">Deployment Sync</span>
+                <span id="deployment-sync-status" class="sync-status">Checking...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="monitor-nav">
+        <a href="index.html"><i class="fas fa-home"></i> Portfolio</a>
+        <a href="#" id="btn-refresh-monitor"><i class="fas fa-sync"></i> Refresh</a>
+        <a href="https://github.com/mangeshraut712/mangeshrautarchive" target="_blank"
+          ><i class="fas fa-code"></i> Source</a
+        >
+        <div class="nav-actions">
+          <button id="shortcuts-btn" class="nav-action-btn" title="Keyboard Shortcuts">
+            <i class="fas fa-keyboard"></i>
+          </button>
+          <button id="theme-toggle-monitor" class="nav-action-btn" title="Toggle Theme">
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+        <div class="keyboard-shortcuts" id="keyboard-shortcuts">
+          <h5>Keyboard Shortcuts</h5>
+          <div class="shortcut-item">
+            <span>Run Test</span>
+            <span class="shortcut-key">Ctrl+Enter</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Refresh All</span>
+            <span class="shortcut-key">Ctrl+R</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Clear Results</span>
+            <span class="shortcut-key">Escape</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Toggle Theme</span>
+            <span class="shortcut-key">Click Moon/Sun</span>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Script to handle all logic -->
+    <script src="js/modules/api-monitor.js"></script>
+  </body>
+</html>

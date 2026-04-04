@@ -1,1 +1,22 @@
-const themeToggle=document.getElementById("theme-toggle"),themeToggleIcon=document.getElementById("theme-toggle-icon");function setInitialTheme(){"dark"===localStorage.getItem("theme")?(document.documentElement.classList.add("dark"),themeToggleIcon.classList.remove("fa-moon"),themeToggleIcon.classList.add("fa-sun")):(document.documentElement.classList.remove("dark"),themeToggleIcon.classList.remove("fa-sun"),themeToggleIcon.classList.add("fa-moon"))}function initThemeToggle(){setInitialTheme(),themeToggle.addEventListener("click",()=>{document.documentElement.classList.toggle("dark");const e=document.documentElement.classList.contains("dark");themeToggleIcon.classList.toggle("fa-moon",!e),themeToggleIcon.classList.toggle("fa-sun",e),localStorage.setItem("theme",e?"dark":"light")})}document.addEventListener("DOMContentLoaded",initThemeToggle);
+const themeToggle = document.getElementById('theme-toggle'),
+  themeToggleIcon = document.getElementById('theme-toggle-icon');
+function setInitialTheme() {
+  'dark' === localStorage.getItem('theme')
+    ? (document.documentElement.classList.add('dark'),
+      themeToggleIcon.classList.remove('fa-moon'),
+      themeToggleIcon.classList.add('fa-sun'))
+    : (document.documentElement.classList.remove('dark'),
+      themeToggleIcon.classList.remove('fa-sun'),
+      themeToggleIcon.classList.add('fa-moon'));
+}
+function initThemeToggle() {
+  (setInitialTheme(),
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const e = document.documentElement.classList.contains('dark');
+      (themeToggleIcon.classList.toggle('fa-moon', !e),
+        themeToggleIcon.classList.toggle('fa-sun', e),
+        localStorage.setItem('theme', e ? 'dark' : 'light'));
+    }));
+}
+document.addEventListener('DOMContentLoaded', initThemeToggle);

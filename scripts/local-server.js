@@ -146,19 +146,24 @@ app.use((req, res, next) => {
 
 // Serve static files from the 'src' directory
 const staticPath = join(projectRoot, 'src');
-app.use(express.static(staticPath, {
-  etag: false,
-  lastModified: false,
-  cacheControl: false,
-}));
+app.use(
+  express.static(staticPath, {
+    etag: false,
+    lastModified: false,
+    cacheControl: false,
+  })
+);
 
 // Serve chatbot assets so linked styles/scripts resolve correctly
 const chatbotPath = join(projectRoot, 'chatbot');
-app.use('/chatbot', express.static(chatbotPath, {
-  etag: false,
-  lastModified: false,
-  cacheControl: false,
-}));
+app.use(
+  '/chatbot',
+  express.static(chatbotPath, {
+    etag: false,
+    lastModified: false,
+    cacheControl: false,
+  })
+);
 
 app.listen(port, () => {
   console.log(`\n🚀 Local development server running!`);

@@ -177,18 +177,18 @@ small {
   color: var(--text-color-muted);
 }
 a {
-  color: #0071e3;
+  color: #1d1d1f;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 a:hover {
-  color: #0077ed;
+  color: #000;
 }
 html.dark a {
-  color: #2997ff;
+  color: #f5f5f7;
 }
 html.dark a:hover {
-  color: #5ac8fa;
+  color: #fff;
 }
 code,
 pre {

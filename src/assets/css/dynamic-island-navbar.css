@@ -11,8 +11,8 @@
   --island-link-gap-compact: 22px;
   --island-link-color: rgba(29, 29, 31, 0.88);
   --island-link-color-active: #000;
-  --island-link-color-hover: #0071e3;
-  --island-link-underline: #0071e3;
+  --island-link-color-hover: #1d1d1f;
+  --island-link-underline: #1d1d1f;
   --island-link-active-bg: rgba(0, 113, 227, 0.1);
   --island-control-size: 34px;
   --island-control-size-compact: 30px;
@@ -40,8 +40,8 @@
     padding 0.24s ease,
     transform 0.28s ease;
   contain: layout style paint;
-  font-family: var(--island-font) ;
-  color: var(--island-link-color) ;
+  font-family: var(--island-font);
+  color: var(--island-link-color);
   isolation: isolate;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -69,21 +69,21 @@ html.dark .global-nav.dynamic-island {
     padding-inline: var(--island-side-pad-compact);
   }
   #global-nav.global-nav.dynamic-island.is-compact {
-    height: var(--island-height-compact) ;
-    padding-inline: var(--island-side-pad-compact) ;
+    height: var(--island-height-compact);
+    padding-inline: var(--island-side-pad-compact);
   }
   #global-nav.global-nav.dynamic-island.is-compact .nav-links {
-    gap: var(--island-link-gap-compact) ;
+    gap: var(--island-link-gap-compact);
   }
   #global-nav.global-nav.dynamic-island.is-compact #menu-btn,
   #global-nav.global-nav.dynamic-island.is-compact #search-toggle,
   #global-nav.global-nav.dynamic-island.is-compact #theme-toggle,
   #global-nav.global-nav.dynamic-island.is-compact .menu-toggle-button,
   #global-nav.global-nav.dynamic-island.is-compact .theme-toggle-nav {
-    width: var(--island-control-size-compact) ;
-    height: var(--island-control-size-compact) ;
-    min-width: var(--island-control-size-compact) ;
-    min-height: var(--island-control-size-compact) ;
+    width: var(--island-control-size-compact);
+    height: var(--island-control-size-compact);
+    min-width: var(--island-control-size-compact);
+    min-height: var(--island-control-size-compact);
   }
 }
 .global-nav.dynamic-island.scrolled {
@@ -129,10 +129,10 @@ html.dark .global-nav.dynamic-island.scrolled {
 }
 .global-nav.dynamic-island .nav-link,
 .global-nav.dynamic-island .nav-links {
-  font-size: var(--island-link-size) ;
-  font-weight: var(--island-link-weight) ;
-  letter-spacing: -0.01em ;
-  font-family: var(--island-font) ;
+  font-size: var(--island-link-size);
+  font-weight: var(--island-link-weight);
+  letter-spacing: -0.01em;
+  font-family: var(--island-font);
 }
 .global-nav.dynamic-island .nav-links {
   display: flex;
@@ -143,36 +143,36 @@ html.dark .global-nav.dynamic-island.scrolled {
 }
 .global-nav.dynamic-island .nav-link {
   position: relative;
-  padding: 8px 0 ;
+  padding: 8px 0;
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
     box-shadow 0.2s ease,
     padding 0.2s ease;
   white-space: nowrap;
-  text-transform: none ;
+  text-transform: none;
   border-radius: 999px;
 }
 #global-nav.global-nav.dynamic-island .nav-link,
 .global-nav.dynamic-island .nav-link,
 html.dark #global-nav.global-nav.dynamic-island .nav-link,
 html.dark .global-nav.dynamic-island .nav-link {
-  color: var(--island-link-color) ;
+  color: var(--island-link-color);
 }
 .global-nav.dynamic-island .nav-link.active {
-  font-weight: 500 ;
+  font-weight: 500;
   background: var(--island-link-active-bg);
-  padding-inline: 10px ;
+  padding-inline: 10px;
 }
 #global-nav.global-nav.dynamic-island .nav-link.active,
 .global-nav.dynamic-island .nav-link.active,
 html.dark #global-nav.global-nav.dynamic-island .nav-link.active,
 html.dark .global-nav.dynamic-island .nav-link.active {
-  color: var(--island-link-color-active) ;
+  color: var(--island-link-color-active);
 }
 .global-nav.dynamic-island .nav-link:hover,
 html.dark .global-nav.dynamic-island .nav-link:hover {
-  color: var(--island-link-color-hover) ;
+  color: var(--island-link-color-hover);
 }
 .global-nav.dynamic-island .nav-link::after {
   content: '';
@@ -203,14 +203,14 @@ html.dark .global-nav.dynamic-island .nav-link::after {
 .global-nav.dynamic-island #theme-toggle,
 .global-nav.dynamic-island .menu-toggle-button,
 .global-nav.dynamic-island .theme-toggle-nav {
-  width: var(--island-control-size) ;
-  height: var(--island-control-size) ;
-  min-width: var(--island-control-size) ;
-  min-height: var(--island-control-size) ;
-  border-radius: 999px ;
-  border: 1px solid var(--island-control-border) ;
-  background: var(--island-control-bg) ;
-  color: var(--island-control-color) ;
+  width: var(--island-control-size);
+  height: var(--island-control-size);
+  min-width: var(--island-control-size);
+  min-height: var(--island-control-size);
+  border-radius: 999px;
+  border: 1px solid var(--island-control-border);
+  background: var(--island-control-bg);
+  color: var(--island-control-color);
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -221,15 +221,15 @@ html.dark .global-nav.dynamic-island .nav-link::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--island-control-icon-size) ;
-  box-shadow: none ;
-  padding: 0 ;
-  font-family: var(--island-font) ;
-  line-height: 1 ;
+  font-size: var(--island-control-icon-size);
+  box-shadow: none;
+  padding: 0;
+  font-family: var(--island-font);
+  line-height: 1;
 }
 .global-nav.dynamic-island #menu-btn,
 .global-nav.dynamic-island .menu-toggle-button {
-  display: none ;
+  display: none;
 }
 #global-nav.global-nav.dynamic-island #menu-btn,
 #global-nav.global-nav.dynamic-island #search-toggle,
@@ -242,25 +242,25 @@ html.dark .global-nav.dynamic-island #search-toggle,
 html.dark .global-nav.dynamic-island #theme-toggle,
 html.dark .global-nav.dynamic-island .menu-toggle-button,
 html.dark .global-nav.dynamic-island .theme-toggle-nav {
-  color: var(--island-control-color) ;
+  color: var(--island-control-color);
 }
 .global-nav.dynamic-island #menu-btn:hover,
 .global-nav.dynamic-island #search-toggle:hover,
 .global-nav.dynamic-island #theme-toggle:hover,
 .global-nav.dynamic-island .menu-toggle-button:hover,
 .global-nav.dynamic-island .theme-toggle-nav:hover {
-  background: var(--island-control-bg-hover) ;
-  color: var(--island-link-color-active) ;
-  border-color: rgb(0 113 227/28%) ;
+  background: var(--island-control-bg-hover);
+  color: var(--island-link-color-active);
+  border-color: rgb(0 113 227/28%);
 }
 html.dark .global-nav.dynamic-island #menu-btn:hover,
 html.dark .global-nav.dynamic-island #search-toggle:hover,
 html.dark .global-nav.dynamic-island #theme-toggle:hover,
 html.dark .global-nav.dynamic-island .menu-toggle-button:hover,
 html.dark .global-nav.dynamic-island .theme-toggle-nav:hover {
-  background: var(--island-control-bg-hover) ;
-  color: var(--island-link-color-active) ;
-  border-color: rgb(78 161 255/35%) ;
+  background: var(--island-control-bg-hover);
+  color: var(--island-link-color-active);
+  border-color: rgb(78 161 255/35%);
 }
 .global-nav.dynamic-island #menu-btn:active,
 .global-nav.dynamic-island #search-toggle:active,
@@ -274,21 +274,21 @@ html.dark .global-nav.dynamic-island .theme-toggle-nav:hover {
 .global-nav.dynamic-island #theme-toggle i,
 .global-nav.dynamic-island .menu-toggle-button i,
 .global-nav.dynamic-island .theme-toggle-nav i {
-  color: currentcolor ;
-  font-size: var(--island-control-icon-size) ;
-  line-height: 1 ;
+  color: currentcolor;
+  font-size: var(--island-control-icon-size);
+  line-height: 1;
   pointer-events: none;
 }
 .global-nav.dynamic-island .menu-toggle-icon {
   transition: transform 0.22s ease;
 }
 .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
-  background: var(--island-control-bg-hover) ;
-  color: var(--island-link-color-active) ;
-  border-color: rgb(0 113 227/28%) ;
+  background: var(--island-control-bg-hover);
+  color: var(--island-link-color-active);
+  border-color: rgb(0 113 227/28%);
 }
 html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
-  border-color: rgb(78 161 255/35%) ;
+  border-color: rgb(78 161 255/35%);
 }
 .global-nav.dynamic-island #menu-btn[aria-expanded='true'] .menu-toggle-icon {
   transform: rotate(90deg);
@@ -342,7 +342,7 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
   }
   .global-nav.dynamic-island #menu-btn,
   .global-nav.dynamic-island .menu-toggle-button {
-    display: flex ;
+    display: flex;
   }
 }
 
@@ -369,8 +369,8 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
 @media (prefers-reduced-motion: reduce) {
   .global-nav.dynamic-island,
   .global-nav.dynamic-island * {
-    transition-duration: 0.01ms ;
-    animation-duration: 0.01ms ;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
   }
 }
 

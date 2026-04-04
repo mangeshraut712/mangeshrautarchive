@@ -3,7 +3,7 @@
  * Uses /api/profile/spotify, which may be backed by Spotify directly or Last.fm fallback.
  * The frontend keeps Spotify branding in the UI and hides backend/provider details.
  */
-(function() {
+(function () {
   'use strict';
 
   const MUSIC_ENDPOINT = '/api/profile/spotify';
@@ -35,8 +35,13 @@
 
   function setStatusDot(active) {
     if (!elements.statusDot) return;
-    elements.statusDot.style.backgroundColor = active ? '#1DB954' : '#86868b';
-    elements.statusDot.style.boxShadow = active ? '0 0 8px rgba(29, 185, 84, 0.35)' : 'none';
+    const isDark = document.documentElement.classList.contains('dark');
+    elements.statusDot.style.backgroundColor = active ? (isDark ? '#fff' : '#000') : '#86868b';
+    elements.statusDot.style.boxShadow = active
+      ? isDark
+        ? '0 0 8px rgba(255, 255, 255, 0.4)'
+        : '0 0 8px rgba(0, 0, 0, 0.2)'
+      : 'none';
   }
 
   function setSourcePresentation() {
@@ -46,7 +51,8 @@
 
     if (elements.sourceIcon) {
       elements.sourceIcon.className = 'fab fa-spotify';
-      elements.sourceIcon.style.color = '#1DB954';
+      const isDark = document.documentElement.classList.contains('dark');
+      elements.sourceIcon.style.color = isDark ? '#fff' : '#000';
     }
   }
 

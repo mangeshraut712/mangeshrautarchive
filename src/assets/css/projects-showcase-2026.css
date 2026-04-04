@@ -28,20 +28,20 @@
 }
 #projects #github-projects-container {
   width: 100%;
-  display: grid ;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) ;
-  gap: 1rem ;
-  min-width: 0 ;
-  max-width: 1200px ;
-  margin: 0 auto ;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  min-width: 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 html.dark #projects .github-graph-svg {
   filter: invert(1) hue-rotate(180deg);
   opacity: 0.9;
 }
 #projects {
-  display: block ;
-  min-height: auto ;
+  display: block;
+  min-height: auto;
   scroll-margin-top: 100px;
 }
 /* background managed by sitewide-design-system.css */
@@ -69,25 +69,25 @@ html.dark #projects .global-nav.dynamic-island .nav-link:hover {
   color: #7bb6ff;
 }
 #projects #projects-stats .stat-card {
-  border: 1px solid var(--project-border-light) ;
-  background: #fff ;
-  color: var(--project-text-light) ;
-  box-shadow: var(--project-shadow-light) ;
-  border-radius: 12px ;
-  padding: 0.75rem 1rem ;
+  border: 1px solid var(--project-border-light);
+  background: #fff;
+  color: var(--project-text-light);
+  box-shadow: var(--project-shadow-light);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
 }
 html.dark #projects #projects-stats .stat-card {
-  border-color: var(--project-border-dark) ;
-  background: #000 ;
-  color: var(--project-text-dark) ;
-  box-shadow: var(--project-shadow-dark) ;
+  border-color: var(--project-border-dark);
+  background: #000;
+  color: var(--project-text-dark);
+  box-shadow: var(--project-shadow-dark);
 }
 #projects #projects-stats .stat-label {
-  color: var(--project-muted-light) ;
-  font-size: 0.75rem ;
+  color: var(--project-muted-light);
+  font-size: 0.75rem;
 }
 html.dark #projects #projects-stats .stat-label {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 #projects .projects-showcase-shell {
   width: min(1240px, 100%);
@@ -99,103 +99,103 @@ html.dark #projects #projects-stats .stat-label {
   min-width: 0;
 }
 #projects .section-subtitle {
-  max-width: 68ch ;
-  margin-bottom: clamp(1.4rem, 2.6vw, 2.2rem) ;
+  max-width: 68ch;
+  margin-bottom: clamp(1.4rem, 2.6vw, 2.2rem);
 }
 #projects .proj-input-group,
 #projects .proj-search-container {
-  min-width: 0 ;
-  display: flex ;
-  align-items: center ;
+  min-width: 0;
+  display: flex;
+  align-items: center;
 }
 #projects .proj-search-container {
-  flex-direction: row ;
-  justify-content: space-between ;
-  gap: 0.85rem ;
-  width: 100% ;
-  max-width: 1200px ;
-  margin: 0 auto ;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 #projects .proj-input-group {
-  flex: 1 1 auto ;
-  min-height: 52px ;
-  max-width: 100% ;
-  border-radius: 14px ;
-  border: 1px solid var(--project-border-light) ;
-  background: #fff ;
-  box-shadow: 0 10px 22px rgb(15 23 42/8%) ;
-  padding: 0 1rem ;
+  flex: 1 1 auto;
+  min-height: 52px;
+  max-width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--project-border-light);
+  background: #fff;
+  box-shadow: 0 10px 22px rgb(15 23 42/8%);
+  padding: 0 1rem;
 }
 #projects .proj-input-group i {
-  color: #7d8aa2 ;
-  margin-right: 0.65rem ;
+  color: #7d8aa2;
+  margin-right: 0.65rem;
 }
 #projects .proj-search-input {
-  width: 100% ;
-  min-width: 0 ;
-  color: var(--project-text-light) ;
-  font-size: 0.95rem ;
-  font-weight: 500 ;
+  width: 100%;
+  min-width: 0;
+  color: var(--project-text-light);
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 #projects .proj-search-input::placeholder {
-  color: #90a0b4 ;
+  color: #90a0b4;
 }
 #projects .proj-controls-group {
-  display: flex ;
-  flex-direction: row ;
-  align-items: center ;
-  gap: 0.65rem ;
-  min-width: 0 ;
-  width: auto ;
-  margin-left: auto ;
-  flex-wrap: nowrap ;
-  flex: 0 0 auto ;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  width: auto;
+  margin-left: auto;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
 }
 #projects .proj-filter-select,
 #projects .projects-view-all-btn {
-  min-height: 52px ;
-  border-radius: 14px ;
-  border: 1px solid var(--project-border-light) ;
-  font-size: 0.9rem ;
-  font-weight: 600 ;
-  letter-spacing: -0.01em ;
+  min-height: 52px;
+  border-radius: 14px;
+  border: 1px solid var(--project-border-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 #projects .proj-filter-select {
-  min-width: 192px ;
-  padding: 0 2.25rem 0 1rem ;
-  background-color: #fff ;
-  color: var(--project-text-light) ;
-  box-shadow: 0 10px 20px rgb(15 23 42/7%) ;
+  min-width: 192px;
+  padding: 0 2.25rem 0 1rem;
+  background-color: #fff;
+  color: var(--project-text-light);
+  box-shadow: 0 10px 20px rgb(15 23 42/7%);
 }
 #projects .projects-view-all-btn {
-  padding: 0 1.5rem ;
-  background: linear-gradient(135deg, var(--project-accent), #1683ff) ;
-  border-color: rgb(7 91 199/42%) ;
-  color: #fff ;
-  box-shadow: 0 12px 24px rgb(10 111 239/26%) ;
+  padding: 0 1.5rem;
+  background: linear-gradient(135deg, var(--project-accent), #1683ff);
+  border-color: rgb(7 91 199/42%);
+  color: #fff;
+  box-shadow: 0 12px 24px rgb(10 111 239/26%);
 }
 #projects .projects-view-all-btn:hover {
-  transform: translateY(-1px) ;
-  box-shadow: 0 16px 30px rgb(10 111 239/30%) ;
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgb(10 111 239/30%);
 }
 html.dark #projects .proj-input-group {
-  color: var(--project-text-dark) ;
+  color: var(--project-text-dark);
 }
 html.dark #projects .proj-filter-select,
 html.dark #projects .proj-input-group {
-  background: #000 ;
-  border-color: var(--project-border-dark) ;
-  box-shadow: 0 14px 24px rgb(0 0 0/52%) ;
+  background: #000;
+  border-color: var(--project-border-dark);
+  box-shadow: 0 14px 24px rgb(0 0 0/52%);
 }
 html.dark #projects .proj-input-group i {
-  color: #7a889f ;
+  color: #7a889f;
 }
 html.dark #projects .proj-filter-select,
 html.dark #projects .proj-search-input {
-  color: var(--project-text-dark) ;
+  color: var(--project-text-dark);
 }
 html.dark #projects .proj-search-input::placeholder {
-  color: #76849a ;
+  color: #76849a;
 }
 #projects .projects-activity-overview {
   max-width: 1200px;
@@ -221,33 +221,33 @@ html.dark #projects .projects-activity-overview {
   min-width: 0;
 }
 #projects .activity-eyebrow {
-  margin: 0 ;
-  color: var(--project-accent) ;
-  font-size: 0.76rem ;
-  font-weight: 700 ;
+  margin: 0;
+  color: var(--project-accent);
+  font-size: 0.76rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em ;
+  letter-spacing: 0.08em;
 }
 #projects .activity-title {
-  margin: 0.38rem 0 0 ;
-  font-size: clamp(1.18rem, 2vw, 1.65rem) ;
-  line-height: 1.15 ;
-  letter-spacing: -0.02em ;
-  color: var(--project-text-light) ;
+  margin: 0.38rem 0 0;
+  font-size: clamp(1.18rem, 2vw, 1.65rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--project-text-light);
 }
 html.dark #projects .activity-title {
-  color: var(--project-text-dark) ;
+  color: var(--project-text-dark);
 }
 #projects .projects-activity-caption {
-  margin: 0 ;
+  margin: 0;
   max-width: 42ch;
-  color: var(--project-muted-light) ;
-  font-size: 0.9rem ;
-  line-height: 1.5 ;
+  color: var(--project-muted-light);
+  font-size: 0.9rem;
+  line-height: 1.5;
   text-align: right;
 }
 html.dark #projects .projects-activity-caption {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 #projects .activity-overview-inner {
   margin-top: 1rem;
@@ -273,23 +273,23 @@ html.dark #projects .activity-stat-item {
   background: rgb(255 255 255/2%);
 }
 #projects .activity-stat-value {
-  color: var(--project-text-light) ;
-  font-size: 2rem ;
-  line-height: 1 ;
-  letter-spacing: -0.04em ;
-  font-weight: 720 ;
+  color: var(--project-text-light);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 720;
 }
 html.dark #projects .activity-stat-value {
-  color: var(--project-text-dark) ;
+  color: var(--project-text-dark);
 }
 #projects .activity-stat-label {
-  color: var(--project-muted-light) ;
-  font-size: 0.72rem ;
+  color: var(--project-muted-light);
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em ;
+  letter-spacing: 0.06em;
 }
 html.dark #projects .activity-stat-label {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 #projects .activity-github-graph-container {
   margin-top: 1rem;
@@ -300,13 +300,13 @@ html.dark #projects .activity-github-graph-container {
   border-top-color: var(--project-border-dark);
 }
 #projects .graph-title {
-  margin: 0 0 0.72rem ;
-  font-size: 1.04rem ;
-  font-weight: 640 ;
-  color: var(--project-text-light) ;
+  margin: 0 0 0.72rem;
+  font-size: 1.04rem;
+  font-weight: 640;
+  color: var(--project-text-light);
 }
 html.dark #projects .graph-title {
-  color: var(--project-text-dark) ;
+  color: var(--project-text-dark);
 }
 #projects .github-graph-scroll {
   overflow-x: auto;
@@ -341,13 +341,13 @@ html.dark #projects .projects-empty-state {
   margin-bottom: 0.75rem;
 }
 #projects #github-projects-container .showcase-project-card {
-  position: relative ;
-  display: flex ;
-  flex-direction: column ;
-  min-height: 355px ;
-  height: 100% ;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 355px;
+  height: 100%;
   /* background/border/shadow managed by sitewide-design-system.css */
-  overflow: hidden ;
+  overflow: hidden;
 }
 #projects #github-projects-container .showcase-project-card::after {
   content: '';
@@ -360,27 +360,27 @@ html.dark #projects .projects-empty-state {
   transition: opacity 0.24s ease;
 }
 #projects #github-projects-container .showcase-project-card:hover {
-  transform: translateY(-4px) ;
-  border-color: rgb(10 111 239/40%) ;
-  box-shadow: 0 22px 40px rgb(15 23 42/14%) ;
+  transform: translateY(-4px);
+  border-color: rgb(10 111 239/40%);
+  box-shadow: 0 22px 40px rgb(15 23 42/14%);
 }
 #projects #github-projects-container .showcase-project-card:hover::after {
   opacity: 1;
 }
 /* Dark mode overrides handled by sitewide-design-system.css */
 #projects #github-projects-container .project-header {
-  padding: 1rem 1rem 0.8rem ;
-  display: flex ;
-  flex-direction: column ;
-  gap: 0.62rem ;
-  flex: 1 ;
+  padding: 1rem 1rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.62rem;
+  flex: 1;
 }
 #projects #github-projects-container .project-head-top {
-  display: flex ;
-  align-items: flex-start ;
-  justify-content: space-between ;
-  flex-wrap: wrap ;
-  gap: 0.58rem ;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.58rem;
 }
 #projects #github-projects-container .project-title-wrap {
   min-width: 0;
@@ -388,47 +388,47 @@ html.dark #projects .projects-empty-state {
   gap: 0.28rem;
 }
 #projects #github-projects-container .project-title {
-  margin: 0 ;
-  min-width: 0 ;
-  color: inherit ;
+  margin: 0;
+  min-width: 0;
+  color: inherit;
 }
 #projects #github-projects-container .project-title-text {
-  font-size: 1.16rem ;
-  font-weight: 700 ;
-  line-height: 1.22 ;
-  letter-spacing: -0.02em ;
-  display: -webkit-box ;
-  -webkit-line-clamp: 1 ;
-  line-clamp: 1 ;
-  -webkit-box-orient: vertical ;
-  overflow: hidden ;
+  font-size: 1.16rem;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 #projects #github-projects-container .project-repo-updated {
-  display: inline-flex ;
-  align-items: center ;
-  gap: 0.34rem ;
-  flex-shrink: 0 ;
-  border-radius: 999px ;
-  border: 1px solid var(--project-accent-soft-border) ;
-  background: var(--project-accent-soft) ;
-  color: #0a58be ;
-  padding: 0.3rem 0.65rem ;
-  font-size: 0.74rem ;
-  font-weight: 640 ;
-  line-height: 1 ;
-  white-space: nowrap ;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--project-accent-soft-border);
+  background: var(--project-accent-soft);
+  color: #0a58be;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 640;
+  line-height: 1;
+  white-space: nowrap;
 }
 html.dark #projects #github-projects-container .project-repo-updated {
-  color: #9dccff ;
-  border-color: rgb(88 166 255/30%) ;
-  background: rgb(88 166 255/14%) ;
+  color: #9dccff;
+  border-color: rgb(88 166 255/30%);
+  background: rgb(88 166 255/14%);
 }
 #projects #github-projects-container .project-repo-link,
 #projects #github-projects-container .project-repo-path {
-  margin: 0 ;
-  color: var(--project-muted-light) ;
-  font-size: 0.78rem ;
-  line-height: 1.35 ;
+  margin: 0;
+  color: var(--project-muted-light);
+  font-size: 0.78rem;
+  line-height: 1.35;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   white-space: nowrap;
   overflow: hidden;
@@ -436,22 +436,22 @@ html.dark #projects #github-projects-container .project-repo-updated {
 }
 html.dark #projects #github-projects-container .project-repo-link,
 html.dark #projects #github-projects-container .project-repo-path {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 #projects #github-projects-container .project-description {
-  margin: 0 ;
-  color: #374151 ;
-  font-size: 0.9rem ;
-  line-height: 1.54 ;
-  letter-spacing: -0.004em ;
-  display: -webkit-box ;
-  -webkit-line-clamp: 3 ;
-  line-clamp: 3 ;
-  -webkit-box-orient: vertical ;
-  overflow: hidden ;
+  margin: 0;
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.54;
+  letter-spacing: -0.004em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 html.dark #projects #github-projects-container .project-description {
-  color: #d4dde8 ;
+  color: #d4dde8;
 }
 #projects #github-projects-container .project-signal-row {
   display: flex;
@@ -491,92 +491,92 @@ html.dark #projects #github-projects-container .project-signal-score {
   color: var(--project-muted-dark);
 }
 #projects #github-projects-container .project-tags {
-  display: flex ;
-  flex-wrap: wrap ;
-  gap: 0.34rem ;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.34rem;
 }
 #projects #github-projects-container .project-language,
 #projects #github-projects-container .project-tag {
-  display: inline-flex ;
-  align-items: center ;
-  gap: 0.3rem ;
-  border-radius: 999px ;
-  border: 1px solid var(--project-accent-soft-border) ;
-  background: var(--project-accent-soft) ;
-  color: #0a58be ;
-  padding: 0.22rem 0.58rem ;
-  font-size: 0.72rem ;
-  font-weight: 620 ;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 999px;
+  border: 1px solid var(--project-accent-soft-border);
+  background: var(--project-accent-soft);
+  color: #0a58be;
+  padding: 0.22rem 0.58rem;
+  font-size: 0.72rem;
+  font-weight: 620;
 }
 html.dark #projects #github-projects-container .project-language,
 html.dark #projects #github-projects-container .project-tag {
-  color: #9dccff ;
-  border-color: rgb(88 166 255/30%) ;
-  background: rgb(88 166 255/15%) ;
+  color: #9dccff;
+  border-color: rgb(88 166 255/30%);
+  background: rgb(88 166 255/15%);
 }
 #projects #github-projects-container .project-footer {
-  margin-top: auto ;
-  display: grid ;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) ;
-  gap: 0.55rem ;
-  padding: 0.75rem 1rem 1rem ;
-  border-top: 1px solid var(--project-border-light) ;
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid var(--project-border-light);
   background: #ffffff !important;
 }
 html.dark #projects #github-projects-container .project-footer {
-  border-top-color: var(--project-border-dark) ;
+  border-top-color: var(--project-border-dark);
   background: #000000 !important;
 }
 #projects #github-projects-container .project-action-btn {
-  min-height: 44px ;
-  border-radius: 12px ;
-  padding: 0.55rem 0.7rem ;
-  display: inline-flex ;
-  align-items: center ;
-  justify-content: center ;
-  gap: 0.4rem ;
-  font-size: 0.84rem ;
-  font-weight: 640 ;
-  letter-spacing: -0.01em ;
-  text-decoration: none ;
-  white-space: nowrap ;
-  width: 100% ;
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 0.55rem 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 640;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  width: 100%;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease ;
+    box-shadow 0.2s ease;
 }
 #projects #github-projects-container .btn-ar {
-  background: linear-gradient(135deg, var(--project-accent), #1683ff) ;
-  border: 1px solid rgb(7 91 199/40%) ;
-  color: #fff ;
-  box-shadow: 0 10px 20px rgb(10 111 239/28%) ;
+  background: linear-gradient(135deg, var(--project-accent), #1683ff);
+  border: 1px solid rgb(7 91 199/40%);
+  color: #fff;
+  box-shadow: 0 10px 20px rgb(10 111 239/28%);
 }
 #projects #github-projects-container .btn-demo {
-  background: var(--project-surface-light) ;
-  color: var(--project-text-light) ;
-  border: 1px solid var(--project-border-light) ;
-  box-shadow: 0 10px 20px rgb(15 23 42/8%) ;
+  background: var(--project-surface-light);
+  color: var(--project-text-light);
+  border: 1px solid var(--project-border-light);
+  box-shadow: 0 10px 20px rgb(15 23 42/8%);
 }
 html.dark #projects #github-projects-container .btn-demo {
-  background: rgb(255 255 255/3%) ;
-  color: var(--project-text-dark) ;
-  border-color: var(--project-border-dark) ;
+  background: rgb(255 255 255/3%);
+  color: var(--project-text-dark);
+  border-color: var(--project-border-dark);
 }
 #projects #github-projects-container .btn-ar:hover:not(:disabled),
 #projects #github-projects-container .btn-demo:hover:not(:disabled) {
-  transform: translateY(-1px) ;
+  transform: translateY(-1px);
 }
 #projects #github-projects-container .btn-ar:hover:not(:disabled) {
-  box-shadow: 0 13px 24px rgb(10 111 239/32%) ;
+  box-shadow: 0 13px 24px rgb(10 111 239/32%);
 }
 #projects #github-projects-container .btn-demo:hover:not(:disabled) {
-  box-shadow: var(--project-shadow-light-hover) ;
-  background: #f5f8fc ;
-  border-color: #d3dce8 ;
+  box-shadow: var(--project-shadow-light-hover);
+  background: #f5f8fc;
+  border-color: #d3dce8;
 }
 html.dark #projects #github-projects-container .btn-demo:hover:not(:disabled) {
-  background: rgb(255 255 255/7%) ;
-  box-shadow: var(--project-shadow-dark-hover) ;
+  background: rgb(255 255 255/7%);
+  box-shadow: var(--project-shadow-dark-hover);
 }
 #projects #github-projects-container .project-action-btn:focus-visible {
   outline: 2px solid rgb(10 111 239/58%);
@@ -584,45 +584,45 @@ html.dark #projects #github-projects-container .btn-demo:hover:not(:disabled) {
 }
 #projects #github-projects-container .project-action-btn.is-disabled,
 #projects #github-projects-container .project-action-btn:disabled {
-  background: #c0c6cf ;
-  border: 1px solid #c0c6cf ;
-  color: #f8fafc ;
-  box-shadow: none ;
-  pointer-events: none ;
+  background: #c0c6cf;
+  border: 1px solid #c0c6cf;
+  color: #f8fafc;
+  box-shadow: none;
+  pointer-events: none;
 }
 html.dark #projects #github-projects-container .project-action-btn.is-disabled,
 html.dark #projects #github-projects-container .project-action-btn:disabled {
-  background: #2a3340 ;
-  border-color: #2a3340 ;
-  color: #8f9eb3 ;
+  background: #2a3340;
+  border-color: #2a3340;
+  color: #8f9eb3;
 }
 .project-xr-modal {
-  position: fixed ;
-  inset: 0 ;
-  z-index: 1600 ;
-  display: grid ;
-  place-items: center ;
-  padding: clamp(12px, 3vw, 24px) ;
-  background: rgb(7 10 18/64%) ;
-  backdrop-filter: blur(13px) saturate(120%) ;
+  position: fixed;
+  inset: 0;
+  z-index: 1600;
+  display: grid;
+  place-items: center;
+  padding: clamp(12px, 3vw, 24px);
+  background: rgb(7 10 18/64%);
+  backdrop-filter: blur(13px) saturate(120%);
 }
 .project-xr-dialog {
-  width: min(820px, calc(100vw - 18px)) ;
-  max-height: calc(100dvh - 18px) ;
-  overflow: auto ;
-  border-radius: 20px ;
-  border: 1px solid var(--project-border-light) ;
+  width: min(820px, calc(100vw - 18px));
+  max-height: calc(100dvh - 18px);
+  overflow: auto;
+  border-radius: 20px;
+  border: 1px solid var(--project-border-light);
   background: #ffffff !important;
-  color: var(--project-text-light) ;
+  color: var(--project-text-light);
   box-shadow: none !important;
-  padding: clamp(0.78rem, 1.5vw, 1rem) ;
+  padding: clamp(0.78rem, 1.5vw, 1rem);
   display: grid;
   gap: 0.52rem;
 }
 html.dark .project-xr-dialog {
-  border-color: var(--project-border-dark) ;
+  border-color: var(--project-border-dark);
   background: #000000 !important;
-  color: var(--project-text-dark) ;
+  color: var(--project-text-dark);
   box-shadow: none !important;
 }
 .project-xr-head {
@@ -636,10 +636,10 @@ html.dark .project-xr-dialog {
   min-width: 0;
 }
 .project-xr-head h3 {
-  margin: 0 ;
-  font-size: clamp(1.2rem, 2vw, 1.64rem) ;
-  line-height: 1.12 ;
-  letter-spacing: -0.025em ;
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.64rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
 }
 .project-xr-head-actions {
   display: flex;
@@ -672,13 +672,13 @@ html.dark .project-xr-top-close {
   color: var(--project-text-dark);
 }
 .project-xr-modal-description {
-  margin: 0 ;
-  color: #3f4d61 ;
-  line-height: 1.45 ;
-  font-size: 0.88rem ;
+  margin: 0;
+  color: #3f4d61;
+  line-height: 1.45;
+  font-size: 0.88rem;
 }
 html.dark .project-xr-modal-description {
-  color: #ced9e7 ;
+  color: #ced9e7;
 }
 .project-xr-updated-chip {
   border-radius: 999px;
@@ -695,16 +695,16 @@ html.dark .project-xr-updated-chip {
   background: rgb(88 166 255/15%);
 }
 .project-xr-repo-label {
-  margin: 0.3rem 0 0 ;
-  font-size: 0.79rem ;
-  color: var(--project-muted-light) ;
+  margin: 0.3rem 0 0;
+  font-size: 0.79rem;
+  color: var(--project-muted-light);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 html.dark .project-xr-repo-label {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 .project-xr-data-section,
 .project-xr-spatial-brief {
@@ -722,26 +722,26 @@ html.dark .project-xr-spatial-brief {
 }
 .project-xr-section-head h4,
 .project-xr-spatial-brief h4 {
-  margin: 0 ;
-  color: #0a57ba ;
+  margin: 0;
+  color: #0a57ba;
   text-transform: uppercase;
 }
 .project-xr-spatial-brief h4 {
-  font-size: 0.82rem ;
-  letter-spacing: 0.07em ;
+  font-size: 0.82rem;
+  letter-spacing: 0.07em;
 }
 html.dark .project-xr-section-head h4,
 html.dark .project-xr-spatial-brief h4 {
-  color: #9dccff ;
+  color: #9dccff;
 }
 .project-xr-spatial-copy {
-  margin: 0 ;
-  font-size: 0.8rem ;
-  line-height: 1.45 ;
-  color: var(--project-muted-light) ;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--project-muted-light);
 }
 html.dark .project-xr-spatial-copy {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 .project-xr-insights-grid {
   display: grid;
@@ -794,23 +794,23 @@ html.dark .project-xr-fact-label {
   gap: 0.5rem;
 }
 .project-xr-section-head h4 {
-  font-size: 0.8rem ;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
 }
 .project-xr-loading-text,
 .project-xr-section-meta {
-  color: var(--project-muted-light) ;
+  color: var(--project-muted-light);
 }
 .project-xr-section-meta {
   font-size: 0.7rem;
 }
 html.dark .project-xr-loading-text,
 html.dark .project-xr-section-meta {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 .project-xr-loading-text {
-  margin: 0 ;
-  font-size: 0.78rem ;
+  margin: 0;
+  font-size: 0.78rem;
 }
 .project-xr-lang-bar-wrap {
   display: grid;
@@ -949,46 +949,46 @@ html.dark .project-xr-heatmap-cell {
   background: rgb(88 166 255/10%);
 }
 .project-xr-activity-note {
-  margin: 0.46rem 0 0 ;
-  font-size: 0.74rem ;
-  color: var(--project-muted-light) ;
+  margin: 0.46rem 0 0;
+  font-size: 0.74rem;
+  color: var(--project-muted-light);
   text-align: center;
 }
 .project-xr-activity-note strong {
   color: var(--project-text-light);
 }
 html.dark .project-xr-activity-note {
-  color: var(--project-muted-dark) ;
+  color: var(--project-muted-dark);
 }
 .project-xr-actions {
-  display: grid ;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) ;
-  gap: 0.34rem ;
-  margin-top: 0.08rem ;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.34rem;
+  margin-top: 0.08rem;
 }
 .project-xr-action-primary,
 .project-xr-action-secondary {
-  min-height: 40px ;
-  border-radius: 10px ;
-  border: 1px solid var(--project-border-light) ;
-  background: #fff ;
-  color: var(--project-text-light) ;
-  font-size: 0.8rem ;
-  font-weight: 640 ;
-  display: inline-flex ;
-  align-items: center ;
-  justify-content: center ;
-  text-decoration: none ;
-  padding: 0 0.84rem ;
-  gap: 0.36rem ;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--project-border-light);
+  background: #fff;
+  color: var(--project-text-light);
+  font-size: 0.8rem;
+  font-weight: 640;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 0 0.84rem;
+  gap: 0.36rem;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease ;
+    box-shadow 0.2s ease;
 }
 .project-xr-action-primary {
-  border-color: rgb(7 91 199/40%) ;
-  background: linear-gradient(135deg, var(--project-accent), #1683ff) ;
-  color: #fff ;
+  border-color: rgb(7 91 199/40%);
+  background: linear-gradient(135deg, var(--project-accent), #1683ff);
+  color: #fff;
 }
 .project-xr-action-primary:hover,
 .project-xr-action-secondary:hover {
@@ -999,25 +999,25 @@ html.dark .project-xr-activity-note {
 }
 html.dark .project-xr-action-primary,
 html.dark .project-xr-action-secondary {
-  border-color: var(--project-border-dark) ;
-  background: rgb(255 255 255/3%) ;
-  color: var(--project-text-dark) ;
+  border-color: var(--project-border-dark);
+  background: rgb(255 255 255/3%);
+  color: var(--project-text-dark);
 }
 html.dark .project-xr-action-primary {
-  border-color: rgb(88 166 255/42%) ;
-  background: linear-gradient(135deg, #0b63da, #218bff) ;
-  color: #fff ;
+  border-color: rgb(88 166 255/42%);
+  background: linear-gradient(135deg, #0b63da, #218bff);
+  color: #fff;
 }
 .project-xr-action-disabled {
-  background: #c0c6cf ;
-  border-color: #c0c6cf ;
-  color: #f8fafc ;
-  pointer-events: none ;
+  background: #c0c6cf;
+  border-color: #c0c6cf;
+  color: #f8fafc;
+  pointer-events: none;
 }
 html.dark .project-xr-action-disabled {
-  background: #2a3340 ;
-  border-color: #2a3340 ;
-  color: #8f9eb3 ;
+  background: #2a3340;
+  border-color: #2a3340;
+  color: #8f9eb3;
 }
 .project-xr-overlay {
   position: fixed;
@@ -1079,7 +1079,7 @@ html.dark .project-xr-status {
 
 @media (max-width: 1180px) {
   #projects #github-projects-container {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) ;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -1096,21 +1096,21 @@ html.dark .project-xr-status {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   #projects .proj-search-container {
-    flex-direction: column ;
-    align-items: stretch ;
+    flex-direction: column;
+    align-items: stretch;
   }
   #projects .proj-controls-group {
-    width: 100% ;
-    margin-left: 0 ;
-    justify-content: flex-start ;
-    flex-wrap: wrap ;
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
   #projects .proj-controls-group .proj-filter-select,
   #projects .proj-controls-group .projects-view-all-btn {
-    width: 100% ;
+    width: 100%;
   }
   #projects #github-projects-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) ;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .project-xr-activity-stats,
   .project-xr-facts {
@@ -1123,38 +1123,38 @@ html.dark .project-xr-status {
     margin-left: 0.55rem;
   }
   .project-xr-actions {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) ;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
 
 @media (max-width: 680px) {
   #projects #github-projects-container,
   #projects .activity-overview-inner {
-    grid-template-columns: 1fr ;
+    grid-template-columns: 1fr;
   }
   #projects .projects-activity-overview {
-    padding: 1.25rem 1rem ;
-    max-width: 100% ;
-    min-width: 0 ;
-    overflow: hidden ;
-    box-sizing: border-box ;
+    padding: 1.25rem 1rem;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   #projects .github-graph-scroll,
   .activity-github-graph-container {
-    max-width: 100% ;
-    min-width: 0 ;
-    width: 100% ;
-    box-sizing: border-box ;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
   #projects .proj-controls-group {
-    flex-direction: column ;
-    align-items: stretch ;
+    flex-direction: column;
+    align-items: stretch;
   }
   #projects #github-projects-container .project-footer,
   .project-xr-actions,
   .project-xr-activity-stats,
   .project-xr-facts {
-    grid-template-columns: 1fr ;
+    grid-template-columns: 1fr;
   }
   #projects #github-projects-container .project-signal-score {
     width: 100%;

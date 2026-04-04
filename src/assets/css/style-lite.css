@@ -4,7 +4,7 @@
   --bg-secondary: #f5f5f7;
   --text-primary: #1d1d1f;
   --text-secondary: #6e6e73;
-  --accent: #0071e3;
+  --accent: #1d1d1f;
   --accent-hover: #0077ed;
   --surface-border: rgba(0, 0, 0, 0.08);
   --surface-border-strong: rgba(0, 0, 0, 0.12);
@@ -16,7 +16,7 @@ html.dark {
   --bg-secondary: #1c1c1e;
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
-  --accent: #2997ff;
+  --accent: #86868b;
   --accent-hover: #66b5ff;
   --surface-border: rgba(255, 255, 255, 0.12);
   --surface-border-strong: rgba(255, 255, 255, 0.18);
@@ -103,7 +103,7 @@ a:hover {
   cursor: pointer;
   text-decoration: none;
   color: #fff;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #0a84ff 100%);
   box-shadow: 0 10px 24px rgba(0, 113, 227, 0.24);
   transition:
     background-color 0.2s ease,
@@ -118,13 +118,13 @@ a:hover {
 .contact-assistme-btn:hover,
 #contact-chatbot-cta:hover {
   color: #fff;
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  background: linear-gradient(135deg, #0077ed 0%, #86868b 100%);
   transform: translateY(-1px);
   box-shadow: 0 14px 28px rgba(0, 113, 227, 0.28);
 }
 
 .button-secondary {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #0a84ff 100%);
 }
 
 #search-overlay {
@@ -245,7 +245,7 @@ html.dark .overlay-nav-link {
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #0a84ff 100%);
   box-shadow: 0 14px 30px rgba(0, 113, 227, 0.28);
 }
 
@@ -262,7 +262,7 @@ html.dark .overlay-nav-link {
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #0a84ff 100%);
   box-shadow: 0 12px 28px rgba(0, 113, 227, 0.24);
   opacity: 0;
   visibility: hidden;

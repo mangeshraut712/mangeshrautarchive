@@ -1,32 +1,32 @@
 #debug-runner-section,
 #debug-runner-section.bg-gray-50,
 section#debug-runner-section {
-  background: var(--card-surface-light) ;
-  background-color: var(--card-surface-light) ;
-  background-image: none ;
-  background-blend-mode: normal ;
+  background: var(--card-surface-light);
+  background-color: var(--card-surface-light);
+  background-image: none;
+  background-blend-mode: normal;
 }
 #debug-runner-container {
-  max-width: 800px ;
-  margin: 0 auto ;
-  background: 0 0 ;
-  border-radius: 20px ;
-  overflow: hidden ;
-  border: 2px solid var(--card-border-light) ;
-  box-shadow: var(--shadow-lg) ;
+  max-width: 800px;
+  margin: 0 auto;
+  background: 0 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid var(--card-border-light);
+  box-shadow: var(--shadow-lg);
 }
 html.dark #debug-runner-container {
-  border: 2px solid var(--card-border-light) ;
-  box-shadow: var(--shadow-dark-lg) ;
+  border: 2px solid var(--card-border-light);
+  box-shadow: var(--shadow-dark-lg);
 }
 #debug-runner-canvas {
-  display: block ;
-  width: 100% ;
-  max-width: 800px ;
-  height: auto ;
-  border-radius: 16px ;
-  background: var(--card-surface-light) ;
-  background-color: var(--card-surface-light) ;
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 16px;
+  background: var(--card-surface-light);
+  background-color: var(--card-surface-light);
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
@@ -64,7 +64,7 @@ html.dark .game-control-card:hover {
   min-width: 48px;
   height: 40px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%);
+  background: linear-gradient(135deg, #1d1d1f 0, #0a84ff 100%);
   color: #fff;
   font-weight: 700;
   font-size: 14px;
@@ -104,40 +104,40 @@ html.dark .game-container {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 footer {
-  background: #fff ;
-  background-color: #fff ;
-  padding: 24px 0 ;
+  background: #fff;
+  background-color: #fff;
+  padding: 24px 0;
 }
 html.dark footer {
-  background: #000 ;
-  background-color: #000 ;
+  background: #000;
+  background-color: #000;
 }
 footer .wrapper {
-  margin-top: 0 ;
-  margin-bottom: 0 ;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 footer .border-t {
-  border-color: rgba(0, 0, 0, 0.1) ;
+  border-color: rgba(0, 0, 0, 0.1);
 }
 html.dark footer .border-t {
-  border-color: rgba(255, 255, 255, 0.1) ;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 .wrapper {
-  margin-top: 20px ;
-  margin-bottom: 20px ;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 #contact .wrapper {
-  margin-top: 8px ;
-  margin-bottom: 28px ;
+  margin-top: 8px;
+  margin-bottom: 28px;
 }
 html.dark #contact .contact-section[style*='border-top'] {
-  border-top-color: rgba(255, 255, 255, 0.1) ;
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 .wrapper .tooltip {
-  z-index: 1001 ;
+  z-index: 1001;
 }
 #chatbot-toggle,
 #chatbot-widget,
 #go-to-top {
-  z-index: 100000 ;
+  z-index: 100000;
 }

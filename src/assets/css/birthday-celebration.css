@@ -265,7 +265,7 @@ html.dark .birthday-notification {
 }
 .ios-calendar-header {
   height: 6px;
-  background: #ff3b30;
+  background: #666666;
   width: 100%;
   position: absolute;
   top: 0;
@@ -455,13 +455,13 @@ html.dark .birthday-notification {
   left: 0;
   right: 0;
   height: 18px;
-  background: #ff3b30;
+  background: #666666;
   border-radius: 12px 12px 0 0;
 }
 .calendar-month {
   font-size: 10px;
   font-weight: 700;
-  color: #ff3b30;
+  color: #666666;
   text-transform: uppercase;
   margin-top: 20px;
   letter-spacing: 0.5px;
@@ -756,7 +756,7 @@ html.dark .birthday-continue-btn:hover {
   .confetti,
   .firework,
   .sparkle {
-    animation: none ;
+    animation: none;
   }
   .birthday-title {
     -webkit-text-fill-color: #fff;

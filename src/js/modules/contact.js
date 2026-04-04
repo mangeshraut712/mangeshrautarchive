@@ -24,9 +24,9 @@ function initLetsTalkButton() {
 
   talkButton.dataset.initialized = 'true';
 
-  talkButton.addEventListener('click', async (e) => {
+  talkButton.addEventListener('click', async e => {
     e.preventDefault();
-    
+
     // Open chat widget or redirect to chat
     const chatWidget = document.getElementById('chatbot-widget');
     if (chatWidget) {
@@ -47,7 +47,7 @@ function initScheduleMeetingButton() {
   scheduleButton.dataset.initialized = 'true';
   const originalText = scheduleButton.innerHTML;
 
-  scheduleButton.addEventListener('click', async (e) => {
+  scheduleButton.addEventListener('click', async e => {
     e.preventDefault();
 
     try {
@@ -76,7 +76,7 @@ function initSetReminderButton() {
   reminderButton.dataset.initialized = 'true';
   const originalText = reminderButton.innerHTML;
 
-  reminderButton.addEventListener('click', async (e) => {
+  reminderButton.addEventListener('click', async e => {
     e.preventDefault();
 
     try {
@@ -152,7 +152,7 @@ function showMessage(message, tone = 'success') {
     max-width: 400px;
     animation: slideIn 0.3s ease;
   `;
-  
+
   document.body.appendChild(node);
 
   window.setTimeout(() => {
@@ -374,14 +374,29 @@ export function initContactForm(formId = 'contact-form', root = document) {
   }
 }
 
+// Initialize both old and new contact forms
+function initAllContactFeatures() {
+  initContactPage();
+
+  // Initialize new contact form if it exists
+  const newContactForm = document.getElementById('contact-form');
+  if (newContactForm) {
+    initContactForm('contact-form');
+  }
+}
+
 // Initialize contact page when DOM is ready
 if (typeof window !== 'undefined') {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      initContactPage();
-    }, { once: true });
+    document.addEventListener(
+      'DOMContentLoaded',
+      () => {
+        initAllContactFeatures();
+      },
+      { once: true }
+    );
   } else {
-    initContactPage();
+    initAllContactFeatures();
   }
 }
 

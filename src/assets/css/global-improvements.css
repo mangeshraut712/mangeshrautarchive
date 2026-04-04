@@ -8,15 +8,12 @@
 button[type='submit'],
 input[type='submit'] {
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%);
-  color: #fff ;
-  border: 2px solid transparent;
-  border-radius: 16px;
+  border: none;
+  border-radius: 980px;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgb(0 113 227/30%);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: inline-flex;
   align-items: center;
@@ -47,33 +44,7 @@ input[type='submit'] {
 .hero-cta:hover::before {
   transform: translateX(100%);
 }
-.action-btn:hover,
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn:hover,
-.cta-button:hover,
-.download-btn:hover,
-.hero-cta:hover {
-  background: linear-gradient(135deg, #0077ed 0, #2997ff 100%);
-  box-shadow: 0 6px 24px rgb(41 151 255/40%);
-  transform: translateY(-2px);
-}
-html.dark .btn,
-html.dark .btn-primary,
-html.dark .btn-secondary,
-html.dark .cta-button,
-html.dark .hero-cta {
-  background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%);
-  color: #fff ;
-}
-html.dark .btn-primary:hover,
-html.dark .btn-secondary:hover,
-html.dark .btn:hover,
-html.dark .cta-button:hover,
-html.dark .hero-cta:hover {
-  background: linear-gradient(135deg, #0077ed 0, #2997ff 100%);
-  box-shadow: 0 8px 32px rgb(41 151 255/50%);
-}
+/* Hover and Dark mode backgrounds managed by style.css */
 .award-card,
 .blog-card,
 .card,
@@ -101,7 +72,7 @@ html.dark .hero-cta:hover {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa);
+  background: linear-gradient(90deg, #1d1d1f, #86868b, #aeaeb2);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -169,7 +140,7 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: 0;
-  border-color: #0071e3;
+  border-color: #1d1d1f;
   box-shadow: 0 0 0 4px rgb(0 113 227/10%);
 }
 html.dark input,
@@ -182,7 +153,7 @@ html.dark textarea {
 html.dark input:focus,
 html.dark select:focus,
 html.dark textarea:focus {
-  border-color: #2997ff;
+  border-color: #86868b;
   box-shadow: 0 0 0 4px rgb(41 151 255/15%);
 }
 section {

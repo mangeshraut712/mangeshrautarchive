@@ -28,7 +28,7 @@
   position: relative;
   width: clamp(136px, 11vw, 168px);
   height: clamp(136px, 11vw, 168px);
-  margin-bottom: 28px ;
+  margin-bottom: 28px;
 }
 #home .profile-image {
   width: 100%;
@@ -46,7 +46,7 @@
   inset: -8px;
   border-radius: 28%;
   border: 3px solid transparent;
-  background: linear-gradient(135deg, #0071e3, #2997ff) border-box;
+  background: linear-gradient(135deg, #1d1d1f, #86868b) border-box;
   mask:
     linear-gradient(#fff, #fff) padding-box,
     linear-gradient(#fff, #fff);
@@ -63,7 +63,7 @@
   margin-bottom: 0.5rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #0071e3 ;
+  color: #000000;
 }
 .hero-title {
   font-size: clamp(1.5rem, 2vw + 0.75rem, 2.25rem);
@@ -74,8 +74,8 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  color: #1d1d1f ;
-  text-shadow: none ;
+  color: #1d1d1f;
+  text-shadow: none;
 }
 .hero-description {
   font-size: clamp(0.9375rem, 0.5vw + 0.5rem, 1.125rem);
@@ -83,18 +83,18 @@
   margin: 0 auto 2.5rem;
   line-height: 1.65;
   font-weight: 400;
-  color: #424245 ;
+  color: #424245;
   letter-spacing: 0.01em;
 }
 html.dark .hero-name {
-  color: #2997ff ;
+  color: #86868b;
 }
 html.dark .hero-title {
-  color: #fff ;
-  text-shadow: none ;
+  color: #fff;
+  text-shadow: none;
 }
 html.dark .hero-description {
-  color: #a1a1a6 ;
+  color: #a1a1a6;
 }
 .hero-social-links {
   display: flex;
@@ -151,55 +151,55 @@ html.dark .hero-description {
 }
 .marquee-item .fa-java,
 html.dark .marquee-item .fa-java {
-  color: #007396 ;
+  color: #007396;
 }
 .marquee-item .fa-python,
 html.dark .marquee-item .fa-python {
-  color: #3776ab ;
+  color: #3776ab;
 }
 .marquee-item .fa-js,
 html.dark .marquee-item .fa-js {
-  color: #f7df1e ;
+  color: #f7df1e;
 }
 .marquee-item .fa-react,
 html.dark .marquee-item .fa-react {
-  color: #61dafb ;
+  color: #61dafb;
 }
 .marquee-item .fa-angular,
 html.dark .marquee-item .fa-angular {
-  color: #dd0031 ;
+  color: #dd0031;
 }
 .marquee-item .fa-node,
 html.dark .marquee-item .fa-node {
-  color: #393 ;
+  color: #393;
 }
 .marquee-item .fa-aws,
 html.dark .marquee-item .fa-aws {
-  color: #f90 ;
+  color: #f90;
 }
 .marquee-item .fa-docker,
 html.dark .marquee-item .fa-docker {
-  color: #2496ed ;
+  color: #2496ed;
 }
 .marquee-item .fa-database,
 html.dark .marquee-item .fa-database {
-  color: #0071e3 ;
+  color: #1d1d1f;
 }
 .marquee-item .fa-git-alt,
 html.dark .marquee-item .fa-git-alt {
-  color: #f05032 ;
+  color: #f05032;
 }
 .marquee-item .fa-linux,
 html.dark .marquee-item .fa-linux {
-  color: #fcc624 ;
+  color: #fcc624;
 }
 .marquee-item .fa-html5,
 html.dark .marquee-item .fa-html5 {
-  color: #e34f26 ;
+  color: #e34f26;
 }
 .marquee-item .fa-css3-alt,
 html.dark .marquee-item .fa-css3-alt {
-  color: #1572b6 ;
+  color: #1572b6;
 }
 .hero-stats {
   display: grid;
@@ -224,11 +224,11 @@ html.dark .hero-stat-value {
 .hero-stat-value {
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #0071e3, #2997ff);
+  background: linear-gradient(135deg, #1d1d1f, #86868b);
   margin-bottom: 0.5rem;
 }
 html.dark .hero-stat-value {
-  background: linear-gradient(135deg, #2997ff, #0071e3);
+  background: linear-gradient(135deg, #86868b, #1d1d1f);
 }
 .hero-stat-label {
   font-size: 0.875rem;

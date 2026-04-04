@@ -1,1 +1,75 @@
-export class ModernInputHandler{constructor(t,i){this.input=t,this.onSubmit=i,this.composing=!1,this._setupModernInput()}_setupModernInput(){if(!this.input)return;const t=this.input.cloneNode(!0);this.input.parentNode.replaceChild(t,this.input),this.input=t,this.input.addEventListener("compositionstart",()=>{this.composing=!0},{passive:!0}),this.input.addEventListener("compositionend",()=>{this.composing=!1},{passive:!0}),this.input.addEventListener("keydown",t=>{this.composing||"Enter"!==t.key||t.shiftKey||(t.preventDefault(),this.submit())},{passive:!1}),this._optimizeInput()}_optimizeInput(){this.input.style.contain="layout style paint",this.input.style.userSelect="text",this.input.style.pointerEvents="auto",this.input.style.touchAction="manipulation",this.input.style.transform="none",this.input.style.filter="none",this.input.style.position="relative",this.input.style.zIndex="1","TEXTAREA"===this.input.tagName&&this.input.addEventListener("input",()=>{this.input.style.height="auto",this.input.style.height=Math.min(this.input.scrollHeight,120)+"px"},{passive:!0}),this.input.addEventListener("keypress",t=>{if(" "===t.key||32===t.keyCode)return!0},{passive:!0})}submit(){const t=this.input.value.trim();t&&this.onSubmit&&(this.onSubmit(t),this.clear())}clear(){this.input.value="",this.input.style.height="auto"}focus(){this.input.focus()}getValue(){return this.input.value}setValue(t){this.input.value=t}}
+export class ModernInputHandler {
+  constructor(t, i) {
+    ((this.input = t), (this.onSubmit = i), (this.composing = !1), this._setupModernInput());
+  }
+  _setupModernInput() {
+    if (!this.input) return;
+    const t = this.input.cloneNode(!0);
+    (this.input.parentNode.replaceChild(t, this.input),
+      (this.input = t),
+      this.input.addEventListener(
+        'compositionstart',
+        () => {
+          this.composing = !0;
+        },
+        { passive: !0 }
+      ),
+      this.input.addEventListener(
+        'compositionend',
+        () => {
+          this.composing = !1;
+        },
+        { passive: !0 }
+      ),
+      this.input.addEventListener(
+        'keydown',
+        t => {
+          this.composing || 'Enter' !== t.key || t.shiftKey || (t.preventDefault(), this.submit());
+        },
+        { passive: !1 }
+      ),
+      this._optimizeInput());
+  }
+  _optimizeInput() {
+    ((this.input.style.contain = 'layout style paint'),
+      (this.input.style.userSelect = 'text'),
+      (this.input.style.pointerEvents = 'auto'),
+      (this.input.style.touchAction = 'manipulation'),
+      (this.input.style.transform = 'none'),
+      (this.input.style.filter = 'none'),
+      (this.input.style.position = 'relative'),
+      (this.input.style.zIndex = '1'),
+      'TEXTAREA' === this.input.tagName &&
+        this.input.addEventListener(
+          'input',
+          () => {
+            ((this.input.style.height = 'auto'),
+              (this.input.style.height = Math.min(this.input.scrollHeight, 120) + 'px'));
+          },
+          { passive: !0 }
+        ),
+      this.input.addEventListener(
+        'keypress',
+        t => {
+          if (' ' === t.key || 32 === t.keyCode) return !0;
+        },
+        { passive: !0 }
+      ));
+  }
+  submit() {
+    const t = this.input.value.trim();
+    t && this.onSubmit && (this.onSubmit(t), this.clear());
+  }
+  clear() {
+    ((this.input.value = ''), (this.input.style.height = 'auto'));
+  }
+  focus() {
+    this.input.focus();
+  }
+  getValue() {
+    return this.input.value;
+  }
+  setValue(t) {
+    this.input.value = t;
+  }
+}

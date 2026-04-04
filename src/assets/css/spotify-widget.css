@@ -76,7 +76,7 @@ html.dark .spotify-card:hover {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #1db954;
+  color: #333333;
 }
 
 /* Not playing state */
@@ -167,7 +167,7 @@ html.dark .spotify-progress {
 .spotify-progress-fill {
   height: 100%;
   width: 0%;
-  background: #1db954;
+  background: #333333;
   border-radius: 999px;
   transform-origin: left;
   transition: width 1s linear;
@@ -217,7 +217,7 @@ html.dark .spotify-progress {
 
 .spotify-bar {
   width: 3px;
-  background: #1db954;
+  background: #333333;
   border-radius: 1px;
   transform-origin: bottom;
   will-change: transform;
@@ -248,13 +248,13 @@ html.dark .spotify-progress {
 
 @media (prefers-reduced-motion: reduce) {
   .spotify-bar {
-    animation: none ;
+    animation: none;
   }
   .spotify-card {
-    transition: none ;
+    transition: none;
   }
   .spotify-progress-fill {
-    transition: none ;
+    transition: none;
   }
 }
 

@@ -1,1 +1,925 @@
-import{intelligentAssistant as chatAssistant}from"./chat.js";import{ui as uiConfig,features}from"./config.js";import{ModernInputHandler}from"./modern-input.js";import ExternalApiKeys from"../modules/external-config.js";import{initOverlayMenu,initOverlayNavigation,initSmoothScroll}from"../modules/overlay.js";import{initializeVercelAnalytics}from"../modules/vercel-analytics.js";const markdownLib="undefined"!=typeof window&&window.marked?window.marked:"undefined"!=typeof marked?marked:null,htmlSanitizer="undefined"!=typeof window&&window.DOMPurify?window.DOMPurify:"undefined"!=typeof DOMPurify?DOMPurify:null;features.enableMarkdownRendering&&markdownLib&&markdownLib.setOptions({renderer:new markdownLib.Renderer,highlight(e,t){if(window.Prism){const s=window.Prism.languages[t]?t:"javascript";return window.Prism.highlight(e,window.Prism.languages[s],s)}if(window.hljs){const s=window.hljs.getLanguage(t)?t:"plaintext";return window.hljs.highlight(e,{language:s}).value}return e},pedantic:!1,gfm:!0,breaks:!0,sanitize:!1,smartypants:!0});class ChatUI{constructor(){if(this.elements=this._initializeElements(),this.typingIndicator=null,this.messageQueue=[],this.isProcessing=!1,this.maxMessages=uiConfig.maxMessages,this.suggestionsVisible=!1,this.history=[],this.voiceOutputEnabled=!1,this.voiceMenuVisible=!1,this.voiceHoldTimer=null,this.voiceHoldTriggered=!1,this.elements.widget){const e=!this.elements.widget.classList.contains("hidden");this.elements.widget.setAttribute("aria-hidden",e?"false":"true")}this.elements.toggleButton&&this.elements.widget&&(this.elements.toggleButton.setAttribute("aria-controls",this.elements.widget.id),this.elements.toggleButton.setAttribute("aria-haspopup","dialog"),this.elements.toggleButton.setAttribute("aria-expanded",this._isWidgetOpen().toString())),this.elements.input&&(this.modernInput=new ModernInputHandler(this.elements.input,()=>this._handleUserInput())),this._bindEvents(),this._initializeFeatures()}_initializeElements(){return{form:document.getElementById("chat-form")||document.getElementById("portfolio-chat-form"),input:document.getElementById("message-input")||document.getElementById("portfolio-chat-input"),messages:document.getElementById("chat-messages")||document.getElementById("portfolio-chat-messages"),clearButton:document.getElementById("clear-chat"),suggestions:null,status:null,widget:document.getElementById("portfolio-chat-widget"),toggleButton:document.getElementById("portfolio-chat-toggle"),closeButton:document.getElementById("portfolio-chat-close"),voiceButton:document.getElementById("portfolio-voice-input"),voiceMenu:document.getElementById("voice-control-menu"),voiceMenuClose:document.getElementById("voice-mode-close"),voiceOutputToggle:document.getElementById("voice-output-toggle"),voiceContinuousToggle:document.getElementById("continuous-mode-toggle")}}_bindEvents(){if(this.elements.form&&this.elements.form.addEventListener("submit",e=>{e.preventDefault(),this._handleUserInput()}),this.elements.clearButton&&this.elements.clearButton.addEventListener("click",()=>{this.clearChat()}),document.addEventListener("click",e=>{this.suggestionsVisible&&(e.target.closest(".chat-suggestions")||e.target.closest("#message-input")||e.target.closest("#portfolio-chat-input")||e.target.closest("#chatbot-input")||this._hideSuggestions())}),this.elements.toggleButton&&this.elements.widget&&this.elements.toggleButton.addEventListener("click",()=>{this._toggleWidget()}),this.elements.closeButton&&this.elements.closeButton.addEventListener("click",()=>{this._closeWidget()}),this.elements.voiceButton){const e=this.elements.voiceButton;e.addEventListener("pointerdown",e=>this._handleVoiceButtonPointerDown(e)),e.addEventListener("pointerup",e=>this._handleVoiceButtonPointerUp(e)),e.addEventListener("pointerleave",()=>this._cancelVoiceButtonHold()),e.addEventListener("pointercancel",()=>this._cancelVoiceButtonHold()),e.addEventListener("keydown",e=>this._handleVoiceButtonKey(e))}this.elements.voiceMenuClose&&this.elements.voiceMenuClose.addEventListener("click",e=>{e.preventDefault(),this.hideVoiceMenu()}),this.elements.voiceOutputToggle&&this.elements.voiceOutputToggle.addEventListener("change",e=>{const t=Boolean(e.target.checked);document.dispatchEvent(new CustomEvent("voice-output-toggle",{detail:{enabled:t}}))}),this.elements.voiceContinuousToggle&&this.elements.voiceContinuousToggle.addEventListener("change",e=>{const t=Boolean(e.target.checked);document.dispatchEvent(new CustomEvent("voice-continuous-toggle",{detail:{enabled:t}}))});const e=document.getElementById("mute-voice-btn");e&&e.addEventListener("click",()=>{window.voiceManager&&(window.voiceManager.stopSpeaking(),this.setVoiceOutputEnabledState(!1),this.addMessage("🔇 Voice output muted","system",{skipSpeech:!0}),this.hideVoiceMenu())});const t=document.getElementById("stop-voice-btn");t&&t.addEventListener("click",()=>{window.voiceManager&&(window.voiceManager.stopVoiceInput(),window.voiceManager.stopSpeaking(),this.addMessage("⏹️ Voice mode stopped","system",{skipSpeech:!0}),this.hideVoiceMenu())}),document.addEventListener("click",e=>this._handleDocumentClick(e)),this.elements.widget&&(document.addEventListener("keydown",e=>{"Escape"===e.key&&this._isWidgetOpen()&&this._closeWidget()}),document.addEventListener("click",e=>{this._isWidgetOpen()&&(e.target.closest("#portfolio-chat-widget")||e.target.closest("#chatbot-widget")||e.target.closest("#portfolio-chat-toggle")||e.target.closest("#chatbot-toggle")||this._closeWidget())}))}_initializeFeatures(){features.enableTypingIndicator&&(this.typingIndicator=this._createTypingIndicator()),this._createStatusIndicator(),this._createSuggestionsElement(),this.setVoiceOutputEnabledState(this.voiceOutputEnabled)}async _handleUserInput(){}async sendMessage(e,t={}){}_handleTyping(e){const t=(e||"").trim();t.length<2||(this.typingTimeout&&clearTimeout(this.typingTimeout),this.typingTimeout=setTimeout(()=>{this._updateSuggestions(t)},350))}_createMessageElement(e,t,s,i={},n=!1){const o=document.createElement("div");o.className=`${t}-message message`,o.dataset.timestamp=s,o.dataset.role=t;const a=`msg-${s}-${Math.random().toString(36).substr(2,9)}`;o.id=a,i.error&&o.classList.add("error-message");const r=document.createElement("div");if(r.className="message-content","string"==typeof e){const t=e.replace(/\r\n/g,"\n").replace(/\r/g,"\n").trim();r.textContent=t,r.style.whiteSpace="pre-wrap",r.style.wordWrap="break-word",r.style.overflowWrap="break-word"}else if(e?.html&&features.enableMarkdownRendering){const t=htmlSanitizer?htmlSanitizer.sanitize(e.html):e.html;r.innerHTML=t,window.Prism?requestAnimationFrame(()=>{r.querySelectorAll("pre code").forEach(e=>{window.Prism.highlightElement(e)})}):window.hljs&&requestAnimationFrame(()=>{r.querySelectorAll("pre code").forEach(e=>{window.hljs.highlightElement(e)})})}else{const t=String(e?.text||e).replace(/\r\n/g,"\n").replace(/\r/g,"\n").trim();r.textContent=t,r.style.whiteSpace="pre-wrap",r.style.wordWrap="break-word",r.style.overflowWrap="break-word"}o.appendChild(r);const c=[];if(i.model&&c.push(this._createMetaChip("model-info",`🤖 ${i.model}`)),i.category&&c.push(this._createMetaChip("category-info",`📁 ${i.category}`)),i.source&&c.push(this._createMetaChip("response-source",`🔌 ${i.source}`)),i.processingTime||i.runtime){const e=this._formatProcessingTime(i.processingTime||i.runtime);e&&c.push(this._createMetaChip("processing-time",`⏱️ ${e}`))}if(void 0!==i.tokens&&i.tokens>0&&c.push(this._createMetaChip("token-usage",`🎯 ${i.tokens} tokens`)),void 0!==i.cost){const e="number"==typeof i.cost?`$${i.cost.toFixed(4)}`:i.cost;c.push(this._createMetaChip("token-cost",`💰 ${e}`))}if(e?.text||e){const t=e?.text||e,s="string"==typeof t?t.length:0;s>0&&c.push(this._createMetaChip("char-count",`📝 ${s} chars`))}if(void 0!==i.confidence){const e=this._formatConfidence(i.confidence);e&&c.push(this._createMetaChip("response-confidence",`✓ ${e}`))}if(void 0!==i.safetyScore){const e=Math.round(100*i.safetyScore),t=e>=90?"🛡️":e>=70?"⚠️":"🚫";c.push(this._createMetaChip("safety-score",`${t} ${e}% safe`))}const l=new Date(s).toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:!0});if(c.push(this._createMetaChip("timestamp",`🕐 ${l}`)),Array.isArray(i.providers)&&i.providers.length){const e=this._formatProviders(i.providers),t=i.source&&e.toLowerCase().includes(i.source.toLowerCase());e&&!t&&c.push(this._createMetaChip("providers-tried",e))}if(i.sourceDetail&&c.push(this._createMetaChip("source-detail",i.sourceDetail)),!n&&c.some(Boolean)){const e=document.createElement("div");if(e.className="message-metadata",c.forEach(t=>{t&&e.appendChild(t)}),"assistant"===t&&!i.error&&!n){const t=document.createElement("div");t.className="message-actions";const s=document.createElement("button");s.className="msg-action-btn",s.title="Copy",s.innerHTML='<i class="fas fa-copy"></i>',s.onclick=e=>{e.stopPropagation(),this._copyMessageText(r.textContent,s)},t.appendChild(s);const i=document.createElement("button");i.className="msg-action-btn",i.title="Read Aloud",i.innerHTML='<i class="fas fa-volume-up"></i>',i.onclick=e=>{e.stopPropagation(),this._speakMessage(r.textContent,i)},t.appendChild(i),e.appendChild(t)}e.childNodes.length&&o.appendChild(e)}else if("assistant"===t&&!i.error&&!n){const e=document.createElement("div");e.className="message-metadata";const t=document.createElement("div");t.className="message-actions";const s=document.createElement("button");s.className="msg-action-btn",s.innerHTML='<i class="fas fa-copy"></i>',s.onclick=()=>this._copyMessageText(r.textContent,s),t.appendChild(s);const i=document.createElement("button");i.className="msg-action-btn",i.innerHTML='<i class="fas fa-volume-up"></i>',i.onclick=e=>{e.stopPropagation(),this._speakMessage(r.textContent,i)},t.appendChild(i),e.appendChild(t),o.appendChild(e)}if(i.error){const e=document.createElement("button");e.className="msg-retry-btn",e.innerHTML="🔄 Retry",e.onclick=()=>this._retryLastMessage(),o.appendChild(e)}return o}_copyMessageText(e,t){if(navigator.clipboard)navigator.clipboard.writeText(e);else{const t=document.createElement("textarea");t.value=e,document.body.appendChild(t),t.select(),document.execCommand("copy"),document.body.removeChild(t)}const s=t.innerHTML;t.innerHTML='<i class="fas fa-check"></i>',t.style.background="linear-gradient(135deg, #34c759 0%, #30d158 100%)",t.title="Copied!",setTimeout(()=>{t.innerHTML=s,t.style.background="",t.title="Copy"},2e3)}_speakMessage(e,t){if("speechSynthesis"in window)if(window.speechSynthesis.speaking)window.speechSynthesis.cancel(),t.innerHTML='<i class="fas fa-volume-up"></i>',t.style.background="",t.title="Read Aloud";else{const s=e.replace(/[*#`_~]/g,"").replace(/<[^>]*>/g,"").replace(/\[([^\]]+)\]\([^)]+\)/g,"$1").trim(),i=new SpeechSynthesisUtterance(s);i.rate=1,i.pitch=1,i.volume=1,i.onstart=()=>{t.innerHTML='<i class="fas fa-stop"></i>',t.style.background="linear-gradient(135deg, #ff3b30 0%, #ff2d21 100%)",t.title="Stop Speaking"},i.onend=()=>{t.innerHTML='<i class="fas fa-volume-up"></i>',t.style.background="",t.title="Read Aloud"},i.onerror=()=>{t.innerHTML='<i class="fas fa-volume-up"></i>',t.style.background="",t.title="Read Aloud"},window.speechSynthesis.speak(i)}else alert("Text-to-speech is not supported in your browser")}_retryLastMessage(){this.lastUserMessage&&this.sendMessage(this.lastUserMessage)}_formatAssistantResponse(e){if(!e)return{content:"",metadata:{}};if("string"==typeof e)return{content:e,metadata:{}};const t={};e.type&&(t.type=e.type);const s=e.source||e.provider||"OpenRouter";t.sourceKey=s,t.source=e.sourceLabel||this._formatSourceLabel(s,e.type),t.model=e.model||"x-ai/grok-4.1-fast",e.sourceMessage&&(t.sourceDetail=e.sourceMessage),"number"!=typeof e.confidence&&"string"!=typeof e.confidence||(t.confidence=e.confidence),"number"==typeof e.processingTime?t.processingTime=Math.max(0,Math.round(e.processingTime)):e.processingTime&&(t.processingTime=e.processingTime),Array.isArray(e.providers)&&e.providers.length?t.providers=e.providers:t.providers=[s];const i=e?.usage?.total_tokens||e?.usage?.totalTokens;if("number"==typeof i&&(t.tokens=i,t.processingTime&&t.processingTime>0)){const e=t.processingTime/1e3;t.tokensPerSecond=Math.max(0,i/e)}e.error&&(t.error=!0);const n=this._normalizeAnswerPayload(e);return n&&"object"==typeof n&&n.html&&features.enableMarkdownRendering?{content:{html:n.html},metadata:t}:{content:n,metadata:t}}_normalizeAnswerPayload(e){const t=e?.html?{html:e.html}:e?.answer??e?.text??e;return this._normalizeAnswerValue(t)}_normalizeAnswerValue(e){if(null==e)return"";if("string"==typeof e)return e;if("number"==typeof e||"boolean"==typeof e)return String(e);if(Array.isArray(e))return e.map(e=>this._normalizeAnswerValue(e)).filter(Boolean).join("\n");if("object"==typeof e){if(e.html&&"string"==typeof e.html)return{html:e.html};if("string"==typeof e.text)return e.text;if("string"==typeof e.answer)return e.answer;if("string"==typeof e.content)return e.content}try{return JSON.stringify(e)}catch{return String(e)}}_createMetaChip(e,t){if(!t)return null;const s=document.createElement("span");return s.className=e,s.textContent=t,s}_formatQueryType(e){return{portfolio:"Portfolio",math:"Math",factual:"Factual",definition:"Definition",general:"General",greeting:"Greeting",help:"Help",identity:"Identity",utility:"Utility",fallback:"Fallback",ai:"AI"}[e]||(e?e.charAt(0).toUpperCase()+e.slice(1):"")}_formatConfidence(e){return null==e?"":"string"==typeof e?e:"number"==typeof e?e>1?`${Math.round(e)}%`:`${Math.round(100*e)}%`:""}_formatProcessingTime(e){return null==e?"":"number"==typeof e&&Number.isFinite(e)?`${Math.max(0,Math.round(e))}ms`:"string"==typeof e?e:""}_formatProviders(e){if(!Array.isArray(e)||0===e.length)return"";const t=[...new Set(e.filter(Boolean))];return t.length?`Signals: ${t.join(", ")}`:""}_formatSourceLabel(e,t="general"){if(!e)return"portfolio"===t?"AssistMe Portfolio":"math"===t?"AssistMe Math Engine":"AssistMe";const s=this._normalizeSourceKey(e),i={assistme:"AssistMe","assistme-portfolio":"AssistMe Portfolio","assistme-general":"AssistMe","assistme-math":"AssistMe Math Engine","assistme-utility":"AssistMe Utility",openai:"OpenAI",grok:"Grok (xAI)",claude:"Claude (Anthropic)",gemini:"Google Gemini",duckduckgo:"DuckDuckGo",wikipedia:"Wikipedia",stackoverflow:"Stack Overflow",offline:"Offline Knowledge Base",country_facts:"REST Countries",perplexity:"Perplexity AI",huggingface:"Hugging Face",openrouter:"OpenRouter"};if(i[s])return i[s];const n=s.split(/[-_]/g).filter(Boolean);return n.length?n.map(e=>e.charAt(0).toUpperCase()+e.slice(1)).join(" "):"AssistMe"}_normalizeSourceKey(e){if(!e&&0!==e)return"";const t=String(e).trim().toLowerCase(),s={"assistme server":"assistme","assistme client":"assistme","assistme portfolio":"assistme-portfolio",portfolio:"assistme-portfolio","assistme math":"assistme-math",gpt:"openai","gpt-4":"openai","gpt-4o":"openai","openai gpt":"openai","claude ai":"claude","grok ai":"grok","x.ai":"grok","duck duck go":"duckduckgo","wikipedia.org":"wikipedia","stack overflow":"stackoverflow","offline knowledge base":"offline",restcountries:"country_facts","perplexity ai":"perplexity","hugging face":"huggingface","open router":"openrouter"};return s[t]?s[t]:t.replace(/\s+/g,"-")}_createTypingIndicator(){const e=document.createElement("div");return e.className="typing-indicator hidden",e.innerHTML='\n            <div class="typing-dots">\n                <span></span><span></span><span></span>\n            </div>\n        ',e}_showTypingIndicator(){this.typingIndicator&&this.elements.messages&&(this.elements.messages.appendChild(this.typingIndicator),this.typingIndicator.classList.remove("hidden"),this._scrollToBottom())}_hideTypingIndicator(){this.typingIndicator&&(this.typingIndicator.classList.add("hidden"),this.typingIndicator.parentNode&&this.typingIndicator.parentNode.removeChild(this.typingIndicator))}_createSuggestionsElement(){this.elements.suggestions=document.createElement("div"),this.elements.suggestions.className="chat-suggestions hidden",this.elements.suggestions.id="chat-suggestions",this.elements.messages&&this.elements.messages.parentNode&&this.elements.messages.parentNode.insertBefore(this.elements.suggestions,this.elements.messages.nextSibling)}_updateSuggestions(e=""){if(!features.enableHistory||!this.elements.suggestions)return;if(void 0===e&&(e=""),"string"!=typeof e&&(e="number"==typeof e?String(e):""),!e&&!this.history.length)return void this._hideSuggestions();let t=[];e.length>2?t=this._getContextualSuggestions(e)||[]:this.history.length&&(t=chatAssistant.getSuggestions?.()||[]),Array.isArray(t)&&t.length?(this.elements.suggestions.innerHTML="",t.forEach(e=>{const t=document.createElement("button");t.className="suggestion-button",t.type="button",t.textContent=e,t.addEventListener("click",()=>{this.elements.input&&(this.elements.input.value=e,this.elements.input.focus(),this._hideSuggestions())}),this.elements.suggestions.appendChild(t)}),this._showSuggestions()):this._hideSuggestions()}_getContextualSuggestions(e){const t=e.toLowerCase(),s=[];return t.startsWith("tell me about")?(s.push("Tell me about your education"),s.push("Tell me about your skills"),s.push("Tell me about your projects")):t.startsWith("what")?(s.push("What are your main projects?"),s.push("What technologies do you use?")):(t.includes("calculate")||t.includes("math"))&&(s.push("Calculate 25 * 15"),s.push("Convert 100 celsius to fahrenheit")),s}_showSuggestions(){this.elements.suggestions&&(this.elements.suggestions.classList.remove("hidden"),this.suggestionsVisible=!0)}_hideSuggestions(){this.elements.suggestions&&(this.elements.suggestions.classList.add("hidden"),this.suggestionsVisible=!1)}_createStatusIndicator(){}_showWelcomeMessage(){}_addMessageElement(e){if(this.elements.messages&&e){for(this.elements.messages.appendChild(e);this.elements.messages.children.length>this.maxMessages;)this.elements.messages.removeChild(this.elements.messages.firstChild);this._scrollToBottom()}}_scrollToBottom(){this.elements.messages&&requestAnimationFrame(()=>{this.elements.messages.scrollTo({top:this.elements.messages.scrollHeight,behavior:"smooth"})})}_toggleWidget(){}_openWidget(){}_closeWidget(){}_isWidgetOpen(){return!(!this.elements.widget||this.elements.widget.classList.contains("hidden"))}clearChat(){if(this.elements.messages)for(;this.elements.messages.firstChild;)this.elements.messages.removeChild(this.elements.messages.firstChild);chatAssistant.clearHistory(),this._showWelcomeMessage()}notifyAssistant(e){e&&this.addMessage(e,"assistant",{skipSpeech:!0})}getStatus(){return{isProcessing:this.isProcessing,messageCount:this.elements.messages?.children.length||0,assistantStatus:chatAssistant.getStatus()}}addMessage(e,t="assistant",s={}){if(null==e)return null;const i={...s.metadata||{}};s.system&&(i.type=i.type||"system");const n=this._createMessageElement(e,t,Date.now(),i);return this._addMessageElement(n),this.voiceOutputEnabled&&"assistant"===t&&!s.skipSpeech&&"string"==typeof e&&this._speakText(e),n}showAssistantThinking(){features.enableTypingIndicator&&this._showTypingIndicator()}hideAssistantThinking(){features.enableTypingIndicator&&this._hideTypingIndicator()}refreshSuggestions(){this._updateSuggestions()}async fetchAssistantResponse(e){if(!e)return{content:"",metadata:{}};if(!chatAssistant.isReady())try{await chatAssistant.initialize()}catch(e){console.warn("Assistant initialization failed before processing voice query:",e)}const t=await chatAssistant.ask(e);return this._formatAssistantResponse(t)}_handleVoiceButtonPointerDown(e){0===e.button&&(this.elements.voiceButton?.disabled||(this.voiceMenuVisible&&this.hideVoiceMenu(),this.voiceHoldTriggered=!1,this._cancelVoiceButtonHold(),this.voiceHoldTimer=window.setTimeout(()=>{this.voiceHoldTriggered=!0,this.showVoiceMenu()},520)))}_handleVoiceButtonPointerUp(e){0===e.button&&(this.voiceHoldTimer&&(clearTimeout(this.voiceHoldTimer),this.voiceHoldTimer=null),this.voiceHoldTriggered?this.voiceHoldTriggered=!1:this.elements.voiceButton?.disabled||(document.dispatchEvent(new CustomEvent("voice-input-click")),this._cancelVoiceButtonHold()))}_cancelVoiceButtonHold(){this.voiceHoldTimer&&(clearTimeout(this.voiceHoldTimer),this.voiceHoldTimer=null),this.voiceHoldTriggered=!1}_handleVoiceButtonKey(e){return" "===e.key||"Enter"===e.key?(e.preventDefault(),void document.dispatchEvent(new CustomEvent("voice-input-click"))):"ArrowDown"===e.key||"F10"===e.key&&e.shiftKey?(e.preventDefault(),void this.showVoiceMenu()):void("Escape"===e.key&&this.voiceMenuVisible&&(e.preventDefault(),this.hideVoiceMenu()))}_handleDocumentClick(e){if(!this.voiceMenuVisible)return;const t=this.elements.voiceMenu,s=this.elements.voiceButton;if(!t)return;const i=e.target;t.contains(i)||s?.contains(i)||this.hideVoiceMenu()}_syncVoiceMenuState(){if(this.elements.voiceOutputToggle){this.elements.voiceOutputToggle.checked=this.voiceOutputEnabled;const e=this.elements.voiceOutputToggle.closest(".voice-menu-option");e&&e.classList.toggle("disabled",this.elements.voiceOutputToggle.disabled)}if(this.elements.voiceContinuousToggle){const e=Boolean(window.voiceManager?.isContinuous);this.elements.voiceContinuousToggle.checked=e;const t=this.elements.voiceContinuousToggle.closest(".voice-menu-option");t&&t.classList.toggle("disabled",this.elements.voiceContinuousToggle.disabled)}}showVoiceMenu(){const e=this.elements.voiceMenu;if(!e||this.elements.voiceButton?.disabled)return;this._syncVoiceMenuState(),this.voiceMenuVisible=!0,e.classList.remove("hidden"),e.setAttribute("aria-hidden","false"),this.elements.voiceButton?.classList.add("menu-open"),this.elements.voiceButton?.setAttribute("aria-expanded","true");const t=this.elements.voiceOutputToggle?.disabled?this.elements.voiceContinuousToggle:this.elements.voiceOutputToggle;t&&!t.disabled&&setTimeout(()=>t.focus({preventScroll:!0}),0)}hideVoiceMenu(){const e=this.elements.voiceMenu;e&&this.voiceMenuVisible&&(this.voiceMenuVisible=!1,e.classList.add("hidden"),e.setAttribute("aria-hidden","true"),this.elements.voiceButton?.classList.remove("menu-open"),this.elements.voiceButton?.setAttribute("aria-expanded","false"),this._cancelVoiceButtonHold(),e.contains(document.activeElement)&&this.elements.voiceButton?.focus({preventScroll:!0}))}setVoiceInputActive(e){const t=this.elements.voiceButton;t&&(e?(t.classList.add("active","recording"),t.setAttribute("aria-pressed","true"),t.title="Listening... Click to stop voice input"):(t.classList.remove("active","recording"),t.setAttribute("aria-pressed","false"),t.title="Click to start voice input"))}setVoiceOutputActive(e){const t=this.elements.voiceButton;t&&(e?(t.classList.add("speaking"),t.setAttribute("data-speaking","true")):(t.classList.remove("speaking"),t.removeAttribute("data-speaking")))}setVoiceOutputEnabledState(e){this.voiceOutputEnabled=Boolean(e);const t=this.elements.voiceButton;t&&(t.classList.toggle("voice-muted",!this.voiceOutputEnabled),t.setAttribute("data-voice-enabled",this.voiceOutputEnabled?"true":"false"));const s=this.elements.voiceOutputToggle;s&&s.checked!==this.voiceOutputEnabled&&(s.checked=this.voiceOutputEnabled),this.voiceMenuVisible&&this._syncVoiceMenuState()}setContinuousModeActive(e){const t=Boolean(e),s=this.elements.voiceButton;s&&s.classList.toggle("continuous-active",t);const i=this.elements.voiceContinuousToggle;i&&i.checked!==t&&(i.checked=t),this.voiceMenuVisible&&this._syncVoiceMenuState()}disableVoiceInput(e="Voice input is not supported in this browser."){const t=this.elements.voiceButton;t&&(t.disabled=!0,t.classList.add("disabled"),t.classList.remove("active","recording","continuous-active"),t.setAttribute("aria-pressed","false"),t.title=e),this.disableContinuousMode("Continuous listening requires voice input support."),this.hideVoiceMenu()}disableVoiceOutput(e="Voice output is not supported in this browser."){this.setVoiceOutputEnabledState(!1);const t=this.elements.voiceOutputToggle;if(t){t.checked=!1,t.disabled=!0,t.title=e;const s=t.closest(".voice-menu-option");s&&s.classList.add("disabled")}this.hideVoiceMenu()}disableContinuousMode(e="Continuous listening is not available."){const t=this.elements.voiceContinuousToggle;if(t){t.checked=!1,t.disabled=!0,t.title=e;const s=t.closest(".voice-menu-option");s&&s.classList.add("disabled")}const s=this.elements.voiceButton;s&&s.classList.remove("continuous-active")}updateInterimTranscript(e){console.log("🎤 Interim transcript:",e)}_speakText(e){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const t=new SpeechSynthesisUtterance(e);t.rate=.9,t.pitch=1,t.volume=.8;const s=window.speechSynthesis.getVoices(),i=s.find(e=>e.lang.startsWith("en")&&(e.name.toLowerCase().includes("natural")||e.name.toLowerCase().includes("human")||e.localService))||s.find(e=>e.lang.startsWith("en"));i&&(t.voice=i),window.speechSynthesis.speak(t)}}function initContactChatbotCTA(e=document){const t=e.getElementById("contact-chatbot-cta");t&&"true"!==t.dataset.chatbotBound&&(t.dataset.chatbotBound="true",t.addEventListener("click",()=>{if(window.appleIntelligenceChatbot&&"function"==typeof window.appleIntelligenceChatbot.ask)return void window.appleIntelligenceChatbot.ask("I want to contact Mangesh about a project opportunity.");const t=e.getElementById("chatbot-toggle");t?.click()}))}let chatUI;document.addEventListener("DOMContentLoaded",()=>{initOverlayMenu(),initOverlayNavigation(),initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)'),initContactChatbotCTA(),window.AssistMeConfig=Object.freeze({externalApis:ExternalApiKeys}),setTimeout(()=>{const e=document.querySelector(".typewriter");e&&(e.style.borderRight="none")},6e3)}),document.addEventListener("DOMContentLoaded",()=>{chatUI=new ChatUI,window.chatUI=chatUI,window.chatAssistant=chatAssistant,initializeVercelAnalytics(),console.log("✅ ChatUI initialized and ready")});export{ChatUI};
+import { intelligentAssistant as chatAssistant } from './chat.js';
+import { ui as uiConfig, features } from './config.js';
+import { ModernInputHandler } from './modern-input.js';
+import ExternalApiKeys from '../modules/external-config.js';
+import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
+import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
+const markdownLib =
+    'undefined' != typeof window && window.marked
+      ? window.marked
+      : 'undefined' != typeof marked
+        ? marked
+        : null,
+  htmlSanitizer =
+    'undefined' != typeof window && window.DOMPurify
+      ? window.DOMPurify
+      : 'undefined' != typeof DOMPurify
+        ? DOMPurify
+        : null;
+features.enableMarkdownRendering &&
+  markdownLib &&
+  markdownLib.setOptions({
+    renderer: new markdownLib.Renderer(),
+    highlight(e, t) {
+      if (window.Prism) {
+        const s = window.Prism.languages[t] ? t : 'javascript';
+        return window.Prism.highlight(e, window.Prism.languages[s], s);
+      }
+      if (window.hljs) {
+        const s = window.hljs.getLanguage(t) ? t : 'plaintext';
+        return window.hljs.highlight(e, { language: s }).value;
+      }
+      return e;
+    },
+    pedantic: !1,
+    gfm: !0,
+    breaks: !0,
+    sanitize: !1,
+    smartypants: !0,
+  });
+class ChatUI {
+  constructor() {
+    if (
+      ((this.elements = this._initializeElements()),
+      (this.typingIndicator = null),
+      (this.messageQueue = []),
+      (this.isProcessing = !1),
+      (this.maxMessages = uiConfig.maxMessages),
+      (this.suggestionsVisible = !1),
+      (this.history = []),
+      (this.voiceOutputEnabled = !1),
+      (this.voiceMenuVisible = !1),
+      (this.voiceHoldTimer = null),
+      (this.voiceHoldTriggered = !1),
+      this.elements.widget)
+    ) {
+      const e = !this.elements.widget.classList.contains('hidden');
+      this.elements.widget.setAttribute('aria-hidden', e ? 'false' : 'true');
+    }
+    (this.elements.toggleButton &&
+      this.elements.widget &&
+      (this.elements.toggleButton.setAttribute('aria-controls', this.elements.widget.id),
+      this.elements.toggleButton.setAttribute('aria-haspopup', 'dialog'),
+      this.elements.toggleButton.setAttribute('aria-expanded', this._isWidgetOpen().toString())),
+      this.elements.input &&
+        (this.modernInput = new ModernInputHandler(this.elements.input, () =>
+          this._handleUserInput()
+        )),
+      this._bindEvents(),
+      this._initializeFeatures());
+  }
+  _initializeElements() {
+    return {
+      form: document.getElementById('chat-form') || document.getElementById('portfolio-chat-form'),
+      input:
+        document.getElementById('message-input') || document.getElementById('portfolio-chat-input'),
+      messages:
+        document.getElementById('chat-messages') ||
+        document.getElementById('portfolio-chat-messages'),
+      clearButton: document.getElementById('clear-chat'),
+      suggestions: null,
+      status: null,
+      widget: document.getElementById('portfolio-chat-widget'),
+      toggleButton: document.getElementById('portfolio-chat-toggle'),
+      closeButton: document.getElementById('portfolio-chat-close'),
+      voiceButton: document.getElementById('portfolio-voice-input'),
+      voiceMenu: document.getElementById('voice-control-menu'),
+      voiceMenuClose: document.getElementById('voice-mode-close'),
+      voiceOutputToggle: document.getElementById('voice-output-toggle'),
+      voiceContinuousToggle: document.getElementById('continuous-mode-toggle'),
+    };
+  }
+  _bindEvents() {
+    if (
+      (this.elements.form &&
+        this.elements.form.addEventListener('submit', e => {
+          (e.preventDefault(), this._handleUserInput());
+        }),
+      this.elements.clearButton &&
+        this.elements.clearButton.addEventListener('click', () => {
+          this.clearChat();
+        }),
+      document.addEventListener('click', e => {
+        this.suggestionsVisible &&
+          (e.target.closest('.chat-suggestions') ||
+            e.target.closest('#message-input') ||
+            e.target.closest('#portfolio-chat-input') ||
+            e.target.closest('#chatbot-input') ||
+            this._hideSuggestions());
+      }),
+      this.elements.toggleButton &&
+        this.elements.widget &&
+        this.elements.toggleButton.addEventListener('click', () => {
+          this._toggleWidget();
+        }),
+      this.elements.closeButton &&
+        this.elements.closeButton.addEventListener('click', () => {
+          this._closeWidget();
+        }),
+      this.elements.voiceButton)
+    ) {
+      const e = this.elements.voiceButton;
+      (e.addEventListener('pointerdown', e => this._handleVoiceButtonPointerDown(e)),
+        e.addEventListener('pointerup', e => this._handleVoiceButtonPointerUp(e)),
+        e.addEventListener('pointerleave', () => this._cancelVoiceButtonHold()),
+        e.addEventListener('pointercancel', () => this._cancelVoiceButtonHold()),
+        e.addEventListener('keydown', e => this._handleVoiceButtonKey(e)));
+    }
+    (this.elements.voiceMenuClose &&
+      this.elements.voiceMenuClose.addEventListener('click', e => {
+        (e.preventDefault(), this.hideVoiceMenu());
+      }),
+      this.elements.voiceOutputToggle &&
+        this.elements.voiceOutputToggle.addEventListener('change', e => {
+          const t = Boolean(e.target.checked);
+          document.dispatchEvent(
+            new CustomEvent('voice-output-toggle', { detail: { enabled: t } })
+          );
+        }),
+      this.elements.voiceContinuousToggle &&
+        this.elements.voiceContinuousToggle.addEventListener('change', e => {
+          const t = Boolean(e.target.checked);
+          document.dispatchEvent(
+            new CustomEvent('voice-continuous-toggle', { detail: { enabled: t } })
+          );
+        }));
+    const e = document.getElementById('mute-voice-btn');
+    e &&
+      e.addEventListener('click', () => {
+        window.voiceManager &&
+          (window.voiceManager.stopSpeaking(),
+          this.setVoiceOutputEnabledState(!1),
+          this.addMessage('🔇 Voice output muted', 'system', { skipSpeech: !0 }),
+          this.hideVoiceMenu());
+      });
+    const t = document.getElementById('stop-voice-btn');
+    (t &&
+      t.addEventListener('click', () => {
+        window.voiceManager &&
+          (window.voiceManager.stopVoiceInput(),
+          window.voiceManager.stopSpeaking(),
+          this.addMessage('⏹️ Voice mode stopped', 'system', { skipSpeech: !0 }),
+          this.hideVoiceMenu());
+      }),
+      document.addEventListener('click', e => this._handleDocumentClick(e)),
+      this.elements.widget &&
+        (document.addEventListener('keydown', e => {
+          'Escape' === e.key && this._isWidgetOpen() && this._closeWidget();
+        }),
+        document.addEventListener('click', e => {
+          this._isWidgetOpen() &&
+            (e.target.closest('#portfolio-chat-widget') ||
+              e.target.closest('#chatbot-widget') ||
+              e.target.closest('#portfolio-chat-toggle') ||
+              e.target.closest('#chatbot-toggle') ||
+              this._closeWidget());
+        })));
+  }
+  _initializeFeatures() {
+    (features.enableTypingIndicator && (this.typingIndicator = this._createTypingIndicator()),
+      this._createStatusIndicator(),
+      this._createSuggestionsElement(),
+      this.setVoiceOutputEnabledState(this.voiceOutputEnabled));
+  }
+  async _handleUserInput() {}
+  async sendMessage(e, t = {}) {}
+  _handleTyping(e) {
+    const t = (e || '').trim();
+    t.length < 2 ||
+      (this.typingTimeout && clearTimeout(this.typingTimeout),
+      (this.typingTimeout = setTimeout(() => {
+        this._updateSuggestions(t);
+      }, 350)));
+  }
+  _createMessageElement(e, t, s, i = {}, n = !1) {
+    const o = document.createElement('div');
+    ((o.className = `${t}-message message`), (o.dataset.timestamp = s), (o.dataset.role = t));
+    const a = `msg-${s}-${Math.random().toString(36).substr(2, 9)}`;
+    ((o.id = a), i.error && o.classList.add('error-message'));
+    const r = document.createElement('div');
+    if (((r.className = 'message-content'), 'string' == typeof e)) {
+      const t = e.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+      ((r.textContent = t),
+        (r.style.whiteSpace = 'pre-wrap'),
+        (r.style.wordWrap = 'break-word'),
+        (r.style.overflowWrap = 'break-word'));
+    } else if (e?.html && features.enableMarkdownRendering) {
+      const t = htmlSanitizer ? htmlSanitizer.sanitize(e.html) : e.html;
+      ((r.innerHTML = t),
+        window.Prism
+          ? requestAnimationFrame(() => {
+              r.querySelectorAll('pre code').forEach(e => {
+                window.Prism.highlightElement(e);
+              });
+            })
+          : window.hljs &&
+            requestAnimationFrame(() => {
+              r.querySelectorAll('pre code').forEach(e => {
+                window.hljs.highlightElement(e);
+              });
+            }));
+    } else {
+      const t = String(e?.text || e)
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .trim();
+      ((r.textContent = t),
+        (r.style.whiteSpace = 'pre-wrap'),
+        (r.style.wordWrap = 'break-word'),
+        (r.style.overflowWrap = 'break-word'));
+    }
+    o.appendChild(r);
+    const c = [];
+    if (
+      (i.model && c.push(this._createMetaChip('model-info', `🤖 ${i.model}`)),
+      i.category && c.push(this._createMetaChip('category-info', `📁 ${i.category}`)),
+      i.source && c.push(this._createMetaChip('response-source', `🔌 ${i.source}`)),
+      i.processingTime || i.runtime)
+    ) {
+      const e = this._formatProcessingTime(i.processingTime || i.runtime);
+      e && c.push(this._createMetaChip('processing-time', `⏱️ ${e}`));
+    }
+    if (
+      (void 0 !== i.tokens &&
+        i.tokens > 0 &&
+        c.push(this._createMetaChip('token-usage', `🎯 ${i.tokens} tokens`)),
+      void 0 !== i.cost)
+    ) {
+      const e = 'number' == typeof i.cost ? `$${i.cost.toFixed(4)}` : i.cost;
+      c.push(this._createMetaChip('token-cost', `💰 ${e}`));
+    }
+    if (e?.text || e) {
+      const t = e?.text || e,
+        s = 'string' == typeof t ? t.length : 0;
+      s > 0 && c.push(this._createMetaChip('char-count', `📝 ${s} chars`));
+    }
+    if (void 0 !== i.confidence) {
+      const e = this._formatConfidence(i.confidence);
+      e && c.push(this._createMetaChip('response-confidence', `✓ ${e}`));
+    }
+    if (void 0 !== i.safetyScore) {
+      const e = Math.round(100 * i.safetyScore),
+        t = e >= 90 ? '🛡️' : e >= 70 ? '⚠️' : '🚫';
+      c.push(this._createMetaChip('safety-score', `${t} ${e}% safe`));
+    }
+    const l = new Date(s).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: !0,
+    });
+    if (
+      (c.push(this._createMetaChip('timestamp', `🕐 ${l}`)),
+      Array.isArray(i.providers) && i.providers.length)
+    ) {
+      const e = this._formatProviders(i.providers),
+        t = i.source && e.toLowerCase().includes(i.source.toLowerCase());
+      e && !t && c.push(this._createMetaChip('providers-tried', e));
+    }
+    if (
+      (i.sourceDetail && c.push(this._createMetaChip('source-detail', i.sourceDetail)),
+      !n && c.some(Boolean))
+    ) {
+      const e = document.createElement('div');
+      if (
+        ((e.className = 'message-metadata'),
+        c.forEach(t => {
+          t && e.appendChild(t);
+        }),
+        'assistant' === t && !i.error && !n)
+      ) {
+        const t = document.createElement('div');
+        t.className = 'message-actions';
+        const s = document.createElement('button');
+        ((s.className = 'msg-action-btn'),
+          (s.title = 'Copy'),
+          (s.innerHTML = '<i class="fas fa-copy"></i>'),
+          (s.onclick = e => {
+            (e.stopPropagation(), this._copyMessageText(r.textContent, s));
+          }),
+          t.appendChild(s));
+        const i = document.createElement('button');
+        ((i.className = 'msg-action-btn'),
+          (i.title = 'Read Aloud'),
+          (i.innerHTML = '<i class="fas fa-volume-up"></i>'),
+          (i.onclick = e => {
+            (e.stopPropagation(), this._speakMessage(r.textContent, i));
+          }),
+          t.appendChild(i),
+          e.appendChild(t));
+      }
+      e.childNodes.length && o.appendChild(e);
+    } else if ('assistant' === t && !i.error && !n) {
+      const e = document.createElement('div');
+      e.className = 'message-metadata';
+      const t = document.createElement('div');
+      t.className = 'message-actions';
+      const s = document.createElement('button');
+      ((s.className = 'msg-action-btn'),
+        (s.innerHTML = '<i class="fas fa-copy"></i>'),
+        (s.onclick = () => this._copyMessageText(r.textContent, s)),
+        t.appendChild(s));
+      const i = document.createElement('button');
+      ((i.className = 'msg-action-btn'),
+        (i.innerHTML = '<i class="fas fa-volume-up"></i>'),
+        (i.onclick = e => {
+          (e.stopPropagation(), this._speakMessage(r.textContent, i));
+        }),
+        t.appendChild(i),
+        e.appendChild(t),
+        o.appendChild(e));
+    }
+    if (i.error) {
+      const e = document.createElement('button');
+      ((e.className = 'msg-retry-btn'),
+        (e.innerHTML = '🔄 Retry'),
+        (e.onclick = () => this._retryLastMessage()),
+        o.appendChild(e));
+    }
+    return o;
+  }
+  _copyMessageText(e, t) {
+    if (navigator.clipboard) navigator.clipboard.writeText(e);
+    else {
+      const t = document.createElement('textarea');
+      ((t.value = e),
+        document.body.appendChild(t),
+        t.select(),
+        document.execCommand('copy'),
+        document.body.removeChild(t));
+    }
+    const s = t.innerHTML;
+    ((t.innerHTML = '<i class="fas fa-check"></i>'),
+      (t.style.background = 'linear-gradient(135deg, #34c759 0%, #30d158 100%)'),
+      (t.title = 'Copied!'),
+      setTimeout(() => {
+        ((t.innerHTML = s), (t.style.background = ''), (t.title = 'Copy'));
+      }, 2e3));
+  }
+  _speakMessage(e, t) {
+    if ('speechSynthesis' in window)
+      if (window.speechSynthesis.speaking)
+        (window.speechSynthesis.cancel(),
+          (t.innerHTML = '<i class="fas fa-volume-up"></i>'),
+          (t.style.background = ''),
+          (t.title = 'Read Aloud'));
+      else {
+        const s = e
+            .replace(/[*#`_~]/g, '')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+            .trim(),
+          i = new SpeechSynthesisUtterance(s);
+        ((i.rate = 1),
+          (i.pitch = 1),
+          (i.volume = 1),
+          (i.onstart = () => {
+            ((t.innerHTML = '<i class="fas fa-stop"></i>'),
+              (t.style.background = 'linear-gradient(135deg, #ff3b30 0%, #ff2d21 100%)'),
+              (t.title = 'Stop Speaking'));
+          }),
+          (i.onend = () => {
+            ((t.innerHTML = '<i class="fas fa-volume-up"></i>'),
+              (t.style.background = ''),
+              (t.title = 'Read Aloud'));
+          }),
+          (i.onerror = () => {
+            ((t.innerHTML = '<i class="fas fa-volume-up"></i>'),
+              (t.style.background = ''),
+              (t.title = 'Read Aloud'));
+          }),
+          window.speechSynthesis.speak(i));
+      }
+    else alert('Text-to-speech is not supported in your browser');
+  }
+  _retryLastMessage() {
+    this.lastUserMessage && this.sendMessage(this.lastUserMessage);
+  }
+  _formatAssistantResponse(e) {
+    if (!e) return { content: '', metadata: {} };
+    if ('string' == typeof e) return { content: e, metadata: {} };
+    const t = {};
+    e.type && (t.type = e.type);
+    const s = e.source || e.provider || 'OpenRouter';
+    ((t.sourceKey = s),
+      (t.source = e.sourceLabel || this._formatSourceLabel(s, e.type)),
+      (t.model = e.model || 'x-ai/grok-4.1-fast'),
+      e.sourceMessage && (t.sourceDetail = e.sourceMessage),
+      ('number' != typeof e.confidence && 'string' != typeof e.confidence) ||
+        (t.confidence = e.confidence),
+      'number' == typeof e.processingTime
+        ? (t.processingTime = Math.max(0, Math.round(e.processingTime)))
+        : e.processingTime && (t.processingTime = e.processingTime),
+      Array.isArray(e.providers) && e.providers.length
+        ? (t.providers = e.providers)
+        : (t.providers = [s]));
+    const i = e?.usage?.total_tokens || e?.usage?.totalTokens;
+    if ('number' == typeof i && ((t.tokens = i), t.processingTime && t.processingTime > 0)) {
+      const e = t.processingTime / 1e3;
+      t.tokensPerSecond = Math.max(0, i / e);
+    }
+    e.error && (t.error = !0);
+    const n = this._normalizeAnswerPayload(e);
+    return n && 'object' == typeof n && n.html && features.enableMarkdownRendering
+      ? { content: { html: n.html }, metadata: t }
+      : { content: n, metadata: t };
+  }
+  _normalizeAnswerPayload(e) {
+    const t = e?.html ? { html: e.html } : (e?.answer ?? e?.text ?? e);
+    return this._normalizeAnswerValue(t);
+  }
+  _normalizeAnswerValue(e) {
+    if (null == e) return '';
+    if ('string' == typeof e) return e;
+    if ('number' == typeof e || 'boolean' == typeof e) return String(e);
+    if (Array.isArray(e))
+      return e
+        .map(e => this._normalizeAnswerValue(e))
+        .filter(Boolean)
+        .join('\n');
+    if ('object' == typeof e) {
+      if (e.html && 'string' == typeof e.html) return { html: e.html };
+      if ('string' == typeof e.text) return e.text;
+      if ('string' == typeof e.answer) return e.answer;
+      if ('string' == typeof e.content) return e.content;
+    }
+    try {
+      return JSON.stringify(e);
+    } catch {
+      return String(e);
+    }
+  }
+  _createMetaChip(e, t) {
+    if (!t) return null;
+    const s = document.createElement('span');
+    return ((s.className = e), (s.textContent = t), s);
+  }
+  _formatQueryType(e) {
+    return (
+      {
+        portfolio: 'Portfolio',
+        math: 'Math',
+        factual: 'Factual',
+        definition: 'Definition',
+        general: 'General',
+        greeting: 'Greeting',
+        help: 'Help',
+        identity: 'Identity',
+        utility: 'Utility',
+        fallback: 'Fallback',
+        ai: 'AI',
+      }[e] || (e ? e.charAt(0).toUpperCase() + e.slice(1) : '')
+    );
+  }
+  _formatConfidence(e) {
+    return null == e
+      ? ''
+      : 'string' == typeof e
+        ? e
+        : 'number' == typeof e
+          ? e > 1
+            ? `${Math.round(e)}%`
+            : `${Math.round(100 * e)}%`
+          : '';
+  }
+  _formatProcessingTime(e) {
+    return null == e
+      ? ''
+      : 'number' == typeof e && Number.isFinite(e)
+        ? `${Math.max(0, Math.round(e))}ms`
+        : 'string' == typeof e
+          ? e
+          : '';
+  }
+  _formatProviders(e) {
+    if (!Array.isArray(e) || 0 === e.length) return '';
+    const t = [...new Set(e.filter(Boolean))];
+    return t.length ? `Signals: ${t.join(', ')}` : '';
+  }
+  _formatSourceLabel(e, t = 'general') {
+    if (!e)
+      return 'portfolio' === t
+        ? 'AssistMe Portfolio'
+        : 'math' === t
+          ? 'AssistMe Math Engine'
+          : 'AssistMe';
+    const s = this._normalizeSourceKey(e),
+      i = {
+        assistme: 'AssistMe',
+        'assistme-portfolio': 'AssistMe Portfolio',
+        'assistme-general': 'AssistMe',
+        'assistme-math': 'AssistMe Math Engine',
+        'assistme-utility': 'AssistMe Utility',
+        openai: 'OpenAI',
+        grok: 'Grok (xAI)',
+        claude: 'Claude (Anthropic)',
+        gemini: 'Google Gemini',
+        duckduckgo: 'DuckDuckGo',
+        wikipedia: 'Wikipedia',
+        stackoverflow: 'Stack Overflow',
+        offline: 'Offline Knowledge Base',
+        country_facts: 'REST Countries',
+        perplexity: 'Perplexity AI',
+        huggingface: 'Hugging Face',
+        openrouter: 'OpenRouter',
+      };
+    if (i[s]) return i[s];
+    const n = s.split(/[-_]/g).filter(Boolean);
+    return n.length ? n.map(e => e.charAt(0).toUpperCase() + e.slice(1)).join(' ') : 'AssistMe';
+  }
+  _normalizeSourceKey(e) {
+    if (!e && 0 !== e) return '';
+    const t = String(e).trim().toLowerCase(),
+      s = {
+        'assistme server': 'assistme',
+        'assistme client': 'assistme',
+        'assistme portfolio': 'assistme-portfolio',
+        portfolio: 'assistme-portfolio',
+        'assistme math': 'assistme-math',
+        gpt: 'openai',
+        'gpt-4': 'openai',
+        'gpt-4o': 'openai',
+        'openai gpt': 'openai',
+        'claude ai': 'claude',
+        'grok ai': 'grok',
+        'x.ai': 'grok',
+        'duck duck go': 'duckduckgo',
+        'wikipedia.org': 'wikipedia',
+        'stack overflow': 'stackoverflow',
+        'offline knowledge base': 'offline',
+        restcountries: 'country_facts',
+        'perplexity ai': 'perplexity',
+        'hugging face': 'huggingface',
+        'open router': 'openrouter',
+      };
+    return s[t] ? s[t] : t.replace(/\s+/g, '-');
+  }
+  _createTypingIndicator() {
+    const e = document.createElement('div');
+    return (
+      (e.className = 'typing-indicator hidden'),
+      (e.innerHTML =
+        '\n            <div class="typing-dots">\n                <span></span><span></span><span></span>\n            </div>\n        '),
+      e
+    );
+  }
+  _showTypingIndicator() {
+    this.typingIndicator &&
+      this.elements.messages &&
+      (this.elements.messages.appendChild(this.typingIndicator),
+      this.typingIndicator.classList.remove('hidden'),
+      this._scrollToBottom());
+  }
+  _hideTypingIndicator() {
+    this.typingIndicator &&
+      (this.typingIndicator.classList.add('hidden'),
+      this.typingIndicator.parentNode &&
+        this.typingIndicator.parentNode.removeChild(this.typingIndicator));
+  }
+  _createSuggestionsElement() {
+    ((this.elements.suggestions = document.createElement('div')),
+      (this.elements.suggestions.className = 'chat-suggestions hidden'),
+      (this.elements.suggestions.id = 'chat-suggestions'),
+      this.elements.messages &&
+        this.elements.messages.parentNode &&
+        this.elements.messages.parentNode.insertBefore(
+          this.elements.suggestions,
+          this.elements.messages.nextSibling
+        ));
+  }
+  _updateSuggestions(e = '') {
+    if (!features.enableHistory || !this.elements.suggestions) return;
+    if (
+      (void 0 === e && (e = ''),
+      'string' != typeof e && (e = 'number' == typeof e ? String(e) : ''),
+      !e && !this.history.length)
+    )
+      return void this._hideSuggestions();
+    let t = [];
+    (e.length > 2
+      ? (t = this._getContextualSuggestions(e) || [])
+      : this.history.length && (t = chatAssistant.getSuggestions?.() || []),
+      Array.isArray(t) && t.length
+        ? ((this.elements.suggestions.innerHTML = ''),
+          t.forEach(e => {
+            const t = document.createElement('button');
+            ((t.className = 'suggestion-button'),
+              (t.type = 'button'),
+              (t.textContent = e),
+              t.addEventListener('click', () => {
+                this.elements.input &&
+                  ((this.elements.input.value = e),
+                  this.elements.input.focus(),
+                  this._hideSuggestions());
+              }),
+              this.elements.suggestions.appendChild(t));
+          }),
+          this._showSuggestions())
+        : this._hideSuggestions());
+  }
+  _getContextualSuggestions(e) {
+    const t = e.toLowerCase(),
+      s = [];
+    return (
+      t.startsWith('tell me about')
+        ? (s.push('Tell me about your education'),
+          s.push('Tell me about your skills'),
+          s.push('Tell me about your projects'))
+        : t.startsWith('what')
+          ? (s.push('What are your main projects?'), s.push('What technologies do you use?'))
+          : (t.includes('calculate') || t.includes('math')) &&
+            (s.push('Calculate 25 * 15'), s.push('Convert 100 celsius to fahrenheit')),
+      s
+    );
+  }
+  _showSuggestions() {
+    this.elements.suggestions &&
+      (this.elements.suggestions.classList.remove('hidden'), (this.suggestionsVisible = !0));
+  }
+  _hideSuggestions() {
+    this.elements.suggestions &&
+      (this.elements.suggestions.classList.add('hidden'), (this.suggestionsVisible = !1));
+  }
+  _createStatusIndicator() {}
+  _showWelcomeMessage() {}
+  _addMessageElement(e) {
+    if (this.elements.messages && e) {
+      for (
+        this.elements.messages.appendChild(e);
+        this.elements.messages.children.length > this.maxMessages;
+      )
+        this.elements.messages.removeChild(this.elements.messages.firstChild);
+      this._scrollToBottom();
+    }
+  }
+  _scrollToBottom() {
+    this.elements.messages &&
+      requestAnimationFrame(() => {
+        this.elements.messages.scrollTo({
+          top: this.elements.messages.scrollHeight,
+          behavior: 'smooth',
+        });
+      });
+  }
+  _toggleWidget() {}
+  _openWidget() {}
+  _closeWidget() {}
+  _isWidgetOpen() {
+    return !(!this.elements.widget || this.elements.widget.classList.contains('hidden'));
+  }
+  clearChat() {
+    if (this.elements.messages)
+      for (; this.elements.messages.firstChild; )
+        this.elements.messages.removeChild(this.elements.messages.firstChild);
+    (chatAssistant.clearHistory(), this._showWelcomeMessage());
+  }
+  notifyAssistant(e) {
+    e && this.addMessage(e, 'assistant', { skipSpeech: !0 });
+  }
+  getStatus() {
+    return {
+      isProcessing: this.isProcessing,
+      messageCount: this.elements.messages?.children.length || 0,
+      assistantStatus: chatAssistant.getStatus(),
+    };
+  }
+  addMessage(e, t = 'assistant', s = {}) {
+    if (null == e) return null;
+    const i = { ...(s.metadata || {}) };
+    s.system && (i.type = i.type || 'system');
+    const n = this._createMessageElement(e, t, Date.now(), i);
+    return (
+      this._addMessageElement(n),
+      this.voiceOutputEnabled &&
+        'assistant' === t &&
+        !s.skipSpeech &&
+        'string' == typeof e &&
+        this._speakText(e),
+      n
+    );
+  }
+  showAssistantThinking() {
+    features.enableTypingIndicator && this._showTypingIndicator();
+  }
+  hideAssistantThinking() {
+    features.enableTypingIndicator && this._hideTypingIndicator();
+  }
+  refreshSuggestions() {
+    this._updateSuggestions();
+  }
+  async fetchAssistantResponse(e) {
+    if (!e) return { content: '', metadata: {} };
+    if (!chatAssistant.isReady())
+      try {
+        await chatAssistant.initialize();
+      } catch (e) {
+        console.warn('Assistant initialization failed before processing voice query:', e);
+      }
+    const t = await chatAssistant.ask(e);
+    return this._formatAssistantResponse(t);
+  }
+  _handleVoiceButtonPointerDown(e) {
+    0 === e.button &&
+      (this.elements.voiceButton?.disabled ||
+        (this.voiceMenuVisible && this.hideVoiceMenu(),
+        (this.voiceHoldTriggered = !1),
+        this._cancelVoiceButtonHold(),
+        (this.voiceHoldTimer = window.setTimeout(() => {
+          ((this.voiceHoldTriggered = !0), this.showVoiceMenu());
+        }, 520))));
+  }
+  _handleVoiceButtonPointerUp(e) {
+    0 === e.button &&
+      (this.voiceHoldTimer && (clearTimeout(this.voiceHoldTimer), (this.voiceHoldTimer = null)),
+      this.voiceHoldTriggered
+        ? (this.voiceHoldTriggered = !1)
+        : this.elements.voiceButton?.disabled ||
+          (document.dispatchEvent(new CustomEvent('voice-input-click')),
+          this._cancelVoiceButtonHold()));
+  }
+  _cancelVoiceButtonHold() {
+    (this.voiceHoldTimer && (clearTimeout(this.voiceHoldTimer), (this.voiceHoldTimer = null)),
+      (this.voiceHoldTriggered = !1));
+  }
+  _handleVoiceButtonKey(e) {
+    return ' ' === e.key || 'Enter' === e.key
+      ? (e.preventDefault(), void document.dispatchEvent(new CustomEvent('voice-input-click')))
+      : 'ArrowDown' === e.key || ('F10' === e.key && e.shiftKey)
+        ? (e.preventDefault(), void this.showVoiceMenu())
+        : void (
+            'Escape' === e.key &&
+            this.voiceMenuVisible &&
+            (e.preventDefault(), this.hideVoiceMenu())
+          );
+  }
+  _handleDocumentClick(e) {
+    if (!this.voiceMenuVisible) return;
+    const t = this.elements.voiceMenu,
+      s = this.elements.voiceButton;
+    if (!t) return;
+    const i = e.target;
+    t.contains(i) || s?.contains(i) || this.hideVoiceMenu();
+  }
+  _syncVoiceMenuState() {
+    if (this.elements.voiceOutputToggle) {
+      this.elements.voiceOutputToggle.checked = this.voiceOutputEnabled;
+      const e = this.elements.voiceOutputToggle.closest('.voice-menu-option');
+      e && e.classList.toggle('disabled', this.elements.voiceOutputToggle.disabled);
+    }
+    if (this.elements.voiceContinuousToggle) {
+      const e = Boolean(window.voiceManager?.isContinuous);
+      this.elements.voiceContinuousToggle.checked = e;
+      const t = this.elements.voiceContinuousToggle.closest('.voice-menu-option');
+      t && t.classList.toggle('disabled', this.elements.voiceContinuousToggle.disabled);
+    }
+  }
+  showVoiceMenu() {
+    const e = this.elements.voiceMenu;
+    if (!e || this.elements.voiceButton?.disabled) return;
+    (this._syncVoiceMenuState(),
+      (this.voiceMenuVisible = !0),
+      e.classList.remove('hidden'),
+      e.setAttribute('aria-hidden', 'false'),
+      this.elements.voiceButton?.classList.add('menu-open'),
+      this.elements.voiceButton?.setAttribute('aria-expanded', 'true'));
+    const t = this.elements.voiceOutputToggle?.disabled
+      ? this.elements.voiceContinuousToggle
+      : this.elements.voiceOutputToggle;
+    t && !t.disabled && setTimeout(() => t.focus({ preventScroll: !0 }), 0);
+  }
+  hideVoiceMenu() {
+    const e = this.elements.voiceMenu;
+    e &&
+      this.voiceMenuVisible &&
+      ((this.voiceMenuVisible = !1),
+      e.classList.add('hidden'),
+      e.setAttribute('aria-hidden', 'true'),
+      this.elements.voiceButton?.classList.remove('menu-open'),
+      this.elements.voiceButton?.setAttribute('aria-expanded', 'false'),
+      this._cancelVoiceButtonHold(),
+      e.contains(document.activeElement) &&
+        this.elements.voiceButton?.focus({ preventScroll: !0 }));
+  }
+  setVoiceInputActive(e) {
+    const t = this.elements.voiceButton;
+    t &&
+      (e
+        ? (t.classList.add('active', 'recording'),
+          t.setAttribute('aria-pressed', 'true'),
+          (t.title = 'Listening... Click to stop voice input'))
+        : (t.classList.remove('active', 'recording'),
+          t.setAttribute('aria-pressed', 'false'),
+          (t.title = 'Click to start voice input')));
+  }
+  setVoiceOutputActive(e) {
+    const t = this.elements.voiceButton;
+    t &&
+      (e
+        ? (t.classList.add('speaking'), t.setAttribute('data-speaking', 'true'))
+        : (t.classList.remove('speaking'), t.removeAttribute('data-speaking')));
+  }
+  setVoiceOutputEnabledState(e) {
+    this.voiceOutputEnabled = Boolean(e);
+    const t = this.elements.voiceButton;
+    t &&
+      (t.classList.toggle('voice-muted', !this.voiceOutputEnabled),
+      t.setAttribute('data-voice-enabled', this.voiceOutputEnabled ? 'true' : 'false'));
+    const s = this.elements.voiceOutputToggle;
+    (s && s.checked !== this.voiceOutputEnabled && (s.checked = this.voiceOutputEnabled),
+      this.voiceMenuVisible && this._syncVoiceMenuState());
+  }
+  setContinuousModeActive(e) {
+    const t = Boolean(e),
+      s = this.elements.voiceButton;
+    s && s.classList.toggle('continuous-active', t);
+    const i = this.elements.voiceContinuousToggle;
+    (i && i.checked !== t && (i.checked = t), this.voiceMenuVisible && this._syncVoiceMenuState());
+  }
+  disableVoiceInput(e = 'Voice input is not supported in this browser.') {
+    const t = this.elements.voiceButton;
+    (t &&
+      ((t.disabled = !0),
+      t.classList.add('disabled'),
+      t.classList.remove('active', 'recording', 'continuous-active'),
+      t.setAttribute('aria-pressed', 'false'),
+      (t.title = e)),
+      this.disableContinuousMode('Continuous listening requires voice input support.'),
+      this.hideVoiceMenu());
+  }
+  disableVoiceOutput(e = 'Voice output is not supported in this browser.') {
+    this.setVoiceOutputEnabledState(!1);
+    const t = this.elements.voiceOutputToggle;
+    if (t) {
+      ((t.checked = !1), (t.disabled = !0), (t.title = e));
+      const s = t.closest('.voice-menu-option');
+      s && s.classList.add('disabled');
+    }
+    this.hideVoiceMenu();
+  }
+  disableContinuousMode(e = 'Continuous listening is not available.') {
+    const t = this.elements.voiceContinuousToggle;
+    if (t) {
+      ((t.checked = !1), (t.disabled = !0), (t.title = e));
+      const s = t.closest('.voice-menu-option');
+      s && s.classList.add('disabled');
+    }
+    const s = this.elements.voiceButton;
+    s && s.classList.remove('continuous-active');
+  }
+  updateInterimTranscript(e) {
+    console.log('🎤 Interim transcript:', e);
+  }
+  _speakText(e) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const t = new SpeechSynthesisUtterance(e);
+    ((t.rate = 0.9), (t.pitch = 1), (t.volume = 0.8));
+    const s = window.speechSynthesis.getVoices(),
+      i =
+        s.find(
+          e =>
+            e.lang.startsWith('en') &&
+            (e.name.toLowerCase().includes('natural') ||
+              e.name.toLowerCase().includes('human') ||
+              e.localService)
+        ) || s.find(e => e.lang.startsWith('en'));
+    (i && (t.voice = i), window.speechSynthesis.speak(t));
+  }
+}
+function initContactChatbotCTA(e = document) {
+  const t = e.getElementById('contact-chatbot-cta');
+  t &&
+    'true' !== t.dataset.chatbotBound &&
+    ((t.dataset.chatbotBound = 'true'),
+    t.addEventListener('click', () => {
+      if (
+        window.appleIntelligenceChatbot &&
+        'function' == typeof window.appleIntelligenceChatbot.ask
+      )
+        return void window.appleIntelligenceChatbot.ask(
+          'I want to contact Mangesh about a project opportunity.'
+        );
+      const t = e.getElementById('chatbot-toggle');
+      t?.click();
+    }));
+}
+let chatUI;
+(document.addEventListener('DOMContentLoaded', () => {
+  (initOverlayMenu(),
+    initOverlayNavigation(),
+    initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)'),
+    initContactChatbotCTA(),
+    (window.AssistMeConfig = Object.freeze({ externalApis: ExternalApiKeys })),
+    setTimeout(() => {
+      const e = document.querySelector('.typewriter');
+      e && (e.style.borderRight = 'none');
+    }, 6e3));
+}),
+  document.addEventListener('DOMContentLoaded', () => {
+    ((chatUI = new ChatUI()),
+      (window.chatUI = chatUI),
+      (window.chatAssistant = chatAssistant),
+      initializeVercelAnalytics(),
+      console.log('✅ ChatUI initialized and ready'));
+  }));
+export { ChatUI };

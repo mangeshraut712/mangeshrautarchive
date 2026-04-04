@@ -87,26 +87,31 @@ function initContactChatbotCTA(loader, root = document) {
   const buttons = [
     root.getElementById('contact-chatbot-cta'),
     root.getElementById('contact-chat-btn'),
-    root.getElementById('footer-chat-btn')
+    root.getElementById('footer-chat-btn'),
   ].filter(Boolean);
 
   buttons.forEach(button => {
     if (button.dataset.chatbotBound === 'true') return;
     button.dataset.chatbotBound = 'true';
 
-    button.addEventListener('click', async (e) => {
+    button.addEventListener('click', async e => {
       e.preventDefault();
       await loader.load();
 
-      if (window.appleIntelligenceChatbot && typeof window.appleIntelligenceChatbot.ask === 'function') {
-        window.appleIntelligenceChatbot.ask('I want to contact Mangesh about a project opportunity.');
+      if (
+        window.appleIntelligenceChatbot &&
+        typeof window.appleIntelligenceChatbot.ask === 'function'
+      ) {
+        window.appleIntelligenceChatbot.ask(
+          'I want to contact Mangesh about a project opportunity.'
+        );
         return;
       }
 
       // Toggle chatbot widget
       const chatbotWidget = root.getElementById('chatbot-widget');
       const chatbotToggle = root.getElementById('chatbot-toggle');
-      
+
       if (chatbotWidget) {
         chatbotWidget.classList.remove('hidden');
         chatbotWidget.classList.add('flex');
@@ -157,7 +162,8 @@ function bindSearchShortcutLoader(loader, root = document) {
   root.addEventListener(
     'keydown',
     async event => {
-      const shortcutPressed = (event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey);
+      const shortcutPressed =
+        (event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey);
       if (!shortcutPressed || loader.isLoaded()) return;
 
       event.preventDefault();
@@ -208,7 +214,9 @@ function initHashNavigationStabilizer(root = document) {
   };
 
   const alignToHash = hashValue => {
-    const sectionId = String(hashValue || '').replace('#', '').trim();
+    const sectionId = String(hashValue || '')
+      .replace('#', '')
+      .trim();
     if (!sectionId) return;
 
     const section = root.getElementById(sectionId);
@@ -342,11 +350,14 @@ function lazyLoadSectionModule(sectionId, modulePath, rootMargin = '300px 0px') 
   }
 
   if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        load();
-      }
-    }, { rootMargin });
+    observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          load();
+        }
+      },
+      { rootMargin }
+    );
 
     observer.observe(section);
     window.addEventListener('hashchange', onHashChange);
@@ -369,7 +380,10 @@ function initLazyModules() {
           loadModule(modulePath);
         });
 
-        if (window.innerWidth > 1024 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (
+          window.innerWidth > 1024 &&
+          !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ) {
           loadModule('../modules/3d-background.js');
         }
       };
@@ -432,13 +446,16 @@ function initProjectShowcaseOnDemand() {
       }
     };
 
-    observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        loadProjects();
-        observer?.disconnect();
-        window.removeEventListener('hashchange', onHashChange);
-      }
-    }, { rootMargin: '350px 0px' });
+    observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          loadProjects();
+          observer?.disconnect();
+          window.removeEventListener('hashchange', onHashChange);
+        }
+      },
+      { rootMargin: '350px 0px' }
+    );
 
     observer.observe(projectsSection);
     window.addEventListener('hashchange', onHashChange);

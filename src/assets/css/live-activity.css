@@ -50,7 +50,7 @@ html.dark .portfolio-views-chip:hover {
 }
 
 .portfolio-views-chip svg {
-  color: var(--text-accent, #0071e3);
+  color: var(--text-accent, #1d1d1f);
   opacity: 0.9;
 }
 
@@ -94,7 +94,7 @@ html.dark .now-section {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #1db954;
+  background: #333333;
   margin-right: 4px;
   animation: live-pulse 2s ease-in-out infinite;
   will-change: opacity;
@@ -197,21 +197,21 @@ html.dark .activity-card:hover {
 
 .activity-card--music {
   grid-column: 1 / -1; /* full width on top */
-  background: rgba(255, 255, 255, 0.72) ;
-  backdrop-filter: blur(30px) saturate(210%) ;
-  -webkit-backdrop-filter: blur(30px) saturate(210%) ;
-  border: 0.5px solid rgba(255, 255, 255, 0.4) ;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(30px) saturate(210%);
+  -webkit-backdrop-filter: blur(30px) saturate(210%);
+  border: 0.5px solid rgba(255, 255, 255, 0.4);
   box-shadow:
     0 12px 34px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.03) ;
-  padding: 14px ;
-  border-radius: 24px ;
+    0 4px 10px rgba(0, 0, 0, 0.03);
+  padding: 14px;
+  border-radius: 24px;
 }
 
 html.dark .activity-card--music {
-  background: rgba(25, 25, 27, 0.82) ;
-  border: 0.5px solid rgba(255, 255, 255, 0.12) ;
-  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45) ;
+  background: rgba(25, 25, 27, 0.82);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
 }
 
 .music-card-inner {
@@ -298,7 +298,7 @@ html.dark .music-progress-track {
 .music-progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #ff2d55, #ff375f);
+  background: linear-gradient(90deg, #555555, #ff375f);
   box-shadow: 0 0 10px rgba(255, 45, 85, 0.3);
   transform-origin: left;
   transition: width 1s linear;
@@ -318,7 +318,7 @@ html.dark .music-progress-track {
   padding: 3px 10px;
   border-radius: 999px;
   background: rgba(255, 45, 85, 0.08);
-  color: #ff2d55;
+  color: #555555;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -343,7 +343,7 @@ html.dark .music-status-pill {
   padding: 0 12px;
   border-radius: 999px;
   background: #f2f2f7;
-  color: #0071e3;
+  color: #1d1d1f;
   font-size: 10px;
   font-weight: 600;
   text-decoration: none;
@@ -353,7 +353,7 @@ html.dark .music-status-pill {
 
 html.dark .music-provider-link {
   background: rgba(255, 255, 255, 0.08);
-  color: #5ac8fa;
+  color: #aeaeb2;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -369,7 +369,7 @@ html.dark .music-provider-link {
 }
 
 html.dark .music-provider-link.spotify {
-  background: #1db954;
+  background: #333333;
 }
 
 .music-provider-link.spotify:hover {
@@ -616,7 +616,7 @@ html.dark .sport-name {
   border-radius: 999px;
   border: 1px solid rgba(0, 113, 227, 0.14);
   background: rgba(0, 113, 227, 0.08);
-  color: #0071e3;
+  color: #1d1d1f;
   font-size: 0.58rem;
   font-weight: 600;
   line-height: 1;
@@ -639,7 +639,7 @@ html.dark .sport-name {
 html.dark .provider-link {
   border-color: rgba(41, 151, 255, 0.18);
   background: rgba(41, 151, 255, 0.12);
-  color: #5ac8fa;
+  color: #aeaeb2;
 }
 
 html.dark .provider-link:hover {
@@ -743,7 +743,7 @@ html.dark .provider-link--neutral {
 @media (prefers-reduced-motion: reduce) {
   .eq-bar,
   .live-dot {
-    animation: none ;
+    animation: none;
   }
   .activity-card,
   .music-progress-fill,
@@ -751,7 +751,7 @@ html.dark .provider-link--neutral {
   .media-item,
   .provider-link,
   .shelf-cover {
-    transition: none ;
+    transition: none;
   }
 }
 
@@ -786,7 +786,7 @@ html.dark .provider-link--neutral {
   width: 3px;
   border-radius: 1.5px;
   transform-origin: bottom;
-  background: #ff2d55;
+  background: #555555;
   will-change: transform;
 }
 
@@ -802,7 +802,7 @@ html.dark .provider-link--neutral {
 
 .eq-bar--idle,
 .not-playing .eq-bar {
-  animation: none ;
+  animation: none;
   transform: scaleY(0.3);
   background: #8e8e93;
 }
@@ -904,7 +904,7 @@ html.dark .spotify-compact {
 }
 
 .spotify-compact.is-playing .status-dot {
-  background: #1db954;
+  background: #333333;
   box-shadow: 0 0 8px rgba(29, 185, 84, 0.5);
 }
 
@@ -941,7 +941,7 @@ html.dark .spotify-song {
 }
 
 .spotify-brand {
-  color: #1db954;
+  color: #333333;
   font-size: 24px;
   display: flex;
   align-items: center;
@@ -949,5 +949,5 @@ html.dark .spotify-song {
 }
 
 html.dark .spotify-brand {
-  color: #1db954;
+  color: #333333;
 }

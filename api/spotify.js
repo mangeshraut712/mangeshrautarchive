@@ -14,10 +14,8 @@
  */
 
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
-const NOW_PLAYING_ENDPOINT =
-  'https://api.spotify.com/v1/me/player/currently-playing';
-const RECENTLY_PLAYED_ENDPOINT =
-  'https://api.spotify.com/v1/me/player/recently-played?limit=1';
+const NOW_PLAYING_ENDPOINT = 'https://api.spotify.com/v1/me/player/currently-playing';
+const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-played?limit=1';
 
 // Module-level token cache
 let _accessToken = null;
@@ -98,7 +96,7 @@ export default async function handler(req, res) {
       return res.status(200).json({
         isPlaying: true,
         song: track.name,
-        artist: track.artists.map((a) => a.name).join(', '),
+        artist: track.artists.map(a => a.name).join(', '),
         album: track.album.name,
         albumArt: track.album.images?.[1]?.url || track.album.images?.[0]?.url || null,
         songUrl: track.external_urls?.spotify || null,
@@ -113,7 +111,7 @@ export default async function handler(req, res) {
       return res.status(200).json({
         isPlaying: false,
         song: recent.name,
-        artist: recent.artists.map((a) => a.name).join(', '),
+        artist: recent.artists.map(a => a.name).join(', '),
         album: recent.album.name,
         albumArt: recent.album.images?.[1]?.url || recent.album.images?.[0]?.url || null,
         songUrl: recent.external_urls?.spotify || null,

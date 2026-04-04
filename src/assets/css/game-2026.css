@@ -45,7 +45,7 @@ html.dark .game-control-item:hover {
   min-width: 56px;
   height: 42px;
   padding: 0 16px;
-  background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%);
+  background: linear-gradient(135deg, #1d1d1f 0, #0a84ff 100%);
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   font-size: 14px;
@@ -105,10 +105,10 @@ html.dark #debug-runner-container {
   width: 100%;
   max-width: 800px;
   border-radius: 16px;
-  background: #fff ;
+  background: #fff;
 }
 html.dark #debug-runner-canvas {
-  background: #000 ;
+  background: #000;
 }
 .debug-runner-mobile-controls {
   display: none;
@@ -116,7 +116,7 @@ html.dark #debug-runner-canvas {
 
 @media (max-width: 768px) {
   .debug-runner-mobile-controls {
-    display: flex ;
+    display: flex;
     justify-content: center;
     gap: 16px;
     margin-top: 20px;
@@ -127,7 +127,7 @@ html.dark #debug-runner-canvas {
     flex: 1;
     max-width: 160px;
     padding: 18px 24px;
-    background: linear-gradient(135deg, #0071e3 0, #0a84ff 100%);
+    background: linear-gradient(135deg, #1d1d1f 0, #0a84ff 100%);
     color: #fff;
     border: 0;
     border-radius: 16px;
@@ -150,7 +150,7 @@ html.dark #debug-runner-canvas {
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
   .debug-runner-mobile-controls .debug-game-btn--jump {
-    background: linear-gradient(135deg, #34c759 0, #30d158 100%);
+    background: linear-gradient(135deg, #444444 0, #30d158 100%);
     box-shadow:
       0 6px 20px rgba(52, 199, 89, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -161,7 +161,7 @@ html.dark #debug-runner-canvas {
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
   .debug-runner-mobile-controls .debug-game-btn--duck {
-    background: linear-gradient(135deg, #ff9500 0, #ff9f0a 100%);
+    background: linear-gradient(135deg, #777777 0, #ff9f0a 100%);
     box-shadow:
       0 6px 20px rgba(255, 149, 0, 0.4),
       inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -175,10 +175,10 @@ html.dark #debug-runner-canvas {
 
 @media (hover: none) and (pointer: coarse) {
   .game-controls-wrapper {
-    display: none ;
+    display: none;
   }
   .debug-runner-mobile-controls {
-    display: flex ;
+    display: flex;
     justify-content: center;
     gap: 16px;
     margin-top: 20px;
@@ -308,7 +308,7 @@ html.dark .legend-emoji {
 
 @media (max-width: 768px) {
   .game-controls-wrapper {
-    display: none ;
+    display: none;
   }
   .game-control-item {
     padding: 12px 18px;

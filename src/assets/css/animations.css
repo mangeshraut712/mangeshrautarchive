@@ -261,7 +261,7 @@ img.rounded-full {
   top: 0;
   width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, #0071e3, #2997ff);
+  background: linear-gradient(180deg, #1d1d1f, #86868b);
   animation: timelineProgress 1.5s ease-out forwards;
 }
 html.dark .timeline-line::before {
@@ -286,9 +286,9 @@ img[loading='lazy'].loaded {
   *,
   ::after,
   ::before {
-    animation-duration: 0.01ms ;
-    animation-iteration-count: 1 ;
-    scroll-behavior: auto ;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
   }
   .animate-on-scroll,
   .education-card,
@@ -297,16 +297,16 @@ img[loading='lazy'].loaded {
   .showcase-project-card,
   .skill-badge,
   section h2 {
-    animation: none ;
-    opacity: 1 ;
-    transform: none ;
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
   *,
   .btn:hover,
   .nav-link:hover,
   ::after,
   ::before {
-    transition-duration: 0.01ms ;
+    transition-duration: 0.01ms;
   }
 }
 
@@ -314,9 +314,9 @@ img[loading='lazy'].loaded {
   *,
   ::after,
   ::before {
-    animation: none ;
-    transition: none ;
-    opacity: 1 ;
-    transform: none ;
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }

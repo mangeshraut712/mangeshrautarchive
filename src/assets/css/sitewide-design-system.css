@@ -5,8 +5,8 @@
 */
 
 :root {
-  --apple-accent: #0071e3;
-  --apple-accent-hover: #0077ed;
+  --apple-accent: #000000;
+  --apple-accent-hover: #333333;
   --apple-bg-light: #ffffff;
   --apple-bg-dark: #000000;
   --apple-card-bg-light: #ffffff;
@@ -14,7 +14,7 @@
   --apple-border-light: rgba(0, 0, 0, 0.1);
   --apple-border-dark: rgba(255, 255, 255, 0.15);
   --apple-shadow-light: 0 4px 24px rgba(0, 0, 0, 0.04);
-  --apple-shadow-dark: 0 0 0 transparent; /* No shadow to keep it solid and clean */
+  --apple-shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.8);
   --apple-radius: 20px;
   --apple-radius-button: 12px;
 }
@@ -29,21 +29,26 @@ html.dark body {
   background-color: var(--apple-bg-dark);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-color-primary) !important;
   margin-bottom: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-.section-subtitle, 
+.section-subtitle,
 .text-secondary {
   color: var(--text-color-secondary) !important;
   margin-bottom: 2.5rem;
   max-width: 800px;
 }
 
-.container, 
+.container,
 .container-fluid {
   max-width: 1200px !important;
   margin: 0 auto !important;
@@ -52,12 +57,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* 1. Global Section Behavior */
 ::selection {
-  background-color: rgba(0, 113, 227, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
   color: inherit;
 }
 
 html.dark ::selection {
-  background-color: rgba(41, 151, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Minimalist Scrollbar */
@@ -83,7 +88,7 @@ html.dark ::-webkit-scrollbar-thumb {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 113, 227, 0.4);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 * {
@@ -95,7 +100,7 @@ html {
   scroll-behavior: smooth;
 }
 
-section, 
+section,
 footer {
   background-color: var(--apple-bg-light) !important;
   padding: 5rem 0 !important;
@@ -136,7 +141,7 @@ html.dark footer {
 }
 
 html.dark .card,
-html.dark [class*="-card"],
+html.dark [class*='-card'],
 html.dark .experience-content,
 html.dark .education-content,
 html.dark .skill-badge,
@@ -149,7 +154,7 @@ html.dark .about-highlight-card {
 }
 
 html:not(.dark) .card,
-html:not(.dark) [class*="-card"],
+html:not(.dark) [class*='-card'],
 html:not(.dark) .experience-content,
 html:not(.dark) .education-content,
 html:not(.dark) .skill-badge {
@@ -159,7 +164,7 @@ html:not(.dark) .skill-badge {
   color: #1d1d1f !important;
 }
 
-[class*="-card"]:hover,
+[class*='-card']:hover,
 .card:hover,
 .experience-content:hover,
 .education-content:hover,
@@ -170,7 +175,7 @@ html:not(.dark) .skill-badge {
   border-width: 2px !important;
 }
 
-html.dark [class*="-card"]:hover,
+html.dark [class*='-card']:hover,
 html.dark .card:hover,
 html.dark .experience-content:hover,
 html.dark .skill-badge:hover {
@@ -208,29 +213,15 @@ html.dark .skill-badge:hover {
 }
 
 /* 3. Global Button Standards */
-.btn,
-.about-btn,
-.contact-submit,
-.cta-button,
-.download-btn,
-.hero-btn,
-.project-link,
-.read-more-btn,
-.submit-btn,
-.blog-read-btn,
-.hero-cta,
-.talk-button,
-.calendar-button,
-a.button,
 button:not(.search-toggle):not(.theme-toggle):not(.menu-toggle-button):not(.support-button) {
-  background: linear-gradient(135deg, #0071e3, #0a84ff) !important;
+  background: #000 !important;
   color: #ffffff !important;
-  border: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   font-weight: 600 !important;
   border-radius: var(--apple-radius-button) !important;
   padding: 0.85rem 1.75rem !important;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.25) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -239,22 +230,50 @@ button:not(.search-toggle):not(.theme-toggle):not(.menu-toggle-button):not(.supp
   text-decoration: none !important;
 }
 
+html.dark .btn,
+html.dark .about-btn,
+html.dark .contact-submit,
+html.dark .cta-button,
+html.dark .download-btn,
+html.dark .hero-btn,
+html.dark .project-link,
+/* Global background overrides for interactive elements removed to prevent conflicts with Apple Blue theme */
+
 /* Specific Support Button Brand Logic */
-.support-button.coffee { background: linear-gradient(135deg, #ffdd00, #ffaa00) !important; color: #000 !important; }
-.support-button.paypal { background: linear-gradient(135deg, #003087, #001a5c) !important; color: #fff !important; }
-.support-button.cashapp { background: linear-gradient(135deg, #00d632, #00a824) !important; color: #fff !important; }
-.support-button:hover { transform: translateY(-3px) !important; box-shadow: 0 8px 20px rgba(0,0,0,0.2) !important; }
+.support-button.coffee {
+  background: #333 !important;
+  color: #fff !important;
+}
+.support-button.paypal {
+  background: #666 !important;
+  color: #fff !important;
+}
+.support-button.cashapp {
+  background: #999 !important;
+  color: #fff !important;
+}
+.support-button:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+}
 
 .btn:hover,
-[class*="-btn"]:hover,
-[class*="-button"]:not(.search-toggle):not(.theme-toggle):hover,
+[class*='-btn']:hover,
+[class*='-button']:not(.search-toggle):not(.theme-toggle):hover,
 .contact-submit:hover,
 .cta-button:hover,
 a.button:hover {
-  background: linear-gradient(135deg, #0077ed, #2997ff) !important;
+  background: #333 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.35) !important;
-  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark .btn:hover,
+html.dark [class*='-btn']:hover,
+html.dark [class*='-button']:not(.search-toggle):not(.theme-toggle):hover,
+html.dark .contact-submit:hover {
+  background: #f5f5f7 !important;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2) !important;
 }
 
 .btn-secondary,
@@ -262,16 +281,16 @@ a.button:hover {
 .talk-button.secondary,
 .calendar-button.secondary {
   background: transparent !important;
-  border: 1px solid var(--apple-accent) !important;
-  color: var(--apple-accent) !important;
+  border: 1.5px solid #000 !important;
+  color: #000 !important;
   box-shadow: none !important;
 }
 
 html.dark .btn-secondary,
 html.dark .ghost-button,
 html.dark .talk-button.secondary {
-  color: #2997ff !important;
-  border-color: #2997ff !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
 .btn-secondary:hover,
@@ -360,19 +379,28 @@ html.dark textarea:focus {
 
 html.dark .text-apple-blue,
 html.dark .hero-name {
-  color: #2997ff !important;
+  color: #86868b !important;
 }
 
 /* Sections */
-#about, #experience, #skills, #education, #publications, #awards, #recommendations, #certifications, #blog, #contact {
-    scroll-margin-top: 80px;
+#about,
+#experience,
+#skills,
+#education,
+#publications,
+#awards,
+#recommendations,
+#certifications,
+#blog,
+#contact {
+  scroll-margin-top: 80px;
 }
 
 /* 6. Final Solid Monochrome Override (Enforcing Strict #FFFFFF / #000000) */
 /* This block explicitly overrides all legacy grey/off-white background tokens for minor components */
 
 /* General Tags, Badges, and Small Insets */
-.skill-icon-container, 
+.skill-icon-container,
 .progress-bar-bg,
 .experience-type-header,
 .project-stat,
@@ -404,15 +432,15 @@ html.dark .hero-name {
 .sport-item,
 .spotify-status-row,
 .spotify-content {
-    background-color: var(--apple-bg-light) !important;
-    border: 1px solid var(--apple-border-light) !important;
-    box-shadow: none !important;
-    background-image: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  background-color: var(--apple-bg-light) !important;
+  border: 1px solid var(--apple-border-light) !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
-html.dark .skill-icon-container, 
+html.dark .skill-icon-container,
 html.dark .progress-bar-bg,
 html.dark .experience-type-header,
 html.dark .project-stat,
@@ -444,21 +472,22 @@ html.dark .sport-emoji,
 html.dark .sport-item,
 html.dark .spotify-status-row,
 html.dark .spotify-content {
-    background-color: var(--apple-bg-dark) !important;
-    border: 1px solid var(--apple-border-dark) !important;
-    box-shadow: none !important;
-    background-image: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  background-color: var(--apple-bg-dark) !important;
+  border: 1px solid var(--apple-border-dark) !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Ensure progress bar fills and active badges remain visible but solid */
 .progress-bar-fill {
-    background: var(--apple-accent) !important;
+  background: var(--apple-accent) !important;
 }
 
-.skill-level-text, .skill-name {
-    color: var(--text-color-primary) !important;
+.skill-level-text,
+.skill-name {
+  color: var(--text-color-primary) !important;
 }
 
 /* Remove all residual gradients or glow effects on ANY pseudo-elements or specific classes */
@@ -474,28 +503,34 @@ main::after,
 #home::before,
 #home::after,
 .profile-ring {
-    background: none !important;
-    box-shadow: none !important;
-    display: none !important;
-    content: none !important;
-    border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  display: none !important;
+  content: none !important;
+  border: none !important;
 }
 
 /* Fix Hero section specific residuals */
 .hero-stat-item {
-    padding: 0.5rem 1rem !important;
-    border-radius: 12px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding: 0.5rem 1rem !important;
+  border-radius: 12px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Final cleanup for any off-whites showing in light mode cards */
-[class*="-card"], .card, .experience-content, .education-content {
-    background-color: #ffffff !important;
+[class*='-card'],
+.card,
+.experience-content,
+.education-content {
+  background-color: #ffffff !important;
 }
 
 /* Final cleanup for any dark-greys showing in dark mode cards */
-html.dark [class*="-card"], html.dark .card, html.dark .experience-content, html.dark .education-content {
-    background-color: #000000 !important;
+html.dark [class*='-card'],
+html.dark .card,
+html.dark .experience-content,
+html.dark .education-content {
+  background-color: #000000 !important;
 }

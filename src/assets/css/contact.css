@@ -1,1068 +1,550 @@
 /* ===================================
-   CONTACT & FOOTER STYLES
-   Clean, organized styles for contact section and footer
-   =================================== */
+    CONTACT & FOOTER STYLES (BENTO GRID v2)
+    =================================== */
 
-/* Animations */
-@keyframes glowSpin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+/* Premium Apple-Style Bento Grid v2 */
+.contact-bento-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
 }
 
-@keyframes glowPulse {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.05) rotate(180deg);
-  }
-}
-
-@keyframes blessingFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes marquee-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-/* Contact Grid Layout - ULTRA OVERRIDE */
-.contact-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 2rem !important;
-  margin-top: 2rem !important;
-  align-items: start !important;
-}
-
-@media (max-width: 900px) {
-  .contact-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-  }
-}
-
-#contact .contact-grid {
-  align-items: start;
-}
-
-#contact .contact-column {
-  align-items: stretch;
-}
-
-#contact .contact-column > * {
-  width: 100%;
-  max-width: 100%;
-}
-
-/* Calendar Component */
-.calendar-wrapper-clean {
-  width: 100%;
-  min-width: 0;
-  margin-top: 0.25rem;
-}
-
-#calendar-widget {
-  width: 100%;
-  min-width: 0;
-}
-
-/* Contact Cards - Enhanced */
-.contact-card {
-  /* background/border/shadow managed by sitewide-design-system.css */
+/* Base Bento Card Style */
+.contact-section-card {
+  background: var(--contact-card-bg, rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 40px;
+  padding: 2.5rem;
+  border: 1px solid var(--contact-card-border, rgba(0, 0, 0, 0.05));
+  box-shadow: var(--contact-card-shadow, 0 10px 30px rgba(0, 0, 0, 0.03));
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
   overflow: hidden;
-}
-.contact-card h3 {
-  font-size: 1.5rem ;
-  margin-bottom: 1rem ;
-  font-weight: 600;
-}
-.contact-description {
-  font-size: 0.9rem ;
-  margin-bottom: 1rem ;
+  display: flex;
+  flex-direction: column;
 }
 
-html.dark .contact-description {
-  color: #a1a1a6;
+html.dark .contact-section-card {
+  background: var(--contact-card-bg-dark, rgba(10, 10, 10, 0.8));
+  border-color: var(--contact-card-border-dark, rgba(255, 255, 255, 0.1));
+  box-shadow: var(--contact-card-shadow-dark, 0 15px 45px rgba(0, 0, 0, 0.4));
 }
 
-/* Contact Information Card - Enhanced */
-.contact-info-card {
-  background: #ffffff !important;
+.contact-section-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 113, 227, 0.3);
 }
 
-html.dark .contact-info-card {
-  background: #000000 !important;
+html.dark .contact-section-card:hover {
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  border-color: rgba(41, 151, 255, 0.3);
+}
+
+/* Card Spanning Rules */
+#card-hero-talk,
+#card-companies-v2,
+#card-cars-v2,
+#card-follow-v2,
+#card-calendar-v2 {
+  grid-column: span 2;
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 1100px) {
+  .contact-bento-grid-v2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-bento-grid-v2 {
+    grid-template-columns: 1fr;
+  }
+  #card-hero-talk,
+  #card-companies-v2,
+  #card-cars-v2,
+  #card-follow-v2,
+  #card-calendar-v2 {
+    grid-column: span 1;
+  }
+  .contact-section-card {
+    border-radius: 32px;
+    padding: 2rem;
+  }
+}
+
+/* Section Title Sync */
+#contact-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  background: var(--contact-button-bg);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+}
+
+html.dark #contact-title {
+  background: linear-gradient(135deg, #58a6ff, #79c0ff);
+  -webkit-background-clip: text;
+}
+
+/* Identity & Info List */
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 .contact-info-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background: #ffffff !important;
-  border-radius: 12px;
-  margin-bottom: 0.75rem;
-  transition: all 0.3s ease;
-  border: 1px solid var(--apple-border-light) !important;
+  align-items: center;
+  gap: 1.25rem;
+  text-decoration: none;
+  color: inherit;
 }
 
-html.dark .contact-info-item {
-  background: #000000 !important;
-  border-color: var(--apple-border-dark) !important;
-}
-
-.contact-info-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+.contact-info-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #f5f5f7;
+  color: #1d1d1f;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.125rem;
-  color: #fff;
+  font-size: 1.25rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.contact-info-icon.email-icon { background: linear-gradient(135deg, #007aff, #0051d5); }
-.contact-info-icon.phone-icon { background: linear-gradient(135deg, #34c759, #2ecc71); }
-.contact-info-icon.location-icon { background: linear-gradient(135deg, #af52de, #8b5cf6); }
-
-.contact-info-details h4 {
-  color: var(--text-primary);
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-}
-
-.contact-info-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.contact-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--text-secondary);
-  text-decoration: none;
   transition: all 0.3s ease;
-  padding: 0.375rem 0;
-  border-radius: 8px;
-  font-size: 0.9rem;
 }
 
-.contact-link:hover {
-  color: var(--apple-blue);
-  transform: translateX(8px);
-}
-
-.contact-link i {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-}
-
-/* Contact Items - Legacy Support */
-.contact-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.contact-label {
-  margin-left: 0;
-}
-
-.contact-link-item {
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  padding: 0.5rem;
-  border-radius: 8px;
-}
-
-html.dark .contact-link-item {
+html.dark .contact-info-icon-box {
+  background: #1d1d1f;
   color: #f5f5f7;
 }
 
-.contact-link-item:hover {
-  background: rgb(0 0 0 / 4%);
+.contact-info-item:hover .contact-info-icon-box {
+  transform: scale(1.1);
+  background: #0071e3;
+  color: #fff;
 }
 
-html.dark .contact-link-item:hover {
-  background: rgb(255 255 255 / 6%);
+.contact-info-content h4 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.5;
+  margin-bottom: 0.2rem;
 }
 
-.contact-link-item i {
+.contact-info-content a {
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: block;
+}
+
+/* Hero CTA Card */
+.hero-cta-card {
+  background: #000 !important;
+  color: #fff !important;
+  justify-content: center;
+}
+
+.hero-cta-card h3 {
+  font-size: 2rem !important;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-cta-card p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
   font-size: 1rem;
-  width: 20px;
-  text-align: center;
 }
 
-.link-text {
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-/* Icon Boxes */
-.icon-box {
-  display: flex;
-  align-items: center;
-  width: 36px ;
-  height: 36px ;
-  border-radius: 50%;
-  justify-content: center;
-  font-size: 1rem ;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  flex-shrink: 0;
+/* Premium Apple Button */
+.btn-premium-apple {
+  background: linear-gradient(180deg, #0077ed 0%, #006edb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 1.25rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-}
-
-.icon-box.blue {
-  background: rgb(0 122 255 / 10%) ;
-  color: #007aff ;
-  box-shadow: none ;
-}
-
-.icon-box.green {
-  background: rgb(52 199 89 / 10%) ;
-  color: #34c759 ;
-  box-shadow: none ;
-}
-
-.icon-box.purple {
-  background: rgb(175 82 222 / 10%) ;
-  color: #af52de ;
-  box-shadow: none ;
-}
-
-/* Social Media Icons - Contact Section */
-.contact-social-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-}
-
-.contact-social-wrapper .icon {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.contact-social-wrapper .icon:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.contact-social-wrapper .icon a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  box-shadow: 0 4px 15px rgba(0, 113, 227, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: fit-content;
   text-decoration: none;
-  color: #000;
-  font-size: 18px;
+}
+
+.btn-premium-apple:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(0, 113, 227, 0.6);
+  filter: brightness(1.1);
+}
+
+/* Social Bento Grid */
+.social-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-bento-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 20px;
+  text-decoration: none;
+  color: inherit;
   transition: all 0.3s ease;
 }
 
-/* Social Icon Brand Colors */
-.contact-social-wrapper .icon.facebook a { color: #1877f2; }
-.contact-social-wrapper .icon.github a { color: #333; }
-.contact-social-wrapper .icon.instagram a { color: #e4405f; }
-.contact-social-wrapper .icon.linkedin a { color: #0077b5; }
-.contact-social-wrapper .icon.youtube a { color: #ff0000; }
-.contact-social-wrapper .icon.x a { color: #000; }
-.contact-social-wrapper .icon.leetcode a { color: #ffa500; }
-.contact-social-wrapper .icon.snapchat a { color: #fffc00; }
-.contact-social-wrapper .icon.whatsapp a { color: #25d366; }
-.contact-social-wrapper .icon.email a { color: #ea4335; }
-
-/* Dark Mode Social Icon Brand Colors */
-html.dark .contact-social-wrapper .icon.facebook a {
-  color: #1877f2;
-}
-html.dark .contact-social-wrapper .icon.github a {
-  color: #ffffff;
-}
-html.dark .contact-social-wrapper .icon.instagram a {
-  color: #e4405f;
-}
-html.dark .contact-social-wrapper .icon.linkedin a {
-  color: #0077b5;
-}
-html.dark .contact-social-wrapper .icon.youtube a {
-  color: #ff0000;
-}
-html.dark .contact-social-wrapper .icon.x a {
-  color: #ffffff;
-}
-html.dark .contact-social-wrapper .icon.leetcode a {
-  color: #ffa500;
-}
-html.dark .contact-social-wrapper .icon.snapchat a {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(0, 0, 0, 0.02);
+html.dark .social-bento-item {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.social-link:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: rgba(0, 113, 227, 0.3);
+.social-bento-item i {
+  font-size: 1.5rem;
 }
 
-.social-link.facebook:hover { border-color: #1877f2; }
-.social-link.github:hover { border-color: #333; }
-.social-link.instagram:hover { border-color: #e4405f; }
-.social-link.linkedin:hover { border-color: #0077b5; }
-.social-link.youtube:hover { border-color: #ff0000; }
-.social-link.x:hover { border-color: #000; }
-.social-link.leetcode:hover { border-color: #ffa500; }
-.social-link.snapchat:hover { border-color: #fffc00; }
-.social-link.whatsapp:hover { border-color: #25d366; }
-
-.social-link i {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-}
-
-.social-link span {
-  color: var(--text-primary);
+.social-bento-item span {
+  font-size: 0.75rem;
   font-weight: 500;
+  opacity: 0.7;
 }
 
-/* ========================================
-   SUPPORT SECTION - Ganpati Design
-   ======================================== */
-
-.support-card {
-  background: #ffffff !important;
-  border: 2px solid #ff9500;
+.social-bento-item:hover {
+  transform: translateY(-4px);
+  background: #0071e3;
+  color: #fff;
 }
 
-html.dark .support-card {
-  background: #000000 !important;
-  border-color: #ff9500;
+.social-bento-item.github:hover {
+  background: var(--social-github, #000) !important;
+}
+.social-bento-item.leetcode:hover {
+  background: var(--social-leetcode, #ffa116) !important;
+}
+.social-bento-item.instagram:hover {
+  background: var(--social-instagram, #e4405f) !important;
+}
+.social-bento-item.youtube:hover {
+  background: var(--social-youtube, #ff0000) !important;
 }
 
-.support-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: rgba(255, 149, 0, 0.08);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 149, 0, 0.2);
-}
-
-html.dark .support-header {
-  background: rgba(255, 149, 0, 0.12);
-  border-color: rgba(255, 149, 0, 0.3);
-}
-
-.ganesh-glow-container {
-  width: 70px;
-  height: 70px;
+/* Support Card Extensions */
+.support-header-v2 .ganesh-img-wrapper {
+  border: 3px solid #ff9500;
+  padding: 3px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #ff9500;
-  box-shadow: 0 0 20px rgba(255, 149, 0, 0.4), 0 0 40px rgba(255, 149, 0, 0.2);
-  flex-shrink: 0;
-  animation: ganeshGlow 3s ease-in-out infinite;
 }
 
-@keyframes ganeshGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 149, 0, 0.4), 0 0 40px rgba(255, 149, 0, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(255, 149, 0, 0.6), 0 0 60px rgba(255, 149, 0, 0.3); }
-}
-
-.ganesh-image {
+.support-header-v2 .ganesh-img-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.support-info {
-  flex: 1;
-}
-
-.support-blessing {
-  color: #b35900;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin: 0 0 0.5rem 0;
-}
-
-.support-text {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  margin: 0;
-}
-
-html.dark .support-blessing {
-  color: #ffaa33;
-}
-
-.support-options {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-}
-
-.support-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: none;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.support-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.support-icon-svg {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.support-icon-svg svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Buy Me a Coffee Button */
-.support-button.coffee {
-  background: linear-gradient(135deg, #ffdd00 0%, #ffaa00 100%);
-  color: #000;
-}
-
-.support-button.coffee:hover {
-  background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
-  box-shadow: 0 8px 20px rgba(255, 221, 0, 0.3);
-}
-
-/* PayPal Button */
-.support-button.paypal {
-  background: linear-gradient(135deg, #003087 0%, #001a5c 100%);
-  color: #fff;
-}
-
-.support-button.paypal:hover {
-  background: linear-gradient(135deg, #004099 0%, #002266 100%);
-  box-shadow: 0 8px 20px rgba(0, 48, 135, 0.3);
-}
-
-/* Cash App Button */
-.support-button.cashapp {
-  background: linear-gradient(135deg, #00d632 0%, #00a824 100%);
-  color: #fff;
-}
-
-.support-button.cashapp:hover {
-  background: linear-gradient(135deg, #00e838 0%, #00bc2d 100%);
-  box-shadow: 0 8px 20px rgba(0, 214, 50, 0.3);
-}
-
-/* ========================================
-   DREAM COMPANIES & CARS
-   ======================================== */
-
-.dream-companies-showcase {
-  overflow-x: auto;
-  padding: 0.5rem 0;
-}
-
-.dream-companies-track {
-  display: flex;
-  gap: 1rem;
-  animation: scroll 30s linear infinite;
-}
-
-.dream-company-item {
-  flex-shrink: 0;
-  transition: var(--transition-normal);
-  border-radius: 12px;
-  padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.02);
-}
-
-.dream-company-item:hover {
-  transform: translateY(-4px) scale(1.05);
-  background: rgba(0, 113, 227, 0.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.company-logo {
-  width: 80px;
-  height: 30px;
-  object-fit: contain;
-  transition: var(--transition-fast);
-  filter: none;
-}
-
-.dream-company-item:hover .company-logo {
-  transform: scale(1.1);
-}
-
-/* Company Logo Hover Effects - Original Colors Only */
-.dream-company-item:hover .company-logo {
-  transform: scale(1.1);
-}
-
-/* ========================================
-   TALK & CALENDAR ACTIONS
-   ======================================== */
-
-.talk-description {
-  text-align: center;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-}
-
-.talk-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-/* Standard button behavior managed by sitewide-design-system.css */
-
-.calendar-description {
-  text-align: center;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-}
-
-.calendar-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-/* Standard button behavior managed by sitewide-design-system.css */
-
-.calendar-widget-container {
-  margin-top: 1rem;
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.02);
-}
-
-/* ========================================
-   DARK MODE
-   ======================================== */
-
-/* Dark mode overrides handled by sitewide-design-system.css */
-
-html.dark .contact-card-header {
-  background: rgba(0, 122, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-html.dark .contact-card-header h3 {
-  color: #f5f5f7;
-}
-
-html.dark .contact-info-icon {
-  background: var(--apple-blue);
-}
-
-/* Contact Card Header Icons */
-.contact-card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.contact-card-icon.email-icon { 
-  background: linear-gradient(135deg, #007aff, #0051d5); 
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-}
-
-.contact-card-icon.support-icon { 
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24); 
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-}
-
-.contact-card-icon.social-icon { 
-  background: linear-gradient(135deg, #8b5cf6, #3b82f6); 
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-}
-
-.contact-card-icon.dream-icon { 
-  background: linear-gradient(135deg, #34c759, #2ecc71); 
-  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
-}
-
-.contact-card-icon.car-icon { 
-  background: linear-gradient(135deg, #ff6b35, #f39c12); 
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-}
-
-.contact-card-icon.talk-icon { 
-  background: linear-gradient(135deg, #007aff, #0051d5); 
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-}
-
-.contact-card-icon.calendar-icon { 
-  background: linear-gradient(135deg, #af52de, #8b5cf6); 
-  box-shadow: 0 4px 12px rgba(175, 82, 222, 0.3);
-}
-
-html.dark .contact-link {
-  color: #f5f5f7;
-}
-
-html.dark .contact-link:hover {
-  color: #007aff;
-  background: rgba(0, 122, 255, 0.08);
-}
-
-html.dark .support-message p {
-  color: #f5f5f7;
-}
-
-html.dark .social-description {
-  color: #f5f5f7;
-}
-
-html.dark .social-link {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-html.dark .social-link:hover {
-  border-color: rgba(0, 122, 255, 0.3);
-}
-
-html.dark .social-link i {
-  color: #f5f5f7;
-}
-
-html.dark .social-link span {
-  color: #f5f5f7;
-}
-
-html.dark .dream-company-item {
-  background: #000000 !important;
-  border: 1px solid var(--apple-border-dark);
-}
-
-html.dark .dream-company-item:hover {
-  background: rgba(0, 122, 255, 0.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-html.dark .company-logo {
-  filter: none;
-}
-
-
-html.dark .talk-description,
-html.dark .calendar-description {
-  color: #f5f5f7;
-}
-
-html.dark .calendar-widget-container {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-
-@media (max-width: 768px) {
-  .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .contact-card {
-    border-radius: 16px;
-  }
-  
-  .contact-card-header {
-    padding: 1rem;
-  }
-  
-  .contact-card-content {
-    padding: 1rem;
-  }
-  
-  .social-links-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.75rem;
-  }
-  
-  .support-options {
-    grid-template-columns: 1fr;
-  }
-  
-  .talk-actions,
-  .calendar-actions {
-    gap: 0.75rem;
-  }
-  
-  .talk-button,
-  .calendar-button {
-    padding: 0.875rem 1.25rem;
-    font-size: 0.875rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .contact-card-header h3 {
-    font-size: 1.25rem;
-  }
-  
-  .social-links-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .dream-companies-track {
-    gap: 0.75rem;
-  }
-  
-  .company-logo {
-    width: 60px;
-    height: 24px;
-  }
-}
-
-/* ========================================
-   FOOTER STYLES
-   ======================================== */
-
-footer {
-  background: var(--bg-primary);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 3rem 0;
-}
-
-footer .max-w-6xl {
-  text-align: center;
-}
-
-footer .wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-}
-
-footer .wrapper .icon {
-  position: relative;
-  width: 48px;
-  height: 48px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-support {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-footer .wrapper .icon:hover {
-  transform: translateY(-4px) scale(1.1);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
-  background: #f8f9fa;
-}
-
-footer .wrapper .icon a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
   text-decoration: none;
-  color: #000;
-  font-size: 20px;
-  transition: all 0.3s ease;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  transition: all 0.2s ease;
 }
 
-footer .wrapper .icon a:hover {
-  color: #007aff;
-  transform: scale(1.15);
-}
-
-/* Footer Social Icon Brand Colors */
-footer .wrapper .icon.facebook a { color: #1877f2; }
-footer .wrapper .icon.github a { color: #333; }
-footer .wrapper .icon.instagram a { color: #e4405f; }
-footer .wrapper .icon.linkedin a { color: #0077b5; }
-footer .wrapper .icon.youtube a { color: #ff0000; }
-footer .wrapper .icon.x a { color: #000; }
-footer .wrapper .icon.leetcode a { color: #ffa500; }
-footer .wrapper .icon.snapchat a { color: #fffc00; }
-footer .wrapper .icon.whatsapp a { color: #25d366; }
-footer .wrapper .icon.email a { color: #ea4335; }
-
-/* Footer Hover Brand Colors - Enhanced */
-footer .wrapper .icon.facebook:hover a {
-  color: #1877f2;
-  text-shadow: 0 0 10px rgba(24, 119, 242, 0.4);
-}
-
-footer .wrapper .icon.github:hover a {
-  color: #333;
-  text-shadow: 0 0 10px rgba(51, 51, 51, 0.4);
-}
-
-footer .wrapper .icon.instagram:hover a {
-  color: #e4405f;
-  text-shadow: 0 0 10px rgba(228, 64, 95, 0.4);
-}
-
-footer .wrapper .icon.linkedin:hover a {
-  color: #0077b5;
-  text-shadow: 0 0 10px rgba(0, 119, 181, 0.4);
-}
-
-footer .wrapper .icon.youtube:hover a {
-  color: #ff0000;
-  text-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
-}
-
-footer .wrapper .icon.x:hover a {
-  color: #000;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-}
-
-footer .wrapper .icon.leetcode:hover a {
-  color: #ffa500;
-  text-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
-}
-
-footer .wrapper .icon.snapchat:hover a {
-  color: #fffc00;
-  text-shadow: 0 0 10px rgba(255, 252, 0, 0.4);
-}
-
-footer .wrapper .icon.whatsapp:hover a {
-  color: #25d366;
-  text-shadow: 0 0 10px rgba(37, 211, 102, 0.4);
-}
-
-footer .wrapper .icon.email:hover a {
-  color: #ea4335;
-  text-shadow: 0 0 10px rgba(234, 67, 53, 0.4);
-}
-
-/* Footer Dark Mode */
-html.dark footer {
-  background: #000;
-  border-top-color: rgba(255, 255, 255, 0.1);
-}
-
-html.dark footer .wrapper .icon {
-  background: #2d2d2d;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-html.dark footer .wrapper .icon:hover {
-  background: #3a3a3a;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-}
-
-html.dark footer .wrapper .icon a {
+html.dark .btn-support {
+  background: #1d1d1f;
   color: #f5f5f7;
 }
 
-html.dark footer .wrapper .icon.facebook a { color: #1877f2; }
-html.dark footer .wrapper .icon.github a { color: #ffffff; }
-html.dark footer .wrapper .icon.instagram a { color: #e4405f; }
-html.dark footer .wrapper .icon.linkedin a { color: #0077b5; }
-html.dark footer .wrapper .icon.youtube a { color: #ff0000; }
-html.dark footer .wrapper .icon.x a { color: #ffffff; }
-html.dark footer .wrapper .icon.leetcode a { color: #ffa500; }
-html.dark footer .wrapper .icon.snapchat a { color: #fffc00; }
-html.dark footer .wrapper .icon.whatsapp a { color: #25d366; }
-html.dark footer .wrapper .icon.email a { color: #ea4335; }
-
-/* Dark Mode Hover Glow Effects */
-html.dark footer .wrapper .icon.facebook:hover a { text-shadow: 0 0 12px rgba(24, 119, 242, 0.6); }
-html.dark footer .wrapper .icon.github:hover a { text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); }
-html.dark footer .wrapper .icon.instagram:hover a { text-shadow: 0 0 12px rgba(228, 64, 95, 0.6); }
-html.dark footer .wrapper .icon.linkedin:hover a { text-shadow: 0 0 12px rgba(0, 119, 181, 0.6); }
-html.dark footer .wrapper .icon.youtube:hover a { text-shadow: 0 0 12px rgba(255, 0, 0, 0.6); }
-html.dark footer .wrapper .icon.x:hover a { text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); }
-html.dark footer .wrapper .icon.leetcode:hover a { text-shadow: 0 0 12px rgba(255, 165, 0, 0.6); }
-html.dark footer .wrapper .icon.snapchat:hover a { text-shadow: 0 0 12px rgba(255, 252, 0, 0.6); }
-html.dark footer .wrapper .icon.whatsapp:hover a { text-shadow: 0 0 12px rgba(37, 211, 102, 0.6); }
-html.dark footer .wrapper .icon.email:hover a { text-shadow: 0 0 12px rgba(234, 67, 53, 0.6); }
-
-footer .wrapper .icon .tooltip {
-  position: absolute;
-  bottom: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
+.btn-support:hover {
+  transform: scale(1.02);
+  background: #ff9500;
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  z-index: 1000;
 }
 
-footer .wrapper .icon:hover .tooltip {
+/* Marquee Card Polish */
+.marquee-card h3 {
+  color: var(--contact-text-secondary, #86868b);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+}
+
+html.dark .marquee-card h3 {
+  color: var(--contact-text-secondary-dark, #aeaeb2);
+}
+
+/* Calendar Card Polish */
+.calendar-container-v2 {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 30px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+html.dark .calendar-container-v2 {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Marquee Animation logic */
+.dream-marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  padding: 1.5rem 0;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 5rem;
+  animation: scroll-left 30s linear infinite;
+  align-items: center;
+}
+
+.dream-marquee.reversed .marquee-track {
+  animation-direction: reverse;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.company-logo-img,
+.car-logo-img {
+  height: 38px;
+  width: auto;
+  opacity: 0.4;
+  filter: grayscale(1);
+  transition: all 0.3s ease;
+  margin: 0 1rem;
+}
+
+.social-icon-btn:hover .company-logo-img,
+.marquee-track:hover .company-logo-img,
+.marquee-track:hover .car-logo-img {
+  filter: grayscale(0);
   opacity: 1;
 }
 
-/* Footer Dark Mode */
-html.dark footer .wrapper .icon {
-  background: rgb(255 255 255 / 10%);
+/* ===================================
+    CONTACT FORM LAYOUT STYLES
+    =================================== */
+
+/* Premium Apple-Style Bento Grid v2 */
+.contact-bento-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
 }
 
-html.dark footer .wrapper .icon:hover {
-  background: rgb(255 255 255 / 15%);
+/* Base Bento Card Style */
+.contact-section-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 40px;
+  padding: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-html.dark footer .wrapper .icon a {
-  color: rgb(245 245 247);
+html.dark .contact-section-card {
+  background: rgba(10, 10, 10, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Responsive Design */
+/* Grid Spanning Classes */
+.contact-section-card:nth-child(1) {
+  grid-column: span 1;
+}
+.contact-section-card:nth-child(2) {
+  grid-column: span 1;
+}
+.contact-section-card:nth-child(3) {
+  grid-column: span 2;
+}
+.contact-section-card:nth-child(4) {
+  grid-column: span 2;
+}
+.contact-section-card:nth-child(5) {
+  grid-column: span 2;
+}
+.contact-section-card:nth-child(6) {
+  grid-column: span 2;
+}
+.contact-section-card:nth-child(7) {
+  grid-column: span 2;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+  .contact-bento-grid-v2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .contact-section-card:nth-child(1) {
+    grid-column: span 1;
+  }
+  .contact-section-card:nth-child(2) {
+    grid-column: span 1;
+  }
+  .contact-section-card:nth-child(3) {
+    grid-column: span 2;
+  }
+  .contact-section-card:nth-child(4) {
+    grid-column: span 1;
+  }
+  .contact-section-card:nth-child(5) {
+    grid-column: span 1;
+  }
+  .contact-section-card:nth-child(6) {
+    grid-column: span 2;
+  }
+  .contact-section-card:nth-child(7) {
+    grid-column: span 2;
+  }
+}
+
 @media (max-width: 768px) {
-  .contact-grid {
-    grid-template-columns: 1fr ;
-    gap: 1.5rem ;
+  .contact-bento-grid-v2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .contact-social-wrapper {
-    gap: 10px;
-    padding: 16px 0;
+  .contact-section-card:nth-child(1) {
+    grid-column: span 1;
   }
-
-  .contact-social-wrapper .icon {
-    width: 44px;
-    height: 44px;
+  .contact-section-card:nth-child(2) {
+    grid-column: span 1;
   }
-
-  .contact-social-wrapper .icon a {
-    font-size: 16px;
+  .contact-section-card:nth-child(3) {
+    grid-column: span 1;
   }
-
-  .chat-bubble-btn {
-    width: 52px;
-    height: 52px;
-    margin-left: 12px;
+  .contact-section-card:nth-child(4) {
+    grid-column: span 1;
   }
-
-  .chat-bubble-btn i {
-    font-size: 20px;
+  .contact-section-card:nth-child(5) {
+    grid-column: span 1;
   }
-
-  footer .wrapper {
-    gap: 12px;
-    padding: 16px 0;
+  .contact-section-card:nth-child(6) {
+    grid-column: span 1;
   }
-
-  footer .wrapper .icon {
-    width: 44px;
-    height: 44px;
-  }
-
-  footer .wrapper .icon a {
-    font-size: 16px;
+  .contact-section-card:nth-child(7) {
+    grid-column: span 1;
   }
 }
 
-@media (max-width: 480px) {
-  .contact-social-wrapper {
-    gap: 8px;
-    padding: 12px 0;
-  }
+.company-logo-img:hover,
+.car-logo-img:hover {
+  opacity: 1 !important;
+  filter: grayscale(0) !important;
+  transform: scale(1.35);
+}
 
-  .contact-social-wrapper .icon {
-    width: 40px;
-    height: 40px;
-  }
+html.dark .apple-logo {
+  filter: grayscale(1) invert(1) brightness(2);
+}
 
-  .contact-social-wrapper .icon a {
-    font-size: 14px;
-  }
+/* Contact Link Styling */
+.contact-link {
+  color: var(--contact-text-primary);
+  transition: color 0.2s ease;
+}
 
-  .chat-bubble-btn {
-    width: 48px;
-    height: 48px;
-    margin-left: 8px;
-  }
+.contact-link:hover {
+  color: var(--contact-link-hover);
+}
 
-  .chat-bubble-btn i {
-    font-size: 18px;
-  }
+/* ===================================
+    THEME VARIABLES FOR CONTACT SECTION
+    =================================== */
 
-  footer .wrapper {
-    gap: 8px;
-    padding: 12px 0;
-  }
+:root {
+  /* Contact Card Styles */
+  --contact-card-bg: rgba(255, 255, 255, 0.7);
+  --contact-card-border: rgba(0, 0, 0, 0.05);
+  --contact-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 
-  footer .wrapper .icon {
-    width: 40px;
-    height: 40px;
-  }
+  /* Contact Text Colors */
+  --contact-text-primary: #1d1d1f;
+  --contact-text-secondary: #86868b;
+  --contact-text-muted: #6b7280;
 
-  footer .wrapper .icon a {
-    font-size: 16px;
-  }
+  /* Contact Interactive Elements */
+  --contact-link-hover: #007aff;
+  --contact-button-bg: linear-gradient(135deg, #007aff, #0056cc);
+  --contact-button-hover: linear-gradient(135deg, #0056cc, #004299);
+
+  /* Social Link Colors */
+  --social-github: #000;
+  --social-leetcode: #ffa116;
+  --social-instagram: #e4405f;
+  --social-youtube: #ff0000;
+}
+
+html.dark {
+  /* Contact Card Styles - Dark Theme */
+  --contact-card-bg-dark: rgba(10, 10, 10, 0.8);
+  --contact-card-border-dark: rgba(255, 255, 255, 0.1);
+  --contact-card-shadow-dark: 0 15px 45px rgba(0, 0, 0, 0.4);
+
+  /* Contact Text Colors - Dark Theme */
+  --contact-text-primary: #ffffff;
+  --contact-text-secondary: #aeaeb2;
+  --contact-text-muted: #86868b;
+
+  /* Contact Interactive Elements - Dark Theme */
+  --contact-link-hover: #0a84ff;
+  --contact-button-bg: linear-gradient(135deg, #0a84ff, #0066cc);
+  --contact-button-hover: linear-gradient(135deg, #0066cc, #005299);
+
+  /* Social Link Colors - Dark Theme (same as light for brand consistency) */
+  --social-github: #000;
+  --social-leetcode: #ffa116;
+  --social-instagram: #e4405f;
+  --social-youtube: #ff0000;
 }

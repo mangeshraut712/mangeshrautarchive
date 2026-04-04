@@ -2,7 +2,7 @@
  * Curated Shelves Module
  * Renders real cover/poster artwork for books, series, and movies.
  */
-(function() {
+(function () {
   'use strict';
 
   const BOOKS_DATA = [
@@ -156,32 +156,31 @@
   }));
 
   const SPORTS_DATA = [
-    { 
-      name: 'IPL 2026', 
-      emoji: '🏏', 
-      subtitle: 'Live: KKR vs SRH @ 7:30 PM', 
-      url: 'https://www.iplt20.com/' 
+    {
+      name: 'IPL 2026',
+      emoji: '🏏',
+      subtitle: 'Live: KKR vs SRH @ 7:30 PM',
+      url: 'https://www.iplt20.com/',
     },
-    { 
-      name: 'Formula 1', 
-      emoji: '🏎️', 
-      subtitle: 'Next: Japanese GP (Suzuka)', 
-      url: 'https://www.formula1.com/en/racing/2026' 
+    {
+      name: 'Formula 1',
+      emoji: '🏎️',
+      subtitle: 'Next: Japanese GP (Suzuka)',
+      url: 'https://www.formula1.com/en/racing/2026',
     },
-    { 
-      name: 'Volleyball', 
-      emoji: '🏐', 
-      subtitle: 'Pro League Live', 
-      url: 'https://tv.volleyballworld.com/' 
+    {
+      name: 'Volleyball',
+      emoji: '🏐',
+      subtitle: 'Pro League Live',
+      url: 'https://tv.volleyballworld.com/',
     },
-    { 
-      name: 'Basketball', 
-      emoji: '🏀', 
-      subtitle: 'NBA Playoffs 2026', 
-      url: 'https://www.nba.com/games' 
+    {
+      name: 'Basketball',
+      emoji: '🏀',
+      subtitle: 'NBA Playoffs 2026',
+      url: 'https://www.nba.com/games',
     },
   ];
-
 
   function createArtworkShell(type, item) {
     const shell = document.createElement('div');

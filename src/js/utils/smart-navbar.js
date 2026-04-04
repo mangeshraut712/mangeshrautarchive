@@ -1,1 +1,334 @@
-const DESKTOP_BREAKPOINT=1150,SCROLLED_THRESHOLD=50,DELTA_THRESHOLD=4,COMPACT_THRESHOLD=120,state={nav:null,navLinks:[],overlayLinks:[],lastY:0,direction:"still",ticking:!1,observer:null,stabilizeTimers:[],hashSyncBound:!1,isCompact:!1};function isDesktop(){return window.innerWidth>DESKTOP_BREAKPOINT}function updateScrolledState(){if(!state.nav)return;const t=(window.scrollY||window.pageYOffset||0)>SCROLLED_THRESHOLD;state.nav.classList.toggle("scrolled",t),state.nav.dataset.morphState=t?"scrolled":"default"}function setNavVisibility(t){if(!state.nav)return;const e=Boolean(t);state.nav.classList.toggle("is-hidden",e),state.nav.dataset.navVisibility=e?"hidden":"visible"}function setMorphState(t="default"){if(!state.nav)return;const e=new Set(["default","scrolled","hidden"]).has(t)?t:"default";state.nav.dataset.morphState=e,state.nav.classList.toggle("scrolled","scrolled"===e),setNavVisibility("hidden"===e)}function setCompactState(t){if(!state.nav)return;const e=Boolean(t)&&isDesktop();state.isCompact!==e&&(state.isCompact=e,state.nav.classList.toggle("is-compact",e),state.nav.dataset.compactState=e?"compact":"default")}function keepActiveDesktopLinkVisible(){if(!isDesktop())return;const t=state.nav?.querySelector(".nav-links.scrollable-nav"),e=state.navLinks.find(t=>t.classList.contains("active"));if(!t||!e)return;const n=e.offsetLeft,a=n+e.offsetWidth,i=t.scrollLeft,s=i+t.clientWidth;n<i?t.scrollTo({left:Math.max(0,n-16),behavior:"auto"}):a>s&&t.scrollTo({left:a-t.clientWidth+16,behavior:"auto"})}function setActiveLinkBySectionId(t){if(!t)return;const e=`#${t}`,n=[...state.navLinks,...state.overlayLinks],a=n.find(t=>t.classList.contains("active"))?.getAttribute("href");a!==e&&(n.forEach(t=>{const n=t.getAttribute("href")===e;t.classList.toggle("active",n),n?t.setAttribute("aria-current","page"):t.removeAttribute("aria-current")}),keepActiveDesktopLinkVisible())}function getVisibleSectionId(){const t=(state.nav?.offsetHeight||0)+120,e=Array.from(document.querySelectorAll("section[id]")).filter(t=>state.navLinks.some(e=>e.getAttribute("href")===`#${t.id}`)).sort((t,e)=>t.offsetTop-e.offsetTop);for(let n=e.length-1;n>=0;n-=1)if(window.scrollY+t>=e[n].offsetTop)return e[n].id;return e[0]?.id||null}function clearStabilizeTimers(){state.stabilizeTimers.forEach(t=>window.clearTimeout(t)),state.stabilizeTimers=[]}function getSectionOffset(){return(state.nav?.offsetHeight||60)+12}function stabilizeScrollToSection(t){clearStabilizeTimers();const e=()=>clearStabilizeTimers();window.addEventListener("wheel",e,{passive:!0,once:!0}),window.addEventListener("touchstart",e,{passive:!0,once:!0}),window.addEventListener("mousedown",e,{passive:!0,once:!0}),window.addEventListener("keydown",e,{passive:!0,once:!0});[220,700,1250,1850,2450].forEach(e=>{const n=window.setTimeout(()=>{const e=document.getElementById(t);if(!e||!state.nav)return;if(window.location.hash.replace("#","").trim()!==t)return;const n=getSectionOffset(),a=e.getBoundingClientRect().top-n;Math.abs(a)<=22||window.scrollBy({top:a,behavior:"auto"})},e);state.stabilizeTimers.push(n)})}function scrollToSection(t){const e=document.getElementById(t);if(!e||!state.nav)return;const n=getSectionOffset(),a=e.getBoundingClientRect().top+window.scrollY-n,i=window.matchMedia("(prefers-reduced-motion: reduce)").matches;window.scrollTo({top:Math.max(0,a),behavior:i?"auto":"smooth"}),stabilizeScrollToSection(t)}function emitSectionHashSync(t){window.location.hash!==t&&history.replaceState(null,"",t);const e=window.location.hash.replace("#","").trim();e&&(window.dispatchEvent(new HashChangeEvent("hashchange",{oldURL:window.location.href,newURL:window.location.href})),window.dispatchEvent(new CustomEvent("portfolio:sectionchange",{detail:{sectionId:e}})))}function closeOverlayMenu(){document.body.classList.remove("menu-open");const t=document.getElementById("overlay-menu");t?.setAttribute("aria-hidden","true"),t?.setAttribute("inert","");const e=document.getElementById("menu-btn");e?.setAttribute("aria-expanded","false")}function bindNavLinks(){state.navLinks.forEach(t=>{"true"!==t.dataset.navBound&&(t.dataset.navBound="true",t.addEventListener("click",e=>{const n=t.getAttribute("href");if(!n||!n.startsWith("#"))return;const a=n.slice(1);e.preventDefault(),setActiveLinkBySectionId(a),scrollToSection(a),emitSectionHashSync(n)}))})}function bindOverlayLinks(){state.overlayLinks.forEach(t=>{"true"!==t.dataset.navBound&&(t.dataset.navBound="true",t.addEventListener("click",e=>{const n=t.getAttribute("href");if(!n||!n.startsWith("#"))return;const a=n.slice(1);document.getElementById(a)&&(e.preventDefault(),closeOverlayMenu(),setActiveLinkBySectionId(a),scrollToSection(a),emitSectionHashSync(n))}))})}function bindHashSync(){state.hashSyncBound||(state.hashSyncBound=!0,window.addEventListener("hashchange",()=>{const t=window.location.hash.replace("#","").trim();t&&setActiveLinkBySectionId(t)}))}function bindScrollWheelForDesktopNav(){const t=state.nav?.querySelector(".nav-links.scrollable-nav");t&&"true"!==t.dataset.wheelBound&&(t.dataset.wheelBound="true",t.addEventListener("wheel",e=>{isDesktop()&&(Math.abs(e.deltaY)<=Math.abs(e.deltaX)||(e.preventDefault(),t.scrollLeft+=e.deltaY))},{passive:!1}))}function bindKeyboardNavigation(){const t=state.nav?.querySelector(".nav-links.scrollable-nav");t&&"true"!==t.dataset.keyboardBound&&(t.dataset.keyboardBound="true",t.hasAttribute("tabindex")||(t.tabIndex=0),t.hasAttribute("aria-label")||t.setAttribute("aria-label","Primary sections"),t.addEventListener("keydown",t=>{if(!isDesktop())return;if(!new Set(["ArrowRight","ArrowLeft","Home","End"]).has(t.key))return;const e=state.navLinks;if(!e.length)return;const n=e.indexOf(document.activeElement),a=e.findIndex(t=>t.classList.contains("active"));let i=n>=0?n:Math.max(0,a);"ArrowRight"===t.key?i=Math.min(e.length-1,i+1):"ArrowLeft"===t.key?i=Math.max(0,i-1):"Home"===t.key?i=0:"End"===t.key&&(i=e.length-1);const s=e[i];s&&(t.preventDefault(),s.focus({preventScroll:!0}),s.scrollIntoView({behavior:"auto",block:"nearest",inline:"nearest"}))}))}function initSectionObserver(){const t=Array.from(document.querySelectorAll("section[id]")).filter(t=>state.navLinks.some(e=>e.getAttribute("href")===`#${t.id}`));t.length&&"IntersectionObserver"in window&&(state.observer&&state.observer.disconnect(),state.observer=new IntersectionObserver(t=>{const e=t.filter(t=>t.isIntersecting).sort((t,e)=>e.intersectionRatio-t.intersectionRatio);if(e.length)return void setActiveLinkBySectionId(e[0].target.id);const n=getVisibleSectionId();n&&setActiveLinkBySectionId(n)},{threshold:[.2,.4,.65],rootMargin:"-20% 0px -55% 0px"}),t.forEach(t=>state.observer.observe(t)))}function updateSmartNavbar(){if(!state.nav)return;const t=Math.max(0,window.scrollY||window.pageYOffset||0),e=t-state.lastY;state.direction=e>DELTA_THRESHOLD?"down":e<-DELTA_THRESHOLD?"up":"still",updateScrolledState();const n=t<=58,a=isDesktop()&&t>COMPACT_THRESHOLD;n||!a?setCompactState(!1):"down"===state.direction?setCompactState(!0):"up"===state.direction&&setCompactState(!1);const i=getVisibleSectionId();i&&setActiveLinkBySectionId(i),state.lastY=t}function updateChatbotOffset(){const t=document.getElementById("chatbot-toggle");if(!t)return;const e=Math.max(0,window.scrollY||window.pageYOffset||0);"down"===state.direction&&e>96?t.style.transform="translate3d(0, -18px, 0)":t.style.transform="translate3d(0, 0, 0)"}function handleSmartNavbar(){updateSmartNavbar()}function handleScrollAwareChatbot(){updateChatbotOffset()}function onScroll(){state.ticking||(state.ticking=!0,requestAnimationFrame(()=>{handleSmartNavbar(),handleScrollAwareChatbot(),state.ticking=!1}))}function onResize(){if(!state.nav)return;const t=isDesktop();t||setCompactState(!1),setNavVisibility(!1),t&&closeOverlayMenu(),keepActiveDesktopLinkVisible()}function initSmartNavbar(){if(state.nav=document.querySelector(".global-nav.dynamic-island"),!state.nav)return;state.navLinks=Array.from(state.nav.querySelectorAll('.nav-link[href^="#"]')),state.overlayLinks=Array.from(document.querySelectorAll('.menu-item[href^="#"]')),state.lastY=Math.max(0,window.scrollY||window.pageYOffset||0),window.__smartNavbarHandlesDynamicIsland=!0,state.nav.dataset.smartNav="true",state.nav.dataset.morphState="default",state.nav.dataset.navVisibility="visible",state.nav.dataset.compactState="default",bindNavLinks(),bindOverlayLinks(),bindHashSync(),bindScrollWheelForDesktopNav(),bindKeyboardNavigation(),initSectionObserver();setActiveLinkBySectionId(window.location.hash.replace("#","").trim()||getVisibleSectionId()||"home"),updateSmartNavbar(),updateScrolledState(),window.addEventListener("scroll",onScroll,{passive:!0}),window.addEventListener("resize",onResize,{passive:!0}),console.log("✅ Apple-inspired navbar initialized")}function destroySmartNavbar(){clearStabilizeTimers(),state.observer&&(state.observer.disconnect(),state.observer=null),window.removeEventListener("scroll",onScroll),window.removeEventListener("resize",onResize),state.nav&&(state.nav.dataset.smartNav="false",state.nav.dataset.navVisibility="visible",state.nav.dataset.compactState="default"),state.nav=null,state.navLinks=[],state.overlayLinks=[],state.isCompact=!1}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",initSmartNavbar,{once:!0}):initSmartNavbar();export{handleSmartNavbar,handleScrollAwareChatbot,initSmartNavbar,destroySmartNavbar,setMorphState,setNavVisibility,updateScrolledState};
+const DESKTOP_BREAKPOINT = 1150,
+  SCROLLED_THRESHOLD = 50,
+  DELTA_THRESHOLD = 4,
+  COMPACT_THRESHOLD = 120,
+  state = {
+    nav: null,
+    navLinks: [],
+    overlayLinks: [],
+    lastY: 0,
+    direction: 'still',
+    ticking: !1,
+    observer: null,
+    stabilizeTimers: [],
+    hashSyncBound: !1,
+    isCompact: !1,
+  };
+function isDesktop() {
+  return window.innerWidth > DESKTOP_BREAKPOINT;
+}
+function updateScrolledState() {
+  if (!state.nav) return;
+  const t = (window.scrollY || window.pageYOffset || 0) > SCROLLED_THRESHOLD;
+  (state.nav.classList.toggle('scrolled', t),
+    (state.nav.dataset.morphState = t ? 'scrolled' : 'default'));
+}
+function setNavVisibility(t) {
+  if (!state.nav) return;
+  const e = Boolean(t);
+  (state.nav.classList.toggle('is-hidden', e),
+    (state.nav.dataset.navVisibility = e ? 'hidden' : 'visible'));
+}
+function setMorphState(t = 'default') {
+  if (!state.nav) return;
+  const e = new Set(['default', 'scrolled', 'hidden']).has(t) ? t : 'default';
+  ((state.nav.dataset.morphState = e),
+    state.nav.classList.toggle('scrolled', 'scrolled' === e),
+    setNavVisibility('hidden' === e));
+}
+function setCompactState(t) {
+  if (!state.nav) return;
+  const e = Boolean(t) && isDesktop();
+  state.isCompact !== e &&
+    ((state.isCompact = e),
+    state.nav.classList.toggle('is-compact', e),
+    (state.nav.dataset.compactState = e ? 'compact' : 'default'));
+}
+function keepActiveDesktopLinkVisible() {
+  if (!isDesktop()) return;
+  const t = state.nav?.querySelector('.nav-links.scrollable-nav'),
+    e = state.navLinks.find(t => t.classList.contains('active'));
+  if (!t || !e) return;
+  const n = e.offsetLeft,
+    a = n + e.offsetWidth,
+    i = t.scrollLeft,
+    s = i + t.clientWidth;
+  n < i
+    ? t.scrollTo({ left: Math.max(0, n - 16), behavior: 'auto' })
+    : a > s && t.scrollTo({ left: a - t.clientWidth + 16, behavior: 'auto' });
+}
+function setActiveLinkBySectionId(t) {
+  if (!t) return;
+  const e = `#${t}`,
+    n = [...state.navLinks, ...state.overlayLinks],
+    a = n.find(t => t.classList.contains('active'))?.getAttribute('href');
+  a !== e &&
+    (n.forEach(t => {
+      const n = t.getAttribute('href') === e;
+      (t.classList.toggle('active', n),
+        n ? t.setAttribute('aria-current', 'page') : t.removeAttribute('aria-current'));
+    }),
+    keepActiveDesktopLinkVisible());
+}
+function getVisibleSectionId() {
+  const t = (state.nav?.offsetHeight || 0) + 120,
+    e = Array.from(document.querySelectorAll('section[id]'))
+      .filter(t => state.navLinks.some(e => e.getAttribute('href') === `#${t.id}`))
+      .sort((t, e) => t.offsetTop - e.offsetTop);
+  for (let n = e.length - 1; n >= 0; n -= 1)
+    if (window.scrollY + t >= e[n].offsetTop) return e[n].id;
+  return e[0]?.id || null;
+}
+function clearStabilizeTimers() {
+  (state.stabilizeTimers.forEach(t => window.clearTimeout(t)), (state.stabilizeTimers = []));
+}
+function getSectionOffset() {
+  return (state.nav?.offsetHeight || 60) + 12;
+}
+function stabilizeScrollToSection(t) {
+  clearStabilizeTimers();
+  const e = () => clearStabilizeTimers();
+  (window.addEventListener('wheel', e, { passive: !0, once: !0 }),
+    window.addEventListener('touchstart', e, { passive: !0, once: !0 }),
+    window.addEventListener('mousedown', e, { passive: !0, once: !0 }),
+    window.addEventListener('keydown', e, { passive: !0, once: !0 }));
+  [220, 700, 1250, 1850, 2450].forEach(e => {
+    const n = window.setTimeout(() => {
+      const e = document.getElementById(t);
+      if (!e || !state.nav) return;
+      if (window.location.hash.replace('#', '').trim() !== t) return;
+      const n = getSectionOffset(),
+        a = e.getBoundingClientRect().top - n;
+      Math.abs(a) <= 22 || window.scrollBy({ top: a, behavior: 'auto' });
+    }, e);
+    state.stabilizeTimers.push(n);
+  });
+}
+function scrollToSection(t) {
+  const e = document.getElementById(t);
+  if (!e || !state.nav) return;
+  const n = getSectionOffset(),
+    a = e.getBoundingClientRect().top + window.scrollY - n,
+    i = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (window.scrollTo({ top: Math.max(0, a), behavior: i ? 'auto' : 'smooth' }),
+    stabilizeScrollToSection(t));
+}
+function emitSectionHashSync(t) {
+  window.location.hash !== t && history.replaceState(null, '', t);
+  const e = window.location.hash.replace('#', '').trim();
+  e &&
+    (window.dispatchEvent(
+      new HashChangeEvent('hashchange', {
+        oldURL: window.location.href,
+        newURL: window.location.href,
+      })
+    ),
+    window.dispatchEvent(new CustomEvent('portfolio:sectionchange', { detail: { sectionId: e } })));
+}
+function closeOverlayMenu() {
+  document.body.classList.remove('menu-open');
+  const t = document.getElementById('overlay-menu');
+  (t?.setAttribute('aria-hidden', 'true'), t?.setAttribute('inert', ''));
+  const e = document.getElementById('menu-btn');
+  e?.setAttribute('aria-expanded', 'false');
+}
+function bindNavLinks() {
+  state.navLinks.forEach(t => {
+    'true' !== t.dataset.navBound &&
+      ((t.dataset.navBound = 'true'),
+      t.addEventListener('click', e => {
+        const n = t.getAttribute('href');
+        if (!n || !n.startsWith('#')) return;
+        const a = n.slice(1);
+        (e.preventDefault(),
+          setActiveLinkBySectionId(a),
+          scrollToSection(a),
+          emitSectionHashSync(n));
+      }));
+  });
+}
+function bindOverlayLinks() {
+  state.overlayLinks.forEach(t => {
+    'true' !== t.dataset.navBound &&
+      ((t.dataset.navBound = 'true'),
+      t.addEventListener('click', e => {
+        const n = t.getAttribute('href');
+        if (!n || !n.startsWith('#')) return;
+        const a = n.slice(1);
+        document.getElementById(a) &&
+          (e.preventDefault(),
+          closeOverlayMenu(),
+          setActiveLinkBySectionId(a),
+          scrollToSection(a),
+          emitSectionHashSync(n));
+      }));
+  });
+}
+function bindHashSync() {
+  state.hashSyncBound ||
+    ((state.hashSyncBound = !0),
+    window.addEventListener('hashchange', () => {
+      const t = window.location.hash.replace('#', '').trim();
+      t && setActiveLinkBySectionId(t);
+    }));
+}
+function bindScrollWheelForDesktopNav() {
+  const t = state.nav?.querySelector('.nav-links.scrollable-nav');
+  t &&
+    'true' !== t.dataset.wheelBound &&
+    ((t.dataset.wheelBound = 'true'),
+    t.addEventListener(
+      'wheel',
+      e => {
+        isDesktop() &&
+          (Math.abs(e.deltaY) <= Math.abs(e.deltaX) ||
+            (e.preventDefault(), (t.scrollLeft += e.deltaY)));
+      },
+      { passive: !1 }
+    ));
+}
+function bindKeyboardNavigation() {
+  const t = state.nav?.querySelector('.nav-links.scrollable-nav');
+  t &&
+    'true' !== t.dataset.keyboardBound &&
+    ((t.dataset.keyboardBound = 'true'),
+    t.hasAttribute('tabindex') || (t.tabIndex = 0),
+    t.hasAttribute('aria-label') || t.setAttribute('aria-label', 'Primary sections'),
+    t.addEventListener('keydown', t => {
+      if (!isDesktop()) return;
+      if (!new Set(['ArrowRight', 'ArrowLeft', 'Home', 'End']).has(t.key)) return;
+      const e = state.navLinks;
+      if (!e.length) return;
+      const n = e.indexOf(document.activeElement),
+        a = e.findIndex(t => t.classList.contains('active'));
+      let i = n >= 0 ? n : Math.max(0, a);
+      'ArrowRight' === t.key
+        ? (i = Math.min(e.length - 1, i + 1))
+        : 'ArrowLeft' === t.key
+          ? (i = Math.max(0, i - 1))
+          : 'Home' === t.key
+            ? (i = 0)
+            : 'End' === t.key && (i = e.length - 1);
+      const s = e[i];
+      s &&
+        (t.preventDefault(),
+        s.focus({ preventScroll: !0 }),
+        s.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' }));
+    }));
+}
+function initSectionObserver() {
+  const t = Array.from(document.querySelectorAll('section[id]')).filter(t =>
+    state.navLinks.some(e => e.getAttribute('href') === `#${t.id}`)
+  );
+  t.length &&
+    'IntersectionObserver' in window &&
+    (state.observer && state.observer.disconnect(),
+    (state.observer = new IntersectionObserver(
+      t => {
+        const e = t
+          .filter(t => t.isIntersecting)
+          .sort((t, e) => e.intersectionRatio - t.intersectionRatio);
+        if (e.length) return void setActiveLinkBySectionId(e[0].target.id);
+        const n = getVisibleSectionId();
+        n && setActiveLinkBySectionId(n);
+      },
+      { threshold: [0.2, 0.4, 0.65], rootMargin: '-20% 0px -55% 0px' }
+    )),
+    t.forEach(t => state.observer.observe(t)));
+}
+function updateSmartNavbar() {
+  if (!state.nav) return;
+  const t = Math.max(0, window.scrollY || window.pageYOffset || 0),
+    e = t - state.lastY;
+  ((state.direction = e > DELTA_THRESHOLD ? 'down' : e < -DELTA_THRESHOLD ? 'up' : 'still'),
+    updateScrolledState());
+  const n = t <= 58,
+    a = isDesktop() && t > COMPACT_THRESHOLD;
+  n || !a
+    ? setCompactState(!1)
+    : 'down' === state.direction
+      ? setCompactState(!0)
+      : 'up' === state.direction && setCompactState(!1);
+  const i = getVisibleSectionId();
+  (i && setActiveLinkBySectionId(i), (state.lastY = t));
+}
+function updateChatbotOffset() {
+  const t = document.getElementById('chatbot-toggle');
+  if (!t) return;
+  const e = Math.max(0, window.scrollY || window.pageYOffset || 0);
+  'down' === state.direction && e > 96
+    ? (t.style.transform = 'translate3d(0, -18px, 0)')
+    : (t.style.transform = 'translate3d(0, 0, 0)');
+}
+function handleSmartNavbar() {
+  updateSmartNavbar();
+}
+function handleScrollAwareChatbot() {
+  updateChatbotOffset();
+}
+function onScroll() {
+  state.ticking ||
+    ((state.ticking = !0),
+    requestAnimationFrame(() => {
+      (handleSmartNavbar(), handleScrollAwareChatbot(), (state.ticking = !1));
+    }));
+}
+function onResize() {
+  if (!state.nav) return;
+  const t = isDesktop();
+  (t || setCompactState(!1),
+    setNavVisibility(!1),
+    t && closeOverlayMenu(),
+    keepActiveDesktopLinkVisible());
+}
+function initSmartNavbar() {
+  if (((state.nav = document.querySelector('.global-nav.dynamic-island')), !state.nav)) return;
+  ((state.navLinks = Array.from(state.nav.querySelectorAll('.nav-link[href^="#"]'))),
+    (state.overlayLinks = Array.from(document.querySelectorAll('.menu-item[href^="#"]'))),
+    (state.lastY = Math.max(0, window.scrollY || window.pageYOffset || 0)),
+    (window.__smartNavbarHandlesDynamicIsland = !0),
+    (state.nav.dataset.smartNav = 'true'),
+    (state.nav.dataset.morphState = 'default'),
+    (state.nav.dataset.navVisibility = 'visible'),
+    (state.nav.dataset.compactState = 'default'),
+    bindNavLinks(),
+    bindOverlayLinks(),
+    bindHashSync(),
+    bindScrollWheelForDesktopNav(),
+    bindKeyboardNavigation(),
+    initSectionObserver());
+  (setActiveLinkBySectionId(
+    window.location.hash.replace('#', '').trim() || getVisibleSectionId() || 'home'
+  ),
+    updateSmartNavbar(),
+    updateScrolledState(),
+    window.addEventListener('scroll', onScroll, { passive: !0 }),
+    window.addEventListener('resize', onResize, { passive: !0 }),
+    console.log('✅ Apple-inspired navbar initialized'));
+}
+function destroySmartNavbar() {
+  (clearStabilizeTimers(),
+    state.observer && (state.observer.disconnect(), (state.observer = null)),
+    window.removeEventListener('scroll', onScroll),
+    window.removeEventListener('resize', onResize),
+    state.nav &&
+      ((state.nav.dataset.smartNav = 'false'),
+      (state.nav.dataset.navVisibility = 'visible'),
+      (state.nav.dataset.compactState = 'default')),
+    (state.nav = null),
+    (state.navLinks = []),
+    (state.overlayLinks = []),
+    (state.isCompact = !1));
+}
+'loading' === document.readyState
+  ? document.addEventListener('DOMContentLoaded', initSmartNavbar, { once: !0 })
+  : initSmartNavbar();
+export {
+  handleSmartNavbar,
+  handleScrollAwareChatbot,
+  initSmartNavbar,
+  destroySmartNavbar,
+  setMorphState,
+  setNavVisibility,
+  updateScrolledState,
+};

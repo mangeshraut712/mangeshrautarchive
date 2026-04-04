@@ -1,1 +1,234 @@
-export class Interactive3DBackground{constructor(t={}){this.options={particleCount:100,particleSize:2,connectionDistance:150,mouseInfluence:100,animationSpeed:5e-4,enableConnections:!0,enableMouseInteraction:!0,...t},this.canvas=null,this.ctx=null,this.particles=[],this.mouse={x:0,y:0},this.animationId=null,this.isInitialized=!1,this.isDarkMode=!1}async init(){this.isInitialized||(this.createCanvas(),this.initParticles(),this.setupEventListeners(),this.animate(),this.isInitialized=!0,console.log("✨ 3D Interactive Background initialized"))}createCanvas(){this.canvas=document.createElement("canvas"),this.canvas.id="3d-background-canvas",this.canvas.style.cssText="\n            position: fixed;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            z-index: -1;\n            pointer-events: none;\n            opacity: 0.6;\n            transition: opacity 0.3s ease;\n        ",document.body.insertBefore(this.canvas,document.body.firstChild),this.ctx=this.canvas.getContext("2d"),this.resize()}initParticles(){this.particles=[],this.particleCache=document.createElement("canvas"),this.particleCache.width=20,this.particleCache.height=20;const t=this.particleCache.getContext("2d");t.fillStyle="#ffffff",t.beginPath(),t.arc(10,10,2,0,2*Math.PI),t.fill();const i=t.createRadialGradient(10,10,0,10,10,8);i.addColorStop(0,"rgba(255, 255, 255, 0.4)"),i.addColorStop(1,"rgba(255, 255, 255, 0)"),t.fillStyle=i,t.beginPath(),t.arc(10,10,8,0,2*Math.PI),t.fill();for(let t=0;t<this.options.particleCount;t++)this.particles.push({x:Math.random()*this.canvas.width,y:Math.random()*this.canvas.height,vx:.5*(Math.random()-.5),vy:.5*(Math.random()-.5),radius:Math.random()*this.options.particleSize+1,originalX:0,originalY:0});this.particles.forEach(t=>{t.originalX=t.x,t.originalY=t.y})}setupEventListeners(){this.options.enableMouseInteraction&&document.addEventListener("mousemove",t=>{this.mouse.x=t.clientX,this.mouse.y=t.clientY}),window.addEventListener("resize",()=>this.resize());new MutationObserver(()=>{this.isDarkMode=document.documentElement.classList.contains("dark")}).observe(document.documentElement,{attributes:!0,attributeFilter:["class"]}),this.isDarkMode=document.documentElement.classList.contains("dark"),document.addEventListener("visibilitychange",()=>{document.hidden?this.pause():this.resume()})}resize(){this.canvas.width=window.innerWidth,this.canvas.height=window.innerHeight}updateParticles(){this.particles.forEach(t=>{if(t.x+=t.vx,t.y+=t.vy,this.options.enableMouseInteraction){const i=this.mouse.x-t.x,e=this.mouse.y-t.y,s=Math.sqrt(i*i+e*e);if(s<this.options.mouseInfluence){const n=(this.options.mouseInfluence-s)/this.options.mouseInfluence;t.vx-=i/s*n*.1,t.vy-=e/s*n*.1}}(t.x<0||t.x>this.canvas.width)&&(t.vx*=-1,t.x=Math.max(0,Math.min(this.canvas.width,t.x))),(t.y<0||t.y>this.canvas.height)&&(t.vy*=-1,t.y=Math.max(0,Math.min(this.canvas.height,t.y))),t.vx*=.99,t.vy*=.99,t.vx+=.02*(Math.random()-.5),t.vy+=.02*(Math.random()-.5);const i=Math.sqrt(t.vx*t.vx+t.vy*t.vy);i>2&&(t.vx=t.vx/i*2,t.vy=t.vy/i*2)})}draw(){this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);const t=this.isDarkMode,i=t?"rgba(255, 255, 255, 0.15)":"rgba(0, 0, 0, 0.1)",e=this.options.connectionDistance*this.options.connectionDistance;if(this.options.enableConnections){this.ctx.strokeStyle=i,this.ctx.lineWidth=1;for(let t=0;t<this.particles.length;t++){const i=this.particles[t];for(let s=t+1;s<this.particles.length;s++){const t=this.particles[s],n=i.x-t.x,a=i.y-t.y,o=n*n+a*a;if(o<e){const s=1-o/e;this.ctx.globalAlpha=.3*s,this.ctx.beginPath(),this.ctx.moveTo(i.x,i.y),this.ctx.lineTo(t.x,t.y),this.ctx.stroke()}}}this.ctx.globalAlpha=1}const s=t?.8:.6;if(this.ctx.globalAlpha=s,t)for(let t=0;t<this.particles.length;t++){const i=this.particles[t],e=6*i.radius;this.ctx.drawImage(this.particleCache,i.x-e/2,i.y-e/2,e,e)}else{this.ctx.fillStyle="rgba(0, 0, 0, 0.6)";for(let t=0;t<this.particles.length;t++){const i=this.particles[t];this.ctx.beginPath(),this.ctx.arc(i.x,i.y,i.radius,0,2*Math.PI),this.ctx.fill()}}this.ctx.globalAlpha=1}animate(){this.updateParticles(),this.draw(),this.animationId=requestAnimationFrame(()=>this.animate())}pause(){this.animationId&&(cancelAnimationFrame(this.animationId),this.animationId=null)}resume(){this.animationId||this.animate()}destroy(){this.pause(),this.canvas&&this.canvas.parentNode&&this.canvas.parentNode.removeChild(this.canvas),this.isInitialized=!1}updateConfig(t){this.options={...this.options,...t},t.particleCount&&t.particleCount!==this.particles.length&&this.initParticles()}}export class CursorFollower3D{constructor(){this.cursor=null,this.trail=[],this.maxTrailLength=10,this.isInitialized=!1}init(){if(this.isInitialized)return;this.cursor=document.createElement("div"),this.cursor.className="cursor-3d",this.cursor.style.cssText="\n            position: fixed;\n            width: 20px;\n            height: 20px;\n            border: 2px solid rgba(0, 122, 255, 0.5);\n            border-radius: 50%;\n            pointer-events: none;\n            z-index: 9999;\n            transform: translate(-50%, -50%);\n            transition: all 0.1s ease;\n            mix-blend-mode: difference;\n        ",document.body.appendChild(this.cursor),document.addEventListener("mousemove",t=>{this.cursor.style.left=t.clientX+"px",this.cursor.style.top=t.clientY+"px",this.addTrailPoint(t.clientX,t.clientY)});const t='a, button, input, textarea, [role="button"]';document.addEventListener("mouseover",i=>{i.target.matches(t)&&(this.cursor.style.transform="translate(-50%, -50%) scale(1.5)",this.cursor.style.borderColor="rgba(0, 122, 255, 0.8)")}),document.addEventListener("mouseout",i=>{i.target.matches(t)&&(this.cursor.style.transform="translate(-50%, -50%) scale(1)",this.cursor.style.borderColor="rgba(0, 122, 255, 0.5)")}),this.isInitialized=!0,console.log("✨ 3D Cursor Follower initialized")}addTrailPoint(t,i){this.trail.push({x:t,y:i,opacity:1}),this.trail.length>this.maxTrailLength&&this.trail.shift(),this.trail.forEach((t,i)=>{t.opacity=(i+1)/this.trail.length})}destroy(){this.cursor&&this.cursor.parentNode&&this.cursor.parentNode.removeChild(this.cursor),this.isInitialized=!1}}if("undefined"!=typeof window){const t=()=>{const t=window.matchMedia("(prefers-reduced-motion: reduce)").matches,i=navigator.deviceMemory&&navigator.deviceMemory<=4||navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4;if(window.innerWidth>768&&!t){const t=new Interactive3DBackground({particleCount:i?36:64,particleSize:2,connectionDistance:i?90:120,mouseInfluence:i?70:100,enableConnections:!i});t.init(),window.background3D=t}};"loading"===document.readyState?document.addEventListener("DOMContentLoaded",t):t()}export default Interactive3DBackground;
+export class Interactive3DBackground {
+  constructor(t = {}) {
+    ((this.options = {
+      particleCount: 100,
+      particleSize: 2,
+      connectionDistance: 150,
+      mouseInfluence: 100,
+      animationSpeed: 5e-4,
+      enableConnections: !0,
+      enableMouseInteraction: !0,
+      ...t,
+    }),
+      (this.canvas = null),
+      (this.ctx = null),
+      (this.particles = []),
+      (this.mouse = { x: 0, y: 0 }),
+      (this.animationId = null),
+      (this.isInitialized = !1),
+      (this.isDarkMode = !1));
+  }
+  async init() {
+    this.isInitialized ||
+      (this.createCanvas(),
+      this.initParticles(),
+      this.setupEventListeners(),
+      this.animate(),
+      (this.isInitialized = !0),
+      console.log('✨ 3D Interactive Background initialized'));
+  }
+  createCanvas() {
+    ((this.canvas = document.createElement('canvas')),
+      (this.canvas.id = '3d-background-canvas'),
+      (this.canvas.style.cssText =
+        '\n            position: fixed;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            z-index: -1;\n            pointer-events: none;\n            opacity: 0.6;\n            transition: opacity 0.3s ease;\n        '),
+      document.body.insertBefore(this.canvas, document.body.firstChild),
+      (this.ctx = this.canvas.getContext('2d')),
+      this.resize());
+  }
+  initParticles() {
+    ((this.particles = []),
+      (this.particleCache = document.createElement('canvas')),
+      (this.particleCache.width = 20),
+      (this.particleCache.height = 20));
+    const t = this.particleCache.getContext('2d');
+    ((t.fillStyle = '#ffffff'), t.beginPath(), t.arc(10, 10, 2, 0, 2 * Math.PI), t.fill());
+    const i = t.createRadialGradient(10, 10, 0, 10, 10, 8);
+    (i.addColorStop(0, 'rgba(255, 255, 255, 0.4)'),
+      i.addColorStop(1, 'rgba(255, 255, 255, 0)'),
+      (t.fillStyle = i),
+      t.beginPath(),
+      t.arc(10, 10, 8, 0, 2 * Math.PI),
+      t.fill());
+    for (let t = 0; t < this.options.particleCount; t++)
+      this.particles.push({
+        x: Math.random() * this.canvas.width,
+        y: Math.random() * this.canvas.height,
+        vx: 0.5 * (Math.random() - 0.5),
+        vy: 0.5 * (Math.random() - 0.5),
+        radius: Math.random() * this.options.particleSize + 1,
+        originalX: 0,
+        originalY: 0,
+      });
+    this.particles.forEach(t => {
+      ((t.originalX = t.x), (t.originalY = t.y));
+    });
+  }
+  setupEventListeners() {
+    (this.options.enableMouseInteraction &&
+      document.addEventListener('mousemove', t => {
+        ((this.mouse.x = t.clientX), (this.mouse.y = t.clientY));
+      }),
+      window.addEventListener('resize', () => this.resize()));
+    (new MutationObserver(() => {
+      this.isDarkMode = document.documentElement.classList.contains('dark');
+    }).observe(document.documentElement, { attributes: !0, attributeFilter: ['class'] }),
+      (this.isDarkMode = document.documentElement.classList.contains('dark')),
+      document.addEventListener('visibilitychange', () => {
+        document.hidden ? this.pause() : this.resume();
+      }));
+  }
+  resize() {
+    ((this.canvas.width = window.innerWidth), (this.canvas.height = window.innerHeight));
+  }
+  updateParticles() {
+    this.particles.forEach(t => {
+      if (((t.x += t.vx), (t.y += t.vy), this.options.enableMouseInteraction)) {
+        const i = this.mouse.x - t.x,
+          e = this.mouse.y - t.y,
+          s = Math.sqrt(i * i + e * e);
+        if (s < this.options.mouseInfluence) {
+          const n = (this.options.mouseInfluence - s) / this.options.mouseInfluence;
+          ((t.vx -= (i / s) * n * 0.1), (t.vy -= (e / s) * n * 0.1));
+        }
+      }
+      ((t.x < 0 || t.x > this.canvas.width) &&
+        ((t.vx *= -1), (t.x = Math.max(0, Math.min(this.canvas.width, t.x)))),
+        (t.y < 0 || t.y > this.canvas.height) &&
+          ((t.vy *= -1), (t.y = Math.max(0, Math.min(this.canvas.height, t.y)))),
+        (t.vx *= 0.99),
+        (t.vy *= 0.99),
+        (t.vx += 0.02 * (Math.random() - 0.5)),
+        (t.vy += 0.02 * (Math.random() - 0.5)));
+      const i = Math.sqrt(t.vx * t.vx + t.vy * t.vy);
+      i > 2 && ((t.vx = (t.vx / i) * 2), (t.vy = (t.vy / i) * 2));
+    });
+  }
+  draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const t = this.isDarkMode,
+      i = t ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+      e = this.options.connectionDistance * this.options.connectionDistance;
+    if (this.options.enableConnections) {
+      ((this.ctx.strokeStyle = i), (this.ctx.lineWidth = 1));
+      for (let t = 0; t < this.particles.length; t++) {
+        const i = this.particles[t];
+        for (let s = t + 1; s < this.particles.length; s++) {
+          const t = this.particles[s],
+            n = i.x - t.x,
+            a = i.y - t.y,
+            o = n * n + a * a;
+          if (o < e) {
+            const s = 1 - o / e;
+            ((this.ctx.globalAlpha = 0.3 * s),
+              this.ctx.beginPath(),
+              this.ctx.moveTo(i.x, i.y),
+              this.ctx.lineTo(t.x, t.y),
+              this.ctx.stroke());
+          }
+        }
+      }
+      this.ctx.globalAlpha = 1;
+    }
+    const s = t ? 0.8 : 0.6;
+    if (((this.ctx.globalAlpha = s), t))
+      for (let t = 0; t < this.particles.length; t++) {
+        const i = this.particles[t],
+          e = 6 * i.radius;
+        this.ctx.drawImage(this.particleCache, i.x - e / 2, i.y - e / 2, e, e);
+      }
+    else {
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+      for (let t = 0; t < this.particles.length; t++) {
+        const i = this.particles[t];
+        (this.ctx.beginPath(), this.ctx.arc(i.x, i.y, i.radius, 0, 2 * Math.PI), this.ctx.fill());
+      }
+    }
+    this.ctx.globalAlpha = 1;
+  }
+  animate() {
+    (this.updateParticles(),
+      this.draw(),
+      (this.animationId = requestAnimationFrame(() => this.animate())));
+  }
+  pause() {
+    this.animationId && (cancelAnimationFrame(this.animationId), (this.animationId = null));
+  }
+  resume() {
+    this.animationId || this.animate();
+  }
+  destroy() {
+    (this.pause(),
+      this.canvas && this.canvas.parentNode && this.canvas.parentNode.removeChild(this.canvas),
+      (this.isInitialized = !1));
+  }
+  updateConfig(t) {
+    ((this.options = { ...this.options, ...t }),
+      t.particleCount && t.particleCount !== this.particles.length && this.initParticles());
+  }
+}
+export class CursorFollower3D {
+  constructor() {
+    ((this.cursor = null),
+      (this.trail = []),
+      (this.maxTrailLength = 10),
+      (this.isInitialized = !1));
+  }
+  init() {
+    if (this.isInitialized) return;
+    ((this.cursor = document.createElement('div')),
+      (this.cursor.className = 'cursor-3d'),
+      (this.cursor.style.cssText =
+        '\n            position: fixed;\n            width: 20px;\n            height: 20px;\n            border: 2px solid rgba(0, 122, 255, 0.5);\n            border-radius: 50%;\n            pointer-events: none;\n            z-index: 9999;\n            transform: translate(-50%, -50%);\n            transition: all 0.1s ease;\n            mix-blend-mode: difference;\n        '),
+      document.body.appendChild(this.cursor),
+      document.addEventListener('mousemove', t => {
+        ((this.cursor.style.left = t.clientX + 'px'),
+          (this.cursor.style.top = t.clientY + 'px'),
+          this.addTrailPoint(t.clientX, t.clientY));
+      }));
+    const t = 'a, button, input, textarea, [role="button"]';
+    (document.addEventListener('mouseover', i => {
+      i.target.matches(t) &&
+        ((this.cursor.style.transform = 'translate(-50%, -50%) scale(1.5)'),
+        (this.cursor.style.borderColor = 'rgba(0, 122, 255, 0.8)'));
+    }),
+      document.addEventListener('mouseout', i => {
+        i.target.matches(t) &&
+          ((this.cursor.style.transform = 'translate(-50%, -50%) scale(1)'),
+          (this.cursor.style.borderColor = 'rgba(0, 122, 255, 0.5)'));
+      }),
+      (this.isInitialized = !0),
+      console.log('✨ 3D Cursor Follower initialized'));
+  }
+  addTrailPoint(t, i) {
+    (this.trail.push({ x: t, y: i, opacity: 1 }),
+      this.trail.length > this.maxTrailLength && this.trail.shift(),
+      this.trail.forEach((t, i) => {
+        t.opacity = (i + 1) / this.trail.length;
+      }));
+  }
+  destroy() {
+    (this.cursor && this.cursor.parentNode && this.cursor.parentNode.removeChild(this.cursor),
+      (this.isInitialized = !1));
+  }
+}
+if ('undefined' != typeof window) {
+  const t = () => {
+    const t = window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      i =
+        (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+    if (window.innerWidth > 768 && !t) {
+      const t = new Interactive3DBackground({
+        particleCount: i ? 36 : 64,
+        particleSize: 2,
+        connectionDistance: i ? 90 : 120,
+        mouseInfluence: i ? 70 : 100,
+        enableConnections: !i,
+      });
+      (t.init(), (window.background3D = t));
+    }
+  };
+  'loading' === document.readyState ? document.addEventListener('DOMContentLoaded', t) : t();
+}
+export default Interactive3DBackground;

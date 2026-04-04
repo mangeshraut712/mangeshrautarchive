@@ -2,7 +2,7 @@
  * Live Activity & Views Module
  * Maintains a shared real-time portfolio reach store for all view surfaces.
  */
-(function() {
+(function () {
   'use strict';
 
   const VIEW_EVENT_NAME = 'portfolio:views-updated';
@@ -13,7 +13,10 @@
   const REQUEST_TIMEOUT_MS = 8000;
 
   function normalizeHash(value) {
-    return String(value || '').replace(/^#/, '').trim().toLowerCase();
+    return String(value || '')
+      .replace(/^#/, '')
+      .trim()
+      .toLowerCase();
   }
 
   function isHomeSectionActive() {
@@ -149,7 +152,8 @@
       if (started) return;
       started = true;
 
-      const shouldIncrement = sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' && isHomeSectionActive();
+      const shouldIncrement =
+        sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' && isHomeSectionActive();
       refresh({ increment: shouldIncrement });
 
       refreshTimerId = window.setInterval(() => {
@@ -179,7 +183,10 @@
 
       window.addEventListener('portfolio:sectionchange', event => {
         const sectionId = normalizeHash(event.detail?.sectionId);
-        if (sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' && (sectionId === '' || sectionId === 'home')) {
+        if (
+          sessionStorage.getItem(VIEW_STORAGE_KEY) !== '1' &&
+          (sectionId === '' || sectionId === 'home')
+        ) {
           refresh({ increment: true });
           return;
         }

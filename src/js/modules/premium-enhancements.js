@@ -1,1 +1,226 @@
-!function(){"use strict";const e=window.matchMedia("(prefers-reduced-motion: reduce)").matches,t=navigator.deviceMemory&&navigator.deviceMemory<=4||navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4;function n(){if(e)return;const t=document.createElement("div");t.className="scroll-progress",t.setAttribute("aria-hidden","true"),document.body.appendChild(t);let n=!1;function r(){const e=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;t.style.transform=`scaleX(${Math.min(100,Math.max(0,e))/100})`,n=!1}window.addEventListener("scroll",()=>{n||(requestAnimationFrame(r),n=!0)},{passive:!0}),r()}function r(){if(e)return;const t=document.querySelectorAll(".hero-stat-value, .project-stat-value, [data-counter]"),n=new IntersectionObserver(e=>{e.forEach(e=>{e.isIntersecting&&!e.target.dataset.counted&&(function(e){const t=e.textContent.trim().match(/^(\d+)(\+?)$/);if(!t)return;const n=parseInt(t[1],10),r=t[2]||"",o=performance.now();e.classList.add("counting"),requestAnimationFrame(function t(i){const a=i-o,s=Math.min(a/2e3,1),c=1-Math.pow(1-s,3),l=Math.floor(n*c);e.textContent=l+r,s<1?requestAnimationFrame(t):(e.textContent=n+r,e.classList.remove("counting"))})}(e.target),e.target.dataset.counted="true")})},{threshold:.5,rootMargin:"0px"});t.forEach(e=>n.observe(e))}function o(){e||document.querySelectorAll(".hero-cta, .btn-primary, .projects-view-all-btn").forEach(e=>{e.classList.add("magnetic-btn"),e.addEventListener("mousemove",t=>{const n=e.getBoundingClientRect(),r=t.clientX-n.left-n.width/2,o=t.clientY-n.top-n.height/2;e.style.transform=`translate(${.15*r}px, ${.15*o}px)`}),e.addEventListener("mouseleave",()=>{e.style.transform=""})})}function i(){if(e)return;const t=Array.from(document.querySelectorAll('[data-parallax="scroll"]'));if(!t.length)return;const n=t.map(e=>({el:e,speed:parseFloat(e.dataset.parallaxSpeed)||.06,maxShift:parseFloat(e.dataset.parallaxMax)||18}));let r=!1;function o(){const e=window.innerWidth<=900,t=.5*window.innerHeight;n.forEach(({el:n,speed:r,maxShift:o})=>{if(e)return void(n.style.transform="translate3d(0, 0, 0)");const i=n.getBoundingClientRect();if(i.bottom<-120||i.top>window.innerHeight+120)return void(n.style.transform="translate3d(0, 0, 0)");const a=i.top+.5*i.height,s=(t-a)*r,c=Math.max(-o,Math.min(o,s));n.style.transform=`translate3d(0, ${c.toFixed(2)}px, 0)`}),r=!1}const i=()=>{r||(r=!0,requestAnimationFrame(o))};window.addEventListener("scroll",i,{passive:!0}),window.addEventListener("resize",i,{passive:!0}),o()}function a(n){e||t||n.dataset.tiltInitialized||(n.dataset.tiltInitialized="true",n.addEventListener("mousemove",e=>{const t=n.getBoundingClientRect(),r=e.clientX-t.left,o=e.clientY-t.top,i=t.width/2,a=-(o-t.height/2)/20,s=(r-i)/20;n.style.transform=`perspective(1000px) rotateX(${a}deg) rotateY(${s}deg) scale3d(1.02, 1.02, 1.02)`,n.style.transition="none"}),n.addEventListener("mouseleave",()=>{n.style.transform="perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",n.style.transition="transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)"}),n.addEventListener("mouseenter",()=>{n.style.transition="transform 0.1s ease-out"}))}function s(){e||document.querySelectorAll(".project-card, .blog-card, .apple-3d-project").forEach(a)}function c(){n(),r(),function(){const e=document.querySelectorAll(".projects-grid, .skills-grid, .cert-grid, .blog-grid");e.forEach(e=>{e.classList.add("stagger-reveal")});const t=new IntersectionObserver(e=>{e.forEach(e=>{e.isIntersecting&&(e.target.classList.add("revealed"),t.unobserve(e.target))})},{threshold:.1,rootMargin:"50px"});e.forEach(e=>t.observe(e))}(),document.querySelectorAll('img[loading="lazy"]').forEach(e=>{e.complete?e.classList.add("loaded"):e.addEventListener("load",()=>{e.classList.add("loaded")})}),document.querySelectorAll('a[href^="#"]:not(.nav-link):not(.menu-item)').forEach(t=>{t.addEventListener("click",function(t){const n=this.getAttribute("href");if("#"===n)return;const r=document.querySelector(n);if(r){t.preventDefault();const n=document.querySelector(".global-nav, .navbar")?.offsetHeight||80,o=r.getBoundingClientRect().top+window.scrollY-n;window.scrollTo({top:o,behavior:e?"auto":"smooth"})}})}),function(){if(window.__smartNavbarHandlesDynamicIsland)return;const e=document.querySelectorAll("section[id]"),t=document.querySelectorAll(".nav-link, .menu-item"),n=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){const n=e.target.getAttribute("id");t.forEach(e=>{e.classList.remove("active"),e.getAttribute("href")===`#${n}`&&e.classList.add("active")})}})},{threshold:.3,rootMargin:"-80px 0px -50% 0px"});e.forEach(e=>n.observe(e))}(),t||i(),window.innerWidth>768&&!t&&(o(),s()),function(){const t=document.querySelector(".hero-title[data-typing]");t&&!e&&t.classList.add("typing-animation")}(),localStorage.getItem("enableSounds")&&document.querySelectorAll(".btn, .hero-cta").forEach(e=>{e.addEventListener("mouseenter",()=>{const e=new(window.AudioContext||window.webkitAudioContext),t=e.createOscillator(),n=e.createGain();t.connect(n),n.connect(e.destination),t.frequency.value=800,t.type="sine",n.gain.setValueAtTime(.02,e.currentTime),n.gain.exponentialRampToValueAtTime(.001,e.currentTime+.1),t.start(e.currentTime),t.stop(e.currentTime+.1)})}),console.log("✨ Premium enhancements initialized"+(t?" (low-power mode)":""))}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",c):c(),window.PremiumEnhancements={init:c,initScrollProgress:n,initSkillCounters:r,initMagneticButtons:o,initCardTilt:s,applyTiltToElement:a,initParallax:i}}();
+!(function () {
+  'use strict';
+  const e = window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    t =
+      (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+  function n() {
+    if (e) return;
+    const t = document.createElement('div');
+    ((t.className = 'scroll-progress'),
+      t.setAttribute('aria-hidden', 'true'),
+      document.body.appendChild(t));
+    let n = !1;
+    function r() {
+      const e =
+        (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      ((t.style.transform = `scaleX(${Math.min(100, Math.max(0, e)) / 100})`), (n = !1));
+    }
+    (window.addEventListener(
+      'scroll',
+      () => {
+        n || (requestAnimationFrame(r), (n = !0));
+      },
+      { passive: !0 }
+    ),
+      r());
+  }
+  function r() {
+    if (e) return;
+    const t = document.querySelectorAll('.hero-stat-value, .project-stat-value, [data-counter]'),
+      n = new IntersectionObserver(
+        e => {
+          e.forEach(e => {
+            e.isIntersecting &&
+              !e.target.dataset.counted &&
+              ((function (e) {
+                const t = e.textContent.trim().match(/^(\d+)(\+?)$/);
+                if (!t) return;
+                const n = parseInt(t[1], 10),
+                  r = t[2] || '',
+                  o = performance.now();
+                (e.classList.add('counting'),
+                  requestAnimationFrame(function t(i) {
+                    const a = i - o,
+                      s = Math.min(a / 2e3, 1),
+                      c = 1 - Math.pow(1 - s, 3),
+                      l = Math.floor(n * c);
+                    ((e.textContent = l + r),
+                      s < 1
+                        ? requestAnimationFrame(t)
+                        : ((e.textContent = n + r), e.classList.remove('counting')));
+                  }));
+              })(e.target),
+              (e.target.dataset.counted = 'true'));
+          });
+        },
+        { threshold: 0.5, rootMargin: '0px' }
+      );
+    t.forEach(e => n.observe(e));
+  }
+  function o() {
+    e ||
+      document.querySelectorAll('.hero-cta, .btn-primary, .projects-view-all-btn').forEach(e => {
+        (e.classList.add('magnetic-btn'),
+          e.addEventListener('mousemove', t => {
+            const n = e.getBoundingClientRect(),
+              r = t.clientX - n.left - n.width / 2,
+              o = t.clientY - n.top - n.height / 2;
+            e.style.transform = `translate(${0.15 * r}px, ${0.15 * o}px)`;
+          }),
+          e.addEventListener('mouseleave', () => {
+            e.style.transform = '';
+          }));
+      });
+  }
+  function i() {
+    if (e) return;
+    const t = Array.from(document.querySelectorAll('[data-parallax="scroll"]'));
+    if (!t.length) return;
+    const n = t.map(e => ({
+      el: e,
+      speed: parseFloat(e.dataset.parallaxSpeed) || 0.06,
+      maxShift: parseFloat(e.dataset.parallaxMax) || 18,
+    }));
+    let r = !1;
+    function o() {
+      const e = window.innerWidth <= 900,
+        t = 0.5 * window.innerHeight;
+      (n.forEach(({ el: n, speed: r, maxShift: o }) => {
+        if (e) return void (n.style.transform = 'translate3d(0, 0, 0)');
+        const i = n.getBoundingClientRect();
+        if (i.bottom < -120 || i.top > window.innerHeight + 120)
+          return void (n.style.transform = 'translate3d(0, 0, 0)');
+        const a = i.top + 0.5 * i.height,
+          s = (t - a) * r,
+          c = Math.max(-o, Math.min(o, s));
+        n.style.transform = `translate3d(0, ${c.toFixed(2)}px, 0)`;
+      }),
+        (r = !1));
+    }
+    const i = () => {
+      r || ((r = !0), requestAnimationFrame(o));
+    };
+    (window.addEventListener('scroll', i, { passive: !0 }),
+      window.addEventListener('resize', i, { passive: !0 }),
+      o());
+  }
+  function a(n) {
+    e ||
+      t ||
+      n.dataset.tiltInitialized ||
+      ((n.dataset.tiltInitialized = 'true'),
+      n.addEventListener('mousemove', e => {
+        const t = n.getBoundingClientRect(),
+          r = e.clientX - t.left,
+          o = e.clientY - t.top,
+          i = t.width / 2,
+          a = -(o - t.height / 2) / 20,
+          s = (r - i) / 20;
+        ((n.style.transform = `perspective(1000px) rotateX(${a}deg) rotateY(${s}deg) scale3d(1.02, 1.02, 1.02)`),
+          (n.style.transition = 'none'));
+      }),
+      n.addEventListener('mouseleave', () => {
+        ((n.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)'),
+          (n.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)'));
+      }),
+      n.addEventListener('mouseenter', () => {
+        n.style.transition = 'transform 0.1s ease-out';
+      }));
+  }
+  function s() {
+    e || document.querySelectorAll('.project-card, .blog-card, .apple-3d-project').forEach(a);
+  }
+  function c() {
+    (n(),
+      r(),
+      (function () {
+        const e = document.querySelectorAll('.projects-grid, .skills-grid, .cert-grid, .blog-grid');
+        e.forEach(e => {
+          e.classList.add('stagger-reveal');
+        });
+        const t = new IntersectionObserver(
+          e => {
+            e.forEach(e => {
+              e.isIntersecting && (e.target.classList.add('revealed'), t.unobserve(e.target));
+            });
+          },
+          { threshold: 0.1, rootMargin: '50px' }
+        );
+        e.forEach(e => t.observe(e));
+      })(),
+      document.querySelectorAll('img[loading="lazy"]').forEach(e => {
+        e.complete
+          ? e.classList.add('loaded')
+          : e.addEventListener('load', () => {
+              e.classList.add('loaded');
+            });
+      }),
+      document.querySelectorAll('a[href^="#"]:not(.nav-link):not(.menu-item)').forEach(t => {
+        t.addEventListener('click', function (t) {
+          const n = this.getAttribute('href');
+          if ('#' === n) return;
+          const r = document.querySelector(n);
+          if (r) {
+            t.preventDefault();
+            const n = document.querySelector('.global-nav, .navbar')?.offsetHeight || 80,
+              o = r.getBoundingClientRect().top + window.scrollY - n;
+            window.scrollTo({ top: o, behavior: e ? 'auto' : 'smooth' });
+          }
+        });
+      }),
+      (function () {
+        if (window.__smartNavbarHandlesDynamicIsland) return;
+        const e = document.querySelectorAll('section[id]'),
+          t = document.querySelectorAll('.nav-link, .menu-item'),
+          n = new IntersectionObserver(
+            e => {
+              e.forEach(e => {
+                if (e.isIntersecting) {
+                  const n = e.target.getAttribute('id');
+                  t.forEach(e => {
+                    (e.classList.remove('active'),
+                      e.getAttribute('href') === `#${n}` && e.classList.add('active'));
+                  });
+                }
+              });
+            },
+            { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' }
+          );
+        e.forEach(e => n.observe(e));
+      })(),
+      t || i(),
+      window.innerWidth > 768 && !t && (o(), s()),
+      (function () {
+        const t = document.querySelector('.hero-title[data-typing]');
+        t && !e && t.classList.add('typing-animation');
+      })(),
+      localStorage.getItem('enableSounds') &&
+        document.querySelectorAll('.btn, .hero-cta').forEach(e => {
+          e.addEventListener('mouseenter', () => {
+            const e = new (window.AudioContext || window.webkitAudioContext)(),
+              t = e.createOscillator(),
+              n = e.createGain();
+            (t.connect(n),
+              n.connect(e.destination),
+              (t.frequency.value = 800),
+              (t.type = 'sine'),
+              n.gain.setValueAtTime(0.02, e.currentTime),
+              n.gain.exponentialRampToValueAtTime(0.001, e.currentTime + 0.1),
+              t.start(e.currentTime),
+              t.stop(e.currentTime + 0.1));
+          });
+        }),
+      console.log('✨ Premium enhancements initialized' + (t ? ' (low-power mode)' : '')));
+  }
+  ('loading' === document.readyState ? document.addEventListener('DOMContentLoaded', c) : c(),
+    (window.PremiumEnhancements = {
+      init: c,
+      initScrollProgress: n,
+      initSkillCounters: r,
+      initMagneticButtons: o,
+      initCardTilt: s,
+      applyTiltToElement: a,
+      initParallax: i,
+    }));
+})();

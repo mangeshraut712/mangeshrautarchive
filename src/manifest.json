@@ -1,6 +1,7 @@
 {
   "name": "Mangesh Raut | Software Engineer",
   "short_name": "Mangesh Raut",
+  "version": "3.0.0",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",

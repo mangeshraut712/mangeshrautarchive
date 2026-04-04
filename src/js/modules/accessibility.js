@@ -1,1 +1,327 @@
-export class AccessibilityEnhancer{constructor(){this.focusableElements='a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',this.currentFocusIndex=0,this.shortcuts=new Map,this.announcer=null,this.skipLinks=[],this.isInitialized=!1}async init(){this.isInitialized||(console.log("♿ Initializing Accessibility Enhancements..."),this.createLiveRegion(),this.addSkipLinks(),this.enhanceFocusIndicators(),this.setupKeyboardNavigation(),this.registerKeyboardShortcuts(),this.enhanceFormAccessibility(),this.addMissingAriaLabels(),this.setupModalFocusTrap(),this.respectUserPreferences(),this.createAccessibilityToolbar(),this.isInitialized=!0,this.announce("Accessibility features enabled","polite"),console.log("✅ Accessibility Enhancements initialized"))}createLiveRegion(){this.announcer=document.createElement("div"),this.announcer.setAttribute("role","status"),this.announcer.setAttribute("aria-live","polite"),this.announcer.setAttribute("aria-atomic","true"),this.announcer.className="sr-only",this.announcer.style.cssText="\n            position: absolute;\n            left: -10000px;\n            width: 1px;\n            height: 1px;\n            overflow: hidden;\n        ",document.body.appendChild(this.announcer)}announce(e,t="polite"){this.announcer&&(this.announcer.setAttribute("aria-live",t),this.announcer.textContent="",setTimeout(()=>{this.announcer.textContent=e},100),setTimeout(()=>{this.announcer.textContent=""},3e3))}addSkipLinks(){const e=document.querySelector(".skip-links");if(e)return void(this.skipLinks=Array.from(e.querySelectorAll("a.skip-link")));const t=document.createElement("div");t.className="skip-links",t.setAttribute("role","navigation"),t.setAttribute("aria-label","Skip links");[{href:"#main-content",text:"Skip to main content"},{href:"#global-nav",text:"Skip to navigation"},{href:"#contact",text:"Skip to contact"}].forEach(e=>{const n=document.createElement("a");n.href=e.href,n.textContent=e.text,n.className="skip-link",n.style.cssText="\n                position: absolute;\n                left: -10000px;\n                top: 0;\n                z-index: 10001;\n                padding: 1rem 2rem;\n                background: #007aff;\n                color: white;\n                text-decoration: none;\n                border-radius: 0 0 8px 0;\n                font-weight: 600;\n            ",n.addEventListener("focus",()=>{n.style.left="0"}),n.addEventListener("blur",()=>{n.style.left="-10000px"}),n.addEventListener("click",t=>{t.preventDefault();const n=document.querySelector(e.href);n&&(n.setAttribute("tabindex","-1"),n.focus(),n.scrollIntoView({behavior:"smooth",block:"start"}),this.announce(`Navigated to ${e.text.replace("Skip to ","")}`))}),t.appendChild(n),this.skipLinks.push(n)}),document.body.insertBefore(t,document.body.firstChild)}enhanceFocusIndicators(){const e=document.createElement("style");e.textContent="\n            /* Enhanced focus indicators */\n            *:focus {\n                outline: 3px solid #007aff !important;\n                outline-offset: 2px !important;\n            }\n\n            *:focus:not(:focus-visible) {\n                outline: none !important;\n            }\n\n            *:focus-visible {\n                outline: 3px solid #007aff !important;\n                outline-offset: 2px !important;\n            }\n\n            /* High contrast mode support */\n            @media (prefers-contrast: high) {\n                *:focus-visible {\n                    outline: 4px solid currentColor !important;\n                    outline-offset: 3px !important;\n                }\n            }\n\n            /* Dark mode focus */\n            html.dark *:focus-visible {\n                outline-color: #0a84ff !important;\n            }\n\n            /* Button focus states */\n            button:focus-visible,\n            a:focus-visible {\n                box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3) !important;\n            }\n\n            /* Screen reader only class */\n            .sr-only {\n                position: absolute;\n                left: -10000px;\n                width: 1px;\n                height: 1px;\n                overflow: hidden;\n            }\n        ",document.head.appendChild(e)}setupKeyboardNavigation(){document.addEventListener("keydown",e=>{"Escape"===e.key&&this.handleEscapeKey(),["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)&&this.handleArrowKeyNavigation(e),"Home"===e.key&&e.ctrlKey&&(e.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),this.announce("Scrolled to top of page")),"End"===e.key&&e.ctrlKey&&(e.preventDefault(),window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"}),this.announce("Scrolled to bottom of page"))}),document.addEventListener("focusin",e=>{console.log("Focus:",e.target)})}handleEscapeKey(){const e=document.querySelector("#search-overlay");if(e&&e.classList.contains("active"))return e.classList.remove("active"),void this.announce("Search closed");const t=document.querySelector("#chatbot-widget");if(t&&!t.classList.contains("hidden"))return t.classList.add("hidden"),void this.announce("Chatbot closed");document.querySelectorAll('[role="dialog"], .modal, .modal-overlay').forEach(e=>{"none"===e.style.display||e.classList.contains("hidden")||(e.style.display="none",e.classList.add("hidden"),this.announce("Modal closed"))})}handleArrowKeyNavigation(e){const t=e.target;if(t.closest(".nav-links")){const n=Array.from(t.closest(".nav-links").querySelectorAll("a")),o=n.indexOf(t);"ArrowRight"===e.key&&o<n.length-1?(e.preventDefault(),n[o+1].focus()):"ArrowLeft"===e.key&&o>0&&(e.preventDefault(),n[o-1].focus())}if(t.closest(".grid, .flex")){const n=Array.from(t.closest(".grid, .flex").querySelectorAll('a, button, [tabindex="0"]')),o=n.indexOf(t),i=this.getGridColumns(t.closest(".grid, .flex"));"ArrowRight"===e.key&&o<n.length-1?(e.preventDefault(),n[o+1].focus()):"ArrowLeft"===e.key&&o>0?(e.preventDefault(),n[o-1].focus()):"ArrowDown"===e.key&&o+i<n.length?(e.preventDefault(),n[o+i].focus()):"ArrowUp"===e.key&&o-i>=0&&(e.preventDefault(),n[o-i].focus())}}getGridColumns(e){const t=window.getComputedStyle(e).gridTemplateColumns;return t&&"none"!==t?t.split(" ").length:1}registerKeyboardShortcuts(){this.registerShortcut("k",{ctrl:!0},()=>{const e=document.querySelector("#search-toggle");e&&(e.click(),this.announce("Search opened"))}),this.registerShortcut("/",{ctrl:!0},()=>{this.showKeyboardShortcuts()}),this.registerShortcut("d",{ctrl:!0},()=>{const e=document.querySelector("#theme-toggle");if(e){e.click();const t=document.documentElement.classList.contains("dark");this.announce(`Switched to ${t?"dark":"light"} mode`)}}),this.registerShortcut("h",{ctrl:!0},()=>{window.location.hash="#home",this.announce("Navigated to home")}),this.registerShortcut("c",{ctrl:!0,shift:!0},()=>{window.location.hash="#contact",this.announce("Navigated to contact")}),document.addEventListener("keydown",e=>{const t=e.key.toLowerCase(),n={ctrl:e.ctrlKey||e.metaKey,shift:e.shiftKey,alt:e.altKey};this.shortcuts.forEach((o,i)=>{const[a,s]=i.split("+"),r=JSON.stringify(n)===s;t===a&&r&&(e.preventDefault(),o())})})}registerShortcut(e,t={},n){const o=`${e}+${JSON.stringify(t)}`;this.shortcuts.set(o,n)}showKeyboardShortcuts(){const e=document.createElement("div");e.setAttribute("role","dialog"),e.setAttribute("aria-labelledby","shortcuts-title"),e.setAttribute("aria-modal","true"),e.className="shortcuts-modal",e.innerHTML='\n            <div class="modal-overlay" style="\n                position: fixed;\n                top: 0;\n                left: 0;\n                right: 0;\n                bottom: 0;\n                background: rgba(0, 0, 0, 0.7);\n                backdrop-filter: blur(10px);\n                display: flex;\n                align-items: center;\n                justify-content: center;\n                z-index: 10001;\n                animation: fadeIn 0.3s ease;\n            ">\n                <div class="modal-content" style="\n                    background: white;\n                    padding: 2rem;\n                    border-radius: 16px;\n                    max-width: 600px;\n                    width: 90%;\n                    max-height: 80vh;\n                    overflow-y: auto;\n                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);\n                " tabindex="-1">\n                    <h2 id="shortcuts-title" style="margin: 0 0 1.5rem 0; color: #1d1d1f;">\n                        ⌨️ Keyboard Shortcuts\n                    </h2>\n                    <div style="display: grid; gap: 1rem;">\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + K</kbd>\n                            <span>Open search</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + D</kbd>\n                            <span>Toggle dark mode</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + H</kbd>\n                            <span>Go to home</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + Shift + C</kbd>\n                            <span>Go to contact</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Esc</kbd>\n                            <span>Close modals/overlays</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Tab</kbd>\n                            <span>Navigate forward</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Shift + Tab</kbd>\n                            <span>Navigate backward</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Arrow Keys</kbd>\n                            <span>Navigate within sections</span>\n                        </div>\n                    </div>\n                    <button onclick="this.closest(\'.shortcuts-modal\').remove()" style="\n                        margin-top: 1.5rem;\n                        background: #007aff;\n                        color: white;\n                        border: none;\n                        padding: 0.75rem 1.5rem;\n                        border-radius: 8px;\n                        cursor: pointer;\n                        font-size: 1rem;\n                        width: 100%;\n                    ">\n                        Close\n                    </button>\n                </div>\n            </div>\n        ';const t=document.createElement("style");t.textContent="\n            .shortcut-item {\n                display: flex;\n                justify-content: space-between;\n                align-items: center;\n                padding: 0.75rem;\n                background: #f5f5f7;\n                border-radius: 8px;\n            }\n            .shortcut-item kbd {\n                background: white;\n                padding: 0.25rem 0.5rem;\n                border-radius: 4px;\n                border: 1px solid #ddd;\n                font-family: monospace;\n                font-size: 0.9rem;\n            }\n            html.dark .modal-content {\n                background: #1d1d1f !important;\n                color: #f5f5f7 !important;\n            }\n            html.dark .shortcut-item {\n                background: #2c2c2e !important;\n            }\n            html.dark .shortcut-item kbd {\n                background: #3a3a3c !important;\n                border-color: #48484a !important;\n                color: #f5f5f7 !important;\n            }\n        ",document.head.appendChild(t),document.body.appendChild(e);const n=e.querySelector(".modal-content");n.focus(),this.trapFocus(n),e.querySelector(".modal-overlay").addEventListener("click",t=>{t.target===t.currentTarget&&e.remove()}),this.announce("Keyboard shortcuts dialog opened")}enhanceFormAccessibility(){document.querySelectorAll("form").forEach(e=>{e.querySelectorAll("input, textarea, select").forEach(t=>{t.id||(t.id=`input-${Math.random().toString(36).substr(2,9)}`);if(!e.querySelector(`label[for="${t.id}"]`)&&t.placeholder){const e=document.createElement("label");e.setAttribute("for",t.id),e.className="sr-only",e.textContent=t.placeholder,t.parentNode.insertBefore(e,t)}t.required&&t.setAttribute("aria-required","true"),t.addEventListener("invalid",()=>{t.setAttribute("aria-invalid","true")}),t.addEventListener("input",()=>{t.validity.valid&&t.setAttribute("aria-invalid","false")})})})}addMissingAriaLabels(){document.querySelectorAll("button:not([aria-label]):not([aria-labelledby])").forEach(e=>{if(!e.textContent.trim()&&e.querySelector("i, svg")){const t=e.querySelector("i");if(t){const n=t.className;let o="Button";n.includes("search")?o="Search":n.includes("menu")?o="Menu":n.includes("close")?o="Close":n.includes("theme")&&(o="Toggle theme"),e.setAttribute("aria-label",o)}}});document.querySelectorAll("a:not([aria-label]):not([aria-labelledby])").forEach(e=>{if(!e.textContent.trim()&&e.querySelector("i, svg, img")){const t=e.querySelector("img");t&&t.alt&&e.setAttribute("aria-label",t.alt)}})}setupModalFocusTrap(){new MutationObserver(e=>{e.forEach(e=>{e.addedNodes.forEach(e=>{1===e.nodeType&&(e.matches('[role="dialog"]')||e.classList?.contains("modal"))&&this.trapFocus(e)})})}).observe(document.body,{childList:!0,subtree:!0})}trapFocus(e){const t=e.querySelectorAll(this.focusableElements),n=t[0],o=t[t.length-1];e.addEventListener("keydown",e=>{"Tab"===e.key&&(e.shiftKey?document.activeElement===n&&(e.preventDefault(),o.focus()):document.activeElement===o&&(e.preventDefault(),n.focus()))}),n&&n.focus()}respectUserPreferences(){window.matchMedia("(prefers-reduced-motion: reduce)").matches&&(document.documentElement.style.setProperty("--animation-duration","0.01ms"),this.announce("Reduced motion enabled")),window.matchMedia("(prefers-contrast: high)").matches&&document.documentElement.classList.add("high-contrast"),window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change",e=>{e.matches?(document.documentElement.style.setProperty("--animation-duration","0.01ms"),this.announce("Reduced motion enabled")):(document.documentElement.style.removeProperty("--animation-duration"),this.announce("Animations enabled"))})}createAccessibilityToolbar(){const e=document.createElement("style");e.textContent="\n            .a11y-toolbar {\n                position: fixed;\n                bottom: 20px;\n                left: 20px;\n                background: rgba(255, 255, 255, 0.95);\n                backdrop-filter: blur(10px);\n                padding: 0.5rem;\n                border-radius: 12px;\n                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\n                z-index: 9998;\n                display: flex;\n                gap: 0.5rem;\n                transition: all 0.3s ease;\n            }\n            \n            .a11y-toolbar button {\n                background: white;\n                border: 1px solid #ddd;\n                border-radius: 8px;\n                padding: 0.5rem;\n                cursor: pointer;\n                font-size: 1.2rem;\n                transition: all 0.2s;\n                width: 40px;\n                height: 40px;\n                display: flex;\n                align-items: center;\n                justify-content: center;\n            }\n\n            .a11y-toolbar button:hover {\n                transform: scale(1.1);\n                background: #f5f5f7;\n            }\n\n            html.dark .a11y-toolbar {\n                background: rgba(28, 28, 30, 0.95);\n                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n                border: 1px solid rgba(255, 255, 255, 0.1);\n            }\n\n            html.dark .a11y-toolbar button {\n                background: #2c2c2e;\n                border-color: #3a3a3c;\n                color: #fff;\n            }\n\n            /* Mobile adjustments */\n            @media (max-width: 768px) {\n                .a11y-toolbar {\n                    display: none !important; /* Hide on mobile to prevent overlap */\n                }\n            }\n        ",document.head.appendChild(e);const t=document.createElement("div");t.className="a11y-toolbar",t.setAttribute("role","toolbar"),t.setAttribute("aria-label","Accessibility tools");[{icon:"⌨️",label:"Keyboard shortcuts",action:()=>this.showKeyboardShortcuts()},{icon:"🔍",label:"Increase text size",action:()=>this.adjustTextSize(1.1)},{icon:"🔎",label:"Decrease text size",action:()=>this.adjustTextSize(.9)}].forEach(e=>{const n=document.createElement("button");n.textContent=e.icon,n.setAttribute("aria-label",e.label),n.addEventListener("click",e.action),t.appendChild(n)}),document.body.appendChild(t)}adjustTextSize(e){const t=parseFloat(getComputedStyle(document.documentElement).fontSize)*e;document.documentElement.style.fontSize=`${t}px`,this.announce("Text size "+(e>1?"increased":"decreased"))}}if("undefined"!=typeof window){const e=()=>{const e=new AccessibilityEnhancer;e.init(),window.a11y=e};"loading"===document.readyState?document.addEventListener("DOMContentLoaded",e):e()}export default AccessibilityEnhancer;
+export class AccessibilityEnhancer {
+  constructor() {
+    ((this.focusableElements =
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      (this.currentFocusIndex = 0),
+      (this.shortcuts = new Map()),
+      (this.announcer = null),
+      (this.skipLinks = []),
+      (this.isInitialized = !1));
+  }
+  async init() {
+    this.isInitialized ||
+      (console.log('♿ Initializing Accessibility Enhancements...'),
+      this.createLiveRegion(),
+      this.addSkipLinks(),
+      this.enhanceFocusIndicators(),
+      this.setupKeyboardNavigation(),
+      this.registerKeyboardShortcuts(),
+      this.enhanceFormAccessibility(),
+      this.addMissingAriaLabels(),
+      this.setupModalFocusTrap(),
+      this.respectUserPreferences(),
+      this.createAccessibilityToolbar(),
+      (this.isInitialized = !0),
+      this.announce('Accessibility features enabled', 'polite'),
+      console.log('✅ Accessibility Enhancements initialized'));
+  }
+  createLiveRegion() {
+    ((this.announcer = document.createElement('div')),
+      this.announcer.setAttribute('role', 'status'),
+      this.announcer.setAttribute('aria-live', 'polite'),
+      this.announcer.setAttribute('aria-atomic', 'true'),
+      (this.announcer.className = 'sr-only'),
+      (this.announcer.style.cssText =
+        '\n            position: absolute;\n            left: -10000px;\n            width: 1px;\n            height: 1px;\n            overflow: hidden;\n        '),
+      document.body.appendChild(this.announcer));
+  }
+  announce(e, t = 'polite') {
+    this.announcer &&
+      (this.announcer.setAttribute('aria-live', t),
+      (this.announcer.textContent = ''),
+      setTimeout(() => {
+        this.announcer.textContent = e;
+      }, 100),
+      setTimeout(() => {
+        this.announcer.textContent = '';
+      }, 3e3));
+  }
+  addSkipLinks() {
+    const e = document.querySelector('.skip-links');
+    if (e) return void (this.skipLinks = Array.from(e.querySelectorAll('a.skip-link')));
+    const t = document.createElement('div');
+    ((t.className = 'skip-links'),
+      t.setAttribute('role', 'navigation'),
+      t.setAttribute('aria-label', 'Skip links'));
+    ([
+      { href: '#main-content', text: 'Skip to main content' },
+      { href: '#global-nav', text: 'Skip to navigation' },
+      { href: '#contact', text: 'Skip to contact' },
+    ].forEach(e => {
+      const n = document.createElement('a');
+      ((n.href = e.href),
+        (n.textContent = e.text),
+        (n.className = 'skip-link'),
+        (n.style.cssText =
+          '\n                position: absolute;\n                left: -10000px;\n                top: 0;\n                z-index: 10001;\n                padding: 1rem 2rem;\n                background: #007aff;\n                color: white;\n                text-decoration: none;\n                border-radius: 0 0 8px 0;\n                font-weight: 600;\n            '),
+        n.addEventListener('focus', () => {
+          n.style.left = '0';
+        }),
+        n.addEventListener('blur', () => {
+          n.style.left = '-10000px';
+        }),
+        n.addEventListener('click', t => {
+          t.preventDefault();
+          const n = document.querySelector(e.href);
+          n &&
+            (n.setAttribute('tabindex', '-1'),
+            n.focus(),
+            n.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+            this.announce(`Navigated to ${e.text.replace('Skip to ', '')}`));
+        }),
+        t.appendChild(n),
+        this.skipLinks.push(n));
+    }),
+      document.body.insertBefore(t, document.body.firstChild));
+  }
+  enhanceFocusIndicators() {
+    const e = document.createElement('style');
+    ((e.textContent =
+      '\n            /* Enhanced focus indicators */\n            *:focus {\n                outline: 3px solid #007aff !important;\n                outline-offset: 2px !important;\n            }\n\n            *:focus:not(:focus-visible) {\n                outline: none !important;\n            }\n\n            *:focus-visible {\n                outline: 3px solid #007aff !important;\n                outline-offset: 2px !important;\n            }\n\n            /* High contrast mode support */\n            @media (prefers-contrast: high) {\n                *:focus-visible {\n                    outline: 4px solid currentColor !important;\n                    outline-offset: 3px !important;\n                }\n            }\n\n            /* Dark mode focus */\n            html.dark *:focus-visible {\n                outline-color: #0a84ff !important;\n            }\n\n            /* Button focus states */\n            button:focus-visible,\n            a:focus-visible {\n                box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3) !important;\n            }\n\n            /* Screen reader only class */\n            .sr-only {\n                position: absolute;\n                left: -10000px;\n                width: 1px;\n                height: 1px;\n                overflow: hidden;\n            }\n        '),
+      document.head.appendChild(e));
+  }
+  setupKeyboardNavigation() {
+    (document.addEventListener('keydown', e => {
+      ('Escape' === e.key && this.handleEscapeKey(),
+        ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) &&
+          this.handleArrowKeyNavigation(e),
+        'Home' === e.key &&
+          e.ctrlKey &&
+          (e.preventDefault(),
+          window.scrollTo({ top: 0, behavior: 'smooth' }),
+          this.announce('Scrolled to top of page')),
+        'End' === e.key &&
+          e.ctrlKey &&
+          (e.preventDefault(),
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }),
+          this.announce('Scrolled to bottom of page')));
+    }),
+      document.addEventListener('focusin', e => {
+        console.log('Focus:', e.target);
+      }));
+  }
+  handleEscapeKey() {
+    const e = document.querySelector('#search-overlay');
+    if (e && e.classList.contains('active'))
+      return (e.classList.remove('active'), void this.announce('Search closed'));
+    const t = document.querySelector('#chatbot-widget');
+    if (t && !t.classList.contains('hidden'))
+      return (t.classList.add('hidden'), void this.announce('Chatbot closed'));
+    document.querySelectorAll('[role="dialog"], .modal, .modal-overlay').forEach(e => {
+      'none' === e.style.display ||
+        e.classList.contains('hidden') ||
+        ((e.style.display = 'none'), e.classList.add('hidden'), this.announce('Modal closed'));
+    });
+  }
+  handleArrowKeyNavigation(e) {
+    const t = e.target;
+    if (t.closest('.nav-links')) {
+      const n = Array.from(t.closest('.nav-links').querySelectorAll('a')),
+        o = n.indexOf(t);
+      'ArrowRight' === e.key && o < n.length - 1
+        ? (e.preventDefault(), n[o + 1].focus())
+        : 'ArrowLeft' === e.key && o > 0 && (e.preventDefault(), n[o - 1].focus());
+    }
+    if (t.closest('.grid, .flex')) {
+      const n = Array.from(t.closest('.grid, .flex').querySelectorAll('a, button, [tabindex="0"]')),
+        o = n.indexOf(t),
+        i = this.getGridColumns(t.closest('.grid, .flex'));
+      'ArrowRight' === e.key && o < n.length - 1
+        ? (e.preventDefault(), n[o + 1].focus())
+        : 'ArrowLeft' === e.key && o > 0
+          ? (e.preventDefault(), n[o - 1].focus())
+          : 'ArrowDown' === e.key && o + i < n.length
+            ? (e.preventDefault(), n[o + i].focus())
+            : 'ArrowUp' === e.key && o - i >= 0 && (e.preventDefault(), n[o - i].focus());
+    }
+  }
+  getGridColumns(e) {
+    const t = window.getComputedStyle(e).gridTemplateColumns;
+    return t && 'none' !== t ? t.split(' ').length : 1;
+  }
+  registerKeyboardShortcuts() {
+    (this.registerShortcut('k', { ctrl: !0 }, () => {
+      const e = document.querySelector('#search-toggle');
+      e && (e.click(), this.announce('Search opened'));
+    }),
+      this.registerShortcut('/', { ctrl: !0 }, () => {
+        this.showKeyboardShortcuts();
+      }),
+      this.registerShortcut('d', { ctrl: !0 }, () => {
+        const e = document.querySelector('#theme-toggle');
+        if (e) {
+          e.click();
+          const t = document.documentElement.classList.contains('dark');
+          this.announce(`Switched to ${t ? 'dark' : 'light'} mode`);
+        }
+      }),
+      this.registerShortcut('h', { ctrl: !0 }, () => {
+        ((window.location.hash = '#home'), this.announce('Navigated to home'));
+      }),
+      this.registerShortcut('c', { ctrl: !0, shift: !0 }, () => {
+        ((window.location.hash = '#contact'), this.announce('Navigated to contact'));
+      }),
+      document.addEventListener('keydown', e => {
+        const t = e.key.toLowerCase(),
+          n = { ctrl: e.ctrlKey || e.metaKey, shift: e.shiftKey, alt: e.altKey };
+        this.shortcuts.forEach((o, i) => {
+          const [a, s] = i.split('+'),
+            r = JSON.stringify(n) === s;
+          t === a && r && (e.preventDefault(), o());
+        });
+      }));
+  }
+  registerShortcut(e, t = {}, n) {
+    const o = `${e}+${JSON.stringify(t)}`;
+    this.shortcuts.set(o, n);
+  }
+  showKeyboardShortcuts() {
+    const e = document.createElement('div');
+    (e.setAttribute('role', 'dialog'),
+      e.setAttribute('aria-labelledby', 'shortcuts-title'),
+      e.setAttribute('aria-modal', 'true'),
+      (e.className = 'shortcuts-modal'),
+      (e.innerHTML =
+        '\n            <div class="modal-overlay" style="\n                position: fixed;\n                top: 0;\n                left: 0;\n                right: 0;\n                bottom: 0;\n                background: rgba(0, 0, 0, 0.7);\n                backdrop-filter: blur(10px);\n                display: flex;\n                align-items: center;\n                justify-content: center;\n                z-index: 10001;\n                animation: fadeIn 0.3s ease;\n            ">\n                <div class="modal-content" style="\n                    background: white;\n                    padding: 2rem;\n                    border-radius: 16px;\n                    max-width: 600px;\n                    width: 90%;\n                    max-height: 80vh;\n                    overflow-y: auto;\n                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);\n                " tabindex="-1">\n                    <h2 id="shortcuts-title" style="margin: 0 0 1.5rem 0; color: #1d1d1f;">\n                        ⌨️ Keyboard Shortcuts\n                    </h2>\n                    <div style="display: grid; gap: 1rem;">\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + K</kbd>\n                            <span>Open search</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + D</kbd>\n                            <span>Toggle dark mode</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + H</kbd>\n                            <span>Go to home</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Ctrl/Cmd + Shift + C</kbd>\n                            <span>Go to contact</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Esc</kbd>\n                            <span>Close modals/overlays</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Tab</kbd>\n                            <span>Navigate forward</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Shift + Tab</kbd>\n                            <span>Navigate backward</span>\n                        </div>\n                        <div class="shortcut-item">\n                            <kbd>Arrow Keys</kbd>\n                            <span>Navigate within sections</span>\n                        </div>\n                    </div>\n                    <button onclick="this.closest(\'.shortcuts-modal\').remove()" style="\n                        margin-top: 1.5rem;\n                        background: #007aff;\n                        color: white;\n                        border: none;\n                        padding: 0.75rem 1.5rem;\n                        border-radius: 8px;\n                        cursor: pointer;\n                        font-size: 1rem;\n                        width: 100%;\n                    ">\n                        Close\n                    </button>\n                </div>\n            </div>\n        '));
+    const t = document.createElement('style');
+    ((t.textContent =
+      '\n            .shortcut-item {\n                display: flex;\n                justify-content: space-between;\n                align-items: center;\n                padding: 0.75rem;\n                background: #f5f5f7;\n                border-radius: 8px;\n            }\n            .shortcut-item kbd {\n                background: white;\n                padding: 0.25rem 0.5rem;\n                border-radius: 4px;\n                border: 1px solid #ddd;\n                font-family: monospace;\n                font-size: 0.9rem;\n            }\n            html.dark .modal-content {\n                background: #1d1d1f !important;\n                color: #f5f5f7 !important;\n            }\n            html.dark .shortcut-item {\n                background: #2c2c2e !important;\n            }\n            html.dark .shortcut-item kbd {\n                background: #3a3a3c !important;\n                border-color: #48484a !important;\n                color: #f5f5f7 !important;\n            }\n        '),
+      document.head.appendChild(t),
+      document.body.appendChild(e));
+    const n = e.querySelector('.modal-content');
+    (n.focus(),
+      this.trapFocus(n),
+      e.querySelector('.modal-overlay').addEventListener('click', t => {
+        t.target === t.currentTarget && e.remove();
+      }),
+      this.announce('Keyboard shortcuts dialog opened'));
+  }
+  enhanceFormAccessibility() {
+    document.querySelectorAll('form').forEach(e => {
+      e.querySelectorAll('input, textarea, select').forEach(t => {
+        t.id || (t.id = `input-${Math.random().toString(36).substr(2, 9)}`);
+        if (!e.querySelector(`label[for="${t.id}"]`) && t.placeholder) {
+          const e = document.createElement('label');
+          (e.setAttribute('for', t.id),
+            (e.className = 'sr-only'),
+            (e.textContent = t.placeholder),
+            t.parentNode.insertBefore(e, t));
+        }
+        (t.required && t.setAttribute('aria-required', 'true'),
+          t.addEventListener('invalid', () => {
+            t.setAttribute('aria-invalid', 'true');
+          }),
+          t.addEventListener('input', () => {
+            t.validity.valid && t.setAttribute('aria-invalid', 'false');
+          }));
+      });
+    });
+  }
+  addMissingAriaLabels() {
+    document.querySelectorAll('button:not([aria-label]):not([aria-labelledby])').forEach(e => {
+      if (!e.textContent.trim() && e.querySelector('i, svg')) {
+        const t = e.querySelector('i');
+        if (t) {
+          const n = t.className;
+          let o = 'Button';
+          (n.includes('search')
+            ? (o = 'Search')
+            : n.includes('menu')
+              ? (o = 'Menu')
+              : n.includes('close')
+                ? (o = 'Close')
+                : n.includes('theme') && (o = 'Toggle theme'),
+            e.setAttribute('aria-label', o));
+        }
+      }
+    });
+    document.querySelectorAll('a:not([aria-label]):not([aria-labelledby])').forEach(e => {
+      if (!e.textContent.trim() && e.querySelector('i, svg, img')) {
+        const t = e.querySelector('img');
+        t && t.alt && e.setAttribute('aria-label', t.alt);
+      }
+    });
+  }
+  setupModalFocusTrap() {
+    new MutationObserver(e => {
+      e.forEach(e => {
+        e.addedNodes.forEach(e => {
+          1 === e.nodeType &&
+            (e.matches('[role="dialog"]') || e.classList?.contains('modal')) &&
+            this.trapFocus(e);
+        });
+      });
+    }).observe(document.body, { childList: !0, subtree: !0 });
+  }
+  trapFocus(e) {
+    const t = e.querySelectorAll(this.focusableElements),
+      n = t[0],
+      o = t[t.length - 1];
+    (e.addEventListener('keydown', e => {
+      'Tab' === e.key &&
+        (e.shiftKey
+          ? document.activeElement === n && (e.preventDefault(), o.focus())
+          : document.activeElement === o && (e.preventDefault(), n.focus()));
+    }),
+      n && n.focus());
+  }
+  respectUserPreferences() {
+    (window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      (document.documentElement.style.setProperty('--animation-duration', '0.01ms'),
+      this.announce('Reduced motion enabled')),
+      window.matchMedia('(prefers-contrast: high)').matches &&
+        document.documentElement.classList.add('high-contrast'),
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
+        e.matches
+          ? (document.documentElement.style.setProperty('--animation-duration', '0.01ms'),
+            this.announce('Reduced motion enabled'))
+          : (document.documentElement.style.removeProperty('--animation-duration'),
+            this.announce('Animations enabled'));
+      }));
+  }
+  createAccessibilityToolbar() {
+    const e = document.createElement('style');
+    ((e.textContent =
+      '\n            .a11y-toolbar {\n                position: fixed;\n                bottom: 20px;\n                left: 20px;\n                background: rgba(255, 255, 255, 0.95);\n                backdrop-filter: blur(10px);\n                padding: 0.5rem;\n                border-radius: 12px;\n                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\n                z-index: 9998;\n                display: flex;\n                gap: 0.5rem;\n                transition: all 0.3s ease;\n            }\n            \n            .a11y-toolbar button {\n                background: white;\n                border: 1px solid #ddd;\n                border-radius: 8px;\n                padding: 0.5rem;\n                cursor: pointer;\n                font-size: 1.2rem;\n                transition: all 0.2s;\n                width: 40px;\n                height: 40px;\n                display: flex;\n                align-items: center;\n                justify-content: center;\n            }\n\n            .a11y-toolbar button:hover {\n                transform: scale(1.1);\n                background: #f5f5f7;\n            }\n\n            html.dark .a11y-toolbar {\n                background: rgba(28, 28, 30, 0.95);\n                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n                border: 1px solid rgba(255, 255, 255, 0.1);\n            }\n\n            html.dark .a11y-toolbar button {\n                background: #2c2c2e;\n                border-color: #3a3a3c;\n                color: #fff;\n            }\n\n            /* Mobile adjustments */\n            @media (max-width: 768px) {\n                .a11y-toolbar {\n                    display: none !important; /* Hide on mobile to prevent overlap */\n                }\n            }\n        '),
+      document.head.appendChild(e));
+    const t = document.createElement('div');
+    ((t.className = 'a11y-toolbar'),
+      t.setAttribute('role', 'toolbar'),
+      t.setAttribute('aria-label', 'Accessibility tools'));
+    ([
+      { icon: '⌨️', label: 'Keyboard shortcuts', action: () => this.showKeyboardShortcuts() },
+      { icon: '🔍', label: 'Increase text size', action: () => this.adjustTextSize(1.1) },
+      { icon: '🔎', label: 'Decrease text size', action: () => this.adjustTextSize(0.9) },
+    ].forEach(e => {
+      const n = document.createElement('button');
+      ((n.textContent = e.icon),
+        n.setAttribute('aria-label', e.label),
+        n.addEventListener('click', e.action),
+        t.appendChild(n));
+    }),
+      document.body.appendChild(t));
+  }
+  adjustTextSize(e) {
+    const t = parseFloat(getComputedStyle(document.documentElement).fontSize) * e;
+    ((document.documentElement.style.fontSize = `${t}px`),
+      this.announce('Text size ' + (e > 1 ? 'increased' : 'decreased')));
+  }
+}
+if ('undefined' != typeof window) {
+  const e = () => {
+    const e = new AccessibilityEnhancer();
+    (e.init(), (window.a11y = e));
+  };
+  'loading' === document.readyState ? document.addEventListener('DOMContentLoaded', e) : e();
+}
+export default AccessibilityEnhancer;

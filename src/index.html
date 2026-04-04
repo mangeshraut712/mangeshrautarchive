@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-  <meta name="theme-color" content="#0071e3" />
+  <meta name="theme-color" content="#000000" />
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -66,7 +66,7 @@
   <style>
     /* Skip links */
     .skip-links{position:fixed;top:0;left:0;z-index:10001}
-    .skip-link{position:absolute;left:0;top:0;transform:translateY(-200%);padding:.75rem 1rem;background:#005fcc;color:#fff;text-decoration:none;border-radius:0 0 10px 0;font-weight:700;transition:transform .2s ease}
+    .skip-link{position:absolute;left:0;top:0;transform:translateY(-200%);padding:.75rem 1rem;background:#000;color:#fff;text-decoration:none;border-radius:0 0 10px 0;font-weight:700;transition:transform .2s ease}
     .skip-link:focus{transform:translateY(0)}
     .footer-copy{color:#1d1d1f}
     html.dark .footer-copy{color:#f5f5f7}
@@ -86,8 +86,7 @@
     .nav-actions{display:flex;align-items:center;gap:12px;flex-shrink:0}
     .nav-logo{display:inline-flex;align-items:center;width:40px;height:40px;flex-shrink:0}
     .nav-logo img{height:32px;width:32px;object-fit:cover;border-radius:8px}
-    @media(max-width:1150px){.nav-links{display:none !important}}
-    @media(max-width:768px){.global-nav.dynamic-island{height:48px}.nav-container{padding:0 16px}}
+    @media(max-width:768px){.nav-links{display:none !important}.global-nav.dynamic-island{height:48px}.nav-container{padding:0 16px}}
 
     /* Hero section critical */
     .home-hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;background:#fff;padding-top:140px;padding-bottom:60px;contain:layout}
@@ -95,9 +94,9 @@
     .hero-layout-wrapper{display:flex;flex-direction:column;align-items:center}
     .profile-image-wrapper{position:relative;width:clamp(136px,11vw,168px);height:clamp(136px,11vw,168px);margin-bottom:28px}
     #home .profile-image{width:100%;height:100%;object-fit:cover;border-radius:25%;box-shadow:0 8px 32px rgba(0,0,0,0.1);position:relative;z-index:2}
-    .hero-name{font-size:clamp(1rem,1vw + .5rem,1.25rem);font-weight:600;margin-bottom:.5rem;text-align:center;letter-spacing:2px;text-transform:uppercase;color:#0071e3}
+    .hero-name{font-size:clamp(1rem,1vw + .5rem,1.25rem);font-weight:600;margin-bottom:.5rem;text-align:center;letter-spacing:2px;text-transform:uppercase;color:#86868b}
     .hero-title{font-size:clamp(1.5rem,2vw + .75rem,2.25rem);font-weight:700;margin-bottom:1.25rem;text-align:center;line-height:1.2;letter-spacing:-.02em;max-width:700px;margin-left:auto;margin-right:auto;color:#1d1d1f}
-    html.dark .hero-name{color:#2997ff}
+    html.dark .hero-name{color:#a1a1a6}
     html.dark .hero-title{color:#fff}
     .hero-description{font-size:clamp(.9375rem,.5vw + .5rem,1.125rem);max-width:600px;margin:0 auto 2.5rem;line-height:1.65;color:#424245}
     html.dark .hero-description{color:#a1a1a6}
@@ -115,7 +114,7 @@
     .theme-toggle-nav,.menu-toggle-button,#search-toggle,#theme-toggle,#menu-btn{width:34px;height:34px;min-width:34px;min-height:34px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:transparent;color:rgba(29,29,31,.86);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;padding:0}
     html.dark .theme-toggle-nav,html.dark .menu-toggle-button,html.dark #search-toggle,html.dark #theme-toggle,html.dark #menu-btn{color:rgba(255,255,255,.94);border-color:rgba(255,255,255,.18)}
     .menu-toggle-button,#menu-btn{display:none !important}
-    @media(max-width:1150px){.menu-toggle-button,#menu-btn{display:flex !important}}
+    @media(max-width:768px){.menu-toggle-button,#menu-btn{display:flex !important}}
 
     /* Container */
     .container{max-width:1200px;margin:0 auto;padding:0 24px}
@@ -280,7 +279,7 @@
   <link rel="stylesheet" href="assets/css/spotify-widget.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/apple-stability-fixes.css?v=20260402-final-design-v2" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/sitewide-design-system.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/contact-override.css" media="print" onload="this.media='all'" />
+
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
 
@@ -334,6 +333,7 @@
         <a href="#blog" class="nav-link" role="menuitem">Blogs</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
         <a href="#debug-runner-section" class="nav-link" role="menuitem">Game</a>
+        <a href="monitor.html" class="nav-link" role="menuitem">Monitor</a>
       </div>
       <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav" aria-label="Search">
@@ -441,7 +441,7 @@
 
             <div class="hero-text-block home-hero-text">
               <div class="hero-header mb-12">
-                <h2 class="hero-name text-apple-blue">Mangesh Raut</h2>
+                <h2 class="hero-name">Mangesh Raut</h2>
                 <h1 class="hero-title">Software Development Engineer</h1>
 
                 <!-- Vibe Coder Badge & Views Counter -->
@@ -537,7 +537,7 @@
 
             <div class="about-text">
               <span class="about-kicker" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: #86868b; text-transform: uppercase;">Software Engineer</span>
-              <h3 class="about-intro-title">Hello! I'm <span class="text-apple-blue">Mangesh Raut</span></h3>
+              <h3 class="about-intro-title">Hello! I'm <span>Mangesh Raut</span></h3>
               <p class="about-intro-text">
                 A passionate <strong>Software Engineer</strong> with 5+ years of experience in building scalable,
                 high-performance applications. I specialize in <strong>full-stack development</strong>, <strong>cloud
@@ -569,7 +569,7 @@
               <div class="activity-card">
                 <div class="activity-card-header">
                   <div class="activity-card-label">
-                    <i class="fa-solid fa-book-open" style="color: #ff9500;"></i> Reading
+                    <i class="fa-solid fa-book-open"></i> Reading
                   </div>
                 </div>
                 <div id="books-shelf" class="books-row" title="Scroll horizontally"></div>
@@ -579,7 +579,7 @@
               <div class="activity-card">
                 <div class="activity-card-header">
                   <div class="activity-card-label">
-                    <i class="fa-solid fa-tv" style="color: #0ea5d9;"></i> Series
+                    <i class="fa-solid fa-tv"></i> Series
                   </div>
                 </div>
                 <div id="series-shelf" class="media-row" title="Scroll horizontally"></div>
@@ -589,7 +589,7 @@
               <div class="activity-card">
                 <div class="activity-card-header">
                   <div class="activity-card-label">
-                    <i class="fa-solid fa-film" style="color: #bf5af2;"></i> Movies
+                    <i class="fa-solid fa-film"></i> Movies
                   </div>
                 </div>
                 <div id="movies-shelf" class="media-row" title="Scroll horizontally"></div>
@@ -599,7 +599,7 @@
               <div class="activity-card">
                  <div class="activity-card-header">
                   <div class="activity-card-label">
-                    <i class="fa-solid fa-trophy" style="color: #ff2d55;"></i> Following
+                    <i class="fa-solid fa-trophy"></i> Following
                   </div>
                 </div>
                 <div id="sports-shelf" class="sports-list"></div>
@@ -1534,202 +1534,158 @@
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
           </div>
         </div>
-        <div class="section-view-more-wrap w-full">
-          <button class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
-            onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
-            More <i class="fas fa-chevron-down"></i></button>
+        <div class="section-view-more-wrap w-full flex justify-center mt-12">
+          <button id="blog-view-more-static" class="btn button-secondary" style="display: none;">View More <i class="fas fa-chevron-down"></i></button>
         </div>
       </div>
     </section>
 
     <section id="contact" class="fade-in py-32">
       <div class="container">
-        <h2>Get In Touch</h2>
-        <div class="contact-grid">
-          <div class="contact-column">
-            <div class="contact-card contact-info-all">
-              <div class="contact-section">
-                <h3>Contact Information</h3>
-                <p class="contact-description">
-                  Feel free to reach out via email or connect on social media.
-                </p>
+        <h2 class="section-title text-center" id="contact-title">Get In Touch</h2>
 
-                <div class="contact-info-group">
-                  <div class="contact-item">
-                    <span class="contact-label">Email</span>
-                    <div class="contact-link-wrapper">
-                      <a href="mailto:mbr63@drexel.edu" class="contact-link-item">
-                        <div class="icon-box blue">
-                          <i class="fas fa-envelope"></i>
-                        </div>
-                        <span class="link-text">mbr63@drexel.edu</span>
-                      </a>
-                      <a href="mailto:mbr63drexel@gmail.com" class="contact-link-item">
-                        <div class="icon-box blue">
-                          <i class="fas fa-envelope"></i>
-                        </div>
-                        <span class="link-text">mbr63drexel@gmail.com</span>
-                      </a>
-                    </div>
-                  </div>
+        <!-- Premium Apple-Style Bento Grid v2 -->
+        <div class="contact-bento-grid-v2">
 
-                  <div class="contact-item">
-                    <span class="contact-label">Phone</span>
-                    <div class="contact-link-wrapper">
-                      <a href="https://wa.me/917276819090" target="_blank" rel="noopener noreferrer" class="contact-link-item">
-                        <div class="icon-box green">
-                          <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <span class="link-text">+91 727 681 9090 (WhatsApp)</span>
-                      </a>
-                      <a href="tel:+16095053500" class="contact-link-item">
-                        <div class="icon-box blue">
-                          <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <span class="link-text">+1 (609) 505-3500</span>
-                      </a>
-                    </div>
-                  </div>
-
-                  <div class="contact-item">
-                    <span class="contact-label">Location</span>
-                    <div class="contact-link-wrapper">
-                      <a href="https://www.google.com/maps/place/Pune,+Maharashtra,+India" target="_blank" rel="noopener noreferrer" class="contact-link-item">
-                        <div class="icon-box purple">
-                          <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <span class="link-text">Pune, MH, India 🇮🇳</span>
-                      </a>
-                      <a href="https://www.google.com/maps/place/Philadelphia,+PA,+USA" target="_blank" rel="noopener noreferrer" class="contact-link-item">
-                        <div class="icon-box purple">
-                          <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <span class="link-text">Philadelphia, PA, USA 🇺🇸</span>
-                      </a>
-                    </div>
-                  </div>
+          <!-- Identity Card (Span 1) -->
+          <div class="contact-section-card compact" id="card-identity">
+            <h3>Identity</h3>
+            <div class="contact-info-list">
+              <div class="contact-info-item">
+                <div class="contact-info-icon-box"><i class="fas fa-envelope"></i></div>
+                <div class="contact-info-content">
+                  <h4>Email</h4>
+                  <a href="mailto:mbr63@drexel.edu" class="block text-inherit hover:text-blue-500 transition-colors contact-link">mbr63@drexel.edu</a>
+                  <a href="mailto:mbr63drexel@gmail.com" class="block text-inherit hover:text-blue-500 transition-colors contact-link">mbr63drexel@gmail.com</a>
                 </div>
               </div>
 
-              <div class="contact-section support-section">
-                <div class="support-donation-card">
-                  <div class="donation-compact-header">
-                    <div class="ganesh-glow-container">
-                      <picture>
-                        <source
-                          type="image/webp"
-                          srcset="
-                            assets/images/optimized/ganesh-mobile.webp 320w,
-                            assets/images/optimized/ganesh-tablet.webp 768w,
-                            assets/images/optimized/ganesh-desktop.webp 1200w,
-                            assets/images/optimized/ganesh-hd.webp 1920w"
-                          sizes="(max-width: 768px) 100px, 150px" />
-                        <img src="assets/images/optimized/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img" title="🕉️ Om Gan Ganapataye Namah">
-                      </picture>
-                      <div class="glow-ring"></div>
-                    </div>
-                    <div class="donation-info">
-                      <h3>Support My Work</h3>
-                      <p class="blessing-text">🙏 May Ganpati Bappa bless your journey!</p>
-                    </div>
-                  </div>
-
-                  <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer" class="support-coffee-btn premium">
-                    <i class="fas fa-mug-hot"></i>
-                    <span>Buy Me a Coffee</span>
-                    <i class="fas fa-arrow-right arrow-icon"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="contact-section follow-section">
-                <h3>Follow Me</h3>
-                <p class="contact-description">Connect with me on social media platforms.</p>
-                <ul class="wrapper contact-social-wrapper justify-start pl-0 ml-0 gap-4 flex-wrap">
-                  <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><span class="tooltip">Facebook</span><svg viewBox="0 0 320 512" height="1.2em" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"></path></svg></a></li>
-                  <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer" aria-label="Github"><span class="tooltip">Github</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path></svg></a></li>
-                  <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><span class="tooltip">Instagram</span><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path></svg></a></li>
-                  <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" rel="noopener noreferrer" aria-label="Linkedin"><span class="tooltip">Linkedin</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M8 11l0 5"></path><path d="M8 8l0 .01"></path><path d="M12 16l0 -5"></path><path d="M16 16v-3a2 2 0 0 0 -4 0"></path></svg></a></li>
-                  <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><span class="tooltip">YouTube</span><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 42.15 48.284 48.472 42.591 11.486 213.371 11.486 213.371 11.486s170.78 0 213.371-11.486c23.497-6.322 42.003-24.822 48.284-48.472 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></svg></a></li>
-                  <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer" aria-label="X"><span class="tooltip">X</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg></a></li>
-                  <li class="icon leetcode"><a href="https://leetcode.com/u/mangeshraut712/" target="_blank" rel="noopener noreferrer" aria-label="LeetCode"><span class="tooltip">LeetCode</span><svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"></path></svg></a></li>
-                </ul>
-              </div>
-
-              <div class="contact-section">
-                <h3>Dream Companies</h3>
-                <div class="dream-companies-marquee">
-                  <div class="dream-companies-track">
-                    <div class="dream-company-item" title="Apple"><img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Google"><img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Microsoft"><img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Amazon"><img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Meta"><img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Tesla"><img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Netflix"><img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Adobe"><img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Apple"><img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Google"><img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Microsoft"><img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Amazon"><img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Meta"><img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Tesla"><img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Netflix"><img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-company-item" title="Adobe"><img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120" height="40" loading="lazy" decoding="async" fetchpriority="low"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="contact-section">
-                <h3>Dream Cars</h3>
-                <div class="dream-cars-marquee">
-                  <div class="dream-cars-track">
-                    <div class="dream-car-item" title="Mercedes-Benz"><img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="BMW"><img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Audi"><img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Rolls-Royce"><img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Porsche"><img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Lexus"><img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Land Rover"><img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Bentley"><img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Jaguar"><img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Aston Martin"><img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220" height="85" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Mercedes-Benz"><img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="BMW"><img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Audi"><img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Rolls-Royce"><img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Porsche"><img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Lexus"><img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Land Rover"><img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Bentley"><img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Jaguar"><img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120" loading="lazy" decoding="async" fetchpriority="low"></div>
-                    <div class="dream-car-item" title="Aston Martin"><img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220" height="85" loading="lazy" decoding="async" fetchpriority="low"></div>
-                  </div>
+              <div class="contact-info-item">
+                <div class="contact-info-icon-box"><i class="fas fa-phone"></i></div>
+                <div class="contact-info-content">
+                  <h4>Phone</h4>
+                  <a href="tel:+16095053500" class="block text-inherit hover:text-blue-500 transition-colors contact-link">+1 (609) 505-3500</a>
+                  <a href="tel:+917276819090" class="block text-inherit hover:text-blue-500 transition-colors contact-link">+91 727 681 9090 (WhatsApp)</a>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="contact-column">
-            <div class="contact-card contact-assistme-card">
-              <div class="icon-box blue contact-assistme-icon">
-                <i class="fas fa-robot"></i>
+          <!-- Support Card (Span 1) - Gita Quote Removed -->
+          <div class="contact-section-card compact text-center" id="card-support-v2">
+            <div class="support-header-v2">
+              <div class="ganesh-img-wrapper small mx-auto mb-2">
+                <img src="assets/images/optimized/ganesh.jpg" alt="Ganpati Bappa">
               </div>
-              <h3>Let's Talk!</h3>
-              <p class="contact-description">
-                Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
-              </p>
-              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
-                <i class="fas fa-message"></i>
-                Open AssistMe Flow
-              </button>
-              <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
+              <h4 class="text-orange-500 font-bold text-sm">Support My Work</h4>
+              <p class="text-[10px] italic opacity-70 leading-tight mb-3">🙏 May Ganpati Bappa bless your journey!</p>
             </div>
 
-            <div class="calendar-wrapper-clean">
+            <div class="support-buttons grid-2">
+              <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" class="btn-support coffee small">
+                <i class="fas fa-mug-hot"></i> Coffee
+              </a>
+              <a href="#" target="_blank" class="btn-support paypal small">
+                <i class="fab fa-paypal"></i> PayPal
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero CTA Card (Span 2) -->
+          <div class="contact-section-card solid-block hero-cta-card" id="card-hero-talk">
+            <div class="cta-content">
+              <h3>Let's build something extraordinary.</h3>
+              <p>Whether it's a revolutionary AI product, a high-performance web app, or just a technical coffee chat—I'm ready.</p>
+
+              <button id="contact-chatbot-cta" class="btn-premium-apple">
+                <i class="fas fa-sparkles mr-2"></i> Launch AssistMe Flow
+              </button>
+            </div>
+          </div>
+
+          <!-- Dream Companies (Span 2) -->
+          <div class="contact-section-card marquee-card" id="card-companies-v2">
+            <h3>Dream Companies</h3>
+            <div class="dream-marquee horizontal">
+              <div class="marquee-track">
+                <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo-img apple-logo">
+                <img src="assets/images/companies/google.svg" alt="Google" class="company-logo-img">
+                <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo-img">
+                <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo-img">
+                <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo-img apple-logo">
+              </div>
+            </div>
+          </div>
+
+          <!-- Dream Cars (Span 2) -->
+          <div class="contact-section-card marquee-card" id="card-cars-v2">
+            <h3>Dream Cars</h3>
+            <div class="dream-marquee horizontal reversed">
+              <div class="marquee-track">
+                <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes" class="car-logo-img">
+                <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo-img">
+                <img src="assets/images/cars/ferrari.png" alt="Ferrari" class="car-logo-img">
+                <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo-img">
+                <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes" class="car-logo-img">
+              </div>
+            </div>
+          </div>
+
+          <!-- Follow Me (Span 2) -->
+          <div class="contact-section-card compact" id="card-follow-v2">
+            <h3>Follow My Journey</h3>
+            <div class="social-bento-grid">
+              <a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank" class="social-bento-item linkedin">
+                <i class="fab fa-linkedin-in"></i>
+                <span>LinkedIn</span>
+              </a>
+              <a href="https://github.com/mangeshraut712" target="_blank" class="social-bento-item github">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+              </a>
+              <a href="https://leetcode.com/mangeshraut71298/" target="_blank" class="social-bento-item leetcode">
+                <i class="fas fa-code"></i>
+                <span>LeetCode</span>
+              </a>
+              <a href="https://x.com/mrcommando712" target="_blank" class="social-bento-item x">
+                <i class="fab fa-x-twitter"></i>
+                <span>X</span>
+              </a>
+              <a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank" class="social-bento-item facebook">
+                <i class="fab fa-facebook-f"></i>
+                <span>Facebook</span>
+              </a>
+              <a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank" class="social-bento-item instagram">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+              </a>
+              <a href="https://www.snapchat.com/add/mangeshraut712" target="_blank" class="social-bento-item snapchat">
+                <i class="fab fa-snapchat"></i>
+                <span>Snapchat</span>
+              </a>
+              <a href="https://www.youtube.com/@mangeshraut71298" target="_blank" class="social-bento-item youtube">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Availability Calendar (Span 2) -->
+          <div class="contact-section-card compact" id="card-calendar">
+            <h3 class="flex items-center gap-3">
+              <i class="fas fa-calendar-check text-blue-500"></i>
+              Availability Center
+            </h3>
+            <p class="text-sm text-gray-500 mb-6">View my current schedule or choose a slot for a meeting.</p>
+            <div class="calendar-container">
               <div id="calendar-widget"></div>
             </div>
           </div>
+
+        </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1823,30 +1779,38 @@
             <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
                 rel="noopener noreferrer" aria-label="Facebook">
                 <span class="tooltip">Facebook</span><i class="fab fa-facebook-f"></i></a></li>
-            <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
-                rel="noopener noreferrer" aria-label="Github">
-                <span class="tooltip">Github</span>
-                <i class="fab fa-github"></i></a></li>
             <li class="icon instagram"><a href="https://www.instagram.com/mangesh_d_charming_guy/" target="_blank"
                 rel="noopener noreferrer" aria-label="Instagram">
                 <span class="tooltip">Instagram</span>
                 <i class="fab fa-instagram"></i></a></li>
-            <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
-                rel="noopener noreferrer" aria-label="Linkedin">
-                <span class="tooltip">Linkedin</span>
-                <i class="fab fa-linkedin-in"></i></a></li>
+            <li class="icon snapchat"><a href="https://www.snapchat.com/add/mangeshraut712" target="_blank"
+                rel="noopener noreferrer" aria-label="Snapchat">
+                <span class="tooltip">Snapchat</span>
+                <i class="fab fa-snapchat"></i></a></li>
             <li class="icon youtube"><a href="https://www.youtube.com/@mangeshraut71298" target="_blank"
                 rel="noopener noreferrer" aria-label="YouTube">
                 <span class="tooltip">YouTube</span>
                 <i class="fab fa-youtube"></i></a></li>
+            <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
+                rel="noopener noreferrer" aria-label="Linkedin">
+                <span class="tooltip">Linkedin</span>
+                <i class="fab fa-linkedin-in"></i></a></li>
             <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"
                 aria-label="X">
                 <span class="tooltip">X</span>
                 <i class="fab fa-x-twitter"></i></a></li>
-            <li class="icon leetcode"><a href="links/leetcode.html" target="_blank"
+            <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
+                rel="noopener noreferrer" aria-label="Github">
+                <span class="tooltip">GitHub</span>
+                <i class="fab fa-github"></i></a></li>
+            <li class="icon leetcode"><a href="https://leetcode.com/mangeshraut71298/" target="_blank"
                 rel="noopener noreferrer" aria-label="LeetCode">
                 <span class="tooltip">LeetCode</span>
                 <i class="fas fa-code"></i></a></li>
+            <li class="icon monitor"><a href="monitor.html" target="_blank"
+                rel="noopener noreferrer" aria-label="System Monitor">
+                <span class="tooltip">System Monitor</span>
+                <i class="fas fa-microchip"></i></a></li>
           </ul>
         </div>
 
@@ -1943,6 +1907,35 @@
             });
           });
           observer.observe(gameSection);
+        }
+
+        // Lazy load Blog module when visible
+        const blogSection = document.querySelector('#blog');
+        if (blogSection) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                import('./js/modules/blog-loader.js');
+                observer.disconnect();
+              }
+            });
+          });
+          observer.observe(blogSection);
+        }
+
+        // Lazy load Calendar and Contact modules when visible
+        const contactSection = document.querySelector('#contact');
+        if (contactSection) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                import('./js/modules/calendar.js');
+                import('./js/modules/contact.js');
+                observer.disconnect();
+              }
+            });
+          });
+          observer.observe(contactSection);
         }
 
         document.addEventListener('click', () => {

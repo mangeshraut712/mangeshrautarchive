@@ -2,18 +2,19 @@
 
 @layer tokens {
   :root {
-    --apple-blue: #0071e3;
-    --apple-blue-light: #0077ed;
-    --apple-blue-dark: #0051a8;
-    --apple-indigo: #5856d6;
-    --apple-purple: #af52de;
-    --apple-pink: #ff2d55;
-    --apple-red: #ff3b30;
-    --apple-orange: #ff9500;
-    --apple-yellow: #ffcc00;
-    --apple-green: #34c759;
-    --apple-teal: #5ac8fa;
-    --apple-cyan: #32ade6;
+    /* Neutralized Monochrome Palette */
+    --apple-blue: #000000;
+    --apple-blue-light: #333333;
+    --apple-blue-dark: #111111;
+    --apple-indigo: #444444;
+    --apple-purple: #555555;
+    --apple-pink: #666666;
+    --apple-red: #777777;
+    --apple-orange: #888888;
+    --apple-yellow: #999999;
+    --apple-green: #444444;
+    --apple-teal: #666666;
+    --apple-cyan: #555555;
     --apple-gray: #8e8e93;
     --apple-gray-2: #aeaeb2;
     --apple-gray-3: #c7c7cc;
@@ -96,6 +97,18 @@
     --fill: var(--fill-dark);
     --fill-secondary: var(--fill-secondary-dark);
     --fill-tertiary: var(--fill-tertiary-dark);
+    --apple-blue: #ffffff;
+    --apple-blue-light: #f5f5f7;
+    --apple-blue-dark: #d1d1d6;
+    --apple-indigo: #a1a1a6;
+    --apple-purple: #86868b;
+    --apple-pink: #d1d1d6;
+    --apple-red: #8e8e93;
+    --apple-orange: #a1a1a6;
+    --apple-yellow: #c7c7cc;
+    --apple-green: #a1a1a6;
+    --apple-teal: #d1d1d6;
+    --apple-cyan: #a1a1a6;
     --glass-bg: var(--glass-bg-dark);
     --glass-border: var(--glass-border-dark);
     --shadow-sm: var(--shadow-sm-dark);
@@ -461,9 +474,9 @@
     *,
     ::after,
     ::before {
-      animation-duration: 0.01ms ;
-      animation-iteration-count: 1 ;
-      transition-duration: 0.01ms ;
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+      transition-duration: 0.01ms;
     }
   }
 }

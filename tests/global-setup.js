@@ -3,7 +3,7 @@ import { chromium } from '@playwright/test';
 
 async function globalSetup() {
   console.log('🔧 Setting up Playwright test environment for CI...');
-  
+
   // Optimize browser launch for CI
   const browser = await chromium.launch({
     headless: true,
@@ -33,7 +33,7 @@ async function globalSetup() {
   await page.goto('about:blank');
   await context.close();
   await browser.close();
-  
+
   console.log('✅ Playwright test environment setup complete');
 }
 

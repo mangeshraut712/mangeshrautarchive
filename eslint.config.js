@@ -10,6 +10,7 @@ export default [
       'build/**',
       'node_modules/**',
       'venv/**',
+      'api-monitor/**', // Separate API monitor project
       'src/assets/**',
       'src/js/core/chat.js',
       'src/js/core/script.js',
