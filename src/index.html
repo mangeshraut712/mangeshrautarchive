@@ -48,7 +48,9 @@
 
    <!-- Preload critical resources -->
    <link rel="preload" as="image" href="assets/images/optimized/profile-mobile.webp" type="image/webp" fetchpriority="high" />
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" as="style" />
+   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" as="style" />
+   <link rel="preload" href="assets/css/style.css" as="style" />
+   <link rel="preload" href="js/core/bootstrap.js" as="script" />
 
   <!-- (duplicate critical style block removed to eliminate forced reflow) -->
 
@@ -501,7 +503,7 @@
                       assets/images/optimized/graduation-desktop.webp 1200w,
                       assets/images/optimized/graduation-hd.webp 1920w"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
-                  <img src="assets/images/optimized/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="600"
+                   <img src="assets/images/optimized/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="600" loading="lazy"
                     height="600" loading="lazy" decoding="async" fetchpriority="low" />
                 </picture>
                 <div class="about-image-badge" data-parallax="scroll" data-parallax-speed="0.03" data-parallax-max="8">
@@ -1359,7 +1361,7 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/hackerrank.png" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/hackerrank.png" class="certification-logo" width="40" height="40" loading="lazy"
                   loading="lazy" decoding="async" alt="HackerRank">
               </div>
               <div class="certification-info">
@@ -1377,7 +1379,7 @@
             <span class="certification-category">Marketing</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/apple.png" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/apple.png" class="certification-logo" width="40" height="40" loading="lazy"
                   loading="lazy" decoding="async" alt="Apple">
               </div>
               <div class="certification-info">
@@ -1622,11 +1624,11 @@
             <h3>Dream Cars</h3>
             <div class="dream-marquee horizontal reversed">
               <div class="marquee-track">
-                <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes" class="car-logo-img">
-                <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo-img">
-                <img src="assets/images/cars/ferrari.png" alt="Ferrari" class="car-logo-img">
-                <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo-img">
-                <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes" class="car-logo-img">
+                <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes" class="car-logo-img" loading="lazy">
+                <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo-img" loading="lazy">
+                <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo-img" loading="lazy">
+                <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo-img" loading="lazy">
+                <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes" class="car-logo-img" loading="lazy">
               </div>
             </div>
           </div>
