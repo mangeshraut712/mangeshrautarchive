@@ -1530,7 +1530,31 @@ async def get_github_repos_alias(
     return await get_github_repos_public(username, "updated", limit, no_forks)
 
 
-# Analytics views endpoint - GET current stats
+# Additional alias for /github/repos/public (frontend calls this)
+@app.get("/github/repos/public")
+async def get_github_repos_public_alias(
+    username: str = "mangeshraut712",
+    sort: str = "updated",
+    limit: int = 100,
+    no_forks: bool = False
+):
+    """Alias for /github/repos/public endpoint (without /api prefix)"""
+    return await get_github_repos_public(username, sort, limit, no_forks)
+
+
+# Alias for old analytics paths - support both GET and OPTIONS for CORS
+@app.options("/api/analytics/views")
+async def options_analytics_views():
+    """Handle CORS preflight for analytics endpoint"""
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        }
+    )
+
 @app.get("/api/analytics/views")
 async def get_analytics_views():
     """
@@ -1575,7 +1599,12 @@ async def post_analytics_view(request: Request):
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
 
 
-# Alias for old analytics paths
+# Alias for old analytics paths - support both GET and OPTIONS for CORS
+@app.options("/analytics/views")
+async def options_analytics_views_alias():
+    """Handle CORS preflight for analytics endpoint"""
+    return await options_analytics_views()
+
 @app.get("/analytics/views")
 async def get_analytics_views_alias():
     """Alias for old frontend code that doesn't use /api prefix"""
