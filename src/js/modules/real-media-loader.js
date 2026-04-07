@@ -132,20 +132,44 @@ class RealMediaLoader {
    * Get Open Library cover for books with fallback
    */
   getOpenLibraryCover(isbn, title) {
-    // Open Library covers - use L (large) size for better quality, with fallback
-    return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
+    // Open Library covers - try without default=false first to get real covers
+    // If missing, Open Library returns a placeholder which is better than broken image
+    return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
   }
 
   /**
-   * Check if Open Library cover exists
+   * Get Google Books cover as fallback
    */
-  async checkCoverExists(url) {
-    try {
-      const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
-      return response.ok;
-    } catch (e) {
-      return false;
-    }
+  getGoogleBooksCover(isbn) {
+    // Google Books API cover URL format
+    return `https://books.google.com/books/content?vid=isbn:${isbn}&printsec=frontcover&img=1&zoom=1`;
+  }
+
+  /**
+   * Generate a book-themed SVG placeholder
+   */
+  generateBookPlaceholder(title, author) {
+    const encodedTitle = encodeURIComponent(title.substring(0, 18));
+    const encodedAuthor = encodeURIComponent(author?.substring(0, 20) || '');
+    
+    // Create a nice book-style SVG placeholder
+    return `data:image/svg+xml,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+        <defs>
+          <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2a2a2a"/>
+            <stop offset="100%" style="stop-color:#1a1a1a"/>
+          </linearGradient>
+        </defs>
+        <rect fill="url(#bg)" width="200" height="300"/>
+        <rect fill="#3a3a3a" x="15" y="20" width="170" height="240" rx="3"/>
+        <rect fill="#4a4a4a" x="20" y="25" width="160" height="230" rx="2"/>
+        <text fill="#888" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" x="100" y="100" text-anchor="middle">${title.substring(0, 25)}</text>
+        <text fill="#666" font-family="system-ui, -apple-system, sans-serif" font-size="9" x="100" y="120" text-anchor="middle">${author ? author.substring(0, 30) : ''}</text>
+        <rect fill="#555" x="25" y="140" width="150" height="1"/>
+        <text fill="#555" font-family="system-ui, -apple-system, sans-serif" font-size="8" x="100" y="240" text-anchor="middle">Book Cover</text>
+      </svg>
+    `)}`;
   }
 
   /**
@@ -164,36 +188,68 @@ class RealMediaLoader {
   }
 
   /**
-   * Render shows and movies with real posters
+   * Generate a media placeholder with better styling
+   */
+  generateMediaPlaceholder(title, type) {
+    const encodedTitle = encodeURIComponent(title.substring(0, 20));
+    const isSeries = type === 'Series';
+    const icon = isSeries ? '📺' : '🎬';
+    const bgColor = isSeries ? '#1e3a5f' : '#3d1e1e';
+    const accentColor = isSeries ? '#4a90d9' : '#d94a4a';
+    
+    return `data:image/svg+xml,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:${bgColor}"/>
+            <stop offset="100%" style="stop-color:#1a1a2e"/>
+          </linearGradient>
+        </defs>
+        <rect fill="url(#grad)" width="200" height="300"/>
+        <rect fill="${accentColor}" x="0" y="0" width="200" height="4" opacity="0.8"/>
+        <text font-size="60" x="100" y="130" text-anchor="middle">${icon}</text>
+        <text fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" x="100" y="180" text-anchor="middle" opacity="0.9">${title.substring(0, 22)}</text>
+        <text fill="#888" font-family="system-ui, -apple-system, sans-serif" font-size="11" x="100" y="205" text-anchor="middle">${type}</text>
+        <rect fill="${accentColor}" x="60" y="240" width="80" height="2" opacity="0.5"/>
+      </svg>
+    `)}`;
+  }
+
+  /**
+   * Render shows and movies with real posters and better error handling
    */
   async renderShowsAndMovies(container) {
-    // Generate a media-themed SVG placeholder as data URL
-    const getMediaPlaceholder = (title, type) => {
-      const encodedTitle = encodeURIComponent(title.substring(0, 20));
-      const icon = type === 'Series' ? '📺' : '🎬';
-      return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23f5f5f7' width='200' height='300'/%3E%3Crect fill='%23e8e8ed' x='20' y='40' width='160' height='220' rx='4'/%3E%3Ctext font-size='40' x='100' y='120' text-anchor='middle'%3E${icon}%3C/text%3E%3Ctext fill='%2386868b' font-family='system-ui' font-size='14' x='100' y='180' text-anchor='middle'%3E${encodedTitle}%3C/text%3E%3Ctext fill='%23a1a1a6' font-family='system-ui' font-size='12' x='100' y='210' text-anchor='middle'%3E${type}%3C/text%3E%3C/svg%3E`;
-    };
-
     const allMedia = [...this.mediaData.shows, ...this.mediaData.movies];
-    const html = [];
-
-    for (const item of allMedia) {
-      // Try to get real poster with explicit type
-      let posterUrl = await this.getTMDBPoster(item.id, item.title, item.type);
-      
-      // Use fallback SVG if needed (inline, no external service)
-      if (!posterUrl) {
-        posterUrl = getMediaPlaceholder(item.title, item.type);
+    
+    // Pre-fetch all posters in parallel with better error handling
+    const posterPromises = allMedia.map(async (item) => {
+      try {
+        let posterUrl = await this.getTMDBPoster(item.id, item.title, item.type);
+        return { item, posterUrl, error: null };
+      } catch (err) {
+        console.warn(`[RealMediaLoader] Failed to load poster for ${item.title}:`, err);
+        return { item, posterUrl: null, error: err };
       }
-
+    });
+    
+    const results = await Promise.all(posterPromises);
+    
+    const html = results.map(({ item, posterUrl }) => {
       const shortTitle = item.title.length > 15 ? item.title.substring(0, 12) + '...' : item.title;
-      const fallbackSvg = getMediaPlaceholder(item.title, item.type);
+      const placeholderUrl = this.generateMediaPlaceholder(item.title, item.type);
+      
+      // Use poster URL or fallback to placeholder
+      const finalUrl = posterUrl || placeholderUrl;
+      
+      // Create a chain: try poster → placeholder (if poster fails)
+      const onErrorAttr = posterUrl 
+        ? `onerror="this.src='${placeholderUrl}'; this.onerror=null;"`
+        : '';
 
-      html.push(`
+      return `
         <div class="media-card">
           <div class="media-poster">
-            <img src="${posterUrl}" alt="${item.title}" loading="lazy" 
-              onerror="this.src='${fallbackSvg}'; this.onerror=null;" />
+            <img src="${finalUrl}" alt="${item.title}" loading="lazy" ${onErrorAttr} />
             <span class="media-badge">${item.type}</span>
           </div>
           <div class="media-info">
@@ -203,32 +259,32 @@ class RealMediaLoader {
             </a>
           </div>
         </div>
-      `);
-    }
+      `;
+    }).join('');
 
-    container.innerHTML = html.join('');
+    container.innerHTML = html;
   }
 
   /**
-   * Render books with real covers
+   * Render books with real covers and multiple fallback strategies
    */
   async renderBooks(container) {
-    // Generate a book-themed SVG placeholder as data URL
-    const getBookPlaceholder = (title) => {
-      const encodedTitle = encodeURIComponent(title.substring(0, 20));
-      return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23f5f5f7' width='200' height='300'/%3E%3Crect fill='%23e8e8ed' x='20' y='40' width='160' height='220' rx='4'/%3E%3Ctext fill='%2386868b' font-family='system-ui' font-size='14' x='100' y='150' text-anchor='middle'%3E${encodedTitle}%3C/text%3E%3Ctext fill='%23a1a1a6' font-family='system-ui' font-size='12' x='100' y='180' text-anchor='middle'%3EBook Cover%3C/text%3E%3C/svg%3E`;
-    };
-
     const html = await Promise.all(this.mediaData.books.map(async (book) => {
-      const coverUrl = this.getOpenLibraryCover(book.isbn, book.title);
       const shortTitle = book.title.length > 15 ? book.title.substring(0, 12) + '...' : book.title;
-      const placeholderUrl = getBookPlaceholder(book.title);
+      
+      // Try multiple cover sources in order
+      const openLibUrl = this.getOpenLibraryCover(book.isbn);
+      const googleUrl = this.getGoogleBooksCover(book.isbn);
+      const placeholderUrl = this.generateBookPlaceholder(book.title, book.author);
+      
+      // Build onerror chain: try Open Library → Google Books → placeholder
+      const onErrorChain = `this.onerror=function(){this.src='${googleUrl}';this.onerror=function(){this.src='${placeholderUrl}';this.onerror=null;}}`;
 
       return `
         <div class="media-card book-card">
           <div class="media-poster">
-            <img src="${coverUrl}" alt="${book.title}" loading="lazy"
-              onerror="this.src='${placeholderUrl}'; this.onerror=null;" />
+            <img src="${openLibUrl}" alt="${book.title}" loading="lazy" 
+              ${onErrorChain} />
             <span class="media-badge">${book.type}</span>
           </div>
           <div class="media-info">
