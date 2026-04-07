@@ -475,7 +475,7 @@ Built with amazing open-source tools:
 ```mermaid
 graph TD
     User([👤 User]) <-->|HTTPS| LB[🌐 Edge Proxy / Vercel]
-    
+
     subgraph Frontend [🎨 Glassmorphism UI - ESNext]
         LB <--> UI[Main App / Layout]
         UI <--> Modules{Feature Modules}
