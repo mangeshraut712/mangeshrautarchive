@@ -20,7 +20,10 @@ class BlogLoader {
   }
 
   renderPosts() {
-    this.container.innerHTML = blogPosts
+    // Sort posts by date (most recent first)
+    const sortedPosts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    this.container.innerHTML = sortedPosts
       .map(
         post => `
             <article class="blog-card apple-3d-project" data-id="${post.id}">
