@@ -50,6 +50,7 @@ html {
    ============================================ */
 
 /* Responsive viewport settings */
+/* stylelint-disable at-rule-no-vendor-prefix */
 @viewport {
   width: device-width;
   zoom: 1;
@@ -64,6 +65,7 @@ html {
   width: device-width;
   zoom: 1;
 }
+/* stylelint-enable at-rule-no-vendor-prefix */
 
 /* ============================================
    FLEXBOX & GRID CROSS-BROWSER SUPPORT
@@ -362,6 +364,7 @@ body {
    ============================================ */
 
 /* Support for high-DPI screens */
+/* stylelint-disable media-feature-name-no-vendor-prefix */
 @media (-webkit-min-device-pixel-ratio: 2), 
        (min-resolution: 192dpi),
        (min-resolution: 2dppx) {
@@ -370,6 +373,7 @@ body {
     image-rendering: crisp-edges;
   }
 }
+/* stylelint-enable media-feature-name-no-vendor-prefix */
 
 /* ============================================
    PRINT STYLES

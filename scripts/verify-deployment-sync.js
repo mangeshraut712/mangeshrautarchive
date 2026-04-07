@@ -50,7 +50,7 @@ function log(message, type = 'info') {
   }
 }
 
-function calculateFileHash(filepath) {
+function _calculateFileHash(filepath) {
   const fileBuffer = fs.readFileSync(filepath);
   const hashSum = crypto.createHash('sha256');
   hashSum.update(fileBuffer);
