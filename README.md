@@ -26,7 +26,6 @@
 - [Tech Stack](#️-tech-stack)
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
-- [Engineering Docs](#-engineering-docs)
 - [Scripts](#-available-scripts)
 - [Quality Gates](#-quality--performance-gates)
 - [Contributing](#-contributing)
@@ -92,8 +91,8 @@ A curated showcase of entertainment preferences with streaming links:
 
 - **Shows & Movies Tab** — 30+ titles with direct streaming platform links
   - Indian TV: Taarak Mehta, CID, Mahabharat, Scam 1992, Mirzapur, The Family Man
-  - International: Breaking Bad, Money Heist, Narcos, Squid Game, Stranger Things, Crash Landing on You
-  - Movies: KGF, RRR, Dangal, Vikram, Jailer, Kantara, Baahubali, Pushpa, Avengers, and more
+  - International: Breaking Bad, Money Heist, Narcos, Squid Game, Stranger Things, F1: Drive to Survive
+  - Movies: KGF, RRR, Dangal, Vikram, Jailer, Kantara, Baahubali, Pushpa, Avengers, The Social Network, and more
 - **Music Tab** — Last.fm integration showing Now Playing and recent tracks
   - Real-time Spotify sync via Last.fm API
   - Album art display with direct Spotify links
@@ -105,7 +104,7 @@ A curated showcase of entertainment preferences with streaming links:
 
 </details>
 
-### � Music Integration
+### 🎵 Music Integration
 
 <details>
 <summary><b>🎧 Click to explore Music features</b></summary>
@@ -121,7 +120,7 @@ Real-time music tracking powered by Last.fm:
 
 </details>
 
-### �🎮 Debug Runner — Interactive Canvas Game
+### 🎮 Debug Runner — Interactive Canvas Game
 
 <details>
 <summary><b>🕹️ Click to explore game features</b></summary>
@@ -155,7 +154,8 @@ Real-time project showcase that automatically stays current:
 - 🎨 **Beautiful Cards** — Compact Apple 2026 design with smooth hover animations
 - 🔖 **Dynamic Tags** — Topic badges automatically pulled from repository metadata
 - ⚡ **Intelligent Caching** — 10-minute client + server cache window to reduce API pressure
-- 🛡️ **Backend Proxy First** — Uses `/api/github/repos/public` + `/api/github/proxy` before direct GitHub fallback
+- 🛡️ **Backend Proxy** — Uses `/api/github/repos` + `/api/github/proxy` for secure API calls
+- 🎯 **Backend Analytics** — Real-time view counter with persistent storage
 - 📱 **Mobile-Safe Layout** — Projects toolbar and cards are constrained to viewport widths on phones
 - 🔎 **Fuzzy Search** — Project search supports close matches (for typo-tolerant lookup)
 - 🕒 **Compact Update Chip** — Updated labels use `relative + absolute` format (example: `3w ago · Feb 4, 2026`)
@@ -213,10 +213,10 @@ Real-time project showcase that automatically stays current:
 
 🚀 **[mangeshraut.pro](https://mangeshraut.pro)** — Main portfolio (custom domain)
 
-### Alternative Deployments
+### Mirror Deployments
 
 - 📄 **[GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/)** — Static mirror
-- ⚡ **[Vercel](https://mangeshrautarchive.vercel.app)** — Edge deployment
+- ⚡ **[Vercel](https://mangeshrautarchive.vercel.app)** — Edge deployment with serverless functions
 
 > **Note:** All deployments are identical in functionality. The custom domain offers the best performance and SEO.
 
@@ -351,97 +351,60 @@ npm run build:css
 
 ## 📂 Project Structure
 
-Detailed conventions live in [`docs/PROJECT_STRUCTURE.md`](docs/PROJECT_STRUCTURE.md).
-
 ```text
 mangeshrautarchive/
 ├── api/                        # FastAPI backend + serverless handlers
+│   ├── index.py               # Main FastAPI application
+│   ├── memory_manager.py      # Personal intelligence memory system
+│   ├── monitoring.py          # System monitoring & health checks
+│   └── integrations/          # GitHub connector & external APIs
 ├── src/                        # Frontend source
-│   ├── assets/                 # CSS, images, icons, downloadable files
+│   ├── index.html             # Main portfolio page
+│   ├── assets/                # CSS, images, icons, downloadable files
+│   │   ├── css/              # Stylesheets (108KB+ of optimized CSS)
+│   │   └── files/            # Resume PDF & downloadable assets
 │   └── js/
-│       ├── core/               # App bootstrap + orchestration
-│       ├── modules/            # Feature modules
-│       ├── services/           # Shared runtime services
-│       ├── components/         # Reusable UI components
-│       └── utils/              # Small focused helpers
-├── scripts/                    # Build/dev/QA/security scripts
-├── tests/e2e/                  # Playwright smoke + a11y + post-deploy checks
-├── docs/
-│   ├── README.md               # Documentation index
-│   ├── PROJECT_STRUCTURE.md    # Folder and ownership conventions
-│   └── testing/                # Chrome QA runbooks/templates
-├── .github/workflows/          # CI/CD and monitoring workflows
-├── package.json                # Node scripts/dependencies
-├── package-lock.json           # Reproducible npm installs (required by npm ci)
-├── .dockerignore               # Pruned Docker build context
-└── requirements.txt            # Python dependencies
+│       ├── core/              # App bootstrap + orchestration
+│       ├── modules/           # Feature modules (blog, chatbot, media)
+│       ├── services/          # Shared runtime services
+│       ├── components/        # Reusable UI components
+│       └── utils/             # Small focused helpers
+├── scripts/                   # Build/dev/QA/security scripts
+│   ├── build.js              # Production build script
+│   ├── security-check.js     # Secret scanning
+│   └── local-server.js       # Development server
+├── tests/e2e/                # Playwright smoke + a11y + post-deploy
+├── .github/workflows/         # CI/CD automation
+├── package.json              # Node scripts/dependencies
+├── requirements.txt          # Python dependencies
+├── vercel.json             # Vercel deployment config
+└── README.md               # This file
 ```
 
 ### Structure Rules
 
-- Keep startup wiring in `src/js/core/bootstrap.js`.
-- Add product behavior under `src/js/modules/*`.
-- Keep shared primitives in `src/js/services/*` and UI pieces in `src/js/components/*`.
-- Keep generated output (`dist/`, `artifacts/`, `test-results/`) out of commits.
+- Keep startup wiring in `src/js/core/bootstrap.js`
+- Add product behavior under `src/js/modules/*`
+- Keep shared primitives in `src/js/services/*` and UI pieces in `src/js/components/*`
+- Keep generated output (`dist/`, `artifacts/`, `test-results/`) out of commits
 
 ---
 
-## 🧭 Engineering Docs
+## � Quality & Performance Gates
 
-- `docs/README.md` — Documentation index
-- `docs/PROJECT_STRUCTURE.md` — Source layout and ownership rules
+Release readiness is validated by executable gates:
 
----
+- `npm run qa:smoke` — E2E smoke tests
+- `npm run qa:a11y` — Accessibility checks
+- `npm run qa:lighthouse:desktop` — Desktop performance audit
+- `npm run qa:lighthouse:mobile` — Mobile performance audit
+- `npm run qa:chrome` — Full Chrome QA gate (smoke + a11y + perf)
+- `npm run qa:prod-ready` — Full pre-release gate (security + lint + test + qa)lidation
 
-## 📜 Available Scripts
+Current Lighthouse thresholds:
 
-| Command                          | Description                                                        |
-| -------------------------------- | ------------------------------------------------------------------ |
-| `npm run dev`                    | 🚀 Start full stack (frontend + backend)                           |
-| `npm run dev:frontend`           | 🎨 Start frontend server only (port 3000)                          |
-| `npm run dev:backend`            | 🔧 Start Python backend only (port 8000)                           |
-| `npm run build`                  | 📦 Build production assets                                         |
-| `npm run build:css`              | 🎨 Compile Tailwind CSS                                            |
-| `npm run lint`                   | 🔍 Run ESLint code quality checks                                  |
-| `npm run lint:fix`               | ✨ Auto-fix linting issues                                         |
-| `npm run lint:css`               | 🧹 Run Stylelint across CSS                                        |
-| `npm run format`                 | 🧼 Format codebase with Prettier                                   |
-| `npm run format:check`           | ✅ Verify Prettier formatting without modifying files              |
-| `npm run check`                  | ✅ Run JS lint + tests                                             |
-| `npm test`                       | 🧪 Run Vitest test suite                                           |
-| `npm run test:e2e:chrome`        | 🧪 Run Playwright smoke suite on Chromium                          |
-| `npm run test:e2e:mobile-chrome` | 📱 Run Playwright smoke suite on Mobile Chrome                     |
-| `npm run test:a11y:chrome`       | ♿ Run accessibility checks on Chromium                            |
-| `npm run qa:smoke`               | 🌐 Playwright smoke tests on Chrome                                |
-| `npm run qa:smoke:mobile`        | 📱 Playwright smoke tests on Mobile Chrome emulation               |
-| `npm run qa:a11y`                | ♿ Axe accessibility baseline on Chrome                            |
-| `npm run qa:lighthouse:desktop`  | ⚡ Lighthouse desktop gate                                         |
-| `npm run qa:lighthouse:mobile`   | 📱 Lighthouse mobile gate                                          |
-| `npm run qa:postdeploy`          | 🧪 Smoke + a11y check against deployed URL (`PLAYWRIGHT_BASE_URL`) |
-| `npm run qa:chrome`              | 🧭 Full Chrome QA gate (smoke + a11y + perf)                       |
-| `npm run qa:prod-ready`          | 🛡️ Full pre-release gate                                           |
-| `npm run optimize-images`        | 🖼️ Optimize image assets                                           |
-| `npm run security-check`         | 🔒 Scan for exposed secrets                                        |
-| `npm run audit:css-duplicates`   | 🔎 Report exact duplicate CSS rule blocks                          |
-| `npm run clean`                  | 🧽 Remove generated build/test artifacts and Python caches         |
-
----
-
-## 🧪 Quality & Performance Gates
-
-Release readiness is validated by executable gates (not static README snapshots):
-
-- `npm run qa:smoke`
-- `npm run qa:a11y`
-- `npm run qa:lighthouse:desktop`
-- `npm run qa:lighthouse:mobile`
-- `npm run qa:chrome`
-- `npm run qa:prod-ready`
-
-Current configured Lighthouse release floor:
-
-- Desktop: Perf `>= 86`, A11y/Best Practices/SEO `>= 90`
-- Mobile: Perf `>= 60`, A11y/Best Practices/SEO `>= 90`
+- **Desktop:** Performance ≥ 86, Accessibility/Best Practices/SEO ≥ 90
+- **Mobile:** Performance ≥ 60, Accessibility/Best Practices/SEO ≥ 90
 
 ### Performance Practices
 
@@ -449,7 +412,8 @@ Current configured Lighthouse release floor:
 - ✅ **Code Splitting** — Modular JavaScript architecture
 - ✅ **Asset Optimization** — WebP images, minified CSS/JS
 - ✅ **CDN Delivery** — Static assets served via edge network
-- ✅ **Caching Strategy** — Service worker with smart cache-first approach
+- ✅ **Backend Proxy** — API calls routed through serverless functions
+- ✅ **Smart Caching** — 10-minute cache for GitHub API, persistent analytics
 - ✅ **Zero Layout Shift** — Proper image dimensions and placeholders
 
 ---
@@ -508,8 +472,6 @@ Built with amazing open-source tools:
 ### ⭐ If you found this project helpful, please give it a star!
 
 **Connect:** [Portfolio](https://mangeshraut.pro) • [LinkedIn](https://linkedin.com/in/mangeshraut71298) • [GitHub](https://github.com/mangeshraut712) • [Snapchat](https://snapchat.com/t/nk1K673G) • [Email](mailto:mbr63@drexel.edu)
-
----
 
 **© 2026 Mangesh Raut • Built with ❤️ in Pennsylvania**
 
