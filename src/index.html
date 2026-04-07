@@ -376,10 +376,25 @@
                       musicCard: document.getElementById('music-card')
                     };
                     
+                    let errorCount = 0;
+                    const MAX_ERRORS = 3;
+                    
                     async function fetchNowPlaying() {
+                      // Stop trying after repeated failures
+                      if (errorCount >= MAX_ERRORS) return;
+                      
                       try {
-                        const response = await fetch(API_URL);
-                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 5000);
+                        
+                        const response = await fetch(API_URL, { signal: controller.signal });
+                        clearTimeout(timeoutId);
+                        
+                        if (!response.ok) {
+                          errorCount++;
+                          if (errorCount >= MAX_ERRORS) showOfflineState();
+                          return;
+                        }
                         
                         const data = await response.json();
                         const tracks = data.recenttracks?.track;
@@ -388,6 +403,9 @@
                           showOfflineState();
                           return;
                         }
+                        
+                        // Reset error count on success
+                        errorCount = 0;
                         
                         // Get first track (could be now playing or most recent)
                         const track = Array.isArray(tracks) ? tracks[0] : tracks;
@@ -427,11 +445,9 @@
                           elements.musicCard.classList.remove('is-playing');
                         }
                         
-                        console.log('✓ Last.fm: Loaded track', trackName, isNowPlaying ? '(Now Playing)' : '');
-                        
                       } catch (error) {
-                        console.error('Last.fm fetch error:', error);
-                        showOfflineState();
+                        errorCount++;
+                        if (errorCount >= MAX_ERRORS) showOfflineState();
                       }
                     }
                     
@@ -440,22 +456,22 @@
                       elements.artistName.textContent = 'Connect Spotify for more';
                       elements.statusText.textContent = 'Spotify';
                       elements.playingIndicator.classList.remove('active');
-                      elements.albumArt.src = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                      elements.musicCard.classList.remove('is-playing');
                     }
                     
                     // Initial fetch
                     fetchNowPlaying();
                     
-                    // Refresh every 30 seconds when visible
+                    // Refresh every 60 seconds (not 30 to reduce API calls)
                     setInterval(() => {
-                      if (document.visibilityState === 'visible') {
+                      if (document.visibilityState === 'visible' && errorCount < MAX_ERRORS) {
                         fetchNowPlaying();
                       }
-                    }, 30000);
+                    }, 60000);
                     
                     // Refresh when page becomes visible
                     document.addEventListener('visibilitychange', () => {
-                      if (document.visibilityState === 'visible') {
+                      if (document.visibilityState === 'visible' && errorCount < MAX_ERRORS) {
                         fetchNowPlaying();
                       }
                     });
@@ -2391,10 +2407,12 @@
                 <script>
                   // Last.fm Now Playing Integration
                   (function() {
-                    // Using credentials from .env file
                     const LASTFM_USER = 'mbr63';
                     const LASTFM_API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
                     const LASTFM_API_URL = 'https://ws.audioscrobbler.com/2.0/';
+
+                    let errorCount = 0;
+                    const MAX_ERRORS = 3;
 
                     async function fetchNowPlaying() {
                       const loadingEl = document.getElementById('music-loading');
@@ -2402,13 +2420,28 @@
                       const nowPlayingEl = document.getElementById('now-playing-card');
                       const recentContainer = document.getElementById('recent-tracks-container');
 
+                      // Stop after repeated failures
+                      if (errorCount >= MAX_ERRORS) {
+                        loadingEl.style.display = 'none';
+                        emptyEl.style.display = 'flex';
+                        document.querySelector('#music-empty h4').textContent = 'Service Unavailable';
+                        document.querySelector('#music-empty p').textContent = 'Last.fm temporarily unavailable';
+                        return;
+                      }
+
                       try {
-                        // Fetch recent tracks with now playing info
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
                         const response = await fetch(
-                          `${LASTFM_API_URL}?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=10`
+                          `${LASTFM_API_URL}?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=10`,
+                          { signal: controller.signal }
                         );
 
+                        clearTimeout(timeoutId);
+
                         if (!response.ok) {
+                          errorCount++;
                           throw new Error(`HTTP ${response.status}`);
                         }
 
@@ -2418,8 +2451,11 @@
                           throw new Error('No tracks found');
                         }
 
-                        const tracks = Array.isArray(data.recenttracks.track) 
-                          ? data.recenttracks.track 
+                        // Reset error count on success
+                        errorCount = 0;
+
+                        const tracks = Array.isArray(data.recenttracks.track)
+                          ? data.recenttracks.track
                           : [data.recenttracks.track];
 
                         // Find now playing track
@@ -2433,7 +2469,7 @@
                           // Show now playing card
                           document.getElementById('now-playing-track').textContent = nowPlaying.name;
                           document.getElementById('now-playing-artist').textContent = nowPlaying.artist?.['#text'] || nowPlaying.artist?.name;
-                          
+
                           // Get best available image
                           let imgUrl = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
                           if (nowPlaying.image && Array.isArray(nowPlaying.image)) {
@@ -2488,30 +2524,34 @@
                           recentContainer.appendChild(trackCard);
                         });
 
-                        console.log('✓ Last.fm: Loaded', tracks.length, 'tracks', nowPlaying ? '(Now Playing)' : '');
-
                       } catch (err) {
-                        console.warn('Last.fm error:', err.message);
+                        errorCount++;
                         loadingEl.style.display = 'none';
                         emptyEl.style.display = 'flex';
 
-                        // Show error message
-                        document.querySelector('#music-empty h4').textContent = 'Connection Error';
-                        document.querySelector('#music-empty p').textContent = 'Check Last.fm profile';
+                        if (errorCount >= MAX_ERRORS) {
+                          document.querySelector('#music-empty h4').textContent = 'Service Unavailable';
+                          document.querySelector('#music-empty p').textContent = 'Last.fm temporarily unavailable';
+                        } else {
+                          document.querySelector('#music-empty h4').textContent = 'Connection Error';
+                          document.querySelector('#music-empty p').textContent = 'Check Last.fm profile';
+                        }
                       }
                     }
 
-                    // Fetch on load and every 30 seconds
+                    // Fetch on load
                     fetchNowPlaying();
+
+                    // Refresh every 60 seconds (not 30 to reduce API calls)
                     setInterval(() => {
-                      if (document.visibilityState === 'visible') {
+                      if (document.visibilityState === 'visible' && errorCount < MAX_ERRORS) {
                         fetchNowPlaying();
                       }
-                    }, 30000);
+                    }, 60000);
 
                     // Refresh when page becomes visible
                     document.addEventListener('visibilitychange', () => {
-                      if (document.visibilityState === 'visible') {
+                      if (document.visibilityState === 'visible' && errorCount < MAX_ERRORS) {
                         fetchNowPlaying();
                       }
                     });
@@ -2915,17 +2955,9 @@
     <!-- END CHATBOT -->
 
     <script>
-      // Portfolio Reach - Optimized View Counter with Multi-layer Fallback
+      // Portfolio Reach - Simple LocalStorage Counter (Reliable)
       (function() {
-        const COUNTAPI_NAMESPACE = 'mangeshraut712';
-        const COUNTAPI_KEY = 'portfolio-views-v2';
-        const COUNTAPI_URL = 'https://api.countapi.xyz';
-        
         const reachCountEl = document.getElementById('reach-count');
-        
-        // Cache configuration
-        const CACHE_KEY = 'portfolio_reach_cache';
-        const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
         
         function formatNumber(num) {
           if (!num || isNaN(num)) return '--';
@@ -2934,165 +2966,44 @@
           return num.toString();
         }
         
-        // Get cached count
-        function getCachedCount() {
+        // Simple localStorage counter with session tracking
+        function getViewCount() {
           try {
-            const cached = sessionStorage.getItem(CACHE_KEY);
-            if (cached) {
-              const { value, timestamp, source } = JSON.parse(cached);
-              const age = Date.now() - timestamp;
-              if (age < CACHE_DURATION) {
-                return { value, source, fresh: age < 30000 }; // fresh if < 30s
-              }
-            }
-          } catch (e) {
-            // Ignore cache errors
-          }
-          return null;
-        }
-        
-        // Set cached count
-        function setCachedCount(value, source) {
-          try {
-            sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-              value,
-              timestamp: Date.now(),
-              source
-            }));
-          } catch (e) {
-            // Ignore cache errors
-          }
-        }
-        
-        // CountAPI with timeout and retry logic
-        async function fetchCountAPI(increment = false, retries = 1) {
-          const endpoint = increment 
-            ? `${COUNTAPI_URL}/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`
-            : `${COUNTAPI_URL}/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`;
-          
-          for (let attempt = 0; attempt <= retries; attempt++) {
-            try {
-              const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 5000);
-              
-              const response = await fetch(endpoint, {
-                method: 'GET',
-                headers: { 'Accept': 'application/json' },
-                signal: controller.signal,
-                cache: 'no-store'
-              });
-              
-              clearTimeout(timeoutId);
-              
-              if (response.ok) {
-                const data = await response.json();
-                if (typeof data.value === 'number') {
-                  return data.value;
-                }
-              }
-            } catch (err) {
-              // Retry on failure
-              if (attempt < retries) {
-                await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-                continue;
-              }
-            }
-          }
-          return null;
-        }
-        
-        // LocalStorage fallback with session tracking
-        function getLocalStorageCount(increment = false) {
-          try {
-            const stored = localStorage.getItem('portfolio_views_v2');
+            const stored = localStorage.getItem('portfolio_views_v3');
             let count = stored ? parseInt(stored, 10) : 0;
             
-            // Validate stored count
+            // Validate
             if (isNaN(count) || count < 0) count = 0;
             
-            if (increment && !sessionStorage.getItem('view_counted_v2')) {
+            // Increment if new session
+            const sessionKey = 'session_counted_v3';
+            if (!sessionStorage.getItem(sessionKey)) {
               count++;
-              localStorage.setItem('portfolio_views_v2', count.toString());
-              sessionStorage.setItem('view_counted_v2', 'true');
+              localStorage.setItem('portfolio_views_v3', count.toString());
+              sessionStorage.setItem(sessionKey, 'true');
             }
             
-            return count > 0 ? count : null;
+            return count;
           } catch (e) {
-            return null;
+            // Private browsing mode - use session only
+            if (!sessionStorage.getItem('session_only_count')) {
+              sessionStorage.setItem('session_only_count', '1');
+            }
+            return parseInt(sessionStorage.getItem('session_only_count') || '1', 10);
           }
         }
         
-        // Main fetch function with priority: Cache → CountAPI → localStorage
-        async function fetchViewCount() {
+        // Update display
+        function updateDisplay() {
           if (!reachCountEl) return;
-          
-          const isNewSession = !sessionStorage.getItem('view_counted_v2');
-          let count = null;
-          let source = 'fallback';
-          
-          // 1. Check cache first for immediate display
-          const cached = getCachedCount();
-          if (cached && cached.value) {
-            reachCountEl.textContent = formatNumber(cached.value);
-            reachCountEl.setAttribute('data-source', cached.source);
-            
-            // If cache is fresh and not new session, don't fetch
-            if (cached.fresh && !isNewSession) {
-              return;
-            }
-          }
-          
-          // 2. Try CountAPI
-          const countAPIValue = await fetchCountAPI(isNewSession);
-          if (countAPIValue !== null) {
-            count = countAPIValue;
-            source = 'countapi';
-            setCachedCount(count, source);
-          }
-          
-          // 3. Final fallback to localStorage
-          if (count === null) {
-            const localValue = getLocalStorageCount(isNewSession);
-            if (localValue !== null) {
-              count = localValue;
-              source = 'localStorage';
-            } else {
-              // Show placeholder if all fail
-              reachCountEl.textContent = '--';
-              reachCountEl.setAttribute('title', 'View counter unavailable');
-              return;
-            }
-          }
-          
-          // Update UI
+          const count = getViewCount();
           reachCountEl.textContent = formatNumber(count);
-          reachCountEl.setAttribute('data-source', source);
-          reachCountEl.setAttribute('title', `Portfolio views (${source})`);
-          
-          // Debug logging (localhost only)
-          if (window.location.hostname === 'localhost') {
-            console.log(`[Portfolio Reach] ${formatNumber(count)} views (source: ${source})`);
-          }
+          reachCountEl.setAttribute('title', 'Portfolio views');
         }
         
         // Initialize
         if (reachCountEl) {
-          // Initial fetch with small delay to not block critical rendering
-          setTimeout(fetchViewCount, 100);
-          
-          // Refresh every 2 minutes (not 30 seconds to reduce API calls)
-          setInterval(() => {
-            if (document.visibilityState === 'visible') {
-              fetchViewCount();
-            }
-          }, 120000);
-          
-          // Refresh when tab becomes visible
-          document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-              fetchViewCount();
-            }
-          });
+          setTimeout(updateDisplay, 50);
         }
       })();
     </script>
