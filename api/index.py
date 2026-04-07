@@ -14,8 +14,9 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import defaultdict
+import threading
 
 import httpx
 from dotenv import load_dotenv
@@ -88,7 +89,119 @@ print(f"   Site URL: {SITE_URL}")
 print("   Docs: http://localhost:8000/api/docs")
 print("=" * 60)
 
-# Rate Limiting
+# Analytics storage (in-memory with periodic flush to disk for persistence)
+analytics_lock = threading.Lock()
+analytics_data = {
+    "total_views": 0,
+    "daily_views": {},  # Format: "2024-01-15": count
+    "last_updated": datetime.utcnow().isoformat()
+}
+ANALYTICS_FILE = os.path.join(os.path.dirname(__file__), "analytics_data.json")
+
+def load_analytics():
+    """Load analytics data from disk if available"""
+    global analytics_data
+    try:
+        if os.path.exists(ANALYTICS_FILE):
+            with open(ANALYTICS_FILE, 'r') as f:
+                loaded = json.load(f)
+                with analytics_lock:
+                    analytics_data.update(loaded)
+    except Exception as e:
+        print(f"⚠️ Could not load analytics: {e}")
+
+def save_analytics():
+    """Save analytics data to disk"""
+    try:
+        with analytics_lock:
+            data_to_save = analytics_data.copy()
+            data_to_save["last_updated"] = datetime.utcnow().isoformat()
+        with open(ANALYTICS_FILE, 'w') as f:
+            json.dump(data_to_save, f)
+    except Exception as e:
+        print(f"⚠️ Could not save analytics: {e}")
+
+def get_today_key():
+    """Get today's date key"""
+    return datetime.utcnow().strftime("%Y-%m-%d")
+
+def get_week_key():
+    """Get current week key"""
+    now = datetime.utcnow()
+    return now.strftime("%Y-W%U")
+
+def get_month_key():
+    """Get current month key"""
+    return datetime.utcnow().strftime("%Y-%m")
+
+def increment_view():
+    """Increment view count and return updated stats"""
+    today = get_today_key()
+    
+    with analytics_lock:
+        analytics_data["total_views"] += 1
+        if today not in analytics_data["daily_views"]:
+            analytics_data["daily_views"][today] = 0
+        analytics_data["daily_views"][today] += 1
+        
+        # Calculate period totals
+        total = analytics_data["total_views"]
+        today_count = analytics_data["daily_views"].get(today, 0)
+        
+        # This week (last 7 days)
+        week_total = 0
+        for i in range(7):
+            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
+            week_total += analytics_data["daily_views"].get(date, 0)
+        
+        # This month (last 30 days)
+        month_total = 0
+        for i in range(30):
+            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
+            month_total += analytics_data["daily_views"].get(date, 0)
+        
+        result = {
+            "total": total,
+            "today": today_count,
+            "this_week": week_total,
+            "this_month": month_total,
+            "last_updated": datetime.utcnow().isoformat() + "Z"
+        }
+    
+    # Save async (don't block request)
+    threading.Thread(target=save_analytics, daemon=True).start()
+    return result
+
+def get_view_stats():
+    """Get current view statistics"""
+    today = get_today_key()
+    
+    with analytics_lock:
+        total = analytics_data["total_views"]
+        today_count = analytics_data["daily_views"].get(today, 0)
+        
+        # This week (last 7 days)
+        week_total = 0
+        for i in range(7):
+            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
+            week_total += analytics_data["daily_views"].get(date, 0)
+        
+        # This month (last 30 days)
+        month_total = 0
+        for i in range(30):
+            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
+            month_total += analytics_data["daily_views"].get(date, 0)
+        
+        return {
+            "total": total,
+            "today": today_count,
+            "this_week": week_total,
+            "this_month": month_total,
+            "last_updated": datetime.utcnow().isoformat() + "Z"
+        }
+
+# Load analytics on startup
+load_analytics()
 rate_limit_store = defaultdict(list)
 RATE_LIMIT_REQUESTS = 20  # requests per window
 RATE_LIMIT_WINDOW = 60  # seconds
@@ -1417,34 +1530,61 @@ async def get_github_repos_alias(
     return await get_github_repos_public(username, "updated", limit, no_forks)
 
 
-# Analytics views endpoint
+# Analytics views endpoint - GET current stats
 @app.get("/api/analytics/views")
 async def get_analytics_views():
     """
     Get portfolio view analytics
-    Returns view count data for the portfolio counter
+    Returns real view count data from persistent storage
     """
     try:
-        # Return mock data for now - in production this would fetch from a database
+        stats = get_view_stats()
         return {
             "success": True,
-            "views": {
-                "total": 1250,
-                "today": 45,
-                "this_week": 320,
-                "this_month": 890,
-            },
+            "views": stats,
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
 
 
-# Alias for old analytics path
+# Analytics views endpoint - POST to increment
+@app.post("/api/analytics/views")
+async def post_analytics_view(request: Request):
+    """
+    Record a new portfolio view and return updated stats
+    Call this when a user visits the portfolio
+    """
+    try:
+        # Get client info for analytics
+        client_ip = get_client_ip(request)
+        user_agent = request.headers.get("user-agent", "Unknown")[:200]
+        
+        # Increment view and get stats
+        stats = increment_view()
+        
+        # Log for monitoring (optional)
+        print(f"📊 View recorded from {client_ip} - Total: {stats['total']}")
+        
+        return {
+            "success": True,
+            "views": stats,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
+
+
+# Alias for old analytics paths
 @app.get("/analytics/views")
 async def get_analytics_views_alias():
     """Alias for old frontend code that doesn't use /api prefix"""
     return await get_analytics_views()
+
+@app.post("/analytics/views")
+async def post_analytics_view_alias(request: Request):
+    """Alias for old frontend code that doesn't use /api prefix"""
+    return await post_analytics_view(request)
 
 
 # ============================================================
