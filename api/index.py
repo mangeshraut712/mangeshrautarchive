@@ -23,6 +23,7 @@ from dotenv import load_dotenv
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
 from api.integrations.github_connector import github_connector
+from api.monitoring import system_monitor, MonitoringMiddleware, HealthStatus, EventType
 
 # Load environment variables
 load_dotenv()
@@ -35,6 +36,9 @@ app = FastAPI(
     docs_url="/api/docs",
     redoc_url="/api/redoc",
 )
+
+# Add monitoring middleware
+app.add_middleware(MonitoringMiddleware, monitor=system_monitor)
 
 # Add GZip compression for better performance
 app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -1517,6 +1521,147 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
         "context": context,
         "timestamp": datetime.utcnow().isoformat() + "Z"
     }
+
+
+# ====================================================================================
+# SYSTEM MONITORING ENDPOINTS (v1.0)
+# ====================================================================================
+
+@app.get("/api/monitor/health")
+async def get_monitor_health():
+    """
+    Comprehensive health check with all service statuses
+    """
+    health = await system_monitor.check_health()
+    return health
+
+
+@app.get("/api/monitor/metrics")
+async def get_monitor_metrics():
+    """
+    Get system metrics including endpoint performance
+    """
+    metrics = system_monitor.get_metrics()
+    return metrics
+
+
+@app.get("/api/monitor/events")
+async def get_monitor_events(
+    limit: int = 100,
+    event_type: Optional[str] = None,
+    resolved_only: Optional[bool] = None
+):
+    """
+    Get system events with optional filtering
+    
+    Query params:
+        - limit: Max events to return (default: 100)
+        - event_type: Filter by type (critical, error, warning, info, success)
+        - resolved_only: Filter by resolved status
+    """
+    event_type_enum = None
+    if event_type:
+        try:
+            event_type_enum = EventType(event_type)
+        except ValueError:
+            raise HTTPException(status_code=400, detail=f"Invalid event type: {event_type}")
+    
+    events = system_monitor.get_events(
+        limit=limit,
+        event_type=event_type_enum,
+        resolved_only=resolved_only
+    )
+    return {
+        "events": events,
+        "count": len(events),
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
+
+
+@app.post("/api/monitor/events/{event_id}/resolve")
+async def resolve_monitor_event(event_id: str):
+    """
+    Mark a system event as resolved
+    """
+    success = system_monitor.resolve_event(event_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Event not found: {event_id}")
+    
+    return {
+        "success": True,
+        "message": "Event resolved",
+        "event_id": event_id,
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
+
+
+@app.get("/api/monitor/status")
+async def get_monitor_status():
+    """
+    Quick status check for load balancers
+    """
+    return {
+        "status": "ok",
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
+
+
+# Global exception handler to ensure 200 OK responses with proper error details
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    """
+    Custom exception handler to ensure consistent JSON responses
+    """
+    # Log the error
+    system_monitor.log_event(
+        EventType.ERROR if exc.status_code >= 500 else EventType.WARNING,
+        f"HTTP {exc.status_code}: {exc.detail}",
+        "api_error",
+        {"path": request.url.path, "status_code": exc.status_code}
+    )
+    
+    # Return JSON response with proper structure
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "success": False,
+            "error": {
+                "code": exc.status_code,
+                "message": exc.detail,
+                "type": "http_error"
+            },
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    )
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """
+    Global exception handler to catch all unhandled exceptions
+    and return a proper 500 response with JSON
+    """
+    # Log the error
+    system_monitor.log_event(
+        EventType.CRITICAL,
+        f"Unhandled exception: {str(exc)}",
+        "exception",
+        {"path": request.url.path, "error": str(exc)}
+    )
+    
+    # Return JSON response
+    return JSONResponse(
+        status_code=500,
+        content={
+            "success": False,
+            "error": {
+                "code": 500,
+                "message": "Internal server error",
+                "type": "internal_error"
+            },
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    )
 
 
 # Serve static files for local development and Cloud Run
