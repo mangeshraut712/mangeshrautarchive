@@ -45,9 +45,9 @@ Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and depl
 
 ### 💡 Project Highlights
 
-|                  🧠 AI Assistant                   |       🎮 Hidden Game       |      📊 Live Data      |        🎨 Premium UI         |
-| :------------------------------------------------: | :------------------------: | :--------------------: | :--------------------------: |
-| Real-time streaming chatbot with context awareness | Debug Runner - Canvas game | GitHub API integration | Apple-inspired glassmorphism |
+|                  🧠 AI Assistant                   |      📺 Currently Card       |      📊 Live Data      |        🎨 Premium UI         |
+| :------------------------------------------------: | :--------------------------: | :--------------------: | :--------------------------: |
+| Real-time streaming chatbot with context awareness | Shows, Music, Books tracking | GitHub API integration | Apple-inspired glassmorphism |
 
 </div>
 
@@ -81,7 +81,47 @@ The centerpiece of this portfolio is **AssistMe**, an AI-powered chatbot that go
 
 </details>
 
-### 🎮 Debug Runner — Interactive Canvas Game
+### 📺 Currently Watching Card
+
+<details>
+<summary><b>📱 Click to explore Currently features</b></summary>
+
+<br/>
+
+A curated showcase of entertainment preferences with streaming links:
+
+- **Shows & Movies Tab** — 30+ titles with direct streaming platform links
+  - Indian TV: Taarak Mehta, CID, Mahabharat, Scam 1992, Mirzapur, The Family Man
+  - International: Breaking Bad, Money Heist, Narcos, Squid Game, Stranger Things, Crash Landing on You
+  - Movies: KGF, RRR, Dangal, Vikram, Jailer, Kantara, Baahubali, Pushpa, Avengers, and more
+- **Music Tab** — Last.fm integration showing Now Playing and recent tracks
+  - Real-time Spotify sync via Last.fm API
+  - Album art display with direct Spotify links
+- **Books Tab** — 9 curated titles with author names
+  - Steve Jobs, Atomic Habits, The Ramayana, Bhagavad Gita, Holy Bible
+  - Dune, The Lord of the Rings
+  - Marathi literature: Mrityunjay, Shyamchi Aai
+- **Streaming Links** — Direct links to Netflix, Prime Video, Disney+, SonyLIV, and more
+
+</details>
+
+### � Music Integration
+
+<details>
+<summary><b>🎧 Click to explore Music features</b></summary>
+
+<br/>
+
+Real-time music tracking powered by Last.fm:
+
+- **Now Playing** — Shows currently playing track with album art
+- **Recent Tracks** — Last 5 played songs with timestamps
+- **Spotify Sync** — Automatically syncs when you play music on Spotify
+- **One-Click Links** — Direct links to tracks on Last.fm and Spotify
+
+</details>
+
+### �🎮 Debug Runner — Interactive Canvas Game
 
 <details>
 <summary><b>🕹️ Click to explore game features</b></summary>
@@ -350,10 +390,6 @@ mangeshrautarchive/
 
 - `docs/README.md` — Documentation index
 - `docs/PROJECT_STRUCTURE.md` — Source layout and ownership rules
-- `docs/testing/CHROME_QA_RUNBOOK.md` — Chrome environment + release verification flow
-- `docs/testing/CHROME_TEST_MATRIX.md` — Functional/perf/security/usability checklist
-- `docs/testing/RELEASE_TEST_REPORT_TEMPLATE.md` — Release sign-off template
-- `docs/testing/POST_DEPLOYMENT_FEEDBACK_LOOP.md` — Post-release intake + triage loop
 
 ---
 
@@ -404,7 +440,7 @@ Release readiness is validated by executable gates (not static README snapshots)
 
 Current configured Lighthouse release floor:
 
-- Desktop: Perf `>= 88`, A11y/Best Practices/SEO `>= 90`
+- Desktop: Perf `>= 86`, A11y/Best Practices/SEO `>= 90`
 - Mobile: Perf `>= 60`, A11y/Best Practices/SEO `>= 90`
 
 ### Performance Practices
@@ -462,48 +498,8 @@ Built with amazing open-source tools:
 - **Prism.js** — Syntax highlighting
 - **OpenRouter** — AI model gateway
 - **xAI & Google** — For incredible AI models
-
----
-
-<!-- codex:project-diagram:start -->
-
-## 🔭 Project Architecture
-
-> [!NOTE]
-> This portfolio is built on a **High-Purity Core™** philosophy: Zero bloat, maximum performance, and deep AI integration.
-
-```mermaid
-graph TD
-    User([👤 User]) <-->|HTTPS| LB[🌐 Edge Proxy / Vercel]
-
-    subgraph Frontend [🎨 Glassmorphism UI - ESNext]
-        LB <--> UI[Main App / Layout]
-        UI <--> Modules{Feature Modules}
-        Modules --> AssistMe[🧠 AI Assistant]
-        Modules --> DebugRunner[🕹️ Canvas Game]
-        Modules --> GitHub[📊 Live Projects]
-        Modules --> XR[🕶️ XR Visualization]
-    end
-
-    subgraph Backend [🐍 Python FastAPI - AI Engine]
-        AssistMe <-->|Streaming NDJSON| API[Core API]
-        API <-->|Context Retrieval| Memory[(Session Store)]
-        API <-->|Multi-Model| OpenRouter[[OpenRouter Gateway]]
-        OpenRouter <--> Grok[Grok 4.1]
-        OpenRouter <--> Claude[Claude 3.5]
-    end
-
-    subgraph Data [⚡ Data Sources]
-        GitHub <-->|Proxy| GH_API[[GitHub API]]
-        Modules <--> CMS[[Local JSON / Config]]
-    end
-```
-
-### 💎 Engineering Excellence
-
-- **Latency-First Streaming:** AI responses begin appearing in `< 200ms` thanks to FastAPI's async generators and standard EventSource primitives.
-- **Glassmorphism 2026:** A bespoke design system utilizing advanced CSS `backdrop-filter`, `oklch()` color spaces, and hardware-accelerated animations.
-- **Agentic Interactivity:** The AI isn't just a chatbot; it's a co-pilot that can navigate the site, change themes, and interact with the DOM in real-time.
+- **Last.fm** — Music scrobbling and API
+- **TMDB** — Movie and TV show metadata
 
 ---
 
@@ -515,10 +511,8 @@ graph TD
 
 ---
 
-**© 2026 Mangesh Raut • Built with ❤️ in Philadelphia**
+**© 2026 Mangesh Raut • Built with ❤️ in Pennsylvania**
 
 [↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 </div>
-
-<!-- codex:project-diagram:end -->
