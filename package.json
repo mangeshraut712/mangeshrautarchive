@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:css": "stylelint \"src/assets/css/**/*.css\"",
-    "test": "vitest --passWithNoTests",
+    "test": "vitest --passWithNoTests --run",
     "test:e2e:chrome": "playwright test tests/e2e/smoke.spec.js --project=chromium",
     "test:e2e:mobile-chrome": "playwright test tests/e2e/smoke.spec.js --project=\"Mobile Chrome\"",
     "test:a11y:chrome": "playwright test tests/e2e/accessibility.spec.js --project=chromium",
