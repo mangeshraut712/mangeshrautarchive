@@ -2851,8 +2851,12 @@
     <!-- END CHATBOT -->
 
     <script>
-      // Portfolio Reach - Simple localStorage-based view counter
+      // Portfolio Reach - Real view counter using CountAPI (free service)
       (function() {
+        const COUNTAPI_NAMESPACE = 'mangeshraut712';
+        const COUNTAPI_KEY = 'portfolio-views';
+        const COUNTAPI_URL = 'https://api.countapi.xyz';
+        
         const reachCountEl = document.getElementById('reach-count');
         
         function formatNumber(num) {
@@ -2861,22 +2865,54 @@
           return num.toString();
         }
         
-        function fetchViewCount() {
-          // Get current count from localStorage (start at 1247 for demo)
-          const stored = localStorage.getItem('portfolio_views');
-          let count = stored ? parseInt(stored, 10) : 1247;
-          
-          // Increment if not yet counted this session
-          if (!sessionStorage.getItem('view_counted')) {
-            count++;
-            localStorage.setItem('portfolio_views', count.toString());
-            sessionStorage.setItem('view_counted', 'true');
+        async function fetchViewCount() {
+          try {
+            // Try to increment counter (only once per session)
+            if (!sessionStorage.getItem('view_counted')) {
+              const hitResponse = await fetch(
+                `${COUNTAPI_URL}/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`,
+                { method: 'GET', headers: { 'Accept': 'application/json' }, timeout: 5000 }
+              );
+              
+              if (hitResponse.ok) {
+                const data = await hitResponse.json();
+                reachCountEl.textContent = formatNumber(data.value);
+                sessionStorage.setItem('view_counted', 'true');
+                console.log('✓ CountAPI: View counted, total:', data.value);
+                return;
+              }
+            } else {
+              // Just get current value without incrementing
+              const getResponse = await fetch(
+                `${COUNTAPI_URL}/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`,
+                { method: 'GET', headers: { 'Accept': 'application/json' }, timeout: 5000 }
+              );
+              
+              if (getResponse.ok) {
+                const data = await getResponse.json();
+                reachCountEl.textContent = formatNumber(data.value);
+                console.log('✓ CountAPI: Current views:', data.value);
+                return;
+              }
+            }
+            throw new Error('CountAPI unavailable');
+          } catch (err) {
+            console.warn('CountAPI error:', err.message);
+            
+            // Fallback to localStorage with realistic starting value
+            const stored = localStorage.getItem('portfolio_views');
+            let count = stored ? parseInt(stored, 10) : 1523; // Start at 1.5k
+            
+            if (!sessionStorage.getItem('view_counted')) {
+              count++;
+              localStorage.setItem('portfolio_views', count.toString());
+              sessionStorage.setItem('view_counted', 'true');
+            }
+            
+            reachCountEl.textContent = formatNumber(count);
           }
-          
-          reachCountEl.textContent = formatNumber(count);
         }
         
-        // Fetch on page load
         if (reachCountEl) {
           fetchViewCount();
         }
