@@ -991,6 +991,25 @@ html.dark .support-coffee-btn.premium svg {
   color: #000000 !important;
 }
 
+/* Accessibility fixes for color contrast */
+.footer-tagline,
+.footer-copy {
+  color: #6b7280 !important;
+}
+
+html.dark .footer-tagline,
+html.dark .footer-copy {
+  color: #9ca3af !important;
+}
+
+.support-donation-card cite {
+  color: #6b7280 !important;
+}
+
+html.dark .support-donation-card cite {
+  color: #9ca3af !important;
+}
+
 /* Premium Cash App Button */
 .support-cashapp-btn.premium {
   display: flex;
@@ -1785,8 +1804,8 @@ html.dark .media-poster {
   top: 4px;
   right: 4px;
   padding: 2px 5px;
-  background: rgba(0 0 0 / 0.75);
-  color: #fff;
+  background: rgba(0 0 0 / 0.85);
+  color: #ffffff !important;
   font-size: 0.55rem;
   font-weight: 700;
   border-radius: 4px;
@@ -1794,6 +1813,7 @@ html.dark .media-poster {
   letter-spacing: 0.02em;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  text-shadow: 0 1px 2px rgba(0 0 0 / 0.5);
 }
 
 /* Media Info - Compact */
