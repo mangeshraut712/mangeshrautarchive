@@ -8,11 +8,14 @@
  * Reference: https://vercel.com/docs/analytics
  */
 
+import { track } from '@vercel/analytics';
+
 /**
  * Initialize Vercel Web Analytics
  *
  * This function imports the analytics library and calls inject()
  * to set up tracking. It must run on the client side.
+ * Also exposes track function globally for AnalyticsService.
  *
  * @returns {Promise<void>}
  */
@@ -24,6 +27,12 @@ export async function initializeVercelAnalytics() {
     // Call inject() to initialize analytics tracking
     inject();
 
+    // Expose track function globally so AnalyticsService can use it
+    if (typeof window !== 'undefined') {
+      window.__vercel_insights_track = track;
+      window.va = (event, properties) => track(event, properties);
+    }
+
     console.log('✓ Vercel Web Analytics initialized successfully');
   } catch (error) {
     // Silently fail - analytics is not critical to app functionality
@@ -32,10 +41,3 @@ export async function initializeVercelAnalytics() {
     }
   }
 }
-
-/**
- * Fallback: Use the Vercel CDN script
- *
- * If dynamic import fails, the CDN script tag in HTML serves as a fallback.
- * The CDN script automatically initializes analytics if available.
- */
