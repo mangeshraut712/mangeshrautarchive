@@ -315,6 +315,128 @@
                     <span class="reach-count" id="reach-count">--</span>
                   </span>
                 </div>
+
+                <!-- Apple Music Style - Last.fm Now Playing Card -->
+                <div class="music-card" id="music-card">
+                  <div class="music-card-inner">
+                    <div class="album-art-container">
+                      <img 
+                        id="album-art" 
+                        src="https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png" 
+                        alt="Album Art" 
+                        class="album-art"
+                      />
+                      <div class="playing-indicator" id="playing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                    <div class="track-info">
+                      <div class="status-row">
+                        <span class="status-dot" id="status-dot"></span>
+                        <span class="status-text" id="status-text">Loading...</span>
+                      </div>
+                      <h4 class="track-name" id="track-name">--</h4>
+                      <p class="artist-name" id="artist-name">--</p>
+                    </div>
+                    <a 
+                      href="https://www.last.fm/user/mangeshraut712" 
+                      target="_blank" 
+                      rel="noopener" 
+                      class="lastfm-link"
+                      title="View on Last.fm"
+                    >
+                      <svg viewBox="0 0 24 24" fill="currentColor" class="lastfm-icon">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm-3.5 15.5c-1.5 0-2.5-1-2.5-2.5s1-2.5 2.5-2.5c1.2 0 2 .7 2.5 1.5l1.5-1c-.8-1.2-2.2-2-4-2-2.5 0-4.5 1.5-4.5 4s2 4 4.5 4c1.8 0 3.2-.8 4-2l-1.5-1c-.5.8-1.3 1.5-2.5 1.5zm7 0c-1.5 0-2.5-1-2.5-2.5s1-2.5 2.5-2.5c1.2 0 2 .7 2.5 1.5l1.5-1c-.8-1.2-2.2-2-4-2-2.5 0-4.5 1.5-4.5 4s2 4 4.5 4c1.8 0 3.2-.8 4-2l-1.5-1c-.5.8-1.3 1.5-2.5 1.5z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                <script>
+                  // Last.fm Integration - Apple Music Style Card
+                  (function() {
+                    const LASTFM_API_KEY = 'bf577878f6d15620dace61e502d01f8d';
+                    const LASTFM_USERNAME = 'mangeshraut712';
+                    const API_URL = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
+                    
+                    const elements = {
+                      trackName: document.getElementById('track-name'),
+                      artistName: document.getElementById('artist-name'),
+                      albumArt: document.getElementById('album-art'),
+                      statusText: document.getElementById('status-text'),
+                      statusDot: document.getElementById('status-dot'),
+                      playingIndicator: document.getElementById('playing-indicator'),
+                      musicCard: document.getElementById('music-card')
+                    };
+                    
+                    async function fetchNowPlaying() {
+                      try {
+                        const response = await fetch(API_URL);
+                        if (!response.ok) throw new Error('Failed to fetch');
+                        
+                        const data = await response.json();
+                        const track = data.recenttracks?.track?.[0];
+                        
+                        if (!track) {
+                          showOfflineState();
+                          return;
+                        }
+                        
+                        const isNowPlaying = track['@attr']?.nowplaying === 'true';
+                        const trackName = track.name || 'Unknown Track';
+                        const artistName = track.artist['#text'] || 'Unknown Artist';
+                        const albumArtUrl = track.image?.find(img => img.size === 'extralarge')?.['#text'] || 
+                                          track.image?.find(img => img.size === 'large')?.['#text'] ||
+                                          'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                        
+                        // Update UI
+                        elements.trackName.textContent = trackName;
+                        elements.artistName.textContent = artistName;
+                        elements.albumArt.src = albumArtUrl;
+                        
+                        if (isNowPlaying) {
+                          elements.statusText.textContent = 'Now playing';
+                          elements.statusDot.classList.add('playing');
+                          elements.playingIndicator.classList.add('active');
+                          elements.musicCard.classList.add('is-playing');
+                        } else {
+                          const date = track.date?.['#text'] || 'Recently';
+                          elements.statusText.textContent = `Last played · ${date}`;
+                          elements.statusDot.classList.remove('playing');
+                          elements.playingIndicator.classList.remove('active');
+                          elements.musicCard.classList.remove('is-playing');
+                        }
+                        
+                      } catch (error) {
+                        console.error('Last.fm fetch error:', error);
+                        showOfflineState();
+                      }
+                    }
+                    
+                    function showOfflineState() {
+                      elements.trackName.textContent = 'Music';
+                      elements.artistName.textContent = 'Connect Spotify for more';
+                      elements.statusText.textContent = 'Last.fm';
+                      elements.statusDot.classList.remove('playing');
+                      elements.playingIndicator.classList.remove('active');
+                    }
+                    
+                    // Initial fetch
+                    fetchNowPlaying();
+                    
+                    // Refresh every 30 seconds when visible
+                    setInterval(fetchNowPlaying, 30000);
+                    
+                    // Refresh when page becomes visible
+                    document.addEventListener('visibilitychange', () => {
+                      if (document.visibilityState === 'visible') {
+                        fetchNowPlaying();
+                      }
+                    });
+                  })();
+                </script>
               </div>
 
               <div class="hero-body mb-16">
