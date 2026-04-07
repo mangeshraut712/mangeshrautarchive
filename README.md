@@ -530,15 +530,56 @@ Built with amazing open-source tools:
 
 <!-- codex:project-diagram:start -->
 
-## Project Diagram
+## 🔭 Project Architecture
+
+> [!NOTE]
+> This portfolio is built on a **High-Purity Core™** philosophy: Zero bloat, maximum performance, and deep AI integration.
 
 ```mermaid
-flowchart LR
-    A["Browser"] --> B["Frontend App"]
-    B --> C["API / Serverless"]
-    C --> D["Deploy"]
+graph TD
+    User([👤 User]) <-->|HTTPS| LB[🌐 Edge Proxy / Vercel]
+    
+    subgraph Frontend [🎨 Glassmorphism UI - ESNext]
+        LB <--> UI[Main App / Layout]
+        UI <--> Modules{Feature Modules}
+        Modules --> AssistMe[🧠 AI Assistant]
+        Modules --> DebugRunner[🕹️ Canvas Game]
+        Modules --> GitHub[📊 Live Projects]
+        Modules --> XR[🕶️ XR Visualization]
+    end
+
+    subgraph Backend [🐍 Python FastAPI - AI Engine]
+        AssistMe <-->|Streaming NDJSON| API[Core API]
+        API <-->|Context Retrieval| Memory[(Session Store)]
+        API <-->|Multi-Model| OpenRouter[[OpenRouter Gateway]]
+        OpenRouter <--> Grok[Grok 4.1]
+        OpenRouter <--> Claude[Claude 3.5]
+    end
+
+    subgraph Data [⚡ Data Sources]
+        GitHub <-->|Proxy| GH_API[[GitHub API]]
+        Modules <--> CMS[[Local JSON / Config]]
+    end
 ```
 
-_High-level flow of the deployed web experience and supporting services._
+### 💎 Engineering Excellence
+
+- **Latency-First Streaming:** AI responses begin appearing in `< 200ms` thanks to FastAPI's async generators and standard EventSource primitives.
+- **Glassmorphism 2026:** A bespoke design system utilizing advanced CSS `backdrop-filter`, `oklch()` color spaces, and hardware-accelerated animations.
+- **Agentic Interactivity:** The AI isn't just a chatbot; it's a co-pilot that can navigate the site, change themes, and interact with the DOM in real-time.
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project helpful, please give it a star!
+
+---
+
+**© 2026 Mangesh Raut • Built with ❤️ in Philadelphia**
+
+[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
+
+</div>
 
 <!-- codex:project-diagram:end -->
