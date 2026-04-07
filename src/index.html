@@ -2904,11 +2904,14 @@
     <!-- END CHATBOT -->
 
     <script>
-      // Portfolio Reach - Real view counter using CountAPI (free service)
+      // Portfolio Reach - Vercel Analytics with CountAPI Fallback
       (function() {
         const COUNTAPI_NAMESPACE = 'mangeshraut712';
         const COUNTAPI_KEY = 'portfolio-views';
         const COUNTAPI_URL = 'https://api.countapi.xyz';
+        
+        // Vercel Analytics API endpoint (if configured)
+        const VERCEL_ANALYTICS_URL = '/api/analytics/views';
         
         const reachCountEl = document.getElementById('reach-count');
         
@@ -2918,56 +2921,129 @@
           return num.toString();
         }
         
-        async function fetchViewCount() {
+        // Try Vercel Analytics API first
+        async function fetchVercelAnalytics() {
           try {
-            // Try to increment counter (only once per session)
-            if (!sessionStorage.getItem('view_counted')) {
-              const hitResponse = await fetch(
-                `${COUNTAPI_URL}/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`,
-                { method: 'GET', headers: { 'Accept': 'application/json' }, timeout: 5000 }
-              );
-              
-              if (hitResponse.ok) {
-                const data = await hitResponse.json();
-                reachCountEl.textContent = formatNumber(data.value);
-                sessionStorage.setItem('view_counted', 'true');
-                console.log('✓ CountAPI: View counted, total:', data.value);
-                return;
-              }
-            } else {
-              // Just get current value without incrementing
-              const getResponse = await fetch(
-                `${COUNTAPI_URL}/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`,
-                { method: 'GET', headers: { 'Accept': 'application/json' }, timeout: 5000 }
-              );
-              
-              if (getResponse.ok) {
-                const data = await getResponse.json();
-                reachCountEl.textContent = formatNumber(data.value);
-                console.log('✓ CountAPI: Current views:', data.value);
-                return;
+            const response = await fetch(VERCEL_ANALYTICS_URL, {
+              method: 'GET',
+              headers: { 'Accept': 'application/json' },
+              timeout: 5000
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              if (data.views && typeof data.views === 'number') {
+                console.log('✓ Vercel Analytics:', data.views);
+                return data.views;
               }
             }
-            throw new Error('CountAPI unavailable');
+            throw new Error('Vercel Analytics unavailable');
           } catch (err) {
-            console.warn('CountAPI error:', err.message);
-            
-            // Fallback to localStorage with realistic starting value
-            const stored = localStorage.getItem('portfolio_views');
-            let count = stored ? parseInt(stored, 10) : 1523; // Start at 1.5k
-            
-            if (!sessionStorage.getItem('view_counted')) {
-              count++;
-              localStorage.setItem('portfolio_views', count.toString());
-              sessionStorage.setItem('view_counted', 'true');
-            }
-            
-            reachCountEl.textContent = formatNumber(count);
+            console.log('⚠ Vercel Analytics not configured, using CountAPI fallback');
+            return null;
           }
         }
         
+        // CountAPI as fallback
+        async function fetchCountAPI(increment = false) {
+          try {
+            const endpoint = increment 
+              ? `${COUNTAPI_URL}/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`
+              : `${COUNTAPI_URL}/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`;
+              
+            const response = await fetch(endpoint, {
+              method: 'GET',
+              headers: { 'Accept': 'application/json' },
+              timeout: 5000
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              console.log(increment ? '✓ CountAPI view counted:' : '✓ CountAPI views:', data.value);
+              return data.value;
+            }
+            throw new Error('CountAPI failed');
+          } catch (err) {
+            console.warn('CountAPI error:', err.message);
+            return null;
+          }
+        }
+        
+        // LocalStorage fallback
+        function getLocalStorageCount(increment = false) {
+          const stored = localStorage.getItem('portfolio_views');
+          let count = stored ? parseInt(stored, 10) : 1523;
+          
+          if (increment && !sessionStorage.getItem('view_counted')) {
+            count++;
+            localStorage.setItem('portfolio_views', count.toString());
+            sessionStorage.setItem('view_counted', 'true');
+          }
+          
+          console.log('✓ LocalStorage fallback count:', count);
+          return count;
+        }
+        
+        async function fetchViewCount() {
+          const isNewSession = !sessionStorage.getItem('view_counted');
+          let count = null;
+          let source = 'fallback';
+          
+          // Priority: Vercel Analytics → CountAPI → localStorage
+          
+          // 1. Try Vercel Analytics (if configured)
+          const vercelCount = await fetchVercelAnalytics();
+          if (vercelCount !== null) {
+            count = vercelCount;
+            source = 'vercel-analytics';
+            // Note: Vercel Analytics auto-tracks, so we don't increment manually
+            if (isNewSession) {
+              sessionStorage.setItem('view_counted', 'true');
+            }
+          }
+          
+          // 2. Fall back to CountAPI
+          if (count === null) {
+            const countAPIValue = await fetchCountAPI(isNewSession);
+            if (countAPIValue !== null) {
+              count = countAPIValue;
+              source = 'countapi';
+            }
+          }
+          
+          // 3. Final fallback to localStorage
+          if (count === null) {
+            count = getLocalStorageCount(isNewSession);
+            source = 'localStorage';
+          }
+          
+          // Update UI
+          if (reachCountEl && count !== null) {
+            reachCountEl.textContent = formatNumber(count);
+            reachCountEl.setAttribute('data-source', source);
+            reachCountEl.setAttribute('title', `Portfolio views (${source})`);
+          }
+          
+          console.log(`✓ Portfolio reach: ${formatNumber(count)} (source: ${source})`);
+        }
+        
+        // Initial fetch
         if (reachCountEl) {
           fetchViewCount();
+          
+          // Refresh count every 30 seconds for real-time updates
+          setInterval(() => {
+            if (document.visibilityState === 'visible') {
+              fetchViewCount();
+            }
+          }, 30000);
+          
+          // Refresh when page becomes visible
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+              fetchViewCount();
+            }
+          });
         }
       })();
     </script>
