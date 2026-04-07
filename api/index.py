@@ -349,10 +349,10 @@ PORTFOLIO_DATA = {
 }
 
 
-SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code.
+SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code.  # noqa: E501
 
 ## Your Identity
-You're an intelligent, conversational AI that answers any question with clarity and depth. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
+You're an intelligent, conversational AI that answers any question with clarity and depth. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.  # noqa: E501
 
 ## Mangesh Raut — Quick Profile
 - Software Engineer at Customized Energy Solutions (Philadelphia, PA)
@@ -370,14 +370,14 @@ You're an intelligent, conversational AI that answers any question with clarity 
 CRITICAL: Write naturally flowing prose. Avoid excessive formatting.
 
 ✅ GOOD Response Style:
-"Mangesh Raut is a Software Engineer based in Philadelphia, currently optimizing energy analytics systems at Customized Energy Solutions. He specializes in Java Spring Boot, Python, and cloud infrastructure with AWS.
+"Mangesh Raut is a Software Engineer based in Philadelphia, currently optimizing energy analytics systems at Customized Energy Solutions. He specializes in Java Spring Boot, Python, and cloud infrastructure with AWS.  # noqa: E501
 
-His notable achievements include reducing dashboard latency by 40% through React optimization and improving ML forecasting accuracy by 25% using TensorFlow. Previously at IoasiZ, he implemented Redis caching that delivered 3x faster data retrieval.
+His notable achievements include reducing dashboard latency by 40% through React optimization and improving ML forecasting accuracy by 25% using TensorFlow. Previously at IoasiZ, he implemented Redis caching that delivered 3x faster data retrieval.  # noqa: E501
 
-He completed his Master's in Computer Science at Drexel University with a 3.76 GPA. Interested in his AI projects or work experience?"
+He completed his Master's in Computer Science at Drexel University with a 3.76 GPA. Interested in his AI projects or work experience?"  # noqa: E501
 
 ❌ BAD Response Style (Avoid This):
-"**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **40%** efficiency gains at **Customized Energy Solutions**. **Key Achievements**: - Reduced dashboard latency **40%** via React..."
+"**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **40%** efficiency gains at **Customized Energy Solutions**. **Key Achievements**: - Reduced dashboard latency **40%** via React..."  # noqa: E501
 
 ## Formatting Rules
 
@@ -394,13 +394,13 @@ He completed his Master's in Computer Science at Drexel University with a 3.76 G
 ## How to Handle Different Questions
 
 For "Who is Mangesh?":
-Write a warm, professional introduction (2-3 paragraphs). Mention his current role, key skills, major achievements with specific numbers, and education. End with an invitation to learn more about specific areas.
+Write a warm, professional introduction (2-3 paragraphs). Mention his current role, key skills, major achievements with specific numbers, and education. End with an invitation to learn more about specific areas.  # noqa: E501
 
 For general questions (science, news, etc.):
-Answer directly and helpfully. If there's a natural connection to Mangesh's expertise, mention it briefly at the end — but don't force it.
+Answer directly and helpfully. If there's a natural connection to Mangesh's expertise, mention it briefly at the end — but don't force it.  # noqa: E501
 
 For technical questions:
-Provide clear, accurate explanations. If Mangesh has relevant experience, weave it in naturally without making it feel promotional.
+Provide clear, accurate explanations. If Mangesh has relevant experience, weave it in naturally without making it feel promotional.  # noqa: E501
 
 ## Tone
 - Conversational and intelligent
@@ -576,7 +576,8 @@ def api_error(code: str, message: str, status: int = 400, retry_after: Optional[
 # ─────────────────────────────────────────────
 
 _FACTUAL_KEYWORDS = re.compile(
-    r"\b(experience|education|skills|projects|contact|resume|cv|location|company|university|degree|gpa|certification|achievement|publication)\b",
+    r"\b(experience|education|skills|projects|contact|resume|cv|location|company|"
+    r"university|degree|gpa|certification|achievement|publication)\b",
     re.I,
 )
 _CREATIVE_KEYWORDS = re.compile(
@@ -821,18 +822,24 @@ def generate_local_response(query: str) -> Dict:
     # Greetings
     if any(g in query for g in ["hello", "hi", "hey", "greetings"]):
         return {
-            "answer": "👋 Hello! I'm AssistMe, running in **Local Dev Mode**. I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
+            "answer": (  # noqa: E501
+                "👋 Hello! I'm AssistMe, running in **Local Dev Mode**. "
+                "I can tell you about Mangesh's experience, skills, projects, and more. "
+                "What would you like to know?"
+            ),
             "category": "Greeting",
         }
 
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
         return {
-            "answer": f"👨‍💻 **{
-                PORTFOLIO_DATA['name']}** is a {
-                PORTFOLIO_DATA['title']} based in {
-                PORTFOLIO_DATA['location']}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
-            "category": "About"}
+            "answer": (  # noqa: E501
+                f"👨‍💻 **{PORTFOLIO_DATA['name']}** is a {PORTFOLIO_DATA['title']} "
+                f"based in {PORTFOLIO_DATA['location']}. He specializes in building "
+                f"scalable backend systems, cloud infrastructure, and AI-powered applications."
+            ),
+            "category": "About"
+        }
 
     # Resume/CV
     if "resume" in query or "cv" in query:
@@ -846,7 +853,13 @@ def generate_local_response(query: str) -> Dict:
         langs = ", ".join(PORTFOLIO_DATA["skills"]["languages"])
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
-            "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}\n• **Cloud**: AWS, Docker, Kubernetes\n• **Databases**: PostgreSQL, MongoDB, Redis",
+            "answer": (  # noqa: E501
+                f"🛠️ **Technical Stack**:\n"
+                f"• **Languages**: {langs}\n"
+                f"• **Frameworks**: {frameworks}\n"
+                f"• **Cloud**: AWS, Docker, Kubernetes\n"
+                f"• **Databases**: PostgreSQL, MongoDB, Redis"
+            ),
             "category": "Skills"
         }
 
@@ -882,19 +895,40 @@ def generate_local_response(query: str) -> Dict:
         edu_list = "\n".join(
             [f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
         return {
-            "answer": f"🎓 **Education**:\n{edu_list}" if edu_list else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
-            "category": "Education"}
+            "answer": (  # noqa: E501
+                f"🎓 **Education**:\n{edu_list}"
+                if edu_list
+                else "🎓 Mangesh holds a Master's in Computer Science from Drexel University."
+            ),
+            "category": "Education"
+        }
 
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
         return {
-            "answer": "🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Architected microservices handling **100+ concurrent users**",
+            "answer": (  # noqa: E501
+                "🏆 **Key Achievements**:\n"
+                "• Reduced dashboard latency by **40%** at Customized Energy Solutions\n"
+                "• Built AI systems with **95% accuracy**\n"
+                "• Architected microservices handling **100+ concurrent users**"
+            ),
             "category": "Achievements",
         }
 
     # Default fallback
     return {
-        "answer": "👋 I'm running in **Local Dev Mode** (no API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
+        "answer": (  # noqa: E501
+            "👋 I'm running in **Local Dev Mode** (no API key configured).\n\n"
+            "**Available topics:**\n"
+            "• Who is Mangesh?\n"
+            "• Skills & Tech Stack\n"
+            "• Projects\n"
+            "• Experience\n"
+            "• Education\n"
+            "• Contact Info\n"
+            "• Resume\n\n"
+            "What would you like to know?"
+        ),
         "category": "System",
     }
 
@@ -1149,7 +1183,11 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         if is_prompt_injection(message):
             print(f"🛡️  Prompt injection detected from {client_ip}: {message[:80]}")
             return {
-                "answer": "I noticed your message contains instructions that try to change my behaviour. I'm here to help you learn about Mangesh's portfolio — feel free to ask me anything about that!",
+                "answer": (  # noqa: E501
+                    "I noticed your message contains instructions that try to change "
+                    "my behaviour. I'm here to help you learn about Mangesh's portfolio "
+                    "— feel free to ask me anything about that!"
+                ),
                 "source": "Security",
                 "model": "Guard",
                 "type": "blocked",
