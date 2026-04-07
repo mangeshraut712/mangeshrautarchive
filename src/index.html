@@ -360,9 +360,10 @@
                 <script>
                   // Last.fm Integration - Apple Music Style Card
                   (function() {
-                    const LASTFM_API_KEY = 'bf577878f6d15620dace61e502d01f8d';
-                    const LASTFM_USERNAME = 'mangeshraut712';
-                    const API_URL = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_API_KEY}&format=json&limit=1`;
+                    // Using credentials from .env file
+                    const LASTFM_API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
+                    const LASTFM_USERNAME = 'mbr63';
+                    const API_URL = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${LASTFM_API_KEY}&format=json&limit=5`;
                     
                     const elements = {
                       trackName: document.getElementById('track-name'),
@@ -377,27 +378,43 @@
                     async function fetchNowPlaying() {
                       try {
                         const response = await fetch(API_URL);
-                        if (!response.ok) throw new Error('Failed to fetch');
+                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
                         
                         const data = await response.json();
-                        const track = data.recenttracks?.track?.[0];
+                        const tracks = data.recenttracks?.track;
                         
-                        if (!track) {
+                        if (!tracks || (Array.isArray(tracks) && tracks.length === 0)) {
                           showOfflineState();
                           return;
                         }
                         
+                        // Get first track (could be now playing or most recent)
+                        const track = Array.isArray(tracks) ? tracks[0] : tracks;
+                        
+                        // Check if track is currently playing
                         const isNowPlaying = track['@attr']?.nowplaying === 'true';
+                        
                         const trackName = track.name || 'Unknown Track';
-                        const artistName = track.artist['#text'] || 'Unknown Artist';
-                        const albumArtUrl = track.image?.find(img => img.size === 'extralarge')?.['#text'] || 
-                                          track.image?.find(img => img.size === 'large')?.['#text'] ||
-                                          'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                        const artistName = track.artist?.['#text'] || track.artist?.name || 'Unknown Artist';
+                        
+                        // Get best available image
+                        let albumArtUrl = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                        if (track.image && Array.isArray(track.image)) {
+                          const sizes = ['extralarge', 'large', 'medium', 'small'];
+                          for (const size of sizes) {
+                            const img = track.image.find(i => i.size === size);
+                            if (img && img['#text']) {
+                              albumArtUrl = img['#text'];
+                              break;
+                            }
+                          }
+                        }
                         
                         // Update UI
                         elements.trackName.textContent = trackName;
                         elements.artistName.textContent = artistName;
                         elements.albumArt.src = albumArtUrl;
+                        elements.albumArt.alt = `${trackName} by ${artistName}`;
                         
                         if (isNowPlaying) {
                           elements.statusText.textContent = 'Now playing';
@@ -405,12 +422,15 @@
                           elements.playingIndicator.classList.add('active');
                           elements.musicCard.classList.add('is-playing');
                         } else {
+                          // Show last played time
                           const date = track.date?.['#text'] || 'Recently';
-                          elements.statusText.textContent = `Last played · ${date}`;
+                          elements.statusText.textContent = `Last played • ${date}`;
                           elements.statusDot.classList.remove('playing');
                           elements.playingIndicator.classList.remove('active');
                           elements.musicCard.classList.remove('is-playing');
                         }
+                        
+                        console.log('✓ Last.fm: Loaded track', trackName, isNowPlaying ? '(Now Playing)' : '');
                         
                       } catch (error) {
                         console.error('Last.fm fetch error:', error);
@@ -424,13 +444,18 @@
                       elements.statusText.textContent = 'Last.fm';
                       elements.statusDot.classList.remove('playing');
                       elements.playingIndicator.classList.remove('active');
+                      elements.albumArt.src = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
                     }
                     
                     // Initial fetch
                     fetchNowPlaying();
                     
                     // Refresh every 30 seconds when visible
-                    setInterval(fetchNowPlaying, 30000);
+                    setInterval(() => {
+                      if (document.visibilityState === 'visible') {
+                        fetchNowPlaying();
+                      }
+                    }, 30000);
                     
                     // Refresh when page becomes visible
                     document.addEventListener('visibilitychange', () => {
@@ -2309,8 +2334,9 @@
                 <script>
                   // Last.fm Now Playing Integration
                   (function() {
-                    const LASTFM_USER = 'mangeshraut712';
-                    const LASTFM_API_KEY = 'bf577878f6d15620dace61e502d01f8d';
+                    // Using credentials from .env file
+                    const LASTFM_USER = 'mbr63';
+                    const LASTFM_API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
                     const LASTFM_API_URL = 'https://ws.audioscrobbler.com/2.0/';
 
                     async function fetchNowPlaying() {
@@ -2349,11 +2375,22 @@
                         if (nowPlaying) {
                           // Show now playing card
                           document.getElementById('now-playing-track').textContent = nowPlaying.name;
-                          document.getElementById('now-playing-artist').textContent = nowPlaying.artist['#text'];
-                          document.getElementById('now-playing-img').src = 
-                            nowPlaying.image?.find(img => img.size === 'extralarge')?.['#text'] || 
-                            nowPlaying.image?.find(img => img.size === 'large')?.['#text'] ||
-                            'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                          document.getElementById('now-playing-artist').textContent = nowPlaying.artist?.['#text'] || nowPlaying.artist?.name;
+                          
+                          // Get best available image
+                          let imgUrl = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                          if (nowPlaying.image && Array.isArray(nowPlaying.image)) {
+                            const sizes = ['extralarge', 'large', 'medium'];
+                            for (const size of sizes) {
+                              const img = nowPlaying.image.find(i => i.size === size);
+                              if (img && img['#text']) {
+                                imgUrl = img['#text'];
+                                break;
+                              }
+                            }
+                          }
+                          document.getElementById('now-playing-img').src = imgUrl;
+                          document.getElementById('now-playing-img').alt = `${nowPlaying.name} by ${nowPlaying.artist?.['#text'] || nowPlaying.artist?.name}`;
                           document.getElementById('now-playing-link').href = nowPlaying.url;
                           nowPlayingEl.style.display = 'flex';
                         } else {
@@ -2364,10 +2401,18 @@
                         // Render recent tracks
                         recentContainer.innerHTML = '';
                         recentTracks.forEach(track => {
-                          const imgUrl = track.image?.find(img => img.size === 'medium')?.['#text'] ||
-                                        track.image?.find(img => img.size === 'small')?.['#text'] ||
-                                        'https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png';
-                          
+                          let imgUrl = 'https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png';
+                          if (track.image && Array.isArray(track.image)) {
+                            const sizes = ['medium', 'small'];
+                            for (const size of sizes) {
+                              const img = track.image.find(i => i.size === size);
+                              if (img && img['#text']) {
+                                imgUrl = img['#text'];
+                                break;
+                              }
+                            }
+                          }
+
                           const trackCard = document.createElement('div');
                           trackCard.className = 'media-card music-card recent';
                           trackCard.innerHTML = `
@@ -2377,7 +2422,7 @@
                             </div>
                             <div class="media-info">
                               <h4>${track.name.substring(0, 25)}${track.name.length > 25 ? '...' : ''}</h4>
-                              <p class="text-xs text-gray-500">${track.artist['#text'].substring(0, 20)}${track.artist['#text'].length > 20 ? '...' : ''}</p>
+                              <p class="text-xs text-gray-500">${(track.artist?.['#text'] || track.artist?.name || 'Unknown').substring(0, 20)}${(track.artist?.['#text'] || track.artist?.name || '').length > 20 ? '...' : ''}</p>
                               <a href="${track.url}" target="_blank" rel="noopener" class="watch-btn">
                                 <i class="fas fa-external-link-alt"></i> View
                               </a>
@@ -2386,13 +2431,13 @@
                           recentContainer.appendChild(trackCard);
                         });
 
-                        console.log('✓ Last.fm: Loaded', tracks.length, 'tracks');
+                        console.log('✓ Last.fm: Loaded', tracks.length, 'tracks', nowPlaying ? '(Now Playing)' : '');
 
                       } catch (err) {
                         console.warn('Last.fm error:', err.message);
                         loadingEl.style.display = 'none';
                         emptyEl.style.display = 'flex';
-                        
+
                         // Show error message
                         document.querySelector('#music-empty h4').textContent = 'Connection Error';
                         document.querySelector('#music-empty p').textContent = 'Check Last.fm profile';
@@ -2401,7 +2446,18 @@
 
                     // Fetch on load and every 30 seconds
                     fetchNowPlaying();
-                    setInterval(fetchNowPlaying, 30000);
+                    setInterval(() => {
+                      if (document.visibilityState === 'visible') {
+                        fetchNowPlaying();
+                      }
+                    }, 30000);
+
+                    // Refresh when page becomes visible
+                    document.addEventListener('visibilitychange', () => {
+                      if (document.visibilityState === 'visible') {
+                        fetchNowPlaying();
+                      }
+                    });
                   })();
                 </script>
               </div>
