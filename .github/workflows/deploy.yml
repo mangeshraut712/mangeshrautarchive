@@ -97,14 +97,16 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: 🏗️ Build for production
+      - name: 🏗️ Build for GitHub Pages
         run: npm run build
         env:
           # Public config only — NO API keys in build output
+          # GitHub Pages serves from /mangeshrautarchive/ subdirectory
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
           OPENROUTER_MODEL: x-ai/grok-4.1-fast
           NODE_ENV: production
+          GITHUB_PAGES: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
