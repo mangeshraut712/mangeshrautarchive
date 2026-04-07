@@ -556,7 +556,7 @@
         <!-- Interactive Skills Visualization Container -->
         <div id="skills-container" class="max-w-6xl mx-auto">
           <!-- Skills will be dynamically rendered here by skills-visualization.js -->
-          <div class="text-center py-12">
+          <div class="text-center py-12" id="skills-loading">
             <div class="inline-block animate-pulse">
               <svg class="w-12 h-12 text-accent mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -565,6 +565,52 @@
               <p class="text-secondary">Loading interactive skills visualization...</p>
             </div>
           </div>
+          
+          <!-- No-JS Fallback: Static Skills List -->
+          <noscript>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-8">
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fab fa-java text-2xl mb-2"></i>
+                <h4>Java</h4>
+                <p class="text-sm text-gray-500">Spring Boot, Microservices</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fab fa-python text-2xl mb-2"></i>
+                <h4>Python</h4>
+                <p class="text-sm text-gray-500">ML/AI, Data Processing</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fab fa-aws text-2xl mb-2"></i>
+                <h4>AWS</h4>
+                <p class="text-sm text-gray-500">Lambda, EC2, S3, RDS</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fab fa-js text-2xl mb-2"></i>
+                <h4>JavaScript</h4>
+                <p class="text-sm text-gray-500">Angular, React, Node.js</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fas fa-database text-2xl mb-2"></i>
+                <h4>Databases</h4>
+                <p class="text-sm text-gray-500">MySQL, PostgreSQL, Redis</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fas fa-brain text-2xl mb-2"></i>
+                <h4>Machine Learning</h4>
+                <p class="text-sm text-gray-500">TensorFlow, LSTM, NLP</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fab fa-docker text-2xl mb-2"></i>
+                <h4>Docker</h4>
+                <p class="text-sm text-gray-500">Containers, Kubernetes</p>
+              </div>
+              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                <i class="fab fa-git-alt text-2xl mb-2"></i>
+                <h4>DevOps</h4>
+                <p class="text-sm text-gray-500">CI/CD, Terraform, Jenkins</p>
+              </div>
+            </div>
+          </noscript>
         </div>
       </div>
     </section>
