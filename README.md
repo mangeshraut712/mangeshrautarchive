@@ -511,6 +511,8 @@ graph TD
 
 ### ⭐ If you found this project helpful, please give it a star!
 
+**Connect:** [Portfolio](https://mangeshraut.pro) • [LinkedIn](https://linkedin.com/in/mangeshraut71298) • [GitHub](https://github.com/mangeshraut712) • [Snapchat](https://snapchat.com/t/nk1K673G) • [Email](mailto:mbr63@drexel.edu)
+
 ---
 
 **© 2026 Mangesh Raut • Built with ❤️ in Philadelphia**
