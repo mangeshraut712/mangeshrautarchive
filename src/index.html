@@ -1748,11 +1748,633 @@
             <div class="calendar-wrapper-clean">
               <div id="calendar-widget"></div>
             </div>
+
+            <!-- Currently Watching/Reading Card -->
+            <div class="currently-card">
+              <div class="currently-header">
+                <h3><i class="fas fa-bookmark"></i> Currently</h3>
+                <div class="currently-tabs">
+                  <button class="currently-tab active" data-tab="shows" onclick="switchTab(this, 'shows')">
+                    <i class="fas fa-tv"></i>
+                    <span>Shows & Movies</span>
+                  </button>
+                  <button class="currently-tab" data-tab="books" onclick="switchTab(this, 'books')">
+                    <i class="fas fa-book"></i>
+                    <span>Books</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Shows & Movies Section -->
+              <div class="currently-content active" id="shows-content">
+                <div class="media-grid">
+                  <!-- Indian TV Shows -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #ff6b6b, #feca57);">
+                      <span class="media-emoji">🎭</span>
+                      <span class="media-badge">TV</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Tarak Mehta Ka Ooltah Chashmah</h4>
+                      <p>Long-running Indian sitcom</p>
+                      <a href="https://www.imdb.com/title/tt1704688/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on SonyLIV
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #2c3e50, #e74c3c);">
+                      <span class="media-emoji">🚔</span>
+                      <span class="media-badge">TV</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>CID</h4>
+                      <p>Iconic Indian detective series</p>
+                      <a href="https://www.imdb.com/title/tt0319679/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on SonyLIV
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #8e44ad, #c0392b);">
+                      <span class="media-emoji">🏹</span>
+                      <span class="media-badge">TV</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Mahabharat (Star Plus)</h4>
+                      <p>Epic Indian mythology series</p>
+                      <a href="https://www.imdb.com/title/tt3213684/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Hotstar
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Sports -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e74c3c, #000);">
+                      <span class="media-emoji">🏎️</span>
+                      <span class="media-badge">Sport</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Formula 1</h4>
+                      <p>Pinnacle of motorsport racing</p>
+                      <a href="https://www.formula1.com/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on F1 TV
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Animated Series -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #3498db, #2ecc71);">
+                      <span class="media-emoji">🌊</span>
+                      <span class="media-badge">Anime</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Dhurandhar</h4>
+                      <p>Indian animated superhero</p>
+                      <a href="https://www.youtube.com/results?search_query=dhurandhar+serials" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on YouTube
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Indian Movies - Action -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #c0392b, #f39c12);">
+                      <span class="media-emoji">🔨</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>KGF Chapter 1 & 2</h4>
+                      <p>Kannada action blockbuster</p>
+                      <a href="https://www.imdb.com/title/tt7838252/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e67e22, #d35400);">
+                      <span class="media-emoji">⚔️</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Bahubali 1 & 2</h4>
+                      <p>Indian epic historical fiction</p>
+                      <a href="https://www.imdb.com/title/tt4849438/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Hotstar
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #9b59b6, #34495e);">
+                      <span class="media-emoji">🔥</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Vikram (2022)</h4>
+                      <p>Kamal Haasan action thriller</p>
+                      <a href="https://www.imdb.com/title/tt9179430/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Hotstar
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+                      <span class="media-emoji">🏖️</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Jailer</h4>
+                      <p>Rajinikanth action drama</p>
+                      <a href="https://www.imdb.com/title/tt11614424/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                      <span class="media-emoji">🌾</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Kantara</h4>
+                      <p>Kannada action thriller</p>
+                      <a href="https://www.imdb.com/title/tt15327050/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e67e22, #f1c40f);">
+                      <span class="media-emoji">🎭</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Pushpa</h4>
+                      <p>Allu Arjun action drama</p>
+                      <a href="https://www.imdb.com/title/tt11374902/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #c0392b, #8e44ad);">
+                      <span class="media-emoji">🏛️</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Chhaava</h4>
+                      <p>Vicky Kaushal historical drama</p>
+                      <a href="https://www.imdb.com/title/tt27951204/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> In Theaters
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Bollywood Classics -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #2980b9, #27ae60);">
+                      <span class="media-emoji">🏆</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Dangal</h4>
+                      <p>Aamir Khan sports biopic</p>
+                      <a href="https://www.imdb.com/title/tt5074352/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e74c3c, #f39c12);">
+                      <span class="media-emoji">🌊</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>RRR</h4>
+                      <p>SS Rajamouli epic action</p>
+                      <a href="https://www.imdb.com/title/tt8178634/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                      <span class="media-emoji">❤️</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Bajrangi Bhaijaan</h4>
+                      <p>Salman Khan heartwarming drama</p>
+                      <a href="https://www.imdb.com/title/tt3863552/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                      <span class="media-emoji">👽</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>PK</h4>
+                      <p>Aamir Khan comedy-drama</p>
+                      <a href="https://www.imdb.com/title/tt2338151/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Hollywood Movies -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #2c3e50, #3498db);">
+                      <span class="media-emoji">💻</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>The Social Network</h4>
+                      <p>Facebook founding story</p>
+                      <a href="https://www.imdb.com/title/tt1285016/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                      <span class="media-emoji">🏈</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>The Blind Side</h4>
+                      <p>Inspiring sports drama</p>
+                      <a href="https://www.imdb.com/title/tt0878804/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e67e22, #d35400);">
+                      <span class="media-emoji">🐕</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>777 Charlie</h4>
+                      <p>Heartwarming dog movie</p>
+                      <a href="https://www.imdb.com/title/tt10867958/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #34495e, #2c3e50);">
+                      <span class="media-emoji">🚗</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Fast Five</h4>
+                      <p>High-octane action thriller</p>
+                      <a href="https://www.imdb.com/title/tt1596343/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e74c3c, #f39c12);">
+                      <span class="media-emoji">🦸</span>
+                      <span class="media-badge">Movie</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Avengers: Endgame</h4>
+                      <p>Marvel epic conclusion</p>
+                      <a href="https://www.imdb.com/title/tt4154796/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Disney+
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- International Series -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #8e44ad, #c0392b);">
+                      <span class="media-emoji">💰</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Money Heist</h4>
+                      <p>Spanish heist thriller</p>
+                      <a href="https://www.imdb.com/title/tt6468322/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #27ae60, #2c3e50);">
+                      <span class="media-emoji">🚬</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Narcos</h4>
+                      <p>Drug cartel crime drama</p>
+                      <a href="https://www.imdb.com/title/tt2707408/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #e91e63, #9c27b0);">
+                      <span class="media-emoji">💕</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Crash Landing on You</h4>
+                      <p>Korean romantic drama</p>
+                      <a href="https://www.imdb.com/title/tt10850932/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Indian Web Series -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #f39c12, #e74c3c);">
+                      <span class="media-emoji">📈</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Scam 1992</h4>
+                      <p>Harshad Mehta story</p>
+                      <a href="https://www.imdb.com/title/tt12392504/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on SonyLIV
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #c0392b, #8e44ad);">
+                      <span class="media-emoji">🔫</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Mirzapur</h4>
+                      <p>Crime thriller series</p>
+                      <a href="https://www.imdb.com/title/tt6473300/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #34495e, #2c3e50);">
+                      <span class="media-emoji">👨‍👩‍👧‍👦</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>The Family Man</h4>
+                      <p>Manoj Bajpayee spy thriller</p>
+                      <a href="https://www.imdb.com/title/tt9544034/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #2c3e50, #c0392b);">
+                      <span class="media-emoji">👹</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>From</h4>
+                      <p>Mystery horror thriller</p>
+                      <a href="https://www.imdb.com/title/tt9813792/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Prime
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Korean Series -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #2c3e50, #c0392b);">
+                      <span class="media-emoji">🦑</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Squid Game</h4>
+                      <p>Korean survival drama</p>
+                      <a href="https://www.imdb.com/title/tt10919420/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- US Series -->
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);">
+                      <span class="media-emoji">👽</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Stranger Things</h4>
+                      <p>80s sci-fi horror</p>
+                      <a href="https://www.imdb.com/title/tt4574334/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card">
+                    <div class="media-poster" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                      <span class="media-emoji">💊</span>
+                      <span class="media-badge">Series</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Breaking Bad</h4>
+                      <p>Crime drama masterpiece</p>
+                      <a href="https://www.imdb.com/title/tt0903747/" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Watch on Netflix
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Books Section -->
+              <div class="currently-content" id="books-content">
+                <div class="media-grid">
+                  <!-- Biography -->
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #2c3e50, #34495e);">
+                      <span class="media-emoji">🍎</span>
+                      <span class="media-badge">Biography</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Steve Jobs</h4>
+                      <p>Walter Isaacson</p>
+                      <a href="https://www.amazon.com/Steve-Jobs-Walter-Isaacson/dp/1451648537" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Self-Help -->
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                      <span class="media-emoji">⚛️</span>
+                      <span class="media-badge">Self-Help</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Atomic Habits</h4>
+                      <p>James Clear</p>
+                      <a href="https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Religious/Spiritual -->
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #e67e22, #d35400);">
+                      <span class="media-emoji">🕉️</span>
+                      <span class="media-badge">Epic</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>The Ramayana</h4>
+                      <p>Valmiki / Tulsidas</p>
+                      <a href="https://www.amazon.com/Ramayana-William-Buck/dp/0520040393" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                      <span class="media-emoji">📿</span>
+                      <span class="media-badge">Scripture</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Bhagavad Gita</h4>
+                      <p>Vyasa / Traditional</p>
+                      <a href="https://www.amazon.com/Bhagavad-Gita-As-It-Is/dp/089213268X" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                      <span class="media-emoji">✝️</span>
+                      <span class="media-badge">Scripture</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Holy Bible</h4>
+                      <p>Various Authors</p>
+                      <a href="https://www.amazon.com/Holy-Bible-New-International-Version/dp/0310446617" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Sci-Fi/Fantasy -->
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                      <span class="media-emoji">🏜️</span>
+                      <span class="media-badge">Sci-Fi</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Dune</h4>
+                      <p>Frank Herbert</p>
+                      <a href="https://www.amazon.com/Dune-Frank-Herbert/dp/0441172717" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                      <span class="media-emoji">🧙</span>
+                      <span class="media-badge">Fantasy</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>The Lord of the Rings</h4>
+                      <p>J.R.R. Tolkien</p>
+                      <a href="https://www.amazon.com/Lord-Rings-J-R-Tolkien/dp/0618640150" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Marathi Literature -->
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #c0392b, #8e44ad);">
+                      <span class="media-emoji">⚔️</span>
+                      <span class="media-badge">Marathi</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Mrityunjay (मृत्युंजय)</h4>
+                      <p>Shivaji Sawant</p>
+                      <a href="https://www.amazon.in/Mrityunjay-Shivaji-Sawant/dp/8170284485" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon India
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="media-card book-card">
+                    <div class="media-poster book-poster" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                      <span class="media-emoji">👩‍👦</span>
+                      <span class="media-badge">Marathi</span>
+                    </div>
+                    <div class="media-info">
+                      <h4>Shyamchi Aai (श्यामची आई)</h4>
+                      <p>Sane Guruji</p>
+                      <a href="https://www.amazon.in/Shyamchi-Aai-Sane-Guruji/dp/8170284485" target="_blank" rel="noopener" class="watch-btn book-btn">
+                        <i class="fas fa-book-open"></i> Read on Amazon India
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <script>
+              // Currently Card Tab Switching
+              function switchTab(btn, tabName) {
+                // Remove active class from all tabs
+                document.querySelectorAll('.currently-tab').forEach(tab => {
+                  tab.classList.remove('active');
+                });
+                
+                // Add active class to clicked tab
+                btn.classList.add('active');
+                
+                // Hide all content
+                document.querySelectorAll('.currently-content').forEach(content => {
+                  content.classList.remove('active');
+                });
+                
+                // Show selected content
+                document.getElementById(tabName + '-content').classList.add('active');
+              }
+            </script>
           </div>
         </div>
       </div>
     </section>
-
 
     <!-- ═══════════════════════════════════════════════════════════
          DEBUG RUNNER GAME SECTION
