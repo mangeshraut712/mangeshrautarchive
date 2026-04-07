@@ -1686,57 +1686,100 @@ html.dark .apple-tldr:hover {
 .vibe-coder-badge-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
   perspective: 1000px;
-  margin-top: 2rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .vibe-coder-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 1.4rem;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #1d1d1f;
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.04),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  background: #0071e3;
+  border: none;
+  border-radius: 980px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
 }
 
 .vibe-coder-badge i {
-  font-size: 0.8rem;
-  background: linear-gradient(135deg, #0071e3, #42a5f5);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 0.75rem;
+  color: #fff;
 }
 
 .vibe-coder-badge:hover {
-  transform: translateY(-2px) scale(1.04);
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px) scale(1.02);
+  background: #0077ed;
 }
 
 html.dark .vibe-coder-badge {
-  background: rgba(28, 28, 30, 0.6);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #f5f5f7;
-  box-shadow:
-    0 8px 16px rgba(0, 0, 0, 0.2),
-    rgba(255, 255, 255, 0.02) 0px 1px 3px 0px;
+  background: #0a84ff;
+  color: #fff;
+  box-shadow: none;
 }
 
 html.dark .vibe-coder-badge i {
-  background: linear-gradient(135deg, #2997ff, #64b5f6);
-  -webkit-background-clip: text;
-  background-clip: text;
+  color: #fff;
+}
+
+html.dark .vibe-coder-badge:hover {
+  background: #2997ff;
+}
+
+/* Portfolio Reach Badge - Apple Style */
+.portfolio-reach-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  background: transparent;
+  border: 1px solid rgb(0 0 0 / 15%);
+  border-radius: 980px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #1d1d1f;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
+}
+
+.portfolio-reach-badge i {
+  font-size: 0.75rem;
+  color: #0071e3;
+}
+
+.portfolio-reach-badge .reach-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.portfolio-reach-badge:hover {
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgb(0 0 0 / 25%);
+  background: rgb(0 0 0 / 3%);
+}
+
+html.dark .portfolio-reach-badge {
+  background: transparent;
+  border-color: rgb(255 255 255 / 15%);
+  color: #f5f5f7;
+}
+
+html.dark .portfolio-reach-badge i {
+  color: #2997ff;
+}
+
+html.dark .portfolio-reach-badge:hover {
+  border-color: rgb(255 255 255 / 25%);
+  background: rgb(255 255 255 / 5%);
 }
 
 .hero-name {
