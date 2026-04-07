@@ -90,6 +90,27 @@
       }
     })();
   </script>
+  <!-- Suppress Chrome Extension message channel errors -->
+  <script>
+    (function () {
+      const originalConsoleError = console.error;
+      const isExtensionError = function (args) {
+        const message = args.length > 0 && typeof args[0] === 'string' ? args[0] : '';
+        return message.includes('message channel closed') ||
+               message.includes('A listener indicated an asynchronous response') ||
+               message.includes('Unchecked runtime.lastError') ||
+               message.includes('The message port closed before') ||
+               (message.includes('Uncaught (in promise)') && message.includes('Error'));
+      };
+      console.error = function () {
+        if (isExtensionError(arguments)) {
+          // Suppress extension-related errors - they don't affect your app
+          return;
+        }
+        return originalConsoleError.apply(console, arguments);
+      };
+    })();
+  </script>
   <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="assets/css/tailwind-output.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print"
