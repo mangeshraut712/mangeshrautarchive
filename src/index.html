@@ -344,7 +344,7 @@
                       <p class="artist-name" id="artist-name">--</p>
                     </div>
                     <a 
-                      href="https://www.last.fm/user/mangeshraut712" 
+                      href="https://www.last.fm/user/mbr63" 
                       target="_blank" 
                       rel="noopener" 
                       class="lastfm-link"
@@ -2855,13 +2855,8 @@
     <!-- END CHATBOT -->
 
     <script>
-      // Portfolio Reach - Real view counter using CountAPI (free service)
+      // Portfolio Reach - Simple localStorage-based view counter
       (function() {
-        // CountAPI configuration - free counter service
-        const COUNTAPI_NAMESPACE = 'mangeshraut712';
-        const COUNTAPI_KEY = 'portfolio-views';
-        const COUNTAPI_URL = `https://api.countapi.xyz`;
-        
         const reachCountEl = document.getElementById('reach-count');
         
         function formatNumber(num) {
@@ -2870,54 +2865,19 @@
           return num.toString();
         }
         
-        async function fetchViewCount() {
-          try {
-            // First, try to hit (increment) the counter - only count once per session
-            if (!sessionStorage.getItem('view_counted')) {
-              const hitResponse = await fetch(
-                `${COUNTAPI_URL}/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`,
-                { method: 'GET', headers: { 'Accept': 'application/json' } }
-              );
-              
-              if (hitResponse.ok) {
-                const hitData = await hitResponse.json();
-                reachCountEl.textContent = formatNumber(hitData.value);
-                sessionStorage.setItem('view_counted', 'true');
-                console.log('✓ CountAPI: View counted, total:', hitData.value);
-                return;
-              }
-            }
-            
-            // If already counted this session, just get current value
-            const getResponse = await fetch(
-              `${COUNTAPI_URL}/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`,
-              { method: 'GET', headers: { 'Accept': 'application/json' } }
-            );
-            
-            if (getResponse.ok) {
-              const getData = await getResponse.json();
-              reachCountEl.textContent = formatNumber(getData.value);
-              console.log('✓ CountAPI: Current views:', getData.value);
-              return;
-            }
-            
-            throw new Error('CountAPI response not OK');
-          } catch (err) {
-            // Silent fail - don't show error to users
-            console.warn('CountAPI failed:', err.message);
-            
-            // Fallback: Use localStorage for demo/development
-            const stored = localStorage.getItem('portfolio_views');
-            let count = stored ? parseInt(stored, 10) : 1247;
-            
-            if (!sessionStorage.getItem('view_counted')) {
-              count++;
-              localStorage.setItem('portfolio_views', count.toString());
-              sessionStorage.setItem('view_counted', 'true');
-            }
-            
-            reachCountEl.textContent = formatNumber(count);
+        function fetchViewCount() {
+          // Get current count from localStorage (start at 1247 for demo)
+          const stored = localStorage.getItem('portfolio_views');
+          let count = stored ? parseInt(stored, 10) : 1247;
+          
+          // Increment if not yet counted this session
+          if (!sessionStorage.getItem('view_counted')) {
+            count++;
+            localStorage.setItem('portfolio_views', count.toString());
+            sessionStorage.setItem('view_counted', 'true');
           }
+          
+          reachCountEl.textContent = formatNumber(count);
         }
         
         // Fetch on page load
