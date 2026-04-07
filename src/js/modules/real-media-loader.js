@@ -64,16 +64,19 @@ class RealMediaLoader {
   /**
    * Get TMDB poster URL for a movie/show
    */
-  async getTMDBPoster(id, title) {
+  async getTMDBPoster(id, title, type) {
     const cacheKey = `tmdb_${id}`;
     if (this.cache.has(cacheKey)) {
       return this.cache.get(cacheKey);
     }
 
     try {
+      // Determine endpoint from explicit type field (not unreliable ID check)
+      const endpoint = type === 'Series' ? 'tv' : 'movie';
+      
       // Use TMDB API to get poster
       const response = await fetch(
-        `https://api.themoviedb.org/3/${id > 100000 ? 'tv' : 'movie'}/${id}?api_key=bef46b0d7702dac5b071906cd186bd28`,
+        `https://api.themoviedb.org/3/${endpoint}/${id}?api_key=bef46b0d7702dac5b071906cd186bd28`,
         { 
           signal: AbortSignal.timeout(5000),
           headers: {
@@ -96,10 +99,10 @@ class RealMediaLoader {
       }
 
       // Fallback to searching
-      return this.searchTMDB(title, id > 100000 ? 'tv' : 'movie');
+      return this.searchTMDB(title, endpoint);
     } catch (error) {
       console.warn(`Failed to fetch TMDB poster for ${title}:`, error);
-      return this.searchTMDB(title, id > 100000 ? 'tv' : 'movie');
+      return this.searchTMDB(title, type === 'Series' ? 'tv' : 'movie');
     }
   }
 
@@ -126,11 +129,23 @@ class RealMediaLoader {
   }
 
   /**
-   * Get Open Library cover for books
+   * Get Open Library cover for books with fallback
    */
   getOpenLibraryCover(isbn, title) {
-    // Open Library covers are reliable and don't need API calls
-    return `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`;
+    // Open Library covers - use L (large) size for better quality, with fallback
+    return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
+  }
+
+  /**
+   * Check if Open Library cover exists
+   */
+  async checkCoverExists(url) {
+    try {
+      const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
+      return response.ok;
+    } catch (e) {
+      return false;
+    }
   }
 
   /**
@@ -152,25 +167,33 @@ class RealMediaLoader {
    * Render shows and movies with real posters
    */
   async renderShowsAndMovies(container) {
+    // Generate a media-themed SVG placeholder as data URL
+    const getMediaPlaceholder = (title, type) => {
+      const encodedTitle = encodeURIComponent(title.substring(0, 20));
+      const icon = type === 'Series' ? '📺' : '🎬';
+      return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23f5f5f7' width='200' height='300'/%3E%3Crect fill='%23e8e8ed' x='20' y='40' width='160' height='220' rx='4'/%3E%3Ctext font-size='40' x='100' y='120' text-anchor='middle'%3E${icon}%3C/text%3E%3Ctext fill='%2386868b' font-family='system-ui' font-size='14' x='100' y='180' text-anchor='middle'%3E${encodedTitle}%3C/text%3E%3Ctext fill='%23a1a1a6' font-family='system-ui' font-size='12' x='100' y='210' text-anchor='middle'%3E${type}%3C/text%3E%3C/svg%3E`;
+    };
+
     const allMedia = [...this.mediaData.shows, ...this.mediaData.movies];
     const html = [];
 
     for (const item of allMedia) {
-      // Try to get real poster
-      let posterUrl = await this.getTMDBPoster(item.id, item.title);
+      // Try to get real poster with explicit type
+      let posterUrl = await this.getTMDBPoster(item.id, item.title, item.type);
       
-      // Use fallback if needed
+      // Use fallback SVG if needed (inline, no external service)
       if (!posterUrl) {
-        posterUrl = `https://via.placeholder.com/200x300/f5f5f7/86868b?text=${encodeURIComponent(item.title.substring(0, 15))}`;
+        posterUrl = getMediaPlaceholder(item.title, item.type);
       }
 
       const shortTitle = item.title.length > 15 ? item.title.substring(0, 12) + '...' : item.title;
+      const fallbackSvg = getMediaPlaceholder(item.title, item.type);
 
       html.push(`
         <div class="media-card">
           <div class="media-poster">
             <img src="${posterUrl}" alt="${item.title}" loading="lazy" 
-              onerror="this.src='https://via.placeholder.com/200x300/f5f5f7/86868b?text=${encodeURIComponent(shortTitle)}'" />
+              onerror="this.src='${fallbackSvg}'; this.onerror=null;" />
             <span class="media-badge">${item.type}</span>
           </div>
           <div class="media-info">
@@ -189,16 +212,23 @@ class RealMediaLoader {
   /**
    * Render books with real covers
    */
-  renderBooks(container) {
-    const html = this.mediaData.books.map(book => {
+  async renderBooks(container) {
+    // Generate a book-themed SVG placeholder as data URL
+    const getBookPlaceholder = (title) => {
+      const encodedTitle = encodeURIComponent(title.substring(0, 20));
+      return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23f5f5f7' width='200' height='300'/%3E%3Crect fill='%23e8e8ed' x='20' y='40' width='160' height='220' rx='4'/%3E%3Ctext fill='%2386868b' font-family='system-ui' font-size='14' x='100' y='150' text-anchor='middle'%3E${encodedTitle}%3C/text%3E%3Ctext fill='%23a1a1a6' font-family='system-ui' font-size='12' x='100' y='180' text-anchor='middle'%3EBook Cover%3C/text%3E%3C/svg%3E`;
+    };
+
+    const html = await Promise.all(this.mediaData.books.map(async (book) => {
       const coverUrl = this.getOpenLibraryCover(book.isbn, book.title);
       const shortTitle = book.title.length > 15 ? book.title.substring(0, 12) + '...' : book.title;
+      const placeholderUrl = getBookPlaceholder(book.title);
 
       return `
         <div class="media-card book-card">
           <div class="media-poster">
             <img src="${coverUrl}" alt="${book.title}" loading="lazy"
-              onerror="this.src='https://via.placeholder.com/200x300/f5f5f7/86868b?text=${encodeURIComponent(shortTitle)}'; this.onerror=null;" />
+              onerror="this.src='${placeholderUrl}'; this.onerror=null;" />
             <span class="media-badge">${book.type}</span>
           </div>
           <div class="media-info">
@@ -210,9 +240,9 @@ class RealMediaLoader {
           </div>
         </div>
       `;
-    }).join('');
+    }));
 
-    container.innerHTML = html;
+    container.innerHTML = html.join('');
   }
 
   /**
@@ -226,12 +256,22 @@ class RealMediaLoader {
       // Show loading state
       showsContainer.innerHTML = '<div class="text-center py-8"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent mx-auto"></div><p class="text-sm text-gray-500 mt-2">Loading real posters...</p></div>';
       
-      // Load real data
-      await this.renderShowsAndMovies(showsContainer);
+      try {
+        // Load real data
+        await this.renderShowsAndMovies(showsContainer);
+      } catch (err) {
+        console.error('[RealMediaLoader] Failed to load shows/movies:', err);
+        showsContainer.innerHTML = '<div class="text-center py-8 text-red-500">Failed to load content. Please refresh.</div>';
+      }
     }
 
     if (booksContainer) {
-      this.renderBooks(booksContainer);
+      try {
+        await this.renderBooks(booksContainer);
+      } catch (err) {
+        console.error('[RealMediaLoader] Failed to load books:', err);
+        booksContainer.innerHTML = '<div class="text-center py-8 text-red-500">Failed to load books. Please refresh.</div>';
+      }
     }
   }
 }
