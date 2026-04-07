@@ -4456,6 +4456,7 @@ html.dark .education-card .date-badge {
 
   /* Wix Blue */
   --leetcode-color: #ffa116;
+  --snapchat-color: #fffc00;
 }
 
 /* Scoped to wrapper to avoid breaking body */
@@ -4607,6 +4608,10 @@ html.dark .wrapper .icon:hover {
   color: var(--leetcode-color);
 }
 
+.wrapper .snapchat {
+  color: var(--snapchat-color);
+}
+
 /* Hover effects - keep background change but ensure text is white */
 .wrapper .facebook:hover,
 .wrapper .facebook:hover .tooltip,
@@ -4657,6 +4662,13 @@ html.dark .wrapper .icon:hover {
   color: #fff;
 }
 
+.wrapper .snapchat:hover,
+.wrapper .snapchat:hover .tooltip,
+.wrapper .snapchat:hover .tooltip::before {
+  background: var(--snapchat-color);
+  color: #000;
+}
+
 /* Dark mode - Override with specific brand colors for better visibility */
 html.dark .wrapper .facebook {
   color: #0a84ff;
@@ -4684,6 +4696,10 @@ html.dark .wrapper .x {
 
 html.dark .wrapper .leetcode {
   color: #ffa116;
+}
+
+html.dark .wrapper .snapchat {
+  color: #fffc00;
 }
 
 /* Fix Hero Text Visibility */
