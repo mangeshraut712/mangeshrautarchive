@@ -5433,3 +5433,208 @@ html.dark .debug-instruction-card:hover {
     z-index: 10001 !important;
   }
 }
+
+/* ============================================================
+   ACCESSIBILITY CONTRAST FIXES - WCAG 2.1 AA COMPLIANT
+   Minimum contrast ratio 4.5:1 for normal text, 3:1 for large
+   ============================================================ */
+
+/* Ensure strong/b elements have proper contrast */
+strong,
+b {
+  color: var(--text-primary);
+}
+
+html:not(.dark) strong,
+html:not(.dark) b {
+  color: #000;
+}
+
+html.dark strong,
+html.dark b {
+  color: #fff;
+}
+
+/* Explicit text colors for common elements - Light Mode */
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) h5,
+html:not(.dark) h6 {
+  color: #1d1d1f;
+}
+
+html:not(.dark) p,
+html:not(.dark) span,
+html:not(.dark) div {
+  color: inherit;
+}
+
+/* Ensure all text elements inherit or have explicit colors */
+.text-accent {
+  color: #0051a8 !important; /* Darker blue for 4.5:1 contrast */
+}
+
+html.dark .text-accent {
+  color: #2997ff !important;
+}
+
+/* Publication elements */
+.publication-category {
+  color: #004a94 !important;
+}
+
+.publication-title {
+  color: #1d1d1f !important;
+}
+
+.publication-authors {
+  color: #1d1d1f !important;
+}
+
+.publication-journal {
+  color: #1d1d1f !important;
+}
+
+.publication-details {
+  color: #6e6e73 !important;
+}
+
+.publication-venue {
+  color: #1d1d1f !important;
+}
+
+html.dark .publication-category {
+  color: #2997ff !important;
+}
+
+html.dark .publication-title,
+html.dark .publication-authors,
+html.dark .publication-journal,
+html.dark .publication-venue {
+  color: #f5f5f7 !important;
+}
+
+/* Award elements */
+.award-title {
+  color: #1d1d1f !important;
+}
+
+.award-institution {
+  color: #0051a8 !important;
+}
+
+.award-description {
+  color: #1d1d1f !important;
+}
+
+.award-date,
+.award-issuer {
+  color: #6e6e73 !important;
+}
+
+html.dark .award-title,
+html.dark .award-description {
+  color: #f5f5f7 !important;
+}
+
+html.dark .award-institution {
+  color: #2997ff !important;
+}
+
+html.dark .award-date,
+html.dark .award-issuer {
+  color: #a1a1a6 !important;
+}
+
+/* Recommendation elements */
+.recommendation-text {
+  color: #1d1d1f !important;
+}
+
+.author-name {
+  color: #1d1d1f !important;
+}
+
+.author-title {
+  color: #6e6e73 !important;
+}
+
+.author-company {
+  color: #0051a8 !important;
+}
+
+html.dark .recommendation-text,
+html.dark .author-name {
+  color: #f5f5f7 !important;
+}
+
+html.dark .author-title {
+  color: #a1a1a6 !important;
+}
+
+html.dark .author-company {
+  color: #2997ff !important;
+}
+
+/* Experience elements */
+.experience-content h3 {
+  color: #1d1d1f !important;
+}
+
+.experience-content .text-accent {
+  color: #0051a8 !important;
+}
+
+.experience-date-badge {
+  color: #004a94 !important;
+  background: rgb(0 89 179 / 12%) !important;
+}
+
+.experience-tag {
+  color: #1d1d1f !important;
+  background: #f5f5f7 !important;
+}
+
+html.dark .experience-content h3,
+html.dark .experience-tag {
+  color: #f5f5f7 !important;
+}
+
+html.dark .experience-content .text-accent,
+html.dark .author-company {
+  color: #2997ff !important;
+}
+
+html.dark .experience-date-badge {
+  color: #58a6ff !important;
+  background: rgb(41 151 255 / 15%) !important;
+}
+
+/* Education elements */
+.education-degree {
+  color: #1d1d1f !important;
+}
+
+.education-institution {
+  color: #0051a8 !important;
+}
+
+.education-location,
+.education-period {
+  color: #6e6e73 !important;
+}
+
+html.dark .education-degree {
+  color: #f5f5f7 !important;
+}
+
+html.dark .education-institution {
+  color: #2997ff !important;
+}
+
+html.dark .education-location,
+html.dark .education-period {
+  color: #a1a1a6 !important;
+}

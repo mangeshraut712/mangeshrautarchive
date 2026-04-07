@@ -82,8 +82,8 @@ html.dark .certification-card:hover {
 .certification-category {
   display: inline-block !important;
   padding: 0.25rem 0.6rem !important;
-  background: rgb(0 113 227 / 10%) !important;
-  color: #0071e3 !important;
+  background: rgb(0 89 179 / 15%) !important;
+  color: #004a94 !important;
   font-size: 0.7rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
