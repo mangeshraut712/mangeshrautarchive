@@ -9,7 +9,15 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from collections import deque
 from enum import Enum
-import psutil
+
+# Optional psutil import - graceful fallback if not available
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    psutil = None
+    PSUTIL_AVAILABLE = False
+
 import httpx
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -274,6 +282,13 @@ class SystemMonitor:
 
     def _check_system_resources(self) -> Dict:
         """Check system resource usage."""
+        if not PSUTIL_AVAILABLE:
+            return {
+                "status": HealthStatus.UNKNOWN,
+                "message": "System resource monitoring not available",
+                "details": {}
+            }
+
         try:
             cpu_percent = psutil.cpu_percent(interval=0.1)
             memory = psutil.virtual_memory()
@@ -296,9 +311,9 @@ class SystemMonitor:
                 "details": {
                     "cpu_percent": cpu_percent,
                     "memory_percent": memory.percent,
-                    "memory_available_mb": memory.available // (1024 * 1024),
+                    "memory_available_gb": round(memory.available / (1024**3), 2),
                     "disk_percent": disk.percent,
-                    "disk_free_gb": disk.free // (1024 * 1024 * 1024)
+                    "disk_free_gb": round(disk.free / (1024**3), 2)
                 }
             }
         except Exception as e:
