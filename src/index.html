@@ -2921,50 +2921,59 @@
           return num.toString();
         }
         
-        // Try Vercel Analytics API first
+        // Try Vercel Analytics API first (silent failure)
         async function fetchVercelAnalytics() {
           try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2000);
+            
             const response = await fetch(VERCEL_ANALYTICS_URL, {
               method: 'GET',
               headers: { 'Accept': 'application/json' },
-              timeout: 5000
+              signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
             
             if (response.ok) {
               const data = await response.json();
               if (data.views && typeof data.views === 'number') {
-                console.log('✓ Vercel Analytics:', data.views);
                 return data.views;
               }
             }
-            throw new Error('Vercel Analytics unavailable');
+            return null;
           } catch (err) {
-            console.log('⚠ Vercel Analytics not configured, using CountAPI fallback');
+            // Silently fail - Vercel Analytics not configured
             return null;
           }
         }
         
-        // CountAPI as fallback
+        // CountAPI as fallback with silent error handling
         async function fetchCountAPI(increment = false) {
           try {
             const endpoint = increment 
               ? `${COUNTAPI_URL}/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`
               : `${COUNTAPI_URL}/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`;
               
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+            
             const response = await fetch(endpoint, {
               method: 'GET',
               headers: { 'Accept': 'application/json' },
-              timeout: 5000
+              signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
             
             if (response.ok) {
               const data = await response.json();
               console.log(increment ? '✓ CountAPI view counted:' : '✓ CountAPI views:', data.value);
               return data.value;
             }
-            throw new Error('CountAPI failed');
+            throw new Error('CountAPI response not ok');
           } catch (err) {
-            console.warn('CountAPI error:', err.message);
+            // Silently fail - don't log to console to avoid clutter
             return null;
           }
         }
@@ -2980,7 +2989,6 @@
             sessionStorage.setItem('view_counted', 'true');
           }
           
-          console.log('✓ LocalStorage fallback count:', count);
           return count;
         }
         
@@ -3021,10 +3029,13 @@
           if (reachCountEl && count !== null) {
             reachCountEl.textContent = formatNumber(count);
             reachCountEl.setAttribute('data-source', source);
-            reachCountEl.setAttribute('title', `Portfolio views (${source})`);
+            reachCountEl.setAttribute('title', `Portfolio views`);
           }
           
-          console.log(`✓ Portfolio reach: ${formatNumber(count)} (source: ${source})`);
+          // Only log in development
+          if (window.location.hostname === 'localhost') {
+            console.log(`✓ Portfolio reach: ${formatNumber(count)} (source: ${source})`);
+          }
         }
         
         // Initial fetch
