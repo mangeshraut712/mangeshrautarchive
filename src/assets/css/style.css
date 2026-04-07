@@ -883,7 +883,6 @@ section#game {
 }
 
 @media (width >=834px) {
-
   .container-fluid,
   .container {
     padding: 0 44px;
@@ -891,7 +890,6 @@ section#game {
 }
 
 @media (width >=1024px) {
-
   .container-fluid,
   .container {
     padding: 0 68px;
@@ -1250,7 +1248,6 @@ html.dark .theme-toggle-nav:focus-visible {
 /* Fix footer padding on mobile */
 @media (width <=768px) {
   footer .max-w-6xl {
-
     /* Mobile Navbar Fixes */
     @media (width <=768px) {
       .global-nav {
@@ -1358,7 +1355,6 @@ section,
 
 /* Mobile Global Padding */
 @media (width <=768px) {
-
   section,
   .page-section {
     padding: 60px 0;
@@ -1916,7 +1912,7 @@ html.dark .global-nav .theme-toggle-nav i {
   /* Increased padding */
 }
 
-.timeline-item>div {
+.timeline-item > div {
   background-color: var(--bg-primary);
   padding: 2rem;
   border-radius: 16px;
@@ -2576,7 +2572,7 @@ html.dark .project-card a.text-accent:hover {
   /* Mobile Cards */
   .education-card,
   .project-card,
-  .timeline-item>div {
+  .timeline-item > div {
     padding: 1.5rem;
     margin-bottom: 1rem;
     border-radius: 16px;
@@ -2634,7 +2630,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== TABLET DESIGN ===== */
 @media (width >=768px) and (width <=1023px) {
-
   /* Tablet-specific styles */
   .container,
   .container-fluid {
@@ -2670,7 +2665,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== DESKTOP ENHANCEMENTS ===== */
 @media (width >=1024px) {
-
   /* Desktop navigation - show full nav */
   .nav-links {
     display: flex;
@@ -2694,7 +2688,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
-
   /* iOS Safari touch targets */
   button,
   .btn,
@@ -2724,7 +2717,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* Android Chrome specific fixes */
 @supports not (-webkit-touch-callout: none) {
-
   /* Android Chrome touch improvements */
   * {
     -webkit-tap-highlight-color: rgb(0 113 227 / 10%);
@@ -2747,9 +2739,7 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== HIGH RESOLUTION DISPLAYS ===== */
 /* stylelint-disable-next-line media-feature-name-no-unknown */
-@media (min-device-pixel-ratio: 2),
-(resolution >=192dpi) {
-
+@media (min-device-pixel-ratio: 2), (resolution >=192dpi) {
   /* Retina display optimizations */
   .nav-logo img {
     image-rendering: -webkit-optimize-contrast;
@@ -2766,7 +2756,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== ACCESSIBILITY ENHANCEMENTS ===== */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -2790,17 +2779,16 @@ html.dark .project-card a.text-accent:hover {
 
 /* Reduce complexity on mobile for better performance */
 @media (width <=767px) {
-
   /* Disable heavy shadows on mobile */
   .project-card,
   .education-card,
-  .timeline-item>div {
+  .timeline-item > div {
     box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
   }
 
   html.dark .project-card,
   html.dark .education-card,
-  html.dark .timeline-item>div {
+  html.dark .timeline-item > div {
     box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
   }
 
@@ -2817,7 +2805,6 @@ html.dark .project-card a.text-accent:hover {
 
 /* ===== PRINT STYLES ===== */
 @media print {
-
   .global-nav,
   .theme-toggle-nav,
   footer {
@@ -3696,7 +3683,6 @@ html.dark .theme-toggle-nav i.fa-moon {
 
 /* Keyframe animations for beautiful effects */
 @keyframes brainPulse {
-
   0%,
   100% {
     filter: brightness(1);
@@ -4821,8 +4807,8 @@ html:not(.dark) #search-overlay {
 }
 
 /* Main site search icon - NOT for projects */
-#search-input+.search-icon,
-.search-input-wrapper>.search-icon:not(#projects .search-icon) {
+#search-input + .search-icon,
+.search-input-wrapper > .search-icon:not(#projects .search-icon) {
   position: absolute;
   left: 20px;
   top: 50%;
@@ -5100,7 +5086,6 @@ html:not(.dark) .search-result-section {
 }
 
 @keyframes float-image {
-
   0%,
   100% {
     transform: translateY(0);

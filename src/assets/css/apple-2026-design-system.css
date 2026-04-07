@@ -259,7 +259,6 @@
    ========================================================================== */
 
 @layer components {
-
   /* Apple Cards 2026 */
   .apple-card {
     background: var(--bg-primary);
@@ -428,7 +427,6 @@
    ========================================================================== */
 
 @layer utilities {
-
   /* Fade Up Animation */
   @keyframes fadeUp {
     from {
@@ -482,7 +480,6 @@
 
   /* Pulse Glow */
   @keyframes pulseGlow {
-
     0%,
     100% {
       box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.4);
@@ -509,45 +506,47 @@
   }
 
   .shimmer {
-    background: linear-gradient(90deg,
-        var(--bg-secondary) 25%,
-        var(--bg-tertiary) 50%,
-        var(--bg-secondary) 75%);
+    background: linear-gradient(
+      90deg,
+      var(--bg-secondary) 25%,
+      var(--bg-tertiary) 50%,
+      var(--bg-secondary) 75%
+    );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
 
   /* Stagger Children Animation */
-  .stagger-children>* {
+  .stagger-children > * {
     opacity: 0;
     transform: translateY(20px);
   }
 
-  .stagger-children.animate>* {
+  .stagger-children.animate > * {
     animation: fadeUp var(--duration-normal) var(--ease-spring) forwards;
   }
 
-  .stagger-children.animate>*:nth-child(1) {
+  .stagger-children.animate > *:nth-child(1) {
     animation-delay: 0ms;
   }
 
-  .stagger-children.animate>*:nth-child(2) {
+  .stagger-children.animate > *:nth-child(2) {
     animation-delay: 50ms;
   }
 
-  .stagger-children.animate>*:nth-child(3) {
+  .stagger-children.animate > *:nth-child(3) {
     animation-delay: 100ms;
   }
 
-  .stagger-children.animate>*:nth-child(4) {
+  .stagger-children.animate > *:nth-child(4) {
     animation-delay: 150ms;
   }
 
-  .stagger-children.animate>*:nth-child(5) {
+  .stagger-children.animate > *:nth-child(5) {
     animation-delay: 200ms;
   }
 
-  .stagger-children.animate>*:nth-child(6) {
+  .stagger-children.animate > *:nth-child(6) {
     animation-delay: 250ms;
   }
 }
@@ -557,7 +556,6 @@
    ========================================================================== */
 
 @layer utilities {
-
   /* GPU Acceleration */
   .gpu-accelerate {
     transform: translateZ(0);
@@ -572,7 +570,6 @@
 
   /* Reduce Motion */
   @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
@@ -613,7 +610,6 @@
    ========================================================================== */
 
 @layer overrides {
-
   /* Experience Cards */
   .experience-content,
   .education-card,
@@ -630,7 +626,9 @@
     overflow: hidden;
     padding: var(--space-6);
     height: 100%;
-    transition: transform var(--duration-normal) var(--ease-spring), box-shadow var(--duration-normal) var(--ease-spring);
+    transition:
+      transform var(--duration-normal) var(--ease-spring),
+      box-shadow var(--duration-normal) var(--ease-spring);
   }
 
   .experience-content:hover,
@@ -682,7 +680,9 @@
     box-shadow: var(--shadow-md);
     overflow: hidden;
     position: relative;
-    transition: transform var(--duration-normal) var(--ease-spring), box-shadow var(--duration-normal) var(--ease-spring);
+    transition:
+      transform var(--duration-normal) var(--ease-spring),
+      box-shadow var(--duration-normal) var(--ease-spring);
   }
 
   .project-card:hover {
@@ -764,7 +764,9 @@
     border: 1px solid var(--separator);
     border-radius: var(--radius-lg);
     color: var(--text-primary);
-    transition: border-color var(--duration-fast) var(--ease-apple), box-shadow var(--duration-fast) var(--ease-apple);
+    transition:
+      border-color var(--duration-fast) var(--ease-apple),
+      box-shadow var(--duration-fast) var(--ease-apple);
   }
 
   input[type='text']:focus,
@@ -800,7 +802,6 @@
    ========================================================================== */
 
 @layer utilities {
-
   /* Flexbox Utilities */
   .flex {
     display: flex;
@@ -1212,7 +1213,6 @@
    ========================================================================== */
 
 @layer utilities {
-
   /* Mobile First - Small */
   @media (min-width: 640px) {
     .sm\:flex-row {

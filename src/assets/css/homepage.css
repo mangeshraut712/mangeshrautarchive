@@ -504,7 +504,6 @@ html:not(.dark) .hero-stat-label {
 
 /* Animation Enhancements */
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);

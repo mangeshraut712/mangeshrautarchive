@@ -11,7 +11,7 @@
 }
 
 /* CRITICAL FIX: Constrain the .container inside skills */
-#skills>.container {
+#skills > .container {
   overflow: hidden;
   max-width: 100%;
   box-sizing: border-box;
@@ -150,7 +150,6 @@ html.dark .skill-badge:hover {
 }
 
 @keyframes gentleFloat {
-
   0%,
   100% {
     transform: translateY(0);
@@ -204,7 +203,6 @@ html.dark .skill-badge:hover {
 }
 
 @keyframes iconFloat {
-
   0%,
   100% {
     transform: translateY(0) rotate(0deg);
@@ -224,7 +222,6 @@ html.dark .skill-badge:hover {
 }
 
 @keyframes iconBreath {
-
   0%,
   100% {
     transform: scale(1);
@@ -320,12 +317,14 @@ html.dark .skill-badge-bar {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg,
-      transparent,
-      rgb(255 255 255 / 60%) 20%,
-      rgb(255 255 255 / 80%) 50%,
-      rgb(255 255 255 / 60%) 80%,
-      transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 60%) 20%,
+    rgb(255 255 255 / 80%) 50%,
+    rgb(255 255 255 / 60%) 80%,
+    transparent
+  );
   animation: progressShine 3s ease-in-out infinite;
 }
 
@@ -343,7 +342,6 @@ html.dark .skill-badge-bar {
 }
 
 @keyframes progressShine {
-
   0%,
   100% {
     transform: translateX(-100%);
@@ -380,7 +378,6 @@ html.dark .skill-badge-percentage {
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
-
   .skill-badge,
   .skill-badge-icon,
   .skill-badge-progress::before,

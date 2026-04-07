@@ -60,7 +60,6 @@ html.dark section h2 {
    ═══════════════════════════════════════════════════════════════════ */
 
 @keyframes pulseGlow {
-
   0%,
   100% {
     box-shadow:
@@ -106,7 +105,6 @@ html.dark .hero-cta {
 }
 
 @keyframes pulseGlowDark {
-
   0%,
   100% {
     box-shadow:
@@ -200,7 +198,6 @@ html.dark .blog-card::before {
 }
 
 @keyframes blinkCursor {
-
   0%,
   100% {
     border-color: #0071e3;
@@ -229,7 +226,6 @@ html.dark .hero-title.typing-animation {
    ═══════════════════════════════════════════════════════════════════ */
 
 @keyframes floatSubtle {
-
   0%,
   100% {
     transform: translateY(0) rotate(0deg);
@@ -390,19 +386,23 @@ section:not(:first-of-type)::before {
   transform: translateX(-50%);
   width: min(80%, 800px);
   height: 1px;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(0, 0, 0, 0.08) 20%,
-      rgba(0, 0, 0, 0.08) 80%,
-      transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 0, 0, 0.08) 20%,
+    rgba(0, 0, 0, 0.08) 80%,
+    transparent
+  );
 }
 
 html.dark section:not(:first-of-type)::before {
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.05) 20%,
-      rgba(255, 255, 255, 0.05) 80%,
-      transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05) 20%,
+    rgba(255, 255, 255, 0.05) 80%,
+    transparent
+  );
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -509,7 +509,6 @@ html.dark .cert-card:hover {
    ═══════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
-
   /* Match sizes for both floating buttons on mobile */
   #go-to-top,
   #chatbot-toggle {
@@ -546,20 +545,24 @@ html.dark .cert-card:hover {
 }
 
 .skeleton {
-  background: linear-gradient(90deg,
-      rgba(0, 0, 0, 0.06) 25%,
-      rgba(0, 0, 0, 0.1) 50%,
-      rgba(0, 0, 0, 0.06) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.06) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
 }
 
 html.dark .skeleton {
-  background: linear-gradient(90deg,
-      rgba(255, 255, 255, 0.05) 25%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0.05) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
   background-size: 200% 100%;
 }
 
@@ -567,45 +570,45 @@ html.dark .skeleton {
    20. STAGGERED REVEAL FOR GRID ITEMS
    ═══════════════════════════════════════════════════════════════════ */
 
-.stagger-reveal>* {
+.stagger-reveal > * {
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.stagger-reveal.revealed>*:nth-child(1) {
+.stagger-reveal.revealed > *:nth-child(1) {
   transition-delay: 0.05s;
 }
 
-.stagger-reveal.revealed>*:nth-child(2) {
+.stagger-reveal.revealed > *:nth-child(2) {
   transition-delay: 0.1s;
 }
 
-.stagger-reveal.revealed>*:nth-child(3) {
+.stagger-reveal.revealed > *:nth-child(3) {
   transition-delay: 0.15s;
 }
 
-.stagger-reveal.revealed>*:nth-child(4) {
+.stagger-reveal.revealed > *:nth-child(4) {
   transition-delay: 0.2s;
 }
 
-.stagger-reveal.revealed>*:nth-child(5) {
+.stagger-reveal.revealed > *:nth-child(5) {
   transition-delay: 0.25s;
 }
 
-.stagger-reveal.revealed>*:nth-child(6) {
+.stagger-reveal.revealed > *:nth-child(6) {
   transition-delay: 0.3s;
 }
 
-.stagger-reveal.revealed>*:nth-child(7) {
+.stagger-reveal.revealed > *:nth-child(7) {
   transition-delay: 0.35s;
 }
 
-.stagger-reveal.revealed>*:nth-child(8) {
+.stagger-reveal.revealed > *:nth-child(8) {
   transition-delay: 0.4s;
 }
 
-.stagger-reveal.revealed>* {
+.stagger-reveal.revealed > * {
   opacity: 1;
   transform: translateY(0);
 }
@@ -615,12 +618,11 @@ html.dark .skeleton {
    ═══════════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-
   .scroll-progress,
   .hero-cta,
   .profile-image-wrapper,
   .hero-stat-value,
-  .stagger-reveal>* {
+  .stagger-reveal > * {
     animation: none !important;
     transition: none !important;
   }

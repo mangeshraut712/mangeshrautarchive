@@ -35,12 +35,14 @@
   --ai-shadow-premium: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3);
   /* Neural Network Gradient - Signature Style */
   --ai-gradient: linear-gradient(135deg, #0071e3 0%, #005bb5 50%, #003d7a 100%);
-  --ai-glow: linear-gradient(135deg,
-      #007aff 0%,
-      #00c7ff 25%,
-      #34c759 50%,
-      #ffcc00 75%,
-      #ff3b30 100%);
+  --ai-glow: linear-gradient(
+    135deg,
+    #007aff 0%,
+    #00c7ff 25%,
+    #34c759 50%,
+    #ffcc00 75%,
+    #ff3b30 100%
+  );
   --ai-primary: #007aff;
 
   /* Enhanced Theme Colors */
@@ -130,7 +132,6 @@ html.dark .chatbot-header {
 }
 
 @keyframes shimmer {
-
   0%,
   100% {
     filter: drop-shadow(0 0 12px rgb(46 136 249 / 25%));
@@ -230,7 +231,6 @@ html.dark .typing-dot {
 }
 
 @keyframes typingBounce {
-
   0%,
   80%,
   100% {
@@ -1266,7 +1266,6 @@ html.dark #chatbot-toggle:hover {
 }
 
 @keyframes welcomePulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -1311,7 +1310,6 @@ html.dark .welcome-subtitle {
 }
 
 @keyframes voicePulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -1477,7 +1475,6 @@ html.dark .chatbot-retry-btn:hover {
 }
 
 @keyframes sparkle {
-
   0%,
   100% {
     transform: scale(1) rotate(0deg);
@@ -1534,7 +1531,6 @@ html.dark .welcome-name {
 }
 
 @keyframes statusPulse {
-
   0%,
   100% {
     opacity: 1;
@@ -1814,7 +1810,6 @@ html.dark .thinking-content {
 }
 
 @keyframes brainPulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -1868,7 +1863,6 @@ html.dark .thinking-dots span {
 }
 
 @keyframes dotBounce {
-
   0%,
   80%,
   100% {
@@ -1934,7 +1928,6 @@ html.dark .agentic-pulse {
 }
 
 @keyframes agenticPulse {
-
   0%,
   100% {
     opacity: 1;

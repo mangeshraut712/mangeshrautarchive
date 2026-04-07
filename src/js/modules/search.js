@@ -224,8 +224,8 @@ class PortfolioSearch {
     const html = `
             <div class="search-section-title">Suggested Searches</div>
             ${this.suggestedSearches
-        .map(
-          suggestion => `
+              .map(
+                suggestion => `
                 <div class="search-result-item" data-section="${suggestion.section}">
                     <div class="search-result-icon">
                         <i class="fas ${suggestion.icon}"></i>
@@ -235,8 +235,8 @@ class PortfolioSearch {
                     </div>
                 </div>
             `
-        )
-        .join('')}
+              )
+              .join('')}
         `;
 
     this.searchResults.innerHTML = html;
@@ -280,9 +280,9 @@ class PortfolioSearch {
     const html = `
             <div class="search-section-title">Results (${results.length})</div>
             ${results
-        .slice(0, 10)
-        .map(
-          result => `
+              .slice(0, 10)
+              .map(
+                result => `
                 <div class="search-result-item" data-section="${result.sectionId}">
                     <div class="search-result-icon">
                         <i class="fas ${result.icon}"></i>
@@ -293,8 +293,8 @@ class PortfolioSearch {
                     </div>
                 </div>
             `
-        )
-        .join('')}
+              )
+              .join('')}
         `;
 
     this.searchResults.innerHTML = html;
