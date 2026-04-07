@@ -1475,7 +1475,7 @@
 
         </div>
         <div class="section-view-more-wrap w-full">
-          <button type="button" class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
+          <button type="button" class="btn button-secondary" aria-label="View more certifications" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
             onclick="document.getElementById('certifications-grid').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
             More <i class="fas fa-chevron-down"></i></button>
         </div>
@@ -1496,7 +1496,7 @@
           </div>
         </div>
         <div class="section-view-more-wrap w-full">
-          <button type="button" class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
+          <button type="button" class="btn button-secondary" aria-label="View more blog posts" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
             onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
             More <i class="fas fa-chevron-down"></i></button>
         </div>
@@ -1921,7 +1921,7 @@
               <p class="contact-description">
                 Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
               </p>
-              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
+              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn" aria-label="Open chatbot">
                 <i class="fas fa-message"></i>
                 Open AssistMe Flow
               </button>
@@ -1938,15 +1938,15 @@
               <div class="currently-header">
                 <h3><i class="fas fa-bookmark"></i> Currently</h3>
                 <div class="currently-tabs">
-                  <button class="currently-tab active" data-tab="shows" onclick="switchTab(this, 'shows')">
+                  <button class="currently-tab active" data-tab="shows" onclick="switchTab(this, 'shows')" aria-label="Shows and Movies">
                     <i class="fas fa-tv"></i>
                     <span>Shows & Movies</span>
                   </button>
-                  <button class="currently-tab" data-tab="music" onclick="switchTab(this, 'music')">
+                  <button class="currently-tab" data-tab="music" onclick="switchTab(this, 'music')" aria-label="Music">
                     <i class="fas fa-music"></i>
                     <span>Music</span>
                   </button>
-                  <button class="currently-tab" data-tab="books" onclick="switchTab(this, 'books')">
+                  <button class="currently-tab" data-tab="books" onclick="switchTab(this, 'books')" aria-label="Books">
                     <i class="fas fa-book"></i>
                     <span>Books</span>
                   </button>
