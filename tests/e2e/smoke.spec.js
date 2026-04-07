@@ -60,9 +60,9 @@ test.describe('Chrome smoke tests', () => {
   test('skip links are keyboard reachable', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    const skipLink = page.locator('.skip-link[href="#main-content"]').first();
+    const skipLink = page.locator('.skip-link[href="#home"]').first();
 
-    await expect(skipLink).toHaveAttribute('href', '#main-content');
+    await expect(skipLink).toHaveAttribute('href', '#home');
     await skipLink.focus();
     await expect(skipLink).toBeFocused();
   });
