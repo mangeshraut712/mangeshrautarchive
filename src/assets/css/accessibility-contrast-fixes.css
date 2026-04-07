@@ -1,0 +1,436 @@
+/**
+ * WCAG AA Color Contrast Fixes
+ * Addresses low contrast issues identified in accessibility audit
+ * Target: 4.5:1 minimum contrast ratio for all text
+ */
+
+/* ========================================
+   1. EXPERIENCE SECTION - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Company name in experience - was #0071e3 (contrast ~3.0) */
+.experience-content .text-accent,
+.experience-card .company-name,
+.experience-item .company-name {
+  color: #004494 !important; /* Darker blue for 7:1 contrast on white */
+  font-weight: 700 !important;
+}
+
+html.dark .experience-content .text-accent,
+html.dark .experience-card .company-name,
+html.dark .experience-item .company-name {
+  color: #5ac8fa !important; /* Lighter blue for dark mode 7:1 contrast */
+}
+
+/* Experience date badge - improve contrast */
+.experience-date-badge {
+  color: #003366 !important; /* Dark navy for 7:1 contrast */
+  background: rgb(0 51 102 / 12%) !important;
+  font-weight: 600 !important;
+}
+
+html.dark .experience-date-badge {
+  color: #7dc8ff !important; /* Light blue for dark mode */
+  background: rgb(41 151 255 / 15%) !important;
+}
+
+/* Experience tags - ensure dark text on light background */
+.experience-tag {
+  color: #1a1a1a !important; /* Near black for 15:1 contrast on #f5f5f7 */
+  background: #e8e8ed !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  font-weight: 500 !important;
+}
+
+html.dark .experience-tag {
+  color: #f5f5f7 !important; /* White text for dark mode */
+  background: #2c2c2e !important;
+  border-color: rgb(255 255 255 / 15%) !important;
+}
+
+/* Experience section headings */
+.experience-content h3,
+.experience-card h3,
+#experience h3.text-xl {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .experience-content h3,
+html.dark .experience-card h3,
+html.dark #experience h3.text-xl {
+  color: #f5f5f7 !important;
+}
+
+/* Experience description text */
+.experience-content p,
+.experience-card p,
+.experience-item p {
+  color: #2c2c2e !important; /* Dark gray for 10:1 contrast */
+}
+
+html.dark .experience-content p,
+html.dark .experience-card p,
+html.dark .experience-item p {
+  color: #d1d1d6 !important;
+}
+
+/* ========================================
+   2. PUBLICATIONS - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Publication category - was #0071e3 */
+.publication-category {
+  color: #003d7a !important; /* Dark blue for 7:1 contrast */
+  font-weight: 700 !important;
+}
+
+html.dark .publication-category {
+  color: #5ac8fa !important;
+}
+
+/* Publication venue */
+.publication-venue {
+  color: #1d1d1f !important;
+  font-weight: 500 !important;
+}
+
+html.dark .publication-venue {
+  color: #f5f5f7 !important;
+}
+
+/* Publication title */
+.publication-title,
+.publication-card h3 {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .publication-title,
+html.dark .publication-card h3 {
+  color: #f5f5f7 !important;
+}
+
+/* Publication authors */
+.publication-authors {
+  color: #3a3a3c !important;
+  font-weight: 500 !important;
+}
+
+html.dark .publication-authors {
+  color: #d1d1d6 !important;
+}
+
+/* Publication journal */
+.publication-journal {
+  color: #48484a !important;
+}
+
+html.dark .publication-journal {
+  color: #a1a1a6 !important;
+}
+
+/* Publication details */
+.publication-details {
+  color: #3a3a3c !important;
+}
+
+html.dark .publication-details {
+  color: #d1d1d6 !important;
+}
+
+/* ========================================
+   3. AWARDS - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Award title */
+.award-title,
+.award-card h3 {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .award-title,
+html.dark .award-card h3 {
+  color: #f5f5f7 !important;
+}
+
+/* Award institution - was #0071e3 */
+.award-institution {
+  color: #004494 !important;
+  font-weight: 600 !important;
+}
+
+html.dark .award-institution {
+  color: #5ac8fa !important;
+}
+
+/* Award description */
+.award-description {
+  color: #2c2c2e !important;
+}
+
+html.dark .award-description {
+  color: #d1d1d6 !important;
+}
+
+/* ========================================
+   4. RECOMMENDATIONS - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Recommendation text */
+.recommendation-text {
+  color: #2c2c2e !important;
+  font-weight: 400 !important;
+}
+
+html.dark .recommendation-text {
+  color: #d1d1d6 !important;
+}
+
+/* Author name */
+.author-name {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .author-name {
+  color: #f5f5f7 !important;
+}
+
+/* Author title */
+.author-title {
+  color: #48484a !important; /* Darker for better contrast */
+  font-weight: 500 !important;
+}
+
+html.dark .author-title {
+  color: #a1a1a6 !important;
+}
+
+/* Author company */
+.author-company {
+  color: #0051a8 !important;
+  font-weight: 500 !important;
+}
+
+html.dark .author-company {
+  color: #5ac8fa !important;
+}
+
+/* ========================================
+   5. EDUCATION - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Education badges */
+.education-badge.completed {
+  background: #15803d !important; /* Darker green */
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+html.dark .education-badge.completed {
+  background: #16a34a !important;
+  color: #fff !important;
+}
+
+/* Education text */
+.education-title {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .education-title {
+  color: #f5f5f7 !important;
+}
+
+.education-school {
+  color: #2c2c2e !important;
+  font-weight: 600 !important;
+}
+
+html.dark .education-school {
+  color: #d1d1d6 !important;
+}
+
+/* ========================================
+   6. PROJECTS / GITHUB ACTIVITY - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Activity stat labels */
+.activity-stat-label,
+#projects .activity-stat-label {
+  color: #3a3a3c !important; /* Darker than #86868b */
+  font-weight: 500 !important;
+}
+
+html.dark .activity-stat-label,
+html.dark #projects .activity-stat-label {
+  color: #c7c7cc !important; /* Lighter for dark mode */
+}
+
+/* ========================================
+   7. GLOBAL TEXT ACCENT FIXES
+   ======================================== */
+
+/* Global text-accent override - ensure minimum 4.5:1 contrast */
+.text-accent {
+  color: #004494 !important; /* Dark blue 7:1 on white */
+}
+
+html.dark .text-accent {
+  color: #5ac8fa !important; /* Light blue 7:1 on black */
+}
+
+/* Text secondary - improve from #86868b */
+.text-secondary {
+  color: #48484a !important; /* 7:1 contrast on white */
+}
+
+html.dark .text-secondary {
+  color: #a1a1a6 !important; /* 7:1 contrast on black */
+}
+
+/* Text tertiary - improve from #a1a1a6 */
+.text-tertiary {
+  color: #636366 !important; /* 5:1 contrast minimum */
+}
+
+html.dark .text-tertiary {
+  color: #8e8e93 !important;
+}
+
+/* ========================================
+   8. CHATBOT / HINTS - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Hint main title */
+.hint-main-title,
+.chat-hint-title {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .hint-main-title,
+html.dark .chat-hint-title {
+  color: #f5f5f7 !important;
+}
+
+/* Hint description */
+.hint-description,
+.chat-hint-text {
+  color: #2c2c2e !important;
+}
+
+html.dark .hint-description,
+html.dark .chat-hint-text {
+  color: #d1d1d6 !important;
+}
+
+/* Checklist items */
+.check-list-title {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .check-list-title {
+  color: #f5f5f7 !important;
+}
+
+.check-list-item-title {
+  color: #2c2c2e !important;
+  font-weight: 500 !important;
+}
+
+html.dark .check-list-item-title {
+  color: #d1d1d6 !important;
+}
+
+/* ========================================
+   9. CERTIFICATIONS - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Certification title */
+.certification-title {
+  color: #1d1d1f !important;
+  font-weight: 700 !important;
+}
+
+html.dark .certification-title {
+  color: #f5f5f7 !important;
+}
+
+/* Certification issuer */
+.certification-issuer {
+  color: #004494 !important;
+  font-weight: 600 !important;
+}
+
+html.dark .certification-issuer {
+  color: #5ac8fa !important;
+}
+
+/* ========================================
+   10. SKILL BADGES - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Skill badge percentage */
+.skill-badge-percentage {
+  color: #48484a !important;
+  font-weight: 700 !important;
+}
+
+html.dark .skill-badge-percentage {
+  color: #a1a1a6 !important;
+}
+
+/* ========================================
+   11. FOOTER - HIGH CONTRAST FIXES
+   ======================================== */
+
+/* Footer text */
+.footer-copy,
+.footer-tagline {
+  color: #48484a !important;
+}
+
+html.dark .footer-copy,
+html.dark .footer-tagline {
+  color: #a1a1a6 !important;
+}
+
+/* ========================================
+   12. HIGH CONTRAST MODE SUPPORT
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .text-accent,
+  .experience-content .text-accent,
+  .award-institution,
+  .certification-issuer,
+  .author-company {
+    color: #000080 !important; /* Navy - maximum contrast */
+    text-decoration: underline !important;
+  }
+  
+  html.dark .text-accent,
+  html.dark .experience-content .text-accent,
+  html.dark .award-institution,
+  html.dark .certification-issuer,
+  html.dark .author-company {
+    color: #00ffff !important; /* Cyan on black - maximum contrast */
+    text-decoration: underline !important;
+  }
+  
+  .text-secondary,
+  .author-title,
+  .activity-stat-label {
+    color: #000 !important;
+  }
+  
+  html.dark .text-secondary,
+  html.dark .author-title,
+  html.dark .activity-stat-label {
+    color: #fff !important;
+  }
+}
