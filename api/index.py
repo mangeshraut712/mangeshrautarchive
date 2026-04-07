@@ -628,6 +628,13 @@ async def github_api_proxy(path: str):
     return response
 
 
+# Alias for old github proxy path without /api prefix
+@app.get("/github/proxy")
+async def github_api_proxy_alias(path: str):
+    """Alias for old frontend code that doesn't use /api prefix"""
+    return await github_api_proxy(path)
+
+
 def is_resume_query(message: str) -> bool:
     keywords = ["resume", "cv", "download", "curriculum vitae"]
     return any(keyword in message.lower() for keyword in keywords)
@@ -1329,6 +1336,115 @@ async def github_repos_proxy(
         "rate_mode": rate_header,
         "timestamp": datetime.utcnow().isoformat() + "Z",
     }
+
+
+@app.get("/api/github/repos/public")
+async def get_github_repos_public(
+    username: str = "mangeshraut712",
+    sort: str = "updated",
+    limit: int = 100,
+    no_forks: bool = False
+):
+    """
+    Public endpoint for GitHub repos (browser-safe, no auth required)
+    Alias for /api/github/repos with simplified response
+    """
+    # Reuse the existing repos endpoint logic
+    try:
+        repos = await fetch_github_repos_cached(username)
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 403:
+            raise api_error("GITHUB_RATE_LIMITED", "GitHub API rate limit hit. Try again in a few minutes.", 503)
+        if exc.response.status_code == 404:
+            raise api_error("GITHUB_USER_NOT_FOUND", f"GitHub user '{username}' not found.", 404)
+        raise api_error("GITHUB_ERROR", f"GitHub API returned {exc.response.status_code}.", 502)
+    except httpx.RequestError:
+        raise api_error("GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503)
+
+    # Sort
+    sort_key = {"updated": "pushed_at", "created": "created_at", "stars": "stargazers_count"}.get(sort, "pushed_at")
+    repos.sort(key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count"))
+
+    # Filter forks
+    if no_forks:
+        repos = [r for r in repos if not r.get("fork", False)]
+
+    # Strip to lean response
+    def slim(r: dict) -> dict:
+        return {
+            "name": r.get("name"),
+            "full_name": r.get("full_name"),
+            "description": r.get("description"),
+            "homepage": r.get("homepage"),
+            "html_url": r.get("html_url"),
+            "language": r.get("language"),
+            "topics": r.get("topics", []),
+            "stargazers_count": r.get("stargazers_count", 0),
+            "forks_count": r.get("forks_count", 0),
+            "open_issues_count": r.get("open_issues_count", 0),
+            "watchers_count": r.get("watchers_count", 0),
+            "subscribers_count": r.get("subscribers_count", 0),
+            "size": r.get("size", 0),
+            "license": r.get("license"),
+            "default_branch": r.get("default_branch", "main"),
+            "updated_at": r.get("updated_at"),
+            "created_at": r.get("created_at"),
+            "pushed_at": r.get("pushed_at"),
+            "fork": r.get("fork", False),
+            "archived": r.get("archived", False),
+        }
+
+    slim_repos = [slim(r) for r in repos[:limit]]
+
+    return {
+        "success": True,
+        "username": username,
+        "count": len(slim_repos),
+        "data": slim_repos,
+        "cache_ttl_seconds": GITHUB_PROXY_TTL,
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+    }
+
+
+# Alias for backwards compatibility - some frontend code calls /github/repos without /api prefix
+@app.get("/github/repos")
+async def get_github_repos_alias(
+    username: str = "mangeshraut712",
+    limit: int = 100,
+    no_forks: bool = False
+):
+    """Redirect/alias for old frontend code that doesn't use /api prefix"""
+    return await get_github_repos_public(username, "updated", limit, no_forks)
+
+
+# Analytics views endpoint
+@app.get("/api/analytics/views")
+async def get_analytics_views():
+    """
+    Get portfolio view analytics
+    Returns view count data for the portfolio counter
+    """
+    try:
+        # Return mock data for now - in production this would fetch from a database
+        return {
+            "success": True,
+            "views": {
+                "total": 1250,
+                "today": 45,
+                "this_week": 320,
+                "this_month": 890,
+            },
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
+
+
+# Alias for old analytics path
+@app.get("/analytics/views")
+async def get_analytics_views_alias():
+    """Alias for old frontend code that doesn't use /api prefix"""
+    return await get_analytics_views()
 
 
 # ============================================================
