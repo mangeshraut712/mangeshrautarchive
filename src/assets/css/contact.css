@@ -804,6 +804,71 @@ html.dark .blessing-text {
   color: #a1a1a6;
 }
 
+/* Support Quote Section */
+.support-quote {
+  text-align: center;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgb(0 0 0 / 6%);
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+html.dark .support-quote {
+  border-top-color: rgb(255 255 255 / 10%);
+  border-bottom-color: rgb(255 255 255 / 10%);
+}
+
+.support-quote blockquote {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+html.dark .support-quote blockquote {
+  color: #f5f5f7;
+}
+
+.support-quote cite {
+  font-size: 0.75rem;
+  color: #86868b;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+html.dark .support-quote cite {
+  color: #a1a1a6;
+}
+
+/* Support Description */
+.support-description {
+  font-size: 0.9rem;
+  color: #6e6e73;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0;
+}
+
+html.dark .support-description {
+  color: #a1a1a6;
+}
+
+/* Support Buttons Container */
+.support-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Payment Logo SVG sizing */
+.payment-logo {
+  width: 1.2em;
+  height: 1.2em;
+  flex-shrink: 0;
+}
+
 /* Donation Description */
 .donation-description {
   font-size: 0.85rem;
@@ -841,8 +906,10 @@ html.dark .donation-description {
 }
 
 .support-coffee-btn.premium span,
-.support-coffee-btn.premium i {
+.support-coffee-btn.premium i,
+.support-coffee-btn.premium svg {
   color: #000000 !important;
+  fill: #000000 !important;
   position: relative;
   z-index: 1;
 }
@@ -874,12 +941,17 @@ html.dark .donation-description {
   box-shadow: 0 10px 32px rgb(255 176 52 / 50%);
 }
 
-.support-coffee-btn.premium .arrow-icon {
-  transition: transform 0.3s ease;
+/* Dark mode support for Buy Me a Coffee button */
+html.dark .support-coffee-btn.premium {
+  background: linear-gradient(135deg, #ffdd00 0%, #fbb034 50%, #ff9800 100%);
+  color: #000000 !important;
 }
 
-.support-coffee-btn.premium:hover .arrow-icon {
-  transform: translateX(4px);
+html.dark .support-coffee-btn.premium span,
+html.dark .support-coffee-btn.premium i,
+html.dark .support-coffee-btn.premium svg {
+  color: #000000 !important;
+  fill: #000000 !important;
 }
 
 /* Premium Cash App Button */
@@ -941,14 +1013,6 @@ html.dark .donation-description {
   box-shadow: 0 10px 32px rgb(0 214 50 / 50%);
 }
 
-.support-cashapp-btn.premium .arrow-icon {
-  transition: transform 0.3s ease;
-}
-
-.support-cashapp-btn.premium:hover .arrow-icon {
-  transform: translateX(4px);
-}
-
 /* Dark mode support for Cash App button */
 html.dark .support-cashapp-btn.premium {
   background: linear-gradient(135deg, #00d632 0%, #00c853 50%, #00b248 100%);
@@ -986,8 +1050,10 @@ html.dark .support-cashapp-btn.premium svg {
 }
 
 .support-paypal-btn.premium span,
-.support-paypal-btn.premium i {
+.support-paypal-btn.premium i,
+.support-paypal-btn.premium svg {
   color: #ffffff !important;
+  fill: #ffffff !important;
   position: relative;
   z-index: 1;
 }
@@ -1019,14 +1085,6 @@ html.dark .support-cashapp-btn.premium svg {
   box-shadow: 0 10px 32px rgb(0 112 186 / 50%);
 }
 
-.support-paypal-btn.premium .arrow-icon {
-  transition: transform 0.3s ease;
-}
-
-.support-paypal-btn.premium:hover .arrow-icon {
-  transform: translateX(4px);
-}
-
 /* Dark mode support for PayPal button */
 html.dark .support-paypal-btn.premium {
   background: linear-gradient(135deg, #003087 0%, #0070ba 50%, #009cde 100%);
@@ -1034,8 +1092,10 @@ html.dark .support-paypal-btn.premium {
 }
 
 html.dark .support-paypal-btn.premium span,
-html.dark .support-paypal-btn.premium i {
+html.dark .support-paypal-btn.premium i,
+html.dark .support-paypal-btn.premium svg {
   color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 /* Support Stats */
@@ -1071,23 +1131,18 @@ html.dark .stat-item {
 /* Desktop Adjustments */
 @media (min-width: 1024px) {
   .support-donation-card {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 1.75rem;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.5rem 1.75rem;
   }
 
   .donation-compact-header {
-    flex: 1;
+    flex: none;
   }
 
   .ganesh-glow-container {
     width: 64px;
     height: 64px;
-  }
-
-  .support-coffee-btn.premium {
-    flex-shrink: 0;
   }
 }
 
