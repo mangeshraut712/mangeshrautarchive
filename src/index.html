@@ -3,162 +3,125 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="MobileOptimized" content="320" />
-  <meta name="format-detection" content="telephone=yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Preconnect to external domains -->
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+  <link rel="dns-prefetch" href="https://ws.audioscrobbler.com" />
+  <link rel="dns-prefetch" href="https://lastfm.freetls.fastly.net" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  
+  <!-- Critical CSS inlined -->
+  <style>
+    /* Critical Above-the-Fold CSS Only */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-family:system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+    body{background:#fff;color:#000;min-height:100vh}
+    .dark body{background:#18181b;color:#fff}
+    
+    /* Hero Section Critical Styles */
+    .hero-section{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+    .container-fluid{width:100%;max-width:1280px;margin:0 auto;padding:0 1rem}
+    .text-center{text-align:center}
+    .mx-auto{margin-left:auto;margin-right:auto}
+    .max-w-5xl{max-width:64rem}
+    .max-w-3xl{max-width:48rem}
+    .mb-12{margin-bottom:3rem}
+    .mb-16{margin-bottom:4rem}
+    .mb-20{margin-bottom:5rem}
+    .mt-2{margin-top:0.5rem}
+    
+    /* Profile Image */
+    .profile-image-wrapper{position:relative;width:200px;height:200px;margin:0 auto 3rem}
+    .profile-image{width:100%;height:100%;object-fit:cover;border-radius:50%;border:4px solid #0071e3}
+    .profile-ring{position:absolute;inset:-8px;border:2px solid #0071e3;border-radius:50%;opacity:0.3}
+    
+    /* Typography */
+    .hero-name{font-size:2.5rem;font-weight:700;margin-bottom:0.5rem;color:#1d1d1f}
+    .dark .hero-name{color:#f5f5f7}
+    .hero-title{font-size:1.25rem;opacity:0.8;margin-bottom:1rem}
+    .hero-description{font-size:1.125rem;line-height:1.7;opacity:0.9}
+    
+    /* Buttons */
+    .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+    .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 1.5rem;border-radius:9999px;font-weight:500;text-decoration:none;transition:all 0.2s;background:#0071e3;color:#fff;border:none;cursor:pointer}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,113,227,0.3)}
+    .hero-cta-secondary{background:transparent;border:2px solid #0071e3;color:#0071e3}
+    .dark .hero-cta-secondary{color:#fff;border-color:#fff}
+    
+    /* Skip Links */
+    .skip-links{position:fixed;top:0;left:0;z-index:10001}
+    .skip-link{position:absolute;left:-9999px;top:0;padding:0.75rem 1rem;background:#005fcc;color:#fff;text-decoration:none;border-radius:0 0 10px 0;font-weight:700}
+    .skip-link:focus{left:0;z-index:10000}
+    
+    /* Navigation */
+    .global-nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.1)}
+    .dark .global-nav{background:rgba(24,24,27,0.8);border-color:rgba(255,255,255,0.1)}
+    .nav-container{max-width:1280px;margin:0 auto;padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo img{width:32px;height:32px;border-radius:50%}
+    .nav-links{display:none}
+    @media(min-width:768px){.nav-links{display:flex;gap:1.5rem}}
+    .nav-link{text-decoration:none;color:inherit;font-weight:500;opacity:0.8;transition:opacity 0.2s}
+    .nav-link:hover{opacity:1}
+    .nav-actions{display:flex;gap:0.75rem;align-items:center}
+    .menu-toggle-button{display:block;background:none;border:none;font-size:1.5rem;cursor:pointer;color:inherit}
+    @media(min-width:768px){.menu-toggle-button{display:none}}
+    
+    /* Badges */
+    .vibe-coder-badge-wrapper{display:flex;gap:1rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
+    .vibe-coder-badge,.portfolio-reach-badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;background:rgba(0,113,227,0.1);color:#0071e3;border-radius:9999px;font-size:0.875rem;font-weight:500}
+    .dark .vibe-coder-badge,.dark .portfolio-reach-badge{background:rgba(0,113,227,0.2);color:#4da3ff}
+    
+    /* Section spacing */
+    section{padding:4rem 1rem}
+    .container{max-width:1280px;margin:0 auto}
+    h2{font-size:2rem;font-weight:700;text-align:center;margin-bottom:3rem}
+    
+    /* Accessibility */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+
+  <meta name="description" content="Mangesh Raut - Software Engineer specializing in full-stack development, cloud, and AI/ML. Building scalable, production-ready software." />
   <meta name="theme-color" content="#0071e3" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
   <link rel="manifest" href="manifest.json" />
+  <title>Mangesh Raut | Software Engineer</title>
   
-  <!-- Preload critical CSS for performance -->
-  <link rel="preload" href="assets/css/cross-browser-responsive.css" as="style" />
-  <link rel="stylesheet" href="assets/css/cross-browser-responsive.css" />
-  <meta name="apple-touch-fullscreen" content="yes" />
-  <meta name="description"
-    content="Mangesh Raut portfolio: software engineer with expertise in full-stack development, cloud, and AI/ML." />
-  <style>
-    .skip-links {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 10001;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: 0;
-      top: 0;
-      transform: translateY(-200%);
-      padding: 0.75rem 1rem;
-      background: #005fcc;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 0 0 10px 0;
-      font-weight: 700;
-      transition: transform 0.2s ease;
-    }
-
-    .skip-link:focus {
-      transform: translateY(0);
-    }
-
-    .footer-copy {
-      color: #1d1d1f;
-    }
-
-    html.dark .footer-copy {
-      color: #f5f5f7;
-    }
-  </style>
-  <title>Mangesh Raut | Expert Software Engineer | Technical Leadership</title>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-
-  <!-- JSON-LD Structured Data for SEO -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Mangesh Raut",
-      "jobTitle": "Software Engineer",
-      "url": "https://mangeshraut.vercel.app",
-      "sameAs": [
-        "https://linkedin.com/in/mangeshraut71298",
-        "https://github.com/mangeshraut712",
-        "https://snapchat.com/t/nk1K673G",
-        "https://t.me/mangesh71298"
-      ],
-      "knowsAbout": ["Java", "Python", "Spring Boot", "AngularJS", "AWS", "Machine Learning"],
-      "alumniOf": "Drexel University"
-    }
-  </script>
-
-  <script>
-    // API Keys - Only OpenRouter is used (backend on Vercel)
-    // Note: OpenRouter API key is stored securely in Vercel environment variables
-    // Frontend doesn't need API keys - all calls go through Vercel backend
-    window.API_KEYS = Object.freeze({
-      OPENROUTER_API_KEY: '' // Not used in frontend - backend only
-    });
-  </script>
-  <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
-  <script>
-    (function () {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
-  <!-- Suppress Chrome Extension message channel errors -->
-  <script>
-    (function () {
-      const originalConsoleError = console.error;
-      const isExtensionError = function (args) {
-        const message = args.length > 0 && typeof args[0] === 'string' ? args[0] : '';
-        return message.includes('message channel closed') ||
-               message.includes('A listener indicated an asynchronous response') ||
-               message.includes('Unchecked runtime.lastError') ||
-               message.includes('The message port closed before') ||
-               (message.includes('Uncaught (in promise)') && message.includes('Error'));
-      };
-      console.error = function () {
-        if (isExtensionError(arguments)) {
-          // Suppress extension-related errors - they don't affect your app
-          return;
-        }
-        return originalConsoleError.apply(console, arguments);
-      };
-    })();
-  </script>
+  <!-- Preload critical image -->
   <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high" />
+  
+  <!-- Theme initialization -->
+  <script>
+    (function(){const s=localStorage.getItem('theme');if(s==='dark')document.documentElement.classList.add('dark')})();
+  </script>
+  
+  <!-- Core CSS - load normally for performance -->
   <link rel="stylesheet" href="assets/css/tailwind-output.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print"
-    onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  </noscript>
+  <link rel="stylesheet" href="assets/css/cross-browser-responsive.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/global-improvements.css" />
   <link rel="stylesheet" href="assets/css/sitewide-design-system.css" />
-  <link rel="stylesheet" href="assets/css/contact.css" media="print" onload="this.media='all'" />
-
-  <!-- Performance-Optimized Animations -->
-  <link rel="stylesheet" href="assets/css/animations.css" />
-
-  <link rel="stylesheet" href="assets/css/publications.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/education.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/skills.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/certifications.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/homepage.css" />
-  <link rel="stylesheet" href="assets/css/experience.css" media="print" onload="this.media='all'" />
-
-  <link rel="stylesheet" href="assets/css/ai-assistant.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/ai-assistant-mobile.css" media="print" onload="this.media='all'" />
-
-  <link rel="stylesheet" href="assets/css/about.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/blog.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" />
-  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css" />
-  <link rel="stylesheet" href="assets/css/unified-mobile-buttons.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/recommendations.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/awards.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/typography-system.css" />
-  <link rel="stylesheet" href="assets/css/game-section-fix.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/game-2026.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/premium-enhancements.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/birthday-celebration.css" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/projects-showcase-2026.css" media="print" onload="this.media='all'" />
-
-  <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css" />
+  
+  <!-- Deferred non-critical CSS -->
+  <link rel="stylesheet" href="assets/css/animations.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" media="print" onload="this.media='all'" />
+  
+  <noscript>
+    <link rel="stylesheet" href="assets/css/animations.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  </noscript>
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
-
+  
+  <!-- JSON-LD Structured Data for SEO 100 -->
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Person","name":"Mangesh Raut","jobTitle":"Software Engineer","url":"https://mangeshraut.pro","sameAs":["https://linkedin.com/in/mangeshraut71298","https://github.com/mangeshraut712"],"knowsAbout":["Java","Python","Spring Boot","AWS","Machine Learning"],"alumniOf":"Drexel University"}
+  </script>
 </head>
 
 <body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
@@ -333,7 +296,7 @@
                         src="https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png" 
                         alt="Music album artwork" 
                         class="album-art"
-                      />
+                        loading="lazy" decoding="async" width="80" height="80" />
                       <div class="playing-indicator" id="playing-indicator">
                         <span></span>
                         <span></span>
@@ -973,7 +936,7 @@
                     srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
                   <img src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github chart"
                     class="github-graph-svg" loading="lazy" onload="document.getElementById('graph-loading').style.display='none'; this.parentElement.style.display='block';"
-                    onerror="document.getElementById('graph-loading').innerHTML='<span class=\'graph-error\'><i class=\'fas fa-exclamation-circle\'></i> Unable to load contribution graph</span>';">
+                    onerror="document.getElementById('graph-loading').innerHTML='<span class=\'graph-error\' loading="lazy" decoding="async"><i class=\'fas fa-exclamation-circle\'></i> Unable to load contribution graph</span>';">
                 </picture>
               </div>
             </div>
@@ -1358,7 +1321,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/hackerrank.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="HackerRank">
+                  loading="lazy" decoding="async" alt="HackerRank" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Software Engineer</h3>
@@ -1376,7 +1339,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/apple.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="Apple">
+                  loading="lazy" decoding="async" alt="Apple" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Search Ads</h3>
@@ -1393,7 +1356,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/google.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="Google">
+                  loading="lazy" decoding="async" alt="Google" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Prompt Design in Vertex AI</h3>
@@ -1410,7 +1373,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="IBM">
+                  loading="lazy" decoding="async" alt="IBM" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Data Fundamentals</h3>
@@ -1427,7 +1390,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="IBM">
+                  loading="lazy" decoding="async" alt="IBM" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Cybersecurity Fundamentals</h3>
@@ -1444,7 +1407,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="Cisco">
+                  loading="lazy" decoding="async" alt="Cisco" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">Networking Basics</h3>
@@ -1462,7 +1425,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/microsoft.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="Microsoft">
+                  loading="lazy" decoding="async" alt="Microsoft" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">JavaScript Programming</h3>
@@ -1480,7 +1443,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="Cisco">
+                  loading="lazy" decoding="async" alt="Cisco" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">CCNP Certification</h3>
@@ -1498,7 +1461,7 @@
             <div class="certification-header">
               <div class="certification-logo-container">
                 <img src="assets/images/profile-icon.png" class="certification-logo" width="40" height="40"
-                  loading="lazy" decoding="async" alt="Spoken Tutorial">
+                  loading="lazy" decoding="async" alt="Spoken Tutorial" loading="lazy" decoding="async">
               </div>
               <div class="certification-info">
                 <h3 class="certification-title">C Language</h3>
@@ -1624,7 +1587,7 @@
                     <!-- Ganesh Image (Left) -->
                     <div class="ganesh-glow-container">
                       <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
-                        title="🕉️ Om Gan Ganapataye Namah">
+                        title="🕉️ Om Gan Ganapataye Namah" loading="lazy" decoding="async">
                       <div class="glow-ring"></div>
                     </div>
                     <!-- Support My Work (Center) -->
@@ -1635,7 +1598,7 @@
                     <!-- Hanuman Image (Right) -->
                     <div class="hanuman-glow-container">
                       <img src="assets/images/hanuman.png" alt="Lord Hanuman" class="hanuman-blessing-img"
-                        title="🙏 Jai Hanuman">
+                        title="🙏 Jai Hanuman" loading="lazy" decoding="async">
                       <div class="glow-ring"></div>
                     </div>
                   </div>
@@ -1787,68 +1750,68 @@
                     <!-- First set -->
                     <div class="dream-company-item" title="Apple">
                       <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Google">
                       <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
                       <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Amazon">
                       <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Meta">
                       <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Tesla">
                       <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Netflix">
                       <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Adobe">
                       <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <!-- Duplicate set for seamless scroll -->
                     <div class="dream-company-item" title="Apple">
                       <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Google">
                       <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
                       <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Amazon">
                       <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Meta">
                       <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Tesla">
                       <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Netflix">
                       <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-company-item" title="Adobe">
                       <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
-                        height="40" loading="lazy" decoding="async" fetchpriority="low">
+                        height="40" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                   </div>
                 </div>
@@ -1862,84 +1825,84 @@
                     <!-- First set -->
                     <div class="dream-car-item" title="Mercedes-Benz">
                       <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                        height="120" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="BMW">
                       <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Audi">
                       <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Rolls-Royce">
                       <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                        height="120" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Porsche">
                       <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Lexus">
                       <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Land Rover">
                       <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                        height="120" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Bentley">
                       <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Jaguar">
                       <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Aston Martin">
                       <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
-                        height="85" loading="lazy" decoding="async" fetchpriority="low">
+                        height="85" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <!-- Duplicate set for seamless scroll -->
                     <div class="dream-car-item" title="Mercedes-Benz">
                       <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                        height="120" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="BMW">
                       <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Audi">
                       <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Rolls-Royce">
                       <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                        height="120" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Porsche">
                       <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Lexus">
                       <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Land Rover">
                       <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
-                        height="120" loading="lazy" decoding="async" fetchpriority="low">
+                        height="120" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Bentley">
                       <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Jaguar">
                       <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
-                        loading="lazy" decoding="async" fetchpriority="low">
+                        loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                     <div class="dream-car-item" title="Aston Martin">
                       <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
-                        height="85" loading="lazy" decoding="async" fetchpriority="low">
+                        height="85" loading="lazy" decoding="async" fetchpriority="low" loading="lazy" decoding="async">
                     </div>
                   </div>
                 </div>
@@ -2674,14 +2637,14 @@
       })();
     </script>
 
-    <script type="module" src="js/utils/smart-navbar.js"></script>
-    <script src="js/utils/theme.js"></script>
-    <script src="js/utils/go-to-top.js"></script>
-    <script type="module" src="js/core/bootstrap.js"></script>
-    <script src="js/modules/scroll-animations.js"></script>
+    <script type="module"  defer src="js/utils/smart-navbar.js"></script>
+    <script  defer src="js/utils/theme.js"></script>
+    <script  defer src="js/utils/go-to-top.js"></script>
+    <script type="module"  defer src="js/core/bootstrap.js"></script>
+    <script  defer src="js/modules/scroll-animations.js"></script>
     
     <!-- Real Media Loader - Fetches verified posters from TMDB and Open Library -->
-    <script type="module" src="js/modules/real-media-loader.js"></script>
+    <script type="module"  defer src="js/modules/real-media-loader.js"></script>
 </body>
 
 </html>
