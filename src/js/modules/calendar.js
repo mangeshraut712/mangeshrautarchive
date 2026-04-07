@@ -38,14 +38,6 @@ export class CalendarWidget {
         color: 'purple',
         completed: false,
       },
-      {
-        id: 4,
-        text: 'Team Sync',
-        time: 'Tomorrow',
-        tag: 'Work',
-        color: 'green',
-        completed: false,
-      },
     ];
   }
 
