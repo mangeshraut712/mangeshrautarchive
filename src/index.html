@@ -864,42 +864,52 @@
               </p>
             </div>
 
-            <div class="activity-overview-inner">
-              <div class="activity-stat-item">
+            <div class="activity-overview-inner" id="activity-stats-container">
+              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-repos">--</span>
                 <span class="activity-stat-label">Public Repos</span>
               </div>
-              <div class="activity-stat-item">
+              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-stars">--</span>
                 <span class="activity-stat-label">Stars</span>
               </div>
-              <div class="activity-stat-item">
+              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-forks">--</span>
                 <span class="activity-stat-label">Forks</span>
               </div>
-              <div class="activity-stat-item">
+              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-commits">--</span>
                 <span class="activity-stat-label">Commits (30d)</span>
               </div>
-              <div class="activity-stat-item">
+              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-contributors">--</span>
                 <span class="activity-stat-label">Contributors</span>
               </div>
-              <div class="activity-stat-item">
+              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-languages">--</span>
                 <span class="activity-stat-label">Languages</span>
               </div>
             </div>
 
-            <div class="activity-github-graph-container">
-              <h4 class="graph-title">Contributions in the last year</h4>
+            <div class="activity-github-graph-container" id="github-graph-container">
+              <div class="graph-header">
+                <h4 class="graph-title">Contributions in the last year</h4>
+                <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer" class="graph-link">
+                  <i class="fab fa-github"></i> View on GitHub
+                </a>
+              </div>
               <div class="github-graph-scroll">
-                <picture>
+                <div class="graph-loading" id="graph-loading">
+                  <div class="loading-spinner"></div>
+                  <span>Loading contribution graph...</span>
+                </div>
+                <picture id="github-graph-picture" style="display: none;">
                   <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/4fa5ff/mangeshraut712">
                   <source media="(prefers-color-scheme: light)"
                     srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
                   <img src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github chart"
-                    class="github-graph-svg">
+                    class="github-graph-svg" loading="lazy" onload="document.getElementById('graph-loading').style.display='none'; this.parentElement.style.display='block';"
+                    onerror="document.getElementById('graph-loading').innerHTML='<span class=\'graph-error\'><i class=\'fas fa-exclamation-circle\'></i> Unable to load contribution graph</span>';">
                 </picture>
               </div>
             </div>

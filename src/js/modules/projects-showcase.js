@@ -115,6 +115,16 @@ function renderNoResults(container, query = '') {
 function updateActivityStats(allRepos, visibleRepos = []) {
   const source = Array.isArray(allRepos) ? allRepos : [];
 
+  // Remove skeleton classes from stat items
+  document.querySelectorAll('.activity-stat-item.skeleton').forEach(item => {
+    item.classList.add('loaded');
+    // Remove skeleton class after animation completes
+    setTimeout(() => {
+      item.classList.remove('skeleton');
+      item.classList.remove('loaded');
+    }, 300);
+  });
+
   const totals = source.reduce(
     (acc, repo) => {
       acc.totalStars += Number(repo.stargazers_count || 0);
