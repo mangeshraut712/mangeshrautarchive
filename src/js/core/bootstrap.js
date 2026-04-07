@@ -131,9 +131,12 @@ function bindInteractionModuleLoader(
       if (!loaded) return;
 
       if (replay) {
-        requestAnimationFrame(() => {
-          element.click();
-        });
+        // Wait for module to fully initialize before replaying click
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            element.click();
+          });
+        }, 100);
       }
     },
     { capture: true }
@@ -180,9 +183,12 @@ function bindSearchShortcutLoader(moduleLoader, documentRef = document) {
         return;
       }
 
-      requestAnimationFrame(() => {
-        documentRef.getElementById('search-toggle')?.click();
-      });
+      // Wait for module to fully initialize before triggering click
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          documentRef.getElementById('search-toggle')?.click();
+        });
+      }, 100);
     },
     { capture: true }
   );
