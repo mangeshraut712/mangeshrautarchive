@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
 from api.integrations.github_connector import github_connector
-from api.monitoring import system_monitor, MonitoringMiddleware, HealthStatus, EventType
+from api.monitoring import system_monitor, MonitoringMiddleware, EventType
 
 # Load environment variables
 load_dotenv()
@@ -1553,7 +1553,7 @@ async def get_monitor_events(
 ):
     """
     Get system events with optional filtering
-    
+
     Query params:
         - limit: Max events to return (default: 100)
         - event_type: Filter by type (critical, error, warning, info, success)
@@ -1565,7 +1565,7 @@ async def get_monitor_events(
             event_type_enum = EventType(event_type)
         except ValueError:
             raise HTTPException(status_code=400, detail=f"Invalid event type: {event_type}")
-    
+
     events = system_monitor.get_events(
         limit=limit,
         event_type=event_type_enum,
@@ -1586,7 +1586,7 @@ async def resolve_monitor_event(event_id: str):
     success = system_monitor.resolve_event(event_id)
     if not success:
         raise HTTPException(status_code=404, detail=f"Event not found: {event_id}")
-    
+
     return {
         "success": True,
         "message": "Event resolved",
@@ -1619,7 +1619,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         "api_error",
         {"path": request.url.path, "status_code": exc.status_code}
     )
-    
+
     # Return JSON response with proper structure
     return JSONResponse(
         status_code=exc.status_code,
@@ -1648,7 +1648,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         "exception",
         {"path": request.url.path, "error": str(exc)}
     )
-    
+
     # Return JSON response
     return JSONResponse(
         status_code=500,
