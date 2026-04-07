@@ -1880,6 +1880,10 @@
                     <i class="fas fa-tv"></i>
                     <span>Shows & Movies</span>
                   </button>
+                  <button class="currently-tab" data-tab="music" onclick="switchTab(this, 'music')">
+                    <i class="fas fa-music"></i>
+                    <span>Music</span>
+                  </button>
                   <button class="currently-tab" data-tab="books" onclick="switchTab(this, 'books')">
                     <i class="fas fa-book"></i>
                     <span>Books</span>
@@ -2247,6 +2251,156 @@
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- Music Section - Last.fm Now Playing -->
+              <div class="currently-content" id="music-content">
+                <div class="media-grid" id="music-grid">
+                  <!-- Now Playing Card -->
+                  <div class="media-card music-card now-playing" id="now-playing-card" style="display: none;">
+                    <div class="media-poster">
+                      <img id="now-playing-img" src="" alt="Album Art" loading="lazy" />
+                      <span class="media-badge playing">Now Playing</span>
+                      <div class="playing-indicator">
+                        <span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <div class="media-info">
+                      <h4 id="now-playing-track">Track Name</h4>
+                      <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
+                      <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Listen
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Loading State -->
+                  <div class="media-card music-card loading" id="music-loading">
+                    <div class="media-poster" style="display: flex; align-items: center; justify-content: center;">
+                      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+                    </div>
+                    <div class="media-info">
+                      <h4>Loading...</h4>
+                      <p class="text-xs text-gray-500">Fetching from Last.fm</p>
+                    </div>
+                  </div>
+
+                  <!-- Error/Empty State -->
+                  <div class="media-card music-card empty" id="music-empty" style="display: none;">
+                    <div class="media-poster" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
+                      <i class="fab fa-spotify" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <div class="media-info">
+                      <h4>Not Playing</h4>
+                      <p class="text-xs text-gray-500">Connect Spotify to Last.fm</p>
+                      <a href="https://www.last.fm/settings/applications" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-link"></i> Connect
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Recent Tracks Container - Will be populated by JS -->
+                  <div id="recent-tracks-container" style="display: contents;"></div>
+                </div>
+
+                <script>
+                  // Last.fm Now Playing Integration
+                  (function() {
+                    const LASTFM_USER = 'mangeshraut712';
+                    const LASTFM_API_KEY = 'bf577878f6d15620dace61e502d01f8d';
+                    const LASTFM_API_URL = 'https://ws.audioscrobbler.com/2.0/';
+
+                    async function fetchNowPlaying() {
+                      const loadingEl = document.getElementById('music-loading');
+                      const emptyEl = document.getElementById('music-empty');
+                      const nowPlayingEl = document.getElementById('now-playing-card');
+                      const recentContainer = document.getElementById('recent-tracks-container');
+
+                      try {
+                        // Fetch recent tracks with now playing info
+                        const response = await fetch(
+                          `${LASTFM_API_URL}?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_API_KEY}&format=json&limit=10`
+                        );
+
+                        if (!response.ok) {
+                          throw new Error(`HTTP ${response.status}`);
+                        }
+
+                        const data = await response.json();
+
+                        if (!data.recenttracks || !data.recenttracks.track) {
+                          throw new Error('No tracks found');
+                        }
+
+                        const tracks = Array.isArray(data.recenttracks.track) 
+                          ? data.recenttracks.track 
+                          : [data.recenttracks.track];
+
+                        // Find now playing track
+                        const nowPlaying = tracks.find(t => t['@attr'] && t['@attr'].nowplaying);
+                        const recentTracks = tracks.filter(t => !t['@attr'] || !t['@attr'].nowplaying).slice(0, 5);
+
+                        // Hide loading
+                        loadingEl.style.display = 'none';
+
+                        if (nowPlaying) {
+                          // Show now playing card
+                          document.getElementById('now-playing-track').textContent = nowPlaying.name;
+                          document.getElementById('now-playing-artist').textContent = nowPlaying.artist['#text'];
+                          document.getElementById('now-playing-img').src = 
+                            nowPlaying.image?.find(img => img.size === 'extralarge')?.['#text'] || 
+                            nowPlaying.image?.find(img => img.size === 'large')?.['#text'] ||
+                            'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+                          document.getElementById('now-playing-link').href = nowPlaying.url;
+                          nowPlayingEl.style.display = 'flex';
+                        } else {
+                          // Show empty state if nothing playing
+                          emptyEl.style.display = 'flex';
+                        }
+
+                        // Render recent tracks
+                        recentContainer.innerHTML = '';
+                        recentTracks.forEach(track => {
+                          const imgUrl = track.image?.find(img => img.size === 'medium')?.['#text'] ||
+                                        track.image?.find(img => img.size === 'small')?.['#text'] ||
+                                        'https://lastfm.freetls.fastly.net/i/u/174s/2a96cbd8b46e442fc41c2b86b821562f.png';
+                          
+                          const trackCard = document.createElement('div');
+                          trackCard.className = 'media-card music-card recent';
+                          trackCard.innerHTML = `
+                            <div class="media-poster">
+                              <img src="${imgUrl}" alt="${track.name}" loading="lazy" />
+                              <span class="media-badge">Recent</span>
+                            </div>
+                            <div class="media-info">
+                              <h4>${track.name.substring(0, 25)}${track.name.length > 25 ? '...' : ''}</h4>
+                              <p class="text-xs text-gray-500">${track.artist['#text'].substring(0, 20)}${track.artist['#text'].length > 20 ? '...' : ''}</p>
+                              <a href="${track.url}" target="_blank" rel="noopener" class="watch-btn">
+                                <i class="fas fa-external-link-alt"></i> View
+                              </a>
+                            </div>
+                          `;
+                          recentContainer.appendChild(trackCard);
+                        });
+
+                        console.log('✓ Last.fm: Loaded', tracks.length, 'tracks');
+
+                      } catch (err) {
+                        console.warn('Last.fm error:', err.message);
+                        loadingEl.style.display = 'none';
+                        emptyEl.style.display = 'flex';
+                        
+                        // Show error message
+                        document.querySelector('#music-empty h4').textContent = 'Connection Error';
+                        document.querySelector('#music-empty p').textContent = 'Check Last.fm profile';
+                      }
+                    }
+
+                    // Fetch on load and every 30 seconds
+                    fetchNowPlaying();
+                    setInterval(fetchNowPlaying, 30000);
+                  })();
+                </script>
               </div>
 
               <!-- Books Section -->
