@@ -51,8 +51,6 @@ Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and depl
 
 </div>
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## ✨ Key Features
@@ -167,8 +165,6 @@ Real-time project showcase that automatically stays current:
 
 </details>
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 🌐 Live Demos
@@ -183,8 +179,6 @@ Real-time project showcase that automatically stays current:
 - ⚡ **[Vercel](https://mangeshrautarchive.vercel.app)** — Edge deployment
 
 > **Note:** All deployments are identical in functionality. The custom domain offers the best performance and SEO.
-
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
@@ -254,8 +248,6 @@ Real-time project showcase that automatically stays current:
 └── Local fallback + session memory — resilient behavior when API is unavailable
 ```
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 🚀 Quick Start
@@ -315,8 +307,6 @@ npm run build
 npm run build:css
 ```
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 📂 Project Structure
@@ -354,8 +344,6 @@ mangeshrautarchive/
 - Keep shared primitives in `src/js/services/*` and UI pieces in `src/js/components/*`.
 - Keep generated output (`dist/`, `artifacts/`, `test-results/`) out of commits.
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 🧭 Engineering Docs
@@ -366,8 +354,6 @@ mangeshrautarchive/
 - `docs/testing/CHROME_TEST_MATRIX.md` — Functional/perf/security/usability checklist
 - `docs/testing/RELEASE_TEST_REPORT_TEMPLATE.md` — Release sign-off template
 - `docs/testing/POST_DEPLOYMENT_FEEDBACK_LOOP.md` — Post-release intake + triage loop
-
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
 
 ---
 
@@ -403,16 +389,6 @@ mangeshrautarchive/
 | `npm run audit:css-duplicates`   | 🔎 Report exact duplicate CSS rule blocks                          |
 | `npm run clean`                  | 🧽 Remove generated build/test artifacts and Python caches         |
 
-Chrome QA runbook and report template:
-
-- `docs/testing/CHROME_QA_RUNBOOK.md`
-- `docs/testing/CHROME_TEST_MATRIX.md`
-- `docs/testing/RELEASE_TEST_REPORT_TEMPLATE.md`
-- `docs/testing/POST_DEPLOYMENT_FEEDBACK_LOOP.md`
-- `docs/testing/README.md`
-
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 🧪 Quality & Performance Gates
@@ -440,8 +416,6 @@ Current configured Lighthouse release floor:
 - ✅ **Caching Strategy** — Service worker with smart cache-first approach
 - ✅ **Zero Layout Shift** — Proper image dimensions and placeholders
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 🤝 Contributing
@@ -464,8 +438,6 @@ Contributions, issues, and feature requests are welcome! Feel free to check out 
 - Add comments for complex logic
 - Update documentation for new features
 
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
 ---
 
 ## 📄 License
@@ -480,27 +452,6 @@ You're free to use this code for your own portfolio, but please:
 
 ---
 
-## 💬 Connect with Me
-
-<div align="center">
-
-### **Mangesh Raut**
-
-_Software Engineer | Full-Stack Developer | AI/ML Enthusiast_
-
-[![Portfolio](https://img.shields.io/badge/🌐_Portfolio-mangeshraut.pro-0071e3?style=for-the-badge)](https://mangeshraut.pro)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/mangeshraut71298)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github)](https://github.com/mangeshraut712)
-[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail)](mailto:mbr63@drexel.edu)
-
-**Current Position:** Software Engineer @ Customized Energy Solutions  
-**Education:** M.S. Computer Science @ Drexel University (Completed 2025)  
-**Location:** Philadelphia, PA, USA 🇺🇸
-
-</div>
-
----
-
 ## 🙏 Acknowledgments
 
 Built with amazing open-source tools:
@@ -511,20 +462,6 @@ Built with amazing open-source tools:
 - **Prism.js** — Syntax highlighting
 - **OpenRouter** — AI model gateway
 - **xAI & Google** — For incredible AI models
-
----
-
-<div align="center">
-
-### ⭐ If you found this project helpful, please give it a star!
-
----
-
-**© 2026 Mangesh Raut • Built with ❤️ in Philadelphia**
-
-[↑ Back to Top](#-mangesh-raut--ai-powered-portfolio)
-
-</div>
 
 ---
 
