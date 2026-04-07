@@ -882,6 +882,86 @@ html.dark .donation-description {
   transform: translateX(4px);
 }
 
+/* Premium Cash App Button */
+.support-cashapp-btn.premium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, #00d632 0%, #00c853 50%, #00b248 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow:
+    0 4px 15px rgb(0 214 50 / 45%),
+    0 0 25px rgb(0 200 83 / 20%),
+    inset 0 1px 0 rgb(255 255 255 / 40%);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+}
+
+.support-cashapp-btn.premium span,
+.support-cashapp-btn.premium i,
+.support-cashapp-btn.premium svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  position: relative;
+  z-index: 1;
+}
+
+.support-cashapp-btn.premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 50%), transparent);
+  transition: left 0.6s;
+}
+
+.support-cashapp-btn.premium:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 8px 25px rgb(0 214 50 / 55%),
+    0 0 40px rgb(0 200 83 / 30%);
+}
+
+.support-cashapp-btn.premium:hover::before {
+  left: 100%;
+}
+
+.support-cashapp-btn.premium:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 32px rgb(0 214 50 / 50%);
+}
+
+.support-cashapp-btn.premium .arrow-icon {
+  transition: transform 0.3s ease;
+}
+
+.support-cashapp-btn.premium:hover .arrow-icon {
+  transform: translateX(4px);
+}
+
+/* Dark mode support for Cash App button */
+html.dark .support-cashapp-btn.premium {
+  background: linear-gradient(135deg, #00d632 0%, #00c853 50%, #00b248 100%);
+  color: #ffffff !important;
+}
+
+html.dark .support-cashapp-btn.premium span,
+html.dark .support-cashapp-btn.premium i,
+html.dark .support-cashapp-btn.premium svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
 /* Support Stats */
 .support-stats {
   display: flex;
