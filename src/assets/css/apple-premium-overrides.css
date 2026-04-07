@@ -259,14 +259,14 @@ html.dark #search-input:focus {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #86868b;
+  color: #4a4a4f;
   margin-bottom: 1rem;
   font-weight: 600;
   padding-left: 0.5rem;
 }
 
 html.dark .menu-section-title {
-  color: #98989d;
+  color: #a1a1a6;
 }
 
 .menu-grid {
@@ -677,7 +677,7 @@ html.dark .schedule-icon {
 }
 
 .schedule-text {
-  color: #86868b;
+  color: #4a4a4f;
   margin-bottom: 2rem;
   max-width: 320px;
   line-height: 1.5;
@@ -828,7 +828,7 @@ html.dark .ios-btn:hover {
   text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #86868b;
+  color: #4a4a4f;
   margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -934,10 +934,10 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   /* Pop in */
 }
 
-/* Completed Item Text Fade */
+/* Completed Item Text - Subtle but readable */
 .reminder-item.completed .reminder-text,
 .reminder-item.completed .reminder-meta {
-  opacity: 0.5 !important;
+  opacity: 0.7 !important;
   transition: opacity 0.3s ease;
 }
 
@@ -1066,20 +1066,19 @@ html.dark .reminders-title {
   height: 24px;
   border-radius: 50%;
   background: rgb(0 0 0 / 5%);
-  color: #86868b;
+  color: #4a4a4f;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  margin-right: 8px;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
 
-  /* Space from tick */
-  opacity: 0;
-
-  /* Hidden by default */
+html.dark .edit-btn {
+  background: rgb(255 255 255 / 10%);
+  color: #a1a1a6;
 }
 
 .reminder-card:hover .edit-btn {
@@ -1091,11 +1090,6 @@ html.dark .reminders-title {
 .edit-btn:hover {
   background: #007aff;
   color: white;
-}
-
-html.dark .edit-btn {
-  background: rgb(255 255 255 / 10%);
-  color: #a1a1a6;
 }
 
 /* Card Grid container */
@@ -1198,7 +1192,11 @@ html.dark .reminder-card.completed {
 
 .reminder-card.completed .card-title {
   text-decoration: line-through;
-  color: #86868b !important;
+  color: #4a4a4f !important;
+}
+
+html.dark .reminder-card.completed .card-title {
+  color: #a1a1a6 !important;
 }
 
 .reminder-card.completed .card-accent-strip {
@@ -1225,9 +1223,13 @@ html.dark .reminder-card.completed {
 
   /* Smaller meta */
   font-weight: 600;
-  color: #86868b;
+  color: #4a4a4f;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+html.dark .card-meta {
+  color: #a1a1a6;
 }
 
 .card-time i {
@@ -1803,19 +1805,19 @@ html.dark .portfolio-reach-badge:hover {
   font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
   font-weight: 600 !important;
   letter-spacing: -0.02em !important;
-  color: #86868b !important;
+  color: #4a4a4f !important;
   margin-bottom: 0 !important;
   line-height: 1.2 !important;
+}
+
+html.dark .hero-title {
+  color: #a1a1a6 !important;
 }
 
 html.dark .hero-name {
   background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
   -webkit-background-clip: text;
   background-clip: text;
-}
-
-html.dark .hero-title {
-  color: #a1a1a6 !important;
 }
 
 .hero-body {
@@ -2919,13 +2921,13 @@ html.dark .music-card:hover .music-card-inner {
 .status-text {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #8e8e93;
+  color: #4a4a4f;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 html.dark .status-text {
-  color: #98989f;
+  color: #a1a1a6;
 }
 
 .track-name {
@@ -2947,7 +2949,7 @@ html.dark .track-name {
 .artist-name {
   font-size: 0.8rem !important;
   font-weight: 500 !important;
-  color: #6e6e73 !important;
+  color: #4a4a4f !important;
   margin: 0 !important;
   line-height: 1.2;
   white-space: nowrap;
@@ -2957,7 +2959,7 @@ html.dark .track-name {
 }
 
 html.dark .artist-name {
-  color: #98989f !important;
+  color: #a1a1a6 !important;
 }
 
 /* Last.fm Link */

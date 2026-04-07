@@ -158,7 +158,7 @@ html.dark .education-institution {
 /* Location */
 .education-location {
   font-size: 0.875rem !important;
-  color: #6e6e73 !important;
+  color: #4a4a4f !important;
   margin: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -166,7 +166,7 @@ html.dark .education-institution {
 }
 
 html.dark .education-location {
-  color: #86868b !important;
+  color: #a1a1a6 !important;
 }
 
 /* Tick Icons - if added in future */
@@ -174,7 +174,7 @@ html.dark .education-location {
 /* Period */
 .education-period {
   font-size: 0.875rem !important;
-  color: #6e6e73 !important;
+  color: #4a4a4f !important;
   margin: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -182,7 +182,7 @@ html.dark .education-location {
 }
 
 html.dark .education-period {
-  color: #86868b !important;
+  color: #a1a1a6 !important;
 }
 
 /* Badges */

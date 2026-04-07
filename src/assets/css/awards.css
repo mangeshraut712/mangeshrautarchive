@@ -138,12 +138,12 @@ html.dark .award-institution {
 
 html.dark .award-date,
 html.dark .award-issuer {
-  color: #86868b;
+  color: #a1a1a6;
 }
 
 html:not(.dark) .award-date,
 html:not(.dark) .award-issuer {
-  color: #6e6e73;
+  color: #4a4a4f;
 }
 
 /* Award Description */
