@@ -2990,6 +2990,9 @@ html.dark .artist-name {
     width: auto !important;
     display: flex !important;
     justify-content: center !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 
   .music-card-inner {
@@ -3101,7 +3104,7 @@ html.dark .media-poster img.error {
 }
 
 /* Hide broken image icon, show placeholder effect */
-.media-poster img:error {
+.media-poster img.error-state {
   display: none;
 }
 
@@ -3116,8 +3119,14 @@ html.dark .media-poster img.error {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Media info styling improvements */

@@ -549,3 +549,81 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   outline-color: var(--island-link-color-hover);
   box-shadow: 0 0 0 4px rgb(78 161 255 / 20%);
 }
+
+/* --- Added Fixes for Responsiveness & Performance --- */
+
+/* Horizontal Scrolling for Nav Links on Desktop/Tablet */
+.global-nav.dynamic-island .nav-links {
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding: 0 15px !important;
+  mask-image: linear-gradient(to right, transparent, black 15px, black calc(100% - 15px), transparent) !important;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15px, black calc(100% - 15px), transparent) !important;
+  gap: 20px !important;
+}
+
+.global-nav.dynamic-island .nav-links::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Ensure links stay visible until mobile breakpoint */
+@media (min-width: 769px) {
+  .global-nav.dynamic-island .nav-links {
+    display: flex !important;
+  }
+}
+
+/* Push main content down to account for fixed navbar */
+#main-content {
+  padding-top: 110px !important;
+}
+
+section, 
+header.hero-section, 
+.game-section,
+#books-content,
+#shows-content {
+  scroll-margin-top: 130px !important;
+}
+
+/* Theme Icon Original Colors */
+#theme-icon-sun {
+  color: #ff9500 !important; /* Apple Sun Orange */
+}
+
+#theme-icon-moon {
+  color: #afafb6 !important; /* Apple Moon Slate */
+}
+
+html.dark #theme-icon-sun {
+  color: #ff9500 !important;
+}
+
+html.dark #theme-icon-moon {
+  color: #ffffff !important;
+}
+
+/* Premium Mobile Menu Close Button Fix */
+#close-menu-btn.premium-close-btn {
+  background: rgba(142, 142, 147, 0.15) !important;
+  border: 1px solid rgba(142, 142, 147, 0.25) !important;
+  color: #1d1d1f !important;
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 1.2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html.dark #close-menu-btn.premium-close-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+#close-menu-btn.premium-close-btn:hover {
+  background: rgba(142, 142, 147, 0.2) !important;
+  transform: scale(1.05) !important;
+}

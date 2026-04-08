@@ -1,4 +1,4 @@
-const CACHE_TAG = 'portfolio-cache-v2026040802';
+const CACHE_TAG = 'portfolio-cache-v2026040901';
 const CACHE_NAME = `mangesh-portfolio-${CACHE_TAG}`;
 const RUNTIME_CACHE = `runtime-${CACHE_TAG}`;
 
@@ -139,4 +139,27 @@ self.addEventListener('fetch', event => {
       return cachedResponse || fetchPromise;
     })
   );
+});
+
+// Message handler for cache management
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+
+  if (event.data && event.data.type === 'CLEAR_CACHE') {
+    caches
+      .keys()
+      .then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            console.log('[SW] Clearing cache:', cacheName);
+            return caches.delete(cacheName);
+          })
+        );
+      })
+      .then(() => {
+        console.log('[SW] All caches cleared');
+      });
+  }
 });

@@ -528,12 +528,161 @@ function initServiceWorker() {
 
   window.addEventListener(
     'load',
-    () => {
+    async () => {
+      // Check for updates and force refresh if needed
+      try {
+        const response = await fetch('/build-config.json');
+        const config = await response.json();
+
+        // Check if we have a cached version
+        const cachedVersion = localStorage.getItem('portfolio-version');
+        const currentVersion = config.version;
+
+        if (cachedVersion && cachedVersion !== currentVersion) {
+          console.log('🔄 New version detected, clearing caches and refreshing...');
+          // Clear all caches
+          if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+          }
+          // Force refresh
+          localStorage.setItem('portfolio-version', currentVersion);
+          window.location.reload();
+          return;
+        }
+
+        // Store current version
+        localStorage.setItem('portfolio-version', currentVersion);
+
+        // Add cache clearing and update functions to window for debugging
+        window.clearAllCaches = async () => {
+          console.log('🧹 Clearing all caches...');
+          if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(
+              cacheNames.map(cacheName => {
+                console.log('🗑️ Deleting cache:', cacheName);
+                return caches.delete(cacheName);
+              })
+            );
+          }
+          localStorage.removeItem('portfolio-version');
+          console.log('✅ All caches cleared');
+        };
+
+        window.forceUpdate = async () => {
+          console.log('🔄 Forcing service worker update...');
+          if ('serviceWorker' in navigator) {
+            const registration = await navigator.serviceWorker.ready;
+            registration.update().then(() => {
+              console.log('🔄 Service worker update triggered');
+            });
+          }
+        };
+      } catch (error) {
+        console.log('Version check failed:', error);
+      }
+
+      // Register service worker
       navigator.serviceWorker
         .register('service-worker.js')
         .then(registration => {
           console.log('ServiceWorker registration successful with scope:', registration.scope);
-          registration.update().catch(() => {});
+
+          // Check for updates every 5 minutes
+          setInterval(
+            () => {
+              registration.update().catch(() => {});
+            },
+            5 * 60 * 1000
+          );
+
+          // Listen for service worker updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Show update notification instead of auto-refresh
+                  showUpdateNotification();
+                }
+              });
+            }
+          });
+
+          // Function to show update notification
+          function showUpdateNotification() {
+            // Remove existing notification
+            const existing = document.getElementById('update-notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.id = 'update-notification';
+            notification.innerHTML = `
+              <div class="update-banner">
+                <span class="update-icon">🔄</span>
+                <span class="update-text">A new version is available!</span>
+                <button class="update-btn" onclick="window.location.reload()">Update Now</button>
+                <button class="update-close" onclick="this.parentElement.parentElement.remove()">×</button>
+              </div>
+            `;
+            notification.style.cssText = `
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              z-index: 10000;
+              background: linear-gradient(135deg, #007aff, #0056cc);
+              color: white;
+              padding: 12px;
+              text-align: center;
+              font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+              box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            `;
+
+            const banner = notification.querySelector('.update-banner');
+            banner.style.cssText = `
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 12px;
+              max-width: 800px;
+              margin: 0 auto;
+            `;
+
+            const btn = notification.querySelector('.update-btn');
+            btn.style.cssText = `
+              background: white;
+              color: #007aff;
+              border: none;
+              padding: 6px 16px;
+              border-radius: 20px;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.2s;
+            `;
+
+            const close = notification.querySelector('.update-close');
+            close.style.cssText = `
+              background: none;
+              border: none;
+              color: white;
+              font-size: 24px;
+              cursor: pointer;
+              padding: 0;
+              margin-left: 8px;
+              opacity: 0.8;
+            `;
+
+            document.body.appendChild(notification);
+
+            // Auto-hide after 30 seconds
+            setTimeout(() => {
+              if (notification.parentElement) {
+                notification.remove();
+              }
+            }, 30000);
+          }
         })
         .catch(error => {
           console.log('ServiceWorker registration failed:', error);

@@ -44,6 +44,7 @@ async function injectApiKeys(distDir) {
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
     buildTime: new Date().toISOString(),
+    version: `v${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
   };
 
   // Create build config JSON file (safe to ship — contains no secrets)
@@ -172,7 +173,36 @@ async function build() {
   console.log('⚡ Minifying copied CSS/JS assets ...');
   await optimizeCopiedAssets(distDir);
 
+  // Add cache busting to HTML assets
+  await addCacheBusting(distDir);
+
   console.log(`✨ Build complete. Static assets written to ${distDir}`);
+}
+
+// Add cache busting query parameters to CSS and JS assets in HTML
+async function addCacheBusting(distDir) {
+  const htmlPath = resolve(distDir, 'index.html');
+  const monitorPath = resolve(distDir, 'monitor.html');
+
+  const version = `v${Date.now()}`;
+
+  for (const htmlFile of [htmlPath, monitorPath]) {
+    if (await pathExists(htmlFile)) {
+      let content = await readFile(htmlFile, 'utf8');
+
+      // Add cache busting to CSS and JS files
+      content = content.replace(
+        /(href|src)="([^"]*\.(css|js))([^"]*)"/g,
+        (match, attr, path, ext, query) => {
+          const separator = query ? '&' : '?';
+          return `${attr}="${path}${separator}v=${version}"`;
+        }
+      );
+
+      await writeFile(htmlFile, content);
+      console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
+    }
+  }
 }
 
 build().catch(error => {

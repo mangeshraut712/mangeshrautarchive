@@ -50,7 +50,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
-    line-height: 1.47059;
+    line-height: 1.4706;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -448,10 +448,25 @@ html.dark .summary-chip {
     font-size: 20px;
 }
 
-.overview-icon.blue { background: rgba(0, 113, 227, 0.1); color: var(--accent-blue); }
-.overview-icon.green { background: rgba(52, 199, 89, 0.1); color: var(--accent-green); }
-.overview-icon.yellow { background: rgba(255, 149, 0, 0.1); color: var(--accent-yellow); }
-.overview-icon.red { background: rgba(255, 59, 48, 0.1); color: var(--accent-red); }
+.overview-icon.blue {
+  background: rgba(0, 113, 227, 0.1);
+  color: var(--accent-blue);
+}
+
+.overview-icon.green {
+  background: rgba(52, 199, 89, 0.1);
+  color: var(--accent-green);
+}
+
+.overview-icon.yellow {
+  background: rgba(255, 149, 0, 0.1);
+  color: var(--accent-yellow);
+}
+
+.overview-icon.red {
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--accent-red);
+}
 
 .overview-label {
     font-size: 13px;
@@ -714,10 +729,25 @@ html.dark .summary-chip {
     font-size: 18px;
 }
 
-.health-status-icon.healthy { background: rgba(52, 199, 89, 0.15); color: var(--accent-green); }
-.health-status-icon.degraded { background: rgba(255, 149, 0, 0.15); color: var(--accent-yellow); }
-.health-status-icon.unhealthy { background: rgba(255, 59, 48, 0.15); color: var(--accent-red); }
-.health-status-icon.unknown { background: rgba(142, 142, 147, 0.15); color: var(--text-secondary); }
+.health-status-icon.healthy {
+  background: rgba(52, 199, 89, 0.15);
+  color: var(--accent-green);
+}
+
+.health-status-icon.degraded {
+  background: rgba(255, 149, 0, 0.15);
+  color: var(--accent-yellow);
+}
+
+.health-status-icon.unhealthy {
+  background: rgba(255, 59, 48, 0.15);
+  color: var(--accent-red);
+}
+
+.health-status-icon.unknown {
+  background: rgba(142, 142, 147, 0.15);
+  color: var(--text-secondary);
+}
 
 .health-info h4 {
     font-size: 16px;
@@ -791,11 +821,30 @@ html.dark .summary-chip {
     flex-shrink: 0;
 }
 
-.event-icon.critical { background: rgba(255, 59, 48, 0.15); color: var(--accent-red); }
-.event-icon.error { background: rgba(255, 59, 48, 0.15); color: var(--accent-red); }
-.event-icon.warning { background: rgba(255, 149, 0, 0.15); color: var(--accent-yellow); }
-.event-icon.info { background: rgba(0, 113, 227, 0.15); color: var(--accent-blue); }
-.event-icon.success { background: rgba(52, 199, 89, 0.15); color: var(--accent-green); }
+.event-icon.critical {
+  background: rgba(255, 59, 48, 0.15);
+  color: var(--accent-red);
+}
+
+.event-icon.error {
+  background: rgba(255, 59, 48, 0.15);
+  color: var(--accent-red);
+}
+
+.event-icon.warning {
+  background: rgba(255, 149, 0, 0.15);
+  color: var(--accent-yellow);
+}
+
+.event-icon.info {
+  background: rgba(0, 113, 227, 0.15);
+  color: var(--accent-blue);
+}
+
+.event-icon.success {
+  background: rgba(52, 199, 89, 0.15);
+  color: var(--accent-green);
+}
 
 .event-content {
     flex: 1;
