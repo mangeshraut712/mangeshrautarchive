@@ -19,9 +19,6 @@ from collections import defaultdict
 
 import httpx
 from dotenv import load_dotenv
-import json
-import hashlib
-import time
 
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
@@ -661,7 +658,7 @@ def api_error(
     """
     detail = {"error": {"code": code, "message": message}}
     if retry_after is not None:
-        detail["error"]["retryAfter"] = retry_after
+        detail["error"]["retryAfter"] = str(retry_after)
     return HTTPException(status_code=status, detail=detail)
 
 
@@ -1581,7 +1578,7 @@ async def get_batch_posters(items: str):
     """Get posters for multiple items at once"""
     try:
         data = json.loads(items)
-    except:
+    except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail="Invalid JSON in items parameter")
 
     results = []

@@ -61,6 +61,7 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.node,
+        ...globals.browser, // For Playwright test files using document in page.evaluate()
       },
     },
     rules: {

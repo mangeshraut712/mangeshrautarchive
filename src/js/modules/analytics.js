@@ -131,7 +131,7 @@
       if (!currentSessionId) return true;
 
       return false;
-    } catch (e) {
+    } catch (_e) {
       // Fallback: assume new session if storage fails
       return true;
     }
@@ -146,7 +146,7 @@
       if (!stored) return defaultValue;
       const parsed = parseInt(stored, 10);
       return isNaN(parsed) ? defaultValue : parsed;
-    } catch (e) {
+    } catch (_e) {
       return defaultValue;
     }
   }
@@ -166,7 +166,7 @@
         return { period: periodKey, count: 0 };
       }
       return data;
-    } catch (e) {
+    } catch (_e) {
       return { period: periodKey, count: 0 };
     }
   }
@@ -218,8 +218,8 @@
       localStorage.setItem(CONFIG.KEYS.WEEKLY_VIEWS, JSON.stringify({ period: weekKey, count: weeklyData.count }));
       localStorage.setItem(CONFIG.KEYS.MONTHLY_VIEWS, JSON.stringify({ period: monthKey, count: monthlyData.count }));
       sessionStorage.setItem(CONFIG.KEYS.SESSION_ID, sessionId);
-    } catch (e) {
-      console.debug('[Portfolio Reach] Storage failed (private browsing):', e.message);
+    } catch (_e) {
+      console.debug('[Portfolio Reach] Storage failed (private browsing):', _e.message);
     }
 
     // Calculate derived metrics
@@ -278,7 +278,7 @@
       localStorage.setItem('test', '1');
       localStorage.removeItem('test');
       return calculateMetrics();
-    } catch (e) {
+    } catch (_e) {
       // Storage not available (private browsing)
       return getFallbackMetrics();
     }
