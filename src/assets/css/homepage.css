@@ -437,67 +437,87 @@ html.dark .hero-description {
   color: #d2d2d7 !important;
 }
 
+/* Music Card - iOS 26.4 Rectangular Compact */
 .music-card {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1.25rem;
-  animation: musicCardSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-top: 1rem;
+  animation: musicCardSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes musicCardSlide {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(16px) scale(0.96);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
+/* Music Card Inner - iOS 26.4 Rectangular Compact */
 .music-card-inner {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
-  background: rgb(255 255 255 / 85%);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgb(0 0 0 / 8%);
-  border-radius: 100px;
+  gap: 0.875rem;
+  padding: 0.625rem 1rem 0.625rem 0.625rem;
+  background: rgb(255 255 255 / 90%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgb(0 0 0 / 6%);
+  border-radius: 16px;
   box-shadow:
-    0 4px 24px rgb(0 0 0 / 8%),
-    0 1px 2px rgb(0 0 0 / 4%),
-    inset 0 1px 0 rgb(255 255 255 / 60%);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 2px 16px rgb(0 0 0 / 6%),
+    0 1px 3px rgb(0 0 0 / 4%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 320px;
 }
 
 html.dark .music-card-inner {
-  background: rgb(28 28 30 / 85%);
-  border-color: rgb(255 255 255 / 10%);
+  background: rgb(28 28 30 / 90%);
+  border-color: rgb(255 255 255 / 8%);
   box-shadow:
-    0 4px 24px rgb(0 0 0 / 40%),
-    0 1px 2px rgb(0 0 0 / 20%),
-    inset 0 1px 0 rgb(255 255 255 / 10%);
+    0 2px 16px rgb(0 0 0 / 40%),
+    0 1px 3px rgb(0 0 0 / 20%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
 }
 
+.music-card:hover .music-card-inner {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 6px 24px rgb(0 0 0 / 10%),
+    0 2px 6px rgb(0 0 0 / 5%),
+    inset 0 1px 0 rgb(255 255 255 / 80%);
+}
+
+html.dark .music-card:hover .music-card-inner {
+  box-shadow:
+    0 6px 24px rgb(0 0 0 / 50%),
+    0 2px 6px rgb(0 0 0 / 30%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+}
+
+/* Album Art Container - iOS 26.4 Rectangular */
 .album-art-container {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .album-art {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 10px;
   box-shadow:
-    0 2px 8px rgb(0 0 0 / 15%),
-    inset 0 0 0 1px rgb(255 255 255 / 20%);
+    0 2px 6px rgb(0 0 0 / 12%),
+    inset 0 0 0 1px rgb(255 255 255 / 15%);
   transition: transform 0.3s ease;
 }
 
@@ -515,21 +535,22 @@ html.dark .music-card-inner {
   }
 }
 
+/* Playing Indicator - iOS 26.4 Compact Style */
 .playing-indicator {
   position: absolute;
-  bottom: -4px;
-  left: 50%;
+  bottom: -2px;
+  right: -2px;
   display: flex;
   align-items: flex-end;
-  gap: 2px;
-  height: 16px;
-  padding: 3px 6px;
-  background: rgb(255 59 48 / 95%);
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgb(255 59 48 / 40%);
+  gap: 1.5px;
+  height: 14px;
+  padding: 2px 5px;
+  background: rgb(29 185 84 / 95%);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgb(29 185 84 / 40%);
   opacity: 0;
-  transform: translateX(-50%);
-  transition: opacity 0.3s ease;
+  transform: none;
+  transition: opacity 0.25s ease;
 }
 
 .playing-indicator.active {
@@ -540,22 +561,22 @@ html.dark .music-card-inner {
   width: 2px;
   border-radius: 1px;
   background: #fff;
-  animation: playingBars 1s ease-in-out infinite;
+  animation: playingBars 0.8s ease-in-out infinite;
 }
 
 .playing-indicator span:nth-child(1) {
-  height: 6px;
+  height: 5px;
   animation-delay: 0s;
 }
 
 .playing-indicator span:nth-child(2) {
-  height: 10px;
-  animation-delay: 0.2s;
+  height: 8px;
+  animation-delay: 0.15s;
 }
 
 .playing-indicator span:nth-child(3) {
-  height: 8px;
-  animation-delay: 0.4s;
+  height: 6px;
+  animation-delay: 0.3s;
 }
 
 @keyframes playingBars {
@@ -565,52 +586,56 @@ html.dark .music-card-inner {
   }
 
   50% {
-    transform: scaleY(1.5);
+    transform: scaleY(1.4);
   }
 }
 
+/* Track Info - iOS 26.4 Compact */
 .track-info {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
   min-width: 0;
+  flex: 1;
   text-align: left;
 }
 
 .status-row {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  margin-bottom: 0.25rem;
+  gap: 0.375rem;
+  margin-bottom: 0.125rem;
 }
 
-.spotify-logo {
-  width: 16px;
-  height: 16px;
+.spotify-logo,
+.lastfm-logo {
+  width: 14px;
+  height: 14px;
   color: #1db954;
   flex-shrink: 0;
 }
 
 .status-text {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  color: #4a4a4f;
-  letter-spacing: 0.03em;
+  color: #6e6e73;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 html.dark .status-text {
-  color: #a1a1a6;
+  color: #8e8e93;
 }
 
 .track-name {
-  max-width: 160px;
+  max-width: 180px;
   margin: 0 !important;
   overflow: hidden;
   color: #1d1d1f !important;
-  font-size: 0.95rem !important;
-  font-weight: 700 !important;
-  line-height: 1.2;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -620,42 +645,45 @@ html.dark .track-name {
 }
 
 .artist-name {
-  max-width: 160px;
+  max-width: 180px;
   margin: 0 !important;
   overflow: hidden;
-  color: #4a4a4f !important;
-  font-size: 0.8rem !important;
+  color: #6e6e73 !important;
+  font-size: 0.75rem !important;
   font-weight: 500 !important;
-  line-height: 1.2;
+  line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 html.dark .artist-name {
-  color: #a1a1a6 !important;
+  color: #8e8e93 !important;
 }
 
+/* Last.fm Link - iOS 26.4 Compact */
 .lastfm-link {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  margin-left: 0.5rem;
+  width: 28px;
+  height: 28px;
+  margin-left: 0.25rem;
   color: #ff3b30;
-  opacity: 0.7;
-  transition: all 0.3s ease;
   flex-shrink: 0;
+  opacity: 0.7;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .lastfm-link:hover {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.08);
+  background: rgb(255 59 48 / 8%);
 }
 
 .lastfm-icon {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Hero CTA Button */
