@@ -1524,6 +1524,38 @@ async def health_alias():
     return await health_check()
 
 
+@app.get("/api/music/recent")
+async def get_recent_music(user: str = "mbr63", limit: int = 10):
+    """
+    Proxy endpoint for Last.fm listening data.
+    Forces UTF-8 and returns structured JSON to avoid frontend fetch issues.
+    """
+    api_key = "bef46b0d7702dac5b071906cd186bd28"
+    url = f"https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user={user}&api_key={api_key}&format=json&limit={limit}"
+    
+    try:
+        async with httpx.AsyncClient(timeout=10.0, follow_redirects=True) as client:
+            headers = {"User-Agent": "AssistMe-Portfolio/3.0.0"}
+            response = await client.get(url, headers=headers)
+            
+            if response.status_code != 200:
+                print(f"Last.fm Error: {response.status_code} - {response.text}")
+                return JSONResponse(
+                    status_code=response.status_code,
+                    content={"error": "Last.fm error", "details": response.text}
+                )
+            
+            data = response.json()
+            return data
+            
+    except Exception as e:
+        print(f"Music Proxy Exception: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Music proxy unavailable", "details": str(e)}
+        )
+
+
 @app.get("/api/test")
 async def test_endpoint():
     """Test endpoint to verify API configuration (API key is masked for security)"""

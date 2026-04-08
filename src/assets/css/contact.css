@@ -1081,23 +1081,18 @@ html.dark .music-recent-source {
 }
 
 .music-card {
-  border-radius: 22px;
-  padding: 1rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 245, 247, 0.92));
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow:
-    0 18px 36px rgba(15, 23, 42, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 html.dark .music-card {
-  background: linear-gradient(180deg, rgba(18, 18, 20, 0.94), rgba(10, 10, 11, 0.94));
-  border-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 18px 36px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .music-card .media-poster {
@@ -1857,8 +1852,16 @@ html.dark #contact .wrapper .x {
 #contact .wrapper .icon:hover {
   transform: translateY(-4px) scale(1.05) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-  color: #fff !important;
 }
+
+#contact .wrapper .linkedin:hover { background: #0077b5 !important; color: #fff !important; }
+#contact .wrapper .instagram:hover { background: #e4405f !important; color: #fff !important; }
+#contact .wrapper .youtube:hover { background: #ff0000 !important; color: #fff !important; }
+#contact .wrapper .telegram:hover { background: #0088cc !important; color: #fff !important; }
+#contact .wrapper .leetcode:hover { background: #ffa116 !important; color: #fff !important; }
+#contact .wrapper .github:hover { background: #333 !important; color: #fff !important; }
+#contact .wrapper .x:hover { background: #000 !important; color: #fff !important; }
+
 
 html.dark #contact .wrapper .icon:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;

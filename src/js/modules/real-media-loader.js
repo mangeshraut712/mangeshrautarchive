@@ -140,6 +140,10 @@ class RealMediaLoader {
       }
     });
   }
+  initMusicFallbacks() {
+    // Placeholder for music fallback initialization if needed
+    console.log('Music fallbacks initialized');
+  }
 
   init() {
     const showsContainer = document.getElementById('shows-content')?.querySelector('.media-grid');

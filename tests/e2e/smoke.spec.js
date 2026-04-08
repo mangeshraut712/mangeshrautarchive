@@ -402,7 +402,7 @@ test.describe('Chrome smoke tests', () => {
         const loading = document.getElementById('music-loading');
         const featured = document.getElementById('now-playing-card');
         const empty = document.getElementById('music-empty');
-        const recentCount = document.querySelectorAll(
+        const _recentCount = document.querySelectorAll(
           '#recent-tracks-container .recent-track-item'
         ).length;
 

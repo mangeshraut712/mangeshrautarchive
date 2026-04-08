@@ -6,7 +6,8 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
   <meta name="format-detection" content="telephone=yes" />
@@ -16,7 +17,7 @@
   <meta name="theme-color" content="#0071e3" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
   <link rel="manifest" href="manifest.json" />
-  
+
   <!-- Preload critical CSS for performance -->
   <link rel="preload" href="assets/css/cross-browser-responsive.css" as="style" />
   <link rel="stylesheet" href="assets/css/cross-browser-responsive.css" />
@@ -194,10 +195,10 @@
       const isExtensionError = function (args) {
         const message = args.length > 0 && typeof args[0] === 'string' ? args[0] : '';
         return message.includes('message channel closed') ||
-               message.includes('A listener indicated an asynchronous response') ||
-               message.includes('Unchecked runtime.lastError') ||
-               message.includes('The message port closed before') ||
-               (message.includes('Uncaught (in promise)') && message.includes('Error'));
+          message.includes('A listener indicated an asynchronous response') ||
+          message.includes('Unchecked runtime.lastError') ||
+          message.includes('The message port closed before') ||
+          (message.includes('Uncaught (in promise)') && message.includes('Error'));
       };
       console.error = function () {
         if (isExtensionError(arguments)) {
@@ -314,7 +315,8 @@
       <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav" aria-label="Search" type="button">
           <span class="inline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
               <circle cx="11" cy="11" r="7"></circle>
               <path d="m20 20-3.5-3.5"></path>
             </svg>
@@ -340,8 +342,8 @@
     </div>
   </nav>
 
-  <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true" inert style="display: none !important;"
-    aria-label="Site navigation">
+  <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true" inert
+    style="display: none !important;" aria-label="Site navigation">
     <button id="close-menu-btn" class="premium-close-btn" type="button" aria-label="Close navigation menu">
       <i class="fas fa-times"></i>
     </button>
@@ -414,7 +416,7 @@
       <div class="container-fluid">
         <div class="max-w-5xl mx-auto text-center">
           <div class="hero-layout-wrapper">
-            <div class="hero-image-block mb-20">
+            <div class="hero-image-block mb-8">
               <div class="profile-image-wrapper mx-auto">
                 <picture>
                   <source srcset="assets/images/profile.webp" type="image/webp" />
@@ -442,7 +444,8 @@
                   </span>
                   <span class="portfolio-reach-badge" id="portfolio-reach" title="Portfolio views">
                     <span class="inline-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path>
                         <circle cx="12" cy="12" r="3"></circle>
                       </svg>
@@ -455,12 +458,9 @@
                 <div class="music-card" id="music-card">
                   <div class="music-card-inner">
                     <div class="album-art-container">
-                      <img 
-                        id="album-art" 
-                        src="https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png" 
-                        alt="Music album artwork" 
-                        class="album-art"
-                      />
+                      <img id="album-art"
+                        src="https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png"
+                        alt="Music album artwork" class="album-art" />
                       <div class="playing-indicator" id="playing-indicator">
                         <span></span>
                         <span></span>
@@ -470,22 +470,19 @@
                     <div class="track-info">
                       <div class="status-row">
                         <svg class="spotify-logo" viewBox="0 0 24 24" fill="currentColor" aria-label="Spotify">
-                          <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                          <path
+                            d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
                         </svg>
                         <span class="status-text" id="status-text">Loading...</span>
                       </div>
                       <p class="track-name" id="track-name">--</p>
                       <p class="artist-name" id="artist-name">--</p>
                     </div>
-                    <a 
-                      href="https://www.last.fm/user/mbr63" 
-                      target="_blank" 
-                      rel="noopener" 
-                      class="lastfm-link"
-                      title="View on Last.fm"
-                    >
+                    <a href="https://open.spotify.com" target="_blank" rel="noopener" class="lastfm-link"
+                      title="Follow on Spotify">
                       <svg viewBox="0 0 24 24" fill="currentColor" class="lastfm-icon">
-                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm-3.5 15.5c-1.5 0-2.5-1-2.5-2.5s1-2.5 2.5-2.5c1.2 0 2 .7 2.5 1.5l1.5-1c-.8-1.2-2.2-2-4-2-2.5 0-4.5 1.5-4.5 4s2 4 4.5 4c1.8 0 3.2-.8 4-2l-1.5-1c-.5.8-1.3 1.5-2.5 1.5zm7 0c-1.5 0-2.5-1-2.5-2.5s1-2.5 2.5-2.5c1.2 0 2 .7 2.5 1.5l1.5-1c-.8-1.2-2.2-2-4-2-2.5 0-4.5 1.5-4.5 4s2 4 4.5 4c1.8 0 3.2-.8 4-2l-1.5-1c-.5.8-1.3 1.5-2.5 1.5z"/>
+                        <path
+                          d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10S2 17.514 2 12 6.486 2 12 2zm-3.5 15.5c-1.5 0-2.5-1-2.5-2.5s1-2.5 2.5-2.5c1.2 0 2 .7 2.5 1.5l1.5-1c-.8-1.2-2.2-2-4-2-2.5 0-4.5 1.5-4.5 4s2 4 4.5 4c1.8 0 3.2-.8 4-2l-1.5-1c-.5.8-1.3 1.5-2.5 1.5zm7 0c-1.5 0-2.5-1-2.5-2.5s1-2.5 2.5-2.5c1.2 0 2 .7 2.5 1.5l1.5-1c-.8-1.2-2.2-2-4-2-2.5 0-4.5 1.5-4.5 4s2 4 4.5 4c1.8 0 3.2-.8 4-2l-1.5-1c-.5.8-1.3 1.5-2.5 1.5z" />
                       </svg>
                     </a>
                   </div>
@@ -506,7 +503,8 @@
                   <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="btn hero-cta"
                     aria-label="Download Resume">
                     <span class="inline-icon mr-2" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M12 3v12"></path>
                         <path d="m7 10 5 5 5-5"></path>
                         <path d="M5 21h14"></path>
@@ -516,7 +514,8 @@
                   </a>
                   <a href="#projects" class="btn hero-cta" aria-label="View Projects">
                     <span class="inline-icon mr-2" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M5 19c4-1 8-5 10-10l4-4-1-1-4 4C9 10 5 14 4 18l1 1Z"></path>
                         <path d="M15 9l3 3"></path>
                         <path d="M4 20l3-3"></path>
@@ -598,7 +597,7 @@
               <p class="text-secondary">Loading interactive skills visualization...</p>
             </div>
           </div>
-          
+
           <!-- No-JS Fallback: Static Skills List -->
           <noscript>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-8">
@@ -985,7 +984,8 @@
             <div class="activity-github-graph-container" id="github-graph-container">
               <div class="graph-header">
                 <h4 class="graph-title">Contributions in the last year</h4>
-                <button id="refresh-graph-btn" class="graph-refresh-btn" aria-label="Refresh contribution graph" title="Refresh graph">
+                <button id="refresh-graph-btn" class="graph-refresh-btn" aria-label="Refresh contribution graph"
+                  title="Refresh graph">
                   <i class="fas fa-sync-alt"></i>
                 </button>
               </div>
@@ -993,7 +993,8 @@
                 <div class="graph-loading" id="graph-loading">
                   <div class="loading-spinner"></div>
                   <span id="graph-loading-text">Loading contribution graph...</span>
-                  <button id="graph-retry-btn" class="graph-retry-btn" style="display: none;" onclick="loadGitHubGraph()">
+                  <button id="graph-retry-btn" class="graph-retry-btn" style="display: none;"
+                    onclick="loadGitHubGraph()">
                     <i class="fas fa-redo"></i> Retry
                   </button>
                 </div>
@@ -1006,23 +1007,23 @@
                 </div>
                 <picture id="github-graph-picture" style="display: none;">
                   <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/39d353/mangeshraut712">
-                  <source media="(prefers-color-scheme: light)" srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
-                  <img id="github-chart-img" src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github contribution chart"
-                    class="github-graph-svg" loading="eager"
-                    onload="handleGraphLoadSuccess()"
-                    onerror="handleGraphLoadError()">
+                  <source media="(prefers-color-scheme: light)"
+                    srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
+                  <img id="github-chart-img" src="https://ghchart.rshah.org/0071e3/mangeshraut712"
+                    alt="Mangesh Raut's Github contribution chart" class="github-graph-svg" loading="eager"
+                    onload="handleGraphLoadSuccess()" onerror="handleGraphLoadError()">
                 </picture>
               </div>
             </div>
 
             <script>
-              (function() {
+              (function () {
                 let graphLoadTimeout;
                 const GRAPH_TIMEOUT = 15000; // 15 seconds timeout
                 let retryCount = 0;
                 const MAX_RETRIES = 3;
 
-                window.handleGraphLoadSuccess = function() {
+                window.handleGraphLoadSuccess = function () {
                   clearTimeout(graphLoadTimeout);
                   document.getElementById('graph-loading').style.display = 'none';
                   document.getElementById('graph-error').style.display = 'none';
@@ -1030,7 +1031,7 @@
                   retryCount = 0;
                 };
 
-                window.handleGraphLoadError = function() {
+                window.handleGraphLoadError = function () {
                   clearTimeout(graphLoadTimeout);
                   showGraphError();
                 };
@@ -1041,7 +1042,7 @@
                   document.getElementById('graph-error').style.display = 'flex';
                 }
 
-                window.loadGitHubGraph = function() {
+                window.loadGitHubGraph = function () {
                   if (retryCount >= MAX_RETRIES) {
                     document.getElementById('graph-loading-text').textContent = 'Service temporarily unavailable';
                     document.getElementById('graph-retry-btn').style.display = 'inline-flex';
@@ -1065,7 +1066,7 @@
 
                   // Set timeout for loading
                   clearTimeout(graphLoadTimeout);
-                  graphLoadTimeout = setTimeout(function() {
+                  graphLoadTimeout = setTimeout(function () {
                     if (document.getElementById('github-graph-picture').style.display !== 'block') {
                       showGraphError();
                     }
@@ -1079,14 +1080,14 @@
                 };
 
                 // Initial load
-                document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('DOMContentLoaded', function () {
                   // Delay initial load for better page performance
                   setTimeout(window.loadGitHubGraph, 2000);
 
                   // Refresh button handler
                   const refreshBtn = document.getElementById('refresh-graph-btn');
                   if (refreshBtn) {
-                    refreshBtn.addEventListener('click', function() {
+                    refreshBtn.addEventListener('click', function () {
                       retryCount = 0;
                       window.loadGitHubGraph();
                     });
@@ -1629,7 +1630,8 @@
 
         </div>
         <div class="section-view-more-wrap w-full">
-          <button type="button" class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
+          <button type="button" class="btn button-secondary"
+            style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
             onclick="document.getElementById('certifications-grid').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
             More <i class="fas fa-chevron-down"></i></button>
         </div>
@@ -1650,7 +1652,8 @@
           </div>
         </div>
         <div class="section-view-more-wrap w-full">
-          <button type="button" class="btn button-secondary" style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
+          <button type="button" class="btn button-secondary"
+            style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
             onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
             More <i class="fas fa-chevron-down"></i></button>
         </div>
@@ -1785,8 +1788,10 @@
                     <a href="https://cash.app/$MangeshRaut" target="_blank" rel="noopener noreferrer"
                       class="support-cashapp-btn premium">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" class="payment-logo">
-                        <rect width="32" height="32" rx="8" fill="#00C244"/>
-                        <path d="M17.5 8.5c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v1.1c-2.1.5-3.5 2.3-3.5 4.4 0 2.4 1.6 3.7 3.7 4.3l.9.3c1.3.4 1.7.7 1.7 1.4 0 .7-.6 1.2-1.5 1.2-1.2 0-1.9-.6-2.6-1.5l-2 1.6c1 1.4 2.4 2.1 4.1 2.4v1.3c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-1.4c2.2-.5 3.6-2.4 3.6-4.5 0-2.7-1.9-3.8-4-4.5l-.9-.3c-1.1-.3-1.4-.6-1.4-1.2 0-.5.4-1 1.2-1 .9 0 1.4.4 2 .9l1.9-1.6c-.9-1.1-2-1.9-3.6-2.2V8.5z" fill="white"/>
+                        <rect width="32" height="32" rx="8" fill="#00C244" />
+                        <path
+                          d="M17.5 8.5c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v1.1c-2.1.5-3.5 2.3-3.5 4.4 0 2.4 1.6 3.7 3.7 4.3l.9.3c1.3.4 1.7.7 1.7 1.4 0 .7-.6 1.2-1.5 1.2-1.2 0-1.9-.6-2.6-1.5l-2 1.6c1 1.4 2.4 2.1 4.1 2.4v1.3c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-1.4c2.2-.5 3.6-2.4 3.6-4.5 0-2.7-1.9-3.8-4-4.5l-.9-.3c-1.1-.3-1.4-.6-1.4-1.2 0-.5.4-1 1.2-1 .9 0 1.4.4 2 .9l1.9-1.6c-.9-1.1-2-1.9-3.6-2.2V8.5z"
+                          fill="white" />
                       </svg>
                       <span>Cash App</span>
                     </a>
@@ -1794,8 +1799,10 @@
                     <!-- PayPal Button -->
                     <a href="https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82" target="_blank" rel="noopener noreferrer"
                       class="support-paypal-btn premium">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="payment-logo">
-                        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.35-1.774.195-3.248-.656-4.393-.18-.239-.376-.451-.578-.65z"/>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="payment-logo">
+                        <path
+                          d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.35-1.774.195-3.248-.656-4.393-.18-.239-.376-.451-.578-.65z" />
                       </svg>
                       <span>PayPal</span>
                     </a>
@@ -1804,10 +1811,12 @@
                     <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer"
                       class="support-coffee-btn premium">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" class="payment-logo">
-                        <rect width="32" height="32" rx="8" fill="#FFDD00"/>
-                        <path d="M10 11.5c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v.5c0 .28-.22.5-.5.5h-11c-.28 0-.5-.22-.5-.5v-.5z" fill="#0A0A0A"/>
-                        <path d="M11 13h10v8c0 1.1-.9 2-2 2h-6c-1.1 0-2-.9-2-2v-8z" fill="#0A0A0A"/>
-                        <path d="M16 14c1.66 0 3-1.34 3-3v-1h-6v1c0 1.66 1.34 3 3 3z" fill="white"/>
+                        <rect width="32" height="32" rx="8" fill="#FFDD00" />
+                        <path
+                          d="M10 11.5c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v.5c0 .28-.22.5-.5.5h-11c-.28 0-.5-.22-.5-.5v-.5z"
+                          fill="#0A0A0A" />
+                        <path d="M11 13h10v8c0 1.1-.9 2-2 2h-6c-1.1 0-2-.9-2-2v-8z" fill="#0A0A0A" />
+                        <path d="M16 14c1.66 0 3-1.34 3-3v-1h-6v1c0 1.66 1.34 3 3 3z" fill="white" />
                       </svg>
                       <span>Buy Me a Coffee</span>
                     </a>
@@ -1897,7 +1906,8 @@
                       rel="noopener noreferrer" aria-label="Telegram">
                       <span class="tooltip">Telegram</span>
                       <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 496 512">
-                        <path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.9 158.5L277.7 392.8c-3.3 14.8-11.6 18.5-23.5 11.5l-64-47.2-30.9 29.7c-3.4 3.4-6.2 6.2-12.7 6.2l4.4-62.7 118.3-107.1c5.2-4.6-1.1-7.2-7.9-2.6l-146 91.9-62.5-19.6c-13.5-4.2-13.9-13.5-2.8-19.7l244.4-94.4c11.2-4.3 21.1 2.7 17.4 19.4z"/>
+                        <path
+                          d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.9 158.5L277.7 392.8c-3.3 14.8-11.6 18.5-23.5 11.5l-64-47.2-30.9 29.7c-3.4 3.4-6.2 6.2-12.7 6.2l4.4-62.7 118.3-107.1c5.2-4.6-1.1-7.2-7.9-2.6l-146 91.9-62.5-19.6c-13.5-4.2-13.9-13.5-2.8-19.7l244.4-94.4c11.2-4.3 21.1 2.7 17.4 19.4z" />
                       </svg>
                     </a></li>
                 </ul>
@@ -2149,7 +2159,8 @@
 
                     <!-- Loading State -->
                     <div class="media-card music-card loading" id="music-loading">
-                      <div class="media-poster music-poster-loading" style="display: flex; align-items: center; justify-content: center;">
+                      <div class="media-poster music-poster-loading"
+                        style="display: flex; align-items: center; justify-content: center;">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
                       </div>
                       <div class="media-info">
@@ -2160,7 +2171,8 @@
 
                     <!-- Error/Empty State -->
                     <div class="media-card music-card empty" id="music-empty" hidden>
-                      <div class="media-poster music-poster-empty" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
+                      <div class="media-poster music-poster-empty"
+                        style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
                         <i class="fab fa-spotify" style="font-size: 2rem; color: white;"></i>
                       </div>
                       <div class="media-info">
@@ -2177,7 +2189,7 @@
                     <div class="music-recent-header">
                       <div>
                         <p class="music-card-kicker">Recently Played</p>
-                        <h4>Quick picks from Last.fm</h4>
+                        <h4>Spotify Recently Played</h4>
                       </div>
                       <span class="music-recent-source">Live</span>
                     </div>
@@ -2199,9 +2211,9 @@
                 </div>
               </div>
 
+            </div>
           </div>
         </div>
-      </div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -2363,11 +2375,12 @@
                 <span class="tooltip">Snapchat</span>
                 <i class="fab fa-snapchat" style="font-size: 1.2em;"></i>
               </a></li>
-            <li class="icon telegram"><a href="https://t.me/mangesh71298" target="_blank"
-                rel="noopener noreferrer" aria-label="Telegram">
+            <li class="icon telegram"><a href="https://t.me/mangesh71298" target="_blank" rel="noopener noreferrer"
+                aria-label="Telegram">
                 <span class="tooltip">Telegram</span>
                 <svg xmlns="http://www.w3.org/2000/svg" height="1.2em" fill="currentColor" viewBox="0 0 496 512">
-                  <path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.9 158.5L277.7 392.8c-3.3 14.8-11.6 18.5-23.5 11.5l-64-47.2-30.9 29.7c-3.4 3.4-6.2 6.2-12.7 6.2l4.4-62.7 118.3-107.1c5.2-4.6-1.1-7.2-7.9-2.6l-146 91.9-62.5-19.6c-13.5-4.2-13.9-13.5-2.8-19.7l244.4-94.4c11.2-4.3 21.1 2.7 17.4 19.4z"/>
+                  <path
+                    d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.9 158.5L277.7 392.8c-3.3 14.8-11.6 18.5-23.5 11.5l-64-47.2-30.9 29.7c-3.4 3.4-6.2 6.2-12.7 6.2l4.4-62.7 118.3-107.1c5.2-4.6-1.1-7.2-7.9-2.6l-146 91.9-62.5-19.6c-13.5-4.2-13.9-13.5-2.8-19.7l244.4-94.4c11.2-4.3 21.1 2.7 17.4 19.4z" />
                 </svg>
               </a></li>
           </ul>
@@ -2377,7 +2390,8 @@
         <div class="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
           <p class="footer-copy text-sm">&copy; 2026 Mangesh Raut Archive</p>
           <p class="footer-copy text-sm mt-1">All rights reserved.</p>
-          <p class="footer-tagline text-xs mt-2 text-gray-500 dark:text-gray-400">Designed by Mangesh in Pennsylvania, Assembled in Maharashtra</p>
+          <p class="footer-tagline text-xs mt-2 text-gray-500 dark:text-gray-400">Designed by Mangesh in Pennsylvania,
+            Assembled in Maharashtra</p>
         </div>
       </div>
     </footer>
@@ -2396,7 +2410,8 @@
     <!-- Chatbot Toggle Button -->
     <button id="chatbot-toggle" type="button" aria-label="Open AI Assistant">
       <span class="inline-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
           <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path>
         </svg>
       </span>

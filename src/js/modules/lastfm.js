@@ -3,6 +3,8 @@
  * Powers the hero music card and the Currently music shelf.
  */
 
+import { analytics } from '../services/AnalyticsService.js';
+
 class LastFmService {
   constructor() {
     this.API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
@@ -30,9 +32,9 @@ class LastFmService {
       .replace(/'/g, '&#39;');
   }
 
-  getArtworkPlaceholder(trackName = 'Now Playing', artistName = 'Last.fm') {
+  getArtworkPlaceholder(trackName = 'Now Playing', artistName = 'Spotify') {
     const safeTrack = this.escapeHtml(String(trackName || 'Now Playing').slice(0, 28));
-    const safeArtist = this.escapeHtml(String(artistName || 'Last.fm').slice(0, 26));
+    const safeArtist = this.escapeHtml(String(artistName || 'Spotify').slice(0, 26));
     const svg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none">
         <defs>
@@ -193,10 +195,7 @@ class LastFmService {
       const response = await fetch(
         `${this.API_URL}?method=user.getrecenttracks&user=${this.USERNAME}&api_key=${this.API_KEY}&format=json&limit=10`,
         {
-          signal: controller.signal,
-          headers: {
-            'User-Agent': 'MangeshRaut-Portfolio/1.0',
-          },
+          signal: controller.signal
         }
       );
 
@@ -304,6 +303,11 @@ class LastFmService {
     els.nowPlayingLink.setAttribute('aria-label', `Open ${trackName} by ${artistName} in Spotify`);
     els.playingIndicator.style.display = isNowPlaying ? 'flex' : 'none';
 
+    // Description is optional
+    if (els.nowPlayingDescription) {
+      els.nowPlayingDescription.textContent = '';
+    }
+
     // Add follow button to featured track
     const followContainer =
       els.nowPlayingCard.querySelector('.follow-container') || document.createElement('div');
@@ -385,8 +389,8 @@ class LastFmService {
       els.statusText.textContent = 'Offline';
       els.trackName.textContent = 'Service';
       els.artistName.textContent = 'Unavailable';
-      this.applyImageFallback(els.albumArt, 'Service Offline', 'Last.fm');
-      els.albumArt.src = this.getArtworkPlaceholder('Service Offline', 'Last.fm');
+      this.applyImageFallback(els.albumArt, 'Service Offline', 'Spotify');
+      els.albumArt.src = this.getArtworkPlaceholder('Service Offline', 'Spotify');
       els.playingIndicator.classList.remove('active');
       els.musicCard.classList.remove('is-playing');
     }
@@ -397,7 +401,7 @@ class LastFmService {
       this.setCardVisibility(els.emptyEl, true);
       els.emptyEl.querySelector('h4').textContent = 'Music shelf offline';
       els.emptyEl.querySelector('p').textContent =
-        'Last.fm is temporarily unavailable. Open Spotify and try again shortly.';
+        'Music service is temporarily unavailable. Open Spotify and try again shortly.';
       this.setCardVisibility(els.nowPlayingCard, false);
       els.recentContainer.innerHTML = '';
     }
@@ -545,7 +549,7 @@ function initLastFmService() {
 
   if (currentlyElements.loadingEl) {
     lastFmService.initCurrentlyComponent(currentlyElements);
-    lastFmService.applyImageFallback(currentlyElements.nowPlayingImg, 'Now Playing', 'Last.fm');
+    lastFmService.applyImageFallback(currentlyElements.nowPlayingImg, 'Now Playing', 'Spotify');
   }
 
   lastFmService.start();
