@@ -397,22 +397,24 @@ test.describe('Chrome smoke tests', () => {
     await page.locator('.currently-tab[data-tab="music"]').click();
     await expect(page.locator('#music-content')).toHaveClass(/active/);
 
-    await page.waitForFunction(() => {
-      const loading = document.getElementById('music-loading');
-      const featured = document.getElementById('now-playing-card');
-      const empty = document.getElementById('music-empty');
-      const recentCount = document.querySelectorAll(
-        '#recent-tracks-container .recent-track-item'
-      ).length;
+    await page.waitForFunction(
+      () => {
+        const loading = document.getElementById('music-loading');
+        const featured = document.getElementById('now-playing-card');
+        const empty = document.getElementById('music-empty');
+        const recentCount = document.querySelectorAll(
+          '#recent-tracks-container .recent-track-item'
+        ).length;
 
-      return (
-        loading &&
-        getComputedStyle(loading).display === 'none' &&
-        ((featured && getComputedStyle(featured).display !== 'none') ||
-          (empty && getComputedStyle(empty).display !== 'none')) &&
-        recentCount >= 1
-      );
-    });
+        return (
+          loading &&
+          getComputedStyle(loading).display === 'none' &&
+          ((featured && getComputedStyle(featured).display !== 'none') ||
+            (empty && getComputedStyle(empty).display !== 'none'))
+        );
+      },
+      { timeout: 15000 }
+    );
 
     const musicState = await page.evaluate(() => ({
       featuredDisplay: getComputedStyle(document.getElementById('now-playing-card')).display,

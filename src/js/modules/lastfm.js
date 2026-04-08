@@ -17,6 +17,8 @@ class LastFmService {
     this.intervalId = null;
     this.started = false;
     this.artworkCache = new Map();
+    this.followStates = new Map(); // Track follow states for tracks/artists
+    this.retryTimeout = null;
   }
 
   escapeHtml(value = '') {
@@ -59,6 +61,16 @@ class LastFmService {
     const query = `${trackName} ${artistName}`.trim();
     if (!query) return 'https://open.spotify.com';
     return `https://open.spotify.com/search/${encodeURIComponent(query)}`;
+  }
+
+  buildLastFmArtistUrl(artistName = '') {
+    if (!artistName) return 'https://www.last.fm';
+    return `https://www.last.fm/music/${encodeURIComponent(artistName)}`;
+  }
+
+  buildLastFmTrackUrl(trackName = '', artistName = '') {
+    if (!trackName || !artistName) return 'https://www.last.fm';
+    return `https://www.last.fm/music/${encodeURIComponent(artistName)}/_/${encodeURIComponent(trackName)}`;
   }
 
   normalizeArtworkUrl(url = '', preferredSize = '300x300') {
@@ -172,21 +184,34 @@ class LastFmService {
     }
 
     try {
+      // Show loading state
+      this.showLoadingState();
+
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // Increased timeout
 
       const response = await fetch(
         `${this.API_URL}?method=user.getrecenttracks&user=${this.USERNAME}&api_key=${this.API_KEY}&format=json&limit=10`,
-        { signal: controller.signal }
+        {
+          signal: controller.signal,
+          headers: {
+            'User-Agent': 'MangeshRaut-Portfolio/1.0',
+          },
+        }
       );
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
+        const errorMessage =
+          response.status === 403
+            ? 'API rate limit exceeded'
+            : response.status === 404
+              ? 'User not found'
+              : `API error (${response.status})`;
         console.warn('Last.fm API returned error:', response.status);
         this.errorCount += 1;
-        this.hideLoadingStates();
-        if (this.errorCount >= this.MAX_ERRORS) this.showOfflineStates();
+        this.showErrorState(errorMessage);
         return;
       }
 
@@ -194,8 +219,7 @@ class LastFmService {
       const tracks = data.recenttracks?.track;
 
       if (!tracks || (Array.isArray(tracks) && tracks.length === 0)) {
-        this.hideLoadingStates();
-        this.showOfflineStates();
+        this.showErrorState('No recent tracks found');
         return;
       }
 
@@ -203,11 +227,19 @@ class LastFmService {
       const trackList = Array.isArray(tracks) ? tracks : [tracks];
       this.updateHero(trackList[0]);
       this.updateCurrently(trackList);
+
+      // Track successful load
+      if (typeof analytics !== 'undefined') {
+        analytics.track('music_loaded', {
+          track_count: trackList.length,
+          has_now_playing: trackList.some(t => t?.['@attr']?.nowplaying === 'true'),
+        });
+      }
     } catch (error) {
       console.warn('Last.fm fetch error:', error);
       this.errorCount += 1;
-      this.hideLoadingStates();
-      if (this.errorCount >= this.MAX_ERRORS) this.showOfflineStates();
+      const errorMessage = error.name === 'AbortError' ? 'Request timed out' : 'Network error';
+      this.showErrorState(errorMessage);
     }
   }
 
@@ -252,6 +284,15 @@ class LastFmService {
     const artistName = this.getArtistName(track);
     const artworkUrl = this.getBestImage(track);
 
+    // Add smooth transition
+    if (els.nowPlayingCard) {
+      els.nowPlayingCard.style.opacity = '0';
+      setTimeout(() => {
+        els.nowPlayingCard.style.transition = 'opacity 0.3s ease-in-out';
+        els.nowPlayingCard.style.opacity = '1';
+      }, 50);
+    }
+
     this.setCardVisibility(els.nowPlayingCard, true);
     this.setCardVisibility(els.emptyEl, false);
     els.nowPlayingTrack.textContent = trackName;
@@ -262,6 +303,19 @@ class LastFmService {
     els.nowPlayingLink.href = this.getTrackLink(track);
     els.nowPlayingLink.setAttribute('aria-label', `Open ${trackName} by ${artistName} in Spotify`);
     els.playingIndicator.style.display = isNowPlaying ? 'flex' : 'none';
+
+    // Add follow button to featured track
+    const followContainer =
+      els.nowPlayingCard.querySelector('.follow-container') || document.createElement('div');
+    followContainer.className = 'follow-container';
+    followContainer.innerHTML = '';
+    this.addFollowButton(track, 'track', followContainer);
+
+    const infoSection = els.nowPlayingCard.querySelector('.media-info');
+    if (infoSection && !infoSection.contains(followContainer)) {
+      infoSection.appendChild(followContainer);
+    }
+
     this.applyImageFallback(els.nowPlayingImg, trackName, artistName);
     els.nowPlayingImg.src = artworkUrl;
     this.hydrateMissingArtwork(els.nowPlayingImg, track);
@@ -280,13 +334,20 @@ class LastFmService {
         const link = this.getTrackLink(track);
 
         return `
-          <a href="${link}" target="_blank" rel="noopener" class="recent-track-item" aria-label="Open ${this.escapeHtml(trackName)} by ${this.escapeHtml(artistName)} in Spotify">
-            <img src="${artworkUrl}" alt="${this.escapeHtml(trackName)}" class="recent-track-img" loading="lazy" decoding="async" onerror="this.src='${fallback}'; this.onerror=null;">
-            <div class="recent-track-info">
-              <h5 class="recent-track-name">${this.escapeHtml(trackName)}</h5>
-              <p class="recent-track-artist">${this.escapeHtml(artistName)}</p>
+          <div class="recent-track-item" data-track-id="${this.escapeHtml(trackName)}-${this.escapeHtml(artistName)}">
+            <a href="${link}" target="_blank" rel="noopener" class="recent-track-link" aria-label="Open ${this.escapeHtml(trackName)} by ${this.escapeHtml(artistName)} in Spotify">
+              <img src="${artworkUrl}" alt="${this.escapeHtml(trackName)}" class="recent-track-img" loading="lazy" decoding="async" onerror="this.src='${fallback}'; this.onerror=null;">
+              <div class="recent-track-info">
+                <h5 class="recent-track-name">${this.escapeHtml(trackName)}</h5>
+                <p class="recent-track-artist">${this.escapeHtml(artistName)}</p>
+              </div>
+            </a>
+            <div class="recent-track-actions">
+              <button class="follow-btn-small" onclick="lastFmService.toggleFollow('${this.escapeHtml(trackName)}-${this.escapeHtml(artistName)}'.toLowerCase().replace(/\\s+/g, '-'), 'track')">
+                <i class="far fa-heart"></i>
+              </button>
             </div>
-          </a>
+          </div>
         `;
       })
       .join('');
@@ -342,9 +403,110 @@ class LastFmService {
     }
   }
 
+  toggleFollow(trackId, type = 'track') {
+    const currentState = this.followStates.get(trackId) || false;
+    this.followStates.set(trackId, !currentState);
+
+    // Update UI
+    const followBtn = document.querySelector(`[data-follow-id="${trackId}"]`);
+    if (followBtn) {
+      followBtn.classList.toggle('followed', !currentState);
+      followBtn.innerHTML = !currentState
+        ? '<i class="fas fa-heart"></i> Following'
+        : '<i class="far fa-heart"></i> Follow';
+    }
+
+    // Analytics
+    if (typeof analytics !== 'undefined') {
+      analytics.track('music_follow', {
+        track_id: trackId,
+        type: type,
+        action: !currentState ? 'follow' : 'unfollow',
+      });
+    }
+
+    return !currentState;
+  }
+
+  addFollowButton(track, type = 'track', container) {
+    if (!container) return;
+
+    const trackId =
+      type === 'track'
+        ? `${track.name}-${track.artist['#text']}`.toLowerCase().replace(/\s+/g, '-')
+        : track.artist['#text'].toLowerCase().replace(/\s+/g, '-');
+
+    const followBtn = document.createElement('button');
+    followBtn.className = 'follow-btn';
+    followBtn.setAttribute('data-follow-id', trackId);
+    followBtn.innerHTML = '<i class="far fa-heart"></i> Follow';
+
+    const isFollowed = this.followStates.get(trackId) || false;
+    if (isFollowed) {
+      followBtn.classList.add('followed');
+      followBtn.innerHTML = '<i class="fas fa-heart"></i> Following';
+    }
+
+    followBtn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleFollow(trackId, type);
+    });
+
+    container.appendChild(followBtn);
+  }
+
+  showLoadingState() {
+    if (this.currentlyComponent) {
+      const els = this.currentlyComponent;
+      this.setCardVisibility(els.loadingEl, true);
+      this.setCardVisibility(els.emptyEl, false);
+      this.setCardVisibility(els.nowPlayingCard, false);
+
+      // Add loading animation
+      if (els.loadingEl) {
+        els.loadingEl.innerHTML = `
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading your music...</p>
+          </div>
+        `;
+      }
+    }
+  }
+
+  showErrorState(errorMessage = 'Unable to load music data') {
+    if (this.currentlyComponent) {
+      const els = this.currentlyComponent;
+      this.setCardVisibility(els.loadingEl, false);
+      this.setCardVisibility(els.nowPlayingCard, false);
+      this.setCardVisibility(els.emptyEl, true);
+
+      if (els.emptyEl) {
+        els.emptyEl.innerHTML = `
+          <div class="error-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h4>Music loading failed</h4>
+            <p>${errorMessage}</p>
+            <button class="retry-btn" onclick="lastFmService.retryLoad()">
+              <i class="fas fa-redo"></i> Try Again
+            </button>
+          </div>
+        `;
+      }
+    }
+  }
+
+  retryLoad() {
+    this.errorCount = 0;
+    this.showLoadingState();
+    this.fetchRecent();
+  }
+
   start() {
     if (this.started) return;
     this.started = true;
+    this.showLoadingState();
     this.fetchRecent();
     this.intervalId = window.setInterval(() => this.fetchRecent(), this.UPDATE_INTERVAL_MS);
   }

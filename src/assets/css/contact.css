@@ -1113,11 +1113,11 @@ html.dark .music-card {
 .music-card.loading,
 .music-card.empty {
   width: 100%;
-  max-width: 520px;
+  max-width: 420px;
   display: grid;
-  grid-template-columns: minmax(132px, 148px) minmax(0, 1fr);
+  grid-template-columns: 100px minmax(0, 1fr);
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .music-card[hidden] {
@@ -1128,6 +1128,7 @@ html.dark .music-card {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+  border-radius: 12px;
 }
 
 .music-poster-loading,
@@ -1269,8 +1270,201 @@ html.dark .music-card-description {
 }
 
 .music-card .watch-btn {
-  align-self: flex-start;
-  margin-top: 0.35rem;
+  background: linear-gradient(135deg, #1db954, #1aa34a);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.music-card .watch-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(29, 185, 84, 0.3);
+}
+
+/* Follow buttons */
+.follow-container {
+  margin-top: 0.75rem;
+}
+
+.follow-btn {
+  background: linear-gradient(135deg, #ff4757, #ff3838);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.follow-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+}
+
+.follow-btn.followed {
+  background: linear-gradient(135deg, #ff6b9d, #c44569);
+}
+
+.follow-btn.followed:hover {
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
+}
+
+.recent-track-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.recent-track-item:hover .recent-track-actions {
+  opacity: 1;
+}
+
+.follow-btn-small {
+  background: rgba(255, 71, 87, 0.9);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.follow-btn-small:hover {
+  background: rgba(255, 71, 87, 1);
+  transform: scale(1.1);
+}
+
+.follow-btn-small.followed {
+  background: rgba(255, 107, 157, 0.9);
+}
+
+.follow-btn-small.followed:hover {
+  background: rgba(255, 107, 157, 1);
+}
+
+/* Loading and error states */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 122, 255, 0.2);
+  border-top: 3px solid #007aff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.error-state i {
+  font-size: 2rem;
+  color: #ff6b6b;
+}
+
+.error-state h4 {
+  color: var(--text-primary);
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.error-state p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #007aff, #0056cc);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.retry-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+}
+
+/* Improved animations */
+.music-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recent-track-item {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.recent-track-item:hover {
+  transform: translateY(-2px);
+}
+
+.recent-track-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Premium Cash App Button - Compact Apple Style */
@@ -1590,18 +1784,134 @@ html.dark .follow-section {
 }
 
 #contact .contact-social-wrapper.wrapper {
-  margin-top: 0.75rem !important;
-  margin-bottom: 0.75rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
   padding: 0 !important;
   justify-content: flex-start !important;
+  gap: 1rem !important;
+}
+
+#contact .wrapper .icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  background: rgba(142, 142, 147, 0.08) !important; /* Lighter Apple Grey */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  position: relative !important;
+}
+
+html.dark #contact .wrapper .icon {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Original Brand Colors - Logos */
+#contact .wrapper .facebook {
+  color: #1877f2 !important;
+}
+#contact .wrapper .instagram {
+  color: #e4405f !important;
+}
+#contact .wrapper .linkedin {
+  color: #0077b5 !important;
+}
+#contact .wrapper .youtube {
+  color: #ff0000 !important;
+}
+#contact .wrapper .github {
+  color: #1d1d1f !important;
+}
+#contact .wrapper .x {
+  color: #000000 !important;
+}
+#contact .wrapper .leetcode {
+  color: #ffa116 !important;
+}
+#contact .wrapper .telegram {
+  color: #0088cc !important;
+}
+
+html.dark #contact .wrapper .github {
+  color: #ffffff !important;
+}
+html.dark #contact .wrapper .x {
+  color: #ffffff !important;
+}
+
+#contact .wrapper .icon:hover {
+  transform: translateY(-4px) scale(1.05) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  color: #fff !important;
+}
+
+html.dark #contact .wrapper .icon:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Individual Brand Hover Effects using CSS Variables for cleanliness */
+/* Individual Brand Hover Effects - White Icon on Brand BG */
+#contact .wrapper .facebook:hover {
+  background: #1877f2 !important;
+  border-color: #1877f2 !important;
+  color: #fff !important;
+}
+#contact .wrapper .x:hover {
+  background: #000000 !important;
+  border-color: #333 !important;
+  color: #fff !important;
+}
+#contact .wrapper .github:hover {
+  background: #24292e !important;
+  border-color: #24292e !important;
+  color: #fff !important;
+}
+#contact .wrapper .instagram:hover {
+  background: linear-gradient(
+    45deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  ) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+#contact .wrapper .linkedin:hover {
+  background: #0077b5 !important;
+  border-color: #0077b5 !important;
+  color: #fff !important;
+}
+#contact .wrapper .youtube:hover {
+  background: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #fff !important;
+}
+#contact .wrapper .leetcode:hover {
+  background: #ffa116 !important;
+  border-color: #ffa116 !important;
+  color: #fff !important;
+}
+#contact .wrapper .telegram:hover {
+  background: #0088cc !important;
+  border-color: #0088cc !important;
+  color: #fff !important;
 }
 
 @media (max-width: 768px) {
   #contact .contact-social-wrapper.wrapper {
     justify-content: center !important;
-    margin-bottom: 1rem !important;
-    gap: 1.25rem !important;
+    gap: 0.85rem !important;
     padding: 0.5rem 0 !important;
+  }
+
+  #contact .wrapper .icon {
+    width: 40px !important;
+    height: 40px !important;
   }
 }
 
@@ -2058,10 +2368,12 @@ html.dark .currently-card {
 
 .currently-header {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid rgb(0 0 0 / 6%);
 }
 
@@ -2131,15 +2443,15 @@ html.dark .currently-tab:hover {
 }
 
 .currently-tab.active {
-  background: #ffffff;
-  color: #0071e3;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  background: #0071e3;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
 }
 
 html.dark .currently-tab.active {
-  background: #000000;
-  color: #0a84ff;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  background: #0a84ff;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgb(10 132 255 / 40%);
 }
 
 .currently-tab i {
@@ -2569,10 +2881,10 @@ html.dark .watch-btn.book-btn {
 #music-content .music-card.empty {
   display: grid !important;
   width: 100% !important;
-  max-width: 520px !important;
+  max-width: 420px !important;
   margin: 0 !important;
   justify-content: stretch !important;
-  grid-template-columns: minmax(132px, 148px) minmax(0, 1fr) !important;
+  grid-template-columns: 100px minmax(0, 1fr) !important;
 }
 
 #music-content .music-card[hidden] {
@@ -2592,7 +2904,8 @@ html.dark .watch-btn.book-btn {
   #music-content .music-card.now-playing,
   #music-content .music-card.loading,
   #music-content .music-card.empty {
-    grid-template-columns: 104px minmax(0, 1fr) !important;
+    grid-template-columns: 80px minmax(0, 1fr) !important;
+    gap: 1rem !important;
     max-width: none !important;
   }
 }
