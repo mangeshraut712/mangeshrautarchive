@@ -265,9 +265,6 @@ html.dark .icon-box.location {
   font-size: 0.9rem;
 }
 
-html.dark .contact-link-item {
-  color: #f5f5f7;
-}
 
 .contact-link-item:hover {
   background: rgb(0 0 0 / 5%);

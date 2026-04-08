@@ -355,11 +355,6 @@ html.dark .birthday-notification {
   }
 }
 
-html.dark .birthday-notification {
-  background: rgb(28 28 30 / 98%);
-  border: 1px solid rgb(255 255 255 / 10%);
-  box-shadow: 0 20px 60px rgb(0 0 0 / 80%);
-}
 
 @keyframes slideDown {
   from {
