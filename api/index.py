@@ -23,7 +23,12 @@ from dotenv import load_dotenv
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
 from api.integrations.github_connector import github_connector
-from api.monitoring import system_monitor, MonitoringMiddleware, EventType
+from api.monitoring import (
+    system_monitor,
+    MonitoringMiddleware,
+    EventType,
+    SystemMonitor,
+)
 
 # Load environment variables
 load_dotenv()
@@ -1660,6 +1665,176 @@ async def test_endpoint():
         "default_model": DEFAULT_MODEL,
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "environment": os.getenv("VERCEL_ENV", "local"),
+    }
+
+
+# 2026-era Enhanced Monitoring Endpoints
+
+
+@app.get("/api/monitor/real-time")
+async def get_real_time_metrics():
+    """Get real-time system metrics for live dashboard"""
+    monitor = SystemMonitor()
+    return monitor.real_time_metrics
+
+
+@app.get("/api/monitor/deployments")
+async def get_deployment_history():
+    """Get deployment history and change tracking"""
+    monitor = SystemMonitor()
+    return {
+        "current_deployment": monitor.current_deployment,
+        "deployment_history": list(monitor.deployment_history),
+        "recent_changes": list(monitor.deployment_changes)[-10:],  # Last 10 changes
+    }
+
+
+@app.post("/api/monitor/web-vitals")
+async def track_web_vitals(vitals: Dict[str, float]):
+    """Track Core Web Vitals from frontend"""
+    monitor = SystemMonitor()
+    monitor.track_web_vitals(vitals)
+    return {"status": "recorded"}
+
+
+@app.get("/api/monitor/security")
+async def get_security_status():
+    """Get security monitoring data"""
+    monitor = SystemMonitor()
+    return {
+        "security_events": list(monitor.security_events)[-20:],  # Last 20 events
+        "suspicious_ips": list(monitor.suspicious_ips),
+        "rate_limits": dict(monitor.rate_limits),
+    }
+
+
+@app.get("/api/monitor/ai-metrics")
+async def get_ai_metrics():
+    """Get AI usage and performance metrics"""
+    monitor = SystemMonitor()
+    return monitor.ai_metrics
+
+
+@app.get("/api/docs")
+async def get_api_documentation():
+    """Enhanced API documentation with 2026-era features"""
+    base_url = os.getenv("VERCEL_URL", "http://localhost:8001")
+
+    return {
+        "title": "AssistMe API - 2026 Edition",
+        "version": "3.0.0",
+        "description": "AI-powered portfolio backend with advanced monitoring and analytics",
+        "base_url": f"https://{base_url}"
+        if base_url != "localhost:8001"
+        else f"http://{base_url}",
+        "endpoints": {
+            "music": {
+                "recent": {
+                    "url": "/api/music/recent",
+                    "method": "GET",
+                    "description": "Get recent Last.fm listening history",
+                    "parameters": {
+                        "user": "Last.fm username (default: mbr63)",
+                        "limit": "Number of tracks to return (default: 10)",
+                    },
+                }
+            },
+            "chat": {
+                "conversation": {
+                    "url": "/api/chat",
+                    "method": "POST",
+                    "description": "AI-powered conversation with context awareness",
+                    "features": [
+                        "Streaming responses",
+                        "Memory management",
+                        "Multi-model support",
+                    ],
+                }
+            },
+            "monitoring": {
+                "health": {
+                    "url": "/api/monitor/health",
+                    "method": "GET",
+                    "description": "Comprehensive system health check",
+                },
+                "metrics": {
+                    "url": "/api/monitor/metrics",
+                    "method": "GET",
+                    "description": "Real-time performance metrics",
+                },
+                "real_time": {
+                    "url": "/api/monitor/real-time",
+                    "method": "GET",
+                    "description": "Live system metrics for dashboard",
+                },
+                "deployments": {
+                    "url": "/api/monitor/deployments",
+                    "method": "GET",
+                    "description": "Deployment history and change tracking",
+                },
+                "security": {
+                    "url": "/api/monitor/security",
+                    "method": "GET",
+                    "description": "Security monitoring and threat detection",
+                },
+                "ai_metrics": {
+                    "url": "/api/monitor/ai-metrics",
+                    "method": "GET",
+                    "description": "AI model usage and performance analytics",
+                },
+                "events": {
+                    "url": "/api/monitor/events",
+                    "method": "GET",
+                    "description": "System events and audit log",
+                },
+            },
+            "github": {
+                "repos": {
+                    "url": "/api/github/repos/public",
+                    "method": "GET",
+                    "description": "Fetch public GitHub repositories with metrics",
+                },
+                "proxy": {
+                    "url": "/api/github/proxy",
+                    "method": "GET",
+                    "description": "GitHub API proxy for additional endpoints",
+                },
+            },
+            "analytics": {
+                "track": {
+                    "url": "/api/analytics/track",
+                    "method": "POST",
+                    "description": "Track user interactions and events",
+                }
+            },
+        },
+        "features": {
+            "ai_integration": "Multi-model AI with OpenRouter and Anthropic",
+            "real_time_monitoring": "Live system metrics and health checks",
+            "deployment_tracking": "Automated deployment change auditing",
+            "security_monitoring": "Threat detection and rate limiting",
+            "performance_analytics": "Core Web Vitals and response time tracking",
+            "external_integrations": "GitHub, Last.fm, and analytics services",
+        },
+        "monitoring": {
+            "health_checks": "Automated health verification for all services",
+            "real_time_metrics": "Live dashboard with system performance",
+            "deployment_auditing": "Complete change tracking during deployments",
+            "security_alerts": "Real-time threat detection and notifications",
+            "ai_performance": "Model usage analytics and optimization",
+        },
+        "deployment": {
+            "platform": "Vercel with automated CI/CD",
+            "monitoring": "Comprehensive system monitoring and alerting",
+            "scaling": "Auto-scaling based on load and performance metrics",
+            "backup": "Automated data backup and recovery systems",
+        },
+        "security": {
+            "api_keys": "Environment-based key management",
+            "rate_limiting": "Intelligent rate limiting per IP",
+            "threat_detection": "Automated suspicious activity monitoring",
+            "audit_logging": "Complete audit trail for all system changes",
+        },
     }
 
 

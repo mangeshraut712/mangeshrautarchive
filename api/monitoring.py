@@ -5,24 +5,31 @@ Provides comprehensive health monitoring, logging, and metrics collection.
 import asyncio
 import os
 import time
+import json
+import hashlib
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from collections import deque
 from enum import Enum
+import logging
 
 # Optional psutil import - graceful fallback if not available
 try:
-    import psutil
+    import psutil  # type: ignore
 
     PSUTIL_AVAILABLE = True
 except ImportError:
-    psutil = None
+    psutil = None  # type: ignore
     PSUTIL_AVAILABLE = False
 
 import httpx
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
+
+# Configure logging for 2026-era monitoring
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class HealthStatus(Enum):
@@ -112,222 +119,391 @@ class EndpointMetrics:
 
 
 class SystemMonitor:
-    """Centralized system monitoring and health checking."""
-
     _instance = None
+    _lock = asyncio.Lock()
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance._initialized = False
         return cls._instance
 
     def __init__(self):
-        if self._initialized:
+        if hasattr(self, "_initialized"):
             return
-
         self._initialized = True
-        self.events: deque = deque(maxlen=1000)
-        self.endpoint_metrics: Dict[str, EndpointMetrics] = {}
-        self.health_checks: Dict[str, HealthCheckResult] = {}
-        self.system_stats: Dict[str, Any] = {}
+
+        # Core metrics storage
+        self.request_counts = {}
+        self.response_times = deque(maxlen=1000)
+        self.error_counts = {}
+        self.endpoint_metrics = {}
+        self.events = deque(maxlen=500)
+
+        # System monitoring
         self.start_time = time.time()
+        self.last_health_check = None
+
+        # Poster API tracking
+        self.poster_requests = {"success": 0, "failure": 0}
+
+        # Deployment tracking (2026-era feature)
+        self.deployment_history = deque(maxlen=50)
+        self.current_deployment = None
+        self.deployment_changes = deque(maxlen=100)
+        self.load_deployment_info()
+
+        # Real-time metrics (2026-era feature)
+        self.real_time_metrics = {
+            "active_connections": 0,
+            "requests_per_second": 0,
+            "error_rate_per_minute": 0,
+            "memory_trend": deque(maxlen=60),  # 1 hour of minute-by-minute data
+            "cpu_trend": deque(maxlen=60),
+            "response_time_trend": deque(maxlen=60),
+            "uptime_seconds": 0,
+            "last_deployment": None,
+        }
+
+        # Security monitoring (2026-era feature)
+        self.security_events = deque(maxlen=200)
+        self.suspicious_ips = set()
+        self.rate_limits = {}
+        self.failed_login_attempts = {}
+        self.api_key_usage = {}
+
+        # Performance baselines (2026-era feature)
+        self.performance_baselines = {
+            "avg_response_time_ms": 150,
+            "error_rate_threshold": 0.05,  # 5%
+            "memory_usage_threshold": 85,  # 85%
+            "cpu_usage_threshold": 90,  # 90%
+            "max_concurrent_connections": 1000,
+            "max_requests_per_minute": 10000,
+        }
+
+        # 2026-era AI monitoring
+        self.ai_metrics = {
+            "openrouter_requests": 0,
+            "openrouter_errors": 0,
+            "ai_response_times": deque(maxlen=100),
+            "model_usage": {},
+            "token_usage": {"input": 0, "output": 0},
+        }
+
+        # Web vitals monitoring (2026-era)
+        self.web_vitals = {
+            "cls": deque(maxlen=100),  # Cumulative Layout Shift
+            "fid": deque(maxlen=100),  # First Input Delay
+            "lcp": deque(maxlen=100),  # Largest Contentful Paint
+            "fcp": deque(maxlen=100),  # First Contentful Paint
+            "ttfb": deque(maxlen=100),  # Time to First Byte
+        }
+
+        # Initialize computed properties
         self.total_requests = 0
         self.error_count = 0
-        self.poster_requests = 0
-        self.poster_errors = 0
 
-        # Service endpoints to monitor
-        self.endpoints = [
-            ("/api/health", "GET"),
-            ("/api/status", "GET"),
-            ("/api/models", "GET"),
-            ("/api/github/profile", "GET"),
-            ("/api", "GET"),
-        ]
-        self.lastfm_username = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
-        self.lastfm_api_key = (
-            os.getenv("LASTFM_API_KEY", "").strip()
-            or "bef46b0d7702dac5b071906cd186bd28"
+        # Last.fm configuration
+        self.lastfm_username = os.getenv("LASTFM_USERNAME", "mbr63")
+        self.lastfm_api_key = os.getenv(
+            "LASTFM_API_KEY", "bef46b0d7702dac5b071906cd186bd28"
         )
 
-    def format_uptime(self, seconds: float) -> str:
-        """Format uptime seconds into a compact human-readable string."""
-        total_seconds = max(0, int(seconds))
-        days, remainder = divmod(total_seconds, 86400)
-        hours, remainder = divmod(remainder, 3600)
-        minutes, _seconds = divmod(remainder, 60)
+        # Initialize with deployment info
+        self.load_deployment_info()
 
+        logger.info("🖥️  System Monitor initialized with 2026-era capabilities")
+
+    def format_uptime(self, seconds: float) -> str:
+        """Format uptime in human-readable format"""
+        days, remainder = divmod(int(seconds), 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        parts = []
         if days > 0:
-            return f"{days}d {hours}h {minutes}m"
+            parts.append(f"{days}d")
         if hours > 0:
-            return f"{hours}h {minutes}m"
+            parts.append(f"{hours}h")
         if minutes > 0:
-            return f"{minutes}m"
-        return f"{total_seconds}s"
+            parts.append(f"{minutes}m")
+        if seconds > 0 or not parts:
+            parts.append(f"{seconds}s")
+
+        return " ".join(parts)
 
     def log_event(
         self,
-        event_type: EventType,
         message: str,
-        source: str,
-        details: Optional[Dict] = None,
+        event_type: EventType = EventType.INFO,
+        metadata: Optional[Dict[str, Any]] = None,
+        source: str = "system",
     ):
-        """Log a system event."""
+        """Log an event with timestamp and metadata"""
         event = SystemEvent(
-            id=f"evt_{int(time.time() * 1000)}_{len(self.events)}",
-            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            id=hashlib.md5(
+                f"{datetime.now(timezone.utc).isoformat()}-{message}".encode()
+            ).hexdigest()[:8],
+            timestamp=datetime.now(timezone.utc).isoformat(),
             type=event_type,
             message=message,
             source=source,
-            details=details or {},
+            details=metadata or {},
         )
-        self.events.appendleft(event)
+        self.events.append(event)
 
-        # Also print for server logs
-        emoji = {
-            EventType.INFO: "ℹ️",
-            EventType.WARNING: "⚠️",
-            EventType.ERROR: "❌",
-            EventType.CRITICAL: "🚨",
-            EventType.SUCCESS: "✅",
-        }.get(event_type, "ℹ️")
-
-        print(f"{emoji} [{event.timestamp}] {source}: {message}")
-        return event
+        # Log to system logger based on severity
+        if event_type == EventType.CRITICAL:
+            logger.critical(message)
+        elif event_type == EventType.ERROR:
+            logger.error(message)
+        elif event_type == EventType.WARNING:
+            logger.warning(message)
+        else:
+            logger.info(message)
 
     def record_request(
-        self, path: str, method: str, status_code: int, response_time_ms: float
+        self,
+        method: str,
+        path: str,
+        status_code: int,
+        response_time_ms: float,
+        user_agent: str = "",
+        client_ip: str = "",
     ):
-        """Record API request metrics."""
-        key = f"{method}:{path}"
-
-        if key not in self.endpoint_metrics:
-            self.endpoint_metrics[key] = EndpointMetrics(path=path, method=method)
-
-        metric = self.endpoint_metrics[key]
-        metric.total_requests += 1
-        metric.last_status_code = status_code
-        metric.last_checked = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-
-        if 200 <= status_code < 400:
-            metric.successful_requests += 1
-        else:
-            metric.failed_requests += 1
-            self.error_count += 1
-
-        # Update average response time
-        metric.avg_response_time_ms = (
-            metric.avg_response_time_ms * (metric.total_requests - 1) + response_time_ms
-        ) / metric.total_requests
-
-        # Calculate error rate
-        if metric.total_requests > 0:
-            metric.error_rate = (metric.failed_requests / metric.total_requests) * 100
-
+        """Record a request for metrics tracking"""
         self.total_requests += 1
 
+        # Track by endpoint
+        endpoint = f"{method} {path}"
+        if endpoint not in self.endpoint_metrics:
+            self.endpoint_metrics[endpoint] = EndpointMetrics(endpoint)
+
+        metrics = self.endpoint_metrics[endpoint]
+        metrics.request_count += 1
+        metrics.response_times.append(response_time_ms)
+        metrics.last_request = datetime.now(timezone.utc).isoformat()
+
+        # Update real-time metrics
+        self.real_time_metrics["requests_per_second"] = self._calculate_rps()
+
+        # Track errors
+        if status_code >= 400:
+            self.error_count += 1
+            if endpoint not in self.error_counts:
+                self.error_counts[endpoint] = 0
+            self.error_counts[endpoint] += 1
+
+        # Track security if suspicious
+        if status_code == 403 or "suspicious" in str(metadata).lower():
+            self.log_event(
+                f"Security event: {method} {path} from {client_ip}",
+                EventType.WARNING,
+                {
+                    "method": method,
+                    "path": path,
+                    "ip": client_ip,
+                    "status": status_code,
+                },
+            )
+
+    def _calculate_rps(self) -> float:
+        """Calculate requests per second from recent activity"""
+        # Simple RPS calculation based on total requests and uptime
+        uptime_hours = (time.time() - self.start_time) / 3600
+        if uptime_hours > 0:
+            return self.total_requests / (uptime_hours * 3600)
+        return 0.0
+
     def record_poster_request(self, success: bool):
-        """Record poster API request metrics."""
-        self.poster_requests += 1
-        if not success:
-            self.poster_errors += 1
+        """Record poster API request for analytics"""
+        if success:
+            self.poster_requests["success"] += 1
+        else:
+            self.poster_requests["failure"] += 1
 
-    async def check_health(self) -> Dict[str, Any]:
-        """Perform comprehensive health checks."""
-        checks = []
-        start_time = time.time()
+    def load_deployment_info(self):
+        """Load deployment information from environment and track changes"""
+        try:
+            deployment_info = {
+                "version": os.getenv("VERCEL_GIT_COMMIT_SHA", "unknown")[:8],
+                "environment": os.getenv("VERCEL_ENV", "local"),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "platform": "vercel" if os.getenv("VERCEL") else "local",
+                "region": os.getenv("VERCEL_REGION", "unknown"),
+                "url": os.getenv("VERCEL_URL", "localhost"),
+            }
 
-        # Check OpenRouter API
-        openrouter_ok = await self._check_openrouter()
-        checks.append(
-            HealthCheckResult(
-                name="OpenRouter API",
-                status=HealthStatus.HEALTHY
-                if openrouter_ok
-                else HealthStatus.UNHEALTHY,
-                response_time_ms=(time.time() - start_time) * 1000,
-                message="OpenRouter API is accessible"
-                if openrouter_ok
-                else "OpenRouter API unavailable",
-                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                details={"provider": "OpenRouter"},
-            )
-        )
-
-        # Check system resources
-        system_ok = self._check_system_resources()
-        checks.append(
-            HealthCheckResult(
-                name="System Resources",
-                status=system_ok["status"],
-                response_time_ms=0,
-                message=system_ok["message"],
-                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                details=system_ok["details"],
-            )
-        )
-
-        # Check memory manager
-        memory_ok = self._check_memory_manager()
-        checks.append(
-            HealthCheckResult(
-                name="Memory Manager",
-                status=memory_ok["status"],
-                response_time_ms=0,
-                message=memory_ok["message"],
-                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                details=memory_ok["details"],
-            )
-        )
-
-        # Check GitHub integration
-        github_ok = await self._check_github()
-        checks.append(
-            HealthCheckResult(
-                name="GitHub Integration",
-                status=HealthStatus.HEALTHY if github_ok else HealthStatus.DEGRADED,
-                response_time_ms=0,
-                message="GitHub API accessible"
-                if github_ok
-                else "GitHub API limited or unavailable",
-                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            )
-        )
-
-        # Determine overall status
-        overall_status = HealthStatus.HEALTHY
-        for check in checks:
-            self.health_checks[check.name] = check
-            if check.status == HealthStatus.UNHEALTHY:
-                overall_status = HealthStatus.UNHEALTHY
-            elif (
-                check.status == HealthStatus.DEGRADED
-                and overall_status != HealthStatus.UNHEALTHY
-            ):
-                overall_status = HealthStatus.DEGRADED
-
-        return {
-            "status": overall_status.value,
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "uptime_seconds": round(time.time() - self.start_time, 2),
-            "total_requests": self.total_requests,
-            "error_count": self.error_count,
-            "error_rate": round(
-                (self.error_count / max(self.total_requests, 1)) * 100, 2
-            ),
-            "poster_requests": self.poster_requests,
-            "poster_errors": self.poster_errors,
-            "poster_success_rate": round(
-                (
-                    (self.poster_requests - self.poster_errors)
-                    / max(self.poster_requests, 1)
+            # Track deployment changes
+            if self.current_deployment:
+                changes = self.detect_deployment_changes(
+                    self.current_deployment, deployment_info
                 )
-                * 100,
-                2,
-            ),
-            "checks": [check.to_dict() for check in checks],
+                if changes:
+                    self.log_deployment_change(changes)
+
+            self.current_deployment = deployment_info
+            self.real_time_metrics["last_deployment"] = deployment_info["timestamp"]
+
+            logger.info(f"📦 Deployment info loaded: {deployment_info}")
+
+        except Exception as e:
+            logger.error(f"Failed to load deployment info: {e}")
+
+    def detect_deployment_changes(
+        self, old_deployment: Dict, new_deployment: Dict
+    ) -> List[str]:
+        """Detect changes between deployments for audit logging"""
+        changes = []
+
+        for key in ["version", "environment", "platform", "region", "url"]:
+            old_val = old_deployment.get(key)
+            new_val = new_deployment.get(key)
+            if old_val != new_val:
+                changes.append(f"{key}: {old_val} → {new_val}")
+
+        return changes
+
+    def log_deployment_change(self, changes: List[str]):
+        """Log deployment changes for audit trail"""
+        change_record = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "type": "deployment_change",
+            "changes": changes,
+            "deployment": self.current_deployment,
         }
+
+        self.deployment_changes.append(change_record)
+        self.log_event(
+            f"🚀 Deployment updated: {', '.join(changes)}",
+            EventType.SUCCESS,
+            {"changes": changes},
+            "deployment",
+        )
+
+        logger.info(f"📝 Deployment change logged: {changes}")
+
+    def track_web_vitals(self, vitals_data: Dict[str, float]):
+        """Track Core Web Vitals for performance monitoring"""
+        for metric, value in vitals_data.items():
+            if metric in self.web_vitals:
+                self.web_vitals[metric].append(
+                    {
+                        "value": value,
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                    }
+                )
+
+                # Check performance thresholds
+                if metric == "lcp" and value > 2500:  # LCP > 2.5s
+                    self.log_event(
+                        f"⚠️ Poor LCP performance: {value}ms",
+                        EventType.WARNING,
+                        {"metric": metric, "value": value},
+                        "performance",
+                    )
+                elif metric == "cls" and value > 0.1:  # CLS > 0.1
+                    self.log_event(
+                        f"⚠️ Layout shift detected: {value}",
+                        EventType.WARNING,
+                        {"metric": metric, "value": value},
+                        "performance",
+                    )
+
+    def track_ai_usage(
+        self, model: str, tokens_used: Dict[str, int], response_time: float
+    ):
+        """Track AI model usage and performance"""
+        self.ai_metrics["openrouter_requests"] += 1
+
+        if model not in self.ai_metrics["model_usage"]:
+            self.ai_metrics["model_usage"][model] = 0
+        self.ai_metrics["model_usage"][model] += 1
+
+        self.ai_metrics["token_usage"]["input"] += tokens_used.get("input", 0)
+        self.ai_metrics["token_usage"]["output"] += tokens_used.get("output", 0)
+
+        self.ai_metrics["ai_response_times"].append(response_time)
+
+        # Check AI performance
+        avg_response_time = sum(self.ai_metrics["ai_response_times"]) / len(
+            self.ai_metrics["ai_response_times"]
+        )
+        if avg_response_time > 5000:  # 5 seconds
+            self.log_event(
+                f"🐌 Slow AI responses: {avg_response_time:.0f}ms average",
+                EventType.WARNING,
+                {"avg_response_time": avg_response_time},
+            )
+
+    def check_security_threats(self, request: Request, response_time: float) -> bool:
+        """Check for security threats and suspicious activity"""
+        client_ip = request.client.host if request.client else "unknown"
+        user_agent = request.headers.get("user-agent", "")
+        path = request.url.path
+
+        # Check for suspicious patterns
+        suspicious_patterns = [
+            "union select",
+            "script",
+            "eval(",
+            "base64",
+            "../../../",
+            "..\\..\\",
+            "<script",
+            "javascript:",
+            "admin",
+            "wp-admin",
+            "phpmyadmin",
+        ]
+
+        is_suspicious = any(
+            pattern in path.lower() or pattern in str(request.query_params).lower()
+            for pattern in suspicious_patterns
+        )
+
+        if is_suspicious:
+            self.security_events.append(
+                {
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "ip": client_ip,
+                    "user_agent": user_agent,
+                    "path": path,
+                    "type": "suspicious_request",
+                    "response_time": response_time,
+                }
+            )
+
+            self.suspicious_ips.add(client_ip)
+            self.log_event(
+                f"🛡️ Suspicious request blocked from {client_ip}",
+                EventType.CRITICAL,
+                {"ip": client_ip, "path": path},
+            )
+            return True
+
+        # Rate limiting check
+        current_minute = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+        if client_ip not in self.rate_limits:
+            self.rate_limits[client_ip] = {}
+
+        if current_minute not in self.rate_limits[client_ip]:
+            self.rate_limits[client_ip][current_minute] = 0
+
+        self.rate_limits[client_ip][current_minute] += 1
+
+        if self.rate_limits[client_ip][current_minute] > 100:  # 100 requests per minute
+            self.log_event(
+                f"🚫 Rate limit exceeded for {client_ip}",
+                EventType.WARNING,
+                {
+                    "ip": client_ip,
+                    "requests_per_minute": self.rate_limits[client_ip][current_minute],
+                },
+            )
+            return True
+
+        return False
 
     async def _check_openrouter(self) -> bool:
         """Check if OpenRouter API is accessible."""
@@ -350,12 +526,29 @@ class SystemMonitor:
             return False
 
     def _check_system_resources(self) -> Dict:
-        """Check system resource usage."""
-        if not PSUTIL_AVAILABLE:
+        if not PSUTIL_AVAILABLE or psutil is None:
             return {
-                "status": HealthStatus.UNKNOWN,
-                "message": "System resource monitoring not available",
-                "details": {},
+                "cpu_usage": 0.0,
+                "memory_usage": 0.0,
+                "disk_usage": 0.0,
+                "available": False,
+            }
+
+        try:
+            return {
+                "cpu_usage": psutil.cpu_percent(interval=1),
+                "memory_usage": psutil.virtual_memory().percent,
+                "disk_usage": psutil.disk_usage("/").percent,
+                "available": True,
+            }
+        except Exception as e:
+            logger.warning(f"System resource check failed: {e}")
+            return {
+                "cpu_usage": 0.0,
+                "memory_usage": 0.0,
+                "disk_usage": 0.0,
+                "available": False,
+                "error": str(e),
             }
 
         try:
@@ -435,13 +628,25 @@ class SystemMonitor:
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "summary": {
                 "healthy": len(
-                    [service for service in services if service["status"] == HealthStatus.HEALTHY.value]
+                    [
+                        service
+                        for service in services
+                        if service["status"] == HealthStatus.HEALTHY.value
+                    ]
                 ),
                 "degraded": len(
-                    [service for service in services if service["status"] == HealthStatus.DEGRADED.value]
+                    [
+                        service
+                        for service in services
+                        if service["status"] == HealthStatus.DEGRADED.value
+                    ]
                 ),
                 "unhealthy": len(
-                    [service for service in services if service["status"] == HealthStatus.UNHEALTHY.value]
+                    [
+                        service
+                        for service in services
+                        if service["status"] == HealthStatus.UNHEALTHY.value
+                    ]
                 ),
                 "total": len(services),
             },
@@ -681,7 +886,9 @@ class SystemMonitor:
         for event in self.events:
             if event.id == event_id:
                 event.resolved = True
-                event.resolved_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+                event.resolved_at = (
+                    datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+                )
                 self.log_event(
                     EventType.SUCCESS,
                     f"Event resolved: {event.message}",
