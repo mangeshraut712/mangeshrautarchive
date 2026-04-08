@@ -2673,40 +2673,40 @@ html.dark .contact-assistme-icon {
 
 /* ========================================
    THEME TOGGLE ICON COLORS
-   Sun = Orange/Yellow, Moon = Blue/Purple
+   Sun = Apple System Orange/Yellow, Moon = Apple System Blue/Indigo
    ======================================== */
 
-/* Sun icon - Orange/Yellow in light mode */
+/* Sun icon - Apple System Orange in light mode */
 .fa-sun,
 .sun-icon,
 .theme-toggle .fa-sun,
 #theme-toggle .fa-sun {
-  color: #f59e0b !important;
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+  color: #ff9500 !important;
+  background: linear-gradient(135deg, #ffcc00 0%, #ff9500 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
 }
 
-/* Moon icon - Blue/Purple in light mode */
+/* Moon icon - Apple System Indigo in light mode */
 .fa-moon,
 .moon-icon,
 .theme-toggle .fa-moon,
 #theme-toggle .fa-moon {
-  color: #6366f1 !important;
-  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%) !important;
+  color: #5856d6 !important;
+  background: linear-gradient(135deg, #7f7cff 0%, #5856d6 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
 }
 
-/* Dark mode - keep same colors for consistency */
+/* Dark mode - Apple System Colors */
 html.dark .fa-sun,
 html.dark .sun-icon,
 html.dark .theme-toggle .fa-sun,
 html.dark #theme-toggle .fa-sun {
-  color: #fbbf24 !important;
-  background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%) !important;
+  color: #ff9f0a !important;
+  background: linear-gradient(135deg, #ffd60a 0%, #ff9f0a 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -2716,8 +2716,8 @@ html.dark .fa-moon,
 html.dark .moon-icon,
 html.dark .theme-toggle .fa-moon,
 html.dark #theme-toggle .fa-moon {
-  color: #a5b4fc !important;
-  background: linear-gradient(135deg, #c7d2fe 0%, #a5b4fc 100%) !important;
+  color: #5e5ce6 !important;
+  background: linear-gradient(135deg, #8f8cff 0%, #5e5ce6 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;

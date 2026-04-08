@@ -546,7 +546,7 @@
               </div>
             </div>
 
-            <div class="about-text">
+            <div class="about-text-card">
               <h3 class="about-intro-title">Hello! I'm Mangesh Raut</h3>
               <p class="about-intro-text">
                 A passionate <strong>Software Engineer</strong> with 5+ years of experience in building scalable,
@@ -558,8 +558,7 @@
                 Currently enhancing energy analytics tools at <strong>Customized Energy Solutions</strong>, where I've
                 achieved a 40% efficiency gain through innovative solutions. My journey includes optimizing legacy
                 systems, deploying cloud infrastructure, and implementing AI-driven features that deliver real
-                business
-                value.
+                business value.
               </p>
 
               <p class="about-description">
@@ -1001,7 +1000,7 @@
                   </button>
                 </div>
                 <picture id="github-graph-picture" style="display: none;">
-                  <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/4fa5ff/mangeshraut712">
+                  <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/39d353/mangeshraut712">
                   <source media="(prefers-color-scheme: light)" srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
                   <img id="github-chart-img" src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github contribution chart"
                     class="github-graph-svg" loading="eager"
@@ -1067,9 +1066,11 @@
                     }
                   }, GRAPH_TIMEOUT);
 
-                  // Reload image with cache-busting
+                  // Reload image with cache-busting - use bright green for dark mode
+                  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  const color = isDark ? '39d353' : '0071e3';
                   const cacheBuster = '?t=' + Date.now();
-                  imgEl.src = 'https://ghchart.rshah.org/0071e3/mangeshraut712' + cacheBuster;
+                  imgEl.src = 'https://ghchart.rshah.org/' + color + '/mangeshraut712' + cacheBuster;
                 };
 
                 // Initial load

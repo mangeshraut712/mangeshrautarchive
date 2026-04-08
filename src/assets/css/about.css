@@ -88,6 +88,44 @@ html.dark .about-image-badge i {
   gap: 1.5rem;
 }
 
+/* About Text Card - Apple Inspired */
+.about-text-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2.5rem;
+  border: 1px solid rgb(0 0 0 / 8%);
+  box-shadow:
+    0 8px 32px rgb(0 0 0 / 6%),
+    0 2px 8px rgb(0 0 0 / 4%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html.dark .about-text-card {
+  background: #000;
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow:
+    0 8px 32px rgb(0 0 0 / 40%),
+    0 2px 8px rgb(0 0 0 / 20%);
+}
+
+.about-text-card:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow:
+    0 16px 48px rgb(0 0 0 / 10%),
+    0 4px 12px rgb(0 0 0 / 6%);
+  border-color: rgb(0 113 227 / 20%);
+}
+
+html.dark .about-text-card:hover {
+  box-shadow:
+    0 16px 48px rgb(0 0 0 / 60%),
+    0 4px 12px rgb(0 0 0 / 30%);
+  border-color: rgb(41 151 255 / 25%);
+}
+
 .about-intro-title {
   font-size: 2rem;
   font-weight: 700;
