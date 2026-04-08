@@ -22,16 +22,26 @@ app.use(express.json());
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 // Proxy API requests to Python backend
-app.use(
-  '/api',
-  createProxyMiddleware({
-    target: apiTarget,
-    changeOrigin: true,
-    pathRewrite: {
-      '^/api': '/api' // Prepend /api back because app.use('/api') strips it
-    }
-  })
-);
+const apiProxy = createProxyMiddleware({
+  target: apiTarget,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': '/api'
+  },
+  onError: (err, req, res) => {
+    console.error('API Proxy Error:', err.message);
+    res.status(503).json({
+      error: 'Backend API not available',
+      message: `Could not connect to API at ${apiTarget}. Please ensure the backend is running with "npm run dev:backend"`,
+      status: 503
+    });
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    console.log(`[API] ${req.method} ${req.url} -> ${apiTarget}${proxyReq.path}`);
+  }
+});
+
+app.use('/api', apiProxy);
 
 // Cache-busting middleware for development
 app.use((req, res, next) => {
