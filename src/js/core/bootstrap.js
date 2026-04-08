@@ -8,6 +8,7 @@ const RUNTIME_MODULES = [
   '../modules/accessibility.js',
   '../modules/premium-enhancements.js',
   '../modules/birthday-celebration.js',
+  '../modules/lastfm.js',
 ];
 
 const SECTION_MODULES = [
