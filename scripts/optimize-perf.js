@@ -6,7 +6,7 @@
 
 import { fileURLToPath } from 'url';
 import { dirname, resolve, join } from 'path';
-import { readFile, writeFile, readdir, stat, unlink, copyFile } from 'fs/promises';
+import { readFile, writeFile, readdir, stat } from 'fs/promises';
 import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +47,7 @@ async function minifyJS(content) {
     .trim();
 }
 
-async function optimizeHTML(content) {
+async function _optimizeHTML(content) {
   return content
     .replace(/<!--(?!<!\[CDATA\[)[\s\S]*?-->/g, '') // Remove comments
     .replace(/>\s+</g, '><') // Remove whitespace between tags
@@ -115,13 +115,13 @@ async function optimizeImages() {
             const saved = (originalSize - webpSize) / 1024;
             
             console.log(`${colors.green}✓${colors.reset} ${entry.name} → .webp (saved ${saved.toFixed(2)} KB)`);
-          } catch (e) {
+          } catch (_e) {
             // Ignore errors for individual images
           }
         }
       }
     }
-  } catch (e) {
+  } catch (_e) {
     console.log(`${colors.yellow}⚠${colors.reset} Image optimization skipped (sharp not available)`);
   }
 }
@@ -201,7 +201,7 @@ async function optimize() {
   console.log(`${colors.blue}📦 Building project...${colors.reset}`);
   try {
     execSync('npm run build', { cwd: projectRoot, stdio: 'inherit' });
-  } catch (e) {
+  } catch (_e) {
     console.error(`${colors.red}✗ Build failed${colors.reset}`);
     process.exit(1);
   }
@@ -226,7 +226,7 @@ async function optimize() {
   console.log(`${colors.blue}\n📦 Final optimized build...${colors.reset}`);
   try {
     execSync('npm run build', { cwd: projectRoot, stdio: 'inherit' });
-  } catch (e) {
+  } catch (_e) {
     // Continue even if build has warnings
   }
   

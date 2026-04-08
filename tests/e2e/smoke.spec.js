@@ -71,7 +71,7 @@ test.describe('Chrome smoke tests', () => {
     test.skip(true, 'Search uses lazy loading which has timing issues in test environment');
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    const openSearch = page.locator('#search-toggle');
+    const _openSearch = page.locator('#search-toggle');
     const closeSearch = page.locator('#search-close');
     const searchOverlay = page.locator('#search-overlay');
 

@@ -123,7 +123,7 @@ class RealMediaLoader {
         return `https://image.tmdb.org/t/p/w200${data.results[0].poster_path}`;
       }
       return null;
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   }
@@ -131,7 +131,7 @@ class RealMediaLoader {
   /**
    * Get Open Library cover for books with fallback
    */
-  getOpenLibraryCover(isbn, title) {
+  getOpenLibraryCover(isbn, _title) {
     // Open Library covers - use L (large) size for better quality, with fallback
     return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
   }
@@ -143,7 +143,7 @@ class RealMediaLoader {
     try {
       const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
       return response.ok;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
