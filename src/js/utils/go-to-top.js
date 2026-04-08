@@ -62,10 +62,26 @@
     function scrollToTop(e) {
       if (e) e.preventDefault();
 
-      window.scrollTo({
+      // Cross-browser smooth scroll to top
+      const scrollOptions = {
         top: 0,
         behavior: 'smooth'
-      });
+      };
+
+      // Try window.scrollTo first
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo(scrollOptions);
+      } else {
+        // Fallback for browsers without smooth scroll support
+        const scrollStep = -window.scrollY / 20;
+        const scrollInterval = setInterval(() => {
+          if (window.scrollY > 0) {
+            window.scrollBy(0, scrollStep);
+          } else {
+            clearInterval(scrollInterval);
+          }
+        }, 16);
+      }
 
       // Accessibility: Move focus to the top after scrolling
       // We look for a focus target at the top
