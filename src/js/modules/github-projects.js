@@ -11,12 +11,17 @@
 class GitHubProjects {
   constructor(username = 'mangeshraut712') {
     this.username = username;
-    this.proxyCandidates = [
-      '/api/github/repos/public',
-      '/api/github/repos',
-      'https://mangeshrautarchive.vercel.app/api/github/repos/public',
-      'https://mangeshrautarchive.vercel.app/api/github/repos',
-    ];
+    const isLocal = typeof window !== 'undefined' && 
+                   ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
+
+    this.proxyCandidates = isLocal 
+      ? ['/api/github/repos/public', '/api/github/repos']
+      : [
+          '/api/github/repos/public',
+          '/api/github/repos',
+          'https://mangeshrautarchive.vercel.app/api/github/repos/public',
+          'https://mangeshrautarchive.vercel.app/api/github/repos',
+        ];
     this.directApiUrl = `https://api.github.com/users/${username}/repos`;
 
     this.cache = null;

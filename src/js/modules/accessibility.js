@@ -59,12 +59,19 @@ export class AccessibilityEnhancer {
     // Respect user preferences
     this.respectUserPreferences();
 
-    // Add accessibility toolbar
-    this.createAccessibilityToolbar();
+    if (this.shouldShowToolbar()) {
+      this.createAccessibilityToolbar();
+    }
 
     this.isInitialized = true;
     this.announce('Accessibility features enabled', 'polite');
     console.log('✅ Accessibility Enhancements initialized');
+  }
+
+  shouldShowToolbar() {
+    const enabledByAttribute = document.body?.dataset.accessibilityToolbar === 'true';
+    const enabledByQuery = new URLSearchParams(window.location.search).get('a11y-toolbar') === '1';
+    return enabledByAttribute || enabledByQuery;
   }
 
   /**

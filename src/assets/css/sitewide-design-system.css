@@ -334,7 +334,7 @@ html.dark input,
 html.dark textarea,
 html.dark .contact-input,
 html.dark .contact-textarea {
-  background-color: #1c1c1e !important;
+  background-color: #000000 !important;
   color: #fff !important;
   border: 1px solid rgb(255 255 255 / 10%) !important;
 }

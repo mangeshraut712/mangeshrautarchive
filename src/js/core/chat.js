@@ -13,33 +13,62 @@ let API_BASE = '';
 // Primary Backend: Vercel (has OPENROUTER_API_KEY configured)
 const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
 
+function isLoopbackHostname(hostname = '') {
+  return ['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname);
+}
+
+function normalizeApiBase(rawValue) {
+  if (!rawValue) return '';
+
+  try {
+    const parsed = new URL(
+      String(rawValue).trim(),
+      typeof window !== 'undefined' ? window.location.origin : undefined
+    );
+
+    if (
+      typeof window !== 'undefined' &&
+      window.location.protocol === 'https:' &&
+      parsed.protocol === 'http:' &&
+      !isLoopbackHostname(parsed.hostname)
+    ) {
+      parsed.protocol = 'https:';
+    }
+
+    return parsed.origin === window?.location?.origin ? '' : parsed.origin;
+  } catch {
+    return '';
+  }
+}
+
 if (typeof window !== 'undefined') {
   if (window.APP_CONFIG?.apiBaseUrl) {
-    // Allow override via config
-    API_BASE = window.APP_CONFIG.apiBaseUrl;
+    API_BASE = normalizeApiBase(window.APP_CONFIG.apiBaseUrl);
     console.log('⚙️ Using custom API base:', API_BASE);
   } else {
     const hostname = window.location.hostname || '';
 
-    // Cloud Run deployment - use relative paths (self-hosted backend)
-    if (hostname.includes('run.app')) {
-      API_BASE = ''; // Cloud Run serves both frontend and backend
+    // ALWAYS use relative paths for localhost to hit the proxy
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+      API_BASE = '';
+      console.log('🏠 Localhost detected - using relative API paths');
+    }
+    // Cloud Run deployment
+    else if (hostname.includes('run.app')) {
+      API_BASE = '';
       console.log('🌐 Running on Cloud Run (self-hosted mode)');
     }
-    // Vercel deployment - use relative paths
+    // Vercel deployment
     else if (hostname.includes('vercel.app')) {
-      API_BASE = ''; // Vercel serves both frontend and backend
+      API_BASE = '';
       console.log('🌐 Running on Vercel (self-hosted mode)');
     }
-    // ALL other cases (localhost, GitHub Pages, custom domain)
-    // Use Vercel backend which has API keys configured
+    // GitHub Pages or Custom Domain - use Vercel backend
     else {
       API_BASE = VERCEL_BACKEND;
-      console.log('🔗 Using Vercel backend (API keys configured):', API_BASE);
+      console.log('🔗 Using Vercel backend (remote keys):', API_BASE);
     }
   }
-} else if (typeof process !== 'undefined' && process.env?.VERCEL_URL) {
-  API_BASE = `https://${process.env.VERCEL_URL}`;
 }
 
 function buildApiUrl(path) {
@@ -47,6 +76,21 @@ function buildApiUrl(path) {
     return path;
   }
   if (path.startsWith('http://') || path.startsWith('https://')) {
+    if (
+      typeof window !== 'undefined' &&
+      window.location.protocol === 'https:' &&
+      path.startsWith('http://')
+    ) {
+      try {
+        const parsed = new URL(path);
+        if (!isLoopbackHostname(parsed.hostname)) {
+          parsed.protocol = 'https:';
+          return parsed.toString();
+        }
+      } catch {
+        return path;
+      }
+    }
     return path;
   }
   return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;

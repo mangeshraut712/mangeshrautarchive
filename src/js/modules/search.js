@@ -206,6 +206,7 @@ class PortfolioSearch {
   }
 
   openSearch() {
+    this.searchOverlay.style.setProperty('display', 'flex', 'important');
     this.searchOverlay.classList.add('active');
     setTimeout(() => {
       this.searchInput.focus();
@@ -215,6 +216,7 @@ class PortfolioSearch {
 
   closeSearch() {
     this.searchOverlay.classList.remove('active');
+    this.searchOverlay.style.setProperty('display', 'none', 'important');
     this.searchInput.value = '';
     this.showSuggestedSearches();
     document.body.style.overflow = '';

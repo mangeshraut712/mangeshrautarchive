@@ -1470,7 +1470,7 @@ html.dark .skill-badge {
 
 html.dark #skills-container .skill-badge:hover,
 html.dark .skill-badge:hover {
-  background: #1c1c1e !important;
+  background: #000000 !important;
 
   /* Dark Grey hover */
   box-shadow: 0 12px 24px rgb(255 255 255 / 10%) !important;
@@ -1726,7 +1726,7 @@ html.dark .apple-tldr:hover {
 }
 
 html.dark .vibe-coder-badge {
-  background: rgba(28, 28, 30, 0.8);
+  background: rgba(0, 0, 0, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
   color: #f5f5f7;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1737,7 +1737,7 @@ html.dark .vibe-coder-badge i {
 }
 
 html.dark .vibe-coder-badge:hover {
-  background: rgba(28, 28, 30, 0.95);
+  background: rgba(0, 0, 0, 0.95);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
@@ -1893,7 +1893,7 @@ html.dark .profile-image-wrapper {
 }
 
 html.dark .profile-image {
-  border-color: rgba(28, 28, 30, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Subtle Spatial Glow instead of the simple ring */
@@ -2624,7 +2624,7 @@ html.dark .game-stat-emoji {
 }
 
 html.dark .legend-emoji {
-  background: #1c1c1e !important;
+  background: #000000 !important;
   box-shadow: 0 2px 8px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 0.05) !important;
 }
 
@@ -2795,7 +2795,7 @@ html.dark .theme-toggle:hover {
 }
 
 html.dark .music-card-inner {
-  background: rgba(28, 28, 30, 0.85);
+  background: rgba(0, 0, 0, 0.85);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 
     0 4px 24px rgba(0, 0, 0, 0.4),
@@ -3034,7 +3034,7 @@ html.dark .artist-name {
 }
 
 html.dark .media-poster img {
-  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+  background: linear-gradient(135deg, #000000 0%, #000000 100%);
 }
 
 /* Image loading state */
@@ -3055,7 +3055,7 @@ html.dark .media-poster img {
 }
 
 html.dark .media-poster img.error {
-  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%) !important;
+  background: linear-gradient(135deg, #000000 0%, #000000 100%) !important;
 }
 
 /* Hide broken image icon, show placeholder effect */
@@ -3091,7 +3091,7 @@ html.dark .media-poster img.error {
 
 html.dark .media-card.empty .media-poster,
 html.dark .media-card.loading .media-poster {
-  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+  background: linear-gradient(135deg, #000000 0%, #000000 100%);
 }
 
 /* Watch button improvements */

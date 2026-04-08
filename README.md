@@ -26,12 +26,11 @@
 - [Tech Stack](#️-tech-stack)
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
-- [Engineering Docs](#-engineering-docs)
 - [Scripts](#-available-scripts)
 - [Quality Gates](#-quality--performance-gates)
 - [Contributing](#-contributing)
 - [License](#-license)
-- [Contact](#-connect-with-me)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
@@ -105,7 +104,7 @@ A curated showcase of entertainment preferences with streaming links:
 
 </details>
 
-### � Music Integration
+### 🎵 Music Integration
 
 <details>
 <summary><b>🎧 Click to explore Music features</b></summary>
@@ -121,7 +120,7 @@ Real-time music tracking powered by Last.fm:
 
 </details>
 
-### �🎮 Debug Runner — Interactive Canvas Game
+### 🎮 Debug Runner — Interactive Canvas Game
 
 <details>
 <summary><b>🕹️ Click to explore game features</b></summary>
@@ -259,11 +258,11 @@ Real-time project showcase that automatically stays current:
 
 ```
 ├── HTML5 — Semantic markup with SEO optimization
-├── CSS3 — 30+ modular stylesheets (108KB core styles)
-├── JavaScript ES2024+ — 34 modular files (core + modules + services + components)
+├── CSS3 — Modular stylesheets with deferred noncritical bundles
+├── JavaScript ES modules — Core bootstrap with lazy-loaded feature modules
 ├── Tailwind CSS 4.x — Utility-first styling system
 ├── Prism.js — Syntax highlighting for code blocks
-├── Font Awesome 6.x — Comprehensive icon library
+├── Font Awesome 6.x + inline SVG — Deferred icon font with fast first paint
 └── Web Speech API — Voice input/output capabilities
 ```
 
@@ -296,7 +295,7 @@ Real-time project showcase that automatically stays current:
 
 Make sure you have these installed before starting:
 
-- **Node.js** 20+ and **npm** 10+
+- **Node.js** 18+ and **npm** 9+
 - **Python** 3.12+
 - **Git** for version control
 - 🔑 **OpenRouter API Key** (optional, for AI chatbot features)
@@ -311,29 +310,33 @@ cd mangeshrautarchive
 # 2️⃣ Install Node.js dependencies
 npm ci
 
-# 3️⃣ Install Python dependencies
+# 3️⃣ Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 4️⃣ Install Python dependencies
 pip install -r requirements.txt
 
-# 4️⃣ Set up environment variables
+# 5️⃣ Set up environment variables
 cp .env.example .env
 # Edit .env and add your OPENROUTER_API_KEY (if you want AI features)
 
-# 5️⃣ Start the development servers
+# 6️⃣ Start the development servers
 npm run dev
 ```
 
 This will start:
 
-- **Frontend** on `http://localhost:3000`
-- **Backend API** on `http://localhost:8000`
+- **Frontend** on `http://localhost:4000`
+- **Backend API** on `http://localhost:8001`
 
 ### Alternative: Run Servers Separately
 
 ```bash
-# Frontend only (port 3000)
+# Frontend only (port 4000)
 npm run dev:frontend
 
-# Backend only (port 8000)
+# Backend only (port 8001)
 npm run dev:backend
 ```
 
@@ -343,6 +346,9 @@ npm run dev:backend
 # Build optimized production assets
 npm run build
 
+# Serve the built dist/ directory locally
+npm run serve:dist
+
 # Rebuild Tailwind CSS only
 npm run build:css
 ```
@@ -350,8 +356,6 @@ npm run build:css
 ---
 
 ## 📂 Project Structure
-
-Detailed conventions live in [`docs/PROJECT_STRUCTURE.md`](docs/PROJECT_STRUCTURE.md).
 
 ```text
 mangeshrautarchive/
@@ -366,10 +370,6 @@ mangeshrautarchive/
 │       └── utils/              # Small focused helpers
 ├── scripts/                    # Build/dev/QA/security scripts
 ├── tests/e2e/                  # Playwright smoke + a11y + post-deploy checks
-├── docs/
-│   ├── README.md               # Documentation index
-│   ├── PROJECT_STRUCTURE.md    # Folder and ownership conventions
-│   └── testing/                # Chrome QA runbooks/templates
 ├── .github/workflows/          # CI/CD and monitoring workflows
 ├── package.json                # Node scripts/dependencies
 ├── package-lock.json           # Reproducible npm installs (required by npm ci)
@@ -386,21 +386,15 @@ mangeshrautarchive/
 
 ---
 
-## 🧭 Engineering Docs
-
-- `docs/README.md` — Documentation index
-- `docs/PROJECT_STRUCTURE.md` — Source layout and ownership rules
-
----
-
 ## 📜 Available Scripts
 
 | Command                          | Description                                                        |
 | -------------------------------- | ------------------------------------------------------------------ |
 | `npm run dev`                    | 🚀 Start full stack (frontend + backend)                           |
-| `npm run dev:frontend`           | 🎨 Start frontend server only (port 3000)                          |
-| `npm run dev:backend`            | 🔧 Start Python backend only (port 8000)                           |
+| `npm run dev:frontend`           | 🎨 Start frontend server only (port 4000)                          |
+| `npm run dev:backend`            | 🔧 Start Python backend only (port 8001)                           |
 | `npm run build`                  | 📦 Build production assets                                         |
+| `npm run serve:dist`             | 🌐 Serve the built `dist/` directory locally                       |
 | `npm run build:css`              | 🎨 Compile Tailwind CSS                                            |
 | `npm run lint`                   | 🔍 Run ESLint code quality checks                                  |
 | `npm run lint:fix`               | ✨ Auto-fix linting issues                                         |
@@ -447,8 +441,8 @@ Current configured Lighthouse release floor:
 
 - ✅ **Lazy Loading** — Images and components load on-demand
 - ✅ **Code Splitting** — Modular JavaScript architecture
-- ✅ **Asset Optimization** — WebP images, minified CSS/JS
-- ✅ **CDN Delivery** — Static assets served via edge network
+- ✅ **Asset Optimization** — WebP images, deferred noncritical CSS/JS, minified build output
+- ✅ **Production Serving** — Local `dist/` serving for realistic cache-header and asset checks
 - ✅ **Caching Strategy** — Service worker with smart cache-first approach
 - ✅ **Zero Layout Shift** — Proper image dimensions and placeholders
 
@@ -499,7 +493,7 @@ Built with amazing open-source tools:
 - **OpenRouter** — AI model gateway
 - **xAI & Google** — For incredible AI models
 - **Last.fm** — Music scrobbling and API
-- **TMDB** — Movie and TV show metadata
+- **TMDB & Open Library** — Poster and book-cover imagery
 
 ---
 

@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url';
 import { dirname, resolve, join, relative } from 'path';
 import { mkdir, rm, readdir, stat, readFile, writeFile } from 'fs/promises';
+import { transform } from 'esbuild';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -104,6 +105,38 @@ async function copyDirContent(src, dest, depth = 0) {
   }
 }
 
+async function optimizeCopiedAssets(dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const entryPath = join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      await optimizeCopiedAssets(entryPath);
+      continue;
+    }
+
+    if (!entry.isFile()) {
+      continue;
+    }
+
+    const extension = entry.name.split('.').pop()?.toLowerCase();
+    if (!extension || !['css', 'js'].includes(extension)) {
+      continue;
+    }
+
+    const source = await readFile(entryPath, 'utf8');
+    const result = await transform(source, {
+      loader: extension === 'css' ? 'css' : 'js',
+      legalComments: 'none',
+      minify: true,
+      target: extension === 'css' ? 'es2020' : 'es2020',
+    });
+
+    await writeFile(entryPath, result.code, 'utf8');
+  }
+}
+
 async function build() {
   const distDir = await resolveDistDir();
 
@@ -135,6 +168,9 @@ async function build() {
 
   // Inject safe public config at build time (no secrets)
   await injectApiKeys(distDir);
+
+  console.log('⚡ Minifying copied CSS/JS assets ...');
+  await optimizeCopiedAssets(distDir);
 
   console.log(`✨ Build complete. Static assets written to ${distDir}`);
 }

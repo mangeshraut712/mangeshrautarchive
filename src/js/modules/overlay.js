@@ -24,6 +24,7 @@ export function initOverlayMenu(options = {}) {
   const openMenu = () => {
     if (body.classList.contains('menu-open')) return;
     body.classList.add('menu-open');
+    overlayMenu.style.setProperty('display', 'flex', 'important');
     overlayMenu.setAttribute('aria-hidden', 'false');
     overlayMenu.removeAttribute('inert');
     menuToggle.setAttribute('aria-expanded', 'true');
@@ -32,6 +33,7 @@ export function initOverlayMenu(options = {}) {
   const closeMenu = () => {
     if (!body.classList.contains('menu-open')) return;
     body.classList.remove('menu-open');
+    overlayMenu.style.setProperty('display', 'none', 'important');
     overlayMenu.setAttribute('aria-hidden', 'true');
     overlayMenu.setAttribute('inert', '');
     menuToggle.setAttribute('aria-expanded', 'false');

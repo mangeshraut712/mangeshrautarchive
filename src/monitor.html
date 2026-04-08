@@ -4,17 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Monitor | AssistMe Dashboard</title>
+    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css">
     <link rel="stylesheet" href="assets/css/apple-premium-overrides.css">
     <link rel="stylesheet" href="assets/css/monitor.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <header class="monitor-header">
+<body class="monitor-page">
+    <nav id="global-nav" class="global-nav dynamic-island monitor-nav" aria-label="Primary navigation">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a class="nav-logo" href="index.html#home" aria-label="Mangesh Raut home">
+                    <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32">
+                </a>
+            </div>
+            <div class="monitor-nav-title" aria-label="Current page">
+                <span class="monitor-nav-kicker">Operations</span>
+                <span class="monitor-nav-label">System Monitor</span>
+            </div>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle theme" type="button">
+                    <span id="theme-toggle-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Toggle theme</span>
+                </button>
+                <button id="menu-btn" class="menu-toggle-button" type="button" aria-label="Open navigation menu"
+                    aria-controls="overlay-menu" aria-expanded="false">
+                    <i class="fas fa-bars menu-toggle-icon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true" inert style="display: none !important;"
+        aria-label="Site navigation">
+        <button id="close-menu-btn" class="premium-close-btn" type="button" aria-label="Close navigation menu">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="overlay-menu-content">
+            <div class="menu-grid">
+                <a href="#overview" class="menu-item">
+                    <div class="premium-menu-icon"><i class="fas fa-wave-square"></i></div>
+                    <span>Overview</span>
+                </a>
+                <a href="#health-checks-section" class="menu-item">
+                    <div class="premium-menu-icon"><i class="fas fa-stethoscope"></i></div>
+                    <span>Health Checks</span>
+                </a>
+                <a href="#endpoint-metrics-section" class="menu-item">
+                    <div class="premium-menu-icon"><i class="fas fa-chart-line"></i></div>
+                    <span>Metrics</span>
+                </a>
+                <a href="#event-log-section" class="menu-item">
+                    <div class="premium-menu-icon"><i class="fas fa-list"></i></div>
+                    <span>Event Log</span>
+                </a>
+                <a href="/api/docs" class="menu-item" target="_blank" rel="noopener">
+                    <div class="premium-menu-icon"><i class="fas fa-book-open"></i></div>
+                    <span>API Docs</span>
+                </a>
+                <a href="index.html#projects" class="menu-item">
+                    <div class="premium-menu-icon"><i class="fas fa-arrow-left"></i></div>
+                    <span>Back to Portfolio</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <header class="monitor-header" id="overview">
         <div class="header-content">
             <div class="header-title">
-                <i class="fas fa-heart-pulse" style="font-size: 32px; color: var(--accent-blue);"></i>
+                <div class="monitor-hero-icon">
+                    <i class="fas fa-heart-pulse" aria-hidden="true"></i>
+                </div>
                 <div>
+                    <p class="monitor-eyebrow">Operations</p>
                     <h1>System Monitor</h1>
+                    <p class="monitor-subtitle">Real-time diagnostics and service health for AssistMe ecosystem.</p>
                     <span id="overall-status" class="status-badge healthy">
                         <span class="status-dot"></span>
                         All Systems Operational
@@ -26,14 +91,20 @@
                     <i class="fas fa-rotate"></i>
                     Refresh
                 </button>
-                <button class="btn btn-primary" onclick="ThemeHandler.toggle()">
-                    <i class="fas fa-moon"></i>
-                </button>
+                <a class="btn btn-primary" href="/api/docs" target="_blank" rel="noopener">
+                    <i class="fas fa-book-open"></i>
+                    API Docs
+                </a>
+                <a class="btn btn-secondary" href="index.html#projects">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Portfolio
+                </a>
             </div>
         </div>
     </header>
 
     <main class="monitor-container">
+
         <!-- Overview Cards -->
         <div class="overview-grid">
             <div class="overview-card">
@@ -82,7 +153,7 @@
         </div>
 
         <!-- Health Checks -->
-        <section class="section">
+        <section class="section" id="health-checks-section">
             <div class="section-header">
                 <h2 class="section-title">Health Checks</h2>
                 <div class="section-actions">
@@ -101,15 +172,9 @@
         </section>
 
         <!-- Endpoint Metrics -->
-        <section class="section">
+        <section class="section" id="endpoint-metrics-section">
             <div class="section-header">
                 <h2 class="section-title">API Endpoint Metrics</h2>
-                <div class="section-actions">
-                    <button class="btn btn-secondary" onclick="exportMetrics()">
-                        <i class="fas fa-download"></i>
-                        Export
-                    </button>
-                </div>
             </div>
             <div style="overflow-x: auto;">
                 <table class="metrics-table">
@@ -136,90 +201,26 @@
         </section>
 
         <!-- External APIs Status -->
-        <section class="section">
+        <section class="section" id="external-services-section">
             <div class="section-header">
-                <h2 class="section-title">External APIs Status</h2>
+                <h2 class="section-title">Service Integrations</h2>
                 <div class="section-actions">
                     <button class="btn btn-secondary" onclick="checkExternalApis()">
                         <i class="fas fa-sync"></i>
-                        Check APIs
+                        Refresh Services
                     </button>
                 </div>
             </div>
             <div class="health-grid" id="external-apis">
-                <div class="health-item">
-                    <div class="health-item-left">
-                        <div class="health-status-icon healthy">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="health-info">
-                            <h4>Last.fm API</h4>
-                            <p>Music integration - Error handling improved, polling reduced to 60s</p>
-                        </div>
-                    </div>
-                    <div class="health-metrics">
-                        <div class="health-metric">
-                            <div class="health-metric-value" style="color: var(--accent-green);">ACTIVE</div>
-                            <div class="health-metric-label">Max 3 retries on error</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="health-item">
-                    <div class="health-item-left">
-                        <div class="health-status-icon unhealthy">
-                            <i class="fas fa-times"></i>
-                        </div>
-                        <div class="health-info">
-                            <h4>CountAPI</h4>
-                            <p>View counter service - DNS resolution failed, removed from code</p>
-                        </div>
-                    </div>
-                    <div class="health-metrics">
-                        <div class="health-metric">
-                            <div class="health-metric-value" style="color: var(--accent-red);">DOWN</div>
-                            <div class="health-metric-label">Using localStorage fallback</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="health-item">
-                    <div class="health-item-left">
-                        <div class="health-status-icon healthy">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="health-info">
-                            <h4>GitHub API</h4>
-                            <p>Repository and profile data - Operational</p>
-                        </div>
-                    </div>
-                    <div class="health-metrics">
-                        <div class="health-metric">
-                            <div class="health-metric-value" style="color: var(--accent-green);">ACTIVE</div>
-                            <div class="health-metric-label">Rate limited</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="health-item">
-                    <div class="health-item-left">
-                        <div class="health-status-icon degraded">
-                            <i class="fas fa-exclamation"></i>
-                        </div>
-                        <div class="health-info">
-                            <h4>Vercel Analytics</h4>
-                            <p>Analytics tracking - Track function exposed, /api/analytics/views endpoint missing</p>
-                        </div>
-                    </div>
-                    <div class="health-metrics">
-                        <div class="health-metric">
-                            <div class="health-metric-value" style="color: var(--accent-yellow);">DEGRADED</div>
-                            <div class="health-metric-label">Using localStorage</div>
-                        </div>
-                    </div>
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Checking service integrations...</h3>
                 </div>
             </div>
         </section>
 
         <!-- Event Log -->
-        <section class="section">
+        <section class="section" id="event-log-section">
             <div class="section-header">
                 <h2 class="section-title">Event Log</h2>
                 <div class="section-actions">
@@ -247,12 +248,11 @@
 
     <div class="toast-container" id="toast-container"></div>
 
-    <script src="js/shared/theme.js"></script>
+    <script src="js/utils/theme.js"></script>
     <script>
         // API client
-        const API_BASE = window.location.hostname === 'localhost' 
-            ? (window.location.protocol === 'https:' ? 'https://localhost:8000/api' : 'http://localhost:8000/api')
-            : '/api';
+        // Always use same-origin /api so dev proxy and production routing behave the same.
+        const API_BASE = '/api';
 
         async function fetchHealth() {
             try {
@@ -276,13 +276,25 @@
             }
         }
 
-        async function fetchEvents(filter = '') {
+        async function fetchExternalServices() {
             try {
-                const url = new URL(`${API_BASE}/monitor/events`);
-                if (filter) url.searchParams.set('type', filter);
-                const response = await fetch(url);
+                const response = await fetch(`${API_BASE}/monitor/external-services`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
+            } catch (error) {
+                console.error('External services fetch failed:', error);
+                return null;
+            }
+        }
+
+        async function fetchEvents(filter = '') {
+            try {
+                const url = new URL(`${API_BASE}/monitor/events`, window.location.origin);
+                if (filter) url.searchParams.set('event_type', filter);
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                return data.events || [];
             } catch (error) {
                 console.error('Events fetch failed:', error);
                 return [];
@@ -425,6 +437,47 @@
             }).join('');
         }
 
+        function getStatusIcon(status) {
+            if (status === 'healthy') return 'check';
+            if (status === 'degraded') return 'exclamation';
+            if (status === 'unknown') return 'question';
+            return 'times';
+        }
+
+        function renderExternalServices(data) {
+            const container = document.getElementById('external-apis');
+            if (!data || !Array.isArray(data.services) || data.services.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-plug-circle-xmark"></i>
+                        <h3>Unable to load service statuses</h3>
+                        <p>Try refreshing the monitor to run the live checks again.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = data.services.map(service => `
+                <div class="health-item">
+                    <div class="health-item-left">
+                        <div class="health-status-icon ${service.status}">
+                            <i class="fas fa-${getStatusIcon(service.status)}"></i>
+                        </div>
+                        <div class="health-info">
+                            <h4>${service.name}</h4>
+                            <p>${service.message}</p>
+                        </div>
+                    </div>
+                    <div class="health-metrics">
+                        <div class="health-metric">
+                            <div class="health-metric-value" style="text-transform: uppercase;">${service.metric_value}</div>
+                            <div class="health-metric-label">${service.metric_label}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         function renderEvents(events) {
             const container = document.getElementById('event-list');
             if (!events || events.length === 0) {
@@ -525,34 +578,19 @@
 
         async function checkExternalApis() {
             showToast('Checking external APIs...', 'info');
-            
-            // In a real implementation, these would be actual API calls
-            // For now, we show the static status we know about
-            
-            const apis = [
-                { name: 'Last.fm', status: 'healthy', message: 'Error handling improved, 60s polling' },
-                { name: 'CountAPI', status: 'unhealthy', message: 'Service down - using localStorage' },
-                { name: 'GitHub API', status: 'healthy', message: 'Operational' },
-                { name: 'Vercel Analytics', status: 'degraded', message: 'Track OK, views endpoint missing' }
-            ];
-            
-            // Update the UI with animation
-            const container = document.getElementById('external-apis');
-            container.style.opacity = '0.5';
-            
-            setTimeout(() => {
-                container.style.opacity = '1';
-                showToast('External API status updated', 'success');
-            }, 500);
+            const integrations = await fetchExternalServices();
+            renderExternalServices(integrations);
+            showToast('Service integrations updated', integrations ? 'success' : 'error');
         }
 
         // Actions
         async function refreshData() {
             showToast('Refreshing data...', 'info');
             
-            const [health, metrics] = await Promise.all([
+            const [health, metrics, integrations] = await Promise.all([
                 fetchHealth(),
-                fetchMetrics()
+                fetchMetrics(),
+                fetchExternalServices()
             ]);
             
             const events = await fetchEvents(document.getElementById('event-filter').value);
@@ -562,6 +600,7 @@
                 renderMetrics(metrics);
                 renderOverview(metrics);
             }
+            renderExternalServices(integrations);
             renderEvents(events);
             
             showToast('Data refreshed', 'success');
@@ -585,10 +624,16 @@
         }
 
         async function clearResolved() {
-            const events = await fetchEvents();
-            const resolved = events.filter(e => e.resolved);
-            showToast(`Cleared ${resolved.length} resolved events`, 'success');
-            filterEvents();
+            const events = await fetchEvents(document.getElementById('event-filter').value);
+            const unresolved = events.filter(e => !e.resolved);
+            const clearedCount = events.length - unresolved.length;
+            renderEvents(unresolved);
+            showToast(
+                clearedCount > 0
+                    ? `Cleared ${clearedCount} resolved event${clearedCount === 1 ? '' : 's'}`
+                    : 'No resolved events to clear',
+                'success'
+            );
         }
 
         function exportMetrics() {
@@ -625,6 +670,19 @@
             // Auto-refresh every 30 seconds
             setInterval(refreshData, 30000);
         });
+    </script>
+    <script type="module">
+        import { initOverlayMenu } from './js/modules/overlay.js';
+
+        initOverlayMenu();
+
+        const nav = document.getElementById('global-nav');
+        const syncNavState = () => {
+            nav?.classList.toggle('scrolled', window.scrollY > 12);
+        };
+
+        syncNavState();
+        window.addEventListener('scroll', syncNavState, { passive: true });
     </script>
 </body>
 </html>

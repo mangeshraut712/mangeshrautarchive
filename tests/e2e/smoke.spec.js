@@ -67,50 +67,99 @@ test.describe('Chrome smoke tests', () => {
     await expect(skipLink).toBeFocused();
   });
 
+  test('system monitor actions respond', async ({ page }) => {
+    await page.goto('/monitor.html', { waitUntil: 'domcontentloaded' });
+
+    await expect(page.locator('h1')).toHaveText(/System Monitor/i);
+
+    await page.waitForFunction(() => {
+      const el = document.getElementById('backend-status');
+      return Boolean(el && el.textContent && el.textContent.trim() !== 'Checking...');
+    });
+
+    const beforeTheme = await page.evaluate(() =>
+      document.documentElement.getAttribute('data-theme')
+    );
+
+    await page.locator('.monitor-header .header-actions .btn').first().click();
+    await page.waitForTimeout(500);
+
+    await page.locator('#event-filter').selectOption('warning');
+    await page.waitForTimeout(300);
+
+    await page.locator('button', { hasText: 'Refresh Services' }).click();
+    const toastCount = await page.locator('#toast-container .toast').count();
+    expect(toastCount).toBeGreaterThan(0);
+
+    await page.locator('#theme-toggle').click();
+    await page.waitForTimeout(200);
+
+    const afterTheme = await page.evaluate(() =>
+      document.documentElement.getAttribute('data-theme')
+    );
+    expect(afterTheme).not.toBe(beforeTheme);
+  });
+
   test('search overlay opens and closes', async ({ page }) => {
-    test.skip(true, 'Search uses lazy loading which has timing issues in test environment');
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    const _openSearch = page.locator('#search-toggle');
+    const openSearch = page.locator('#search-toggle');
     const closeSearch = page.locator('#search-close');
     const searchOverlay = page.locator('#search-overlay');
+    const searchInput = page.locator('#search-input');
 
-    // Use keyboard shortcut to open search (loads module + opens in one action)
-    await page.keyboard.press('Control+k');
+    await expect(searchOverlay).not.toHaveClass(/active/);
+    await openSearch.click();
     await expect(searchOverlay).toHaveClass(/active/);
+    await expect(searchInput).toBeFocused();
 
     await closeSearch.click();
+    await expect(searchOverlay).not.toHaveClass(/active/);
+
+    // Keyboard shortcut should also open the overlay after lazy-loading hooks are ready.
+    await page.keyboard.press('Control+k');
+    await expect(searchOverlay).toHaveClass(/active/);
+    await expect(searchInput).toBeFocused();
+
+    await page.keyboard.press('Escape');
     await expect(searchOverlay).not.toHaveClass(/active/);
   });
 
   test('contact nav route works', async ({ page }, testInfo) => {
-    test.skip(
-      testInfo.project.name === 'Mobile Chrome',
-      'Mobile overlay navigation does not reliably update URL hash.'
-    );
-
     await page.goto('/', { waitUntil: 'domcontentloaded' });
-    await page.locator('a.nav-link[href="#contact"]').first().click();
+
+    if (testInfo.project.name === 'Mobile Chrome') {
+      await page.locator('#menu-btn').click();
+      await page.waitForTimeout(250);
+      await page.locator('#overlay-menu a.menu-item[href="#contact"]').click();
+      await page.waitForTimeout(3200);
+    } else {
+      await page.locator('a.nav-link[href="#contact"]').first().click();
+    }
+
     await expect(page).toHaveURL(/#contact$/);
+    await expect(page.locator('section#contact')).toBeVisible();
   });
 
   test('navbar fast clicks land on intended sections during lazy loading', async ({
     page,
   }, testInfo) => {
-    test.skip(
-      testInfo.project.name === 'Mobile Chrome',
-      'This assertion targets desktop smart-navbar offset behavior.'
-    );
-
     const targets = ['projects', 'education', 'contact'];
 
     for (const sectionId of targets) {
       await page.goto('/', { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(350);
+      await page.waitForTimeout(testInfo.project.name === 'Mobile Chrome' ? 250 : 350);
 
-      await page.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
+      if (testInfo.project.name === 'Mobile Chrome') {
+        await page.locator('#menu-btn').click();
+        await page.waitForTimeout(250);
+        await page.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
+      } else {
+        await page.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
+      }
+
       await expect(page).toHaveURL(new RegExp(`#${sectionId}$`));
-      await page.waitForTimeout(2500);
+      await page.waitForTimeout(testInfo.project.name === 'Mobile Chrome' ? 3200 : 2500);
 
       const info = await page.evaluate(id => {
         const navHeight = globalThis.document.querySelector('.global-nav')?.offsetHeight || 0;
@@ -128,11 +177,13 @@ test.describe('Chrome smoke tests', () => {
 
       expect(info?.missing, `${sectionId} section should exist`).not.toBe(true);
 
-      const topDistance = Math.abs(info.rectTop - (info.navHeight + 12));
+      const expectedOffset = testInfo.project.name === 'Mobile Chrome' ? info.navHeight + 12 : info.navHeight + 12;
+      const allowedDelta = testInfo.project.name === 'Mobile Chrome' ? 120 : 140;
+      const topDistance = Math.abs(info.rectTop - expectedOffset);
       expect(
         topDistance,
         `${sectionId} should align near navbar offset after lazy-load reflow`
-      ).toBeLessThanOrEqual(140);
+      ).toBeLessThanOrEqual(allowedDelta);
     }
   });
 
@@ -183,5 +234,34 @@ test.describe('Chrome smoke tests', () => {
       const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
       expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
     }
+  });
+
+  test('contact page removes portfolio reach and keeps currently media deduplicated', async ({
+    page,
+  }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    const currentSection = page.locator('#currently-section');
+    await currentSection.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1200);
+
+    await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
+
+    const showsTab = page.locator('.currently-tab[data-tab="shows"]');
+    const booksTab = page.locator('.currently-tab[data-tab="books"]');
+
+    await showsTab.click();
+    await page.waitForTimeout(400);
+    await expect(page.locator('#shows-content')).toHaveClass(/active/);
+
+    const showTitles = await page.locator('#shows-grid .media-card h4').allTextContents();
+    expect(new Set(showTitles).size, 'show and movie cards should be unique').toBe(showTitles.length);
+
+    await booksTab.click();
+    await page.waitForTimeout(400);
+    await expect(page.locator('#books-content')).toHaveClass(/active/);
+
+    const bookTitles = await page.locator('#books-grid .media-card h4').allTextContents();
+    expect(new Set(bookTitles).size, 'book cards should be unique').toBe(bookTitles.length);
   });
 });

@@ -11,7 +11,7 @@ async function run(name, contextOpts) {
   const context = await browser.newContext(contextOpts);
   const page = await context.newPage();
 
-  await page.goto('http://127.0.0.1:3000', { waitUntil: 'networkidle' });
+  await page.goto('http://127.0.0.1:4000', { waitUntil: 'networkidle' });
 
   if (name.includes('dark')) {
     await page.evaluate(() => {

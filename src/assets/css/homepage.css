@@ -157,6 +157,31 @@ html.dark .hero-description {
     width: 116px !important;
     height: 116px !important;
   }
+
+  .vibe-coder-badge,
+  .music-card-inner,
+  .profile-image-wrapper {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .music-card,
+  .music-card.is-playing .album-art,
+  .playing-indicator span,
+  .profile-ring {
+    animation: none !important;
+  }
+
+  .music-card-inner {
+    box-shadow:
+      0 4px 16px rgb(0 0 0 / 8%),
+      0 1px 2px rgb(0 0 0 / 4%);
+  }
+
+  .profile-ring {
+    filter: blur(10px);
+    opacity: 0.45;
+  }
 }
 
 /* Hero Social Links */
@@ -195,7 +220,7 @@ html.dark .hero-description {
 }
 
 html.dark .hero-social-link {
-  background: #1c1c1e;
+  background: #000000;
   border-color: rgb(255 255 255 / 10%);
   color: #f5f5f7;
 }
@@ -204,6 +229,433 @@ html.dark .hero-social-link:hover {
   background: #0a84ff;
   border-color: #0a84ff;
   color: #fff;
+}
+
+/* Premium above-the-fold hero refinements kept eager to avoid loading the full overrides file */
+#home.hero-section {
+  padding-top: clamp(100px, 12vh, 140px) !important;
+  padding-bottom: clamp(40px, 8vh, 80px) !important;
+  min-height: auto !important;
+}
+
+.hero-section {
+  overflow: hidden;
+  background: radial-gradient(circle at 50% -10%, rgb(90 200 250 / 3%), transparent 60%);
+}
+
+.hero-layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-image-block {
+  position: relative;
+  margin-bottom: 2rem !important;
+}
+
+.profile-image-wrapper {
+  width: clamp(84px, 10vw, 108px) !important;
+  height: clamp(84px, 10vw, 108px) !important;
+  border-radius: 50% !important;
+  padding: 2px !important;
+  background: linear-gradient(135deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 10%)) !important;
+  box-shadow:
+    0 10px 30px rgb(0 0 0 / 5%),
+    0 0 0 1px rgb(0 0 0 / 3%) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10;
+  margin-bottom: 0 !important;
+}
+
+html.dark .profile-image-wrapper {
+  background: linear-gradient(135deg, rgb(255 255 255 / 10%), rgb(255 255 255 / 2%));
+  box-shadow:
+    0 20px 40px rgb(0 0 0 / 30%),
+    0 0 0 1px rgb(255 255 255 / 5%);
+}
+
+#home .profile-image {
+  border-radius: 50% !important;
+  border: 2px solid rgb(255 255 255 / 80%) !important;
+}
+
+html.dark #home .profile-image {
+  border-color: rgb(28 28 30 / 80%) !important;
+}
+
+.profile-ring {
+  inset: -15px;
+  border-radius: 50%;
+  border: 0;
+  background: radial-gradient(circle, rgb(0 113 227 / 8%) 0%, transparent 70%);
+  filter: blur(20px);
+  z-index: -1;
+  animation: spatialPulse 4s ease-in-out infinite;
+}
+
+@keyframes spatialPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+.vibe-coder-badge-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  perspective: 1000px;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.vibe-coder-badge,
+.portfolio-reach-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 980px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
+}
+
+.vibe-coder-badge {
+  background: rgb(255 255 255 / 80%);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgb(0 0 0 / 10%);
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+}
+
+.vibe-coder-badge i,
+.portfolio-reach-badge i {
+  font-size: 0.75rem;
+  color: #0071e3;
+}
+
+.vibe-coder-badge:hover,
+.portfolio-reach-badge:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+html.dark .vibe-coder-badge {
+  background: rgb(28 28 30 / 80%);
+  border-color: rgb(255 255 255 / 10%);
+  color: #f5f5f7;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+
+html.dark .vibe-coder-badge i,
+html.dark .portfolio-reach-badge i {
+  color: #2997ff;
+}
+
+.portfolio-reach-badge {
+  background: transparent;
+  border: 1px solid rgb(0 0 0 / 15%);
+  color: #1d1d1f;
+}
+
+.portfolio-reach-badge .reach-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.portfolio-reach-badge:hover {
+  border-color: rgb(0 0 0 / 25%);
+  background: rgb(0 0 0 / 3%);
+}
+
+html.dark .portfolio-reach-badge {
+  border-color: rgb(255 255 255 / 15%);
+  color: #f5f5f7;
+}
+
+html.dark .portfolio-reach-badge:hover {
+  border-color: rgb(255 255 255 / 25%);
+  background: rgb(255 255 255 / 5%);
+}
+
+.hero-name {
+  font-size: clamp(2.5rem, 7vw, 4.2rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04em !important;
+  margin-bottom: 0.4rem !important;
+  line-height: 1.1 !important;
+  background: none;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: initial;
+}
+
+html.dark .hero-name {
+  background: none;
+  color: #2997ff !important;
+}
+
+.hero-title {
+  font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: #4a4a4f !important;
+  margin-bottom: 0 !important;
+  line-height: 1.2 !important;
+}
+
+html.dark .hero-title {
+  color: #a1a1a6 !important;
+}
+
+.hero-body {
+  margin-bottom: 3rem !important;
+}
+
+.hero-description {
+  font-size: clamp(1rem, 1.8vw, 1.25rem) !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
+  color: #434346 !important;
+  opacity: 0.9;
+  letter-spacing: -0.01em !important;
+}
+
+html.dark .hero-description {
+  color: #d2d2d7 !important;
+}
+
+.music-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.25rem;
+  animation: musicCardSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes musicCardSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.music-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  background: rgb(255 255 255 / 85%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 100px;
+  box-shadow:
+    0 4px 24px rgb(0 0 0 / 8%),
+    0 1px 2px rgb(0 0 0 / 4%),
+    inset 0 1px 0 rgb(255 255 255 / 60%);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html.dark .music-card-inner {
+  background: rgb(28 28 30 / 85%);
+  border-color: rgb(255 255 255 / 10%);
+  box-shadow:
+    0 4px 24px rgb(0 0 0 / 40%),
+    0 1px 2px rgb(0 0 0 / 20%),
+    inset 0 1px 0 rgb(255 255 255 / 10%);
+}
+
+.album-art-container {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.album-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 15%),
+    inset 0 0 0 1px rgb(255 255 255 / 20%);
+  transition: transform 0.3s ease;
+}
+
+.music-card.is-playing .album-art {
+  animation: albumSpin 8s linear infinite;
+}
+
+@keyframes albumSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.playing-indicator {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+  padding: 3px 6px;
+  background: rgb(255 59 48 / 95%);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgb(255 59 48 / 40%);
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease;
+}
+
+.playing-indicator.active {
+  opacity: 1;
+}
+
+.playing-indicator span {
+  width: 2px;
+  border-radius: 1px;
+  background: #fff;
+  animation: playingBars 1s ease-in-out infinite;
+}
+
+.playing-indicator span:nth-child(1) {
+  height: 6px;
+  animation-delay: 0s;
+}
+
+.playing-indicator span:nth-child(2) {
+  height: 10px;
+  animation-delay: 0.2s;
+}
+
+.playing-indicator span:nth-child(3) {
+  height: 8px;
+  animation-delay: 0.4s;
+}
+
+@keyframes playingBars {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    transform: scaleY(1.5);
+  }
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  text-align: left;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.spotify-logo {
+  width: 16px;
+  height: 16px;
+  color: #1db954;
+  flex-shrink: 0;
+}
+
+.status-text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #4a4a4f;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+html.dark .status-text {
+  color: #a1a1a6;
+}
+
+.track-name {
+  max-width: 160px;
+  margin: 0 !important;
+  overflow: hidden;
+  color: #1d1d1f !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html.dark .track-name {
+  color: #f5f5f7 !important;
+}
+
+.artist-name {
+  max-width: 160px;
+  margin: 0 !important;
+  overflow: hidden;
+  color: #4a4a4f !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html.dark .artist-name {
+  color: #a1a1a6 !important;
+}
+
+.lastfm-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: 0.5rem;
+  color: #ff3b30;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.lastfm-link:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.lastfm-icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* Hero CTA Button */

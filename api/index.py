@@ -19,6 +19,9 @@ from collections import defaultdict
 
 import httpx
 from dotenv import load_dotenv
+import json
+import hashlib
+import time
 
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
@@ -27,6 +30,10 @@ from api.monitoring import system_monitor, MonitoringMiddleware, EventType
 
 # Load environment variables
 load_dotenv()
+
+# API Keys for media services
+TMDB_API_KEY = os.getenv("TMDB_API_KEY", "").strip()
+GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
 
 # Initialize FastAPI with optimizations
 app = FastAPI(
@@ -50,12 +57,34 @@ origins = [
     "https://mangeshraut.pro",
     "https://mangeshrautarchive.vercel.app",
     # Development
+    "http://localhost:4000",
+    "https://localhost:4000",
+    "http://localhost:4001",
+    "https://localhost:4001",
+    "http://localhost:4002",
+    "https://localhost:4002",
+    "http://localhost:4173",
+    "https://localhost:4173",
     "http://localhost:3000",
     "http://localhost:8000",
+    "http://localhost:8001",
+    "https://localhost:8001",
     "http://localhost:5173",
+    "https://localhost:5173",
+    "http://127.0.0.1:4000",
+    "https://127.0.0.1:4000",
+    "http://127.0.0.1:4001",
+    "https://127.0.0.1:4001",
+    "http://127.0.0.1:4002",
+    "https://127.0.0.1:4002",
+    "http://127.0.0.1:4173",
+    "https://127.0.0.1:4173",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:8001",
+    "https://127.0.0.1:8001",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
+    "https://127.0.0.1:5173",
 ]
 
 app.add_middleware(
@@ -63,7 +92,13 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=False,
     allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+    allow_headers=[
+        "Content-Type",
+        "Authorization",
+        "Accept",
+        "Origin",
+        "X-Requested-With",
+    ],
     expose_headers=["X-Session-ID"],
 )
 
@@ -85,7 +120,7 @@ else:
     print("   API Key: ⚠️  Not configured")
     print("   Mode: 🧠 Local Intelligence (Offline Fallback Active)")
 print(f"   Site URL: {SITE_URL}")
-print("   Docs: http://localhost:8000/api/docs")
+print("   Docs: http://localhost:8001/api/docs")
 print("=" * 60)
 
 # Rate Limiting
@@ -100,9 +135,24 @@ MEMORY_EXPIRY = 3600  # 1 hour
 
 # Models - Support multiple models
 MODELS = [
-    {"id": "x-ai/grok-4.1-fast", "name": "Grok 4.1 Fast", "priority": 1, "streaming": True},
-    {"id": "x-ai/grok-2-1212", "name": "Grok 2 (Legacy)", "priority": 2, "streaming": True},
-    {"id": "anthropic/claude-3.5-sonnet", "name": "Claude 3.5 Sonnet", "priority": 3, "streaming": True},
+    {
+        "id": "x-ai/grok-4.1-fast",
+        "name": "Grok 4.1 Fast",
+        "priority": 1,
+        "streaming": True,
+    },
+    {
+        "id": "x-ai/grok-2-1212",
+        "name": "Grok 2 (Legacy)",
+        "priority": 2,
+        "streaming": True,
+    },
+    {
+        "id": "anthropic/claude-3.5-sonnet",
+        "name": "Claude 3.5 Sonnet",
+        "priority": 3,
+        "streaming": True,
+    },
 ]
 DEFAULT_MODEL = OPENROUTER_MODEL or "x-ai/grok-4.1-fast"
 
@@ -333,7 +383,8 @@ def check_rate_limit(client_id: str) -> bool:
     now = time.time()
     # Clean old entries
     rate_limit_store[client_id] = [
-        timestamp for timestamp in rate_limit_store[client_id]
+        timestamp
+        for timestamp in rate_limit_store[client_id]
         if now - timestamp < RATE_LIMIT_WINDOW
     ]
 
@@ -363,7 +414,7 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
         conversation_memory[session_id] = {
             "messages": [],
             "created": time.time(),
-            "last_access": time.time()
+            "last_access": time.time(),
         }
 
     memory = conversation_memory[session_id]
@@ -372,7 +423,7 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
 
     # Keep only last N messages
     if len(memory["messages"]) > MAX_MEMORY_MESSAGES * 2:
-        memory["messages"] = memory["messages"][-MAX_MEMORY_MESSAGES * 2:]
+        memory["messages"] = memory["messages"][-MAX_MEMORY_MESSAGES * 2 :]
 
     memory["last_access"] = time.time()
 
@@ -380,6 +431,10 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
 # Cache with TTL
 response_cache = {}
 CACHE_DURATION = 300  # 5 minutes
+
+# Poster cache - longer TTL since images don't change often
+poster_cache = {}
+POSTER_CACHE_DURATION = 86400  # 24 hours
 
 
 # Helper Functions
@@ -422,6 +477,155 @@ def set_cached_response(cache_key: str, response: Dict):
             del response_cache[k]
 
 
+# Poster fetching functions
+async def get_cached_poster(cache_key: str):
+    """Get cached poster URL"""
+    cached = poster_cache.get(cache_key)
+    if not cached:
+        return None
+
+    if time.time() - cached["timestamp"] > POSTER_CACHE_DURATION:
+        del poster_cache[cache_key]
+        return None
+
+    return cached["url"]
+
+
+def set_cached_poster(cache_key: str, url: str):
+    """Cache poster URL"""
+    poster_cache[cache_key] = {
+        "url": url,
+        "timestamp": time.time(),
+    }
+
+    # Cleanup old entries
+    if len(poster_cache) > 500:
+        sorted_keys = sorted(
+            poster_cache.keys(), key=lambda k: poster_cache[k]["timestamp"]
+        )
+        for k in sorted_keys[:100]:
+            del poster_cache[k]
+
+
+async def fetch_tmdb_poster(title: str, media_type: str = "movie") -> str:
+    """Fetch poster from TMDB API"""
+    if not TMDB_API_KEY:
+        return ""
+
+    cache_key = f"tmdb:{media_type}:{title.lower().strip()}"
+    cached = await get_cached_poster(cache_key)
+    if cached:
+        return cached
+
+    try:
+        # Search for the title
+        search_url = f"https://api.themoviedb.org/3/search/{media_type}"
+        params = {"api_key": TMDB_API_KEY, "query": title, "include_adult": False}
+
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(search_url, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+        if data.get("results"):
+            # Get the first result
+            result = data["results"][0]
+            poster_path = result.get("poster_path")
+            if poster_path:
+                poster_url = f"https://image.tmdb.org/t/p/w200{poster_path}"
+                set_cached_poster(cache_key, poster_url)
+                system_monitor.record_poster_request(True)
+                return poster_url
+
+    except Exception as e:
+        print(f"TMDB fetch error for {title}: {str(e)}")
+        system_monitor.record_poster_request(False)
+
+    return ""
+
+
+async def fetch_google_books_cover(title: str, author: str = "") -> str:
+    """Fetch book cover from Google Books API"""
+    if not GOOGLE_BOOKS_API_KEY:
+        return ""
+
+    query = f"intitle:{title}"
+    if author:
+        query += f" inauthor:{author}"
+
+    cache_key = f"gbooks:{query.lower().strip()}"
+    cached = await get_cached_poster(cache_key)
+    if cached:
+        return cached
+
+    try:
+        url = "https://www.googleapis.com/books/v1/volumes"
+        params = {
+            "q": query,
+            "key": GOOGLE_BOOKS_API_KEY,
+            "maxResults": 1,
+            "fields": "items(volumeInfo(imageLinks))",
+        }
+
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(url, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+        if data.get("items"):
+            volume_info = data["items"][0].get("volumeInfo", {})
+            image_links = volume_info.get("imageLinks", {})
+            # Prefer medium thumbnail
+            cover_url = image_links.get(
+                "thumbnail", image_links.get("smallThumbnail", "")
+            )
+            if cover_url:
+                # Remove &zoom=1 if present for better quality
+                cover_url = cover_url.replace("&zoom=1", "")
+                set_cached_poster(cache_key, cover_url)
+                system_monitor.record_poster_request(True)
+                return cover_url
+
+    except Exception as e:
+        print(f"Google Books fetch error for {title}: {str(e)}")
+        system_monitor.record_poster_request(False)
+
+    return ""
+
+
+async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
+    """Fallback: Fetch from Open Library (no API key needed)"""
+    cache_key = f"ol:{title.lower().strip()}:{author.lower().strip()}"
+    cached = await get_cached_poster(cache_key)
+    if cached:
+        return cached
+
+    try:
+        # Search for the book
+        search_url = "https://openlibrary.org/search.json"
+        params = {"title": title, "author": author, "limit": 1}
+
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(search_url, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+        if data.get("docs"):
+            doc = data["docs"][0]
+            cover_id = doc.get("cover_i")
+            if cover_id:
+                cover_url = f"https://covers.openlibrary.org/b/id/{cover_id}-M.jpg"
+                set_cached_poster(cache_key, cover_url)
+                system_monitor.record_poster_request(True)
+                return cover_url
+
+    except Exception as e:
+        print(f"Open Library fetch error for {title}: {str(e)}")
+        system_monitor.record_poster_request(False)
+
+    return ""
+
+
 # Prompt injection guard — patterns that attempt to hijack system behaviour
 _INJECTION_PATTERNS = [
     re.compile(r"ignore (all |previous |prior )?instructions?", re.I),
@@ -446,7 +650,10 @@ def is_prompt_injection(message: str) -> bool:
 # Structured error envelope helper
 # ─────────────────────────────────────────────
 
-def api_error(code: str, message: str, status: int = 400, retry_after: Optional[int] = None) -> HTTPException:
+
+def api_error(
+    code: str, message: str, status: int = 400, retry_after: Optional[int] = None
+) -> HTTPException:
     """
     Return a uniform error envelope:
       { "error": { "code": "...", "message": "...", "retryAfter": N } }
@@ -543,7 +750,9 @@ async def github_api_proxy(path: str):
     GitHub data consistent through a single server-side source of truth.
     """
     if not path or not path.strip():
-        raise HTTPException(status_code=400, detail="Missing required query param: path")
+        raise HTTPException(
+            status_code=400, detail="Missing required query param: path"
+        )
 
     normalized_path = unquote(path.strip())
     if not normalized_path.startswith("/"):
@@ -554,7 +763,9 @@ async def github_api_proxy(path: str):
 
     allowed_prefixes = ("/repos/", "/users/")
     if not normalized_path.startswith(allowed_prefixes):
-        raise HTTPException(status_code=400, detail="Only /repos/* and /users/* paths are allowed")
+        raise HTTPException(
+            status_code=400, detail="Only /repos/* and /users/* paths are allowed"
+        )
 
     cache_key = f"gh_proxy:{normalized_path}"
     cached = _github_api_proxy_cache.get(cache_key)
@@ -577,7 +788,9 @@ async def github_api_proxy(path: str):
         async with httpx.AsyncClient(timeout=12.0) as client:
             github_resp = await client.get(target_url, headers=headers)
     except httpx.RequestError as exc:
-        raise HTTPException(status_code=503, detail=f"GitHub request failed: {str(exc)}")
+        raise HTTPException(
+            status_code=503, detail=f"GitHub request failed: {str(exc)}"
+        )
 
     # Local-dev rescue path: use authenticated `gh api` when direct API is rate-limited
     # and PAT is not configured. This keeps data accurate during local development.
@@ -610,7 +823,12 @@ async def github_api_proxy(path: str):
         payload = {"message": github_resp.text}
 
     passthrough_headers = {}
-    for key in ("link", "x-ratelimit-limit", "x-ratelimit-remaining", "x-ratelimit-reset"):
+    for key in (
+        "link",
+        "x-ratelimit-limit",
+        "x-ratelimit-remaining",
+        "x-ratelimit-reset",
+    ):
         value = github_resp.headers.get(key)
         if value:
             passthrough_headers[key] = value
@@ -715,18 +933,22 @@ def generate_local_response(query: str) -> Dict:
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
         return {
-            "answer": f"👨‍💻 **{
-                PORTFOLIO_DATA['name']}** is a {
-                PORTFOLIO_DATA['title']} based in {
-                PORTFOLIO_DATA['location']}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
-            "category": "About"}
+            "answer": f"👨‍💻 **{PORTFOLIO_DATA['name']}** is a {
+                PORTFOLIO_DATA['title']
+            } based in {
+                PORTFOLIO_DATA['location']
+            }. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
+            "category": "About",
+        }
 
     # Resume/CV
     if "resume" in query or "cv" in query:
         return {
             "answer": f"📄 You can download Mangesh's resume here: {
-                PORTFOLIO_DATA['resume_url']}",
-            "category": "Resume"}
+                PORTFOLIO_DATA['resume_url']
+            }",
+            "category": "Resume",
+        }
 
     # Skills
     if "skill" in query or "stack" in query or "tech" in query or "language" in query:
@@ -734,43 +956,65 @@ def generate_local_response(query: str) -> Dict:
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
             "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}\n• **Cloud**: AWS, Docker, Kubernetes\n• **Databases**: PostgreSQL, MongoDB, Redis",
-            "category": "Skills"
+            "category": "Skills",
         }
 
     # Projects
     if "project" in query:
-        projects_list = "\n".join([f"• **{p['name']}**: {p['achievements']}" for p in PORTFOLIO_DATA["projects"][:3]])
+        projects_list = "\n".join(
+            [
+                f"• **{p['name']}**: {p['achievements']}"
+                for p in PORTFOLIO_DATA["projects"][:3]
+            ]
+        )
         return {
             "answer": f"🚀 **Key Projects**:\n{projects_list}",
-            "category": "Projects"
+            "category": "Projects",
         }
 
     # Contact
     if "contact" in query or "email" in query or "hiring" in query or "hire" in query:
         return {
             "answer": f"📫 **Contact Information**:\n• **Email**: {
-                PORTFOLIO_DATA['email']}\n• **Phone**: {
-                PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {
-                PORTFOLIO_DATA['linkedin']}\n• **GitHub**: {
-                    PORTFOLIO_DATA['github']}",
-            "category": "Contact"}
+                PORTFOLIO_DATA['email']
+            }\n• **Phone**: {PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {
+                PORTFOLIO_DATA['linkedin']
+            }\n• **GitHub**: {PORTFOLIO_DATA['github']}",
+            "category": "Contact",
+        }
 
     # Experience
     if "experience" in query or "job" in query or "work" in query:
         exp_list = "\n".join(
-            [f"• **{e['title']}** at {e['company']} ({e['period']})" for e in PORTFOLIO_DATA["experience"][:3]])
+            [
+                f"• **{e['title']}** at {e['company']} ({e['period']})"
+                for e in PORTFOLIO_DATA["experience"][:3]
+            ]
+        )
         return {
             "answer": f"💼 **Professional Experience**:\n{exp_list}",
-            "category": "Experience"
+            "category": "Experience",
         }
 
     # Education
-    if "education" in query or "degree" in query or "university" in query or "college" in query:
+    if (
+        "education" in query
+        or "degree" in query
+        or "university" in query
+        or "college" in query
+    ):
         edu_list = "\n".join(
-            [f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
+            [
+                f"• **{e['degree']}** - {e['school']} ({e['period']})"
+                for e in PORTFOLIO_DATA.get("education", [])[:2]
+            ]
+        )
         return {
-            "answer": f"🎓 **Education**:\n{edu_list}" if edu_list else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
-            "category": "Education"}
+            "answer": f"🎓 **Education**:\n{edu_list}"
+            if edu_list
+            else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
+            "category": "Education",
+        }
 
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
@@ -787,7 +1031,8 @@ def generate_local_response(query: str) -> Dict:
 
 
 async def stream_openrouter_response(
-        model: str, messages: List[Dict], session_id: Optional[str] = None) -> AsyncGenerator[str, None]:
+    model: str, messages: List[Dict], session_id: Optional[str] = None
+) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
     print(f"🔄 Streaming from OpenRouter: {model}")
 
@@ -816,29 +1061,39 @@ async def stream_openrouter_response(
         current_pos = 0
 
         while current_pos < len(full_text):
-            chunk = full_text[current_pos:current_pos + chunk_size]
+            chunk = full_text[current_pos : current_pos + chunk_size]
             current_pos += chunk_size
-            yield json.dumps({
-                "type": "chunk",
-                "content": chunk,
-                "chunk_id": current_pos // chunk_size
-            }) + "\n"
+            yield (
+                json.dumps(
+                    {
+                        "type": "chunk",
+                        "content": chunk,
+                        "chunk_id": current_pos // chunk_size,
+                    }
+                )
+                + "\n"
+            )
             await asyncio.sleep(0.02)  # Simulate typing speed
 
         # Send done signal
-        yield json.dumps({
-            "type": "done",
-            "full_content": full_text,
-            "metadata": {
-                "model": "Local-FastAPI",
-                "source": "Local Intelligence",
-                "sourceLabel": "Local Dev Mode",
-                "category": fallback.get("category", "General"),
-                "confidence": 1.0,
-                "tokens_estimate": len(full_text) // 4,
-                "elapsed_ms": 600
-            }
-        }) + "\n"
+        yield (
+            json.dumps(
+                {
+                    "type": "done",
+                    "full_content": full_text,
+                    "metadata": {
+                        "model": "Local-FastAPI",
+                        "source": "Local Intelligence",
+                        "sourceLabel": "Local Dev Mode",
+                        "category": fallback.get("category", "General"),
+                        "confidence": 1.0,
+                        "tokens_estimate": len(full_text) // 4,
+                        "elapsed_ms": 600,
+                    },
+                }
+            )
+            + "\n"
+        )
         return
 
     # Send typing indicator start
@@ -860,7 +1115,9 @@ async def stream_openrouter_response(
             chunk_count = 0
 
         try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(60.0, connect=10.0)) as client:
+            async with httpx.AsyncClient(
+                timeout=httpx.Timeout(60.0, connect=10.0)
+            ) as client:
                 async with client.stream(
                     "POST",
                     API_URL,
@@ -875,17 +1132,31 @@ async def stream_openrouter_response(
                         "messages": messages,
                         "stream": True,
                         **adaptive_llm_params(
-                            next((m["content"] for m in reversed(messages) if m.get("role") == "user"), "")
+                            next(
+                                (
+                                    m["content"]
+                                    for m in reversed(messages)
+                                    if m.get("role") == "user"
+                                ),
+                                "",
+                            )
                         ),
                     },
                 ) as response:
                     if response.status_code != 200:
                         error_text = await response.aread()
-                        print(f"❌ API Error {response.status_code}: {error_text.decode()}")
-                        yield json.dumps({
-                            "error": f"API Error {response.status_code}",
-                            "type": "error"
-                        }) + "\n"
+                        print(
+                            f"❌ API Error {response.status_code}: {error_text.decode()}"
+                        )
+                        yield (
+                            json.dumps(
+                                {
+                                    "error": f"API Error {response.status_code}",
+                                    "type": "error",
+                                }
+                            )
+                            + "\n"
+                        )
                         return
 
                     # Stop typing indicator only once
@@ -900,23 +1171,30 @@ async def stream_openrouter_response(
                         if data == "[DONE]":
                             elapsed = time.time() - start_time
                             tokens_estimate = len(full_content) // 4
-                            tokens_per_sec = tokens_estimate / elapsed if elapsed > 0 else 0
+                            tokens_per_sec = (
+                                tokens_estimate / elapsed if elapsed > 0 else 0
+                            )
 
-                            yield json.dumps({
-                                "type": "done",
-                                "full_content": full_content,
-                                "metadata": {
-                                    "model": model,
-                                    "source": "OpenRouter",
-                                    "sourceLabel": f"OpenRouter ({model.split('/')[-1]})",
-                                    "category": "AI Response",
-                                    "char_count": len(full_content),
-                                    "tokens_estimate": tokens_estimate,
-                                    "elapsed_ms": int(elapsed * 1000),
-                                    "tokens_per_sec": round(tokens_per_sec, 2),
-                                    "chunks": chunk_count
-                                }
-                            }) + "\n"
+                            yield (
+                                json.dumps(
+                                    {
+                                        "type": "done",
+                                        "full_content": full_content,
+                                        "metadata": {
+                                            "model": model,
+                                            "source": "OpenRouter",
+                                            "sourceLabel": f"OpenRouter ({model.split('/')[-1]})",
+                                            "category": "AI Response",
+                                            "char_count": len(full_content),
+                                            "tokens_estimate": tokens_estimate,
+                                            "elapsed_ms": int(elapsed * 1000),
+                                            "tokens_per_sec": round(tokens_per_sec, 2),
+                                            "chunks": chunk_count,
+                                        },
+                                    }
+                                )
+                                + "\n"
+                            )
                             return  # Success!
 
                         try:
@@ -930,11 +1208,16 @@ async def stream_openrouter_response(
                             if content:
                                 full_content += content
                                 chunk_count += 1
-                                yield json.dumps({
-                                    "type": "chunk",
-                                    "content": content,
-                                    "chunk_id": chunk_count
-                                }) + "\n"
+                                yield (
+                                    json.dumps(
+                                        {
+                                            "type": "chunk",
+                                            "content": content,
+                                            "chunk_id": chunk_count,
+                                        }
+                                    )
+                                    + "\n"
+                                )
                         except BaseException:
                             continue
 
@@ -946,18 +1229,22 @@ async def stream_openrouter_response(
             print(f"⚠️ Stream connection error: {str(e)}")
             retry_count += 1
             if retry_count > max_retries:
-                yield json.dumps({
-                    "error": "The neural link was interrupted. Please try rephrasing or refreshing.",
-                    "type": "error"
-                }) + "\n"
+                yield (
+                    json.dumps(
+                        {
+                            "error": "The neural link was interrupted. Please try rephrasing or refreshing.",
+                            "type": "error",
+                        }
+                    )
+                    + "\n"
+                )
             else:
                 await asyncio.sleep(1)  # Wait before retry
         except Exception as e:
             print(f"❌ Critical stream error: {str(e)}")
-            yield json.dumps({
-                "error": f"Neural error: {str(e)}",
-                "type": "error"
-            }) + "\n"
+            yield (
+                json.dumps({"error": f"Neural error: {str(e)}", "type": "error"}) + "\n"
+            )
             return
 
 
@@ -996,6 +1283,7 @@ async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
 
 
 # API Routes
+@app.post("/chat")
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest, req: Request):
     """Enhanced chat endpoint with memory, rate limiting, and streaming"""
@@ -1024,7 +1312,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "category": fallback.get("category", "General"),
             "confidence": 1.0,
             "runtime": f"{int(elapsed * 1000)}ms",
-            "type": "local"
+            "type": "local",
         }
 
     try:
@@ -1055,7 +1343,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         # Get conversation history: prefer client-provided messages, fallback to server session memory
         if request.messages:
             # Ensure it's max N messages to prevent payload explosion
-            history = request.messages[-MAX_MEMORY_MESSAGES * 2:]
+            history = request.messages[-MAX_MEMORY_MESSAGES * 2 :]
         else:
             history = get_session_memory(session_id) if request.session_id else []
 
@@ -1079,9 +1367,12 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
         # Streaming response
         if request.stream:
+
             async def generate_stream():
                 full_response = ""
-                async for chunk in stream_openrouter_response(selected_model, conversation, session_id):
+                async for chunk in stream_openrouter_response(
+                    selected_model, conversation, session_id
+                ):
                     yield chunk
                     # Extract full content for memory
                     try:
@@ -1101,7 +1392,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                 headers={
                     "Cache-Control": "no-cache",
                     "X-Accel-Buffering": "no",
-                    "X-Session-ID": session_id
+                    "X-Session-ID": session_id,
                 },
             )
 
@@ -1150,7 +1441,7 @@ async def get_models():
     return {
         "models": MODELS,
         "default": DEFAULT_MODEL,
-        "current": OPENROUTER_MODEL or DEFAULT_MODEL
+        "current": OPENROUTER_MODEL or DEFAULT_MODEL,
     }
 
 
@@ -1164,11 +1455,7 @@ async def typing_indicator(indicator: TypingIndicator):
 async def get_conversation(session_id: str):
     """Get conversation history for a session"""
     history = get_session_memory(session_id)
-    return {
-        "session_id": session_id,
-        "messages": history,
-        "count": len(history)
-    }
+    return {"session_id": session_id, "messages": history, "count": len(history)}
 
 
 @app.delete("/api/conversation/{session_id}")
@@ -1213,7 +1500,7 @@ async def health_check():
             "default_model": DEFAULT_MODEL,
             "cache_size": len(response_cache),
             "active_sessions": len(conversation_memory),
-            "rate_limit": f"{RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s"
+            "rate_limit": f"{RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s",
         },
     }
 
@@ -1241,8 +1528,92 @@ async def test_endpoint():
         "api_key_masked": masked_key,
         "default_model": DEFAULT_MODEL,
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "environment": os.getenv("VERCEL_ENV", "local")
+        "environment": os.getenv("VERCEL_ENV", "local"),
     }
+
+
+@app.get("/api/posters/movie")
+async def get_movie_poster(title: str, media_type: str = "movie"):
+    """Get movie/TV poster from TMDB"""
+    if not title.strip():
+        raise HTTPException(status_code=400, detail="Title is required")
+
+    poster_url = await fetch_tmdb_poster(title, media_type)
+    if not poster_url:
+        # Fallback to static if available, but for now return empty
+        return {"poster_url": "", "source": "tmdb", "cached": False}
+
+    return {
+        "poster_url": poster_url,
+        "source": "tmdb",
+        "cached": True,
+        "title": title,
+        "media_type": media_type,
+    }
+
+
+@app.get("/api/posters/book")
+async def get_book_cover(title: str, author: str = ""):
+    """Get book cover from Google Books or Open Library"""
+    if not title.strip():
+        raise HTTPException(status_code=400, detail="Title is required")
+
+    # Try Google Books first
+    cover_url = await fetch_google_books_cover(title, author)
+    source = "google_books"
+
+    if not cover_url:
+        # Fallback to Open Library
+        cover_url = await fetch_openlibrary_cover(title, author)
+        source = "openlibrary"
+
+    return {
+        "cover_url": cover_url,
+        "source": source,
+        "cached": bool(cover_url),
+        "title": title,
+        "author": author,
+    }
+
+
+@app.get("/api/posters/batch")
+async def get_batch_posters(items: str):
+    """Get posters for multiple items at once"""
+    try:
+        data = json.loads(items)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid JSON in items parameter")
+
+    results = []
+    for item in data:
+        media_type = item.get("type", "").lower()
+        title = item.get("title", "")
+        author = item.get("author", "")
+
+        if media_type in ["movie", "tv", "series"]:
+            poster_url = await fetch_tmdb_poster(
+                title, "tv" if media_type == "tv" else "movie"
+            )
+            source = "tmdb"
+        elif media_type == "book":
+            poster_url = await fetch_google_books_cover(title, author)
+            if not poster_url:
+                poster_url = await fetch_openlibrary_cover(title, author)
+            source = "google_books" if poster_url else "openlibrary"
+        else:
+            poster_url = ""
+            source = "unknown"
+
+        results.append(
+            {
+                "id": str(item.get("id", "")),
+                "poster_url": poster_url,
+                "source": source,
+                "cached": bool(poster_url),
+            }
+        )
+
+    return {"results": results}
 
 
 @app.get("/api")
@@ -1255,6 +1626,9 @@ async def api_root():
             "resume": "/api/resume",
             "health": "/api/health",
             "github_repos": "/api/github/repos/public",
+            "posters_movie": "/api/posters/movie",
+            "posters_book": "/api/posters/book",
+            "posters_batch": "/api/posters/batch",
             "docs": "/api/docs",
         },
     }
@@ -1267,6 +1641,8 @@ async def api_root():
 # With GITHUB_PAT set this endpoint allows 5000 req/hr.
 # ============================================================
 
+
+@app.get("/github/repos/public")
 @app.get("/api/github/repos/public")
 async def github_repos_proxy(
     username: str = "mangeshraut712",
@@ -1284,16 +1660,32 @@ async def github_repos_proxy(
         repos = await fetch_github_repos_cached(username)
     except httpx.HTTPStatusError as exc:
         if exc.response.status_code == 403:
-            raise api_error("GITHUB_RATE_LIMITED", "GitHub API rate limit hit. Try again in a few minutes.", 503)
+            raise api_error(
+                "GITHUB_RATE_LIMITED",
+                "GitHub API rate limit hit. Try again in a few minutes.",
+                503,
+            )
         if exc.response.status_code == 404:
-            raise api_error("GITHUB_USER_NOT_FOUND", f"GitHub user '{username}' not found.", 404)
-        raise api_error("GITHUB_ERROR", f"GitHub API returned {exc.response.status_code}.", 502)
+            raise api_error(
+                "GITHUB_USER_NOT_FOUND", f"GitHub user '{username}' not found.", 404
+            )
+        raise api_error(
+            "GITHUB_ERROR", f"GitHub API returned {exc.response.status_code}.", 502
+        )
     except httpx.RequestError:
-        raise api_error("GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503)
+        raise api_error(
+            "GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503
+        )
 
     # Sort
-    sort_key = {"updated": "pushed_at", "created": "created_at", "stars": "stargazers_count"}.get(sort, "pushed_at")
-    repos.sort(key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count"))
+    sort_key = {
+        "updated": "pushed_at",
+        "created": "created_at",
+        "stars": "stargazers_count",
+    }.get(sort, "pushed_at")
+    repos.sort(
+        key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count")
+    )
 
     # Filter forks
     if no_forks:
@@ -1326,7 +1718,9 @@ async def github_repos_proxy(
 
     slim_repos = [slim(r) for r in repos[:limit]]
 
-    rate_header = "authenticated (5000 req/hr)" if GITHUB_PAT else "unauthenticated (60 req/hr)"
+    rate_header = (
+        "authenticated (5000 req/hr)" if GITHUB_PAT else "unauthenticated (60 req/hr)"
+    )
     return {
         "success": True,
         "username": username,
@@ -1341,9 +1735,7 @@ async def github_repos_proxy(
 # Alias for backwards compatibility - some frontend code calls /github/repos without /api prefix
 @app.get("/github/repos")
 async def get_github_repos_alias(
-    username: str = "mangeshraut712",
-    limit: int = 100,
-    no_forks: bool = False
+    username: str = "mangeshraut712", limit: int = 100, no_forks: bool = False
 ):
     """Redirect/alias for old frontend code that doesn't use /api prefix"""
     return await github_repos_proxy(username, "updated", limit, no_forks)
@@ -1366,7 +1758,7 @@ async def get_analytics_views():
                 "this_week": 320,
                 "this_month": 890,
             },
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
@@ -1383,6 +1775,7 @@ async def get_analytics_views_alias():
 # CONTACT FORM ENDPOINT  (replaces dead-code api/contact.js)
 # ============================================================
 
+
 class ContactMessage(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     email: str = Field(..., min_length=5, max_length=200)
@@ -1398,11 +1791,14 @@ async def send_contact_message(payload: ContactMessage, req: Request):
     if not email_re.match(payload.email):
         raise HTTPException(status_code=400, detail="Invalid email address")
 
-    firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv("FIREBASE_API_KEY")
+    firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv(
+        "FIREBASE_API_KEY"
+    )
     if not firebase_api_key:
         raise HTTPException(
             status_code=503,
-            detail="Contact service not configured. Please email mbr63@drexel.edu directly.")
+            detail="Contact service not configured. Please email mbr63@drexel.edu directly.",
+        )
 
     project_id = "mangeshrautarchive"
     url = (
@@ -1418,7 +1814,11 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             "message": {"stringValue": payload.message.strip()},
             "timestamp": {"timestampValue": datetime.utcnow().isoformat() + "Z"},
             "userAgent": {"stringValue": req.headers.get("user-agent", "Unknown")},
-            "submittedFrom": {"stringValue": req.headers.get("referer") or req.headers.get("origin") or "Direct"},
+            "submittedFrom": {
+                "stringValue": req.headers.get("referer")
+                or req.headers.get("origin")
+                or "Direct"
+            },
         }
     }
 
@@ -1429,8 +1829,10 @@ async def send_contact_message(payload: ContactMessage, req: Request):
         if not resp.is_success:
             error_body = resp.text
             print(f"❌ Firestore error {resp.status_code}: {error_body}")
-            raise HTTPException(status_code=502,
-                                detail="Failed to save message. Please try again or email mbr63@drexel.edu.")
+            raise HTTPException(
+                status_code=502,
+                detail="Failed to save message. Please try again or email mbr63@drexel.edu.",
+            )
 
         doc_id = resp.json().get("name", "").split("/")[-1]
         print(f"✅ Contact message saved: {doc_id} from {payload.email}")
@@ -1445,6 +1847,8 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 # PERSONAL INTELLIGENCE ENDPOINTS (v6.0)
 # ====================================================================================
 
+
+@app.get("/github/profile")
 @app.get("/api/github/profile")
 async def get_github_profile(username: str = "mangeshraut712"):
     """
@@ -1459,25 +1863,26 @@ async def get_github_profile(username: str = "mangeshraut712"):
     try:
         activity = await github_connector.get_user_activity_summary(username)
 
-        if 'error' in activity:
-            raise HTTPException(status_code=404, detail=activity['error'])
+        if "error" in activity:
+            raise HTTPException(status_code=404, detail=activity["error"])
 
         return {
             "success": True,
             "data": activity,
             "ai_summary": github_connector.generate_github_summary_for_ai(activity),
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
 
 
+@app.get("/github/repos")
 @app.get("/api/github/repos")
 async def get_github_repos(
     username: str = "mangeshraut712",
     sort: str = "updated",
     limit: int = 10,
-    search: Optional[str] = None
+    search: Optional[str] = None,
 ):
     """
     Get user's GitHub repositories with optional filtering
@@ -1492,13 +1897,15 @@ async def get_github_repos(
         if search:
             repos = await github_connector.search_user_repos(username, search)
         else:
-            repos = await github_connector.get_repositories(username, sort=sort, max_repos=limit)
+            repos = await github_connector.get_repositories(
+                username, sort=sort, max_repos=limit
+            )
 
         return {
             "success": True,
             "count": len(repos),
             "data": repos,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
+            "timestamp": datetime.utcnow().isoformat() + "Z",
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
@@ -1511,15 +1918,12 @@ async def get_memory_stats():
     return {
         "success": True,
         "data": stats,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
 
 @app.post("/api/personalization/preferences")
-async def update_user_preferences(
-    request: Request,
-    preferences: Dict[str, Any]
-):
+async def update_user_preferences(request: Request, preferences: Dict[str, Any]):
     """
     Update user preferences (GDPR compliant)
 
@@ -1535,8 +1939,8 @@ async def update_user_preferences(
         }
     """
     try:
-        user_id = preferences.get('user_id', get_client_ip(request))
-        prefs = preferences.get('preferences', {})
+        user_id = preferences.get("user_id", get_client_ip(request))
+        prefs = preferences.get("preferences", {})
 
         memory_manager.update_preferences(user_id, prefs)
 
@@ -1544,10 +1948,12 @@ async def update_user_preferences(
             "success": True,
             "message": "Preferences updated successfully",
             "user_id": user_id,
-            "preferences": prefs
+            "preferences": prefs,
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error updating preferences: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error updating preferences: {str(e)}"
+        )
 
 
 @app.get("/api/personalization/greeting")
@@ -1567,7 +1973,7 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
         "success": True,
         "greeting": greeting,
         "context": context,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -1575,6 +1981,8 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
 # SYSTEM MONITORING ENDPOINTS (v1.0)
 # ====================================================================================
 
+
+@app.get("/monitor/health")
 @app.get("/api/monitor/health")
 async def get_monitor_health():
     """
@@ -1584,6 +1992,7 @@ async def get_monitor_health():
     return health
 
 
+@app.get("/monitor/metrics")
 @app.get("/api/monitor/metrics")
 async def get_monitor_metrics():
     """
@@ -1593,11 +2002,21 @@ async def get_monitor_metrics():
     return metrics
 
 
+@app.get("/monitor/external-services")
+@app.get("/api/monitor/external-services")
+async def get_monitor_external_services():
+    """
+    Live status for external and integration services surfaced in the monitor UI
+    """
+    return await system_monitor.get_external_services_status()
+
+
+@app.get("/monitor/events")
 @app.get("/api/monitor/events")
 async def get_monitor_events(
     limit: int = 100,
     event_type: Optional[str] = None,
-    resolved_only: Optional[bool] = None
+    resolved_only: Optional[bool] = None,
 ):
     """
     Get system events with optional filtering
@@ -1612,17 +2031,17 @@ async def get_monitor_events(
         try:
             event_type_enum = EventType(event_type)
         except ValueError:
-            raise HTTPException(status_code=400, detail=f"Invalid event type: {event_type}")
+            raise HTTPException(
+                status_code=400, detail=f"Invalid event type: {event_type}"
+            )
 
     events = system_monitor.get_events(
-        limit=limit,
-        event_type=event_type_enum,
-        resolved_only=resolved_only
+        limit=limit, event_type=event_type_enum, resolved_only=resolved_only
     )
     return {
         "events": events,
         "count": len(events),
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
 
@@ -1639,19 +2058,17 @@ async def resolve_monitor_event(event_id: str):
         "success": True,
         "message": "Event resolved",
         "event_id": event_id,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
 
+@app.get("/monitor/status")
 @app.get("/api/monitor/status")
 async def get_monitor_status():
     """
     Quick status check for load balancers
     """
-    return {
-        "status": "ok",
-        "timestamp": datetime.utcnow().isoformat() + "Z"
-    }
+    return {"status": "ok", "timestamp": datetime.utcnow().isoformat() + "Z"}
 
 
 # Global exception handler to ensure 200 OK responses with proper error details
@@ -1665,7 +2082,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         EventType.ERROR if exc.status_code >= 500 else EventType.WARNING,
         f"HTTP {exc.status_code}: {exc.detail}",
         "api_error",
-        {"path": request.url.path, "status_code": exc.status_code}
+        {"path": request.url.path, "status_code": exc.status_code},
     )
 
     # Return JSON response with proper structure
@@ -1676,10 +2093,10 @@ async def http_exception_handler(request: Request, exc: HTTPException):
             "error": {
                 "code": exc.status_code,
                 "message": exc.detail,
-                "type": "http_error"
+                "type": "http_error",
             },
-            "timestamp": datetime.utcnow().isoformat() + "Z"
-        }
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+        },
     )
 
 
@@ -1694,7 +2111,7 @@ async def global_exception_handler(request: Request, exc: Exception):
         EventType.CRITICAL,
         f"Unhandled exception: {str(exc)}",
         "exception",
-        {"path": request.url.path, "error": str(exc)}
+        {"path": request.url.path, "error": str(exc)},
     )
 
     # Return JSON response
@@ -1705,10 +2122,10 @@ async def global_exception_handler(request: Request, exc: Exception):
             "error": {
                 "code": 500,
                 "message": "Internal server error",
-                "type": "internal_error"
+                "type": "internal_error",
             },
-            "timestamp": datetime.utcnow().isoformat() + "Z"
-        }
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+        },
     )
 
 

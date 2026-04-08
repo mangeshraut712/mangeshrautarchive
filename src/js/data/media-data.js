@@ -5,7 +5,7 @@
  */
 
 // Real TMDB poster URLs - verified working
-const SHOWS_AND_MOVIES = [
+export const SHOWS_AND_MOVIES = [
   // Indian TV Shows - Verified TMDB IDs
   {
     title: 'Taarak Mehta Ka Ooltah Chashmah',
@@ -232,7 +232,7 @@ const SHOWS_AND_MOVIES = [
 ];
 
 // Books with Open Library covers - verified working
-const BOOKS = [
+export const BOOKS = [
   {
     title: 'Steve Jobs',
     author: 'Walter Isaacson',
@@ -308,12 +308,7 @@ const BOOKS = [
 ];
 
 // Fallback image URLs if primary fails
-const FALLBACKS = {
+export const FALLBACKS = {
   movie: 'https://image.tmdb.org/t/p/w200/wwemzKWzjKYJFfCeiB57q3r4Bcm.png',
   book: 'https://covers.openlibrary.org/b/id/8264386-M.jpg'
 };
-
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { SHOWS_AND_MOVIES, BOOKS, FALLBACKS };
-}

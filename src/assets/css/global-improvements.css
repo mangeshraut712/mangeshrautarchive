@@ -88,6 +88,18 @@ html.dark .cta-button:hover {
   box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
 }
 
+/* Projects layout fallback so the showcase keeps a stable grid before deferred styles load */
+#projects #github-projects-container {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.recommendations-grid,
+.certifications-grid {
+  display: grid;
+}
+
 /* ========================================
    GLOBAL CARD STANDARDIZATION
    ======================================== */

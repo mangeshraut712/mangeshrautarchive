@@ -73,10 +73,21 @@
 
 /* Contact card customizations (base styles in sitewide-design-system.css) */
 .contact-card {
-  padding: 1.25rem !important;
-  border-radius: 16px !important;
+  padding: 1.5rem !important;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04) !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
+}
+
+html.dark .contact-card {
+  background: rgba(0, 0, 0, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
 }
 
 .contact-card * {
@@ -134,13 +145,14 @@ html.dark .contact-description {
 .contact-link-item {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.5rem;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  min-height: 44px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-decoration: none;
   color: #1d1d1f;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 html.dark .contact-link-item {
@@ -148,12 +160,20 @@ html.dark .contact-link-item {
 }
 
 .contact-link-item:hover {
-  background: rgb(0 0 0 / 4%);
-  transform: translateX(3px);
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateX(4px);
 }
 
 html.dark .contact-link-item:hover {
-  background: rgb(255 255 255 / 6%);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.contact-link-item:hover .link-text {
+  color: #007aff;
+}
+
+html.dark .contact-link-item:hover .link-text {
+  color: #0a84ff;
 }
 
 .contact-link-item i {
@@ -250,37 +270,6 @@ html.dark .icon-box.location {
   box-shadow:
     0 4px 15px rgb(255 59 48 / 40%),
     0 0 20px rgb(255 59 48 / 25%) !important;
-}
-
-/* Contact Link Item - Improved Hover */
-.contact-link-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  text-decoration: none;
-  color: #1d1d1f;
-  font-size: 0.9rem;
-}
-
-
-.contact-link-item:hover {
-  background: rgb(0 0 0 / 5%);
-  transform: translateX(4px);
-}
-
-html.dark .contact-link-item:hover {
-  background: rgb(255 255 255 / 8%);
-}
-
-.contact-link-item:hover .link-text {
-  color: #007aff;
-}
-
-html.dark .contact-link-item:hover .link-text {
-  color: #0a84ff;
 }
 
 /* ----------------------------------------
@@ -553,25 +542,7 @@ html.dark .social-section {
   border-top: 1px solid rgb(255 255 255 / 10%);
 }
 
-/* Refined Hover Styles - Blue Text, No Background */
-.contact-link-item:hover {
-  background: transparent !important;
-  transform: translateX(4px);
-  color: #007aff !important;
-}
 
-.contact-link-item:hover .link-text {
-  color: #007aff !important;
-}
-
-html.dark .contact-link-item:hover {
-  background: transparent !important;
-  color: #0a84ff !important;
-}
-
-html.dark .contact-link-item:hover .link-text {
-  color: #0a84ff !important;
-}
 
 /* ----------------------------------------
    PREMIUM DONATION CARD - 2026 Redesign
@@ -585,17 +556,19 @@ html.dark .contact-link-item:hover .link-text {
 }
 
 .support-donation-card {
-  background: #ffffff;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72) !important;
+  border-radius: 24px;
   padding: 1.5rem 1.75rem;
-  border: none;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 6%);
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: visible;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 
 /* Subtle accent gradient on left border - DISABLED */
@@ -605,9 +578,9 @@ html.dark .contact-link-item:hover .link-text {
 }
 
 html.dark .support-donation-card {
-  background: #000000;
-  border: none;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
+  background: rgba(0, 0, 0, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .support-donation-card:hover {
@@ -1429,6 +1402,179 @@ html.dark .follow-section {
 }
 
 /* ----------------------------------------
+   Apple Alignment Refinements
+   Keeps Contact consistent with the homepage glass language
+   ---------------------------------------- */
+
+:root {
+  --contact-surface-light: rgba(255, 255, 255, 0.78);
+  --contact-surface-dark: rgba(0, 0, 0, 0.8);
+  --contact-border-light: rgba(0, 0, 0, 0.08);
+  --contact-border-dark: rgba(255, 255, 255, 0.08);
+  --contact-shadow-light:
+    0 12px 34px rgba(15, 23, 42, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --contact-shadow-dark:
+    0 18px 42px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.contact-card,
+.support-donation-card,
+.currently-card {
+  background: var(--contact-surface-light) !important;
+  border: 1px solid var(--contact-border-light) !important;
+  box-shadow: var(--contact-shadow-light) !important;
+  backdrop-filter: saturate(180%) blur(22px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(22px) !important;
+}
+
+html.dark .contact-card,
+html.dark .support-donation-card,
+html.dark .currently-card {
+  background: var(--contact-surface-dark) !important;
+  border-color: var(--contact-border-dark) !important;
+  box-shadow: var(--contact-shadow-dark) !important;
+}
+
+.contact-link-item {
+  border: 1px solid transparent;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.3));
+}
+
+html.dark .contact-link-item {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+}
+
+.contact-link-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 113, 227, 0.16);
+  background: linear-gradient(180deg, rgba(0, 113, 227, 0.06), rgba(0, 113, 227, 0.02));
+}
+
+html.dark .contact-link-item:hover {
+  border-color: rgba(78, 161, 255, 0.2);
+  background: linear-gradient(180deg, rgba(78, 161, 255, 0.12), rgba(78, 161, 255, 0.04));
+}
+
+.contact-link-item:hover .icon-box {
+  transform: scale(1.08);
+}
+
+.contact-link-item:hover .icon-box.blue,
+.contact-link-item:hover .icon-box.green,
+.contact-link-item:hover .icon-box.purple,
+.contact-link-item:hover .icon-box.location {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12) !important;
+}
+
+.contact-assistme-btn,
+.contact-form button[type='submit'],
+.support-cashapp-btn.premium,
+.support-paypal-btn.premium,
+.support-coffee-btn.premium {
+  border-radius: 999px !important;
+  box-shadow:
+    0 8px 22px rgba(0, 113, 227, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+.contact-assistme-btn:hover,
+.contact-form button[type='submit']:hover,
+.support-cashapp-btn.premium:hover,
+.support-paypal-btn.premium:hover,
+.support-coffee-btn.premium:hover {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.support-donation-card {
+  gap: 1rem;
+}
+
+.glow-ring {
+  opacity: 0.24;
+  animation-duration: 12s;
+}
+
+.ganesh-blessing-img:hover,
+.hanuman-blessing-img:hover {
+  transform: scale(1.04);
+}
+
+.dream-company-item:hover,
+.dream-car-item:hover {
+  transform: translateY(-1px) scale(1.06);
+}
+
+.currently-tabs {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  padding: 0.3rem;
+}
+
+html.dark .currently-tabs {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.currently-tab {
+  border-radius: 999px;
+}
+
+.currently-content.active {
+  animation: currentlyFadeIn 0.28s ease;
+}
+
+@keyframes currentlyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.media-card {
+  width: 144px;
+  border-radius: 16px;
+}
+
+.media-card:hover {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.media-poster {
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+html.dark .media-poster {
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+}
+
+@media (max-width: 768px) {
+  .contact-card,
+  .support-donation-card,
+  .currently-card {
+    border-radius: 22px !important;
+  }
+
+  .currently-tabs {
+    gap: 0.35rem;
+  }
+
+  .currently-tab {
+    padding: 0.58rem 0.7rem;
+  }
+
+  .media-card {
+    width: 132px;
+  }
+}
+
+/* ----------------------------------------
    Dream Companies & Cars - Simple Clean Logos
    ---------------------------------------- */
 
@@ -1692,19 +1838,21 @@ html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
    ============================================ */
 
 .currently-card {
-  background: #ffffff;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 24px;
   padding: 1.5rem;
-  border: 1px solid rgb(0 0 0 / 8%);
-  box-shadow: 0 4px 20px rgb(0 0 0 / 6%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   margin-top: 1.5rem;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 html.dark .currently-card {
-  background: #000000;
-  border-color: rgb(255 255 255 / 10%);
-  box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .currently-header {
@@ -1751,7 +1899,7 @@ html.dark .currently-header h3 i {
 }
 
 html.dark .currently-tabs {
-  background: #1c1c1e;
+  background: #000000;
 }
 
 .currently-tab {
@@ -1788,7 +1936,7 @@ html.dark .currently-tab:hover {
 }
 
 html.dark .currently-tab.active {
-  background: #2c2c2e;
+  background: #000000;
   color: #0a84ff;
   box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
 }
@@ -1873,11 +2021,42 @@ html.dark .media-card {
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+  background: #f5f5f7;
 }
 
 html.dark .media-poster {
-  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+  background: #000000;
+}
+
+.media-poster::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.4) 50%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+html.dark .media-poster::after {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%, 
+    rgba(255, 255, 255, 0.08) 50%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.media-poster.loaded::after {
+  opacity: 0;
+  display: none;
 }
 
 .media-poster img {
@@ -1902,7 +2081,7 @@ html.dark .media-poster {
 }
 
 html.dark .media-poster img {
-  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+  background: linear-gradient(135deg, #000000 0%, #000000 100%);
 }
 
 .media-badge {
@@ -1958,38 +2137,41 @@ html.dark .media-info h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
-  padding: 0.4rem 0.6rem;
-  background: transparent;
+  gap: 0.35rem;
+  padding: 0.5rem 0.85rem;
+  background: #f0f0f2;
   color: #0071e3 !important;
-  font-size: 0.65rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
   border-radius: 100px;
   text-decoration: none !important;
-  transition: all 0.3s ease;
-  border: 1px solid #0071e3;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  border: none;
   cursor: pointer;
   margin-top: auto;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: auto;
+  align-self: center;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .watch-btn:hover {
-  background: #0071e3;
-  color: #ffffff !important;
-  transform: translateY(-1px);
+  background: #e5e5ea;
+  transform: scale(1.05);
+}
+
+.watch-btn:active {
+  transform: scale(0.98);
+  opacity: 0.8;
 }
 
 .watch-btn.book-btn {
   color: #ff9500 !important;
-  border-color: #ff9500;
+  background: rgba(255, 149, 0, 0.1);
 }
 
 .watch-btn.book-btn:hover {
-  background: #ff9500;
-  color: #ffffff !important;
+  background: rgba(255, 149, 0, 0.15);
 }
 
 .watch-btn i {
@@ -2003,22 +2185,17 @@ html.dark .media-info h4 {
 }
 
 html.dark .watch-btn {
+  background: rgba(255, 255, 255, 0.1);
   color: #0a84ff !important;
-  border-color: #0a84ff;
 }
 
 html.dark .watch-btn:hover {
-  background: #0a84ff;
-  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 html.dark .watch-btn.book-btn {
   color: #ff9f0a !important;
-  border-color: #ff9f0a;
-}
-
-html.dark .watch-btn.book-btn:hover {
-  background: #ff9f0a;
+  background: rgba(255, 159, 10, 0.15);
 }
 
 /* Responsive adjustments */

@@ -10,8 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = Number.parseInt(process.env.PORT || '3000', 10);
-const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8000';
+const port = Number.parseInt(process.env.PORT || '4000', 10);
+const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8001';
 
 // Get the project root directory
 const projectRoot = resolve(__dirname, '..');
@@ -27,6 +27,9 @@ app.use(
   createProxyMiddleware({
     target: apiTarget,
     changeOrigin: true,
+    pathRewrite: {
+      '^/api': '/api' // Prepend /api back because app.use('/api') strips it
+    }
   })
 );
 

@@ -44,7 +44,7 @@ html.dark .experience-date-badge {
 
 html.dark .experience-tag {
   color: #f5f5f7 !important; /* White text for dark mode */
-  background: #2c2c2e !important;
+  background: #000000 !important;
   border-color: rgb(255 255 255 / 15%) !important;
 }
 
@@ -222,16 +222,21 @@ html.dark .author-company {
    5. EDUCATION - HIGH CONTRAST FIXES
    ======================================== */
 
-/* Education badges */
+/* Education badges - Apple-inspired green with high contrast */
 .education-badge.completed {
-  background: #15803d !important; /* Darker green */
-  color: #fff !important;
-  font-weight: 600 !important;
+  background: linear-gradient(135deg, #34c759 0%, #30d158 100%) !important; /* Apple system green */
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(48, 209, 88, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
 html.dark .education-badge.completed {
-  background: #16a34a !important;
-  color: #fff !important;
+  background: linear-gradient(135deg, #30d158 0%, #28cd41 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(48, 209, 88, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Education text */

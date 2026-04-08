@@ -1,25 +1,48 @@
-import { initProjectShowcase } from '../modules/projects-showcase.js';
 import ExternalApiKeys from '../modules/external-config.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
 import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
-const RUNTIME_MODULES = [
+const IDLE_MODULES = ['../modules/accessibility.js'];
+
+const DELAYED_MODULES = [{ modulePath: '../modules/lastfm.js', delay: 6000 }];
+
+const INTERACTION_MODULES = [
   '../modules/agentic-actions.js',
-  '../modules/accessibility.js',
   '../modules/premium-enhancements.js',
   '../modules/birthday-celebration.js',
-  '../modules/lastfm.js',
 ];
 
 const SECTION_MODULES = [
-  { sectionId: 'skills', modulePath: '../modules/skills-visualization.js' },
-  { sectionId: 'blog', modulePath: '../modules/blog-loader.js' },
-  { sectionId: 'contact', modulePath: '../modules/calendar.js' },
+  { sectionId: 'skills', modulePath: '../modules/skills-visualization.js', rootMargin: '900px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '900px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '1200px 0px' },
+  { sectionId: 'currently-section', modulePath: '../modules/currently.js', rootMargin: '1200px 0px' },
+  { sectionId: 'currently-section', modulePath: '../modules/real-media-loader.js', rootMargin: '1200px 0px' },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
+    rootMargin: '1200px 0px',
   },
 ];
+
+const SECTION_STYLE_GROUPS = [
+  { sectionId: 'about', styleKeys: ['about'], rootMargin: '900px 0px' },
+  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '900px 0px' },
+  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '900px 0px' },
+  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '900px 0px' },
+  { sectionId: 'education', styleKeys: ['education'], rootMargin: '900px 0px' },
+  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '900px 0px' },
+  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '900px 0px' },
+  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '900px 0px' },
+  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '900px 0px' },
+  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '900px 0px' },
+  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '1200px 0px' },
+  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '1200px 0px' },
+];
+
+const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
+
+const deferredStyleLoads = new Map();
 
 function createModuleLoader(modulePath) {
   let loaded = false;
@@ -53,6 +76,125 @@ function createModuleLoader(modulePath) {
 
 const chatbotLoader = createModuleLoader('../modules/chatbot.js');
 const searchLoader = createModuleLoader('../modules/search.js');
+
+function runWhenIdle(callback, timeout = 1500) {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => callback(), { timeout });
+    return;
+  }
+
+  setTimeout(callback, timeout);
+}
+
+function ensureDeferredStylesheetLoaded(link) {
+  const href = link.dataset.href;
+  if (!href) {
+    return Promise.resolve(true);
+  }
+
+  if (link.dataset.styleLoaded === 'true') {
+    return Promise.resolve(true);
+  }
+
+  if (deferredStyleLoads.has(href)) {
+    return deferredStyleLoads.get(href);
+  }
+
+  const pending = new Promise(resolve => {
+    const settle = success => {
+      if (success) {
+        link.dataset.styleLoaded = 'true';
+      }
+      resolve(success);
+    };
+
+    link.addEventListener('load', () => settle(true), { once: true });
+    link.addEventListener('error', () => settle(false), { once: true });
+    link.setAttribute('href', href);
+  });
+
+  deferredStyleLoads.set(href, pending);
+  return pending;
+}
+
+function getLazyStyleLinks(styleKey, documentRef = document) {
+  return Array.from(documentRef.querySelectorAll(`[data-lazy-style-key~="${styleKey}"]`));
+}
+
+function areStyleKeysLoaded(styleKeys = [], documentRef = document) {
+  const uniqueKeys = [...new Set(styleKeys.filter(Boolean))];
+  if (uniqueKeys.length === 0) return true;
+
+  return uniqueKeys.every(styleKey =>
+    getLazyStyleLinks(styleKey, documentRef).every(link => link.dataset.styleLoaded === 'true')
+  );
+}
+
+async function loadDeferredStyles(styleKeys = [], documentRef = document) {
+  const uniqueKeys = [...new Set(styleKeys.filter(Boolean))];
+  if (uniqueKeys.length === 0) return true;
+
+  const links = uniqueKeys.flatMap(styleKey => getLazyStyleLinks(styleKey, documentRef));
+  if (links.length === 0) return true;
+
+  const results = await Promise.all(links.map(link => ensureDeferredStylesheetLoaded(link)));
+  return results.every(Boolean);
+}
+
+async function loadModule(path) {
+  try {
+    await import(path);
+  } catch (error) {
+    console.warn(`Lazy load failed for ${path}`, error);
+  }
+}
+
+function observeSectionTask(sectionId, task, rootMargin = '300px 0px') {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+
+  let started = false;
+  let observer = null;
+  const hashTarget = `#${sectionId}`;
+
+  const run = () => {
+    if (started) return;
+    started = true;
+    observer?.disconnect();
+    window.removeEventListener('hashchange', onHashChange);
+    Promise.resolve(task()).catch(error => {
+      console.warn(`Deferred section task failed for ${sectionId}`, error);
+    });
+  };
+
+  const onHashChange = () => {
+    if (window.location.hash === hashTarget) {
+      run();
+    }
+  };
+
+  if (window.location.hash === hashTarget) {
+    run();
+    return;
+  }
+
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          run();
+        }
+      },
+      { rootMargin }
+    );
+
+    observer.observe(section);
+    window.addEventListener('hashchange', onHashChange);
+    return;
+  }
+
+  run();
+}
 
 function initFooterYear() {
   const year = document.getElementById('current-year');
@@ -93,7 +235,11 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
 
   ctaButton.dataset.chatbotBound = 'true';
   ctaButton.addEventListener('click', async () => {
-    await chatbotModuleLoader.load();
+    await Promise.all([
+      loadDeferredStyles(['assistant'], documentRef),
+      chatbotModuleLoader.load(),
+    ]);
+
     const prompt = 'I want to contact Mangesh about a project opportunity.';
     if (
       window.appleIntelligenceChatbot &&
@@ -108,11 +254,47 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
   });
 }
 
+function bindInteractionStyleLoader(
+  elementId,
+  styleKeys,
+  replay = true,
+  documentRef = document
+) {
+  const element = documentRef.getElementById(elementId);
+  if (!element || element.dataset.lazyStyleBound === 'true') return;
+
+  element.dataset.lazyStyleBound = 'true';
+
+  element.addEventListener(
+    'click',
+    async event => {
+      if (areStyleKeysLoaded(styleKeys, documentRef)) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+
+      const loaded = await loadDeferredStyles(styleKeys, documentRef);
+      if (!loaded) return;
+
+      if (replay) {
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            element.click();
+          });
+        }, 60);
+      }
+    },
+    { capture: true }
+  );
+}
+
 function bindInteractionModuleLoader(
   elementId,
   moduleLoader,
   replay = true,
-  documentRef = document
+  documentRef = document,
+  styleKeys = []
 ) {
   const element = documentRef.getElementById(elementId);
   if (!element || element.dataset.lazyModuleBound === 'true') return;
@@ -122,17 +304,21 @@ function bindInteractionModuleLoader(
   element.addEventListener(
     'click',
     async event => {
-      if (moduleLoader.isLoaded()) return;
+      if (moduleLoader.isLoaded() && areStyleKeysLoaded(styleKeys, documentRef)) {
+        return;
+      }
 
       event.preventDefault();
       event.stopImmediatePropagation();
       event.stopPropagation();
 
-      const loaded = await moduleLoader.load();
-      if (!loaded) return;
+      const [stylesLoaded, moduleLoaded] = await Promise.all([
+        loadDeferredStyles(styleKeys, documentRef),
+        moduleLoader.load(),
+      ]);
+      if (!stylesLoaded || !moduleLoaded) return;
 
       if (replay) {
-        // Wait for module to fully initialize before replaying click
         setTimeout(() => {
           requestAnimationFrame(() => {
             element.click();
@@ -144,22 +330,7 @@ function bindInteractionModuleLoader(
   );
 }
 
-function initOnDemandModules() {
-  bindInteractionModuleLoader('chatbot-toggle', chatbotLoader, true);
-  bindInteractionModuleLoader('search-toggle', searchLoader, true);
-  bindSearchShortcutLoader(searchLoader);
-}
-
-function runWhenIdle(callback, timeout = 1500) {
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(() => callback(), { timeout });
-    return;
-  }
-
-  setTimeout(callback, timeout);
-}
-
-function bindSearchShortcutLoader(moduleLoader, documentRef = document) {
+function bindSearchShortcutLoader(moduleLoader, documentRef = document, styleKeys = []) {
   if (documentRef.body?.dataset.searchShortcutBound === 'true') {
     return;
   }
@@ -173,18 +344,20 @@ function bindSearchShortcutLoader(moduleLoader, documentRef = document) {
     async event => {
       const isShortcut =
         (event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey);
-      if (!isShortcut || moduleLoader.isLoaded()) {
+      if (!isShortcut || (moduleLoader.isLoaded() && areStyleKeysLoaded(styleKeys, documentRef))) {
         return;
       }
 
       event.preventDefault();
 
-      const loaded = await moduleLoader.load();
-      if (!loaded) {
+      const [stylesLoaded, loaded] = await Promise.all([
+        loadDeferredStyles(styleKeys, documentRef),
+        moduleLoader.load(),
+      ]);
+      if (!loaded || !stylesLoaded) {
         return;
       }
 
-      // Wait for module to fully initialize before triggering click
       setTimeout(() => {
         requestAnimationFrame(() => {
           documentRef.getElementById('search-toggle')?.click();
@@ -195,57 +368,36 @@ function bindSearchShortcutLoader(moduleLoader, documentRef = document) {
   );
 }
 
-async function loadModule(path) {
-  try {
-    await import(path);
-  } catch (error) {
-    console.warn(`Lazy load failed for ${path}`, error);
-  }
+function initOnDemandModules() {
+  bindInteractionModuleLoader('chatbot-toggle', chatbotLoader, true, document, ['assistant']);
+  bindInteractionModuleLoader('search-toggle', searchLoader, true, document, ['interactive']);
+  bindInteractionStyleLoader('menu-btn', ['interactive']);
+  bindSearchShortcutLoader(searchLoader, document, ['interactive']);
 }
 
-function lazyLoadSectionModule(sectionId, modulePath, rootMargin = '300px 0px') {
-  const section = document.getElementById(sectionId);
-  if (!section) return;
-
-  let loaded = false;
-  let observer = null;
-  const hashTarget = `#${sectionId}`;
-
-  const load = () => {
-    if (loaded) return;
-    loaded = true;
-    if (observer) observer.disconnect();
-    window.removeEventListener('hashchange', onHashChange);
-    loadModule(modulePath);
-  };
-
-  const onHashChange = () => {
-    if (window.location.hash === hashTarget) {
-      load();
-    }
-  };
-
-  if (window.location.hash === hashTarget) {
-    load();
+function initDeferredStyles() {
+  if (window.__portfolioDeferredStylesBound) {
     return;
   }
+  window.__portfolioDeferredStylesBound = true;
 
-  if ('IntersectionObserver' in window) {
-    observer = new IntersectionObserver(
-      entries => {
-        if (entries.some(entry => entry.isIntersecting)) {
-          load();
-        }
-      },
-      { rootMargin }
-    );
+  const loadInteractionStyles = () => {
+    loadDeferredStyles(FIRST_INTERACTION_STYLE_KEYS).catch(error => {
+      console.warn('Deferred style load skipped:', error);
+    });
+  };
 
-    observer.observe(section);
-    window.addEventListener('hashchange', onHashChange);
-    return;
-  }
+  ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
+    window.addEventListener(eventName, loadInteractionStyles, {
+      once: true,
+      passive: eventName !== 'keydown',
+      capture: true,
+    });
+  });
 
-  load();
+  SECTION_STYLE_GROUPS.forEach(({ sectionId, styleKeys, rootMargin }) => {
+    observeSectionTask(sectionId, () => loadDeferredStyles(styleKeys), rootMargin);
+  });
 }
 
 function initLazyModules() {
@@ -257,39 +409,47 @@ function initLazyModules() {
   window.addEventListener(
     'load',
     () => {
-      const loadRuntimeModules = () => {
-        RUNTIME_MODULES.forEach(path => {
+      runWhenIdle(() => {
+        IDLE_MODULES.forEach(path => {
           loadModule(path);
         });
+      }, 800);
 
-        if (
-          window.innerWidth > 1024 &&
-          !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ) {
-          loadModule('../modules/3d-background.js');
-        }
-      };
+      DELAYED_MODULES.forEach(({ modulePath, delay }) => {
+        window.setTimeout(() => {
+          loadModule(modulePath);
+        }, delay);
+      });
 
-      let runtimeModulesScheduled = false;
-      const scheduleRuntimeModules = () => {
-        if (runtimeModulesScheduled) return;
-        runtimeModulesScheduled = true;
-        runWhenIdle(loadRuntimeModules, 600);
+      let interactionModulesScheduled = false;
+      const scheduleInteractionModules = () => {
+        if (interactionModulesScheduled) return;
+        interactionModulesScheduled = true;
+
+        runWhenIdle(() => {
+          INTERACTION_MODULES.forEach(path => {
+            loadModule(path);
+          });
+
+          if (
+            window.innerWidth > 1024 &&
+            !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ) {
+            loadModule('../modules/3d-background.js');
+          }
+        }, 600);
       };
 
       ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
-        window.addEventListener(eventName, scheduleRuntimeModules, {
+        window.addEventListener(eventName, scheduleInteractionModules, {
           once: true,
           passive: eventName !== 'keydown',
           capture: true,
         });
       });
 
-      // Fallback for passive sessions where no interaction occurs.
-      setTimeout(scheduleRuntimeModules, 12000);
-
-      SECTION_MODULES.forEach(({ sectionId, modulePath }) => {
-        lazyLoadSectionModule(sectionId, modulePath);
+      SECTION_MODULES.forEach(({ sectionId, modulePath, rootMargin }) => {
+        observeSectionTask(sectionId, () => loadModule(modulePath), rootMargin);
       });
     },
     { once: true }
@@ -298,54 +458,29 @@ function initLazyModules() {
 
 function initProjectShowcaseOnDemand() {
   const projectsSection = document.getElementById('projects');
-  let started = false;
+  if (!projectsSection) {
+    return;
+  }
+
+  let pending = null;
 
   const start = () => {
-    if (started) return;
-    started = true;
+    if (pending) return pending;
 
-    initProjectShowcase().catch(error => {
-      console.error('Project showcase init failed:', error);
-    });
+    pending = Promise.all([
+      loadDeferredStyles(['projects']),
+      import('../modules/projects-showcase.js'),
+    ])
+      .then(([, module]) => module.initProjectShowcase())
+      .catch(error => {
+        console.error('Project showcase init failed:', error);
+        pending = null;
+      });
+
+    return pending;
   };
 
-  if (!projectsSection) {
-    runWhenIdle(start, 2000);
-    return;
-  }
-
-  if (window.location.hash === '#projects') {
-    start();
-    return;
-  }
-
-  if ('IntersectionObserver' in window) {
-    let observer = null;
-    const onHashChange = () => {
-      if (window.location.hash === '#projects') {
-        start();
-        observer?.disconnect();
-        window.removeEventListener('hashchange', onHashChange);
-      }
-    };
-
-    observer = new IntersectionObserver(
-      entries => {
-        if (entries.some(entry => entry.isIntersecting)) {
-          start();
-          observer?.disconnect();
-          window.removeEventListener('hashchange', onHashChange);
-        }
-      },
-      { rootMargin: '350px 0px' }
-    );
-
-    observer.observe(projectsSection);
-    window.addEventListener('hashchange', onHashChange);
-    return;
-  }
-
-  runWhenIdle(start, 2000);
+  observeSectionTask('projects', start, '500px 0px');
 }
 
 function initServiceWorker() {
@@ -410,6 +545,7 @@ async function initBootstrap() {
   initOverlayMenu();
   initOverlayNavigation();
   initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');
+  initDeferredStyles();
   initOnDemandModules();
   initContactChatbotCTA(chatbotLoader);
 
@@ -431,7 +567,6 @@ async function initBootstrap() {
 
   initLazyModules();
   initServiceWorker();
-
   initProjectShowcaseOnDemand();
 }
 

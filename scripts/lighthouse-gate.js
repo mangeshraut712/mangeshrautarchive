@@ -34,7 +34,7 @@ function parseThreshold(value, fallback) {
   return number > 1 ? number : number * 100;
 }
 
-const url = getArg('url', 'http://127.0.0.1:3000');
+const url = getArg('url', 'http://127.0.0.1:4000');
 const formFactor = getArg('form-factor', 'mobile');
 const outputDir = resolve(process.cwd(), getArg('output-dir', 'artifacts/lighthouse'));
 

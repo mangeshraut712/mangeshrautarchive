@@ -10,7 +10,7 @@
  * Privacy: No PII collected, anonymous counting only
  */
 (function() {
-  const reachCountEl = document.getElementById('reach-count');
+  const reachCountEls = document.querySelectorAll('.reach-count');
 
   // Configuration constants
   const CONFIG = {
@@ -288,7 +288,7 @@
    * Update the UI display with formatted metrics
    */
   function updateDisplay() {
-    if (!reachCountEl) return;
+    if (!reachCountEls || reachCountEls.length === 0) return;
 
     const metrics = getMetrics();
 
@@ -296,9 +296,6 @@
     // Strategy: Show unique visitors (more meaningful than raw views)
     const displayValue = metrics.uniqueVisitors;
     const formatted = formatNumber(displayValue);
-
-    // Update display
-    reachCountEl.textContent = formatted;
 
     // Enhanced tooltip with full breakdown
     const tooltipLines = [
@@ -312,8 +309,17 @@
       `Avg ${metrics.avgViewsPerDay}/day`,
       `Age: ${metrics.portfolioAgeDays} day${metrics.portfolioAgeDays !== 1 ? 's' : ''}`
     ];
+    const tooltipText = tooltipLines.join('\n');
 
-    reachCountEl.setAttribute('title', tooltipLines.join('\n'));
+    reachCountEls.forEach(el => {
+      el.textContent = formatted;
+      // If the parent is the badge container, update its title too
+      if (el.parentElement && el.parentElement.classList.contains('portfolio-reach-badge')) {
+        el.parentElement.setAttribute('title', tooltipText);
+      } else {
+        el.setAttribute('title', tooltipText);
+      }
+    });
 
     // Log metrics for debugging (development only)
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -322,7 +328,7 @@
   }
 
   // Initialize on page load
-  if (reachCountEl) {
+  if (reachCountEls && reachCountEls.length > 0) {
     // Small delay to ensure DOM is ready
     setTimeout(updateDisplay, 50);
 

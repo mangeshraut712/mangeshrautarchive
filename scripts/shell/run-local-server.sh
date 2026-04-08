@@ -53,11 +53,11 @@ fi
 echo ""
 echo -e "${GREEN}✅ Server starting...${NC}"
 echo -e "📁 Serving from: $(pwd)"
-echo -e "🌐 Local URL: ${BLUE}http://localhost:8000${NC}"
+echo -e "🌐 Local URL: ${BLUE}http://localhost:4000${NC}"
 echo ""
 echo "INSTRUCTIONS:"
-echo "1. Visit: http://localhost:8000"
-echo "2. The API and Frontend are now running together."
+echo "1. Visit: http://localhost:4000"
+echo "2. The frontend proxies API requests to http://localhost:8001"
 echo ""
 echo "To stop server: Press CTRL+C"
 echo ""
@@ -65,4 +65,4 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 
 # Run FastAPI with Uvicorn
-uvicorn api.index:app --reload --host 0.0.0.0 --port 8000
+PORT=4000 API_TARGET=http://127.0.0.1:8001 node scripts/local-server.js
