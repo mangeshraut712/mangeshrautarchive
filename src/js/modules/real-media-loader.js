@@ -85,6 +85,7 @@ class RealMediaLoader {
         }
       );
 
+      if (response.status === 401) return null; // Suppress 401 unauthorized
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -100,9 +101,8 @@ class RealMediaLoader {
 
       // Fallback to searching
       return this.searchTMDB(title, endpoint);
-    } catch (error) {
-      console.warn(`Failed to fetch TMDB poster for ${title}:`, error);
-      return this.searchTMDB(title, type === 'Series' ? 'tv' : 'movie');
+    } catch (_error) {
+      return null; // Fallback handled by UI smoothly, suppress warning
     }
   }
 
@@ -116,7 +116,7 @@ class RealMediaLoader {
         { signal: AbortSignal.timeout(5000) }
       );
 
-      if (!response.ok) return null;
+      if (response.status === 401 || !response.ok) return null;
 
       const data = await response.json();
       if (data.results && data.results.length > 0 && data.results[0].poster_path) {
