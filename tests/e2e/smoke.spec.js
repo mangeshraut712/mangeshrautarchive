@@ -1,4 +1,3 @@
-/* eslint-env browser */
 import { expect, test } from '@playwright/test';
 
 const navSections = [
