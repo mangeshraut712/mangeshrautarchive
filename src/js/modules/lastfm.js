@@ -100,11 +100,13 @@ class LastFmService {
   }
 
   getBestImage(track, preferredSizes = ['extralarge', 'large', 'medium', 'small']) {
-    let imgUrl = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png';
+    // Default placeholder with music icon
+    let imgUrl = this.getArtworkPlaceholder(track.name || 'Music', track.artist?.name || 'Unknown');
+
     if (track.image && Array.isArray(track.image)) {
       for (const size of preferredSizes) {
         const img = track.image.find(i => i.size === size);
-        if (img && img['#text']) {
+        if (img && img['#text'] && !img['#text'].includes('2a96cbd8b46e442fc41c2b86b821562f')) {
           imgUrl = img['#text'];
           break;
         }
