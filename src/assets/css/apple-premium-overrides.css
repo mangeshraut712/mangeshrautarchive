@@ -2755,21 +2755,21 @@ html.dark .theme-toggle:hover {
 
 /* ========================================
    APPLE MUSIC STYLE - LAST.FM NOW PLAYING CARD
-   iOS 26.4 Design Language - Rectangular Compact
+   Circular Design with Glassmorphism
    ======================================== */
 
 .music-card {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
-  animation: musicCardSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-top: 1.25rem;
+  animation: musicCardSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes musicCardSlide {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.96);
+    transform: translateY(20px) scale(0.95);
   }
   to {
     opacity: 1;
@@ -2780,63 +2780,60 @@ html.dark .theme-toggle:hover {
 .music-card-inner {
   display: flex;
   align-items: center;
-  gap: 0.875rem;
-  padding: 0.625rem 1rem 0.625rem 0.625rem;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  gap: 1rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
-    0 2px 16px rgba(0, 0, 0, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  max-width: 320px;
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 html.dark .music-card-inner {
-  background: rgba(28, 28, 30, 0.9);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 2px 16px rgba(0, 0, 0, 0.4),
-    0 1px 3px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .music-card:hover .music-card-inner {
-  transform: translateY(-2px) scale(1.01);
+  transform: translateY(-2px) scale(1.02);
   box-shadow:
-    0 6px 24px rgba(0, 0, 0, 0.1),
-    0 2px 6px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 html.dark .music-card:hover .music-card-inner {
   box-shadow:
-    0 6px 24px rgba(0, 0, 0, 0.5),
-    0 2px 6px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Album Art Container - iOS 26.4 Rectangular with micro-rounding */
+/* Album Art Container - Circular Design */
 .album-art-container {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   flex-shrink: 0;
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 .album-art {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 50%;
   box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.12),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   transition: transform 0.3s ease;
 }
 
@@ -2849,21 +2846,22 @@ html.dark .music-card:hover .music-card-inner {
   to { transform: rotate(360deg); }
 }
 
-/* Playing Indicator Bars - iOS 26.4 Compact */
+/* Playing Indicator Bars - Centered Bottom */
 .playing-indicator {
   position: absolute;
-  bottom: -2px;
-  right: -2px;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: flex-end;
-  gap: 1.5px;
-  height: 14px;
-  padding: 2px 5px;
-  background: rgba(29, 185, 84, 0.95);
-  border-radius: 6px;
+  gap: 2px;
+  height: 16px;
+  padding: 3px 6px;
+  background: rgba(255, 59, 48, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(255, 59, 48, 0.4);
   opacity: 0;
-  transition: opacity 0.25s ease;
-  box-shadow: 0 2px 6px rgba(29, 185, 84, 0.4);
+  transition: opacity 0.3s ease;
 }
 
 .playing-indicator.active {
@@ -2874,27 +2872,27 @@ html.dark .music-card:hover .music-card-inner {
   width: 2px;
   background: white;
   border-radius: 1px;
-  animation: playingBars 0.8s ease-in-out infinite;
+  animation: playingBars 1s ease-in-out infinite;
 }
 
 .playing-indicator span:nth-child(1) {
-  height: 5px;
+  height: 6px;
   animation-delay: 0s;
 }
 
 .playing-indicator span:nth-child(2) {
-  height: 8px;
-  animation-delay: 0.15s;
+  height: 10px;
+  animation-delay: 0.2s;
 }
 
 .playing-indicator span:nth-child(3) {
-  height: 6px;
-  animation-delay: 0.3s;
+  height: 8px;
+  animation-delay: 0.4s;
 }
 
 @keyframes playingBars {
   0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(1.4); }
+  50% { transform: scaleY(1.5); }
 }
 
 /* Track Info - iOS 26.4 Compact */
