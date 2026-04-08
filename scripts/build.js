@@ -32,7 +32,7 @@ async function resolveDistDir() {
 
 const srcDir = resolve(projectRoot, 'src');
 
-const staticExtras = ['perplexity-mcp.json'];
+const staticExtras = ['perplexity-mcp.json', 'CNAME'];
 
 // Build-time public config injection for GitHub Pages
 // SECURITY: API keys must NEVER be written here — they live in backend env vars only.
