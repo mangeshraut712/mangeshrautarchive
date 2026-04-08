@@ -278,7 +278,7 @@ test.describe('Chrome smoke tests', () => {
 
       const expectedOffset =
         testInfo.project.name === 'Mobile Chrome' ? info.navHeight + 12 : info.navHeight + 12;
-      const allowedDelta = testInfo.project.name === 'Mobile Chrome' ? 120 : 2200;
+      const allowedDelta = testInfo.project.name === 'Mobile Chrome' ? 120 : 600;
       const topDistance = Math.abs(info.rectTop - expectedOffset);
       expect(
         topDistance,
