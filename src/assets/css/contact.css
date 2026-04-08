@@ -1154,6 +1154,7 @@ html.dark .music-card {
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }
@@ -1201,6 +1202,7 @@ html.dark .music-card {
   100% {
     transform: scaleY(0.5);
   }
+
   50% {
     transform: scaleY(1);
   }
@@ -1389,6 +1391,7 @@ html.dark .music-card-description {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -1795,7 +1798,8 @@ html.dark .follow-section {
   width: 44px !important;
   height: 44px !important;
   border-radius: 12px !important;
-  background: rgba(142, 142, 147, 0.08) !important; /* Lighter Apple Grey */
+  background: rgba(142, 142, 147, 0.08) !important;
+  /* Lighter Apple Grey */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1813,24 +1817,31 @@ html.dark #contact .wrapper .icon {
 #contact .wrapper .facebook {
   color: #1877f2 !important;
 }
+
 #contact .wrapper .instagram {
   color: #e4405f !important;
 }
+
 #contact .wrapper .linkedin {
   color: #0077b5 !important;
 }
+
 #contact .wrapper .youtube {
   color: #ff0000 !important;
 }
+
 #contact .wrapper .github {
   color: #1d1d1f !important;
 }
+
 #contact .wrapper .x {
   color: #000000 !important;
 }
+
 #contact .wrapper .leetcode {
   color: #ffa116 !important;
 }
+
 #contact .wrapper .telegram {
   color: #0088cc !important;
 }
@@ -1838,6 +1849,7 @@ html.dark #contact .wrapper .icon {
 html.dark #contact .wrapper .github {
   color: #ffffff !important;
 }
+
 html.dark #contact .wrapper .x {
   color: #ffffff !important;
 }
@@ -1859,16 +1871,19 @@ html.dark #contact .wrapper .icon:hover {
   border-color: #1877f2 !important;
   color: #fff !important;
 }
+
 #contact .wrapper .x:hover {
   background: #000000 !important;
   border-color: #333 !important;
   color: #fff !important;
 }
+
 #contact .wrapper .github:hover {
   background: #24292e !important;
   border-color: #24292e !important;
   color: #fff !important;
 }
+
 #contact .wrapper .instagram:hover {
   background: linear-gradient(
     45deg,
@@ -1881,21 +1896,25 @@ html.dark #contact .wrapper .icon:hover {
   border-color: transparent !important;
   color: #fff !important;
 }
+
 #contact .wrapper .linkedin:hover {
   background: #0077b5 !important;
   border-color: #0077b5 !important;
   color: #fff !important;
 }
+
 #contact .wrapper .youtube:hover {
   background: #ff0000 !important;
   border-color: #ff0000 !important;
   color: #fff !important;
 }
+
 #contact .wrapper .leetcode:hover {
   background: #ffa116 !important;
   border-color: #ffa116 !important;
   color: #fff !important;
 }
+
 #contact .wrapper .telegram:hover {
   background: #0088cc !important;
   border-color: #0088cc !important;
@@ -2472,6 +2491,7 @@ html.dark .currently-tab.active {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -2732,7 +2752,7 @@ html.dark .recent-track-name {
   gap: 0.35rem;
   padding: 0.5rem 0.85rem;
   background: #f0f0f2;
-  color: #0071e3 !important;
+  color: #0056cc !important; /* Darker blue for better contrast (6.2:1 ratio) */
   font-size: 0.7rem;
   font-weight: 700;
   border-radius: 100px;
@@ -2754,6 +2774,7 @@ html.dark .recent-track-name {
 
 .watch-btn:hover {
   background: #e5e5ea;
+  color: #004499 !important; /* Even darker on hover for maintained contrast */
   transform: scale(1.05);
 }
 
