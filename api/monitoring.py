@@ -277,7 +277,7 @@ class SystemMonitor:
         # Track by endpoint
         endpoint = f"{method} {path}"
         if endpoint not in self.endpoint_metrics:
-            self.endpoint_metrics[endpoint] = EndpointMetrics(endpoint)
+            self.endpoint_metrics[endpoint] = EndpointMetrics(path=path, method=method)
 
         metrics = self.endpoint_metrics[endpoint]
         metrics.request_count += 1
