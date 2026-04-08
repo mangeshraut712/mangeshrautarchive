@@ -107,7 +107,7 @@ class RealMediaLoader {
           <div class="media-poster">
               <img
                 src="${fallbackSvg}"
-                data-remote-src="${item.poster || FALLBACKS.movie || ''}"
+                data-remote-src="${item.poster || ''}"
                 alt="${item.title}"
                 loading="lazy"
                 decoding="async"
@@ -171,7 +171,7 @@ class RealMediaLoader {
           <div class="media-poster">
               <img
                 src="${fallbackSvg}"
-                data-remote-src="${book.cover || FALLBACKS.book || ''}"
+                data-remote-src="${book.cover || ''}"
                 alt="${book.title}"
                 loading="lazy"
                 decoding="async"

@@ -288,13 +288,13 @@ class GitHubConnector:
             summary_lines.append(f"Primary Languages: {lang_str}")
 
         if popular_projects:
-            summary_lines.append("\\nMost Popular Projects:")
+            summary_lines.append("\nMost Popular Projects:")
             for proj in popular_projects[:3]:
                 summary_lines.append(
                     f"  • {proj['name']} - {proj['stars']} ⭐ ({proj['language']}) - {proj['description'] or 'No description'}"
                 )
 
-        return '\\n'.join(summary_lines)
+        return '\n'.join(summary_lines)
 
     def _is_cached(self, key: str) -> bool:
         """Check if data is in cache and not expired"""

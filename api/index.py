@@ -14,7 +14,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 
 import httpx
@@ -855,7 +855,9 @@ def is_resume_query(message: str) -> bool:
     return any(keyword in message.lower() for keyword in keywords)
 
 
-def build_context_prompt(message: str, context: Dict = {}) -> str:
+def build_context_prompt(message: str, context: Optional[Dict] = None) -> str:
+    if context is None:
+        context = {}
     prompt = f"User Question: {message}\n\n"
 
     if context.get("currentSection"):
@@ -929,21 +931,19 @@ def generate_local_response(query: str) -> Dict:
 
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
+        name = PORTFOLIO_DATA['name']
+        title = PORTFOLIO_DATA['title']
+        location = PORTFOLIO_DATA['location']
         return {
-            "answer": f"👨‍💻 **{PORTFOLIO_DATA['name']}** is a {
-                PORTFOLIO_DATA['title']
-            } based in {
-                PORTFOLIO_DATA['location']
-            }. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
+            "answer": f"👨‍💻 **{name}** is a {title} based in {location}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
             "category": "About",
         }
 
     # Resume/CV
     if "resume" in query or "cv" in query:
+        resume_url = PORTFOLIO_DATA['resume_url']
         return {
-            "answer": f"📄 You can download Mangesh's resume here: {
-                PORTFOLIO_DATA['resume_url']
-            }",
+            "answer": f"📄 You can download Mangesh's resume here: {resume_url}",
             "category": "Resume",
         }
 
@@ -971,12 +971,12 @@ def generate_local_response(query: str) -> Dict:
 
     # Contact
     if "contact" in query or "email" in query or "hiring" in query or "hire" in query:
+        email = PORTFOLIO_DATA['email']
+        phone = PORTFOLIO_DATA['phone']
+        linkedin = PORTFOLIO_DATA['linkedin']
+        github = PORTFOLIO_DATA['github']
         return {
-            "answer": f"📫 **Contact Information**:\n• **Email**: {
-                PORTFOLIO_DATA['email']
-            }\n• **Phone**: {PORTFOLIO_DATA['phone']}\n• **LinkedIn**: {
-                PORTFOLIO_DATA['linkedin']
-            }\n• **GitHub**: {PORTFOLIO_DATA['github']}",
+            "answer": f"📫 **Contact Information**:\n• **Email**: {email}\n• **Phone**: {phone}\n• **LinkedIn**: {linkedin}\n• **GitHub**: {github}",
             "category": "Contact",
         }
 
@@ -1481,7 +1481,7 @@ async def health_check():
     """Enhanced health check endpoint"""
     return {
         "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "service": "assistme-api",
         "version": "3.0.0",
         "features": {
@@ -1524,7 +1524,7 @@ async def test_endpoint():
         "api_key_configured": bool(OPENROUTER_API_KEY),
         "api_key_masked": masked_key,
         "default_model": DEFAULT_MODEL,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "environment": os.getenv("VERCEL_ENV", "local"),
     }
 
@@ -1681,7 +1681,7 @@ async def github_repos_proxy(
         "stars": "stargazers_count",
     }.get(sort, "pushed_at")
     repos.sort(
-        key=lambda r: r.get(sort_key) or "", reverse=(sort_key != "stargazers_count")
+        key=lambda r: r.get(sort_key) or "", reverse=True
     )
 
     # Filter forks
@@ -1725,17 +1725,10 @@ async def github_repos_proxy(
         "data": slim_repos,
         "cache_ttl_seconds": GITHUB_PROXY_TTL,
         "rate_mode": rate_header,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 
 
-# Alias for backwards compatibility - some frontend code calls /github/repos without /api prefix
-@app.get("/github/repos")
-async def get_github_repos_alias(
-    username: str = "mangeshraut712", limit: int = 100, no_forks: bool = False
-):
-    """Redirect/alias for old frontend code that doesn't use /api prefix"""
-    return await github_repos_proxy(username, "updated", limit, no_forks)
 
 
 # Analytics views endpoint
@@ -1755,7 +1748,7 @@ async def get_analytics_views():
                 "this_week": 320,
                 "this_month": 890,
             },
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
@@ -1809,7 +1802,7 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             "email": {"stringValue": payload.email.strip()},
             "subject": {"stringValue": payload.subject.strip()},
             "message": {"stringValue": payload.message.strip()},
-            "timestamp": {"timestampValue": datetime.utcnow().isoformat() + "Z"},
+            "timestamp": {"timestampValue": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")},
             "userAgent": {"stringValue": req.headers.get("user-agent", "Unknown")},
             "submittedFrom": {
                 "stringValue": req.headers.get("referer")
@@ -1867,7 +1860,7 @@ async def get_github_profile(username: str = "mangeshraut712"):
             "success": True,
             "data": activity,
             "ai_summary": github_connector.generate_github_summary_for_ai(activity),
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
@@ -1902,7 +1895,7 @@ async def get_github_repos(
             "success": True,
             "count": len(repos),
             "data": repos,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
@@ -1915,7 +1908,7 @@ async def get_memory_stats():
     return {
         "success": True,
         "data": stats,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 
 
@@ -1970,7 +1963,7 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
         "success": True,
         "greeting": greeting,
         "context": context,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 
 
@@ -2038,7 +2031,7 @@ async def get_monitor_events(
     return {
         "events": events,
         "count": len(events),
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 
 
@@ -2055,7 +2048,7 @@ async def resolve_monitor_event(event_id: str):
         "success": True,
         "message": "Event resolved",
         "event_id": event_id,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 
 
@@ -2065,7 +2058,7 @@ async def get_monitor_status():
     """
     Quick status check for load balancers
     """
-    return {"status": "ok", "timestamp": datetime.utcnow().isoformat() + "Z"}
+    return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")}
 
 
 # Global exception handler to ensure 200 OK responses with proper error details
@@ -2092,7 +2085,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
                 "message": exc.detail,
                 "type": "http_error",
             },
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         },
     )
 
@@ -2121,7 +2114,7 @@ async def global_exception_handler(request: Request, exc: Exception):
                 "message": "Internal server error",
                 "type": "internal_error",
             },
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         },
     )
 

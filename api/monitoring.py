@@ -5,7 +5,7 @@ Provides comprehensive health monitoring, logging, and metrics collection.
 import asyncio
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from collections import deque
@@ -161,7 +161,7 @@ class SystemMonitor:
         """Log a system event."""
         event = SystemEvent(
             id=f"evt_{int(time.time() * 1000)}_{len(self.events)}",
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             type=event_type,
             message=message,
             source=source,
@@ -193,7 +193,7 @@ class SystemMonitor:
         metric = self.endpoint_metrics[key]
         metric.total_requests += 1
         metric.last_status_code = status_code
-        metric.last_checked = datetime.utcnow().isoformat() + "Z"
+        metric.last_checked = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
         if 200 <= status_code < 400:
             metric.successful_requests += 1
@@ -235,7 +235,7 @@ class SystemMonitor:
                 message="OpenRouter API is accessible"
                 if openrouter_ok
                 else "OpenRouter API unavailable",
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 details={"provider": "OpenRouter"},
             )
         )
@@ -248,7 +248,7 @@ class SystemMonitor:
                 status=system_ok["status"],
                 response_time_ms=0,
                 message=system_ok["message"],
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 details=system_ok["details"],
             )
         )
@@ -261,7 +261,7 @@ class SystemMonitor:
                 status=memory_ok["status"],
                 response_time_ms=0,
                 message=memory_ok["message"],
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 details=memory_ok["details"],
             )
         )
@@ -276,7 +276,7 @@ class SystemMonitor:
                 message="GitHub API accessible"
                 if github_ok
                 else "GitHub API limited or unavailable",
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             )
         )
 
@@ -294,7 +294,7 @@ class SystemMonitor:
 
         return {
             "status": overall_status.value,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "uptime_seconds": round(time.time() - self.start_time, 2),
             "total_requests": self.total_requests,
             "error_count": self.error_count,
@@ -417,7 +417,7 @@ class SystemMonitor:
         )
 
         return {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "services": services,
         }
 
@@ -594,7 +594,7 @@ class SystemMonitor:
     def get_metrics(self) -> Dict[str, Any]:
         """Get comprehensive system metrics."""
         return {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "uptime_seconds": round(time.time() - self.start_time, 2),
             "total_requests": self.total_requests,
             "error_count": self.error_count,
@@ -638,7 +638,7 @@ class SystemMonitor:
         for event in self.events:
             if event.id == event_id:
                 event.resolved = True
-                event.resolved_at = datetime.utcnow().isoformat() + "Z"
+                event.resolved_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
                 self.log_event(
                     EventType.SUCCESS,
                     f"Event resolved: {event.message}",
