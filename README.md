@@ -50,6 +50,19 @@ Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and depl
 
 </div>
 
+### 🔄 Recent Changes
+
+- **Synchronize portfolio deployments and monitoring UI**
+- **Fix Playwright webServer to use dev:frontend only**
+- **Resolve Python syntax issues and update media library data**
+- **Synchronize URLs across all deployment environments**
+- **Fix GitHub Actions qa:smoke port timeout issue**
+- **Fix GitHub Pages deployment and custom domain**
+- **Restore circular music card design**
+- **Fix API docs page error handling and logging**
+- **Implement cache busting for updated website version**
+- **Update music card to iOS 26.4 rectangular design with theme-aware colors**
+
 ## ✨ Key Features
 
 ### 🧠 AssistMe — Intelligent AI Assistant
@@ -207,18 +220,11 @@ A first-class monitor page that matches the main site shell and surfaces live ba
 
 ---
 
-## 🌐 Live Demos
+## 🌐 Live Demo
 
-### Primary Website
+🚀 **[mangeshraut.pro](https://mangeshraut.pro)** — Main portfolio with custom domain
 
-🚀 **[mangeshraut.pro](https://mangeshraut.pro)** — Main portfolio (custom domain)
-
-### Alternative Deployments
-
-- 📄 **[GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/)** — Static mirror
-- ⚡ **[Vercel](https://mangeshrautarchive.vercel.app)** — Edge deployment
-
-> **Note:** All deployments are identical in functionality. The custom domain offers the best performance and SEO.
+_Alternative deployments: [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) | [Vercel](https://mangeshrautarchive.vercel.app)_
 
 ---
 
@@ -242,8 +248,8 @@ A first-class monitor page that matches the main site shell and surfaces live ba
 ### AI & Intelligence
 
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-Multi--Model-0EA5E9?style=for-the-badge)
-![xAI](https://img.shields.io/badge/xAI-Grok_4.1_Fast-111111?style=for-the-badge)
-![Anthropic](https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge)
+![xAI](https://img.shields.io/badge/xAI-Grok-111111?style=for-the-badge)
+![Anthropic](https://img.shields.io/badge/Anthropic-Claude-D97706?style=for-the-badge)
 
 ### DevOps & Tools
 
@@ -253,40 +259,13 @@ A first-class monitor page that matches the main site shell and surfaces live ba
 
 </div>
 
-### Detailed Stack
+**Key Technologies:**
 
-**Frontend Architecture:**
-
-```
-├── HTML5 — Semantic markup with SEO optimization
-├── CSS3 — Modular stylesheets with deferred noncritical bundles
-├── JavaScript ES modules — Core bootstrap with lazy-loaded feature modules
-├── Tailwind CSS 4.x — Utility-first styling system
-├── Prism.js — Syntax highlighting for code blocks
-├── Font Awesome 6.x + inline SVG — Deferred icon font with fast first paint
-└── Web Speech API — Voice input/output capabilities
-```
-
-**Backend Architecture:**
-
-```python
-├── Python 3.12+ (Tested through 3.13) — Modern Python with type hints
-├── FastAPI — High-performance async web framework
-├── Uvicorn — Lightning-fast ASGI server
-├── httpx — Async HTTP client for API calls
-├── Pydantic — Data validation and settings management
-└── python-dotenv — Environment configuration
-```
-
-**AI Integration:**
-
-```
-├── OpenRouter API — Multi-model AI gateway
-├── Default Model — x-ai/grok-4.1-fast (configurable via OPENROUTER_MODEL)
-├── Alternate Models — x-ai/grok-2-1212 and anthropic/claude-3.5-sonnet
-├── Streaming NDJSON — Real-time response delivery
-└── Local fallback + session memory — resilient behavior when API is unavailable
-```
+- Frontend: HTML5, CSS3, ES6+ JavaScript, Tailwind CSS 4.0
+- Backend: Python 3.12+, FastAPI 0.115, Uvicorn 0.34, Pydantic 2.10
+- AI: OpenRouter API with xAI Grok and Anthropic Claude models
+- Testing: Playwright, Vitest, Lighthouse
+- Deployment: Vercel, GitHub Pages, Docker
 
 ---
 
@@ -398,63 +377,22 @@ mangeshrautarchive/
 
 ## 📜 Available Scripts
 
-| Command                          | Description                                                        |
-| -------------------------------- | ------------------------------------------------------------------ |
-| `npm run dev`                    | 🚀 Start full stack (frontend + backend)                           |
-| `npm run dev:frontend`           | 🎨 Start frontend server only (port 4000)                          |
-| `npm run dev:backend`            | 🔧 Start Python backend only (port 8001)                           |
-| `npm run build`                  | 📦 Build production assets                                         |
-| `npm run serve:dist`             | 🌐 Serve the built `dist/` directory locally                       |
-| `npm run build:css`              | 🎨 Compile Tailwind CSS                                            |
-| `npm run lint`                   | 🔍 Run ESLint code quality checks                                  |
-| `npm run lint:fix`               | ✨ Auto-fix linting issues                                         |
-| `npm run lint:css`               | 🧹 Run Stylelint across CSS                                        |
-| `npm run format`                 | 🧼 Format codebase with Prettier                                   |
-| `npm run format:check`           | ✅ Verify Prettier formatting without modifying files              |
-| `npm run check`                  | ✅ Run JS lint + tests                                             |
-| `npm test`                       | 🧪 Run Vitest test suite                                           |
-| `npm run test:e2e:chrome`        | 🧪 Run Playwright smoke suite on Chromium                          |
-| `npm run test:e2e:mobile-chrome` | 📱 Run Playwright smoke suite on Mobile Chrome                     |
-| `npm run test:a11y:chrome`       | ♿ Run accessibility checks on Chromium                            |
-| `npm run qa:smoke`               | 🌐 Playwright smoke tests on Chrome                                |
-| `npm run qa:smoke:mobile`        | 📱 Playwright smoke tests on Mobile Chrome emulation               |
-| `npm run qa:a11y`                | ♿ Axe accessibility baseline on Chrome                            |
-| `npm run qa:lighthouse:desktop`  | ⚡ Lighthouse desktop gate                                         |
-| `npm run qa:lighthouse:mobile`   | 📱 Lighthouse mobile gate                                          |
-| `npm run qa:postdeploy`          | 🧪 Smoke + a11y check against deployed URL (`PLAYWRIGHT_BASE_URL`) |
-| `npm run qa:chrome`              | 🧭 Full Chrome QA gate (smoke + a11y + perf)                       |
-| `npm run qa:prod-ready`          | 🛡️ Full pre-release gate                                           |
-| `npm run optimize-images`        | 🖼️ Optimize image assets                                           |
-| `npm run security-check`         | 🔒 Scan for exposed secrets                                        |
-| `npm run audit:css-duplicates`   | 🔎 Report exact duplicate CSS rule blocks                          |
-| `npm run clean`                  | 🧽 Remove generated build/test artifacts and Python caches         |
-
----
-
-## 🧪 Quality & Performance Gates
-
-Release readiness is validated by executable gates (not static README snapshots):
-
-- `npm run qa:smoke`
-- `npm run qa:a11y`
-- `npm run qa:lighthouse:desktop`
-- `npm run qa:lighthouse:mobile`
-- `npm run qa:chrome`
-- `npm run qa:prod-ready`
-
-Current configured Lighthouse release floor:
-
-- Desktop: Perf `>= 86`, A11y/Best Practices/SEO `>= 90`
-- Mobile: Perf `>= 60`, A11y/Best Practices/SEO `>= 90`
-
-### Performance Practices
-
-- ✅ **Lazy Loading** — Images and components load on-demand
-- ✅ **Code Splitting** — Modular JavaScript architecture
-- ✅ **Asset Optimization** — WebP images, deferred noncritical CSS/JS, minified build output
-- ✅ **Production Serving** — Local `dist/` serving for realistic cache-header and asset checks
-- ✅ **Caching Strategy** — Service worker with smart cache-first approach
-- ✅ **Zero Layout Shift** — Proper image dimensions and placeholders
+| Command                         | Description                              |
+| ------------------------------- | ---------------------------------------- |
+| `npm run dev`                   | 🚀 Start full stack (frontend + backend) |
+| `npm run dev:frontend`          | 🎨 Start frontend only (port 4000)       |
+| `npm run dev:backend`           | 🔧 Start backend only (port 8001)        |
+| `npm run build`                 | 📦 Build production assets               |
+| `npm run serve:dist`            | 🌐 Serve built assets locally            |
+| `npm run lint`                  | 🔍 Run ESLint checks                     |
+| `npm run lint:fix`              | ✨ Auto-fix linting issues               |
+| `npm run test`                  | 🧪 Run Vitest tests                      |
+| `npm run qa:smoke`              | 🌐 Playwright smoke tests                |
+| `npm run qa:a11y`               | ♿ Accessibility checks                  |
+| `npm run qa:lighthouse:desktop` | ⚡ Lighthouse desktop perf               |
+| `npm run qa:lighthouse:mobile`  | 📱 Lighthouse mobile perf                |
+| `npm run qa:prod-ready`         | 🛡️ Full pre-release checks               |
+| `npm run clean`                 | 🧽 Remove build artifacts                |
 
 ---
 
@@ -494,16 +432,7 @@ You're free to use this code for your own portfolio, but please:
 
 ## 🙏 Acknowledgments
 
-Built with amazing open-source tools:
-
-- **FastAPI** — Modern Python web framework
-- **Tailwind CSS** — Utility-first CSS framework
-- **Font Awesome** — Icon library
-- **Prism.js** — Syntax highlighting
-- **OpenRouter** — AI model gateway
-- **xAI & Google** — For incredible AI models
-- **Last.fm** — Music scrobbling and API
-- **Open Library & Google Books** — Optional backend cover lookup integrations
+Built with open-source tools: FastAPI, Tailwind CSS, OpenRouter, xAI, Anthropic, Last.fm, and more.
 
 ---
 

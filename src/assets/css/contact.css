@@ -991,24 +991,133 @@ html.dark .support-donation-card cite {
   color: #9ca3af !important;
 }
 
-/* Music Card - Core Styling */
+/* Music Shelf - Compact iOS-style layout */
+#music-content {
+  overflow: hidden;
+}
+
+.music-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.music-featured-stack {
+  display: grid;
+}
+
+.music-recent-section {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(245, 245, 247, 0.86));
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 14px 34px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+html.dark .music-recent-section {
+  background: linear-gradient(180deg, rgba(18, 18, 20, 0.92), rgba(10, 10, 11, 0.92));
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.music-recent-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.music-recent-header h4 {
+  margin: 0 !important;
+  font-size: 0.98rem !important;
+  font-weight: 700 !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .music-recent-header h4 {
+  color: #f5f5f7 !important;
+}
+
+.music-recent-source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 0.38rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(0, 113, 227, 0.1);
+  color: #0071e3;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html.dark .music-recent-source {
+  background: rgba(10, 132, 255, 0.18);
+  color: #6cb6ff;
+}
+
+.music-recent-strip {
+  display: flex;
+  gap: 0.9rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.2rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.music-recent-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.music-card {
+  border-radius: 22px;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 245, 247, 0.92));
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 18px 36px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+html.dark .music-card {
+  background: linear-gradient(180deg, rgba(18, 18, 20, 0.94), rgba(10, 10, 11, 0.94));
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 .music-card .media-poster {
   position: relative;
   overflow: hidden;
   aspect-ratio: 1/1 !important;
   width: 100%;
   background: var(--bg-secondary);
-}
-
-#music-grid {
-  align-items: flex-start;
-  gap: 1rem;
+  border-radius: 20px;
 }
 
 .music-card.now-playing,
 .music-card.loading,
 .music-card.empty {
-  width: 188px;
+  width: 100%;
+  max-width: 520px;
+  display: grid;
+  grid-template-columns: minmax(132px, 148px) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
 }
 
 .music-card[hidden] {
@@ -1021,10 +1130,21 @@ html.dark .support-donation-card cite {
   object-fit: cover !important;
 }
 
+.music-poster-loading,
+.music-poster-empty {
+  min-height: 132px;
+}
+
 .music-card.now-playing .media-badge.playing {
-  background: #1db954 !important;
+  top: 10px;
+  left: 10px;
+  right: auto;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(52, 199, 89, 0.92) !important;
   color: #fff !important;
   font-weight: 700;
+  letter-spacing: 0.04em;
   animation: pulse-badge 2s ease-in-out infinite;
 }
 
@@ -1087,8 +1207,8 @@ html.dark .support-donation-card cite {
 
 /* Music card specific styles */
 .music-card .media-info h4 {
-  font-size: 0.7rem !important;
-  line-height: 1.35;
+  font-size: 1.02rem !important;
+  line-height: 1.18;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1098,24 +1218,38 @@ html.dark .support-donation-card cite {
 }
 
 .music-card .media-info p {
-  font-size: 0.6rem !important;
-  margin-top: 2px;
+  font-size: 0.74rem !important;
+  margin-top: 0;
   display: block;
-  line-height: 1.35;
+  line-height: 1.45;
   color: #6e6e73 !important;
 }
 
-.music-card.now-playing .media-info {
-  min-height: 102px;
+.music-card .media-info {
+  min-height: 0;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.4rem;
 }
 
-.music-card.now-playing .media-info h4 {
-  font-size: 0.82rem !important;
-  line-height: 1.35;
+.music-card-kicker {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.1rem !important;
+  font-size: 0.66rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0071e3 !important;
+}
+
+html.dark .music-card-kicker {
+  color: #6cb6ff !important;
 }
 
 .music-card.now-playing .media-info p {
-  font-size: 0.68rem !important;
+  font-size: 0.78rem !important;
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1126,11 +1260,17 @@ html.dark .support-donation-card cite {
 
 .music-card-description {
   color: #8d8d92 !important;
+  max-width: 28ch;
 }
 
 html.dark .music-card .media-info p,
 html.dark .music-card-description {
   color: #a1a1aa !important;
+}
+
+.music-card .watch-btn {
+  align-self: flex-start;
+  margin-top: 0.35rem;
 }
 
 /* Premium Cash App Button - Compact Apple Style */
@@ -2199,12 +2339,12 @@ html.dark .media-info h4 {
 .recent-track-item {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.7rem;
   padding: 0;
   text-decoration: none !important;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex: 0 0 auto;
-  width: 124px;
+  width: 118px;
   scroll-snap-align: start;
 }
 
@@ -2220,7 +2360,7 @@ html.dark .media-info h4 {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
-  border-radius: 14px;
+  border-radius: 18px;
   box-shadow: 0 8px 18px rgb(15 23 42 / 10%);
   transition: all 0.3s ease;
   background: #f5f5f7;
@@ -2234,13 +2374,13 @@ html.dark .recent-track-img {
 .recent-track-info {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  text-align: center;
-  padding: 0 0.25rem;
+  gap: 0.26rem;
+  text-align: left;
+  padding: 0 0.15rem;
 }
 
 .recent-track-name {
-  font-size: 0.76rem !important;
+  font-size: 0.74rem !important;
   font-weight: 600 !important;
   color: #1d1d1f !important;
   margin: 0 !important;
@@ -2259,7 +2399,7 @@ html.dark .recent-track-name {
 }
 
 .recent-track-artist {
-  font-size: 0.66rem !important;
+  font-size: 0.65rem !important;
   font-weight: 500 !important;
   color: #86868b !important;
   margin: 0 !important;
@@ -2357,22 +2497,102 @@ html.dark .watch-btn.book-btn {
     padding: 0.6rem;
   }
 
-  .media-info h4 {
-    font-size: 0.8rem !important;
+  .music-layout {
+    gap: 0.85rem;
   }
 
   .music-card.now-playing,
   .music-card.loading,
   .music-card.empty {
-    width: 164px;
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 0.85rem;
+    padding: 0.9rem;
+    max-width: none;
+  }
+
+  .music-poster-loading,
+  .music-poster-empty {
+    min-height: 104px;
+  }
+
+  .music-card .media-info h4 {
+    font-size: 0.88rem !important;
+  }
+
+  .music-card .media-info p {
+    font-size: 0.72rem !important;
+  }
+
+  .music-card.now-playing .media-info p {
+    font-size: 0.74rem !important;
+  }
+
+  .music-card-description {
+    max-width: none;
+  }
+
+  .music-recent-section {
+    padding: 0.85rem;
+  }
+
+  .music-recent-header {
+    align-items: flex-start;
+  }
+
+  .music-recent-header h4 {
+    font-size: 0.9rem !important;
+  }
+
+  .media-info h4 {
+    font-size: 0.8rem !important;
   }
 
   .recent-track-item {
-    width: 108px;
+    width: 104px;
   }
 
   .watch-btn {
     padding: 0.4rem 0.75rem;
     font-size: 0.75rem;
+  }
+}
+
+/* Final scoped overrides for the Currently music shelf.
+   Keep these selectors specific so homepage hero music styles cannot override them. */
+#music-grid.music-layout {
+  display: grid !important;
+  overflow: visible !important;
+}
+
+#music-content .music-card.now-playing,
+#music-content .music-card.loading,
+#music-content .music-card.empty {
+  display: grid !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  margin: 0 !important;
+  justify-content: stretch !important;
+  grid-template-columns: minmax(132px, 148px) minmax(0, 1fr) !important;
+}
+
+#music-content .music-card[hidden] {
+  display: none !important;
+}
+
+#music-content .music-card .media-info {
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+#music-content .music-card .watch-btn {
+  align-self: flex-start !important;
+}
+
+@media (max-width: 768px) {
+  #music-content .music-card.now-playing,
+  #music-content .music-card.loading,
+  #music-content .music-card.empty {
+    grid-template-columns: 104px minmax(0, 1fr) !important;
+    max-width: none !important;
   }
 }

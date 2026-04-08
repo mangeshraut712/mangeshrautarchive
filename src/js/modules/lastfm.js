@@ -256,9 +256,7 @@ class LastFmService {
     this.setCardVisibility(els.emptyEl, false);
     els.nowPlayingTrack.textContent = trackName;
     els.nowPlayingArtist.textContent = artistName;
-    els.nowPlayingDescription.textContent = isNowPlaying
-      ? 'Synced via Last.fm • opens in Spotify search'
-      : 'Recently played • opens in Spotify search';
+    els.nowPlayingDescription.textContent = '';
     els.nowPlayingBadge.textContent = isNowPlaying ? 'Now Playing' : 'Recently Played';
     els.nowPlayingImg.alt = `${trackName} by ${artistName}`;
     els.nowPlayingLink.href = this.getTrackLink(track);

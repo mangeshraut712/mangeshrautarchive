@@ -427,9 +427,8 @@ test.describe('Chrome smoke tests', () => {
       recentCount: document.querySelectorAll('#recent-tracks-container .recent-track-item').length,
     }));
 
-    expect(musicState.featuredDisplay).toBe('flex');
+    expect(musicState.featuredDisplay).not.toBe('none');
     expect(musicState.featuredArtist.length).toBeGreaterThan(0);
-    expect(musicState.featuredDescription).toMatch(/Last\.fm|Recently played/i);
     expect(musicState.recentCount).toBeGreaterThan(0);
     expect(
       musicState.featuredArtwork.includes('/300x300/') ||

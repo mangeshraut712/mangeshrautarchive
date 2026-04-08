@@ -712,8 +712,7 @@ def adaptive_llm_params(message: str) -> dict:
 _github_proxy_cache: Dict[str, Any] = {}
 GITHUB_PROXY_TTL = 600  # 10 minutes
 GITHUB_PAT = (
-    os.getenv("GITHUB_PAT", "").strip()
-    or os.getenv("GITHUB_TOKEN", "").strip()
+    os.getenv("GITHUB_PAT", "").strip() or os.getenv("GITHUB_TOKEN", "").strip()
 )  # Optional fine-grained PAT / standard token alias
 _github_api_proxy_cache: Dict[str, Any] = {}
 GITHUB_API_PROXY_TTL = 180  # 3 minutes for endpoint-level GitHub API proxy
@@ -949,9 +948,9 @@ def generate_local_response(query: str) -> Dict:
 
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
-        name = PORTFOLIO_DATA['name']
-        title = PORTFOLIO_DATA['title']
-        location = PORTFOLIO_DATA['location']
+        name = PORTFOLIO_DATA["name"]
+        title = PORTFOLIO_DATA["title"]
+        location = PORTFOLIO_DATA["location"]
         return {
             "answer": f"👨‍💻 **{name}** is a {title} based in {location}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
             "category": "About",
@@ -959,7 +958,7 @@ def generate_local_response(query: str) -> Dict:
 
     # Resume/CV
     if "resume" in query or "cv" in query:
-        resume_url = PORTFOLIO_DATA['resume_url']
+        resume_url = PORTFOLIO_DATA["resume_url"]
         return {
             "answer": f"📄 You can download Mangesh's resume here: {resume_url}",
             "category": "Resume",
@@ -989,10 +988,10 @@ def generate_local_response(query: str) -> Dict:
 
     # Contact
     if "contact" in query or "email" in query or "hiring" in query or "hire" in query:
-        email = PORTFOLIO_DATA['email']
-        phone = PORTFOLIO_DATA['phone']
-        linkedin = PORTFOLIO_DATA['linkedin']
-        github = PORTFOLIO_DATA['github']
+        email = PORTFOLIO_DATA["email"]
+        phone = PORTFOLIO_DATA["phone"]
+        linkedin = PORTFOLIO_DATA["linkedin"]
+        github = PORTFOLIO_DATA["github"]
         return {
             "answer": f"📫 **Contact Information**:\n• **Email**: {email}\n• **Phone**: {phone}\n• **LinkedIn**: {linkedin}\n• **GitHub**: {github}",
             "category": "Contact",
@@ -1698,9 +1697,7 @@ async def github_repos_proxy(
         "created": "created_at",
         "stars": "stargazers_count",
     }.get(sort, "pushed_at")
-    repos.sort(
-        key=lambda r: r.get(sort_key) or "", reverse=True
-    )
+    repos.sort(key=lambda r: r.get(sort_key) or "", reverse=True)
 
     # Filter forks
     if no_forks:
@@ -1745,8 +1742,6 @@ async def github_repos_proxy(
         "rate_mode": rate_header,
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
-
-
 
 
 # Analytics views endpoint
@@ -1820,7 +1815,11 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             "email": {"stringValue": payload.email.strip()},
             "subject": {"stringValue": payload.subject.strip()},
             "message": {"stringValue": payload.message.strip()},
-            "timestamp": {"timestampValue": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")},
+            "timestamp": {
+                "timestampValue": datetime.now(timezone.utc)
+                .isoformat()
+                .replace("+00:00", "Z")
+            },
             "userAgent": {"stringValue": req.headers.get("user-agent", "Unknown")},
             "submittedFrom": {
                 "stringValue": req.headers.get("referer")
@@ -1991,7 +1990,9 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
 
 
 @app.get("/monitor/health", tags=["system-monitor"], summary="Detailed monitor health")
-@app.get("/api/monitor/health", tags=["system-monitor"], summary="Detailed monitor health")
+@app.get(
+    "/api/monitor/health", tags=["system-monitor"], summary="Detailed monitor health"
+)
 async def get_monitor_health():
     """
     Comprehensive health check with all service statuses
@@ -2133,8 +2134,16 @@ async def get_monitor_docs():
     }
 
 
-@app.get("/monitor/external-services", tags=["system-monitor"], summary="External service status")
-@app.get("/api/monitor/external-services", tags=["system-monitor"], summary="External service status")
+@app.get(
+    "/monitor/external-services",
+    tags=["system-monitor"],
+    summary="External service status",
+)
+@app.get(
+    "/api/monitor/external-services",
+    tags=["system-monitor"],
+    summary="External service status",
+)
 async def get_monitor_external_services():
     """
     Live status for external and integration services surfaced in the monitor UI

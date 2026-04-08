@@ -303,8 +303,12 @@
         <a href="#projects" class="nav-link" role="menuitem">Projects</a>
         <a href="#education" class="nav-link" role="menuitem">Education</a>
         <a href="#publications" class="nav-link" role="menuitem">Publications</a>
+        <a href="#awards" class="nav-link" role="menuitem">Awards</a>
+        <a href="#recommendations" class="nav-link" role="menuitem">Recommendations</a>
+        <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
         <a href="#blog" class="nav-link" role="menuitem">Blog</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
+        <a href="#debug-runner-section" class="nav-link" role="menuitem">Game</a>
         <a href="monitor.html" class="nav-link" role="menuitem">System Monitor</a>
       </div>
       <div class="nav-actions">
@@ -2123,53 +2127,66 @@
 
               <!-- Music Section - Last.fm Now Playing -->
               <div class="currently-content" id="music-content">
-                <div class="media-grid" id="music-grid">
-                  <!-- Now Playing Card -->
-                  <div class="media-card music-card now-playing" id="now-playing-card" hidden>
-                    <div class="media-poster">
-                      <img id="now-playing-img" src="" alt="Album Art" loading="lazy" />
-                      <span class="media-badge playing" id="now-playing-badge">Now Playing</span>
-                      <div class="playing-indicator" id="currently-playing-indicator">
-                        <span></span><span></span><span></span>
+                <div class="music-layout" id="music-grid">
+                  <div class="music-featured-stack">
+                    <!-- Now Playing Card -->
+                    <div class="media-card music-card now-playing" id="now-playing-card" hidden>
+                      <div class="media-poster">
+                        <img id="now-playing-img" src="" alt="Album Art" loading="lazy" />
+                        <span class="media-badge playing" id="now-playing-badge">Now Playing</span>
+                        <div class="playing-indicator" id="currently-playing-indicator">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </div>
+                      <div class="media-info">
+                        <p class="music-card-kicker">Music Shelf</p>
+                        <h4 id="now-playing-track">Track Name</h4>
+                        <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
+                        <p id="now-playing-description" class="music-card-description">Synced via Last.fm</p>
+                        <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
+                          <i class="fab fa-spotify"></i> Open in Spotify
+                        </a>
                       </div>
                     </div>
-                    <div class="media-info">
-                      <h4 id="now-playing-track">Track Name</h4>
-                      <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
-                      <p id="now-playing-description" class="music-card-description">Synced via Last.fm</p>
-                      <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
-                        <i class="fab fa-spotify"></i> Open in Spotify
-                      </a>
+
+                    <!-- Loading State -->
+                    <div class="media-card music-card loading" id="music-loading">
+                      <div class="media-poster music-poster-loading" style="display: flex; align-items: center; justify-content: center;">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+                      </div>
+                      <div class="media-info">
+                        <p class="music-card-kicker">Music Shelf</p>
+                        <h4>Syncing music…</h4>
+                        <p class="text-xs text-gray-500">Pulling recent listening from Last.fm</p>
+                      </div>
+                    </div>
+
+                    <!-- Error/Empty State -->
+                    <div class="media-card music-card empty" id="music-empty" hidden>
+                      <div class="media-poster music-poster-empty" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
+                        <i class="fab fa-spotify" style="font-size: 2rem; color: white;"></i>
+                      </div>
+                      <div class="media-info">
+                        <p class="music-card-kicker">Music Shelf</p>
+                        <h4>No live playback</h4>
+                        <p class="text-xs text-gray-500">Open Spotify and keep scrobbling to refresh this shelf</p>
+                        <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
+                          <i class="fab fa-spotify"></i> Open Spotify
+                        </a>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Loading State -->
-                  <div class="media-card music-card loading" id="music-loading">
-                    <div class="media-poster" style="display: flex; align-items: center; justify-content: center;">
-                      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+                  <div class="music-recent-section" aria-label="Recently played tracks">
+                    <div class="music-recent-header">
+                      <div>
+                        <p class="music-card-kicker">Recently Played</p>
+                        <h4>Quick picks from Last.fm</h4>
+                      </div>
+                      <span class="music-recent-source">Live</span>
                     </div>
-                    <div class="media-info">
-                      <h4>Syncing music…</h4>
-                      <p class="text-xs text-gray-500">Pulling recent listening from Last.fm</p>
-                    </div>
+                    <div id="recent-tracks-container" class="music-recent-strip"></div>
                   </div>
-
-                  <!-- Error/Empty State -->
-                  <div class="media-card music-card empty" id="music-empty" hidden>
-                    <div class="media-poster" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
-                      <i class="fab fa-spotify" style="font-size: 2rem; color: white;"></i>
-                    </div>
-                    <div class="media-info">
-                      <h4>No live playback</h4>
-                      <p class="text-xs text-gray-500">Open Spotify and keep scrobbling to refresh this shelf</p>
-                      <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
-                        <i class="fab fa-spotify"></i> Open Spotify
-                      </a>
-                    </div>
-                  </div>
-
-                  <!-- Recent Tracks Container - Will be populated by JS -->
-                  <div id="recent-tracks-container" style="display: contents;"></div>
                 </div>
 
 
