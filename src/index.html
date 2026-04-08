@@ -981,22 +981,113 @@
             <div class="activity-github-graph-container" id="github-graph-container">
               <div class="graph-header">
                 <h4 class="graph-title">Contributions in the last year</h4>
+                <button id="refresh-graph-btn" class="graph-refresh-btn" aria-label="Refresh contribution graph" title="Refresh graph">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
               </div>
               <div class="github-graph-scroll">
                 <div class="graph-loading" id="graph-loading">
                   <div class="loading-spinner"></div>
-                  <span>Loading contribution graph...</span>
+                  <span id="graph-loading-text">Loading contribution graph...</span>
+                  <button id="graph-retry-btn" class="graph-retry-btn" style="display: none;" onclick="loadGitHubGraph()">
+                    <i class="fas fa-redo"></i> Retry
+                  </button>
+                </div>
+                <div class="graph-error-container" id="graph-error" style="display: none;">
+                  <i class="fas fa-exclamation-circle"></i>
+                  <span>Unable to load contribution graph</span>
+                  <button class="graph-retry-btn" onclick="loadGitHubGraph()">
+                    <i class="fas fa-redo"></i> Try Again
+                  </button>
                 </div>
                 <picture id="github-graph-picture" style="display: none;">
                   <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/4fa5ff/mangeshraut712">
-                  <source media="(prefers-color-scheme: light)"
-                    srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
-                  <img src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github chart"
-                    class="github-graph-svg" loading="lazy" onload="document.getElementById('graph-loading').style.display='none'; this.parentElement.style.display='block';"
-                    onerror="document.getElementById('graph-loading').innerHTML='<span class=\'graph-error\'><i class=\'fas fa-exclamation-circle\'></i> Unable to load contribution graph</span>';">
+                  <source media="(prefers-color-scheme: light)" srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
+                  <img id="github-chart-img" src="https://ghchart.rshah.org/0071e3/mangeshraut712" alt="Mangesh Raut's Github contribution chart"
+                    class="github-graph-svg" loading="eager"
+                    onload="handleGraphLoadSuccess()"
+                    onerror="handleGraphLoadError()">
                 </picture>
               </div>
             </div>
+
+            <script>
+              (function() {
+                let graphLoadTimeout;
+                const GRAPH_TIMEOUT = 15000; // 15 seconds timeout
+                let retryCount = 0;
+                const MAX_RETRIES = 3;
+
+                window.handleGraphLoadSuccess = function() {
+                  clearTimeout(graphLoadTimeout);
+                  document.getElementById('graph-loading').style.display = 'none';
+                  document.getElementById('graph-error').style.display = 'none';
+                  document.getElementById('github-graph-picture').style.display = 'block';
+                  retryCount = 0;
+                };
+
+                window.handleGraphLoadError = function() {
+                  clearTimeout(graphLoadTimeout);
+                  showGraphError();
+                };
+
+                function showGraphError() {
+                  document.getElementById('graph-loading').style.display = 'none';
+                  document.getElementById('github-graph-picture').style.display = 'none';
+                  document.getElementById('graph-error').style.display = 'flex';
+                }
+
+                window.loadGitHubGraph = function() {
+                  if (retryCount >= MAX_RETRIES) {
+                    document.getElementById('graph-loading-text').textContent = 'Service temporarily unavailable';
+                    document.getElementById('graph-retry-btn').style.display = 'inline-flex';
+                    return;
+                  }
+
+                  retryCount++;
+                  const loadingEl = document.getElementById('graph-loading');
+                  const pictureEl = document.getElementById('github-graph-picture');
+                  const errorEl = document.getElementById('graph-error');
+                  const imgEl = document.getElementById('github-chart-img');
+
+                  loadingEl.style.display = 'flex';
+                  pictureEl.style.display = 'none';
+                  errorEl.style.display = 'none';
+                  document.getElementById('graph-retry-btn').style.display = 'none';
+                  document.getElementById('graph-loading-text').textContent = retryCount > 1 ? `Retrying... (Attempt ${retryCount}/${MAX_RETRIES})` : 'Loading contribution graph...';
+
+                  // Clear previous image to force reload
+                  imgEl.src = '';
+
+                  // Set timeout for loading
+                  clearTimeout(graphLoadTimeout);
+                  graphLoadTimeout = setTimeout(function() {
+                    if (document.getElementById('github-graph-picture').style.display !== 'block') {
+                      showGraphError();
+                    }
+                  }, GRAPH_TIMEOUT);
+
+                  // Reload image with cache-busting
+                  const cacheBuster = '?t=' + Date.now();
+                  imgEl.src = 'https://ghchart.rshah.org/0071e3/mangeshraut712' + cacheBuster;
+                };
+
+                // Initial load
+                document.addEventListener('DOMContentLoaded', function() {
+                  // Delay initial load for better page performance
+                  setTimeout(window.loadGitHubGraph, 2000);
+
+                  // Refresh button handler
+                  const refreshBtn = document.getElementById('refresh-graph-btn');
+                  if (refreshBtn) {
+                    refreshBtn.addEventListener('click', function() {
+                      retryCount = 0;
+                      window.loadGitHubGraph();
+                    });
+                  }
+                });
+              })();
+            </script>
           </div>
 
           <!-- Project Search & Filter -->

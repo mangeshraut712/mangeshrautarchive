@@ -441,6 +441,114 @@ html.dark #projects .graph-error {
   color: #f87171;
 }
 
+/* Graph Error Container - Enhanced */
+.graph-error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: #ef4444;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.graph-error-container i {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+html.dark .graph-error-container {
+  color: #f87171;
+}
+
+/* Graph Header with Refresh Button */
+.graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.graph-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--project-muted-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.graph-refresh-btn:hover {
+  background: rgb(0 0 0 / 8%);
+  color: var(--project-accent);
+  transform: rotate(180deg);
+}
+
+html.dark .graph-refresh-btn {
+  color: var(--project-muted-dark);
+}
+
+html.dark .graph-refresh-btn:hover {
+  background: rgb(255 255 255 / 10%);
+  color: var(--project-accent);
+}
+
+/* Graph Retry Button */
+.graph-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--project-accent);
+  border-radius: 100px;
+  background: var(--project-accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.graph-retry-btn:hover {
+  background: #005bb5;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
+}
+
+.graph-retry-btn i {
+  font-size: 0.75rem;
+}
+
+.graph-retry-btn:active {
+  transform: translateY(0);
+}
+
+/* Enhanced Loading State */
+#projects .graph-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 0.75rem;
+  color: var(--project-muted-light);
+  font-size: 0.9rem;
+  min-height: 120px;
+}
+
+html.dark #projects .graph-loading {
+  color: var(--project-muted-dark);
+}
+
 /* Skeleton Loading States for Stats */
 #projects .activity-stat-item.skeleton {
   position: relative;
