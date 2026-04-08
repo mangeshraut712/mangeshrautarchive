@@ -9,7 +9,12 @@ class LastFmService {
   constructor() {
     this.API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
     this.USERNAME = 'mbr63';
-    this.API_URL = 'https://ws.audioscrobbler.com/2.0/';
+    // Use configured API base URL from build config
+    this.API_BASE_URL = (typeof buildConfig !== 'undefined' && buildConfig.apiBaseUrl) || '';
+    // In development, use relative URL; in production, use configured base URL
+    this.API_URL = this.API_BASE_URL
+      ? `${this.API_BASE_URL}/api/music/recent`
+      : '/api/music/recent';
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
     this.UPDATE_INTERVAL_MS = 30000;
     this.errorCount = 0;
@@ -18,6 +23,9 @@ class LastFmService {
     this.currentlyComponent = null;
     this.intervalId = null;
     this.started = false;
+    this.cachedTracks = null;
+    this.cacheExpiry = 0;
+    this.CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
     this.artworkCache = new Map();
     this.followStates = new Map(); // Track follow states for tracks/artists
     this.retryTimeout = null;
@@ -180,7 +188,22 @@ class LastFmService {
   }
 
   async fetchRecent() {
+    // Check cache first
+    if (this.cachedTracks && Date.now() < this.cacheExpiry && this.errorCount === 0) {
+      console.log('🎵 Last.fm: Using cached data');
+      this.updateHero(this.cachedTracks[0]);
+      this.updateCurrently(this.cachedTracks);
+      return;
+    }
+
     if (this.errorCount >= this.MAX_ERRORS) {
+      // If we have cached data, show it even when offline
+      if (this.cachedTracks) {
+        console.log('🎵 Last.fm: Showing cached data (offline mode)');
+        this.updateHero(this.cachedTracks[0]);
+        this.updateCurrently(this.cachedTracks);
+        return;
+      }
       this.showOfflineStates();
       return;
     }
@@ -190,27 +213,59 @@ class LastFmService {
       this.showLoadingState();
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // Increased timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased to 30 seconds for production
 
-      const response = await fetch(
-        `${this.API_URL}?method=user.getrecenttracks&user=${this.USERNAME}&api_key=${this.API_KEY}&format=json&limit=10`,
-        {
-          signal: controller.signal
-        }
-      );
+      const fetchUrl = `${this.API_URL}?user=${this.USERNAME}&limit=10`;
+      console.log(`🎵 Last.fm: Fetching from ${fetchUrl}`);
+
+      const response = await fetch(fetchUrl, {
+        signal: controller.signal,
+        headers: {
+          Accept: 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+        // Add timeout for fetch itself
+        method: 'GET',
+      });
+
+      console.log(`🎵 Last.fm: Response status ${response.status}`);
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorMessage =
-          response.status === 403
-            ? 'API rate limit exceeded'
-            : response.status === 404
-              ? 'User not found'
-              : `API error (${response.status})`;
-        console.warn('Last.fm API returned error:', response.status);
+        let errorMessage = `API error (${response.status})`;
+        let errorDetails = '';
+
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+          errorDetails = errorData.details || '';
+        } catch (e) {
+          // If response isn't JSON, use status-based messages
+          if (response.status === 403) {
+            errorMessage = 'API access restricted';
+            errorDetails = 'Last.fm API access is temporarily limited';
+          } else if (response.status === 404) {
+            errorMessage = 'Music profile not found';
+            errorDetails = 'Unable to find Last.fm user profile';
+          } else if (response.status === 500) {
+            errorMessage = 'Last.fm service error';
+            errorDetails = 'Last.fm servers are experiencing issues';
+          } else if (response.status === 502) {
+            errorMessage = 'Invalid API response';
+            errorDetails = 'Last.fm returned unexpected data';
+          } else if (response.status === 503) {
+            errorMessage = 'Service temporarily unavailable';
+            errorDetails = 'Last.fm API is temporarily down';
+          } else if (response.status === 504) {
+            errorMessage = 'Request timeout';
+            errorDetails = 'Last.fm took too long to respond';
+          }
+        }
+
+        console.warn('Last.fm API error:', response.status, errorMessage, errorDetails);
         this.errorCount += 1;
-        this.showErrorState(errorMessage);
+        this.showErrorState(errorMessage, errorDetails);
         return;
       }
 
@@ -224,6 +279,11 @@ class LastFmService {
 
       this.errorCount = 0;
       const trackList = Array.isArray(tracks) ? tracks : [tracks];
+
+      // Cache the successful response
+      this.cachedTracks = trackList;
+      this.cacheExpiry = Date.now() + this.CACHE_DURATION_MS;
+
       this.updateHero(trackList[0]);
       this.updateCurrently(trackList);
 
@@ -235,9 +295,18 @@ class LastFmService {
         });
       }
     } catch (error) {
-      console.warn('Last.fm fetch error:', error);
+      console.error('🎵 Last.fm fetch error:', error);
       this.errorCount += 1;
-      const errorMessage = error.name === 'AbortError' ? 'Request timed out' : 'Network error';
+
+      let errorMessage = 'Network error';
+      if (error.name === 'AbortError') {
+        errorMessage = 'Request timed out - please check your connection';
+      } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        errorMessage = 'Unable to connect to music service';
+      } else if (error.message) {
+        errorMessage = `Connection error: ${error.message}`;
+      }
+
       this.showErrorState(errorMessage);
     }
   }
@@ -272,6 +341,15 @@ class LastFmService {
       els.statusText.textContent = 'Recently played';
       els.playingIndicator.classList.remove('active');
       els.musicCard.classList.remove('is-playing');
+    }
+
+    if (els.lastfmLink) {
+      els.lastfmLink.href = this.getTrackLink(track);
+    }
+
+    // Restore premium styles for Home card
+    if (els.albumArt) {
+      els.albumArt.style.borderRadius = isNowPlaying ? '50%' : '12px';
     }
   }
 
@@ -386,24 +464,41 @@ class LastFmService {
   showOfflineStates() {
     if (this.heroComponent) {
       const els = this.heroComponent;
-      els.statusText.textContent = 'Offline';
-      els.trackName.textContent = 'Service';
-      els.artistName.textContent = 'Unavailable';
-      this.applyImageFallback(els.albumArt, 'Service Offline', 'Spotify');
-      els.albumArt.src = this.getArtworkPlaceholder('Service Offline', 'Spotify');
-      els.playingIndicator.classList.remove('active');
-      els.musicCard.classList.remove('is-playing');
+      if (this.cachedTracks && this.cachedTracks[0]) {
+        // Show cached data
+        this.updateHero(this.cachedTracks[0]);
+      } else {
+        els.statusText.textContent = 'Offline';
+        els.trackName.textContent = 'Service';
+        els.artistName.textContent = 'Unavailable';
+        this.applyImageFallback(els.albumArt, 'Service Offline', 'Spotify');
+        els.albumArt.src = this.getArtworkPlaceholder('Service Offline', 'Spotify');
+        els.playingIndicator.classList.remove('active');
+        els.musicCard.classList.remove('is-playing');
+      }
     }
 
     if (this.currentlyComponent) {
       const els = this.currentlyComponent;
       this.setCardVisibility(els.loadingEl, false);
-      this.setCardVisibility(els.emptyEl, true);
-      els.emptyEl.querySelector('h4').textContent = 'Music shelf offline';
-      els.emptyEl.querySelector('p').textContent =
-        'Music service is temporarily unavailable. Open Spotify and try again shortly.';
-      this.setCardVisibility(els.nowPlayingCard, false);
-      els.recentContainer.innerHTML = '';
+
+      if (this.cachedTracks) {
+        // Show cached data
+        this.updateCurrently(this.cachedTracks);
+        // Add a note that it's cached
+        const cachedNotice = document.createElement('div');
+        cachedNotice.style.cssText =
+          'font-size: 0.8em; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;';
+        cachedNotice.textContent = 'Showing cached music data';
+        els.nowPlayingCard.appendChild(cachedNotice);
+      } else {
+        this.setCardVisibility(els.emptyEl, true);
+        els.emptyEl.querySelector('h4').textContent = 'Music shelf offline';
+        els.emptyEl.querySelector('p').textContent =
+          'Music service is temporarily unavailable. Open Spotify and try again shortly.';
+        this.setCardVisibility(els.nowPlayingCard, false);
+        els.recentContainer.innerHTML = '';
+      }
     }
   }
 
@@ -479,7 +574,7 @@ class LastFmService {
     }
   }
 
-  showErrorState(errorMessage = 'Unable to load music data') {
+  showErrorState(errorMessage = 'Unable to load music data', errorDetails = '') {
     if (this.currentlyComponent) {
       const els = this.currentlyComponent;
       this.setCardVisibility(els.loadingEl, false);
@@ -487,11 +582,27 @@ class LastFmService {
       this.setCardVisibility(els.emptyEl, true);
 
       if (els.emptyEl) {
+        const detailsHtml = errorDetails
+          ? `<small style="color: var(--text-secondary); font-size: 0.8em; display: block; margin: 0.5em 0;">${errorDetails}</small>`
+          : '';
+
+        // Show a more user-friendly message
+        const friendlyMessage =
+          errorMessage.includes('timeout') || errorMessage.includes('Request timed out')
+            ? 'Music service is taking longer than usual to respond'
+            : errorMessage.includes('connect')
+              ? 'Unable to connect to music service right now'
+              : 'Music data is temporarily unavailable';
+
         els.emptyEl.innerHTML = `
           <div class="error-state">
-            <i class="fas fa-exclamation-triangle"></i>
-            <h4>Music loading failed</h4>
-            <p>${errorMessage}</p>
+            <i class="fas fa-music"></i>
+            <h4>Music Service</h4>
+            <p>${friendlyMessage}</p>
+            ${detailsHtml}
+            <div style="margin-top: 1rem; font-size: 0.9em; color: var(--text-secondary);">
+              <p style="margin: 0.5rem 0;">Try opening Spotify or Last.fm in another tab to refresh your music data.</p>
+            </div>
             <button class="retry-btn" onclick="lastFmService.retryLoad()">
               <i class="fas fa-redo"></i> Try Again
             </button>
@@ -517,6 +628,7 @@ class LastFmService {
 }
 
 const lastFmService = new LastFmService();
+window.lastFmService = lastFmService;
 
 function initLastFmService() {
   const heroElements = {
@@ -526,6 +638,7 @@ function initLastFmService() {
     statusText: document.getElementById('status-text'),
     playingIndicator: document.getElementById('playing-indicator'),
     musicCard: document.getElementById('music-card'),
+    lastfmLink: document.querySelector('#home .lastfm-link'),
   };
 
   if (heroElements.trackName) {

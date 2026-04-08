@@ -1532,27 +1532,112 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     """
     api_key = "bef46b0d7702dac5b071906cd186bd28"
     url = f"https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user={user}&api_key={api_key}&format=json&limit={limit}"
-    
+
+    print(f"🔍 Fetching Last.fm data for user: {user}, limit: {limit}")
+    print(f"📡 Last.fm URL: {url}")
+
     try:
-        async with httpx.AsyncClient(timeout=10.0, follow_redirects=True) as client:
-            headers = {"User-Agent": "AssistMe-Portfolio/3.0.0"}
+        # Increase timeout and add retry logic
+        async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
+            headers = {
+                "User-Agent": "AssistMe-Portfolio/3.0.0",
+                "Accept": "application/json",
+            }
+
+            print(f"🚀 Making request to Last.fm API...")
             response = await client.get(url, headers=headers)
-            
+
+            print(f"📊 Last.fm Response Status: {response.status_code}")
+
             if response.status_code != 200:
-                print(f"Last.fm Error: {response.status_code} - {response.text}")
-                return JSONResponse(
-                    status_code=response.status_code,
-                    content={"error": "Last.fm error", "details": response.text}
-                )
-            
+                print(f"❌ Last.fm Error: {response.status_code} - {response.text}")
+
+                # Handle specific error codes
+                if response.status_code == 403:
+                    return JSONResponse(
+                        status_code=503,
+                        content={
+                            "error": "Last.fm service temporarily unavailable",
+                            "details": "API access restricted",
+                        },
+                    )
+                elif response.status_code == 404:
+                    return JSONResponse(
+                        status_code=404,
+                        content={
+                            "error": "User not found",
+                            "details": f"Last.fm user '{user}' not found",
+                        },
+                    )
+                elif response.status_code == 500:
+                    return JSONResponse(
+                        status_code=503,
+                        content={
+                            "error": "Last.fm service error",
+                            "details": "Last.fm servers are experiencing issues",
+                        },
+                    )
+                elif response.status_code >= 500:
+                    return JSONResponse(
+                        status_code=503,
+                        content={
+                            "error": "Last.fm service unavailable",
+                            "details": "Last.fm API is temporarily down",
+                        },
+                    )
+                else:
+                    return JSONResponse(
+                        status_code=response.status_code,
+                        content={
+                            "error": f"Last.fm API error ({response.status_code})",
+                            "details": response.text[:200],
+                        },
+                    )
+
             data = response.json()
+            print(
+                f"✅ Successfully fetched {len(data.get('recenttracks', {}).get('track', []))} tracks for user {user}"
+            )
+
+            # Validate response structure
+            if not data.get("recenttracks"):
+                print("⚠️  Invalid response structure from Last.fm")
+                return JSONResponse(
+                    status_code=502,
+                    content={
+                        "error": "Invalid API response",
+                        "details": "Last.fm returned unexpected data format",
+                    },
+                )
+
             return data
-            
+
+    except httpx.TimeoutException:
+        print("⏰ Last.fm request timed out")
+        return JSONResponse(
+            status_code=504,
+            content={
+                "error": "Request timeout",
+                "details": "Last.fm API took too long to respond",
+            },
+        )
+    except httpx.ConnectError:
+        print("🌐 Connection error to Last.fm")
+        return JSONResponse(
+            status_code=503,
+            content={
+                "error": "Connection failed",
+                "details": "Unable to connect to Last.fm servers",
+            },
+        )
     except Exception as e:
-        print(f"Music Proxy Exception: {str(e)}")
+        print(f"💥 Music Proxy Exception: {str(e)}")
         return JSONResponse(
             status_code=500,
-            content={"error": "Music proxy unavailable", "details": str(e)}
+            content={
+                "error": "Music service error",
+                "details": f"Internal error: {str(e)}",
+            },
         )
 
 
