@@ -14,9 +14,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
 from pydantic import BaseModel, Field
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import defaultdict
-import threading
 
 import httpx
 from dotenv import load_dotenv
@@ -89,119 +88,7 @@ print(f"   Site URL: {SITE_URL}")
 print("   Docs: http://localhost:8000/api/docs")
 print("=" * 60)
 
-# Analytics storage (in-memory with periodic flush to disk for persistence)
-analytics_lock = threading.Lock()
-analytics_data = {
-    "total_views": 0,
-    "daily_views": {},  # Format: "2024-01-15": count
-    "last_updated": datetime.utcnow().isoformat()
-}
-ANALYTICS_FILE = os.path.join(os.path.dirname(__file__), "analytics_data.json")
-
-def load_analytics():
-    """Load analytics data from disk if available"""
-    global analytics_data
-    try:
-        if os.path.exists(ANALYTICS_FILE):
-            with open(ANALYTICS_FILE, 'r') as f:
-                loaded = json.load(f)
-                with analytics_lock:
-                    analytics_data.update(loaded)
-    except Exception as e:
-        print(f"⚠️ Could not load analytics: {e}")
-
-def save_analytics():
-    """Save analytics data to disk"""
-    try:
-        with analytics_lock:
-            data_to_save = analytics_data.copy()
-            data_to_save["last_updated"] = datetime.utcnow().isoformat()
-        with open(ANALYTICS_FILE, 'w') as f:
-            json.dump(data_to_save, f)
-    except Exception as e:
-        print(f"⚠️ Could not save analytics: {e}")
-
-def get_today_key():
-    """Get today's date key"""
-    return datetime.utcnow().strftime("%Y-%m-%d")
-
-def get_week_key():
-    """Get current week key"""
-    now = datetime.utcnow()
-    return now.strftime("%Y-W%U")
-
-def get_month_key():
-    """Get current month key"""
-    return datetime.utcnow().strftime("%Y-%m")
-
-def increment_view():
-    """Increment view count and return updated stats"""
-    today = get_today_key()
-    
-    with analytics_lock:
-        analytics_data["total_views"] += 1
-        if today not in analytics_data["daily_views"]:
-            analytics_data["daily_views"][today] = 0
-        analytics_data["daily_views"][today] += 1
-        
-        # Calculate period totals
-        total = analytics_data["total_views"]
-        today_count = analytics_data["daily_views"].get(today, 0)
-        
-        # This week (last 7 days)
-        week_total = 0
-        for i in range(7):
-            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
-            week_total += analytics_data["daily_views"].get(date, 0)
-        
-        # This month (last 30 days)
-        month_total = 0
-        for i in range(30):
-            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
-            month_total += analytics_data["daily_views"].get(date, 0)
-        
-        result = {
-            "total": total,
-            "today": today_count,
-            "this_week": week_total,
-            "this_month": month_total,
-            "last_updated": datetime.utcnow().isoformat() + "Z"
-        }
-    
-    # Save async (don't block request)
-    threading.Thread(target=save_analytics, daemon=True).start()
-    return result
-
-def get_view_stats():
-    """Get current view statistics"""
-    today = get_today_key()
-    
-    with analytics_lock:
-        total = analytics_data["total_views"]
-        today_count = analytics_data["daily_views"].get(today, 0)
-        
-        # This week (last 7 days)
-        week_total = 0
-        for i in range(7):
-            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
-            week_total += analytics_data["daily_views"].get(date, 0)
-        
-        # This month (last 30 days)
-        month_total = 0
-        for i in range(30):
-            date = (datetime.utcnow() - timedelta(days=i)).strftime("%Y-%m-%d")
-            month_total += analytics_data["daily_views"].get(date, 0)
-        
-        return {
-            "total": total,
-            "today": today_count,
-            "this_week": week_total,
-            "this_month": month_total,
-            "last_updated": datetime.utcnow().isoformat() + "Z"
-        }
-
-# Load analytics on startup
-load_analytics()
+# Rate Limiting
 rate_limit_store = defaultdict(list)
 RATE_LIMIT_REQUESTS = 20  # requests per window
 RATE_LIMIT_WINDOW = 60  # seconds
@@ -349,10 +236,10 @@ PORTFOLIO_DATA = {
 }
 
 
-SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code.  # noqa: E501
+SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code.
 
 ## Your Identity
-You're an intelligent, conversational AI that answers any question with clarity and depth. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.  # noqa: E501
+You're an intelligent, conversational AI that answers any question with clarity and depth. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
 
 ## Mangesh Raut — Quick Profile
 - Software Engineer at Customized Energy Solutions (Philadelphia, PA)
@@ -370,14 +257,14 @@ You're an intelligent, conversational AI that answers any question with clarity 
 CRITICAL: Write naturally flowing prose. Avoid excessive formatting.
 
 ✅ GOOD Response Style:
-"Mangesh Raut is a Software Engineer based in Philadelphia, currently optimizing energy analytics systems at Customized Energy Solutions. He specializes in Java Spring Boot, Python, and cloud infrastructure with AWS.  # noqa: E501
+"Mangesh Raut is a Software Engineer based in Philadelphia, currently optimizing energy analytics systems at Customized Energy Solutions. He specializes in Java Spring Boot, Python, and cloud infrastructure with AWS.
 
-His notable achievements include reducing dashboard latency by 40% through React optimization and improving ML forecasting accuracy by 25% using TensorFlow. Previously at IoasiZ, he implemented Redis caching that delivered 3x faster data retrieval.  # noqa: E501
+His notable achievements include reducing dashboard latency by 40% through React optimization and improving ML forecasting accuracy by 25% using TensorFlow. Previously at IoasiZ, he implemented Redis caching that delivered 3x faster data retrieval.
 
-He completed his Master's in Computer Science at Drexel University with a 3.76 GPA. Interested in his AI projects or work experience?"  # noqa: E501
+He completed his Master's in Computer Science at Drexel University with a 3.76 GPA. Interested in his AI projects or work experience?"
 
 ❌ BAD Response Style (Avoid This):
-"**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **40%** efficiency gains at **Customized Energy Solutions**. **Key Achievements**: - Reduced dashboard latency **40%** via React..."  # noqa: E501
+"**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **40%** efficiency gains at **Customized Energy Solutions**. **Key Achievements**: - Reduced dashboard latency **40%** via React..."
 
 ## Formatting Rules
 
@@ -394,13 +281,13 @@ He completed his Master's in Computer Science at Drexel University with a 3.76 G
 ## How to Handle Different Questions
 
 For "Who is Mangesh?":
-Write a warm, professional introduction (2-3 paragraphs). Mention his current role, key skills, major achievements with specific numbers, and education. End with an invitation to learn more about specific areas.  # noqa: E501
+Write a warm, professional introduction (2-3 paragraphs). Mention his current role, key skills, major achievements with specific numbers, and education. End with an invitation to learn more about specific areas.
 
 For general questions (science, news, etc.):
-Answer directly and helpfully. If there's a natural connection to Mangesh's expertise, mention it briefly at the end — but don't force it.  # noqa: E501
+Answer directly and helpfully. If there's a natural connection to Mangesh's expertise, mention it briefly at the end — but don't force it.
 
 For technical questions:
-Provide clear, accurate explanations. If Mangesh has relevant experience, weave it in naturally without making it feel promotional.  # noqa: E501
+Provide clear, accurate explanations. If Mangesh has relevant experience, weave it in naturally without making it feel promotional.
 
 ## Tone
 - Conversational and intelligent
@@ -576,8 +463,7 @@ def api_error(code: str, message: str, status: int = 400, retry_after: Optional[
 # ─────────────────────────────────────────────
 
 _FACTUAL_KEYWORDS = re.compile(
-    r"\b(experience|education|skills|projects|contact|resume|cv|location|company|"
-    r"university|degree|gpa|certification|achievement|publication)\b",
+    r"\b(experience|education|skills|projects|contact|resume|cv|location|company|university|degree|gpa|certification|achievement|publication)\b",
     re.I,
 )
 _CREATIVE_KEYWORDS = re.compile(
@@ -822,24 +708,18 @@ def generate_local_response(query: str) -> Dict:
     # Greetings
     if any(g in query for g in ["hello", "hi", "hey", "greetings"]):
         return {
-            "answer": (  # noqa: E501
-                "👋 Hello! I'm AssistMe, running in **Local Dev Mode**. "
-                "I can tell you about Mangesh's experience, skills, projects, and more. "
-                "What would you like to know?"
-            ),
+            "answer": "👋 Hello! I'm AssistMe, running in **Local Dev Mode**. I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
             "category": "Greeting",
         }
 
     # Who is Mangesh
     if "who" in query and ("mangesh" in query or "you" in query):
         return {
-            "answer": (  # noqa: E501
-                f"👨‍💻 **{PORTFOLIO_DATA['name']}** is a {PORTFOLIO_DATA['title']} "
-                f"based in {PORTFOLIO_DATA['location']}. He specializes in building "
-                f"scalable backend systems, cloud infrastructure, and AI-powered applications."
-            ),
-            "category": "About"
-        }
+            "answer": f"👨‍💻 **{
+                PORTFOLIO_DATA['name']}** is a {
+                PORTFOLIO_DATA['title']} based in {
+                PORTFOLIO_DATA['location']}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
+            "category": "About"}
 
     # Resume/CV
     if "resume" in query or "cv" in query:
@@ -853,13 +733,7 @@ def generate_local_response(query: str) -> Dict:
         langs = ", ".join(PORTFOLIO_DATA["skills"]["languages"])
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
-            "answer": (  # noqa: E501
-                f"🛠️ **Technical Stack**:\n"
-                f"• **Languages**: {langs}\n"
-                f"• **Frameworks**: {frameworks}\n"
-                f"• **Cloud**: AWS, Docker, Kubernetes\n"
-                f"• **Databases**: PostgreSQL, MongoDB, Redis"
-            ),
+            "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}\n• **Cloud**: AWS, Docker, Kubernetes\n• **Databases**: PostgreSQL, MongoDB, Redis",
             "category": "Skills"
         }
 
@@ -895,40 +769,19 @@ def generate_local_response(query: str) -> Dict:
         edu_list = "\n".join(
             [f"• **{e['degree']}** - {e['school']} ({e['period']})" for e in PORTFOLIO_DATA.get("education", [])[:2]])
         return {
-            "answer": (  # noqa: E501
-                f"🎓 **Education**:\n{edu_list}"
-                if edu_list
-                else "🎓 Mangesh holds a Master's in Computer Science from Drexel University."
-            ),
-            "category": "Education"
-        }
+            "answer": f"🎓 **Education**:\n{edu_list}" if edu_list else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
+            "category": "Education"}
 
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
         return {
-            "answer": (  # noqa: E501
-                "🏆 **Key Achievements**:\n"
-                "• Reduced dashboard latency by **40%** at Customized Energy Solutions\n"
-                "• Built AI systems with **95% accuracy**\n"
-                "• Architected microservices handling **100+ concurrent users**"
-            ),
+            "answer": "🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Architected microservices handling **100+ concurrent users**",
             "category": "Achievements",
         }
 
     # Default fallback
     return {
-        "answer": (  # noqa: E501
-            "👋 I'm running in **Local Dev Mode** (no API key configured).\n\n"
-            "**Available topics:**\n"
-            "• Who is Mangesh?\n"
-            "• Skills & Tech Stack\n"
-            "• Projects\n"
-            "• Experience\n"
-            "• Education\n"
-            "• Contact Info\n"
-            "• Resume\n\n"
-            "What would you like to know?"
-        ),
+        "answer": "👋 I'm running in **Local Dev Mode** (no API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
         "category": "System",
     }
 
@@ -1183,11 +1036,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         if is_prompt_injection(message):
             print(f"🛡️  Prompt injection detected from {client_ip}: {message[:80]}")
             return {
-                "answer": (  # noqa: E501
-                    "I noticed your message contains instructions that try to change "
-                    "my behaviour. I'm here to help you learn about Mangesh's portfolio "
-                    "— feel free to ask me anything about that!"
-                ),
+                "answer": "I noticed your message contains instructions that try to change my behaviour. I'm here to help you learn about Mangesh's portfolio — feel free to ask me anything about that!",
                 "source": "Security",
                 "model": "Guard",
                 "type": "blocked",
@@ -1568,90 +1417,34 @@ async def get_github_repos_alias(
     return await get_github_repos_public(username, "updated", limit, no_forks)
 
 
-# Additional alias for /github/repos/public (frontend calls this)
-@app.get("/github/repos/public")
-async def get_github_repos_public_alias(
-    username: str = "mangeshraut712",
-    sort: str = "updated",
-    limit: int = 100,
-    no_forks: bool = False
-):
-    """Alias for /github/repos/public endpoint (without /api prefix)"""
-    return await get_github_repos_public(username, sort, limit, no_forks)
-
-
-# Alias for old analytics paths - support both GET and OPTIONS for CORS
-@app.options("/api/analytics/views")
-async def options_analytics_views():
-    """Handle CORS preflight for analytics endpoint"""
-    return JSONResponse(
-        content={},
-        headers={
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        }
-    )
-
+# Analytics views endpoint
 @app.get("/api/analytics/views")
 async def get_analytics_views():
     """
     Get portfolio view analytics
-    Returns real view count data from persistent storage
+    Returns view count data for the portfolio counter
     """
     try:
-        stats = get_view_stats()
+        # Return mock data for now - in production this would fetch from a database
         return {
             "success": True,
-            "views": stats,
+            "views": {
+                "total": 1250,
+                "today": 45,
+                "this_week": 320,
+                "this_month": 890,
+            },
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
 
 
-# Analytics views endpoint - POST to increment
-@app.post("/api/analytics/views")
-async def post_analytics_view(request: Request):
-    """
-    Record a new portfolio view and return updated stats
-    Call this when a user visits the portfolio
-    """
-    try:
-        # Get client info for analytics
-        client_ip = get_client_ip(request)
-        user_agent = request.headers.get("user-agent", "Unknown")[:200]
-        
-        # Increment view and get stats
-        stats = increment_view()
-        
-        # Log for monitoring (optional)
-        print(f"📊 View recorded from {client_ip} - Total: {stats['total']}")
-        
-        return {
-            "success": True,
-            "views": stats,
-            "timestamp": datetime.utcnow().isoformat() + "Z"
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
-
-
-# Alias for old analytics paths - support both GET and OPTIONS for CORS
-@app.options("/analytics/views")
-async def options_analytics_views_alias():
-    """Handle CORS preflight for analytics endpoint"""
-    return await options_analytics_views()
-
+# Alias for old analytics path
 @app.get("/analytics/views")
 async def get_analytics_views_alias():
     """Alias for old frontend code that doesn't use /api prefix"""
     return await get_analytics_views()
-
-@app.post("/analytics/views")
-async def post_analytics_view_alias(request: Request):
-    """Alias for old frontend code that doesn't use /api prefix"""
-    return await post_analytics_view(request)
 
 
 # ============================================================

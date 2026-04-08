@@ -282,18 +282,16 @@ class GitHubConnector:
         ]
 
         if top_langs:
-            lang_str = ', '.join([
-                f"{language_stat['language']} ({language_stat['repo_count']} repos)"
-                for language_stat in top_langs[:3]
-            ])
+            lang_str = ', '.join(
+                [f"{language_stat['language']} ({language_stat['repo_count']} repos)" for language_stat in top_langs[:3]]
+            )
             summary_lines.append(f"Primary Languages: {lang_str}")
 
         if popular_projects:
             summary_lines.append("\\nMost Popular Projects:")
             for proj in popular_projects[:3]:
                 summary_lines.append(
-                    f"  • {proj['name']} - {proj['stars']} ⭐ ({proj['language']}) -"
-                    f" {proj['description'] or 'No description'}"
+                    f"  • {proj['name']} - {proj['stars']} ⭐ ({proj['language']}) - {proj['description'] or 'No description'}"
                 )
 
         return '\\n'.join(summary_lines)

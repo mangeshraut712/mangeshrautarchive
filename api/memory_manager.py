@@ -268,22 +268,14 @@ class MemoryManager:
         context = self.get_context_for_user(user_id)
 
         if context['is_new_user']:
-            return (
-                "👋 Welcome! I'm AssistMe AI. I can help you explore Mangesh's portfolio, "
-                "answer technical questions, or discuss career opportunities."
-            )
+            return "👋 Welcome! I'm AssistMe AI. I can help you explore Mangesh's portfolio, answer technical questions, or discuss career opportunities."
 
         interaction_count = context.get('interaction_count', 0)
 
         if interaction_count > 20:
             return "👋 Great to see you again! Ready to dive deeper into Mangesh's work?"
         elif interaction_count > 5:
-            recent = (
-                context['recent_topics'][-1]
-                if context['recent_topics']
-                else 'portfolio details'
-            )
-            return f"👋 Welcome back! Last time we discussed: {recent}."
+            return f"👋 Welcome back! Last time we discussed: {context['recent_topics'][-1] if context['recent_topics'] else 'portfolio details'}."
         else:
             return "👋 Welcome back! How can I assist you today?"
 

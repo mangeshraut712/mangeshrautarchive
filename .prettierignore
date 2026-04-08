@@ -1,0 +1,10 @@
+# Ignore files with parsing issues or unsupported formats
+src/index.html
+api/**/*.py
+node_modules/
+dist/
+build/
+artifacts/
+test-results/
+playwright-report/
+src/assets/css/tailwind-output.css
