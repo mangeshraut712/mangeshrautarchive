@@ -1,4 +1,4 @@
-const CACHE_TAG = 'portfolio-cache-v2026030101';
+const CACHE_TAG = 'portfolio-cache-v2026040802';
 const CACHE_NAME = `mangesh-portfolio-${CACHE_TAG}`;
 const RUNTIME_CACHE = `runtime-${CACHE_TAG}`;
 
