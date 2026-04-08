@@ -41,8 +41,8 @@ class DebugRunner {
     this.themes = {
       dark: {
         bg: '#000000',
-        ground: '#121212',
-        groundLine: 'rgba(255, 255, 255, 0.1)',
+        ground: '#1c1c1e',
+        groundLine: 'rgba(255, 255, 255, 0.08)',
         text: '#ffffff',
         textSecondary: '#86868b',
         accent: '#0A84FF',
@@ -52,7 +52,7 @@ class DebugRunner {
         coffee: '#AC8E68',
         stackOverflow: '#F48024',
         hero: '#ffffff',
-        heroGlow: 'rgba(255, 255, 255, 0.5)',
+        heroGlow: 'rgba(10, 132, 255, 0.5)',
       },
       light: {
         bg: '#ffffff',
@@ -67,7 +67,7 @@ class DebugRunner {
         coffee: '#a2845e',
         stackOverflow: '#f48024',
         hero: '#1d1d1f',
-        heroGlow: 'rgba(0, 0, 0, 0.2)',
+        heroGlow: 'rgba(0, 113, 227, 0.3)',
       },
     };
 
@@ -682,23 +682,29 @@ class DebugRunner {
     const w = this.dev.width;
     const h = this.dev.height;
 
-    // Animate legs based on frame
-    const legOffset = Math.sin(this.frame * 0.2) * 10;
-
-    // Head
+    // Head (Polished Arc)
     this.ctx.beginPath();
-    this.ctx.arc(x + w / 2, y + 10, 10, 0, Math.PI * 2);
+    this.ctx.arc(x + w / 2, y + 8, 11, 0, Math.PI * 2);
     this.ctx.fill();
-    // Body
-    this.ctx.fillRect(x, y + 20, w, h - 25);
 
-    // Legs (Arcade Style)
+    // Body (Rounded Rect for Premium Feel)
+    this.drawRoundedRect(this.ctx, x, y + 16, w, h - 22, 10);
+    this.ctx.fill();
+
+    // Animate legs based on frame
+    const legOffset = Math.sin(this.frame * 0.18) * 8;
+
+    // Legs (Refined)
     if (this.dev.onGround) {
-      this.ctx.fillRect(x + 5, y + h - 5 + legOffset, 10, 5);
-      this.ctx.fillRect(x + w - 15, y + h - 5 - legOffset, 10, 5);
+      this.drawRoundedRect(this.ctx, x + 4, y + h - 6 + legOffset, 12, 6, 3);
+      this.ctx.fill();
+      this.drawRoundedRect(this.ctx, x + w - 16, y + h - 6 - legOffset, 12, 6, 3);
+      this.ctx.fill();
     } else {
-      this.ctx.fillRect(x + 5, y + h - 10, 10, 10);
-      this.ctx.fillRect(x + w - 15, y + h - 10, 10, 10);
+      this.drawRoundedRect(this.ctx, x + 4, y + h - 10, 12, 10, 3);
+      this.ctx.fill();
+      this.drawRoundedRect(this.ctx, x + w - 16, y + h - 10, 12, 10, 3);
+      this.ctx.fill();
     }
 
     // Eyes
@@ -799,13 +805,25 @@ class DebugRunner {
       this.ctx.font = '18px -apple-system';
       this.ctx.fillStyle = this.colors.textSecondary;
       this.ctx.fillText(
-        'Swipe ↑ to Jump • Swipe ↓ to Duck',
+        'Swipe Up to Jump, Down to Duck',
         this.canvas.width / 2,
         this.canvas.height / 2 + 70
       );
     }
+  }
 
-    this.ctx.textAlign = 'left';
+  drawRoundedRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
   }
 
   drawGameOver() {
@@ -833,6 +851,8 @@ class DebugRunner {
     this.ctx.textAlign = 'left';
   }
 }
+
+export default DebugRunner;
 
 // Auto-initialize
 const initDebugRunner = () => {
