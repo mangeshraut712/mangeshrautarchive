@@ -512,7 +512,10 @@ body.menu-open .overlay-menu {
 }
 
 body.menu-open {
-  overflow: hidden;
+  overflow: hidden !important;
+  height: 100dvh !important;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 /* Mobile Overlay Menu - Apple Style */

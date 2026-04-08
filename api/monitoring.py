@@ -151,6 +151,21 @@ class SystemMonitor:
             or "bef46b0d7702dac5b071906cd186bd28"
         )
 
+    def format_uptime(self, seconds: float) -> str:
+        """Format uptime seconds into a compact human-readable string."""
+        total_seconds = max(0, int(seconds))
+        days, remainder = divmod(total_seconds, 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, _seconds = divmod(remainder, 60)
+
+        if days > 0:
+            return f"{days}d {hours}h {minutes}m"
+        if hours > 0:
+            return f"{hours}h {minutes}m"
+        if minutes > 0:
+            return f"{minutes}m"
+        return f"{total_seconds}s"
+
     def log_event(
         self,
         event_type: EventType,
@@ -418,6 +433,18 @@ class SystemMonitor:
 
         return {
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "summary": {
+                "healthy": len(
+                    [service for service in services if service["status"] == HealthStatus.HEALTHY.value]
+                ),
+                "degraded": len(
+                    [service for service in services if service["status"] == HealthStatus.DEGRADED.value]
+                ),
+                "unhealthy": len(
+                    [service for service in services if service["status"] == HealthStatus.UNHEALTHY.value]
+                ),
+                "total": len(services),
+            },
             "services": services,
         }
 
@@ -593,17 +620,33 @@ class SystemMonitor:
 
     def get_metrics(self) -> Dict[str, Any]:
         """Get comprehensive system metrics."""
+        uptime_seconds = round(time.time() - self.start_time, 2)
+        endpoints = [metric.to_dict() for metric in self.endpoint_metrics.values()]
+        resolved_events = len([event for event in self.events if event.resolved])
+        unresolved_events = len([event for event in self.events if not event.resolved])
+
         return {
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "uptime_seconds": round(time.time() - self.start_time, 2),
+            "uptime_seconds": uptime_seconds,
+            "uptime_human": self.format_uptime(uptime_seconds),
             "total_requests": self.total_requests,
             "error_count": self.error_count,
             "error_rate": round(
                 (self.error_count / max(self.total_requests, 1)) * 100, 2
             ),
-            "endpoints": [
-                metric.to_dict() for metric in self.endpoint_metrics.values()
-            ],
+            "endpoints": endpoints,
+            "summary": {
+                "monitored_endpoints": len(endpoints),
+                "resolved_events": resolved_events,
+                "unresolved_events": unresolved_events,
+                "critical_events": len(
+                    [
+                        e
+                        for e in self.events
+                        if e.type == EventType.CRITICAL and not e.resolved
+                    ]
+                ),
+            },
             "events_24h": len(
                 [e for e in self.events if self._is_recent(e.timestamp, hours=24)]
             ),

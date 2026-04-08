@@ -182,35 +182,54 @@ button,
 
 /* Premium Close Button */
 .premium-close-btn {
-  width: 40px;
-  height: 40px;
-  background: #0071e3 !important;
-  color: #fff !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(0, 113, 227, 0.1) !important;
+  color: #0071e3 !important;
   border-radius: 50% !important;
   display: flex !important;
-  align-items: center;
-  justify-content: center;
-  border: none !important;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgb(0 113 227 / 40%) !important;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(0, 113, 227, 0.2) !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
   z-index: 10002;
+}
+
+#search-close.premium-close-btn {
   position: absolute;
-  right: 0;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
 }
 
+#close-menu-btn.premium-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
 .premium-close-btn:hover {
-  background: #0077ed !important;
+  background: #0071e3 !important;
+  color: #fff !important;
+  transform: scale(1.1) !important;
+}
+
+#search-close.premium-close-btn:hover {
   transform: translateY(-50%) scale(1.1) !important;
 }
 
 html.dark .premium-close-btn {
+  background: rgba(10, 132, 255, 0.1) !important;
+  color: #0a84ff !important;
+  border-color: rgba(10, 132, 255, 0.2) !important;
+}
+
+html.dark .premium-close-btn:hover {
   background: #0a84ff !important;
-  box-shadow: 0 4px 12px rgb(10 132 255 / 50%) !important;
+  color: #fff !important;
 }
 
 /* Search Input - Premium Box Style */
@@ -2693,8 +2712,8 @@ html.dark .contact-assistme-icon {
 .moon-icon,
 .theme-toggle .fa-moon,
 #theme-toggle .fa-moon {
-  color: #5856d6 !important;
-  background: linear-gradient(135deg, #7f7cff 0%, #5856d6 100%) !important;
+  color: #ffcc00 !important;
+  background: linear-gradient(135deg, #ffe066 0%, #ffcc00 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -2716,8 +2735,8 @@ html.dark .fa-moon,
 html.dark .moon-icon,
 html.dark .theme-toggle .fa-moon,
 html.dark #theme-toggle .fa-moon {
-  color: #5e5ce6 !important;
-  background: linear-gradient(135deg, #8f8cff 0%, #5e5ce6 100%) !important;
+  color: #ffd60a !important;
+  background: linear-gradient(135deg, #ffea00 0%, #ffd60a 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -2965,6 +2984,56 @@ html.dark .artist-name {
   color: #8e8e93 !important;
 }
 
+@media (max-width: 768px) {
+  .music-card {
+    margin: 1.5rem auto 0 !important;
+    width: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .music-card-inner {
+    padding: 6px 14px 6px 6px !important;
+    gap: 12px !important;
+    max-width: none !important;
+    width: fit-content !important;
+    border-radius: 100px !important;
+    min-width: 200px !important;
+  }
+
+  .album-art-container {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+  }
+
+  .album-art {
+    border-radius: 50% !important;
+  }
+
+  .track-info {
+    text-align: left !important;
+  }
+
+  .track-name,
+  .artist-name {
+    max-width: 160px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .track-name {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .artist-name {
+    font-size: 0.75rem !important;
+  }
+}
+
 /* Last.fm Link - iOS 26.4 Compact */
 .lastfm-link {
   display: flex;
@@ -2991,67 +3060,9 @@ html.dark .artist-name {
   height: 18px;
 }
 
-/* Responsive - iOS 26.4 Compact */
+/* Music card - Final Responsive Overrides */
 @media (max-width: 768px) {
-  .music-card-inner {
-    padding: 0.5rem 0.875rem 0.5rem 0.5rem;
-    gap: 0.75rem;
-    max-width: 280px;
-  }
-
-  .album-art-container {
-    width: 44px;
-    height: 44px;
-    border-radius: 9px;
-  }
-
-  .album-art {
-    border-radius: 9px;
-  }
-
-  .track-name,
-  .artist-name {
-    max-width: 140px;
-  }
-
-  .track-name {
-    font-size: 0.8125rem !important;
-  }
-
-  .artist-name {
-    font-size: 0.6875rem !important;
-  }
-
-  .lastfm-link {
-    width: 26px;
-    height: 26px;
-  }
-
-  .lastfm-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .playing-indicator {
-    height: 12px;
-    padding: 2px 4px;
-    border-radius: 5px;
-  }
-
-  .playing-indicator span:nth-child(1) { height: 4px; }
-  .playing-indicator span:nth-child(2) { height: 7px; }
-  .playing-indicator span:nth-child(3) { height: 5px; }
-}
-
-/* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .music-card,
-  .music-card-inner,
-  .album-art,
-  .playing-indicator span {
-    animation: none !important;
-    transition: none !important;
-  }
+  /* Handled by consolidated block above */
 }
 
 /* ========================================

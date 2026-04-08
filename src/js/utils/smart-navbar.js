@@ -176,6 +176,7 @@ function scrollToSection(sectionId) {
 function closeOverlayMenu() {
   document.body.classList.remove('menu-open');
   const overlayMenu = document.getElementById('overlay-menu');
+  overlayMenu?.style.setProperty('display', 'none', 'important');
   overlayMenu?.setAttribute('aria-hidden', 'true');
   overlayMenu?.setAttribute('inert', '');
   const menuToggle = document.getElementById('menu-btn');

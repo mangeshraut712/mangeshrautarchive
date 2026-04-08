@@ -318,9 +318,7 @@
         </button>
         <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle theme" type="button">
           <span id="theme-toggle-icon" class="inline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
-            </svg>
+            <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
           </span>
           <span class="sr-only">Toggle theme</span>
         </button>
@@ -2127,19 +2125,20 @@
               <div class="currently-content" id="music-content">
                 <div class="media-grid" id="music-grid">
                   <!-- Now Playing Card -->
-                  <div class="media-card music-card now-playing" id="now-playing-card" style="display: none;">
+                  <div class="media-card music-card now-playing" id="now-playing-card" hidden>
                     <div class="media-poster">
                       <img id="now-playing-img" src="" alt="Album Art" loading="lazy" />
-                      <span class="media-badge playing">Now Playing</span>
-                      <div class="playing-indicator">
+                      <span class="media-badge playing" id="now-playing-badge">Now Playing</span>
+                      <div class="playing-indicator" id="currently-playing-indicator">
                         <span></span><span></span><span></span>
                       </div>
                     </div>
                     <div class="media-info">
                       <h4 id="now-playing-track">Track Name</h4>
                       <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
+                      <p id="now-playing-description" class="music-card-description">Synced via Last.fm</p>
                       <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
-                        <i class="fas fa-play"></i> Listen
+                        <i class="fab fa-spotify"></i> Open in Spotify
                       </a>
                     </div>
                   </div>
@@ -2150,19 +2149,19 @@
                       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
                     </div>
                     <div class="media-info">
-                      <h4>Loading...</h4>
-                      <p class="text-xs text-gray-500">Fetching from Last.fm</p>
+                      <h4>Syncing music…</h4>
+                      <p class="text-xs text-gray-500">Pulling recent listening from Last.fm</p>
                     </div>
                   </div>
 
                   <!-- Error/Empty State -->
-                  <div class="media-card music-card empty" id="music-empty" style="display: none;">
+                  <div class="media-card music-card empty" id="music-empty" hidden>
                     <div class="media-poster" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
                       <i class="fab fa-spotify" style="font-size: 2rem; color: white;"></i>
                     </div>
                     <div class="media-info">
-                      <h4>Not Playing</h4>
-                      <p class="text-xs text-gray-500">Open Spotify to start listening</p>
+                      <h4>No live playback</h4>
+                      <p class="text-xs text-gray-500">Open Spotify and keep scrobbling to refresh this shelf</p>
                       <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
                         <i class="fab fa-spotify"></i> Open Spotify
                       </a>

@@ -37,12 +37,12 @@ class DebugRunner {
     this.lastUiHighScore = null;
     this.lastUiSpeed = null;
 
-    // Premium Color Palette (Apple-inspired)
+    // Premium Color Palette (Apple-inspired) - Synced with sitewide design system
     this.themes = {
       dark: {
         bg: '#000000',
-        ground: '#1c1c1e',
-        groundLine: '#333333',
+        ground: '#121212',
+        groundLine: 'rgba(255, 255, 255, 0.1)',
         text: '#ffffff',
         textSecondary: '#86868b',
         accent: '#0A84FF',
@@ -56,10 +56,10 @@ class DebugRunner {
       },
       light: {
         bg: '#ffffff',
-        ground: '#ffffff',
-        groundLine: '#e5e5e7',
+        ground: '#f5f5f7',
+        groundLine: 'rgba(0, 0, 0, 0.05)',
         text: '#1d1d1f',
-        textSecondary: '#86868b',
+        textSecondary: '#6e6e73',
         accent: '#0071e3',
         bug: '#ff3b30',
         conflict: '#ffcc00',
@@ -239,7 +239,15 @@ class DebugRunner {
     const btn = document.createElement('button');
     btn.className = `debug-game-btn debug-game-btn--${type}`;
     btn.type = 'button';
-    btn.textContent = text;
+
+    const icon = document.createElement('i');
+    icon.className = type === 'jump' ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+
+    const label = document.createElement('span');
+    label.textContent = text.replace('↑ ', '').replace('↓ ', '');
+
+    btn.appendChild(icon);
+    btn.appendChild(label);
     btn.setAttribute('aria-label', text);
 
     return btn;

@@ -38,7 +38,11 @@ export function initOverlayMenu(options = {}) {
     overlayMenu.setAttribute('inert', '');
     menuToggle.setAttribute('aria-expanded', 'false');
     if (typeof menuToggle.focus === 'function') {
-      menuToggle.focus();
+      try {
+        menuToggle.focus({ preventScroll: true });
+      } catch {
+        menuToggle.focus();
+      }
     }
   };
 
@@ -101,13 +105,18 @@ export function initOverlayNavigation(options = {}) {
       }
       const overlayMenu = documentRef.getElementById('overlay-menu');
       if (overlayMenu) {
+        overlayMenu.style.setProperty('display', 'none', 'important');
         overlayMenu.setAttribute('aria-hidden', 'true');
         overlayMenu.setAttribute('inert', '');
       }
       const menuToggle = documentRef.getElementById('menu-btn');
       if (menuToggle) {
         menuToggle.setAttribute('aria-expanded', 'false');
-        menuToggle.focus();
+        try {
+          menuToggle.focus({ preventScroll: true });
+        } catch {
+          menuToggle.focus();
+        }
       }
 
       setTimeout(() => {

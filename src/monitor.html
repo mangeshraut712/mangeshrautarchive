@@ -58,7 +58,7 @@
                     <div class="premium-menu-icon"><i class="fas fa-list"></i></div>
                     <span>Event Log</span>
                 </a>
-                <a href="/api/docs" class="menu-item" target="_blank" rel="noopener">
+                <a href="#api-docs-section" class="menu-item">
                     <div class="premium-menu-icon"><i class="fas fa-book-open"></i></div>
                     <span>API Docs</span>
                 </a>
@@ -104,6 +104,47 @@
     </header>
 
     <main class="monitor-container">
+        <section class="monitor-summary-card" id="monitor-summary-section" aria-label="Monitor summary">
+            <div class="monitor-summary-copy">
+                <p class="monitor-summary-eyebrow">Control Center</p>
+                <h2>Backend status, uptime, docs, and integrations in one place.</h2>
+                <p id="monitor-summary-text">Loading operational summary…</p>
+                <div class="monitor-summary-chips">
+                    <div class="summary-chip">
+                        <span class="summary-chip-label">Uptime</span>
+                        <strong id="summary-uptime">--</strong>
+                    </div>
+                    <div class="summary-chip">
+                        <span class="summary-chip-label">Last Refresh</span>
+                        <strong id="summary-last-refresh">--</strong>
+                    </div>
+                    <div class="summary-chip">
+                        <span class="summary-chip-label">Open Issues</span>
+                        <strong id="summary-open-issues">--</strong>
+                    </div>
+                    <div class="summary-chip">
+                        <span class="summary-chip-label">Services</span>
+                        <strong id="summary-service-count">--</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="monitor-summary-actions">
+                <div class="docs-link-stack">
+                    <a class="btn btn-primary" href="/api/docs" target="_blank" rel="noopener">
+                        <i class="fas fa-book-open"></i>
+                        OpenAPI
+                    </a>
+                    <a class="btn btn-secondary" href="/api/redoc" target="_blank" rel="noopener">
+                        <i class="fas fa-file-lines"></i>
+                        ReDoc
+                    </a>
+                    <a class="btn btn-secondary" href="/api/monitor/health" target="_blank" rel="noopener">
+                        <i class="fas fa-wave-square"></i>
+                        Health JSON
+                    </a>
+                </div>
+            </div>
+        </section>
 
         <!-- Overview Cards -->
         <div class="overview-grid">
@@ -175,6 +216,12 @@
         <section class="section" id="endpoint-metrics-section">
             <div class="section-header">
                 <h2 class="section-title">API Endpoint Metrics</h2>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" onclick="exportMetrics()">
+                        <i class="fas fa-download"></i>
+                        Export JSON
+                    </button>
+                </div>
             </div>
             <div style="overflow-x: auto;">
                 <table class="metrics-table">
@@ -219,6 +266,28 @@
             </div>
         </section>
 
+        <section class="section" id="api-docs-section">
+            <div class="section-header">
+                <h2 class="section-title">API Docs & References</h2>
+                <div class="section-actions">
+                    <a class="btn btn-primary" href="/api/docs" target="_blank" rel="noopener">
+                        <i class="fas fa-book-open"></i>
+                        OpenAPI
+                    </a>
+                    <a class="btn btn-secondary" href="/api/redoc" target="_blank" rel="noopener">
+                        <i class="fas fa-file-lines"></i>
+                        ReDoc
+                    </a>
+                </div>
+            </div>
+            <div class="docs-grid" id="monitor-docs-grid">
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Loading API references...</h3>
+                </div>
+            </div>
+        </section>
+
         <!-- Event Log -->
         <section class="section" id="event-log-section">
             <div class="section-header">
@@ -253,6 +322,7 @@
         // API client
         // Always use same-origin /api so dev proxy and production routing behave the same.
         const API_BASE = '/api';
+        let lastRefreshIso = null;
 
         async function fetchHealth() {
             try {
@@ -283,6 +353,28 @@
                 return await response.json();
             } catch (error) {
                 console.error('External services fetch failed:', error);
+                return null;
+            }
+        }
+
+        async function fetchStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/monitor/status`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Status fetch failed:', error);
+                return null;
+            }
+        }
+
+        async function fetchMonitorDocs() {
+            try {
+                const response = await fetch(`${API_BASE}/monitor/docs`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Monitor docs fetch failed:', error);
                 return null;
             }
         }
@@ -339,6 +431,118 @@
             return `${Math.floor(diff / 86400)}d ago`;
         }
 
+        function escapeHtml(value = '') {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatLocalTime(isoString) {
+            if (!isoString) return '--';
+            const date = new Date(isoString);
+            return new Intl.DateTimeFormat(undefined, {
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit'
+            }).format(date);
+        }
+
+        function renderSummary(statusData, metricsData, healthData, servicesData) {
+            const summaryText = document.getElementById('monitor-summary-text');
+            const uptime = document.getElementById('summary-uptime');
+            const lastRefresh = document.getElementById('summary-last-refresh');
+            const openIssues = document.getElementById('summary-open-issues');
+            const serviceCount = document.getElementById('summary-service-count');
+
+            const unresolvedEvents = metricsData?.summary?.unresolved_events ?? '--';
+            const totalServices = servicesData?.summary?.total ?? servicesData?.services?.length ?? '--';
+            const uptimeText = statusData?.uptime_human || metricsData?.uptime_human || '--';
+
+            const degradedChecks = (healthData?.checks || []).filter(check => check.status !== 'healthy').length;
+            const errorRate = metricsData?.error_rate ?? 0;
+            const environment = statusData?.environment || 'local';
+
+            summaryText.textContent = degradedChecks > 0
+                ? `${degradedChecks} health checks need attention. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`
+                : `All monitored services are operational. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
+
+            uptime.textContent = uptimeText;
+            lastRefresh.textContent = formatLocalTime(lastRefreshIso);
+            openIssues.textContent = String(unresolvedEvents);
+            serviceCount.textContent = String(totalServices);
+        }
+
+        function renderMonitorDocs(data) {
+            const container = document.getElementById('monitor-docs-grid');
+            if (!data || !Array.isArray(data.endpoint_groups)) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-book-open"></i>
+                        <h3>Unable to load API references</h3>
+                        <p>Open the live OpenAPI docs directly from the actions above.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const statusLegend = (data.status_legend || []).map(item => `
+                <span class="legend-pill ${item.status}">
+                    <strong>${item.label}</strong>
+                    <span>${item.description}</span>
+                </span>
+            `).join('');
+
+            const eventLegend = (data.event_types || []).map(item => `
+                <span class="legend-pill neutral">
+                    <strong>${item.type}</strong>
+                    <span>${item.description}</span>
+                </span>
+            `).join('');
+
+            const groups = data.endpoint_groups.map(group => `
+                <article class="doc-card">
+                    <p class="doc-card-kicker">${escapeHtml(group.title)}</p>
+                    <p class="doc-card-description">${escapeHtml(group.description || '')}</p>
+                    <div class="doc-endpoint-list">
+                        ${(group.endpoints || []).map(endpoint => `
+                            <div class="doc-endpoint-row">
+                                <span class="doc-method method-${endpoint.method.toLowerCase()}">${escapeHtml(endpoint.method)}</span>
+                                <div class="doc-endpoint-copy">
+                                    <code>${escapeHtml(endpoint.path)}</code>
+                                    <p>${escapeHtml(endpoint.summary || '')}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </article>
+            `).join('');
+
+            container.innerHTML = `
+                <article class="doc-card doc-card-links">
+                    <p class="doc-card-kicker">Documentation Links</p>
+                    <p class="doc-card-description">${escapeHtml(data.description || '')}</p>
+                    <div class="doc-link-list">
+                        <a class="doc-link" href="${escapeHtml(data.docs_links?.openapi || '/api/docs')}" target="_blank" rel="noopener">OpenAPI Explorer</a>
+                        <a class="doc-link" href="${escapeHtml(data.docs_links?.redoc || '/api/redoc')}" target="_blank" rel="noopener">ReDoc Reference</a>
+                        <a class="doc-link" href="${escapeHtml(data.docs_links?.health_json || '/api/monitor/health')}" target="_blank" rel="noopener">Health JSON</a>
+                        <a class="doc-link" href="${escapeHtml(data.docs_links?.status_json || '/api/monitor/status')}" target="_blank" rel="noopener">Status JSON</a>
+                    </div>
+                </article>
+                ${groups}
+                <article class="doc-card">
+                    <p class="doc-card-kicker">Status Legend</p>
+                    <div class="legend-grid">${statusLegend}</div>
+                </article>
+                <article class="doc-card">
+                    <p class="doc-card-kicker">Event Types</p>
+                    <div class="legend-grid">${eventLegend}</div>
+                </article>
+            `;
+        }
+
         function renderHealthChecks(data) {
             const container = document.getElementById('health-checks');
             if (!data || !data.checks) {
@@ -353,7 +557,7 @@
             }
 
             container.innerHTML = data.checks.map(check => `
-                <div class="health-item">
+                <div class="health-item ${check.status}">
                     <div class="health-item-left">
                         <div class="health-status-icon ${check.status}">
                             <i class="fas fa-${check.status === 'healthy' ? 'check' : check.status === 'degraded' ? 'exclamation' : 'times'}"></i>
@@ -458,7 +662,7 @@
             }
 
             container.innerHTML = data.services.map(service => `
-                <div class="health-item">
+                <div class="health-item ${service.status}">
                     <div class="health-item-left">
                         <div class="health-status-icon ${service.status}">
                             <i class="fas fa-${getStatusIcon(service.status)}"></i>
@@ -580,6 +784,7 @@
             showToast('Checking external APIs...', 'info');
             const integrations = await fetchExternalServices();
             renderExternalServices(integrations);
+            renderSummary(null, null, null, integrations);
             showToast('Service integrations updated', integrations ? 'success' : 'error');
         }
 
@@ -587,13 +792,16 @@
         async function refreshData() {
             showToast('Refreshing data...', 'info');
             
-            const [health, metrics, integrations] = await Promise.all([
+            const [health, metrics, integrations, status, docs] = await Promise.all([
                 fetchHealth(),
                 fetchMetrics(),
-                fetchExternalServices()
+                fetchExternalServices(),
+                fetchStatus(),
+                fetchMonitorDocs()
             ]);
             
             const events = await fetchEvents(document.getElementById('event-filter').value);
+            lastRefreshIso = new Date().toISOString();
             
             if (health) renderHealthChecks(health);
             if (metrics) {
@@ -601,6 +809,8 @@
                 renderOverview(metrics);
             }
             renderExternalServices(integrations);
+            renderSummary(status, metrics, health, integrations);
+            renderMonitorDocs(docs);
             renderEvents(events);
             
             showToast('Data refreshed', 'success');

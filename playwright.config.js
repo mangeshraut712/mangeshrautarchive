@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4000';
+const useManagedWebServer = !process.env.PLAYWRIGHT_BASE_URL;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -16,12 +17,14 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  webServer: {
-    command: 'npm run dev:frontend',
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: useManagedWebServer
+    ? {
+        command: 'npm run dev',
+        url: baseURL,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+      }
+    : undefined,
   projects: [
     {
       name: 'chromium',

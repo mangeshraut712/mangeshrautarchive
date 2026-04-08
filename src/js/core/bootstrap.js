@@ -4,7 +4,7 @@ import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
 const IDLE_MODULES = ['../modules/accessibility.js'];
 
-const DELAYED_MODULES = [{ modulePath: '../modules/lastfm.js', delay: 6000 }];
+const DELAYED_MODULES = [];
 
 const INTERACTION_MODULES = [
   '../modules/agentic-actions.js',
@@ -13,11 +13,24 @@ const INTERACTION_MODULES = [
 ];
 
 const SECTION_MODULES = [
-  { sectionId: 'skills', modulePath: '../modules/skills-visualization.js', rootMargin: '900px 0px' },
+  {
+    sectionId: 'skills',
+    modulePath: '../modules/skills-visualization.js',
+    rootMargin: '900px 0px',
+  },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '900px 0px' },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '1200px 0px' },
-  { sectionId: 'currently-section', modulePath: '../modules/currently.js', rootMargin: '1200px 0px' },
-  { sectionId: 'currently-section', modulePath: '../modules/real-media-loader.js', rootMargin: '1200px 0px' },
+  {
+    sectionId: 'currently-section',
+    modulePath: '../modules/currently.js',
+    rootMargin: '1200px 0px',
+  },
+  {
+    sectionId: 'currently-section',
+    modulePath: '../modules/real-media-loader.js',
+    rootMargin: '1200px 0px',
+  },
+  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '1200px 0px' },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
@@ -235,10 +248,7 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
 
   ctaButton.dataset.chatbotBound = 'true';
   ctaButton.addEventListener('click', async () => {
-    await Promise.all([
-      loadDeferredStyles(['assistant'], documentRef),
-      chatbotModuleLoader.load(),
-    ]);
+    await Promise.all([loadDeferredStyles(['assistant'], documentRef), chatbotModuleLoader.load()]);
 
     const prompt = 'I want to contact Mangesh about a project opportunity.';
     if (
@@ -254,12 +264,7 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
   });
 }
 
-function bindInteractionStyleLoader(
-  elementId,
-  styleKeys,
-  replay = true,
-  documentRef = document
-) {
+function bindInteractionStyleLoader(elementId, styleKeys, replay = true, documentRef = document) {
   const element = documentRef.getElementById(elementId);
   if (!element || element.dataset.lazyStyleBound === 'true') return;
 

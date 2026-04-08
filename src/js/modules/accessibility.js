@@ -69,9 +69,15 @@ export class AccessibilityEnhancer {
   }
 
   shouldShowToolbar() {
-    const enabledByAttribute = document.body?.dataset.accessibilityToolbar === 'true';
-    const enabledByQuery = new URLSearchParams(window.location.search).get('a11y-toolbar') === '1';
-    return enabledByAttribute || enabledByQuery;
+    const toolbarQuery = new URLSearchParams(window.location.search).get('a11y-toolbar');
+    const disabledByAttribute = document.body?.dataset.accessibilityToolbar === 'false';
+    const disabledByQuery = toolbarQuery === '0';
+
+    if (disabledByAttribute || disabledByQuery) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -730,64 +736,163 @@ export class AccessibilityEnhancer {
    * Create accessibility toolbar
    */
   createAccessibilityToolbar() {
-    // Inject styles for the toolbar
-    const style = document.createElement('style');
-    style.textContent = `
-            .a11y-toolbar {
-                position: fixed;
-                bottom: 20px;
-                left: 20px;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 0.5rem;
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                z-index: 9998;
-                display: flex;
-                gap: 0.5rem;
-                transition: all 0.3s ease;
-            }
-            
-            .a11y-toolbar button {
-                background: white;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 0.5rem;
-                cursor: pointer;
-                font-size: 1.2rem;
-                transition: all 0.2s;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+    if (document.querySelector('.a11y-toolbar')) return;
 
-            .a11y-toolbar button:hover {
-                transform: scale(1.1);
-                background: #f5f5f7;
-            }
+    if (!document.getElementById('a11y-toolbar-styles')) {
+      const style = document.createElement('style');
+      style.id = 'a11y-toolbar-styles';
+      style.textContent = `
+        .a11y-toolbar {
+          position: fixed;
+          left: 20px;
+          bottom: max(24px, env(safe-area-inset-bottom));
+          z-index: 9997;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 8px;
+          padding: 8px;
+          border-radius: 999px;
+          background: rgb(255 255 255 / 90%);
+          border: 1px solid rgb(0 0 0 / 8%);
+          box-shadow:
+            0 8px 32px rgb(0 0 0 / 12%),
+            0 4px 16px rgb(0 0 0 / 8%);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          pointer-events: auto;
+        }
 
-            html.dark .a11y-toolbar {
-                background: rgba(28, 28, 30, 0.95);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
+        .a11y-toolbar button {
+          position: relative;
+          width: 42px;
+          height: 42px;
+          border: 1px solid rgb(0 0 0 / 6%);
+          border-radius: 999px;
+          background: rgb(255 255 255 / 72%);
+          color: #0071e3;
+          box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.9rem;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.01em;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+        }
 
-            html.dark .a11y-toolbar button {
-                background: #2c2c2e;
-                border-color: #3a3a3c;
-                color: #fff;
-            }
+        .a11y-toolbar button:hover {
+          transform: translateY(-2px) scale(1.04);
+          box-shadow:
+            0 10px 24px rgb(0 113 227 / 14%),
+            0 4px 12px rgb(0 0 0 / 8%);
+          background: rgb(255 255 255 / 92%);
+        }
 
-            /* Mobile adjustments */
-            @media (max-width: 768px) {
-                .a11y-toolbar {
-                    display: none !important; /* Hide on mobile to prevent overlap */
-                }
-            }
-        `;
-    document.head.appendChild(style);
+        .a11y-toolbar button:focus-visible {
+          outline: none;
+          box-shadow:
+            0 0 0 4px rgb(0 113 227 / 25%),
+            0 12px 28px rgb(0 113 227 / 18%);
+        }
+
+        .a11y-toolbar button::after {
+          content: attr(data-label);
+          position: absolute;
+          left: 50%;
+          bottom: calc(100% + 10px);
+          transform: translateX(-50%) translateY(4px);
+          opacity: 0;
+          pointer-events: none;
+          white-space: nowrap;
+          padding: 8px 12px;
+          border-radius: 999px;
+          background: rgb(255 255 255 / 96%);
+          border: 1px solid rgb(0 0 0 / 8%);
+          box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+          color: #1d1d1f;
+          font-size: 0.75rem;
+          font-weight: 700;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .a11y-toolbar button:hover::after,
+        .a11y-toolbar button:focus-visible::after {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+
+        .a11y-toolbar-button__icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+        }
+
+        .a11y-toolbar-button__icon--text {
+          font-size: 0.82rem;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+
+        html.dark .a11y-toolbar button {
+          border-color: rgb(255 255 255 / 10%);
+          background: rgb(18 18 20 / 82%);
+          color: #4ea1ff;
+          box-shadow: 0 4px 12px rgb(0 0 0 / 24%);
+        }
+
+        html.dark .a11y-toolbar button:hover {
+          background: rgb(24 24 28 / 92%);
+          box-shadow:
+            0 10px 24px rgb(10 132 255 / 12%),
+            0 4px 12px rgb(0 0 0 / 30%);
+        }
+
+        html.dark .a11y-toolbar button:focus-visible {
+          box-shadow:
+            0 0 0 4px rgb(78 161 255 / 28%),
+            0 12px 28px rgb(10 132 255 / 18%);
+        }
+
+        html.dark .a11y-toolbar {
+          background: rgb(0 0 0 / 88%);
+          border-color: rgb(255 255 255 / 10%);
+          box-shadow:
+            0 8px 32px rgb(0 0 0 / 40%),
+            0 4px 16px rgb(0 0 0 / 30%);
+        }
+
+        html.dark .a11y-toolbar button::after {
+          background: rgb(18 18 20 / 96%);
+          border-color: rgb(255 255 255 / 10%);
+          color: #f5f5f7;
+        }
+
+        @media (max-width: 768px) {
+          .a11y-toolbar {
+            left: 16px;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            gap: 6px;
+            padding: 6px;
+          }
+
+          .a11y-toolbar button {
+            width: 40px;
+            height: 40px;
+            font-size: 0.84rem;
+          }
+
+          .a11y-toolbar button::after {
+            display: none;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
     const toolbar = document.createElement('div');
     toolbar.className = 'a11y-toolbar';
@@ -796,17 +901,17 @@ export class AccessibilityEnhancer {
 
     const buttons = [
       {
-        icon: '⌨️',
+        icon: '⌨',
         label: 'Keyboard shortcuts',
         action: () => this.showKeyboardShortcuts(),
       },
       {
-        icon: '🔍',
+        icon: 'A+',
         label: 'Increase text size',
         action: () => this.adjustTextSize(1.1),
       },
       {
-        icon: '🔎',
+        icon: 'A−',
         label: 'Decrease text size',
         action: () => this.adjustTextSize(0.9),
       },
@@ -814,8 +919,10 @@ export class AccessibilityEnhancer {
 
     buttons.forEach(btn => {
       const button = document.createElement('button');
-      button.textContent = btn.icon;
       button.setAttribute('aria-label', btn.label);
+      button.setAttribute('data-label', btn.label);
+      const iconClass = btn.icon.startsWith('A') ? 'a11y-toolbar-button__icon--text' : '';
+      button.innerHTML = `<span class="a11y-toolbar-button__icon ${iconClass}" aria-hidden="true">${btn.icon}</span>`;
       button.addEventListener('click', btn.action);
       toolbar.appendChild(button);
     });

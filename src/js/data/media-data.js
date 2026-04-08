@@ -1,273 +1,268 @@
 /**
- * Currently Card - Real Media Data Module
- * Poster URLs are fetched at runtime via /api/posters/movie (TMDB) and
- * /api/posters/book (Google Books / Open Library).
- * Static `poster` fields are left empty so the loader shows its branded
- * SVG placeholder first, then swaps in the real image once the API responds.
- * Book covers use verified Open Library cover IDs that resolve correctly.
- * Last updated: April 2026
+ * Currently Card - Curated Local Media Assets
+ * The "Currently" catalog is fixed, so poster and cover art ships locally with the site.
+ * This keeps rendering deterministic across localhost, GitHub Pages, Vercel, and the custom domain.
  */
 
-// Shows & Movies — poster URLs fetched at runtime via /api/posters/movie
 export const SHOWS_AND_MOVIES = [
-  // Indian TV Shows
   {
     title: 'Taarak Mehta Ka Ooltah Chashmah',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/taarak-mehta-ka-ooltah-chashmah.jpg',
     link: 'https://www.sonyliv.com/shows/taarak-mehta-ka-ooltah-chashmah',
     platform: 'SonyLIV',
   },
   {
     title: 'CID',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/cid.jpg',
     link: 'https://www.sonyliv.com/shows/cid',
     platform: 'SonyLIV',
   },
   {
     title: 'Mahabharat',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/mahabharat.jpg',
     link: 'https://www.hotstar.com/in/tv/mahabharat/435',
     platform: 'Hotstar',
   },
   {
     title: 'Scam 1992',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/scam-1992.jpg',
     link: 'https://www.sonyliv.com/shows/scam-1992',
     platform: 'SonyLIV',
   },
   {
     title: 'Mirzapur',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/mirzapur.jpg',
     link: 'https://www.primevideo.com/detail/Mirzapur',
     platform: 'Prime',
   },
   {
     title: 'The Family Man',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/the-family-man.jpg',
     link: 'https://www.primevideo.com/detail/The-Family-Man',
     platform: 'Prime',
   },
-
-  // International Series
   {
     title: 'Breaking Bad',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/breaking-bad.jpg',
     link: 'https://www.netflix.com/title/70143836',
     platform: 'Netflix',
   },
   {
     title: 'Money Heist',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/money-heist.jpg',
     link: 'https://www.netflix.com/title/80192098',
     platform: 'Netflix',
   },
   {
     title: 'Narcos',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/narcos.jpg',
     link: 'https://www.netflix.com/title/80025172',
     platform: 'Netflix',
   },
   {
     title: 'Squid Game',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/squid-game.jpg',
     link: 'https://www.netflix.com/title/81040344',
     platform: 'Netflix',
   },
   {
     title: 'Stranger Things',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/stranger-things.jpg',
     link: 'https://www.netflix.com/title/80057281',
     platform: 'Netflix',
   },
   {
     title: 'Formula 1: Drive to Survive',
     type: 'Series',
-    poster: '',
+    poster: 'assets/images/currently/formula-1-drive-to-survive.jpg',
     link: 'https://www.netflix.com/title/80204890',
     platform: 'Netflix',
   },
-
-  // Indian Movies
   {
     title: 'KGF Chapter 1',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/kgf-chapter-1.jpg',
     link: 'https://www.primevideo.com/detail/KGF',
     platform: 'Prime',
   },
   {
     title: 'RRR',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/rrr.jpg',
     link: 'https://www.netflix.com/title/81295574',
     platform: 'Netflix',
   },
   {
     title: 'Dangal',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/dangal.jpg',
     link: 'https://www.netflix.com/title/80166185',
     platform: 'Netflix',
   },
   {
     title: 'Bajrangi Bhaijaan',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/bajrangi-bhaijaan.jpg',
     link: 'https://www.primevideo.com/detail/Bajrangi-Bhaijaan',
     platform: 'Prime',
   },
   {
     title: 'PK',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/pk.jpg',
     link: 'https://www.netflix.com/title/80057473',
     platform: 'Netflix',
   },
   {
     title: 'Vikram',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/vikram.jpg',
     link: 'https://www.primevideo.com/detail/Vikram',
     platform: 'Prime',
   },
   {
     title: 'Jailer',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/jailer.jpg',
     link: 'https://www.primevideo.com/detail/Jailer',
     platform: 'Prime',
   },
   {
     title: 'Kantara',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/kantara.jpg',
     link: 'https://www.netflix.com/title/81663360',
     platform: 'Netflix',
   },
   {
     title: 'Baahubali 2',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/baahubali-2.jpg',
     link: 'https://www.netflix.com/title/80218621',
     platform: 'Netflix',
   },
   {
     title: 'Pushpa',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/pushpa.jpg',
     link: 'https://www.primevideo.com/detail/Pushpa',
     platform: 'Prime',
   },
-
-  // Hollywood Movies
   {
     title: 'Avengers: Endgame',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/avengers-endgame.jpg',
     link: 'https://www.disneyplus.com/movies/avengers-endgame',
     platform: 'Disney+',
   },
   {
     title: 'The Social Network',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/the-social-network.jpg',
     link: 'https://www.netflix.com/title/70132721',
     platform: 'Netflix',
   },
   {
     title: 'The Blind Side',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/the-blind-side.jpg',
     link: 'https://www.netflix.com/title/70102660',
     platform: 'Netflix',
   },
   {
     title: '777 Charlie',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/777-charlie.jpg',
     link: 'https://www.primevideo.com/detail/777-Charlie',
     platform: 'Prime',
   },
   {
     title: 'Fast Five',
     type: 'Movie',
-    poster: '',
+    poster: 'assets/images/currently/fast-five.jpg',
     link: 'https://www.netflix.com/title/70157102',
     platform: 'Netflix',
   },
 ];
 
-// Books — verified Open Library cover IDs (queried April 2026)
 export const BOOKS = [
   {
     title: 'Steve Jobs',
     author: 'Walter Isaacson',
     type: 'Biography',
-    cover: 'https://covers.openlibrary.org/b/id/12374726-M.jpg',
+    cover: 'assets/images/currently/steve-jobs.jpg',
+    link: 'https://www.amazon.com/Steve-Jobs-Walter-Isaacson/dp/1451648537',
   },
   {
     title: 'Atomic Habits',
     author: 'James Clear',
     type: 'Self-Help',
-    cover: 'https://covers.openlibrary.org/b/id/12539702-M.jpg',
+    cover: 'assets/images/currently/atomic-habits.jpg',
+    link: 'https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299',
   },
   {
     title: 'The Ramayana',
     author: 'Valmiki',
     type: 'Epic',
-    cover: 'https://covers.openlibrary.org/b/id/656347-M.jpg',
+    cover: 'assets/images/currently/the-ramayana.jpg',
+    link: 'https://www.amazon.com/s?k=The+Ramayana+Valmiki',
   },
   {
     title: 'Bhagavad Gita',
     author: 'Vyasa',
     type: 'Scripture',
-    cover: 'https://covers.openlibrary.org/b/id/11157767-M.jpg',
+    cover: 'assets/images/currently/bhagavad-gita.jpg',
+    link: 'https://www.amazon.com/s?k=Bhagavad+Gita',
   },
   {
     title: 'The Holy Bible',
     author: 'Various',
     type: 'Scripture',
-    cover: 'https://covers.openlibrary.org/b/id/8238736-M.jpg',
+    cover: 'assets/images/currently/the-holy-bible.jpg',
+    link: 'https://www.amazon.com/s?k=Holy+Bible',
   },
   {
     title: 'Dune',
     author: 'Frank Herbert',
     type: 'Sci-Fi',
-    cover: 'https://covers.openlibrary.org/b/id/11481354-M.jpg',
+    cover: 'assets/images/currently/dune.jpg',
+    link: 'https://www.amazon.com/Dune-Frank-Herbert/dp/0441172717',
   },
   {
     title: 'The Lord of the Rings',
     author: 'J.R.R. Tolkien',
     type: 'Fantasy',
-    cover: 'https://covers.openlibrary.org/b/id/14625765-M.jpg',
+    cover: 'assets/images/currently/the-lord-of-the-rings.jpg',
+    link: 'https://www.amazon.com/Lord-Rings-J-R-R-Tolkien/dp/0544003411',
   },
   {
     title: 'Mrityunjay',
     author: 'Shivaji Sawant',
     type: 'Marathi',
-    cover: 'https://covers.openlibrary.org/b/id/7360775-M.jpg',
+    cover: 'assets/images/currently/mrityunjay.jpg',
+    link: 'https://www.amazon.com/s?k=mrityunjay+shivaji+sawant',
   },
   {
     title: 'Shyamchi Aai',
     author: 'Sane Guruji',
     type: 'Marathi',
-    cover: 'https://covers.openlibrary.org/b/id/13563584-M.jpg',
+    cover: 'assets/images/currently/shyamchi-aai.jpg',
+    link: 'https://www.amazon.com/s?k=shyamchi+aai+sane+guruji',
   },
 ];
 
-// Fallback placeholder (used when both API and static poster fail)
 export const FALLBACKS = {
   movie: '',
-  book: 'https://covers.openlibrary.org/b/id/12374726-M.jpg',
+  book: '',
 };

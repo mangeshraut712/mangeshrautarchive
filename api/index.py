@@ -32,13 +32,28 @@ load_dotenv()
 TMDB_API_KEY = os.getenv("TMDB_API_KEY", "").strip()
 GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
 
+OPENAPI_TAGS = [
+    {
+        "name": "system-monitor",
+        "description": "Operational health, metrics, event history, service integrations, and monitor reference data.",
+    },
+    {
+        "name": "core",
+        "description": "General API status, models, and application-level endpoints.",
+    },
+]
+
 # Initialize FastAPI with optimizations
 app = FastAPI(
     title="AssistMe - AI Portfolio Assistant API",
-    description="Next-gen AI chatbot with streaming, context awareness, and iMessage-style features",
+    description=(
+        "AssistMe backend for the portfolio experience. "
+        "Includes chatbot APIs, GitHub activity, monitor endpoints, and operational diagnostics."
+    ),
     version="3.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
+    openapi_tags=OPENAPI_TAGS,
 )
 
 # Add monitoring middleware
@@ -696,7 +711,10 @@ def adaptive_llm_params(message: str) -> dict:
 
 _github_proxy_cache: Dict[str, Any] = {}
 GITHUB_PROXY_TTL = 600  # 10 minutes
-GITHUB_PAT = os.getenv("GITHUB_PAT", "").strip()  # Optional fine-grained PAT
+GITHUB_PAT = (
+    os.getenv("GITHUB_PAT", "").strip()
+    or os.getenv("GITHUB_TOKEN", "").strip()
+)  # Optional fine-grained PAT / standard token alias
 _github_api_proxy_cache: Dict[str, Any] = {}
 GITHUB_API_PROXY_TTL = 180  # 3 minutes for endpoint-level GitHub API proxy
 
@@ -1635,7 +1653,7 @@ async def api_root():
 # GITHUB PROXY  — server-side cache + optional PAT auth
 # Replaces the direct browser → api.github.com call in
 # github-projects.js which is limited to 60 req/hr unauthenticated.
-# With GITHUB_PAT set this endpoint allows 5000 req/hr.
+# With GITHUB_PAT or GITHUB_TOKEN set this endpoint allows 5000 req/hr.
 # ============================================================
 
 
@@ -1650,7 +1668,7 @@ async def github_repos_proxy(
     """
     Browser-safe proxy for GitHub repos.
     - Applies server-side 10-min cache (no per-IP budget burned)
-    - Optionally authenticates with GITHUB_PAT env var (5000 req/hr)
+    - Optionally authenticates with GITHUB_PAT or GITHUB_TOKEN env var (5000 req/hr)
     - Returns only the fields the frontend needs (strips sensitive data)
     """
     try:
@@ -1972,8 +1990,8 @@ async def get_personalized_greeting(request: Request, user_id: Optional[str] = N
 # ====================================================================================
 
 
-@app.get("/monitor/health")
-@app.get("/api/monitor/health")
+@app.get("/monitor/health", tags=["system-monitor"], summary="Detailed monitor health")
+@app.get("/api/monitor/health", tags=["system-monitor"], summary="Detailed monitor health")
 async def get_monitor_health():
     """
     Comprehensive health check with all service statuses
@@ -1982,8 +2000,8 @@ async def get_monitor_health():
     return health
 
 
-@app.get("/monitor/metrics")
-@app.get("/api/monitor/metrics")
+@app.get("/monitor/metrics", tags=["system-monitor"], summary="Monitor metrics")
+@app.get("/api/monitor/metrics", tags=["system-monitor"], summary="Monitor metrics")
 async def get_monitor_metrics():
     """
     Get system metrics including endpoint performance
@@ -1992,8 +2010,131 @@ async def get_monitor_metrics():
     return metrics
 
 
-@app.get("/monitor/external-services")
-@app.get("/api/monitor/external-services")
+@app.get("/monitor/docs", tags=["system-monitor"], summary="Monitor API reference")
+@app.get("/api/monitor/docs", tags=["system-monitor"], summary="Monitor API reference")
+async def get_monitor_docs():
+    """
+    Structured monitor reference data for the System Monitor frontend and API docs shortcuts.
+    """
+    return {
+        "title": "System Monitor API",
+        "description": "Reference metadata for monitor endpoints, status meanings, and documentation links.",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "docs_links": {
+            "openapi": "/api/docs",
+            "redoc": "/api/redoc",
+            "health_json": "/api/monitor/health",
+            "status_json": "/api/monitor/status",
+        },
+        "status_legend": [
+            {
+                "status": "healthy",
+                "label": "Healthy",
+                "description": "Service is responding normally and within expected thresholds.",
+            },
+            {
+                "status": "degraded",
+                "label": "Degraded",
+                "description": "Service is responding but has configuration, latency, or quota pressure.",
+            },
+            {
+                "status": "unhealthy",
+                "label": "Unhealthy",
+                "description": "Service is unavailable or returning failed checks.",
+            },
+            {
+                "status": "unknown",
+                "label": "Unknown",
+                "description": "No reliable signal is currently available for that check.",
+            },
+        ],
+        "event_types": [
+            {
+                "type": "critical",
+                "description": "Immediate action required. User-facing failure or major outage.",
+            },
+            {
+                "type": "error",
+                "description": "A request or integration failed and should be investigated.",
+            },
+            {
+                "type": "warning",
+                "description": "Non-fatal degradation, quota pressure, or performance anomaly.",
+            },
+            {
+                "type": "info",
+                "description": "Operational informational event or monitoring update.",
+            },
+            {
+                "type": "success",
+                "description": "Successful remediation or recovery event.",
+            },
+        ],
+        "endpoint_groups": [
+            {
+                "title": "Overview & Health",
+                "description": "Use these endpoints for top-level status and health diagnostics.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/status",
+                        "summary": "Quick status payload for lightweight checks and summaries.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/health",
+                        "summary": "Detailed health report with component checks and overall status.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/metrics",
+                        "summary": "Aggregated request metrics, endpoint performance, and event counts.",
+                    },
+                ],
+            },
+            {
+                "title": "Events & Incidents",
+                "description": "Inspect warnings, errors, and resolution history from the monitor.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/events",
+                        "summary": "Fetch recent monitor events with optional filtering.",
+                    },
+                    {
+                        "method": "POST",
+                        "path": "/api/monitor/events/{event_id}/resolve",
+                        "summary": "Mark an event as resolved from the dashboard.",
+                    },
+                ],
+            },
+            {
+                "title": "Integrations & Docs",
+                "description": "Reference integration health and documentation surfaces.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/external-services",
+                        "summary": "Live health for external services such as OpenRouter, GitHub, Last.fm, and analytics.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/docs",
+                        "summary": "Structured monitor reference data for the frontend docs panel.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/docs",
+                        "summary": "Interactive OpenAPI explorer for the full backend.",
+                    },
+                ],
+            },
+        ],
+    }
+
+
+@app.get("/monitor/external-services", tags=["system-monitor"], summary="External service status")
+@app.get("/api/monitor/external-services", tags=["system-monitor"], summary="External service status")
 async def get_monitor_external_services():
     """
     Live status for external and integration services surfaced in the monitor UI
@@ -2001,8 +2142,8 @@ async def get_monitor_external_services():
     return await system_monitor.get_external_services_status()
 
 
-@app.get("/monitor/events")
-@app.get("/api/monitor/events")
+@app.get("/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
+@app.get("/api/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
 async def get_monitor_events(
     limit: int = 100,
     event_type: Optional[str] = None,
@@ -2035,7 +2176,11 @@ async def get_monitor_events(
     }
 
 
-@app.post("/api/monitor/events/{event_id}/resolve")
+@app.post(
+    "/api/monitor/events/{event_id}/resolve",
+    tags=["system-monitor"],
+    summary="Resolve a monitor event",
+)
 async def resolve_monitor_event(event_id: str):
     """
     Mark a system event as resolved
@@ -2052,13 +2197,27 @@ async def resolve_monitor_event(event_id: str):
     }
 
 
-@app.get("/monitor/status")
-@app.get("/api/monitor/status")
+@app.get("/monitor/status", tags=["system-monitor"], summary="Quick monitor status")
+@app.get("/api/monitor/status", tags=["system-monitor"], summary="Quick monitor status")
 async def get_monitor_status():
     """
     Quick status check for load balancers
     """
-    return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")}
+    metrics = system_monitor.get_metrics()
+    return {
+        "status": "ok",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "version": app.version,
+        "environment": os.getenv("VERCEL_ENV", "local"),
+        "uptime_seconds": metrics["uptime_seconds"],
+        "uptime_human": metrics["uptime_human"],
+        "summary": metrics["summary"],
+        "docs": {
+            "openapi": "/api/docs",
+            "redoc": "/api/redoc",
+            "monitor_reference": "/api/monitor/docs",
+        },
+    }
 
 
 # Global exception handler to ensure 200 OK responses with proper error details

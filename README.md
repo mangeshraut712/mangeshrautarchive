@@ -36,7 +36,7 @@
 
 ## 🌟 About
 
-This is my **personal portfolio website** — not just a static resume, but an **intelligent, interactive experience** that showcases modern full-stack development. It features a real-time AI chatbot assistant, live GitHub integration, an interactive canvas game, and a premium glassmorphism UI design.
+This is my **personal portfolio website** — not just a static resume, but an **interactive product-style portfolio** that showcases modern full-stack development. It combines an AI assistant, live GitHub activity, a system monitor dashboard, a curated media shelf, and a polished Apple-inspired UI.
 
 Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and deployed on multiple platforms for maximum reliability and performance.
 
@@ -49,8 +49,6 @@ Built with **Python FastAPI** backend, **vanilla JavaScript** frontend, and depl
 | Real-time streaming chatbot with context awareness | Shows, Music, Books tracking | GitHub API integration | Apple-inspired glassmorphism |
 
 </div>
-
----
 
 ## ✨ Key Features
 
@@ -80,14 +78,14 @@ The centerpiece of this portfolio is **AssistMe**, an AI-powered chatbot that go
 
 </details>
 
-### 📺 Currently Watching Card
+### 📺 Currently Card
 
 <details>
 <summary><b>📱 Click to explore Currently features</b></summary>
 
 <br/>
 
-A curated showcase of entertainment preferences with streaming links:
+A curated media shelf with locally shipped artwork and stable runtime behavior:
 
 - **Shows & Movies Tab** — 30+ titles with direct streaming platform links
   - Indian TV: Taarak Mehta, CID, Mahabharat, Scam 1992, Mirzapur, The Family Man
@@ -101,22 +99,8 @@ A curated showcase of entertainment preferences with streaming links:
   - Dune, The Lord of the Rings
   - Marathi literature: Mrityunjay, Shyamchi Aai
 - **Streaming Links** — Direct links to Netflix, Prime Video, Disney+, SonyLIV, and more
-
-</details>
-
-### 🎵 Music Integration
-
-<details>
-<summary><b>🎧 Click to explore Music features</b></summary>
-
-<br/>
-
-Real-time music tracking powered by Last.fm:
-
-- **Now Playing** — Shows currently playing track with album art
-- **Recent Tracks** — Last 5 played songs with timestamps
-- **Spotify Sync** — Automatically syncs when you play music on Spotify
-- **One-Click Links** — Direct links to tracks on Last.fm and Spotify
+- **🖼️ Curated Local Poster Assets** — Fixed show/movie/book artwork ships with the site, avoiding runtime poster mismatches
+- **📈 Engagement Analytics** — Real-time user interaction tracking (`media_click`) synced seamlessly with Vercel Web Analytics
 
 </details>
 
@@ -161,6 +145,23 @@ Real-time project showcase that automatically stays current:
 - 🗺️ **Spatial Modal** — Interactive project detail modal with repo stats and activity timeline
 
 **Implementation:** Custom JavaScript module with GitHub REST API integration
+
+</details>
+
+### 📈 System Monitor
+
+<details>
+<summary><b>🩺 Click to explore monitor features</b></summary>
+
+<br/>
+
+A first-class monitor page that matches the main site shell and surfaces live backend state:
+
+- **Live Health Checks** — Backend resource and integration health
+- **Endpoint Metrics** — Success rate, response times, and recent API status
+- **Service Integrations** — OpenRouter, GitHub, Last.fm, and analytics status cards
+- **Event Log** — Resolved and unresolved operational events
+- **Shared Apple Shell** — Same navbar, theme toggle, glass surfaces, and spacing language as the homepage
 
 </details>
 
@@ -269,7 +270,7 @@ Real-time project showcase that automatically stays current:
 **Backend Architecture:**
 
 ```python
-├── Python 3.12+ — Modern Python with type hints
+├── Python 3.12+ (Tested through 3.13) — Modern Python with type hints
 ├── FastAPI — High-performance async web framework
 ├── Uvicorn — Lightning-fast ASGI server
 ├── httpx — Async HTTP client for API calls
@@ -299,6 +300,8 @@ Make sure you have these installed before starting:
 - **Python** 3.12+
 - **Git** for version control
 - 🔑 **OpenRouter API Key** (optional, for AI chatbot features)
+- 🐙 **GitHub Token** (optional, recommended to avoid GitHub API rate limits)
+- 🖼️ **TMDB / Google Books Keys** (optional, only needed if you want to use backend poster lookup endpoints)
 
 ### Installation Steps
 
@@ -319,7 +322,10 @@ pip install -r requirements.txt
 
 # 5️⃣ Set up environment variables
 cp .env.example .env
-# Edit .env and add your OPENROUTER_API_KEY (if you want AI features)
+# Edit .env and add any keys you want:
+# - OPENROUTER_API_KEY for AI features
+# - GITHUB_TOKEN or GITHUB_PAT for higher GitHub API limits
+# - TMDB_API_KEY / GOOGLE_BOOKS_API_KEY only if you want the optional backend poster lookup endpoints
 
 # 6️⃣ Start the development servers
 npm run dev
@@ -360,8 +366,11 @@ npm run build:css
 ```text
 mangeshrautarchive/
 ├── api/                        # FastAPI backend + serverless handlers
+│   ├── integrations/           # External connector helpers
+│   └── legacy/                 # Legacy JS handlers kept for compatibility
 ├── src/                        # Frontend source
 │   ├── assets/                 # CSS, images, icons, downloadable files
+│   │   └── images/currently/   # Curated local artwork for the Currently card
 │   └── js/
 │       ├── core/               # App bootstrap + orchestration
 │       ├── modules/            # Feature modules
@@ -369,6 +378,7 @@ mangeshrautarchive/
 │       ├── components/         # Reusable UI components
 │       └── utils/              # Small focused helpers
 ├── scripts/                    # Build/dev/QA/security scripts
+│   └── shell/                  # Shell wrappers for local workflows
 ├── tests/e2e/                  # Playwright smoke + a11y + post-deploy checks
 ├── .github/workflows/          # CI/CD and monitoring workflows
 ├── package.json                # Node scripts/dependencies
@@ -493,7 +503,7 @@ Built with amazing open-source tools:
 - **OpenRouter** — AI model gateway
 - **xAI & Google** — For incredible AI models
 - **Last.fm** — Music scrobbling and API
-- **TMDB & Open Library** — Poster and book-cover imagery
+- **Open Library & Google Books** — Optional backend cover lookup integrations
 
 ---
 
