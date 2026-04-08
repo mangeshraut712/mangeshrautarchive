@@ -4,5 +4,11 @@
   "include": ["src", "api"],
   "exclude": ["**/__pycache__", "scripts", "tests"],
   "reportMissingImports": true,
-  "pythonVersion": "3.13"
+  "pythonVersion": "3.13",
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "extraPaths": ["."]
+    }
+  ]
 }
