@@ -1,4 +1,5 @@
 import { BOOKS, FALLBACKS, SHOWS_AND_MOVIES } from '../data/media-data.js';
+import { analytics } from '../services/AnalyticsService.js';
 
 class RealMediaLoader {
   constructor() {
@@ -119,7 +120,7 @@ class RealMediaLoader {
           </div>
           <div class="media-info">
             <h4>${this.getShortTitle(item.title)}</h4>
-            <a href="${item.link}" target="_blank" rel="noopener" class="watch-btn">
+            <a href="${item.link}" target="_blank" rel="noopener" class="watch-btn" onclick="try { window.analyticsTracker.track('media_click', { title: '${item.title.replace(/'/g, "\\'")}', type: '${item.type}' }) } catch(e){}">
               <i class="fas fa-play"></i> ${item.platform}
             </a>
           </div>
@@ -184,7 +185,7 @@ class RealMediaLoader {
           <div class="media-info">
             <h4>${this.getShortTitle(book.title)}</h4>
             <p class="text-xs text-gray-500">${book.author}</p>
-            <a href="${book.link}" target="_blank" rel="noopener" class="watch-btn book-btn">
+            <a href="${book.link}" target="_blank" rel="noopener" class="watch-btn book-btn" onclick="try { window.analyticsTracker.track('media_click', { title: '${book.title.replace(/'/g, "\\'")}', type: '${book.type}' }) } catch(e){}">
               <i class="fas fa-book-open"></i> Read
             </a>
           </div>
@@ -249,6 +250,7 @@ class RealMediaLoader {
 }
 
 function initRealMediaLoader() {
+  window.analyticsTracker = analytics;
   const loader = new RealMediaLoader();
   loader.init();
 }

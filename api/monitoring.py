@@ -380,7 +380,7 @@ class SystemMonitor:
     def _check_memory_manager(self) -> Dict:
         """Check memory manager status."""
         try:
-            from api.memory_manager import memory_manager
+            from .memory_manager import memory_manager
 
             stats = memory_manager.get_stats()
 
@@ -570,7 +570,7 @@ class SystemMonitor:
 
     async def _probe_analytics_service(self) -> Dict[str, Any]:
         try:
-            from api.index import get_analytics_views
+            from .index import get_analytics_views
 
             payload = await get_analytics_views()
             views = payload.get("views", {}).get("total", 0)

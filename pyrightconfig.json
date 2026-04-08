@@ -1,8 +1,8 @@
 {
   "venvPath": ".",
   "venv": "venv",
-  "include": ["src"],
-  "exclude": ["**/__pycache__", "api", "scripts", "tests"],
+  "include": ["src", "api"],
+  "exclude": ["**/__pycache__", "scripts", "tests"],
   "reportMissingImports": true,
   "pythonVersion": "3.13"
 }
