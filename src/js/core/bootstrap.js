@@ -1,4 +1,5 @@
 import ExternalApiKeys from '../modules/external-config.js';
+import { initCurrentlySection } from '../modules/currently.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
 import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
@@ -20,11 +21,6 @@ const SECTION_MODULES = [
   },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '900px 0px' },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '1200px 0px' },
-  {
-    sectionId: 'currently-section',
-    modulePath: '../modules/currently.js',
-    rootMargin: '1200px 0px',
-  },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/real-media-loader.js',
@@ -493,200 +489,39 @@ function initServiceWorker() {
     return;
   }
 
-  const host = window.location.hostname;
-  const disableSW = /no-sw=1/.test(window.location.search);
-  const isLocal = host === 'localhost' || host === '127.0.0.1';
-
-  if (isLocal) {
-    const alreadyCleaned = sessionStorage.getItem('local-sw-cleanup-done') === '1';
-    if (alreadyCleaned) {
-      return;
-    }
-
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-      registrations.forEach(registration => {
-        registration.unregister();
-        console.log('ServiceWorker unregistered for local development');
-      });
-    });
-
-    if ('caches' in window) {
-      caches.keys().then(cacheNames => {
-        cacheNames.forEach(cacheName => {
-          caches.delete(cacheName);
-        });
-      });
-    }
-
-    sessionStorage.setItem('local-sw-cleanup-done', '1');
-    return;
-  }
-
-  if (disableSW) {
+  const cleanupKey = 'portfolio-sw-cleanup-v20260410';
+  if (sessionStorage.getItem(cleanupKey) === '1') {
     return;
   }
 
   window.addEventListener(
     'load',
     async () => {
-      // Check for updates and force refresh if needed
       try {
-        const response = await fetch('/build-config.json');
-        const config = await response.json();
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(registration => registration.unregister()));
 
-        // Check if we have a cached version
-        const cachedVersion = localStorage.getItem('portfolio-version');
-        const currentVersion = config.version;
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+        }
 
-        if (cachedVersion && cachedVersion !== currentVersion) {
-          console.log('🔄 New version detected, clearing caches and refreshing...');
-          // Clear all caches
+        localStorage.removeItem('portfolio-version');
+        sessionStorage.setItem(cleanupKey, '1');
+
+        window.clearAllCaches = async () => {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(registration => registration.unregister()));
           if ('caches' in window) {
             const cacheNames = await caches.keys();
             await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
           }
-          // Force refresh
-          localStorage.setItem('portfolio-version', currentVersion);
-          window.location.reload();
-          return;
-        }
-
-        // Store current version
-        localStorage.setItem('portfolio-version', currentVersion);
-
-        // Add cache clearing and update functions to window for debugging
-        window.clearAllCaches = async () => {
-          console.log('🧹 Clearing all caches...');
-          if ('caches' in window) {
-            const cacheNames = await caches.keys();
-            await Promise.all(
-              cacheNames.map(cacheName => {
-                console.log('🗑️ Deleting cache:', cacheName);
-                return caches.delete(cacheName);
-              })
-            );
-          }
           localStorage.removeItem('portfolio-version');
-          console.log('✅ All caches cleared');
-        };
-
-        window.forceUpdate = async () => {
-          console.log('🔄 Forcing service worker update...');
-          if ('serviceWorker' in navigator) {
-            const registration = await navigator.serviceWorker.ready;
-            registration.update().then(() => {
-              console.log('🔄 Service worker update triggered');
-            });
-          }
+          sessionStorage.removeItem(cleanupKey);
         };
       } catch (error) {
-        console.log('Version check failed:', error);
+        console.log('Service worker cleanup skipped:', error);
       }
-
-      // Register service worker
-      navigator.serviceWorker
-        .register('service-worker.js')
-        .then(registration => {
-          console.log('ServiceWorker registration successful with scope:', registration.scope);
-
-          // Check for updates every 5 minutes
-          setInterval(
-            () => {
-              registration.update().catch(() => {});
-            },
-            5 * 60 * 1000
-          );
-
-          // Listen for service worker updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // Show update notification instead of auto-refresh
-                  showUpdateNotification();
-                }
-              });
-            }
-          });
-
-          // Function to show update notification
-          function showUpdateNotification() {
-            // Remove existing notification
-            const existing = document.getElementById('update-notification');
-            if (existing) existing.remove();
-
-            const notification = document.createElement('div');
-            notification.id = 'update-notification';
-            notification.innerHTML = `
-              <div class="update-banner">
-                <span class="update-icon">🔄</span>
-                <span class="update-text">A new version is available!</span>
-                <button class="update-btn" onclick="window.location.reload()">Update Now</button>
-                <button class="update-close" onclick="this.parentElement.parentElement.remove()">×</button>
-              </div>
-            `;
-            notification.style.cssText = `
-              position: fixed;
-              top: 0;
-              left: 0;
-              right: 0;
-              z-index: 10000;
-              background: linear-gradient(135deg, #007aff, #0056cc);
-              color: white;
-              padding: 12px;
-              text-align: center;
-              font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-              box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-            `;
-
-            const banner = notification.querySelector('.update-banner');
-            banner.style.cssText = `
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 12px;
-              max-width: 800px;
-              margin: 0 auto;
-            `;
-
-            const btn = notification.querySelector('.update-btn');
-            btn.style.cssText = `
-              background: white;
-              color: #007aff;
-              border: none;
-              padding: 6px 16px;
-              border-radius: 20px;
-              font-weight: 600;
-              cursor: pointer;
-              transition: all 0.2s;
-            `;
-
-            const close = notification.querySelector('.update-close');
-            close.style.cssText = `
-              background: none;
-              border: none;
-              color: white;
-              font-size: 24px;
-              cursor: pointer;
-              padding: 0;
-              margin-left: 8px;
-              opacity: 0.8;
-            `;
-
-            document.body.appendChild(notification);
-
-            // Auto-hide after 30 seconds
-            setTimeout(() => {
-              if (notification.parentElement) {
-                notification.remove();
-              }
-            }, 30000);
-          }
-        })
-        .catch(error => {
-          console.log('ServiceWorker registration failed:', error);
-        });
     },
     { once: true }
   );
@@ -699,6 +534,7 @@ async function initBootstrap() {
   initOverlayMenu();
   initOverlayNavigation();
   initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');
+  initCurrentlySection();
   initDeferredStyles();
   initOnDemandModules();
   initContactChatbotCTA(chatbotLoader);

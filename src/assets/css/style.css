@@ -2493,13 +2493,13 @@ html.dark .project-card a.text-accent:hover {
 
   /* Mobile Sections */
   section {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
   }
 
   #home {
-    padding-top: 4rem;
-    padding-bottom: 3rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   /* Mobile Container */

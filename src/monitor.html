@@ -54,6 +54,10 @@
                     <div class="premium-menu-icon"><i class="fas fa-chart-line"></i></div>
                     <span>Metrics</span>
                 </a>
+                <a href="#deployment-surfaces-section" class="menu-item">
+                    <div class="premium-menu-icon"><i class="fas fa-globe"></i></div>
+                    <span>Deployments</span>
+                </a>
                 <a href="#event-log-section" class="menu-item">
                     <div class="premium-menu-icon"><i class="fas fa-list"></i></div>
                     <span>Event Log</span>
@@ -79,7 +83,7 @@
                 <div>
                     <p class="monitor-eyebrow">Operations</p>
                     <h1>System Monitor</h1>
-                    <p class="monitor-subtitle">Real-time diagnostics and service health for AssistMe ecosystem.</p>
+                    <p class="monitor-subtitle">Real-time diagnostics for backend health, provider APIs, and deployed portfolio surfaces.</p>
                     <span id="overall-status" class="status-badge healthy">
                         <span class="status-dot"></span>
                         All Systems Operational
@@ -91,10 +95,6 @@
                     <i class="fas fa-rotate"></i>
                     Refresh
                 </button>
-                <a class="btn btn-primary" href="/api/docs" target="_blank" rel="noopener">
-                    <i class="fas fa-book-open"></i>
-                    API Docs
-                </a>
                 <a class="btn btn-secondary" href="index.html#projects">
                     <i class="fas fa-arrow-left"></i>
                     Back to Portfolio
@@ -107,7 +107,7 @@
         <section class="monitor-summary-card" id="monitor-summary-section" aria-label="Monitor summary">
             <div class="monitor-summary-copy">
                 <p class="monitor-summary-eyebrow">Control Center</p>
-                <h2>Backend status, uptime, docs, and integrations in one place.</h2>
+                <h2>Backend status, runtime config, and deployment coverage in one place.</h2>
                 <p id="monitor-summary-text">Loading operational summary…</p>
                 <div class="monitor-summary-chips">
                     <div class="summary-chip">
@@ -128,20 +128,10 @@
                     </div>
                 </div>
             </div>
-            <div class="monitor-summary-actions">
-                <div class="docs-link-stack">
-                    <a class="btn btn-primary" href="/api/docs" target="_blank" rel="noopener">
-                        <i class="fas fa-book-open"></i>
-                        OpenAPI
-                    </a>
-                    <a class="btn btn-secondary" href="/api/redoc" target="_blank" rel="noopener">
-                        <i class="fas fa-file-lines"></i>
-                        ReDoc
-                    </a>
-                    <a class="btn btn-secondary" href="/api/monitor/health" target="_blank" rel="noopener">
-                        <i class="fas fa-wave-square"></i>
-                        Health JSON
-                    </a>
+            <div class="monitor-summary-panel" id="runtime-snapshot-card">
+                <div class="empty-state compact">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Loading runtime snapshot...</h3>
                 </div>
             </div>
         </section>
@@ -250,11 +240,11 @@
         <!-- External APIs Status -->
         <section class="section" id="external-services-section">
             <div class="section-header">
-                <h2 class="section-title">Service Integrations</h2>
+                <h2 class="section-title">Provider APIs</h2>
                 <div class="section-actions">
                     <button class="btn btn-secondary" onclick="checkExternalApis()">
                         <i class="fas fa-sync"></i>
-                        Refresh Services
+                        Refresh Providers
                     </button>
                 </div>
             </div>
@@ -266,19 +256,27 @@
             </div>
         </section>
 
+        <section class="section" id="deployment-surfaces-section">
+            <div class="section-header">
+                <h2 class="section-title">Deployment Surfaces</h2>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" onclick="refreshHostingSurfaces()">
+                        <i class="fas fa-globe"></i>
+                        Refresh Surfaces
+                    </button>
+                </div>
+            </div>
+            <div class="health-grid" id="deployment-surfaces">
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Checking deployment surfaces...</h3>
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="api-docs-section">
             <div class="section-header">
                 <h2 class="section-title">API Docs & References</h2>
-                <div class="section-actions">
-                    <a class="btn btn-primary" href="/api/docs" target="_blank" rel="noopener">
-                        <i class="fas fa-book-open"></i>
-                        OpenAPI
-                    </a>
-                    <a class="btn btn-secondary" href="/api/redoc" target="_blank" rel="noopener">
-                        <i class="fas fa-file-lines"></i>
-                        ReDoc
-                    </a>
-                </div>
             </div>
             <div class="docs-grid" id="monitor-docs-grid">
                 <div class="empty-state">
@@ -319,14 +317,62 @@
 
     <script src="js/utils/theme.js"></script>
     <script>
-        // API client
-        // Always use same-origin /api so dev proxy and production routing behave the same.
-        const API_BASE = '/api';
+        const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshraut.pro';
+        const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
+        let monitorConfig = null;
+        let apiOrigin = '';
         let lastRefreshIso = null;
+
+        function normalizeOrigin(rawValue, fallback = '') {
+            if (!rawValue) return fallback;
+
+            try {
+                const parsed = new URL(String(rawValue).trim(), window.location.origin);
+                return parsed.origin;
+            } catch {
+                return fallback;
+            }
+        }
+
+        async function loadPublicConfig() {
+            try {
+                const response = await fetch(new URL('./build-config.json', window.location.href), {
+                    cache: 'no-store'
+                });
+                if (!response.ok) return null;
+                return await response.json();
+            } catch {
+                return null;
+            }
+        }
+
+        function resolveApiOrigin(config) {
+            const hostname = window.location.hostname || '';
+
+            if (LOCAL_HOSTS.has(hostname)) {
+                return '';
+            }
+
+            if (hostname.includes('github.io')) {
+                return normalizeOrigin(config?.apiBaseUrl, REMOTE_API_FALLBACK_ORIGIN);
+            }
+
+            return '';
+        }
+
+        function buildApiUrl(path) {
+            const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+            return apiOrigin ? `${apiOrigin}${normalizedPath}` : normalizedPath;
+        }
+
+        function toAbsoluteApiLink(path) {
+            if (!path) return '#';
+            return buildApiUrl(path.startsWith('/api/') ? path : `/api/${path.replace(/^\/+/, '')}`);
+        }
 
         async function fetchHealth() {
             try {
-                const response = await fetch(`${API_BASE}/monitor/health`);
+                const response = await fetch(buildApiUrl('/api/monitor/health'));
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
             } catch (error) {
@@ -337,7 +383,7 @@
 
         async function fetchMetrics() {
             try {
-                const response = await fetch(`${API_BASE}/monitor/metrics`);
+                const response = await fetch(buildApiUrl('/api/monitor/metrics'));
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
             } catch (error) {
@@ -348,7 +394,7 @@
 
         async function fetchExternalServices() {
             try {
-                const response = await fetch(`${API_BASE}/monitor/external-services`);
+                const response = await fetch(buildApiUrl('/api/monitor/external-services'));
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
             } catch (error) {
@@ -359,7 +405,7 @@
 
         async function fetchStatus() {
             try {
-                const response = await fetch(`${API_BASE}/monitor/status`);
+                const response = await fetch(buildApiUrl('/api/monitor/status'));
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
             } catch (error) {
@@ -368,9 +414,20 @@
             }
         }
 
+        async function fetchHostingSurfaces() {
+            try {
+                const response = await fetch(buildApiUrl('/api/monitor/hosting-surfaces'));
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Hosting surfaces fetch failed:', error);
+                return null;
+            }
+        }
+
         async function fetchMonitorDocs() {
             try {
-                const response = await fetch(`${API_BASE}/monitor/docs`);
+                const response = await fetch(buildApiUrl('/api/monitor/docs'));
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
             } catch (error) {
@@ -381,7 +438,7 @@
 
         async function fetchEvents(filter = '') {
             try {
-                const url = new URL(`${API_BASE}/monitor/events`, window.location.origin);
+                const url = new URL(buildApiUrl('/api/monitor/events'), window.location.origin);
                 if (filter) url.searchParams.set('event_type', filter);
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -395,7 +452,7 @@
 
         async function resolveEvent(eventId) {
             try {
-                const response = await fetch(`${API_BASE}/monitor/events/${eventId}/resolve`, {
+                const response = await fetch(buildApiUrl(`/api/monitor/events/${eventId}/resolve`), {
                     method: 'POST'
                 });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -450,7 +507,13 @@
             }).format(date);
         }
 
-        function renderSummary(statusData, metricsData, healthData, servicesData) {
+        function formatConfigLabel(key) {
+            return key
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        function renderSummary(statusData, metricsData, healthData, servicesData, hostingData) {
             const summaryText = document.getElementById('monitor-summary-text');
             const uptime = document.getElementById('summary-uptime');
             const lastRefresh = document.getElementById('summary-last-refresh');
@@ -458,21 +521,66 @@
             const serviceCount = document.getElementById('summary-service-count');
 
             const unresolvedEvents = metricsData?.summary?.unresolved_events ?? '--';
-            const totalServices = servicesData?.summary?.total ?? servicesData?.services?.length ?? '--';
+            const totalServices = (
+                (servicesData?.summary?.total ?? servicesData?.services?.length ?? 0) +
+                (hostingData?.summary?.total ?? hostingData?.surfaces?.length ?? 0)
+            ) || '--';
             const uptimeText = statusData?.uptime_human || metricsData?.uptime_human || '--';
 
             const degradedChecks = (healthData?.checks || []).filter(check => check.status !== 'healthy').length;
+            const degradedSurfaces = (hostingData?.surfaces || []).filter(surface => surface.status !== 'healthy').length;
             const errorRate = metricsData?.error_rate ?? 0;
             const environment = statusData?.environment || 'local';
 
-            summaryText.textContent = degradedChecks > 0
-                ? `${degradedChecks} health checks need attention. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`
-                : `All monitored services are operational. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
+            if (degradedChecks > 0 || degradedSurfaces > 0) {
+                summaryText.textContent = `${degradedChecks} backend checks and ${degradedSurfaces} deployment surfaces need attention. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
+            } else {
+                summaryText.textContent = `Backend, provider APIs, and deployment surfaces are responding normally. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
+            }
 
             uptime.textContent = uptimeText;
             lastRefresh.textContent = formatLocalTime(lastRefreshIso);
             openIssues.textContent = String(unresolvedEvents);
             serviceCount.textContent = String(totalServices);
+        }
+
+        function renderRuntimeSnapshot(data) {
+            const container = document.getElementById('runtime-snapshot-card');
+            const runtime = data?.runtime || data?.runtime_config || null;
+
+            if (!runtime) {
+                container.innerHTML = `
+                    <div class="empty-state compact">
+                        <i class="fas fa-sliders"></i>
+                        <h3>Runtime snapshot unavailable</h3>
+                        <p>Monitor runtime metadata could not be loaded.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const envPresence = Object.entries(runtime.env_presence || {}).map(([key, value]) => `
+                <span class="env-pill ${value ? 'healthy' : 'missing'}">
+                    <span class="env-pill-label">${escapeHtml(formatConfigLabel(key))}</span>
+                    <strong>${value ? 'Present' : 'Missing'}</strong>
+                </span>
+            `).join('');
+
+            const publicOrigins = runtime.public_origins || {};
+            const originRows = Object.entries(publicOrigins).map(([key, value]) => `
+                <div class="runtime-meta-row">
+                    <span>${escapeHtml(formatConfigLabel(key))}</span>
+                    <a href="${escapeHtml(value)}" target="_blank" rel="noopener">${escapeHtml(value)}</a>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <p class="doc-card-kicker">Runtime Snapshot</p>
+                <h3 class="runtime-card-title">${escapeHtml(runtime.platform || 'local')} · ${escapeHtml(runtime.environment || 'unknown')}</h3>
+                <p class="doc-card-description">Version ${escapeHtml(runtime.version || 'unknown')} · Region ${escapeHtml(runtime.region || 'unknown')} · Deployment ${escapeHtml(runtime.deployment_url || 'localhost')}</p>
+                <div class="runtime-meta-list">${originRows}</div>
+                <div class="env-pill-list">${envPresence}</div>
+            `;
         }
 
         function renderMonitorDocs(data) {
@@ -525,10 +633,11 @@
                     <p class="doc-card-kicker">Documentation Links</p>
                     <p class="doc-card-description">${escapeHtml(data.description || '')}</p>
                     <div class="doc-link-list">
-                        <a class="doc-link" href="${escapeHtml(data.docs_links?.openapi || '/api/docs')}" target="_blank" rel="noopener">OpenAPI Explorer</a>
-                        <a class="doc-link" href="${escapeHtml(data.docs_links?.redoc || '/api/redoc')}" target="_blank" rel="noopener">ReDoc Reference</a>
-                        <a class="doc-link" href="${escapeHtml(data.docs_links?.health_json || '/api/monitor/health')}" target="_blank" rel="noopener">Health JSON</a>
-                        <a class="doc-link" href="${escapeHtml(data.docs_links?.status_json || '/api/monitor/status')}" target="_blank" rel="noopener">Status JSON</a>
+                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.openapi || '/api/docs'))}" target="_blank" rel="noopener">OpenAPI Explorer</a>
+                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.redoc || '/api/redoc'))}" target="_blank" rel="noopener">ReDoc Reference</a>
+                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.health_json || '/api/monitor/health'))}" target="_blank" rel="noopener">Health JSON</a>
+                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.status_json || '/api/monitor/status'))}" target="_blank" rel="noopener">Status JSON</a>
+                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.hosting_surfaces || '/api/monitor/hosting-surfaces'))}" target="_blank" rel="noopener">Deployment JSON</a>
                     </div>
                 </article>
                 ${groups}
@@ -541,6 +650,41 @@
                     <div class="legend-grid">${eventLegend}</div>
                 </article>
             `;
+        }
+
+        function renderDeploymentSurfaces(data) {
+            const container = document.getElementById('deployment-surfaces');
+            if (!data || !Array.isArray(data.surfaces) || data.surfaces.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-globe"></i>
+                        <h3>Unable to load deployment surfaces</h3>
+                        <p>Refresh the monitor to run the published-site probes again.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = data.surfaces.map(surface => `
+                <div class="health-item ${surface.status}">
+                    <div class="health-item-left">
+                        <div class="health-status-icon ${surface.status}">
+                            <i class="fas fa-${getStatusIcon(surface.status)}"></i>
+                        </div>
+                        <div class="health-info">
+                            <h4>${escapeHtml(surface.name)}</h4>
+                            <p>${escapeHtml(surface.message)}</p>
+                            ${surface.url ? `<a class="health-inline-link" href="${escapeHtml(surface.url)}" target="_blank" rel="noopener">${escapeHtml(surface.url)}</a>` : ''}
+                        </div>
+                    </div>
+                    <div class="health-metrics">
+                        <div class="health-metric">
+                            <div class="health-metric-value">${escapeHtml(surface.metric_value || '--')}</div>
+                            <div class="health-metric-label">${escapeHtml(surface.metric_label || '')}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function renderHealthChecks(data) {
@@ -579,14 +723,28 @@
                     </div>
                 </div>
             `).join('');
+        }
 
-            // Update overall status
+        function renderOverallStatus(healthData, servicesData, hostingData) {
             const statusBadge = document.getElementById('overall-status');
-            statusBadge.className = `status-badge ${data.status}`;
+            const statuses = [
+                healthData?.status,
+                ...(servicesData?.services || []).map(service => service.status),
+                ...(hostingData?.surfaces || []).map(surface => surface.status),
+            ].filter(Boolean);
+
+            let overallStatus = 'healthy';
+            if (statuses.some(status => status === 'unhealthy' || status === 'critical')) {
+                overallStatus = 'unhealthy';
+            } else if (statuses.some(status => status === 'degraded' || status === 'unknown')) {
+                overallStatus = 'degraded';
+            }
+
+            statusBadge.className = `status-badge ${overallStatus}`;
             statusBadge.innerHTML = `
                 <span class="status-dot"></span>
-                ${data.status === 'healthy' ? 'All Systems Operational' : 
-                  data.status === 'degraded' ? 'System Degraded' : 
+                ${overallStatus === 'healthy' ? 'All Systems Operational' :
+                  overallStatus === 'degraded' ? 'Monitoring Attention Needed' :
                   'System Issues Detected'}
             `;
         }
@@ -781,23 +939,31 @@
         }
 
         async function checkExternalApis() {
-            showToast('Checking external APIs...', 'info');
+            showToast('Checking provider APIs...', 'info');
             const integrations = await fetchExternalServices();
             renderExternalServices(integrations);
-            renderSummary(null, null, null, integrations);
-            showToast('Service integrations updated', integrations ? 'success' : 'error');
+            showToast('Provider APIs updated', integrations ? 'success' : 'error');
+        }
+
+        async function refreshHostingSurfaces() {
+            showToast('Checking deployment surfaces...', 'info');
+            const hosting = await fetchHostingSurfaces();
+            renderRuntimeSnapshot(hosting);
+            renderDeploymentSurfaces(hosting);
+            showToast('Deployment surfaces updated', hosting ? 'success' : 'error');
         }
 
         // Actions
         async function refreshData() {
             showToast('Refreshing data...', 'info');
             
-            const [health, metrics, integrations, status, docs] = await Promise.all([
+            const [health, metrics, integrations, status, docs, hosting] = await Promise.all([
                 fetchHealth(),
                 fetchMetrics(),
                 fetchExternalServices(),
                 fetchStatus(),
-                fetchMonitorDocs()
+                fetchMonitorDocs(),
+                fetchHostingSurfaces()
             ]);
             
             const events = await fetchEvents(document.getElementById('event-filter').value);
@@ -809,7 +975,10 @@
                 renderOverview(metrics);
             }
             renderExternalServices(integrations);
-            renderSummary(status, metrics, health, integrations);
+            renderRuntimeSnapshot(hosting || status);
+            renderDeploymentSurfaces(hosting);
+            renderOverallStatus(health, integrations, hosting);
+            renderSummary(status, metrics, health, integrations, hosting);
             renderMonitorDocs(docs);
             renderEvents(events);
             
@@ -874,7 +1043,9 @@
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            monitorConfig = await loadPublicConfig();
+            apiOrigin = resolveApiOrigin(monitorConfig);
             refreshData();
             
             // Auto-refresh every 30 seconds

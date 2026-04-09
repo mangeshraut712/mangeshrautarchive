@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from collections import deque
 from enum import Enum
 import logging
+from urllib.parse import urlsplit
 
 # Optional psutil import - graceful fallback if not available
 try:
@@ -150,7 +151,6 @@ class SystemMonitor:
         self.deployment_history = deque(maxlen=50)
         self.current_deployment = None
         self.deployment_changes = deque(maxlen=100)
-        self.load_deployment_info()
 
         # Real-time metrics (2026-era feature)
         self.real_time_metrics = {
@@ -274,37 +274,45 @@ class SystemMonitor:
         """Record a request for metrics tracking"""
         self.total_requests += 1
 
-        # Track by endpoint
-        endpoint = f"{method} {path}"
+        endpoint = f"{method}:{path}"
         if endpoint not in self.endpoint_metrics:
             self.endpoint_metrics[endpoint] = EndpointMetrics(path=path, method=method)
 
         metrics = self.endpoint_metrics[endpoint]
-        metrics.request_count += 1
-        metrics.response_times.append(response_time_ms)
-        metrics.last_request = datetime.now(timezone.utc).isoformat()
+        metrics.total_requests += 1
+        metrics.last_status_code = status_code
+        metrics.last_checked = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        metrics.avg_response_time_ms = (
+            (metrics.avg_response_time_ms * (metrics.total_requests - 1)) + response_time_ms
+        ) / max(metrics.total_requests, 1)
 
-        # Update real-time metrics
+        if 200 <= status_code < 400:
+            metrics.successful_requests += 1
+        else:
+            metrics.failed_requests += 1
+            self.error_count += 1
+            self.error_counts[endpoint] = self.error_counts.get(endpoint, 0) + 1
+
+        metrics.error_rate = (
+            (metrics.failed_requests / max(metrics.total_requests, 1)) * 100
+        )
+
+        self.request_counts[endpoint] = self.request_counts.get(endpoint, 0) + 1
+        self.response_times.append(response_time_ms)
         self.real_time_metrics["requests_per_second"] = self._calculate_rps()
 
-        # Track errors
-        if status_code >= 400:
-            self.error_count += 1
-            if endpoint not in self.error_counts:
-                self.error_counts[endpoint] = 0
-            self.error_counts[endpoint] += 1
-
-        # Track security if suspicious
-        if status_code == 403 or "suspicious" in str(metadata).lower():
+        if status_code == 403:
             self.log_event(
-                f"Security event: {method} {path} from {client_ip}",
+                f"Security event: {method} {path} from {client_ip or 'unknown client'}",
                 EventType.WARNING,
                 {
                     "method": method,
                     "path": path,
                     "ip": client_ip,
                     "status": status_code,
+                    "user_agent": user_agent,
                 },
+                "security_monitor",
             )
 
     def _calculate_rps(self) -> float:
@@ -349,6 +357,77 @@ class SystemMonitor:
 
         except Exception as e:
             logger.error(f"Failed to load deployment info: {e}")
+
+    def _normalize_public_origin(self, raw_value: Optional[str], fallback: str) -> str:
+        candidate = (raw_value or fallback or "").strip()
+        if not candidate:
+            return fallback.rstrip("/")
+        if not candidate.startswith(("http://", "https://")):
+            candidate = f"https://{candidate.lstrip('/')}"
+        return candidate.rstrip("/")
+
+    def get_public_origins(self) -> Dict[str, str]:
+        custom_domain = self._normalize_public_origin(
+            os.getenv("OPENROUTER_SITE_URL") or os.getenv("SITE_URL"),
+            "https://mangeshraut.pro",
+        )
+        vercel_origin = self._normalize_public_origin(
+            os.getenv("NEXT_PUBLIC_API_BASE") or os.getenv("VERCEL_PUBLIC_URL"),
+            "https://mangeshrautarchive.vercel.app",
+        )
+        github_pages = self._normalize_public_origin(
+            os.getenv("GITHUB_PAGES_URL"),
+            "https://mangeshraut712.github.io/mangeshrautarchive",
+        )
+
+        return {
+            "custom_domain": custom_domain,
+            "vercel_deployment": vercel_origin,
+            "github_pages": github_pages,
+        }
+
+    def get_runtime_environment(self) -> Dict[str, Any]:
+        deployment = self.current_deployment or {}
+        public_origins = self.get_public_origins()
+
+        return {
+            "platform": deployment.get("platform", "local"),
+            "environment": deployment.get("environment", "local"),
+            "region": deployment.get("region", "unknown"),
+            "version": deployment.get("version", "unknown"),
+            "deployment_url": deployment.get("url", "localhost"),
+            "public_origins": public_origins,
+            "env_presence": {
+                "github_token": bool(
+                    (os.getenv("GITHUB_TOKEN") or os.getenv("GITHUB_PAT") or "").strip()
+                ),
+                "openrouter_api_key": bool(os.getenv("OPENROUTER_API_KEY", "").strip()),
+                "lastfm_api_key": bool(os.getenv("LASTFM_API_KEY", "").strip()),
+                "vercel_url": bool(os.getenv("VERCEL_URL", "").strip()),
+                "next_public_api_base": bool(
+                    os.getenv("NEXT_PUBLIC_API_BASE", "").strip()
+                ),
+                "github_pages_url": bool(os.getenv("GITHUB_PAGES_URL", "").strip()),
+            },
+        }
+
+    def _build_status_summary(self, entries: List[Dict[str, Any]]) -> Dict[str, int]:
+        return {
+            "healthy": len(
+                [entry for entry in entries if entry["status"] == HealthStatus.HEALTHY.value]
+            ),
+            "degraded": len(
+                [entry for entry in entries if entry["status"] == HealthStatus.DEGRADED.value]
+            ),
+            "unhealthy": len(
+                [
+                    entry
+                    for entry in entries
+                    if entry["status"] == HealthStatus.UNHEALTHY.value
+                ]
+            ),
+            "total": len(entries),
+        }
 
     def detect_deployment_changes(
         self, old_deployment: Dict, new_deployment: Dict
@@ -521,34 +600,19 @@ class SystemMonitor:
                 return response.status_code == 200
         except Exception as e:
             self.log_event(
-                EventType.WARNING, f"OpenRouter check failed: {str(e)}", "health_check"
+                f"OpenRouter check failed: {str(e)}",
+                EventType.WARNING,
+                {"error": str(e)},
+                "health_check",
             )
             return False
 
     def _check_system_resources(self) -> Dict:
         if not PSUTIL_AVAILABLE or psutil is None:
             return {
-                "cpu_usage": 0.0,
-                "memory_usage": 0.0,
-                "disk_usage": 0.0,
-                "available": False,
-            }
-
-        try:
-            return {
-                "cpu_usage": psutil.cpu_percent(interval=1),
-                "memory_usage": psutil.virtual_memory().percent,
-                "disk_usage": psutil.disk_usage("/").percent,
-                "available": True,
-            }
-        except Exception as e:
-            logger.warning(f"System resource check failed: {e}")
-            return {
-                "cpu_usage": 0.0,
-                "memory_usage": 0.0,
-                "disk_usage": 0.0,
-                "available": False,
-                "error": str(e),
+                "status": HealthStatus.UNKNOWN,
+                "message": "System resource monitoring not available",
+                "details": {},
             }
 
         try:
@@ -556,14 +620,13 @@ class SystemMonitor:
             memory = psutil.virtual_memory()  # type: ignore
             disk = psutil.disk_usage("/")  # type: ignore
 
-            # Determine status based on thresholds
             status = HealthStatus.HEALTHY
             message = "System resources are healthy"
 
             if cpu_percent > 90 or memory.percent > 90:
                 status = HealthStatus.CRITICAL
                 message = "Critical: High resource usage"
-            elif cpu_percent > 70 or memory.percent > 80:
+            elif cpu_percent > 70 or memory.percent > 80 or disk.percent > 85:
                 status = HealthStatus.DEGRADED
                 message = "Warning: Elevated resource usage"
 
@@ -579,6 +642,7 @@ class SystemMonitor:
                 },
             }
         except Exception as e:
+            logger.warning(f"System resource check failed: {e}")
             return {
                 "status": HealthStatus.UNKNOWN,
                 "message": f"Could not check system resources: {str(e)}",
@@ -607,50 +671,141 @@ class SystemMonitor:
     async def _check_github(self) -> bool:
         """Check GitHub API accessibility."""
         try:
+            headers = {}
+            access_token = (
+                os.getenv("GITHUB_TOKEN", "").strip()
+                or os.getenv("GITHUB_PAT", "").strip()
+            )
+            if access_token:
+                headers["Authorization"] = f"Bearer {access_token}"
+
             async with httpx.AsyncClient() as client:
                 response = await client.get(
-                    "https://api.github.com/rate_limit", timeout=5.0
+                    "https://api.github.com/rate_limit",
+                    headers=headers,
+                    timeout=5.0,
                 )
                 return response.status_code == 200
         except Exception:
             return False
+
+    async def check_health(self) -> Dict[str, Any]:
+        """Return monitor health payload for the frontend dashboard and health endpoint."""
+        timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        checks: List[HealthCheckResult] = []
+
+        openrouter_ok = await self._check_openrouter()
+        checks.append(
+            HealthCheckResult(
+                name="OpenRouter API",
+                status=HealthStatus.HEALTHY if openrouter_ok else HealthStatus.DEGRADED,
+                response_time_ms=0,
+                message=(
+                    "OpenRouter API reachable"
+                    if openrouter_ok
+                    else "OpenRouter API unavailable or not configured"
+                ),
+                timestamp=timestamp,
+            )
+        )
+
+        system_resources = self._check_system_resources()
+        checks.append(
+            HealthCheckResult(
+                name="System Resources",
+                status=system_resources["status"],
+                response_time_ms=0,
+                message=system_resources["message"],
+                timestamp=timestamp,
+                details=system_resources.get("details", {}),
+            )
+        )
+
+        memory_status = self._check_memory_manager()
+        checks.append(
+            HealthCheckResult(
+                name="Memory Manager",
+                status=memory_status["status"],
+                response_time_ms=0,
+                message=memory_status["message"],
+                timestamp=timestamp,
+                details=memory_status.get("details", {}),
+            )
+        )
+
+        github_ok = await self._check_github()
+        checks.append(
+            HealthCheckResult(
+                name="GitHub API",
+                status=HealthStatus.HEALTHY if github_ok else HealthStatus.DEGRADED,
+                response_time_ms=0,
+                message=(
+                    "GitHub API reachable"
+                    if github_ok
+                    else "GitHub API limited or temporarily unavailable"
+                ),
+                timestamp=timestamp,
+            )
+        )
+
+        overall = HealthStatus.HEALTHY
+        for check in checks:
+            if check.status == HealthStatus.CRITICAL:
+                overall = HealthStatus.CRITICAL
+                break
+            if check.status == HealthStatus.UNHEALTHY:
+                overall = HealthStatus.UNHEALTHY
+            elif check.status == HealthStatus.DEGRADED and overall == HealthStatus.HEALTHY:
+                overall = HealthStatus.DEGRADED
+
+        uptime_seconds = round(time.time() - self.start_time, 2)
+        return {
+            "status": overall.value,
+            "timestamp": timestamp,
+            "uptime_seconds": uptime_seconds,
+            "uptime_human": self.format_uptime(uptime_seconds),
+            "total_requests": self.total_requests,
+            "error_count": self.error_count,
+            "error_rate": round((self.error_count / max(self.total_requests, 1)) * 100, 2),
+            "checks": [check.to_dict() for check in checks],
+        }
 
     async def get_external_services_status(self) -> Dict[str, Any]:
         """Get live status information for key third-party and analytics integrations."""
         services = await asyncio.gather(
             self._probe_openrouter_service(),
             self._probe_github_service(),
+            self._probe_vercel_platform_service(),
             self._probe_lastfm_service(),
             self._probe_analytics_service(),
         )
 
         return {
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "summary": {
-                "healthy": len(
-                    [
-                        service
-                        for service in services
-                        if service["status"] == HealthStatus.HEALTHY.value
-                    ]
-                ),
-                "degraded": len(
-                    [
-                        service
-                        for service in services
-                        if service["status"] == HealthStatus.DEGRADED.value
-                    ]
-                ),
-                "unhealthy": len(
-                    [
-                        service
-                        for service in services
-                        if service["status"] == HealthStatus.UNHEALTHY.value
-                    ]
-                ),
-                "total": len(services),
-            },
+            "summary": self._build_status_summary(services),
             "services": services,
+        }
+
+    async def get_hosting_surfaces_status(self) -> Dict[str, Any]:
+        """Get live status for public hosting surfaces and runtime configuration."""
+        public_origins = self.get_public_origins()
+        surfaces = await asyncio.gather(
+            self._probe_monitor_surface(
+                "Custom Domain",
+                public_origins["custom_domain"],
+            ),
+            self._probe_monitor_surface(
+                "Vercel Deployment",
+                public_origins["vercel_deployment"],
+            ),
+            self._probe_github_pages_surface(public_origins["github_pages"]),
+        )
+
+        return {
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "summary": self._build_status_summary(surfaces),
+            "runtime": self.get_runtime_environment(),
+            "surfaces": surfaces,
         }
 
     async def _probe_openrouter_service(self) -> Dict[str, Any]:
@@ -704,19 +859,37 @@ class SystemMonitor:
     async def _probe_github_service(self) -> Dict[str, Any]:
         start = time.time()
         try:
+            headers = {}
+            access_token = (
+                os.getenv("GITHUB_TOKEN", "").strip()
+                or os.getenv("GITHUB_PAT", "").strip()
+            )
+            if access_token:
+                headers["Authorization"] = f"Bearer {access_token}"
+
             async with httpx.AsyncClient() as client:
                 response = await client.get(
-                    "https://api.github.com/rate_limit", timeout=5.0
+                    "https://api.github.com/rate_limit",
+                    headers=headers,
+                    timeout=5.0,
                 )
 
             latency = round((time.time() - start) * 1000)
             if response.status_code != 200:
                 return {
                     "name": "GitHub API",
-                    "status": HealthStatus.UNHEALTHY.value,
+                    "status": (
+                        HealthStatus.DEGRADED.value
+                        if response.status_code in {403, 429}
+                        else HealthStatus.UNHEALTHY.value
+                    ),
                     "message": f"GitHub returned HTTP {response.status_code}.",
                     "metric_value": f"{latency}ms",
-                    "metric_label": "request failed",
+                    "metric_label": (
+                        "rate limited"
+                        if response.status_code in {403, 429}
+                        else "request failed"
+                    ),
                 }
 
             payload = response.json()
@@ -736,6 +909,55 @@ class SystemMonitor:
                 "name": "GitHub API",
                 "status": HealthStatus.UNHEALTHY.value,
                 "message": f"GitHub check failed: {str(exc)}",
+                "metric_value": "ERROR",
+                "metric_label": "network failure",
+            }
+
+    async def _probe_vercel_platform_service(self) -> Dict[str, Any]:
+        start = time.time()
+        try:
+            async with httpx.AsyncClient(follow_redirects=True) as client:
+                response = await client.get(
+                    "https://www.vercel-status.com/api/v2/summary.json",
+                    timeout=5.0,
+                )
+
+            latency = round((time.time() - start) * 1000)
+            if response.status_code != 200:
+                return {
+                    "name": "Vercel Platform Status",
+                    "status": HealthStatus.UNHEALTHY.value,
+                    "message": f"Vercel status returned HTTP {response.status_code}.",
+                    "metric_value": f"{latency}ms",
+                    "metric_label": "status page error",
+                }
+
+            payload = response.json()
+            indicator = (
+                payload.get("status", {}).get("indicator", "") or ""
+            ).lower()
+            description = payload.get("status", {}).get(
+                "description", "Status page reachable."
+            )
+            if indicator in {"none", "operational"}:
+                status = HealthStatus.HEALTHY
+            elif indicator in {"minor", "maintenance"}:
+                status = HealthStatus.DEGRADED
+            else:
+                status = HealthStatus.UNHEALTHY
+
+            return {
+                "name": "Vercel Platform Status",
+                "status": status.value,
+                "message": description,
+                "metric_value": f"{latency}ms",
+                "metric_label": indicator or "status api",
+            }
+        except Exception as exc:
+            return {
+                "name": "Vercel Platform Status",
+                "status": HealthStatus.UNHEALTHY.value,
+                "message": f"Vercel status check failed: {str(exc)}",
                 "metric_value": "ERROR",
                 "metric_label": "network failure",
             }
@@ -823,6 +1045,134 @@ class SystemMonitor:
                 "metric_label": "endpoint failure",
             }
 
+    async def _probe_monitor_surface(self, name: str, origin: str) -> Dict[str, Any]:
+        status_url = f"{origin}/api/monitor/status"
+        page_url = f"{origin}/monitor.html"
+        start = time.time()
+        try:
+            async with httpx.AsyncClient(follow_redirects=True) as client:
+                response = await client.get(status_url, timeout=6.0)
+
+            latency = round((time.time() - start) * 1000)
+            if response.status_code != 200:
+                try:
+                    async with httpx.AsyncClient(follow_redirects=True) as client:
+                        page_response = await client.get(page_url, timeout=6.0)
+                    if page_response.status_code == 200:
+                        return {
+                            "name": name,
+                            "status": HealthStatus.DEGRADED.value,
+                            "message": f"{name} UI is published, but /api/monitor/status returned HTTP {response.status_code}.",
+                            "metric_value": f"{latency}ms",
+                            "metric_label": urlsplit(origin).netloc or origin,
+                            "url": origin,
+                        }
+                except Exception:
+                    pass
+
+                return {
+                    "name": name,
+                    "status": HealthStatus.UNHEALTHY.value,
+                    "message": f"{name} monitor endpoint returned HTTP {response.status_code}.",
+                    "metric_value": f"{latency}ms",
+                    "metric_label": urlsplit(origin).netloc or origin,
+                    "url": origin,
+                }
+
+            payload = response.json()
+            environment = payload.get("environment", "unknown")
+            version = payload.get("version", "unknown")
+            return {
+                "name": name,
+                "status": HealthStatus.HEALTHY.value,
+                "message": f"{name} is serving live monitor data.",
+                "metric_value": payload.get("uptime_human", "LIVE"),
+                "metric_label": f"{environment} · {version}",
+                "url": origin,
+            }
+        except Exception as exc:
+            try:
+                async with httpx.AsyncClient(follow_redirects=True) as client:
+                    page_response = await client.get(page_url, timeout=6.0)
+                if page_response.status_code == 200:
+                    return {
+                        "name": name,
+                        "status": HealthStatus.DEGRADED.value,
+                        "message": f"{name} UI is reachable, but the monitor API is unavailable.",
+                        "metric_value": "ERROR",
+                        "metric_label": urlsplit(origin).netloc or origin,
+                        "url": origin,
+                    }
+            except Exception:
+                pass
+
+            return {
+                "name": name,
+                "status": HealthStatus.UNHEALTHY.value,
+                "message": f"{name} check failed: {str(exc)}",
+                "metric_value": "ERROR",
+                "metric_label": urlsplit(origin).netloc or origin,
+                "url": origin,
+            }
+
+    async def _probe_github_pages_surface(self, origin: str) -> Dict[str, Any]:
+        monitor_url = f"{origin}/monitor.html"
+        config_url = f"{origin}/build-config.json"
+        start = time.time()
+        try:
+            async with httpx.AsyncClient(follow_redirects=True) as client:
+                monitor_response, config_response = await asyncio.gather(
+                    client.get(monitor_url, timeout=6.0),
+                    client.get(config_url, timeout=6.0),
+                )
+
+            latency = round((time.time() - start) * 1000)
+            if monitor_response.status_code != 200:
+                return {
+                    "name": "GitHub Pages",
+                    "status": HealthStatus.UNHEALTHY.value,
+                    "message": f"GitHub Pages returned HTTP {monitor_response.status_code}.",
+                    "metric_value": f"{latency}ms",
+                    "metric_label": urlsplit(origin).netloc or origin,
+                    "url": origin,
+                }
+
+            api_origin = ""
+            if config_response.status_code == 200:
+                try:
+                    api_origin = (
+                        config_response.json().get("apiBaseUrl", "") or ""
+                    ).strip()
+                except json.JSONDecodeError:
+                    api_origin = ""
+
+            status = HealthStatus.HEALTHY if api_origin else HealthStatus.DEGRADED
+            return {
+                "name": "GitHub Pages",
+                "status": status.value,
+                "message": (
+                    "Static monitor is published and points at a live API origin."
+                    if api_origin
+                    else "Static monitor is reachable but build-config.json is missing an API origin."
+                ),
+                "metric_value": f"{latency}ms",
+                "metric_label": (
+                    urlsplit(api_origin).netloc
+                    if api_origin
+                    else "static shell only"
+                ),
+                "url": origin,
+            }
+        except Exception as exc:
+            return {
+                "name": "GitHub Pages",
+                "status": HealthStatus.UNHEALTHY.value,
+                "message": f"GitHub Pages check failed: {str(exc)}",
+                "metric_value": "ERROR",
+                "metric_label": urlsplit(origin).netloc or origin,
+                "url": origin,
+            }
+
     def get_metrics(self) -> Dict[str, Any]:
         """Get comprehensive system metrics."""
         uptime_seconds = round(time.time() - self.start_time, 2)
@@ -890,10 +1240,10 @@ class SystemMonitor:
                     datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
                 )
                 self.log_event(
-                    EventType.SUCCESS,
                     f"Event resolved: {event.message}",
-                    "event_resolution",
+                    EventType.SUCCESS,
                     {"event_id": event_id},
+                    "event_resolution",
                 )
                 return True
         return False
@@ -935,10 +1285,10 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
             # Log slow requests
             if response_time > 5000:  # 5 seconds
                 self.monitor.log_event(
-                    EventType.WARNING,
                     f"Slow request: {request.method} {request.url.path} took {response_time:.0f}ms",
-                    "performance",
+                    EventType.WARNING,
                     {"response_time_ms": response_time, "path": request.url.path},
+                    "performance",
                 )
 
             # Ensure we always return proper JSON for API endpoints
@@ -946,10 +1296,10 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
                 # Log the error
                 if response.status_code >= 500:
                     self.monitor.log_event(
-                        EventType.ERROR,
                         f"Server error {response.status_code}: {request.method} {request.url.path}",
-                        "api_error",
+                        EventType.ERROR,
                         {"status_code": response.status_code, "path": request.url.path},
+                        "api_error",
                     )
 
             return response
@@ -960,10 +1310,10 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
 
             # Log the exception
             self.monitor.log_event(
-                EventType.ERROR,
                 f"Unhandled exception in {request.method} {request.url.path}: {str(e)}",
-                "exception",
+                EventType.ERROR,
                 {"error": str(e), "path": request.url.path},
+                "exception",
             )
 
             # Record as failed request

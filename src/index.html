@@ -428,7 +428,7 @@
             </div>
 
             <div class="hero-text-block home-hero-text">
-              <div class="hero-header mb-12">
+              <div class="hero-header mb-4">
                 <h2 class="hero-name">Mangesh Raut</h2>
                 <h1 class="hero-title">Software Development Engineer</h1>
 
@@ -2137,64 +2137,51 @@
 
               <!-- Music Section - Last.fm Now Playing -->
               <div class="currently-content" id="music-content">
-                <div class="music-layout" id="music-grid">
-                  <div class="music-featured-stack">
-                    <!-- Now Playing Card -->
-                    <div class="media-card music-card now-playing" id="now-playing-card" hidden>
-                      <div class="media-poster">
-                        <img id="now-playing-img" src="" alt="Album Art" loading="lazy" />
-                        <span class="media-badge playing" id="now-playing-badge">Now Playing</span>
-                        <div class="playing-indicator" id="currently-playing-indicator">
-                          <span></span><span></span><span></span>
-                        </div>
-                      </div>
-                      <div class="media-info">
-                        <h4 id="now-playing-track">Track Name</h4>
-                        <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
-                        <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
-                          <i class="fab fa-spotify"></i> Open in Spotify
-                        </a>
-                      </div>
+                <div class="media-grid music-shelf-grid" id="music-grid">
+                  <!-- Featured / now playing card -->
+                  <div class="media-card currently-music-card currently-music-state now-playing" id="now-playing-card" hidden>
+                    <div class="media-poster">
+                      <img id="now-playing-img" src="" alt="Album Art" loading="lazy" />
+                      <span class="media-badge playing" id="now-playing-badge">Now Playing</span>
                     </div>
-
-                    <!-- Loading State -->
-                    <div class="media-card music-card loading" id="music-loading">
-                      <div class="media-poster music-poster-loading"
-                        style="display: flex; align-items: center; justify-content: center;">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
-                      </div>
-                      <div class="media-info">
-                        <h4>Syncing music…</h4>
-                        <p class="text-xs text-gray-500">Pulling recent listening from Last.fm</p>
-                      </div>
-                    </div>
-
-                    <!-- Error/Empty State -->
-                    <div class="media-card music-card empty" id="music-empty" hidden>
-                      <div class="media-poster music-poster-empty"
-                        style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1db954 0%, #191414 100%);">
-                        <i class="fab fa-spotify" style="font-size: 2rem; color: white;"></i>
-                      </div>
-                      <div class="media-info">
-                        <h4>No live playback</h4>
-                        <p class="text-xs text-gray-500">Open Spotify and keep scrobbling to refresh this shelf</p>
-                        <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
-                          <i class="fab fa-spotify"></i> Open Spotify
-                        </a>
-                      </div>
+                    <div class="media-info">
+                      <h4 id="now-playing-track">Track Name</h4>
+                      <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
+                      <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-play"></i> Listen
+                      </a>
                     </div>
                   </div>
 
-                  <div class="music-recent-section" aria-label="Recently played tracks">
-                    <div class="music-recent-header">
-                      <div>
-                        <p class="music-card-kicker">Recently Played</p>
-                        <h4>Spotify Recently Played</h4>
-                      </div>
-                      <span class="music-recent-source">Live</span>
+                  <!-- Loading State -->
+                  <div class="media-card currently-music-card currently-music-state loading" id="music-loading">
+                    <div class="media-poster music-poster-loading"
+                      style="display: flex; align-items: center; justify-content: center;">
+                      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
                     </div>
-                    <div id="recent-tracks-container" class="music-recent-strip"></div>
+                    <div class="media-info">
+                      <h4>Syncing music…</h4>
+                      <p class="text-xs text-gray-500">Pulling recent listening from Last.fm</p>
+                    </div>
                   </div>
+
+                  <!-- Error/Empty State -->
+                  <div class="media-card currently-music-card currently-music-state empty" id="music-empty" hidden>
+                    <div class="media-poster music-poster-empty"
+                      style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
+                      <i class="fab fa-spotify" style="font-size: 2rem; color: #1db954;"></i>
+                    </div>
+                    <div class="media-info">
+                      <h4>No live playback</h4>
+                      <p class="text-xs text-gray-500">Open Spotify and keep scrobbling to refresh this shelf</p>
+                      <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
+                        <i class="fas fa-arrow-up-right-from-square"></i> View
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Recent tracks will be injected here as music cards -->
+                  <div id="recent-tracks-container" style="display: contents;"></div>
                 </div>
 
 

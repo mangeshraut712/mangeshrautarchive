@@ -42,11 +42,11 @@
 ```mermaid
 graph TB
     subgraph "🌐 User Interface (Frontend)"
-        A[HTML5/CSS3/JS] --> B[Tailwind CSS 4.0]
+        A[HTML5/CSS3/JS] --> B[Apple-inspired CSS system]
         A --> C[ES6 Modules]
-        A --> D[PWA Features]
-        D --> E[Service Worker]
-        D --> F[Web App Manifest]
+        A --> D[Build Config Routing]
+        D --> E[Same-Origin API on Vercel]
+        D --> F[Remote API Fallback on GitHub Pages]
     end
 
     subgraph "🖥️ Backend API (Python)"
@@ -92,12 +92,12 @@ graph TB
 
 **Architecture Highlights:**
 
-- **Frontend**: Modular ES6 architecture with PWA capabilities for offline access
-- **Backend**: Async Python API with type-safe data validation
-- **AI Layer**: Multi-model streaming responses with fallback handling
-- **Integrations**: Real-time data from external APIs with smart caching
-- **Deployment**: Multi-platform hosting for reliability and performance
-- **Testing**: Comprehensive QA pipeline ensuring production readiness
+- **Frontend**: Modular ES6 architecture with deployment-aware API routing and Apple-style UI primitives
+- **Backend**: Async Python API with typed responses, monitor endpoints, and resilient proxy/cache behavior
+- **AI Layer**: OpenRouter-backed chat with local fallback behavior when remote AI is unavailable
+- **Integrations**: GitHub, Last.fm, analytics, and deployment health surfaced through one backend
+- **Deployment**: Vercel powers the live API while GitHub Pages consumes the same production backend
+- **Testing**: Playwright smoke coverage plus lint/build gates for frontend, monitor, and navigation flows
 
 ---
 
@@ -125,18 +125,13 @@ Built with cutting-edge **Python FastAPI** backend, **vanilla JavaScript** front
 
 </div>
 
-### 🔄 Recent Changes
+### 🔄 Current Platform Snapshot
 
-- **Synchronize portfolio deployments and monitoring UI**
-- **Fix Playwright webServer to use dev:frontend only**
-- **Resolve Python syntax issues and update media library data**
-- **Synchronize URLs across all deployment environments**
-- **Fix GitHub Actions qa:smoke port timeout issue**
-- **Fix GitHub Pages deployment and custom domain**
-- **Restore circular music card design**
-- **Fix API docs page error handling and logging**
-- **Implement cache busting for updated website version**
-- **Update music card to iOS 26.4 rectangular design with theme-aware colors**
+- **Deployment-aware monitor** — one System Monitor now tracks backend health, provider APIs, deployment surfaces, and safe runtime env presence
+- **Cross-host routing** — Vercel/custom-domain use same-origin `/api`, while GitHub Pages resolves the live API from `build-config.json`
+- **Curated media shelf** — shows, movies, and books use local artwork; music stays live via Last.fm with artwork fallback logic
+- **Resilient GitHub data** — backend proxy caching plus curated client fallback keeps projects usable during GitHub rate limits
+- **Clean local workflows** — root cleanup, cache cleanup, build-time cache busting, and focused smoke coverage are all in place
 
 ## ✨ Key Features
 
@@ -245,11 +240,14 @@ Curious about my coding projects? This section pulls **live data from GitHub** a
 
 Ever wanted to peek behind the curtain? This **live monitoring dashboard** shows the real status of the backend:
 
-- **Live Health Checks** — Backend resource and integration health
+- **Live Health Checks** — Backend resource, memory-manager, OpenRouter, and GitHub API health
 - **Endpoint Metrics** — Success rate, response times, and recent API status
-- **Service Integrations** — OpenRouter, GitHub, Last.fm, and analytics status cards
+- **Provider APIs** — OpenRouter, GitHub, Vercel platform status, Last.fm, and analytics cards
+- **Deployment Surfaces** — Real-time status for `mangeshraut.pro`, Vercel deployment, and GitHub Pages
+- **Runtime Snapshot** — Safe env presence flags and public origin mapping for production debugging
 - **Event Log** — Resolved and unresolved operational events
 - **Shared Apple Shell** — Same navbar, theme toggle, glass surfaces, and spacing language as the homepage
+- **Docs Panel** — OpenAPI, ReDoc, monitor JSON, and deployment JSON surfaced from the monitor itself
 
 </details>
 
@@ -383,11 +381,10 @@ _Alternative deployments: [GitHub Pages](https://mangeshraut712.github.io/manges
 
 - **Web Speech API** — Voice input/output
 - **Canvas API** — Game rendering
-- **Service Worker** — Caching & offline support
 - **Local Storage** — Persistent game scores
 - **Fetch API** — Async data loading
 - **Web Animations API** — Smooth transitions
-- **PWA Features** — App manifest, installable
+- **Build Config Injection** — Deployment-aware API routing for Vercel, custom-domain, and GitHub Pages
 
 ### 🔧 Development Tools
 
@@ -443,7 +440,7 @@ cp .env.example .env
 # Open .env and add your API keys:
 # - OPENROUTER_API_KEY (for chatting with AI)
 # - GITHUB_TOKEN (for unlimited GitHub API calls)
-# - TMDB_API_KEY / GOOGLE_BOOKS_API_KEY (for extra media features)
+# - TMDB_API_KEY / GOOGLE_BOOKS_API_KEY (optional backend media lookup endpoints only)
 
 # 6️⃣ Launch the development servers! 🚀
 npm run dev
@@ -463,6 +460,12 @@ npm run dev:frontend
 # Backend only (port 8001)
 npm run dev:backend
 ```
+
+### Deployment Routing Notes
+
+- **Localhost** uses the frontend proxy and same-origin `/api`
+- **Vercel + custom domain** use same-origin `/api`
+- **GitHub Pages** loads `build-config.json` and points interactive features, chat, music, and System Monitor at the live Vercel/custom-domain API origin
 
 ### Production Build
 
@@ -525,13 +528,17 @@ mangeshrautarchive/
 | `npm run serve:dist`            | 🌐 Serve built assets locally            |
 | `npm run lint`                  | 🔍 Run ESLint checks                     |
 | `npm run lint:fix`              | ✨ Auto-fix linting issues               |
+| `npm run lint:css`              | 🎨 Run Stylelint for CSS                 |
 | `npm run test`                  | 🧪 Run Vitest tests                      |
 | `npm run qa:smoke`              | 🌐 Playwright smoke tests                |
+| `npm run qa:smoke:mobile`       | 📱 Playwright mobile smoke tests         |
 | `npm run qa:a11y`               | ♿ Accessibility checks                  |
 | `npm run qa:lighthouse:desktop` | ⚡ Lighthouse desktop perf               |
 | `npm run qa:lighthouse:mobile`  | 📱 Lighthouse mobile perf                |
+| `npm run qa:postdeploy`         | 🚀 Post-deploy production checks         |
 | `npm run qa:prod-ready`         | 🛡️ Full pre-release checks               |
 | `npm run clean`                 | 🧽 Remove build artifacts                |
+| `npm run format:check`          | 🧾 Check Prettier formatting             |
 
 ---
 

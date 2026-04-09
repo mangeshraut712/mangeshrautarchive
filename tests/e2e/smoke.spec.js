@@ -87,6 +87,7 @@ test.describe('Chrome smoke tests', () => {
     await page.goto('/monitor.html', { waitUntil: 'domcontentloaded' });
 
     await expect(page.locator('h1')).toHaveText(/System Monitor/i);
+    await expect(page.locator('#runtime-snapshot-card')).toBeVisible();
 
     await page.waitForFunction(() => {
       const el = document.getElementById('backend-status');
@@ -103,7 +104,8 @@ test.describe('Chrome smoke tests', () => {
     await page.locator('#event-filter').selectOption('warning');
     await page.waitForTimeout(300);
 
-    await page.locator('button', { hasText: 'Refresh Services' }).click();
+    await page.locator('button', { hasText: 'Refresh Providers' }).click();
+    await expect(page.locator('#deployment-surfaces .health-item').first()).toBeVisible();
     const toastCount = await page.locator('#toast-container .toast').count();
     expect(toastCount).toBeGreaterThan(0);
 
@@ -403,7 +405,7 @@ test.describe('Chrome smoke tests', () => {
         const featured = document.getElementById('now-playing-card');
         const empty = document.getElementById('music-empty');
         const _recentCount = document.querySelectorAll(
-          '#recent-tracks-container .recent-track-item'
+          '#recent-tracks-container .recent-track-card'
         ).length;
 
         return (
@@ -425,9 +427,9 @@ test.describe('Chrome smoke tests', () => {
         document.getElementById('now-playing-description')?.textContent?.trim() || '',
       recentArtwork:
         document
-          .querySelector('#recent-tracks-container .recent-track-item img')
+          .querySelector('#recent-tracks-container .recent-track-card img')
           ?.getAttribute('src') || '',
-      recentCount: document.querySelectorAll('#recent-tracks-container .recent-track-item').length,
+      recentCount: document.querySelectorAll('#recent-tracks-container .recent-track-card').length,
     }));
 
     // If empty state is shown (no API configured), skip detailed checks

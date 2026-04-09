@@ -46,6 +46,10 @@ coverage/
 artifacts/
 test-results/
 playwright-report/
+scratch/
+.ruff_cache/
+backend_test.log
+dev_server.log
 
 # nyc test coverage
 .nyc_output

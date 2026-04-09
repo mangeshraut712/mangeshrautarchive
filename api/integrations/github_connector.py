@@ -10,6 +10,7 @@ Features:
 """
 
 import httpx
+import os
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 import asyncio
@@ -33,7 +34,7 @@ class GitHubConnector:
         Args:
             access_token: Optional GitHub personal access token for higher rate limits
         """
-        self.access_token = access_token
+        self.access_token = access_token or os.getenv("GITHUB_TOKEN") or os.getenv("GITHUB_PAT")
         self.base_url = "https://api.github.com"
         self.headers = {
             "Accept": "application/vnd.github.v3+json",

@@ -339,9 +339,14 @@ html.dark .header-content {
     color: var(--text-secondary);
 }
 
-.monitor-summary-actions {
-    display: flex;
-    align-items: center;
+.monitor-summary-panel {
+    width: min(420px, 100%);
+    padding: 20px 22px;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at top right, rgba(0, 113, 227, 0.12), transparent 38%),
+        rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .monitor-summary-chips {
@@ -375,15 +380,92 @@ html.dark .header-content {
     color: var(--text-secondary);
 }
 
-.docs-link-stack {
+.runtime-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.runtime-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.runtime-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 13px;
+}
+
+.runtime-meta-row span {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+}
+
+.runtime-meta-row a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    word-break: break-word;
+    text-align: right;
+}
+
+.env-pill-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    justify-content: flex-end;
+    gap: 10px;
+}
+
+.env-pill {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 128px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.env-pill.healthy {
+    border-color: rgba(52, 199, 89, 0.22);
+    background: rgba(52, 199, 89, 0.1);
+}
+
+.env-pill.missing {
+    border-color: rgba(255, 149, 0, 0.22);
+    background: rgba(255, 149, 0, 0.1);
+}
+
+.env-pill-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
 }
 
 [data-theme="dark"] .summary-chip,
 html.dark .summary-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .monitor-summary-panel,
+html.dark .monitor-summary-panel {
+    background:
+        radial-gradient(circle at top right, rgba(10, 132, 255, 0.16), transparent 38%),
+        rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .env-pill,
+html.dark .env-pill {
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.08);
 }
@@ -760,6 +842,15 @@ html.dark .summary-chip {
     color: var(--text-secondary);
 }
 
+.health-inline-link {
+    display: inline-flex;
+    margin-top: 8px;
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .health-metrics {
     display: flex;
     align-items: center;
@@ -1015,6 +1106,21 @@ html.dark .summary-chip {
     color: var(--text-primary);
 }
 
+.empty-state.compact {
+    padding: 0;
+    text-align: left;
+}
+
+.empty-state.compact i {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.empty-state.compact h3 {
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
 /* ========================================
    LOADING STATE
    ======================================== */
@@ -1064,7 +1170,7 @@ html.dark .summary-chip {
     }
 
     .header-actions,
-    .monitor-summary-actions {
+    .monitor-summary-panel {
         width: 100%;
     }
 
@@ -1133,15 +1239,18 @@ html.dark .summary-chip {
         grid-template-columns: 1fr;
     }
 
-    .docs-link-stack {
-        width: 100%;
-        justify-content: stretch;
-    }
-
-    .docs-link-stack .btn,
     .doc-link {
         width: 100%;
         justify-content: center;
+    }
+
+    .runtime-meta-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .runtime-meta-row a {
+        text-align: left;
     }
 }
 

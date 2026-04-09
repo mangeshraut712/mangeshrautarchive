@@ -20,8 +20,8 @@
   background-attachment: scroll;
 
   /* Improved spacing for fixed header + notification */
-  padding-top: 60px;
-  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   /* Performance */
   contain: layout;
@@ -29,12 +29,12 @@
 
 html.dark .home-hero {
   background: #000;
-  padding-top: 60px;
+  padding-top: 20px;
 }
 
 html:not(.dark) .home-hero {
   background: #fff;
-  padding-top: 60px;
+  padding-top: 20px;
 }
 
 /* Profile Image with Ring */

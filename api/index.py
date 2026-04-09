@@ -36,6 +36,10 @@ load_dotenv()
 # API Keys for media services
 TMDB_API_KEY = os.getenv("TMDB_API_KEY", "").strip()
 GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
+LASTFM_API_KEY = (
+    os.getenv("LASTFM_API_KEY", "").strip() or "bef46b0d7702dac5b071906cd186bd28"
+)
+LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
 OPENAPI_TAGS = [
     {
@@ -58,6 +62,7 @@ app = FastAPI(
     version="3.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
     openapi_tags=OPENAPI_TAGS,
 )
 
@@ -137,13 +142,17 @@ else:
     print("   API Key: ⚠️  Not configured")
     print("   Mode: 🧠 Local Intelligence (Offline Fallback Active)")
 print(f"   Site URL: {SITE_URL}")
-print("   Docs: http://localhost:8001/api/docs")
+print("   Docs: /api/docs")
 print("=" * 60)
 
 # Rate Limiting
 rate_limit_store = defaultdict(list)
 RATE_LIMIT_REQUESTS = 20  # requests per window
 RATE_LIMIT_WINDOW = 60  # seconds
+
+# Last.fm cache
+LASTFM_CACHE_TTL = 60  # seconds
+lastfm_recent_cache: Dict[str, Dict[str, Any]] = {}
 
 # Conversation Memory (stores last N messages per session)
 conversation_memory = {}
@@ -734,28 +743,33 @@ async def fetch_github_repos_cached(username: str) -> list:
     if GITHUB_PAT:
         headers["Authorization"] = f"Bearer {GITHUB_PAT}"
 
-    async with httpx.AsyncClient(timeout=10.0) as client:
-        resp = await client.get(
-            f"https://api.github.com/users/{username}/repos",
-            params={"per_page": 100, "sort": "updated"},
-            headers=headers,
-        )
-        if resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
-            try:
-                gh_run = subprocess.run(
-                    ["gh", "api", f"users/{username}/repos?per_page=100&sort=updated"],
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=12,
-                )
-                repos = json.loads(gh_run.stdout) if gh_run.stdout else []
-            except Exception:
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(
+                f"https://api.github.com/users/{username}/repos",
+                params={"per_page": 100, "sort": "updated"},
+                headers=headers,
+            )
+            if resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
+                try:
+                    gh_run = subprocess.run(
+                        ["gh", "api", f"users/{username}/repos?per_page=100&sort=updated"],
+                        capture_output=True,
+                        text=True,
+                        check=True,
+                        timeout=12,
+                    )
+                    repos = json.loads(gh_run.stdout) if gh_run.stdout else []
+                except Exception:
+                    resp.raise_for_status()
+                    repos = resp.json()
+            else:
                 resp.raise_for_status()
                 repos = resp.json()
-        else:
-            resp.raise_for_status()
-            repos = resp.json()
+    except Exception:
+        if entry and entry.get("data"):
+            return entry["data"]
+        raise
 
     _github_proxy_cache[cache_key] = {"data": repos, "ts": time.time()}
     return repos
@@ -807,6 +821,10 @@ async def github_api_proxy(path: str):
         async with httpx.AsyncClient(timeout=12.0) as client:
             github_resp = await client.get(target_url, headers=headers)
     except httpx.RequestError as exc:
+        if cached and cached.get("data") is not None:
+            response = JSONResponse(status_code=200, content=cached["data"])
+            response.headers["x-data-stale"] = "1"
+            return response
         raise HTTPException(
             status_code=503, detail=f"GitHub request failed: {str(exc)}"
         )
@@ -835,6 +853,11 @@ async def github_api_proxy(path: str):
         except Exception:
             # Fall back to normal GitHub API error payload below.
             pass
+
+    if github_resp.status_code in (403, 429) and cached and cached.get("data") is not None:
+        response = JSONResponse(status_code=200, content=cached["data"])
+        response.headers["x-data-stale"] = "1"
+        return response
 
     try:
         payload = github_resp.json()
@@ -1535,8 +1558,17 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     Proxy endpoint for Last.fm listening data.
     Forces UTF-8 and returns structured JSON to avoid frontend fetch issues.
     """
-    api_key = "bef46b0d7702dac5b071906cd186bd28"
-    url = f"https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user={user}&api_key={api_key}&format=json&limit={limit}"
+    user = user.strip() or LASTFM_DEFAULT_USERNAME
+    limit = max(1, min(limit, 20))
+    cache_key = f"{user}:{limit}"
+    cached = lastfm_recent_cache.get(cache_key)
+    if cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL:
+        return cached["data"]
+
+    url = (
+        "https://ws.audioscrobbler.com/2.0/"
+        f"?method=user.getrecenttracks&user={user}&api_key={LASTFM_API_KEY}&format=json&limit={limit}"
+    )
 
     print(f"🔍 Fetching Last.fm data for user: {user}, limit: {limit}")
     print(f"📡 Last.fm URL: {url}")
@@ -1615,6 +1647,7 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
                     },
                 )
 
+            lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
             return data
 
     except httpx.TimeoutException:
@@ -1637,6 +1670,8 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
         )
     except Exception as e:
         print(f"💥 Music Proxy Exception: {str(e)}")
+        if cached:
+            return cached["data"]
         return JSONResponse(
             status_code=500,
             content={
@@ -1715,7 +1750,7 @@ async def get_ai_metrics():
     return monitor.ai_metrics
 
 
-@app.get("/api/docs")
+@app.get("/api/docs/reference")
 async def get_api_documentation():
     """Enhanced API documentation with 2026-era features"""
     base_url = os.getenv("VERCEL_URL", "http://localhost:8001")
@@ -2318,6 +2353,8 @@ async def get_monitor_docs():
             "redoc": "/api/redoc",
             "health_json": "/api/monitor/health",
             "status_json": "/api/monitor/status",
+            "hosting_surfaces": "/api/monitor/hosting-surfaces",
+            "external_services": "/api/monitor/external-services",
         },
         "status_legend": [
             {
@@ -2408,7 +2445,12 @@ async def get_monitor_docs():
                     {
                         "method": "GET",
                         "path": "/api/monitor/external-services",
-                        "summary": "Live health for external services such as OpenRouter, GitHub, Last.fm, and analytics.",
+                        "summary": "Live health for external services such as OpenRouter, GitHub, Vercel platform status, Last.fm, and analytics.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/hosting-surfaces",
+                        "summary": "Status for custom-domain, Vercel deployment, GitHub Pages, and safe runtime env presence.",
                     },
                     {
                         "method": "GET",
@@ -2441,6 +2483,23 @@ async def get_monitor_external_services():
     Live status for external and integration services surfaced in the monitor UI
     """
     return await system_monitor.get_external_services_status()
+
+
+@app.get(
+    "/monitor/hosting-surfaces",
+    tags=["system-monitor"],
+    summary="Deployment surface status",
+)
+@app.get(
+    "/api/monitor/hosting-surfaces",
+    tags=["system-monitor"],
+    summary="Deployment surface status",
+)
+async def get_monitor_hosting_surfaces():
+    """
+    Live status for public hosting surfaces and safe runtime env presence.
+    """
+    return await system_monitor.get_hosting_surfaces_status()
 
 
 @app.get("/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
@@ -2513,10 +2572,12 @@ async def get_monitor_status():
         "uptime_seconds": metrics["uptime_seconds"],
         "uptime_human": metrics["uptime_human"],
         "summary": metrics["summary"],
+        "runtime": system_monitor.get_runtime_environment(),
         "docs": {
             "openapi": "/api/docs",
             "redoc": "/api/redoc",
             "monitor_reference": "/api/monitor/docs",
+            "hosting_surfaces": "/api/monitor/hosting-surfaces",
         },
     }
 
@@ -2529,10 +2590,10 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     """
     # Log the error
     system_monitor.log_event(
-        EventType.ERROR if exc.status_code >= 500 else EventType.WARNING,
         f"HTTP {exc.status_code}: {exc.detail}",
-        "api_error",
+        EventType.ERROR if exc.status_code >= 500 else EventType.WARNING,
         {"path": request.url.path, "status_code": exc.status_code},
+        "api_error",
     )
 
     # Return JSON response with proper structure
@@ -2558,10 +2619,10 @@ async def global_exception_handler(request: Request, exc: Exception):
     """
     # Log the error
     system_monitor.log_event(
-        EventType.CRITICAL,
         f"Unhandled exception: {str(exc)}",
-        "exception",
+        EventType.CRITICAL,
         {"path": request.url.path, "error": str(exc)},
+        "exception",
     )
 
     # Return JSON response

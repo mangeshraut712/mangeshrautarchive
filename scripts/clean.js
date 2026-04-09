@@ -9,7 +9,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const root = resolve(__dirname, '..');
 
-const generatedDirs = ['dist', 'artifacts', 'test-results', 'playwright-report'];
+const generatedDirs = [
+  'dist',
+  'artifacts',
+  'test-results',
+  'playwright-report',
+  'scratch',
+  '.ruff_cache',
+];
+const generatedFiles = ['backend_test.log', 'dev_server.log'];
 
 async function removeDirectory(relativePath) {
   const absolutePath = join(root, relativePath);
@@ -44,6 +52,10 @@ async function findPycacheDirs(directory, matches = []) {
 async function clean() {
   for (const directory of generatedDirs) {
     await removeDirectory(directory);
+  }
+
+  for (const file of generatedFiles) {
+    await removeDirectory(file);
   }
 
   const pycacheDirs = await findPycacheDirs(root);

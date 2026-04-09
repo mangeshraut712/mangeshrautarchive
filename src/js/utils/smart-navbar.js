@@ -136,7 +136,9 @@ function stabilizeScrollToSection(sectionId) {
   window.addEventListener('keydown', cancelTimers, { passive: true, once: true });
 
   // Sections above target can expand during lazy load; re-align across early + late reflow phases.
-  const checkpoints = [220, 700, 1250, 1850, 2450];
+  const checkpoints = isDesktop()
+    ? [220, 700, 1250, 1850, 2450, 3200]
+    : [220, 700, 1250, 1850, 2450, 3400, 4600];
   checkpoints.forEach(delay => {
     const timerId = window.setTimeout(() => {
       const target = document.getElementById(sectionId);
@@ -145,7 +147,7 @@ function stabilizeScrollToSection(sectionId) {
 
       const expectedTop = getSectionOffset();
       const delta = target.getBoundingClientRect().top - expectedTop;
-      if (Math.abs(delta) <= 22) return;
+      if (Math.abs(delta) <= 18) return;
 
       window.scrollBy({
         top: delta,
