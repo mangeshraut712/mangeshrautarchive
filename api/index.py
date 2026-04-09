@@ -1581,7 +1581,7 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
                 "Accept": "application/json",
             }
 
-            print(f"🚀 Making request to Last.fm API...")
+            print("🚀 Making request to Last.fm API...")
             response = await client.get(url, headers=headers)
 
             print(f"📊 Last.fm Response Status: {response.status_code}")
