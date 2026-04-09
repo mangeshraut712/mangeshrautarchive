@@ -44,6 +44,14 @@ jobs:
       - name: 🧪 Tests — Vitest unit tests
         run: npm test
 
+      - name: 🐍 Python — setup and lint
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
       - name: 🌐 Setup Chrome for Playwright
         run: npx playwright install --with-deps chromium
 
@@ -67,14 +75,6 @@ jobs:
           path: |
             artifacts/playwright-report
             artifacts/lighthouse
-
-      - name: 🐍 Python — setup and lint
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
 
       - name: 🐍 Python — lint with flake8
         run: pip install flake8 && flake8 api/ --max-line-length=120 --ignore=E501,W503
