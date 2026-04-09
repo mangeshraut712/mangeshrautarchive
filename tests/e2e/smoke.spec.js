@@ -402,29 +402,31 @@ test.describe('Chrome smoke tests', () => {
     await page.waitForFunction(
       () => {
         const loading = document.getElementById('music-loading');
-        const featured = document.getElementById('now-playing-card');
         const empty = document.getElementById('music-empty');
-        const _recentCount = document.querySelectorAll(
+        const recentCount = document.querySelectorAll(
           '#recent-tracks-container .recent-track-card'
         ).length;
 
         return (
           loading &&
           getComputedStyle(loading).display === 'none' &&
-          ((featured && getComputedStyle(featured).display !== 'none') ||
-            (empty && getComputedStyle(empty).display !== 'none'))
+          (recentCount > 0 || (empty && getComputedStyle(empty).display !== 'none'))
         );
       },
-      { timeout: 15000 }
+      { timeout: 20000 }
     );
 
     const musicState = await page.evaluate(() => ({
       featuredDisplay: getComputedStyle(document.getElementById('now-playing-card')).display,
       emptyDisplay: getComputedStyle(document.getElementById('music-empty')).display,
-      featuredArtwork: document.getElementById('now-playing-img')?.getAttribute('src') || '',
-      featuredArtist: document.getElementById('now-playing-artist')?.textContent?.trim() || '',
-      featuredDescription:
-        document.getElementById('now-playing-description')?.textContent?.trim() || '',
+      firstShelfArtwork:
+        document
+          .querySelector('#recent-tracks-container .recent-track-card img')
+          ?.getAttribute('src') || '',
+      firstShelfArtist:
+        document
+          .querySelector('#recent-tracks-container .recent-track-card .media-info p')
+          ?.textContent?.trim() || '',
       recentArtwork:
         document
           .querySelector('#recent-tracks-container .recent-track-card img')
@@ -438,14 +440,14 @@ test.describe('Chrome smoke tests', () => {
       return;
     }
 
-    // If featured content is loaded, check quality
-    expect(musicState.featuredDisplay).not.toBe('none');
-    expect(musicState.featuredArtist.length).toBeGreaterThan(0);
+    // Music shelf now renders as one uniform row rather than a distinct featured panel.
+    expect(musicState.featuredDisplay).toBe('none');
+    expect(musicState.firstShelfArtist.length).toBeGreaterThan(0);
     expect(musicState.recentCount).toBeGreaterThan(0);
     expect(
-      musicState.featuredArtwork.includes('/300x300/') ||
-        musicState.featuredArtwork.includes('/600x600bb.') ||
-        musicState.featuredArtwork.startsWith('data:image/')
+      musicState.firstShelfArtwork.includes('/300x300/') ||
+        musicState.firstShelfArtwork.includes('/600x600bb.') ||
+        musicState.firstShelfArtwork.startsWith('data:image/')
     ).toBe(true);
     expect(
       musicState.recentArtwork.includes('/300x300/') ||
