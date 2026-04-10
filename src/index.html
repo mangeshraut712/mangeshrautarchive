@@ -179,6 +179,21 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
+  <script>
+    (function () {
+      const isGitHubPages = window.location.hostname.endsWith('github.io');
+      const apiBaseUrl = isGitHubPages ? 'https://mangeshraut.pro' : window.location.origin;
+
+      window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, {
+        apiBaseUrl,
+        siteUrl: window.location.origin,
+        appTitle: 'AssistMe Portfolio Assistant',
+        selectedModel: 'x-ai/grok-4.1-fast'
+      });
+
+      window.buildConfig = Object.assign({}, window.buildConfig || {}, window.APP_CONFIG);
+    })();
+  </script>
   <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
   <script>
     (function () {
@@ -2464,7 +2479,6 @@
 
     <!-- Portfolio Reach Analytics -->
     <script defer src="js/modules/analytics.js"></script>
-    <script defer src="build-config.js"></script>
 
     <script type="module" defer src="js/utils/smart-navbar.js"></script>
     <script defer src="js/utils/theme.js"></script>

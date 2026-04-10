@@ -9,6 +9,21 @@
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
     <script>
       (function () {
+        const isGitHubPages = window.location.hostname.endsWith('github.io');
+        const apiBaseUrl = isGitHubPages ? 'https://mangeshraut.pro' : window.location.origin;
+
+        window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, {
+          apiBaseUrl,
+          siteUrl: window.location.origin,
+          appTitle: 'AssistMe Portfolio Assistant',
+          selectedModel: 'x-ai/grok-4.1-fast',
+        });
+
+        window.buildConfig = Object.assign({}, window.buildConfig || {}, window.APP_CONFIG);
+      })();
+    </script>
+    <script>
+      (function () {
         const savedTheme = localStorage.getItem('theme');
         const isDark = savedTheme === 'dark';
         document.documentElement.classList.toggle('dark', isDark);
@@ -385,6 +400,10 @@
       }
 
       async function loadPublicConfig() {
+        if (globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl) {
+          return Object.assign({}, globalThis.buildConfig || {}, globalThis.APP_CONFIG || {});
+        }
+
         try {
           const response = await fetch(new URL('./build-config.json', window.location.href), {
             cache: 'no-store',

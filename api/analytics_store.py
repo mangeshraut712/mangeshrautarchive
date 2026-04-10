@@ -1,4 +1,5 @@
 import asyncio
+import copy
 import json
 import os
 import time
@@ -17,15 +18,23 @@ class PortfolioAnalyticsStore:
         self._redis_url = (
             os.getenv("UPSTASH_REDIS_REST_URL", "").strip()
             or os.getenv("REDIS_REST_URL", "").strip()
+            or os.getenv("KV_REST_API_URL", "").strip()
         ).rstrip("/")
         self._redis_token = (
             os.getenv("UPSTASH_REDIS_REST_TOKEN", "").strip()
             or os.getenv("REDIS_REST_TOKEN", "").strip()
+            or os.getenv("KV_REST_API_TOKEN", "").strip()
         )
+        self._memory_data = self._initial_data()
+        self._file_sync_disabled = False
 
     @property
     def backend_name(self) -> str:
-        return "redis" if self.redis_enabled else "file"
+        if self.redis_enabled:
+            return "redis"
+        if self._file_sync_disabled:
+            return "memory"
+        return "file"
 
     @property
     def redis_enabled(self) -> bool:
@@ -67,16 +76,29 @@ class PortfolioAnalyticsStore:
         }
 
     async def _load_file_data(self) -> Dict[str, Any]:
+        if self._file_sync_disabled:
+            return copy.deepcopy(self._memory_data)
+
         if not self._file_path.exists():
-            return self._initial_data()
+            return copy.deepcopy(self._memory_data)
 
         try:
-            return json.loads(self._file_path.read_text())
+            data = json.loads(self._file_path.read_text())
+            self._memory_data = data
+            return copy.deepcopy(data)
         except (json.JSONDecodeError, OSError):
-            return self._initial_data()
+            return copy.deepcopy(self._memory_data)
 
     async def _save_file_data(self, data: Dict[str, Any]) -> None:
-        self._file_path.write_text(json.dumps(data))
+        self._memory_data = copy.deepcopy(data)
+
+        if self._file_sync_disabled:
+            return
+
+        try:
+            self._file_path.write_text(json.dumps(data))
+        except OSError:
+            self._file_sync_disabled = True
 
     def _prune_sessions(self, sessions: Dict[str, float]) -> Dict[str, float]:
         cutoff = time.time() - self._session_ttl_seconds

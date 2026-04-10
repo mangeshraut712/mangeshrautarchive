@@ -1,423 +1,161 @@
 /**
- * PORTFOLIO REACH ANALYTICS v4.0
- * ================================
- * Tracks portfolio viewership with accurate metrics for:
- * - Unique Visitors (30-minute session timeout)
- * - Total Page Views (every page load)
- * - Time-based breakdowns (Today, This Week, This Month)
- *
- * Data Storage: localStorage (persistent) + sessionStorage (session)
- * Privacy: No PII collected, anonymous counting only
+ * Shared portfolio reach analytics.
+ * Uses only backend-provided counts so the homepage does not drift per browser.
  */
-(function() {
+(function () {
   const reachCountEls = document.querySelectorAll('.reach-count');
-  const API_BASE =
-    (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl)
-      ? `${globalThis.buildConfig.apiBaseUrl}/api`
-      : '/api';
-
-  // Configuration constants
-  const CONFIG = {
-    // Session timeout in milliseconds (30 minutes)
-    SESSION_TIMEOUT: 30 * 60 * 1000,
-    // Storage keys for data organization
-    KEYS: {
-      TOTAL_VIEWS: 'portfolio_total_views_v4',
-      UNIQUE_VISITORS: 'portfolio_unique_visitors_v4',
-      LAST_VISIT: 'portfolio_last_visit_v4',
-      SESSION_ID: 'portfolio_session_id_v4',
-      DAILY_VIEWS: 'portfolio_daily_views_v4',
-      WEEKLY_VIEWS: 'portfolio_weekly_views_v4',
-      MONTHLY_VIEWS: 'portfolio_monthly_views_v4',
-      FIRST_VISIT_DATE: 'portfolio_first_visit_v4'
-    }
+  const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+  const STORAGE_KEYS = {
+    SESSION_ID: 'portfolio_shared_session_id_v1',
+    LAST_VISIT: 'portfolio_shared_last_visit_v1',
   };
+
+  function normalizeOrigin(rawValue) {
+    if (!rawValue) return '';
+
+    try {
+      return new URL(String(rawValue), window.location.origin).origin;
+    } catch {
+      return '';
+    }
+  }
+
+  function getApiBase() {
+    const configuredOrigin = normalizeOrigin(
+      globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl
+    );
+
+    if (configuredOrigin) {
+      return `${configuredOrigin}/api`;
+    }
+
+    if (window.location.hostname.endsWith('github.io')) {
+      return 'https://mangeshraut.pro/api';
+    }
+
+    return '/api';
+  }
 
   function getSessionId() {
     const now = Date.now();
-    const lastVisit = parseInt(localStorage.getItem(CONFIG.KEYS.LAST_VISIT) || '0', 10);
-    const existing = localStorage.getItem(CONFIG.KEYS.SESSION_ID);
+    const lastVisit = Number.parseInt(localStorage.getItem(STORAGE_KEYS.LAST_VISIT) || '0', 10);
+    const existing = localStorage.getItem(STORAGE_KEYS.SESSION_ID);
 
-    if (existing && now - lastVisit < CONFIG.SESSION_TIMEOUT) {
+    if (existing && now - lastVisit < SESSION_TIMEOUT_MS) {
       return existing;
     }
 
     const sessionId = `portfolio_${now}_${Math.random().toString(36).slice(2, 10)}`;
-    localStorage.setItem(CONFIG.KEYS.SESSION_ID, sessionId);
+    localStorage.setItem(STORAGE_KEYS.SESSION_ID, sessionId);
     return sessionId;
   }
 
-  /**
-   * Format number for display with smart rounding
-   * - Shows exact number under 1,000
-   * - Shows "1.2K" for thousands (1 decimal when needed)
-   * - Shows "1.5M" for millions (1 decimal when needed)
-   * - Shows "2B" for billions (no decimals for cleaner display)
-   *
-   * @param {number} num - The number to format
-   * @returns {string} Formatted number string
-   */
-  function formatNumber(num) {
-    // Validate input - treat null/undefined as 0, not "--"
-    if (num === null || num === undefined) return '0';
-    if (typeof num !== 'number') {
-      num = parseFloat(num);
-    }
-    if (isNaN(num)) return '0';
-
-    const absNum = Math.abs(num);
-
-    // Billions (no decimals for cleaner billion display)
-    if (absNum >= 1_000_000_000) {
-      const billions = absNum / 1_000_000_000;
-      // Show decimal only if significant (e.g., 1.5B but not 1.0B)
-      return (billions % 1 >= 0.1 ? billions.toFixed(1) : Math.round(billions)) + 'B';
-    }
-
-    // Millions (show 1 decimal only if needed)
-    if (absNum >= 1_000_000) {
-      const millions = absNum / 1_000_000;
-      // Check if decimal part is significant
-      const rounded = Math.round(millions * 10) / 10;
-      return (rounded % 1 !== 0 ? rounded.toFixed(1) : Math.round(millions)) + 'M';
-    }
-
-    // Thousands (show 1 decimal only if needed)
-    if (absNum >= 1_000) {
-      const thousands = absNum / 1_000;
-      const rounded = Math.round(thousands * 10) / 10;
-      return (rounded % 1 !== 0 ? rounded.toFixed(1) : Math.round(thousands)) + 'K';
-    }
-
-    // Under 1000: return exact number
-    return Math.round(num).toString();
+  function formatNumber(value) {
+    const num = Number(value || 0);
+    if (!Number.isFinite(num)) return '--';
+    if (num >= 1_000_000_000) return `${(num / 1_000_000_000).toFixed(num >= 10_000_000_000 ? 0 : 1).replace(/\.0$/, '')}B`;
+    if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(num >= 10_000_000 ? 0 : 1).replace(/\.0$/, '')}M`;
+    if (num >= 1_000) return `${(num / 1_000).toFixed(num >= 10_000 ? 0 : 1).replace(/\.0$/, '')}K`;
+    return `${Math.round(num)}`;
   }
 
-  /**
-   * Get current date in YYYY-MM-DD format for consistent storage
-   */
-  function getTodayKey() {
-    return new Date().toISOString().split('T')[0];
+  function setUnavailableState() {
+    reachCountEls.forEach(element => {
+      element.textContent = '--';
+      element.parentElement?.setAttribute('title', 'Portfolio reach temporarily unavailable');
+    });
   }
 
-  /**
-   * Get week identifier (YYYY-W##) for weekly tracking
-   */
-  function getWeekKey() {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 1);
-    const diff = now - start;
-    const oneWeek = 604800000; // milliseconds in week
-    const weekNum = Math.floor(diff / oneWeek) + 1;
-    return `${now.getFullYear()}-W${weekNum.toString().padStart(2, '0')}`;
-  }
-
-  /**
-   * Get month identifier (YYYY-MM) for monthly tracking
-   */
-  function getMonthKey() {
-    const now = new Date();
-    return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`;
-  }
-
-  /**
-   * Check if this is a new unique session (30-minute timeout)
-   * Returns true if:
-   * - No previous visit recorded
-   * - Last visit was more than 30 minutes ago
-   * - Session ID has changed
-   *
-   * @returns {boolean} true if this is a unique visitor session
-   */
-  function isNewUniqueSession() {
-    try {
-      const lastVisit = localStorage.getItem(CONFIG.KEYS.LAST_VISIT);
-      const currentSessionId = sessionStorage.getItem(CONFIG.KEYS.SESSION_ID);
-
-      // No previous visit = new unique visitor
-      if (!lastVisit) return true;
-
-      // Check time since last visit
-      const lastVisitTime = parseInt(lastVisit, 10);
-      const now = Date.now();
-      const timeDiff = now - lastVisitTime;
-
-      // Session expired (30+ minutes) = new unique visitor
-      if (timeDiff > CONFIG.SESSION_TIMEOUT) return true;
-
-      // No current session = new unique visitor
-      if (!currentSessionId) return true;
-
-      return false;
-    } catch (_e) {
-      // Fallback: assume new session if storage fails
-      return true;
-    }
-  }
-
-  /**
-   * Get or initialize counter from storage
-   */
-  function getCounter(key, defaultValue = 0) {
-    try {
-      const stored = localStorage.getItem(key);
-      if (!stored) return defaultValue;
-      const parsed = parseInt(stored, 10);
-      return isNaN(parsed) ? defaultValue : parsed;
-    } catch (_e) {
-      return defaultValue;
-    }
-  }
-
-  /**
-   * Get or initialize time-based counter from storage
-   * Automatically resets if period (day/week/month) has changed
-   */
-  function getTimeBasedCounter(storageKey, periodKey) {
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (!stored) return { period: periodKey, count: 0 };
-
-      const data = JSON.parse(stored);
-      // If period changed, reset counter
-      if (data.period !== periodKey) {
-        return { period: periodKey, count: 0 };
-      }
-      return data;
-    } catch (_e) {
-      return { period: periodKey, count: 0 };
-    }
-  }
-
-  /**
-   * Main analytics calculation - updates all metrics
-   * Returns complete analytics data object
-   */
-  function calculateMetrics() {
-    const now = Date.now();
-    const todayKey = getTodayKey();
-    const weekKey = getWeekKey();
-    const monthKey = getMonthKey();
-
-    // Check if this is a new unique visitor session
-    const isUnique = isNewUniqueSession();
-
-    // Get current counters
-    const totalViews = getCounter(CONFIG.KEYS.TOTAL_VIEWS, 0) + 1;
-    const uniqueVisitors = isUnique
-      ? getCounter(CONFIG.KEYS.UNIQUE_VISITORS, 0) + 1
-      : getCounter(CONFIG.KEYS.UNIQUE_VISITORS, 0);
-
-    // Time-based counters
-    const dailyData = getTimeBasedCounter(CONFIG.KEYS.DAILY_VIEWS, todayKey);
-    const weeklyData = getTimeBasedCounter(CONFIG.KEYS.WEEKLY_VIEWS, weekKey);
-    const monthlyData = getTimeBasedCounter(CONFIG.KEYS.MONTHLY_VIEWS, monthKey);
-
-    // Update time-based counters
-    dailyData.count += 1;
-    weeklyData.count += 1;
-    monthlyData.count += 1;
-
-    // Track first visit for portfolio age calculation
-    const firstVisit = localStorage.getItem(CONFIG.KEYS.FIRST_VISIT_DATE);
-    if (!firstVisit) {
-      localStorage.setItem(CONFIG.KEYS.FIRST_VISIT_DATE, now.toString());
+  function updateDisplay(payload) {
+    const views = payload?.views;
+    if (!views) {
+      setUnavailableState();
+      return;
     }
 
-    // Generate new session ID if needed
-    const sessionId = isUnique ? `session_${now}_${Math.random().toString(36).substr(2, 9)}` : sessionStorage.getItem(CONFIG.KEYS.SESSION_ID);
+    const displayValue = views.unique_visitors ?? views.homepage_total ?? views.total ?? 0;
+    const tooltipLines = [
+      `Total Views: ${formatNumber(views.total ?? 0)}`,
+      `Homepage Views: ${formatNumber(views.homepage_total ?? 0)}`,
+      `Unique Visitors: ${formatNumber(views.unique_visitors ?? 0)}`,
+      '',
+      `Today: ${formatNumber(views.today ?? 0)}`,
+      `This Week: ${formatNumber(views.this_week ?? 0)}`,
+      `This Month: ${formatNumber(views.this_month ?? 0)}`,
+      '',
+      `Avg ${payload.avg_views_per_day ?? '0.0'}/day`,
+      `Age: ${payload.portfolio_age_days ?? 1} day${payload.portfolio_age_days === 1 ? '' : 's'}`,
+      payload.storage?.backend ? `Store: ${payload.storage.backend}` : '',
+    ].filter(Boolean);
+    const tooltip = tooltipLines.join('\n');
+    const formattedValue = formatNumber(displayValue);
 
-    // Persist all data
-    try {
-      localStorage.setItem(CONFIG.KEYS.TOTAL_VIEWS, totalViews.toString());
-      localStorage.setItem(CONFIG.KEYS.UNIQUE_VISITORS, uniqueVisitors.toString());
-      localStorage.setItem(CONFIG.KEYS.LAST_VISIT, now.toString());
-      localStorage.setItem(CONFIG.KEYS.DAILY_VIEWS, JSON.stringify({ period: todayKey, count: dailyData.count }));
-      localStorage.setItem(CONFIG.KEYS.WEEKLY_VIEWS, JSON.stringify({ period: weekKey, count: weeklyData.count }));
-      localStorage.setItem(CONFIG.KEYS.MONTHLY_VIEWS, JSON.stringify({ period: monthKey, count: monthlyData.count }));
-      sessionStorage.setItem(CONFIG.KEYS.SESSION_ID, sessionId);
-    } catch (_e) {
-      console.debug('[Portfolio Reach] Storage failed (private browsing):', _e.message);
-    }
-
-    // Calculate derived metrics
-    const firstVisitTime = firstVisit ? parseInt(firstVisit, 10) : now;
-    const portfolioAgeDays = Math.max(1, Math.floor((now - firstVisitTime) / (24 * 60 * 60 * 1000)));
-    const avgViewsPerDay = (totalViews / portfolioAgeDays).toFixed(1);
-
-    return {
-      // Core metrics
-      totalViews,
-      uniqueVisitors,
-      isNewSession: isUnique,
-      sessionId,
-
-      // Time-based metrics
-      today: dailyData.count,
-      thisWeek: weeklyData.count,
-      thisMonth: monthlyData.count,
-
-      // Derived metrics
-      portfolioAgeDays,
-      avgViewsPerDay,
-
-      // Metadata
-      lastUpdated: new Date().toISOString()
-    };
-  }
-
-  /**
-   * Fallback metrics for private browsing mode
-   */
-  function getFallbackMetrics() {
-    const sessionCount = parseInt(sessionStorage.getItem('portfolio_fallback_count') || '0', 10) + 1;
-    sessionStorage.setItem('portfolio_fallback_count', sessionCount.toString());
-
-    return {
-      totalViews: sessionCount,
-      uniqueVisitors: 1, // Can't track across sessions
-      isNewSession: true,
-      today: sessionCount,
-      thisWeek: sessionCount,
-      thisMonth: sessionCount,
-      portfolioAgeDays: 1,
-      avgViewsPerDay: sessionCount.toFixed(1),
-      lastUpdated: new Date().toISOString(),
-      isFallback: true
-    };
-  }
-
-  /**
-   * Get all metrics with graceful fallback
-   */
-  function getMetrics() {
-    try {
-      // Test storage availability
-      localStorage.setItem('test', '1');
-      localStorage.removeItem('test');
-      return calculateMetrics();
-    } catch (_e) {
-      // Storage not available (private browsing)
-      return getFallbackMetrics();
-    }
+    reachCountEls.forEach(element => {
+      element.textContent = formattedValue;
+      element.parentElement?.setAttribute('title', tooltip);
+    });
   }
 
   async function fetchSharedMetrics() {
-    try {
-      const response = await fetch(`${API_BASE}/analytics/views`, {
-        headers: { Accept: 'application/json' },
-        cache: 'no-store'
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const payload = await response.json();
-      return payload?.views ? payload : null;
-    } catch (_error) {
-      return null;
+    const response = await fetch(`${getApiBase()}/analytics/views`, {
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error(`Analytics fetch failed: ${response.status}`);
     }
+    return response.json();
   }
 
   async function trackSharedVisit() {
-    try {
-      const sessionId = getSessionId();
-      const response = await fetch(`${API_BASE}/analytics/track`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify({
-          session_id: sessionId,
-          path: window.location.pathname || '/',
-          is_homepage: window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
-          referrer: document.referrer || ''
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      const payload = await response.json();
-      localStorage.setItem(CONFIG.KEYS.LAST_VISIT, Date.now().toString());
-      return payload?.views ? payload : null;
-    } catch (_error) {
-      return null;
-    }
-  }
-
-  /**
-   * Update the UI display with formatted metrics
-   */
-  function updateDisplay(metricsOverride = null) {
-    if (!reachCountEls || reachCountEls.length === 0) return;
-
-    const backendViews = metricsOverride?.views || null;
-    const metrics = backendViews
-      ? {
-          totalViews: backendViews.total ?? 0,
-          uniqueVisitors: backendViews.unique_visitors ?? 0,
-          today: backendViews.today ?? 0,
-          thisWeek: backendViews.this_week ?? 0,
-          thisMonth: backendViews.this_month ?? 0,
-          avgViewsPerDay: String(metricsOverride?.avg_views_per_day ?? '0.0'),
-          portfolioAgeDays: Number(metricsOverride?.portfolio_age_days ?? 1),
-          storageBackend: metricsOverride?.storage?.backend || 'unknown'
-        }
-      : getMetrics();
-
-    // Format the primary display number
-    // Strategy: Show unique visitors (more meaningful than raw views)
-    const displayValue = metrics.uniqueVisitors;
-    const formatted = formatNumber(displayValue);
-
-    // Enhanced tooltip with full breakdown
-    const tooltipLines = [
-      `Total Views: ${formatNumber(metrics.totalViews)}`,
-      `Unique Visitors: ${formatNumber(metrics.uniqueVisitors)}`,
-      ``,
-      `Today: ${formatNumber(metrics.today)}`,
-      `This Week: ${formatNumber(metrics.thisWeek)}`,
-      `This Month: ${formatNumber(metrics.thisMonth)}`,
-      ``,
-      `Avg ${metrics.avgViewsPerDay}/day`,
-      `Age: ${metrics.portfolioAgeDays} day${metrics.portfolioAgeDays !== 1 ? 's' : ''}`,
-      metrics.storageBackend ? `Store: ${metrics.storageBackend}` : ''
-    ];
-    const tooltipText = tooltipLines.join('\n');
-
-    reachCountEls.forEach(el => {
-      el.textContent = formatted;
-      // If the parent is the badge container, update its title too
-      if (el.parentElement && el.parentElement.classList.contains('portfolio-reach-badge')) {
-        el.parentElement.setAttribute('title', tooltipText);
-      } else {
-        el.setAttribute('title', tooltipText);
-      }
+    const response = await fetch(`${getApiBase()}/analytics/track`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        session_id: getSessionId(),
+        path: window.location.pathname || '/',
+        is_homepage: window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
+        referrer: document.referrer || '',
+      }),
     });
 
-    // Log metrics for debugging (development only)
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      console.log('[Portfolio Reach] Metrics:', metrics);
+    if (!response.ok) {
+      throw new Error(`Analytics track failed: ${response.status}`);
+    }
+
+    localStorage.setItem(STORAGE_KEYS.LAST_VISIT, Date.now().toString());
+    return response.json();
+  }
+
+  async function refreshReach({ track = false } = {}) {
+    try {
+      const payload = track ? await trackSharedVisit() : await fetchSharedMetrics();
+      updateDisplay(payload);
+    } catch (error) {
+      console.warn('[Portfolio Reach]', error.message);
+      if (track) {
+        try {
+          updateDisplay(await fetchSharedMetrics());
+          return;
+        } catch {
+          // Ignore and surface unavailable state below.
+        }
+      }
+      setUnavailableState();
     }
   }
 
-  // Initialize on page load
-  if (reachCountEls && reachCountEls.length > 0) {
-    // Small delay to ensure DOM is ready
-    setTimeout(async () => {
-      const tracked = await trackSharedVisit();
-      const sharedMetrics = tracked || (await fetchSharedMetrics());
-      updateDisplay(sharedMetrics);
+  if (reachCountEls.length > 0) {
+    setTimeout(() => {
+      refreshReach({ track: true });
     }, 50);
 
-    // Also update on visibility change (returning to tab)
-    document.addEventListener('visibilitychange', async () => {
+    document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
-        const sharedMetrics = await fetchSharedMetrics();
-        updateDisplay(sharedMetrics);
+        refreshReach();
       }
     });
   }

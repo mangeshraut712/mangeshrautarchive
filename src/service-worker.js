@@ -1,165 +1,35 @@
-const CACHE_TAG = 'portfolio-cache-v2026040901';
-const CACHE_NAME = `mangesh-portfolio-${CACHE_TAG}`;
-const RUNTIME_CACHE = `runtime-${CACHE_TAG}`;
+/*
+ * Cleanup-only service worker.
+ * Existing stale workers update to this file, purge caches, and unregister.
+ * New installs do not cache any assets.
+ */
 
-// Core assets to cache immediately
-const CORE_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/assets/images/profile-icon.png',
-  '/assets/images/profile.jpg',
-];
-
-// External resources to cache at runtime
-const EXTERNAL_RESOURCES = [
-  'https://fonts.googleapis.com',
-  'https://fonts.gstatic.com',
-  'https://cdnjs.cloudflare.com',
-  'https://cdn.jsdelivr.net',
-];
-
-// Install Event - Cache Core Assets
 self.addEventListener('install', event => {
-  console.log('[SW] Installing service worker...');
-  event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then(cache => {
-        console.log('[SW] Caching core assets');
-        return cache.addAll(CORE_ASSETS);
-      })
-      .then(() => self.skipWaiting())
-      .catch(err => console.error('[SW] Cache installation failed:', err))
-  );
+  event.waitUntil(self.skipWaiting());
 });
 
-// Activate Event - Cleanup Old Caches
 self.addEventListener('activate', event => {
-  console.log('[SW] Activating service worker...');
   event.waitUntil(
-    caches
-      .keys()
-      .then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => {
-            if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
-              console.log('[SW] Removing old cache:', cacheName);
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-      .then(() => self.clients.claim())
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+      await self.clients.claim();
+      await self.registration.unregister();
+    })()
   );
 });
 
-// Fetch Event - Stale-While-Revalidate Strategy
-self.addEventListener('fetch', event => {
-  const { request } = event;
-  const url = new URL(request.url);
-  const accept = request.headers.get('Accept') || '';
-
-  if (request.method !== 'GET') {
-    return;
-  }
-
-  // Skip cross-origin requests except fonts and CDN resources
-  if (
-    url.origin !== self.location.origin &&
-    !EXTERNAL_RESOURCES.some(ext => url.href.startsWith(ext))
-  ) {
-    return;
-  }
-
-  // Skip API requests
-  if (url.pathname.startsWith('/api/')) {
-    return;
-  }
-
-  // Never cache the service worker script itself.
-  if (url.pathname.endsWith('/service-worker.js')) {
-    event.respondWith(fetch(request));
-    return;
-  }
-
-  // Network-first for app shell assets that change frequently.
-  const isHtmlRequest = accept.includes('text/html');
-  const isStyleOrScript = request.destination === 'style' || request.destination === 'script';
-  if (isHtmlRequest || isStyleOrScript) {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          if (response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-
-  // Cache-first for static media assets
-  if (request.url.match(/\.(png|jpg|jpeg|svg|webp|woff2|woff|ttf)$/)) {
-    event.respondWith(
-      caches.match(request).then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(request).then(response => {
-          if (response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(RUNTIME_CACHE).then(cache => {
-              cache.put(request, responseClone);
-            });
-          }
-          return response;
-        });
-      })
-    );
-    return;
-  }
-
-  // Stale-while-revalidate for everything else
-  event.respondWith(
-    caches.match(request).then(cachedResponse => {
-      const fetchPromise = fetch(request).then(response => {
-        if (response.status === 200) {
-          const responseClone = response.clone();
-          caches.open(RUNTIME_CACHE).then(cache => {
-            cache.put(request, responseClone);
-          });
-        }
-        return response;
-      });
-      return cachedResponse || fetchPromise;
-    })
-  );
+self.addEventListener('fetch', () => {
+  // Intentionally no caching.
 });
 
-// Message handler for cache management
 self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data?.type !== 'CLEAR_CACHE') return;
 
-  if (event.data && event.data.type === 'CLEAR_CACHE') {
-    caches
-      .keys()
-      .then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => {
-            console.log('[SW] Clearing cache:', cacheName);
-            return caches.delete(cacheName);
-          })
-        );
-      })
-      .then(() => {
-        console.log('[SW] All caches cleared');
-      });
-  }
+  event.waitUntil(
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+    })()
+  );
 });
