@@ -431,13 +431,6 @@ function initLazyModules() {
           INTERACTION_MODULES.forEach(path => {
             loadModule(path);
           });
-
-          if (
-            window.innerWidth > 1024 &&
-            !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ) {
-            loadModule('../modules/3d-background.js');
-          }
         }, 600);
       };
 

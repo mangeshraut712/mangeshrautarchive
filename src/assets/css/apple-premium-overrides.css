@@ -3180,3 +3180,43 @@ html.dark .media-card.loading .animate-spin {
 #search-overlay:not(.active) {
   display: none !important;
 }
+
+/* Homepage hero stabilization for Safari, iOS, and Android browsers */
+#home.hero-section.home-hero,
+html:not(.dark) #home.hero-section.home-hero {
+  background: #fff !important;
+  background-image: none !important;
+}
+
+html.dark #home.hero-section.home-hero {
+  background: #000 !important;
+  background-image: none !important;
+}
+
+#home.hero-section .profile-image-wrapper {
+  background: #fff !important;
+  box-shadow:
+    0 10px 28px rgb(0 0 0 / 8%),
+    0 0 0 1px rgb(0 0 0 / 6%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark #home.hero-section .profile-image-wrapper {
+  background: #050505 !important;
+  box-shadow:
+    0 12px 32px rgb(0 0 0 / 42%),
+    0 0 0 1px rgb(255 255 255 / 8%) !important;
+}
+
+#home.hero-section .profile-ring {
+  background: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  animation: none !important;
+  border: 2px solid rgb(0 113 227 / 14%) !important;
+}
+
+html.dark #home.hero-section .profile-ring {
+  border-color: rgb(255 255 255 / 12%) !important;
+}

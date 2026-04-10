@@ -14,8 +14,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#0071e3" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="manifest" href="manifest.json" />
 
   <!-- Preload critical CSS for performance -->
@@ -183,9 +183,10 @@
   <script>
     (function () {
       const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
+      const isDark = savedTheme === 'dark';
+      document.documentElement.classList.toggle('dark', isDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      document.documentElement.style.backgroundColor = isDark ? '#000000' : '#ffffff';
     })();
   </script>
   <!-- Suppress Chrome Extension message channel errors -->
@@ -256,7 +257,7 @@
 
 </head>
 
-<body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-[#18181b]">
+<body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-black">
   <div class="skip-links" role="navigation" aria-label="Skip links">
     <a href="#home" class="skip-link">Skip to Home</a>
     <a href="#about" class="skip-link">Skip to About</a>

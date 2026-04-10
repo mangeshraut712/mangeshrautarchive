@@ -8,8 +8,19 @@
  * Reference: https://vercel.com/docs/analytics
  */
 
-// Use global script loading instead of module imports for browser compatibility
-const VERCEL_ANALYTICS_SCRIPT = 'https://cdn.jsdelivr.net/npm/@vercel/analytics@1.1.1/dist/index.global.js';
+const VERCEL_ANALYTICS_SCRIPT = '/_vercel/insights/script.js';
+
+function isLocalHost(hostname = '') {
+  return ['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname);
+}
+
+function shouldEnableVercelAnalytics(hostname = '') {
+  if (!hostname || isLocalHost(hostname)) {
+    return false;
+  }
+
+  return !hostname.endsWith('.github.io');
+}
 
 /**
  * Initialize Vercel Web Analytics
@@ -20,29 +31,33 @@ const VERCEL_ANALYTICS_SCRIPT = 'https://cdn.jsdelivr.net/npm/@vercel/analytics@
  * @returns {Promise<void>}
  */
 export async function initializeVercelAnalytics() {
-  // Skip in development/local environments
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    console.log('ℹ️ Vercel Analytics skipped in development');
+  const hostname = window.location.hostname || '';
+
+  if (!shouldEnableVercelAnalytics(hostname)) {
+    console.log('ℹ️ Vercel Analytics skipped on this host');
     return;
   }
 
   try {
-    // Check if already loaded
-    if (window.va) {
+    if (window.__vercelAnalyticsReady) {
       console.log('✓ Vercel Web Analytics already loaded');
       return;
     }
 
-    // Load script dynamically
+    window.va =
+      window.va ||
+      function () {
+        (window.vaq = window.vaq || []).push(arguments);
+      };
+
     await loadScript(VERCEL_ANALYTICS_SCRIPT);
 
-    // Initialize if available
     if (window.va) {
-      window.va('event', { name: 'page_view' });
+      window.__vercelAnalyticsReady = true;
+      window.dispatchEvent(new CustomEvent('vercel-analytics-ready'));
       console.log('✓ Vercel Web Analytics initialized');
     }
   } catch (error) {
-    // Silently fail - analytics is not critical to app functionality
     console.warn('⚠ Vercel Web Analytics initialization failed:', error.message);
   }
 }
@@ -52,10 +67,26 @@ export async function initializeVercelAnalytics() {
  */
 function loadScript(src) {
   return new Promise((resolve, reject) => {
+    const existingScript = document.querySelector(`script[src="${src}"]`);
+    if (existingScript) {
+      if (existingScript.dataset.loaded === 'true') {
+        resolve();
+        return;
+      }
+
+      existingScript.addEventListener('load', resolve, { once: true });
+      existingScript.addEventListener('error', reject, { once: true });
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = src;
     script.async = true;
-    script.onload = resolve;
+    script.defer = true;
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    };
     script.onerror = reject;
     document.head.appendChild(script);
   });

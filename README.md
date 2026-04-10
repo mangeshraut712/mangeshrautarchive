@@ -1,626 +1,95 @@
-<div align="center">
-
-# 🚀 Welcome to Mangesh Raut's AI-Powered Portfolio! 🤖
-
-### _Experience the Future of Developer Portfolios with Intelligent AI Assistance_
-
-[![Live Portfolio](https://img.shields.io/badge/🌐_Live_Demo-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white)](https://mangeshraut.pro)
-[![GitHub Pages](https://img.shields.io/badge/📄_GitHub_Pages-181717?style=for-the-badge&logo=github&logoColor=white)](https://mangeshraut712.github.io/mangeshrautarchive/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/mangeshraut712/mangeshrautarchive/actions)
-
-**[🚀 Live Demo](https://mangeshraut.pro)** • **[✨ Features](#-key-features)** • **[🛠️ Tech Stack](#️-tech-stack)** • **[📚 Quick Start](#-quick-start)** • **[🏗️ Architecture](#️-architecture-overview)**
-
----
-
-<img src="https://img.shields.io/badge/Built_with-❤️_and_coffee_in_Pennsylvania-ff6b6b?style=flat-square" alt="Built with love and coffee" />
-
-> **👋 Hi there!** Thanks for checking out my portfolio. This isn't just a static website—it's an interactive experience featuring AI-powered conversations, real-time integrations, and hidden easter eggs. Feel free to explore, chat with AssistMe, or dive into the code!
-
-</div>
+# Mangesh Raut Portfolio
 
----
+[![Live Demo](https://img.shields.io/badge/Live_Demo-mangeshraut.pro-0071e3?style=flat-square&logo=vercel&logoColor=white)](https://mangeshraut.pro)
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-181717?style=flat-square&logo=github&logoColor=white)](https://mangeshraut712.github.io/mangeshrautarchive/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-## 📖 Table of Contents
+A premium, interactive portfolio crafted with Apple-inspired design principles for 2026. Features AI-powered conversations, real-time data integrations, and advanced web technologies.
 
-- [About](#-about)
-- [Key Features](#-key-features)
-- [Live Demos](#-live-demos)
-- [Tech Stack](#️-tech-stack)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [Scripts](#-available-scripts)
-- [Quality Gates](#-quality--performance-gates)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Acknowledgments](#-acknowledgments)
+## Key Features
 
----
+- **AI Assistant**: Intelligent chatbot with voice I/O and contextual memory
+- **Live Data Integration**: Real-time GitHub statistics and Last.fm music tracking
+- **Interactive Experiences**: Canvas-based game, dynamic media shelf, and responsive design
+- **System Monitoring**: Backend health checks and deployment status
+- **Accessibility**: WCAG 2.2 AA compliant with full keyboard navigation
+- **Performance Optimized**: Lighthouse scores exceeding 90 on core metrics
 
-## 🏗️ Architecture Overview
+## Technology Stack
 
-```mermaid
-graph TB
-    subgraph "🌐 User Interface (Frontend)"
-        A[HTML5/CSS3/JS] --> B[Apple-inspired CSS system]
-        A --> C[ES6 Modules]
-        A --> D[Build Config Routing]
-        D --> E[Same-Origin API on Vercel]
-        D --> F[Remote API Fallback on GitHub Pages]
-    end
+### Frontend
 
-    subgraph "🖥️ Backend API (Python)"
-        G[FastAPI] --> H[Uvicorn ASGI Server]
-        G --> I[Pydantic Models]
-        G --> J[httpx Client]
-    end
+- HTML5, CSS3, ES6+ JavaScript
+- Tailwind CSS, Apple-inspired design system
+- Web APIs: Speech, Canvas, Local Storage
 
-    subgraph "🤖 AI & Integrations"
-        K[OpenRouter API] --> L[xAI Grok 4.1 Fast]
-        K --> M[Anthropic Claude 3.5]
-        N[GitHub API] --> G
-        O[Last.fm API] --> G
-        P[Web Speech API] --> A
-    end
+### Backend
 
-    subgraph "🎮 Interactive Features"
-        Q[Canvas Game] --> A
-        R[Voice I/O] --> A
-        S[Real-time Chat] --> A
-    end
+- Python 3.12+ with FastAPI
+- Uvicorn ASGI server
+- OpenRouter AI integration
 
-    subgraph "🚀 Deployment Platforms"
-        T[Vercel] --> U[CDN & Edge Functions]
-        V[GitHub Pages] --> W[Static Hosting]
-        X[Custom Domain] --> Y[mangeshraut.pro]
-    end
+### Quality Assurance
 
-    subgraph "🧪 Quality Assurance"
-        Z[Playwright E2E] --> AA[Lighthouse Perf]
-        Z --> BB[Accessibility Tests]
-        CC[Vitest Unit] --> DD[ESLint/Stylelint]
-    end
+- Playwright E2E testing
+- Lighthouse performance audits
+- ESLint and Stylelint
 
-    A --> G
-    G --> K
-    A -.-> T
-    A -.-> V
-    A -.-> X
-    CC -.-> A
-    Z -.-> A
-```
+### Deployment
 
-**Architecture Highlights:**
+- Vercel for API and hosting
+- GitHub Pages for static fallback
+- Docker containerization
 
-- **Frontend**: Modular ES6 architecture with deployment-aware API routing and Apple-style UI primitives
-- **Backend**: Async Python API with typed responses, monitor endpoints, and resilient proxy/cache behavior
-- **AI Layer**: OpenRouter-backed chat with local fallback behavior when remote AI is unavailable
-- **Integrations**: GitHub, Last.fm, analytics, and deployment health surfaced through one backend
-- **Deployment**: Vercel powers the live API while GitHub Pages consumes the same production backend
-- **Testing**: Playwright smoke coverage plus lint/build gates for frontend, monitor, and navigation flows
+## Quick Setup
 
----
+### Prerequisites
 
-## 🌟 About This Project
+- Node.js 22+
+- Python 3.12+
+- Git
 
-Hey there! 👋 This is my **personal portfolio website** — but not your typical boring resume site! It's a **fully interactive, product-style portfolio** that brings modern full-stack development to life. Imagine chatting with an AI assistant, exploring real-time GitHub stats, monitoring system health, browsing a curated media collection, and enjoying sleek Apple-inspired design—all in one place!
-
-**🎯 What makes it special:**
-
-- **🤖 AI-Powered**: Real conversations with AssistMe, my intelligent chatbot
-- **📊 Live Data**: Always up-to-date GitHub projects and activity
-- **🎮 Fun Elements**: Hidden games and interactive features
-- **🎨 Beautiful Design**: Premium UI with glassmorphism and smooth animations
-- **🚀 Production-Ready**: Deployed across multiple platforms for reliability
-
-Built with cutting-edge **Python FastAPI** backend, **vanilla JavaScript** frontend, and hosted on Vercel, GitHub Pages, and a custom domain for maximum performance and uptime.
-
-<div align="center">
-
-### 💡 Project Highlights
-
-|                  🧠 AI Assistant                   |      📺 Currently Card       |      📊 Live Data      |        🎨 Premium UI         |
-| :------------------------------------------------: | :--------------------------: | :--------------------: | :--------------------------: |
-| Real-time streaming chatbot with context awareness | Shows, Music, Books tracking | GitHub API integration | Apple-inspired glassmorphism |
-
-</div>
-
-### 🔄 Current Platform Snapshot
-
-- **Deployment-aware monitor** — one System Monitor now tracks backend health, provider APIs, deployment surfaces, and safe runtime env presence
-- **Cross-host routing** — Vercel/custom-domain use same-origin `/api`, while GitHub Pages resolves the live API from `build-config.json`
-- **Curated media shelf** — shows, movies, and books use local artwork; music stays live via Last.fm with artwork fallback logic
-- **Resilient GitHub data** — backend proxy caching plus curated client fallback keeps projects usable during GitHub rate limits
-- **Clean local workflows** — root cleanup, cache cleanup, build-time cache busting, and focused smoke coverage are all in place
-
-## ✨ Key Features
-
-### 🧠 AssistMe — Your Intelligent AI Companion
-
-<details>
-<summary><b>🤖 Click to chat with AssistMe! (Real AI, not just a demo)</b></summary>
-
-<br/>
-
-Meet **AssistMe**, the star of the show! This isn't a fake chatbot—it's a **fully functional AI assistant** that can actually interact with the website:
-
-- **🔄 Real-Time Streaming** — Watch responses appear character-by-character like ChatGPT
-- **💾 Conversation Memory** — Maintains context across multiple questions and answers
-- **🎤 Voice Input** — Speak your questions using the Web Speech API
-- **🔊 Voice Output** — Hear responses via built-in text-to-speech
-- **🎯 Agentic Actions** — The AI can actually control the website:
-  - Toggle between dark and light themes
-  - Download my resume PDF
-  - Navigate to specific portfolio sections
-  - Show/hide UI elements on command
-- **📊 Live Metadata** — See AI model info, token count, and response latency
-- **🛡️ Privacy Dashboard** — Complete control over your conversation data
-- **📴 Offline Mode** — Smart fallback responses when the API is unavailable
-
-**Technology:** OpenRouter-backed multi-model chat (default: Grok 4.1 Fast), with configurable model selection and local fallback responses when remote AI is unavailable.
-
-</details>
-
-### 📺 Currently Card — My Media Universe
-
-<details>
-<summary><b>📱 Click to see what I'm watching/listening to! 🎬🎵📚</b></summary>
-
-<br/>
-
-Ever wonder what shows, music, or books I'm into? Check out this **curated media shelf** with everything I love:
-
-- **Shows & Movies Tab** — 30+ titles with direct streaming platform links
-  - Indian TV: Taarak Mehta, CID, Mahabharat, Scam 1992, Mirzapur, The Family Man
-  - International: Breaking Bad, Money Heist, Narcos, Squid Game, Stranger Things, Crash Landing on You
-  - Movies: KGF, RRR, Dangal, Vikram, Jailer, Kantara, Baahubali, Pushpa, Avengers, and more
-- **Music Tab** — Last.fm integration showing Now Playing and recent tracks
-  - Real-time Spotify sync via Last.fm API
-  - Album art display with direct Spotify links
-- **Books Tab** — 9 curated titles with author names
-  - Steve Jobs, Atomic Habits, The Ramayana, Bhagavad Gita, Holy Bible
-  - Dune, The Lord of the Rings
-  - Marathi literature: Mrityunjay, Shyamchi Aai
-- **Streaming Links** — Direct links to Netflix, Prime Video, Disney+, SonyLIV, and more
-- **🖼️ Curated Local Poster Assets** — Fixed show/movie/book artwork ships with the site, avoiding runtime poster mismatches
-- **📈 Engagement Analytics** — Real-time user interaction tracking (`media_click`) synced seamlessly with Vercel Web Analytics
-
-</details>
-
-### 🎮 Debug Runner — Retro Arcade Fun!
-
-<details>
-<summary><b>🕹️ Click to play the hidden game! (Yes, it's actually playable)</b></summary>
-
-<br/>
-
-Psst... want to see something cool? I built a **full-fledged HTML5 Canvas game** from scratch! It's like those old arcade games, but modern:
-
-- ⚡ **60 FPS Performance** — Smooth animations with optimized rendering
-- 📱 **Mobile Touch Controls** — Play on any device with responsive touch input
-- 🎯 **Score Tracking** — Local storage persists your high scores
-- 🎨 **Pixel Art Graphics** — Retro aesthetic with custom sprite sheets
-- 🏆 **Progressive Difficulty** — Game gets harder as you advance
-
-**Location:** Navigate to the "Debug Runner" section in the portfolio to discover this hidden easter egg!
-
-</details>
-
-### 📊 Live GitHub Showcase — My Code Journey
-
-<details>
-<summary><b>💻 Click to see my real GitHub projects! (Always up-to-date)</b></summary>
-
-<br/>
-
-Curious about my coding projects? This section pulls **live data from GitHub** and showcases my work dynamically:
-
-- 🔄 **Auto-Updating** — Fetches latest repositories from GitHub API on every visit
-- 🔍 **Showcase Ranking** — Excludes forks/profile repos and ranks by quality + activity signals
-- 📈 **Live Statistics** — Real-time star counts, fork counts, and primary languages
-- 🎨 **Beautiful Cards** — Compact Apple 2026 design with smooth hover animations
-- 🔖 **Dynamic Tags** — Topic badges automatically pulled from repository metadata
-- ⚡ **Intelligent Caching** — 10-minute client + server cache window to reduce API pressure
-- 🛡️ **Backend Proxy First** — Uses `/api/github/repos/public` + `/api/github/proxy` before direct GitHub fallback
-- 📱 **Mobile-Safe Layout** — Projects toolbar and cards are constrained to viewport widths on phones
-- 🔎 **Fuzzy Search** — Project search supports close matches (for typo-tolerant lookup)
-- 🕒 **Compact Update Chip** — Updated labels use `relative + absolute` format (example: `3w ago · Feb 4, 2026`)
-- 🗺️ **Spatial Modal** — Interactive project detail modal with repo stats and activity timeline
-
-**Implementation:** Custom JavaScript module with GitHub REST API integration
-
-</details>
-
-### 📈 System Monitor — Behind the Scenes
-
-<details>
-<summary><b>🩺 Click to see the server health! (Real metrics)</b></summary>
-
-<br/>
-
-Ever wanted to peek behind the curtain? This **live monitoring dashboard** shows the real status of the backend:
-
-- **Live Health Checks** — Backend resource, memory-manager, OpenRouter, and GitHub API health
-- **Endpoint Metrics** — Success rate, response times, and recent API status
-- **Provider APIs** — OpenRouter, GitHub, Vercel platform status, Last.fm, and analytics cards
-- **Deployment Surfaces** — Real-time status for `mangeshraut.pro`, Vercel deployment, and GitHub Pages
-- **Runtime Snapshot** — Safe env presence flags and public origin mapping for production debugging
-- **Event Log** — Resolved and unresolved operational events
-- **Shared Apple Shell** — Same navbar, theme toggle, glass surfaces, and spacing language as the homepage
-- **Docs Panel** — OpenAPI, ReDoc, monitor JSON, and deployment JSON surfaced from the monitor itself
-
-</details>
-
-### 🎨 Premium Design System — Apple-Inspired Magic
-
-<details>
-<summary><b>🖌️ Click to see the design magic! ✨</b></summary>
-
-<br/>
-
-The design is inspired by **Apple's 2026 aesthetic**—think sleek, modern, and oh-so-polished:
-
-- 🎯 **CSS Layers Architecture** — Modern cascade management for 2026
-- 🔮 **Glassmorphism 2026** — Advanced frosted glass effects with backdrop blur
-- 📱 **Container Queries** — Component-level responsive design
-- 🌈 **Neural gradient animations** — Smooth, GPU-accelerated effects
-- 🌓 **Automatic dark/light theme** — Based on system preferences
-- 📐 **Mobile-first design** — Breakpoints at 640px, 768px, 1024px, 1280px
-- ♿ **WCAG 2.2 AA** — Full keyboard navigation accessibility
-- ⚡ **Performance optimized** — GPU acceleration, content visibility
-
-**Typography:**
-
-- **Display Font:** SF Pro Display — Apple's premium typeface
-- **Text Font:** SF Pro Text — Optimized for readability
-- **Monospace:** SF Mono / JetBrains Mono for code
-
-**Color System:**
-
-- Light mode: Clean whites with Apple blue accents
-- Dark mode: Deep blacks with vibrant highlights
-- Consistent spacing grid (4px base unit)
-
-**Components:**
-
-- Apple Cards with hover lift effects
-- Primary, secondary, ghost buttons
-- Glass cards with backdrop blur
-- Tags and form inputs
-- Smooth scroll animations
-
-</details>
-
----
-
-## 📸 Screenshots & Previews
-
-> **Note:** These are live previews of the interactive portfolio. Click the links above to experience it yourself!
-
-<div align="center">
-
-### 🏠 Homepage
-
-_Clean, modern landing with AI assistant, navigation, and feature highlights_
-
-### 🤖 AI Assistant in Action
-
-_Real-time streaming chat with voice capabilities and agentic actions_
-
-### 📺 Currently Card
-
-_Curated media shelf with shows, music, books, and streaming links_
-
-### 🎮 Debug Runner Game
-
-_HTML5 Canvas arcade game with mobile touch controls and score persistence_
-
-### 📊 System Monitor
-
-_Live backend health dashboard with API metrics and service status_
-
-### 💻 GitHub Projects Showcase
-
-_Dynamic project cards with real-time stats and fuzzy search_
-
-</div>
-
----
-
-## 🌐 Live Demo
-
-🚀 **[mangeshraut.pro](https://mangeshraut.pro)** — Main portfolio with custom domain
-
-_Alternative deployments: [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) | [Vercel](https://mangeshrautarchive.vercel.app)_
-
----
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-### 🎨 Frontend Technologies
-
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0.9-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Prism.js](https://img.shields.io/badge/Prism.js-Syntax_Highlighting-F7DF1E?style=for-the-badge&logo=prism&logoColor=black)
-![Font Awesome](https://img.shields.io/badge/Font_Awesome-6.x-339AF0?style=for-the-badge&logo=font-awesome&logoColor=white)
-
-### 🖥️ Backend & APIs
-
-![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115.6-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Uvicorn](https://img.shields.io/badge/Uvicorn-0.34.0-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white)
-![Pydantic](https://img.shields.io/badge/Pydantic-2.10.3-E92063?style=for-the-badge&logo=pydantic&logoColor=white)
-![httpx](https://img.shields.io/badge/httpx-0.28.1-000000?style=for-the-badge)
-
-### 🤖 AI & Intelligence
-
-![OpenRouter](https://img.shields.io/badge/OpenRouter-API-0EA5E9?style=for-the-badge)
-![xAI Grok](https://img.shields.io/badge/xAI-Grok_4.1_Fast-111111?style=for-the-badge&logo=xai&logoColor=white)
-![Anthropic Claude](https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge&logo=anthropic&logoColor=white)
-
-### 🧪 Testing & Quality
-
-![Playwright](https://img.shields.io/badge/Playwright-1.58.2-45BA4B?style=for-the-badge&logo=playwright&logoColor=white)
-![Vitest](https://img.shields.io/badge/Vitest-3.0.7-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
-![Lighthouse](https://img.shields.io/badge/Lighthouse-13.0.3-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white)
-![ESLint](https://img.shields.io/badge/ESLint-9.21.0-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
-![Stylelint](https://img.shields.io/badge/Stylelint-16.14.1-263238?style=for-the-badge&logo=stylelint&logoColor=white)
-
-### 🚀 DevOps & Deployment
-
-![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Hosted-181717?style=for-the-badge&logo=github&logoColor=white)
-
-### 📱 Web APIs & Browser Features
-
-- **Web Speech API** — Voice input/output
-- **Canvas API** — Game rendering
-- **Local Storage** — Persistent game scores
-- **Fetch API** — Async data loading
-- **Web Animations API** — Smooth transitions
-- **Build Config Injection** — Deployment-aware API routing for Vercel, custom-domain, and GitHub Pages
-
-### 🔧 Development Tools
-
-![Node.js](https://img.shields.io/badge/Node.js-22+-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![npm](https://img.shields.io/badge/npm-9+-CB3837?style=for-the-badge&logo=npm&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-3.8.1-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
-![Sharp](https://img.shields.io/badge/Sharp-0.33.5-99CC00?style=for-the-badge&logo=sharp&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-1.7.9-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
-
-### 📊 Analytics & Monitoring
-
-![Vercel Analytics](https://img.shields.io/badge/Vercel_Analytics-1.5.0-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![psutil](https://img.shields.io/badge/psutil-7.0.0-3776AB?style=for-the-badge&logo=python&logoColor=white)
-
-</div>
-
----
-
-## 🚀 Quick Start — Let's Get You Running! 💻
-
-### 📋 Prerequisites
-
-Before we dive in, make sure your machine is ready with these awesome tools:
-
-- **Node.js** 22+ and **npm** 9+
-- **Python** 3.12+
-- **Git** for version control
-- 🔑 **OpenRouter API Key** (optional, for AI chatbot features)
-- 🐙 **GitHub Token** (optional, recommended to avoid GitHub API rate limits)
-- 🖼️ **TMDB / Google Books Keys** (optional, only needed if you want to use backend poster lookup endpoints)
-
-### 🛠️ Installation Steps
-
-Ready to run this locally? Let's do it step by step! 🎉
+### Installation
 
 ```bash
-# 1️⃣ Clone this awesome repo
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
-
-# 2️⃣ Install all the Node.js goodies
 npm ci
-
-# 3️⃣ Set up your Python playground
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# 4️⃣ Install Python dependencies
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-
-# 5️⃣ Configure your secrets (optional but recommended)
-cp .env.example .env
-# Open .env and add your API keys:
-# - OPENROUTER_API_KEY (for chatting with AI)
-# - GITHUB_TOKEN (for unlimited GitHub API calls)
-# - TMDB_API_KEY / GOOGLE_BOOKS_API_KEY (optional backend media lookup endpoints only)
-
-# 6️⃣ Launch the development servers! 🚀
+cp .env.example .env  # Add API keys if desired
 npm run dev
 ```
 
-🎯 **What you'll get:**
+Visit `http://localhost:4000` for the frontend and `http://localhost:8001` for the API.
 
-- **Frontend**: `http://localhost:4000` — Your beautiful portfolio
-- **Backend API**: `http://localhost:8001` — The brain behind the magic
+## Project Architecture
 
-### Alternative: Run Servers Separately
-
-```bash
-# Frontend only (port 4000)
-npm run dev:frontend
-
-# Backend only (port 8001)
-npm run dev:backend
 ```
-
-### Deployment Routing Notes
-
-- **Localhost** uses the frontend proxy and same-origin `/api`
-- **Vercel + custom domain** use same-origin `/api`
-- **GitHub Pages** loads `build-config.json` and points interactive features, chat, music, and System Monitor at the live Vercel/custom-domain API origin
-
-### Production Build
-
-```bash
-# Build optimized production assets
-npm run build
-
-# Serve the built dist/ directory locally
-npm run serve:dist
-
-# Rebuild Tailwind CSS only
-npm run build:css
-```
-
----
-
-## 📂 Project Structure
-
-```text
 mangeshrautarchive/
-├── api/                        # FastAPI backend + serverless handlers
-│   ├── integrations/           # External connector helpers
-│   └── legacy/                 # Legacy JS handlers kept for compatibility
-├── src/                        # Frontend source
-│   ├── assets/                 # CSS, images, icons, downloadable files
-│   │   └── images/currently/   # Curated local artwork for the Currently card
-│   └── js/
-│       ├── core/               # App bootstrap + orchestration
-│       ├── modules/            # Feature modules
-│       ├── services/           # Shared runtime services
-│       ├── components/         # Reusable UI components
-│       └── utils/              # Small focused helpers
-├── scripts/                    # Build/dev/QA/security scripts
-│   └── shell/                  # Shell wrappers for local workflows
-├── tests/e2e/                  # Playwright smoke + a11y + post-deploy checks
-├── .github/workflows/          # CI/CD and monitoring workflows
-├── package.json                # Node scripts/dependencies
-├── package-lock.json           # Reproducible npm installs (required by npm ci)
-├── .dockerignore               # Pruned Docker build context
-└── requirements.txt            # Python dependencies
+├── api/              # FastAPI backend and integrations
+├── src/              # Frontend source files
+│   ├── assets/       # Styles, images, and media
+│   └── js/           # Modular JavaScript architecture
+│       ├── core/     # Bootstrap and configuration
+│       ├── modules/  # Feature implementations
+│       └── services/ # Shared utilities
+├── scripts/          # Build and quality scripts
+├── tests/            # End-to-end tests
+└── dist/             # Production build output
 ```
 
-### Structure Rules
+## Links
 
-- Keep startup wiring in `src/js/core/bootstrap.js`.
-- Add product behavior under `src/js/modules/*`.
-- Keep shared primitives in `src/js/services/*` and UI pieces in `src/js/components/*`.
-- Keep generated output (`dist/`, `artifacts/`, `test-results/`) out of commits.
+- [Live Portfolio](https://mangeshraut.pro) - Primary deployment
+- [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) - Static version
+- [System Monitor](https://mangeshraut.pro/monitor.html) - Backend health dashboard
+- [LinkedIn](https://linkedin.com/in/mangeshraut71298)
+- [GitHub](https://github.com/mangeshraut712)
 
----
+## License
 
-## 📜 Available Scripts
+MIT License - see [LICENSE](LICENSE) for details.
 
-| Command                         | Description                              |
-| ------------------------------- | ---------------------------------------- |
-| `npm run dev`                   | 🚀 Start full stack (frontend + backend) |
-| `npm run dev:frontend`          | 🎨 Start frontend only (port 4000)       |
-| `npm run dev:backend`           | 🔧 Start backend only (port 8001)        |
-| `npm run build`                 | 📦 Build production assets               |
-| `npm run serve:dist`            | 🌐 Serve built assets locally            |
-| `npm run lint`                  | 🔍 Run ESLint checks                     |
-| `npm run lint:fix`              | ✨ Auto-fix linting issues               |
-| `npm run lint:css`              | 🎨 Run Stylelint for CSS                 |
-| `npm run test`                  | 🧪 Run Vitest tests                      |
-| `npm run qa:smoke`              | 🌐 Playwright smoke tests                |
-| `npm run qa:smoke:mobile`       | 📱 Playwright mobile smoke tests         |
-| `npm run qa:a11y`               | ♿ Accessibility checks                  |
-| `npm run qa:lighthouse:desktop` | ⚡ Lighthouse desktop perf               |
-| `npm run qa:lighthouse:mobile`  | 📱 Lighthouse mobile perf                |
-| `npm run qa:postdeploy`         | 🚀 Post-deploy production checks         |
-| `npm run qa:prod-ready`         | 🛡️ Full pre-release checks               |
-| `npm run clean`                 | 🧽 Remove build artifacts                |
-| `npm run format:check`          | 🧾 Check Prettier formatting             |
-
----
-
-## 🤝 Contributing — Join the Fun! 🌟
-
-Love this project? Want to make it even better? **Contributions are super welcome!** 🎉 Whether it's bug fixes, new features, or just improving the docs—I'm all ears!
-
-Check out the [issues page](https://github.com/mangeshraut712/mangeshrautarchive/issues) for ideas, or create your own!
-
-### 🚀 How to Contribute
-
-1. **🍴 Fork** this repository
-2. **🌿 Create** your feature branch: `git checkout -b feature/amazing-feature`
-3. **💻 Make** your awesome changes
-4. **✅ Commit** with a clear message: `git commit -m 'Add some amazing feature'`
-5. **📤 Push** to your branch: `git push origin feature/amazing-feature`
-6. **🔄 Open** a Pull Request and let's chat!
-
-### Code Style Guidelines
-
-- Follow existing code formatting
-- Run `npm run lint:fix` before committing
-- Write clear, descriptive commit messages
-- Add comments for complex logic
-- Update documentation for new features
-
----
-
-## 📄 License — Let's Share the Love! ❤️
-
-This project is proudly licensed under the **MIT License** - check out the [LICENSE](LICENSE) file for all the legal details.
-
-**🎁 You're free to:**
-
-- Use this code for your own portfolio projects
-- Fork, modify, and distribute
-- Build awesome things on top of it
-
-**🤝 Just remember to:**
-
-- Give credit where credit's due (a shoutout is always nice!)
-- Don't present it as entirely your own work
-- Add your personal touch to make it unique
-
-**Happy coding!** 🚀
-
----
-
-## 🙏 Acknowledgments — A Huge Thank You! 🙌
-
-This project wouldn't be possible without these amazing open-source projects and services:
-
-- **🚀 FastAPI** & **🐍 Python** — For the blazing-fast backend
-- **🎨 Tailwind CSS** — Making the UI look gorgeous
-- **🤖 OpenRouter, xAI, & Anthropic** — Powering the AI magic
-- **📊 Last.fm & GitHub APIs** — Feeding real data
-- **🧪 Playwright, Lighthouse, & friends** — Keeping quality high
-- **🌐 Vercel & GitHub Pages** — Hosting this beauty
-- **☕ And countless others...** You know who you are! ❤️
-
-**Extra special thanks to the open-source community for making development so much fun!** 🎉
-
----
-
-<div align="center">
-
-### ⭐ Loved it? Show some love! ⭐
-
-If this portfolio inspired you or made you smile, please give it a **star** on GitHub! 🌟 It means the world to me!
-
-**Let's Connect! 🤝**
-
-- [🌐 Portfolio](https://mangeshraut.pro) — See it live!
-- [💼 LinkedIn](https://linkedin.com/in/mangeshraut71298) — Professional me
-- [🐙 GitHub](https://github.com/mangeshraut712) — More code adventures
-- [📸 Snapchat](https://snapchat.com/t/nk1K673G) — Casual chats
-- [📧 Email](mailto:mbr63@drexel.edu) — Drop a line
-
----
-
-**© 2026 Mangesh Raut • Crafted with ❤️ and ☕ in Pennsylvania • Powered by Open Source Magic ✨**
-
-[↑ Back to Top](#-welcome-to-mangesh-rauts-ai-powered-portfolio-)
-
-</div>
+© 2026 Mangesh Raut. Crafted in Pennsylvania with precision and innovation.

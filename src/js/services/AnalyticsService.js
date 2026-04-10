@@ -25,8 +25,13 @@ class AnalyticsService {
     this._track = null;
     this._queue = [];
     this._initialized = false;
+    this._handleReady = () => this._init();
 
-    // Defer init to next tick so the Vercel script has time to load
+    if (typeof window !== 'undefined') {
+      window.addEventListener('vercel-analytics-ready', this._handleReady);
+      window.addEventListener('load', () => this._init(), { once: true });
+    }
+
     setTimeout(() => this._init(), 500);
   }
 
@@ -51,8 +56,13 @@ class AnalyticsService {
 
   _sendEvent(name, properties = {}) {
     if (!this._track) {
-      // Queue for when analytics loads, or silently drop
-      this._queue.push([name, properties]);
+      this._init();
+    }
+
+    if (!this._track) {
+      if (this._queue.length < 50) {
+        this._queue.push([name, properties]);
+      }
       return;
     }
     try {

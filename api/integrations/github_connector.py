@@ -152,28 +152,6 @@ class GitHubConnector:
             print(f"Error fetching GitHub repos: {e}")
             return []
 
-    async def get_repository_languages(self, owner: str, repo: str) -> Dict[str, int]:
-        """Get programming languages used in a repository"""
-        cache_key = f"languages:{owner}:{repo}"
-
-        if self._is_cached(cache_key):
-            return self.cache[cache_key]['data']
-
-        url = f"{self.base_url}/repos/{owner}/{repo}/languages"
-
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(url, headers=self.headers, timeout=10.0)
-                response.raise_for_status()
-                languages = response.json()
-
-                self._cache_data(cache_key, languages)
-                return languages
-
-        except httpx.HTTPError as e:
-            print(f"Error fetching repo languages: {e}")
-            return {}
-
     async def get_user_activity_summary(self, username: str = "mangeshraut712") -> Dict[str, Any]:
         """
         Get a comprehensive summary of user's GitHub activity
@@ -323,11 +301,6 @@ class GitHubConnector:
             return update_time > threshold
         except BaseException:
             return False
-
-    def clear_cache(self):
-        """Clear all cached data"""
-        self.cache = {}
-
 
 # Singleton instance
 github_connector = GitHubConnector()

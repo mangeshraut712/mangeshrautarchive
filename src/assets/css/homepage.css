@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  background: var(--bg-primary);
+  background: #fff;
 
   /* Account for navbar */
 
@@ -234,7 +234,7 @@ html.dark .hero-social-link:hover {
 
 .hero-section {
   overflow: hidden;
-  background: radial-gradient(circle at 50% -10%, rgb(90 200 250 / 3%), transparent 60%);
+  background: transparent;
 }
 
 .hero-layout-wrapper {
@@ -281,13 +281,19 @@ html.dark #home .profile-image {
 }
 
 .profile-ring {
-  inset: -15px;
+  inset: -6px;
   border-radius: 50%;
-  border: 0;
-  background: radial-gradient(circle, rgb(0 113 227 / 8%) 0%, transparent 70%);
-  filter: blur(20px);
-  z-index: -1;
-  animation: spatialPulse 4s ease-in-out infinite;
+  border: 2px solid rgb(0 113 227 / 16%);
+  background: none;
+  filter: none;
+  opacity: 1;
+  z-index: 1;
+  pointer-events: none;
+  animation: none;
+}
+
+html.dark .profile-ring {
+  border-color: rgb(255 255 255 / 12%);
 }
 
 @keyframes spatialPulse {

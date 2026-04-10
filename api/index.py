@@ -385,11 +385,6 @@ class ChatRequest(BaseModel):
     model: Optional[str] = None  # Allow model selection
 
 
-class MessageReaction(BaseModel):
-    message_id: str
-    reaction: str  # emoji reaction
-
-
 class TypingIndicator(BaseModel):
     session_id: str
     is_typing: bool
@@ -454,53 +449,9 @@ def update_session_memory(session_id: str, user_msg: str, assistant_msg: str):
     memory["last_access"] = time.time()
 
 
-# Cache with TTL
-response_cache = {}
-CACHE_DURATION = 300  # 5 minutes
-
 # Poster cache - longer TTL since images don't change often
 poster_cache = {}
 POSTER_CACHE_DURATION = 86400  # 24 hours
-
-
-# Helper Functions
-def get_cache_key(message: str, session_id: Optional[str] = None) -> str:
-    """Session-aware cache key so personalised context isn't shared between users."""
-    base = message.strip().lower()[:100]
-    if session_id:
-        return f"chat:{session_id[:8]}:{base}"
-    return f"chat:anon:{base}"
-
-
-def get_cached_response(cache_key: str):
-    cached = response_cache.get(cache_key)
-    if not cached:
-        return None
-
-    if time.time() - cached["timestamp"] > CACHE_DURATION:
-        del response_cache[cache_key]
-        return None
-
-    print(f"🚀 Cache hit: {cache_key}")
-    return cached["response"]
-
-
-def set_cached_response(cache_key: str, response: Dict):
-    if not response.get("answer") or len(response["answer"]) < 10:
-        return
-
-    response_cache[cache_key] = {
-        "response": {**response, "cached": True},
-        "timestamp": time.time(),
-    }
-
-    # Cleanup old entries
-    if len(response_cache) > 100:
-        sorted_keys = sorted(
-            response_cache.keys(), key=lambda k: response_cache[k]["timestamp"]
-        )
-        for k in sorted_keys[:50]:
-            del response_cache[k]
 
 
 # Poster fetching functions
@@ -1458,10 +1409,6 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         if session_id:
             update_session_memory(session_id, message, response["answer"])
 
-        # Cache the response (session-aware key to avoid cross-user pollution)
-        cache_key = get_cache_key(message, session_id)
-        set_cached_response(cache_key, result)
-
         return result
 
     except HTTPException:
@@ -1490,7 +1437,11 @@ async def get_models():
 @app.post("/api/typing")
 async def typing_indicator(indicator: TypingIndicator):
     """Handle typing indicators (for future WebSocket support)"""
-    return {"status": "received", "session_id": indicator.session_id}
+    return {
+        "status": "received",
+        "session_id": indicator.session_id,
+        "is_typing": indicator.is_typing,
+    }
 
 
 @app.get("/api/conversation/{session_id}")
@@ -1540,7 +1491,6 @@ async def health_check():
             "api_key_configured": bool(OPENROUTER_API_KEY),
             "models_available": len(MODELS),
             "default_model": DEFAULT_MODEL,
-            "cache_size": len(response_cache),
             "active_sessions": len(conversation_memory),
             "rate_limit": f"{RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s",
         },

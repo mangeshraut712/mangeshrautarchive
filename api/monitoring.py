@@ -142,7 +142,6 @@ class SystemMonitor:
 
         # System monitoring
         self.start_time = time.time()
-        self.last_health_check = None
 
         # Poster API tracking
         self.poster_requests = {"success": 0, "failure": 0}
@@ -168,18 +167,6 @@ class SystemMonitor:
         self.security_events = deque(maxlen=200)
         self.suspicious_ips = set()
         self.rate_limits = {}
-        self.failed_login_attempts = {}
-        self.api_key_usage = {}
-
-        # Performance baselines (2026-era feature)
-        self.performance_baselines = {
-            "avg_response_time_ms": 150,
-            "error_rate_threshold": 0.05,  # 5%
-            "memory_usage_threshold": 85,  # 85%
-            "cpu_usage_threshold": 90,  # 90%
-            "max_concurrent_connections": 1000,
-            "max_requests_per_minute": 10000,
-        }
 
         # 2026-era AI monitoring
         self.ai_metrics = {
@@ -488,101 +475,6 @@ class SystemMonitor:
                         {"metric": metric, "value": value},
                         "performance",
                     )
-
-    def track_ai_usage(
-        self, model: str, tokens_used: Dict[str, int], response_time: float
-    ):
-        """Track AI model usage and performance"""
-        self.ai_metrics["openrouter_requests"] += 1
-
-        if model not in self.ai_metrics["model_usage"]:
-            self.ai_metrics["model_usage"][model] = 0
-        self.ai_metrics["model_usage"][model] += 1
-
-        self.ai_metrics["token_usage"]["input"] += tokens_used.get("input", 0)
-        self.ai_metrics["token_usage"]["output"] += tokens_used.get("output", 0)
-
-        self.ai_metrics["ai_response_times"].append(response_time)
-
-        # Check AI performance
-        avg_response_time = sum(self.ai_metrics["ai_response_times"]) / len(
-            self.ai_metrics["ai_response_times"]
-        )
-        if avg_response_time > 5000:  # 5 seconds
-            self.log_event(
-                f"🐌 Slow AI responses: {avg_response_time:.0f}ms average",
-                EventType.WARNING,
-                {"avg_response_time": avg_response_time},
-            )
-
-    def check_security_threats(self, request: Request, response_time: float) -> bool:
-        """Check for security threats and suspicious activity"""
-        client_ip = request.client.host if request.client else "unknown"
-        user_agent = request.headers.get("user-agent", "")
-        path = request.url.path
-
-        # Check for suspicious patterns
-        suspicious_patterns = [
-            "union select",
-            "script",
-            "eval(",
-            "base64",
-            "../../../",
-            "..\\..\\",
-            "<script",
-            "javascript:",
-            "admin",
-            "wp-admin",
-            "phpmyadmin",
-        ]
-
-        is_suspicious = any(
-            pattern in path.lower() or pattern in str(request.query_params).lower()
-            for pattern in suspicious_patterns
-        )
-
-        if is_suspicious:
-            self.security_events.append(
-                {
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                    "ip": client_ip,
-                    "user_agent": user_agent,
-                    "path": path,
-                    "type": "suspicious_request",
-                    "response_time": response_time,
-                }
-            )
-
-            self.suspicious_ips.add(client_ip)
-            self.log_event(
-                f"🛡️ Suspicious request blocked from {client_ip}",
-                EventType.CRITICAL,
-                {"ip": client_ip, "path": path},
-            )
-            return True
-
-        # Rate limiting check
-        current_minute = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-        if client_ip not in self.rate_limits:
-            self.rate_limits[client_ip] = {}
-
-        if current_minute not in self.rate_limits[client_ip]:
-            self.rate_limits[client_ip][current_minute] = 0
-
-        self.rate_limits[client_ip][current_minute] += 1
-
-        if self.rate_limits[client_ip][current_minute] > 100:  # 100 requests per minute
-            self.log_event(
-                f"🚫 Rate limit exceeded for {client_ip}",
-                EventType.WARNING,
-                {
-                    "ip": client_ip,
-                    "requests_per_minute": self.rate_limits[client_ip][current_minute],
-                },
-            )
-            return True
-
-        return False
 
     async def _check_openrouter(self) -> bool:
         """Check if OpenRouter API is accessible."""
