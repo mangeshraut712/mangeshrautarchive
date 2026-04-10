@@ -1,621 +1,692 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <title>System Monitor | AssistMe Dashboard</title>
-    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css">
-    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css">
-    <link rel="stylesheet" href="assets/css/monitor.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="monitor-page">
-    <nav id="global-nav" class="global-nav dynamic-island monitor-nav" aria-label="Primary navigation">
-        <div class="nav-container">
-            <div class="nav-left">
-                <a class="nav-logo" href="index.html#home" aria-label="Mangesh Raut home">
-                    <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32">
-                </a>
-            </div>
-            <div class="monitor-nav-title" aria-label="Current page">
-                <span class="monitor-nav-kicker">Operations</span>
-                <span class="monitor-nav-label">System Monitor</span>
-            </div>
-            <div class="nav-actions">
-                <button id="theme-toggle" class="theme-toggle-nav" aria-label="Toggle theme" type="button">
-                    <span id="theme-toggle-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Toggle theme</span>
-                </button>
-                <button id="menu-btn" class="menu-toggle-button" type="button" aria-label="Open navigation menu"
-                    aria-controls="overlay-menu" aria-expanded="false">
-                    <i class="fas fa-bars menu-toggle-icon" aria-hidden="true"></i>
-                </button>
-            </div>
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem('theme');
+        const isDark = savedTheme === 'dark';
+        document.documentElement.classList.toggle('dark', isDark);
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        document.documentElement.style.backgroundColor = isDark ? '#000000' : '#ffffff';
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css" />
+    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css" />
+    <link rel="stylesheet" href="assets/css/monitor.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="monitor-page">
+    <nav
+      id="global-nav"
+      class="global-nav dynamic-island monitor-nav"
+      aria-label="Primary navigation"
+    >
+      <div class="nav-container">
+        <div class="nav-left">
+          <a class="nav-logo" href="index.html#home" aria-label="Mangesh Raut home">
+            <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32" />
+          </a>
         </div>
+        <div class="monitor-nav-title" aria-label="Current page">
+          <span class="monitor-nav-kicker">Operations</span>
+          <span class="monitor-nav-label">System Monitor</span>
+        </div>
+        <div class="nav-actions">
+          <button
+            id="theme-toggle"
+            class="theme-toggle-nav"
+            aria-label="Toggle theme"
+            type="button"
+          >
+            <span id="theme-toggle-icon" aria-hidden="true"></span>
+            <span class="sr-only">Toggle theme</span>
+          </button>
+          <button
+            id="menu-btn"
+            class="menu-toggle-button"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="overlay-menu"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars menu-toggle-icon" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </nav>
 
-    <div id="overlay-menu" class="overlay-menu" role="dialog" aria-modal="true" aria-hidden="true" inert style="display: none !important;"
-        aria-label="Site navigation">
-        <button id="close-menu-btn" class="premium-close-btn" type="button" aria-label="Close navigation menu">
-            <i class="fas fa-times"></i>
-        </button>
+    <div
+      id="overlay-menu"
+      class="overlay-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      inert
+      style="display: none !important"
+      aria-label="Site navigation"
+    >
+      <button
+        id="close-menu-btn"
+        class="premium-close-btn"
+        type="button"
+        aria-label="Close navigation menu"
+      >
+        <i class="fas fa-times"></i>
+      </button>
 
-        <div class="overlay-menu-content">
-            <div class="menu-grid">
-                <a href="#overview" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-wave-square"></i></div>
-                    <span>Overview</span>
-                </a>
-                <a href="#health-checks-section" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-stethoscope"></i></div>
-                    <span>Health Checks</span>
-                </a>
-                <a href="#endpoint-metrics-section" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-chart-line"></i></div>
-                    <span>Metrics</span>
-                </a>
-                <a href="#deployment-surfaces-section" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-globe"></i></div>
-                    <span>Deployments</span>
-                </a>
-                <a href="#event-log-section" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-list"></i></div>
-                    <span>Event Log</span>
-                </a>
-                <a href="#api-docs-section" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-book-open"></i></div>
-                    <span>API Docs</span>
-                </a>
-                <a href="index.html#projects" class="menu-item">
-                    <div class="premium-menu-icon"><i class="fas fa-arrow-left"></i></div>
-                    <span>Back to Portfolio</span>
-                </a>
-            </div>
+      <div class="overlay-menu-content">
+        <div class="menu-grid">
+          <a href="#overview" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-wave-square"></i></div>
+            <span>Overview</span>
+          </a>
+          <a href="#health-checks-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-stethoscope"></i></div>
+            <span>Health Checks</span>
+          </a>
+          <a href="#endpoint-metrics-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-chart-line"></i></div>
+            <span>Metrics</span>
+          </a>
+          <a href="#deployment-surfaces-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-globe"></i></div>
+            <span>Deployments</span>
+          </a>
+          <a href="#event-log-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-list"></i></div>
+            <span>Event Log</span>
+          </a>
+          <a href="#api-docs-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-book-open"></i></div>
+            <span>API Docs</span>
+          </a>
+          <a href="index.html#projects" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-arrow-left"></i></div>
+            <span>Back to Portfolio</span>
+          </a>
         </div>
+      </div>
     </div>
 
     <header class="monitor-header" id="overview">
-        <div class="header-content">
-            <div class="header-title">
-                <div class="monitor-hero-icon">
-                    <i class="fas fa-heart-pulse" aria-hidden="true"></i>
-                </div>
-                <div>
-                    <p class="monitor-eyebrow">Operations</p>
-                    <h1>System Monitor</h1>
-                    <p class="monitor-subtitle">Real-time diagnostics for backend health, provider APIs, and deployed portfolio surfaces.</p>
-                    <span id="overall-status" class="status-badge healthy">
-                        <span class="status-dot"></span>
-                        All Systems Operational
-                    </span>
-                </div>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="refreshData()">
-                    <i class="fas fa-rotate"></i>
-                    Refresh
-                </button>
-                <a class="btn btn-secondary" href="index.html#projects">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Portfolio
-                </a>
-            </div>
+      <div class="header-content">
+        <div class="header-title">
+          <div class="monitor-hero-icon">
+            <i class="fas fa-heart-pulse" aria-hidden="true"></i>
+          </div>
+          <div>
+            <p class="monitor-eyebrow">Operations</p>
+            <h1>System Monitor</h1>
+            <p class="monitor-subtitle">
+              Real-time diagnostics for backend health, provider APIs, and deployed portfolio
+              surfaces.
+            </p>
+            <span id="overall-status" class="status-badge healthy">
+              <span class="status-dot"></span>
+              All Systems Operational
+            </span>
+          </div>
         </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="refreshData()">
+            <i class="fas fa-rotate"></i>
+            Refresh
+          </button>
+          <a class="btn btn-secondary" href="index.html#projects">
+            <i class="fas fa-arrow-left"></i>
+            Back to Portfolio
+          </a>
+        </div>
+      </div>
     </header>
 
     <main class="monitor-container">
-        <section class="monitor-summary-card" id="monitor-summary-section" aria-label="Monitor summary">
-            <div class="monitor-summary-copy">
-                <p class="monitor-summary-eyebrow">Control Center</p>
-                <h2>Backend status, runtime config, and deployment coverage in one place.</h2>
-                <p id="monitor-summary-text">Loading operational summary…</p>
-                <div class="monitor-summary-chips">
-                    <div class="summary-chip">
-                        <span class="summary-chip-label">Uptime</span>
-                        <strong id="summary-uptime">--</strong>
-                    </div>
-                    <div class="summary-chip">
-                        <span class="summary-chip-label">Last Refresh</span>
-                        <strong id="summary-last-refresh">--</strong>
-                    </div>
-                    <div class="summary-chip">
-                        <span class="summary-chip-label">Open Issues</span>
-                        <strong id="summary-open-issues">--</strong>
-                    </div>
-                    <div class="summary-chip">
-                        <span class="summary-chip-label">Services</span>
-                        <strong id="summary-service-count">--</strong>
-                    </div>
-                </div>
+      <section
+        class="monitor-summary-card"
+        id="monitor-summary-section"
+        aria-label="Monitor summary"
+      >
+        <div class="monitor-summary-copy">
+          <p class="monitor-summary-eyebrow">Control Center</p>
+          <h2>Backend status, runtime config, and deployment coverage in one place.</h2>
+          <p id="monitor-summary-text">Loading operational summary…</p>
+          <div class="monitor-summary-chips">
+            <div class="summary-chip">
+              <span class="summary-chip-label">Uptime</span>
+              <strong id="summary-uptime">--</strong>
             </div>
-            <div class="monitor-summary-panel" id="runtime-snapshot-card">
-                <div class="empty-state compact">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <h3>Loading runtime snapshot...</h3>
-                </div>
+            <div class="summary-chip">
+              <span class="summary-chip-label">Last Refresh</span>
+              <strong id="summary-last-refresh">--</strong>
             </div>
-        </section>
+            <div class="summary-chip">
+              <span class="summary-chip-label">Open Issues</span>
+              <strong id="summary-open-issues">--</strong>
+            </div>
+            <div class="summary-chip">
+              <span class="summary-chip-label">Services</span>
+              <strong id="summary-service-count">--</strong>
+            </div>
+          </div>
+        </div>
+        <div class="monitor-summary-panel" id="runtime-snapshot-card">
+          <div class="empty-state compact">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading runtime snapshot...</h3>
+          </div>
+        </div>
+      </section>
 
-        <!-- Overview Cards -->
-        <div class="overview-grid">
-            <div class="overview-card">
-                <div class="overview-card-header">
-                    <div class="overview-icon blue" id="backend-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <span class="overview-label">Backend Status</span>
-                </div>
-                <div class="overview-value" id="backend-status">Checking...</div>
-                <div class="overview-subtext" id="backend-detail">API endpoints</div>
+      <!-- Overview Cards -->
+      <div class="overview-grid">
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <div class="overview-icon blue" id="backend-icon">
+              <i class="fas fa-server"></i>
             </div>
-
-            <div class="overview-card">
-                <div class="overview-card-header">
-                    <div class="overview-icon green">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <span class="overview-label">Success Rate</span>
-                </div>
-                <div class="overview-value" id="success-rate">--%</div>
-                <div class="overview-subtext">API requests successful</div>
-            </div>
-
-            <div class="overview-card">
-                <div class="overview-card-header">
-                    <div class="overview-icon yellow">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <span class="overview-label">Avg Response</span>
-                </div>
-                <div class="overview-value" id="avg-response">--ms</div>
-                <div class="overview-subtext">Last 24 hours</div>
-            </div>
-
-            <div class="overview-card">
-                <div class="overview-card-header">
-                    <div class="overview-icon red" id="errors-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <span class="overview-label">Errors</span>
-                </div>
-                <div class="overview-value" id="error-count">--</div>
-                <div class="overview-subtext">Total failed requests</div>
-            </div>
+            <span class="overview-label">Backend Status</span>
+          </div>
+          <div class="overview-value" id="backend-status">Checking...</div>
+          <div class="overview-subtext" id="backend-detail">API endpoints</div>
         </div>
 
-        <!-- Health Checks -->
-        <section class="section" id="health-checks-section">
-            <div class="section-header">
-                <h2 class="section-title">Health Checks</h2>
-                <div class="section-actions">
-                    <button class="btn btn-secondary" onclick="runHealthChecks()">
-                        <i class="fas fa-stethoscope"></i>
-                        Run Checks
-                    </button>
-                </div>
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <div class="overview-icon green">
+              <i class="fas fa-check-circle"></i>
             </div>
-            <div class="health-grid" id="health-checks">
-                <div class="empty-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <h3>Loading health checks...</h3>
-                </div>
-            </div>
-        </section>
+            <span class="overview-label">Success Rate</span>
+          </div>
+          <div class="overview-value" id="success-rate">--%</div>
+          <div class="overview-subtext">API requests successful</div>
+        </div>
 
-        <!-- Endpoint Metrics -->
-        <section class="section" id="endpoint-metrics-section">
-            <div class="section-header">
-                <h2 class="section-title">API Endpoint Metrics</h2>
-                <div class="section-actions">
-                    <button class="btn btn-secondary" onclick="exportMetrics()">
-                        <i class="fas fa-download"></i>
-                        Export JSON
-                    </button>
-                </div>
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <div class="overview-icon yellow">
+              <i class="fas fa-bolt"></i>
             </div>
-            <div style="overflow-x: auto;">
-                <table class="metrics-table">
-                    <thead>
-                        <tr>
-                            <th>Endpoint</th>
-                            <th>Method</th>
-                            <th>Requests</th>
-                            <th>Success Rate</th>
-                            <th>Avg Response</th>
-                            <th>Last Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="metrics-table-body">
-                        <tr>
-                            <td colspan="6" class="empty-state">
-                                <i class="fas fa-spinner fa-spin"></i>
-                                <h3>Loading metrics...</h3>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+            <span class="overview-label">Avg Response</span>
+          </div>
+          <div class="overview-value" id="avg-response">--ms</div>
+          <div class="overview-subtext">Last 24 hours</div>
+        </div>
 
-        <!-- External APIs Status -->
-        <section class="section" id="external-services-section">
-            <div class="section-header">
-                <h2 class="section-title">Provider APIs</h2>
-                <div class="section-actions">
-                    <button class="btn btn-secondary" onclick="checkExternalApis()">
-                        <i class="fas fa-sync"></i>
-                        Refresh Providers
-                    </button>
-                </div>
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <div class="overview-icon red" id="errors-icon">
+              <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <div class="health-grid" id="external-apis">
-                <div class="empty-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <h3>Checking service integrations...</h3>
-                </div>
-            </div>
-        </section>
+            <span class="overview-label">Errors</span>
+          </div>
+          <div class="overview-value" id="error-count">--</div>
+          <div class="overview-subtext">Total failed requests</div>
+        </div>
+      </div>
 
-        <section class="section" id="deployment-surfaces-section">
-            <div class="section-header">
-                <h2 class="section-title">Deployment Surfaces</h2>
-                <div class="section-actions">
-                    <button class="btn btn-secondary" onclick="refreshHostingSurfaces()">
-                        <i class="fas fa-globe"></i>
-                        Refresh Surfaces
-                    </button>
-                </div>
-            </div>
-            <div class="health-grid" id="deployment-surfaces">
-                <div class="empty-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <h3>Checking deployment surfaces...</h3>
-                </div>
-            </div>
-        </section>
+      <!-- Health Checks -->
+      <section class="section" id="health-checks-section">
+        <div class="section-header">
+          <h2 class="section-title">Health Checks</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="runHealthChecks()">
+              <i class="fas fa-stethoscope"></i>
+              Run Checks
+            </button>
+          </div>
+        </div>
+        <div class="health-grid" id="health-checks">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading health checks...</h3>
+          </div>
+        </div>
+      </section>
 
-        <section class="section" id="api-docs-section">
-            <div class="section-header">
-                <h2 class="section-title">API Docs & References</h2>
-            </div>
-            <div class="docs-grid" id="monitor-docs-grid">
-                <div class="empty-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <h3>Loading API references...</h3>
-                </div>
-            </div>
-        </section>
+      <!-- Endpoint Metrics -->
+      <section class="section" id="endpoint-metrics-section">
+        <div class="section-header">
+          <h2 class="section-title">API Endpoint Metrics</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="exportMetrics()">
+              <i class="fas fa-download"></i>
+              Export JSON
+            </button>
+          </div>
+        </div>
+        <div style="overflow-x: auto">
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Endpoint</th>
+                <th>Method</th>
+                <th>Requests</th>
+                <th>Success Rate</th>
+                <th>Avg Response</th>
+                <th>Last Status</th>
+              </tr>
+            </thead>
+            <tbody id="metrics-table-body">
+              <tr>
+                <td colspan="6" class="empty-state">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <h3>Loading metrics...</h3>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-        <!-- Event Log -->
-        <section class="section" id="event-log-section">
-            <div class="section-header">
-                <h2 class="section-title">Event Log</h2>
-                <div class="section-actions">
-                    <select class="btn btn-secondary" id="event-filter" onchange="filterEvents()">
-                        <option value="">All Events</option>
-                        <option value="critical">Critical</option>
-                        <option value="error">Errors</option>
-                        <option value="warning">Warnings</option>
-                        <option value="info">Info</option>
-                    </select>
-                    <button class="btn btn-secondary" onclick="clearResolved()">
-                        <i class="fas fa-check-double"></i>
-                        Clear Resolved
-                    </button>
-                </div>
-            </div>
-            <div class="event-list" id="event-list">
-                <div class="empty-state">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <h3>Loading events...</h3>
-                </div>
-            </div>
-        </section>
+      <!-- External APIs Status -->
+      <section class="section" id="external-services-section">
+        <div class="section-header">
+          <h2 class="section-title">Provider APIs</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="checkExternalApis()">
+              <i class="fas fa-sync"></i>
+              Refresh Providers
+            </button>
+          </div>
+        </div>
+        <div class="health-grid" id="external-apis">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Checking service integrations...</h3>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="deployment-surfaces-section">
+        <div class="section-header">
+          <h2 class="section-title">Deployment Surfaces</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="refreshHostingSurfaces()">
+              <i class="fas fa-globe"></i>
+              Refresh Surfaces
+            </button>
+          </div>
+        </div>
+        <div class="health-grid" id="deployment-surfaces">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Checking deployment surfaces...</h3>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="api-docs-section">
+        <div class="section-header">
+          <h2 class="section-title">API Docs & References</h2>
+        </div>
+        <div class="docs-grid" id="monitor-docs-grid">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading API references...</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- Event Log -->
+      <section class="section" id="event-log-section">
+        <div class="section-header">
+          <h2 class="section-title">Event Log</h2>
+          <div class="section-actions">
+            <select class="btn btn-secondary" id="event-filter" onchange="filterEvents()">
+              <option value="">All Events</option>
+              <option value="critical">Critical</option>
+              <option value="error">Errors</option>
+              <option value="warning">Warnings</option>
+              <option value="info">Info</option>
+            </select>
+            <button class="btn btn-secondary" onclick="clearResolved()">
+              <i class="fas fa-check-double"></i>
+              Clear Resolved
+            </button>
+          </div>
+        </div>
+        <div class="event-list" id="event-list">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading events...</h3>
+          </div>
+        </div>
+      </section>
     </main>
 
     <div class="toast-container" id="toast-container"></div>
 
     <script src="js/utils/theme.js"></script>
     <script>
-        const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshraut.pro';
-        const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
-        let monitorConfig = null;
-        let apiOrigin = '';
-        let lastRefreshIso = null;
+      const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshraut.pro';
+      const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
+      let monitorConfig = null;
+      let apiOrigin = '';
+      let lastRefreshIso = null;
 
-        function normalizeOrigin(rawValue, fallback = '') {
-            if (!rawValue) return fallback;
+      function normalizeOrigin(rawValue, fallback = '') {
+        if (!rawValue) return fallback;
 
-            try {
-                const parsed = new URL(String(rawValue).trim(), window.location.origin);
-                return parsed.origin;
-            } catch {
-                return fallback;
-            }
+        try {
+          const parsed = new URL(String(rawValue).trim(), window.location.origin);
+          return parsed.origin;
+        } catch {
+          return fallback;
+        }
+      }
+
+      async function loadPublicConfig() {
+        try {
+          const response = await fetch(new URL('./build-config.json', window.location.href), {
+            cache: 'no-store',
+          });
+          if (!response.ok) return null;
+          return await response.json();
+        } catch {
+          return null;
+        }
+      }
+
+      function resolveApiOrigin(config) {
+        const hostname = window.location.hostname || '';
+
+        if (LOCAL_HOSTS.has(hostname)) {
+          return '';
         }
 
-        async function loadPublicConfig() {
-            try {
-                const response = await fetch(new URL('./build-config.json', window.location.href), {
-                    cache: 'no-store'
-                });
-                if (!response.ok) return null;
-                return await response.json();
-            } catch {
-                return null;
-            }
+        if (hostname.includes('github.io')) {
+          return normalizeOrigin(config?.apiBaseUrl, REMOTE_API_FALLBACK_ORIGIN);
         }
 
-        function resolveApiOrigin(config) {
-            const hostname = window.location.hostname || '';
+        return '';
+      }
 
-            if (LOCAL_HOSTS.has(hostname)) {
-                return '';
-            }
+      function buildApiUrl(path) {
+        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+        return apiOrigin ? `${apiOrigin}${normalizedPath}` : normalizedPath;
+      }
 
-            if (hostname.includes('github.io')) {
-                return normalizeOrigin(config?.apiBaseUrl, REMOTE_API_FALLBACK_ORIGIN);
-            }
+      function toAbsoluteApiLink(path) {
+        if (!path) return '#';
+        return buildApiUrl(path.startsWith('/api/') ? path : `/api/${path.replace(/^\/+/, '')}`);
+      }
 
-            return '';
+      async function fetchHealth() {
+        try {
+          const response = await fetch(buildApiUrl('/api/monitor/health'));
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('Health check failed:', error);
+          return null;
+        }
+      }
+
+      async function fetchMetrics() {
+        try {
+          const response = await fetch(buildApiUrl('/api/monitor/metrics'));
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('Metrics fetch failed:', error);
+          return null;
+        }
+      }
+
+      async function fetchExternalServices() {
+        try {
+          const response = await fetch(buildApiUrl('/api/monitor/external-services'));
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('External services fetch failed:', error);
+          return null;
+        }
+      }
+
+      async function fetchStatus() {
+        try {
+          const response = await fetch(buildApiUrl('/api/monitor/status'));
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('Status fetch failed:', error);
+          return null;
+        }
+      }
+
+      async function fetchHostingSurfaces() {
+        try {
+          const response = await fetch(buildApiUrl('/api/monitor/hosting-surfaces'));
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('Hosting surfaces fetch failed:', error);
+          return null;
+        }
+      }
+
+      async function fetchMonitorDocs() {
+        try {
+          const response = await fetch(buildApiUrl('/api/monitor/docs'));
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error('Monitor docs fetch failed:', error);
+          return null;
+        }
+      }
+
+      async function fetchEvents(filter = '') {
+        try {
+          const url = new URL(buildApiUrl('/api/monitor/events'), window.location.origin);
+          if (filter) url.searchParams.set('event_type', filter);
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          return data.events || [];
+        } catch (error) {
+          console.error('Events fetch failed:', error);
+          return [];
+        }
+      }
+
+      async function resolveEvent(eventId) {
+        try {
+          const response = await fetch(buildApiUrl(`/api/monitor/events/${eventId}/resolve`), {
+            method: 'POST',
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          showToast('Event resolved successfully', 'success');
+          refreshData();
+          return true;
+        } catch (error) {
+          console.error('Failed to resolve event:', error);
+          showToast('Failed to resolve event', 'error');
+          return false;
+        }
+      }
+
+      // UI rendering
+      function formatDuration(seconds) {
+        const days = Math.floor(seconds / 86400);
+        const hours = Math.floor((seconds % 86400) / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+
+        if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+        if (hours > 0) return `${hours}h ${minutes}m`;
+        return `${minutes}m`;
+      }
+
+      function formatTimeAgo(isoString) {
+        const date = new Date(isoString);
+        const now = new Date();
+        const diff = Math.floor((now - date) / 1000);
+
+        if (diff < 60) return 'Just now';
+        if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+        if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+        return `${Math.floor(diff / 86400)}d ago`;
+      }
+
+      function escapeHtml(value = '') {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatLocalTime(isoString) {
+        if (!isoString) return '--';
+        const date = new Date(isoString);
+        return new Intl.DateTimeFormat(undefined, {
+          hour: 'numeric',
+          minute: '2-digit',
+          second: '2-digit',
+        }).format(date);
+      }
+
+      function formatConfigLabel(key) {
+        return key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+      }
+
+      function renderSummary(statusData, metricsData, healthData, servicesData, hostingData) {
+        const summaryText = document.getElementById('monitor-summary-text');
+        const uptime = document.getElementById('summary-uptime');
+        const lastRefresh = document.getElementById('summary-last-refresh');
+        const openIssues = document.getElementById('summary-open-issues');
+        const serviceCount = document.getElementById('summary-service-count');
+
+        const unresolvedEvents = metricsData?.summary?.unresolved_events ?? '--';
+        const totalServices =
+          (servicesData?.summary?.total ?? servicesData?.services?.length ?? 0) +
+            (hostingData?.summary?.total ?? hostingData?.surfaces?.length ?? 0) || '--';
+        const uptimeText = statusData?.uptime_human || metricsData?.uptime_human || '--';
+
+        const degradedChecks = (healthData?.checks || []).filter(
+          check => check.status !== 'healthy'
+        ).length;
+        const degradedSurfaces = (hostingData?.surfaces || []).filter(
+          surface => surface.status !== 'healthy'
+        ).length;
+        const errorRate = metricsData?.error_rate ?? 0;
+        const environment = statusData?.environment || 'local';
+
+        if (degradedChecks > 0 || degradedSurfaces > 0) {
+          summaryText.textContent = `${degradedChecks} backend checks and ${degradedSurfaces} deployment surfaces need attention. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
+        } else {
+          summaryText.textContent = `Backend, provider APIs, and deployment surfaces are responding normally. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
         }
 
-        function buildApiUrl(path) {
-            const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-            return apiOrigin ? `${apiOrigin}${normalizedPath}` : normalizedPath;
-        }
+        uptime.textContent = uptimeText;
+        lastRefresh.textContent = formatLocalTime(lastRefreshIso);
+        openIssues.textContent = String(unresolvedEvents);
+        serviceCount.textContent = String(totalServices);
+      }
 
-        function toAbsoluteApiLink(path) {
-            if (!path) return '#';
-            return buildApiUrl(path.startsWith('/api/') ? path : `/api/${path.replace(/^\/+/, '')}`);
-        }
+      function renderRuntimeSnapshot(data) {
+        const container = document.getElementById('runtime-snapshot-card');
+        const runtime = data?.runtime || data?.runtime_config || null;
 
-        async function fetchHealth() {
-            try {
-                const response = await fetch(buildApiUrl('/api/monitor/health'));
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error('Health check failed:', error);
-                return null;
-            }
-        }
-
-        async function fetchMetrics() {
-            try {
-                const response = await fetch(buildApiUrl('/api/monitor/metrics'));
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error('Metrics fetch failed:', error);
-                return null;
-            }
-        }
-
-        async function fetchExternalServices() {
-            try {
-                const response = await fetch(buildApiUrl('/api/monitor/external-services'));
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error('External services fetch failed:', error);
-                return null;
-            }
-        }
-
-        async function fetchStatus() {
-            try {
-                const response = await fetch(buildApiUrl('/api/monitor/status'));
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error('Status fetch failed:', error);
-                return null;
-            }
-        }
-
-        async function fetchHostingSurfaces() {
-            try {
-                const response = await fetch(buildApiUrl('/api/monitor/hosting-surfaces'));
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error('Hosting surfaces fetch failed:', error);
-                return null;
-            }
-        }
-
-        async function fetchMonitorDocs() {
-            try {
-                const response = await fetch(buildApiUrl('/api/monitor/docs'));
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error('Monitor docs fetch failed:', error);
-                return null;
-            }
-        }
-
-        async function fetchEvents(filter = '') {
-            try {
-                const url = new URL(buildApiUrl('/api/monitor/events'), window.location.origin);
-                if (filter) url.searchParams.set('event_type', filter);
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                return data.events || [];
-            } catch (error) {
-                console.error('Events fetch failed:', error);
-                return [];
-            }
-        }
-
-        async function resolveEvent(eventId) {
-            try {
-                const response = await fetch(buildApiUrl(`/api/monitor/events/${eventId}/resolve`), {
-                    method: 'POST'
-                });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                showToast('Event resolved successfully', 'success');
-                refreshData();
-                return true;
-            } catch (error) {
-                console.error('Failed to resolve event:', error);
-                showToast('Failed to resolve event', 'error');
-                return false;
-            }
-        }
-
-        // UI rendering
-        function formatDuration(seconds) {
-            const days = Math.floor(seconds / 86400);
-            const hours = Math.floor((seconds % 86400) / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            
-            if (days > 0) return `${days}d ${hours}h ${minutes}m`;
-            if (hours > 0) return `${hours}h ${minutes}m`;
-            return `${minutes}m`;
-        }
-
-        function formatTimeAgo(isoString) {
-            const date = new Date(isoString);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 1000);
-            
-            if (diff < 60) return 'Just now';
-            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-            return `${Math.floor(diff / 86400)}d ago`;
-        }
-
-        function escapeHtml(value = '') {
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
-        function formatLocalTime(isoString) {
-            if (!isoString) return '--';
-            const date = new Date(isoString);
-            return new Intl.DateTimeFormat(undefined, {
-                hour: 'numeric',
-                minute: '2-digit',
-                second: '2-digit'
-            }).format(date);
-        }
-
-        function formatConfigLabel(key) {
-            return key
-                .replace(/_/g, ' ')
-                .replace(/\b\w/g, char => char.toUpperCase());
-        }
-
-        function renderSummary(statusData, metricsData, healthData, servicesData, hostingData) {
-            const summaryText = document.getElementById('monitor-summary-text');
-            const uptime = document.getElementById('summary-uptime');
-            const lastRefresh = document.getElementById('summary-last-refresh');
-            const openIssues = document.getElementById('summary-open-issues');
-            const serviceCount = document.getElementById('summary-service-count');
-
-            const unresolvedEvents = metricsData?.summary?.unresolved_events ?? '--';
-            const totalServices = (
-                (servicesData?.summary?.total ?? servicesData?.services?.length ?? 0) +
-                (hostingData?.summary?.total ?? hostingData?.surfaces?.length ?? 0)
-            ) || '--';
-            const uptimeText = statusData?.uptime_human || metricsData?.uptime_human || '--';
-
-            const degradedChecks = (healthData?.checks || []).filter(check => check.status !== 'healthy').length;
-            const degradedSurfaces = (hostingData?.surfaces || []).filter(surface => surface.status !== 'healthy').length;
-            const errorRate = metricsData?.error_rate ?? 0;
-            const environment = statusData?.environment || 'local';
-
-            if (degradedChecks > 0 || degradedSurfaces > 0) {
-                summaryText.textContent = `${degradedChecks} backend checks and ${degradedSurfaces} deployment surfaces need attention. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
-            } else {
-                summaryText.textContent = `Backend, provider APIs, and deployment surfaces are responding normally. Environment: ${environment}. Error rate is ${errorRate.toFixed(1)}%.`;
-            }
-
-            uptime.textContent = uptimeText;
-            lastRefresh.textContent = formatLocalTime(lastRefreshIso);
-            openIssues.textContent = String(unresolvedEvents);
-            serviceCount.textContent = String(totalServices);
-        }
-
-        function renderRuntimeSnapshot(data) {
-            const container = document.getElementById('runtime-snapshot-card');
-            const runtime = data?.runtime || data?.runtime_config || null;
-
-            if (!runtime) {
-                container.innerHTML = `
+        if (!runtime) {
+          container.innerHTML = `
                     <div class="empty-state compact">
                         <i class="fas fa-sliders"></i>
                         <h3>Runtime snapshot unavailable</h3>
                         <p>Monitor runtime metadata could not be loaded.</p>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            const envPresence = Object.entries(runtime.env_presence || {}).map(([key, value]) => `
+        const envPresence = Object.entries(runtime.env_presence || {})
+          .map(
+            ([key, value]) => `
                 <span class="env-pill ${value ? 'healthy' : 'missing'}">
                     <span class="env-pill-label">${escapeHtml(formatConfigLabel(key))}</span>
                     <strong>${value ? 'Present' : 'Missing'}</strong>
                 </span>
-            `).join('');
+            `
+          )
+          .join('');
 
-            const publicOrigins = runtime.public_origins || {};
-            const originRows = Object.entries(publicOrigins).map(([key, value]) => `
+        const publicOrigins = runtime.public_origins || {};
+        const originRows = Object.entries(publicOrigins)
+          .map(
+            ([key, value]) => `
                 <div class="runtime-meta-row">
                     <span>${escapeHtml(formatConfigLabel(key))}</span>
                     <a href="${escapeHtml(value)}" target="_blank" rel="noopener">${escapeHtml(value)}</a>
                 </div>
-            `).join('');
+            `
+          )
+          .join('');
 
-            container.innerHTML = `
+        container.innerHTML = `
                 <p class="doc-card-kicker">Runtime Snapshot</p>
                 <h3 class="runtime-card-title">${escapeHtml(runtime.platform || 'local')} · ${escapeHtml(runtime.environment || 'unknown')}</h3>
                 <p class="doc-card-description">Version ${escapeHtml(runtime.version || 'unknown')} · Region ${escapeHtml(runtime.region || 'unknown')} · Deployment ${escapeHtml(runtime.deployment_url || 'localhost')}</p>
                 <div class="runtime-meta-list">${originRows}</div>
                 <div class="env-pill-list">${envPresence}</div>
             `;
-        }
+      }
 
-        function renderMonitorDocs(data) {
-            const container = document.getElementById('monitor-docs-grid');
-            if (!data || !Array.isArray(data.endpoint_groups)) {
-                container.innerHTML = `
+      function renderMonitorDocs(data) {
+        const container = document.getElementById('monitor-docs-grid');
+        if (!data || !Array.isArray(data.endpoint_groups)) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-book-open"></i>
                         <h3>Unable to load API references</h3>
                         <p>Open the live OpenAPI docs directly from the actions above.</p>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            const statusLegend = (data.status_legend || []).map(item => `
+        const statusLegend = (data.status_legend || [])
+          .map(
+            item => `
                 <span class="legend-pill ${item.status}">
                     <strong>${item.label}</strong>
                     <span>${item.description}</span>
                 </span>
-            `).join('');
+            `
+          )
+          .join('');
 
-            const eventLegend = (data.event_types || []).map(item => `
+        const eventLegend = (data.event_types || [])
+          .map(
+            item => `
                 <span class="legend-pill neutral">
                     <strong>${item.type}</strong>
                     <span>${item.description}</span>
                 </span>
-            `).join('');
+            `
+          )
+          .join('');
 
-            const groups = data.endpoint_groups.map(group => `
+        const groups = data.endpoint_groups
+          .map(
+            group => `
                 <article class="doc-card">
                     <p class="doc-card-kicker">${escapeHtml(group.title)}</p>
                     <p class="doc-card-description">${escapeHtml(group.description || '')}</p>
                     <div class="doc-endpoint-list">
-                        ${(group.endpoints || []).map(endpoint => `
+                        ${(group.endpoints || [])
+                          .map(
+                            endpoint => `
                             <div class="doc-endpoint-row">
                                 <span class="doc-method method-${endpoint.method.toLowerCase()}">${escapeHtml(endpoint.method)}</span>
                                 <div class="doc-endpoint-copy">
@@ -623,12 +694,16 @@
                                     <p>${escapeHtml(endpoint.summary || '')}</p>
                                 </div>
                             </div>
-                        `).join('')}
+                        `
+                          )
+                          .join('')}
                     </div>
                 </article>
-            `).join('');
+            `
+          )
+          .join('');
 
-            container.innerHTML = `
+        container.innerHTML = `
                 <article class="doc-card doc-card-links">
                     <p class="doc-card-kicker">Documentation Links</p>
                     <p class="doc-card-description">${escapeHtml(data.description || '')}</p>
@@ -650,22 +725,24 @@
                     <div class="legend-grid">${eventLegend}</div>
                 </article>
             `;
-        }
+      }
 
-        function renderDeploymentSurfaces(data) {
-            const container = document.getElementById('deployment-surfaces');
-            if (!data || !Array.isArray(data.surfaces) || data.surfaces.length === 0) {
-                container.innerHTML = `
+      function renderDeploymentSurfaces(data) {
+        const container = document.getElementById('deployment-surfaces');
+        if (!data || !Array.isArray(data.surfaces) || data.surfaces.length === 0) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-globe"></i>
                         <h3>Unable to load deployment surfaces</h3>
                         <p>Refresh the monitor to run the published-site probes again.</p>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            container.innerHTML = data.surfaces.map(surface => `
+        container.innerHTML = data.surfaces
+          .map(
+            surface => `
                 <div class="health-item ${surface.status}">
                     <div class="health-item-left">
                         <div class="health-status-icon ${surface.status}">
@@ -684,23 +761,27 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
+            `
+          )
+          .join('');
+      }
 
-        function renderHealthChecks(data) {
-            const container = document.getElementById('health-checks');
-            if (!data || !data.checks) {
-                container.innerHTML = `
+      function renderHealthChecks(data) {
+        const container = document.getElementById('health-checks');
+        if (!data || !data.checks) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-exclamation-circle"></i>
                         <h3>Unable to load health checks</h3>
                         <p>Please check your connection and try again</p>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            container.innerHTML = data.checks.map(check => `
+        container.innerHTML = data.checks
+          .map(
+            check => `
                 <div class="health-item ${check.status}">
                     <div class="health-item-left">
                         <div class="health-status-icon ${check.status}">
@@ -722,37 +803,43 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `
+          )
+          .join('');
+      }
+
+      function renderOverallStatus(healthData, servicesData, hostingData) {
+        const statusBadge = document.getElementById('overall-status');
+        const statuses = [
+          healthData?.status,
+          ...(servicesData?.services || []).map(service => service.status),
+          ...(hostingData?.surfaces || []).map(surface => surface.status),
+        ].filter(Boolean);
+
+        let overallStatus = 'healthy';
+        if (statuses.some(status => status === 'unhealthy' || status === 'critical')) {
+          overallStatus = 'unhealthy';
+        } else if (statuses.some(status => status === 'degraded' || status === 'unknown')) {
+          overallStatus = 'degraded';
         }
 
-        function renderOverallStatus(healthData, servicesData, hostingData) {
-            const statusBadge = document.getElementById('overall-status');
-            const statuses = [
-                healthData?.status,
-                ...(servicesData?.services || []).map(service => service.status),
-                ...(hostingData?.surfaces || []).map(surface => surface.status),
-            ].filter(Boolean);
-
-            let overallStatus = 'healthy';
-            if (statuses.some(status => status === 'unhealthy' || status === 'critical')) {
-                overallStatus = 'unhealthy';
-            } else if (statuses.some(status => status === 'degraded' || status === 'unknown')) {
-                overallStatus = 'degraded';
-            }
-
-            statusBadge.className = `status-badge ${overallStatus}`;
-            statusBadge.innerHTML = `
+        statusBadge.className = `status-badge ${overallStatus}`;
+        statusBadge.innerHTML = `
                 <span class="status-dot"></span>
-                ${overallStatus === 'healthy' ? 'All Systems Operational' :
-                  overallStatus === 'degraded' ? 'Monitoring Attention Needed' :
-                  'System Issues Detected'}
+                ${
+                  overallStatus === 'healthy'
+                    ? 'All Systems Operational'
+                    : overallStatus === 'degraded'
+                      ? 'Monitoring Attention Needed'
+                      : 'System Issues Detected'
+                }
             `;
-        }
+      }
 
-        function renderMetrics(data) {
-            const tbody = document.getElementById('metrics-table-body');
-            if (!data || !data.endpoints || data.endpoints.length === 0) {
-                tbody.innerHTML = `
+      function renderMetrics(data) {
+        const tbody = document.getElementById('metrics-table-body');
+        if (!data || !data.endpoints || data.endpoints.length === 0) {
+          tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="empty-state">
                             <i class="fas fa-chart-line"></i>
@@ -761,21 +848,23 @@
                         </td>
                     </tr>
                 `;
-                return;
-            }
+          return;
+        }
 
-            tbody.innerHTML = data.endpoints.map(endpoint => {
-                const successRate = endpoint.total_requests > 0 
-                    ? ((endpoint.successful_requests / endpoint.total_requests) * 100).toFixed(1)
-                    : 100;
-                
-                let responseClass = 'fast';
-                if (endpoint.avg_response_time_ms > 500) responseClass = 'medium';
-                if (endpoint.avg_response_time_ms > 2000) responseClass = 'slow';
-                
-                const responsePercent = Math.min((endpoint.avg_response_time_ms / 5000) * 100, 100);
-                
-                return `
+        tbody.innerHTML = data.endpoints
+          .map(endpoint => {
+            const successRate =
+              endpoint.total_requests > 0
+                ? ((endpoint.successful_requests / endpoint.total_requests) * 100).toFixed(1)
+                : 100;
+
+            let responseClass = 'fast';
+            if (endpoint.avg_response_time_ms > 500) responseClass = 'medium';
+            if (endpoint.avg_response_time_ms > 2000) responseClass = 'slow';
+
+            const responsePercent = Math.min((endpoint.avg_response_time_ms / 5000) * 100, 100);
+
+            return `
                     <tr>
                         <td><span class="endpoint-path">${endpoint.path}</span></td>
                         <td>${endpoint.method}</td>
@@ -796,30 +885,33 @@
                         </td>
                     </tr>
                 `;
-            }).join('');
-        }
+          })
+          .join('');
+      }
 
-        function getStatusIcon(status) {
-            if (status === 'healthy') return 'check';
-            if (status === 'degraded') return 'exclamation';
-            if (status === 'unknown') return 'question';
-            return 'times';
-        }
+      function getStatusIcon(status) {
+        if (status === 'healthy') return 'check';
+        if (status === 'degraded') return 'exclamation';
+        if (status === 'unknown') return 'question';
+        return 'times';
+      }
 
-        function renderExternalServices(data) {
-            const container = document.getElementById('external-apis');
-            if (!data || !Array.isArray(data.services) || data.services.length === 0) {
-                container.innerHTML = `
+      function renderExternalServices(data) {
+        const container = document.getElementById('external-apis');
+        if (!data || !Array.isArray(data.services) || data.services.length === 0) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-plug-circle-xmark"></i>
                         <h3>Unable to load service statuses</h3>
                         <p>Try refreshing the monitor to run the live checks again.</p>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            container.innerHTML = data.services.map(service => `
+        container.innerHTML = data.services
+          .map(
+            service => `
                 <div class="health-item ${service.status}">
                     <div class="health-item-left">
                         <div class="health-status-icon ${service.status}">
@@ -837,29 +929,40 @@
                         </div>
                     </div>
                 </div>
-            `).join('');
-        }
+            `
+          )
+          .join('');
+      }
 
-        function renderEvents(events) {
-            const container = document.getElementById('event-list');
-            if (!events || events.length === 0) {
-                container.innerHTML = `
+      function renderEvents(events) {
+        const container = document.getElementById('event-list');
+        if (!events || events.length === 0) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-check-circle"></i>
                         <h3>No events to display</h3>
                         <p>All systems running smoothly</p>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            container.innerHTML = events.map(event => `
+        container.innerHTML = events
+          .map(
+            event => `
                 <div class="event-item ${event.type} ${event.resolved ? 'resolved' : ''}">
                     <div class="event-icon ${event.type}">
-                        <i class="fas fa-${event.type === 'critical' ? 'exclamation-circle' : 
-                                         event.type === 'error' ? 'times-circle' : 
-                                         event.type === 'warning' ? 'exclamation-triangle' : 
-                                         event.type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                        <i class="fas fa-${
+                          event.type === 'critical'
+                            ? 'exclamation-circle'
+                            : event.type === 'error'
+                              ? 'times-circle'
+                              : event.type === 'warning'
+                                ? 'exclamation-triangle'
+                                : event.type === 'success'
+                                  ? 'check-circle'
+                                  : 'info-circle'
+                        }"></i>
                     </div>
                     <div class="event-content">
                         <div class="event-header">
@@ -867,203 +970,224 @@
                             <span class="event-time">${formatTimeAgo(event.timestamp)}</span>
                         </div>
                         <div class="event-source">${event.source}</div>
-                        ${Object.keys(event.details).length > 0 ? `
+                        ${
+                          Object.keys(event.details).length > 0
+                            ? `
                             <div class="event-details">
                                 ${JSON.stringify(event.details, null, 2)}
                             </div>
-                        ` : ''}
+                        `
+                            : ''
+                        }
                     </div>
-                    ${!event.resolved ? `
+                    ${
+                      !event.resolved
+                        ? `
                         <div class="event-actions">
                             <button class="event-btn event-btn-resolve" onclick="resolveEvent('${event.id}')">
                                 Resolve
                             </button>
                         </div>
-                    ` : '<span style="color: var(--accent-green); font-size: 12px;"><i class="fas fa-check"></i> Resolved</span>'}
+                    `
+                        : '<span style="color: var(--accent-green); font-size: 12px;"><i class="fas fa-check"></i> Resolved</span>'
+                    }
                 </div>
-            `).join('');
+            `
+          )
+          .join('');
+      }
+
+      function renderOverview(data) {
+        // Backend status
+        const backendIcon = document.getElementById('backend-icon');
+        const backendStatus = document.getElementById('backend-status');
+        const backendDetail = document.getElementById('backend-detail');
+
+        if (!data || !data.endpoints || data.endpoints.length === 0) {
+          // No data available - set offline state
+          backendIcon.className = 'overview-icon gray';
+          backendStatus.textContent = 'OFFLINE';
+          backendStatus.style.color = 'var(--text-secondary)';
+          backendDetail.textContent = 'No metrics available';
+          return;
         }
 
-        function renderOverview(data) {
-            if (!data) return;
-            
-            // Backend status
-            const backendIcon = document.getElementById('backend-icon');
-            const backendStatus = document.getElementById('backend-status');
-            const backendDetail = document.getElementById('backend-detail');
-            
-            if (data.endpoints && data.endpoints.length > 0) {
-                const errorRate = data.error_rate || 0;
-                if (errorRate === 0) {
-                    backendIcon.className = 'overview-icon green';
-                    backendStatus.textContent = 'ONLINE';
-                    backendStatus.style.color = 'var(--accent-green)';
-                    backendDetail.textContent = `${data.endpoints.length} endpoints active`;
-                } else if (errorRate < 5) {
-                    backendIcon.className = 'overview-icon yellow';
-                    backendStatus.textContent = 'DEGRADED';
-                    backendStatus.style.color = 'var(--accent-yellow)';
-                    backendDetail.textContent = `${errorRate.toFixed(1)}% error rate`;
-                } else {
-                    backendIcon.className = 'overview-icon red';
-                    backendStatus.textContent = 'ISSUES';
-                    backendStatus.style.color = 'var(--accent-red)';
-                    backendDetail.textContent = `${errorRate.toFixed(1)}% error rate`;
-                }
-            } else {
-                backendIcon.className = 'overview-icon yellow';
-                backendStatus.textContent = 'NO DATA';
-                backendDetail.textContent = 'Endpoints not yet tracked';
-            }
-            
-            document.getElementById('success-rate').textContent = 
-                (100 - (data.error_rate || 0)).toFixed(1) + '%';
-            document.getElementById('error-count').textContent = (data.error_count || 0).toLocaleString();
-            
-            // Calculate avg response from endpoints
-            const avgResponse = data.endpoints && data.endpoints.length > 0
-                ? data.endpoints.reduce((sum, e) => sum + (e.avg_response_time_ms || 0), 0) / data.endpoints.length
-                : 0;
-            document.getElementById('avg-response').textContent = avgResponse.toFixed(0) + 'ms';
-            
-            // Update error icon color
-            const errorIcon = document.getElementById('errors-icon');
-            if (data.error_count === 0) {
-                errorIcon.className = 'overview-icon green';
-                errorIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-            } else if (data.error_rate < 5) {
-                errorIcon.className = 'overview-icon yellow';
-            } else {
-                errorIcon.className = 'overview-icon red';
-            }
+        if (data.endpoints && data.endpoints.length > 0) {
+          const errorRate = data.error_rate || 0;
+          if (errorRate === 0) {
+            backendIcon.className = 'overview-icon green';
+            backendStatus.textContent = 'ONLINE';
+            backendStatus.style.color = 'var(--accent-green)';
+            backendDetail.textContent = `${data.endpoints.length} endpoints active`;
+          } else if (errorRate < 5) {
+            backendIcon.className = 'overview-icon yellow';
+            backendStatus.textContent = 'DEGRADED';
+            backendStatus.style.color = 'var(--accent-yellow)';
+            backendDetail.textContent = `${errorRate.toFixed(1)}% error rate`;
+          } else {
+            backendIcon.className = 'overview-icon red';
+            backendStatus.textContent = 'ISSUES';
+            backendStatus.style.color = 'var(--accent-red)';
+            backendDetail.textContent = `${errorRate.toFixed(1)}% error rate`;
+          }
+        } else {
+          backendIcon.className = 'overview-icon yellow';
+          backendStatus.textContent = 'NO DATA';
+          backendDetail.textContent = 'Endpoints not yet tracked';
         }
 
-        async function checkExternalApis() {
-            showToast('Checking provider APIs...', 'info');
-            const integrations = await fetchExternalServices();
-            renderExternalServices(integrations);
-            showToast('Provider APIs updated', integrations ? 'success' : 'error');
-        }
+        document.getElementById('success-rate').textContent =
+          (100 - (data.error_rate || 0)).toFixed(1) + '%';
+        document.getElementById('error-count').textContent = (
+          data.error_count || 0
+        ).toLocaleString();
 
-        async function refreshHostingSurfaces() {
-            showToast('Checking deployment surfaces...', 'info');
-            const hosting = await fetchHostingSurfaces();
-            renderRuntimeSnapshot(hosting);
-            renderDeploymentSurfaces(hosting);
-            showToast('Deployment surfaces updated', hosting ? 'success' : 'error');
-        }
+        // Calculate avg response from endpoints
+        const avgResponse =
+          data.endpoints && data.endpoints.length > 0
+            ? data.endpoints.reduce((sum, e) => sum + (e.avg_response_time_ms || 0), 0) /
+              data.endpoints.length
+            : 0;
+        document.getElementById('avg-response').textContent = avgResponse.toFixed(0) + 'ms';
 
-        // Actions
-        async function refreshData() {
-            showToast('Refreshing data...', 'info');
-            
-            const [health, metrics, integrations, status, docs, hosting] = await Promise.all([
-                fetchHealth(),
-                fetchMetrics(),
-                fetchExternalServices(),
-                fetchStatus(),
-                fetchMonitorDocs(),
-                fetchHostingSurfaces()
-            ]);
-            
-            const events = await fetchEvents(document.getElementById('event-filter').value);
-            lastRefreshIso = new Date().toISOString();
-            
-            if (health) renderHealthChecks(health);
-            if (metrics) {
-                renderMetrics(metrics);
-                renderOverview(metrics);
-            }
-            renderExternalServices(integrations);
-            renderRuntimeSnapshot(hosting || status);
-            renderDeploymentSurfaces(hosting);
-            renderOverallStatus(health, integrations, hosting);
-            renderSummary(status, metrics, health, integrations, hosting);
-            renderMonitorDocs(docs);
-            renderEvents(events);
-            
-            showToast('Data refreshed', 'success');
+        // Update error icon color
+        const errorIcon = document.getElementById('errors-icon');
+        if (data.error_count === 0) {
+          errorIcon.className = 'overview-icon green';
+          errorIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+        } else if (data.error_rate < 5) {
+          errorIcon.className = 'overview-icon yellow';
+        } else {
+          errorIcon.className = 'overview-icon red';
         }
+      }
 
-        async function runHealthChecks() {
-            showToast('Running health checks...', 'info');
-            const health = await fetchHealth();
-            if (health) {
-                renderHealthChecks(health);
-                showToast('Health checks complete', 'success');
-            } else {
-                showToast('Health checks failed', 'error');
-            }
+      async function checkExternalApis() {
+        showToast('Checking provider APIs...', 'info');
+        const integrations = await fetchExternalServices();
+        renderExternalServices(integrations);
+        showToast('Provider APIs updated', integrations ? 'success' : 'error');
+      }
+
+      async function refreshHostingSurfaces() {
+        showToast('Checking deployment surfaces...', 'info');
+        const hosting = await fetchHostingSurfaces();
+        renderRuntimeSnapshot(hosting);
+        renderDeploymentSurfaces(hosting);
+        showToast('Deployment surfaces updated', hosting ? 'success' : 'error');
+      }
+
+      // Actions
+      async function refreshData() {
+        showToast('Refreshing data...', 'info');
+
+        const [health, metrics, integrations, status, docs, hosting] = await Promise.all([
+          fetchHealth(),
+          fetchMetrics(),
+          fetchExternalServices(),
+          fetchStatus(),
+          fetchMonitorDocs(),
+          fetchHostingSurfaces(),
+        ]);
+
+        const events = await fetchEvents(document.getElementById('event-filter').value);
+        lastRefreshIso = new Date().toISOString();
+
+        if (health) renderHealthChecks(health);
+        if (metrics) {
+          renderMetrics(metrics);
+          renderOverview(metrics);
         }
+        renderExternalServices(integrations);
+        renderRuntimeSnapshot(hosting || status);
+        renderDeploymentSurfaces(hosting);
+        renderOverallStatus(health, integrations, hosting);
+        renderSummary(status, metrics, health, integrations, hosting);
+        renderMonitorDocs(docs);
+        renderEvents(events);
 
-        async function filterEvents() {
-            const filter = document.getElementById('event-filter').value;
-            const events = await fetchEvents(filter);
-            renderEvents(events);
+        showToast('Data refreshed', 'success');
+      }
+
+      async function runHealthChecks() {
+        showToast('Running health checks...', 'info');
+        const health = await fetchHealth();
+        if (health) {
+          renderHealthChecks(health);
+          showToast('Health checks complete', 'success');
+        } else {
+          showToast('Health checks failed', 'error');
         }
+      }
 
-        async function clearResolved() {
-            const events = await fetchEvents(document.getElementById('event-filter').value);
-            const unresolved = events.filter(e => !e.resolved);
-            const clearedCount = events.length - unresolved.length;
-            renderEvents(unresolved);
-            showToast(
-                clearedCount > 0
-                    ? `Cleared ${clearedCount} resolved event${clearedCount === 1 ? '' : 's'}`
-                    : 'No resolved events to clear',
-                'success'
-            );
-        }
+      async function filterEvents() {
+        const filter = document.getElementById('event-filter').value;
+        const events = await fetchEvents(filter);
+        renderEvents(events);
+      }
 
-        function exportMetrics() {
-            fetchMetrics().then(data => {
-                if (!data) return;
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `metrics-${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                showToast('Metrics exported', 'success');
-            });
-        }
+      async function clearResolved() {
+        const events = await fetchEvents(document.getElementById('event-filter').value);
+        const unresolved = events.filter(e => !e.resolved);
+        const clearedCount = events.length - unresolved.length;
+        renderEvents(unresolved);
+        showToast(
+          clearedCount > 0
+            ? `Cleared ${clearedCount} resolved event${clearedCount === 1 ? '' : 's'}`
+            : 'No resolved events to clear',
+          'success'
+        );
+      }
 
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `
+      function exportMetrics() {
+        fetchMetrics().then(data => {
+          if (!data) return;
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `metrics-${new Date().toISOString().split('T')[0]}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast('Metrics exported', 'success');
+        });
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
                 <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle'}"
                    style="color: var(--accent-${type === 'success' ? 'green' : type === 'error' ? 'red' : 'blue'});"></i>
                 <span>${message}</span>
             `;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 5000);
-        }
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', async () => {
-            monitorConfig = await loadPublicConfig();
-            apiOrigin = resolveApiOrigin(monitorConfig);
-            refreshData();
-            
-            // Auto-refresh every 30 seconds
-            setInterval(refreshData, 30000);
-        });
+      // Initialize
+      document.addEventListener('DOMContentLoaded', async () => {
+        monitorConfig = await loadPublicConfig();
+        apiOrigin = resolveApiOrigin(monitorConfig);
+        refreshData();
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
+      });
     </script>
     <script type="module">
-        import { initOverlayMenu } from './js/modules/overlay.js';
+      import { initOverlayMenu } from './js/modules/overlay.js';
 
-        initOverlayMenu();
+      initOverlayMenu();
 
-        const nav = document.getElementById('global-nav');
-        const syncNavState = () => {
-            nav?.classList.toggle('scrolled', window.scrollY > 12);
-        };
+      const nav = document.getElementById('global-nav');
+      const syncNavState = () => {
+        nav?.classList.toggle('scrolled', window.scrollY > 12);
+      };
 
-        syncNavState();
-        window.addEventListener('scroll', syncNavState, { passive: true });
+      syncNavState();
+      window.addEventListener('scroll', syncNavState, { passive: true });
     </script>
-</body>
+  </body>
 </html>
