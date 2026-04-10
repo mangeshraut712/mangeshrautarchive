@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/assets/images/readme/homepage-preview.png" alt="Mangesh Raut Portfolio homepage preview" width="100%" style="border-radius: 18px; box-shadow: 0 18px 48px rgba(0,0,0,0.12);" />
+<img src="@src/assets/images/home.png" alt="Mangesh Raut Portfolio Homepage" width="100%" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);" />
 
 # Mangesh Raut
 
