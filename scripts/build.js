@@ -191,17 +191,37 @@ async function addCacheBusting(distDir) {
 
   const version = `v${Date.now()}`;
 
+  const appendVersion = rawPath => {
+    if (!rawPath) return rawPath;
+
+    const [pathWithQuery, hash = ''] = String(rawPath).split('#');
+    const [base, queryString = ''] = pathWithQuery.split('?');
+
+    if (!/\.(css|js)$/i.test(base)) {
+      return rawPath;
+    }
+
+    const params = new URLSearchParams(queryString);
+    params.set('v', version);
+    const nextPath = `${base}?${params.toString()}`;
+
+    return hash ? `${nextPath}#${hash}` : nextPath;
+  };
+
   for (const htmlFile of [htmlPath, monitorPath]) {
     if (await pathExists(htmlFile)) {
       let content = await readFile(htmlFile, 'utf8');
 
       // Add cache busting to CSS and JS files
       content = content.replace(
-        /(href|src)="([^"]*\.(css|js))([^"]*)"/g,
-        (match, attr, path, ext, query) => {
-          const separator = query ? '&' : '?';
-          return `${attr}="${path}${separator}v=${version}"`;
-        }
+        /(href|src)="([^"]+)"/g,
+        (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
+      );
+
+      // Keep static asset paths repo-relative for GitHub Pages deployments.
+      content = content.replace(
+        /(href|src|data-href)="\/(assets|js)\//g,
+        (match, attr, folder) => `${attr}="${folder}/`
       );
 
       await writeFile(htmlFile, content);

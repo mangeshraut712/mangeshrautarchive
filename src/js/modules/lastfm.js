@@ -13,7 +13,9 @@ class LastFmService {
     this.intervalId = null;
 
     const apiBaseUrl =
-      (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+      globalThis.APP_CONFIG?.apiBaseUrl ||
+      (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+      '';
     this.apiUrl = apiBaseUrl ? `${apiBaseUrl}/api/music/recent` : '/api/music/recent';
 
     this.hero = null;
