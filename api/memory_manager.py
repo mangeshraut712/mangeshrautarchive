@@ -129,5 +129,6 @@ class MemoryManager:
             'avg_messages_per_session': total_messages / max(total_sessions, 1)
         }
 
+
 # Singleton instance
 memory_manager = MemoryManager()

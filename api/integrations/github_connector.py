@@ -302,5 +302,6 @@ class GitHubConnector:
         except BaseException:
             return False
 
+
 # Singleton instance
 github_connector = GitHubConnector()
