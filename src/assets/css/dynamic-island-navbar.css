@@ -203,8 +203,12 @@ html.dark .global-nav.dynamic-island.scrolled {
 
 /* Individual nav links - Apple style */
 .global-nav.dynamic-island .nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  padding: 8px 0 !important;
+  min-height: 32px !important;
+  padding: 7px 10px !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.01em !important;
@@ -219,6 +223,7 @@ html.dark .global-nav.dynamic-island.scrolled {
   text-transform: none !important;
   font-family: var(--island-font) !important;
   border-radius: 999px;
+  line-height: 1 !important;
 }
 
 html.dark .global-nav.dynamic-island .nav-link {

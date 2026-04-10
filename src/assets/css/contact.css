@@ -1774,6 +1774,23 @@ html.dark .contact-link-item:hover {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12) !important;
 }
 
+/* Final accessibility guardrail for stacked contact links */
+#contact .contact-link-wrapper {
+  gap: 0.5rem !important;
+}
+
+#contact .contact-link-item {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 48px !important;
+  padding: 0.82rem 0.9rem !important;
+  line-height: 1.25 !important;
+}
+
+#contact .contact-link-item .link-text {
+  line-height: 1.25 !important;
+}
+
 .contact-assistme-btn,
 .contact-form button[type='submit'],
 .support-cashapp-btn.premium,
@@ -2527,6 +2544,23 @@ html.dark .watch-btn:hover {
 html.dark .watch-btn.book-btn {
   color: #ff9f0a !important;
   background: rgba(255, 159, 10, 0.15);
+}
+
+/* Final target-size guardrails */
+#contact .contact-item .contact-link-wrapper {
+  gap: 0.6rem !important;
+}
+
+#contact .contact-item .contact-link-wrapper > .contact-link-item {
+  display: flex !important;
+  align-items: center !important;
+  min-height: 52px !important;
+  padding: 0.9rem 0.95rem !important;
+  line-height: 1.25 !important;
+}
+
+#contact .contact-item .contact-link-wrapper > .contact-link-item .link-text {
+  line-height: 1.25 !important;
 }
 
 /* Responsive adjustments */
