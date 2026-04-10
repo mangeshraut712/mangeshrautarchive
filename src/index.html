@@ -418,19 +418,32 @@
         <div class="max-w-5xl mx-auto text-center">
           <div class="hero-layout-wrapper">
             <div class="hero-image-block mb-8">
-              <div class="profile-image-wrapper mx-auto">
+              <div id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" role="button"
+                tabindex="0" aria-pressed="false" aria-label="Toggle avatar style">
                 <picture>
-                  <source srcset="assets/images/profile.webp" type="image/webp" />
-                  <img src="assets/images/profile.jpg" alt="Mangesh Raut" class="profile-image" width="320" height="320"
-                    fetchpriority="high" loading="eager" decoding="async" />
+                  <source id="profile-image-source" srcset="assets/images/profile.webp" type="image/webp" />
+                  <img id="profile-image" src="assets/images/profile.jpg" alt="Mangesh Raut photo" class="profile-image"
+                    width="320" height="320" fetchpriority="high" loading="eager" decoding="async"
+                    data-photo-src="assets/images/profile.jpg" data-photo-srcset="assets/images/profile.webp"
+                    data-avatar-src="assets/images/avtar.jpg" />
                 </picture>
-                <div class="profile-ring"></div>
               </div>
             </div>
 
             <div class="hero-text-block home-hero-text">
               <div class="hero-header mb-4">
-                <h2 class="hero-name">Mangesh Raut</h2>
+                <h2 class="hero-name">
+                  <span class="hero-name-text">Mangesh Raut</span>
+                  <span class="hero-verified-badge" aria-label="Verified profile">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path
+                        d="M12 2.75 14.83 5l3.58.56.56 3.58L21.25 12 19 14.83l-.56 3.58-3.58.56L12 21.25 9.17 19l-3.58-.56-.56-3.58L2.75 12 5 9.17l.56-3.58L9.17 5 12 2.75Z"
+                        fill="currentColor"></path>
+                      <path d="m8.4 12.2 2.2 2.2 5-5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+                  </span>
+                </h2>
                 <h1 class="hero-title">Software Development Engineer</h1>
 
                 <!-- Vibe Coder Badge -->
@@ -451,7 +464,7 @@
                         <circle cx="12" cy="12" r="3"></circle>
                       </svg>
                     </span>
-                    <span class="reach-count" id="reach-count">1K+</span>
+                    <span class="reach-count" id="reach-count">0</span>
                   </span>
                 </div>
 
@@ -2376,8 +2389,7 @@
 
         <!-- Copyright Below (Centered) -->
         <div class="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
-          <p class="footer-copy text-sm">&copy; 2026 Mangesh Raut Archive</p>
-          <p class="footer-copy text-sm mt-1">All rights reserved.</p>
+          <p class="footer-copy text-sm">&copy; 2026 Mangesh Raut Archive | All rights reserved.</p>
           <p class="footer-tagline text-xs mt-2 text-gray-500 dark:text-gray-400">Designed by Mangesh in Pennsylvania,
             Assembled in Maharashtra</p>
         </div>

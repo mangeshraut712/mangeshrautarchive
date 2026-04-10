@@ -1,4 +1,5 @@
 import express from 'express';
+import { Readable } from 'node:stream';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import dotenv from 'dotenv';
@@ -15,32 +16,82 @@ const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8001';
 
 // Get the project root directory
 const projectRoot = resolve(__dirname, '..');
+const hopByHopHeaders = new Set([
+  'connection',
+  'content-length',
+  'host',
+  'keep-alive',
+  'proxy-authenticate',
+  'proxy-authorization',
+  'te',
+  'trailers',
+  'transfer-encoding',
+  'upgrade',
+]);
 
-// Middleware to parse JSON bodies, which is needed for our API
-app.use(express.json());
+function getPublicBuildConfig() {
+  return {
+    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || `http://localhost:${port}`,
+    siteUrl: process.env.OPENROUTER_SITE_URL || `http://localhost:${port}`,
+    appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
+    selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
+    buildTime: new Date().toISOString(),
+    version: `dev-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
+  };
+}
 
-import { createProxyMiddleware } from 'http-proxy-middleware';
+app.use('/api', express.raw({ type: '*/*', limit: '10mb' }));
 
-// Proxy API requests to Python backend
-app.use(
-  '/api',
-  createProxyMiddleware({
-    target: apiTarget,
-    changeOrigin: true,
-    pathRewrite: (_path, _req) => '/api' + _path,
-    onError: (err, req, res) => {
-      console.error('API Proxy Error:', err.message);
-      res.status(503).json({
-        error: 'Backend API not available',
-        message: `Could not connect to API at ${apiTarget}. Please ensure the backend is running with "npm run dev:backend"`,
-        status: 503,
-      });
-    },
-    onProxyReq: (proxyReq, req) => {
-      console.log(`[API] ${req.method} ${req.url} -> ${apiTarget}${proxyReq.path}`);
-    },
-  })
-);
+function buildProxyHeaders(req) {
+  const headers = new Headers();
+
+  for (const [key, value] of Object.entries(req.headers)) {
+    if (hopByHopHeaders.has(key.toLowerCase()) || value == null) continue;
+    headers.set(key, Array.isArray(value) ? value.join(', ') : value);
+  }
+
+  return headers;
+}
+
+async function proxyApiRequest(req, res) {
+  const targetUrl = new URL(req.originalUrl, apiTarget);
+  const method = req.method || 'GET';
+  const hasBody = !['GET', 'HEAD'].includes(method);
+  const body = hasBody && Buffer.isBuffer(req.body) && req.body.length > 0 ? req.body : undefined;
+
+  try {
+    console.log(`[API] ${method} ${req.originalUrl} -> ${targetUrl}`);
+
+    const upstream = await fetch(targetUrl, {
+      method,
+      headers: buildProxyHeaders(req),
+      body,
+      redirect: 'manual',
+    });
+
+    res.status(upstream.status);
+    upstream.headers.forEach((value, key) => {
+      if (hopByHopHeaders.has(key.toLowerCase())) return;
+      res.setHeader(key, value);
+    });
+
+    if (!upstream.body) {
+      res.end();
+      return;
+    }
+
+    Readable.fromWeb(upstream.body).pipe(res);
+  } catch (err) {
+    console.error('API Proxy Error:', err.message);
+    res.status(503).json({
+      error: 'Backend API not available',
+      message: `Could not connect to API at ${apiTarget}. Please ensure the backend is running with "npm run dev:backend"`,
+      status: 503,
+    });
+  }
+}
+
+app.use('/api', proxyApiRequest);
 
 // Cache-busting middleware for development
 app.use((req, res, next) => {
@@ -50,6 +101,21 @@ app.use((req, res, next) => {
   res.setHeader('Expires', '0');
   res.setHeader('Surrogate-Control', 'no-store');
   next();
+});
+
+app.get('/build-config.json', (_req, res) => {
+  res.type('application/json');
+  res.send(JSON.stringify(getPublicBuildConfig(), null, 2));
+});
+
+app.get('/build-config.js', (_req, res) => {
+  const config = JSON.stringify(getPublicBuildConfig(), null, 2);
+  res.type('application/javascript');
+  res.send(`(function () {
+  const buildConfig = ${config};
+  globalThis.buildConfig = buildConfig;
+  globalThis.APP_CONFIG = Object.assign({}, globalThis.APP_CONFIG || {}, buildConfig);
+})();`);
 });
 
 // Serve static files from the 'src' directory

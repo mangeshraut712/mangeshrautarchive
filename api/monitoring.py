@@ -920,13 +920,15 @@ class SystemMonitor:
 
             payload = await get_analytics_views()
             views = payload.get("views", {}).get("total", 0)
+            storage_backend = payload.get("storage", {}).get("backend", "unknown")
+            persistent = payload.get("storage", {}).get("persistent", False)
 
             return {
                 "name": "Portfolio Analytics",
                 "status": HealthStatus.HEALTHY.value,
                 "message": "Portfolio analytics endpoint is serving view data.",
                 "metric_value": str(views),
-                "metric_label": "total tracked views",
+                "metric_label": f"{storage_backend} {'persistent' if persistent else 'fallback'}",
             }
         except Exception as exc:
             return {

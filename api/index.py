@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 
 # Personal Intelligence Modules
 from api.memory_manager import memory_manager
+from api.analytics_store import portfolio_analytics_store
 from api.integrations.github_connector import github_connector
 from api.monitoring import (
     system_monitor,
@@ -2033,19 +2034,36 @@ async def get_analytics_views():
     Returns view count data for the portfolio counter
     """
     try:
-        # Return mock data for now - in production this would fetch from a database
-        return {
-            "success": True,
-            "views": {
-                "total": 1250,
-                "today": 45,
-                "this_week": 320,
-                "this_month": 890,
-            },
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        }
+        return await portfolio_analytics_store.get_metrics()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
+
+
+class AnalyticsTrackRequest(BaseModel):
+    session_id: str = Field(..., min_length=6, max_length=128)
+    path: str = Field(default="/", max_length=256)
+    is_homepage: bool = True
+    referrer: Optional[str] = Field(default="", max_length=512)
+
+
+@app.post("/api/analytics/track")
+async def track_analytics_view(payload: AnalyticsTrackRequest, request: Request):
+    """
+    Track a portfolio landing using a shared backend store.
+    Uses Redis when configured, otherwise falls back to local file storage.
+    """
+    try:
+        user_agent = request.headers.get("user-agent", "")
+        metrics = await portfolio_analytics_store.track_visit(
+            session_id=payload.session_id,
+            path=payload.path,
+            is_homepage=payload.is_homepage,
+            referrer=payload.referrer or "",
+            user_agent=user_agent,
+        )
+        return metrics
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Analytics tracking error: {str(e)}")
 
 
 # Alias for old analytics path

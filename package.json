@@ -6,7 +6,7 @@
     "build:css": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./src/assets/css/tailwind-output.css --minify",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "API_TARGET=http://127.0.0.1:8001 node scripts/local-server.js",
-    "dev:backend": "python3 -m uvicorn api.index:app --reload --port 8001",
+    "dev:backend": "node scripts/dev-backend.js",
     "serve:dist": "node scripts/serve-dist.js",
     "security-check": "node scripts/security-check.js",
     "check-secrets": "npm run security-check",

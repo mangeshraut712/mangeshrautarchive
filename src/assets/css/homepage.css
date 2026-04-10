@@ -267,53 +267,56 @@ html.dark .hero-social-link:hover {
 .hero-image-block {
   position: relative;
   margin-bottom: 2rem !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-image-wrapper {
   width: clamp(84px, 10vw, 108px) !important;
   height: clamp(84px, 10vw, 108px) !important;
   border-radius: 50% !important;
-  padding: 2px !important;
-  background: linear-gradient(135deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 10%)) !important;
-  box-shadow:
-    0 10px 30px rgb(0 0 0 / 5%),
-    0 0 0 1px rgb(0 0 0 / 3%) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   z-index: 10;
   margin-bottom: 0 !important;
 }
 
 html.dark .profile-image-wrapper {
-  background: linear-gradient(135deg, rgb(255 255 255 / 10%), rgb(255 255 255 / 2%));
-  box-shadow:
-    0 20px 40px rgb(0 0 0 / 30%),
-    0 0 0 1px rgb(255 255 255 / 5%);
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 #home .profile-image {
   border-radius: 50% !important;
-  border: 2px solid rgb(255 255 255 / 80%) !important;
+  border: none !important;
 }
 
-html.dark #home .profile-image {
-  border-color: rgb(28 28 30 / 80%) !important;
+.profile-image-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  overflow: visible !important;
+  border: none;
+  background: transparent !important;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.profile-ring {
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid rgb(0 113 227 / 16%);
-  background: none;
-  filter: none;
-  opacity: 1;
-  z-index: 1;
-  pointer-events: none;
-  animation: none;
+.profile-image-toggle:hover {
+  transform: translateY(-2px) scale(1.02);
 }
 
-html.dark .profile-ring {
-  border-color: rgb(255 255 255 / 12%);
+.profile-image-toggle:focus-visible {
+  outline: 2px solid rgb(0 113 227 / 45%);
+  outline-offset: 8px;
 }
 
 @keyframes spatialPulse {
@@ -412,6 +415,10 @@ html.dark .portfolio-reach-badge:hover {
 }
 
 .hero-name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   font-size: clamp(2.5rem, 7vw, 4.2rem) !important;
   font-weight: 800 !important;
   letter-spacing: -0.04em !important;
@@ -422,8 +429,42 @@ html.dark .portfolio-reach-badge:hover {
   -webkit-text-fill-color: initial;
 }
 
+.hero-name-text {
+  display: inline-block;
+  color: inherit;
+}
+
+.hero-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.4em;
+  height: 0.4em;
+  position: relative;
+  top: -0.2em;
+  color: #0a84ff !important;
+  filter: drop-shadow(0 4px 10px rgb(10 132 255 / 22%));
+  flex: 0 0 auto;
+}
+
+.hero-verified-badge svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+html.dark .hero-verified-badge {
+  color: #2997ff !important;
+  filter: drop-shadow(0 4px 12px rgb(41 151 255 / 28%));
+}
+
 html.dark .hero-name {
   background: none;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+html.dark .hero-name-text {
   color: #2997ff !important;
 }
 
@@ -943,9 +984,7 @@ html:not(.dark) .hero-stat-label {
     flex-shrink: 0;
     border-radius: 25%;
     aspect-ratio: 1 / 1;
-    overflow: hidden;
-
-    /* Ensure content stays inside */
+    overflow: visible !important;
   }
 
   .profile-image {

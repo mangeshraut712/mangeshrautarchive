@@ -1,5 +1,6 @@
 import ExternalApiKeys from '../modules/external-config.js';
 import { initCurrentlySection } from '../modules/currently.js';
+import { initAvatarToggle } from '../modules/avatar-toggle.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
 import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
@@ -528,6 +529,7 @@ async function initBootstrap() {
   initOverlayNavigation();
   initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');
   initCurrentlySection();
+  initAvatarToggle();
   initDeferredStyles();
   initOnDemandModules();
   initContactChatbotCTA(chatbotLoader);

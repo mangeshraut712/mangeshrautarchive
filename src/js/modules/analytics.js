@@ -11,6 +11,10 @@
  */
 (function() {
   const reachCountEls = document.querySelectorAll('.reach-count');
+  const API_BASE =
+    (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl)
+      ? `${globalThis.buildConfig.apiBaseUrl}/api`
+      : '/api';
 
   // Configuration constants
   const CONFIG = {
@@ -28,6 +32,20 @@
       FIRST_VISIT_DATE: 'portfolio_first_visit_v4'
     }
   };
+
+  function getSessionId() {
+    const now = Date.now();
+    const lastVisit = parseInt(localStorage.getItem(CONFIG.KEYS.LAST_VISIT) || '0', 10);
+    const existing = localStorage.getItem(CONFIG.KEYS.SESSION_ID);
+
+    if (existing && now - lastVisit < CONFIG.SESSION_TIMEOUT) {
+      return existing;
+    }
+
+    const sessionId = `portfolio_${now}_${Math.random().toString(36).slice(2, 10)}`;
+    localStorage.setItem(CONFIG.KEYS.SESSION_ID, sessionId);
+    return sessionId;
+  }
 
   /**
    * Format number for display with smart rounding
@@ -284,13 +302,71 @@
     }
   }
 
+  async function fetchSharedMetrics() {
+    try {
+      const response = await fetch(`${API_BASE}/analytics/views`, {
+        headers: { Accept: 'application/json' },
+        cache: 'no-store'
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const payload = await response.json();
+      return payload?.views ? payload : null;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  async function trackSharedVisit() {
+    try {
+      const sessionId = getSessionId();
+      const response = await fetch(`${API_BASE}/analytics/track`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          session_id: sessionId,
+          path: window.location.pathname || '/',
+          is_homepage: window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
+          referrer: document.referrer || ''
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const payload = await response.json();
+      localStorage.setItem(CONFIG.KEYS.LAST_VISIT, Date.now().toString());
+      return payload?.views ? payload : null;
+    } catch (_error) {
+      return null;
+    }
+  }
+
   /**
    * Update the UI display with formatted metrics
    */
-  function updateDisplay() {
+  function updateDisplay(metricsOverride = null) {
     if (!reachCountEls || reachCountEls.length === 0) return;
 
-    const metrics = getMetrics();
+    const backendViews = metricsOverride?.views || null;
+    const metrics = backendViews
+      ? {
+          totalViews: backendViews.total ?? 0,
+          uniqueVisitors: backendViews.unique_visitors ?? 0,
+          today: backendViews.today ?? 0,
+          thisWeek: backendViews.this_week ?? 0,
+          thisMonth: backendViews.this_month ?? 0,
+          avgViewsPerDay: String(metricsOverride?.avg_views_per_day ?? '0.0'),
+          portfolioAgeDays: Number(metricsOverride?.portfolio_age_days ?? 1),
+          storageBackend: metricsOverride?.storage?.backend || 'unknown'
+        }
+      : getMetrics();
 
     // Format the primary display number
     // Strategy: Show unique visitors (more meaningful than raw views)
@@ -307,7 +383,8 @@
       `This Month: ${formatNumber(metrics.thisMonth)}`,
       ``,
       `Avg ${metrics.avgViewsPerDay}/day`,
-      `Age: ${metrics.portfolioAgeDays} day${metrics.portfolioAgeDays !== 1 ? 's' : ''}`
+      `Age: ${metrics.portfolioAgeDays} day${metrics.portfolioAgeDays !== 1 ? 's' : ''}`,
+      metrics.storageBackend ? `Store: ${metrics.storageBackend}` : ''
     ];
     const tooltipText = tooltipLines.join('\n');
 
@@ -330,12 +407,17 @@
   // Initialize on page load
   if (reachCountEls && reachCountEls.length > 0) {
     // Small delay to ensure DOM is ready
-    setTimeout(updateDisplay, 50);
+    setTimeout(async () => {
+      const tracked = await trackSharedVisit();
+      const sharedMetrics = tracked || (await fetchSharedMetrics());
+      updateDisplay(sharedMetrics);
+    }, 50);
 
     // Also update on visibility change (returning to tab)
-    document.addEventListener('visibilitychange', () => {
+    document.addEventListener('visibilitychange', async () => {
       if (document.visibilityState === 'visible') {
-        updateDisplay();
+        const sharedMetrics = await fetchSharedMetrics();
+        updateDisplay(sharedMetrics);
       }
     });
   }

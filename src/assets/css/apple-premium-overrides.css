@@ -2281,9 +2281,14 @@ html.dark #home.hero-section.home-hero {
 }
 
 #home.hero-section .hero-name {
-  font-size: clamp(1.2rem, 5vw, 1.6rem) !important;
+  font-size: clamp(2.15rem, 5.8vw, 2.9rem) !important;
   margin-bottom: 0.2rem !important;
   line-height: 1.1 !important;
+}
+
+html.dark #home.hero-section .hero-name {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 #home.hero-section .hero-title {
@@ -2335,7 +2340,7 @@ html.dark #home.hero-section.home-hero {
   }
 
   #home.hero-section .hero-name {
-    font-size: clamp(1.1rem, 6vw, 1.4rem) !important;
+    font-size: clamp(1.6rem, 6.2vw, 2.05rem) !important;
   }
 
   #home.hero-section .hero-title {
