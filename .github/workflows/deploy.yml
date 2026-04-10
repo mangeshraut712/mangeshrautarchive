@@ -107,6 +107,7 @@ jobs:
         env:
           # Public config only — NO API keys in build output
           # GitHub Pages serves from /mangeshrautarchive/ subdirectory
+          NEXT_PUBLIC_API_BASE: https://mangeshraut.pro
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
           OPENROUTER_MODEL: x-ai/grok-4.1-fast

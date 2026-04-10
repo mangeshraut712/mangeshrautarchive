@@ -39,7 +39,7 @@ const staticExtras = ['perplexity-mcp.json', 'CNAME'];
 async function injectApiKeys(distDir) {
   const config = {
     // Safe public configuration only — NO secrets
-    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshrautarchive.vercel.app',
+    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshraut.pro',
     siteUrl: process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
@@ -57,10 +57,11 @@ async function injectApiKeys(distDir) {
   const jsConfig = `// Auto-generated build configuration — safe public values only
 // DO NOT add API keys or secrets to this file.
 // This file is shipped to browsers and publicly visible.
-const buildConfig = ${JSON.stringify(config, null, 2)};
-
-export default buildConfig;
-export { buildConfig };
+(function () {
+  const buildConfig = ${JSON.stringify(config, null, 2)};
+  globalThis.buildConfig = buildConfig;
+  globalThis.APP_CONFIG = Object.assign({}, globalThis.APP_CONFIG || {}, buildConfig);
+})();
 `;
   const jsConfigPath = resolve(distDir, 'build-config.js');
   await writeFile(jsConfigPath, jsConfig);
@@ -123,6 +124,10 @@ async function optimizeCopiedAssets(dir) {
 
     const extension = entry.name.split('.').pop()?.toLowerCase();
     if (!extension || !['css', 'js'].includes(extension)) {
+      continue;
+    }
+
+    if (entry.name === 'build-config.js') {
       continue;
     }
 
