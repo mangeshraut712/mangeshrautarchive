@@ -1678,7 +1678,7 @@ html.dark .apple-tldr:hover {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at 50% -10%, rgba(90, 200, 250, 0.03), transparent 60%);
+  background: transparent;
 }
 
 .hero-layout-wrapper {
@@ -1815,10 +1815,9 @@ html.dark .portfolio-reach-badge:hover {
   letter-spacing: -0.04em !important;
   margin-bottom: 0.4rem !important;
   line-height: 1.1 !important;
-  background: linear-gradient(180deg, #1d1d1f 0%, #434346 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: none;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: currentColor;
 }
 
 .hero-title {
@@ -1835,9 +1834,9 @@ html.dark .hero-title {
 }
 
 html.dark .hero-name {
-  background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+  background: none;
+  color: #2997ff !important;
+  -webkit-text-fill-color: currentColor;
 }
 
 .hero-body {
@@ -3235,6 +3234,15 @@ html.dark #home.hero-section .profile-ring {
 
 html.dark #home.hero-section.home-hero {
   background: #000 !important;
+  background-image: none !important;
+}
+
+#home.hero-section .container-fluid,
+#home.hero-section .max-w-5xl,
+#home.hero-section .hero-layout-wrapper,
+#home.hero-section .hero-image-block,
+#home.hero-section .hero-text-block {
+  background: transparent !important;
   background-image: none !important;
 }
 

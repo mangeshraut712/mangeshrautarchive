@@ -1,7 +1,6 @@
 const STORAGE_KEY = 'hero-avatar-mode';
 
 function applyAvatarMode(mode) {
-  const source = document.getElementById('profile-image-source');
   const image = document.getElementById('profile-image');
   const toggle = document.getElementById('avatar-toggle');
 
@@ -9,21 +8,14 @@ function applyAvatarMode(mode) {
 
   const isAvatar = mode === 'avatar';
   const photoSrc = image.dataset.photoSrc || image.getAttribute('src') || '';
-  const photoSrcset = image.dataset.photoSrcset || '';
   const avatarSrc = image.dataset.avatarSrc || '';
 
   if (isAvatar) {
-    if (source) {
-      source.removeAttribute('srcset');
-    }
     image.src = avatarSrc || photoSrc;
     image.alt = 'Mangesh Raut avatar';
     toggle.dataset.mode = 'avatar';
     toggle.setAttribute('aria-pressed', 'true');
   } else {
-    if (source && photoSrcset) {
-      source.setAttribute('srcset', photoSrcset);
-    }
     image.src = photoSrc;
     image.alt = 'Mangesh Raut photo';
     toggle.dataset.mode = 'photo';
@@ -39,22 +31,42 @@ export function initAvatarToggle() {
   if (!toggle || toggle.dataset.bound === 'true') return;
 
   toggle.dataset.bound = 'true';
+  let lastToggleAt = 0;
 
   const savedMode = localStorage.getItem(STORAGE_KEY) === 'avatar' ? 'avatar' : 'photo';
   applyAvatarMode(savedMode);
 
   const switchAvatar = () => {
+    const now = Date.now();
+    if (now - lastToggleAt < 250) return;
+    lastToggleAt = now;
     const nextMode = toggle.dataset.mode === 'avatar' ? 'photo' : 'avatar';
     localStorage.setItem(STORAGE_KEY, nextMode);
     applyAvatarMode(nextMode);
   };
 
-  toggle.addEventListener('click', switchAvatar);
-  image?.addEventListener('click', event => {
-    event.preventDefault();
-    event.stopPropagation();
+  window.__toggleHeroAvatar = event => {
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
     switchAvatar();
-  });
+  };
+
+  const bindToggleEvent = (target, type, prevent = false) => {
+    target?.addEventListener(type, event => {
+      if (prevent) {
+        event.preventDefault();
+      }
+      event.stopPropagation();
+      switchAvatar();
+    });
+  };
+
+  bindToggleEvent(toggle, 'click');
+  bindToggleEvent(toggle, 'pointerup', true);
+  bindToggleEvent(image, 'click', true);
+  bindToggleEvent(image, 'pointerup', true);
+  bindToggleEvent(image, 'touchend', true);
+
   toggle.addEventListener('keydown', event => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     event.preventDefault();
