@@ -1,6 +1,9 @@
 /* ========================================
-   Homepage Hero - Enhanced Design
-   ======================================== */
+    Homepage Hero - Showcase Design 2026
+    ========================================
+    Enhanced for maximum visual impact and user engagement
+    Features: Glassmorphism, smooth animations, responsive design
+    ======================================== */
 
 /* Hero Section */
 
@@ -25,6 +28,23 @@
 
   /* Performance */
   contain: layout;
+}
+
+/* Showcase enhancements */
+.showcase-container {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+html.dark .showcase-container {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 html.dark .home-hero {
@@ -297,7 +317,6 @@ html.dark .profile-ring {
 }
 
 @keyframes spatialPulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -589,7 +608,6 @@ html.dark .music-card:hover .music-card-inner {
 }
 
 @keyframes playingBars {
-
   0%,
   100% {
     transform: scaleY(1);
@@ -994,7 +1012,6 @@ html:not(.dark) .hero-stat-label {
 
 /* Animation Enhancements */
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);
