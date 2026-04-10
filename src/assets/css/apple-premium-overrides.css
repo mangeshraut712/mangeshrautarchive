@@ -3226,3 +3226,58 @@ html.dark #home.hero-section .profile-image-wrapper {
 html.dark #home.hero-section .profile-ring {
   border-color: rgb(255 255 255 / 12%) !important;
 }
+
+/* Final homepage hero guardrail: keep background, name, tick, and avatar interaction stable */
+#home.hero-section.home-hero {
+  background: #fff !important;
+  background-image: none !important;
+}
+
+html.dark #home.hero-section.home-hero {
+  background: #000 !important;
+  background-image: none !important;
+}
+
+#home.hero-section #avatar-toggle,
+#home.hero-section #profile-image {
+  cursor: pointer;
+}
+
+#home.hero-section #profile-image {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+#home.hero-section .hero-name {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.36rem !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark #home.hero-section .hero-name,
+html.dark #home.hero-section .hero-name-text {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+#home.hero-section .hero-name-text {
+  white-space: nowrap;
+}
+
+#home.hero-section .hero-verified-badge {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  top: -3px !important;
+  margin-left: 0.06rem !important;
+  color: #0a84ff !important;
+}
+
+html.dark #home.hero-section .hero-verified-badge {
+  color: #2997ff !important;
+}

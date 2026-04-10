@@ -35,6 +35,7 @@ function applyAvatarMode(mode) {
 
 export function initAvatarToggle() {
   const toggle = document.getElementById('avatar-toggle');
+  const image = document.getElementById('profile-image');
   if (!toggle || toggle.dataset.bound === 'true') return;
 
   toggle.dataset.bound = 'true';
@@ -49,6 +50,11 @@ export function initAvatarToggle() {
   };
 
   toggle.addEventListener('click', switchAvatar);
+  image?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    switchAvatar();
+  });
   toggle.addEventListener('keydown', event => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     event.preventDefault();
