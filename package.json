@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:css": "stylelint \"src/assets/css/**/*.css\"",
-    "lint:dead-code": "./venv/bin/python -m ruff check api && ./venv/bin/python -m vulture --config pyproject.toml",
+    "lint:dead-code": "./venv/bin/python -m ruff check api && ./venv/bin/python -m vulture --config vulture.toml",
     "test": "vitest --passWithNoTests --run",
     "test:e2e:chrome": "playwright test tests/e2e/smoke.spec.js --project=chromium",
     "test:e2e:mobile-chrome": "playwright test tests/e2e/smoke.spec.js --project=\"Mobile Chrome\"",
