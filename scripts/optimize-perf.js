@@ -21,7 +21,7 @@ const colors = {
   yellow: '\x1b[33m',
   red: '\x1b[31m',
   blue: '\x1b[34m',
-  reset: '\x1b[0m'
+  reset: '\x1b[0m',
 };
 
 async function minifyCSS(content) {
@@ -59,10 +59,10 @@ async function _optimizeHTML(content) {
 async function processDirectory(dir, extension, processor) {
   const entries = await readdir(dir, { withFileTypes: true });
   let totalSaved = 0;
-  
+
   for (const entry of entries) {
     const path = join(dir, entry.name);
-    
+
     if (entry.isDirectory()) {
       const saved = await processDirectory(path, extension, processor);
       totalSaved += saved;
@@ -71,50 +71,50 @@ async function processDirectory(dir, extension, processor) {
       const originalSize = Buffer.byteLength(content, 'utf8');
       const optimized = await processor(content);
       const newSize = Buffer.byteLength(optimized, 'utf8');
-      
+
       await writeFile(path, optimized, 'utf8');
-      totalSaved += (originalSize - newSize);
-      
+      totalSaved += originalSize - newSize;
+
       const kb = (originalSize - newSize) / 1024;
       if (kb > 0.1) {
         console.log(`${colors.green}✓${colors.reset} ${entry.name}: saved ${kb.toFixed(2)} KB`);
       }
     }
   }
-  
+
   return totalSaved;
 }
 
 async function optimizeImages() {
   console.log(`${colors.blue}\n📸 Optimizing images...${colors.reset}`);
-  
+
   const imagesDir = resolve(srcDir, 'assets/images');
-  
+
   try {
     // Use sharp if available for WebP conversion
     const sharp = await import('sharp').catch(() => null);
-    
+
     if (sharp) {
       const entries = await readdir(imagesDir, { withFileTypes: true, recursive: true });
-      
+
       for (const entry of entries) {
         if (!entry.isFile()) continue;
-        
+
         const ext = entry.name.toLowerCase();
         if (ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png')) {
           const path = join(entry.parentPath || imagesDir, entry.name);
           const webpPath = path.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-          
+
           try {
-            await sharp.default(path)
-              .webp({ quality: 85, effort: 6 })
-              .toFile(webpPath);
-            
+            await sharp.default(path).webp({ quality: 85, effort: 6 }).toFile(webpPath);
+
             const originalSize = (await stat(path)).size;
             const webpSize = (await stat(webpPath)).size;
             const saved = (originalSize - webpSize) / 1024;
-            
-            console.log(`${colors.green}✓${colors.reset} ${entry.name} → .webp (saved ${saved.toFixed(2)} KB)`);
+
+            console.log(
+              `${colors.green}✓${colors.reset} ${entry.name} → .webp (saved ${saved.toFixed(2)} KB)`
+            );
           } catch (_e) {
             // Ignore errors for individual images
           }
@@ -122,16 +122,18 @@ async function optimizeImages() {
       }
     }
   } catch (_e) {
-    console.log(`${colors.yellow}⚠${colors.reset} Image optimization skipped (sharp not available)`);
+    console.log(
+      `${colors.yellow}⚠${colors.reset} Image optimization skipped (sharp not available)`
+    );
   }
 }
 
 async function addPerformanceHeaders() {
   console.log(`${colors.blue}\n🔧 Adding performance optimizations to HTML...${colors.reset}`);
-  
+
   const indexPath = resolve(srcDir, 'index.html');
   let html = await readFile(indexPath, 'utf8');
-  
+
   // Add resource hints for external domains
   const resourceHints = `
   <!-- Critical Performance Optimizations -->
@@ -142,31 +144,22 @@ async function addPerformanceHeaders() {
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <meta name="view-transition" content="same-origin" />
 `;
-  
+
   // Insert after charset meta
-  html = html.replace(
-    /<meta charset="UTF-8" \/>/,
-    `<meta charset="UTF-8" />${resourceHints}`
-  );
-  
+  html = html.replace(/<meta charset="UTF-8" \/>/, `<meta charset="UTF-8" />${resourceHints}`);
+
   // Add loading="lazy" to all images that don't have it
-  html = html.replace(
-    /<img(?!.*?loading=)([^>]*?)>/gi,
-    '<img$1 loading="lazy" decoding="async">'
-  );
-  
+  html = html.replace(/<img(?!.*?loading=)([^>]*?)>/gi, '<img$1 loading="lazy" decoding="async">');
+
   // Add fetchpriority to critical images only
   html = html.replace(
     /<img([^>]*?)src="assets\/images\/profile\.jpg"([^>]*?)>/i,
     '<img$1src="assets/images/profile.jpg"$2 fetchpriority="high" loading="eager" decoding="async">'
   );
-  
+
   // Defer all non-critical scripts
-  html = html.replace(
-    /<script((?!.*?(defer|async))[^>]*?)src=/gi,
-    '<script$1 defer src='
-  );
-  
+  html = html.replace(/<script((?!.*?(defer|async))[^>]*?)src=/gi, '<script$1 defer src=');
+
   // Add critical CSS inline
   const criticalCSS = `
     <style>
@@ -183,20 +176,17 @@ async function addPerformanceHeaders() {
       .skip-link:focus{left:0;z-index:10000}
     </style>
   `;
-  
+
   // Insert critical CSS before first stylesheet
-  html = html.replace(
-    /<link rel="stylesheet"/,
-    `${criticalCSS}<link rel="stylesheet"`
-  );
-  
+  html = html.replace(/<link rel="stylesheet"/, `${criticalCSS}<link rel="stylesheet"`);
+
   await writeFile(indexPath, html, 'utf8');
   console.log(`${colors.green}✓${colors.reset} HTML performance optimizations applied`);
 }
 
 async function optimize() {
   console.log(`${colors.blue}🚀 Starting aggressive performance optimization...${colors.reset}\n`);
-  
+
   // Step 1: Build first
   console.log(`${colors.blue}📦 Building project...${colors.reset}`);
   try {
@@ -205,23 +195,27 @@ async function optimize() {
     console.error(`${colors.red}✗ Build failed${colors.reset}`);
     process.exit(1);
   }
-  
+
   // Step 2: Minify CSS
   console.log(`${colors.blue}\n🎨 Minifying CSS...${colors.reset}`);
   const cssSaved = await processDirectory(distDir, '.css', minifyCSS);
-  console.log(`${colors.green}✓${colors.reset} CSS optimization saved ${(cssSaved / 1024).toFixed(2)} KB`);
-  
+  console.log(
+    `${colors.green}✓${colors.reset} CSS optimization saved ${(cssSaved / 1024).toFixed(2)} KB`
+  );
+
   // Step 3: Minify JS
   console.log(`${colors.blue}\n📜 Minifying JavaScript...${colors.reset}`);
   const jsSaved = await processDirectory(distDir, '.js', minifyJS);
-  console.log(`${colors.green}✓${colors.reset} JS optimization saved ${(jsSaved / 1024).toFixed(2)} KB`);
-  
+  console.log(
+    `${colors.green}✓${colors.reset} JS optimization saved ${(jsSaved / 1024).toFixed(2)} KB`
+  );
+
   // Step 4: Optimize images
   await optimizeImages();
-  
+
   // Step 5: Add performance headers to HTML
   await addPerformanceHeaders();
-  
+
   // Step 6: Final optimized build
   console.log(`${colors.blue}\n📦 Final optimized build...${colors.reset}`);
   try {
@@ -229,7 +223,7 @@ async function optimize() {
   } catch (_e) {
     // Continue even if build has warnings
   }
-  
+
   console.log(`${colors.green}\n✅ Performance optimization complete!${colors.reset}`);
   console.log(`${colors.yellow}\n🎯 Target scores: 100/100/100/100${colors.reset}`);
   console.log(`${colors.blue}Run 'npm run qa:lighthouse:desktop' to verify${colors.reset}\n`);

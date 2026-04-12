@@ -25,7 +25,7 @@
     goToTopBtn.style.justifyContent = 'center';
     goToTopBtn.style.flexDirection = 'column';
     goToTopBtn.style.gap = '2px';
-    
+
     // Add a visible label for better clarity (can be styled to appear on hover/focus)
     const label = document.createElement('span');
     label.className = 'go-to-top-label';
@@ -41,7 +41,7 @@
       if (!isScrolling) {
         window.requestAnimationFrame(() => {
           const scrollPosition = window.pageYOffset || root.scrollTop;
-          const showThreshold = 500; 
+          const showThreshold = 500;
 
           if (scrollPosition > showThreshold) {
             goToTopBtn.classList.add('visible');
@@ -65,7 +65,7 @@
       // Cross-browser smooth scroll to top
       const scrollOptions = {
         top: 0,
-        behavior: 'smooth'
+        behavior: 'smooth',
       };
 
       // Try window.scrollTo first
@@ -89,16 +89,18 @@
         const topTarget = document.querySelector('h1') || document.body;
         topTarget.tabIndex = -1; // Make it focusable if not already
         topTarget.focus({ preventScroll: true });
-        
+
         // Remove tabindex after focus if we added it
         if (topTarget !== document.body) {
-          topTarget.addEventListener('blur', () => topTarget.removeAttribute('tabindex'), { once: true });
+          topTarget.addEventListener('blur', () => topTarget.removeAttribute('tabindex'), {
+            once: true,
+          });
         }
       }, 600); // Wait for smooth scroll to finish mostly
     }
 
     // Keyboard support (Space/Enter is handled by <button> naturally, but good to be sure)
-    goToTopBtn.addEventListener('keydown', (e) => {
+    goToTopBtn.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         scrollToTop(e);
       }
@@ -110,7 +112,7 @@
 
     // Initial check
     throttleScroll();
-    
+
     // Set initial accessibility state
     goToTopBtn.setAttribute('aria-hidden', 'true');
     goToTopBtn.tabIndex = -1;

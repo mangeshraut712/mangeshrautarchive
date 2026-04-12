@@ -940,7 +940,7 @@ Try them all, find what works for you, and embrace the AI revolution. The develo
     id: 'apple-50th-anniversary-2026',
     title: "Apple's 50th Anniversary: Five Decades of Innovation That Changed the World",
     summary:
-      'Celebrating Apple Inc.\'s golden jubilee—a comprehensive retrospective on 50 years of revolutionary products, cultural transformation, and the relentless pursuit of excellence that redefined technology.',
+      "Celebrating Apple Inc.'s golden jubilee—a comprehensive retrospective on 50 years of revolutionary products, cultural transformation, and the relentless pursuit of excellence that redefined technology.",
     date: '2026-04-01',
     tags: ['Apple', 'Technology', 'Innovation', 'History'],
     readTime: '12 min read',
@@ -1193,7 +1193,7 @@ From garage to global phenomenon, Apple's 50-year journey proves that technology
     id: 'anthropic-mythos-2026',
     title: 'Anthropic Mythos: Philosophical Foundations and Technological Implications',
     summary:
-      'Exploring the philosophical concept of anthropic mythos—from ancient cosmology to contemporary AI discourse—and its profound implications for how we understand consciousness, existence, and humanity\'s place in an increasingly artificial world.',
+      "Exploring the philosophical concept of anthropic mythos—from ancient cosmology to contemporary AI discourse—and its profound implications for how we understand consciousness, existence, and humanity's place in an increasingly artificial world.",
     date: '2026-04-06',
     tags: ['Philosophy', 'Anthropics', 'AI Ethics', 'Consciousness'],
     readTime: '11 min read',

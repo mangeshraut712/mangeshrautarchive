@@ -2644,12 +2644,16 @@ html.dark .game-stat-emoji {
 /* --- Legend/Info Icons --- */
 .legend-emoji {
   background: #f5f5f7 !important;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 6%), inset 0 1px 0 rgb(255 255 255 / 0.8) !important;
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 6%),
+    inset 0 1px 0 rgb(255 255 255 / 0.8) !important;
 }
 
 html.dark .legend-emoji {
   background: #000000 !important;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 0.05) !important;
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 30%),
+    inset 0 1px 0 rgb(255 255 255 / 0.05) !important;
 }
 
 /* --- Menu Icons --- */
@@ -2866,8 +2870,12 @@ html.dark .music-card:hover .music-card-inner {
 }
 
 @keyframes albumSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Playing Indicator Bars - Centered Bottom */
@@ -2915,8 +2923,13 @@ html.dark .music-card:hover .music-card-inner {
 }
 
 @keyframes playingBars {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(1.5); }
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.5);
+  }
 }
 
 /* Track Info - iOS 26.4 Compact */
@@ -3088,7 +3101,7 @@ html.dark .media-poster img {
 }
 
 /* Image loading state */
-.media-poster img[loading="lazy"] {
+.media-poster img[loading='lazy'] {
   opacity: 0.8;
   transition: opacity 0.3s ease;
 }

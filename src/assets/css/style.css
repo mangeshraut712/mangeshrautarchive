@@ -5239,7 +5239,7 @@ footer p {
   align-items: center;
   justify-content: center;
   gap: 2px;
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgb(0 122 255 / 30%),
     inset 0 1px 0 rgb(255 255 255 / 25%);
   opacity: 0;
@@ -5278,7 +5278,7 @@ footer p {
 
 #go-to-top:focus-visible {
   outline: none;
-  box-shadow: 
+  box-shadow:
     0 0 0 4px rgba(0, 122, 255, 0.45),
     0 12px 28px rgb(0 122 255 / 40%);
   transform: translateY(-4px) scale(1.08);
@@ -5291,13 +5291,13 @@ footer p {
 
 html.dark #go-to-top {
   background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
-  box-shadow: 
+  box-shadow:
     0 6px 16px rgb(0 0 0 / 60%),
     inset 0 1px 0 rgb(255 255 255 / 15%);
 }
 
 html.dark #go-to-top:focus-visible {
-  box-shadow: 
+  box-shadow:
     0 0 0 4px rgba(10, 132, 255, 0.5),
     0 12px 28px rgb(0 0 0 / 70%);
 }
@@ -5679,29 +5679,29 @@ html.dark .education-period {
    ============================================================ */
 
 /* Remove any 1px or 4px wide elements that could be vertical lines */
-[style*="width: 1px"],
-[style*="width: 4px"],
-[style*="width:1px"],
-[style*="width:4px"] {
+[style*='width: 1px'],
+[style*='width: 4px'],
+[style*='width:1px'],
+[style*='width:4px'] {
   display: none !important;
   width: 0 !important;
   opacity: 0 !important;
 }
 
 /* Remove border-left and border-right that could appear as vertical lines */
-[style*="border-left"],
-[style*="border-right"],
-[style*="border-left-width"],
-[style*="border-right-width"] {
+[style*='border-left'],
+[style*='border-right'],
+[style*='border-left-width'],
+[style*='border-right-width'] {
   border-left: none !important;
   border-right: none !important;
 }
 
 /* Remove all ::before and ::after pseudo-elements that could create lines */
-[class*="support-"]::before,
-[class*="support-"]::after,
-[class*="donation-"]::before,
-[class*="donation-"]::after,
+[class*='support-']::before,
+[class*='support-']::after,
+[class*='donation-']::before,
+[class*='donation-']::after,
 .contact-card::before,
 .contact-card::after {
   display: none !important;
@@ -5713,10 +5713,14 @@ html.dark .education-period {
   caret-color: transparent !important;
 }
 
-input, textarea, [contenteditable] {
+input,
+textarea,
+[contenteditable] {
   caret-color: #0071e3 !important;
 }
 
-html.dark input, html.dark textarea, html.dark [contenteditable] {
+html.dark input,
+html.dark textarea,
+html.dark [contenteditable] {
   caret-color: #2997ff !important;
 }

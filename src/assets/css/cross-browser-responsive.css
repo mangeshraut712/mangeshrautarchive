@@ -218,23 +218,33 @@ html {
 
 /* Container max-widths for different breakpoints */
 @media (min-width: 640px) {
-  .container { max-width: 640px; }
+  .container {
+    max-width: 640px;
+  }
 }
 
 @media (min-width: 768px) {
-  .container { max-width: 768px; }
+  .container {
+    max-width: 768px;
+  }
 }
 
 @media (min-width: 1024px) {
-  .container { max-width: 1024px; }
+  .container {
+    max-width: 1024px;
+  }
 }
 
 @media (min-width: 1280px) {
-  .container { max-width: 1280px; }
+  .container {
+    max-width: 1280px;
+  }
 }
 
 @media (min-width: 1536px) {
-  .container { max-width: 1536px; }
+  .container {
+    max-width: 1536px;
+  }
 }
 
 /* ============================================
@@ -258,7 +268,8 @@ h4 {
   font-size: clamp(1.125rem, 1.5vw + 0.625rem, 1.5rem);
 }
 
-p, li {
+p,
+li {
   font-size: clamp(0.875rem, 1vw + 0.5rem, 1.125rem);
 }
 
@@ -283,7 +294,8 @@ body {
 
 /* Improve tap targets on mobile */
 @media (hover: none) and (pointer: coarse) {
-  a, button {
+  a,
+  button {
     min-height: 44px;
     min-width: 44px;
   }
@@ -305,7 +317,7 @@ body {
   .flex-gap {
     gap: 1rem;
   }
-  
+
   .flex-gap > * + * {
     margin-left: 1rem;
   }
@@ -319,7 +331,9 @@ body {
 
 /* Fix for iOS input zoom */
 @media screen and (max-width: 768px) {
-  input, select, textarea {
+  input,
+  select,
+  textarea {
     font-size: 16px;
   }
 }
@@ -334,11 +348,11 @@ body {
     width: 8px;
     height: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: var(--scrollbar-color, #86868b);
     border-radius: 4px;
@@ -365,9 +379,7 @@ body {
 
 /* Support for high-DPI screens */
 /* stylelint-disable media-feature-name-no-vendor-prefix */
-@media (-webkit-min-device-pixel-ratio: 2), 
-       (min-resolution: 192dpi),
-       (min-resolution: 2dppx) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
   img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
@@ -386,13 +398,15 @@ body {
     box-shadow: none !important;
     text-shadow: none !important;
   }
-  
-  nav, .chatbot, .game-area {
+
+  nav,
+  .chatbot,
+  .game-area {
     display: none !important;
   }
-  
+
   a[href]::after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
     font-size: 0.8em;
   }
 }

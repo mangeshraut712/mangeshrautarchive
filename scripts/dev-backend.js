@@ -82,7 +82,9 @@ async function main() {
     }
 
     console.error(`❌ Port ${port} is already in use by another process.`);
-    console.error(`   Stop the process using ${host}:${port} or change API_PORT before running npm run dev.`);
+    console.error(
+      `   Stop the process using ${host}:${port} or change API_PORT before running npm run dev.`
+    );
     process.exit(1);
   }
 

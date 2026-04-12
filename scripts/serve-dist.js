@@ -31,7 +31,16 @@ const mimeTypes = {
   '.xml': 'application/xml; charset=utf-8',
 };
 
-const compressibleExtensions = new Set(['.css', '.html', '.js', '.json', '.svg', '.txt', '.webmanifest', '.xml']);
+const compressibleExtensions = new Set([
+  '.css',
+  '.html',
+  '.js',
+  '.json',
+  '.svg',
+  '.txt',
+  '.webmanifest',
+  '.xml',
+]);
 
 function setAssetHeaders(res, filePath) {
   const extension = extname(filePath).toLowerCase();
@@ -46,7 +55,11 @@ function setAssetHeaders(res, filePath) {
     return;
   }
 
-  if (['.woff', '.woff2', '.ttf', '.jpg', '.jpeg', '.png', '.webp', '.svg', '.ico', '.gif'].includes(extension)) {
+  if (
+    ['.woff', '.woff2', '.ttf', '.jpg', '.jpeg', '.png', '.webp', '.svg', '.ico', '.gif'].includes(
+      extension
+    )
+  ) {
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     return;
   }

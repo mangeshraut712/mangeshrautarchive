@@ -429,7 +429,9 @@ html.dark #projects .graph-loading {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #projects .graph-error {
@@ -584,8 +586,12 @@ html.dark #projects .activity-stat-item.skeleton .activity-stat-value {
 }
 
 @keyframes skeleton-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
@@ -600,7 +606,9 @@ html.dark #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
 
 /* Enhanced stat item hover effects */
 #projects .activity-stat-item {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   cursor: default;
 }
 

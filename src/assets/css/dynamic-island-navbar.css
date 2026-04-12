@@ -127,7 +127,7 @@ html.dark .global-nav.dynamic-island {
   backdrop-filter: saturate(180%) blur(24px);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
   border-bottom-color: rgba(0, 0, 0, 0.06);
-  box-shadow: 
+  box-shadow:
     0 1px 0 rgba(0, 0, 0, 0.04),
     0 4px 20px rgba(0, 0, 0, 0.04);
 }
@@ -135,7 +135,7 @@ html.dark .global-nav.dynamic-island {
 html.dark .global-nav.dynamic-island.scrolled {
   background: rgba(0, 0, 0, 0.98);
   border-bottom-color: rgba(255, 255, 255, 0.06);
-  box-shadow: 
+  box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.04),
     0 4px 20px rgba(0, 0, 0, 0.2);
 }
@@ -563,8 +563,20 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   padding: 0 15px !important;
-  mask-image: linear-gradient(to right, transparent, black 15px, black calc(100% - 15px), transparent) !important;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 15px, black calc(100% - 15px), transparent) !important;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15px,
+    black calc(100% - 15px),
+    transparent
+  ) !important;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15px,
+    black calc(100% - 15px),
+    transparent
+  ) !important;
   gap: 20px !important;
 }
 
@@ -584,8 +596,8 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   padding-top: 110px !important;
 }
 
-section, 
-header.hero-section, 
+section,
+header.hero-section,
 .game-section,
 #books-content,
 #shows-content {

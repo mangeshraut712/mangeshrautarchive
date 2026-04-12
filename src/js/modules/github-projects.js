@@ -11,10 +11,11 @@
 class GitHubProjects {
   constructor(username = 'mangeshraut712') {
     this.username = username;
-    const isLocal = typeof window !== 'undefined' && 
-                   ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
+    const isLocal =
+      typeof window !== 'undefined' &&
+      ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
 
-    this.proxyCandidates = isLocal 
+    this.proxyCandidates = isLocal
       ? ['/api/github/repos/public', '/api/github/repos']
       : [
           '/api/github/repos/public',

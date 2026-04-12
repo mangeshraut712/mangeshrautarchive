@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Deployment Synchronization Verification Script
- * 
+ *
  * This script verifies that both GitHub Pages and Vercel deployments
  * are synchronized and serving the same content.
- * 
+ *
  * Usage: node scripts/verify-deployment-sync.js
  */
 
@@ -33,7 +33,7 @@ const colors = {
 function log(message, type = 'info') {
   const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
   const prefix = `[${timestamp}]`;
-  
+
   switch (type) {
     case 'success':
       console.log(`${colors.green}${prefix} ✓ ${message}${colors.reset}`);
@@ -75,18 +75,18 @@ function getBuildInfo() {
 
 function checkLocalBuild() {
   log('Checking local build...', 'info');
-  
+
   if (!fs.existsSync(CONFIG.distDir)) {
     log('Dist directory not found! Run "npm run build" first.', 'error');
     return false;
   }
-  
+
   const requiredFiles = [
     'index.html',
     'build-config.json',
     'assets/css/cross-browser-responsive.css',
   ];
-  
+
   for (const file of requiredFiles) {
     const filepath = path.join(CONFIG.distDir, file);
     if (!fs.existsSync(filepath)) {
@@ -94,56 +94,56 @@ function checkLocalBuild() {
       return false;
     }
   }
-  
+
   const buildInfo = getBuildInfo();
   if (buildInfo) {
     log(`Build time: ${buildInfo.buildTime}`, 'info');
     log(`Git commit: ${buildInfo.gitCommit}`, 'info');
   }
-  
+
   log('Local build verified ✓', 'success');
   return true;
 }
 
 function checkGitStatus() {
   log('Checking Git status...', 'info');
-  
+
   try {
     // Check for uncommitted changes
     const status = execSync('git status --porcelain', { encoding: 'utf8' }).trim();
-    
+
     if (status) {
       log('Uncommitted changes detected:', 'warning');
       console.log(status);
       log('Please commit all changes before deploying.', 'warning');
       return false;
     }
-    
+
     // Check if local is ahead/behind remote
     const branch = execSync('git branch --show-current', { encoding: 'utf8' }).trim();
-    const revCount = execSync(
-      `git rev-list --left-right --count origin/${branch}...${branch}`,
-      { encoding: 'utf8' }
-    ).trim().split('\t');
-    
+    const revCount = execSync(`git rev-list --left-right --count origin/${branch}...${branch}`, {
+      encoding: 'utf8',
+    })
+      .trim()
+      .split('\t');
+
     const behind = parseInt(revCount[0], 10);
     const ahead = parseInt(revCount[1], 10);
-    
+
     if (behind > 0) {
       log(`Local branch is ${behind} commits behind origin/${branch}`, 'error');
       log('Run "git pull" to sync with remote.', 'warning');
       return false;
     }
-    
+
     if (ahead > 0) {
       log(`Local branch is ${ahead} commits ahead of origin/${branch}`, 'warning');
       log('Run "git push" to sync with remote.', 'warning');
       return false;
     }
-    
+
     log('Git repository is synchronized ✓', 'success');
     return true;
-    
   } catch (error) {
     log(`Git check error: ${error.message}`, 'error');
     return false;
@@ -152,7 +152,7 @@ function checkGitStatus() {
 
 function generateDeploymentChecklist() {
   const buildInfo = getBuildInfo();
-  
+
   return `
 ${colors.bright}╔══════════════════════════════════════════════════════════════╗
 ║           DEPLOYMENT SYNCHRONIZATION CHECKLIST              ║
@@ -201,26 +201,26 @@ function main() {
   console.log('\n' + '='.repeat(70));
   log('DEPLOYMENT SYNCHRONIZATION VERIFIER', 'info');
   console.log('='.repeat(70) + '\n');
-  
+
   let allChecks = true;
-  
+
   // Check local build
   if (!checkLocalBuild()) {
     allChecks = false;
   }
-  
+
   console.log('');
-  
+
   // Check Git status
   if (!checkGitStatus()) {
     allChecks = false;
   }
-  
+
   console.log('');
-  
+
   // Generate checklist
   console.log(generateDeploymentChecklist());
-  
+
   if (allChecks) {
     log('All checks passed! Ready for deployment.', 'success');
     process.exit(0);

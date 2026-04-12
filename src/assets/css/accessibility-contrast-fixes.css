@@ -417,7 +417,7 @@ html.dark .footer-tagline {
     color: #000080 !important; /* Navy - maximum contrast */
     text-decoration: underline !important;
   }
-  
+
   html.dark .text-accent,
   html.dark .experience-content .text-accent,
   html.dark .award-institution,
@@ -426,13 +426,13 @@ html.dark .footer-tagline {
     color: #00ffff !important; /* Cyan on black - maximum contrast */
     text-decoration: underline !important;
   }
-  
+
   .text-secondary,
   .author-title,
   .activity-stat-label {
     color: #000 !important;
   }
-  
+
   html.dark .text-secondary,
   html.dark .author-title,
   html.dark .activity-stat-label {

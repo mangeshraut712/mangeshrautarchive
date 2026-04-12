@@ -53,8 +53,10 @@
   function formatNumber(value) {
     const num = Number(value || 0);
     if (!Number.isFinite(num)) return '--';
-    if (num >= 1_000_000_000) return `${(num / 1_000_000_000).toFixed(num >= 10_000_000_000 ? 0 : 1).replace(/\.0$/, '')}B`;
-    if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(num >= 10_000_000 ? 0 : 1).replace(/\.0$/, '')}M`;
+    if (num >= 1_000_000_000)
+      return `${(num / 1_000_000_000).toFixed(num >= 10_000_000_000 ? 0 : 1).replace(/\.0$/, '')}B`;
+    if (num >= 1_000_000)
+      return `${(num / 1_000_000).toFixed(num >= 10_000_000 ? 0 : 1).replace(/\.0$/, '')}M`;
     if (num >= 1_000) return `${(num / 1_000).toFixed(num >= 10_000 ? 0 : 1).replace(/\.0$/, '')}K`;
     return `${Math.round(num)}`;
   }
@@ -117,7 +119,8 @@
       body: JSON.stringify({
         session_id: getSessionId(),
         path: window.location.pathname || '/',
-        is_homepage: window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
+        is_homepage:
+          window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
         referrer: document.referrer || '',
       }),
     });

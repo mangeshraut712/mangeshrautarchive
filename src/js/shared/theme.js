@@ -3,7 +3,7 @@
  * Handles dark/light mode toggling across all pages
  */
 
-(function() {
+(function () {
   'use strict';
 
   const THEME_KEY = 'theme';
@@ -16,7 +16,7 @@
   function initTheme() {
     const savedTheme = localStorage.getItem(THEME_KEY);
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     const theme = savedTheme || (prefersDark ? THEME_DARK : THEME_LIGHT);
     applyTheme(theme);
     return theme;
@@ -41,19 +41,21 @@
    * Toggle between light and dark themes
    */
   function toggleTheme() {
-    const currentTheme = document.documentElement.classList.contains('dark') 
-      ? THEME_DARK 
+    const currentTheme = document.documentElement.classList.contains('dark')
+      ? THEME_DARK
       : THEME_LIGHT;
     const newTheme = currentTheme === THEME_DARK ? THEME_LIGHT : THEME_DARK;
-    
+
     applyTheme(newTheme);
     localStorage.setItem(THEME_KEY, newTheme);
-    
+
     // Dispatch custom event for other components
-    window.dispatchEvent(new CustomEvent('themechange', { 
-      detail: { theme: newTheme } 
-    }));
-    
+    window.dispatchEvent(
+      new CustomEvent('themechange', {
+        detail: { theme: newTheme },
+      })
+    );
+
     return newTheme;
   }
 
@@ -71,9 +73,7 @@
    * Get current theme
    */
   function getTheme() {
-    return document.documentElement.classList.contains('dark') 
-      ? THEME_DARK 
-      : THEME_LIGHT;
+    return document.documentElement.classList.contains('dark') ? THEME_DARK : THEME_LIGHT;
   }
 
   // Initialize on DOM ready
@@ -90,6 +90,6 @@
     set: setTheme,
     get: getTheme,
     THEME_DARK,
-    THEME_LIGHT
+    THEME_LIGHT,
   };
 })();
