@@ -76,6 +76,22 @@
 </div>
 </details>
 
+### 🎬 Premium Launch Experience
+<details>
+<summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>✨ Immersive Brand Intro</b></summary>
+<br/>
+<div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
+  <p style="margin: 0 0 1rem 0;">Signature splash experience featuring:</p>
+  <ul style="margin: 0;">
+    <li>🖋️ Handwritten "नमस्ते" (Namaste) SVG animation</li>
+    <li>🎥 Smooth 5.6s cinemagraphic transition sequence</li>
+    <li>📱 Responsive scaling with intelligent path length calculations</li>
+    <li>♿ Motion-optimized (honors <code>prefers-reduced-motion</code>)</li>
+    <li>🎨 Apple 2026-inspired minimal branding</li>
+  </ul>
+</div>
+</details>
+
 ### 📺 Personal Media Showcase ("Currently")
 
 <details>

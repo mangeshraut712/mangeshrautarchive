@@ -213,6 +213,40 @@ function initFooterYear() {
   }
 }
 
+function initLaunchIntro(documentRef = document) {
+  const intro = documentRef.getElementById('launch-intro');
+  if (!intro || intro.dataset.launchIntroBound === 'true') {
+    return;
+  }
+
+  intro.dataset.launchIntroBound = 'true';
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = documentRef.documentElement;
+  const totalDuration = prefersReducedMotion ? 1400 : 5600;
+  const fadeDuration = 900;
+
+  const complete = () => {
+    if (intro.dataset.launchIntroComplete === 'true') return;
+
+    intro.dataset.launchIntroComplete = 'true';
+    intro.classList.add('is-exiting');
+    root.classList.remove('launch-intro-active');
+
+    window.setTimeout(() => {
+      intro.hidden = true;
+    }, fadeDuration);
+  };
+
+  root.classList.add('launch-intro-active');
+
+  requestAnimationFrame(() => {
+    intro.classList.add('is-playing');
+  });
+
+  window.setTimeout(complete, totalDuration);
+}
+
 function initGlobalErrorHandlers() {
   if (window.__portfolioErrorHandlersBound) {
     return;
@@ -522,6 +556,7 @@ function initServiceWorker() {
 }
 
 async function initBootstrap() {
+  initLaunchIntro();
   initFooterYear();
   initGlobalErrorHandlers();
 
