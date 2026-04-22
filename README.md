@@ -3,10 +3,11 @@
 <img src="src/assets/images/home.png" alt="Mangesh Raut Portfolio Homepage" width="100%" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);" />
 
 <h1 style="font-size: 3rem; font-weight: 700; margin: 1rem 0; color: #1d1d1f;">Mangesh Raut</h1>
-<h2 style="font-size: 1.5rem; font-weight: 400; margin: 0.5rem 0; color: #86868b;">AI-Powered Interactive Portfolio</h2>
+<h3 style="font-size: 1.5rem; font-weight: 400; margin: 0.5rem 0; color: #86868b;">AI-Powered Interactive Portfolio · Apple 2026 Design</h3>
 
-<p style="font-size: 1.125rem; max-width: 600px; margin: 1rem auto; color: #86868b;">
-  Experience the future of developer portfolios with real-time AI conversations, live GitHub data, immersive design, and cutting-edge web technologies.
+<p style="font-size: 1.125rem; max-width: 640px; margin: 1rem auto; color: #86868b;">
+  A full-stack portfolio featuring live AI chat, real-time GitHub integration, system monitoring dashboard,<br/>
+  unified engagement metrics, and an immersive Apple-inspired design system — built with FastAPI &amp; ES2026.
 </p>
 
 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
@@ -35,6 +36,39 @@
 
 ---
 
+## 🏆 What Makes This Portfolio Different
+
+<table>
+<tr>
+<td width="50%">
+
+### 🤖 AI Assistant Built-In
+Conversational chatbot that knows the portfolio owner's resume, projects, and skills — with streaming responses, voice I/O, and offline fallback.
+
+### 📊 Unified "Portfolio Reach" Metric
+Server-aggregated engagement number combining page views + GitHub stars + forks + watchers — **same number everywhere**.
+
+### 🖥️ Operations Dashboard
+10-section monitor page with client-side latency probes, security audits, AI metrics, and live health checks.
+
+</td>
+<td width="50%">
+
+### 🎬 Cinematic Launch Sequence
+Handwritten "नमस्ते" SVG animation with 5.6s cinemagraphic intro — honors `prefers-reduced-motion`.
+
+### 🎵 Live Music Integration
+Real-time Last.fm scrobbling with album art, Spotify links, and "Now Playing" card — updates on every visit.
+
+### 🎮 Hidden Easter Egg
+Retro canvas game (Debug Runner) with 60fps rendering, touch controls, and persistent high scores.
+
+</td>
+</tr>
+</table>
+
+---
+
 ## 📊 Repository Overview
 
 <div align="center">
@@ -46,11 +80,13 @@
 
 </div>
 
-**Repository:** `mangeshraut712/mangeshrautarchive` — AI-powered portfolio & development showcase  
-**Language:** JavaScript (55%), CSS (27%), Python (6%), HTML/Config (12%)  
-**Codebase:** 55K+ lines across 200+ files · 840+ commits  
-**Created:** April 2025 · **Actively maintained**  
-**Author:** [Mangesh Raut](https://github.com/mangeshraut712) — Software Engineer @ Customized Energy Solutions, MS CS @ Drexel University
+| | |
+|---|---|
+| **Author** | [Mangesh Raut](https://github.com/mangeshraut712) — Software Engineer @ CES · MS CS @ Drexel University |
+| **Languages** | JavaScript 55% · CSS 27% · Python 6% · HTML/Config 12% |
+| **Codebase** | 55K+ lines · 200+ files · 840+ commits |
+| **Created** | April 2025 · Actively maintained |
+| **License** | MIT |
 
 ---
 
@@ -456,15 +492,30 @@ mangeshrautarchive/
 
 ## 🎯 Performance Metrics
 
-![Lighthouse](https://img.shields.io/badge/Lighthouse-95%2B-brightgreen?style=flat-square&logo=lighthouse)
+<div align="center">
 
-- **Lighthouse Score**: 95+ on all categories
-- **First Contentful Paint**: <1.2s
-- **Largest Contentful Paint**: <2.5s
-- **Cumulative Layout Shift**: <0.1
-- **Total Blocking Time**: <200ms
-- **Bundle Size**: <500KB gzipped
-- **API Response Time**: <100ms average
+| Metric | Target | Status |
+|--------|--------|--------|
+| Lighthouse Score | 95+ all categories | ✅ |
+| First Contentful Paint | < 1.2s | ✅ |
+| Largest Contentful Paint | < 2.5s | ✅ |
+| Cumulative Layout Shift | < 0.1 | ✅ |
+| Total Blocking Time | < 200ms | ✅ |
+| Bundle Size (gzipped) | < 500KB | ✅ |
+| API Response Time | < 100ms avg | ✅ |
+
+</div>
+
+---
+
+## 🌐 Live Deployments
+
+| Surface | URL | Purpose |
+|---------|-----|---------|
+| **Production** | [mangeshraut.pro](https://mangeshraut.pro) | Primary — Vercel + FastAPI backend |
+| **GitHub Pages** | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback — client-side only |
+| **System Monitor** | [mangeshraut.pro/monitor.html](https://mangeshraut.pro/monitor.html) | Ops dashboard — health, probes, AI metrics |
+| **API Docs** | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs) | OpenAPI explorer |
 
 ---
 
@@ -495,7 +546,14 @@ MIT License — see [LICENSE](LICENSE) for details.
   <a href="https://github.com/mangeshraut712"><img src="https://img.shields.io/badge/GitHub-Follow-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/></a>
   <a href="mailto:mbr63drexel@gmail.com"><img src="https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
   <a href="https://snapchat.com/t/nk1K673G"><img src="https://img.shields.io/badge/Snapchat-Add-FFFC00?style=for-the-badge&logo=snapchat&logoColor=black" alt="Snapchat"/></a>
-  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-❤️_Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="Sponsor"/></a>
+</div>
+
+### 💖 Support This Project
+
+<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1rem 0;">
+  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/GitHub_Sponsors-❤️_Sponsor-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"/></a>
+  <a href="https://buymeacoffee.com/mangeshraut"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-☕_Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee"/></a>
+  <a href="https://paypal.me/mbr63drexel"><img src="https://img.shields.io/badge/PayPal-💳_Donate-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"/></a>
 </div>
 
 <p style="color: #86868b; font-size: 0.875rem;">© 2025–2026 Mangesh Raut · Built with ❤️ in Philadelphia, PA</p>
