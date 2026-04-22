@@ -124,8 +124,10 @@ html.dark .certification-category {
 }
 
 html.dark .certification-logo-container {
-  background: #000000 !important;
-  border-color: rgb(255 255 255 / 10%) !important;
+  background: #ffffff !important;
+  border-color: rgb(255 255 255 / 15%) !important;
+  border-radius: 8px !important;
+  padding: 4px !important;
 }
 
 .certification-logo {

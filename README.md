@@ -39,11 +39,10 @@
 
 <div align="center">
 
-| 📈 Stats            | 🔧 Tech                | 🚀 Deployments       |
-| ------------------- | ---------------------- | -------------------- |
-| **2.1K+** views     | **15+** technologies   | **3** platforms      |
-| **50+** commits     | **10K+** lines of code | **99.9%** uptime     |
-| **15** contributors | **50+** npm packages   | **<100ms** load time |
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/mangeshraut712/mangeshrautarchive?style=flat-square&label=commits)
+![GitHub contributors](https://img.shields.io/github/contributors/mangeshraut712/mangeshrautarchive?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/mangeshraut712/mangeshrautarchive?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/mangeshraut712/mangeshrautarchive?style=flat-square)
 
 </div>
 
@@ -75,7 +74,7 @@
     <li>🛡️ Privacy dashboard with conversation management</li>
     <li>📴 Offline fallback responses</li>
   </ul>
-  <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>Powered by xAI Grok-2 Ultra & Anthropic Claude-4 via OpenRouter API</em></p>
+  <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>Powered by xAI Grok 4.1 Fast & Anthropic Claude 3.5 Sonnet via OpenRouter API</em></p>
 </div>
 </details>
 
@@ -241,8 +240,8 @@ graph TB
     end
 
     subgraph "🤖 AI & Data Layer"
-        K[OpenRouter API] --> L[xAI Grok-2 Ultra]
-        K --> M[Anthropic Claude-4]
+        K[OpenRouter API] --> L[xAI Grok 4.1 Fast]
+        K --> M[Anthropic Claude 3.5 Sonnet]
         N[GitHub REST API v2026] --> F
         O[Last.fm API] --> F
         P[Web Neural Networks API] --> A
@@ -293,7 +292,7 @@ graph TB
 
 <a href="https://openrouter.ai/" target="_blank"><img src="https://img.shields.io/badge/OpenRouter-API-0EA5E9?style=for-the-badge" alt="OpenRouter"/></a>
 <a href="https://x.ai/" target="_blank"><img src="https://img.shields.io/badge/xAI-Grok_2_Ultra-111111?style=for-the-badge&logo=xai&logoColor=white" alt="xAI Grok"/></a>
-<a href="https://anthropic.com/" target="_blank"><img src="https://img.shields.io/badge/Anthropic-Claude_4-D97706?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude"/></a>
+<a href="https://anthropic.com/" target="_blank"><img src="https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude"/></a>
 <a href="https://js.tensorflow.org/" target="_blank"><img src="https://img.shields.io/badge/TensorFlow.js-v5-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow.js"/></a>
 <a href="https://webmachinelearning.github.io/webnn/" target="_blank"><img src="https://img.shields.io/badge/WebNN_API-1.0.0-0066CC?style=for-the-badge" alt="WebNN"/></a>
 
@@ -435,6 +434,8 @@ mangeshrautarchive/
 
 ## 🎯 Performance Metrics
 
+![Lighthouse](https://img.shields.io/badge/Lighthouse-95%2B-brightgreen?style=flat-square&logo=lighthouse)
+
 - **Lighthouse Score**: 95+ on all categories
 - **First Contentful Paint**: <1.2s
 - **Largest Contentful Paint**: <2.5s
@@ -464,7 +465,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
   <a href="https://linkedin.com/in/mangeshraut71298" style="color: #0077b5;"><img src="https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
   <a href="https://github.com/mangeshraut712" style="color: #333;"><img src="https://img.shields.io/badge/GitHub-Follow-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/></a>
-  <a href="mailto:mbr63@drexel.edu" style="color: #ea4335;"><img src="https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
+  <a href="mailto:mbr63drexel@gmail.com" style="color: #ea4335;"><img src="https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
   <a href="https://snapchat.com/t/nk1K673G" style="color: #fffc00;"><img src="https://img.shields.io/badge/Snapchat-Add-FFFC00?style=for-the-badge&logo=snapchat&logoColor=black" alt="Snapchat"/></a>
 </div>
 
