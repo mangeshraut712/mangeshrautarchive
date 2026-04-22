@@ -548,7 +548,6 @@ function initServiceWorker() {
           sessionStorage.removeItem(cleanupKey);
         };
       } catch (error) {
-        console.log('Service worker cleanup skipped:', error);
       }
     },
     { once: true }

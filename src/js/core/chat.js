@@ -44,29 +44,24 @@ function normalizeApiBase(rawValue) {
 if (typeof window !== 'undefined') {
   if (window.APP_CONFIG?.apiBaseUrl) {
     API_BASE = normalizeApiBase(window.APP_CONFIG.apiBaseUrl);
-    console.log('⚙️ Using custom API base:', API_BASE);
   } else {
     const hostname = window.location.hostname || '';
 
     // ALWAYS use relative paths for localhost to hit the proxy
     if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
       API_BASE = '';
-      console.log('🏠 Localhost detected - using relative API paths');
     }
     // Cloud Run deployment
     else if (hostname.includes('run.app')) {
       API_BASE = '';
-      console.log('🌐 Running on Cloud Run (self-hosted mode)');
     }
     // Vercel deployment
     else if (hostname.includes('vercel.app')) {
       API_BASE = '';
-      console.log('🌐 Running on Vercel (self-hosted mode)');
     }
     // GitHub Pages or Custom Domain - use Vercel backend
     else {
       API_BASE = VERCEL_BACKEND;
-      console.log('🔗 Using Vercel backend (remote keys):', API_BASE);
     }
   }
 }
@@ -164,34 +159,25 @@ class IntelligentAssistant {
         !hostname.endsWith('.netlify.app'));
 
     if (isGitHubPages) {
-      console.log('🤖 GitHub Pages detected - checking API availability...');
-      console.log('Current hostname:', hostname);
-      console.log('Protocol:', window.location.protocol);
-      console.log('API Base URL:', api.baseUrl);
 
       // Check if API_BASE is configured (which it should be now)
       if (API_BASE && (API_BASE.includes('vercel.app') || API_BASE.startsWith('http'))) {
-        console.log('✅ Remote API configured - hybrid mode enabled');
         this.canUseServerAI = true;
         this.isReadyState = true;
         return true; // API is available
       } else {
-        console.log('📴 No API configured - offline mode only');
         this.isReadyState = true;
         return false;
       }
     }
 
     if (!navigator.onLine) {
-      console.log('📴 Offline mode - no network connection');
       this.isReadyState = true;
       return false;
     }
 
     // If API_BASE is explicitly configured, trust it and enable server AI
     if (API_BASE && API_BASE.length > 0) {
-      console.log('✅ API Base configured:', API_BASE);
-      console.log('   Enabling server AI optimistically (will verify on first request)');
       this.canUseServerAI = true;
       this.isReadyState = true;
       return true;
@@ -199,7 +185,6 @@ class IntelligentAssistant {
 
     // Fallback: Try health check for legacy compatibility
     try {
-      console.log('🖥️ Testing server connectivity...');
       const tryEndpoint = async (path, timeoutMs) => {
         const res = await fetch(buildApiUrl(path), {
           method: 'GET',
@@ -214,7 +199,6 @@ class IntelligentAssistant {
         (await tryEndpoint('/api/status', 15000).catch(() => false));
 
       if (healthy) {
-        console.log('✅ Server connectivity test successful');
         this.canUseServerAI = true;
         this.isReadyState = true;
         return true;
@@ -261,7 +245,6 @@ class IntelligentAssistant {
       const actionResult = await agenticActions.detectAndExecute(trimmed);
 
       if (actionResult.actionDetected) {
-        console.log('✅ Action executed:', actionResult);
 
         const processingTime = Date.now() - startTime;
 
@@ -363,17 +346,12 @@ class IntelligentAssistant {
       (hostname.includes('github.io') && API_BASE && API_BASE.includes('vercel.app'));
 
     if (!canCallServerAPI) {
-      console.log('🔄 Skipping server API call - offline mode or no API configured');
-      console.log('   canUseServerAI:', this.canUseServerAI);
-      console.log('   API_BASE:', API_BASE);
       return null;
     }
 
-    console.log('📡 API Base URL:', API_BASE);
 
     try {
       const apiUrl = buildApiUrl('/api/chat');
-      console.log('🖥️ Calling API:', apiUrl);
 
       const isStreaming = typeof options.onChunk === 'function';
 
@@ -474,18 +452,11 @@ class IntelligentAssistant {
           throw new Error('Empty response from server');
         }
         const data = JSON.parse(text);
-        console.log('✅ API response received:', {
-          source: data.source,
-          type: data.type,
-          confidence: data.confidence,
-          answerLength: data.answer?.length || 0,
-        });
         this.isReadyState = true;
         return data;
       }
     } catch (error) {
       console.error('❌ API call failed:', error.message);
-      console.log('💡 Falling back to client-side processing');
       this.markServerUnavailable();
       return null;
     }
@@ -980,7 +951,6 @@ class IntelligentAssistant {
     this.conversation = [];
     this.cache = null;
 
-    console.log('Assistant destroyed and cleaned up');
   }
 }
 

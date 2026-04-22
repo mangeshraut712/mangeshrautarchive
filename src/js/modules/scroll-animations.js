@@ -36,7 +36,6 @@ class ScrollAnimations {
     // Lazy load images
     this.lazyLoadImages();
 
-    console.log('✨ Scroll animations initialized');
   }
 
   handleIntersection(entries) {
@@ -77,7 +76,6 @@ class ScrollAnimations {
       });
     });
 
-    console.log(`🎬 Observing ${selectors.length} element types for scroll animations`);
   }
 
   lazyLoadImages() {
@@ -98,7 +96,6 @@ class ScrollAnimations {
       }
     });
 
-    console.log(`🖼️  Lazy loading ${images.length} images`);
   }
 
   fallbackAnimation() {

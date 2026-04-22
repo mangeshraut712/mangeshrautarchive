@@ -281,7 +281,6 @@ class GitHubProjects {
 
         const data = await proxyResp.json();
         if (data.success && Array.isArray(data.data)) {
-          console.log(`✅ GitHub repos via proxy ${proxyBase}`);
           rawRepos = data.data;
           break;
         }
@@ -298,7 +297,6 @@ class GitHubProjects {
 
         if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
         rawRepos = await response.json();
-        console.log('ℹ️ GitHub repos loaded directly (unauthenticated mode)');
       } catch (err) {
         console.error('Error fetching GitHub repositories:', err);
         // If we have stale cache, return it with a warning

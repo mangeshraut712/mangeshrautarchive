@@ -141,7 +141,6 @@ class AppleIntelligenceChatbot {
       }
     }
 
-    console.log('✅ Chat API connected');
     this.updateStatusIndicator('online');
   }
 
@@ -263,7 +262,6 @@ class AppleIntelligenceChatbot {
     this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
     this.elements.clearBtn?.addEventListener('click', () => this.clearChat());
     this.elements.privacyBtn?.addEventListener('click', () => {
-      console.log('🛡️ Opening Privacy Dashboard');
       privacyDashboard.open();
     });
 
@@ -505,7 +503,6 @@ class AppleIntelligenceChatbot {
 
       // Auto-retry on empty response (1 silent retry)
       if (!fullText && !isRetry) {
-        console.log('🔄 Empty response, auto-retrying...');
         messageDiv.remove();
         this.retryCount++;
         this.showThinkingIndicator();
