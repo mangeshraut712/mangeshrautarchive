@@ -46,11 +46,11 @@
 
 </div>
 
-**Repository:** `mangeshraut712/mangeshrautarchive` - Personal portfolio and development showcase  
+**Repository:** `mangeshraut712/mangeshrautarchive` — AI-powered portfolio & development showcase  
 **Language:** JavaScript (55%), CSS (27%), Python (6%), HTML/Config (12%)  
-**Size:** ~450MB (includes high-res image assets)  
-**Created:** April 2025  
-**Maintained by:** [Mangesh Raut](https://github.com/mangeshraut712)
+**Codebase:** 55K+ lines across 200+ files · 840+ commits  
+**Created:** April 2025 · **Actively maintained**  
+**Author:** [Mangesh Raut](https://github.com/mangeshraut712) — Software Engineer @ Customized Energy Solutions, MS CS @ Drexel University
 
 ---
 
@@ -168,16 +168,37 @@
 <summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>🩺 Backend Health & Analytics</b></summary>
 <br/>
 <div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
-  <p style="margin: 0 0 1rem 0;">Real-time monitoring includes:</p>
+  <p style="margin: 0 0 1rem 0;">Full-stack operations dashboard at <code>/monitor.html</code>:</p>
   <ul style="margin: 0;">
     <li>🔄 Live health checks for backend, APIs, and deployments</li>
     <li>📊 Endpoint performance metrics and response times</li>
     <li>🌐 Provider status (OpenRouter, GitHub, Last.fm, Vercel)</li>
     <li>🚀 Deployment surface monitoring (custom domain, Vercel, GitHub Pages)</li>
-    <li>⚙️ Runtime environment details and debugging info</li>
+    <li>📡 <strong>Client-side latency probes</strong> — runs from browser, no backend needed</li>
+    <li>🛡️ <strong>Security audit</strong> — env var checks, CORS, headers</li>
+    <li>🤖 <strong>AI provider metrics</strong> — model usage and performance stats</li>
     <li>📋 Event logs with resolved/unresolved incidents</li>
-    <li>🎨 Consistent Apple UI across monitoring interface</li>
+    <li>⚙️ Auto-refresh every 30s with graceful fallbacks</li>
   </ul>
+</div>
+</details>
+
+### 📊 Portfolio Reach (Unified Metric)
+
+<details>
+<summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>🎯 Centralized Engagement Tracking</b></summary>
+<br/>
+<div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
+  <p style="margin: 0 0 1rem 0;">Single authoritative engagement metric displayed on homepage:</p>
+  <ul style="margin: 0;">
+    <li>📈 <strong>Formula:</strong> <code>total_reach = page_views + stars + forks + watchers</code></li>
+    <li>🔄 Server-side 5-minute cache ensures identical number across all surfaces</li>
+    <li>🌐 Works on GitHub Pages, Vercel, and localhost</li>
+    <li>📊 Full breakdown tooltip (page views, unique visitors, GitHub stats)</li>
+    <li>💾 Dual storage: Redis (Vercel) or file-based (local)</li>
+    <li>🛡️ Graceful fallback to legacy <code>/api/analytics/views</code></li>
+  </ul>
+  <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>API: GET /api/analytics/reach</em></p>
 </div>
 </details>
 
@@ -226,15 +247,15 @@
 ```mermaid
 graph TB
     subgraph "🌐 Frontend Layer"
-        A[ES2026 Modules] --> B[Tailwind CSS v4.0.9]
+        A[ES2026 Modules] --> B[Tailwind CSS v4.0]
         A --> C[Apple Design System 2026]
         A --> D[Web APIs Integration]
         D --> E[Canvas, Web Speech, Local Storage]
     end
 
     subgraph "🖥️ Backend Layer"
-        F[FastAPI 0.120+] --> G[Uvicorn ASGI 0.35+]
-        F --> H[Pydantic v3 Models]
+        F[FastAPI 0.115] --> G[Uvicorn ASGI 0.34]
+        F --> H[Pydantic v2 Models]
         F --> I[httpx Async Client]
         F --> J[WebSocket Support]
     end
@@ -255,10 +276,10 @@ graph TB
     end
 
     subgraph "🧪 Quality Assurance"
-        X[Playwright v2.0] --> Y[E2E + Visual Regression]
-        Z[Lighthouse v14] --> AA[Performance Auditing]
-        BB[Vitest v4] --> CC[Unit & Integration Tests]
-        DD[ESLint v10 + Stylelint] --> EE[Code Quality Gates]
+        X[Playwright v1.58] --> Y[E2E + Visual Regression]
+        Z[Lighthouse v13] --> AA[Performance Auditing]
+        BB[Vitest v3] --> CC[Unit & Integration Tests]
+        DD[ESLint v9 + Prettier] --> EE[Code Quality Gates]
     end
 
     A --> F
@@ -284,9 +305,9 @@ graph TB
 #### Backend & Server
 
 <a href="https://www.python.org/" target="_blank"><img src="https://img.shields.io/badge/Python-3.13+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/></a>
-<a href="https://fastapi.tiangolo.com/" target="_blank"><img src="https://img.shields.io/badge/FastAPI-0.120+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
-<a href="https://www.uvicorn.org/" target="_blank"><img src="https://img.shields.io/badge/Uvicorn-0.35+-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white" alt="Uvicorn"/></a>
-<a href="https://pydantic.dev/" target="_blank"><img src="https://img.shields.io/badge/Pydantic-v2-E92063?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic"/></a>
+<a href="https://fastapi.tiangolo.com/" target="_blank"><img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
+<a href="https://www.uvicorn.org/" target="_blank"><img src="https://img.shields.io/badge/Uvicorn-0.34-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white" alt="Uvicorn"/></a>
+<a href="https://pydantic.dev/" target="_blank"><img src="https://img.shields.io/badge/Pydantic-v2.10-E92063?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic"/></a>
 
 #### AI & Machine Learning
 
@@ -300,8 +321,8 @@ graph TB
 
 <a href="https://playwright.dev/" target="_blank"><img src="https://img.shields.io/badge/Playwright-1.58-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright"/></a>
 <a href="https://developer.chrome.com/docs/lighthouse" target="_blank"><img src="https://img.shields.io/badge/Lighthouse-13-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
-<a href="https://vitest.dev/" target="_blank"><img src="https://img.shields.io/badge/Vitest-3.0-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
-<a href="https://eslint.org/" target="_blank"><img src="https://img.shields.io/badge/ESLint-9-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
+<a href="https://vitest.dev/" target="_blank"><img src="https://img.shields.io/badge/Vitest-3.0.7-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
+<a href="https://eslint.org/" target="_blank"><img src="https://img.shields.io/badge/ESLint-9.21-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
 
 #### DevOps & Deployment
 
@@ -325,9 +346,10 @@ graph TB
 
 ### Prerequisites
 
-- Node.js 25+
-- Python 3.13+
+- Node.js ≥ 18 (tested on v25.9)
+- Python ≥ 3.10 (tested on 3.13.2)
 - Git
+- GitHub CLI (`gh`) — optional, for deployment workflows
 
 ### Installation
 
@@ -450,11 +472,17 @@ mangeshrautarchive/
 
 Contributions welcome! Fork the repo, create a feature branch, and open a PR.
 
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'feat: add your feature'`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a Pull Request
+
 ---
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
@@ -463,13 +491,15 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 🌟 Connect & Support
 
 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
-  <a href="https://linkedin.com/in/mangeshraut71298" style="color: #0077b5;"><img src="https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
-  <a href="https://github.com/mangeshraut712" style="color: #333;"><img src="https://img.shields.io/badge/GitHub-Follow-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/></a>
-  <a href="mailto:mbr63drexel@gmail.com" style="color: #ea4335;"><img src="https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
-  <a href="https://snapchat.com/t/nk1K673G" style="color: #fffc00;"><img src="https://img.shields.io/badge/Snapchat-Add-FFFC00?style=for-the-badge&logo=snapchat&logoColor=black" alt="Snapchat"/></a>
+  <a href="https://linkedin.com/in/mangeshraut71298"><img src="https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
+  <a href="https://github.com/mangeshraut712"><img src="https://img.shields.io/badge/GitHub-Follow-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/></a>
+  <a href="mailto:mbr63drexel@gmail.com"><img src="https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
+  <a href="https://snapchat.com/t/nk1K673G"><img src="https://img.shields.io/badge/Snapchat-Add-FFFC00?style=for-the-badge&logo=snapchat&logoColor=black" alt="Snapchat"/></a>
+  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-❤️_Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="Sponsor"/></a>
 </div>
 
-<p style="color: #86868b; font-size: 0.875rem;">© 2026 Mangesh Raut • Built with ❤️ in Pennsylvania</p>
+<p style="color: #86868b; font-size: 0.875rem;">© 2025–2026 Mangesh Raut · Built with ❤️ in Philadelphia, PA</p>
+<p style="color: #86868b; font-size: 0.75rem;">MS Computer Science @ Drexel University · Software Engineer @ Customized Energy Solutions</p>
 
 </div>
 
