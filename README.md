@@ -36,36 +36,48 @@
 
 ---
 
-## 🏆 What Makes This Portfolio Different
+## 🎨 Design Philosophy — Inspired by Apple
+
+> _"Design is not just what it looks like and feels like. Design is how it works."_ — Steve Jobs
+
+This portfolio is a love letter to Apple's design language — reimagined for the web. Every pixel, animation, and interaction follows the principles that make Apple products feel magical:
 
 <table>
 <tr>
-<td width="50%">
+<td width="33%" align="center">
 
-### 🤖 AI Assistant Built-In
-Conversational chatbot that knows the portfolio owner's resume, projects, and skills — with streaming responses, voice I/O, and offline fallback.
+**🪩 Clarity**
 
-### 📊 Unified "Portfolio Reach" Metric
-Server-aggregated engagement number combining page views + GitHub stars + forks + watchers — **same number everywhere**.
-
-### 🖥️ Operations Dashboard
-10-section monitor page with client-side latency probes, security audits, AI metrics, and live health checks.
+SF Pro typography, generous whitespace, and a strict visual hierarchy — content speaks first, chrome disappears.
 
 </td>
-<td width="50%">
+<td width="33%" align="center">
 
-### 🎬 Cinematic Launch Sequence
-Handwritten "नमस्ते" SVG animation with 5.6s cinemagraphic intro — honors `prefers-reduced-motion`.
+**✨ Deference**
 
-### 🎵 Live Music Integration
-Real-time Last.fm scrobbling with album art, Spotify links, and "Now Playing" card — updates on every visit.
+Glassmorphism panels, neural gradients, and fluid blur effects create depth without competing with content.
 
-### 🎮 Hidden Easter Egg
-Retro canvas game (Debug Runner) with 60fps rendering, touch controls, and persistent high scores.
+</td>
+<td width="33%" align="center">
+
+**⚙️ Depth**
+
+Layered translucency, parallax scrolling, and micro-animations provide a sense of dimension and responsiveness.
 
 </td>
 </tr>
 </table>
+
+| Apple DNA | Implementation |
+|-----------|----------------|
+| **Dark Mode** | System-aware auto-switching with `prefers-color-scheme`, smooth 300ms transitions |
+| **Typography** | SF Pro Display for headlines, SF Pro Text for body, JetBrains Mono for code |
+| **Glassmorphism** | `backdrop-filter: blur(20px)` with layered opacity on cards, nav, and modals |
+| **Motion** | GPU-accelerated `transform`/`opacity` animations, respects `prefers-reduced-motion` |
+| **Spacing** | 8px grid system with Apple's signature generous padding |
+| **Colors** | Apple system palette — `#0071e3` primary, `#f5f5f7` surface, `#86868b` secondary text |
+| **Radius** | Consistent 12px/16px/25px roundedness matching iOS/macOS components |
+| **Haptics** | Subtle hover lifts, press states, and spring-based easing curves |
 
 ---
 
@@ -240,34 +252,37 @@ Retro canvas game (Debug Runner) with 60fps rendering, touch controls, and persi
 
 ### 🎨 Design System (Apple 2026)
 
-<details>
+<details open>
 <summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>✨ Premium Visual Experience</b></summary>
 <br/>
 <div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
-  <p style="margin: 0 0 1rem 0;">Future-forward design inspired by Apple 2026:</p>
+  <p style="margin: 0 0 1rem 0;">A comprehensive design system inspired by Apple's 2026 vision — every component follows these principles:</p>
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
     <div>
       <h4 style="margin: 0 0 0.5rem 0; color: #1d1d1f;">CSS Architecture</h4>
       <ul style="margin: 0; font-size: 0.9rem; color: #86868b;">
-        <li>Modern cascade layers</li>
-        <li>Advanced glassmorphism</li>
-        <li>Container queries</li>
+        <li>Modern <code>@layer</code> cascade layers</li>
+        <li>Advanced glassmorphism with <code>backdrop-filter</code></li>
+        <li>Container queries for component-level responsiveness</li>
+        <li>CSS custom properties for theming (100+ tokens)</li>
       </ul>
     </div>
     <div>
       <h4 style="margin: 0 0 0.5rem 0; color: #1d1d1f;">Typography</h4>
       <ul style="margin: 0; font-size: 0.9rem; color: #86868b;">
-        <li>SF Pro Display/Text</li>
-        <li>JetBrains Mono for code</li>
-        <li>Fluid responsive sizing</li>
+        <li>SF Pro Display &amp; Text (system font stack fallback)</li>
+        <li>JetBrains Mono for code blocks</li>
+        <li>Fluid <code>clamp()</code> responsive sizing</li>
+        <li>Apple-standard font weights: 400, 500, 600, 700</li>
       </ul>
     </div>
     <div>
-      <h4 style="margin: 0 0 0.5rem 0; color: #1d1d1f;">Animations</h4>
+      <h4 style="margin: 0 0 0.5rem 0; color: #1d1d1f;">Animations &amp; Motion</h4>
       <ul style="margin: 0; font-size: 0.9rem; color: #86868b;">
-        <li>GPU-accelerated effects</li>
-        <li>Neural gradient animations</li>
-        <li>Auto dark/light themes</li>
+        <li>GPU-accelerated <code>transform</code> + <code>opacity</code></li>
+        <li>Neural gradient background animations</li>
+        <li>Spring-based easing: <code>cubic-bezier(0.25, 0.46, 0.45, 0.94)</code></li>
+        <li>Auto dark/light mode with smooth 300ms transition</li>
       </ul>
     </div>
   </div>
