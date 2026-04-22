@@ -1,6 +1,11 @@
 /**
  * Shared portfolio reach analytics.
- * Uses only backend-provided counts so the homepage does not drift per browser.
+ * Calls the centralized /api/analytics/reach endpoint which aggregates:
+ *   - Portfolio page views (unique visitors, homepage, total)
+ *   - GitHub stars, forks, watchers across all public repos
+ * Falls back to /api/analytics/views if reach endpoint is unavailable.
+ * The backend caches the aggregated result for 5 minutes so every
+ * surface (GitHub Pages, Vercel, localhost) sees the same number.
  */
 (function () {
   const reachCountEls = document.querySelectorAll('.reach-count');
@@ -68,7 +73,51 @@
     });
   }
 
-  function updateDisplay(payload) {
+  /**
+   * Display the aggregated reach from the /api/analytics/reach endpoint.
+   * Shows total_reach (page views + GitHub stars + forks + watchers).
+   */
+  function updateDisplayFromReach(payload) {
+    if (!payload?.success) {
+      setUnavailableState();
+      return;
+    }
+
+    const totalReach = payload.total_reach ?? 0;
+    const b = payload.breakdown || {};
+    const pv = b.page_views || {};
+    const gh = b.github || {};
+
+    const tooltipLines = [
+      `Total Reach: ${formatNumber(totalReach)}`,
+      '',
+      '— Page Views —',
+      `  Total Views: ${formatNumber(pv.total ?? 0)}`,
+      `  Unique Visitors: ${formatNumber(pv.unique_visitors ?? 0)}`,
+      `  Homepage: ${formatNumber(pv.homepage_views ?? 0)}`,
+      '',
+      '— GitHub —',
+      `  Stars: ${formatNumber(gh.stars ?? 0)}`,
+      `  Forks: ${formatNumber(gh.forks ?? 0)}`,
+      `  Watchers: ${formatNumber(gh.watchers ?? 0)}`,
+      `  Repos: ${gh.repos_counted ?? 0}`,
+      '',
+      `Formula: page_views + stars + forks + watchers`,
+      `Cached: ${payload.cache_ttl_seconds ?? 300}s`,
+    ].filter(Boolean);
+
+    const formattedValue = formatNumber(totalReach);
+
+    reachCountEls.forEach(element => {
+      element.textContent = formattedValue;
+      element.parentElement?.setAttribute('title', tooltipLines.join('\n'));
+    });
+  }
+
+  /**
+   * Legacy fallback: display from /api/analytics/views
+   */
+  function updateDisplayFromViews(payload) {
     const views = payload?.views;
     if (!views) {
       setUnavailableState();
@@ -89,24 +138,40 @@
       `Age: ${payload.portfolio_age_days ?? 1} day${payload.portfolio_age_days === 1 ? '' : 's'}`,
       payload.storage?.backend ? `Store: ${payload.storage.backend}` : '',
     ].filter(Boolean);
-    const tooltip = tooltipLines.join('\n');
+
     const formattedValue = formatNumber(displayValue);
 
     reachCountEls.forEach(element => {
       element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', tooltip);
+      element.parentElement?.setAttribute('title', tooltipLines.join('\n'));
     });
   }
 
-  async function fetchSharedMetrics() {
-    const response = await fetch(`${getApiBase()}/analytics/views`, {
-      headers: { Accept: 'application/json' },
-      cache: 'no-store',
-    });
-    if (!response.ok) {
-      throw new Error(`Analytics fetch failed: ${response.status}`);
+  /**
+   * Fetch the aggregated reach metric.
+   * Falls back to legacy /analytics/views if the reach endpoint fails.
+   */
+  async function fetchReach() {
+    try {
+      const res = await fetch(`${getApiBase()}/analytics/reach`, {
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+      });
+      if (!res.ok) throw new Error(`Reach fetch failed: ${res.status}`);
+      return { type: 'reach', data: await res.json() };
+    } catch {
+      // Fallback to legacy views endpoint
+      try {
+        const res = await fetch(`${getApiBase()}/analytics/views`, {
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+        });
+        if (!res.ok) throw new Error(`Views fetch failed: ${res.status}`);
+        return { type: 'views', data: await res.json() };
+      } catch {
+        return null;
+      }
     }
-    return response.json();
   }
 
   async function trackSharedVisit() {
@@ -135,18 +200,25 @@
 
   async function refreshReach({ track = false } = {}) {
     try {
-      const payload = track ? await trackSharedVisit() : await fetchSharedMetrics();
-      updateDisplay(payload);
+      // Step 1: Track visit (fire-and-forget if it fails)
+      if (track) {
+        try { await trackSharedVisit(); } catch { /* noop */ }
+      }
+
+      // Step 2: Fetch the authoritative reach metric
+      const result = await fetchReach();
+      if (!result) {
+        setUnavailableState();
+        return;
+      }
+
+      if (result.type === 'reach') {
+        updateDisplayFromReach(result.data);
+      } else {
+        updateDisplayFromViews(result.data);
+      }
     } catch (error) {
       console.warn('[Portfolio Reach]', error.message);
-      if (track) {
-        try {
-          updateDisplay(await fetchSharedMetrics());
-          return;
-        } catch {
-          // Ignore and surface unavailable state below.
-        }
-      }
       setUnavailableState();
     }
   }

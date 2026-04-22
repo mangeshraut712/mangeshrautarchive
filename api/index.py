@@ -2074,6 +2074,94 @@ async def get_analytics_views_alias():
 
 
 # ============================================================
+# PORTFOLIO REACH - Centralized, Authoritative Metric
+# Aggregates: page views + GitHub stars/forks/watchers
+# Cached server-side for 5 min to prevent data drift
+# ============================================================
+_reach_cache: Dict[str, Any] = {"data": None, "ts": 0}
+REACH_CACHE_TTL = 300  # 5 minutes
+
+
+@app.get("/api/analytics/reach")
+@app.get("/analytics/reach")
+async def get_portfolio_reach():
+    """
+    Single authoritative Portfolio Reach metric.
+
+    Aggregates:
+    - Portfolio page views (total, unique visitors)
+    - GitHub stars, forks, watchers across all public repos
+
+    Returns a single `total_reach` number and full breakdown.
+    Cached server-side for 5 minutes for consistency.
+    """
+    now = time.time()
+
+    # Return cached result if fresh
+    if _reach_cache["data"] and now - _reach_cache["ts"] < REACH_CACHE_TTL:
+        return _reach_cache["data"]
+
+    # ----- Component 1: Portfolio Analytics (page views) -----
+    try:
+        analytics = await portfolio_analytics_store.get_metrics()
+        views_data = analytics.get("views", {})
+        page_views_total = int(views_data.get("total", 0))
+        unique_visitors = int(views_data.get("unique_visitors", 0))
+        homepage_views = int(views_data.get("homepage_total", 0))
+    except Exception:
+        page_views_total = 0
+        unique_visitors = 0
+        homepage_views = 0
+
+    # ----- Component 2: GitHub Engagement -----
+    github_stars = 0
+    github_forks = 0
+    github_watchers = 0
+    github_repo_count = 0
+    github_status = "ok"
+
+    try:
+        repos = await fetch_github_repos_cached("mangeshraut712")
+        for repo in repos:
+            if not repo.get("fork", False):
+                github_stars += int(repo.get("stargazers_count", 0))
+                github_forks += int(repo.get("forks_count", 0))
+                github_watchers += int(repo.get("watchers_count", 0))
+                github_repo_count += 1
+    except Exception as e:
+        github_status = f"error: {str(e)[:80]}"
+
+    # ----- Aggregate: Total Reach -----
+    total_reach = page_views_total + github_stars + github_forks + github_watchers
+
+    result = {
+        "success": True,
+        "total_reach": total_reach,
+        "breakdown": {
+            "page_views": {
+                "total": page_views_total,
+                "unique_visitors": unique_visitors,
+                "homepage_views": homepage_views,
+            },
+            "github": {
+                "stars": github_stars,
+                "forks": github_forks,
+                "watchers": github_watchers,
+                "repos_counted": github_repo_count,
+                "status": github_status,
+            },
+        },
+        "formula": "total_reach = page_views + stars + forks + watchers",
+        "cache_ttl_seconds": REACH_CACHE_TTL,
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+
+    _reach_cache["data"] = result
+    _reach_cache["ts"] = now
+    return result
+
+
+# ============================================================
 # CONTACT FORM ENDPOINT  (replaces dead-code api/contact.js)
 # ============================================================
 
