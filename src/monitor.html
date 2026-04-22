@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <title>System Monitor | AssistMe Dashboard</title>
-    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260411d" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
     <script>
       (function () {
         const isGitHubPages = window.location.hostname.endsWith('github.io');
@@ -31,9 +31,9 @@
         document.documentElement.style.backgroundColor = isDark ? '#000000' : '#ffffff';
       })();
     </script>
-    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260411d" />
-    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260411d" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260411d" />
+    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260423a" />
+    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260423a" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260423a" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -123,6 +123,18 @@
           <a href="#api-docs-section" class="menu-item">
             <div class="premium-menu-icon"><i class="fas fa-book-open"></i></div>
             <span>API Docs</span>
+          </a>
+          <a href="#client-probes-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-satellite-dish"></i></div>
+            <span>Latency Probes</span>
+          </a>
+          <a href="#security-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-shield-halved"></i></div>
+            <span>Security</span>
+          </a>
+          <a href="#ai-metrics-section" class="menu-item">
+            <div class="premium-menu-icon"><i class="fas fa-brain"></i></div>
+            <span>AI Metrics</span>
           </a>
           <a href="index.html#projects" class="menu-item">
             <div class="premium-menu-icon"><i class="fas fa-arrow-left"></i></div>
@@ -376,11 +388,72 @@
           </div>
         </div>
       </section>
+
+      <!-- Client-Side Latency Probes -->
+      <section class="section" id="client-probes-section">
+        <div class="section-header">
+          <h2 class="section-title">Client-Side Latency</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="runClientProbes()">
+              <i class="fas fa-satellite-dish"></i>
+              Run Probes
+            </button>
+          </div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
+          Live latency probes from your browser to all deployment surfaces. Works on GitHub Pages, Vercel, and localhost.
+        </p>
+        <div class="health-grid" id="client-probes">
+          <div class="empty-state">
+            <i class="fas fa-satellite-dish"></i>
+            <h3>Click "Run Probes" to measure latency</h3>
+            <p>Probes run entirely client-side — no backend needed</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Security Audit -->
+      <section class="section" id="security-section">
+        <div class="section-header">
+          <h2 class="section-title">Security Audit</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="refreshSecurity()">
+              <i class="fas fa-shield-halved"></i>
+              Run Audit
+            </button>
+          </div>
+        </div>
+        <div class="health-grid" id="security-checks">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading security audit...</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Metrics -->
+      <section class="section" id="ai-metrics-section">
+        <div class="section-header">
+          <h2 class="section-title">AI Provider Metrics</h2>
+          <div class="section-actions">
+            <button class="btn btn-secondary" onclick="refreshAIMetrics()">
+              <i class="fas fa-brain"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div class="health-grid" id="ai-metrics">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading AI metrics...</h3>
+          </div>
+        </div>
+      </section>
     </main>
 
     <div class="toast-container" id="toast-container"></div>
 
-    <script src="js/utils/theme.js?v=20260411d"></script>
+    <script src="js/utils/theme.js?v=20260423a"></script>
     <script>
       const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshraut.pro';
       const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
@@ -1172,6 +1245,194 @@
         });
       }
 
+      // ========================================
+      // CLIENT-SIDE LATENCY PROBES
+      // ========================================
+      const PROBE_TARGETS = [
+        { name: 'Vercel (mangeshraut.pro)', url: 'https://mangeshraut.pro/api/health', type: 'api' },
+        { name: 'Vercel App', url: 'https://mangeshrautarchive.vercel.app/api/health', type: 'api' },
+        { name: 'GitHub Pages', url: 'https://mangeshraut712.github.io/mangeshrautarchive/', type: 'page' },
+        { name: 'GitHub API', url: 'https://api.github.com/repos/mangeshraut712/mangeshrautarchive', type: 'api' },
+        { name: 'OpenRouter API', url: 'https://openrouter.ai/api/v1/models', type: 'api' },
+      ];
+
+      async function probeLatency(target) {
+        const start = performance.now();
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 8000);
+          const res = await fetch(target.url, {
+            method: target.type === 'api' ? 'GET' : 'HEAD',
+            mode: 'cors',
+            signal: controller.signal,
+            cache: 'no-store',
+          });
+          clearTimeout(timeout);
+          const latency = Math.round(performance.now() - start);
+          return { ...target, latency, status: res.ok ? 'healthy' : 'degraded', httpStatus: res.status };
+        } catch (e) {
+          const latency = Math.round(performance.now() - start);
+          if (e.name === 'AbortError') {
+            return { ...target, latency, status: 'unhealthy', message: 'Timeout (>8s)' };
+          }
+          // CORS errors still mean server responded
+          if (latency < 7000) {
+            return { ...target, latency, status: 'degraded', message: 'CORS blocked (server reachable)' };
+          }
+          return { ...target, latency, status: 'unhealthy', message: e.message || 'Unreachable' };
+        }
+      }
+
+      async function runClientProbes() {
+        const container = document.getElementById('client-probes');
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Probing ${PROBE_TARGETS.length} surfaces...</h3></div>`;
+        showToast('Running latency probes...', 'info');
+
+        const results = await Promise.all(PROBE_TARGETS.map(probeLatency));
+        container.innerHTML = results.map(r => {
+          const statusClass = r.status;
+          const icon = getStatusIcon(r.status);
+          const msg = r.message || (r.httpStatus ? `HTTP ${r.httpStatus}` : 'OK');
+          const latencyClass = r.latency < 300 ? 'fast' : r.latency < 1000 ? 'medium' : 'slow';
+          const latencyPercent = Math.min((r.latency / 3000) * 100, 100);
+          return `
+            <div class="health-item ${statusClass}">
+              <div class="health-item-left">
+                <div class="health-status-icon ${statusClass}"><i class="fas fa-${icon}"></i></div>
+                <div class="health-info">
+                  <h4>${escapeHtml(r.name)}</h4>
+                  <p>${escapeHtml(msg)}</p>
+                </div>
+              </div>
+              <div class="health-metrics">
+                <div class="health-metric">
+                  <div class="health-metric-value">
+                    <div class="response-time">
+                      <span>${r.latency}ms</span>
+                      <div class="response-time-bar"><div class="response-time-fill ${latencyClass}" style="width:${latencyPercent}%"></div></div>
+                    </div>
+                  </div>
+                  <div class="health-metric-label">Latency</div>
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+        showToast('Latency probes complete', 'success');
+      }
+
+      // ========================================
+      // SECURITY AUDIT
+      // ========================================
+      async function fetchSecurity() {
+        try {
+          const res = await fetch(buildApiUrl('/api/monitor/security'));
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch { return null; }
+      }
+
+      function renderSecurity(data) {
+        const container = document.getElementById('security-checks');
+        if (!data || !Array.isArray(data.checks)) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-shield-halved"></i>
+              <h3>Security audit unavailable</h3>
+              <p>Backend API not reachable — try again from Vercel or localhost.</p>
+            </div>`;
+          return;
+        }
+        container.innerHTML = data.checks.map(check => `
+          <div class="health-item ${check.status}">
+            <div class="health-item-left">
+              <div class="health-status-icon ${check.status}">
+                <i class="fas fa-${check.status === 'pass' || check.status === 'healthy' ? 'check' : check.status === 'warn' || check.status === 'degraded' ? 'exclamation' : 'times'}"></i>
+              </div>
+              <div class="health-info">
+                <h4>${escapeHtml(check.name || check.check)}</h4>
+                <p>${escapeHtml(check.message || check.detail || '')}</p>
+              </div>
+            </div>
+            <div class="health-metrics">
+              <div class="health-metric">
+                <div class="health-metric-value" style="text-transform:uppercase;">${escapeHtml(check.status)}</div>
+                <div class="health-metric-label">Result</div>
+              </div>
+            </div>
+          </div>`).join('');
+      }
+
+      async function refreshSecurity() {
+        showToast('Running security audit...', 'info');
+        const data = await fetchSecurity();
+        renderSecurity(data);
+        showToast(data ? 'Security audit complete' : 'Security audit failed', data ? 'success' : 'error');
+      }
+
+      // ========================================
+      // AI METRICS
+      // ========================================
+      async function fetchAIMetrics() {
+        try {
+          const res = await fetch(buildApiUrl('/api/monitor/ai-metrics'));
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch { return null; }
+      }
+
+      function renderAIMetrics(data) {
+        const container = document.getElementById('ai-metrics');
+        if (!data) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-brain"></i>
+              <h3>AI metrics unavailable</h3>
+              <p>Backend API not reachable — try again from Vercel or localhost.</p>
+            </div>`;
+          return;
+        }
+
+        const models = data.models || data.providers || [];
+        if (Array.isArray(models) && models.length > 0) {
+          container.innerHTML = models.map(m => `
+            <div class="health-item healthy">
+              <div class="health-item-left">
+                <div class="health-status-icon healthy"><i class="fas fa-robot"></i></div>
+                <div class="health-info">
+                  <h4>${escapeHtml(m.name || m.model || 'Unknown Model')}</h4>
+                  <p>${escapeHtml(m.provider || '')} · ${m.total_requests ?? '--'} requests</p>
+                </div>
+              </div>
+              <div class="health-metrics">
+                <div class="health-metric">
+                  <div class="health-metric-value">${m.avg_latency_ms ? m.avg_latency_ms.toFixed(0) + 'ms' : m.success_rate ? (m.success_rate * 100).toFixed(0) + '%' : '--'}</div>
+                  <div class="health-metric-label">${m.avg_latency_ms ? 'Avg Latency' : 'Success Rate'}</div>
+                </div>
+              </div>
+            </div>`).join('');
+        } else {
+          // Display as key-value summary
+          const entries = Object.entries(data).filter(([k]) => k !== 'timestamp');
+          container.innerHTML = entries.map(([key, value]) => `
+            <div class="health-item healthy">
+              <div class="health-item-left">
+                <div class="health-status-icon healthy"><i class="fas fa-chart-bar"></i></div>
+                <div class="health-info">
+                  <h4>${escapeHtml(formatConfigLabel(key))}</h4>
+                  <p>${escapeHtml(typeof value === 'object' ? JSON.stringify(value) : String(value))}</p>
+                </div>
+              </div>
+            </div>`).join('');
+        }
+      }
+
+      async function refreshAIMetrics() {
+        showToast('Fetching AI metrics...', 'info');
+        const data = await fetchAIMetrics();
+        renderAIMetrics(data);
+        showToast(data ? 'AI metrics updated' : 'AI metrics failed', data ? 'success' : 'error');
+      }
+
       function showToast(message, type = 'info') {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -1190,6 +1451,10 @@
         monitorConfig = await loadPublicConfig();
         apiOrigin = resolveApiOrigin(monitorConfig);
         refreshData();
+
+        // Also fetch security + AI metrics on load
+        fetchSecurity().then(renderSecurity);
+        fetchAIMetrics().then(renderAIMetrics);
 
         // Auto-refresh every 30 seconds
         setInterval(refreshData, 30000);
