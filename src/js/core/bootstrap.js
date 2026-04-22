@@ -548,6 +548,7 @@ function initServiceWorker() {
           sessionStorage.removeItem(cleanupKey);
         };
       } catch (error) {
+        // Service worker cleanup is best-effort; failures are non-critical
       }
     },
     { once: true }
