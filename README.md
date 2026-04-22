@@ -87,16 +87,16 @@ Layered translucency, parallax scrolling, and micro-animations provide a sense o
 </tr>
 </table>
 
-| Apple DNA | Implementation |
-|-----------|----------------|
-| **Dark Mode** | System-aware auto-switching with `prefers-color-scheme`, smooth 300ms transitions |
-| **Typography** | SF Pro Display for headlines, SF Pro Text for body, JetBrains Mono for code |
-| **Glassmorphism** | `backdrop-filter: blur(20px)` with layered opacity on cards, nav, and modals |
-| **Motion** | GPU-accelerated `transform`/`opacity` animations, respects `prefers-reduced-motion` |
-| **Spacing** | 8px grid system with Apple's signature generous padding |
-| **Colors** | Apple system palette — `#0071e3` primary, `#f5f5f7` surface, `#86868b` secondary text |
-| **Radius** | Consistent 12px/16px/25px roundedness matching iOS/macOS components |
-| **Haptics** | Subtle hover lifts, press states, and spring-based easing curves |
+| Apple DNA         | Implementation                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------- |
+| **Dark Mode**     | System-aware auto-switching with `prefers-color-scheme`, smooth 300ms transitions     |
+| **Typography**    | SF Pro Display for headlines, SF Pro Text for body, JetBrains Mono for code           |
+| **Glassmorphism** | `backdrop-filter: blur(20px)` with layered opacity on cards, nav, and modals          |
+| **Motion**        | GPU-accelerated `transform`/`opacity` animations, respects `prefers-reduced-motion`   |
+| **Spacing**       | 8px grid system with Apple's signature generous padding                               |
+| **Colors**        | Apple system palette — `#0071e3` primary, `#f5f5f7` surface, `#86868b` secondary text |
+| **Radius**        | Consistent 12px/16px/25px roundedness matching iOS/macOS components                   |
+| **Haptics**       | Subtle hover lifts, press states, and spring-based easing curves                      |
 
 ---
 
@@ -111,13 +111,13 @@ Layered translucency, parallax scrolling, and micro-animations provide a sense o
 
 </div>
 
-| | |
-|---|---|
-| **Author** | [Mangesh Raut](https://github.com/mangeshraut712) — Software Engineer @ CES · MS CS @ Drexel University |
-| **Languages** | JavaScript 55% · CSS 27% · Python 6% · HTML/Config 12% |
-| **Codebase** | 55K+ lines · 200+ files · 840+ commits |
-| **Created** | April 2025 · Actively maintained |
-| **License** | MIT |
+|               |                                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| **Author**    | [Mangesh Raut](https://github.com/mangeshraut712) — Software Engineer @ CES · MS CS @ Drexel University |
+| **Languages** | JavaScript 55% · CSS 27% · Python 6% · HTML/Config 12%                                                  |
+| **Codebase**  | 55K+ lines · 200+ files · 840+ commits                                                                  |
+| **Created**   | April 2025 · Actively maintained                                                                        |
+| **License**   | MIT                                                                                                     |
 
 ---
 
@@ -417,17 +417,17 @@ graph TB
 
 This project leverages modern browser APIs available in 2026:
 
-| API | Usage | Browser Support |
-|-----|-------|-----------------|
-| **Web Speech API** | Voice input/output for AI assistant | Chrome, Edge, Safari |
-| **Canvas 2D** | Debug Runner game rendering at 60fps | All modern browsers |
-| **Intersection Observer** | Scroll-triggered animations & lazy loading | All modern browsers |
-| **Local Storage** | Persistent chat history, game scores, preferences | All modern browsers |
-| **Fetch + Streaming** | SSE streaming for AI responses | All modern browsers |
-| **CSS Container Queries** | Component-level responsive design | Chrome 105+, Safari 16+ |
-| **CSS `@layer`** | Cascade layer management for design system | All modern browsers |
-| **`prefers-color-scheme`** | Automatic dark/light mode switching | All modern browsers |
-| **`prefers-reduced-motion`** | Accessibility-first animation control | All modern browsers |
+| API                          | Usage                                             | Browser Support         |
+| ---------------------------- | ------------------------------------------------- | ----------------------- |
+| **Web Speech API**           | Voice input/output for AI assistant               | Chrome, Edge, Safari    |
+| **Canvas 2D**                | Debug Runner game rendering at 60fps              | All modern browsers     |
+| **Intersection Observer**    | Scroll-triggered animations & lazy loading        | All modern browsers     |
+| **Local Storage**            | Persistent chat history, game scores, preferences | All modern browsers     |
+| **Fetch + Streaming**        | SSE streaming for AI responses                    | All modern browsers     |
+| **CSS Container Queries**    | Component-level responsive design                 | Chrome 105+, Safari 16+ |
+| **CSS `@layer`**             | Cascade layer management for design system        | All modern browsers     |
+| **`prefers-color-scheme`**   | Automatic dark/light mode switching               | All modern browsers     |
+| **`prefers-reduced-motion`** | Accessibility-first animation control             | All modern browsers     |
 
 ---
 
@@ -462,13 +462,13 @@ npm run dev
 
 Copy `.env.example` to `.env` and configure:
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `OPENROUTER_API_KEY` | Yes | AI chat via [OpenRouter](https://openrouter.ai/) |
-| `GITHUB_PAT` | Optional | Authenticated GitHub API (higher rate limits) |
-| `LASTFM_API_KEY` | Optional | Live music scrobbling from [Last.fm](https://www.last.fm/api) |
-| `TMDB_API_KEY` | Optional | Movie/TV poster fetching |
-| `VERCEL_ANALYTICS_ID` | Auto | Set by Vercel on deployment |
+| Variable              | Required | Description                                                   |
+| --------------------- | -------- | ------------------------------------------------------------- |
+| `OPENROUTER_API_KEY`  | Yes      | AI chat via [OpenRouter](https://openrouter.ai/)              |
+| `GITHUB_PAT`          | Optional | Authenticated GitHub API (higher rate limits)                 |
+| `LASTFM_API_KEY`      | Optional | Live music scrobbling from [Last.fm](https://www.last.fm/api) |
+| `TMDB_API_KEY`        | Optional | Movie/TV poster fetching                                      |
+| `VERCEL_ANALYTICS_ID` | Auto     | Set by Vercel on deployment                                   |
 
 ---
 
@@ -540,19 +540,19 @@ mangeshrautarchive/
 
 ## 📜 Available Commands
 
-| Command                        | Description                                       |
-| ------------------------------ | ------------------------------------------------- |
-| `npm run dev`                  | Start full-stack development (frontend + backend) |
-| `npm run build`                | Build production assets                           |
-| `npm run test`                 | Run unit tests                                    |
-| `npm run qa:smoke`             | End-to-end smoke tests                            |
-| `npm run qa:a11y`              | Accessibility tests                               |
-| `npm run qa:lighthouse:desktop` | Desktop performance audit                        |
-| `npm run qa:lighthouse:mobile` | Mobile performance audit                          |
-| `npm run qa:postdeploy`        | Post-deployment validation                        |
-| `npm run qa:prod-ready`        | Full production readiness check                   |
-| `npm run clean`                | Remove build artifacts                            |
-| `npm run format:check`         | Check Prettier formatting                         |
+| Command                         | Description                                       |
+| ------------------------------- | ------------------------------------------------- |
+| `npm run dev`                   | Start full-stack development (frontend + backend) |
+| `npm run build`                 | Build production assets                           |
+| `npm run test`                  | Run unit tests                                    |
+| `npm run qa:smoke`              | End-to-end smoke tests                            |
+| `npm run qa:a11y`               | Accessibility tests                               |
+| `npm run qa:lighthouse:desktop` | Desktop performance audit                         |
+| `npm run qa:lighthouse:mobile`  | Mobile performance audit                          |
+| `npm run qa:postdeploy`         | Post-deployment validation                        |
+| `npm run qa:prod-ready`         | Full production readiness check                   |
+| `npm run clean`                 | Remove build artifacts                            |
+| `npm run format:check`          | Check Prettier formatting                         |
 
 ---
 
@@ -560,15 +560,15 @@ mangeshrautarchive/
 
 <div align="center">
 
-| Metric | Target | Status |
-|--------|--------|--------|
-| Lighthouse Score | 95+ all categories | ✅ |
-| First Contentful Paint | < 1.2s | ✅ |
-| Largest Contentful Paint | < 2.5s | ✅ |
-| Cumulative Layout Shift | < 0.1 | ✅ |
-| Total Blocking Time | < 200ms | ✅ |
-| Bundle Size (gzipped) | < 500KB | ✅ |
-| API Response Time | < 100ms avg | ✅ |
+| Metric                   | Target             | Status |
+| ------------------------ | ------------------ | ------ |
+| Lighthouse Score         | 95+ all categories | ✅     |
+| First Contentful Paint   | < 1.2s             | ✅     |
+| Largest Contentful Paint | < 2.5s             | ✅     |
+| Cumulative Layout Shift  | < 0.1              | ✅     |
+| Total Blocking Time      | < 200ms            | ✅     |
+| Bundle Size (gzipped)    | < 500KB            | ✅     |
+| API Response Time        | < 100ms avg        | ✅     |
 
 </div>
 
@@ -576,12 +576,12 @@ mangeshrautarchive/
 
 ## 🌐 Live Deployments
 
-| Surface | URL | Purpose |
-|---------|-----|---------|
-| **Production** | [mangeshraut.pro](https://mangeshraut.pro) | Primary — Vercel + FastAPI backend |
-| **GitHub Pages** | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback — client-side only |
-| **System Monitor** | [mangeshraut.pro/monitor.html](https://mangeshraut.pro/monitor.html) | Ops dashboard — health, probes, AI metrics |
-| **API Docs** | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs) | OpenAPI explorer |
+| Surface            | URL                                                                             | Purpose                                    |
+| ------------------ | ------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Production**     | [mangeshraut.pro](https://mangeshraut.pro)                                      | Primary — Vercel + FastAPI backend         |
+| **GitHub Pages**   | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback — client-side only         |
+| **System Monitor** | [mangeshraut.pro/monitor.html](https://mangeshraut.pro/monitor.html)            | Ops dashboard — health, probes, AI metrics |
+| **API Docs**       | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs)                    | OpenAPI explorer                           |
 
 ---
 

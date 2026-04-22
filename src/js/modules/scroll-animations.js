@@ -35,7 +35,6 @@ class ScrollAnimations {
 
     // Lazy load images
     this.lazyLoadImages();
-
   }
 
   handleIntersection(entries) {
@@ -75,7 +74,6 @@ class ScrollAnimations {
         this.observer.observe(el);
       });
     });
-
   }
 
   lazyLoadImages() {
@@ -95,7 +93,6 @@ class ScrollAnimations {
         });
       }
     });
-
   }
 
   fallbackAnimation() {

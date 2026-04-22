@@ -159,7 +159,6 @@ class IntelligentAssistant {
         !hostname.endsWith('.netlify.app'));
 
     if (isGitHubPages) {
-
       // Check if API_BASE is configured (which it should be now)
       if (API_BASE && (API_BASE.includes('vercel.app') || API_BASE.startsWith('http'))) {
         this.canUseServerAI = true;
@@ -245,7 +244,6 @@ class IntelligentAssistant {
       const actionResult = await agenticActions.detectAndExecute(trimmed);
 
       if (actionResult.actionDetected) {
-
         const processingTime = Date.now() - startTime;
 
         // Create response with action result and consistent metadata
@@ -348,7 +346,6 @@ class IntelligentAssistant {
     if (!canCallServerAPI) {
       return null;
     }
-
 
     try {
       const apiUrl = buildApiUrl('/api/chat');
@@ -950,7 +947,6 @@ class IntelligentAssistant {
     this.history = [];
     this.conversation = [];
     this.cache = null;
-
   }
 }
 

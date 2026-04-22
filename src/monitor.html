@@ -400,8 +400,9 @@
             </button>
           </div>
         </div>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
-          Live latency probes from your browser to all deployment surfaces. Works on GitHub Pages, Vercel, and localhost.
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px">
+          Live latency probes from your browser to all deployment surfaces. Works on GitHub Pages,
+          Vercel, and localhost.
         </p>
         <div class="health-grid" id="client-probes">
           <div class="empty-state">
@@ -1249,10 +1250,26 @@
       // CLIENT-SIDE LATENCY PROBES
       // ========================================
       const PROBE_TARGETS = [
-        { name: 'Vercel (mangeshraut.pro)', url: 'https://mangeshraut.pro/api/health', type: 'api' },
-        { name: 'Vercel App', url: 'https://mangeshrautarchive.vercel.app/api/health', type: 'api' },
-        { name: 'GitHub Pages', url: 'https://mangeshraut712.github.io/mangeshrautarchive/', type: 'page' },
-        { name: 'GitHub API', url: 'https://api.github.com/repos/mangeshraut712/mangeshrautarchive', type: 'api' },
+        {
+          name: 'Vercel (mangeshraut.pro)',
+          url: 'https://mangeshraut.pro/api/health',
+          type: 'api',
+        },
+        {
+          name: 'Vercel App',
+          url: 'https://mangeshrautarchive.vercel.app/api/health',
+          type: 'api',
+        },
+        {
+          name: 'GitHub Pages',
+          url: 'https://mangeshraut712.github.io/mangeshrautarchive/',
+          type: 'page',
+        },
+        {
+          name: 'GitHub API',
+          url: 'https://api.github.com/repos/mangeshraut712/mangeshrautarchive',
+          type: 'api',
+        },
         { name: 'OpenRouter API', url: 'https://openrouter.ai/api/v1/models', type: 'api' },
       ];
 
@@ -1269,7 +1286,12 @@
           });
           clearTimeout(timeout);
           const latency = Math.round(performance.now() - start);
-          return { ...target, latency, status: res.ok ? 'healthy' : 'degraded', httpStatus: res.status };
+          return {
+            ...target,
+            latency,
+            status: res.ok ? 'healthy' : 'degraded',
+            httpStatus: res.status,
+          };
         } catch (e) {
           const latency = Math.round(performance.now() - start);
           if (e.name === 'AbortError') {
@@ -1277,7 +1299,12 @@
           }
           // CORS errors still mean server responded
           if (latency < 7000) {
-            return { ...target, latency, status: 'degraded', message: 'CORS blocked (server reachable)' };
+            return {
+              ...target,
+              latency,
+              status: 'degraded',
+              message: 'CORS blocked (server reachable)',
+            };
           }
           return { ...target, latency, status: 'unhealthy', message: e.message || 'Unreachable' };
         }
@@ -1289,13 +1316,14 @@
         showToast('Running latency probes...', 'info');
 
         const results = await Promise.all(PROBE_TARGETS.map(probeLatency));
-        container.innerHTML = results.map(r => {
-          const statusClass = r.status;
-          const icon = getStatusIcon(r.status);
-          const msg = r.message || (r.httpStatus ? `HTTP ${r.httpStatus}` : 'OK');
-          const latencyClass = r.latency < 300 ? 'fast' : r.latency < 1000 ? 'medium' : 'slow';
-          const latencyPercent = Math.min((r.latency / 3000) * 100, 100);
-          return `
+        container.innerHTML = results
+          .map(r => {
+            const statusClass = r.status;
+            const icon = getStatusIcon(r.status);
+            const msg = r.message || (r.httpStatus ? `HTTP ${r.httpStatus}` : 'OK');
+            const latencyClass = r.latency < 300 ? 'fast' : r.latency < 1000 ? 'medium' : 'slow';
+            const latencyPercent = Math.min((r.latency / 3000) * 100, 100);
+            return `
             <div class="health-item ${statusClass}">
               <div class="health-item-left">
                 <div class="health-status-icon ${statusClass}"><i class="fas fa-${icon}"></i></div>
@@ -1316,7 +1344,8 @@
                 </div>
               </div>
             </div>`;
-        }).join('');
+          })
+          .join('');
         showToast('Latency probes complete', 'success');
       }
 
@@ -1328,7 +1357,9 @@
           const res = await fetch(buildApiUrl('/api/monitor/security'));
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return await res.json();
-        } catch { return null; }
+        } catch {
+          return null;
+        }
       }
 
       function renderSecurity(data) {
@@ -1342,7 +1373,9 @@
             </div>`;
           return;
         }
-        container.innerHTML = data.checks.map(check => `
+        container.innerHTML = data.checks
+          .map(
+            check => `
           <div class="health-item ${check.status}">
             <div class="health-item-left">
               <div class="health-status-icon ${check.status}">
@@ -1359,14 +1392,19 @@
                 <div class="health-metric-label">Result</div>
               </div>
             </div>
-          </div>`).join('');
+          </div>`
+          )
+          .join('');
       }
 
       async function refreshSecurity() {
         showToast('Running security audit...', 'info');
         const data = await fetchSecurity();
         renderSecurity(data);
-        showToast(data ? 'Security audit complete' : 'Security audit failed', data ? 'success' : 'error');
+        showToast(
+          data ? 'Security audit complete' : 'Security audit failed',
+          data ? 'success' : 'error'
+        );
       }
 
       // ========================================
@@ -1377,7 +1415,9 @@
           const res = await fetch(buildApiUrl('/api/monitor/ai-metrics'));
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return await res.json();
-        } catch { return null; }
+        } catch {
+          return null;
+        }
       }
 
       function renderAIMetrics(data) {
@@ -1394,7 +1434,9 @@
 
         const models = data.models || data.providers || [];
         if (Array.isArray(models) && models.length > 0) {
-          container.innerHTML = models.map(m => `
+          container.innerHTML = models
+            .map(
+              m => `
             <div class="health-item healthy">
               <div class="health-item-left">
                 <div class="health-status-icon healthy"><i class="fas fa-robot"></i></div>
@@ -1409,11 +1451,15 @@
                   <div class="health-metric-label">${m.avg_latency_ms ? 'Avg Latency' : 'Success Rate'}</div>
                 </div>
               </div>
-            </div>`).join('');
+            </div>`
+            )
+            .join('');
         } else {
           // Display as key-value summary
           const entries = Object.entries(data).filter(([k]) => k !== 'timestamp');
-          container.innerHTML = entries.map(([key, value]) => `
+          container.innerHTML = entries
+            .map(
+              ([key, value]) => `
             <div class="health-item healthy">
               <div class="health-item-left">
                 <div class="health-status-icon healthy"><i class="fas fa-chart-bar"></i></div>
@@ -1422,7 +1468,9 @@
                   <p>${escapeHtml(typeof value === 'object' ? JSON.stringify(value) : String(value))}</p>
                 </div>
               </div>
-            </div>`).join('');
+            </div>`
+            )
+            .join('');
         }
       }
 

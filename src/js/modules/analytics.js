@@ -202,7 +202,11 @@
     try {
       // Step 1: Track visit (fire-and-forget if it fails)
       if (track) {
-        try { await trackSharedVisit(); } catch { /* noop */ }
+        try {
+          await trackSharedVisit();
+        } catch {
+          /* noop */
+        }
       }
 
       // Step 2: Fetch the authoritative reach metric

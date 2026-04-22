@@ -547,7 +547,7 @@ function initServiceWorker() {
           localStorage.removeItem('portfolio-version');
           sessionStorage.removeItem(cleanupKey);
         };
-      } catch (error) {
+      } catch (_error) {
         // Service worker cleanup is best-effort; failures are non-critical
       }
     },
