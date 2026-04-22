@@ -36,6 +36,25 @@
 
 ---
 
+## 📑 Table of Contents
+
+- [Design Philosophy](#-design-philosophy--inspired-by-apple)
+- [Repository Overview](#-repository-overview)
+- [Features](#-features)
+  - [AI Assistant](#-ai-powered-assistant-assistme) · [Launch Experience](#-premium-launch-experience) · [Media Showcase](#-personal-media-showcase-currently) · [GitHub Projects](#-github-projects-showcase) · [Debug Runner Game](#-interactive-game-debug-runner) · [System Monitor](#-system-monitoring-dashboard) · [Portfolio Reach](#-portfolio-reach-unified-metric) · [Design System](#-design-system-apple-2026)
+- [Architecture & Tech Stack](#%EF%B8%8F-architecture--tech-stack)
+- [Getting Started](#-getting-started)
+- [Project Structure](#-project-structure)
+- [Available Commands](#-available-commands)
+- [Performance Metrics](#-performance-metrics)
+- [Live Deployments](#-live-deployments)
+- [Environment Variables](#-environment-variables)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Connect & Support](#-connect--support)
+
+---
+
 ## 🎨 Design Philosophy — Inspired by Apple
 
 > _"Design is not just what it looks like and feels like. Design is how it works."_ — Steve Jobs
@@ -347,49 +366,68 @@ graph TB
 
 #### Frontend Ecosystem
 
-<a href="https://html.spec.whatwg.org/" target="_blank"><img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/></a>
-<a href="https://www.w3.org/TR/CSS/" target="_blank"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"/></a>
-<a href="https://tc39.es/ecma262/" target="_blank"><img src="https://img.shields.io/badge/JavaScript-ES2026+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="ES2026"/></a>
-<a href="https://tailwindcss.com/" target="_blank"><img src="https://img.shields.io/badge/Tailwind_CSS-4.0.9-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"/></a>
-<a href="https://fontawesome.com/" target="_blank"><img src="https://img.shields.io/badge/Font_Awesome-6.6-339AF0?style=for-the-badge&logo=font-awesome&logoColor=white" alt="Font Awesome"/></a>
+<a href="https://html.spec.whatwg.org/"><img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/></a>
+<a href="https://www.w3.org/TR/CSS/"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"/></a>
+<a href="https://tc39.es/ecma262/"><img src="https://img.shields.io/badge/JavaScript-ES2026+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="ES2026"/></a>
+<a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS v4"/></a>
 
 #### Backend & Server
 
-<a href="https://www.python.org/" target="_blank"><img src="https://img.shields.io/badge/Python-3.13+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/></a>
-<a href="https://fastapi.tiangolo.com/" target="_blank"><img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
-<a href="https://www.uvicorn.org/" target="_blank"><img src="https://img.shields.io/badge/Uvicorn-0.34-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white" alt="Uvicorn"/></a>
-<a href="https://pydantic.dev/" target="_blank"><img src="https://img.shields.io/badge/Pydantic-v2.10-E92063?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic"/></a>
+<a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.13"/></a>
+<a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
+<a href="https://www.uvicorn.org/"><img src="https://img.shields.io/badge/Uvicorn_ASGI-0.34-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white" alt="Uvicorn"/></a>
+<a href="https://pydantic.dev/"><img src="https://img.shields.io/badge/Pydantic-v2.10-E92063?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic"/></a>
+<a href="https://www.python-httpx.org/"><img src="https://img.shields.io/badge/httpx-0.28-3d85c6?style=for-the-badge" alt="httpx"/></a>
 
-#### AI & Machine Learning
+#### AI & Integrations
 
-<a href="https://openrouter.ai/" target="_blank"><img src="https://img.shields.io/badge/OpenRouter-API-0EA5E9?style=for-the-badge" alt="OpenRouter"/></a>
-<a href="https://x.ai/" target="_blank"><img src="https://img.shields.io/badge/xAI-Grok_4.1_Fast-111111?style=for-the-badge&logo=xai&logoColor=white" alt="xAI Grok"/></a>
-<a href="https://anthropic.com/" target="_blank"><img src="https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude"/></a>
-<a href="https://js.tensorflow.org/" target="_blank"><img src="https://img.shields.io/badge/TensorFlow.js-v4-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow.js"/></a>
-<a href="https://webmachinelearning.github.io/webnn/" target="_blank"><img src="https://img.shields.io/badge/WebNN_API-1.0.0-0066CC?style=for-the-badge" alt="WebNN"/></a>
+<a href="https://openrouter.ai/"><img src="https://img.shields.io/badge/OpenRouter-Multi_Model-0EA5E9?style=for-the-badge" alt="OpenRouter"/></a>
+<a href="https://x.ai/"><img src="https://img.shields.io/badge/xAI-Grok_4.1_Fast-111111?style=for-the-badge&logo=x&logoColor=white" alt="xAI Grok"/></a>
+<a href="https://anthropic.com/"><img src="https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude"/></a>
+<a href="https://www.last.fm/api"><img src="https://img.shields.io/badge/Last.fm-Scrobbling-D51007?style=for-the-badge&logo=lastdotfm&logoColor=white" alt="Last.fm API"/></a>
+<a href="https://docs.github.com/en/rest"><img src="https://img.shields.io/badge/GitHub_REST-API_v3-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub API"/></a>
 
 #### Testing & Quality
 
-<a href="https://playwright.dev/" target="_blank"><img src="https://img.shields.io/badge/Playwright-1.58-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright"/></a>
-<a href="https://developer.chrome.com/docs/lighthouse" target="_blank"><img src="https://img.shields.io/badge/Lighthouse-13-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
-<a href="https://vitest.dev/" target="_blank"><img src="https://img.shields.io/badge/Vitest-3.0.7-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
-<a href="https://eslint.org/" target="_blank"><img src="https://img.shields.io/badge/ESLint-9.21-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
+<a href="https://playwright.dev/"><img src="https://img.shields.io/badge/Playwright-1.58-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright"/></a>
+<a href="https://developer.chrome.com/docs/lighthouse"><img src="https://img.shields.io/badge/Lighthouse-13-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
+<a href="https://vitest.dev/"><img src="https://img.shields.io/badge/Vitest-3.0-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
+<a href="https://eslint.org/"><img src="https://img.shields.io/badge/ESLint-9.21-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
+<a href="https://stylelint.io/"><img src="https://img.shields.io/badge/Stylelint-16.14-263238?style=for-the-badge&logo=stylelint&logoColor=white" alt="Stylelint"/></a>
+<a href="https://github.com/dequelabs/axe-core"><img src="https://img.shields.io/badge/axe--core-4.11-662D91?style=for-the-badge" alt="axe-core"/></a>
 
 #### DevOps & Deployment
 
-<a href="https://vercel.com/" target="_blank"><img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel"/></a>
-<a href="https://pages.github.com/" target="_blank"><img src="https://img.shields.io/badge/GitHub_Pages-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages"/></a>
-<a href="https://www.docker.com/" target="_blank"><img src="https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/></a>
-<a href="https://github.com/features/actions" target="_blank"><img src="https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions"/></a>
+<a href="https://vercel.com/"><img src="https://img.shields.io/badge/Vercel-Edge_Functions-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel"/></a>
+<a href="https://pages.github.com/"><img src="https://img.shields.io/badge/GitHub_Pages-Static_CDN-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages"/></a>
+<a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/></a>
+<a href="https://github.com/features/actions"><img src="https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions"/></a>
 
 #### Development Tools
 
-<a href="https://nodejs.org/" target="_blank"><img src="https://img.shields.io/badge/Node.js-25+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js"/></a>
-<a href="https://npmjs.com/" target="_blank"><img src="https://img.shields.io/badge/npm-11+-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm"/></a>
-<a href="https://prettier.io/" target="_blank"><img src="https://img.shields.io/badge/Prettier-3.8-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier"/></a>
-<a href="https://sharp.pixelplumbing.com/" target="_blank"><img src="https://img.shields.io/badge/Sharp-0.33+-99CC00?style=for-the-badge&logo=sharp&logoColor=white" alt="Sharp"/></a>
+<a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-v25.9-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js"/></a>
+<a href="https://npmjs.com/"><img src="https://img.shields.io/badge/npm-v11.12-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm"/></a>
+<a href="https://prettier.io/"><img src="https://img.shields.io/badge/Prettier-3.8-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier"/></a>
+<a href="https://sharp.pixelplumbing.com/"><img src="https://img.shields.io/badge/Sharp-0.33-99CC00?style=for-the-badge" alt="Sharp"/></a>
+<a href="https://vercel.com/analytics"><img src="https://img.shields.io/badge/Vercel_Analytics-1.5-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel Analytics"/></a>
 
 </div>
+
+### Web Platform APIs (2026)
+
+This project leverages modern browser APIs available in 2026:
+
+| API | Usage | Browser Support |
+|-----|-------|-----------------|
+| **Web Speech API** | Voice input/output for AI assistant | Chrome, Edge, Safari |
+| **Canvas 2D** | Debug Runner game rendering at 60fps | All modern browsers |
+| **Intersection Observer** | Scroll-triggered animations & lazy loading | All modern browsers |
+| **Local Storage** | Persistent chat history, game scores, preferences | All modern browsers |
+| **Fetch + Streaming** | SSE streaming for AI responses | All modern browsers |
+| **CSS Container Queries** | Component-level responsive design | Chrome 105+, Safari 16+ |
+| **CSS `@layer`** | Cascade layer management for design system | All modern browsers |
+| **`prefers-color-scheme`** | Automatic dark/light mode switching | All modern browsers |
+| **`prefers-reduced-motion`** | Accessibility-first animation control | All modern browsers |
 
 ---
 
@@ -418,6 +456,19 @@ npm run dev
 
 - Frontend: `http://localhost:4000`
 - Backend API: `http://localhost:8001`
+- System Monitor: `http://localhost:4000/monitor.html`
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OPENROUTER_API_KEY` | Yes | AI chat via [OpenRouter](https://openrouter.ai/) |
+| `GITHUB_PAT` | Optional | Authenticated GitHub API (higher rate limits) |
+| `LASTFM_API_KEY` | Optional | Live music scrobbling from [Last.fm](https://www.last.fm/api) |
+| `TMDB_API_KEY` | Optional | Movie/TV poster fetching |
+| `VERCEL_ANALYTICS_ID` | Auto | Set by Vercel on deployment |
 
 ---
 
