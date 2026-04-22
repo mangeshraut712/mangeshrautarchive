@@ -47,9 +47,9 @@
 </div>
 
 **Repository:** `mangeshraut712/mangeshrautarchive` - Personal portfolio and development showcase  
-**Language:** JavaScript (60%), Python (25%), CSS (10%), HTML (5%)  
-**Size:** ~45MB  
-**Created:** 2024  
+**Language:** JavaScript (55%), CSS (27%), Python (6%), HTML/Config (12%)  
+**Size:** ~450MB (includes high-res image assets)  
+**Created:** April 2025  
 **Maintained by:** [Mangesh Raut](https://github.com/mangeshraut712)
 
 ---
@@ -242,7 +242,7 @@ graph TB
     subgraph "🤖 AI & Data Layer"
         K[OpenRouter API] --> L[xAI Grok 4.1 Fast]
         K --> M[Anthropic Claude 3.5 Sonnet]
-        N[GitHub REST API v2026] --> F
+        N[GitHub REST API] --> F
         O[Last.fm API] --> F
         P[Web Neural Networks API] --> A
     end
@@ -276,7 +276,7 @@ graph TB
 #### Frontend Ecosystem
 
 <a href="https://html.spec.whatwg.org/" target="_blank"><img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/></a>
-<a href="https://www.w3.org/TR/CSS/" target="_blank"><img src="https://img.shields.io/badge/CSS4-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS4"/></a>
+<a href="https://www.w3.org/TR/CSS/" target="_blank"><img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3"/></a>
 <a href="https://tc39.es/ecma262/" target="_blank"><img src="https://img.shields.io/badge/JavaScript-ES2026+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="ES2026"/></a>
 <a href="https://tailwindcss.com/" target="_blank"><img src="https://img.shields.io/badge/Tailwind_CSS-4.0.9-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"/></a>
 <a href="https://fontawesome.com/" target="_blank"><img src="https://img.shields.io/badge/Font_Awesome-6.6-339AF0?style=for-the-badge&logo=font-awesome&logoColor=white" alt="Font Awesome"/></a>
@@ -286,22 +286,22 @@ graph TB
 <a href="https://www.python.org/" target="_blank"><img src="https://img.shields.io/badge/Python-3.13+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/></a>
 <a href="https://fastapi.tiangolo.com/" target="_blank"><img src="https://img.shields.io/badge/FastAPI-0.120+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
 <a href="https://www.uvicorn.org/" target="_blank"><img src="https://img.shields.io/badge/Uvicorn-0.35+-2C2D72?style=for-the-badge&logo=gunicorn&logoColor=white" alt="Uvicorn"/></a>
-<a href="https://pydantic.dev/" target="_blank"><img src="https://img.shields.io/badge/Pydantic-v3-E92063?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic"/></a>
+<a href="https://pydantic.dev/" target="_blank"><img src="https://img.shields.io/badge/Pydantic-v2-E92063?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic"/></a>
 
 #### AI & Machine Learning
 
 <a href="https://openrouter.ai/" target="_blank"><img src="https://img.shields.io/badge/OpenRouter-API-0EA5E9?style=for-the-badge" alt="OpenRouter"/></a>
-<a href="https://x.ai/" target="_blank"><img src="https://img.shields.io/badge/xAI-Grok_2_Ultra-111111?style=for-the-badge&logo=xai&logoColor=white" alt="xAI Grok"/></a>
+<a href="https://x.ai/" target="_blank"><img src="https://img.shields.io/badge/xAI-Grok_4.1_Fast-111111?style=for-the-badge&logo=xai&logoColor=white" alt="xAI Grok"/></a>
 <a href="https://anthropic.com/" target="_blank"><img src="https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude"/></a>
-<a href="https://js.tensorflow.org/" target="_blank"><img src="https://img.shields.io/badge/TensorFlow.js-v5-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow.js"/></a>
+<a href="https://js.tensorflow.org/" target="_blank"><img src="https://img.shields.io/badge/TensorFlow.js-v4-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow.js"/></a>
 <a href="https://webmachinelearning.github.io/webnn/" target="_blank"><img src="https://img.shields.io/badge/WebNN_API-1.0.0-0066CC?style=for-the-badge" alt="WebNN"/></a>
 
 #### Testing & Quality
 
-<a href="https://playwright.dev/" target="_blank"><img src="https://img.shields.io/badge/Playwright-2.0-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright"/></a>
-<a href="https://lighthouse.dev/" target="_blank"><img src="https://img.shields.io/badge/Lighthouse-14-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
-<a href="https://vitest.dev/" target="_blank"><img src="https://img.shields.io/badge/Vitest-4.0-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
-<a href="https://eslint.org/" target="_blank"><img src="https://img.shields.io/badge/ESLint-10-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
+<a href="https://playwright.dev/" target="_blank"><img src="https://img.shields.io/badge/Playwright-1.58-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright"/></a>
+<a href="https://developer.chrome.com/docs/lighthouse" target="_blank"><img src="https://img.shields.io/badge/Lighthouse-13-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
+<a href="https://vitest.dev/" target="_blank"><img src="https://img.shields.io/badge/Vitest-3.0-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
+<a href="https://eslint.org/" target="_blank"><img src="https://img.shields.io/badge/ESLint-9-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
 
 #### DevOps & Deployment
 
@@ -312,9 +312,9 @@ graph TB
 
 #### Development Tools
 
-<a href="https://nodejs.org/" target="_blank"><img src="https://img.shields.io/badge/Node.js-24+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js"/></a>
-<a href="https://npmjs.com/" target="_blank"><img src="https://img.shields.io/badge/npm-10+-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm"/></a>
-<a href="https://prettier.io/" target="_blank"><img src="https://img.shields.io/badge/Prettier-4.0-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier"/></a>
+<a href="https://nodejs.org/" target="_blank"><img src="https://img.shields.io/badge/Node.js-25+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js"/></a>
+<a href="https://npmjs.com/" target="_blank"><img src="https://img.shields.io/badge/npm-11+-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm"/></a>
+<a href="https://prettier.io/" target="_blank"><img src="https://img.shields.io/badge/Prettier-3.8-F7B93E?style=for-the-badge&logo=prettier&logoColor=black" alt="Prettier"/></a>
 <a href="https://sharp.pixelplumbing.com/" target="_blank"><img src="https://img.shields.io/badge/Sharp-0.33+-99CC00?style=for-the-badge&logo=sharp&logoColor=white" alt="Sharp"/></a>
 
 </div>
@@ -325,7 +325,7 @@ graph TB
 
 ### Prerequisites
 
-- Node.js 24+
+- Node.js 25+
 - Python 3.13+
 - Git
 
@@ -423,7 +423,7 @@ mangeshrautarchive/
 | `npm run test`                 | Run unit tests                                    |
 | `npm run qa:smoke`             | End-to-end smoke tests                            |
 | `npm run qa:a11y`              | Accessibility tests                               |
-| `npm run qa:lighthouse`        | Desktop performance audit                         |
+| `npm run qa:lighthouse:desktop` | Desktop performance audit                        |
 | `npm run qa:lighthouse:mobile` | Mobile performance audit                          |
 | `npm run qa:postdeploy`        | Post-deployment validation                        |
 | `npm run qa:prod-ready`        | Full production readiness check                   |
@@ -448,7 +448,7 @@ mangeshrautarchive/
 
 ## 🤝 Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions welcome! Fork the repo, create a feature branch, and open a PR.
 
 ---
 
