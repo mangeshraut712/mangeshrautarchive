@@ -504,7 +504,20 @@
                         stroke-linejoin="round"></path>
                     </svg>
                   </span>
+                  <button id="name-pronounce-btn" class="name-pronounce-btn" type="button"
+                    aria-label="Listen to name pronunciation" title="Hear how to pronounce my name">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path class="sound-wave" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                      <path class="sound-wave" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                  </button>
                 </h2>
+                <!-- Name Pronunciation Audio -->
+                <audio id="name-pronounce-audio" preload="none">
+                  <source src="assets/files/Name%20Pronounce.mp4" type="audio/mp4">
+                </audio>
                 <h1 class="hero-title">Software Development Engineer</h1>
 
                 <!-- Vibe Coder Badge -->
@@ -2531,6 +2544,7 @@
     <script defer src="js/utils/go-to-top.js?v=20260423a"></script>
     <script type="module" defer src="js/core/bootstrap.js?v=20260423a"></script>
     <script defer src="js/modules/scroll-animations.js?v=20260423a"></script>
+    <script defer src="js/modules/name-pronounce.js?v=20260506a"></script>
 </body>
 
 </html>
