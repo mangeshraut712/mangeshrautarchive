@@ -14,6 +14,7 @@
     SESSION_ID: 'portfolio_shared_session_id_v1',
     LAST_VISIT: 'portfolio_shared_last_visit_v1',
   };
+  const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
 
   function normalizeOrigin(rawValue) {
     if (!rawValue) return '';
@@ -29,6 +30,10 @@
     const configuredOrigin = normalizeOrigin(
       globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl
     );
+
+    if (LOCAL_HOSTS.has(window.location.hostname) && configuredOrigin === window.location.origin) {
+      return '';
+    }
 
     if (configuredOrigin) {
       return `${configuredOrigin}/api`;
@@ -152,8 +157,11 @@
    * Falls back to legacy /analytics/views if the reach endpoint fails.
    */
   async function fetchReach() {
+    const apiBase = getApiBase();
+    if (!apiBase) return null;
+
     try {
-      const res = await fetch(`${getApiBase()}/analytics/reach`, {
+      const res = await fetch(`${apiBase}/analytics/reach`, {
         headers: { Accept: 'application/json' },
         cache: 'no-store',
       });
@@ -162,7 +170,7 @@
     } catch {
       // Fallback to legacy views endpoint
       try {
-        const res = await fetch(`${getApiBase()}/analytics/views`, {
+        const res = await fetch(`${apiBase}/analytics/views`, {
           headers: { Accept: 'application/json' },
           cache: 'no-store',
         });
@@ -175,7 +183,10 @@
   }
 
   async function trackSharedVisit() {
-    const response = await fetch(`${getApiBase()}/analytics/track`, {
+    const apiBase = getApiBase();
+    if (!apiBase) return null;
+
+    const response = await fetch(`${apiBase}/analytics/track`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

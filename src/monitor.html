@@ -513,70 +513,41 @@
         return buildApiUrl(path.startsWith('/api/') ? path : `/api/${path.replace(/^\/+/, '')}`);
       }
 
-      async function fetchHealth() {
+      async function fetchMonitorJson(path, label) {
         try {
-          const response = await fetch(buildApiUrl('/api/monitor/health'));
+          const response = await fetch(buildApiUrl(path));
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const contentType = response.headers.get('content-type') || '';
+          if (!contentType.includes('application/json')) return null;
           return await response.json();
         } catch (error) {
-          console.error('Health check failed:', error);
+          console.warn(`${label} unavailable:`, error.message || error);
           return null;
         }
+      }
+
+      async function fetchHealth() {
+        return fetchMonitorJson('/api/monitor/health', 'Health check');
       }
 
       async function fetchMetrics() {
-        try {
-          const response = await fetch(buildApiUrl('/api/monitor/metrics'));
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          console.error('Metrics fetch failed:', error);
-          return null;
-        }
+        return fetchMonitorJson('/api/monitor/metrics', 'Metrics');
       }
 
       async function fetchExternalServices() {
-        try {
-          const response = await fetch(buildApiUrl('/api/monitor/external-services'));
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          console.error('External services fetch failed:', error);
-          return null;
-        }
+        return fetchMonitorJson('/api/monitor/external-services', 'External services');
       }
 
       async function fetchStatus() {
-        try {
-          const response = await fetch(buildApiUrl('/api/monitor/status'));
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          console.error('Status fetch failed:', error);
-          return null;
-        }
+        return fetchMonitorJson('/api/monitor/status', 'Status');
       }
 
       async function fetchHostingSurfaces() {
-        try {
-          const response = await fetch(buildApiUrl('/api/monitor/hosting-surfaces'));
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          console.error('Hosting surfaces fetch failed:', error);
-          return null;
-        }
+        return fetchMonitorJson('/api/monitor/hosting-surfaces', 'Hosting surfaces');
       }
 
       async function fetchMonitorDocs() {
-        try {
-          const response = await fetch(buildApiUrl('/api/monitor/docs'));
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          console.error('Monitor docs fetch failed:', error);
-          return null;
-        }
+        return fetchMonitorJson('/api/monitor/docs', 'Monitor docs');
       }
 
       async function fetchEvents(filter = '') {
@@ -585,10 +556,12 @@
           if (filter) url.searchParams.set('event_type', filter);
           const response = await fetch(url);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const contentType = response.headers.get('content-type') || '';
+          if (!contentType.includes('application/json')) return [];
           const data = await response.json();
           return data.events || [];
         } catch (error) {
-          console.error('Events fetch failed:', error);
+          console.warn('Events unavailable:', error.message || error);
           return [];
         }
       }

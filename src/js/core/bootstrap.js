@@ -2,6 +2,7 @@ import ExternalApiKeys from '../modules/external-config.js';
 import { initCurrentlySection } from '../modules/currently.js';
 import { initAvatarToggle } from '../modules/avatar-toggle.js';
 import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
+import { initPortfolioFeatureUpgrades } from '../modules/portfolio-feature-upgrades.js';
 import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
 const IDLE_MODULES = ['../modules/accessibility.js'];
@@ -565,6 +566,7 @@ async function initBootstrap() {
   initSmoothScroll('a[href^="#"]:not(.nav-link):not(.menu-item)');
   initCurrentlySection();
   initAvatarToggle();
+  initPortfolioFeatureUpgrades();
   initDeferredStyles();
   initOnDemandModules();
   initContactChatbotCTA(chatbotLoader);

@@ -14,6 +14,7 @@ const generatedDirs = [
   'artifacts',
   'test-results',
   'playwright-report',
+  '.playwright-mcp',
   'scratch',
   '.ruff_cache',
 ];

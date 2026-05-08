@@ -188,6 +188,7 @@ async function build() {
 async function addCacheBusting(distDir) {
   const htmlPath = resolve(distDir, 'index.html');
   const monitorPath = resolve(distDir, 'monitor.html');
+  const travelPath = resolve(distDir, 'travel.html');
 
   const version = `v${Date.now()}`;
 
@@ -208,7 +209,7 @@ async function addCacheBusting(distDir) {
     return hash ? `${nextPath}#${hash}` : nextPath;
   };
 
-  for (const htmlFile of [htmlPath, monitorPath]) {
+  for (const htmlFile of [htmlPath, monitorPath, travelPath]) {
     if (await pathExists(htmlFile)) {
       let content = await readFile(htmlFile, 'utf8');
 

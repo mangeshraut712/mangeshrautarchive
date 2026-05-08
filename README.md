@@ -41,7 +41,7 @@
 - [Design Philosophy](#-design-philosophy--inspired-by-apple)
 - [Repository Overview](#-repository-overview)
 - [Features](#-features)
-  - [AI Assistant](#-ai-powered-assistant-assistme) · [Launch Experience](#-premium-launch-experience) · [Media Showcase](#-personal-media-showcase-currently) · [GitHub Projects](#-github-projects-showcase) · [Debug Runner Game](#-interactive-game-debug-runner) · [System Monitor](#-system-monitoring-dashboard) · [Portfolio Reach](#-portfolio-reach-unified-metric) · [Design System](#-design-system-apple-2026)
+  - [AI Assistant](#-ai-powered-assistant-assistme) · [Launch Experience](#-premium-launch-experience) · [Media Showcase](#-personal-media-showcase-currently) · [Travel Atlas](#-travel-atlas) · [GitHub Projects](#-github-projects-showcase) · [Debug Runner Game](#-interactive-game-debug-runner) · [System Monitor](#-system-monitoring-dashboard) · [Portfolio Reach](#-portfolio-reach-unified-metric) · [Design System](#-design-system-apple-2026)
 - [Architecture & Tech Stack](#%EF%B8%8F-architecture--tech-stack)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
@@ -186,6 +186,25 @@ Layered translucency, parallax scrolling, and micro-animations provide a sense o
     </div>
   </div>
   <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>Curated local artwork ships with site for instant loading, avoiding runtime mismatches</em></p>
+</div>
+</details>
+
+### 🗺️ Travel Atlas
+
+<details>
+<summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>🌍 Map-led destination journal</b></summary>
+<br/>
+<div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
+  <p style="margin: 0 0 1rem 0;"><strong>Travel Atlas</strong> at <code>/travel.html</code> turns visited places into a clean country/city browsing experience:</p>
+  <ul style="margin: 0;">
+    <li>🗺️ MapLibre basemap with red visited-place pins and active-place fly-to behavior</li>
+    <li>🏙️ Country-wise timeline with city, region, and specific landmark context</li>
+    <li>🏠 Pune home-base guide with image-backed highlights and concise things-to-do cards</li>
+    <li>🔎 Search, featured mode, spotlight tour, category filters, and keyboard-accessible cards</li>
+    <li>🌗 Theme-aware glass UI with responsive desktop sidebar and mobile bottom sheet</li>
+    <li>🧭 Canonical city normalization for landmarks/suburbs, plus nearest-city fallback in the travel engine</li>
+  </ul>
+  <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>Runtime data lives in <code>src/js/data/travel-locations.js</code> and <code>src/js/data/travel-engine.js</code>; raw EXIF exports stay local and are ignored.</em></p>
 </div>
 </details>
 
@@ -492,6 +511,7 @@ mangeshrautarchive/
 │   │   │   ├── apple-2026-design-system.css
 │   │   │   ├── homepage.css      # Hero section styling
 │   │   │   ├── style.css         # Global styles
+│   │   │   ├── travel-atlas.css  # Map-led travel page styles
 │   │   │   └── tailwind-output.css
 │   │   ├── images/               # Optimized images
 │   │   │   ├── currently/        # Media poster assets
@@ -509,12 +529,18 @@ mangeshrautarchive/
 │   │   │   ├── debug-runner.js   # Canvas game
 │   │   │   ├── github-projects.js # GitHub showcase
 │   │   │   ├── search.js         # Site search
+│   │   │   ├── travel-atlas.js   # Travel Atlas UI and MapLibre orchestration
 │   │   │   └── system-monitor.js # Backend monitoring
+│   │   ├── data/                 # Frontend data modules
+│   │   │   ├── travel-engine.js  # City normalization and travel narrative builder
+│   │   │   └── travel-locations.js # Generated visited-place dataset
 │   │   └── services/             # Shared utilities
 │   │       ├── VoiceService.js   # Speech I/O
 │   │       ├── AnalyticsService.js # Usage tracking
 │   │       └── MarkdownService.js # Content rendering
-│   └── index.html                # Main HTML document
+│   ├── index.html                # Main HTML document
+│   ├── travel.html               # Travel Atlas page
+│   └── monitor.html              # System monitor dashboard
 ├── tests/                        # Test suites
 │   ├── e2e/                      # Playwright end-to-end tests
 │   │   ├── smoke.spec.js         # Critical path tests
@@ -523,7 +549,10 @@ mangeshrautarchive/
 │   └── unit/                     # Vitest unit tests
 ├── scripts/                      # Build and utility scripts
 │   ├── build.js                  # Production build pipeline
+│   ├── build-travel-data.cjs     # Optional local EXIF-to-travel-data generator
+│   ├── city-db.json              # Curated city metadata used by travel data generation
 │   ├── clean.js                  # Cache and build cleanup
+│   ├── fetch-wiki.cjs            # Optional city metadata enrichment helper
 │   ├── lighthouse-gate.js        # Performance validation
 │   └── optimize-images.js        # Image optimization
 ├── .github/                      # GitHub configuration
@@ -544,14 +573,17 @@ mangeshrautarchive/
 | ------------------------------- | ------------------------------------------------- |
 | `npm run dev`                   | Start full-stack development (frontend + backend) |
 | `npm run build`                 | Build production assets                           |
+| `npm run lint`                  | Run JavaScript linting                            |
+| `npm run lint:css`              | Run CSS linting                                   |
 | `npm run test`                  | Run unit tests                                    |
+| `npm run check-secrets`         | Scan for exposed API keys and secrets             |
 | `npm run qa:smoke`              | End-to-end smoke tests                            |
 | `npm run qa:a11y`               | Accessibility tests                               |
 | `npm run qa:lighthouse:desktop` | Desktop performance audit                         |
 | `npm run qa:lighthouse:mobile`  | Mobile performance audit                          |
 | `npm run qa:postdeploy`         | Post-deployment validation                        |
 | `npm run qa:prod-ready`         | Full production readiness check                   |
-| `npm run clean`                 | Remove build artifacts                            |
+| `npm run clean`                 | Remove build, test, browser, log, and cache artifacts |
 | `npm run format:check`          | Check Prettier formatting                         |
 
 ---

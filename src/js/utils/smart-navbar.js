@@ -66,7 +66,7 @@ function setCompactState(compact) {
   state.nav.dataset.compactState = shouldCompact ? 'compact' : 'default';
 }
 
-function centerActiveDesktopLink() {
+function revealActiveDesktopLink() {
   if (!isDesktop()) return;
   const activeLink = state.navLinks.find(link => link.classList.contains('active'));
   if (!activeLink) return;
@@ -74,7 +74,7 @@ function centerActiveDesktopLink() {
   activeLink.scrollIntoView({
     behavior: 'auto',
     block: 'nearest',
-    inline: 'center',
+    inline: 'nearest',
   });
 }
 
@@ -97,7 +97,7 @@ function setActiveLinkBySectionId(sectionId) {
     }
   });
 
-  centerActiveDesktopLink();
+  revealActiveDesktopLink();
 }
 
 function getVisibleSectionId() {
@@ -300,7 +300,7 @@ function bindKeyboardNavigation() {
     targetLink.scrollIntoView({
       behavior: 'auto',
       block: 'nearest',
-      inline: 'center',
+      inline: 'nearest',
     });
   });
 }
@@ -420,7 +420,7 @@ function onResize() {
     closeOverlayMenu();
   }
 
-  centerActiveDesktopLink();
+  revealActiveDesktopLink();
 }
 
 function initSmartNavbar() {

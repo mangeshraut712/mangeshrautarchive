@@ -334,18 +334,19 @@
     <a href="#contact" class="skip-link">Skip to Contact</a>
   </div>
   <!-- Search Overlay -->
-  <div id="search-overlay" style="display: none !important;">
+  <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette"
+    style="display: none !important;">
     <div class="search-container">
       <div class="search-input-wrapper">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" id="search-input" placeholder="Search" autocomplete="off">
+        <input type="text" id="search-input" placeholder="Search pages, sections, posts..." autocomplete="off">
         <button id="search-close" class="premium-close-btn" aria-label="Close search" type="button">
           <i class="fas fa-times"></i>
         </button>
       </div>
       <div id="search-results"></div>
       <div class="search-hint">
-        Press <kbd>Esc</kbd> to close
+        Press <kbd>Enter</kbd> to open, <kbd>Esc</kbd> to close
       </div>
     </div>
   </div>
@@ -374,11 +375,13 @@
         <a href="#certifications" class="nav-link" role="menuitem">Certifications</a>
         <a href="#blog" class="nav-link" role="menuitem">Blog</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
+        <a href="travel.html" class="nav-link" role="menuitem">Travel</a>
         <a href="#debug-runner-section" class="nav-link" role="menuitem">Game</a>
         <a href="monitor.html" class="nav-link" role="menuitem">System Monitor</a>
       </div>
       <div class="nav-actions">
-        <button id="search-toggle" class="theme-toggle-nav" aria-label="Search" type="button">
+        <button id="search-toggle" class="theme-toggle-nav" aria-label="Open command palette" title="Command palette"
+          type="button">
           <span class="inline-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round">
@@ -464,6 +467,10 @@
           <div class="premium-menu-icon"><i class="fas fa-envelope"></i></div>
           <span>Contact</span>
         </a>
+        <a href="travel.html" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-route"></i></div>
+          <span>Travel Atlas</span>
+        </a>
         <a href="#debug-runner-section" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-gamepad"></i></div>
           <span>Game</span>
@@ -514,11 +521,21 @@
                     </svg>
                   </button>
                 </h2>
+                <div class="hero-identity-strip" aria-label="Profile quick details">
+                  <span class="hero-identity-item">
+                    <i class="fas fa-mars" aria-hidden="true"></i>
+                    he/him
+                  </span>
+                </div>
                 <!-- Name Pronunciation Audio -->
                 <audio id="name-pronounce-audio" preload="none">
                   <source src="assets/files/Name%20Pronounce.mp4" type="audio/mp4">
                 </audio>
                 <h1 class="hero-title">Software Development Engineer</h1>
+                <p class="hero-role-flip" aria-live="polite">
+                  <span>I am a</span>
+                  <strong id="hero-role-word">Developer</strong>
+                </p>
 
                 <!-- Vibe Coder Badge -->
                 <div class="vibe-coder-badge-wrapper">
@@ -1099,7 +1116,7 @@
                     srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
                   <img id="github-chart-img" src="https://ghchart.rshah.org/0071e3/mangeshraut712"
                     alt="Mangesh Raut's Github contribution chart" class="github-graph-svg" loading="eager"
-                    onload="handleGraphLoadSuccess()" onerror="handleGraphLoadError()">
+                    onload="window.handleGraphLoadSuccess?.()" onerror="window.handleGraphLoadError?.()">
                 </picture>
               </div>
             </div>
@@ -1729,7 +1746,7 @@
     <!-- Blog Section -->
     <section id="blog" class="fade-in py-32">
       <div class="container">
-        <h2>Technical Writings</h2>
+        <h2>Technical Writings <span id="blog-post-count" class="section-count">(0)</span></h2>
         <p class="text-center text-secondary max-w-2xl mx-auto mb-12">
           Sharing insights on cloud architecture, full-stack development, and machine learning.
         </p>

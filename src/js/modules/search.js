@@ -1,3 +1,5 @@
+import { blogPosts } from './blog-data.js';
+
 /**
  * Search Functionality Module - Apple Inspired
  * Provides theme-aware search overlay with suggested searches and real-time filtering
@@ -12,15 +14,17 @@ class PortfolioSearch {
     this.searchClose = document.getElementById('search-close');
 
     this.searchableContent = [];
+    this.activeResultIndex = -1;
     this.suggestedSearches = [
-      { text: 'Projects', icon: 'fa-code', section: 'projects' },
-      { text: 'Skills', icon: 'fa-laptop-code', section: 'skills' },
-      { text: 'Experience', icon: 'fa-briefcase', section: 'experience' },
-      { text: 'Education', icon: 'fa-graduation-cap', section: 'education' },
+      { title: 'Projects', icon: 'fa-code', sectionId: 'projects', type: 'Portfolio' },
+      { title: 'Skills', icon: 'fa-laptop-code', sectionId: 'skills', type: 'Portfolio' },
+      { title: 'Experience', icon: 'fa-briefcase', sectionId: 'experience', type: 'Portfolio' },
+      { title: 'Technical Writings', icon: 'fa-rss', sectionId: 'blog', type: 'Portfolio' },
       {
-        text: 'Certifications',
+        title: 'Certifications',
         icon: 'fa-certificate',
-        section: 'certifications',
+        sectionId: 'certifications',
+        type: 'Portfolio',
       },
     ];
 
@@ -70,6 +74,9 @@ class PortfolioSearch {
   }
 
   indexContent() {
+    this.indexStaticCommands();
+    this.indexBlogPosts();
+
     // Index all searchable content from the page
     const sections = [
       {
@@ -168,6 +175,170 @@ class PortfolioSearch {
     this.indexContent();
   }
 
+  indexStaticCommands() {
+    const commands = [
+      {
+        title: 'Home',
+        description: 'Hero, current role, quick links, and GitHub activity',
+        icon: 'fa-house',
+        sectionId: 'home',
+        type: 'Portfolio',
+        tags: 'homepage intro profile command palette',
+      },
+      {
+        title: 'About',
+        description: 'Background, profile, and personal summary',
+        icon: 'fa-user',
+        sectionId: 'about',
+        type: 'Portfolio',
+        tags: 'bio summary profile',
+      },
+      {
+        title: 'Skills',
+        description: 'Technical skills and engineering stack',
+        icon: 'fa-laptop-code',
+        sectionId: 'skills',
+        type: 'Portfolio',
+        tags: 'languages frameworks tools',
+      },
+      {
+        title: 'Experience',
+        description: 'Work history and internships',
+        icon: 'fa-briefcase',
+        sectionId: 'experience',
+        type: 'Portfolio',
+        tags: 'work career companies jobs',
+      },
+      {
+        title: 'Projects',
+        description: 'Featured projects and GitHub repositories',
+        icon: 'fa-code',
+        sectionId: 'projects',
+        type: 'Portfolio',
+        tags: 'github repositories portfolio apps',
+      },
+      {
+        title: 'Education',
+        description: 'Drexel MSCS and academic background',
+        icon: 'fa-graduation-cap',
+        sectionId: 'education',
+        type: 'Portfolio',
+        tags: 'drexel university mscs academics',
+      },
+      {
+        title: 'Publications',
+        description: 'Research papers and publications',
+        icon: 'fa-book',
+        sectionId: 'publications',
+        type: 'Portfolio',
+        tags: 'research papers publication',
+      },
+      {
+        title: 'Awards',
+        description: 'Awards, honors, and recognition',
+        icon: 'fa-trophy',
+        sectionId: 'awards',
+        type: 'Portfolio',
+        tags: 'honors achievements recognition',
+      },
+      {
+        title: 'Recommendations',
+        description: 'Professional recommendations and testimonials',
+        icon: 'fa-quote-left',
+        sectionId: 'recommendations',
+        type: 'Portfolio',
+        tags: 'testimonials endorsements references',
+      },
+      {
+        title: 'Certifications',
+        description: 'Professional certifications and credentials',
+        icon: 'fa-certificate',
+        sectionId: 'certifications',
+        type: 'Portfolio',
+        tags: 'certificates credentials badges',
+      },
+      {
+        title: 'Technical Writings',
+        description: 'Blog posts and technical articles',
+        icon: 'fa-rss',
+        sectionId: 'blog',
+        type: 'Portfolio',
+        tags: 'blog articles writing posts',
+      },
+      {
+        title: 'Contact',
+        description: 'Email, phone, pronouns, location, and social links',
+        icon: 'fa-address-card',
+        sectionId: 'contact',
+        type: 'Portfolio',
+        tags: 'email phone social linkedin github',
+      },
+      {
+        title: 'Travel Atlas',
+        description: 'Open the interactive travel timeline, route playback, and location gallery',
+        icon: 'fa-route',
+        url: 'travel.html',
+        type: 'Page',
+        tags: 'travel map atlas journey timeline route flight road gallery mapbox',
+      },
+      {
+        title: 'Game',
+        description: 'Interactive debug runner game section',
+        icon: 'fa-gamepad',
+        sectionId: 'debug-runner-section',
+        type: 'Portfolio',
+        tags: 'game interactive debug runner',
+      },
+      {
+        title: 'System Monitor',
+        description: 'Open the system monitor page',
+        icon: 'fa-heart-pulse',
+        url: 'monitor.html',
+        type: 'Page',
+        tags: 'monitor system status health',
+      },
+      {
+        title: 'Download Resume',
+        description: 'Open Mangesh Raut resume PDF',
+        icon: 'fa-file-arrow-down',
+        url: 'assets/files/Mangesh_Raut_Resume.pdf',
+        type: 'Action',
+        tags: 'resume cv pdf download',
+      },
+      {
+        title: 'GitHub Profile',
+        description: 'Open github.com/mangeshraut712',
+        icon: 'fab fa-github',
+        url: 'https://github.com/mangeshraut712',
+        type: 'Social',
+        tags: 'github code repositories contributions',
+      },
+      {
+        title: 'LinkedIn Profile',
+        description: 'Open LinkedIn profile',
+        icon: 'fab fa-linkedin',
+        url: 'https://www.linkedin.com/in/mangeshraut71298/',
+        type: 'Social',
+        tags: 'linkedin professional contact',
+      },
+    ];
+
+    this.searchableContent.push(...commands);
+  }
+
+  indexBlogPosts() {
+    blogPosts.forEach(post => {
+      this.searchableContent.push({
+        title: post.title,
+        description: post.summary,
+        tags: post.tags.join(' '),
+        type: 'Blog',
+        icon: 'fa-rss',
+        sectionId: 'blog',
+      });
+    });
+  }
+
   attachEventListeners() {
     // Open search
     this.searchToggle.addEventListener('click', () => this.openSearch());
@@ -203,6 +374,8 @@ class PortfolioSearch {
         this.performSearch(query);
       }
     });
+
+    this.searchInput.addEventListener('keydown', e => this.handleSearchKeydown(e));
   }
 
   openSearch() {
@@ -223,26 +396,17 @@ class PortfolioSearch {
   }
 
   showSuggestedSearches() {
+    this.activeResultIndex = 0;
     const html = `
-            <div class="search-section-title">Suggested Searches</div>
-            ${this.suggestedSearches
-              .map(
-                suggestion => `
-                <div class="search-result-item" data-section="${suggestion.section}">
-                    <div class="search-result-icon">
-                        <i class="fas ${suggestion.icon}"></i>
-                    </div>
-                    <div class="search-result-content">
-                        <div class="search-result-title">${suggestion.text}</div>
-                    </div>
-                </div>
-            `
-              )
-              .join('')}
-        `;
+      <div class="search-section-title">Suggested Commands</div>
+      ${this.suggestedSearches
+        .map((suggestion, index) => this.renderResultItem(suggestion, '', index))
+        .join('')}
+    `;
 
     this.searchResults.innerHTML = html;
     this.attachResultClickHandlers();
+    this.updateActiveResult();
   }
 
   performSearch(query) {
@@ -255,19 +419,35 @@ class PortfolioSearch {
     this.refreshIndex();
 
     const lowerQuery = query.toLowerCase();
-    const results = this.searchableContent.filter(item => {
-      return (
-        item.title.toLowerCase().includes(lowerQuery) ||
-        item.description.toLowerCase().includes(lowerQuery) ||
-        item.tags.toLowerCase().includes(lowerQuery)
-      );
-    });
+    const results = this.searchableContent
+      .filter(item => {
+        return (
+          item.title.toLowerCase().includes(lowerQuery) ||
+          item.description.toLowerCase().includes(lowerQuery) ||
+          item.tags.toLowerCase().includes(lowerQuery)
+        );
+      })
+      .sort((a, b) => this.rankResult(a, lowerQuery) - this.rankResult(b, lowerQuery));
 
     this.displayResults(results, query);
   }
 
+  rankResult(item, query) {
+    const title = String(item.title || '').toLowerCase();
+    const tags = String(item.tags || '').toLowerCase();
+    const description = String(item.description || '').toLowerCase();
+
+    if (title === query) return 0;
+    if (title.startsWith(query)) return 1;
+    if (title.includes(query)) return 2;
+    if (tags.includes(query)) return 3;
+    if (description.includes(query)) return 4;
+    return 5;
+  }
+
   displayResults(results, query) {
     if (results.length === 0) {
+      this.activeResultIndex = -1;
       this.searchResults.innerHTML = `
                 <div class="search-no-results">
                     <div class="search-no-results-icon">
@@ -279,56 +459,172 @@ class PortfolioSearch {
       return;
     }
 
-    const html = `
-            <div class="search-section-title">Results (${results.length})</div>
-            ${results
-              .slice(0, 10)
-              .map(
-                result => `
-                <div class="search-result-item" data-section="${result.sectionId}">
-                    <div class="search-result-icon">
-                        <i class="fas ${result.icon}"></i>
-                    </div>
-                    <div class="search-result-content">
-                        <div class="search-result-title">${this.highlightQuery(result.title, query)}</div>
-                        <div class="search-result-section">${result.type}</div>
-                    </div>
-                </div>
-            `
-              )
-              .join('')}
-        `;
+    const limitedResults = results.slice(0, 12);
+    this.activeResultIndex = 0;
+    const groups = this.groupResultsByType(limitedResults);
+    const html = groups
+      .map(
+        group => `
+          <div class="search-section-title">${group.type}</div>
+          ${group.results
+            .map(({ result, index }) => this.renderResultItem(result, query, index))
+            .join('')}
+        `
+      )
+      .join('');
 
     this.searchResults.innerHTML = html;
     this.attachResultClickHandlers();
+    this.updateActiveResult();
+  }
+
+  groupResultsByType(results) {
+    const order = ['Portfolio', 'Blog', 'Project', 'GitHub Project', 'Social', 'Action', 'Page'];
+    const grouped = new Map();
+
+    results.forEach((result, index) => {
+      const type = result.type || 'Result';
+      if (!grouped.has(type)) grouped.set(type, []);
+      grouped.get(type).push({ result, index });
+    });
+
+    return [...grouped.entries()]
+      .sort(([a], [b]) => {
+        const aIndex = order.indexOf(a);
+        const bIndex = order.indexOf(b);
+        return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);
+      })
+      .map(([type, groupResults]) => ({ type, results: groupResults }));
+  }
+
+  renderResultItem(result, query, index) {
+    const iconClass = result.icon?.startsWith('fab ') ? result.icon : `fas ${result.icon}`;
+    const sectionAttr = result.sectionId ? `data-section="${this.escapeAttribute(result.sectionId)}"` : '';
+    const urlAttr = result.url ? `data-url="${this.escapeAttribute(result.url)}"` : '';
+    const description = result.description
+      ? `<div class="search-result-section">${this.escapeHtml(result.description)}</div>`
+      : `<div class="search-result-section">${this.escapeHtml(result.type || '')}</div>`;
+
+    return `
+      <div class="search-result-item" role="option" tabindex="-1" data-index="${index}" ${sectionAttr} ${urlAttr}>
+        <div class="search-result-icon">
+          <i class="${iconClass}"></i>
+        </div>
+        <div class="search-result-content">
+          <div class="search-result-title">${this.highlightQuery(result.title, query)}</div>
+          ${description}
+        </div>
+        <div class="search-result-shortcut">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </div>
+    `;
   }
 
   attachResultClickHandlers() {
     this.searchResults.querySelectorAll('.search-result-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const sectionId = item.dataset.section;
-        this.closeSearch();
+      item.addEventListener('mouseenter', () => {
+        this.activeResultIndex = this.getResultItems().indexOf(item);
+        this.updateActiveResult();
+      });
 
-        // Scroll to section
-        setTimeout(() => {
-          const section = document.getElementById(sectionId);
-          if (section) {
-            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 100);
+      item.addEventListener('click', () => {
+        this.navigateResult(item);
       });
     });
+  }
+
+  handleSearchKeydown(e) {
+    const items = this.getResultItems();
+    if (items.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this.activeResultIndex = Math.min(this.activeResultIndex + 1, items.length - 1);
+      this.updateActiveResult();
+      return;
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this.activeResultIndex = Math.max(this.activeResultIndex - 1, 0);
+      this.updateActiveResult();
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const activeItem = items[this.activeResultIndex] || items[0];
+      this.navigateResult(activeItem);
+    }
+  }
+
+  getResultItems() {
+    return Array.from(this.searchResults.querySelectorAll('.search-result-item'));
+  }
+
+  updateActiveResult() {
+    const items = this.getResultItems();
+    items.forEach((item, index) => {
+      const isActive = index === this.activeResultIndex;
+      item.classList.toggle('active', isActive);
+      item.setAttribute('aria-selected', isActive.toString());
+      if (isActive) {
+        item.scrollIntoView({ block: 'nearest' });
+      }
+    });
+  }
+
+  navigateResult(item) {
+    if (!item) return;
+
+    const sectionId = item.dataset.section;
+    const url = item.dataset.url;
+    this.closeSearch();
+
+    setTimeout(() => {
+      if (url) {
+        if (/^https?:\/\//.test(url)) {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+          window.location.href = url;
+        }
+        return;
+      }
+
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.setTimeout(() => {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 700);
+        window.setTimeout(() => {
+          section.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }, 1600);
+      }
+    }, 100);
   }
 
   highlightQuery(text, query) {
     if (!query) return text;
 
+    const safeText = this.escapeHtml(text);
     const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
-    return text.replace(regex, '<span class="highlight">$1</span>');
+    return safeText.replace(regex, '<span class="highlight">$1</span>');
   }
 
   escapeRegex(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  escapeHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = String(value ?? '');
+    return div.innerHTML;
+  }
+
+  escapeAttribute(value) {
+    return this.escapeHtml(value).replace(/"/g, '&quot;');
   }
 }
 

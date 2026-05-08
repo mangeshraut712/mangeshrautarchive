@@ -12,12 +12,12 @@
     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', Inter, sans-serif;
   --island-height: 52px;
   --island-height-compact: 46px;
-  --island-side-pad: 48px;
-  --island-side-pad-compact: 40px;
+  --island-side-pad: clamp(28px, 4vw, 48px);
+  --island-side-pad-compact: clamp(24px, 3vw, 40px);
   --island-link-size: 13px;
   --island-link-weight: 400;
-  --island-link-gap: 32px;
-  --island-link-gap-compact: 22px;
+  --island-link-gap: clamp(14px, 1.6vw, 24px);
+  --island-link-gap-compact: clamp(12px, 1.3vw, 18px);
   --island-link-color: rgba(29, 29, 31, 0.88);
   --island-link-color-active: #000;
   --island-link-color-hover: #0071e3;
@@ -146,13 +146,18 @@ html.dark .global-nav.dynamic-island.scrolled {
 
 .global-nav.dynamic-island .nav-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1360px;
   height: 100%;
   margin: 0 auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  column-gap: clamp(14px, 2vw, 24px);
+}
+
+.global-nav.dynamic-island .nav-left,
+.global-nav.dynamic-island .nav-actions {
+  min-width: max-content;
 }
 
 /* ============================================
@@ -191,13 +196,13 @@ html.dark .global-nav.dynamic-island.scrolled {
 
 .global-nav.dynamic-island .nav-links {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: var(--island-link-gap);
+  gap: var(--island-link-gap) !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.01em !important;
-  flex: 1 1 auto;
+  min-width: 0;
   font-family: var(--island-font) !important;
 }
 
@@ -428,6 +433,7 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
+  scroll-padding-inline: 24px;
   -webkit-overflow-scrolling: touch;
   mask-image: linear-gradient(
     to right,
@@ -443,7 +449,7 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
     black calc(100% - 20px),
     transparent 100%
   );
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 .global-nav.dynamic-island .nav-links.scrollable-nav::-webkit-scrollbar {
@@ -460,7 +466,7 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
   }
 
   .global-nav.dynamic-island .nav-links {
-    gap: 24px;
+    gap: var(--island-link-gap) !important;
   }
 }
 
@@ -475,11 +481,11 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
   }
 
   .global-nav.dynamic-island .nav-container {
-    gap: 16px;
+    column-gap: 16px;
   }
 
-  .global-nav.dynamic-island .nav-links {
-    display: none;
+  #global-nav.global-nav.dynamic-island .nav-links {
+    display: none !important;
   }
 
   .global-nav.dynamic-island .menu-toggle-button,
