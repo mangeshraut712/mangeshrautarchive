@@ -281,7 +281,7 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
     : '';
   const wikiImage = waypoint.editorial.wikiImage
     ? `<img class="travel-stop__image loaded" src="${waypoint.editorial.wikiImage}" alt="${waypoint.title}" loading="lazy" referrerpolicy="no-referrer" />`
-    : `<img class="travel-stop__image" style="display: none;" alt="${waypoint.title}" loading="lazy" referrerpolicy="no-referrer" />`;
+    : '';
   const wikiSummary = waypoint.editorial.wikiSummary || 'Select this place to load concise local context.';
 
   return `

@@ -19,6 +19,7 @@ const generatedDirs = [
   '.ruff_cache',
 ];
 const generatedFiles = ['backend_test.log', 'dev_server.log'];
+const generatedFileNames = new Set(['.DS_Store']);
 
 async function removeDirectory(relativePath) {
   const absolutePath = join(root, relativePath);
@@ -34,7 +35,7 @@ async function findPycacheDirs(directory, matches = []) {
       continue;
     }
 
-    if (entry.name === 'node_modules' || entry.name === '.git') {
+    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
       continue;
     }
 
@@ -45,6 +46,29 @@ async function findPycacheDirs(directory, matches = []) {
     }
 
     await findPycacheDirs(absolutePath, matches);
+  }
+
+  return matches;
+}
+
+async function findGeneratedFiles(directory, matches = []) {
+  const entries = await readdir(directory, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
+      continue;
+    }
+
+    const absolutePath = join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      await findGeneratedFiles(absolutePath, matches);
+      continue;
+    }
+
+    if (generatedFileNames.has(entry.name)) {
+      matches.push(absolutePath);
+    }
   }
 
   return matches;
@@ -63,6 +87,12 @@ async function clean() {
   for (const pycache of pycacheDirs) {
     await rm(pycache, { recursive: true, force: true });
     console.log(`🧹 Removed ${pycache.replace(`${root}/`, '')}`);
+  }
+
+  const generatedWorkspaceFiles = await findGeneratedFiles(root);
+  for (const file of generatedWorkspaceFiles) {
+    await rm(file, { force: true });
+    console.log(`🧹 Removed ${file.replace(`${root}/`, '')}`);
   }
 
   console.log('✅ Workspace cleanup complete.');
