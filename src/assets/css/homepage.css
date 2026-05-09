@@ -532,6 +532,11 @@ html.dark .section-count {
   isolation: isolate;
 }
 
+.launch-intro[hidden] {
+  display: none !important;
+  pointer-events: none;
+}
+
 html.dark .launch-intro {
   background:
     radial-gradient(circle at 18% 78%, rgb(194 119 58 / 18%) 0%, rgb(194 119 58 / 0%) 30%),
