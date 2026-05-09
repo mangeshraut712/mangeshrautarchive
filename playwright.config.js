@@ -2,6 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4000';
 const useManagedWebServer = !process.env.PLAYWRIGHT_BASE_URL;
+const browserChannel = process.env.PLAYWRIGHT_BROWSER_CHANNEL || undefined;
+const videoMode = process.env.PLAYWRIGHT_DISABLE_VIDEO === '1' ? 'off' : 'retain-on-failure';
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -15,7 +17,8 @@ export default defineConfig({
     baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video: videoMode,
+    ...(browserChannel ? { channel: browserChannel } : {}),
   },
   webServer: useManagedWebServer
     ? {

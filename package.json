@@ -60,7 +60,9 @@
     "cross-env": "^7.0.3",
     "express": "^4.21.2",
     "http-proxy-middleware": "^3.0.3",
-    "limiter": "^2.1.0"
+    "limiter": "^2.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "engines": {
     "node": ">=18",

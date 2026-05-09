@@ -62,9 +62,10 @@ class ProjectXR {
     const readText = selector => card?.querySelector(selector)?.textContent?.trim() || '';
     const readList = selector => {
       if (!card) return [];
-      return Array.from(card.querySelectorAll(selector))
-        .map(el => el.textContent?.trim())
-        .filter(Boolean);
+      return Array.from(card.querySelectorAll(selector)).flatMap(el => {
+        const text = el.textContent?.trim();
+        return text ? [text] : [];
+      });
     };
     const parseNumber = value => {
       const num = Number.parseInt(value, 10);

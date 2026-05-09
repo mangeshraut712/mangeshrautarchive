@@ -151,8 +151,10 @@ class DebugRunner {
     this.colors = isDark ? this.themes.dark : this.themes.light;
 
     if (this.canvas) {
-      this.canvas.style.background = this.colors.bg;
-      this.canvas.style.borderColor = this.colors.groundLine;
+      Object.assign(this.canvas.style, {
+        background: this.colors.bg,
+        borderColor: this.colors.groundLine,
+      });
     }
 
     // Force redraw if not running

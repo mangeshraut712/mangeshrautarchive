@@ -11,6 +11,13 @@ const VISITED_PIN_COLOR = '#ff3b30';
 const MAPLIBRE_CSS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
 const MAPLIBRE_JS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
 const mapWarningMessages = new Set();
+const htmlEntities = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
 
 const state = {
   map: null,
@@ -32,6 +39,16 @@ function waypointColor() {
 
 function normalize(value) {
   return String(value || '').trim().toLowerCase();
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => htmlEntities[char]);
+}
+
+function safeExternalUrl(value) {
+  const url = String(value || '').trim();
+  if (!/^https?:\/\//i.test(url)) return '';
+  return escapeHtml(url);
 }
 
 function hasMatchingCategories(waypoint) {
@@ -188,6 +205,18 @@ function updateResultsSummary(filtered) {
     : `${total} places across ${travelData.summary.countries} countries · city guides, landmarks, and local highlights`;
 }
 
+function applyFilterChange({ focusSearch = false } = {}) {
+  stopTour();
+  syncFilterControls();
+  renderCountryChapters();
+  renderTimeline();
+  fitMapToVisiblePlaces();
+
+  if (focusSearch) {
+    document.getElementById('place-search')?.focus();
+  }
+}
+
 function syncFilterControls() {
   const search = document.getElementById('place-search');
   const clear = document.getElementById('clear-place-search');
@@ -216,20 +245,12 @@ function syncFilterControls() {
 }
 
 function resetFilters({ focusSearch = false } = {}) {
-  stopTour();
   state.activeCountry = null;
   state.searchTerm = '';
   state.featuredOnly = false;
   state.activeCategories.clear();
   state.advancedSearchExpanded = false;
-  syncFilterControls();
-  renderCountryChapters();
-  renderTimeline();
-  fitMapToVisiblePlaces();
-
-  if (focusSearch) {
-    document.getElementById('place-search')?.focus();
-  }
+  applyFilterChange({ focusSearch });
 }
 
 function renderCountryPills() {
@@ -237,8 +258,8 @@ function renderCountryPills() {
   el.innerHTML = travelData.countryChapters
     .map(
       country => `
-        <button class="country-pill" data-country="${country.name}" title="${country.mood}" aria-pressed="false">
-          <span>${country.emoji} ${country.name}</span>
+        <button class="country-pill" data-country="${escapeHtml(country.name)}" title="${escapeHtml(country.mood)}" aria-pressed="false">
+          <span>${escapeHtml(country.emoji)} ${escapeHtml(country.name)}</span>
           <strong>${country.cityCount}</strong>
         </button>`
     )
@@ -249,14 +270,7 @@ function renderCountryPills() {
     if (!pill) return;
 
     state.activeCountry = state.activeCountry === pill.dataset.country ? null : pill.dataset.country;
-    el.querySelectorAll('.country-pill').forEach(item => {
-      const isActive = item.dataset.country === state.activeCountry;
-      item.classList.toggle('active', isActive);
-      item.setAttribute('aria-pressed', String(isActive));
-    });
-    renderCountryChapters();
-    renderTimeline();
-    fitMapToVisiblePlaces();
+    applyFilterChange();
   });
 }
 
@@ -278,10 +292,10 @@ function renderCountryChapters() {
     .map(
       chapter => `
         <article class="country-chapter">
-          <div class="country-chapter__mark">${chapter.emoji}</div>
+          <div class="country-chapter__mark">${escapeHtml(chapter.emoji)}</div>
           <div>
-            <h3>${chapter.name}</h3>
-            <p>${chapter.mood}</p>
+            <h3>${escapeHtml(chapter.name)}</h3>
+            <p>${escapeHtml(chapter.mood)}</p>
             <span>${chapter.cityCount} cities · ${chapter.placeCount} places · ${chapter.regionCount} regions</span>
           </div>
         </article>`
@@ -316,7 +330,7 @@ function renderTimeline() {
   el.innerHTML = filtered
     .map(({ waypoint, index }) => {
       const countryGroupHeader = waypoint.locality.country !== currentGroupCountry
-        ? `<div class="travel-timeline__country-header"><h3>${waypoint.locality.emoji} ${waypoint.locality.country}</h3></div>`
+        ? `<div class="travel-timeline__country-header"><h3>${escapeHtml(waypoint.locality.emoji)} ${escapeHtml(waypoint.locality.country)}</h3></div>`
         : '';
       currentGroupCountry = waypoint.locality.country;
       return renderStopCard(waypoint, index, countryGroupHeader);
@@ -358,31 +372,31 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
     ? '<span class="travel-stop__home-badge"><i class="fas fa-house" aria-hidden="true"></i> Home Base</span>'
     : '';
   const placeContext = waypoint.locality.placeName
-    ? `<div class="travel-stop__place-name">${waypoint.locality.placeKind || 'Place'} · ${waypoint.locality.placeName}</div>`
+    ? `<div class="travel-stop__place-name">${escapeHtml(waypoint.locality.placeKind || 'Place')} · ${escapeHtml(waypoint.locality.placeName)}</div>`
     : '';
   const wikiImage = waypoint.editorial.wikiImage
-    ? `<img class="travel-stop__image loaded" src="${waypoint.editorial.wikiImage}" alt="${waypoint.title}" loading="lazy" referrerpolicy="no-referrer" />`
+    ? `<img class="travel-stop__image loaded" src="${safeExternalUrl(waypoint.editorial.wikiImage)}" alt="${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />`
     : '';
   const wikiSummary = waypoint.editorial.wikiSummary || 'Select this place to load concise local context.';
 
   return `
     ${countryGroupHeader}
-    <article class="travel-stop${activeClass}" role="button" tabindex="0" aria-expanded="${index === state.activeIndex}" data-index="${index}" data-city="${waypoint.locality.city}" data-country="${waypoint.locality.country}" style="--stop-color: ${waypointColor()}">
+    <article class="travel-stop${activeClass}" role="button" tabindex="0" aria-expanded="${index === state.activeIndex}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}">
       <div class="travel-stop__dot"></div>
-      <div class="travel-stop__order">${waypoint.locality.region}, ${waypoint.locality.country} ${homeBadge}</div>
-      <h3 class="travel-stop__name">${waypoint.title}</h3>
+      <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
+      <h3 class="travel-stop__name">${escapeHtml(waypoint.title)}</h3>
       ${placeContext}
-      <div class="travel-stop__tagline">${waypoint.editorial.experience}</div>
+      <div class="travel-stop__tagline">${escapeHtml(waypoint.editorial.experience)}</div>
       <div class="travel-stop__details">
         ${wikiImage}
-        <p class="travel-stop__story">${wikiSummary}</p>
+        <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
         <div class="travel-stop__detail-section">
           <div class="travel-stop__detail-label">Why Visit</div>
-          <div class="travel-stop__detail-text">${waypoint.editorial.whyVisit}</div>
+          <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.whyVisit)}</div>
         </div>
         <div class="travel-stop__detail-section">
           <div class="travel-stop__detail-label">Must See</div>
-          <div class="travel-stop__detail-text">${waypoint.editorial.mustSee.join(', ')}</div>
+          <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.mustSee.join(', '))}</div>
         </div>
         ${renderPlaceGuide(waypoint)}
       </div>
@@ -395,22 +409,25 @@ function renderPlaceGuide(waypoint) {
 
   const chips = [...editorial.bestFor, ...editorial.neighborhoods]
     .slice(0, 10)
-    .map(item => `<span>${item}</span>`)
+    .map(item => `<span>${escapeHtml(item)}</span>`)
     .join('');
 
   const cards = editorial.thingsToDo
-    .map(
-      item => `
-        <article class="place-guide-card">
-          <img src="${item.image}" alt="${item.title} in ${waypoint.title}" loading="lazy" referrerpolicy="no-referrer" />
+    .map(item => {
+      const image = safeExternalUrl(item.image);
+      const sourceUrl = safeExternalUrl(item.sourceUrl);
+
+      return `
+        <article class="place-guide-card${image ? '' : ' place-guide-card--image-missing'}">
+          ${image ? `<img src="${image}" alt="${escapeHtml(item.title)} in ${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />` : ''}
           <div class="place-guide-card__body">
-            <div class="place-guide-card__meta">${item.category}</div>
-            <h4>${item.title}</h4>
-            <p>${item.summary}</p>
-            <a href="${item.sourceUrl}" target="_blank" rel="noopener noreferrer">${item.source}</a>
+            <div class="place-guide-card__meta">${escapeHtml(item.category)}</div>
+            <h4>${escapeHtml(item.title)}</h4>
+            <p>${escapeHtml(item.summary)}</p>
+            ${sourceUrl ? `<a href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.source)}</a>` : ''}
           </div>
-        </article>`
-    )
+        </article>`;
+    })
     .join('');
 
   return `
@@ -418,7 +435,7 @@ function renderPlaceGuide(waypoint) {
       <div class="place-guide__header">
         <div>
           <div class="travel-stop__detail-label">City Guide</div>
-          <p>${editorial.guideSummary}</p>
+          <p>${escapeHtml(editorial.guideSummary)}</p>
         </div>
       </div>
       <div class="place-guide__chips">${chips}</div>
@@ -438,29 +455,18 @@ function bindFilters() {
 
   search?.addEventListener('input', event => {
     state.searchTerm = event.target.value;
-    clear?.classList.toggle('visible', Boolean(state.searchTerm));
-    renderCountryChapters();
-    renderTimeline();
-    fitMapToVisiblePlaces();
+    applyFilterChange();
   });
 
   clear?.addEventListener('click', () => {
     state.searchTerm = '';
     search.value = '';
-    clear.classList.remove('visible');
-    renderCountryChapters();
-    renderTimeline();
-    fitMapToVisiblePlaces();
-    search.focus();
+    applyFilterChange({ focusSearch: true });
   });
 
   featured?.addEventListener('click', () => {
     state.featuredOnly = !state.featuredOnly;
-    featured.classList.toggle('active', state.featuredOnly);
-    featured.setAttribute('aria-pressed', String(state.featuredOnly));
-    renderCountryChapters();
-    renderTimeline();
-    fitMapToVisiblePlaces();
+    applyFilterChange();
   });
 
   tour?.addEventListener('click', () => {
@@ -488,16 +494,10 @@ function bindFilters() {
       const category = chip.dataset.category;
       if (state.activeCategories.has(category)) {
         state.activeCategories.delete(category);
-        chip.classList.remove('active');
-        chip.setAttribute('aria-pressed', 'false');
       } else {
         state.activeCategories.add(category);
-        chip.classList.add('active');
-        chip.setAttribute('aria-pressed', 'true');
       }
-      renderCountryChapters();
-      renderTimeline();
-      fitMapToVisiblePlaces();
+      applyFilterChange();
     });
   });
 }
@@ -742,7 +742,7 @@ function openPhotoGallery(stopElement, startIndex = 0) {
 
 function setActive(index) {
   const { waypoints } = travelData;
-  if (index < 0 || index >= waypoints.length) return;
+  if (!Number.isInteger(index) || index < 0 || index >= waypoints.length) return;
 
   cancelAnimationFrame(state.spinFrame);
   state.activeIndex = index;
@@ -813,6 +813,11 @@ function startTour() {
   let cursor = 0;
   setActive(state.visibleIndexes[cursor]);
   state.tourTimer = window.setInterval(() => {
+    if (!state.visibleIndexes.length) {
+      stopTour();
+      return;
+    }
+
     cursor = (cursor + 1) % state.visibleIndexes.length;
     setActive(state.visibleIndexes[cursor]);
   }, 2600);

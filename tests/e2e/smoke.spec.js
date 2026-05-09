@@ -57,6 +57,34 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('section#contact')).toBeAttached();
   });
 
+  test('travel atlas search, empty state, and reset flow work', async ({ page }) => {
+    await page.goto('/travel.html', { waitUntil: 'domcontentloaded' });
+
+    await expect(page).toHaveTitle(/Travel Atlas/i);
+    await expect(page.locator('#travel-sidebar')).toBeVisible();
+    await expect(page.locator('#travel-results-summary')).toContainText('places across');
+
+    const stops = page.locator('.travel-stop');
+    await expect(stops.first()).toBeVisible();
+    const initialStopCount = await stops.count();
+    expect(initialStopCount).toBeGreaterThan(50);
+
+    await page.locator('#spotlight-tour').click();
+    await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'true');
+
+    await page.locator('#place-search').fill('zzzz-no-match');
+    await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.locator('.travel-empty-state')).toBeVisible();
+
+    await page.locator('[data-reset-travel]').click();
+    await expect(page.locator('#place-search')).toHaveValue('');
+    await expect(page.locator('.travel-stop')).toHaveCount(initialStopCount);
+
+    await page.locator('#place-search').fill('Pune');
+    await expect(page.locator('#travel-results-summary')).toContainText('"Pune"');
+    await expect(page.locator('.travel-stop')).toHaveCount(2);
+  });
+
   test('skip links are keyboard reachable', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 

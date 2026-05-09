@@ -46,15 +46,18 @@ function listCssFiles(directory) {
 function normalizeDeclarations(block) {
   return block
     .split(';')
-    .map(declaration => declaration.trim())
-    .filter(Boolean)
-    .filter(declaration => declaration.includes(':'))
-    .map(declaration =>
-      declaration
-        .replace(/\s+/g, ' ')
-        .replace(/\s*:\s*/g, ':')
-        .trim()
-    )
+    .reduce((acc, raw) => {
+      const declaration = raw.trim();
+      if (declaration && declaration.includes(':')) {
+        acc.push(
+          declaration
+            .replace(/\s+/g, ' ')
+            .replace(/\s*:\s*/g, ':')
+            .trim()
+        );
+      }
+      return acc;
+    }, [])
     .join(';');
 }
 
@@ -63,15 +66,20 @@ function parseSelectors(rawSelector) {
     return [];
   }
 
-  return rawSelector
-    .split(',')
-    .map(selector => selector.trim())
-    .filter(Boolean)
-    .filter(selector => !selector.startsWith('@'))
-    .filter(selector => !selector.includes(';'))
-    .filter(selector => selector.length < 240)
-    .filter(selector => !/^(from|to|\d+%)$/i.test(selector))
-    .filter(selector => /[.#*a-zA-Z[]/.test(selector));
+  return rawSelector.split(',').reduce((acc, raw) => {
+    const selector = raw.trim();
+    if (
+      selector &&
+      !selector.startsWith('@') &&
+      !selector.includes(';') &&
+      selector.length < 240 &&
+      !/^(from|to|\d+%)$/i.test(selector) &&
+      /[.#*a-zA-Z[]/.test(selector)
+    ) {
+      acc.push(selector);
+    }
+    return acc;
+  }, []);
 }
 
 function lineNumberForIndex(content, index) {
