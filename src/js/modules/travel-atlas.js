@@ -161,6 +161,77 @@ function populateStats() {
   document.getElementById('stat-regions').textContent = summary.regions;
 }
 
+function hasActiveFilters() {
+  return (
+    Boolean(state.searchTerm) ||
+    Boolean(state.activeCountry) ||
+    state.featuredOnly ||
+    state.activeCategories.size > 0
+  );
+}
+
+function updateResultsSummary(filtered) {
+  const el = document.getElementById('travel-results-summary');
+  if (!el) return;
+
+  const total = travelData.waypoints.length;
+  const count = filtered.length;
+  const parts = [];
+
+  if (state.activeCountry) parts.push(state.activeCountry);
+  if (state.searchTerm) parts.push(`"${state.searchTerm.trim()}"`);
+  if (state.featuredOnly) parts.push('featured');
+  if (state.activeCategories.size > 0) parts.push([...state.activeCategories].join(', '));
+
+  el.textContent = hasActiveFilters()
+    ? `${count} of ${total} places shown · ${parts.join(' · ')}`
+    : `${total} places across ${travelData.summary.countries} countries · city guides, landmarks, and local highlights`;
+}
+
+function syncFilterControls() {
+  const search = document.getElementById('place-search');
+  const clear = document.getElementById('clear-place-search');
+  const featured = document.getElementById('featured-toggle');
+  const advancedToggle = document.getElementById('toggle-advanced-search');
+  const advancedContent = document.getElementById('advanced-search-content');
+
+  if (search) search.value = state.searchTerm;
+  clear?.classList.toggle('visible', Boolean(state.searchTerm));
+  featured?.classList.toggle('active', state.featuredOnly);
+  featured?.setAttribute('aria-pressed', String(state.featuredOnly));
+  advancedToggle?.setAttribute('aria-expanded', String(state.advancedSearchExpanded));
+  advancedContent?.classList.toggle('expanded', state.advancedSearchExpanded);
+
+  document.querySelectorAll('.country-pill').forEach(item => {
+    const isActive = item.dataset.country === state.activeCountry;
+    item.classList.toggle('active', isActive);
+    item.setAttribute('aria-pressed', String(isActive));
+  });
+
+  document.querySelectorAll('.travel-filter-chip').forEach(chip => {
+    const isActive = state.activeCategories.has(chip.dataset.category);
+    chip.classList.toggle('active', isActive);
+    chip.setAttribute('aria-pressed', String(isActive));
+  });
+}
+
+function resetFilters({ focusSearch = false } = {}) {
+  stopTour();
+  state.activeCountry = null;
+  state.searchTerm = '';
+  state.featuredOnly = false;
+  state.activeCategories.clear();
+  state.advancedSearchExpanded = false;
+  syncFilterControls();
+  renderCountryChapters();
+  renderTimeline();
+  fitMapToVisiblePlaces();
+
+  if (focusSearch) {
+    document.getElementById('place-search')?.focus();
+  }
+}
+
 function renderCountryPills() {
   const el = document.getElementById('country-pills');
   el.innerHTML = travelData.countryChapters
@@ -222,6 +293,8 @@ function renderTimeline() {
   const el = document.getElementById('travel-timeline');
   const filtered = getFilteredWaypoints();
   state.visibleIndexes = filtered.map(item => item.index);
+  updateResultsSummary(filtered);
+
   if (!state.visibleIndexes.includes(state.activeIndex)) {
     state.activeIndex = null;
     clearActiveMarker();
@@ -233,6 +306,7 @@ function renderTimeline() {
         <i class="fas fa-location-dot" aria-hidden="true"></i>
         <strong>No places match</strong>
         <span>Try another country or search term.</span>
+        <button class="travel-empty-state__reset" type="button" data-reset-travel>Reset filters</button>
       </div>`;
     updateMapPointVisibility();
     return;
@@ -252,6 +326,12 @@ function renderTimeline() {
   if (el.dataset.bound !== 'true') {
     el.dataset.bound = 'true';
     el.addEventListener('click', event => {
+      const reset = event.target.closest('[data-reset-travel]');
+      if (reset) {
+        resetFilters({ focusSearch: true });
+        return;
+      }
+
       const stop = event.target.closest('.travel-stop');
       if (!stop) return;
       stopTour();
@@ -351,6 +431,7 @@ function bindFilters() {
   const clear = document.getElementById('clear-place-search');
   const featured = document.getElementById('featured-toggle');
   const tour = document.getElementById('spotlight-tour');
+  const reset = document.getElementById('reset-travel-filters');
   const advancedToggle = document.getElementById('toggle-advanced-search');
   const advancedContent = document.getElementById('advanced-search-content');
   const categoryChips = document.querySelectorAll('.travel-filter-chip');
@@ -388,6 +469,10 @@ function bindFilters() {
       return;
     }
     startTour();
+  });
+
+  reset?.addEventListener('click', () => {
+    resetFilters({ focusSearch: true });
   });
 
   // Advanced search toggle

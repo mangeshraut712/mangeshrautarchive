@@ -5,18 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description"
-    content="Mangesh Raut Travel Atlas — an Apple Maps-inspired journal of countries, cities, and places visited." />
+    content="Mangesh Raut Travel Atlas — a 2026 map-led journal of countries, cities, landmarks, and destination guides." />
   <link rel="canonical" href="https://mangeshraut.pro/travel.html" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mangeshraut.pro/travel.html" />
   <meta property="og:title" content="Travel Atlas | Mangesh Raut" />
   <meta property="og:description"
-    content="A map-led travel atlas of countries, cities, landmarks, and personal destination highlights." />
+    content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights." />
   <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Travel Atlas | Mangesh Raut" />
   <meta name="twitter:description"
-    content="A map-led travel atlas of countries, cities, landmarks, and personal destination highlights." />
+    content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights." />
   <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
   <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
@@ -157,7 +157,13 @@
               <i class="fas fa-play" aria-hidden="true"></i>
               <span>Spotlight</span>
             </button>
+            <button id="reset-travel-filters" class="travel-action travel-action--quiet" type="button">
+              <i class="fas fa-rotate-left" aria-hidden="true"></i>
+              <span>Reset</span>
+            </button>
           </div>
+
+          <div id="travel-results-summary" class="travel-results-summary" aria-live="polite"></div>
 
           <div class="country-chapters" id="country-chapters" aria-label="Country chapters"></div>
         </div>

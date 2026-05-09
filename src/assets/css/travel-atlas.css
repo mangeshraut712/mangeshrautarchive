@@ -300,7 +300,7 @@
 
 .travel-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-2);
   margin-top: var(--space-3);
 }
@@ -427,6 +427,22 @@
   border-color: var(--apple-red);
   background: color-mix(in srgb, var(--apple-red) 14%, transparent);
   color: var(--apple-red);
+}
+
+.travel-action--quiet {
+  color: var(--text-tertiary);
+}
+
+.travel-results-summary {
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--separator) 70%, transparent);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--fill-secondary) 60%, transparent);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 /* ─── Country Editorial Chapters ─── */
@@ -785,6 +801,25 @@
   font-size: 13px;
 }
 
+.travel-empty-state__reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  margin-top: var(--space-2);
+  padding: 0 var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--apple-blue) 38%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--apple-blue) 10%, transparent);
+  color: var(--apple-blue);
+  font: 800 12px/1 var(--font-text);
+  cursor: pointer;
+}
+
+.travel-empty-state__reset:hover {
+  background: color-mix(in srgb, var(--apple-blue) 16%, transparent);
+}
+
 @keyframes travelFadeIn {
   from {
     opacity: 0;
@@ -886,7 +921,13 @@
   }
 
   .travel-actions {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .travel-action {
+    gap: 5px;
+    min-height: 36px;
+    font-size: 12px;
   }
 
   .travel-filter-chip {
