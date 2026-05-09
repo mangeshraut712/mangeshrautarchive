@@ -73,8 +73,16 @@ function getMimeType(filePath) {
   return mimeTypes[extname(filePath).toLowerCase()] || 'application/octet-stream';
 }
 
-function getCompressedPayload(filePath, buffer, encoding) {
-  const cacheKey = `${filePath}:${encoding}`;
+function getCompressedPayload(filePath, buffer, encoding, fileStat) {
+  const cachePrefix = `${filePath}:${encoding}:`;
+  const cacheKey = `${cachePrefix}${fileStat.mtimeMs}:${buffer.length}`;
+
+  for (const key of compressedCache.keys()) {
+    if (key.startsWith(cachePrefix) && key !== cacheKey) {
+      compressedCache.delete(key);
+    }
+  }
+
   if (compressedCache.has(cacheKey)) {
     return compressedCache.get(cacheKey);
   }
@@ -124,6 +132,7 @@ app.get('*', async (req, res) => {
   }
 
   const fileBuffer = await readFile(filePath);
+  const fileStat = await stat(filePath);
   const extension = extname(filePath).toLowerCase();
   const acceptsEncoding = req.headers['accept-encoding'] || '';
 
@@ -132,14 +141,14 @@ app.get('*', async (req, res) => {
   setAssetHeaders(res, filePath);
 
   if (compressibleExtensions.has(extension) && acceptsEncoding.includes('br')) {
-    const compressed = getCompressedPayload(filePath, fileBuffer, 'br');
+    const compressed = getCompressedPayload(filePath, fileBuffer, 'br', fileStat);
     res.setHeader('Content-Encoding', 'br');
     res.send(compressed);
     return;
   }
 
   if (compressibleExtensions.has(extension) && acceptsEncoding.includes('gzip')) {
-    const compressed = getCompressedPayload(filePath, fileBuffer, 'gzip');
+    const compressed = getCompressedPayload(filePath, fileBuffer, 'gzip', fileStat);
     res.setHeader('Content-Encoding', 'gzip');
     res.send(compressed);
     return;

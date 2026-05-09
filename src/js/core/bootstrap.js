@@ -222,10 +222,33 @@ function initLaunchIntro(documentRef = document) {
 
   intro.dataset.launchIntroBound = 'true';
 
+  const storageKey = 'portfolio-launch-intro-seen-v2026';
+  const hasSeenIntro = () => {
+    try {
+      return sessionStorage.getItem(storageKey) === '1';
+    } catch (_error) {
+      return false;
+    }
+  };
+  const markIntroSeen = () => {
+    try {
+      sessionStorage.setItem(storageKey, '1');
+    } catch (_error) {
+      // Privacy-restricted storage should not block the page.
+    }
+  };
+
+  if (hasSeenIntro()) {
+    intro.hidden = true;
+    return;
+  }
+
+  markIntroSeen();
+
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root = documentRef.documentElement;
-  const totalDuration = prefersReducedMotion ? 1400 : 5600;
-  const fadeDuration = 900;
+  const totalDuration = prefersReducedMotion ? 700 : 2600;
+  const fadeDuration = 520;
 
   const complete = () => {
     if (intro.dataset.launchIntroComplete === 'true') return;
@@ -518,9 +541,13 @@ function initServiceWorker() {
     return;
   }
 
-  const cleanupKey = 'portfolio-sw-cleanup-v20260410';
-  if (sessionStorage.getItem(cleanupKey) === '1') {
-    return;
+  const cleanupKey = 'portfolio-sw-cleanup-v20260509';
+  try {
+    if (sessionStorage.getItem(cleanupKey) === '1') {
+      return;
+    }
+  } catch (_error) {
+    // Privacy-restricted storage should not block stale-cache cleanup.
   }
 
   window.addEventListener(
@@ -536,7 +563,11 @@ function initServiceWorker() {
         }
 
         localStorage.removeItem('portfolio-version');
-        sessionStorage.setItem(cleanupKey, '1');
+        try {
+          sessionStorage.setItem(cleanupKey, '1');
+        } catch (_error) {
+          // Stale-cache cleanup already ran; storage support is optional.
+        }
 
         window.clearAllCaches = async () => {
           const regs = await navigator.serviceWorker.getRegistrations();

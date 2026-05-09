@@ -10,6 +10,7 @@ const travelData = createTravelNarrative(rawTravelData);
 const VISITED_PIN_COLOR = '#ff3b30';
 const MAPLIBRE_CSS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
 const MAPLIBRE_JS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
+const mapWarningMessages = new Set();
 
 const state = {
   map: null,
@@ -764,6 +765,22 @@ function getMapStyle() {
     : 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
 }
 
+function handleMapError(event) {
+  const message = event?.error?.message;
+  if (!message) return;
+
+  if (message === 'Failed to fetch') {
+    return;
+  }
+
+  if (mapWarningMessages.has(message)) {
+    return;
+  }
+
+  mapWarningMessages.add(message);
+  console.warn(`Map resource unavailable: ${message}`);
+}
+
 async function initMap() {
   await loadMapLibre();
 
@@ -779,10 +796,7 @@ async function initMap() {
   });
 
   state.map.addControl(new window.maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-right');
-  state.map.on('error', event => {
-    if (!event?.error) return;
-    console.warn(`Map resource unavailable: ${event.error.message}`);
-  });
+  state.map.on('error', handleMapError);
 
   state.map.on('load', () => {
     state.ready = true;
