@@ -8,8 +8,8 @@ import { travelData as rawTravelData } from '../data/travel-locations.js';
 
 const travelData = createTravelNarrative(rawTravelData);
 const VISITED_PIN_COLOR = '#ff3b30';
-const MAPLIBRE_CSS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
-const MAPLIBRE_JS = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
+const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css';
+const MAPLIBRE_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js';
 const mapWarningMessages = new Set();
 const htmlEntities = {
   '&': '&amp;',
@@ -230,7 +230,6 @@ function updateResultsSummary(filtered) {
 function applyFilterChange({ focusSearch = false } = {}) {
   stopTour();
   syncFilterControls();
-  renderCountryChapters();
   renderTimeline();
   fitMapToVisiblePlaces();
 
@@ -294,35 +293,6 @@ function renderCountryPills() {
     state.activeCountry = state.activeCountry === pill.dataset.country ? null : pill.dataset.country;
     applyFilterChange();
   });
-}
-
-function renderCountryChapters() {
-  const el = document.getElementById('country-chapters');
-  if (!el) return;
-
-  const hasActiveResultFilter =
-    Boolean(state.searchTerm) || state.featuredOnly || state.activeCategories.size > 0;
-  const visibleCountries = hasActiveResultFilter
-    ? new Set(getFilteredWaypoints().map(({ waypoint }) => waypoint.locality.country))
-    : null;
-
-  const chapters = state.activeCountry
-    ? travelData.countryChapters.filter(country => country.name === state.activeCountry)
-    : travelData.countryChapters.filter(country => !visibleCountries || visibleCountries.has(country.name));
-
-  el.innerHTML = chapters
-    .map(
-      chapter => `
-        <article class="country-chapter">
-          <div class="country-chapter__mark">${escapeHtml(chapter.emoji)}</div>
-          <div>
-            <h3>${escapeHtml(chapter.name)}</h3>
-            <p>${escapeHtml(chapter.mood)}</p>
-            <span>${chapter.cityCount} cities · ${chapter.placeCount} places · ${chapter.regionCount} regions</span>
-          </div>
-        </article>`
-    )
-    .join('');
 }
 
 function renderTimeline() {
@@ -1126,7 +1096,6 @@ function init() {
   bindThemeToggle();
   populateStats();
   renderCountryPills();
-  renderCountryChapters();
   bindFilters();
   renderTimeline();
   initMap();

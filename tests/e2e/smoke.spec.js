@@ -62,7 +62,12 @@ test.describe('Chrome smoke tests', () => {
 
     await expect(page).toHaveTitle(/Travel Atlas/i);
     await expect(page.locator('#travel-sidebar')).toBeVisible();
+    await expect(page.locator('#map-container canvas').first()).toBeVisible({ timeout: 20_000 });
     await expect(page.locator('#travel-results-summary')).toContainText('places across');
+    await expect(page.locator('#country-chapters')).toHaveCount(0);
+
+    const timelineBox = await page.locator('#travel-timeline').boundingBox();
+    expect(timelineBox?.height ?? 0).toBeGreaterThan(300);
 
     const stops = page.locator('.travel-stop');
     await expect(stops.first()).toBeVisible();

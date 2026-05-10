@@ -41,6 +41,8 @@ test.describe('Post-deploy Chrome checks', () => {
 
     await expect(page).toHaveTitle(/Travel Atlas/i);
     await expect(page.locator('#travel-sidebar')).toBeVisible();
+    await expect(page.locator('#map-container canvas').first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('#country-chapters')).toHaveCount(0);
     await page.locator('#place-search').fill('Pune');
 
     const stops = page.locator('.travel-stop');

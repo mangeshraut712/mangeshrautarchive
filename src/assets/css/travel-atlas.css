@@ -445,62 +445,6 @@
   line-height: 1.35;
 }
 
-/* ─── Country Editorial Chapters ─── */
-.country-chapters {
-  display: grid;
-  gap: var(--space-2);
-  max-height: 172px;
-  margin-top: var(--space-3);
-  overflow-y: auto;
-  padding-right: 2px;
-  scrollbar-width: thin;
-}
-
-.country-chapter {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: var(--space-3);
-  padding: var(--space-3);
-  border: 1px solid color-mix(in srgb, var(--separator) 78%, transparent);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--fill-tertiary) 84%, transparent);
-}
-
-.country-chapter__mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-full);
-  background: var(--fill-secondary);
-  font-size: 18px;
-}
-
-.country-chapter h3 {
-  margin: 0 0 2px;
-  color: var(--text-primary);
-  font-size: 14px;
-  line-height: 1.2;
-  letter-spacing: 0;
-}
-
-.country-chapter p {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.country-chapter span {
-  display: block;
-  margin-top: var(--space-2);
-  color: var(--text-tertiary);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
 /* ─── Timeline List ─── */
 .travel-timeline {
   flex: 1;
@@ -889,10 +833,6 @@
   }
 
   .travel-countries::-webkit-scrollbar {
-    display: none;
-  }
-
-  .country-chapters {
     display: none;
   }
 
