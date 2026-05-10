@@ -409,7 +409,7 @@ graph TB
 #### Testing & Quality
 
 <a href="https://playwright.dev/"><img src="https://img.shields.io/badge/Playwright-1.58-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright"/></a>
-<a href="https://developer.chrome.com/docs/lighthouse"><img src="https://img.shields.io/badge/Lighthouse-13-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
+<a href="https://developer.chrome.com/docs/lighthouse"><img src="https://img.shields.io/badge/Lighthouse-12-F44B21?style=for-the-badge&logo=lighthouse&logoColor=white" alt="Lighthouse"/></a>
 <a href="https://vitest.dev/"><img src="https://img.shields.io/badge/Vitest-3.0-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest"/></a>
 <a href="https://eslint.org/"><img src="https://img.shields.io/badge/ESLint-9.21-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint"/></a>
 <a href="https://stylelint.io/"><img src="https://img.shields.io/badge/Stylelint-16.14-263238?style=for-the-badge&logo=stylelint&logoColor=white" alt="Stylelint"/></a>
