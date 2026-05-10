@@ -32,4 +32,22 @@ test.describe('Post-deploy Chrome checks', () => {
 
     expect(blockingViolations, JSON.stringify(blockingViolations, null, 2)).toEqual([]);
   });
+
+  test('deployed travel atlas renders distinct accessible Pune cards', async ({ page }, testInfo) => {
+    const targetUrl = resolveTargetUrl(testInfo);
+    expect(targetUrl, 'A base URL is required for post-deploy checks').toBeTruthy();
+
+    await page.goto(new URL('travel.html', targetUrl).toString(), { waitUntil: 'domcontentloaded' });
+
+    await expect(page).toHaveTitle(/Travel Atlas/i);
+    await expect(page.locator('#travel-sidebar')).toBeVisible();
+    await page.locator('#place-search').fill('Pune');
+
+    const stops = page.locator('.travel-stop');
+    await expect(stops).toHaveCount(2);
+    await expect(page.locator('.travel-stop__name')).toHaveText(['Pune', 'Sinhagad Fort']);
+
+    const labels = await stops.evaluateAll(nodes => nodes.map(node => node.getAttribute('aria-label')));
+    expect(labels.every(Boolean)).toBe(true);
+  });
 });

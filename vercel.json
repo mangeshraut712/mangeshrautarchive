@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -6,31 +8,15 @@
     },
     {
       "source": "/",
-      "destination": "/src/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/monitor.html",
-      "destination": "/src/monitor.html"
+      "destination": "/monitor.html"
     },
     {
-      "source": "/assets/(.*)",
-      "destination": "/src/assets/$1"
-    },
-    {
-      "source": "/js/(.*)",
-      "destination": "/src/js/$1"
-    },
-    {
-      "source": "/core/(.*)",
-      "destination": "/src/core/$1"
-    },
-    {
-      "source": "/themes/(.*)",
-      "destination": "/src/themes/$1"
-    },
-    {
-      "source": "/chatbot/(.*)",
-      "destination": "/src/chatbot/$1"
+      "source": "/travel.html",
+      "destination": "/travel.html"
     }
   ],
   "headers": [

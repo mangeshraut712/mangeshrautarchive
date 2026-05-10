@@ -83,6 +83,7 @@ test.describe('Chrome smoke tests', () => {
     await page.locator('#place-search').fill('Pune');
     await expect(page.locator('#travel-results-summary')).toContainText('"Pune"');
     await expect(page.locator('.travel-stop')).toHaveCount(2);
+    await expect(page.locator('.travel-stop__name')).toHaveText(['Pune', 'Sinhagad Fort']);
   });
 
   test('skip links are keyboard reachable', async ({ page }) => {

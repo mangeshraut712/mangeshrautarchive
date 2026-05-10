@@ -51,6 +51,28 @@ function safeExternalUrl(value) {
   return escapeHtml(url);
 }
 
+function sameText(first, second) {
+  return normalize(first) === normalize(second);
+}
+
+function getStopContext(waypoint) {
+  const { locality } = waypoint;
+  const titleIsSpecificPlace = locality.placeName && sameText(waypoint.title, locality.placeName);
+  const pieces = [];
+
+  if (locality.placeKind) {
+    pieces.push(locality.placeKind);
+  }
+
+  if (titleIsSpecificPlace) {
+    pieces.push(`${locality.city} area`);
+  } else if (locality.placeName) {
+    pieces.push(locality.placeName);
+  }
+
+  return pieces.filter(Boolean).join(' · ');
+}
+
 function hasMatchingCategories(waypoint) {
   if (state.activeCategories.size === 0) return true;
 
@@ -371,23 +393,27 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
   const homeBadge = waypoint.editorial.homeBase
     ? '<span class="travel-stop__home-badge"><i class="fas fa-house" aria-hidden="true"></i> Home Base</span>'
     : '';
-  const placeContext = waypoint.locality.placeName
-    ? `<div class="travel-stop__place-name">${escapeHtml(waypoint.locality.placeKind || 'Place')} · ${escapeHtml(waypoint.locality.placeName)}</div>`
+  const stopContext = getStopContext(waypoint);
+  const placeContext = stopContext
+    ? `<div class="travel-stop__place-name">${escapeHtml(stopContext)}</div>`
     : '';
   const wikiImage = waypoint.editorial.wikiImage
     ? `<img class="travel-stop__image loaded" src="${safeExternalUrl(waypoint.editorial.wikiImage)}" alt="${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />`
     : '';
   const wikiSummary = waypoint.editorial.wikiSummary || 'Select this place to load concise local context.';
+  const detailsId = `travel-stop-details-${index}`;
+  const summaryId = `travel-stop-summary-${index}`;
+  const ariaLabel = `Open details for ${waypoint.title} in ${waypoint.locality.city}, ${waypoint.locality.country}`;
 
   return `
     ${countryGroupHeader}
-    <article class="travel-stop${activeClass}" role="button" tabindex="0" aria-expanded="${index === state.activeIndex}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}">
+    <article class="travel-stop${activeClass}" role="button" tabindex="0" aria-label="${escapeHtml(ariaLabel)}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}">
       <div class="travel-stop__dot"></div>
       <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
       <h3 class="travel-stop__name">${escapeHtml(waypoint.title)}</h3>
       ${placeContext}
-      <div class="travel-stop__tagline">${escapeHtml(waypoint.editorial.experience)}</div>
-      <div class="travel-stop__details">
+      <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(waypoint.editorial.experience)}</div>
+      <div class="travel-stop__details" id="${detailsId}">
         ${wikiImage}
         <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
         <div class="travel-stop__detail-section">

@@ -359,12 +359,13 @@ function createWaypoint(stop, index) {
   const intelligence = CITY_INTELLIGENCE[stop.name] || buildFallbackCityIntelligence(stop);
   const whyVisitText = stop.highlight ? `Discover ${stop.highlight}` : `Visit for ${intelligence.mustSee.slice(0, 2).join(' and ').toLowerCase()}, then stay for ${intelligence.localAtmosphere}.`;
   const hasCuratedIntelligence = Boolean(CITY_INTELLIGENCE[stop.name]);
+  const title = stop.placeName || stop.name;
   const headline = stop.placeName ? `${stop.name}: ${stop.placeName}` : `${stop.name}, ${stop.region}`;
 
   return {
     id: `place-${index + 1}`,
     sourceId: stop.id,
-    title: stop.name,
+    title,
     locality: {
       city: stop.name,
       placeName: stop.placeName || '',
