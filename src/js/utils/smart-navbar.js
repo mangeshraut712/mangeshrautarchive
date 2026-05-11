@@ -175,8 +175,30 @@ function scrollToSection(sectionId) {
   stabilizeScrollToSection(sectionId);
 }
 
+function restoreOverlayScrollLock() {
+  const scrollY = Number.parseInt(document.body.dataset.overlayScrollY || '0', 10) || 0;
+  const anchorId = document.body.dataset.overlayAnchorId;
+  const anchorTop = Number.parseFloat(document.body.dataset.overlayAnchorTop || '');
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  delete document.body.dataset.overlayScrollY;
+  delete document.body.dataset.overlayAnchorId;
+  delete document.body.dataset.overlayAnchorTop;
+
+  const anchor = anchorId ? document.getElementById(anchorId) : null;
+  const restoredY =
+    anchor && Number.isFinite(anchorTop)
+      ? anchor.getBoundingClientRect().top + window.scrollY - anchorTop
+      : scrollY;
+  window.scrollTo(0, Math.max(0, restoredY));
+}
+
 function closeOverlayMenu() {
   document.body.classList.remove('menu-open');
+  restoreOverlayScrollLock();
   const overlayMenu = document.getElementById('overlay-menu');
   overlayMenu?.style.setProperty('display', 'none', 'important');
   overlayMenu?.setAttribute('aria-hidden', 'true');

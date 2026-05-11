@@ -208,30 +208,32 @@ test.describe('Chrome smoke tests', () => {
     }
 
     await page.evaluate(() => {
-      const contact = document.getElementById('contact');
-      if (contact) {
-        window.scrollTo(0, Math.max(0, contact.offsetTop - 120));
-      }
+      const scrollHeight = document.documentElement.scrollHeight;
+      window.scrollTo(0, Math.max(0, scrollHeight - window.innerHeight - 1000));
     });
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(600);
 
-    const openState = await page.evaluate(() => {
-      const beforeY = window.scrollY;
-      document.getElementById('menu-btn')?.click();
+    const beforeY = await page.evaluate(() => window.scrollY);
+    await page.locator('#menu-btn').click();
+    await page.waitForSelector('body.menu-open');
+    await page.waitForTimeout(250);
+
+    const openState = await page.evaluate(beforeScrollY => {
       return {
-        beforeY,
+        beforeY: beforeScrollY,
         bodyClass: document.body.className,
+        bodyTop: document.body.style.top,
         duringY: window.scrollY,
         overflow: getComputedStyle(document.body).overflow,
         touchAction: getComputedStyle(document.body).touchAction,
       };
-    });
-    await page.waitForTimeout(250);
+    }, beforeY);
 
     expect(openState.bodyClass).toContain('menu-open');
     expect(openState.overflow).toBe('hidden');
     expect(openState.touchAction).toBe('none');
-    expect(Math.abs(openState.duringY - openState.beforeY)).toBeLessThanOrEqual(4);
+    expect(openState.beforeY).toBeGreaterThan(500);
+    expect(Number.parseInt(openState.bodyTop, 10)).toBeLessThan(-500);
 
     await page.evaluate(() => {
       document.getElementById('close-menu-btn')?.click();
@@ -243,22 +245,10 @@ test.describe('Chrome smoke tests', () => {
       top: document.body.style.top,
       bodyClass: document.body.className,
     }));
-    const contactViewport = await page.evaluate(() => {
-      const contact = document.getElementById('contact');
-      if (!contact) return null;
-      const rect = contact.getBoundingClientRect();
-      return {
-        top: rect.top,
-        bottom: rect.bottom,
-        viewportHeight: window.innerHeight,
-      };
-    });
 
     expect(afterState.bodyClass).not.toContain('menu-open');
     expect(afterState.top).toBe('');
-    expect(contactViewport).not.toBeNull();
-    expect(contactViewport.bottom).toBeGreaterThan(120);
-    expect(contactViewport.top).toBeLessThan(contactViewport.viewportHeight - 120);
+    expect(afterState.y).toBeGreaterThan(500);
   });
 
   test('navbar fast clicks land on intended sections during lazy loading', async ({

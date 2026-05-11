@@ -1,5 +1,46 @@
 const DEFAULT_NAV_OFFSET_SELECTOR = 'nav';
 
+function lockBodyScroll(body, windowRef = window) {
+  const scrollY = windowRef.scrollY || windowRef.pageYOffset || 0;
+  const anchor = Array.from(document.querySelectorAll('section[id]'))
+    .map(section => ({ id: section.id, rect: section.getBoundingClientRect() }))
+    .filter(({ rect }) => rect.bottom > 80 && rect.top < windowRef.innerHeight - 80)
+    .sort((a, b) => Math.abs(a.rect.top - 80) - Math.abs(b.rect.top - 80))[0];
+
+  if (anchor) {
+    body.dataset.overlayAnchorId = anchor.id;
+    body.dataset.overlayAnchorTop = String(anchor.rect.top);
+  }
+
+  body.dataset.overlayScrollY = String(scrollY);
+  body.style.position = 'fixed';
+  body.style.top = `-${scrollY}px`;
+  body.style.left = '0';
+  body.style.right = '0';
+  body.style.width = '100%';
+}
+
+function unlockBodyScroll(body, windowRef = window) {
+  const scrollY = Number.parseInt(body.dataset.overlayScrollY || '0', 10) || 0;
+  const anchorId = body.dataset.overlayAnchorId;
+  const anchorTop = Number.parseFloat(body.dataset.overlayAnchorTop || '');
+  body.style.position = '';
+  body.style.top = '';
+  body.style.left = '';
+  body.style.right = '';
+  body.style.width = '';
+  delete body.dataset.overlayScrollY;
+  delete body.dataset.overlayAnchorId;
+  delete body.dataset.overlayAnchorTop;
+
+  const anchor = anchorId ? document.getElementById(anchorId) : null;
+  const restoredY =
+    anchor && Number.isFinite(anchorTop)
+      ? anchor.getBoundingClientRect().top + windowRef.scrollY - anchorTop
+      : scrollY;
+  windowRef.scrollTo(0, Math.max(0, restoredY));
+}
+
 export function initOverlayMenu(options = {}) {
   const {
     menuButtonId = 'menu-btn',
@@ -23,6 +64,7 @@ export function initOverlayMenu(options = {}) {
 
   const openMenu = () => {
     if (body.classList.contains('menu-open')) return;
+    lockBodyScroll(body);
     body.classList.add('menu-open');
     overlayMenu.style.setProperty('display', 'flex', 'important');
     overlayMenu.setAttribute('aria-hidden', 'false');
@@ -33,6 +75,7 @@ export function initOverlayMenu(options = {}) {
   const closeMenu = () => {
     if (!body.classList.contains('menu-open')) return;
     body.classList.remove('menu-open');
+    unlockBodyScroll(body);
     overlayMenu.style.setProperty('display', 'none', 'important');
     overlayMenu.setAttribute('aria-hidden', 'true');
     overlayMenu.setAttribute('inert', '');
