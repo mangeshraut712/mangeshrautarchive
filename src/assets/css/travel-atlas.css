@@ -859,7 +859,7 @@
     left: 6px;
     right: 6px;
     bottom: 6px;
-    height: 72dvh;
+    height: min(88dvh, 760px);
   }
 
   .travel-sidebar__header {
@@ -867,7 +867,7 @@
   }
 
   .travel-stats {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .travel-actions {
