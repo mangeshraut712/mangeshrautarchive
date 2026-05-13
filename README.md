@@ -464,11 +464,11 @@ This project leverages modern browser APIs available in 2026:
 ```bash
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
-npm ci
+corepack pnpm install
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-npm run dev
+corepack pnpm run dev
 ```
 
 🎯 **Access:**
@@ -571,20 +571,20 @@ mangeshrautarchive/
 
 | Command                         | Description                                       |
 | ------------------------------- | ------------------------------------------------- |
-| `npm run dev`                   | Start full-stack development (frontend + backend) |
-| `npm run build`                 | Build production assets                           |
-| `npm run lint`                  | Run JavaScript linting                            |
-| `npm run lint:css`              | Run CSS linting                                   |
-| `npm run test`                  | Run unit tests                                    |
-| `npm run check-secrets`         | Scan for exposed API keys and secrets             |
-| `npm run qa:smoke`              | End-to-end smoke tests                            |
-| `npm run qa:a11y`               | Accessibility tests                               |
-| `npm run qa:lighthouse:desktop` | Desktop performance audit                         |
-| `npm run qa:lighthouse:mobile`  | Mobile performance audit                          |
-| `npm run qa:postdeploy`         | Post-deployment validation                        |
-| `npm run qa:prod-ready`         | Full production readiness check                   |
-| `npm run clean`                 | Remove build, test, browser, log, and cache artifacts |
-| `npm run format:check`          | Check Prettier formatting                         |
+| `pnpm run dev`                   | Start full-stack development (frontend + backend) |
+| `pnpm run build`                 | Build production assets                           |
+| `pnpm run lint`                  | Run JavaScript linting                            |
+| `pnpm run lint:css`              | Run CSS linting                                   |
+| `pnpm run test`                  | Run unit tests                                    |
+| `pnpm run check-secrets`         | Scan for exposed API keys and secrets             |
+| `pnpm run qa:smoke`              | End-to-end smoke tests                            |
+| `pnpm run qa:a11y`               | Accessibility tests                               |
+| `pnpm run qa:lighthouse:desktop` | Desktop performance audit                         |
+| `pnpm run qa:lighthouse:mobile`  | Mobile performance audit                          |
+| `pnpm run qa:postdeploy`         | Post-deployment validation                        |
+| `pnpm run qa:prod-ready`         | Full production readiness check                   |
+| `pnpm run clean`                 | Remove build, test, browser, log, and cache artifacts |
+| `pnpm run format:check`          | Check Prettier formatting                         |
 
 ---
 

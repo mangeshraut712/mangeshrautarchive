@@ -77,7 +77,7 @@ function checkLocalBuild() {
   log('Checking local build...', 'info');
 
   if (!fs.existsSync(CONFIG.distDir)) {
-    log('Dist directory not found! Run "npm run build" first.', 'error');
+    log('Dist directory not found! Run "pnpm run build" first.', 'error');
     return false;
   }
 

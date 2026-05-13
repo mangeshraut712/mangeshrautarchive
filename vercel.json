@@ -3,22 +3,12 @@
   "installCommand": "npm install --omit=dev --no-audit --no-fund",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/index.py"
-    },
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/monitor.html",
-      "destination": "/monitor.html"
-    },
-    {
-      "source": "/travel.html",
-      "destination": "/travel.html"
     }
   ],
   "headers": [
@@ -47,11 +37,11 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://mangeshraut.pro https://mangeshrautarchive.vercel.app https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com wss:; worker-src 'self' blob:; frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://mangeshraut.pro https://mangeshrautarchive.vercel.app https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org wss:; worker-src 'self' blob:; frame-ancestors 'none';"
         },
         {
           "key": "Strict-Transport-Security",
-          "value": "max-age=31536000; includeSubDomains"
+          "value": "max-age=31536000; includeSubDomains; preload"
         }
       ]
     },
@@ -87,7 +77,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
         }
       ]
     },
@@ -96,7 +86,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
         }
       ]
     },
@@ -105,7 +95,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
         }
       ]
     },

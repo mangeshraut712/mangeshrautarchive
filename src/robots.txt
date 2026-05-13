@@ -1,9 +1,31 @@
 # =============================================================================
-# Human-readable crawlers — full access
+# Googlebot & Bingbot — full access, priority crawling
+# =============================================================================
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# =============================================================================
+# All other legitimate crawlers — full access
 # =============================================================================
 User-agent: *
 Allow: /
-Crawl-delay: 1
+Disallow: /api/
+Disallow: /build-config.json
+Disallow: /build-config.js
+Crawl-delay: 2
 
 # =============================================================================
 # AI training crawlers — blocked from indexing portfolio content
@@ -49,5 +71,12 @@ Disallow: /
 User-agent: PerplexityBot
 Disallow: /
 
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
 # =============================================================================
 Sitemap: https://mangeshraut.pro/sitemap.xml
+Host: https://mangeshraut.pro

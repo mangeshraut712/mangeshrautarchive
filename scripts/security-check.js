@@ -202,7 +202,7 @@ class SecurityChecker {
       console.error('\n🔧 Actions to take:');
       console.error('  1. Revoke/rotate all exposed API keys immediately');
       console.error('  2. Move secrets to config.local.js (git-ignored)');
-      console.error('  3. Run: npm run security-check');
+      console.error('  3. Run: pnpm run security-check');
       console.error('\n📞 Emergency: Check provider dashboards and revoke keys now!');
 
       process.exit(1);

@@ -22,7 +22,7 @@ export default defineConfig({
   },
   webServer: useManagedWebServer
     ? {
-        command: 'npm run dev',
+        command: 'pnpm run dev',
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

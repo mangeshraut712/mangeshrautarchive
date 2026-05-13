@@ -190,7 +190,7 @@ async function optimize() {
   // Step 1: Build first
   console.log(`${colors.blue}📦 Building project...${colors.reset}`);
   try {
-    execSync('npm run build', { cwd: projectRoot, stdio: 'inherit' });
+    execSync('pnpm run build', { cwd: projectRoot, stdio: 'inherit' });
   } catch (_e) {
     console.error(`${colors.red}✗ Build failed${colors.reset}`);
     process.exit(1);
@@ -219,14 +219,14 @@ async function optimize() {
   // Step 6: Final optimized build
   console.log(`${colors.blue}\n📦 Final optimized build...${colors.reset}`);
   try {
-    execSync('npm run build', { cwd: projectRoot, stdio: 'inherit' });
+    execSync('pnpm run build', { cwd: projectRoot, stdio: 'inherit' });
   } catch (_e) {
     // Continue even if build has warnings
   }
 
   console.log(`${colors.green}\n✅ Performance optimization complete!${colors.reset}`);
   console.log(`${colors.yellow}\n🎯 Target scores: 100/100/100/100${colors.reset}`);
-  console.log(`${colors.blue}Run 'npm run qa:lighthouse:desktop' to verify${colors.reset}\n`);
+  console.log(`${colors.blue}Run 'pnpm run qa:lighthouse:desktop' to verify${colors.reset}\n`);
 }
 
 optimize().catch(console.error);
