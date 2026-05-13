@@ -1856,7 +1856,21 @@
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
           </div>
         </div>
-        <div class="section-view-more-wrap w-full">
+        
+        <!-- Newsletter Subscription (Monetization Strategy) -->
+        <div class="newsletter-card mt-12 p-8 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-center max-w-3xl mx-auto">
+          <div class="icon-box blue mx-auto mb-4" style="width: 48px; height: 48px; font-size: 1.5rem;">
+            <i class="fas fa-envelope-open-text"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-2">Subscribe to the Dev Newsletter</h3>
+          <p class="text-secondary mb-6">Join other engineers receiving deep-dives on Spring Boot, AWS architecture, and system design every month.</p>
+          <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Newsletter integration (e.g. Substack/ConvertKit) coming soon!');">
+            <input type="email" placeholder="Email address" required class="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 flex-1 focus:ring-2 focus:ring-blue-500 outline-none" />
+            <button type="submit" class="btn button-primary px-6 py-3 whitespace-nowrap">Subscribe</button>
+          </form>
+        </div>
+
+        <div class="section-view-more-wrap w-full mt-8">
           <button type="button" class="btn button-secondary"
             style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
             onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
@@ -1873,10 +1887,21 @@
             <div class="contact-card contact-info-all">
               <!-- Contact Information -->
               <div class="contact-section">
-                <h3>Contact Information</h3>
+                <h3>Contact & Consulting</h3>
                 <p class="contact-description">
-                  Feel free to reach out via email or connect on social media.
+                  Available for freelance architecture consulting, technical auditing, and full-stack development projects.
                 </p>
+
+                <!-- Book Consultation Action -->
+                <div class="mb-8 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/30">
+                  <h4 class="text-lg font-bold mb-2 flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-blue-500"></i> Book a Consultation
+                  </h4>
+                  <p class="text-sm text-secondary mb-4">Schedule a 1-on-1 technical consultation or project architecture review.</p>
+                  <a href="#" onclick="event.preventDefault(); alert('Calendly integration coming soon!');" class="btn button-primary w-full justify-center">
+                    Check Availability (Calendly)
+                  </a>
+                </div>
 
                 <div class="contact-info-group">
                   <!-- Email -->
