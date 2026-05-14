@@ -489,7 +489,7 @@ class PortfolioSearch {
     });
 
     return [...grouped.entries()]
-      .sort(([a], [b]) => {
+      .toSorted(([a], [b]) => {
         const aIndex = order.indexOf(a);
         const bIndex = order.indexOf(b);
         return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);

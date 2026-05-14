@@ -107,14 +107,12 @@ class SecurityChecker {
       const lines = content.split(/\r?\n/);
       const found = [];
 
+      const activeLines = lines.filter(line => !line.includes('REVOKED:'));
+
       for (const secret of this.secrets) {
         let matchesCount = 0;
 
-        for (const line of lines) {
-          if (line.includes('REVOKED:')) {
-            continue;
-          }
-
+        for (const line of activeLines) {
           const matches = line.match(secret.pattern);
           if (matches) {
             matchesCount += matches.length;

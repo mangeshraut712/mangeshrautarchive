@@ -324,7 +324,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       const query = getCurrentQuery();
       const matcher = createSearchMatcher(query);
       const filtered = allShowcaseRepos.filter(matcher);
-      const sorted = [...filtered].sort(createSortComparator(getCurrentSort(), githubProjects));
+      const sorted = [...filtered].toSorted(createSortComparator(getCurrentSort(), githubProjects));
       const maxItems = getTwoRowLimit(container);
       return sorted.slice(0, maxItems);
     };

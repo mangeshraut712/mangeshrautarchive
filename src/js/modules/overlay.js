@@ -5,7 +5,11 @@ function lockBodyScroll(body, windowRef = window) {
   const anchor = Array.from(document.querySelectorAll('section[id]'))
     .map(section => ({ id: section.id, rect: section.getBoundingClientRect() }))
     .filter(({ rect }) => rect.bottom > 80 && rect.top < windowRef.innerHeight - 80)
-    .sort((a, b) => Math.abs(a.rect.top - 80) - Math.abs(b.rect.top - 80))[0];
+    .reduce((closest, current) => {
+      const closestDist = Math.abs(closest.rect.top - 80);
+      const currentDist = Math.abs(current.rect.top - 80);
+      return currentDist < closestDist ? current : closest;
+    });
 
   if (anchor) {
     body.dataset.overlayAnchorId = anchor.id;
@@ -13,22 +17,26 @@ function lockBodyScroll(body, windowRef = window) {
   }
 
   body.dataset.overlayScrollY = String(scrollY);
-  body.style.position = 'fixed';
-  body.style.top = `-${scrollY}px`;
-  body.style.left = '0';
-  body.style.right = '0';
-  body.style.width = '100%';
+  Object.assign(body.style, {
+    position: 'fixed',
+    top: `-${scrollY}px`,
+    left: '0',
+    right: '0',
+    width: '100%'
+  });
 }
 
 function unlockBodyScroll(body, windowRef = window) {
   const scrollY = Number.parseInt(body.dataset.overlayScrollY || '0', 10) || 0;
   const anchorId = body.dataset.overlayAnchorId;
   const anchorTop = Number.parseFloat(body.dataset.overlayAnchorTop || '');
-  body.style.position = '';
-  body.style.top = '';
-  body.style.left = '';
-  body.style.right = '';
-  body.style.width = '';
+  Object.assign(body.style, {
+    position: '',
+    top: '',
+    left: '',
+    right: '',
+    width: ''
+  });
   delete body.dataset.overlayScrollY;
   delete body.dataset.overlayAnchorId;
   delete body.dataset.overlayAnchorTop;

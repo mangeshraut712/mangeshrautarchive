@@ -401,8 +401,10 @@
 
     function updateSpotlight(e) {
       requestAnimationFrame(() => {
-        spotlight.style.left = e.clientX + 'px';
-        spotlight.style.top = e.clientY + 'px';
+        Object.assign(spotlight.style, {
+          left: e.clientX + 'px',
+          top: e.clientY + 'px'
+        });
       });
     }
 
