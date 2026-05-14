@@ -37,7 +37,7 @@ export class PrivacyDashboard {
 
   saveSettings() {
     try {
-      localStorage.setItem('assistme_privacy_settings', JSON.stringify(this.settings));
+      localStorage.setItem('assistme_privacy_settings:v1', JSON.stringify(this.settings));
       this.syncWithBackend();
     } catch (error) {
       console.error('Failed to save privacy settings:', error);

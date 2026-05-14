@@ -57,21 +57,17 @@ export class ModernInputHandler {
   }
 
   _optimizeInput() {
-    // Modern CSS containment for better rendering performance
-    this.input.style.contain = 'layout style paint';
-
-    // Ensure no conflicting styles
-    this.input.style.userSelect = 'text';
-    this.input.style.pointerEvents = 'auto';
-    this.input.style.touchAction = 'manipulation';
-
-    // Remove any transform/filter that might cause issues
-    this.input.style.transform = 'none';
-    this.input.style.filter = 'none';
-
-    // Ensure proper stacking
-    this.input.style.position = 'relative';
-    this.input.style.zIndex = '1';
+    // Modern CSS containment for better rendering performance and optimization
+    this.input.style.cssText = `
+      contain: layout style paint;
+      user-select: text;
+      pointer-events: auto;
+      touch-action: manipulation;
+      transform: none;
+      filter: none;
+      position: relative;
+      z-index: 1;
+    `.trim().replace(/\s+/g, ' ');
 
     // Auto-resize for textarea
     if (this.input.tagName === 'TEXTAREA') {

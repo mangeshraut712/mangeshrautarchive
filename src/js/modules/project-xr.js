@@ -4,6 +4,13 @@
  * - Falls back to a 3D spatial preview modal everywhere else.
  */
 
+// Hoisted Intl formatters for performance
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
 class ProjectXR {
   constructor(documentRef = document) {
     this.documentRef = documentRef;
@@ -76,7 +83,10 @@ class ProjectXR {
       try {
         const parsed = JSON.parse(value);
         if (!Array.isArray(parsed)) return [];
-        return parsed.map(item => String(item || '').trim()).filter(Boolean);
+        return parsed.flatMap(item => {
+          const trimmed = String(item || '').trim();
+          return trimmed ? [trimmed] : [];
+        });
       } catch {
         return [];
       }
@@ -305,11 +315,7 @@ class ProjectXR {
     if (!dateString) return 'Unknown';
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime())) return 'Unknown';
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(date);
+    return dateFormatter.format(date);
   }
 
   formatRelativeTime(dateString) {

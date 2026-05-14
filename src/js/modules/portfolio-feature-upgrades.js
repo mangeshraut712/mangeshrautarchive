@@ -9,6 +9,20 @@ const ROLE_WORDS = [
 const IST_TIME_ZONE = 'Asia/Kolkata';
 const EASTERN_TIME_ZONE = 'America/New_York';
 
+// Hoisted Intl formatters for performance
+const istTimeFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: IST_TIME_ZONE,
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+const easternTimeFormatter = new Intl.DateTimeFormat('en-US', {
+  timeZone: EASTERN_TIME_ZONE,
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+
 function initHeroRoleFlip() {
   const roleWord = document.getElementById('hero-role-word');
   if (!roleWord) return;
@@ -41,16 +55,13 @@ function initHeroLocalTimes() {
   const easternTime = document.getElementById('hero-est-time');
   if (!istTime && !easternTime) return;
 
-  const istFormatter = createTimeFormatter(IST_TIME_ZONE);
-  const easternFormatter = createTimeFormatter(EASTERN_TIME_ZONE);
-
   const update = () => {
     const now = new Date();
     if (istTime) {
-      istTime.textContent = `IST ${istFormatter.format(now)}`;
+      istTime.textContent = `IST ${istTimeFormatter.format(now)}`;
     }
     if (easternTime) {
-      easternTime.textContent = `EST/EDT ${easternFormatter.format(now)}`;
+      easternTime.textContent = `EST/EDT ${easternTimeFormatter.format(now)}`;
     }
   };
 

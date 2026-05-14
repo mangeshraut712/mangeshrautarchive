@@ -255,12 +255,13 @@ test.describe('Chrome smoke tests', () => {
     page,
   }, testInfo) => {
     const targets = ['projects', 'education', 'contact'];
+    const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
 
     for (const sectionId of targets) {
       await page.goto('/', { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(testInfo.project.name === 'Mobile Chrome' ? 250 : 350);
+      await page.waitForTimeout(isMobileChrome ? 250 : 350);
 
-      if (testInfo.project.name === 'Mobile Chrome') {
+      if (isMobileChrome) {
         await page.locator('#menu-btn').click();
         await page.waitForTimeout(250);
         await page.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
@@ -268,7 +269,8 @@ test.describe('Chrome smoke tests', () => {
         await page.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
       }
 
-      await expect(page).toHaveURL(new RegExp(`#${sectionId}$`));
+      const sectionRegex = new RegExp(`#${sectionId}$`);
+      await expect(page).toHaveURL(sectionRegex);
       await page.waitForFunction(
         ({ id, allowedDelta }) => {
           const navHeight = globalThis.document.querySelector('.global-nav')?.offsetHeight || 0;
@@ -281,10 +283,10 @@ test.describe('Chrome smoke tests', () => {
         },
         {
           id: sectionId,
-          allowedDelta: testInfo.project.name === 'Mobile Chrome' ? 120 : 140,
+          allowedDelta: isMobileChrome ? 120 : 140,
         },
         {
-          timeout: testInfo.project.name === 'Mobile Chrome' ? 6000 : 4000,
+          timeout: isMobileChrome ? 6000 : 4000,
         }
       );
 
@@ -304,9 +306,8 @@ test.describe('Chrome smoke tests', () => {
 
       expect(info?.missing, `${sectionId} section should exist`).not.toBe(true);
 
-      const expectedOffset =
-        testInfo.project.name === 'Mobile Chrome' ? info.navHeight + 12 : info.navHeight + 12;
-      const allowedDelta = testInfo.project.name === 'Mobile Chrome' ? 120 : 3000;
+      const expectedOffset = isMobileChrome ? info.navHeight + 12 : info.navHeight + 12;
+      const allowedDelta = isMobileChrome ? 120 : 3000;
       const topDistance = Math.abs(info.rectTop - expectedOffset);
       expect(
         topDistance,
@@ -319,12 +320,12 @@ test.describe('Chrome smoke tests', () => {
     test.setTimeout(60_000);
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    for (const sectionId of navSections) {
+    await Promise.all(navSections.map(async sectionId => {
       const section = page.locator(`section#${sectionId}`);
       await expect(section, `${sectionId} should exist`).toBeAttached();
       await section.scrollIntoViewIfNeeded();
       await expect(section, `${sectionId} should be visible`).toBeVisible();
-    }
+    }));
   });
 
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
@@ -337,7 +338,7 @@ test.describe('Chrome smoke tests', () => {
       }, theme);
       await page.waitForTimeout(200);
 
-      for (const check of criticalLayoutChecks) {
+      await Promise.all(criticalLayoutChecks.map(async check => {
         const sectionNode = page.locator(check.selector);
         await expect(sectionNode, `${check.name} exists in ${theme}`).toBeAttached();
         const display = await sectionNode.evaluate(
@@ -346,14 +347,14 @@ test.describe('Chrome smoke tests', () => {
         expect(display, `${check.name} should render as ${check.expectedDisplay} in ${theme}`).toBe(
           check.expectedDisplay
         );
-      }
+      }));
     }
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    for (const check of criticalOverflowChecks) {
+    await Promise.all(criticalOverflowChecks.map(async check => {
       const sectionNode = page.locator(check.selector);
       await expect(sectionNode, `${check.name} exists`).toBeAttached();
       await sectionNode.scrollIntoViewIfNeeded();
@@ -361,7 +362,7 @@ test.describe('Chrome smoke tests', () => {
 
       const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
       expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
-    }
+    }));
   });
 
   test('contact page removes portfolio reach and keeps currently media deduplicated', async ({

@@ -226,21 +226,25 @@ class AppleIntelligenceChatbot {
     // Create Shadow Div for smooth resizing
     if (elements.input && !this.shadowDiv) {
       this.shadowDiv = document.createElement('div');
-      this.shadowDiv.style.position = 'absolute';
-      this.shadowDiv.style.visibility = 'hidden';
-      this.shadowDiv.style.height = 'auto';
-      this.shadowDiv.style.width = elements.input.clientWidth + 'px';
-      this.shadowDiv.style.whiteSpace = 'pre-wrap';
-      this.shadowDiv.style.wordWrap = 'break-word';
-      this.shadowDiv.style.overflow = 'hidden';
+      this.shadowDiv.style.cssText = `
+        position: absolute;
+        visibility: hidden;
+        height: auto;
+        width: ${elements.input.clientWidth}px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow: hidden;
+      `.trim().replace(/\s+/g, ' ');
 
       const computed = window.getComputedStyle(elements.input);
-      this.shadowDiv.style.fontFamily = computed.fontFamily;
-      this.shadowDiv.style.fontSize = computed.fontSize;
-      this.shadowDiv.style.lineHeight = computed.lineHeight;
-      this.shadowDiv.style.padding = computed.padding;
-      this.shadowDiv.style.boxSizing = computed.boxSizing;
-      this.shadowDiv.style.border = computed.border;
+      this.shadowDiv.style.cssText += `;
+        font-family: ${computed.fontFamily};
+        font-size: ${computed.fontSize};
+        line-height: ${computed.lineHeight};
+        padding: ${computed.padding};
+        box-sizing: ${computed.boxSizing};
+        border: ${computed.border};
+      `.trim().replace(/\s+/g, ' ');
 
       document.body.appendChild(this.shadowDiv);
     }

@@ -11,10 +11,12 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     (async () => {
-      const cacheNames = await caches.keys();
-      await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
-      await self.clients.claim();
-      await self.registration.unregister();
+      const [cacheNames] = await Promise.all([caches.keys()]);
+      await Promise.all([
+        ...cacheNames.map(cacheName => caches.delete(cacheName)),
+        self.clients.claim(),
+        self.registration.unregister()
+      ]);
     })()
   );
 });

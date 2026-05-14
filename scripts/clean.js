@@ -75,25 +75,20 @@ async function findGeneratedFiles(directory, matches = []) {
 }
 
 async function clean() {
-  for (const directory of generatedDirs) {
-    await removeDirectory(directory);
-  }
-
-  for (const file of generatedFiles) {
-    await removeDirectory(file);
-  }
+  await Promise.all(generatedDirs.map(directory => removeDirectory(directory)));
+  await Promise.all(generatedFiles.map(file => removeDirectory(file)));
 
   const pycacheDirs = await findPycacheDirs(root);
-  for (const pycache of pycacheDirs) {
+  await Promise.all(pycacheDirs.map(async pycache => {
     await rm(pycache, { recursive: true, force: true });
     console.log(`🧹 Removed ${pycache.replace(`${root}/`, '')}`);
-  }
+  }));
 
   const generatedWorkspaceFiles = await findGeneratedFiles(root);
-  for (const file of generatedWorkspaceFiles) {
+  await Promise.all(generatedWorkspaceFiles.map(async file => {
     await rm(file, { force: true });
     console.log(`🧹 Removed ${file.replace(`${root}/`, '')}`);
-  }
+  }));
 
   console.log('✅ Workspace cleanup complete.');
 }

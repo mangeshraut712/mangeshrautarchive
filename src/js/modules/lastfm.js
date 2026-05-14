@@ -87,8 +87,11 @@ class LastFmService {
       return this.getArtworkPlaceholder(track?.name || 'Unknown Track', this.getArtistName(track));
     }
 
+    // Build index map for O(1) lookups
+    const imageMap = new Map(track.image.map(img => [img.size, img]));
+
     for (const size of preferredSizes) {
-      const image = track.image.find(item => item.size === size);
+      const image = imageMap.get(size);
       const normalized = this.normalizeArtworkUrl(image?.['#text'] || '', '300x300');
       if (this.isUsableArtwork(normalized)) {
         return normalized;

@@ -564,7 +564,8 @@ class IntelligentAssistant {
   chooseBestResponse(responses = []) {
     const valid = responses.filter(Boolean);
     if (!valid.length) return null;
-    return valid.sort((a, b) => (b.confidence ?? 0) - (a.confidence ?? 0))[0] || valid[0];
+    const maxConfidence = Math.max(...valid.map(r => r.confidence ?? 0));
+    return valid.find(r => (r.confidence ?? 0) === maxConfidence) || valid[0];
   }
 
   basicQueryProcessing(query) {
@@ -910,12 +911,7 @@ class IntelligentAssistant {
     // Add recent topics
     const recentTopics = this.history
       .slice(-3)
-      .map(h => {
-        if (h.question && h.question.length < 50) {
-          return h.question;
-        }
-      })
-      .filter(Boolean);
+      .flatMap(h => h.question && h.question.length < 50 ? [h.question] : []);
 
     return [...new Set([...suggestions, ...recentTopics])];
   }

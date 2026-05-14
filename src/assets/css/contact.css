@@ -1714,7 +1714,7 @@ html.dark #contact .wrapper .icon:hover {
    ---------------------------------------- */
 
 :root {
-  --contact-surface-light: rgba(255, 255, 255, 0.78);
+  --contact-surface-light: #ffffff;
   --contact-surface-dark: rgba(0, 0, 0, 0.8);
   --contact-border-light: rgba(0, 0, 0, 0.08);
   --contact-border-dark: rgba(255, 255, 255, 0.08);

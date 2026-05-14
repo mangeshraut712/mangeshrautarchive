@@ -197,11 +197,13 @@
   /* Stack buttons vertically on mobile */
   .button-group,
   .btn-group,
-  .action-buttons {
+  .action-buttons,
+  .hero-actions {
     display: flex !important;
     flex-direction: column !important;
     gap: 0.75rem !important;
     width: 100% !important;
+    align-items: center !important;
   }
 
   /* ==========================================================================

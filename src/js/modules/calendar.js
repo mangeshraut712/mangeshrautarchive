@@ -100,11 +100,12 @@ export class CalendarWidget {
     }
 
     // Days
+    const eventDays = new Set([5, 12, 18, 25]);
     for (let i = 1; i <= daysInMonth; i++) {
       const isToday =
         i === today && month === new Date().getMonth() && year === new Date().getFullYear();
       const isBirthday = month === 11 && i === 7; // Dec 7
-      const hasEvent = [5, 12, 18, 25].includes(i); // Dummy events
+      const hasEvent = eventDays.has(i); // Dummy events
 
       let classes = 'day-cell';
       if (isToday) classes += ' today';

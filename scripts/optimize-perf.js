@@ -97,8 +97,8 @@ async function optimizeImages() {
     if (sharp) {
       const entries = await readdir(imagesDir, { withFileTypes: true, recursive: true });
 
-      for (const entry of entries) {
-        if (!entry.isFile()) continue;
+      await Promise.all(entries.map(async entry => {
+        if (!entry.isFile()) return;
 
         const ext = entry.name.toLowerCase();
         if (ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png')) {
@@ -119,7 +119,7 @@ async function optimizeImages() {
             // Ignore errors for individual images
           }
         }
-      }
+      }));
     }
   } catch (_e) {
     console.log(

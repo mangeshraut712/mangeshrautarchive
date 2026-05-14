@@ -163,8 +163,7 @@ class BirthdayCelebration {
 
     // Close Interaction
     overlay.querySelector('.glass-btn').addEventListener('click', () => {
-      overlay.style.opacity = '0';
-      overlay.style.transition = 'opacity 0.8s ease';
+      overlay.style.cssText = 'opacity: 0; transition: opacity 0.8s ease;';
       cancelAnimationFrame(this.animationId);
       setTimeout(() => overlay.remove(), 800);
       sessionStorage.setItem('birthday-celebrated', today);

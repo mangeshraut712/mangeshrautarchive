@@ -196,8 +196,7 @@ export class AgenticActionHandler {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       // Add highlight effect
-      element.style.transition = 'all 0.3s ease';
-      element.style.transform = 'scale(1.02)';
+      element.style.cssText = 'transition: all 0.3s ease; transform: scale(1.02);';
       setTimeout(() => {
         element.style.transform = 'scale(1)';
       }, 300);
@@ -278,20 +277,17 @@ export class AgenticActionHandler {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Show calendar widget if available
-    const calendarContainer = document.querySelector('#calendar-container');
-    if (calendarContainer) {
-      calendarContainer.scrollIntoView({ behavior: 'smooth' });
-      calendarContainer.style.animation = 'pulse 0.5s ease';
+    // Trigger Calendly popup widget
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({url: 'https://calendly.com/mbr63drexel/30min'});
+    } else {
+      window.open('https://calendly.com/mbr63drexel/30min', '_blank');
     }
-
-    // Create a meeting scheduling interface
-    this.showMeetingScheduler();
 
     return {
       success: true,
       message:
-        '📅 Opening calendar to schedule a meeting. Please select a date and time, or email mbr63@drexel.edu directly.',
+        '📅 Opening Calendly to schedule a meeting. Please select a date and time, or email mbr63@drexel.edu directly.',
       action: 'schedule_meeting',
     };
   }
@@ -397,8 +393,7 @@ export class AgenticActionHandler {
           const techLower = technology.toLowerCase();
 
           if (text.includes(techLower)) {
-            card.style.display = 'block';
-            card.style.animation = 'fadeIn 0.5s ease';
+            card.style.cssText = 'display: block; animation: fadeIn 0.5s ease;';
           } else {
             card.style.opacity = '0.3';
           }
@@ -407,8 +402,7 @@ export class AgenticActionHandler {
         // Reset after 5 seconds
         setTimeout(() => {
           projectCards.forEach(card => {
-            card.style.display = 'block';
-            card.style.opacity = '1';
+            card.style.cssText = 'display: block; opacity: 1;';
           });
         }, 5000);
       }, 500);
@@ -456,24 +450,23 @@ export class AgenticActionHandler {
   }
 
   async showAvailability(_match) {
-    // Navigate to calendar
-    const calendarSection = document.querySelector('#calendar-container');
-    if (calendarSection) {
-      calendarSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      calendarSection.style.animation = 'pulse 0.5s ease';
+    // Navigate to contact section
+    const contactSection = document.querySelector('#contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
-      return {
-        success: true,
-        message:
-          "📅 Here's the calendar showing availability. Green dates indicate available slots.",
-        action: 'show_availability',
-      };
+    // Trigger Calendly popup widget
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({url: 'https://calendly.com/mbr63drexel/30min'});
+    } else {
+      window.open('https://calendly.com/mbr63drexel/30min', '_blank');
     }
 
     return {
       success: true,
       message:
-        '📅 Generally available for meetings weekdays 9 AM - 5 PM EST. Email mbr63@drexel.edu to schedule.',
+        '📅 Here is my Calendly schedule! Generally available for meetings weekdays 9 AM - 5 PM EST.',
       action: 'show_availability',
     };
   }

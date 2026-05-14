@@ -8,6 +8,13 @@
  * 3) direct GitHub API fallback
  */
 
+// Hoisted Intl formatters for performance
+const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
 class GitHubProjects {
   constructor(username = 'mangeshraut712') {
     this.username = username;
@@ -321,7 +328,7 @@ class GitHubProjects {
       ? rawRepos.map(repo => this.normalizeRepoShape(repo))
       : [];
 
-    const sortedRepos = normalizedRepos.sort(
+    const sortedRepos = normalizedRepos.toSorted(
       (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
     );
 
@@ -433,11 +440,7 @@ class GitHubProjects {
     if (!dateString) return 'Unknown';
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime())) return 'Unknown';
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(date);
+    return absoluteDateFormatter.format(date);
   }
 
   normalizeHomepageUrl(homepage) {
@@ -457,13 +460,10 @@ class GitHubProjects {
 
   getTopics(repo) {
     if (!Array.isArray(repo?.topics)) return [];
-    return repo.topics
-      .map(topic =>
-        String(topic || '')
-          .trim()
-          .toLowerCase()
-      )
-      .filter(Boolean);
+    return repo.topics.flatMap(topic => {
+      const normalized = String(topic || '').trim().toLowerCase();
+      return normalized ? [normalized] : [];
+    });
   }
 
   getRepoAgeDays(dateString) {
@@ -730,8 +730,10 @@ class GitHubProjects {
 
     const candidates = linkHeader
       .split(',')
-      .map(part => part.trim())
-      .filter(Boolean);
+      .flatMap(part => {
+        const trimmed = part.trim();
+        return trimmed ? [trimmed] : [];
+      });
 
     const last = candidates.find(part => part.includes('rel="last"'));
     const next = candidates.find(part => part.includes('rel="next"'));
@@ -1066,9 +1068,9 @@ class GitHubProjects {
       totalStars: repos.reduce((sum, repo) => sum + Number(repo.stargazers_count || 0), 0),
       totalForks: repos.reduce((sum, repo) => sum + Number(repo.forks_count || 0), 0),
       languages: {},
-      mostStarred: [...repos].sort(
-        (a, b) => Number(b.stargazers_count || 0) - Number(a.stargazers_count || 0)
-      )[0],
+      mostStarred: repos.reduce((max, repo) =>
+        Number(repo.stargazers_count || 0) > Number(max.stargazers_count || 0) ? repo : max
+      ),
       recentlyUpdated: repos[0],
     };
 

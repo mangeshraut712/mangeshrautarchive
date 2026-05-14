@@ -109,6 +109,7 @@ async function copyDirContent(src, dest, depth = 0) {
 
 async function optimizeCopiedAssets(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
+  const minifiableExtensions = new Set(['css', 'js']);
 
   for (const entry of entries) {
     const entryPath = join(dir, entry.name);
@@ -123,7 +124,7 @@ async function optimizeCopiedAssets(dir) {
     }
 
     const extension = entry.name.split('.').pop()?.toLowerCase();
-    if (!extension || !['css', 'js'].includes(extension)) {
+    if (!extension || !minifiableExtensions.has(extension)) {
       continue;
     }
 
@@ -158,7 +159,7 @@ async function build() {
   console.log('📂 Copying src/ → dist/ ...');
   await copyDirContent(srcDir, distDir);
 
-  for (const item of staticExtras) {
+  await Promise.all(staticExtras.map(async item => {
     const source = resolve(projectRoot, item);
     if (await pathExists(source)) {
       const destination = resolve(distDir, item.split('/').pop());
@@ -170,7 +171,7 @@ async function build() {
         console.warn(`⚠️  Skipped extra asset: ${item} — ${err.code}`);
       }
     }
-  }
+  }));
 
   // Inject safe public config at build time (no secrets)
   await injectApiKeys(distDir);
@@ -209,7 +210,7 @@ async function addCacheBusting(distDir) {
     return hash ? `${nextPath}#${hash}` : nextPath;
   };
 
-  for (const htmlFile of [htmlPath, monitorPath, travelPath]) {
+  await Promise.all([htmlPath, monitorPath, travelPath].map(async htmlFile => {
     if (await pathExists(htmlFile)) {
       let content = await readFile(htmlFile, 'utf8');
 
@@ -228,7 +229,7 @@ async function addCacheBusting(distDir) {
       await writeFile(htmlFile, content);
       console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
     }
-  }
+  }));
 }
 
 build().catch(error => {

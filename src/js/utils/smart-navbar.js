@@ -179,11 +179,7 @@ function restoreOverlayScrollLock() {
   const scrollY = Number.parseInt(document.body.dataset.overlayScrollY || '0', 10) || 0;
   const anchorId = document.body.dataset.overlayAnchorId;
   const anchorTop = Number.parseFloat(document.body.dataset.overlayAnchorTop || '');
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.left = '';
-  document.body.style.right = '';
-  document.body.style.width = '';
+  document.body.style.cssText = 'position: ; top: ; left: ; right: ; width: ;';
   delete document.body.dataset.overlayScrollY;
   delete document.body.dataset.overlayAnchorId;
   delete document.body.dataset.overlayAnchorTop;

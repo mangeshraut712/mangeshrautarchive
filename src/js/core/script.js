@@ -567,9 +567,7 @@ class ChatUI {
       contentDiv.textContent = normalizedText;
 
       // Force proper text layout
-      contentDiv.style.whiteSpace = 'pre-wrap';
-      contentDiv.style.wordWrap = 'break-word';
-      contentDiv.style.overflowWrap = 'break-word';
+      contentDiv.style.cssText = 'white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;';
     } else if (content?.html && features.enableMarkdownRendering) {
       const safeHtml = htmlSanitizer ? htmlSanitizer.sanitize(content.html) : content.html;
       contentDiv.innerHTML = safeHtml;
@@ -594,9 +592,7 @@ class ChatUI {
       const normalizedText = String(textContent).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
 
       contentDiv.textContent = normalizedText;
-      contentDiv.style.whiteSpace = 'pre-wrap';
-      contentDiv.style.wordWrap = 'break-word';
-      contentDiv.style.overflowWrap = 'break-word';
+      contentDiv.style.cssText = 'white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;';
     }
 
     messageDiv.appendChild(contentDiv);
@@ -941,8 +937,10 @@ class ChatUI {
 
     if (Array.isArray(value)) {
       return value
-        .map(item => this._normalizeAnswerValue(item))
-        .filter(Boolean)
+        .flatMap(item => {
+          const normalized = this._normalizeAnswerValue(item);
+          return normalized ? [normalized] : [];
+        })
         .join('\n');
     }
 

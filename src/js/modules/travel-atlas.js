@@ -132,11 +132,14 @@ function getFilteredWaypoints() {
   const term = normalize(state.searchTerm);
 
   return travelData.waypoints
-    .map((waypoint, index) => ({ waypoint, index }))
-    .filter(({ waypoint }) => {
+    .reduce((acc, waypoint, index) => {
       const matchesCountry = !state.activeCountry || waypoint.locality.country === state.activeCountry;
       const matchesFeatured = !state.featuredOnly || waypoint.editorial.featured;
       const matchesCategories = state.activeCategories.size === 0 || hasMatchingCategories(waypoint);
+
+      if (!matchesCountry || !matchesFeatured || !matchesCategories) {
+        return acc;
+      }
 
       const haystack = [
         waypoint.title,
@@ -152,27 +155,15 @@ function getFilteredWaypoints() {
         ...waypoint.editorial.neighborhoods,
         ...waypoint.editorial.mustSee,
         ...waypoint.editorial.thingsToDo.map(item => `${item.title} ${item.category} ${item.summary}`),
-      ]
-        .join(' ')
-        .toLowerCase();
-      const matchesSearch = !term || haystack.includes(term);
 
-      return matchesCountry && matchesFeatured && matchesSearch && matchesCategories;
-    })
-    .sort((a, b) => {
-      // Prioritize search scores
-      const scoreDiff = getSearchScore(b.waypoint, term) - getSearchScore(a.waypoint, term);
-      if (scoreDiff !== 0) return scoreDiff;
+      ].filter(Boolean).join(' ').toLowerCase();
 
-      // Organize country wise
-      const countryA = a.waypoint.locality.country;
-      const countryB = b.waypoint.locality.country;
-      if (countryA < countryB) return -1;
-      if (countryA > countryB) return 1;
+      if (!term || haystack.includes(term)) {
+        acc.push({ waypoint, index });
+      }
 
-      // Keep chronological within the same country
-      return a.index - b.index;
-    });
+      return acc;
+    }, []);
 }
 
 function getSearchScore(waypoint, term) {
@@ -683,8 +674,10 @@ function openPhotoGallery(stopElement, startIndex = 0) {
     ).join('');
 
     // Update nav buttons
-    modal.querySelector('#gallery-prev').style.opacity = currentIndex > 0 ? '1' : '0.3';
-    modal.querySelector('#gallery-next').style.opacity = currentIndex < photos.length - 1 ? '1' : '0.3';
+    const prevBtn = modal.querySelector('#gallery-prev');
+    const nextBtn = modal.querySelector('#gallery-next');
+    prevBtn.style.opacity = currentIndex > 0 ? '1' : '0.3';
+    nextBtn.style.opacity = currentIndex < photos.length - 1 ? '1' : '0.3';
   }
 
   function handleGalleryKeydown(e) {

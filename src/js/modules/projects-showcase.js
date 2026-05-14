@@ -413,8 +413,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     await renderProjects();
 
-    const topReposForActivity = [...allShowcaseRepos]
-      .sort(createSortComparator('popularity', githubProjects))
+    const topReposForActivity = allShowcaseRepos
+      .toSorted(createSortComparator('popularity', githubProjects))
       .slice(0, 8);
 
     githubProjects

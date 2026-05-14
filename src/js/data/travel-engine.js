@@ -278,14 +278,20 @@ function getDistanceKm(fromCoordinates, toCoordinates) {
 function findNearestCity(stop, maxDistanceKm = 45) {
   if (!Array.isArray(stop.coordinates)) return null;
 
-  return CITY_ANCHORS
-    .filter(city => city.country === stop.country)
-    .map(city => ({
-      ...city,
-      distanceKm: getDistanceKm(stop.coordinates, city.coordinates),
-    }))
-    .filter(city => city.distanceKm <= maxDistanceKm)
-    .sort((a, b) => a.distanceKm - b.distanceKm)[0] || null;
+  let nearest = null;
+  let minDistance = maxDistanceKm;
+
+  for (const city of CITY_ANCHORS) {
+    if (city.country === stop.country) {
+      const distanceKm = getDistanceKm(stop.coordinates, city.coordinates);
+      if (distanceKm <= maxDistanceKm && distanceKm < minDistance) {
+        minDistance = distanceKm;
+        nearest = { ...city, distanceKm };
+      }
+    }
+  }
+
+  return nearest;
 }
 
 function normalizeStopLocation(stop) {
@@ -336,13 +342,16 @@ function buildFallbackCityIntelligence(stop) {
 
 function dedupeStops(stops) {
   const byPlace = new Map();
-  stops.map(normalizeStopLocation).filter(Boolean).forEach(stop => {
-    const key = `${stop.name}|${stop.placeName || ''}|${stop.region}|${stop.country}`;
-    const current = byPlace.get(key);
-    if (!current || stop.photoCount > current.photoCount) {
-      byPlace.set(key, stop);
+  for (const stop of stops) {
+    const normalized = normalizeStopLocation(stop);
+    if (normalized) {
+      const key = `${normalized.name}|${normalized.placeName || ''}|${normalized.region}|${normalized.country}`;
+      const current = byPlace.get(key);
+      if (!current || normalized.photoCount > current.photoCount) {
+        byPlace.set(key, normalized);
+      }
     }
-  });
+  }
   return [...byPlace.values()];
 }
 

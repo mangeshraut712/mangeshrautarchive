@@ -20,19 +20,13 @@
     goToTopBtn.setAttribute('aria-label', 'Scroll to top of page');
     goToTopBtn.setAttribute('role', 'button');
     goToTopBtn.setAttribute('tabindex', '-1'); // Start hidden from tab order
-    goToTopBtn.style.display = 'flex';
-    goToTopBtn.style.alignItems = 'center';
-    goToTopBtn.style.justifyContent = 'center';
-    goToTopBtn.style.flexDirection = 'column';
-    goToTopBtn.style.gap = '2px';
+    goToTopBtn.style.cssText = 'display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;';
 
     // Add a visible label for better clarity (can be styled to appear on hover/focus)
     const label = document.createElement('span');
     label.className = 'go-to-top-label';
     label.textContent = 'TOP';
-    label.style.fontSize = '9px';
-    label.style.fontWeight = '700';
-    label.style.opacity = '0.9';
+    label.style.cssText = 'font-size: 9px; font-weight: 700; opacity: 0.9;';
     goToTopBtn.appendChild(label);
 
     // Show/hide button based on scroll position - throttled for performance

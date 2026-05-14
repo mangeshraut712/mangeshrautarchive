@@ -356,13 +356,11 @@
       const rotateX = -((y - centerY) / 20);
       const rotateY = (x - centerX) / 20;
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-      card.style.transition = 'none';
+      card.style.cssText = `transform: perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02); transition: none;`;
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-      card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+      card.style.cssText = 'transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);';
     });
 
     card.addEventListener('mouseenter', () => {

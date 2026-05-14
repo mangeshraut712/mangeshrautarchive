@@ -131,8 +131,7 @@ app.get('*', async (req, res) => {
     return;
   }
 
-  const fileBuffer = await readFile(filePath);
-  const fileStat = await stat(filePath);
+  const [fileBuffer, fileStat] = await Promise.all([readFile(filePath), stat(filePath)]);
   const extension = extname(filePath).toLowerCase();
   const acceptsEncoding = req.headers['accept-encoding'] || '';
 
