@@ -49,10 +49,18 @@ async function isAssistMeBackendRunning() {
   }
 }
 
-function runBackend() {
+async function runBackend() {
+  const pythonCmd = './venv/bin/python';
+  const altPythonCmd = 'python3';
+  const args = ['-m', 'uvicorn', 'api.index:app', '--reload', '--port', String(port)];
+
+  // Check if venv python exists, otherwise use system python3
+  const fs = await import('fs');
+  const useVenv = fs.existsSync('./venv/bin/python');
+
   const child = spawn(
-    './venv/bin/python',
-    ['-m', 'uvicorn', 'api.index:app', '--reload', '--port', String(port)],
+    useVenv ? pythonCmd : altPythonCmd,
+    args,
     {
       stdio: 'inherit',
       env: process.env,
@@ -88,7 +96,7 @@ async function main() {
     process.exit(1);
   }
 
-  runBackend();
+  await runBackend();
 }
 
 main().catch(error => {
