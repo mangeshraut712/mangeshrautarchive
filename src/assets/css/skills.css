@@ -63,6 +63,8 @@ html.dark .skill-category h3 {
 .skill-scroll-container {
   position: relative;
   overflow: hidden;
+  overflow: clip;
+  contain: paint;
   border-radius: 12px;
   /* Softer fade on edges, more visible content */
   mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
@@ -419,6 +421,9 @@ html.dark .skill-badge-percentage {
   .skill-scroll-wrapper {
     padding: 0.5rem 0;
     gap: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+    overflow: clip;
   }
 
   .skill-badge {

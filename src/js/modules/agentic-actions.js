@@ -11,6 +11,8 @@
  * - Copy contact information
  */
 
+import { openCalendlyPopup } from '../utils/calendly.js';
+
 export class AgenticActionHandler {
   constructor() {
     this.actions = new Map();
@@ -277,12 +279,7 @@ export class AgenticActionHandler {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Trigger Calendly popup widget
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({url: 'https://calendly.com/mbr63drexel/30min'});
-    } else {
-      window.open('https://calendly.com/mbr63drexel/30min', '_blank');
-    }
+    await openCalendlyPopup();
 
     return {
       success: true,
@@ -456,12 +453,7 @@ export class AgenticActionHandler {
       contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // Trigger Calendly popup widget
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({url: 'https://calendly.com/mbr63drexel/30min'});
-    } else {
-      window.open('https://calendly.com/mbr63drexel/30min', '_blank');
-    }
+    await openCalendlyPopup();
 
     return {
       success: true,

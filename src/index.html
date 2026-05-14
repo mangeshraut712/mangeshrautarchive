@@ -1867,17 +1867,16 @@
           </div>
         </div>
         
-        <!-- Newsletter Subscription (Monetization Strategy) -->
-        <div class="apple-card newsletter-card mt-12 mb-12 p-8 sm:p-12 text-center max-w-3xl mx-auto relative overflow-hidden group">
-          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 pointer-events-none transition-opacity duration-500 opacity-50 group-hover:opacity-100"></div>
-          <div class="icon-box blue mx-auto mb-6 transition-transform duration-500 group-hover:scale-110" style="width: 72px; height: 72px; font-size: 1.85rem; border-radius: 50%; position: relative;">
+        <!-- Newsletter Subscription -->
+        <div class="newsletter-card">
+          <div class="icon-box blue newsletter-icon">
             <i class="fas fa-envelope-open-text"></i>
           </div>
-          <h3 class="text-3xl sm:text-4xl font-bold mb-3" style="letter-spacing: -0.03em;">Subscribe to the Dev Newsletter</h3>
-          <p class="text-secondary mb-8 max-w-xl mx-auto leading-relaxed">Join other engineers receiving deep-dives on Spring Boot, AWS architecture, and system design every month.</p>
-          <form class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto relative z-10" onsubmit="event.preventDefault(); alert('Newsletter integration coming soon!');">
-            <input type="email" placeholder="Email address" required class="apple-input flex-1" style="border-radius: var(--radius-full);" />
-            <button type="submit" class="btn-primary whitespace-nowrap px-6 py-3" style="border-radius: var(--radius-full);">Subscribe</button>
+          <h3>Subscribe to the Dev Newsletter</h3>
+          <p>Monthly notes on Spring Boot, AWS architecture, AI systems, and practical engineering decisions.</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Newsletter integration coming soon!');">
+            <input type="email" placeholder="Email address" required class="apple-input" aria-label="Email address" />
+            <button type="submit" class="btn-primary">Subscribe</button>
           </form>
         </div>
 
@@ -2329,21 +2328,9 @@
               <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
             </div>
 
-            <!-- Calendar & Reminders Widget with Calendly Integration -->
-            <div class="calendar-wrapper-clean apple-card p-6 mb-8 text-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-              <div id="calendar-widget" class="mb-6 w-full"></div>
-              
-              <!-- Integrated Calendly Button -->
-              <div class="calendly-integration w-full mt-2 pt-6" style="border-top: 1px solid var(--separator);">
-                <div class="icon-box blue mx-auto mb-3" style="width: 48px; height: 48px; font-size: 1.4rem; border-radius: 50%;">
-                  <i class="fas fa-calendar-check"></i>
-                </div>
-                <h4 class="text-lg font-bold mb-2">Book a Consultation</h4>
-                <p class="text-secondary mb-4 text-sm">Schedule a 1-on-1 technical consultation or project architecture review.</p>
-                <a href="" onclick="event.preventDefault(); if(window.Calendly) { Calendly.initPopupWidget({url: 'https://calendly.com/mbr63drexel/30min'}); } else { window.open('https://calendly.com/mbr63drexel/30min', '_blank'); }" class="btn-primary inline-flex justify-center w-full" style="padding: 12px 24px;">
-                  Check Availability via Calendly
-                </a>
-              </div>
+            <!-- Calendar, reminders, and booking widget -->
+            <div class="calendar-wrapper-clean apple-card">
+              <div id="calendar-widget"></div>
             </div>
 
             <!-- Currently Watching/Reading Card -->
@@ -2693,9 +2680,6 @@
     <!-- Portfolio Reach Analytics -->
     <script defer src="js/modules/analytics.js?v=20260423a"></script>
 
-    <!-- Calendly popup widget -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 
     <script type="module" defer src="js/utils/smart-navbar.js?v=20260423a"></script>
     <script defer src="js/utils/theme.js?v=20260423a"></script>

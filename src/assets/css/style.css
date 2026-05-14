@@ -281,6 +281,8 @@ body {
 
 html {
   border: none;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 html {

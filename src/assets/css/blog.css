@@ -22,6 +22,66 @@ html.dark #blog {
   margin: 0 auto;
 }
 
+.newsletter-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem 1.25rem;
+  align-items: center;
+  max-width: 760px;
+  margin: 3rem auto;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--card-surface-light) 88%, transparent);
+  border: 1px solid var(--card-border-light);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+html.dark .newsletter-card {
+  color: var(--text-primary-dark);
+  background: color-mix(in srgb, var(--card-surface-dark) 90%, transparent);
+  border-color: var(--card-border-dark);
+}
+
+.newsletter-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  font-size: 1.55rem;
+  border-radius: 18px;
+}
+
+.newsletter-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  line-height: 1.15;
+}
+
+.newsletter-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.newsletter-form {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.newsletter-form .apple-input,
+.newsletter-form .btn-primary {
+  min-height: 48px;
+  border-radius: 999px;
+}
+
+.newsletter-form .apple-input {
+  width: 100%;
+}
+
 /* Blog Card */
 .blog-card {
   background: #fff !important;
@@ -414,6 +474,15 @@ html.dark .article-title {
   #blog-posts-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .newsletter-card {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .newsletter-form {
+    grid-template-columns: 1fr;
   }
 
   .blog-card-content {

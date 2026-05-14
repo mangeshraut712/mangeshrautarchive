@@ -41,15 +41,6 @@ function initHeroRoleFlip() {
   }
 }
 
-function createTimeFormatter(timeZone) {
-  return new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
-}
-
 function initHeroLocalTimes() {
   const istTime = document.getElementById('hero-ist-time');
   const easternTime = document.getElementById('hero-est-time');

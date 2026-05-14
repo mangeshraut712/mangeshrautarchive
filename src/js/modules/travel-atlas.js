@@ -131,7 +131,7 @@ function hasMatchingCategories(waypoint) {
 function getFilteredWaypoints() {
   const term = normalize(state.searchTerm);
 
-  return travelData.waypoints
+  const matches = travelData.waypoints
     .reduce((acc, waypoint, index) => {
       const matchesCountry = !state.activeCountry || waypoint.locality.country === state.activeCountry;
       const matchesFeatured = !state.featuredOnly || waypoint.editorial.featured;
@@ -164,6 +164,13 @@ function getFilteredWaypoints() {
 
       return acc;
     }, []);
+
+  if (!term) return matches;
+
+  return matches.toSorted((a, b) => {
+    const scoreDelta = getSearchScore(b.waypoint, term) - getSearchScore(a.waypoint, term);
+    return scoreDelta || a.index - b.index;
+  });
 }
 
 function getSearchScore(waypoint, term) {

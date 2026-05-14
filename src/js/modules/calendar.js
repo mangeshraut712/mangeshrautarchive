@@ -1,3 +1,5 @@
+import { openCalendlyPopup } from '../utils/calendly.js';
+
 export class CalendarWidget {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -161,8 +163,20 @@ export class CalendarWidget {
                 .join('')}
             </div>
           </div>
-          
-
+        </div>
+        <div class="calendly-panel">
+          <div class="calendly-panel-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="calendly-panel-copy">
+            <span class="calendly-panel-kicker">Availability</span>
+            <h4>Book a consultation</h4>
+            <p>Schedule a focused architecture, full-stack, or AI systems review.</p>
+          </div>
+          <button type="button" class="calendly-panel-button">
+            <span>Check times</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
       </div>
     `;
@@ -228,6 +242,13 @@ export class CalendarWidget {
         };
         this.reminders.unshift(newReminder); // Add to top
         this.render();
+      };
+    }
+
+    const calendlyBtn = this.container.querySelector('.calendly-panel-button');
+    if (calendlyBtn) {
+      calendlyBtn.onclick = () => {
+        openCalendlyPopup();
       };
     }
 

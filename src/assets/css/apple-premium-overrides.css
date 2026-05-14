@@ -759,6 +759,108 @@ html.dark .ios-widget-wrapper {
   box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
 }
 
+.calendly-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem 1rem;
+  align-items: center;
+  padding: 18px 20px 20px;
+  background: linear-gradient(135deg, rgb(0 122 255 / 8%), rgb(52 199 89 / 8%));
+  border-top: 1px solid rgb(0 0 0 / 6%);
+}
+
+html.dark .calendly-panel {
+  background: linear-gradient(135deg, rgb(10 132 255 / 16%), rgb(48 209 88 / 12%));
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+.calendly-panel-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+  background: linear-gradient(135deg, #007aff, #34c759);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgb(0 122 255 / 24%);
+}
+
+.calendly-panel-copy {
+  min-width: 0;
+  text-align: left;
+}
+
+.calendly-panel-kicker {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.calendly-panel h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+html.dark .calendly-panel h4 {
+  color: var(--text-primary-dark);
+}
+
+.calendly-panel p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.calendly-panel-button {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 44px;
+  color: #fff;
+  background: #007aff;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.calendly-panel-button:hover {
+  background: #006edb;
+  box-shadow: 0 12px 28px rgb(0 122 255 / 25%);
+  transform: translateY(-1px);
+}
+
+html.dark .calendly-panel-button {
+  background: #0a84ff;
+}
+
+@media (width >= 1180px) {
+  .calendly-panel {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .calendly-panel-button {
+    grid-column: auto;
+    width: auto;
+    padding: 0 1rem;
+    white-space: nowrap;
+  }
+}
+
 /* Calendar Section */
 .ios-calendar-section {
   padding: 24px !important;
