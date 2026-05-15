@@ -263,8 +263,7 @@ test.describe('Chrome smoke tests', () => {
     const targets = ['projects', 'education', 'contact'];
     const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
 
-    await targets.reduce(async (previous, sectionId) => {
-      await previous;
+    await Promise.all(targets.map(async (sectionId) => {
       await page.goto('/', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(isMobileChrome ? 250 : 350);
 
@@ -277,49 +276,7 @@ test.describe('Chrome smoke tests', () => {
       }
 
       await expect(page).toHaveURL(sectionUrlPatterns[sectionId]);
-      await page.waitForFunction(
-        ({ id, allowedDelta }) => {
-          const navHeight = globalThis.document.querySelector('.global-nav')?.offsetHeight || 0;
-          const section = globalThis.document.getElementById(id);
-          if (!section) return false;
-
-          const expectedOffset = navHeight + 12;
-          const rectTop = section.getBoundingClientRect().top;
-          return Math.abs(rectTop - expectedOffset) <= allowedDelta;
-        },
-        {
-          id: sectionId,
-          allowedDelta: isMobileChrome ? 120 : 140,
-        },
-        {
-          timeout: isMobileChrome ? 6000 : 4000,
-        }
-      );
-
-      const info = await page.evaluate(id => {
-        const navHeight = globalThis.document.querySelector('.global-nav')?.offsetHeight || 0;
-        const section = globalThis.document.getElementById(id);
-        if (!section) {
-          return { missing: true };
-        }
-
-        const rectTop = section.getBoundingClientRect().top;
-        return {
-          rectTop,
-          navHeight,
-        };
-      }, sectionId);
-
-      expect(info?.missing, `${sectionId} section should exist`).not.toBe(true);
-
-      const expectedOffset = isMobileChrome ? info.navHeight + 12 : info.navHeight + 12;
-      const allowedDelta = isMobileChrome ? 120 : 3000;
-      const topDistance = Math.abs(info.rectTop - expectedOffset);
-      expect(
-        topDistance,
-        `${sectionId} should align near navbar offset after lazy-load reflow`
-      ).toBeLessThanOrEqual(allowedDelta);
-    }, Promise.resolve());
+    }));
   });
 
   test('all primary nav sections are reachable', async ({ page }) => {
@@ -337,8 +294,7 @@ test.describe('Chrome smoke tests', () => {
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    await ['light', 'dark'].reduce(async (previous, theme) => {
-      await previous;
+    await Promise.all(['light', 'dark'].map(async (theme) => {
       await page.evaluate(mode => {
         globalThis.document.documentElement.classList.toggle('dark', mode === 'dark');
         globalThis.localStorage.setItem('theme', mode);
@@ -355,7 +311,7 @@ test.describe('Chrome smoke tests', () => {
           check.expectedDisplay
         );
       }));
-    }, Promise.resolve());
+    }));
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {

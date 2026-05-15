@@ -75,15 +75,14 @@ async function findGeneratedFiles(directory, matches = []) {
 }
 
 async function clean() {
-  await Promise.all(generatedDirs.map(directory => removeDirectory(directory)));
-  await Promise.all(generatedFiles.map(file => removeDirectory(file)));
-
   const [pycacheDirs, generatedWorkspaceFiles] = await Promise.all([
     findPycacheDirs(root),
     findGeneratedFiles(root),
   ]);
 
   await Promise.all([
+    ...generatedDirs.map(directory => removeDirectory(directory)),
+    ...generatedFiles.map(file => removeDirectory(file)),
     ...pycacheDirs.map(async pycache => {
       await rm(pycache, { recursive: true, force: true });
       console.log(`🧹 Removed ${pycache.replace(`${root}/`, '')}`);

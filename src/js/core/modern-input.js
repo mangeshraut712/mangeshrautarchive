@@ -76,7 +76,8 @@ export class ModernInputHandler {
         () => {
           const baseStyle = this.input.getAttribute('style') || '';
           this.input.style.cssText = `${baseStyle}; height: auto;`;
-          this.input.style.cssText = `${baseStyle}; height: ${Math.min(this.input.scrollHeight, 120)}px;`;
+          const newHeight = Math.min(this.input.scrollHeight, 120);
+          this.input.style.cssText = `${baseStyle}; height: ${newHeight}px;`;
         },
         { passive: true }
       );
