@@ -27,6 +27,8 @@ function getHljs() {
   return window.hljs ?? null;
 }
 
+const SAFE_URL_PATTERN = /^(https?:|mailto:|tel:|\/(?!\/)|#)/i;
+
 class MarkdownService {
   constructor() {
     this._configured = false;
@@ -146,7 +148,6 @@ class MarkdownService {
           'h5',
           'h6',
           'a',
-          'img',
           'hr',
           'table',
           'thead',
@@ -157,8 +158,11 @@ class MarkdownService {
           'span',
           'div',
         ],
-        ALLOWED_ATTR: ['href', 'src', 'alt', 'class', 'title', 'target', 'rel'],
+        ALLOWED_ATTR: ['href', 'class', 'title', 'target', 'rel'],
+        ALLOWED_URI_REGEXP: SAFE_URL_PATTERN,
         ALLOW_DATA_ATTR: false,
+        FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form', 'input', 'button'],
+        FORBID_ATTR: ['style', 'onerror', 'onclick', 'onload'],
         FORCE_BODY: false,
       });
     }
@@ -166,7 +170,10 @@ class MarkdownService {
     // No DOMPurify — strip dangerous tags manually (best-effort)
     return html
       .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
       .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+      .replace(/<(object|embed|form|input|button)\b[\s\S]*?>/gi, '')
+      .replace(/\s(?:href|src)=["'](?!https?:|mailto:|tel:|\/(?!\/)|#)[^"']*["']/gi, '')
       .replace(/on\w+="[^"]*"/gi, '');
   }
 

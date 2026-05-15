@@ -27,8 +27,8 @@ export class AgenticActionHandler {
     // Navigation actions
     this.registerAction('navigate', {
       patterns: [
-        /(?:go to|show|open|navigate to|take me to)\s+(?:the\s+)?(\w+)(?:\s+section)?/i,
-        /(?:show|view)\s+(?:my|your|the)?\s*(\w+)/i,
+        /(?:go to|open|navigate to|take me to)\s+(?:the\s+)?(home|about|skills|projects|contact|experience|education)(?:\s+section)?/i,
+        /(?:show|view)\s+(?:my|your|the)?\s*(skills|projects|experience|education|contact)(?:\s+section)?/i,
       ],
       handler: this.navigateToSection.bind(this),
       description: 'Navigate to a specific section of the portfolio',

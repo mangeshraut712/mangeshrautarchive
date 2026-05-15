@@ -16,6 +16,19 @@
 
 import { privacyDashboard } from './privacy-dashboard.js';
 import { intelligentAssistant as chatAssistant } from '../core/chat.js';
+import { markdownService } from '../services/MarkdownService.js';
+
+const MAX_CHAT_INPUT_LENGTH = 1800;
+const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
+
+function stripUnsafeControlCharacters(value) {
+  return Array.from(value)
+    .filter(char => {
+      const code = char.charCodeAt(0);
+      return code === 9 || code === 10 || code === 13 || (code >= 32 && code !== 127);
+    })
+    .join('');
+}
 
 // ── Context-aware follow-up chip sets ──────────────────────
 const FOLLOWUP_CHIPS = {
@@ -225,6 +238,7 @@ class AppleIntelligenceChatbot {
 
     // Create Shadow Div for smooth resizing
     if (elements.input && !this.shadowDiv) {
+      elements.input.maxLength = MAX_CHAT_INPUT_LENGTH;
       this.shadowDiv = document.createElement('div');
       this.shadowDiv.style.cssText = `
         position: absolute;
@@ -380,16 +394,32 @@ class AppleIntelligenceChatbot {
                         </div>
 
                         <div class="welcome-chips">
-                            <button type="button" class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('What are Mangesh\\'s top projects?')"><i class="fas fa-rocket"></i> Top Projects</button>
-                            <button type="button" class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('What AI and ML projects has Mangesh built?')"><i class="fas fa-brain"></i> AI/ML Work</button>
-                            <button type="button" class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('Tell me about Mangesh\\'s work experience')"><i class="fas fa-briefcase"></i> Experience</button>
-                            <button type="button" class="welcome-action-chip" onclick="window.appleIntelligenceChatbot.ask('How can I contact Mangesh?')"><i class="fas fa-envelope"></i> Contact</button>
                         </div>
                     </div>
                 `;
+        const chips = welcomeDiv.querySelector('.welcome-chips');
+        [
+          ['fas fa-rocket', 'Top Projects', "What are Mangesh's top projects?"],
+          ['fas fa-brain', 'AI/ML Work', 'What AI and ML projects has Mangesh built?'],
+          ['fas fa-briefcase', 'Experience', "Tell me about Mangesh's work experience"],
+          ['fas fa-envelope', 'Contact', 'How can I contact Mangesh?'],
+        ].forEach(([iconClass, label, prompt]) => {
+          chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
+        });
         this.elements.messages.appendChild(welcomeDiv);
       }
     }, 600);
+  }
+
+  createWelcomeActionChip(iconClass, label, prompt) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'welcome-action-chip';
+    const icon = document.createElement('i');
+    icon.className = iconClass;
+    button.append(icon, document.createTextNode(` ${label}`));
+    button.addEventListener('click', () => this.ask(prompt));
+    return button;
   }
 
   // ── Detect Agentic Actions ──────────────────────
@@ -422,8 +452,13 @@ class AppleIntelligenceChatbot {
   // ── Message Sending ──────────────────────
 
   async handleSendMessage() {
-    const text = this.elements.input?.value.trim();
+    const text = this.normalizeInput(this.elements.input?.value);
     if (!text || this.isProcessing) return;
+
+    if (text.length > MAX_CHAT_INPUT_LENGTH) {
+      this.addErrorMessage(`Please keep messages under ${MAX_CHAT_INPUT_LENGTH} characters.`);
+      return;
+    }
 
     this.isProcessing = true;
     this.lastUserMessage = text;
@@ -464,6 +499,11 @@ class AppleIntelligenceChatbot {
       this.isProcessing = false;
       this.messageCount++;
     }
+  }
+
+  normalizeInput(value) {
+    if (!value || typeof value !== 'string') return '';
+    return stripUnsafeControlCharacters(value).trim();
   }
 
   // ── Streaming AI Response ──────────────────────
@@ -603,7 +643,9 @@ class AppleIntelligenceChatbot {
     const modelBadge = document.createElement('span');
     modelBadge.className = 'meta-model-badge';
     const modelName = (metadata.model || '').split('/').pop() || 'AI';
-    modelBadge.innerHTML = `<i class="fas fa-sparkles"></i> ${this.escapeHtml(modelName)}`;
+    const modelIcon = document.createElement('i');
+    modelIcon.className = 'fas fa-sparkles';
+    modelBadge.append(modelIcon, document.createTextNode(` ${modelName}`));
     primaryRow.appendChild(modelBadge);
 
     // Runtime
@@ -678,9 +720,12 @@ class AppleIntelligenceChatbot {
     }
     if (metadata.timestamp) detailChips.push(`🕐 ${metadata.timestamp}`);
 
-    detailsRow.innerHTML = detailChips
-      .map(c => `<span class="meta-detail-chip">${c}</span>`)
-      .join('');
+    detailChips.forEach(chipText => {
+      const chip = document.createElement('span');
+      chip.className = 'meta-detail-chip';
+      chip.textContent = chipText;
+      detailsRow.appendChild(chip);
+    });
 
     metaContainer.appendChild(detailsRow);
     messageDiv.appendChild(metaContainer);
@@ -689,89 +734,7 @@ class AppleIntelligenceChatbot {
   // ── Markdown Rendering ──────────────────────
 
   renderMarkdown(text) {
-    if (window.marked) {
-      try {
-        window.marked.setOptions({
-          breaks: true,
-          gfm: true,
-          headerIds: false,
-          mangle: false,
-        });
-
-        let html = window.marked.parse(text);
-
-        if (window.DOMPurify) {
-          html = window.DOMPurify.sanitize(html, {
-            ALLOWED_TAGS: [
-              'p',
-              'br',
-              'strong',
-              'b',
-              'em',
-              'i',
-              'u',
-              'a',
-              'ul',
-              'ol',
-              'li',
-              'h1',
-              'h2',
-              'h3',
-              'h4',
-              'h5',
-              'h6',
-              'pre',
-              'code',
-              'blockquote',
-              'table',
-              'thead',
-              'tbody',
-              'tr',
-              'th',
-              'td',
-              'hr',
-              'span',
-              'div',
-            ],
-            ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'id'],
-          });
-        }
-
-        return html;
-      } catch (e) {
-        console.warn('Markdown parsing failed, using fallback:', e);
-      }
-    }
-    return this.simpleMarkdownToHTML(text);
-  }
-
-  simpleMarkdownToHTML(text) {
-    let html = text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-      .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/__(.+?)__/g, '<strong>$1</strong>')
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-      .replace(/_([^_]+)_/g, '<em>$1</em>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
-      .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br>');
-
-    html = '<p>' + html + '</p>';
-    html = html.replace(/(<li>.*?<\/li>)(\s*<li>)/g, '$1$2');
-    html = html.replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>');
-    html = html.replace(/<\/ul>\s*<ul>/g, '');
-    html = html.replace(/<p><\/p>/g, '');
-    html = html.replace(/<p>\s*<br>\s*<\/p>/g, '');
-
-    return html;
+    return markdownService.render(text);
   }
 
   // ── Fallback Typing (local mode) ──────────────────────
@@ -818,7 +781,7 @@ class AppleIntelligenceChatbot {
   createChip(icon, text, type) {
     const chip = document.createElement('span');
     chip.className = `meta-chip meta-chip-${type}`;
-    chip.innerHTML = `${icon} ${text}`;
+    chip.textContent = `${icon} ${text}`;
     return chip;
   }
 
@@ -826,7 +789,9 @@ class AppleIntelligenceChatbot {
     const btn = document.createElement('button');
     btn.className = 'msg-action-btn';
     btn.title = title;
-    btn.innerHTML = `<i class="fas ${iconClass}"></i>`;
+    const icon = document.createElement('i');
+    icon.className = TRUSTED_ICON_CLASS.test(iconClass) ? `fas ${iconClass}` : 'fas fa-circle';
+    btn.appendChild(icon);
     btn.onclick = e => {
       e.stopPropagation();
       onClick();

@@ -12,6 +12,18 @@ let API_BASE = '';
 
 // Primary Backend: Vercel (has OPENROUTER_API_KEY configured)
 const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
+const PRIMARY_CUSTOM_DOMAIN = 'mangeshraut.pro';
+const MAX_SERVER_MESSAGE_LENGTH = 1800;
+const MAX_SERVER_HISTORY_MESSAGES = 12;
+
+function stripUnsafeControlCharacters(value) {
+  return Array.from(value)
+    .filter(char => {
+      const code = char.charCodeAt(0);
+      return code === 9 || code === 10 || code === 13 || (code >= 32 && code !== 127);
+    })
+    .join('');
+}
 
 function isLoopbackHostname(hostname = '') {
   return ['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname);
@@ -55,8 +67,8 @@ if (typeof window !== 'undefined') {
     else if (hostname.includes('run.app')) {
       API_BASE = '';
     }
-    // Vercel deployment
-    else if (hostname.includes('vercel.app')) {
+    // Vercel deployment and primary custom domain
+    else if (hostname.includes('vercel.app') || hostname === PRIMARY_CUSTOM_DOMAIN) {
       API_BASE = '';
     }
     // GitHub Pages or Custom Domain - use Vercel backend
@@ -337,6 +349,9 @@ class IntelligentAssistant {
   }
 
   async callApi(query, options = {}) {
+    const safeQuery = this._sanitizeMessageForServer(query);
+    if (!safeQuery) return null;
+
     // Allow API calls from GitHub Pages if CORS is configured and API base URL is set
     const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
     const canCallServerAPI =
@@ -360,7 +375,7 @@ class IntelligentAssistant {
           Origin: window.location.origin,
         },
         body: JSON.stringify({
-          message: query,
+          message: safeQuery,
           messages: this._getConversationForServer(),
           context: options.context || {},
           stream: isStreaming,
@@ -466,8 +481,7 @@ class IntelligentAssistant {
   }
 
   _pushConversation(role, content) {
-    if (!content || typeof content !== 'string') return;
-    const normalized = content.trim();
+    const normalized = this._sanitizeMessageForServer(content);
     if (!normalized) return;
     this.conversation.push({
       role: role === 'assistant' ? 'assistant' : 'user',
@@ -491,10 +505,18 @@ class IntelligentAssistant {
   }
 
   _getConversationForServer() {
-    return this.conversation.slice(-12).map(entry => ({
-      role: entry.role === 'assistant' ? 'assistant' : 'user',
-      content: entry.content,
-    }));
+    return this.conversation
+      .slice(-MAX_SERVER_HISTORY_MESSAGES)
+      .map(entry => ({
+        role: entry.role === 'assistant' ? 'assistant' : 'user',
+        content: this._sanitizeMessageForServer(entry.content),
+      }))
+      .filter(entry => entry.content);
+  }
+
+  _sanitizeMessageForServer(content) {
+    if (!content || typeof content !== 'string') return '';
+    return stripUnsafeControlCharacters(content).trim().slice(0, MAX_SERVER_MESSAGE_LENGTH);
   }
 
   normalizeResponse(payload, defaultSource = 'AssistMe') {

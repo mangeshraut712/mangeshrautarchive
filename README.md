@@ -41,7 +41,7 @@
 - [Design Philosophy](#-design-philosophy--inspired-by-apple)
 - [Repository Overview](#-repository-overview)
 - [Features](#-features)
-  - [AI Assistant](#-ai-powered-assistant-assistme) · [Launch Experience](#-premium-launch-experience) · [Media Showcase](#-personal-media-showcase-currently) · [Travel Atlas](#-travel-atlas) · [GitHub Projects](#-github-projects-showcase) · [Debug Runner Game](#-interactive-game-debug-runner) · [System Monitor](#-system-monitoring-dashboard) · [Portfolio Reach](#-portfolio-reach-unified-metric) · [Design System](#-design-system-apple-2026)
+  - [AI Assistant](#-ai-powered-assistant-assistme) · [Launch Experience](#-premium-launch-experience) · [Media Showcase](#-personal-media-showcase-currently) · [Travel Atlas](#-travel-atlas) · [GitHub Projects](#-github-projects-showcase) · [Debug Runner Game](#-interactive-game-debug-runner) · [System Monitor](#-system-monitoring-dashboard) · [Portfolio Reach](#-portfolio-reach-unified-metric) · [Calendly Booking](#-calendly-booking-integration) · [Newsletter](#-newsletter-subscription) · [Design System](#-design-system-apple-2026)
 - [Architecture & Tech Stack](#%EF%B8%8F-architecture--tech-stack)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
@@ -288,6 +288,42 @@ Layered translucency, parallax scrolling, and micro-animations provide a sense o
 </div>
 </details>
 
+### 📅 Calendly Booking Integration
+
+<details>
+<summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>📅 Schedule Technical Consultations</b></summary>
+<br/>
+<div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
+  <p style="margin: 0 0 1rem 0;">Integrated booking system for focused architecture reviews and technical consultations:</p>
+  <ul style="margin: 0;">
+    <li>🎯 <strong>Consultation Types:</strong> Full-stack reviews, AI systems design, Spring Boot architecture</li>
+    <li>📅 <strong>Live Availability:</strong> Real-time Calendly integration with popup booking widget</li>
+    <li>🎨 <strong>Apple-Style UI:</strong> Gradient panel with calendar icon, clean button design</li>
+    <li>📱 <strong>Responsive Design:</strong> Desktop sidebar layout, mobile bottom sheet</li>
+    <li>🛡️ <strong>Privacy-First:</strong> Direct integration without third-party tracking</li>
+  </ul>
+  <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>Available on calendar widget and agentic actions throughout the site</em></p>
+</div>
+</details>
+
+### 📧 Newsletter Subscription
+
+<details>
+<summary style="cursor: pointer; font-size: 1.25rem; font-weight: 600; margin: 1rem 0;"><b>📬 Stay Updated with Dev Insights</b></summary>
+<br/>
+<div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
+  <p style="margin: 0 0 1rem 0;">Monthly newsletter covering Spring Boot, AWS architecture, AI systems, and engineering decisions:</p>
+  <ul style="margin: 0;">
+    <li>🔄 <strong>Monthly Editions:</strong> Deep technical dives and practical implementation guides</li>
+    <li>🎨 <strong>Apple-Inspired Card:</strong> Glassmorphism design with gradient accents</li>
+    <li>📱 <strong>Responsive Form:</strong> Stacked on mobile, side-by-side on desktop</li>
+    <li>🎯 <strong>Focused Content:</strong> Spring Boot patterns, AWS best practices, AI system design</li>
+    <li>💼 <strong>Professional Insights:</strong> Real-world engineering decisions and architecture patterns</li>
+  </ul>
+  <p style="margin: 1rem 0 0 0; font-size: 0.9rem; color: #86868b;"><em>Integration ready for email service providers (currently placeholder form)</em></p>
+</div>
+</details>
+
 ### 🎨 Design System (Apple 2026)
 
 <details open>
@@ -354,7 +390,8 @@ graph TB
         K --> M[Anthropic Claude 3.5 Sonnet]
         N[GitHub REST API] --> F
         O[Last.fm API] --> F
-        P[Web Neural Networks API] --> A
+        P[Google Analytics 4] --> A
+        Q[Web Neural Networks API] --> A
     end
 
     subgraph "🚀 Deployment & CDN"
@@ -405,6 +442,7 @@ graph TB
 <a href="https://anthropic.com/"><img src="https://img.shields.io/badge/Anthropic-Claude_3.5_Sonnet-D97706?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude"/></a>
 <a href="https://www.last.fm/api"><img src="https://img.shields.io/badge/Last.fm-Scrobbling-D51007?style=for-the-badge&logo=lastdotfm&logoColor=white" alt="Last.fm API"/></a>
 <a href="https://docs.github.com/en/rest"><img src="https://img.shields.io/badge/GitHub_REST-API_v3-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub API"/></a>
+<a href="https://analytics.google.com/"><img src="https://img.shields.io/badge/Google_Analytics_4-Tracking-E37400?style=for-the-badge&logo=google-analytics&logoColor=white" alt="Google Analytics 4"/></a>
 
 #### Testing & Quality
 
@@ -538,6 +576,8 @@ mangeshrautarchive/
 │   │       ├── VoiceService.js   # Speech I/O
 │   │       ├── AnalyticsService.js # Usage tracking
 │   │       └── MarkdownService.js # Content rendering
+│   │   └── utils/                # Utility modules
+│   │       └── calendly.js       # Calendly booking integration
 │   ├── index.html                # Main HTML document
 │   ├── travel.html               # Travel Atlas page
 │   └── monitor.html              # System monitor dashboard
