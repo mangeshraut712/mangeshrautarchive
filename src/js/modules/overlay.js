@@ -2,14 +2,18 @@ const DEFAULT_NAV_OFFSET_SELECTOR = 'nav';
 
 function lockBodyScroll(body, windowRef = window) {
   const scrollY = windowRef.scrollY || windowRef.pageYOffset || 0;
-  const anchor = Array.from(document.querySelectorAll('section[id]'))
-    .map(section => ({ id: section.id, rect: section.getBoundingClientRect() }))
-    .filter(({ rect }) => rect.bottom > 80 && rect.top < windowRef.innerHeight - 80)
-    .reduce((closest, current) => {
-      const closestDist = Math.abs(closest.rect.top - 80);
-      const currentDist = Math.abs(current.rect.top - 80);
-      return currentDist < closestDist ? current : closest;
-    });
+  const anchor = Array.from(document.querySelectorAll('section[id]')).reduce((closest, section) => {
+    const current = { id: section.id, rect: section.getBoundingClientRect() };
+    if (current.rect.bottom <= 80 || current.rect.top >= windowRef.innerHeight - 80) {
+      return closest;
+    }
+    if (!closest) {
+      return current;
+    }
+    const closestDist = Math.abs(closest.rect.top - 80);
+    const currentDist = Math.abs(current.rect.top - 80);
+    return currentDist < closestDist ? current : closest;
+  }, null);
 
   if (anchor) {
     body.dataset.overlayAnchorId = anchor.id;

@@ -268,10 +268,9 @@ function bindScrollWheelForDesktopNav() {
     event => {
       if (!isDesktop()) return;
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-      event.preventDefault();
       navRail.scrollLeft += event.deltaY;
     },
-    { passive: false }
+    { passive: true }
   );
 }
 

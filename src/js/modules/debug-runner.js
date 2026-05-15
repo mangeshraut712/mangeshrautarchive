@@ -191,9 +191,8 @@ class DebugRunner {
 
     // Helper to handle interactions
     const bindAction = (btn, action, endAction) => {
-      const start = e => {
-        if (e.cancelable) e.preventDefault();
-
+      btn.style.touchAction = 'none';
+      const start = () => {
         // Auto-start game if not running
         if (!this.gameRunning || this.gameOver) {
           this.start();
@@ -204,16 +203,15 @@ class DebugRunner {
         btn.style.transform = 'scale(0.95)';
       };
 
-      const end = e => {
-        if (e.cancelable) e.preventDefault();
+      const end = () => {
         if (endAction) endAction();
         btn.style.transform = 'scale(1)';
       };
 
-      btn.addEventListener('touchstart', start, { passive: false });
+      btn.addEventListener('touchstart', start, { passive: true });
       btn.addEventListener('mousedown', start);
 
-      btn.addEventListener('touchend', end, { passive: false });
+      btn.addEventListener('touchend', end, { passive: true });
       btn.addEventListener('mouseup', end);
       btn.addEventListener('mouseleave', end);
     };
@@ -324,11 +322,11 @@ class DebugRunner {
   setupTouchControls() {
     let touchStartY = 0;
     let touchStartX = 0;
+    this.canvas.style.touchAction = 'none';
 
     this.canvas.addEventListener(
       'touchstart',
       e => {
-        e.preventDefault();
         touchStartY = e.touches[0].clientY;
         touchStartX = e.touches[0].clientX;
 
@@ -337,21 +335,18 @@ class DebugRunner {
           this.vibrate(20);
         }
       },
-      { passive: false }
+      { passive: true }
     );
 
     this.canvas.addEventListener(
       'touchmove',
-      e => {
-        e.preventDefault();
-      },
-      { passive: false }
+      () => {},
+      { passive: true }
     );
 
     this.canvas.addEventListener(
       'touchend',
       e => {
-        e.preventDefault();
         const touchEndY = e.changedTouches[0].clientY;
         const touchEndX = e.changedTouches[0].clientX;
         const diffY = touchEndY - touchStartY;
@@ -377,7 +372,7 @@ class DebugRunner {
           }
         }
       },
-      { passive: false }
+      { passive: true }
     );
   }
 

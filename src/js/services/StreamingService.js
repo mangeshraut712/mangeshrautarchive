@@ -119,9 +119,9 @@ class StreamingService extends EventTarget {
     let buffer = '';
 
     try {
-      while (true) {
+      const readNext = async () => {
         const { done, value } = await reader.read();
-        if (done || signal.aborted) break;
+        if (done || signal.aborted) return;
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
@@ -132,7 +132,11 @@ class StreamingService extends EventTarget {
           if (!trimmed) continue;
           this._parseLine(trimmed);
         }
-      }
+
+        await readNext();
+      };
+
+      await readNext();
 
       // Flush any remaining bytes
       if (buffer.trim()) {

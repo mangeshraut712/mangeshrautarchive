@@ -534,20 +534,21 @@ async function fetchWikiData(waypoint, stopElement) {
       `${waypoint.title} ${waypoint.locality.country}`
     ];
 
-    const queryPromises = queries.map(async q => {
+    const queryPromises = queries.map(q => {
       const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=1&prop=pageimages|extracts&exintro=1&explaintext=1&pithumbsize=800`;
-      try {
-        const res = await fetch(url);
-        if (!res.ok) return null;
-        const data = await res.json();
-        if (data.query && data.query.pages) {
-          const pageId = Object.keys(data.query.pages)[0];
-          return data.query.pages[pageId];
-        }
-      } catch (_e) {
-        return null;
-      }
-      return null;
+      return fetch(url)
+        .then(res => (res.ok ? res.json() : null))
+        .then(data => {
+          if (!data) return null;
+          if (data.query && data.query.pages) {
+            const pageId = Object.keys(data.query.pages)[0];
+            return data.query.pages[pageId];
+          }
+          return null;
+        })
+        .catch(() => {
+          return null;
+        });
     });
 
     const results = await Promise.all(queryPromises);
@@ -574,9 +575,8 @@ function applyWikiData(wikiData, stopElement, waypoint) {
       const img = stopElement.querySelector('.travel-stop__image');
       if (img) {
         img.src = page.thumbnail.source;
-        img.style.display = 'block';
+        img.style.cssText += '; display: block; cursor: pointer;';
         img.classList.add('loaded');
-        img.style.cursor = 'pointer';
         // Check if listener already exists or re-bind
         img.onclick = () => openPhotoGallery(stopElement, 0);
       }
@@ -683,8 +683,8 @@ function openPhotoGallery(stopElement, startIndex = 0) {
     // Update nav buttons
     const prevBtn = modal.querySelector('#gallery-prev');
     const nextBtn = modal.querySelector('#gallery-next');
-    prevBtn.style.opacity = currentIndex > 0 ? '1' : '0.3';
-    nextBtn.style.opacity = currentIndex < photos.length - 1 ? '1' : '0.3';
+    prevBtn.style.cssText += `; opacity: ${currentIndex > 0 ? '1' : '0.3'};`;
+    nextBtn.style.cssText += `; opacity: ${currentIndex < photos.length - 1 ? '1' : '0.3'};`;
   }
 
   function handleGalleryKeydown(e) {

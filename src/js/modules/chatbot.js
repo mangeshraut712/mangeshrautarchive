@@ -751,11 +751,23 @@ class AppleIntelligenceChatbot {
     messageDiv.appendChild(contentDiv);
     this.elements.messages?.appendChild(messageDiv);
 
-    for (let i = 0; i < text.length; i++) {
-      contentDiv.textContent = text.substring(0, i + 1) + '▊';
-      this.scrollToBottom();
-      await new Promise(r => setTimeout(r, 20));
-    }
+    await new Promise(resolve => {
+      let index = 0;
+      const tick = () => {
+        index += 1;
+        contentDiv.textContent = text.substring(0, index) + '▊';
+        this.scrollToBottom();
+
+        if (index >= text.length) {
+          resolve();
+          return;
+        }
+
+        setTimeout(tick, 20);
+      };
+
+      tick();
+    });
 
     contentDiv.textContent = text;
 

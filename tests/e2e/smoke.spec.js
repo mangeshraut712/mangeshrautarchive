@@ -16,6 +16,12 @@ const navSections = [
   'debug-runner-section',
 ];
 
+const sectionUrlPatterns = {
+  projects: /#projects$/,
+  education: /#education$/,
+  contact: /#contact$/,
+};
+
 const criticalLayoutChecks = [
   {
     name: 'projects grid',
@@ -257,7 +263,8 @@ test.describe('Chrome smoke tests', () => {
     const targets = ['projects', 'education', 'contact'];
     const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
 
-    for (const sectionId of targets) {
+    await targets.reduce(async (previous, sectionId) => {
+      await previous;
       await page.goto('/', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(isMobileChrome ? 250 : 350);
 
@@ -269,8 +276,7 @@ test.describe('Chrome smoke tests', () => {
         await page.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
       }
 
-      const sectionRegex = new RegExp(`#${sectionId}$`);
-      await expect(page).toHaveURL(sectionRegex);
+      await expect(page).toHaveURL(sectionUrlPatterns[sectionId]);
       await page.waitForFunction(
         ({ id, allowedDelta }) => {
           const navHeight = globalThis.document.querySelector('.global-nav')?.offsetHeight || 0;
@@ -313,7 +319,7 @@ test.describe('Chrome smoke tests', () => {
         topDistance,
         `${sectionId} should align near navbar offset after lazy-load reflow`
       ).toBeLessThanOrEqual(allowedDelta);
-    }
+    }, Promise.resolve());
   });
 
   test('all primary nav sections are reachable', async ({ page }) => {
@@ -331,7 +337,8 @@ test.describe('Chrome smoke tests', () => {
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    for (const theme of ['light', 'dark']) {
+    await ['light', 'dark'].reduce(async (previous, theme) => {
+      await previous;
       await page.evaluate(mode => {
         globalThis.document.documentElement.classList.toggle('dark', mode === 'dark');
         globalThis.localStorage.setItem('theme', mode);
@@ -348,7 +355,7 @@ test.describe('Chrome smoke tests', () => {
           check.expectedDisplay
         );
       }));
-    }
+    }, Promise.resolve());
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {

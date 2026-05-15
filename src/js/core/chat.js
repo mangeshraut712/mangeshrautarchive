@@ -396,9 +396,9 @@ class IntelligentAssistant {
         let metadata = {};
         let buffer = '';
 
-        while (true) {
+        const readNextChunk = async () => {
           const { done, value } = await reader.read();
-          if (done) break;
+          if (done) return;
 
           buffer += decoder.decode(value, { stream: true });
           const lines = buffer.split('\n');
@@ -447,7 +447,11 @@ class IntelligentAssistant {
               console.warn('Error parsing stream chunk:', e);
             }
           }
-        }
+
+          await readNextChunk();
+        };
+
+        await readNextChunk();
 
         this.isReadyState = true;
         return {
@@ -505,13 +509,15 @@ class IntelligentAssistant {
   }
 
   _getConversationForServer() {
-    return this.conversation
-      .slice(-MAX_SERVER_HISTORY_MESSAGES)
-      .map(entry => ({
+    return this.conversation.slice(-MAX_SERVER_HISTORY_MESSAGES).reduce((entries, entry) => {
+      const content = this._sanitizeMessageForServer(entry.content);
+      if (!content) return entries;
+      entries.push({
         role: entry.role === 'assistant' ? 'assistant' : 'user',
-        content: this._sanitizeMessageForServer(entry.content),
-      }))
-      .filter(entry => entry.content);
+        content,
+      });
+      return entries;
+    }, []);
   }
 
   _sanitizeMessageForServer(content) {

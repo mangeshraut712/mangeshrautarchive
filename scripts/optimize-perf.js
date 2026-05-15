@@ -58,31 +58,35 @@ async function _optimizeHTML(content) {
 
 async function processDirectory(dir, extension, processor) {
   const entries = await readdir(dir, { withFileTypes: true });
-  let totalSaved = 0;
 
-  for (const entry of entries) {
+  const savedSizes = await Promise.all(entries.map(async entry => {
     const path = join(dir, entry.name);
 
     if (entry.isDirectory()) {
-      const saved = await processDirectory(path, extension, processor);
-      totalSaved += saved;
-    } else if (entry.name.endsWith(extension)) {
-      const content = await readFile(path, 'utf8');
-      const originalSize = Buffer.byteLength(content, 'utf8');
-      const optimized = await processor(content);
-      const newSize = Buffer.byteLength(optimized, 'utf8');
-
-      await writeFile(path, optimized, 'utf8');
-      totalSaved += originalSize - newSize;
-
-      const kb = (originalSize - newSize) / 1024;
-      if (kb > 0.1) {
-        console.log(`${colors.green}✓${colors.reset} ${entry.name}: saved ${kb.toFixed(2)} KB`);
-      }
+      return processDirectory(path, extension, processor);
     }
-  }
 
-  return totalSaved;
+    if (!entry.name.endsWith(extension)) {
+      return 0;
+    }
+
+    const content = await readFile(path, 'utf8');
+    const originalSize = Buffer.byteLength(content, 'utf8');
+    const optimized = await processor(content);
+    const newSize = Buffer.byteLength(optimized, 'utf8');
+    const saved = originalSize - newSize;
+
+    await writeFile(path, optimized, 'utf8');
+
+    const kb = saved / 1024;
+    if (kb > 0.1) {
+      console.log(`${colors.green}✓${colors.reset} ${entry.name}: saved ${kb.toFixed(2)} KB`);
+    }
+
+    return saved;
+  }));
+
+  return savedSizes.reduce((total, saved) => total + saved, 0);
 }
 
 async function optimizeImages() {

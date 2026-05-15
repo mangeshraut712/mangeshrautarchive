@@ -88,7 +88,7 @@ async function copyDirContent(src, dest, depth = 0) {
   await mkdir(dest, { recursive: true });
   const entries = await readdir(src, { withFileTypes: true });
 
-  for (const entry of entries) {
+  await Promise.all(entries.map(async entry => {
     const srcPath = join(src, entry.name);
     const destPath = join(dest, entry.name);
 
@@ -104,32 +104,32 @@ async function copyDirContent(src, dest, depth = 0) {
       }
     }
     // symlinks are intentionally skipped — not needed in dist
-  }
+  }));
 }
 
 async function optimizeCopiedAssets(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const minifiableExtensions = new Set(['css', 'js']);
 
-  for (const entry of entries) {
+  await Promise.all(entries.map(async entry => {
     const entryPath = join(dir, entry.name);
 
     if (entry.isDirectory()) {
       await optimizeCopiedAssets(entryPath);
-      continue;
+      return;
     }
 
     if (!entry.isFile()) {
-      continue;
+      return;
     }
 
     const extension = entry.name.split('.').pop()?.toLowerCase();
     if (!extension || !minifiableExtensions.has(extension)) {
-      continue;
+      return;
     }
 
     if (entry.name === 'build-config.js') {
-      continue;
+      return;
     }
 
     const source = await readFile(entryPath, 'utf8');
@@ -141,7 +141,7 @@ async function optimizeCopiedAssets(dir) {
     });
 
     await writeFile(entryPath, result.code, 'utf8');
-  }
+  }));
 }
 
 async function build() {
@@ -173,14 +173,12 @@ async function build() {
     }
   }));
 
-  // Inject safe public config at build time (no secrets)
-  await injectApiKeys(distDir);
-
   console.log('⚡ Minifying copied CSS/JS assets ...');
-  await optimizeCopiedAssets(distDir);
-
-  // Add cache busting to HTML assets
-  await addCacheBusting(distDir);
+  await Promise.all([
+    injectApiKeys(distDir),
+    optimizeCopiedAssets(distDir),
+    addCacheBusting(distDir),
+  ]);
 
   console.log(`✨ Build complete. Static assets written to ${distDir}`);
 }

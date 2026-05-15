@@ -274,7 +274,7 @@ class GitHubProjects {
 
     let rawRepos = null;
 
-    for (const proxyBase of this.proxyCandidates) {
+    const proxyResults = await Promise.all(this.proxyCandidates.map(async proxyBase => {
       try {
         const proxyResp = await fetch(
           `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
@@ -283,18 +283,20 @@ class GitHubProjects {
 
         if (!proxyResp.ok) {
           console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
-          continue;
+          return null;
         }
 
         const data = await proxyResp.json();
         if (data.success && Array.isArray(data.data)) {
-          rawRepos = data.data;
-          break;
+          return data.data;
         }
       } catch (err) {
         console.warn(`Proxy ${proxyBase} failed:`, err.message);
       }
-    }
+      return null;
+    }));
+
+    rawRepos = proxyResults.find(Boolean) || null;
 
     if (!rawRepos) {
       try {

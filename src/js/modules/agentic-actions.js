@@ -137,36 +137,42 @@ export class AgenticActionHandler {
    */
   async detectAndExecute(userInput) {
     const input = userInput.trim();
+    let detected = null;
 
     for (const [actionName, config] of this.actions) {
       for (const pattern of config.patterns) {
         const match = input.match(pattern);
         if (match) {
-          console.log(`🎯 Action detected: ${actionName}`);
-
-          try {
-            const result = await config.handler(match);
-            this.logAction(actionName, input, result);
-            return {
-              actionDetected: true,
-              actionName,
-              result,
-              message: result.message || `Action "${actionName}" executed successfully`,
-            };
-          } catch (error) {
-            console.error(`Error executing action ${actionName}:`, error);
-            return {
-              actionDetected: true,
-              actionName,
-              error: error.message,
-              message: `Failed to execute action: ${error.message}`,
-            };
-          }
+          detected = { actionName, config, match };
+          break;
         }
       }
+      if (detected) break;
     }
 
-    return { actionDetected: false };
+    if (!detected) return { actionDetected: false };
+
+    const { actionName, config, match } = detected;
+    console.log(`🎯 Action detected: ${actionName}`);
+
+    try {
+      const result = await config.handler(match);
+      this.logAction(actionName, input, result);
+      return {
+        actionDetected: true,
+        actionName,
+        result,
+        message: result.message || `Action "${actionName}" executed successfully`,
+      };
+    } catch (error) {
+      console.error(`Error executing action ${actionName}:`, error);
+      return {
+        actionDetected: true,
+        actionName,
+        error: error.message,
+        message: `Failed to execute action: ${error.message}`,
+      };
+    }
   }
 
   /**
@@ -227,49 +233,45 @@ export class AgenticActionHandler {
       '../assets/files/Mangesh_Raut_Resume.pdf', // Parent relative
     ];
 
-    // Try each path
-    let resumeFound = false;
-    for (const link of resumeLinks) {
+    const resumeChecks = await Promise.all(resumeLinks.map(async link => {
       try {
         const response = await fetch(link, { method: 'HEAD' });
-        if (response.ok) {
-          // Open in new tab for download
-          const downloadLink = document.createElement('a');
-          downloadLink.href = link;
-          downloadLink.download = 'Mangesh_Raut_Resume.pdf';
-          downloadLink.target = '_blank';
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-
-          resumeFound = true;
-
-          return {
-            success: true,
-            message: '✅ Resume download initiated! Check your downloads folder.',
-            action: 'download_resume',
-            file: link,
-          };
-        }
+        return response.ok ? link : null;
       } catch (error) {
         console.log(`Failed to fetch from ${link}:`, error);
-        continue;
+        return null;
       }
+    }));
+
+    const availableResumeLink = resumeChecks.find(Boolean);
+    if (availableResumeLink) {
+      const downloadLink = document.createElement('a');
+      downloadLink.href = availableResumeLink;
+      downloadLink.download = 'Mangesh_Raut_Resume.pdf';
+      downloadLink.target = '_blank';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+      return {
+        success: true,
+        message: '✅ Resume download initiated! Check your downloads folder.',
+        action: 'download_resume',
+        file: availableResumeLink,
+      };
     }
 
     // If no PDF found, provide alternative
-    if (!resumeFound) {
-      return {
-        success: false,
-        message:
-          '📄 Resume PDF not found. Please:\n\n1. Click the "Download Resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut.pro',
-        action: 'download_resume',
-        alternative: {
-          email: 'mbr63@drexel.edu',
-          website: 'https://mangeshraut.pro',
-        },
-      };
-    }
+    return {
+      success: false,
+      message:
+        '📄 Resume PDF not found. Please:\n\n1. Click the "Download Resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut.pro',
+      action: 'download_resume',
+      alternative: {
+        email: 'mbr63@drexel.edu',
+        website: 'https://mangeshraut.pro',
+      },
+    };
   }
 
   async scheduleMeeting(_match) {

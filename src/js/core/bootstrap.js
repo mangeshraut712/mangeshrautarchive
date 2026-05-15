@@ -55,6 +55,25 @@ const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
 const deferredStyleLoads = new Map();
 
+const MODULE_IMPORTERS = {
+  '../modules/accessibility.js': () => import('../modules/accessibility.js'),
+  '../modules/agentic-actions.js': () => import('../modules/agentic-actions.js'),
+  '../modules/premium-enhancements.js': () => import('../modules/premium-enhancements.js'),
+  '../modules/birthday-celebration.js': () => import('../modules/birthday-celebration.js'),
+  '../modules/skills-visualization.js': () => import('../modules/skills-visualization.js'),
+  '../modules/blog-loader.js': () => import('../modules/blog-loader.js'),
+  '../modules/calendar.js': () => import('../modules/calendar.js'),
+  '../modules/real-media-loader.js': () => import('../modules/real-media-loader.js'),
+  '../modules/lastfm.js': () => import('../modules/lastfm.js'),
+  '../modules/debug-runner.js': () => import('../modules/debug-runner.js'),
+  '../modules/chatbot.js': () => import('../modules/chatbot.js'),
+  '../modules/search.js': () => import('../modules/search.js'),
+};
+
+function getModuleImporter(modulePath) {
+  return MODULE_IMPORTERS[modulePath] || null;
+}
+
 function createModuleLoader(modulePath) {
   let loaded = false;
   let pending = null;
@@ -63,7 +82,13 @@ function createModuleLoader(modulePath) {
     if (loaded) return true;
     if (pending) return pending;
 
-    pending = import(modulePath)
+    const importer = getModuleImporter(modulePath);
+    if (!importer) {
+      console.warn(`Lazy load skipped for unknown module ${modulePath}`);
+      return false;
+    }
+
+    pending = importer()
       .then(() => {
         loaded = true;
         return true;
@@ -153,8 +178,14 @@ async function loadDeferredStyles(styleKeys = [], documentRef = document) {
 }
 
 async function loadModule(path) {
+  const importer = getModuleImporter(path);
+  if (!importer) {
+    console.warn(`Lazy load skipped for unknown module ${path}`);
+    return;
+  }
+
   try {
-    await import(path);
+    await importer();
   } catch (error) {
     console.warn(`Lazy load failed for ${path}`, error);
   }
