@@ -263,7 +263,7 @@ test.describe('Chrome smoke tests', () => {
     const targets = ['projects', 'education', 'contact'];
     const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
 
-    await Promise.all(targets.map(async (sectionId) => {
+    for (const sectionId of targets) {
       await page.goto('/', { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(isMobileChrome ? 250 : 350);
 
@@ -276,7 +276,7 @@ test.describe('Chrome smoke tests', () => {
       }
 
       await expect(page).toHaveURL(sectionUrlPatterns[sectionId]);
-    }));
+    }
   });
 
   test('all primary nav sections are reachable', async ({ page }) => {
