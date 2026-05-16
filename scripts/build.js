@@ -43,6 +43,8 @@ async function injectApiKeys(distDir) {
     siteUrl: process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
+    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || 'bef46b0d7702dac5b071906cd186bd28',
+    musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `v${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
   };
@@ -147,9 +149,11 @@ async function optimizeCopiedAssets(dir) {
 async function build() {
   const distDir = await resolveDistDir();
 
-  await rm(distDir, { recursive: true, force: true });
-
-  if (!(await pathExists(srcDir))) {
+  const [, sourceExists] = await Promise.all([
+    rm(distDir, { recursive: true, force: true }),
+    pathExists(srcDir),
+  ]);
+  if (!sourceExists) {
     throw new Error('Source directory "src/" not found.');
   }
 

@@ -403,11 +403,11 @@ function bindInteractionModuleLoader(
       event.stopImmediatePropagation();
       event.stopPropagation();
 
-      const [stylesLoaded, moduleLoaded] = await Promise.all([
-        loadDeferredStyles(styleKeys, documentRef),
-        moduleLoader.load(),
-      ]);
-      if (!stylesLoaded || !moduleLoaded) return;
+      const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
+      if (!stylesLoaded) return;
+
+      const moduleLoaded = await moduleLoader.load();
+      if (!moduleLoaded) return;
 
       if (replay) {
         setTimeout(() => {
@@ -441,13 +441,11 @@ function bindSearchShortcutLoader(moduleLoader, documentRef = document, styleKey
 
       event.preventDefault();
 
-      const [stylesLoaded, loaded] = await Promise.all([
-        loadDeferredStyles(styleKeys, documentRef),
-        moduleLoader.load(),
-      ]);
-      if (!loaded || !stylesLoaded) {
-        return;
-      }
+      const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
+      if (!stylesLoaded) return;
+
+      const loaded = await moduleLoader.load();
+      if (!loaded) return;
 
       setTimeout(() => {
         requestAnimationFrame(() => {

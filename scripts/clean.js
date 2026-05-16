@@ -27,6 +27,16 @@ async function removeDirectory(relativePath) {
   console.log(`🧹 Removed ${relativePath}`);
 }
 
+async function removePycacheDirectory(pycache) {
+  await rm(pycache, { recursive: true, force: true });
+  console.log(`🧹 Removed ${pycache.replace(`${root}/`, '')}`);
+}
+
+async function removeGeneratedWorkspaceFile(file) {
+  await rm(file, { force: true });
+  console.log(`🧹 Removed ${file.replace(`${root}/`, '')}`);
+}
+
 async function findPycacheDirs(directory, matches = []) {
   const entries = await readdir(directory, { withFileTypes: true });
 
@@ -83,14 +93,8 @@ async function clean() {
   await Promise.all([
     ...generatedDirs.map(directory => removeDirectory(directory)),
     ...generatedFiles.map(file => removeDirectory(file)),
-    ...pycacheDirs.map(async pycache => {
-      await rm(pycache, { recursive: true, force: true });
-      console.log(`🧹 Removed ${pycache.replace(`${root}/`, '')}`);
-    }),
-    ...generatedWorkspaceFiles.map(async file => {
-      await rm(file, { force: true });
-      console.log(`🧹 Removed ${file.replace(`${root}/`, '')}`);
-    }),
+    ...pycacheDirs.map(removePycacheDirectory),
+    ...generatedWorkspaceFiles.map(removeGeneratedWorkspaceFile),
   ]);
 
   console.log('✅ Workspace cleanup complete.');

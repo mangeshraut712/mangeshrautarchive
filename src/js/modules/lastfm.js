@@ -1,5 +1,9 @@
 import { analytics } from '../services/AnalyticsService.js';
 
+const LASTFM_PUBLIC_API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
+const LASTFM_JSONP_TIMEOUT_MS = 4500;
+const LASTFM_PROXY_TIMEOUT_MS = 3500;
+
 class LastFmService {
   constructor() {
     this.USERNAME = 'mbr63';
@@ -17,6 +21,10 @@ class LastFmService {
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
       '';
     this.apiUrl = apiBaseUrl ? `${apiBaseUrl}/api/music/recent` : '/api/music/recent';
+    this.publicApiKey =
+      globalThis.APP_CONFIG?.lastfmApiKey ||
+      (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.lastfmApiKey) ||
+      LASTFM_PUBLIC_API_KEY;
 
     this.hero = null;
     this.currently = null;
@@ -171,12 +179,35 @@ class LastFmService {
     }
   }
 
-  async fetchRecent() {
+  getTracksFromPayload(payload) {
+    return Array.isArray(payload?.recenttracks?.track) ? payload.recenttracks.track : [];
+  }
+
+  applyRecentPayload(payload, source) {
+    const tracks = this.getTracksFromPayload(payload);
+    if (!tracks.length) {
+      return false;
+    }
+
+    this.cachedTracks = tracks;
+    this.persistLocalCache(tracks);
+    this.updateHero(tracks[0]);
+    this.updateCurrently(tracks);
+    analytics?.track?.('music_loaded', {
+      source,
+      track_count: tracks.length,
+      has_now_playing: tracks.some(track => track?.['@attr']?.nowplaying === 'true'),
+    });
+    return true;
+  }
+
+  async fetchRecentFromProxy(limit = 10) {
+    const controller = new AbortController();
+    const timeoutId = globalThis.setTimeout(() => controller.abort(), LASTFM_PROXY_TIMEOUT_MS);
+
     try {
-      const controller = new AbortController();
-      const timeoutId = globalThis.setTimeout(() => controller.abort(), 6000);
       const response = await fetch(
-        `${this.apiUrl}?user=${encodeURIComponent(this.USERNAME)}&limit=10`,
+        `${this.apiUrl}?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}`,
         {
           signal: controller.signal,
           headers: {
@@ -184,37 +215,87 @@ class LastFmService {
           },
         }
       );
-      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const payload = await response.json();
-      const tracks = Array.isArray(payload?.recenttracks?.track) ? payload.recenttracks.track : [];
-
-      if (!tracks.length) {
-        this.showEmptyState();
-        return;
-      }
-
-      this.cachedTracks = tracks;
-      this.persistLocalCache(tracks);
-      this.updateHero(tracks[0]);
-      this.updateCurrently(tracks);
-      analytics?.track?.('music_loaded', {
-        track_count: tracks.length,
-        has_now_playing: tracks.some(track => track?.['@attr']?.nowplaying === 'true'),
-      });
-    } catch (error) {
-      console.warn('Last.fm music fetch failed:', error);
-      if (this.cachedTracks?.length) {
-        this.updateHero(this.cachedTracks[0]);
-        this.updateCurrently(this.cachedTracks);
-        return;
-      }
-      this.showEmptyState();
+      return response.json();
+    } finally {
+      clearTimeout(timeoutId);
     }
+  }
+
+  fetchRecentViaJsonp(limit = 10) {
+    if (!this.publicApiKey || !globalThis.document) {
+      return Promise.reject(new Error('Last.fm direct fallback is not available'));
+    }
+
+    return new Promise((resolve, reject) => {
+      const callbackName = `__assistMeLastfm${Date.now()}${Math.random()
+        .toString(36)
+        .slice(2)}`;
+      const script = globalThis.document.createElement('script');
+      const cleanup = () => {
+        globalThis.clearTimeout(timeoutId);
+        delete globalThis[callbackName];
+        script.remove();
+      };
+      const params = new URLSearchParams({
+        method: 'user.getrecenttracks',
+        user: this.USERNAME,
+        api_key: this.publicApiKey,
+        format: 'json',
+        limit: String(limit),
+        callback: callbackName,
+      });
+      const timeoutId = globalThis.setTimeout(() => {
+        cleanup();
+        reject(new Error('Last.fm direct fallback timed out'));
+      }, LASTFM_JSONP_TIMEOUT_MS);
+
+      globalThis[callbackName] = payload => {
+        cleanup();
+        resolve(payload);
+      };
+
+      script.async = true;
+      script.src = `https://ws.audioscrobbler.com/2.0/?${params.toString()}`;
+      script.onerror = () => {
+        cleanup();
+        reject(new Error('Last.fm direct fallback failed'));
+      };
+
+      globalThis.document.head.appendChild(script);
+    });
+  }
+
+  async fetchRecent() {
+    try {
+      const payload = await this.fetchRecentFromProxy(10);
+      if (this.applyRecentPayload(payload, 'proxy')) {
+        return;
+      }
+    } catch (error) {
+      console.warn('Last.fm proxy fetch failed; trying direct fallback:', error);
+    }
+
+    try {
+      const payload = await this.fetchRecentViaJsonp(10);
+      if (this.applyRecentPayload(payload, 'direct-jsonp')) {
+        return;
+      }
+    } catch (error) {
+      console.warn('Last.fm direct fallback failed:', error);
+    }
+
+    if (this.cachedTracks?.length) {
+      this.updateHero(this.cachedTracks[0]);
+      this.updateCurrently(this.cachedTracks);
+      return;
+    }
+
+    this.showEmptyState();
   }
 
   updateHero(track) {
@@ -290,9 +371,10 @@ class LastFmService {
       })
       .join('');
 
+    const imageNodes = this.currently.recentContainer.querySelectorAll('.recent-track-img');
     tracks.forEach((item, index) => {
       const track = item.track || item;
-      const imageNode = this.currently.recentContainer.querySelectorAll('.recent-track-img')[index];
+      const imageNode = imageNodes[index];
       this.hydrateFallbackArtwork(imageNode, track);
     });
   }
@@ -300,8 +382,15 @@ class LastFmService {
   updateCurrently(tracks) {
     if (!this.currently) return;
 
-    const nowPlaying = tracks.find(track => track?.['@attr']?.nowplaying === 'true') || null;
-    const recentTracks = tracks.filter(track => !track?.['@attr']?.nowplaying);
+    let nowPlaying = null;
+    const recentTracks = [];
+    for (const track of tracks) {
+      if (!nowPlaying && track?.['@attr']?.nowplaying === 'true') {
+        nowPlaying = track;
+      } else {
+        recentTracks.push(track);
+      }
+    }
     const shelfTracks = nowPlaying
       ? [
           { track: nowPlaying, state: 'now-playing' },

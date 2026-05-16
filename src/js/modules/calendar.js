@@ -5,6 +5,7 @@ export class CalendarWidget {
     this.container = document.getElementById(containerId);
     this.date = new Date();
     this.selectedDate = new Date();
+    this.selectedDayCell = null;
 
     // "Smart" Reminders Data
     this.reminders = [
@@ -255,8 +256,9 @@ export class CalendarWidget {
     // Day Selection
     this.container.querySelectorAll('.day-cell:not(.empty)').forEach(day => {
       day.addEventListener('click', () => {
-        this.container.querySelectorAll('.day-cell').forEach(d => d.classList.remove('selected'));
+        this.selectedDayCell?.classList.remove('selected');
         day.classList.add('selected');
+        this.selectedDayCell = day;
         this.selectedDate = new Date(
           this.date.getFullYear(),
           this.date.getMonth(),

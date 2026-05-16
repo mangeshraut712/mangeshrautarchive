@@ -158,7 +158,10 @@ RATE_LIMIT_WINDOW = 60  # seconds
 # Last.fm cache
 LASTFM_CACHE_TTL = 120  # seconds
 LASTFM_CACHE_HEADERS = {
-    "Cache-Control": "public, s-maxage=120, stale-while-revalidate=900"
+    "Cache-Control": "public, s-maxage=120, stale-while-revalidate=900",
+    "CDN-Cache-Control": "public, s-maxage=120, stale-while-revalidate=900",
+    "Vercel-CDN-Cache-Control": "public, s-maxage=120, stale-while-revalidate=900",
+    "X-Music-Source": "lastfm-proxy",
 }
 lastfm_recent_cache: Dict[str, Dict[str, Any]] = {}
 

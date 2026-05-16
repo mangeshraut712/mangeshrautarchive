@@ -11,6 +11,8 @@ const VISITED_PIN_COLOR = '#ff3b30';
 const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css';
 const MAPLIBRE_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js';
 const mapWarningMessages = new Set();
+const waypointSearchCache = new WeakMap();
+const waypointCategoryCache = new WeakMap();
 const htmlEntities = {
   '&': '&amp;',
   '<': '&lt;',
@@ -76,6 +78,21 @@ function getStopContext(waypoint) {
 function hasMatchingCategories(waypoint) {
   if (state.activeCategories.size === 0) return true;
 
+  const waypointCategories = getWaypointCategories(waypoint);
+  for (const activeCategory of state.activeCategories) {
+    if (waypointCategories.has(activeCategory)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function getWaypointCategories(waypoint) {
+  if (waypointCategoryCache.has(waypoint)) {
+    return waypointCategoryCache.get(waypoint);
+  }
+
   const waypointCategories = new Set();
 
   // Add categories from bestFor
@@ -118,14 +135,33 @@ function hasMatchingCategories(waypoint) {
     }
   });
 
-  // Check if any active category matches
-  for (const activeCategory of state.activeCategories) {
-    if (waypointCategories.has(activeCategory)) {
-      return true;
-    }
+  waypointCategoryCache.set(waypoint, waypointCategories);
+  return waypointCategories;
+}
+
+function getWaypointSearchText(waypoint) {
+  if (waypointSearchCache.has(waypoint)) {
+    return waypointSearchCache.get(waypoint);
   }
 
-  return false;
+  const text = [
+    waypoint.title,
+    waypoint.locality.placeName,
+    waypoint.locality.originalName,
+    waypoint.locality.placeKind,
+    waypoint.locality.region,
+    waypoint.locality.country,
+    waypoint.editorial.experience,
+    waypoint.editorial.culturalSignificance,
+    waypoint.editorial.guideSummary,
+    ...waypoint.editorial.bestFor,
+    ...waypoint.editorial.neighborhoods,
+    ...waypoint.editorial.mustSee,
+    ...waypoint.editorial.thingsToDo.map(item => `${item.title} ${item.category} ${item.summary}`),
+  ].filter(Boolean).join(' ').toLowerCase();
+
+  waypointSearchCache.set(waypoint, text);
+  return text;
 }
 
 function getFilteredWaypoints() {
@@ -141,22 +177,7 @@ function getFilteredWaypoints() {
         return acc;
       }
 
-      const haystack = [
-        waypoint.title,
-        waypoint.locality.placeName,
-        waypoint.locality.originalName,
-        waypoint.locality.placeKind,
-        waypoint.locality.region,
-        waypoint.locality.country,
-        waypoint.editorial.experience,
-        waypoint.editorial.culturalSignificance,
-        waypoint.editorial.guideSummary,
-        ...waypoint.editorial.bestFor,
-        ...waypoint.editorial.neighborhoods,
-        ...waypoint.editorial.mustSee,
-        ...waypoint.editorial.thingsToDo.map(item => `${item.title} ${item.category} ${item.summary}`),
-
-      ].filter(Boolean).join(' ').toLowerCase();
+      const haystack = getWaypointSearchText(waypoint);
 
       if (!term || haystack.includes(term)) {
         acc.push({ waypoint, index });
@@ -683,10 +704,8 @@ function openPhotoGallery(stopElement, startIndex = 0) {
     // Update nav buttons
     const prevBtn = modal.querySelector('#gallery-prev');
     const nextBtn = modal.querySelector('#gallery-next');
-    const opacityPrev = currentIndex > 0 ? '1' : '0.3';
-    const opacityNext = currentIndex < photos.length - 1 ? '1' : '0.3';
-    prevBtn.style.cssText += `; opacity: ${opacityPrev};`;
-    nextBtn.style.cssText += `; opacity: ${opacityNext};`;
+    prevBtn.disabled = currentIndex <= 0;
+    nextBtn.disabled = currentIndex >= photos.length - 1;
   }
 
   function handleGalleryKeydown(e) {

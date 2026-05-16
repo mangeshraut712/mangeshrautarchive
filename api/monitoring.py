@@ -669,6 +669,7 @@ class SystemMonitor:
             self._probe_github_service(),
             self._probe_vercel_platform_service(),
             self._probe_lastfm_service(),
+            self._probe_music_api_service(),
             self._probe_analytics_service(),
         )
 
@@ -1009,6 +1010,56 @@ class SystemMonitor:
                 "url": origin,
             }
 
+    async def _probe_music_api_service(self) -> Dict[str, Any]:
+        public_origins = self.get_public_origins()
+        origin = public_origins["custom_domain"]
+        url = f"{origin}/api/music/recent?user={self.lastfm_username}&limit=1"
+        start = time.time()
+
+        try:
+            async with httpx.AsyncClient(follow_redirects=True) as client:
+                response = await client.get(url, timeout=6.0)
+
+            latency = round((time.time() - start) * 1000)
+            if response.status_code != 200:
+                return {
+                    "name": "Portfolio Music API",
+                    "status": HealthStatus.UNHEALTHY.value,
+                    "message": f"Hosted music proxy returned HTTP {response.status_code}.",
+                    "metric_value": f"{latency}ms",
+                    "metric_label": urlsplit(origin).netloc or origin,
+                    "url": url,
+                }
+
+            payload = response.json()
+            tracks = payload.get("recenttracks", {}).get("track", [])
+            track_count = len(tracks) if isinstance(tracks, list) else 0
+            return {
+                "name": "Portfolio Music API",
+                "status": (
+                    HealthStatus.HEALTHY.value
+                    if track_count
+                    else HealthStatus.DEGRADED.value
+                ),
+                "message": (
+                    "Hosted music proxy is serving Last.fm data."
+                    if track_count
+                    else "Hosted music proxy is reachable but returned no tracks."
+                ),
+                "metric_value": f"{latency}ms",
+                "metric_label": f"{track_count} track{'s' if track_count != 1 else ''}",
+                "url": url,
+            }
+        except Exception as exc:
+            return {
+                "name": "Portfolio Music API",
+                "status": HealthStatus.UNHEALTHY.value,
+                "message": f"Hosted music proxy check failed: {str(exc)}",
+                "metric_value": "ERROR",
+                "metric_label": urlsplit(origin).netloc or origin,
+                "url": url,
+            }
+
     async def _probe_github_pages_surface(self, origin: str) -> Dict[str, Any]:
         monitor_url = f"{origin}/monitor.html"
         config_url = f"{origin}/build-config.json"
@@ -1032,6 +1083,7 @@ class SystemMonitor:
                 }
 
             api_origin = ""
+            music_api_status = None
             if config_response.status_code == 200:
                 try:
                     api_origin = (
@@ -1040,14 +1092,36 @@ class SystemMonitor:
                 except json.JSONDecodeError:
                     api_origin = ""
 
-            status = HealthStatus.HEALTHY if api_origin else HealthStatus.DEGRADED
+            if api_origin:
+                music_url = (
+                    f"{api_origin.rstrip('/')}/api/music/recent"
+                    f"?user={self.lastfm_username}&limit=1"
+                )
+                try:
+                    async with httpx.AsyncClient(follow_redirects=True) as client:
+                        music_response = await client.get(music_url, timeout=6.0)
+                    music_api_status = music_response.status_code
+                except Exception:
+                    music_api_status = 0
+
+            if not api_origin:
+                status = HealthStatus.DEGRADED
+            elif music_api_status == 200:
+                status = HealthStatus.HEALTHY
+            else:
+                status = HealthStatus.DEGRADED
+
             return {
                 "name": "GitHub Pages",
                 "status": status.value,
                 "message": (
-                    "Static monitor is published and points at a live API origin."
-                    if api_origin
-                    else "Static monitor is reachable but build-config.json is missing an API origin."
+                    "Static monitor is published and its music API origin is live."
+                    if music_api_status == 200
+                    else (
+                        f"Static monitor is published, but configured music API returned HTTP {music_api_status}."
+                        if api_origin
+                        else "Static monitor is reachable but build-config.json is missing an API origin."
+                    )
                 ),
                 "metric_value": f"{latency}ms",
                 "metric_label": (

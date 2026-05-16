@@ -37,7 +37,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://mangeshraut.pro https://mangeshrautarchive.vercel.app https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org wss:; worker-src 'self' blob:; frame-ancestors 'none';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com https://ws.audioscrobbler.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://mangeshraut.pro https://mangeshrautarchive.vercel.app https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org wss:; worker-src 'self' blob:; frame-ancestors 'none';"
         },
         {
           "key": "Strict-Transport-Security",

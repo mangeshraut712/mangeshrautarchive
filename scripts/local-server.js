@@ -37,6 +37,8 @@ function getPublicBuildConfig() {
     siteUrl: process.env.OPENROUTER_SITE_URL || `http://localhost:${port}`,
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
+    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || 'bef46b0d7702dac5b071906cd186bd28',
+    musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `dev-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
   };

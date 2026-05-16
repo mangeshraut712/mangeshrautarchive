@@ -55,7 +55,7 @@ class PortfolioSearch {
 
         // Add GitHub projects to searchable content
         projects.forEach(project => {
-          this.searchableContent.push({
+          this.addSearchableEntry({
             type: 'GitHub Project',
             title: project.title,
             description: project.description,
@@ -156,7 +156,7 @@ class PortfolioSearch {
         }
 
         if (title || description) {
-          this.searchableContent.push({
+          this.addSearchableEntry({
             title: title.trim(),
             description: description.trim(),
             tags: tags.trim(),
@@ -173,6 +173,15 @@ class PortfolioSearch {
   refreshIndex() {
     this.searchableContent = [];
     this.indexContent();
+  }
+
+  addSearchableEntry(entry) {
+    this.searchableContent.push({
+      ...entry,
+      normalizedTitle: String(entry.title || '').toLowerCase(),
+      normalizedDescription: String(entry.description || '').toLowerCase(),
+      normalizedTags: String(entry.tags || '').toLowerCase(),
+    });
   }
 
   indexStaticCommands() {
@@ -323,12 +332,12 @@ class PortfolioSearch {
       },
     ];
 
-    this.searchableContent.push(...commands);
+    commands.forEach(command => this.addSearchableEntry(command));
   }
 
   indexBlogPosts() {
     blogPosts.forEach(post => {
-      this.searchableContent.push({
+      this.addSearchableEntry({
         title: post.title,
         description: post.summary,
         tags: post.tags.join(' '),
@@ -420,22 +429,20 @@ class PortfolioSearch {
 
     const lowerQuery = query.toLowerCase();
     const results = this.searchableContent
-      .filter(item => {
-        return (
-          item.title.toLowerCase().includes(lowerQuery) ||
-          item.description.toLowerCase().includes(lowerQuery) ||
-          item.tags.toLowerCase().includes(lowerQuery)
-        );
-      })
+      .filter(item =>
+        item.normalizedTitle.includes(lowerQuery) ||
+        item.normalizedDescription.includes(lowerQuery) ||
+        item.normalizedTags.includes(lowerQuery)
+      )
       .sort((a, b) => this.rankResult(a, lowerQuery) - this.rankResult(b, lowerQuery));
 
     this.displayResults(results, query);
   }
 
   rankResult(item, query) {
-    const title = String(item.title || '').toLowerCase();
-    const tags = String(item.tags || '').toLowerCase();
-    const description = String(item.description || '').toLowerCase();
+    const title = item.normalizedTitle || '';
+    const tags = item.normalizedTags || '';
+    const description = item.normalizedDescription || '';
 
     if (title === query) return 0;
     if (title.startsWith(query)) return 1;
