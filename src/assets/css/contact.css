@@ -1717,7 +1717,7 @@ html.dark #contact .wrapper .icon:hover {
 
 :root {
   --contact-surface-light: #ffffff;
-  --contact-surface-dark: rgba(0, 0, 0, 0.8);
+  --contact-surface-dark: #000000;
   --contact-border-light: rgba(0, 0, 0, 0.08);
   --contact-border-dark: rgba(255, 255, 255, 0.08);
   --contact-shadow-light:
@@ -2189,7 +2189,7 @@ html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
 }
 
 html.dark .currently-card {
-  background: rgba(0, 0, 0, 0.6) !important;
+  background: #000000 !important;
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
@@ -2234,13 +2234,15 @@ html.dark .currently-header h3 i {
 .currently-tabs {
   display: flex;
   gap: 0.5rem;
-  background: #f5f5f7;
+  background: #ffffff;
   padding: 0.25rem;
   border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 html.dark .currently-tabs {
   background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .currently-tab {
@@ -2256,18 +2258,20 @@ html.dark .currently-tabs {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: transparent;
-  color: #86868b;
+  background: #ffffff;
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: none;
 }
 
 .currently-tab:hover {
   color: #1d1d1f;
-  background: rgba(0 0 0 / 5%);
+  background: #f5f5f7;
 }
 
 html.dark .currently-tab:hover {
   color: #f5f5f7;
-  background: rgba(255 255 255 / 5%);
+  background: #111111;
 }
 
 .currently-tab.active {
@@ -2280,6 +2284,12 @@ html.dark .currently-tab.active {
   background: #0a84ff;
   color: #ffffff;
   box-shadow: 0 4px 12px rgb(10 132 255 / 40%);
+}
+
+html.dark .currently-tab {
+  background: #000000;
+  color: #f5f5f7;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .currently-tab i {
@@ -2560,6 +2570,112 @@ html.dark .watch-btn:hover {
 html.dark .watch-btn.book-btn {
   color: #ff9f0a !important;
   background: rgba(255, 159, 10, 0.15);
+}
+
+/* Solid Apple theme guardrails: no grey/glass contact page surfaces. */
+#contact,
+#contact .contact-section,
+#contact .contact-card,
+#contact .support-donation-card,
+#contact .currently-card,
+#contact .calendar-wrapper-clean,
+#contact .ios-widget-wrapper,
+#contact .ios-calendar-section,
+#contact .ios-reminders-section,
+#contact .calendly-panel,
+#contact .reminder-card,
+#contact .contact-link-item,
+#contact .wrapper .icon {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark #contact,
+html.dark #contact .contact-section,
+html.dark #contact .contact-card,
+html.dark #contact .support-donation-card,
+html.dark #contact .currently-card,
+html.dark #contact .calendar-wrapper-clean,
+html.dark #contact .ios-widget-wrapper,
+html.dark #contact .ios-calendar-section,
+html.dark #contact .ios-reminders-section,
+html.dark #contact .calendly-panel,
+html.dark #contact .reminder-card,
+html.dark #contact .contact-link-item,
+html.dark #contact .wrapper .icon {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+#contact .contact-card,
+#contact .support-donation-card,
+#contact .currently-card,
+#contact .calendar-wrapper-clean,
+#contact .ios-widget-wrapper {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.dark #contact .contact-card,
+html.dark #contact .support-donation-card,
+html.dark #contact .currently-card,
+html.dark #contact .calendar-wrapper-clean,
+html.dark #contact .ios-widget-wrapper {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+#contact .reminder-card.completed {
+  opacity: 0.7;
+}
+
+#contact .music-poster-empty {
+  background: #ffffff !important;
+}
+
+html.dark #contact .music-poster-empty {
+  background: #000000 !important;
+}
+
+#contact .currently-tabs,
+#contact .currently-tab:not(.active),
+#contact .ios-btn,
+#contact .today-btn {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: none !important;
+}
+
+html.dark #contact .currently-tabs,
+html.dark #contact .currently-tab:not(.active),
+html.dark #contact .ios-btn,
+html.dark #contact .today-btn {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+#contact .currently-tab.active,
+html.dark #contact .currently-tab.active {
+  color: #ffffff !important;
+  background: #0071e3 !important;
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+#contact .ios-btn:hover,
+#contact .today-btn:hover,
+#contact .currently-tab:not(.active):hover {
+  background: #f5f5f7 !important;
+}
+
+html.dark #contact .ios-btn:hover,
+html.dark #contact .today-btn:hover,
+html.dark #contact .currently-tab:not(.active):hover {
+  background: #111111 !important;
 }
 
 /* Final target-size guardrails */

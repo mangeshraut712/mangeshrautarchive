@@ -6,7 +6,7 @@ class LastFmService {
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
     this.UPDATE_INTERVAL_MS = 30000;
     this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent';
-    this.LOCAL_CACHE_TTL_MS = 10 * 60 * 1000;
+    this.LOCAL_STALE_TTL_MS = 24 * 60 * 60 * 1000;
     this.artworkCache = new Map();
     this.cachedTracks = null;
     this.started = false;
@@ -147,7 +147,7 @@ class LastFmService {
       const parsed = JSON.parse(raw);
       const tracks = Array.isArray(parsed?.tracks) ? parsed.tracks : null;
       const age = Date.now() - Number(parsed?.ts || 0);
-      if (!tracks?.length || age > this.LOCAL_CACHE_TTL_MS) {
+      if (!tracks?.length || age > this.LOCAL_STALE_TTL_MS) {
         return false;
       }
 
@@ -174,7 +174,7 @@ class LastFmService {
   async fetchRecent() {
     try {
       const controller = new AbortController();
-      const timeoutId = globalThis.setTimeout(() => controller.abort(), 15000);
+      const timeoutId = globalThis.setTimeout(() => controller.abort(), 6000);
       const response = await fetch(
         `${this.apiUrl}?user=${encodeURIComponent(this.USERNAME)}&limit=10`,
         {

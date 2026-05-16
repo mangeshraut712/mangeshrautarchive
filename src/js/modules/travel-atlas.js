@@ -685,8 +685,8 @@ function openPhotoGallery(stopElement, startIndex = 0) {
     const nextBtn = modal.querySelector('#gallery-next');
     const opacityPrev = currentIndex > 0 ? '1' : '0.3';
     const opacityNext = currentIndex < photos.length - 1 ? '1' : '0.3';
-    prevBtn.style.opacity = opacityPrev;
-    nextBtn.style.opacity = opacityNext;
+    prevBtn.style.cssText += `; opacity: ${opacityPrev};`;
+    nextBtn.style.cssText += `; opacity: ${opacityNext};`;
   }
 
   function handleGalleryKeydown(e) {

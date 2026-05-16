@@ -74,10 +74,11 @@ export class ModernInputHandler {
       this.input.addEventListener(
         'input',
         () => {
-          const baseStyle = this.input.getAttribute('style') || '';
-          this.input.style.cssText = `${baseStyle}; height: auto;`;
+          this.input.style.height = 'auto';
           const newHeight = Math.min(this.input.scrollHeight, 120);
-          this.input.style.cssText = `${baseStyle}; height: ${newHeight}px;`;
+          requestAnimationFrame(() => {
+            this.input.style.height = `${newHeight}px`;
+          });
         },
         { passive: true }
       );

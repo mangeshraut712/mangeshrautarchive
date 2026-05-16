@@ -496,24 +496,69 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
 
 @media (max-width: 768px) {
   .global-nav.dynamic-island {
-    --island-height: 48px;
-    --island-side-pad: 16px;
-    --island-control-size: 36px;
-    --island-control-icon-size: 14px;
+    --island-height: 52px;
+    --island-side-pad: 20px;
+    --island-control-size: 44px;
+    --island-control-icon-size: 17px;
+    padding: 0 var(--island-side-pad) !important;
+    background: #fff !important;
+    border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  html.dark .global-nav.dynamic-island {
+    background: #000 !important;
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .global-nav.dynamic-island .nav-container {
+    height: 100%;
+    display: grid !important;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    column-gap: 16px;
+    padding: 0 !important;
   }
 
   .global-nav.dynamic-island .nav-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    justify-self: start;
+  }
+
+  .global-nav.dynamic-island .nav-logo img {
     width: 36px;
     height: 36px;
   }
 
-  .global-nav.dynamic-island .nav-logo img {
-    width: 28px;
-    height: 28px;
+  .global-nav.dynamic-island .nav-actions {
+    grid-column: 3;
+    gap: 14px;
+    justify-self: end;
   }
 
-  .global-nav.dynamic-island .nav-actions {
-    gap: 8px;
+  .global-nav.dynamic-island .theme-toggle-nav,
+  .global-nav.dynamic-island .menu-toggle-button,
+  .global-nav.dynamic-island #search-toggle,
+  .global-nav.dynamic-island #theme-toggle,
+  .global-nav.dynamic-island #menu-btn {
+    width: var(--island-control-size) !important;
+    height: var(--island-control-size) !important;
+    min-width: var(--island-control-size) !important;
+    min-height: var(--island-control-size) !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: none !important;
+  }
+
+  html.dark .global-nav.dynamic-island .theme-toggle-nav,
+  html.dark .global-nav.dynamic-island .menu-toggle-button,
+  html.dark .global-nav.dynamic-island #search-toggle,
+  html.dark .global-nav.dynamic-island #theme-toggle,
+  html.dark .global-nav.dynamic-island #menu-btn {
+    background: #000 !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
   }
 }
 

@@ -262,21 +262,27 @@ test.describe('Chrome smoke tests', () => {
   }, testInfo) => {
     const targets = ['projects', 'education', 'contact'];
     const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
+    const context = page.context();
 
-    for (const sectionId of targets) {
-      await page.goto('/', { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(isMobileChrome ? 250 : 350);
+    await Promise.all(targets.map(async sectionId => {
+      const targetPage = await context.newPage();
+      try {
+        await targetPage.goto('/', { waitUntil: 'domcontentloaded' });
+        await targetPage.waitForTimeout(isMobileChrome ? 250 : 350);
 
-      if (isMobileChrome) {
-        await page.locator('#menu-btn').click();
-        await page.waitForTimeout(250);
-        await page.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
-      } else {
-        await page.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
+        if (isMobileChrome) {
+          await targetPage.locator('#menu-btn').click();
+          await targetPage.waitForTimeout(250);
+          await targetPage.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
+        } else {
+          await targetPage.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
+        }
+
+        await expect(targetPage).toHaveURL(sectionUrlPatterns[sectionId]);
+      } finally {
+        await targetPage.close();
       }
-
-      await expect(page).toHaveURL(sectionUrlPatterns[sectionId]);
-    }
+    }));
   });
 
   test('all primary nav sections are reachable', async ({ page }) => {

@@ -6,6 +6,107 @@
 
 export const blogPosts = [
   {
+    id: 'grok-x-algorithm-systems-2026',
+    title: 'Inside the Open X Algorithm: Grok, Phoenix, Thunder, and Real-Time Ranking',
+    summary:
+      'A grounded read of xAI’s open X For You algorithm: Home Mixer orchestration, Thunder in-network retrieval, Phoenix out-of-network ranking, Grox content understanding, and the engineering lessons behind real-time feeds.',
+    date: '2026-05-16',
+    tags: ['Grok', 'X Algorithm', 'Real-Time AI', 'Ranking'],
+    readTime: '8 min read',
+    content: `
+# Inside the Open X Algorithm: Grok, Phoenix, Thunder, and Real-Time Ranking
+
+On May 15, 2026, xAI published an updated open version of the X "For You" feed algorithm. The repository is valuable because it shows the feed as a real production-style system: retrieval, hydration, ranking, filtering, ads blending, and content understanding all working together.
+
+The headline is not just "AI ranks posts." The interesting part is how the system chooses candidates before the model ever scores them.
+
+## The Architecture
+
+The open repo describes four major pieces:
+
+1. **Home Mixer**: the orchestration layer for the feed request
+2. **Thunder**: in-network retrieval from accounts you follow
+3. **Phoenix Retrieval**: out-of-network discovery from the global corpus
+4. **Phoenix Ranker**: a Grok-based transformer model that predicts engagement probabilities
+
+The pipeline is simple at the top level:
+
+\`\`\`text
+Request
+  -> hydrate user/query context
+  -> retrieve in-network candidates through Thunder
+  -> retrieve out-of-network candidates through Phoenix
+  -> hydrate candidate features
+  -> rank with Phoenix
+  -> filter, blend, and serve
+\`\`\`
+
+That shape matters. A feed is not one model call. It is a sequence of systems that progressively reduce a huge candidate space into a useful set of posts.
+
+## What Changed in the 2026 Release
+
+The repository notes several concrete updates:
+
+- **End-to-end inference** through \`phoenix/run_pipeline.py\`, combining retrieval and ranking in one runnable entry point
+- **Mini Phoenix model artifacts** distributed through Git LFS for out-of-the-box inference
+- **Grox content understanding**, including classifiers, embedders, and a task engine for spam, post category, and policy workloads
+- **Ads blending**, including ad injection, positioning, and brand-safety tracking
+- **Query hydrators** for followed topics, starter packs, impression bloom filters, IP, mutual follow graphs, and served history
+- **Candidate hydrators** for engagement counts, brand safety, language, media detection, quote expansion, and mutual follow scores
+- **More candidate sources**, including ads, who-to-follow, Phoenix MoE, Phoenix topics, and prompts
+
+This is useful because it shows how modern recommendation systems are built around many small data-enrichment steps, not one giant score function.
+
+## Grok as a Ranking Model
+
+Phoenix is described as a Grok-based transformer adapted for recommendation use cases. Instead of relying on hand-engineered features, the model uses engagement history to understand what a user may find relevant.
+
+That is the important design shift:
+
+- Old feed systems: many manual features and heuristics
+- Newer AI-native systems: learned representations over user action sequences and post context
+- Production reality: learned ranking still needs strict filtering, safety boundaries, and orchestration
+
+## Retrieval Before Ranking
+
+The biggest lesson for builders is that ranking starts before scoring.
+
+Thunder brings in-network posts. Phoenix brings out-of-network candidates. Hydrators add context. Only then does Phoenix rank.
+
+That pattern applies beyond social feeds:
+
+- AI assistants should retrieve the right documents before generation
+- Developer tools should hydrate logs, commits, and config before summarization
+- Search systems should blend exact matches, semantic candidates, and freshness before scoring
+
+## The Engineering Tradeoff
+
+The open algorithm makes one tradeoff clear: a useful feed needs both model quality and system discipline.
+
+Model quality decides whether the score is meaningful. System discipline decides whether the model sees the right candidates, whether unsafe content is filtered, whether ads respect boundaries, and whether the final feed stays fast.
+
+## How I Would Apply This
+
+For a production AI product, I would copy the shape of this pipeline:
+
+1. Retrieve from multiple candidate sources
+2. Hydrate context before model scoring
+3. Rank with a model that sees user history and item context
+4. Apply policy, duplication, quality, and safety filters
+5. Keep the orchestration layer observable
+
+The mistake is to treat "AI ranking" as one function. The stronger design is a pipeline where each stage has a job and can be measured independently.
+
+## The Takeaway
+
+The X algorithm repository is not just a feed implementation. It is a blueprint for real-time AI systems that need to retrieve, understand, score, filter, and serve under product constraints.
+
+**Bottom Line**: The future of feeds and assistants is not only bigger models. It is better candidate pipelines, cleaner hydration, safer filtering, and ranking systems that can explain why each stage exists.
+
+Source studied: \`github.com/xai-org/x-algorithm\`.
+        `,
+  },
+  {
     id: 'google-ai-ecosystem-2026',
     title: "Google's AI Ecosystem: The Future of Intelligence is Multimodal",
     summary:
