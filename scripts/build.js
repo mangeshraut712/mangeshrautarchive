@@ -87,8 +87,10 @@ async function pathExists(p) {
  * origin metadata set by the OS on files from the Downloads folder or archives.
  */
 async function copyDirContent(src, dest, depth = 0) {
-  await mkdir(dest, { recursive: true });
-  const entries = await readdir(src, { withFileTypes: true });
+  const [, entries] = await Promise.all([
+    mkdir(dest, { recursive: true }),
+    readdir(src, { withFileTypes: true }),
+  ]);
 
   await Promise.all(entries.map(async entry => {
     const srcPath = join(src, entry.name);
