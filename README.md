@@ -265,6 +265,7 @@ Layered translucency, parallax scrolling, and micro-animations provide a sense o
     <li>🤖 <strong>AI provider metrics</strong> — model usage and performance stats</li>
     <li>📋 Event logs with resolved/unresolved incidents</li>
     <li>⚙️ Auto-refresh every 30s with graceful fallbacks</li>
+    <li>🛠️ Recent improvements: Enhanced UI, better error handling, and real-time API status indicators</li>
   </ul>
 </div>
 </details>
