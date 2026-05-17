@@ -7,11 +7,12 @@
    CSS VARIABLES
    ======================================== */
 :root {
-  --bg-primary: #f5f5f7;
+  --bg-primary: #fbfbfd;
   --bg-secondary: #ffffff;
+  --surface-elevated: rgba(255, 255, 255, 0.86);
   --text-primary: #1d1d1f;
-  --text-secondary: #86868b;
-  --border-color: #d2d2d7;
+  --text-secondary: #6e6e73;
+  --border-color: rgba(0, 0, 0, 0.1);
   --accent-blue: #0071e3;
   --accent-green: #34c759;
   --accent-yellow: #ff9500;
@@ -25,10 +26,11 @@
 
 [data-theme='dark'] {
   --bg-primary: #000000;
-  --bg-secondary: #000000;
+  --bg-secondary: #101010;
+  --surface-elevated: rgba(28, 28, 30, 0.82);
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
-  --border-color: #38383a;
+  --border-color: rgba(255, 255, 255, 0.14);
   --accent-blue: #0a84ff;
   --accent-green: #30d158;
   --accent-yellow: #ff9f0a;
@@ -56,6 +58,7 @@ body {
 
 body.monitor-page {
   padding-top: 84px;
+  min-height: 100vh;
 }
 
 .monitor-nav .nav-container {
@@ -82,7 +85,7 @@ body.monitor-page {
 .monitor-nav-label {
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   color: var(--text-primary);
 }
 
@@ -118,9 +121,9 @@ html.dark .monitor-nav-label {
   align-items: center;
   gap: 20px;
   padding: 32px 36px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 28px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.08),
     0 8px 16px rgba(0, 0, 0, 0.04),
@@ -167,9 +170,9 @@ html.dark .header-content {
 }
 
 .header-title h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: 48px;
   font-weight: 700;
-  letter-spacing: -0.021em;
+  letter-spacing: 0;
   margin-bottom: 6px;
 }
 
@@ -319,23 +322,43 @@ html.dark .header-content {
 
 .monitor-summary-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
   padding: 28px 32px;
   margin-bottom: 30px;
   border-radius: 28px;
-  background:
-    radial-gradient(circle at top right, rgba(0, 113, 227, 0.08), transparent 32%),
-    var(--bg-secondary);
+  background: var(--surface-elevated);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+body.monitor-page main > section.monitor-summary-card {
+  padding-top: 28px !important;
+  padding-right: 32px !important;
+  padding-bottom: 28px !important;
+  padding-left: 32px !important;
+}
+
+body.monitor-page main > section.monitor-summary-card:not(#home) {
+  padding-top: 28px !important;
+  padding-right: 32px !important;
+  padding-bottom: 28px !important;
+  padding-left: 32px !important;
+}
+
+.monitor-summary-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 8px;
 }
 
 .monitor-summary-copy h2 {
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: 38px !important;
   line-height: 1.08;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   margin-bottom: 12px;
 }
 
@@ -345,12 +368,11 @@ html.dark .header-content {
 }
 
 .monitor-summary-panel {
-  width: min(420px, 100%);
+  flex: 0 0 min(380px, 34%);
+  width: min(380px, 100%);
   padding: 20px 22px;
   border-radius: 22px;
-  background:
-    radial-gradient(circle at top right, rgba(0, 113, 227, 0.12), transparent 38%),
-    rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -374,7 +396,7 @@ html.dark .header-content {
 .summary-chip strong {
   font-size: 1rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .summary-chip-label {
@@ -388,7 +410,7 @@ html.dark .header-content {
 .runtime-card-title {
   font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   margin-bottom: 8px;
 }
 
@@ -421,8 +443,8 @@ html.dark .header-content {
 }
 
 .env-pill-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -430,7 +452,7 @@ html.dark .header-content {
   display: inline-flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 128px;
+  min-width: 0;
   padding: 10px 12px;
   border-radius: 16px;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -463,9 +485,7 @@ html.dark .summary-chip {
 
 [data-theme='dark'] .monitor-summary-panel,
 html.dark .monitor-summary-panel {
-  background:
-    radial-gradient(circle at top right, rgba(10, 132, 255, 0.16), transparent 38%),
-    rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -498,7 +518,7 @@ html.dark .env-pill {
 }
 
 .overview-card {
-  background: var(--bg-secondary);
+  background: var(--surface-elevated);
   border-radius: var(--radius-md);
   padding: 24px;
   box-shadow:
@@ -566,7 +586,7 @@ html.dark .env-pill {
 .overview-value {
   font-size: 28px;
   font-weight: 700;
-  letter-spacing: -0.021em;
+  letter-spacing: 0;
   margin-top: 12px;
   line-height: 1.1;
 }
@@ -586,12 +606,26 @@ html.dark .env-pill {
    SECTIONS
    ======================================== */
 .section {
-  background: var(--bg-secondary);
+  background: var(--surface-elevated);
   border-radius: var(--radius-lg);
   padding: 28px;
   margin-bottom: 24px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
+}
+
+body.monitor-page main > section.section {
+  padding-top: 28px !important;
+  padding-right: 28px !important;
+  padding-bottom: 28px !important;
+  padding-left: 28px !important;
+}
+
+body.monitor-page main > section.section:not(#home) {
+  padding-top: 28px !important;
+  padding-right: 28px !important;
+  padding-bottom: 28px !important;
+  padding-left: 28px !important;
 }
 
 .section-header {
@@ -602,9 +636,9 @@ html.dark .env-pill {
 }
 
 .section-title {
-  font-size: 24px;
+  font-size: 24px !important;
   font-weight: 700;
-  letter-spacing: -0.021em;
+  letter-spacing: 0;
   color: var(--text-primary);
 }
 
@@ -1201,6 +1235,7 @@ html.dark .env-pill {
 
   .header-actions,
   .monitor-summary-panel {
+    flex-basis: auto;
     width: 100%;
   }
 
@@ -1233,6 +1268,20 @@ html.dark .env-pill {
   .monitor-summary-card {
     padding: 22px 18px;
     border-radius: 24px;
+  }
+
+  body.monitor-page main > section.monitor-summary-card {
+    padding-top: 22px !important;
+    padding-right: 18px !important;
+    padding-bottom: 22px !important;
+    padding-left: 18px !important;
+  }
+
+  body.monitor-page main > section.monitor-summary-card:not(#home) {
+    padding-top: 22px !important;
+    padding-right: 18px !important;
+    padding-bottom: 22px !important;
+    padding-left: 18px !important;
   }
 
   .header-actions,
@@ -1282,6 +1331,10 @@ html.dark .env-pill {
   .runtime-meta-row a {
     text-align: left;
   }
+
+  .env-pill-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 @keyframes slide-in {
@@ -1304,7 +1357,11 @@ html.dark .env-pill {
   }
 
   .header-title h1 {
-    font-size: 22px;
+    font-size: 32px;
+  }
+
+  .monitor-summary-copy h2 {
+    font-size: 28px !important;
   }
 
   .monitor-container {
@@ -1313,6 +1370,20 @@ html.dark .env-pill {
 
   .section {
     padding: 20px;
+  }
+
+  body.monitor-page main > section.section {
+    padding-top: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  body.monitor-page main > section.section:not(#home) {
+    padding-top: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
   }
 
   .health-item {

@@ -458,10 +458,15 @@
 
     <script src="js/utils/theme.js?v=20260423a"></script>
     <script>
-      const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshraut.pro';
+      const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshrautarchive.vercel.app';
+      const MONITOR_API_PROBE_PATH = '/api/monitor/status';
+      const MONITOR_API_TIMEOUT_MS = 8000;
       const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
       let monitorConfig = null;
       let apiOrigin = '';
+      let apiOriginReady = null;
+      let monitorApiAvailable = false;
+      let monitorApiIssue = '';
       let lastRefreshIso = null;
 
       function normalizeOrigin(rawValue, fallback = '') {
@@ -491,23 +496,97 @@
         }
       }
 
-      function resolveApiOrigin(config) {
+      function uniqueOrigins(origins) {
+        const seen = new Set();
+        return origins.filter(origin => {
+          const key = origin || 'same-origin';
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      }
+
+      function getApiOriginCandidates(config) {
         const hostname = window.location.hostname || '';
 
         if (LOCAL_HOSTS.has(hostname)) {
-          return '';
+          return [''];
         }
+
+        const configuredOrigin = normalizeOrigin(config?.apiBaseUrl, '');
+        const remoteConfiguredOrigin =
+          configuredOrigin && configuredOrigin !== window.location.origin ? configuredOrigin : '';
+        const fallbackOrigin =
+          REMOTE_API_FALLBACK_ORIGIN !== window.location.origin ? REMOTE_API_FALLBACK_ORIGIN : '';
 
         if (hostname.includes('github.io')) {
-          return normalizeOrigin(config?.apiBaseUrl, REMOTE_API_FALLBACK_ORIGIN);
+          return uniqueOrigins([remoteConfiguredOrigin || fallbackOrigin]);
         }
 
-        return '';
+        return uniqueOrigins(['', remoteConfiguredOrigin, fallbackOrigin]);
+      }
+
+      function buildApiUrlForOrigin(origin, path) {
+        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+        return origin ? `${origin}${normalizedPath}` : normalizedPath;
+      }
+
+      async function fetchJsonFromOrigin(origin, path) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), MONITOR_API_TIMEOUT_MS);
+        try {
+          const response = await fetch(buildApiUrlForOrigin(origin, path), {
+            cache: 'no-store',
+            signal: controller.signal,
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const contentType = response.headers.get('content-type') || '';
+          if (!contentType.includes('application/json')) {
+            throw new Error('Expected JSON response');
+          }
+          return await response.json();
+        } finally {
+          clearTimeout(timeout);
+        }
+      }
+
+      async function selectApiOrigin(config) {
+        const candidates = getApiOriginCandidates(config);
+        let lastError = null;
+
+        for (const candidate of candidates) {
+          try {
+            const data = await fetchJsonFromOrigin(candidate, MONITOR_API_PROBE_PATH);
+            monitorApiAvailable = true;
+            monitorApiIssue = '';
+            return { origin: candidate, probe: data };
+          } catch (error) {
+            lastError = error;
+          }
+        }
+
+        monitorApiAvailable = false;
+        monitorApiIssue = lastError?.message || 'API probe failed';
+        return { origin: candidates[0] || '', probe: null };
+      }
+
+      async function ensureApiOrigin(options = {}) {
+        if (options.force) {
+          apiOriginReady = null;
+        }
+
+        if (!apiOriginReady) {
+          apiOriginReady = selectApiOrigin(monitorConfig).then(result => {
+            apiOrigin = result.origin;
+            return result;
+          });
+        }
+
+        return apiOriginReady;
       }
 
       function buildApiUrl(path) {
-        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-        return apiOrigin ? `${apiOrigin}${normalizedPath}` : normalizedPath;
+        return buildApiUrlForOrigin(apiOrigin, path);
       }
 
       function toAbsoluteApiLink(path) {
@@ -517,7 +596,9 @@
 
       async function fetchMonitorJson(path, label) {
         try {
-          const response = await fetch(buildApiUrl(path));
+          await ensureApiOrigin();
+          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
+          const response = await fetch(buildApiUrl(path), { cache: 'no-store' });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const contentType = response.headers.get('content-type') || '';
           if (!contentType.includes('application/json')) return null;
@@ -554,9 +635,11 @@
 
       async function fetchEvents(filter = '') {
         try {
+          await ensureApiOrigin();
+          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
           const url = new URL(buildApiUrl('/api/monitor/events'), window.location.origin);
           if (filter) url.searchParams.set('event_type', filter);
-          const response = await fetch(url);
+          const response = await fetch(url, { cache: 'no-store' });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const contentType = response.headers.get('content-type') || '';
           if (!contentType.includes('application/json')) return [];
@@ -570,6 +653,8 @@
 
       async function resolveEvent(eventId) {
         try {
+          await ensureApiOrigin();
+          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
           const response = await fetch(buildApiUrl(`/api/monitor/events/${eventId}/resolve`), {
             method: 'POST',
           });
@@ -635,6 +720,24 @@
         const lastRefresh = document.getElementById('summary-last-refresh');
         const openIssues = document.getElementById('summary-open-issues');
         const serviceCount = document.getElementById('summary-service-count');
+        const apiUnavailable =
+          !monitorApiAvailable &&
+          !statusData &&
+          !metricsData &&
+          !healthData &&
+          !servicesData &&
+          !hostingData;
+
+        if (apiUnavailable) {
+          summaryText.textContent =
+            'Monitor API is unavailable from this deployment. The dashboard is showing a degraded state until /api/monitor/status responds successfully. ' +
+            `Last error: ${monitorApiIssue || 'unknown'}.`;
+          uptime.textContent = '--';
+          lastRefresh.textContent = formatLocalTime(lastRefreshIso);
+          openIssues.textContent = 'Unknown';
+          serviceCount.textContent = '--';
+          return;
+        }
 
         const unresolvedEvents = metricsData?.summary?.unresolved_events ?? '--';
         const totalServices =
@@ -878,6 +981,7 @@
 
       function renderOverallStatus(healthData, servicesData, hostingData) {
         const statusBadge = document.getElementById('overall-status');
+        const apiUnavailable = !monitorApiAvailable && !healthData && !servicesData && !hostingData;
         const statuses = [
           healthData?.status,
           ...(servicesData?.services || []).map(service => service.status),
@@ -885,7 +989,10 @@
         ].filter(Boolean);
 
         let overallStatus = 'healthy';
-        if (statuses.some(status => status === 'unhealthy' || status === 'critical')) {
+        if (
+          apiUnavailable ||
+          statuses.some(status => status === 'unhealthy' || status === 'critical')
+        ) {
           overallStatus = 'unhealthy';
         } else if (statuses.some(status => status === 'degraded' || status === 'unknown')) {
           overallStatus = 'degraded';
@@ -895,11 +1002,13 @@
         statusBadge.innerHTML = `
                 <span class="status-dot"></span>
                 ${
-                  overallStatus === 'healthy'
-                    ? 'All Systems Operational'
-                    : overallStatus === 'degraded'
-                      ? 'Monitoring Attention Needed'
-                      : 'System Issues Detected'
+                  apiUnavailable
+                    ? 'Monitor API Unavailable'
+                    : overallStatus === 'healthy'
+                      ? 'All Systems Operational'
+                      : overallStatus === 'degraded'
+                        ? 'Monitoring Attention Needed'
+                        : 'System Issues Detected'
                 }
             `;
       }
@@ -1148,6 +1257,7 @@
       // Actions
       async function refreshData() {
         showToast('Refreshing data...', 'info');
+        await ensureApiOrigin({ force: true });
 
         const [health, metrics, integrations, status, docs, hosting] = await Promise.all([
           fetchHealth(),
@@ -1329,7 +1439,9 @@
       // ========================================
       async function fetchSecurity() {
         try {
-          const res = await fetch(buildApiUrl('/api/monitor/security'));
+          await ensureApiOrigin();
+          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
+          const res = await fetch(buildApiUrl('/api/monitor/security'), { cache: 'no-store' });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return await res.json();
         } catch {
@@ -1387,7 +1499,9 @@
       // ========================================
       async function fetchAIMetrics() {
         try {
-          const res = await fetch(buildApiUrl('/api/monitor/ai-metrics'));
+          await ensureApiOrigin();
+          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
+          const res = await fetch(buildApiUrl('/api/monitor/ai-metrics'), { cache: 'no-store' });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return await res.json();
         } catch {
@@ -1472,7 +1586,6 @@
       // Initialize
       document.addEventListener('DOMContentLoaded', async () => {
         monitorConfig = await loadPublicConfig();
-        apiOrigin = resolveApiOrigin(monitorConfig);
         refreshData();
 
         // Also fetch security + AI metrics on load
