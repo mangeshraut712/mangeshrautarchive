@@ -358,17 +358,15 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
       await githubProjects.hydrateReposWithActivity(reposToHydrate);
 
-      if (currentToken !== renderToken) {
-        return;
+      if (currentToken === renderToken) {
+        const rerenderRepos = getDisplayRepos();
+        container.innerHTML = rerenderRepos
+          .map((repo, index) => githubProjects.createProjectCard(repo, index))
+          .join('');
+
+        applyTiltEffects(container);
+        updateActivityStats(allRepos, rerenderRepos);
       }
-
-      const rerenderRepos = getDisplayRepos();
-      container.innerHTML = rerenderRepos
-        .map((repo, index) => githubProjects.createProjectCard(repo, index))
-        .join('');
-
-      applyTiltEffects(container);
-      updateActivityStats(allRepos, rerenderRepos);
     };
 
     const debouncedRender = debounce(() => {
