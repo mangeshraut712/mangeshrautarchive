@@ -718,6 +718,10 @@
         return key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
       }
 
+      function formatNumber(value) {
+        return Number.isFinite(Number(value)) ? Number(value).toLocaleString() : '0';
+      }
+
       function renderSummary(statusData, metricsData, healthData, servicesData, hostingData) {
         const summaryText = document.getElementById('monitor-summary-text');
         const uptime = document.getElementById('summary-uptime');
@@ -1377,14 +1381,24 @@
         try {
           const controller = new AbortController();
           const timeout = setTimeout(() => controller.abort(), 8000);
+          const isPageProbe = target.type === 'page';
           const res = await fetch(target.url, {
-            method: target.type === 'api' ? 'GET' : 'HEAD',
-            mode: 'cors',
+            method: isPageProbe ? 'HEAD' : 'GET',
+            mode: isPageProbe ? 'no-cors' : 'cors',
             signal: controller.signal,
             cache: 'no-store',
           });
           clearTimeout(timeout);
           const latency = Math.round(performance.now() - start);
+          if (res.type === 'opaque') {
+            return {
+              ...target,
+              latency,
+              status: 'healthy',
+              message: 'Reachable',
+            };
+          }
+
           return {
             ...target,
             latency,
@@ -1396,8 +1410,7 @@
           if (e.name === 'AbortError') {
             return { ...target, latency, status: 'unhealthy', message: 'Timeout (>8s)' };
           }
-          // CORS errors still mean server responded
-          if (latency < 7000) {
+          if (target.type === 'api' && latency < 7000) {
             return {
               ...target,
               latency,
@@ -1585,17 +1598,69 @@
             )
             .join('');
         } else {
-          // Display as key-value summary
-          const entries = Object.entries(data).filter(([k]) => k !== 'timestamp');
-          container.innerHTML = entries
+          const responseTimes = Array.isArray(data.ai_response_times)
+            ? data.ai_response_times
+            : [];
+          const avgLatency =
+            responseTimes.length > 0
+              ? Math.round(responseTimes.reduce((sum, value) => sum + Number(value || 0), 0) / responseTimes.length)
+              : null;
+          const modelUsage = data.model_usage || {};
+          const modelCount = Object.keys(modelUsage).length;
+          const tokenUsage = data.token_usage || {};
+          const fallbackCards = [
+            {
+              name: 'OpenRouter Requests',
+              status: 'healthy',
+              value: formatNumber(data.openrouter_requests),
+              detail: 'Completed provider calls',
+              icon: 'paper-plane',
+            },
+            {
+              name: 'OpenRouter Errors',
+              status: Number(data.openrouter_errors || 0) > 0 ? 'degraded' : 'healthy',
+              value: formatNumber(data.openrouter_errors),
+              detail: 'Provider request failures',
+              icon: 'triangle-exclamation',
+            },
+            {
+              name: 'AI Latency',
+              status: 'healthy',
+              value: avgLatency == null ? 'No samples yet' : `${avgLatency}ms avg`,
+              detail: `${responseTimes.length} response sample${responseTimes.length === 1 ? '' : 's'} tracked`,
+              icon: 'gauge-high',
+            },
+            {
+              name: 'Model Usage',
+              status: 'healthy',
+              value: modelCount === 0 ? 'No usage yet' : `${modelCount} model${modelCount === 1 ? '' : 's'}`,
+              detail: modelCount === 0 ? 'Waiting for chat traffic' : Object.keys(modelUsage).join(', '),
+              icon: 'robot',
+            },
+            {
+              name: 'Token Usage',
+              status: 'healthy',
+              value: `${formatNumber(tokenUsage.input)} in / ${formatNumber(tokenUsage.output)} out`,
+              detail: 'Tracked chat token volume',
+              icon: 'coins',
+            },
+          ];
+
+          container.innerHTML = fallbackCards
             .map(
-              ([key, value]) => `
-            <div class="health-item healthy">
+              card => `
+            <div class="health-item ${card.status}">
               <div class="health-item-left">
-                <div class="health-status-icon healthy"><i class="fas fa-chart-bar"></i></div>
+                <div class="health-status-icon ${card.status}"><i class="fas fa-${card.icon}"></i></div>
                 <div class="health-info">
-                  <h4>${escapeHtml(formatConfigLabel(key))}</h4>
-                  <p>${escapeHtml(typeof value === 'object' ? JSON.stringify(value) : String(value))}</p>
+                  <h4>${escapeHtml(card.name)}</h4>
+                  <p>${escapeHtml(card.detail)}</p>
+                </div>
+              </div>
+              <div class="health-metrics">
+                <div class="health-metric">
+                  <div class="health-metric-value">${escapeHtml(card.value)}</div>
+                  <div class="health-metric-label">Current</div>
                 </div>
               </div>
             </div>`

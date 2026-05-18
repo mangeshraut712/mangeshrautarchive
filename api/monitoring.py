@@ -511,27 +511,33 @@ class SystemMonitor:
             cpu_percent = psutil.cpu_percent(interval=0.1)  # type: ignore
             memory = psutil.virtual_memory()  # type: ignore
             disk = psutil.disk_usage("/")  # type: ignore
+            is_vercel_runtime = bool(os.getenv("VERCEL") or os.getenv("VERCEL_ENV"))
+            disk_pressure = disk.percent > 85 and not is_vercel_runtime
 
             status = HealthStatus.HEALTHY
-            message = "System resources are healthy"
+            message = "Runtime resources are healthy"
 
             if cpu_percent > 90 or memory.percent > 90:
                 status = HealthStatus.CRITICAL
                 message = "Critical: High resource usage"
-            elif cpu_percent > 70 or memory.percent > 80 or disk.percent > 85:
+            elif cpu_percent > 70 or memory.percent > 80 or disk_pressure:
                 status = HealthStatus.DEGRADED
                 message = "Warning: Elevated resource usage"
+
+            details = {
+                "cpu_percent": cpu_percent,
+                "memory_percent": memory.percent,
+                "memory_available_gb": round(memory.available / (1024**3), 2),
+                "disk_percent": disk.percent,
+                "disk_free_gb": round(disk.free / (1024**3), 2),
+            }
+            if is_vercel_runtime:
+                details["disk_note"] = "Vercel ephemeral disk is informational and not used for health status."
 
             return {
                 "status": status,
                 "message": message,
-                "details": {
-                    "cpu_percent": cpu_percent,
-                    "memory_percent": memory.percent,
-                    "memory_available_gb": round(memory.available / (1024**3), 2),
-                    "disk_percent": disk.percent,
-                    "disk_free_gb": round(disk.free / (1024**3), 2),
-                },
+                "details": details,
             }
         except Exception as e:
             logger.warning(f"System resource check failed: {e}")
