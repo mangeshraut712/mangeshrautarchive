@@ -92,60 +92,64 @@ async function copyDirContent(src, dest, depth = 0) {
     readdir(src, { withFileTypes: true }),
   ]);
 
-  await Promise.all(entries.map(async entry => {
-    const srcPath = join(src, entry.name);
-    const destPath = join(dest, entry.name);
+  await Promise.all(
+    entries.map(async entry => {
+      const srcPath = join(src, entry.name);
+      const destPath = join(dest, entry.name);
 
-    if (entry.isDirectory()) {
-      await copyDirContent(srcPath, destPath, depth + 1);
-    } else if (entry.isFile()) {
-      try {
-        const content = await readFile(srcPath);
-        await writeFile(destPath, content);
-      } catch (err) {
-        // Skip unreadable files and keep building
-        console.warn(`⚠️  Skipped (unreadable): ${relative(projectRoot, srcPath)} — ${err.code}`);
+      if (entry.isDirectory()) {
+        await copyDirContent(srcPath, destPath, depth + 1);
+      } else if (entry.isFile()) {
+        try {
+          const content = await readFile(srcPath);
+          await writeFile(destPath, content);
+        } catch (err) {
+          // Skip unreadable files and keep building
+          console.warn(`⚠️  Skipped (unreadable): ${relative(projectRoot, srcPath)} — ${err.code}`);
+        }
       }
-    }
-    // symlinks are intentionally skipped — not needed in dist
-  }));
+      // symlinks are intentionally skipped — not needed in dist
+    })
+  );
 }
 
 async function optimizeCopiedAssets(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const minifiableExtensions = new Set(['css', 'js']);
 
-  await Promise.all(entries.map(async entry => {
-    const entryPath = join(dir, entry.name);
+  await Promise.all(
+    entries.map(async entry => {
+      const entryPath = join(dir, entry.name);
 
-    if (entry.isDirectory()) {
-      await optimizeCopiedAssets(entryPath);
-      return;
-    }
+      if (entry.isDirectory()) {
+        await optimizeCopiedAssets(entryPath);
+        return;
+      }
 
-    if (!entry.isFile()) {
-      return;
-    }
+      if (!entry.isFile()) {
+        return;
+      }
 
-    const extension = entry.name.split('.').pop()?.toLowerCase();
-    if (!extension || !minifiableExtensions.has(extension)) {
-      return;
-    }
+      const extension = entry.name.split('.').pop()?.toLowerCase();
+      if (!extension || !minifiableExtensions.has(extension)) {
+        return;
+      }
 
-    if (entry.name === 'build-config.js') {
-      return;
-    }
+      if (entry.name === 'build-config.js') {
+        return;
+      }
 
-    const source = await readFile(entryPath, 'utf8');
-    const result = await transform(source, {
-      loader: extension === 'css' ? 'css' : 'js',
-      legalComments: 'none',
-      minify: true,
-      target: extension === 'css' ? 'es2020' : 'es2020',
-    });
+      const source = await readFile(entryPath, 'utf8');
+      const result = await transform(source, {
+        loader: extension === 'css' ? 'css' : 'js',
+        legalComments: 'none',
+        minify: true,
+        target: extension === 'css' ? 'es2020' : 'es2020',
+      });
 
-    await writeFile(entryPath, result.code, 'utf8');
-  }));
+      await writeFile(entryPath, result.code, 'utf8');
+    })
+  );
 }
 
 async function build() {
@@ -165,19 +169,21 @@ async function build() {
   console.log('📂 Copying src/ → dist/ ...');
   await copyDirContent(srcDir, distDir);
 
-  await Promise.all(staticExtras.map(async item => {
-    const source = resolve(projectRoot, item);
-    if (await pathExists(source)) {
-      const destination = resolve(distDir, item.split('/').pop());
-      try {
-        const content = await readFile(source);
-        await writeFile(destination, content);
-        console.log(`📋 Copied extra asset: ${item}`);
-      } catch (err) {
-        console.warn(`⚠️  Skipped extra asset: ${item} — ${err.code}`);
+  await Promise.all(
+    staticExtras.map(async item => {
+      const source = resolve(projectRoot, item);
+      if (await pathExists(source)) {
+        const destination = resolve(distDir, item.split('/').pop());
+        try {
+          const content = await readFile(source);
+          await writeFile(destination, content);
+          console.log(`📋 Copied extra asset: ${item}`);
+        } catch (err) {
+          console.warn(`⚠️  Skipped extra asset: ${item} — ${err.code}`);
+        }
       }
-    }
-  }));
+    })
+  );
 
   console.log('⚡ Minifying copied CSS/JS assets ...');
   await Promise.all([
@@ -214,26 +220,28 @@ async function addCacheBusting(distDir) {
     return hash ? `${nextPath}#${hash}` : nextPath;
   };
 
-  await Promise.all([htmlPath, monitorPath, travelPath].map(async htmlFile => {
-    if (await pathExists(htmlFile)) {
-      let content = await readFile(htmlFile, 'utf8');
+  await Promise.all(
+    [htmlPath, monitorPath, travelPath].map(async htmlFile => {
+      if (await pathExists(htmlFile)) {
+        let content = await readFile(htmlFile, 'utf8');
 
-      // Add cache busting to CSS and JS files
-      content = content.replace(
-        /(href|src)="([^"]+)"/g,
-        (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
-      );
+        // Add cache busting to CSS and JS files
+        content = content.replace(
+          /(href|src)="([^"]+)"/g,
+          (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
+        );
 
-      // Keep static asset paths repo-relative for GitHub Pages deployments.
-      content = content.replace(
-        /(href|src|data-href)="\/(assets|js)\//g,
-        (match, attr, folder) => `${attr}="${folder}/`
-      );
+        // Keep static asset paths repo-relative for GitHub Pages deployments.
+        content = content.replace(
+          /(href|src|data-href)="\/(assets|js)\//g,
+          (match, attr, folder) => `${attr}="${folder}/`
+        );
 
-      await writeFile(htmlFile, content);
-      console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
-    }
-  }));
+        await writeFile(htmlFile, content);
+        console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
+      }
+    })
+  );
 }
 
 build().catch(error => {

@@ -1,154 +1,202 @@
 const CITY_INTELLIGENCE = {
   Philadelphia: {
-    culturalSignificance: 'A historic American city where university life, civic architecture, museums, and neighborhood culture overlap.',
+    culturalSignificance:
+      'A historic American city where university life, civic architecture, museums, and neighborhood culture overlap.',
     localAtmosphere: 'brick streets, campus energy, riverside walks, and quiet academic corners',
     mustSee: ['30th Street Station', 'Old City', 'Schuylkill River Trail'],
     sensoryDescriptors: ['train-hall echoes', 'fall air', 'museum stone', 'coffee between classes'],
   },
   Pune: {
-    culturalSignificance: 'My home base in India: a learning and technology city shaped by Maharashtrian history, forts, monsoon hills, food streets, and student life.',
-    localAtmosphere: 'green hills, late-night food streets, engineering campuses, old-city peths, and familiar home-base movement',
-    mustSee: ['Shaniwar Wada', 'Aga Khan Palace', 'Sinhagad Fort', 'Dagdusheth Ganpati', 'Pataleshwar Cave Temple'],
+    culturalSignificance:
+      'My home base in India: a learning and technology city shaped by Maharashtrian history, forts, monsoon hills, food streets, and student life.',
+    localAtmosphere:
+      'green hills, late-night food streets, engineering campuses, old-city peths, and familiar home-base movement',
+    mustSee: [
+      'Shaniwar Wada',
+      'Aga Khan Palace',
+      'Sinhagad Fort',
+      'Dagdusheth Ganpati',
+      'Pataleshwar Cave Temple',
+    ],
     sensoryDescriptors: ['monsoon petrichor', 'cutting chai', 'two-wheeler motion', 'fort wind'],
     homeBase: true,
-    guideSummary: 'A compact city guide for Pune: heritage in the old peths, quiet palace gardens, hill-fort mornings, Ganesh festival energy, campus corridors, and cafe streets.',
+    guideSummary:
+      'A compact city guide for Pune: heritage in the old peths, quiet palace gardens, hill-fort mornings, Ganesh festival energy, campus corridors, and cafe streets.',
     bestFor: ['Home base', 'Maratha heritage', 'Monsoon hills', 'Street food', 'Student culture'],
-    neighborhoods: ['Shivajinagar', 'FC Road', 'Koregaon Park', 'Kothrud', 'Hinjewadi', 'Viman Nagar'],
+    neighborhoods: [
+      'Shivajinagar',
+      'FC Road',
+      'Koregaon Park',
+      'Kothrud',
+      'Hinjewadi',
+      'Viman Nagar',
+    ],
     thingsToDo: [
       {
         title: 'Shaniwar Wada',
         category: 'Historic palace fort',
-        summary: 'The former Peshwa seat and one of Pune’s strongest cultural symbols, known for Delhi Darwaja, palace remains, fountains, and evening history shows.',
-        image: 'https://cdn.s3waas.gov.in/s3ffeabd223de0d4eacb9a3e6e53e5448d/uploads/bfi_thumb/2018040254-olwe31n5ph474jwoxra06pxchcyt06jg01vxl63iz8.jpg',
+        summary:
+          'The former Peshwa seat and one of Pune’s strongest cultural symbols, known for Delhi Darwaja, palace remains, fountains, and evening history shows.',
+        image:
+          'https://cdn.s3waas.gov.in/s3ffeabd223de0d4eacb9a3e6e53e5448d/uploads/bfi_thumb/2018040254-olwe31n5ph474jwoxra06pxchcyt06jg01vxl63iz8.jpg',
         source: 'District Pune',
         sourceUrl: 'https://pune.gov.in/en/tourist-place/shaniwarwada/',
       },
       {
         title: 'Aga Khan Palace',
         category: 'Gandhi heritage',
-        summary: 'A calm landmark with gardens, arches, and deep connection to India’s freedom movement and the Kasturba Gandhi Memorial.',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Aga_Khan_Palace_Pune.jpg/960px-Aga_Khan_Palace_Pune.jpg',
+        summary:
+          'A calm landmark with gardens, arches, and deep connection to India’s freedom movement and the Kasturba Gandhi Memorial.',
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Aga_Khan_Palace_Pune.jpg/960px-Aga_Khan_Palace_Pune.jpg',
         source: 'Wikimedia Commons',
         sourceUrl: 'https://commons.wikimedia.org/wiki/File:Aga_Khan_Palace_Pune.jpg',
       },
       {
         title: 'Sinhagad Fort',
         category: 'Hill fort and trek',
-        summary: 'A Sahyadri fort near Pune tied to Tanaji Malusare, sweeping hill views, monsoon trails, and classic kanda bhaji stops.',
-        image: 'https://cdn.s3waas.gov.in/s3ffeabd223de0d4eacb9a3e6e53e5448d/uploads/bfi_thumb/2018042587-olwe37a6uhbx27oi0tprloi41o70ad5u0tsugtv5xw.jpg',
+        summary:
+          'A Sahyadri fort near Pune tied to Tanaji Malusare, sweeping hill views, monsoon trails, and classic kanda bhaji stops.',
+        image:
+          'https://cdn.s3waas.gov.in/s3ffeabd223de0d4eacb9a3e6e53e5448d/uploads/bfi_thumb/2018042587-olwe37a6uhbx27oi0tprloi41o70ad5u0tsugtv5xw.jpg',
         source: 'District Pune',
         sourceUrl: 'https://pune.gov.in/en/tourist-place/sinhagad/',
       },
       {
         title: 'Dagdusheth Ganpati',
         category: 'Temple and festival culture',
-        summary: 'One of Pune’s most loved Ganesh temples, especially powerful during Ganeshotsav when the old city becomes a civic celebration.',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Shikhara_of_Dagdusheth_Halwai_Ganpati_Temple%2C_Pune.jpg/960px-Shikhara_of_Dagdusheth_Halwai_Ganpati_Temple%2C_Pune.jpg',
+        summary:
+          'One of Pune’s most loved Ganesh temples, especially powerful during Ganeshotsav when the old city becomes a civic celebration.',
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Shikhara_of_Dagdusheth_Halwai_Ganpati_Temple%2C_Pune.jpg/960px-Shikhara_of_Dagdusheth_Halwai_Ganpati_Temple%2C_Pune.jpg',
         source: 'Wikimedia Commons',
-        sourceUrl: 'https://commons.wikimedia.org/wiki/File:Shikhara_of_Dagdusheth_Halwai_Ganpati_Temple,_Pune.jpg',
+        sourceUrl:
+          'https://commons.wikimedia.org/wiki/File:Shikhara_of_Dagdusheth_Halwai_Ganpati_Temple,_Pune.jpg',
       },
       {
         title: 'Pataleshwar Cave Temple',
         category: 'Rock-cut temple',
-        summary: 'An 8th-century rock-cut cave temple in the city, a quiet architectural pause near Shivajinagar.',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Pataleswar_Main_Entrance_Image.jpg/960px-Pataleswar_Main_Entrance_Image.jpg',
+        summary:
+          'An 8th-century rock-cut cave temple in the city, a quiet architectural pause near Shivajinagar.',
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Pataleswar_Main_Entrance_Image.jpg/960px-Pataleswar_Main_Entrance_Image.jpg',
         source: 'Wikimedia Commons',
         sourceUrl: 'https://commons.wikimedia.org/wiki/File:Pataleswar_Main_Entrance_Image.jpg',
       },
     ],
   },
   Mumbai: {
-    culturalSignificance: 'India’s cinematic, financial, and coastal metropolis, built around movement, arrival, and dense urban energy.',
+    culturalSignificance:
+      'India’s cinematic, financial, and coastal metropolis, built around movement, arrival, and dense urban energy.',
     localAtmosphere: 'sea air, terminals, dense streets, glass towers, and late evening lights',
     mustSee: ['Marine Drive', 'Gateway of India', 'Bandra-Worli Sea Link'],
     sensoryDescriptors: ['salt air', 'local train rhythm', 'street food smoke', 'humid neon'],
   },
   Dubai: {
-    culturalSignificance: 'A global connection point where airport scale, desert modernity, and vertical architecture meet.',
-    localAtmosphere: 'polished terminals, warm night air, reflective towers, and long-haul anticipation',
+    culturalSignificance:
+      'A global connection point where airport scale, desert modernity, and vertical architecture meet.',
+    localAtmosphere:
+      'polished terminals, warm night air, reflective towers, and long-haul anticipation',
     mustSee: ['Dubai Creek', 'Burj Khalifa', 'Museum of the Future'],
     sensoryDescriptors: ['terminal light', 'desert heat', 'quiet lounges', 'glass reflections'],
   },
   Newark: {
-    culturalSignificance: 'A major New York-area gateway where international arrivals connect into the Northeast corridor.',
-    localAtmosphere: 'runway lights, rail links, river crossings, and the first signal of the East Coast',
+    culturalSignificance:
+      'A major New York-area gateway where international arrivals connect into the Northeast corridor.',
+    localAtmosphere:
+      'runway lights, rail links, river crossings, and the first signal of the East Coast',
     mustSee: ['Newark Penn Station', 'Ironbound', 'Branch Brook Park'],
     sensoryDescriptors: ['terminal glass', 'train announcements', 'winter air', 'arrival momentum'],
   },
   'San Juan': {
-    culturalSignificance: 'Puerto Rico’s capital blends Caribbean coastline, Spanish colonial streets, forts, and vivid color.',
+    culturalSignificance:
+      'Puerto Rico’s capital blends Caribbean coastline, Spanish colonial streets, forts, and vivid color.',
     localAtmosphere: 'ocean breeze, pastel walls, fort stone, music, and old-city balconies',
     mustSee: ['Old San Juan', 'Castillo San Felipe del Morro', 'Condado'],
     sensoryDescriptors: ['sea salt', 'cobblestone warmth', 'salsa rhythm', 'tropical rain'],
   },
   Miami: {
-    culturalSignificance: 'A coastal gateway shaped by Latin American culture, art deco architecture, port energy, and Atlantic light.',
-    localAtmosphere: 'palms, waterfront terminals, beach avenues, neon evenings, and bilingual street life',
+    culturalSignificance:
+      'A coastal gateway shaped by Latin American culture, art deco architecture, port energy, and Atlantic light.',
+    localAtmosphere:
+      'palms, waterfront terminals, beach avenues, neon evenings, and bilingual street life',
     mustSee: ['South Beach', 'Wynwood Walls', 'Biscayne Bay'],
     sensoryDescriptors: ['ocean humidity', 'neon glow', 'cafecito aroma', 'terminal horns'],
   },
   Houston: {
-    culturalSignificance: 'A sprawling Gulf Coast metropolis known for space, energy, food diversity, and global neighborhoods.',
+    culturalSignificance:
+      'A sprawling Gulf Coast metropolis known for space, energy, food diversity, and global neighborhoods.',
     localAtmosphere: 'wide skylines, humid evenings, bayou air, and serious food culture',
     mustSee: ['Space Center Houston', 'Museum District', 'Buffalo Bayou Park'],
     sensoryDescriptors: ['warm rain', 'highway scale', 'barbecue smoke', 'bayou air'],
   },
   Chennai: {
-    culturalSignificance: 'A coastal South Indian city known for temples, classical arts, technology, beaches, and Tamil culture.',
+    culturalSignificance:
+      'A coastal South Indian city known for temples, classical arts, technology, beaches, and Tamil culture.',
     localAtmosphere: 'Bay of Bengal air, temple bells, filter coffee, and warm coastal light',
     mustSee: ['Marina Beach', 'Kapaleeshwarar Temple', 'Fort St. George'],
     sensoryDescriptors: ['filter coffee', 'sea wind', 'jasmine', 'temple bells'],
   },
   Hyderabad: {
-    culturalSignificance: 'A Deccan city where old-city heritage, biryani culture, and major technology districts meet.',
+    culturalSignificance:
+      'A Deccan city where old-city heritage, biryani culture, and major technology districts meet.',
     localAtmosphere: 'granite hills, evening bazaars, tech parks, pearls, and layered history',
     mustSee: ['Charminar', 'Golconda Fort', 'HITEC City'],
     sensoryDescriptors: ['biryani spice', 'stone heat', 'market lights', 'monsoon clouds'],
   },
   Delhi: {
-    culturalSignificance: 'India’s capital layers Mughal monuments, civic power, markets, food, and modern metro movement.',
-    localAtmosphere: 'wide boulevards, old-city lanes, winter haze, monuments, and constant political gravity',
+    culturalSignificance:
+      'India’s capital layers Mughal monuments, civic power, markets, food, and modern metro movement.',
+    localAtmosphere:
+      'wide boulevards, old-city lanes, winter haze, monuments, and constant political gravity',
     mustSee: ['India Gate', 'Humayun’s Tomb', 'Chandni Chowk'],
     sensoryDescriptors: ['winter fog', 'chaat spice', 'metro hum', 'red sandstone'],
   },
   Jaipur: {
-    culturalSignificance: 'Rajasthan’s planned Pink City, known for royal architecture, craft traditions, and desert-edge color.',
+    culturalSignificance:
+      'Rajasthan’s planned Pink City, known for royal architecture, craft traditions, and desert-edge color.',
     localAtmosphere: 'sandstone geometry, bazaar color, palace courtyards, and warm evening light',
     mustSee: ['Hawa Mahal', 'Amber Fort', 'City Palace'],
     sensoryDescriptors: ['pink stone', 'spice markets', 'dry heat', 'courtyard shadows'],
   },
   Jodhpur: {
-    culturalSignificance: 'The Blue City of Rajasthan, anchored by fort architecture and desert trade history.',
+    culturalSignificance:
+      'The Blue City of Rajasthan, anchored by fort architecture and desert trade history.',
     localAtmosphere: 'blue lanes, fort silhouettes, rooftop views, and old-city texture',
     mustSee: ['Mehrangarh Fort', 'Clock Tower Market', 'Jaswant Thada'],
     sensoryDescriptors: ['desert light', 'blue walls', 'market bells', 'stone steps'],
   },
   Jaisalmer: {
-    culturalSignificance: 'A golden desert city where sandstone fort walls meet Thar Desert culture.',
+    culturalSignificance:
+      'A golden desert city where sandstone fort walls meet Thar Desert culture.',
     localAtmosphere: 'wind-carved streets, golden stone, desert horizon, and slow sunset drama',
     mustSee: ['Jaisalmer Fort', 'Patwon Ki Haveli', 'Sam Sand Dunes'],
     sensoryDescriptors: ['sand warmth', 'camel bells', 'golden dusk', 'dry wind'],
   },
   Toronto: {
-    culturalSignificance: 'A multicultural lakeside metropolis with a strong skyline, food scene, and cross-border urban scale.',
+    culturalSignificance:
+      'A multicultural lakeside metropolis with a strong skyline, food scene, and cross-border urban scale.',
     localAtmosphere: 'lake air, tower views, streetcars, late dinners, and neighborhood diversity',
     mustSee: ['CN Tower', 'Harbourfront', 'Kensington Market'],
     sensoryDescriptors: ['lake breeze', 'streetcar hum', 'night skyline', 'food-market steam'],
   },
   'Washington, DC': {
-    culturalSignificance: 'A civic capital organized around monuments, museums, government, and ceremonial space.',
+    culturalSignificance:
+      'A civic capital organized around monuments, museums, government, and ceremonial space.',
     localAtmosphere: 'broad avenues, marble facades, quiet museums, and formal evening light',
     mustSee: ['National Mall', 'Smithsonian Museums', 'Lincoln Memorial'],
     sensoryDescriptors: ['marble coolness', 'museum hush', 'spring blossoms', 'wide avenues'],
   },
   'Ocean Cay': {
-    culturalSignificance: 'A private Bahamian marine reserve stop built around clear water, beach time, and slow cruise-day pacing.',
+    culturalSignificance:
+      'A private Bahamian marine reserve stop built around clear water, beach time, and slow cruise-day pacing.',
     localAtmosphere: 'white sand, ship lights, shallow water, and island quiet',
     mustSee: ['Ocean Cay Lighthouse', 'MSC Marine Reserve beaches', 'lagoon shoreline'],
     sensoryDescriptors: ['salt spray', 'soft sand', 'warm water', 'ship lights'],
   },
   'Key West': {
-    culturalSignificance: 'The southern edge of the continental United States, known for maritime history, pastel houses, and island eccentricity.',
+    culturalSignificance:
+      'The southern edge of the continental United States, known for maritime history, pastel houses, and island eccentricity.',
     localAtmosphere: 'porches, sea wind, harbor walks, and sunset crowds',
     mustSee: ['Mallory Square', 'Southernmost Point', 'Duval Street'],
     sensoryDescriptors: ['lime citrus', 'harbor breeze', 'rooster calls', 'sunset heat'],
@@ -164,7 +212,8 @@ const CURATED_HOME_CITY_STOPS = [
     country: 'India',
     emoji: '🇮🇳',
     tagline: 'Home base in India',
-    highlight: 'Maratha heritage, engineering culture, monsoon hills, food streets, and the city I call home',
+    highlight:
+      'Maratha heritage, engineering culture, monsoon hills, food streets, and the city I call home',
   },
 ];
 
@@ -220,15 +269,63 @@ const LOCATION_OVERRIDES = {
 };
 
 const CITY_ANCHORS = [
-  { name: 'Pune', region: 'Maharashtra', country: 'India', emoji: '🇮🇳', coordinates: [73.8567, 18.5204] },
-  { name: 'Mumbai', region: 'Maharashtra', country: 'India', emoji: '🇮🇳', coordinates: [72.8777, 19.076] },
+  {
+    name: 'Pune',
+    region: 'Maharashtra',
+    country: 'India',
+    emoji: '🇮🇳',
+    coordinates: [73.8567, 18.5204],
+  },
+  {
+    name: 'Mumbai',
+    region: 'Maharashtra',
+    country: 'India',
+    emoji: '🇮🇳',
+    coordinates: [72.8777, 19.076],
+  },
   { name: 'Delhi', region: 'Delhi', country: 'India', emoji: '🇮🇳', coordinates: [77.209, 28.6139] },
-  { name: 'Hyderabad', region: 'Telangana', country: 'India', emoji: '🇮🇳', coordinates: [78.4867, 17.385] },
-  { name: 'Philadelphia', region: 'Pennsylvania', country: 'USA', emoji: '🇺🇸', coordinates: [-75.1652, 39.9526] },
-  { name: 'New York City', region: 'New York', country: 'USA', emoji: '🇺🇸', coordinates: [-74.006, 40.7128] },
-  { name: 'Washington, DC', region: 'District of Columbia', country: 'USA', emoji: '🇺🇸', coordinates: [-77.0369, 38.9072] },
-  { name: 'Miami', region: 'Florida', country: 'USA', emoji: '🇺🇸', coordinates: [-80.1918, 25.7617] },
-  { name: 'Houston', region: 'Texas', country: 'USA', emoji: '🇺🇸', coordinates: [-95.3698, 29.7604] },
+  {
+    name: 'Hyderabad',
+    region: 'Telangana',
+    country: 'India',
+    emoji: '🇮🇳',
+    coordinates: [78.4867, 17.385],
+  },
+  {
+    name: 'Philadelphia',
+    region: 'Pennsylvania',
+    country: 'USA',
+    emoji: '🇺🇸',
+    coordinates: [-75.1652, 39.9526],
+  },
+  {
+    name: 'New York City',
+    region: 'New York',
+    country: 'USA',
+    emoji: '🇺🇸',
+    coordinates: [-74.006, 40.7128],
+  },
+  {
+    name: 'Washington, DC',
+    region: 'District of Columbia',
+    country: 'USA',
+    emoji: '🇺🇸',
+    coordinates: [-77.0369, 38.9072],
+  },
+  {
+    name: 'Miami',
+    region: 'Florida',
+    country: 'USA',
+    emoji: '🇺🇸',
+    coordinates: [-80.1918, 25.7617],
+  },
+  {
+    name: 'Houston',
+    region: 'Texas',
+    country: 'USA',
+    emoji: '🇺🇸',
+    coordinates: [-95.3698, 29.7604],
+  },
   { name: 'Dubai', region: 'Dubai', country: 'UAE', emoji: '🇦🇪', coordinates: [55.2708, 25.2048] },
 ];
 
@@ -239,7 +336,8 @@ const COUNTRY_INTELLIGENCE = {
   },
   USA: {
     mood: 'academic life, city grids, highways, museums, coastlines, and east-coast movement',
-    signature: 'riverfronts, skylines, campuses, museums, civic landmarks, and large-scale geography',
+    signature:
+      'riverfronts, skylines, campuses, museums, civic landmarks, and large-scale geography',
   },
   UAE: {
     mood: 'transit scale, glass architecture, desert climate, and global connection',
@@ -330,12 +428,18 @@ function normalizeStopLocation(stop) {
 
 function buildFallbackCityIntelligence(stop) {
   const country = COUNTRY_INTELLIGENCE[stop.country];
-  const placeContext = stop.placeName ? `${stop.placeName} is part of the ${stop.name} area and` : stop.name;
+  const placeContext = stop.placeName
+    ? `${stop.placeName} is part of the ${stop.name} area and`
+    : stop.name;
 
   return {
     culturalSignificance: `${placeContext} adds a ${stop.region} perspective to the wider ${stop.country} travel story.`,
     localAtmosphere: country?.mood || 'local movement, arrival energy, and place-specific memory',
-    mustSee: [stop.placeName || stop.name, stop.region, country?.signature || 'the surrounding neighborhoods'],
+    mustSee: [
+      stop.placeName || stop.name,
+      stop.region,
+      country?.signature || 'the surrounding neighborhoods',
+    ],
     sensoryDescriptors: ['street texture', 'changing light', 'arrival rhythm', 'local atmosphere'],
   };
 }
@@ -366,10 +470,14 @@ function withCuratedHomeCities(stops) {
 
 function createWaypoint(stop, index) {
   const intelligence = CITY_INTELLIGENCE[stop.name] || buildFallbackCityIntelligence(stop);
-  const whyVisitText = stop.highlight ? `Discover ${stop.highlight}` : `Visit for ${intelligence.mustSee.slice(0, 2).join(' and ').toLowerCase()}, then stay for ${intelligence.localAtmosphere}.`;
+  const whyVisitText = stop.highlight
+    ? `Discover ${stop.highlight}`
+    : `Visit for ${intelligence.mustSee.slice(0, 2).join(' and ').toLowerCase()}, then stay for ${intelligence.localAtmosphere}.`;
   const hasCuratedIntelligence = Boolean(CITY_INTELLIGENCE[stop.name]);
   const title = stop.placeName || stop.name;
-  const headline = stop.placeName ? `${stop.name}: ${stop.placeName}` : `${stop.name}, ${stop.region}`;
+  const headline = stop.placeName
+    ? `${stop.name}: ${stop.placeName}`
+    : `${stop.name}, ${stop.region}`;
 
   return {
     id: `place-${index + 1}`,
@@ -396,7 +504,9 @@ function createWaypoint(stop, index) {
       culturalSignificance: intelligence.culturalSignificance,
       mustSee: intelligence.mustSee,
       sensoryDescriptors: intelligence.sensoryDescriptors,
-      whyVisit: stop.placeName ? `${stop.placeName} gives ${stop.name} a more specific travel texture: ${stop.highlight || intelligence.culturalSignificance}` : whyVisitText,
+      whyVisit: stop.placeName
+        ? `${stop.placeName} gives ${stop.name} a more specific travel texture: ${stop.highlight || intelligence.culturalSignificance}`
+        : whyVisitText,
       guideSummary: intelligence.guideSummary || '',
       bestFor: intelligence.bestFor || [],
       neighborhoods: intelligence.neighborhoods || [],
@@ -457,7 +567,9 @@ export function createTravelNarrative(rawTravelData) {
   const waypoints = dedupeStops(withCuratedHomeCities(rawTravelData.stops)).map(createWaypoint);
   const countries = new Set(waypoints.map(waypoint => waypoint.locality.country));
   const cities = new Set(waypoints.map(waypoint => waypoint.locality.city));
-  const regions = new Set(waypoints.map(waypoint => `${waypoint.locality.region}|${waypoint.locality.country}`));
+  const regions = new Set(
+    waypoints.map(waypoint => `${waypoint.locality.region}|${waypoint.locality.country}`)
+  );
 
   return {
     version: '2026.05.visited-places-atlas',
@@ -467,7 +579,8 @@ export function createTravelNarrative(rawTravelData) {
       regions: regions.size,
       waypointCount: waypoints.length,
       headline: 'A personal atlas of countries, cities, and places visited.',
-      experienceFocus: 'location intelligence and visited-place storytelling over movement mechanics',
+      experienceFocus:
+        'location intelligence and visited-place storytelling over movement mechanics',
     },
     countryInsights: summarizeCountries(rawTravelData.countryBreakdown),
     countryChapters: createCountryChapters(waypoints),

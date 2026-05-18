@@ -15,7 +15,7 @@ self.addEventListener('activate', event => {
       await Promise.all([
         ...cacheNames.map(cacheName => caches.delete(cacheName)),
         self.clients.claim(),
-        self.registration.unregister()
+        self.registration.unregister(),
       ]);
     })()
   );

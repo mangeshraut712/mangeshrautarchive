@@ -338,11 +338,7 @@ class DebugRunner {
       { passive: true }
     );
 
-    this.canvas.addEventListener(
-      'touchmove',
-      () => {},
-      { passive: true }
-    );
+    this.canvas.addEventListener('touchmove', () => {}, { passive: true });
 
     this.canvas.addEventListener(
       'touchend',

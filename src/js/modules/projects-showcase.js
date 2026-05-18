@@ -352,6 +352,10 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       const reposToHydrate = displayRepos.filter(repo => !repo.__activityLoaded);
       if (reposToHydrate.length === 0) return;
 
+      if (currentToken !== renderToken) {
+        return;
+      }
+
       await githubProjects.hydrateReposWithActivity(reposToHydrate);
 
       if (currentToken !== renderToken) {

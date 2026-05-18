@@ -360,7 +360,8 @@
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.cssText = 'transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);';
+      card.style.cssText =
+        'transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);';
     });
 
     card.addEventListener('mouseenter', () => {
@@ -403,7 +404,7 @@
       requestAnimationFrame(() => {
         Object.assign(spotlight.style, {
           left: e.clientX + 'px',
-          top: e.clientY + 'px'
+          top: e.clientY + 'px',
         });
       });
     }

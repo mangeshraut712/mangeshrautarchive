@@ -30,7 +30,9 @@
   <meta name="author" content="Mangesh Raut" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow" />
-  <link rel="canonical" href="https://mangeshraut.pro" />
+  <link rel="canonical" href="https://mangeshraut.pro/" />
+  <link rel="alternate" hreflang="en-US" href="https://mangeshraut.pro/" />
+  <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/" />
 
   <!-- Geographic SEO -->
   <meta name="geo.region" content="US-PA" />
@@ -43,7 +45,7 @@
 
   <!-- Open Graph / LinkedIn / Facebook -->
   <meta property="og:type" content="profile" />
-  <meta property="og:url" content="https://mangeshraut.pro" />
+  <meta property="og:url" content="https://mangeshraut.pro/" />
   <meta property="og:title" content="Mangesh Raut | Software Engineer — Java, Python, AWS, Full-Stack" />
   <meta property="og:description"
     content="5+ years building production-ready software. MS CS from Drexel University. Expertise in Java, Spring Boot, Python, AWS, and machine learning. View portfolio, projects, and resume." />
@@ -209,7 +211,8 @@
       "familyName": "Raut",
       "jobTitle": "Software Development Engineer",
       "description": "Software Engineer with 5+ years of experience in full-stack development, cloud computing, and machine learning. MS in Computer Science from Drexel University.",
-      "url": "https://mangeshraut.pro",
+      "url": "https://mangeshraut.pro/",
+      "mainEntityOfPage": { "@id": "https://mangeshraut.pro/#profilepage" },
       "image": "https://mangeshraut.pro/assets/images/profile.jpg",
       "email": "mailto:mr3523@drexel.edu",
       "sameAs": [
@@ -267,7 +270,7 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": "https://mangeshraut.pro/#website",
-      "url": "https://mangeshraut.pro",
+      "url": "https://mangeshraut.pro/",
       "name": "Mangesh Raut — Software Engineer Portfolio",
       "description": "Portfolio of Mangesh Raut — Software Engineer specializing in Java, Python, AWS, and full-stack development.",
       "publisher": { "@id": "https://mangeshraut.pro/#person" },
@@ -277,15 +280,37 @@
       "@context": "https://schema.org",
       "@type": "ProfilePage",
       "@id": "https://mangeshraut.pro/#profilepage",
-      "url": "https://mangeshraut.pro",
+      "url": "https://mangeshraut.pro/",
       "name": "Mangesh Raut — Software Engineer Portfolio",
+      "description": "Portfolio, resume, technical writing, projects, and public engineering work by Mangesh Raut.",
+      "isPartOf": { "@id": "https://mangeshraut.pro/#website" },
+      "breadcrumb": { "@id": "https://mangeshraut.pro/#breadcrumb" },
       "mainEntity": { "@id": "https://mangeshraut.pro/#person" },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://mangeshraut.pro/assets/images/home.png"
+      },
+      "about": [
+        { "@type": "Thing", "name": "Software engineering" },
+        { "@type": "Thing", "name": "Full-stack development" },
+        { "@type": "Thing", "name": "Cloud architecture" },
+        { "@type": "Thing", "name": "Machine learning" }
+      ],
+      "hasPart": [
+        { "@type": "WebPageElement", "name": "About", "url": "https://mangeshraut.pro/#about" },
+        { "@type": "WebPageElement", "name": "Professional Experience", "url": "https://mangeshraut.pro/#experience" },
+        { "@type": "WebPageElement", "name": "Project Showcase", "url": "https://mangeshraut.pro/#projects" },
+        { "@type": "WebPageElement", "name": "Technical Writings", "url": "https://mangeshraut.pro/#blog" },
+        { "@type": "WebPageElement", "name": "Contact", "url": "https://mangeshraut.pro/#contact" }
+      ],
       "dateCreated": "2024-01-01",
-      "dateModified": "2026-05-13"
+      "dateModified": "2026-05-18",
+      "inLanguage": "en-US"
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
+      "@id": "https://mangeshraut.pro/#breadcrumb",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mangeshraut.pro/" },
         { "@type": "ListItem", "position": 2, "name": "About", "item": "https://mangeshraut.pro/#about" },
@@ -603,16 +628,16 @@
             <div class="hero-image-block mb-8">
               <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)">
-                <img id="profile-image" src="assets/images/profile.jpg" alt="Mangesh Raut photo" class="profile-image"
+                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
                   width="320" height="320" fetchpriority="high" loading="eager" decoding="async"
                   onclick="window.__toggleHeroAvatar?.(event)"
-                  data-photo-src="assets/images/profile.jpg" data-avatar-src="assets/images/avtar.jpg" />
+                  data-photo-src="assets/images/profile.webp" data-avatar-src="assets/images/avtar.webp" />
               </button>
             </div>
 
             <div class="hero-text-block home-hero-text">
               <div class="hero-header mb-4">
-                <h2 class="hero-name">
+                <h1 class="hero-name">
                   <span class="hero-name-text">Mangesh Raut</span>
                   <span class="hero-verified-badge" role="img" aria-label="Verified profile">
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -632,7 +657,7 @@
                       <path class="sound-wave" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
                     </svg>
                   </button>
-                </h2>
+                </h1>
                 <div class="hero-identity-strip" aria-label="Profile quick details">
                   <span class="hero-identity-item">
                     <i class="fas fa-mars" aria-hidden="true"></i>
@@ -643,7 +668,7 @@
                 <audio id="name-pronounce-audio" preload="none">
                   <source src="assets/files/Name%20Pronounce.mp4" type="audio/mp4">
                 </audio>
-                <h1 class="hero-title">Software Development Engineer</h1>
+                <p class="hero-title">Software Development Engineer</p>
                 <p class="hero-role-flip" aria-live="polite">
                   <span>I am a</span>
                   <strong id="hero-role-word">Developer</strong>
@@ -757,7 +782,14 @@
           <div class="about-main">
             <div class="about-image-wrapper" data-parallax="scroll" data-parallax-speed="0.06" data-parallax-max="14">
               <picture>
-                <source srcset="assets/images/graduation.webp" type="image/webp" />
+                <source
+                  type="image/webp"
+                  srcset="
+                    assets/images/graduation-mobile.webp 320w,
+                    assets/images/graduation-tablet.webp 768w,
+                    assets/images/graduation-desktop.webp 1200w,
+                    assets/images/graduation-hd.webp 1920w"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                 <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="1200"
                   height="1200" loading="lazy" decoding="async" fetchpriority="low" />
               </picture>
@@ -1976,9 +2008,16 @@
                     <!-- Ganesh Image (Left) -->
                     <div class="ganesh-glow-container">
                       <picture>
-                        <source srcset="assets/images/ganesh.webp" type="image/webp" />
+                        <source
+                          type="image/webp"
+                          srcset="
+                            assets/images/ganesh-mobile.webp 320w,
+                            assets/images/ganesh-tablet.webp 768w,
+                            assets/images/ganesh-desktop.webp 1200w,
+                            assets/images/ganesh-hd.webp 1920w"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                         <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
-                          title="🕉️ Om Gan Ganapataye Namah">
+                          title="🕉️ Om Gan Ganapataye Namah" loading="lazy" decoding="async">
                       </picture>
                       <div class="glow-ring"></div>
                     </div>
@@ -1990,9 +2029,16 @@
                     <!-- Hanuman Image (Right) -->
                     <div class="hanuman-glow-container">
                       <picture>
-                        <source srcset="assets/images/hanuman.webp" type="image/webp" />
+                        <source
+                          type="image/webp"
+                          srcset="
+                            assets/images/hanuman-mobile.webp 320w,
+                            assets/images/hanuman-tablet.webp 768w,
+                            assets/images/hanuman-desktop.webp 1200w,
+                            assets/images/hanuman-hd.webp 1920w"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                         <img src="assets/images/hanuman.png" alt="Lord Hanuman" class="hanuman-blessing-img"
-                          title="🙏 Jai Hanuman">
+                          title="🙏 Jai Hanuman" loading="lazy" decoding="async">
                       </picture>
                       <div class="glow-ring"></div>
                     </div>

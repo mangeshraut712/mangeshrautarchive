@@ -58,14 +58,10 @@ async function runBackend() {
   const fs = await import('fs');
   const useVenv = fs.existsSync('./venv/bin/python');
 
-  const child = spawn(
-    useVenv ? pythonCmd : altPythonCmd,
-    args,
-    {
-      stdio: 'inherit',
-      env: process.env,
-    }
-  );
+  const child = spawn(useVenv ? pythonCmd : altPythonCmd, args, {
+    stdio: 'inherit',
+    env: process.env,
+  });
 
   const forwardSignal = signal => {
     if (!child.killed) {

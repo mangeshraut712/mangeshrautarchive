@@ -130,8 +130,9 @@ app.use(express.static(staticPath));
 const chatbotPath = join(projectRoot, 'chatbot');
 app.use('/chatbot', express.static(chatbotPath));
 
-app.listen(port, () => {
+const host = process.env.HOST || '127.0.0.1';
+app.listen(port, host, () => {
   console.log(`\n🚀 Local development server running!`);
-  console.log(`   - Frontend: http://localhost:${port}`);
+  console.log(`   - Frontend: http://${host}:${port}`);
   console.log(`   - API proxy target: ${apiTarget}`);
 });

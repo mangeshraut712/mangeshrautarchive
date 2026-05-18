@@ -429,10 +429,11 @@ class PortfolioSearch {
 
     const lowerQuery = query.toLowerCase();
     const results = this.searchableContent
-      .filter(item =>
-        item.normalizedTitle.includes(lowerQuery) ||
-        item.normalizedDescription.includes(lowerQuery) ||
-        item.normalizedTags.includes(lowerQuery)
+      .filter(
+        item =>
+          item.normalizedTitle.includes(lowerQuery) ||
+          item.normalizedDescription.includes(lowerQuery) ||
+          item.normalizedTags.includes(lowerQuery)
       )
       .sort((a, b) => this.rankResult(a, lowerQuery) - this.rankResult(b, lowerQuery));
 
@@ -506,7 +507,9 @@ class PortfolioSearch {
 
   renderResultItem(result, query, index) {
     const iconClass = result.icon?.startsWith('fab ') ? result.icon : `fas ${result.icon}`;
-    const sectionAttr = result.sectionId ? `data-section="${this.escapeAttribute(result.sectionId)}"` : '';
+    const sectionAttr = result.sectionId
+      ? `data-section="${this.escapeAttribute(result.sectionId)}"`
+      : '';
     const urlAttr = result.url ? `data-url="${this.escapeAttribute(result.url)}"` : '';
     const description = result.description
       ? `<div class="search-result-section">${this.escapeHtml(result.description)}</div>`

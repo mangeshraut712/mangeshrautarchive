@@ -567,7 +567,8 @@ class ChatUI {
       contentDiv.textContent = normalizedText;
 
       // Force proper text layout
-      contentDiv.style.cssText = 'white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;';
+      contentDiv.style.cssText =
+        'white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;';
     } else if (content?.html && features.enableMarkdownRendering) {
       const safeHtml = htmlSanitizer ? htmlSanitizer.sanitize(content.html) : content.html;
       contentDiv.innerHTML = safeHtml;
@@ -592,7 +593,8 @@ class ChatUI {
       const normalizedText = String(textContent).replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
 
       contentDiv.textContent = normalizedText;
-      contentDiv.style.cssText = 'white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;';
+      contentDiv.style.cssText =
+        'white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;';
     }
 
     messageDiv.appendChild(contentDiv);

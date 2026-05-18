@@ -26,7 +26,7 @@ function lockBodyScroll(body, windowRef = window) {
     top: `-${scrollY}px`,
     left: '0',
     right: '0',
-    width: '100%'
+    width: '100%',
   });
 }
 
@@ -39,7 +39,7 @@ function unlockBodyScroll(body, windowRef = window) {
     top: '',
     left: '',
     right: '',
-    width: ''
+    width: '',
   });
   delete body.dataset.overlayScrollY;
   delete body.dataset.overlayAnchorId;

@@ -20,7 +20,8 @@
     goToTopBtn.setAttribute('aria-label', 'Scroll to top of page');
     goToTopBtn.setAttribute('role', 'button');
     goToTopBtn.setAttribute('tabindex', '-1'); // Start hidden from tab order
-    goToTopBtn.style.cssText = 'display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;';
+    goToTopBtn.style.cssText =
+      'display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;';
 
     // Add a visible label for better clarity (can be styled to appear on hover/focus)
     const label = document.createElement('span');

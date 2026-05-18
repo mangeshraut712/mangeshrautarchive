@@ -233,15 +233,17 @@ export class AgenticActionHandler {
       '../assets/files/Mangesh_Raut_Resume.pdf', // Parent relative
     ];
 
-    const resumeChecks = await Promise.all(resumeLinks.map(async link => {
-      try {
-        const response = await fetch(link, { method: 'HEAD' });
-        return response.ok ? link : null;
-      } catch (error) {
-        console.log(`Failed to fetch from ${link}:`, error);
-        return null;
-      }
-    }));
+    const resumeChecks = await Promise.all(
+      resumeLinks.map(async link => {
+        try {
+          const response = await fetch(link, { method: 'HEAD' });
+          return response.ok ? link : null;
+        } catch (error) {
+          console.log(`Failed to fetch from ${link}:`, error);
+          return null;
+        }
+      })
+    );
 
     const availableResumeLink = resumeChecks.find(Boolean);
     if (availableResumeLink) {

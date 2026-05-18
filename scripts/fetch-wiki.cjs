@@ -15,36 +15,38 @@ function fetchWiki(city) {
     hostname: 'en.wikipedia.org',
     path: `/api/rest_v1/page/summary/${searchTerm}`,
     method: 'GET',
-    headers: { 'User-Agent': 'TravelOdyssey/1.0 (mangeshraut@example.com)' }
+    headers: { 'User-Agent': 'TravelOdyssey/1.0 (mangeshraut@example.com)' },
   };
 
-  https.get(options, (res) => {
-    let data = '';
-    res.on('data', chunk => data += chunk);
-    res.on('end', () => {
-      completed++;
-      if (res.statusCode === 200) {
-        try {
-          const result = JSON.parse(data);
-          cityDb[city].wikiExtract = result.extract;
-          cityDb[city].wikiImage = result.thumbnail ? result.thumbnail.source : null;
-          console.log(`✅ ${city}`);
-        } catch (_e) {
-          console.log(`⚠️ Failed parsing for ${city}`);
+  https
+    .get(options, res => {
+      let data = '';
+      res.on('data', chunk => (data += chunk));
+      res.on('end', () => {
+        completed++;
+        if (res.statusCode === 200) {
+          try {
+            const result = JSON.parse(data);
+            cityDb[city].wikiExtract = result.extract;
+            cityDb[city].wikiImage = result.thumbnail ? result.thumbnail.source : null;
+            console.log(`✅ ${city}`);
+          } catch (_e) {
+            console.log(`⚠️ Failed parsing for ${city}`);
+          }
+        } else {
+          console.log(`❌ Not found: ${city}`);
         }
-      } else {
-        console.log(`❌ Not found: ${city}`);
-      }
 
-      if (completed === cities.length) {
-        fs.writeFileSync(cityDbPath, JSON.stringify(cityDb, null, 2));
-        console.log('Finished updating city-db.json');
-      }
+        if (completed === cities.length) {
+          fs.writeFileSync(cityDbPath, JSON.stringify(cityDb, null, 2));
+          console.log('Finished updating city-db.json');
+        }
+      });
+    })
+    .on('error', e => {
+      console.error(e);
+      completed++;
     });
-  }).on('error', (e) => {
-    console.error(e);
-    completed++;
-  });
 }
 
 cities.forEach(fetchWiki);

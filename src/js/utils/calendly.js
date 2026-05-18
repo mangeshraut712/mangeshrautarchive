@@ -57,4 +57,3 @@ export async function openCalendlyPopup() {
 
   window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
 }
-

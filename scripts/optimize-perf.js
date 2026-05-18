@@ -59,32 +59,34 @@ async function _optimizeHTML(content) {
 async function processDirectory(dir, extension, processor) {
   const entries = await readdir(dir, { withFileTypes: true });
 
-  const savedSizes = await Promise.all(entries.map(async entry => {
-    const path = join(dir, entry.name);
+  const savedSizes = await Promise.all(
+    entries.map(async entry => {
+      const path = join(dir, entry.name);
 
-    if (entry.isDirectory()) {
-      return processDirectory(path, extension, processor);
-    }
+      if (entry.isDirectory()) {
+        return processDirectory(path, extension, processor);
+      }
 
-    if (!entry.name.endsWith(extension)) {
-      return 0;
-    }
+      if (!entry.name.endsWith(extension)) {
+        return 0;
+      }
 
-    const content = await readFile(path, 'utf8');
-    const originalSize = Buffer.byteLength(content, 'utf8');
-    const optimized = await processor(content);
-    const newSize = Buffer.byteLength(optimized, 'utf8');
-    const saved = originalSize - newSize;
+      const content = await readFile(path, 'utf8');
+      const originalSize = Buffer.byteLength(content, 'utf8');
+      const optimized = await processor(content);
+      const newSize = Buffer.byteLength(optimized, 'utf8');
+      const saved = originalSize - newSize;
 
-    await writeFile(path, optimized, 'utf8');
+      await writeFile(path, optimized, 'utf8');
 
-    const kb = saved / 1024;
-    if (kb > 0.1) {
-      console.log(`${colors.green}✓${colors.reset} ${entry.name}: saved ${kb.toFixed(2)} KB`);
-    }
+      const kb = saved / 1024;
+      if (kb > 0.1) {
+        console.log(`${colors.green}✓${colors.reset} ${entry.name}: saved ${kb.toFixed(2)} KB`);
+      }
 
-    return saved;
-  }));
+      return saved;
+    })
+  );
 
   return savedSizes.reduce((total, saved) => total + saved, 0);
 }
@@ -101,29 +103,31 @@ async function optimizeImages() {
     if (sharp) {
       const entries = await readdir(imagesDir, { withFileTypes: true, recursive: true });
 
-      await Promise.all(entries.map(async entry => {
-        if (!entry.isFile()) return;
+      await Promise.all(
+        entries.map(async entry => {
+          if (!entry.isFile()) return;
 
-        const ext = entry.name.toLowerCase();
-        if (ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png')) {
-          const path = join(entry.parentPath || imagesDir, entry.name);
-          const webpPath = path.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+          const ext = entry.name.toLowerCase();
+          if (ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png')) {
+            const path = join(entry.parentPath || imagesDir, entry.name);
+            const webpPath = path.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 
-          try {
-            await sharp.default(path).webp({ quality: 85, effort: 6 }).toFile(webpPath);
+            try {
+              await sharp.default(path).webp({ quality: 85, effort: 6 }).toFile(webpPath);
 
-            const originalSize = (await stat(path)).size;
-            const webpSize = (await stat(webpPath)).size;
-            const saved = (originalSize - webpSize) / 1024;
+              const originalSize = (await stat(path)).size;
+              const webpSize = (await stat(webpPath)).size;
+              const saved = (originalSize - webpSize) / 1024;
 
-            console.log(
-              `${colors.green}✓${colors.reset} ${entry.name} → .webp (saved ${saved.toFixed(2)} KB)`
-            );
-          } catch (_e) {
-            // Ignore errors for individual images
+              console.log(
+                `${colors.green}✓${colors.reset} ${entry.name} → .webp (saved ${saved.toFixed(2)} KB)`
+              );
+            } catch (_e) {
+              // Ignore errors for individual images
+            }
           }
-        }
-      }));
+        })
+      );
     }
   } catch (_e) {
     console.log(

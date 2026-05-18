@@ -1,181 +1,299 @@
 <!doctype html>
 <html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Mangesh Raut Travel Atlas — a 2026 map-led journal of countries, cities, landmarks, and destination guides."
+    />
+    <meta name="author" content="Mangesh Raut" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <link rel="canonical" href="https://mangeshraut.pro/travel" />
+    <link rel="alternate" hreflang="en-US" href="https://mangeshraut.pro/travel" />
+    <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/travel" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mangeshraut.pro/travel" />
+    <meta property="og:title" content="Travel Atlas | Mangesh Raut" />
+    <meta
+      property="og:description"
+      content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights."
+    />
+    <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Travel Atlas | Mangesh Raut" />
+    <meta
+      name="twitter:description"
+      content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights."
+    />
+    <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <title>Travel Atlas | Mangesh Raut</title>
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
+    <link rel="manifest" href="manifest.json" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description"
-    content="Mangesh Raut Travel Atlas — a 2026 map-led journal of countries, cities, landmarks, and destination guides." />
-  <link rel="canonical" href="https://mangeshraut.pro/travel.html" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mangeshraut.pro/travel.html" />
-  <meta property="og:title" content="Travel Atlas | Mangesh Raut" />
-  <meta property="og:description"
-    content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights." />
-  <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Travel Atlas | Mangesh Raut" />
-  <meta name="twitter:description"
-    content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights." />
-  <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
-  <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <title>Travel Atlas | Mangesh Raut</title>
-  <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
-  <link rel="manifest" href="manifest.json" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <!-- Design System -->
+    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" />
 
-  <!-- Design System -->
-  <link rel="stylesheet" href="assets/css/apple-2026-design-system.css" />
+    <!-- Travel Styles -->
+    <link rel="stylesheet" href="assets/css/travel-atlas.css" />
+    <script type="application/ld+json">
+      [
+        {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "@id": "https://mangeshraut.pro/travel#webpage",
+          "url": "https://mangeshraut.pro/travel",
+          "name": "Travel Atlas | Mangesh Raut",
+          "description": "A map-led travel atlas of countries, cities, landmarks, and destination highlights visited by Mangesh Raut.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://mangeshraut.pro/#website",
+            "url": "https://mangeshraut.pro/",
+            "name": "Mangesh Raut — Software Engineer Portfolio"
+          },
+          "publisher": {
+            "@type": "Person",
+            "@id": "https://mangeshraut.pro/#person",
+            "name": "Mangesh Raut",
+            "url": "https://mangeshraut.pro/"
+          },
+          "breadcrumb": { "@id": "https://mangeshraut.pro/travel#breadcrumb" },
+          "about": [
+            { "@type": "Thing", "name": "Travel" },
+            { "@type": "Thing", "name": "Cities" },
+            { "@type": "Thing", "name": "Landmarks" },
+            { "@type": "Thing", "name": "Destination guides" }
+          ],
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://mangeshraut.pro/assets/images/home.png"
+          },
+          "dateModified": "2026-05-18",
+          "inLanguage": "en-US"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "@id": "https://mangeshraut.pro/travel#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://mangeshraut.pro/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Travel Atlas",
+              "item": "https://mangeshraut.pro/travel"
+            }
+          ]
+        }
+      ]
+    </script>
+  </head>
 
-  <!-- Travel Styles -->
-  <link rel="stylesheet" href="assets/css/travel-atlas.css" />
-</head>
+  <body class="travel-body">
+    <!-- Theme init -->
+    <script>
+      if (
+        localStorage.getItem('theme') === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.replace('light', 'dark');
+      }
+    </script>
 
-<body class="travel-body">
+    <main class="travel-layout" id="travel-app">
+      <!-- ─── Map ─── -->
+      <div class="travel-map-layer">
+        <div id="map-container" class="travel-map"></div>
+      </div>
 
-  <!-- Theme init -->
-  <script>
-    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.replace('light', 'dark');
-    }
-  </script>
-
-  <main class="travel-layout" id="travel-app">
-
-    <!-- ─── Map ─── -->
-    <div class="travel-map-layer">
-      <div id="map-container" class="travel-map"></div>
-    </div>
-
-    <!-- ─── UI Overlay ─── -->
-    <div class="travel-ui-layer">
-
-      <!-- Top bar -->
-      <nav class="travel-nav" aria-label="Travel navigation">
-        <a class="travel-nav__back" href="index.html#home" aria-label="Back to portfolio home">
-          <i class="fas fa-chevron-left" aria-hidden="true"></i>
-          <span>Portfolio</span>
-        </a>
-        <div class="travel-nav__brand">
-          <i class="fa-solid fa-globe"></i>
-          <span>Travel Atlas</span>
-        </div>
-        <button id="travel-theme-toggle" class="travel-nav__theme" type="button" aria-label="Toggle theme">
-          <i class="fas fa-moon" aria-hidden="true"></i>
-        </button>
-      </nav>
-
-      <!-- Sidebar -->
-      <aside class="travel-sidebar" id="travel-sidebar">
-
-        <div class="travel-sidebar__header">
-          <h2>My Travel Timeline</h2>
-          <p class="travel-sidebar__subtitle">Countries, cities, culture, and places I have visited</p>
-
-          <!-- Summary stats -->
-          <div class="travel-stats" id="travel-stats">
-            <div class="travel-stat">
-              <span class="travel-stat__value" id="stat-countries">—</span>
-              <span class="travel-stat__label">Countries</span>
-            </div>
-            <div class="travel-stat">
-              <span class="travel-stat__value" id="stat-cities">—</span>
-              <span class="travel-stat__label">Cities</span>
-            </div>
-            <div class="travel-stat">
-              <span class="travel-stat__value" id="stat-places">—</span>
-              <span class="travel-stat__label">Places</span>
-            </div>
-            <div class="travel-stat">
-              <span class="travel-stat__value" id="stat-regions">—</span>
-              <span class="travel-stat__label">Regions</span>
-            </div>
+      <!-- ─── UI Overlay ─── -->
+      <div class="travel-ui-layer">
+        <!-- Top bar -->
+        <nav class="travel-nav" aria-label="Travel navigation">
+          <a class="travel-nav__back" href="index.html#home" aria-label="Back to portfolio home">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+            <span>Portfolio</span>
+          </a>
+          <div class="travel-nav__brand">
+            <i class="fa-solid fa-globe"></i>
+            <span>Travel Atlas</span>
           </div>
+          <button
+            id="travel-theme-toggle"
+            class="travel-nav__theme"
+            type="button"
+            aria-label="Toggle theme"
+          >
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </button>
+        </nav>
 
-          <!-- Country pills -->
-          <div class="travel-countries" id="country-pills"></div>
+        <!-- Sidebar -->
+        <aside class="travel-sidebar" id="travel-sidebar">
+          <div class="travel-sidebar__header">
+            <h1>Travel Atlas</h1>
+            <p class="travel-sidebar__subtitle">
+              Countries, cities, culture, and places I have visited
+            </p>
 
-          <div class="travel-search" role="search">
-            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
-            <input
-              id="place-search"
-              type="search"
-              placeholder="Search city, country, landmark..."
-              autocomplete="off"
-              aria-label="Search visited places"
-            />
-            <button id="clear-place-search" class="travel-search__clear" type="button" aria-label="Clear search">
-              <i class="fas fa-xmark" aria-hidden="true"></i>
-            </button>
-          </div>
+            <!-- Summary stats -->
+            <div class="travel-stats" id="travel-stats">
+              <div class="travel-stat">
+                <span class="travel-stat__value" id="stat-countries">—</span>
+                <span class="travel-stat__label">Countries</span>
+              </div>
+              <div class="travel-stat">
+                <span class="travel-stat__value" id="stat-cities">—</span>
+                <span class="travel-stat__label">Cities</span>
+              </div>
+              <div class="travel-stat">
+                <span class="travel-stat__value" id="stat-places">—</span>
+                <span class="travel-stat__label">Places</span>
+              </div>
+              <div class="travel-stat">
+                <span class="travel-stat__value" id="stat-regions">—</span>
+                <span class="travel-stat__label">Regions</span>
+              </div>
+            </div>
 
-          <div class="travel-advanced-search" id="advanced-search">
-            <button id="toggle-advanced-search" class="travel-advanced-toggle" type="button" aria-expanded="false"
-              aria-controls="advanced-search-content">
-              <i class="fas fa-sliders" aria-hidden="true"></i>
-              <span>Advanced Filters</span>
-              <i class="fas fa-chevron-down" aria-hidden="true"></i>
-            </button>
-            <div class="travel-advanced-content" id="advanced-search-content">
-              <div class="travel-filter-group">
-                <label class="travel-filter-label">Categories</label>
-                <div class="travel-filter-chips" id="category-filters">
-                  <button class="travel-filter-chip" data-category="food" type="button" aria-pressed="false">
-                    <i class="fas fa-utensils" aria-hidden="true"></i> Food
-                  </button>
-                  <button class="travel-filter-chip" data-category="culture" type="button" aria-pressed="false">
-                    <i class="fas fa-landmark" aria-hidden="true"></i> Culture
-                  </button>
-                  <button class="travel-filter-chip" data-category="nature" type="button" aria-pressed="false">
-                    <i class="fas fa-tree" aria-hidden="true"></i> Nature
-                  </button>
-                  <button class="travel-filter-chip" data-category="urban" type="button" aria-pressed="false">
-                    <i class="fas fa-city" aria-hidden="true"></i> Urban
-                  </button>
-                  <button class="travel-filter-chip" data-category="history" type="button" aria-pressed="false">
-                    <i class="fas fa-monument" aria-hidden="true"></i> History
-                  </button>
+            <!-- Country pills -->
+            <div class="travel-countries" id="country-pills"></div>
+
+            <div class="travel-search" role="search">
+              <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+              <input
+                id="place-search"
+                type="search"
+                placeholder="Search city, country, landmark..."
+                autocomplete="off"
+                aria-label="Search visited places"
+              />
+              <button
+                id="clear-place-search"
+                class="travel-search__clear"
+                type="button"
+                aria-label="Clear search"
+              >
+                <i class="fas fa-xmark" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <div class="travel-advanced-search" id="advanced-search">
+              <button
+                id="toggle-advanced-search"
+                class="travel-advanced-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="advanced-search-content"
+              >
+                <i class="fas fa-sliders" aria-hidden="true"></i>
+                <span>Advanced Filters</span>
+                <i class="fas fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="travel-advanced-content" id="advanced-search-content">
+                <div class="travel-filter-group">
+                  <label class="travel-filter-label">Categories</label>
+                  <div class="travel-filter-chips" id="category-filters">
+                    <button
+                      class="travel-filter-chip"
+                      data-category="food"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      <i class="fas fa-utensils" aria-hidden="true"></i> Food
+                    </button>
+                    <button
+                      class="travel-filter-chip"
+                      data-category="culture"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      <i class="fas fa-landmark" aria-hidden="true"></i> Culture
+                    </button>
+                    <button
+                      class="travel-filter-chip"
+                      data-category="nature"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      <i class="fas fa-tree" aria-hidden="true"></i> Nature
+                    </button>
+                    <button
+                      class="travel-filter-chip"
+                      data-category="urban"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      <i class="fas fa-city" aria-hidden="true"></i> Urban
+                    </button>
+                    <button
+                      class="travel-filter-chip"
+                      data-category="history"
+                      type="button"
+                      aria-pressed="false"
+                    >
+                      <i class="fas fa-monument" aria-hidden="true"></i> History
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div class="travel-actions" aria-label="Travel atlas controls">
+              <button id="featured-toggle" class="travel-action" type="button" aria-pressed="false">
+                <i class="fas fa-star" aria-hidden="true"></i>
+                <span>Featured</span>
+              </button>
+              <button id="spotlight-tour" class="travel-action" type="button" aria-pressed="false">
+                <i class="fas fa-play" aria-hidden="true"></i>
+                <span>Spotlight</span>
+              </button>
+              <button
+                id="reset-travel-filters"
+                class="travel-action travel-action--quiet"
+                type="button"
+              >
+                <i class="fas fa-rotate-left" aria-hidden="true"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+
+            <div
+              id="travel-results-summary"
+              class="travel-results-summary"
+              aria-live="polite"
+            ></div>
           </div>
 
-          <div class="travel-actions" aria-label="Travel atlas controls">
-            <button id="featured-toggle" class="travel-action" type="button" aria-pressed="false">
-              <i class="fas fa-star" aria-hidden="true"></i>
-              <span>Featured</span>
-            </button>
-            <button id="spotlight-tour" class="travel-action" type="button" aria-pressed="false">
-              <i class="fas fa-play" aria-hidden="true"></i>
-              <span>Spotlight</span>
-            </button>
-            <button id="reset-travel-filters" class="travel-action travel-action--quiet" type="button">
-              <i class="fas fa-rotate-left" aria-hidden="true"></i>
-              <span>Reset</span>
-            </button>
+          <div class="travel-timeline" id="travel-timeline">
+            <!-- JS-rendered places -->
           </div>
+        </aside>
+      </div>
+    </main>
 
-          <div id="travel-results-summary" class="travel-results-summary" aria-live="polite"></div>
-
-        </div>
-
-        <div class="travel-timeline" id="travel-timeline">
-          <!-- JS-rendered places -->
-        </div>
-
-      </aside>
-    </div>
-  </main>
-
-  <script type="module" src="js/modules/travel-atlas.js"></script>
-</body>
-
+    <script type="module" src="js/modules/travel-atlas.js"></script>
+  </body>
 </html>

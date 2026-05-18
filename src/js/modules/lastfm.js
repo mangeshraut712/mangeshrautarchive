@@ -232,9 +232,7 @@ class LastFmService {
     }
 
     return new Promise((resolve, reject) => {
-      const callbackName = `__assistMeLastfm${Date.now()}${Math.random()
-        .toString(36)
-        .slice(2)}`;
+      const callbackName = `__assistMeLastfm${Date.now()}${Math.random().toString(36).slice(2)}`;
       const script = globalThis.document.createElement('script');
       const cleanup = () => {
         globalThis.clearTimeout(timeoutId);

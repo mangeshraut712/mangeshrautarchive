@@ -34,8 +34,16 @@
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--bg-primary) 42%, transparent) 0%, transparent 44%),
-    linear-gradient(180deg, color-mix(in srgb, var(--bg-primary) 18%, transparent) 0%, transparent 28%);
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--bg-primary) 42%, transparent) 0%,
+      transparent 44%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-primary) 18%, transparent) 0%,
+      transparent 28%
+    );
 }
 
 .travel-map {
@@ -161,7 +169,7 @@
   flex-shrink: 0;
 }
 
-.travel-sidebar__header h2 {
+.travel-sidebar__header h1 {
   font-size: 24px;
   font-weight: 700;
   margin: 0 0 2px;
@@ -337,7 +345,7 @@
   transition: transform var(--duration-fast) var(--ease-apple);
 }
 
-.travel-advanced-toggle[aria-expanded="true"] i:last-child {
+.travel-advanced-toggle[aria-expanded='true'] i:last-child {
   transform: rotate(180deg);
 }
 
@@ -483,7 +491,7 @@
   border: 3px solid var(--stop-color, var(--apple-blue));
   z-index: 2;
   transition: all var(--duration-normal) var(--ease-spring);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 /* Hover */
@@ -592,10 +600,20 @@
 }
 
 @keyframes loadingDots {
-  0%, 20% { content: ''; }
-  40% { content: '.'; }
-  60% { content: '..'; }
-  80%, 100% { content: '...'; }
+  0%,
+  20% {
+    content: '';
+  }
+  40% {
+    content: '.';
+  }
+  60% {
+    content: '..';
+  }
+  80%,
+  100% {
+    content: '...';
+  }
 }
 
 .travel-stop__image {
@@ -793,7 +811,9 @@
     min-height: 44px;
     padding: var(--space-1) var(--space-3);
   }
-  .travel-nav__back span { display: none; }
+  .travel-nav__back span {
+    display: none;
+  }
   .travel-nav__theme {
     width: 34px;
     height: 34px;
@@ -814,14 +834,18 @@
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-1);
   }
-  .travel-stat__value { font-size: 15px; }
-  .travel-stat__label { font-size: 9px; }
+  .travel-stat__value {
+    font-size: 15px;
+  }
+  .travel-stat__label {
+    font-size: 9px;
+  }
 
   .travel-sidebar__header {
     padding: var(--space-4) var(--space-4) var(--space-3);
   }
 
-  .travel-sidebar__header h2 {
+  .travel-sidebar__header h1 {
     font-size: 21px;
   }
 
@@ -961,7 +985,7 @@ html.dark .maplibregl-ctrl-group button {
   object-fit: cover;
   border-radius: var(--radius-md, 8px);
   margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .travel-stop__detail-section {
@@ -1126,7 +1150,7 @@ html.dark .travel-sidebar {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-html.dark .travel-sidebar__header h2,
+html.dark .travel-sidebar__header h1,
 html.dark .travel-stop__name,
 html.dark .travel-stop__detail-text,
 html.dark .place-guide-card h4 {

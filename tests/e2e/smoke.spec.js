@@ -206,12 +206,12 @@ test.describe('Chrome smoke tests', () => {
   test('mobile overlay menu does not snap the page back near the top', async ({
     page,
   }, testInfo) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(1200);
-
     if (testInfo.project.name !== 'Mobile Chrome') {
       return;
     }
+
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(1200);
 
     await page.evaluate(() => {
       const scrollHeight = document.documentElement.scrollHeight;
@@ -264,74 +264,85 @@ test.describe('Chrome smoke tests', () => {
     const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
     const context = page.context();
 
-    await Promise.all(targets.map(async sectionId => {
-      const targetPage = await context.newPage();
-      try {
-        await targetPage.goto('/', { waitUntil: 'domcontentloaded' });
-        await targetPage.waitForTimeout(isMobileChrome ? 250 : 350);
+    await Promise.all(
+      targets.map(async sectionId => {
+        const targetPage = await context.newPage();
+        try {
+          await targetPage.goto('/', { waitUntil: 'domcontentloaded' });
+          await targetPage.waitForTimeout(isMobileChrome ? 250 : 350);
 
-        if (isMobileChrome) {
-          await targetPage.locator('#menu-btn').click();
-          await targetPage.waitForTimeout(250);
-          await targetPage.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
-        } else {
-          await targetPage.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
+          if (isMobileChrome) {
+            await targetPage.locator('#menu-btn').click();
+            await targetPage.waitForTimeout(250);
+            await targetPage.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
+          } else {
+            await targetPage.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
+          }
+
+          await expect(targetPage).toHaveURL(sectionUrlPatterns[sectionId]);
+        } finally {
+          await targetPage.close();
         }
-
-        await expect(targetPage).toHaveURL(sectionUrlPatterns[sectionId]);
-      } finally {
-        await targetPage.close();
-      }
-    }));
+      })
+    );
   });
 
   test('all primary nav sections are reachable', async ({ page }) => {
     test.setTimeout(60_000);
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    await Promise.all(navSections.map(async sectionId => {
-      const section = page.locator(`section#${sectionId}`);
-      await expect(section, `${sectionId} should exist`).toBeAttached();
-      await section.scrollIntoViewIfNeeded();
-      await expect(section, `${sectionId} should be visible`).toBeVisible();
-    }));
+    await Promise.all(
+      navSections.map(async sectionId => {
+        const section = page.locator(`section#${sectionId}`);
+        await expect(section, `${sectionId} should exist`).toBeAttached();
+        await section.scrollIntoViewIfNeeded();
+        await expect(section, `${sectionId} should be visible`).toBeVisible();
+      })
+    );
   });
 
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    await Promise.all(['light', 'dark'].map(async (theme) => {
-      await page.evaluate(mode => {
-        globalThis.document.documentElement.classList.toggle('dark', mode === 'dark');
-        globalThis.localStorage.setItem('theme', mode);
-      }, theme);
-      await page.waitForTimeout(200);
+    await Promise.all(
+      ['light', 'dark'].map(async theme => {
+        await page.evaluate(mode => {
+          globalThis.document.documentElement.classList.toggle('dark', mode === 'dark');
+          globalThis.localStorage.setItem('theme', mode);
+        }, theme);
+        await page.waitForTimeout(200);
 
-      await Promise.all(criticalLayoutChecks.map(async check => {
-        const sectionNode = page.locator(check.selector);
-        await expect(sectionNode, `${check.name} exists in ${theme}`).toBeAttached();
-        const display = await sectionNode.evaluate(
-          node => globalThis.getComputedStyle(node).display
+        await Promise.all(
+          criticalLayoutChecks.map(async check => {
+            const sectionNode = page.locator(check.selector);
+            await expect(sectionNode, `${check.name} exists in ${theme}`).toBeAttached();
+            const display = await sectionNode.evaluate(
+              node => globalThis.getComputedStyle(node).display
+            );
+            expect(
+              display,
+              `${check.name} should render as ${check.expectedDisplay} in ${theme}`
+            ).toBe(check.expectedDisplay);
+          })
         );
-        expect(display, `${check.name} should render as ${check.expectedDisplay} in ${theme}`).toBe(
-          check.expectedDisplay
-        );
-      }));
-    }));
+      })
+    );
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    await Promise.all(criticalOverflowChecks.map(async check => {
-      const sectionNode = page.locator(check.selector);
-      await expect(sectionNode, `${check.name} exists`).toBeAttached();
-      await sectionNode.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(120);
+    await Promise.all(
+      criticalOverflowChecks.map(async check => {
+        const sectionNode = page.locator(check.selector);
+        await expect(sectionNode, `${check.name} exists`).toBeAttached();
+        await sectionNode.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(120);
 
-      const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
-      expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
-    }));
+        const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
+        expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
+      })
+    );
   });
 
   test('contact page removes portfolio reach and keeps currently media deduplicated', async ({

@@ -6,7 +6,35 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <title>System Monitor | AssistMe Dashboard</title>
+    <meta
+      name="description"
+      content="Public system monitor for Mangesh Raut's portfolio, including backend health, API availability, deployment surfaces, security headers, and AI service diagnostics."
+    />
+    <meta name="author" content="Mangesh Raut" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <link rel="canonical" href="https://mangeshraut.pro/monitor" />
+    <link rel="alternate" hreflang="en-US" href="https://mangeshraut.pro/monitor" />
+    <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/monitor" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mangeshraut.pro/monitor" />
+    <meta property="og:title" content="System Monitor | Mangesh Raut" />
+    <meta
+      property="og:description"
+      content="Live portfolio operations dashboard for backend health, provider APIs, deployments, security checks, and AI metrics."
+    />
+    <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta property="og:image:alt" content="System Monitor dashboard for Mangesh Raut portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="System Monitor | Mangesh Raut" />
+    <meta
+      name="twitter:description"
+      content="Live portfolio operations dashboard for backend health, provider APIs, deployments, security checks, and AI metrics."
+    />
+    <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta name="twitter:image:alt" content="System Monitor dashboard for Mangesh Raut portfolio" />
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
+    <link rel="manifest" href="manifest.json" />
     <script>
       (function () {
         const isGitHubPages = window.location.hostname.endsWith('github.io');
@@ -40,6 +68,62 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <script type="application/ld+json">
+      [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://mangeshraut.pro/monitor#webpage",
+          "url": "https://mangeshraut.pro/monitor",
+          "name": "System Monitor | Mangesh Raut",
+          "description": "Public operations dashboard for backend health, API availability, deployment surfaces, security checks, and AI metrics.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://mangeshraut.pro/#website",
+            "url": "https://mangeshraut.pro/",
+            "name": "Mangesh Raut — Software Engineer Portfolio"
+          },
+          "publisher": {
+            "@type": "Person",
+            "@id": "https://mangeshraut.pro/#person",
+            "name": "Mangesh Raut",
+            "url": "https://mangeshraut.pro/"
+          },
+          "breadcrumb": { "@id": "https://mangeshraut.pro/monitor#breadcrumb" },
+          "about": [
+            { "@type": "Thing", "name": "System status" },
+            { "@type": "Thing", "name": "API monitoring" },
+            { "@type": "Thing", "name": "Deployment health" },
+            { "@type": "Thing", "name": "Security diagnostics" }
+          ],
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://mangeshraut.pro/assets/images/home.png"
+          },
+          "dateModified": "2026-05-18",
+          "inLanguage": "en-US"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "@id": "https://mangeshraut.pro/monitor#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://mangeshraut.pro/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "System Monitor",
+              "item": "https://mangeshraut.pro/monitor"
+            }
+          ]
+        }
+      ]
+    </script>
   </head>
   <body class="monitor-page">
     <nav
@@ -50,7 +134,10 @@
       <div class="nav-container">
         <div class="nav-left">
           <a class="nav-logo" href="index.html#home" aria-label="Mangesh Raut home">
-            <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32" />
+            <picture>
+              <source srcset="assets/images/profile-icon.webp" type="image/webp" />
+              <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32" />
+            </picture>
           </a>
         </div>
         <div class="monitor-nav-title" aria-label="Current page">
@@ -1598,12 +1685,13 @@
             )
             .join('');
         } else {
-          const responseTimes = Array.isArray(data.ai_response_times)
-            ? data.ai_response_times
-            : [];
+          const responseTimes = Array.isArray(data.ai_response_times) ? data.ai_response_times : [];
           const avgLatency =
             responseTimes.length > 0
-              ? Math.round(responseTimes.reduce((sum, value) => sum + Number(value || 0), 0) / responseTimes.length)
+              ? Math.round(
+                  responseTimes.reduce((sum, value) => sum + Number(value || 0), 0) /
+                    responseTimes.length
+                )
               : null;
           const modelUsage = data.model_usage || {};
           const modelCount = Object.keys(modelUsage).length;
@@ -1633,8 +1721,12 @@
             {
               name: 'Model Usage',
               status: 'healthy',
-              value: modelCount === 0 ? 'No usage yet' : `${modelCount} model${modelCount === 1 ? '' : 's'}`,
-              detail: modelCount === 0 ? 'Waiting for chat traffic' : Object.keys(modelUsage).join(', '),
+              value:
+                modelCount === 0
+                  ? 'No usage yet'
+                  : `${modelCount} model${modelCount === 1 ? '' : 's'}`,
+              detail:
+                modelCount === 0 ? 'Waiting for chat traffic' : Object.keys(modelUsage).join(', '),
               icon: 'robot',
             },
             {

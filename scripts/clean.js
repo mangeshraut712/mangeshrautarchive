@@ -40,23 +40,25 @@ async function removeGeneratedWorkspaceFile(file) {
 async function findPycacheDirs(directory, matches = []) {
   const entries = await readdir(directory, { withFileTypes: true });
 
-  await Promise.all(entries.map(async entry => {
-    if (!entry.isDirectory()) {
-      return;
-    }
+  await Promise.all(
+    entries.map(async entry => {
+      if (!entry.isDirectory()) {
+        return;
+      }
 
-    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
-      return;
-    }
+      if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
+        return;
+      }
 
-    const absolutePath = join(directory, entry.name);
-    if (entry.name === '__pycache__') {
-      matches.push(absolutePath);
-      return;
-    }
+      const absolutePath = join(directory, entry.name);
+      if (entry.name === '__pycache__') {
+        matches.push(absolutePath);
+        return;
+      }
 
-    await findPycacheDirs(absolutePath, matches);
-  }));
+      await findPycacheDirs(absolutePath, matches);
+    })
+  );
 
   return matches;
 }
@@ -64,22 +66,24 @@ async function findPycacheDirs(directory, matches = []) {
 async function findGeneratedFiles(directory, matches = []) {
   const entries = await readdir(directory, { withFileTypes: true });
 
-  await Promise.all(entries.map(async entry => {
-    if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
-      return;
-    }
+  await Promise.all(
+    entries.map(async entry => {
+      if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
+        return;
+      }
 
-    const absolutePath = join(directory, entry.name);
+      const absolutePath = join(directory, entry.name);
 
-    if (entry.isDirectory()) {
-      await findGeneratedFiles(absolutePath, matches);
-      return;
-    }
+      if (entry.isDirectory()) {
+        await findGeneratedFiles(absolutePath, matches);
+        return;
+      }
 
-    if (generatedFileNames.has(entry.name)) {
-      matches.push(absolutePath);
-    }
-  }));
+      if (generatedFileNames.has(entry.name)) {
+        matches.push(absolutePath);
+      }
+    })
+  );
 
   return matches;
 }

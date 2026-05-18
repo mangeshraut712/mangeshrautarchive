@@ -939,7 +939,7 @@ class IntelligentAssistant {
     // Add recent topics
     const recentTopics = this.history
       .slice(-3)
-      .flatMap(h => h.question && h.question.length < 50 ? [h.question] : []);
+      .flatMap(h => (h.question && h.question.length < 50 ? [h.question] : []));
 
     return [...new Set([...suggestions, ...recentTopics])];
   }

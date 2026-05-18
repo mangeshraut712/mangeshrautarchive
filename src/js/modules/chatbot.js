@@ -248,7 +248,9 @@ class AppleIntelligenceChatbot {
         white-space: pre-wrap;
         word-wrap: break-word;
         overflow: hidden;
-      `.trim().replace(/\s+/g, ' ');
+      `
+        .trim()
+        .replace(/\s+/g, ' ');
 
       const computed = window.getComputedStyle(elements.input);
       this.shadowDiv.style.cssText += `;
@@ -258,7 +260,9 @@ class AppleIntelligenceChatbot {
         padding: ${computed.padding};
         box-sizing: ${computed.boxSizing};
         border: ${computed.border};
-      `.trim().replace(/\s+/g, ' ');
+      `
+        .trim()
+        .replace(/\s+/g, ' ');
 
       document.body.appendChild(this.shadowDiv);
     }

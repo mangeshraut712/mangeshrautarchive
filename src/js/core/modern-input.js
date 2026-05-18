@@ -67,7 +67,9 @@ export class ModernInputHandler {
       filter: none;
       position: relative;
       z-index: 1;
-    `.trim().replace(/\s+/g, ' ');
+    `
+      .trim()
+      .replace(/\s+/g, ' ');
 
     // Auto-resize for textarea
     if (this.input.tagName === 'TEXTAREA') {

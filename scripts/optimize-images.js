@@ -101,22 +101,26 @@ async function processImages() {
 
   console.log(`📸 Found ${imageFiles.length} images to process\n`);
 
-  await Promise.all(imageFiles.map(async file => {
-    const inputPath = join(INPUT_DIR, file);
-    const baseName = basename(file, extname(file));
+  await Promise.all(
+    imageFiles.map(async file => {
+      const inputPath = join(INPUT_DIR, file);
+      const baseName = basename(file, extname(file));
 
-    console.log(`\n📷 Processing: ${file}`);
+      console.log(`\n📷 Processing: ${file}`);
 
-    // Generate WebP versions at different sizes
-    await Promise.all(SIZES.map(size => {
-      const webpPath = join(OUTPUT_DIR, `${baseName}${size.suffix}.webp`);
-      return convertToWebP(inputPath, webpPath, size.width);
-    }));
+      // Generate WebP versions at different sizes
+      await Promise.all(
+        SIZES.map(size => {
+          const webpPath = join(OUTPUT_DIR, `${baseName}${size.suffix}.webp`);
+          return convertToWebP(inputPath, webpPath, size.width);
+        })
+      );
 
-    // Generate original format optimized version
-    const optimizedPath = join(OUTPUT_DIR, file);
-    await optimizeImage(inputPath, optimizedPath);
-  }));
+      // Generate original format optimized version
+      const optimizedPath = join(OUTPUT_DIR, file);
+      await optimizeImage(inputPath, optimizedPath);
+    })
+  );
 
   console.log('\n✨ Image optimization complete!');
   console.log(`📁 Optimized images saved to: ${OUTPUT_DIR}`);

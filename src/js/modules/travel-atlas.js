@@ -40,7 +40,9 @@ function waypointColor() {
 }
 
 function normalize(value) {
-  return String(value || '').trim().toLowerCase();
+  return String(value || '')
+    .trim()
+    .toLowerCase();
 }
 
 function escapeHtml(value) {
@@ -98,19 +100,41 @@ function getWaypointCategories(waypoint) {
   // Add categories from bestFor
   waypoint.editorial.bestFor.forEach(category => {
     const normalized = normalize(category);
-    if (normalized.includes('food') || normalized.includes('restaurant') || normalized.includes('cuisine')) {
+    if (
+      normalized.includes('food') ||
+      normalized.includes('restaurant') ||
+      normalized.includes('cuisine')
+    ) {
       waypointCategories.add('food');
     }
-    if (normalized.includes('culture') || normalized.includes('art') || normalized.includes('museum') || normalized.includes('music')) {
+    if (
+      normalized.includes('culture') ||
+      normalized.includes('art') ||
+      normalized.includes('museum') ||
+      normalized.includes('music')
+    ) {
       waypointCategories.add('culture');
     }
-    if (normalized.includes('nature') || normalized.includes('park') || normalized.includes('beach') || normalized.includes('mountain')) {
+    if (
+      normalized.includes('nature') ||
+      normalized.includes('park') ||
+      normalized.includes('beach') ||
+      normalized.includes('mountain')
+    ) {
       waypointCategories.add('nature');
     }
-    if (normalized.includes('urban') || normalized.includes('city') || normalized.includes('architecture')) {
+    if (
+      normalized.includes('urban') ||
+      normalized.includes('city') ||
+      normalized.includes('architecture')
+    ) {
       waypointCategories.add('urban');
     }
-    if (normalized.includes('history') || normalized.includes('heritage') || normalized.includes('monument')) {
+    if (
+      normalized.includes('history') ||
+      normalized.includes('heritage') ||
+      normalized.includes('monument')
+    ) {
       waypointCategories.add('history');
     }
   });
@@ -121,16 +145,35 @@ function getWaypointCategories(waypoint) {
     if (category.includes('food') || category.includes('restaurant') || category.includes('cafe')) {
       waypointCategories.add('food');
     }
-    if (category.includes('culture') || category.includes('museum') || category.includes('art') || category.includes('theater')) {
+    if (
+      category.includes('culture') ||
+      category.includes('museum') ||
+      category.includes('art') ||
+      category.includes('theater')
+    ) {
       waypointCategories.add('culture');
     }
-    if (category.includes('nature') || category.includes('park') || category.includes('hike') || category.includes('beach')) {
+    if (
+      category.includes('nature') ||
+      category.includes('park') ||
+      category.includes('hike') ||
+      category.includes('beach')
+    ) {
       waypointCategories.add('nature');
     }
-    if (category.includes('urban') || category.includes('city') || category.includes('architecture')) {
+    if (
+      category.includes('urban') ||
+      category.includes('city') ||
+      category.includes('architecture')
+    ) {
       waypointCategories.add('urban');
     }
-    if (category.includes('history') || category.includes('fort') || category.includes('palace') || category.includes('temple')) {
+    if (
+      category.includes('history') ||
+      category.includes('fort') ||
+      category.includes('palace') ||
+      category.includes('temple')
+    ) {
       waypointCategories.add('history');
     }
   });
@@ -158,7 +201,10 @@ function getWaypointSearchText(waypoint) {
     ...waypoint.editorial.neighborhoods,
     ...waypoint.editorial.mustSee,
     ...waypoint.editorial.thingsToDo.map(item => `${item.title} ${item.category} ${item.summary}`),
-  ].filter(Boolean).join(' ').toLowerCase();
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
 
   waypointSearchCache.set(waypoint, text);
   return text;
@@ -167,24 +213,24 @@ function getWaypointSearchText(waypoint) {
 function getFilteredWaypoints() {
   const term = normalize(state.searchTerm);
 
-  const matches = travelData.waypoints
-    .reduce((acc, waypoint, index) => {
-      const matchesCountry = !state.activeCountry || waypoint.locality.country === state.activeCountry;
-      const matchesFeatured = !state.featuredOnly || waypoint.editorial.featured;
-      const matchesCategories = state.activeCategories.size === 0 || hasMatchingCategories(waypoint);
+  const matches = travelData.waypoints.reduce((acc, waypoint, index) => {
+    const matchesCountry =
+      !state.activeCountry || waypoint.locality.country === state.activeCountry;
+    const matchesFeatured = !state.featuredOnly || waypoint.editorial.featured;
+    const matchesCategories = state.activeCategories.size === 0 || hasMatchingCategories(waypoint);
 
-      if (!matchesCountry || !matchesFeatured || !matchesCategories) {
-        return acc;
-      }
-
-      const haystack = getWaypointSearchText(waypoint);
-
-      if (!term || haystack.includes(term)) {
-        acc.push({ waypoint, index });
-      }
-
+    if (!matchesCountry || !matchesFeatured || !matchesCategories) {
       return acc;
-    }, []);
+    }
+
+    const haystack = getWaypointSearchText(waypoint);
+
+    if (!term || haystack.includes(term)) {
+      acc.push({ waypoint, index });
+    }
+
+    return acc;
+  }, []);
 
   if (!term) return matches;
 
@@ -203,7 +249,8 @@ function getSearchScore(waypoint, term) {
   const placeKind = normalize(waypoint.locality.placeKind);
 
   if (title === term || placeName === term || originalName === term) return 100;
-  if (title.startsWith(term) || placeName.startsWith(term) || originalName.startsWith(term)) return 80;
+  if (title.startsWith(term) || placeName.startsWith(term) || originalName.startsWith(term))
+    return 80;
   if (placeName.includes(term) || originalName.includes(term)) return 65;
   if (placeKind.includes(term)) return 45;
   if (waypoint.editorial.mustSee.some(item => normalize(item).includes(term))) return 30;
@@ -309,7 +356,8 @@ function renderCountryPills() {
     const pill = event.target.closest('.country-pill');
     if (!pill) return;
 
-    state.activeCountry = state.activeCountry === pill.dataset.country ? null : pill.dataset.country;
+    state.activeCountry =
+      state.activeCountry === pill.dataset.country ? null : pill.dataset.country;
     applyFilterChange();
   });
 }
@@ -340,9 +388,10 @@ function renderTimeline() {
   let currentGroupCountry = null;
   el.innerHTML = filtered
     .map(({ waypoint, index }) => {
-      const countryGroupHeader = waypoint.locality.country !== currentGroupCountry
-        ? `<div class="travel-timeline__country-header"><h3>${escapeHtml(waypoint.locality.emoji)} ${escapeHtml(waypoint.locality.country)}</h3></div>`
-        : '';
+      const countryGroupHeader =
+        waypoint.locality.country !== currentGroupCountry
+          ? `<div class="travel-timeline__country-header"><h3>${escapeHtml(waypoint.locality.emoji)} ${escapeHtml(waypoint.locality.country)}</h3></div>`
+          : '';
       currentGroupCountry = waypoint.locality.country;
       return renderStopCard(waypoint, index, countryGroupHeader);
     })
@@ -389,7 +438,8 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
   const wikiImage = waypoint.editorial.wikiImage
     ? `<img class="travel-stop__image loaded" src="${safeExternalUrl(waypoint.editorial.wikiImage)}" alt="${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />`
     : '';
-  const wikiSummary = waypoint.editorial.wikiSummary || 'Select this place to load concise local context.';
+  const wikiSummary =
+    waypoint.editorial.wikiSummary || 'Select this place to load concise local context.';
   const detailsId = `travel-stop-details-${index}`;
   const summaryId = `travel-stop-summary-${index}`;
   const ariaLabel = `Open details for ${waypoint.title} in ${waypoint.locality.city}, ${waypoint.locality.country}`;
@@ -523,12 +573,16 @@ const wikiCache = new Map();
 async function fetchWikiData(waypoint, stopElement) {
   // If we already have the data in the waypoint, just apply it
   if (waypoint.editorial.wikiLoaded) {
-    applyWikiData({
-      page: {
-        thumbnail: waypoint.editorial.wikiImage ? { source: waypoint.editorial.wikiImage } : null,
-        extract: waypoint.editorial.wikiSummary
-      }
-    }, stopElement, waypoint);
+    applyWikiData(
+      {
+        page: {
+          thumbnail: waypoint.editorial.wikiImage ? { source: waypoint.editorial.wikiImage } : null,
+          extract: waypoint.editorial.wikiSummary,
+        },
+      },
+      stopElement,
+      waypoint
+    );
     return;
   }
 
@@ -552,7 +606,7 @@ async function fetchWikiData(waypoint, stopElement) {
     const queries = [
       `${waypoint.title} ${waypoint.locality.country} ${waypoint.editorial.highlight || ''}`.trim(),
       `${waypoint.title} ${waypoint.locality.country} landmark`,
-      `${waypoint.title} ${waypoint.locality.country}`
+      `${waypoint.title} ${waypoint.locality.country}`,
     ];
 
     const queryPromises = queries.map(q => {
@@ -573,7 +627,8 @@ async function fetchWikiData(waypoint, stopElement) {
     });
 
     const results = await Promise.all(queryPromises);
-    const bestPage = results.find(p => p && p.thumbnail && p.thumbnail.source) || results.find(p => p);
+    const bestPage =
+      results.find(p => p && p.thumbnail && p.thumbnail.source) || results.find(p => p);
 
     const wikiData = { page: bestPage };
     wikiCache.set(cacheKey, wikiData);
@@ -630,12 +685,14 @@ function getPhotoGallery(waypoint) {
   const photos = [];
 
   // Add main Wikipedia image if available
-  const mainImg = document.querySelector(`[data-index="${travelData.waypoints.indexOf(waypoint)}"] .travel-stop__image`);
+  const mainImg = document.querySelector(
+    `[data-index="${travelData.waypoints.indexOf(waypoint)}"] .travel-stop__image`
+  );
   if (mainImg && mainImg.src && mainImg.style.display !== 'none') {
     photos.push({
       src: mainImg.src,
       alt: `${waypoint.title} - Main view`,
-      caption: `${waypoint.title}, ${waypoint.locality.country}`
+      caption: `${waypoint.title}, ${waypoint.locality.country}`,
     });
   }
 
@@ -645,7 +702,7 @@ function getPhotoGallery(waypoint) {
       photos.push({
         src: item.image,
         alt: `${item.title} in ${waypoint.title}`,
-        caption: `${item.title} - ${item.category}`
+        caption: `${item.title} - ${item.category}`,
       });
     }
   });
@@ -697,9 +754,12 @@ function openPhotoGallery(stopElement, startIndex = 0) {
     captionEl.textContent = photo.caption;
 
     // Update indicators
-    indicatorsEl.innerHTML = photos.map((_, i) =>
-      `<span class="photo-gallery-indicator ${i === currentIndex ? 'active' : ''}" data-index="${i}"></span>`
-    ).join('');
+    indicatorsEl.innerHTML = photos
+      .map(
+        (_, i) =>
+          `<span class="photo-gallery-indicator ${i === currentIndex ? 'active' : ''}" data-index="${i}"></span>`
+      )
+      .join('');
 
     // Update nav buttons
     const prevBtn = modal.querySelector('#gallery-prev');
@@ -747,7 +807,7 @@ function openPhotoGallery(stopElement, startIndex = 0) {
   document.addEventListener('keydown', handleGalleryKeydown);
 
   // Indicator clicks
-  modal.addEventListener('click', (e) => {
+  modal.addEventListener('click', e => {
     if (e.target.classList.contains('photo-gallery-indicator')) {
       currentIndex = Number(e.target.dataset.index);
       updateGallery();
@@ -803,9 +863,13 @@ function attachGalleryHandlers(stopElement) {
   // Attach handler to main image
   const mainImg = stopElement.querySelector('.travel-stop__image');
   if (mainImg) {
-    mainImg.addEventListener('error', () => {
-      mainImg.style.display = 'none';
-    }, { once: true });
+    mainImg.addEventListener(
+      'error',
+      () => {
+        mainImg.style.display = 'none';
+      },
+      { once: true }
+    );
     mainImg.style.cursor = 'pointer';
     mainImg.onclick = () => openPhotoGallery(stopElement, 0);
   }
@@ -813,9 +877,13 @@ function attachGalleryHandlers(stopElement) {
   // Attach handlers to place guide images
   const guideImages = stopElement.querySelectorAll('.place-guide-card img');
   guideImages.forEach((img, index) => {
-    img.addEventListener('error', () => {
-      img.closest('.place-guide-card')?.classList.add('place-guide-card--image-missing');
-    }, { once: true });
+    img.addEventListener(
+      'error',
+      () => {
+        img.closest('.place-guide-card')?.classList.add('place-guide-card--image-missing');
+      },
+      { once: true }
+    );
     img.style.cursor = 'pointer';
     img.onclick = () => openPhotoGallery(stopElement, index + 1);
   });
@@ -902,7 +970,10 @@ async function initMap() {
     attributionControl: true,
   });
 
-  state.map.addControl(new window.maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-right');
+  state.map.addControl(
+    new window.maplibregl.NavigationControl({ visualizePitch: true }),
+    'bottom-right'
+  );
   state.map.on('error', handleMapError);
 
   state.map.on('load', () => {
@@ -1045,9 +1116,10 @@ function fitMapToVisiblePlaces() {
   });
 
   state.map.fitBounds(bounds, {
-    padding: window.innerWidth <= 768
-      ? { top: 80, bottom: window.innerHeight * 0.48 + 20, left: 20, right: 20 }
-      : { top: 84, bottom: 84, left: 460, right: 90 },
+    padding:
+      window.innerWidth <= 768
+        ? { top: 80, bottom: window.innerHeight * 0.48 + 20, left: 20, right: 20 }
+        : { top: 84, bottom: 84, left: 460, right: 90 },
     duration: 1200,
     maxZoom: 8,
   });

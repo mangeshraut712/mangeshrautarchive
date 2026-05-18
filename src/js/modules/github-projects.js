@@ -274,27 +274,29 @@ class GitHubProjects {
 
     let rawRepos = null;
 
-    const proxyResults = await Promise.all(this.proxyCandidates.map(async proxyBase => {
-      try {
-        const proxyResp = await fetch(
-          `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
-          { headers: { Accept: 'application/json' } }
-        );
+    const proxyResults = await Promise.all(
+      this.proxyCandidates.map(async proxyBase => {
+        try {
+          const proxyResp = await fetch(
+            `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
+            { headers: { Accept: 'application/json' } }
+          );
 
-        if (!proxyResp.ok) {
-          console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
-          return null;
-        }
+          if (!proxyResp.ok) {
+            console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
+            return null;
+          }
 
-        const data = await proxyResp.json();
-        if (data.success && Array.isArray(data.data)) {
-          return data.data;
+          const data = await proxyResp.json();
+          if (data.success && Array.isArray(data.data)) {
+            return data.data;
+          }
+        } catch (err) {
+          console.warn(`Proxy ${proxyBase} failed:`, err.message);
         }
-      } catch (err) {
-        console.warn(`Proxy ${proxyBase} failed:`, err.message);
-      }
-      return null;
-    }));
+        return null;
+      })
+    );
 
     rawRepos = proxyResults.find(Boolean) || null;
 
@@ -463,7 +465,9 @@ class GitHubProjects {
   getTopics(repo) {
     if (!Array.isArray(repo?.topics)) return [];
     return repo.topics.flatMap(topic => {
-      const normalized = String(topic || '').trim().toLowerCase();
+      const normalized = String(topic || '')
+        .trim()
+        .toLowerCase();
       return normalized ? [normalized] : [];
     });
   }
@@ -730,12 +734,10 @@ class GitHubProjects {
   getLastPageFromLink(linkHeader = '') {
     if (!linkHeader) return null;
 
-    const candidates = linkHeader
-      .split(',')
-      .flatMap(part => {
-        const trimmed = part.trim();
-        return trimmed ? [trimmed] : [];
-      });
+    const candidates = linkHeader.split(',').flatMap(part => {
+      const trimmed = part.trim();
+      return trimmed ? [trimmed] : [];
+    });
 
     const last = candidates.find(part => part.includes('rel="last"'));
     const next = candidates.find(part => part.includes('rel="next"'));

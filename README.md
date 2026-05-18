@@ -613,24 +613,24 @@ mangeshrautarchive/
 
 ## 📜 Available Commands
 
-| Command                         | Description                                       |
-| ------------------------------- | ------------------------------------------------- |
-| `npm run dev`                   | Start full-stack development (frontend + backend) |
-| `npm run dev:frontend`          | Start the static frontend with `/api` proxy       |
-| `npm run dev:backend`           | Start the FastAPI backend on port 8001            |
-| `npm run build`                 | Build production assets into `dist/`              |
-| `npm run lint`                  | Run JavaScript linting                            |
-| `npm run lint:css`              | Run CSS linting                                   |
-| `npm run test`                  | Run unit tests                                    |
-| `npm run check-secrets`         | Scan for exposed API keys and secrets             |
-| `npm run qa:smoke`              | End-to-end smoke tests                            |
-| `npm run qa:a11y`               | Accessibility tests                               |
-| `npm run qa:lighthouse:desktop` | Desktop performance audit                         |
-| `npm run qa:lighthouse:mobile`  | Mobile performance audit                          |
-| `npm run qa:postdeploy`         | Post-deployment validation                        |
-| `npm run qa:prod-ready`         | Full production readiness check                   |
+| Command                         | Description                                           |
+| ------------------------------- | ----------------------------------------------------- |
+| `npm run dev`                   | Start full-stack development (frontend + backend)     |
+| `npm run dev:frontend`          | Start the static frontend with `/api` proxy           |
+| `npm run dev:backend`           | Start the FastAPI backend on port 8001                |
+| `npm run build`                 | Build production assets into `dist/`                  |
+| `npm run lint`                  | Run JavaScript linting                                |
+| `npm run lint:css`              | Run CSS linting                                       |
+| `npm run test`                  | Run unit tests                                        |
+| `npm run check-secrets`         | Scan for exposed API keys and secrets                 |
+| `npm run qa:smoke`              | End-to-end smoke tests                                |
+| `npm run qa:a11y`               | Accessibility tests                                   |
+| `npm run qa:lighthouse:desktop` | Desktop performance audit                             |
+| `npm run qa:lighthouse:mobile`  | Mobile performance audit                              |
+| `npm run qa:postdeploy`         | Post-deployment validation                            |
+| `npm run qa:prod-ready`         | Full production readiness check                       |
 | `npm run clean`                 | Remove build, test, browser, log, and cache artifacts |
-| `npm run format:check`          | Check Prettier formatting                         |
+| `npm run format:check`          | Check Prettier formatting                             |
 
 ---
 
@@ -654,13 +654,13 @@ mangeshrautarchive/
 
 ## 🌐 Live Deployments
 
-| Surface            | URL                                                                             | Purpose                                           |
-| ------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------- |
-| **Production**     | [mangeshraut.pro](https://mangeshraut.pro)                                      | Primary Vercel deployment with FastAPI functions  |
-| **Vercel App**     | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)          | Vercel-generated deployment URL                   |
+| Surface            | URL                                                                             | Purpose                                               |
+| ------------------ | ------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **Production**     | [mangeshraut.pro](https://mangeshraut.pro)                                      | Primary Vercel deployment with FastAPI functions      |
+| **Vercel App**     | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)          | Vercel-generated deployment URL                       |
 | **GitHub Pages**   | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback generated from the same `dist/` build |
-| **System Monitor** | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                      | Ops dashboard — health, probes, AI metrics        |
-| **API Docs**       | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs)                    | OpenAPI explorer                                  |
+| **System Monitor** | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                      | Ops dashboard — health, probes, AI metrics            |
+| **API Docs**       | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs)                    | OpenAPI explorer                                      |
 
 ### Deployment Sync
 

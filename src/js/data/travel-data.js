@@ -29,7 +29,12 @@ export const travelJournal = {
         { city: 'Pune', label: 'Origin', date: 'Aug 12', coordinates: [73.8567, 18.5204] },
         { city: 'Mumbai', label: 'Connection', date: 'Aug 12', coordinates: [72.8777, 19.076] },
         { city: 'Dubai', label: 'Layover', date: 'Aug 13', coordinates: [55.2708, 25.2048] },
-        { city: 'Philadelphia', label: 'Arrival', date: 'Aug 14', coordinates: [-75.1652, 39.9526] },
+        {
+          city: 'Philadelphia',
+          label: 'Arrival',
+          date: 'Aug 14',
+          coordinates: [-75.1652, 39.9526],
+        },
       ],
       media: [
         {
@@ -69,8 +74,18 @@ export const travelJournal = {
         [-74.006, 40.7128],
       ],
       waypoints: [
-        { city: 'Philadelphia', label: '30th Street', date: 'Oct 4', coordinates: [-75.181, 39.9557] },
-        { city: 'New York City', label: 'Manhattan', date: 'Oct 5', coordinates: [-74.006, 40.7128] },
+        {
+          city: 'Philadelphia',
+          label: '30th Street',
+          date: 'Oct 4',
+          coordinates: [-75.181, 39.9557],
+        },
+        {
+          city: 'New York City',
+          label: 'Manhattan',
+          date: 'Oct 5',
+          coordinates: [-74.006, 40.7128],
+        },
       ],
       media: [
         {
@@ -107,7 +122,12 @@ export const travelJournal = {
       waypoints: [
         { city: 'Philadelphia', label: 'Start', date: 'Mar 15', coordinates: [-75.1652, 39.9526] },
         { city: 'Baltimore', label: 'Pause', date: 'Mar 15', coordinates: [-76.6122, 39.2904] },
-        { city: 'Washington, DC', label: 'Destination', date: 'Mar 16', coordinates: [-77.0369, 38.9072] },
+        {
+          city: 'Washington, DC',
+          label: 'Destination',
+          date: 'Mar 16',
+          coordinates: [-77.0369, 38.9072],
+        },
       ],
       media: [
         {
@@ -145,7 +165,12 @@ export const travelJournal = {
       waypoints: [
         { city: 'Philadelphia', label: 'Start', date: 'Jun 20', coordinates: [-75.1652, 39.9526] },
         { city: 'Buffalo', label: 'Stop', date: 'Jun 21', coordinates: [-78.8784, 42.8864] },
-        { city: 'Niagara Falls', label: 'Waterline', date: 'Jun 22', coordinates: [-79.0849, 43.0896] },
+        {
+          city: 'Niagara Falls',
+          label: 'Waterline',
+          date: 'Jun 22',
+          coordinates: [-79.0849, 43.0896],
+        },
         { city: 'Toronto', label: 'Extension', date: 'Jun 23', coordinates: [-79.3832, 43.6532] },
       ],
       media: [

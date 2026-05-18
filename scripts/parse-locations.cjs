@@ -13,4 +13,6 @@ const jsContent = `export const photoLocations = ${JSON.stringify(uniqueCoordina
 
 fs.writeFileSync('src/js/data/photo-locations.js', jsContent, 'utf8');
 
-console.log(`Extracted ${uniqueCoordinates.length} unique coordinates from ${photos.length} total photos.`);
+console.log(
+  `Extracted ${uniqueCoordinates.length} unique coordinates from ${photos.length} total photos.`
+);

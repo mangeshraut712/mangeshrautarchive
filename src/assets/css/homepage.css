@@ -820,7 +820,8 @@ html.dark .hero-name-text {
 }
 
 @keyframes soundWavePulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
     transform: scaleX(0.95);
   }
@@ -831,14 +832,14 @@ html.dark .hero-name-text {
 }
 
 @keyframes pronouncePulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
     transform: scale(1.08);
   }
 }
-
 
 html.dark #name-pronounce-btn.name-pronounce-btn {
   color: #636366 !important;
