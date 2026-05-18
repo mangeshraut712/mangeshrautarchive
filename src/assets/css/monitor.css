@@ -575,6 +575,11 @@ html.dark .env-pill {
   color: var(--accent-red);
 }
 
+.overview-icon.gray {
+  background: rgba(142, 142, 147, 0.12);
+  color: var(--text-secondary);
+}
+
 .overview-label {
   font-size: 13px;
   font-weight: 600;

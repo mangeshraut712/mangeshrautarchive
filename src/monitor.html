@@ -523,7 +523,7 @@
           return uniqueOrigins([remoteConfiguredOrigin || fallbackOrigin]);
         }
 
-        return uniqueOrigins(['', remoteConfiguredOrigin, fallbackOrigin]);
+        return [''];
       }
 
       function buildApiUrlForOrigin(origin, path) {
@@ -597,14 +597,16 @@
       async function fetchMonitorJson(path, label) {
         try {
           await ensureApiOrigin();
-          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
+          if (!monitorApiAvailable) return null;
           const response = await fetch(buildApiUrl(path), { cache: 'no-store' });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const contentType = response.headers.get('content-type') || '';
           if (!contentType.includes('application/json')) return null;
           return await response.json();
         } catch (error) {
-          console.warn(`${label} unavailable:`, error.message || error);
+          if (monitorApiAvailable) {
+            console.warn(`${label} unavailable:`, error.message || error);
+          }
           return null;
         }
       }
@@ -636,7 +638,7 @@
       async function fetchEvents(filter = '') {
         try {
           await ensureApiOrigin();
-          if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
+          if (!monitorApiAvailable) return [];
           const url = new URL(buildApiUrl('/api/monitor/events'), window.location.origin);
           if (filter) url.searchParams.set('event_type', filter);
           const response = await fetch(url, { cache: 'no-store' });
@@ -646,7 +648,9 @@
           const data = await response.json();
           return data.events || [];
         } catch (error) {
-          console.warn('Events unavailable:', error.message || error);
+          if (monitorApiAvailable) {
+            console.warn('Events unavailable:', error.message || error);
+          }
           return [];
         }
       }
@@ -1179,13 +1183,23 @@
         const backendIcon = document.getElementById('backend-icon');
         const backendStatus = document.getElementById('backend-status');
         const backendDetail = document.getElementById('backend-detail');
+        const successRateEl = document.getElementById('success-rate');
+        const errorCountEl = document.getElementById('error-count');
+        const avgResponseEl = document.getElementById('avg-response');
+        const errorIcon = document.getElementById('errors-icon');
 
         if (!data || !data.endpoints || data.endpoints.length === 0) {
-          // No data available - set offline state
           backendIcon.className = 'overview-icon gray';
-          backendStatus.textContent = 'OFFLINE';
+          backendStatus.textContent = monitorApiAvailable ? 'NO DATA' : 'OFFLINE';
           backendStatus.style.color = 'var(--text-secondary)';
-          backendDetail.textContent = 'No metrics available';
+          backendDetail.textContent = monitorApiAvailable
+            ? 'Endpoints not yet tracked'
+            : 'Monitor API unreachable';
+          successRateEl.textContent = '--%';
+          avgResponseEl.textContent = '--ms';
+          errorCountEl.textContent = '--';
+          errorIcon.className = 'overview-icon gray';
+          errorIcon.innerHTML = '<i class="fas fa-minus-circle"></i>';
           return;
         }
 
@@ -1213,11 +1227,8 @@
           backendDetail.textContent = 'Endpoints not yet tracked';
         }
 
-        document.getElementById('success-rate').textContent =
-          (100 - (data.error_rate || 0)).toFixed(1) + '%';
-        document.getElementById('error-count').textContent = (
-          data.error_count || 0
-        ).toLocaleString();
+        successRateEl.textContent = (100 - (data.error_rate || 0)).toFixed(1) + '%';
+        errorCountEl.textContent = (data.error_count || 0).toLocaleString();
 
         // Calculate avg response from endpoints
         const avgResponse =
@@ -1225,10 +1236,9 @@
             ? data.endpoints.reduce((sum, e) => sum + (e.avg_response_time_ms || 0), 0) /
               data.endpoints.length
             : 0;
-        document.getElementById('avg-response').textContent = avgResponse.toFixed(0) + 'ms';
+        avgResponseEl.textContent = avgResponse.toFixed(0) + 'ms';
 
         // Update error icon color
-        const errorIcon = document.getElementById('errors-icon');
         if (data.error_count === 0) {
           errorIcon.className = 'overview-icon green';
           errorIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
@@ -1255,8 +1265,9 @@
       }
 
       // Actions
-      async function refreshData() {
-        showToast('Refreshing data...', 'info');
+      async function refreshData(options = {}) {
+        const silent = options.silent === true;
+        if (!silent) showToast('Refreshing data...', 'info');
         await ensureApiOrigin({ force: true });
 
         const [health, metrics, integrations, status, docs, hosting] = await Promise.all([
@@ -1271,11 +1282,9 @@
         const events = await fetchEvents(document.getElementById('event-filter').value);
         lastRefreshIso = new Date().toISOString();
 
-        if (health) renderHealthChecks(health);
-        if (metrics) {
-          renderMetrics(metrics);
-          renderOverview(metrics);
-        }
+        renderHealthChecks(health);
+        renderMetrics(metrics);
+        renderOverview(metrics);
         renderExternalServices(integrations);
         renderRuntimeSnapshot(hosting || status);
         renderDeploymentSurfaces(hosting);
@@ -1284,7 +1293,12 @@
         renderMonitorDocs(docs);
         renderEvents(events);
 
-        showToast('Data refreshed', 'success');
+        if (!silent) {
+          showToast(
+            monitorApiAvailable ? 'Data refreshed' : 'Monitor API unavailable',
+            monitorApiAvailable ? 'success' : 'error'
+          );
+        }
       }
 
       async function runHealthChecks() {
@@ -1451,7 +1465,7 @@
 
       function renderSecurity(data) {
         const container = document.getElementById('security-checks');
-        if (!data || !Array.isArray(data.checks)) {
+        if (!data) {
           container.innerHTML = `
             <div class="empty-state">
               <i class="fas fa-shield-halved"></i>
@@ -1460,7 +1474,34 @@
             </div>`;
           return;
         }
-        container.innerHTML = data.checks
+
+        const checks = Array.isArray(data.checks)
+          ? data.checks
+          : [
+              {
+                name: 'Security Events',
+                status: data.security_events?.length ? 'degraded' : 'healthy',
+                message: data.security_events?.length
+                  ? `${data.security_events.length} security event${data.security_events.length === 1 ? '' : 's'} recorded`
+                  : 'No security events recorded',
+              },
+              {
+                name: 'Suspicious IPs',
+                status: data.suspicious_ips?.length ? 'degraded' : 'healthy',
+                message: data.suspicious_ips?.length
+                  ? `${data.suspicious_ips.length} suspicious IP${data.suspicious_ips.length === 1 ? '' : 's'} detected`
+                  : 'No suspicious IPs detected',
+              },
+              {
+                name: 'Rate Limits',
+                status: 'healthy',
+                message: Object.keys(data.rate_limits || {}).length
+                  ? `${Object.keys(data.rate_limits).length} rate limit bucket${Object.keys(data.rate_limits).length === 1 ? '' : 's'} tracked`
+                  : 'No active rate limit pressure',
+              },
+            ];
+
+        container.innerHTML = checks
           .map(
             check => `
           <div class="health-item ${check.status}">
@@ -1586,14 +1627,14 @@
       // Initialize
       document.addEventListener('DOMContentLoaded', async () => {
         monitorConfig = await loadPublicConfig();
-        refreshData();
+        refreshData({ silent: true });
 
         // Also fetch security + AI metrics on load
         fetchSecurity().then(renderSecurity);
         fetchAIMetrics().then(renderAIMetrics);
 
         // Auto-refresh every 30 seconds
-        setInterval(refreshData, 30000);
+        setInterval(() => refreshData({ silent: true }), 30000);
       });
     </script>
     <script type="module">

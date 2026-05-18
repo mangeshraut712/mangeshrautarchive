@@ -256,16 +256,16 @@ Layered translucency, parallax scrolling, and micro-animations provide a sense o
 <div style="background: linear-gradient(135deg, #f5f5f7, #ffffff); padding: 1.5rem; border-radius: 16px; border: 1px solid #e5e5e7;">
   <p style="margin: 0 0 1rem 0;">Full-stack operations dashboard at <code>/monitor.html</code>:</p>
   <ul style="margin: 0;">
-    <li>🔄 Live health checks for backend, APIs, and deployments</li>
-    <li>📊 Endpoint performance metrics and response times</li>
+    <li>🔄 Live health checks for backend, APIs, and deployments through <code>/api/monitor/*</code></li>
+    <li>📊 Endpoint performance metrics, response times, and incident counters</li>
     <li>🌐 Provider status (OpenRouter, GitHub, Last.fm, Vercel)</li>
-    <li>🚀 Deployment surface monitoring (custom domain, Vercel, GitHub Pages)</li>
+    <li>🚀 Deployment surface monitoring for the custom domain, Vercel deployment, and GitHub Pages</li>
     <li>📡 <strong>Client-side latency probes</strong> — runs from browser, no backend needed</li>
     <li>🛡️ <strong>Security audit</strong> — env var checks, CORS, headers</li>
     <li>🤖 <strong>AI provider metrics</strong> — model usage and performance stats</li>
     <li>📋 Event logs with resolved/unresolved incidents</li>
-    <li>⚙️ Auto-refresh every 30s with graceful fallbacks</li>
-    <li>🛠️ Recent improvements: Enhanced UI, better error handling, and real-time API status indicators</li>
+    <li>⚙️ Auto-refresh every 30s with API origin probing and degraded-state fallbacks</li>
+    <li>🛠️ Apple-style operational UI with theme-aware cards, compact spacing, and explicit API status indicators</li>
   </ul>
 </div>
 </details>
@@ -396,7 +396,7 @@ graph TB
     end
 
     subgraph "🚀 Deployment & CDN"
-        Q[Vercel Edge Functions] --> R[Global CDN Distribution]
+        Q[Vercel Serverless Functions] --> R[Global CDN Distribution]
         S[GitHub Pages] --> T[Static Asset Hosting]
         U[Custom Domain SSL] --> V[mangeshraut.pro]
         W[Docker Containerization] --> Q
@@ -503,11 +503,11 @@ This project leverages modern browser APIs available in 2026:
 ```bash
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
-corepack pnpm install
+npm install --no-audit --no-fund
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-corepack pnpm run dev
+npm run dev
 ```
 
 🎯 **Access:**
@@ -515,6 +515,8 @@ corepack pnpm run dev
 - Frontend: `http://localhost:4000`
 - Backend API: `http://localhost:8001`
 - System Monitor: `http://localhost:4000/monitor.html`
+
+The local frontend proxies `/api/*` to the FastAPI backend at `127.0.0.1:8001`, matching the Vercel production routing.
 
 ### Environment Variables
 
@@ -528,6 +530,8 @@ Copy `.env.example` to `.env` and configure:
 | `TMDB_API_KEY`        | Optional | Movie/TV poster fetching                                      |
 | `VERCEL_ANALYTICS_ID` | Auto     | Set by Vercel on deployment                                   |
 
+Public build-time values such as `NEXT_PUBLIC_API_BASE`, `OPENROUTER_SITE_URL`, and `OPENROUTER_MODEL` are safe configuration only. Secret keys must stay in backend environment variables and are scanned by `npm run security-check`.
+
 ---
 
 ## 📂 Project Structure
@@ -537,13 +541,11 @@ mangeshrautarchive/
 ├── api/                          # FastAPI backend
 │   ├── integrations/             # External API clients
 │   │   ├── github_connector.py   # GitHub API client
-│   │   ├── lastfm_connector.py   # Last.fm music API
-│   │   └── openrouter_client.py  # AI API client
-│   ├── monitoring/               # Health check endpoints
-│   │   ├── health.py             # System health monitoring
-│   │   └── metrics.py            # Performance metrics
-│   ├── models/                   # Pydantic data models
-│   └── index.py                  # Main API application
+│   │   └── __init__.py
+│   ├── analytics_store.py        # Portfolio analytics persistence
+│   ├── memory_manager.py         # Lightweight assistant memory
+│   ├── monitoring.py             # Health checks, metrics, and event tracking
+│   └── index.py                  # Main FastAPI application and Vercel entrypoint
 ├── src/                          # Frontend source code
 │   ├── assets/
 │   │   ├── css/                  # Stylesheets
@@ -563,13 +565,14 @@ mangeshrautarchive/
 │   │   │   ├── config.js         # Configuration management
 │   │   │   └── script.js         # Core functionality
 │   │   ├── modules/              # Feature modules
-│   │   │   ├── ai-assistant.js   # AssistMe chatbot
+│   │   │   ├── chatbot.js        # AssistMe chatbot
+│   │   │   ├── calendar.js       # Calendar and Calendly integration
 │   │   │   ├── currently.js      # Media showcase
 │   │   │   ├── debug-runner.js   # Canvas game
 │   │   │   ├── github-projects.js # GitHub showcase
 │   │   │   ├── search.js         # Site search
 │   │   │   ├── travel-atlas.js   # Travel Atlas UI and MapLibre orchestration
-│   │   │   └── system-monitor.js # Backend monitoring
+│   │   │   └── vercel-analytics.js # Vercel analytics bridge
 │   │   ├── data/                 # Frontend data modules
 │   │   │   ├── travel-engine.js  # City normalization and travel narrative builder
 │   │   │   └── travel-locations.js # Generated visited-place dataset
@@ -600,7 +603,7 @@ mangeshrautarchive/
 │   └── workflows/                # CI/CD pipelines
 │       ├── deploy.yml            # Automated deployment
 │       └── post-deploy-monitoring.yml
-├── package.json                  # Node.js dependencies and scripts
+├── package.json                  # Node.js dependencies and npm scripts
 ├── requirements.txt              # Python dependencies
 ├── vercel.json                   # Vercel deployment config
 └── CNAME                         # Custom domain configuration
@@ -612,20 +615,22 @@ mangeshrautarchive/
 
 | Command                         | Description                                       |
 | ------------------------------- | ------------------------------------------------- |
-| `pnpm run dev`                   | Start full-stack development (frontend + backend) |
-| `pnpm run build`                 | Build production assets                           |
-| `pnpm run lint`                  | Run JavaScript linting                            |
-| `pnpm run lint:css`              | Run CSS linting                                   |
-| `pnpm run test`                  | Run unit tests                                    |
-| `pnpm run check-secrets`         | Scan for exposed API keys and secrets             |
-| `pnpm run qa:smoke`              | End-to-end smoke tests                            |
-| `pnpm run qa:a11y`               | Accessibility tests                               |
-| `pnpm run qa:lighthouse:desktop` | Desktop performance audit                         |
-| `pnpm run qa:lighthouse:mobile`  | Mobile performance audit                          |
-| `pnpm run qa:postdeploy`         | Post-deployment validation                        |
-| `pnpm run qa:prod-ready`         | Full production readiness check                   |
-| `pnpm run clean`                 | Remove build, test, browser, log, and cache artifacts |
-| `pnpm run format:check`          | Check Prettier formatting                         |
+| `npm run dev`                   | Start full-stack development (frontend + backend) |
+| `npm run dev:frontend`          | Start the static frontend with `/api` proxy       |
+| `npm run dev:backend`           | Start the FastAPI backend on port 8001            |
+| `npm run build`                 | Build production assets into `dist/`              |
+| `npm run lint`                  | Run JavaScript linting                            |
+| `npm run lint:css`              | Run CSS linting                                   |
+| `npm run test`                  | Run unit tests                                    |
+| `npm run check-secrets`         | Scan for exposed API keys and secrets             |
+| `npm run qa:smoke`              | End-to-end smoke tests                            |
+| `npm run qa:a11y`               | Accessibility tests                               |
+| `npm run qa:lighthouse:desktop` | Desktop performance audit                         |
+| `npm run qa:lighthouse:mobile`  | Mobile performance audit                          |
+| `npm run qa:postdeploy`         | Post-deployment validation                        |
+| `npm run qa:prod-ready`         | Full production readiness check                   |
+| `npm run clean`                 | Remove build, test, browser, log, and cache artifacts |
+| `npm run format:check`          | Check Prettier formatting                         |
 
 ---
 
@@ -649,12 +654,21 @@ mangeshrautarchive/
 
 ## 🌐 Live Deployments
 
-| Surface            | URL                                                                             | Purpose                                    |
-| ------------------ | ------------------------------------------------------------------------------- | ------------------------------------------ |
-| **Production**     | [mangeshraut.pro](https://mangeshraut.pro)                                      | Primary — Vercel + FastAPI backend         |
-| **GitHub Pages**   | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback — client-side only         |
-| **System Monitor** | [mangeshraut.pro/monitor.html](https://mangeshraut.pro/monitor.html)            | Ops dashboard — health, probes, AI metrics |
-| **API Docs**       | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs)                    | OpenAPI explorer                           |
+| Surface            | URL                                                                             | Purpose                                           |
+| ------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Production**     | [mangeshraut.pro](https://mangeshraut.pro)                                      | Primary Vercel deployment with FastAPI functions  |
+| **Vercel App**     | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)          | Vercel-generated deployment URL                   |
+| **GitHub Pages**   | [mangeshraut712.github.io](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback generated from the same `dist/` build |
+| **System Monitor** | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                      | Ops dashboard — health, probes, AI metrics        |
+| **API Docs**       | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs)                    | OpenAPI explorer                                  |
+
+### Deployment Sync
+
+- Vercel runs `npm install --no-audit --no-fund` and `npm run build`, then serves `dist/` plus FastAPI functions from `api/index.py`.
+- `vercel.json` rewrites `/api/:path*` to the FastAPI entrypoint so the monitor, chatbot, analytics, and OpenAPI docs use the same origin on `mangeshraut.pro`.
+- GitHub Actions runs the same npm-based quality gates and build before publishing `dist/` to GitHub Pages.
+- GitHub Pages is static-only; browser features that need the backend use public config and graceful degraded states instead of shipping secrets.
+- The monitor should be checked after deploy with `/api/monitor/status`, `/api/monitor/health`, `/api/monitor/security`, `/api/monitor/ai-metrics`, and `/api/docs`.
 
 ---
 
