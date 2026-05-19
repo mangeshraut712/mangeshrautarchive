@@ -22,7 +22,7 @@
     "qa:smoke": "start-server-and-test \"PORT=4173 npm run dev\" http://127.0.0.1:4173 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run test:e2e:chrome\"",
     "qa:smoke:mobile": "start-server-and-test \"PORT=4173 npm run dev\" http://127.0.0.1:4173 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run test:e2e:mobile-chrome\"",
     "qa:a11y": "start-server-and-test \"PORT=4173 npm run dev\" http://127.0.0.1:4173 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run test:a11y:chrome\"",
-    "qa:lighthouse:desktop": "node scripts/build.js && start-server-and-test \"PORT=4174 node scripts/serve-dist.js\" http://127.0.0.1:4174 \"node scripts/lighthouse-gate.js --url=http://127.0.0.1:4174 --form-factor=desktop --min-performance=80 --min-accessibility=90 --min-best-practices=90 --min-seo=90\"","
+    "qa:lighthouse:desktop": "node scripts/build.js && start-server-and-test \"PORT=4174 node scripts/serve-dist.js\" http://127.0.0.1:4174 \"node scripts/lighthouse-gate.js --url=http://127.0.0.1:4174 --form-factor=desktop --min-performance=80 --min-accessibility=90 --min-best-practices=90 --min-seo=90\"",
     "qa:lighthouse:mobile": "node scripts/build.js && start-server-and-test \"PORT=4175 node scripts/serve-dist.js\" http://127.0.0.1:4175 \"node scripts/lighthouse-gate.js --url=http://127.0.0.1:4175 --form-factor=mobile --min-performance=60 --min-accessibility=90 --min-best-practices=90 --min-seo=90\"",
     "qa:postdeploy": "playwright test tests/e2e/postdeploy.spec.js --project=chromium",
     "qa:chrome": "npm run qa:smoke && npm run qa:a11y && npm run qa:lighthouse:desktop && npm run qa:lighthouse:mobile",
