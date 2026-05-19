@@ -1984,11 +1984,11 @@ html.dark .hero-description {
   }
 }
 
-/* Refined Apple-Style Profile Image - Large Size */
+/* Refined Apple-Style Profile Image - Perfect Size */
 .profile-image-wrapper {
   position: relative;
-  width: clamp(160px, 15vw, 280px) !important;
-  height: clamp(160px, 15vw, 280px) !important;
+  width: clamp(180px, 16vw, 260px) !important;
+  height: clamp(180px, 16vw, 260px) !important;
   border-radius: 50% !important;
   padding: 2px !important;
   background: linear-gradient(
@@ -2379,8 +2379,8 @@ html.dark #home.hero-section.home-hero {
 }
 
 #home.hero-section .profile-image-wrapper {
-  width: clamp(200px, 20vw, 360px) !important;
-  height: clamp(200px, 20vw, 360px) !important;
+  width: clamp(200px, 18vw, 260px) !important;
+  height: clamp(200px, 18vw, 260px) !important;
   margin: 0 auto !important;
 }
 
@@ -2445,8 +2445,8 @@ html.dark #home.hero-section .hero-name {
   }
 
   #home.hero-section .profile-image-wrapper {
-    width: 160px !important;
-    height: 160px !important;
+    width: 180px !important;
+    height: 180px !important;
   }
 
   #home.hero-section .hero-name {

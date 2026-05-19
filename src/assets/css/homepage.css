@@ -56,13 +56,13 @@ html:not(.dark) .home-hero {
   padding-top: 20px;
 }
 
-/* Profile Image with Ring - Apple Style - Large Size */
+/* Profile Image with Ring - Apple Style - Perfect Size */
 .profile-image-wrapper {
   position: relative;
-  width: clamp(200px, 20vw, 400px);
-  height: clamp(200px, 20vw, 400px);
-  min-width: 200px;
-  min-height: 200px;
+  width: clamp(180px, 16vw, 260px);
+  height: clamp(180px, 16vw, 260px);
+  min-width: 180px;
+  min-height: 180px;
   margin-bottom: 32px !important;
   display: flex !important;
   align-items: center !important;
