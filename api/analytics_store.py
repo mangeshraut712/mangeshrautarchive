@@ -1,6 +1,7 @@
 import asyncio
 import copy
 import json
+import logging
 import os
 import time
 from datetime import datetime, timezone
@@ -9,12 +10,20 @@ from typing import Any, Dict, List
 
 import httpx
 
+logger = logging.getLogger(__name__)
+
 
 class PortfolioAnalyticsStore:
     def __init__(self):
         self._lock = asyncio.Lock()
         self._session_ttl_seconds = 30 * 60
-        self._file_path = Path(__file__).with_name("analytics_data.json")
+        # Use /tmp for Vercel serverless compatibility (read-only filesystem except /tmp)
+        # Fallback to module directory for local development
+        vercel_env = os.getenv("VERCEL_ENV") or os.getenv("VERCEL")
+        if vercel_env:
+            self._file_path = Path("/tmp") / "portfolio_analytics_data.json"
+        else:
+            self._file_path = Path(__file__).with_name("analytics_data.json")
         self._redis_url = (
             os.getenv("UPSTASH_REDIS_REST_URL", "").strip()
             or os.getenv("REDIS_REST_URL", "").strip()
@@ -273,4 +282,10 @@ class PortfolioAnalyticsStore:
         }
 
 
-portfolio_analytics_store = PortfolioAnalyticsStore()
+# Global instance with error handling for serverless environments
+try:
+    portfolio_analytics_store = PortfolioAnalyticsStore()
+except Exception as e:
+    logger.error(f"Failed to initialize PortfolioAnalyticsStore: {e}")
+    # Create a minimal fallback that won't crash the API
+    portfolio_analytics_store = None

@@ -67,8 +67,9 @@ app = FastAPI(
     openapi_tags=OPENAPI_TAGS,
 )
 
-# Add monitoring middleware
-app.add_middleware(MonitoringMiddleware, monitor=system_monitor)
+# Add monitoring middleware (only if system_monitor initialized successfully)
+if system_monitor is not None:
+    app.add_middleware(MonitoringMiddleware, monitor=system_monitor)
 
 # Add GZip compression for better performance
 app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -537,12 +538,14 @@ async def fetch_tmdb_poster(title: str, media_type: str = "movie") -> str:
             if poster_path:
                 poster_url = f"https://image.tmdb.org/t/p/w200{poster_path}"
                 set_cached_poster(cache_key, poster_url)
-                system_monitor.record_poster_request(True)
+                if system_monitor is not None:
+                    system_monitor.record_poster_request(True)
                 return poster_url
 
     except Exception as e:
         print(f"TMDB fetch error for {title}: {str(e)}")
-        system_monitor.record_poster_request(False)
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
 
     return ""
 
@@ -586,12 +589,14 @@ async def fetch_google_books_cover(title: str, author: str = "") -> str:
                 # Remove &zoom=1 if present for better quality
                 cover_url = cover_url.replace("&zoom=1", "")
                 set_cached_poster(cache_key, cover_url)
-                system_monitor.record_poster_request(True)
+                if system_monitor is not None:
+                    system_monitor.record_poster_request(True)
                 return cover_url
 
     except Exception as e:
         print(f"Google Books fetch error for {title}: {str(e)}")
-        system_monitor.record_poster_request(False)
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
 
     return ""
 
@@ -619,12 +624,14 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
             if cover_id:
                 cover_url = f"https://covers.openlibrary.org/b/id/{cover_id}-M.jpg"
                 set_cached_poster(cache_key, cover_url)
-                system_monitor.record_poster_request(True)
+                if system_monitor is not None:
+                    system_monitor.record_poster_request(True)
                 return cover_url
 
     except Exception as e:
         print(f"Open Library fetch error for {title}: {str(e)}")
-        system_monitor.record_poster_request(False)
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
 
     return ""
 
@@ -2131,6 +2138,8 @@ async def get_analytics_views():
     Get portfolio view analytics
     Returns view count data for the portfolio counter
     """
+    if portfolio_analytics_store is None:
+        raise HTTPException(status_code=503, detail="Analytics service temporarily unavailable")
     try:
         return await portfolio_analytics_store.get_metrics()
     except Exception as e:
@@ -2150,6 +2159,8 @@ async def track_analytics_view(payload: AnalyticsTrackRequest, request: Request)
     Track a portfolio landing using a shared backend store.
     Uses Redis when configured, otherwise falls back to local file storage.
     """
+    if portfolio_analytics_store is None:
+        raise HTTPException(status_code=503, detail="Analytics service temporarily unavailable")
     try:
         user_agent = request.headers.get("user-agent", "")
         metrics = await portfolio_analytics_store.track_visit(
@@ -2201,6 +2212,8 @@ async def get_portfolio_reach():
 
     # ----- Component 1: Portfolio Analytics (page views) -----
     try:
+        if portfolio_analytics_store is None:
+            raise RuntimeError("Analytics store not initialized")
         analytics = await portfolio_analytics_store.get_metrics()
         views_data = analytics.get("views", {})
         page_views_total = int(views_data.get("total", 0))
@@ -2482,6 +2495,13 @@ async def get_monitor_health():
     """
     Comprehensive health check with all service statuses
     """
+    if system_monitor is None:
+        return {
+            "status": "degraded",
+            "checks": [],
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
     health = await system_monitor.check_health()
     return health
 
@@ -2492,6 +2512,15 @@ async def get_monitor_metrics():
     """
     Get system metrics including endpoint performance
     """
+    if system_monitor is None:
+        return {
+            "status": "degraded",
+            "uptime_seconds": 0,
+            "uptime_human": "unknown",
+            "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0, "total": 0},
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
     metrics = system_monitor.get_metrics()
     return metrics
 
@@ -2640,6 +2669,12 @@ async def get_monitor_external_services():
     """
     Live status for external and integration services surfaced in the monitor UI
     """
+    if system_monitor is None:
+        return {
+            "services": [],
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
     return await system_monitor.get_external_services_status()
 
 
@@ -2657,6 +2692,12 @@ async def get_monitor_hosting_surfaces():
     """
     Live status for public hosting surfaces and safe runtime env presence.
     """
+    if system_monitor is None:
+        return {
+            "surfaces": [],
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
     return await system_monitor.get_hosting_surfaces_status()
 
 
@@ -2684,6 +2725,13 @@ async def get_monitor_events(
                 status_code=400, detail=f"Invalid event type: {event_type}"
             )
 
+    if system_monitor is None:
+        return {
+            "events": [],
+            "count": 0,
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
     events = system_monitor.get_events(
         limit=limit, event_type=event_type_enum, resolved_only=resolved_only
     )
@@ -2703,6 +2751,8 @@ async def resolve_monitor_event(event_id: str):
     """
     Mark a system event as resolved
     """
+    if system_monitor is None:
+        raise HTTPException(status_code=503, detail="Monitor service temporarily unavailable")
     success = system_monitor.resolve_event(event_id)
     if not success:
         raise HTTPException(status_code=404, detail=f"Event not found: {event_id}")
@@ -2721,6 +2771,24 @@ async def get_monitor_status():
     """
     Quick status check for load balancers
     """
+    # Handle case where system_monitor failed to initialize
+    if system_monitor is None:
+        return {
+            "status": "degraded",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "version": app.version,
+            "environment": os.getenv("VERCEL_ENV", "local"),
+            "uptime_seconds": 0,
+            "uptime_human": "unknown",
+            "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0, "total": 0},
+            "runtime": {"environment": os.getenv("VERCEL_ENV", "local"), "platform": "vercel"},
+            "docs": {
+                "openapi": "/api/docs",
+                "redoc": "/api/redoc",
+            },
+            "note": "System monitor not initialized - using fallback",
+        }
+
     metrics = system_monitor.get_metrics()
     return {
         "status": "ok",
@@ -2746,13 +2814,14 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     """
     Custom exception handler to ensure consistent JSON responses
     """
-    # Log the error
-    system_monitor.log_event(
-        f"HTTP {exc.status_code}: {exc.detail}",
-        EventType.ERROR if exc.status_code >= 500 else EventType.WARNING,
-        {"path": request.url.path, "status_code": exc.status_code},
-        "api_error",
-    )
+    # Log the error if system_monitor is available
+    if system_monitor is not None:
+        system_monitor.log_event(
+            f"HTTP {exc.status_code}: {exc.detail}",
+            EventType.ERROR if exc.status_code >= 500 else EventType.WARNING,
+            {"path": request.url.path, "status_code": exc.status_code},
+            "api_error",
+        )
 
     # Return JSON response with proper structure
     return JSONResponse(
@@ -2775,13 +2844,14 @@ async def global_exception_handler(request: Request, exc: Exception):
     Global exception handler to catch all unhandled exceptions
     and return a proper 500 response with JSON
     """
-    # Log the error
-    system_monitor.log_event(
-        f"Unhandled exception: {str(exc)}",
-        EventType.CRITICAL,
-        {"path": request.url.path, "error": str(exc)},
-        "exception",
-    )
+    # Log the error if system_monitor is available
+    if system_monitor is not None:
+        system_monitor.log_event(
+            f"Unhandled exception: {str(exc)}",
+            EventType.CRITICAL,
+            {"path": request.url.path, "error": str(exc)},
+            "exception",
+        )
 
     # Return JSON response
     return JSONResponse(

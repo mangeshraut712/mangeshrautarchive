@@ -681,8 +681,8 @@ class SystemMonitor:
 
         return {
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "summary": self._build_status_summary(services),
-            "services": services,
+            "summary": self._build_status_summary(list(services)),
+            "services": list(services),
         }
 
     async def get_hosting_surfaces_status(self) -> Dict[str, Any]:
@@ -702,9 +702,9 @@ class SystemMonitor:
 
         return {
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "summary": self._build_status_summary(surfaces),
+            "summary": self._build_status_summary(list(surfaces)),
             "runtime": self.get_runtime_environment(),
-            "surfaces": surfaces,
+            "surfaces": list(surfaces),
         }
 
     async def _probe_openrouter_service(self) -> Dict[str, Any]:
@@ -1248,6 +1248,10 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
             # Calculate response time
             response_time = (time.time() - start_time) * 1000
 
+            # Skip monitoring if monitor is not available (e.g., failed to initialize)
+            if self.monitor is None:
+                return response
+
             # Record metrics
             self.monitor.record_request(
                 path=request.url.path,
@@ -1282,25 +1286,32 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
             # Calculate response time even for errors
             response_time = (time.time() - start_time) * 1000
 
-            # Log the exception
-            self.monitor.log_event(
-                f"Unhandled exception in {request.method} {request.url.path}: {str(e)}",
-                EventType.ERROR,
-                {"error": str(e), "path": request.url.path},
-                "exception",
-            )
+            # Skip monitoring if monitor is not available
+            if self.monitor is not None:
+                # Log the exception
+                self.monitor.log_event(
+                    f"Unhandled exception in {request.method} {request.url.path}: {str(e)}",
+                    EventType.ERROR,
+                    {"error": str(e), "path": request.url.path},
+                    "exception",
+                )
 
-            # Record as failed request
-            self.monitor.record_request(
-                path=request.url.path,
-                method=request.method,
-                status_code=500,
-                response_time_ms=response_time,
-            )
+                # Record as failed request
+                self.monitor.record_request(
+                    path=request.url.path,
+                    method=request.method,
+                    status_code=500,
+                    response_time_ms=response_time,
+                )
 
             # Re-raise to let FastAPI handle it with proper error responses
             raise
 
 
-# Global monitor instance
-system_monitor = SystemMonitor()
+# Global monitor instance with error handling for serverless environments
+try:
+    system_monitor = SystemMonitor()
+except Exception as e:
+    logger.error(f"Failed to initialize SystemMonitor: {e}")
+    # Create a minimal fallback monitor that won't crash
+    system_monitor = None
