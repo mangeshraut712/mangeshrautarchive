@@ -12,13 +12,6 @@
       "destination": "/api/index.py"
     }
   ],
-  "functions": {
-    "api/index.py": {
-      "runtime": "@vercel/python@3.0.0",
-      "maxDuration": 30,
-      "memory": 1024
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
