@@ -375,7 +375,8 @@ html.dark .profile-image-wrapper {
 }
 
 .vibe-coder-badge i,
-.portfolio-reach-badge i {
+.portfolio-reach-badge i,
+.portfolio-reach-badge .inline-icon svg {
   font-size: 0.75rem;
   color: #0071e3;
 }
@@ -383,6 +384,10 @@ html.dark .profile-image-wrapper {
 .vibe-coder-badge:hover,
 .portfolio-reach-badge:hover {
   transform: translateY(-2px) scale(1.02);
+}
+
+html.dark .portfolio-reach-badge .inline-icon svg {
+  color: #2997ff;
 }
 
 html.dark .vibe-coder-badge {
@@ -398,9 +403,12 @@ html.dark .portfolio-reach-badge i {
 }
 
 .portfolio-reach-badge {
-  background: transparent;
-  border: 1px solid rgb(0 0 0 / 15%);
+  background: rgb(255 255 255 / 80%);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgb(0 0 0 / 10%);
   color: #1d1d1f;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
 }
 
 .portfolio-reach-badge .reach-label {
@@ -415,19 +423,11 @@ html.dark .portfolio-reach-badge i {
   text-align: left;
 }
 
-.portfolio-reach-badge:hover {
-  border-color: rgb(0 0 0 / 25%);
-  background: rgb(0 0 0 / 3%);
-}
-
 html.dark .portfolio-reach-badge {
-  border-color: rgb(255 255 255 / 15%);
+  background: rgb(28 28 30 / 80%);
+  border-color: rgb(255 255 255 / 10%);
   color: #f5f5f7;
-}
-
-html.dark .portfolio-reach-badge:hover {
-  border-color: rgb(255 255 255 / 25%);
-  background: rgb(255 255 255 / 5%);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
 }
 
 .hero-role-flip {
