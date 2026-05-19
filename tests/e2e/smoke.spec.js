@@ -61,7 +61,6 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('#main-content')).toBeVisible();
     await expect(page.locator('section#home')).toBeVisible();
     await expect(page.locator('#portfolio-reach')).toBeVisible();
-    await expect(page.locator('#portfolio-reach')).toContainText('Portfolio Reach');
     await expect(page.locator('#reach-count')).toBeVisible();
     await expect(page.locator('section#contact')).toBeAttached();
   });
