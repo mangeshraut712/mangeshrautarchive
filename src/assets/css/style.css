@@ -2431,12 +2431,6 @@ html.dark .project-card a.text-accent:hover {
     width: auto;
   }
 
-  .nav-links {
-    display: none;
-
-    /* Hide desktop nav on mobile */
-  }
-
   .nav-left {
     gap: 12px;
   }
@@ -3691,14 +3685,6 @@ html.dark .theme-toggle-nav i.fa-moon {
   font-weight: 900;
 }
 
-.fa-solid.fa-map-marker-alt,
-.fas.fa-map-marker-alt {
-  color: #ef4444;
-
-  /* Red for location */
-  font-weight: 900;
-}
-
 .fa-solid.fa-globe,
 .fas.fa-globe {
   color: #06b6d4;
@@ -3857,12 +3843,6 @@ html.dark .timeline-item svg {
   font-weight: 900;
 }
 
-.fa-solid.fa-code,
-.fas.fa-code {
-  color: #61dafb;
-  font-weight: 900;
-}
-
 /* PDF and File Icons */
 .fa-solid.fa-file-pdf,
 .fas.fa-file-pdf {
@@ -3924,11 +3904,6 @@ html.dark .timeline-item svg {
 .fa-solid.fa-brain-circuit,
 .fa-solid.fa-robot {
   color: #8b5cf6;
-  font-weight: 900;
-}
-
-.fa-solid.fa-layer-group {
-  color: #f59e0b;
   font-weight: 900;
 }
 
@@ -5393,15 +5368,6 @@ html.dark .debug-instruction-card:hover {
     justify-content: center;
     margin-left: 8px;
     z-index: 100000 !important;
-  }
-
-  .menu-icon {
-    background-color: currentcolor !important;
-  }
-
-  .menu-icon::before,
-  .menu-icon::after {
-    background-color: currentcolor !important;
   }
 
   .nav-actions {

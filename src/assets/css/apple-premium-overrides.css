@@ -2396,11 +2396,6 @@ html.dark #home.hero-section.home-hero {
   line-height: 1.1 !important;
 }
 
-html.dark #home.hero-section .hero-name {
-  color: #2997ff !important;
-  -webkit-text-fill-color: #2997ff !important;
-}
-
 #home.hero-section .hero-title {
   font-size: clamp(1.06rem, 2.35vw, 1.66rem) !important;
   margin-bottom: 0 !important;
