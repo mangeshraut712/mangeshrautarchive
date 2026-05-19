@@ -6,6 +6,7 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "compress": true,
   "rewrites": [
     {
       "source": "/api/:path*",

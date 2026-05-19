@@ -190,9 +190,39 @@ async function build() {
     injectApiKeys(distDir),
     optimizeCopiedAssets(distDir),
     addCacheBusting(distDir),
+    minifyHtmlFiles(distDir),
   ]);
 
   console.log(`✨ Build complete. Static assets written to ${distDir}`);
+}
+
+// Minify HTML files for better PageSpeed scores
+async function minifyHtmlFiles(dir) {
+  const entries = await readdir(dir, { withFileTypes: true, recursive: true });
+
+  await Promise.all(
+    entries
+      .filter(entry => entry.isFile() && entry.name.endsWith('.html'))
+      .map(async entry => {
+        const filePath = join(entry.parentPath || dir, entry.name);
+        let content = await readFile(filePath, 'utf8');
+
+        // Basic HTML minification
+        content = content
+          // Remove HTML comments (except conditional comments)
+          .replace(/<!--(?![\s\[]*if)[\s\S]*?-->/g, '')
+          // Collapse whitespace
+          .replace(/>\s+</g, '><')
+          // Remove whitespace between tags
+          .replace(/\n\s*\n/g, '\n')
+          // Trim leading/trailing whitespace in text nodes
+          .replace(/>\s+([^<]*)</g, '>$1<')
+          .replace(/>([^<]*)\s+</g, '>$1<');
+
+        await writeFile(filePath, content, 'utf8');
+        console.log(`📄 Minified ${relative(projectRoot, filePath)}`);
+      })
+  );
 }
 
 // Add cache busting query parameters to CSS and JS assets in HTML
