@@ -7,7 +7,9 @@ function resolveTargetUrl(testInfo) {
 
 function resolveApiUrl(targetUrl, path) {
   const target = new URL(targetUrl);
-  const apiOrigin = target.hostname.endsWith('github.io') ? 'https://mangeshraut.pro' : target.origin;
+  const apiOrigin = target.hostname.endsWith('github.io')
+    ? 'https://mangeshraut.pro'
+    : target.origin;
   return new URL(path, apiOrigin).toString();
 }
 

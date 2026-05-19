@@ -459,9 +459,9 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
-[role="button"]:focus-visible,
-[role="tab"]:focus-visible,
-[tabindex]:focus-visible:not([tabindex="-1"]) {
+[role='button']:focus-visible,
+[role='tab']:focus-visible,
+[tabindex]:focus-visible:not([tabindex='-1']) {
   outline: 3px solid #0071e3 !important;
   outline-offset: 3px !important;
 }

@@ -25,27 +25,27 @@ The site is designed around four principles:
 
 ## Live Surfaces
 
-| Surface | URL | Role |
-| --- | --- | --- |
-| Production | [mangeshraut.pro](https://mangeshraut.pro) | Primary Vercel deployment with static frontend and FastAPI functions |
-| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor) | Live operations dashboard |
-| API Docs | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs) | FastAPI OpenAPI explorer |
-| Vercel App | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app) | Vercel-generated deployment URL |
-| GitHub Pages | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback using the same `dist/` build |
+| Surface        | URL                                                                                                | Role                                                                 |
+| -------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Production     | [mangeshraut.pro](https://mangeshraut.pro)                                                         | Primary Vercel deployment with static frontend and FastAPI functions |
+| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                         | Live operations dashboard                                            |
+| API Docs       | [mangeshraut.pro/api/docs](https://mangeshraut.pro/api/docs)                                       | FastAPI OpenAPI explorer                                             |
+| Vercel App     | [mangeshrautarchive.vercel.app](https://mangeshrautarchive.vercel.app)                             | Vercel-generated deployment URL                                      |
+| GitHub Pages   | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) | Static fallback using the same `dist/` build                         |
 
 ## Feature Map
 
-| Area | What It Does | Key Files |
-| --- | --- | --- |
-| Homepage | Hero, profile identity, Portfolio Reach badge, now-playing card, projects, blog, contact, booking, newsletter | `src/index.html`, `src/assets/css/homepage.css` |
-| AssistMe AI | Streaming portfolio assistant with backend OpenRouter integration and local fallback behavior | `src/js/modules/chatbot.js`, `api/index.py` |
-| System Monitor | Health, metrics, services, deployment surfaces, events, security, AI provider metrics | `src/monitor.html`, `api/monitoring.py` |
-| Portfolio Reach | Authoritative engagement metric: page views + GitHub stars + forks + watchers | `src/js/modules/analytics.js`, `api/analytics_store.py` |
-| GitHub Projects | Live repository showcase with GitHub activity, search, sorting, and graceful fallback | `src/js/modules/github-projects.js` |
-| Travel Atlas | Map-led travel timeline, city normalization, Pune home-base guide, filters, spotlight mode | `src/travel.html`, `src/js/modules/travel-atlas.js`, `src/js/data/travel-engine.js` |
-| Currently | Music, shows, books, local poster art, and external media links | `src/js/modules/currently.js`, `src/assets/images/currently/` |
-| Search and Navigation | Site search, dynamic island navbar, overlay menu, scroll lock, keyboard navigation | `src/js/modules/search.js`, `src/js/utils/smart-navbar.js`, `src/js/modules/overlay.js` |
-| Quality Gates | Lint, security scan, Vitest, Playwright, Lighthouse, post-deploy validation | `tests/`, `scripts/`, `.github/workflows/` |
+| Area                  | What It Does                                                                                                  | Key Files                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Homepage              | Hero, profile identity, Portfolio Reach badge, now-playing card, projects, blog, contact, booking, newsletter | `src/index.html`, `src/assets/css/homepage.css`                                         |
+| AssistMe AI           | Streaming portfolio assistant with backend OpenRouter integration and local fallback behavior                 | `src/js/modules/chatbot.js`, `api/index.py`                                             |
+| System Monitor        | Health, metrics, services, deployment surfaces, events, security, AI provider metrics                         | `src/monitor.html`, `api/monitoring.py`                                                 |
+| Portfolio Reach       | Authoritative engagement metric: page views + GitHub stars + forks + watchers                                 | `src/js/modules/analytics.js`, `api/analytics_store.py`                                 |
+| GitHub Projects       | Live repository showcase with GitHub activity, search, sorting, and graceful fallback                         | `src/js/modules/github-projects.js`                                                     |
+| Travel Atlas          | Map-led travel timeline, city normalization, Pune home-base guide, filters, spotlight mode                    | `src/travel.html`, `src/js/modules/travel-atlas.js`, `src/js/data/travel-engine.js`     |
+| Currently             | Music, shows, books, local poster art, and external media links                                               | `src/js/modules/currently.js`, `src/assets/images/currently/`                           |
+| Search and Navigation | Site search, dynamic island navbar, overlay menu, scroll lock, keyboard navigation                            | `src/js/modules/search.js`, `src/js/utils/smart-navbar.js`, `src/js/modules/overlay.js` |
+| Quality Gates         | Lint, security scan, Vitest, Playwright, Lighthouse, post-deploy validation                                   | `tests/`, `scripts/`, `.github/workflows/`                                              |
 
 ## Architecture
 
@@ -95,24 +95,24 @@ flowchart TB
 
 These checks exist because monitor and reach are production-critical:
 
-| Guardrail | Purpose |
-| --- | --- |
-| `tests/config/vercel-routing.spec.js` | Fails if `/api/*` rewrites are reintroduced in `vercel.json` |
-| `tests/e2e/smoke.spec.js` | Verifies the home page renders the visible `Portfolio Reach` badge |
-| `tests/e2e/postdeploy.spec.js` | Verifies deployed `/api/monitor/status` and `/api/analytics/reach` return JSON |
-| `scripts/security-check.js` | Scans the repo for accidentally exposed API keys |
-| `scripts/build.js` | Produces deterministic `dist/` output and safe browser config |
+| Guardrail                             | Purpose                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------ |
+| `tests/config/vercel-routing.spec.js` | Fails if `/api/*` rewrites are reintroduced in `vercel.json`                   |
+| `tests/e2e/smoke.spec.js`             | Verifies the home page renders the visible `Portfolio Reach` badge             |
+| `tests/e2e/postdeploy.spec.js`        | Verifies deployed `/api/monitor/status` and `/api/analytics/reach` return JSON |
+| `scripts/security-check.js`           | Scans the repo for accidentally exposed API keys                               |
+| `scripts/build.js`                    | Produces deterministic `dist/` output and safe browser config                  |
 
 ## Tech Stack
 
-| Layer | Tools |
-| --- | --- |
-| Frontend | HTML, CSS, Tailwind output, ES modules, browser APIs |
-| Backend | FastAPI, Pydantic, httpx, Uvicorn-compatible ASGI |
-| AI | OpenRouter with configurable model routing |
+| Layer        | Tools                                                         |
+| ------------ | ------------------------------------------------------------- |
+| Frontend     | HTML, CSS, Tailwind output, ES modules, browser APIs          |
+| Backend      | FastAPI, Pydantic, httpx, Uvicorn-compatible ASGI             |
+| AI           | OpenRouter with configurable model routing                    |
 | Integrations | GitHub REST API, Last.fm, Vercel status, Google Analytics tag |
-| Testing | ESLint, Vitest, Playwright, axe-core, Lighthouse, Stylelint |
-| Deployment | Vercel, GitHub Pages, GitHub Actions |
+| Testing      | ESLint, Vitest, Playwright, axe-core, Lighthouse, Stylelint   |
+| Deployment   | Vercel, GitHub Pages, GitHub Actions                          |
 
 ## Quick Start
 
@@ -142,12 +142,12 @@ npm run dev
 
 Local URLs:
 
-| Service | URL |
-| --- | --- |
-| Frontend | `http://127.0.0.1:4000` |
-| FastAPI backend | `http://127.0.0.1:8001` |
-| System Monitor | `http://127.0.0.1:4000/monitor.html` |
-| API health | `http://127.0.0.1:4000/api/health` |
+| Service         | URL                                  |
+| --------------- | ------------------------------------ |
+| Frontend        | `http://127.0.0.1:4000`              |
+| FastAPI backend | `http://127.0.0.1:8001`              |
+| System Monitor  | `http://127.0.0.1:4000/monitor.html` |
+| API health      | `http://127.0.0.1:4000/api/health`   |
 
 The local frontend proxies `/api/*` to the backend so local behavior matches production routing.
 
@@ -155,60 +155,60 @@ The local frontend proxies `/api/*` to the backend so local behavior matches pro
 
 Create `.env` from `.env.example` when local backend features need real providers.
 
-| Variable | Required | Scope | Description |
-| --- | --- | --- | --- |
-| `OPENROUTER_API_KEY` | Recommended | Server | Enables live AI chat through OpenRouter |
-| `OPENROUTER_MODEL` | Optional | Server/public config | Defaults to `x-ai/grok-4.1-fast` |
-| `OPENROUTER_SITE_URL` | Optional | Server/public config | Attribution URL for OpenRouter |
-| `GITHUB_PAT` | Optional | Server | Higher GitHub API rate limits |
-| `LASTFM_API_KEY` | Optional | Server/public fallback | Last.fm recent music integration |
-| `LASTFM_USERNAME` | Optional | Server | Last.fm username, defaults to configured public account |
-| `TMDB_API_KEY` | Optional | Server | Optional poster/media enrichment |
-| `UPSTASH_REDIS_REST_URL` | Optional | Server | Persistent analytics storage |
-| `UPSTASH_REDIS_REST_TOKEN` | Optional | Server | Redis auth token |
+| Variable                   | Required    | Scope                  | Description                                             |
+| -------------------------- | ----------- | ---------------------- | ------------------------------------------------------- |
+| `OPENROUTER_API_KEY`       | Recommended | Server                 | Enables live AI chat through OpenRouter                 |
+| `OPENROUTER_MODEL`         | Optional    | Server/public config   | Defaults to `x-ai/grok-4.1-fast`                        |
+| `OPENROUTER_SITE_URL`      | Optional    | Server/public config   | Attribution URL for OpenRouter                          |
+| `GITHUB_PAT`               | Optional    | Server                 | Higher GitHub API rate limits                           |
+| `LASTFM_API_KEY`           | Optional    | Server/public fallback | Last.fm recent music integration                        |
+| `LASTFM_USERNAME`          | Optional    | Server                 | Last.fm username, defaults to configured public account |
+| `TMDB_API_KEY`             | Optional    | Server                 | Optional poster/media enrichment                        |
+| `UPSTASH_REDIS_REST_URL`   | Optional    | Server                 | Persistent analytics storage                            |
+| `UPSTASH_REDIS_REST_TOKEN` | Optional    | Server                 | Redis auth token                                        |
 
 Never commit `.env`, API keys, tokens, or downloaded credential files.
 
 ## Commands
 
-| Command | What It Does |
-| --- | --- |
-| `npm run dev` | Start frontend and backend together |
-| `npm run dev:frontend` | Start static frontend with `/api` proxy |
-| `npm run dev:backend` | Start FastAPI backend |
-| `npm run build` | Build production assets into `dist/` |
-| `npm run lint` | Run JavaScript linting |
-| `npm run lint:css` | Run CSS linting |
-| `npm run test` | Run Vitest tests |
-| `npm run security-check` | Scan for exposed keys/secrets |
-| `npm run test:e2e:chrome` | Run Chromium smoke tests |
-| `npm run test:a11y:chrome` | Run accessibility tests |
-| `npm run qa:lighthouse:desktop` | Desktop Lighthouse gate |
-| `npm run qa:lighthouse:mobile` | Mobile Lighthouse gate |
-| `npm run qa:postdeploy` | Validate a deployed site with Playwright |
-| `npm run qa:prod-ready` | Full production readiness gate |
-| `npm run clean` | Remove generated build/test/cache artifacts |
+| Command                         | What It Does                                |
+| ------------------------------- | ------------------------------------------- |
+| `npm run dev`                   | Start frontend and backend together         |
+| `npm run dev:frontend`          | Start static frontend with `/api` proxy     |
+| `npm run dev:backend`           | Start FastAPI backend                       |
+| `npm run build`                 | Build production assets into `dist/`        |
+| `npm run lint`                  | Run JavaScript linting                      |
+| `npm run lint:css`              | Run CSS linting                             |
+| `npm run test`                  | Run Vitest tests                            |
+| `npm run security-check`        | Scan for exposed keys/secrets               |
+| `npm run test:e2e:chrome`       | Run Chromium smoke tests                    |
+| `npm run test:a11y:chrome`      | Run accessibility tests                     |
+| `npm run qa:lighthouse:desktop` | Desktop Lighthouse gate                     |
+| `npm run qa:lighthouse:mobile`  | Mobile Lighthouse gate                      |
+| `npm run qa:postdeploy`         | Validate a deployed site with Playwright    |
+| `npm run qa:prod-ready`         | Full production readiness gate              |
+| `npm run clean`                 | Remove generated build/test/cache artifacts |
 
 ## API Contract
 
-| Endpoint | Purpose |
-| --- | --- |
-| `GET /api` | API overview |
-| `GET /api/health` | Backend health |
-| `POST /api/chat` | AI assistant request |
-| `GET /api/models` | Available model metadata |
-| `GET /api/github/repos/public` | Public GitHub repository data |
-| `GET /api/analytics/views` | Portfolio view metrics |
-| `POST /api/analytics/track` | Track portfolio session visit |
-| `GET /api/analytics/reach` | Authoritative Portfolio Reach metric |
-| `GET /api/monitor/status` | Lightweight monitor status |
-| `GET /api/monitor/health` | Detailed monitor health checks |
-| `GET /api/monitor/metrics` | Request and endpoint metrics |
-| `GET /api/monitor/external-services` | Third-party service health |
-| `GET /api/monitor/hosting-surfaces` | Vercel/GitHub Pages deployment status |
-| `GET /api/monitor/security` | Security monitor payload |
-| `GET /api/monitor/ai-metrics` | AI provider metrics |
-| `GET /api/docs` | FastAPI OpenAPI UI |
+| Endpoint                             | Purpose                               |
+| ------------------------------------ | ------------------------------------- |
+| `GET /api`                           | API overview                          |
+| `GET /api/health`                    | Backend health                        |
+| `POST /api/chat`                     | AI assistant request                  |
+| `GET /api/models`                    | Available model metadata              |
+| `GET /api/github/repos/public`       | Public GitHub repository data         |
+| `GET /api/analytics/views`           | Portfolio view metrics                |
+| `POST /api/analytics/track`          | Track portfolio session visit         |
+| `GET /api/analytics/reach`           | Authoritative Portfolio Reach metric  |
+| `GET /api/monitor/status`            | Lightweight monitor status            |
+| `GET /api/monitor/health`            | Detailed monitor health checks        |
+| `GET /api/monitor/metrics`           | Request and endpoint metrics          |
+| `GET /api/monitor/external-services` | Third-party service health            |
+| `GET /api/monitor/hosting-surfaces`  | Vercel/GitHub Pages deployment status |
+| `GET /api/monitor/security`          | Security monitor payload              |
+| `GET /api/monitor/ai-metrics`        | AI provider metrics                   |
+| `GET /api/docs`                      | FastAPI OpenAPI UI                    |
 
 ## Project Structure
 
