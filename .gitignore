@@ -135,3 +135,4 @@ github_upgrade.sh
 
 #Ignore windsurf AI rules
 .windsurfrules
+.env*.local
