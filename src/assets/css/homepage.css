@@ -7,24 +7,23 @@
 
 /* Hero Section */
 
-/* Hero Section */
+/* Hero Section - Full Viewport Height */
 .home-hero {
-  min-height: auto;
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   background: #fff;
 
-  /* Account for navbar */
-
   /* Fixes from 2026 update */
   background-image: none;
   background-attachment: scroll;
 
-  /* Improved spacing for fixed header + notification */
-  padding-top: 20px;
-  padding-bottom: 20px;
+  /* Account for fixed navbar */
+  padding-top: 80px;
+  padding-bottom: 40px;
 
   /* Performance */
   contain: layout;
