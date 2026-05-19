@@ -52,7 +52,12 @@ async function isAssistMeBackendRunning() {
 async function runBackend() {
   const pythonCmd = './venv/bin/python';
   const altPythonCmd = 'python3';
-  const args = ['-m', 'uvicorn', 'api.index:app', '--reload', '--port', String(port)];
+  const shouldReload = !['1', 'true'].includes(String(process.env.CI || '').toLowerCase());
+  const args = ['-m', 'uvicorn', 'api.index:app', '--port', String(port)];
+
+  if (shouldReload) {
+    args.push('--reload');
+  }
 
   // Check if venv python exists, otherwise use system python3
   const fs = await import('fs');
