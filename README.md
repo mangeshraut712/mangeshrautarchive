@@ -86,8 +86,8 @@ flowchart TB
 ### Deployment Model
 
 - Vercel builds the frontend with `npm run build` and serves `dist/`.
-- Vercel treats `api/index.py` as the Python/FastAPI catch-all for `/api/*`.
-- Do **not** add a `vercel.json` rewrite for `/api/:path*`; it can intercept nested FastAPI routes and break monitor/reach APIs.
+- Vercel treats `api/index.py` as the Python/FastAPI handler.
+- A `vercel.json` rewrite routes `/api/:path*` to `/api/index` to handle nested API routes correctly.
 - GitHub Pages is static-only. Runtime features that need a backend call `https://mangeshraut.pro/api/*` through public configuration.
 - Secrets stay server-side in Vercel environment variables. Public config is limited to safe values such as API origin, app title, model name, and site URL.
 
@@ -97,7 +97,7 @@ These checks exist because monitor and reach are production-critical:
 
 | Guardrail                             | Purpose                                                                        |
 | ------------------------------------- | ------------------------------------------------------------------------------ |
-| `tests/config/vercel-routing.spec.js` | Fails if `/api/*` rewrites are reintroduced in `vercel.json`                   |
+| `tests/config/vercel-routing.spec.js` | Verifies `api/index.py` exists and handles monitor/reach API routes            |
 | `tests/e2e/smoke.spec.js`             | Verifies the home page renders the visible `Portfolio Reach` badge             |
 | `tests/e2e/postdeploy.spec.js`        | Verifies deployed `/api/monitor/status` and `/api/analytics/reach` return JSON |
 | `scripts/security-check.js`           | Scans the repo for accidentally exposed API keys                               |
@@ -296,7 +296,7 @@ curl -i https://mangeshraut.pro/api
 curl -i https://mangeshraut.pro/api/monitor/status
 ```
 
-If `/api` works but nested `/api/monitor/status` returns `404`, inspect `vercel.json`. There should be no `/api/:path*` rewrite. Vercel should route `/api/*` directly to `api/index.py`.
+If `/api` works but nested `/api/monitor/status` returns `404`, inspect `vercel.json`. The rewrite rule `/api/:path*` → `/api/index` must be present for proper FastAPI routing.
 
 ### Portfolio Reach Is Missing Or Unavailable
 
