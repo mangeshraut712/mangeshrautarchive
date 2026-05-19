@@ -2243,7 +2243,10 @@ async def get_portfolio_reach():
         github_status = f"error: {str(e)[:80]}"
 
     # ----- Aggregate: Total Reach -----
-    total_reach = page_views_total + github_stars + github_forks + github_watchers
+    # Use unique visitors as primary metric (more accurate than total page views)
+    # Weight GitHub metrics: stars (full), forks (half), watchers (quarter)
+    github_engagement = github_stars + (github_forks // 2) + (github_watchers // 4)
+    total_reach = unique_visitors + github_engagement
 
     result = {
         "success": True,
@@ -2262,7 +2265,7 @@ async def get_portfolio_reach():
                 "status": github_status,
             },
         },
-        "formula": "total_reach = page_views + stars + forks + watchers",
+        "formula": "total_reach = unique_visitors + stars + (forks/2) + (watchers/4)",
         "cache_ttl_seconds": REACH_CACHE_TTL,
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
