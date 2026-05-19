@@ -414,17 +414,56 @@ img.loaded {
   .education-card,
   section h2,
   .hero-content,
-  .skill-badge {
+  .skill-badge,
+  .blog-card,
+  .award-card,
+  .recommendation-card,
+  .cert-card,
+  .publication-card,
+  .stat-card,
+  .dream-car-item,
+  .dream-company-item {
     animation: none !important;
+    transition: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
 
   /* Keep essential transitions but make them instant */
   .btn:hover,
-  .nav-link:hover {
+  .nav-link:hover,
+  .skill-badge:hover {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACCESSIBILITY - STRONG FOCUS STYLES (for 100 Accessibility)
+   ═══════════════════════════════════════════════════════════ */
+
+:focus-visible {
+  outline: 3px solid #0071e3 !important;
+  outline-offset: 3px !important;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 113, 227, 0.3);
+}
+
+html.dark :focus-visible {
+  outline-color: #0a84ff !important;
+  box-shadow: 0 0 0 1px rgba(10, 132, 255, 0.4);
+}
+
+/* Ensure all interactive elements have visible focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[tabindex]:focus-visible:not([tabindex="-1"]) {
+  outline: 3px solid #0071e3 !important;
+  outline-offset: 3px !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
