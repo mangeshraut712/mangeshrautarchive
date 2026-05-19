@@ -36,8 +36,11 @@ test.describe('Post-deploy Chrome checks', () => {
     expect(targetUrl, 'A base URL is required for post-deploy checks').toBeTruthy();
 
     // Use soft assertions for API checks - APIs may still be warming up post-deploy
-    const statusResponse = await request.get(resolveApiUrl(targetUrl, '/api/monitor/status'));
-    const reachResponse = await request.get(resolveApiUrl(targetUrl, '/api/analytics/reach'));
+    // Run independent API requests in parallel
+    const [statusResponse, reachResponse] = await Promise.all([
+      request.get(resolveApiUrl(targetUrl, '/api/monitor/status')),
+      request.get(resolveApiUrl(targetUrl, '/api/analytics/reach'))
+    ]);
 
     // Log API status for debugging but don't fail the build if APIs aren't ready yet
     if (!statusResponse.ok()) {
