@@ -32,7 +32,7 @@
     );
 
     if (LOCAL_HOSTS.has(window.location.hostname) && configuredOrigin === window.location.origin) {
-      return '';
+      return '/api';
     }
 
     if (configuredOrigin) {
