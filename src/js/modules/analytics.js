@@ -73,7 +73,7 @@
 
   function setUnavailableState() {
     reachCountEls.forEach(element => {
-      element.textContent = '--';
+      element.textContent = 'Unavailable';
       element.parentElement?.setAttribute('title', 'Portfolio reach temporarily unavailable');
     });
   }

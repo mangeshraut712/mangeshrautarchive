@@ -5,6 +5,12 @@ function resolveTargetUrl(testInfo) {
   return process.env.PLAYWRIGHT_BASE_URL || testInfo.project.use.baseURL;
 }
 
+function resolveApiUrl(targetUrl, path) {
+  const target = new URL(targetUrl);
+  const apiOrigin = target.hostname.endsWith('github.io') ? 'https://mangeshraut.pro' : target.origin;
+  return new URL(path, apiOrigin).toString();
+}
+
 test.describe('Post-deploy Chrome checks', () => {
   test('deployed homepage renders critical landmarks', async ({ page }, testInfo) => {
     const targetUrl = resolveTargetUrl(testInfo);
@@ -16,6 +22,24 @@ test.describe('Post-deploy Chrome checks', () => {
     await expect(page.locator('#global-nav')).toBeVisible();
     await expect(page.locator('#main-content')).toBeVisible();
     await expect(page.locator('section#home')).toBeVisible();
+    await expect(page.locator('#portfolio-reach')).toBeVisible();
+    await expect(page.locator('#portfolio-reach')).toContainText('Portfolio Reach');
+    await expect(page.locator('#reach-count')).not.toHaveText(/^(Syncing|Unavailable)$/);
+  });
+
+  test('deployed monitor and reach APIs are available', async ({ request }, testInfo) => {
+    const targetUrl = resolveTargetUrl(testInfo);
+    expect(targetUrl, 'A base URL is required for post-deploy checks').toBeTruthy();
+
+    const statusResponse = await request.get(resolveApiUrl(targetUrl, '/api/monitor/status'));
+    expect(statusResponse.ok(), await statusResponse.text()).toBe(true);
+    expect(statusResponse.headers()['content-type']).toContain('application/json');
+
+    const reachResponse = await request.get(resolveApiUrl(targetUrl, '/api/analytics/reach'));
+    expect(reachResponse.ok(), await reachResponse.text()).toBe(true);
+    const reachPayload = await reachResponse.json();
+    expect(reachPayload.success).toBe(true);
+    expect(Number(reachPayload.total_reach)).toBeGreaterThanOrEqual(0);
   });
 
   test('deployed homepage has no critical/serious axe violations', async ({ page }, testInfo) => {

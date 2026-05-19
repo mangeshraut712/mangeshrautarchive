@@ -665,7 +665,7 @@ mangeshrautarchive/
 ### Deployment Sync
 
 - Vercel runs `npm install --no-audit --no-fund` and `npm run build`, then serves `dist/` plus FastAPI functions from `api/index.py`.
-- `vercel.json` rewrites `/api/:path*` to the FastAPI entrypoint so the monitor, chatbot, analytics, and OpenAPI docs use the same origin on `mangeshraut.pro`.
+- Vercel treats `api/index.py` as the FastAPI catch-all for `/api/*`, so monitor, chatbot, analytics, and OpenAPI docs use the same origin on `mangeshraut.pro`.
 - GitHub Actions runs the same npm-based quality gates and build before publishing `dist/` to GitHub Pages.
 - GitHub Pages is static-only; browser features that need the backend use public config and graceful degraded states instead of shipping secrets.
 - The monitor should be checked after deploy with `/api/monitor/status`, `/api/monitor/health`, `/api/monitor/security`, `/api/monitor/ai-metrics`, and `/api/docs`.

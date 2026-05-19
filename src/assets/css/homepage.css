@@ -403,9 +403,16 @@ html.dark .portfolio-reach-badge i {
   color: #1d1d1f;
 }
 
+.portfolio-reach-badge .reach-label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .portfolio-reach-badge .reach-count {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
+  min-width: 3.25rem;
+  text-align: left;
 }
 
 .portfolio-reach-badge:hover {
