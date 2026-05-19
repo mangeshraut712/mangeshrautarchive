@@ -3177,51 +3177,11 @@ html.dark .project-card a.text-accent:hover {
   font-weight: 900;
 }
 
-/* Additional Programming Languages */
-.fa-solid.fa-c {
-  color: hsl(207deg 100% 47%);
-  font-weight: 900;
-}
-
-.fa-solid.fa-cpp,
-.fa.fa-cpp,
-.fas.fa-cpp {
-  color: hsl(207deg 100% 47%);
-  font-weight: 900;
-}
-
-.fa-solid.fa-cpp,
-.fa-solid.fa-c-plus-plus {
-  color: hsl(207deg 100% 47%);
-  font-weight: 900;
-}
-
-.fa-brands.fa-swift,
-.fab.fa-swift {
-  color: hsl(19deg 88% 61%);
-
-  /* Swift orange */
-  font-weight: 400;
-}
-
-.fa-brands.fa-python {
-  color: hsl(200deg 52% 45%);
-  font-weight: 400;
-}
-
-.fa-brands.fa-c-plus-plus,
-.fab.fa-c-plus-plus {
-  color: hsl(207deg 100% 47%);
-  font-weight: 400;
-}
-
 /* FIXED C and C++ Icon Classes - Proper Font Awesome Support */
 .fa.fa-c,
 .fas.fa-c,
 .fa-solid.fa-c {
   color: hsl(207deg 100% 47%);
-
-  /* Proper C language blue */
   font-weight: 900;
 }
 
@@ -3232,8 +3192,6 @@ html.dark .project-card a.text-accent:hover {
 .fas.fa-c-plus-plus,
 .fa-solid.fa-c-plus-plus {
   color: hsl(207deg 100% 47%);
-
-  /* Proper C++ language blue */
   font-weight: 900;
 }
 
@@ -3919,12 +3877,6 @@ html.dark .timeline-item svg {
   font-weight: 900;
 }
 
-.fa-brands.fa-whatsapp,
-.fab.fa-whatsapp {
-  color: #25d366;
-  font-weight: 400;
-}
-
 .fa-solid.fa-mobile-screen-button,
 .fa-solid.fa-mobile,
 .fa-solid.fa-mobile-alt,
@@ -3961,30 +3913,7 @@ html.dark .timeline-item svg {
   font-weight: 900;
 }
 
-/* Additional Programming Languages */
-.fa-solid.fa-c {
-  color: #00599c;
-  font-weight: 900;
-}
-
-.fa-solid.fa-cpp,
-.fa-solid.fa-c-plus-plus {
-  color: #00599c;
-  font-weight: 900;
-}
-
-.fa-brands.fa-swift,
-.fab.fa-swift {
-  color: #fa7343;
-  font-weight: 400;
-}
-
-/* Python and Data Science */
-.fa-brands.fa-python {
-  color: #306998;
-  font-weight: 400;
-}
-
+/* Data Science Icons */
 .fa-solid.fa-chart-simple,
 .fa-solid.fa-chart-bar {
   color: #10b981;
