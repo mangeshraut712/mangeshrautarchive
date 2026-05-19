@@ -9,7 +9,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "/api/catch_all.py"
+      "destination": "/api/index.py"
     }
   ],
   "headers": [
