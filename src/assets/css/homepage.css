@@ -59,10 +59,10 @@ html:not(.dark) .home-hero {
 /* Profile Image with Ring - Apple Style */
 .profile-image-wrapper {
   position: relative;
-  width: clamp(150px, 13vw, 192px);
-  height: clamp(150px, 13vw, 192px);
-  min-width: 150px;
-  min-height: 150px;
+  width: clamp(160px, 15vw, 220px);
+  height: clamp(160px, 15vw, 220px);
+  min-width: 160px;
+  min-height: 160px;
   margin-bottom: 28px !important;
   display: flex !important;
   align-items: center !important;
@@ -442,8 +442,17 @@ html.dark .portfolio-reach-badge {
 }
 
 .hero-role-flip strong {
-  color: #0071e3;
+  color: #0071e3 !important;
   font-weight: 800;
+}
+
+/* Light mode - match hero name blue */
+.hero-role-flip strong {
+  color: #0071e3 !important;
+  background: linear-gradient(135deg, #0071e3, #2997ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 html.dark .hero-role-flip {
@@ -451,7 +460,11 @@ html.dark .hero-role-flip {
 }
 
 html.dark .hero-role-flip strong {
-  color: #2997ff;
+  color: #2997ff !important;
+  background: linear-gradient(135deg, #2997ff, #5ac8fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero-identity-strip {
