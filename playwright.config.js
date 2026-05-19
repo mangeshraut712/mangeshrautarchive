@@ -50,6 +50,7 @@ export default defineConfig({
     } : {}),
   },
   snapshotDir: './tests/e2e/__snapshots__',
+  updateSnapshots: updateSnapshots ? 'all' : 'missing',
   webServer: useManagedWebServer
     ? {
         command: 'npm run dev',

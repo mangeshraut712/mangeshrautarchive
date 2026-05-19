@@ -210,7 +210,7 @@ async function minifyHtmlFiles(dir) {
         // Basic HTML minification
         content = content
           // Remove HTML comments (except conditional comments)
-          .replace(/<!--(?![\s\[]*if)[\s\S]*?-->/g, '')
+          .replace(/<!--(?![\s[]*if)[\s\S]*?-->/g, '')
           // Collapse whitespace
           .replace(/>\s+</g, '><')
           // Remove whitespace between tags
