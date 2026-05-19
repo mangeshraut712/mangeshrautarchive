@@ -1,7 +1,7 @@
-fastapi==0.115.6
-uvicorn[standard]==0.34.0
+aiofiles==25.1.0
+fastapi==0.136.1
 httpx==0.28.1
-python-dotenv==1.0.1
-pydantic==2.10.3
-aiofiles==24.1.0
-psutil==7.0.0
+psutil==7.2.2
+pydantic==2.13.4
+python-dotenv==1.2.2
+uvicorn==0.47.0
