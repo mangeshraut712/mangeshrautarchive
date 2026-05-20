@@ -19,7 +19,7 @@ config.local.js
 
 # Build outputs
 dist/
-build/
+/build/
 
 # IDE files
 .vscode/
