@@ -25,7 +25,7 @@ test.describe('Post-deploy Chrome checks', () => {
     await expect(page.locator('#main-content')).toBeVisible();
     await expect(page.locator('section#home')).toBeVisible();
     await expect(page.locator('#portfolio-reach')).toBeVisible();
-    await expect(page.locator('#portfolio-reach')).toContainText('Portfolio Reach');
+    await expect(page.locator('#portfolio-reach')).toHaveAttribute('title', /Reach/i);
     // Allow 'Syncing' state initially - the reach count updates asynchronously
     // Only fail if explicitly 'Unavailable'
     await expect(page.locator('#reach-count')).not.toHaveText(/^Unavailable$/);
