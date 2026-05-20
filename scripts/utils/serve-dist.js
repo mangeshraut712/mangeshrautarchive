@@ -6,7 +6,7 @@ import { dirname, extname, join, resolve } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const projectRoot = resolve(__dirname, '..');
+const projectRoot = resolve(__dirname, '../../');
 const distDir = resolve(projectRoot, process.env.DIST_DIR || 'dist');
 const port = Number.parseInt(process.env.PORT || '4180', 10);
 

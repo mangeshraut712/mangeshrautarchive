@@ -15,7 +15,7 @@ const port = Number.parseInt(process.env.PORT || '4000', 10);
 const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8001';
 
 // Get the project root directory
-const projectRoot = resolve(__dirname, '..');
+const projectRoot = resolve(__dirname, '../../');
 const hopByHopHeaders = new Set([
   'accept-encoding',
   'connection',
