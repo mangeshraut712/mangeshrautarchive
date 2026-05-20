@@ -138,3 +138,11 @@ github_upgrade.sh
 .env*.local
 
 .windsurf/
+
+# Environment variables (security - never commit secrets)
+.env.*.local
+.env.production
+secrets.*
+*.pem
+*.key
+.vercel/
