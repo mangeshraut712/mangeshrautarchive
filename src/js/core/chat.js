@@ -451,11 +451,14 @@ class IntelligentAssistant {
         } else {
           const reader = stream.getReader();
           try {
-            while (true) {
+            const readNext = async () => {
               const { done, value } = await reader.read();
-              if (done) break;
-              processChunk(value);
-            }
+              if (!done) {
+                processChunk(value);
+                await readNext();
+              }
+            };
+            await readNext();
           } finally {
             reader.releaseLock();
           }
