@@ -26,7 +26,7 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
             writable: true,
           });
         }
-      } catch (e) {
+      } catch (_e) {
         // Fallback
         try {
           navigator.modelContext = mockModelContext;

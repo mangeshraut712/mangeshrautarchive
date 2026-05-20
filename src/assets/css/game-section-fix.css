@@ -203,3 +203,11 @@ html.dark #contact .contact-section[style*='border-top'] {
 #go-to-top {
   z-index: 100000 !important;
 }
+
+/* Prevent debug-runner canvas from becoming too squished/unplayable on mobile */
+@media (max-width: 480px) {
+  #debug-runner-canvas {
+    height: 180px !important;
+    object-fit: fill;
+  }
+}

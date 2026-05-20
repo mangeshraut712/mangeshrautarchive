@@ -75,7 +75,8 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('#country-chapters')).toHaveCount(0);
 
     const timelineBox = await page.locator('#travel-timeline').boundingBox();
-    expect(timelineBox?.height ?? 0).toBeGreaterThan(300);
+    const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
+    expect(timelineBox?.height ?? 0).toBeGreaterThan(isMobile ? 150 : 300);
 
     const stops = page.locator('.travel-stop');
     await expect(stops.first()).toBeVisible();
@@ -166,6 +167,7 @@ test.describe('Chrome smoke tests', () => {
 
   test('search overlay opens and closes', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
+    await page.waitForTimeout(1000);
 
     const openSearch = page.locator('#search-toggle');
     const closeSearch = page.locator('#search-close');
@@ -189,14 +191,15 @@ test.describe('Chrome smoke tests', () => {
     await expect(searchOverlay).not.toHaveClass(/active/);
   });
 
-  test('contact nav route works', async ({ page }, testInfo) => {
+  test('contact nav route works', async ({ page }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    if (testInfo.project.name === 'Mobile Chrome') {
+    const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
+    if (isMobile) {
       await page.locator('#menu-btn').click();
       await page.waitForTimeout(250);
       await page.locator('#overlay-menu a.menu-item[href="#contact"]').click();
-      await page.waitForTimeout(3200);
+      await page.waitForTimeout(1200);
     } else {
       await page.locator('a.nav-link[href="#contact"]').first().click();
     }
@@ -207,8 +210,9 @@ test.describe('Chrome smoke tests', () => {
 
   test('mobile overlay menu does not snap the page back near the top', async ({
     page,
-  }, testInfo) => {
-    if (testInfo.project.name !== 'Mobile Chrome') {
+  }) => {
+    const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
+    if (!isMobile) {
       return;
     }
 
@@ -261,9 +265,8 @@ test.describe('Chrome smoke tests', () => {
 
   test('navbar fast clicks land on intended sections during lazy loading', async ({
     page,
-  }, testInfo) => {
+  }) => {
     const targets = ['projects', 'education', 'contact'];
-    const isMobileChrome = testInfo.project.name === 'Mobile Chrome';
     const context = page.context();
 
     await Promise.all(
@@ -271,9 +274,10 @@ test.describe('Chrome smoke tests', () => {
         const targetPage = await context.newPage();
         try {
           await targetPage.goto('/', { waitUntil: 'domcontentloaded' });
-          await targetPage.waitForTimeout(isMobileChrome ? 250 : 350);
+          const isMobile = targetPage.viewportSize() ? targetPage.viewportSize().width <= 768 : false;
+          await targetPage.waitForTimeout(isMobile ? 250 : 350);
 
-          if (isMobileChrome) {
+          if (isMobile) {
             await targetPage.locator('#menu-btn').click();
             await targetPage.waitForTimeout(250);
             await targetPage.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();

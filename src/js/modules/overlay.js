@@ -88,9 +88,6 @@ export function initOverlayMenu(options = {}) {
     if (!body.classList.contains('menu-open')) return;
     body.classList.remove('menu-open');
     unlockBodyScroll(body);
-    overlayMenu.style.setProperty('display', 'none', 'important');
-    overlayMenu.setAttribute('aria-hidden', 'true');
-    overlayMenu.setAttribute('inert', '');
     menuToggle.setAttribute('aria-expanded', 'false');
     if (typeof menuToggle.focus === 'function') {
       try {
@@ -99,6 +96,9 @@ export function initOverlayMenu(options = {}) {
         menuToggle.focus();
       }
     }
+    overlayMenu.style.setProperty('display', 'none', 'important');
+    overlayMenu.setAttribute('aria-hidden', 'true');
+    overlayMenu.setAttribute('inert', '');
   };
 
   menuToggle.addEventListener('click', () => {
@@ -158,12 +158,6 @@ export function initOverlayNavigation(options = {}) {
       if (body && closeClass) {
         body.classList.remove(closeClass);
       }
-      const overlayMenu = documentRef.getElementById('overlay-menu');
-      if (overlayMenu) {
-        overlayMenu.style.setProperty('display', 'none', 'important');
-        overlayMenu.setAttribute('aria-hidden', 'true');
-        overlayMenu.setAttribute('inert', '');
-      }
       const menuToggle = documentRef.getElementById('menu-btn');
       if (menuToggle) {
         menuToggle.setAttribute('aria-expanded', 'false');
@@ -172,6 +166,12 @@ export function initOverlayNavigation(options = {}) {
         } catch {
           menuToggle.focus();
         }
+      }
+      const overlayMenu = documentRef.getElementById('overlay-menu');
+      if (overlayMenu) {
+        overlayMenu.style.setProperty('display', 'none', 'important');
+        overlayMenu.setAttribute('aria-hidden', 'true');
+        overlayMenu.setAttribute('inert', '');
       }
 
       setTimeout(() => {
