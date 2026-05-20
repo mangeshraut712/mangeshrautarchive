@@ -150,8 +150,12 @@ html.dark #debug-runner-canvas {
   display: none;
 }
 
-/* Show on mobile screens */
-@media (max-width: 768px) {
+/* Show on mobile screens and touch devices regardless of screen size */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+  .game-controls-wrapper {
+    display: none !important;
+  }
+
   .debug-runner-mobile-controls {
     display: flex !important;
     justify-content: center;
@@ -221,22 +225,6 @@ html.dark #debug-runner-canvas {
 
   .debug-runner-mobile-controls .debug-game-btn--duck {
     border-bottom: 4px solid #ff9500 !important;
-  }
-}
-
-/* Show on touch devices regardless of screen size */
-@media (hover: none) and (pointer: coarse) {
-  .game-controls-wrapper {
-    display: none !important;
-  }
-
-  .debug-runner-mobile-controls {
-    display: flex !important;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 20px;
-    padding: 16px 16px 64px 16px;
-    width: 100%;
   }
 }
 
@@ -385,10 +373,6 @@ html.dark .legend-emoji {
    5. RESPONSIVE DESIGN
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .game-controls-wrapper {
-    display: none !important;
-  }
-
   .game-control-item {
     padding: 12px 18px;
     gap: 12px;

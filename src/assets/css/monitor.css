@@ -1263,10 +1263,22 @@ body.monitor-page main > section.section:not(#home) {
     display: none;
   }
 
+  .monitor-header {
+    padding: 16px 20px;
+  }
+
   .monitor-header,
   .monitor-container {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  .header-title h1 {
+    font-size: 32px;
+  }
+
+  .monitor-summary-copy h2 {
+    font-size: 28px !important;
   }
 
   .header-content,
@@ -1307,10 +1319,32 @@ body.monitor-page main > section.section:not(#home) {
     gap: 16px;
   }
 
+  .monitor-container {
+    padding: 20px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+
+  body.monitor-page main > section.section {
+    padding-top: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  body.monitor-page main > section.section:not(#home) {
+    padding-top: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
+  }
+
   .health-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
   }
 
   .health-metrics {
@@ -1353,47 +1387,3 @@ body.monitor-page main > section.section:not(#home) {
   }
 }
 
-/* ========================================
-   RESPONSIVE
-   ======================================== */
-@media (max-width: 768px) {
-  .monitor-header {
-    padding: 16px 20px;
-  }
-
-  .header-title h1 {
-    font-size: 32px;
-  }
-
-  .monitor-summary-copy h2 {
-    font-size: 28px !important;
-  }
-
-  .monitor-container {
-    padding: 20px;
-  }
-
-  .section {
-    padding: 20px;
-  }
-
-  body.monitor-page main > section.section {
-    padding-top: 20px !important;
-    padding-right: 20px !important;
-    padding-bottom: 20px !important;
-    padding-left: 20px !important;
-  }
-
-  body.monitor-page main > section.section:not(#home) {
-    padding-top: 20px !important;
-    padding-right: 20px !important;
-    padding-bottom: 20px !important;
-    padding-left: 20px !important;
-  }
-
-  .health-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-}

@@ -1585,9 +1585,7 @@ html.dark .project-xr-status {
     grid-template-columns: 1fr;
   }
 
-  .project-xr-tree-file {
-    margin-left: 0.55rem;
-  }
+
 
   .project-xr-actions {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;

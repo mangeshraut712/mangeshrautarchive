@@ -26,7 +26,6 @@ class SecurityChecker {
       'src/index.html',
       'src/js/core/script.js',
       'src/js/core/bootstrap.js',
-      'api/contact.js',
       'api/index.py',
     ];
 

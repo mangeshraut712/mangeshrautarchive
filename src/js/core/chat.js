@@ -390,20 +390,15 @@ class IntelligentAssistant {
       }
 
       if (isStreaming) {
-        const reader = response.body.getReader();
+        const stream = response.body;
         const decoder = new TextDecoder();
         let fullText = '';
         let metadata = {};
         let buffer = '';
 
-        const readNextChunk = async () => {
-          const { done, value } = await reader.read();
-          if (done) return;
-
-          buffer += decoder.decode(value, { stream: true });
+        const processChunk = (chunk) => {
+          buffer += decoder.decode(chunk, { stream: true });
           const lines = buffer.split('\n');
-
-          // Keep the last partial line if it doesn't end with a newline
           buffer = buffer.endsWith('\n') ? '' : lines.pop();
 
           for (const line of lines) {
@@ -447,11 +442,24 @@ class IntelligentAssistant {
               console.warn('Error parsing stream chunk:', e);
             }
           }
-
-          await readNextChunk();
         };
 
-        await readNextChunk();
+        if (typeof stream[Symbol.asyncIterator] === 'function') {
+          for await (const chunk of stream) {
+            processChunk(chunk);
+          }
+        } else {
+          const reader = stream.getReader();
+          try {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              processChunk(value);
+            }
+          } finally {
+            reader.releaseLock();
+          }
+        }
 
         this.isReadyState = true;
         return {

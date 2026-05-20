@@ -167,6 +167,8 @@ class BlogLoader {
       }
     };
 
+    const codeMap = new Map(codeBlocks.map(c => [c.placeholder, c]));
+
     for (let block of paragraphs) {
       block = block.trim();
       if (!block) continue;
@@ -175,7 +177,7 @@ class BlogLoader {
       if (block.startsWith('__CODE_BLOCK_PLACEHOLDER_')) {
         closeList();
         const placeholder = block;
-        const found = codeBlocks.find(c => c.placeholder === placeholder);
+        const found = codeMap.get(placeholder);
         if (found) {
           const escapedCode = found.code
             .replace(/&/g, '&amp;')

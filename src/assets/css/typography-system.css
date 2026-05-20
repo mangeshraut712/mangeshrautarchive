@@ -435,10 +435,6 @@ textarea::placeholder {
     margin-bottom: 0.875rem;
   }
 
-  .nav-link {
-    font-size: 13px;
-  }
-
   .overlay-nav-link {
     font-size: 18px;
   }
@@ -450,25 +446,27 @@ textarea::placeholder {
 
 /* Tablet (640px - 1024px) */
 @media (min-width: 640px) and (max-width: 1023px) {
-  body {
-    font-size: 16px;
-  }
-
-  .nav-link {
-    font-size: 13px;
-  }
-
   .overlay-nav-link {
     font-size: 20px;
   }
 }
 
-/* Desktop (>= 1024px) */
-@media (min-width: 1024px) {
+/* Tablet & Mobile (< 1024px) */
+@media (max-width: 1023px) {
+  .nav-link {
+    font-size: 13px;
+  }
+}
+
+/* Tablet & Desktop (>= 640px) */
+@media (min-width: 640px) {
   body {
     font-size: 16px;
   }
+}
 
+/* Desktop (>= 1024px) */
+@media (min-width: 1024px) {
   .nav-link {
     font-size: 14px;
     font-weight: 400;
@@ -485,10 +483,6 @@ textarea::placeholder {
 
 /* Large Desktop (>= 1440px) */
 @media (min-width: 1440px) {
-  .nav-link {
-    font-size: 14px;
-  }
-
   p {
     font-size: 1.125rem;
   }
