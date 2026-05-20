@@ -19,9 +19,11 @@ This is not a static resume page. It is a full-stack portfolio system built to s
 In **May 2026**, the web has transitioned from static layouts to **Agentic Web Applications**. This repository features:
 
 - **Hybrid AI Execution:** Instant, offline-capable browser intelligence via **WebNN** + **Gemma 3**, with a serverless cloud fallback to **Gemini 2.5 Flash / Pro** via OpenRouter.
+- **WebMCP Agentic Actions:** Native browser capability integration using the W3C `navigator.modelContext.registerTool` protocol, exposing 9 core interactive tools (e.g., section navigation, resume download, contact overlay, theme toggles) to agentic orchestrators.
+- **Premium Agentic UX Feedback:** High-fidelity visual micro-animations, glassmorphic `.action-message` rendering, and pulsing action badges (`ACTION EXECUTED`) that provide tactile, real-time visual feedback when local tools are executed by the AI.
 - **Authoritative Engagement Telemetry:** A simple, direct, real-time visitor reach counter built on **Cloud Firestore** and cross-checked with **Vercel Analytics**.
 - **Operational Visibility:** A live operations dashboard at `/monitor` showing endpoint latencies, third-party provider checks, event logging, and hosting surface status.
-- **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites.
+- **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites (including chatbot WebMCP action suites).
 
 ---
 

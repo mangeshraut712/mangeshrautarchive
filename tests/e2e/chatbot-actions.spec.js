@@ -6,16 +6,35 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
     // Define the modelContext mock before navigation
     await page.addInitScript(() => {
       const tools = [];
-      Object.defineProperty(navigator, 'modelContext', {
-        value: {
-          registerTool: (tool, options) => {
-            tools.push({ tool, options });
-          },
+      const mockModelContext = {
+        registerTool: (tool, options) => {
+          tools.push({ tool, options });
         },
-        configurable: true,
-        writable: true,
-      });
-      // Keep track of registered tools globally so we can access them from the test
+      };
+
+      try {
+        if (typeof Navigator !== 'undefined' && Navigator.prototype) {
+          Object.defineProperty(Navigator.prototype, 'modelContext', {
+            value: mockModelContext,
+            configurable: true,
+            writable: true,
+          });
+        } else {
+          Object.defineProperty(navigator, 'modelContext', {
+            value: mockModelContext,
+            configurable: true,
+            writable: true,
+          });
+        }
+      } catch (e) {
+        // Fallback
+        try {
+          navigator.modelContext = mockModelContext;
+        } catch (err) {
+          console.error('Failed to mock modelContext:', err);
+        }
+      }
+
       window.__registeredTools = tools;
     });
 
