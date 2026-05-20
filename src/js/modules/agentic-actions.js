@@ -18,6 +18,199 @@ export class AgenticActionHandler {
     this.actions = new Map();
     this.actionHistory = [];
     this.registerActions();
+    this.registerWebMCPTools();
+  }
+
+  /**
+   * Register WebMCP client-side tools if navigator.modelContext is available
+   */
+  registerWebMCPTools() {
+    if (
+      typeof window === 'undefined' ||
+      typeof navigator === 'undefined' ||
+      !navigator.modelContext ||
+      !navigator.modelContext.registerTool
+    ) {
+      console.log('🔌 WebMCP client-side API not supported by this browser.');
+      return;
+    }
+
+    console.log('🔌 WebMCP detected! Registering client-side tools...');
+    this.abortController = new AbortController();
+    const signal = this.abortController.signal;
+
+    try {
+      // 1. Navigate to section
+      navigator.modelContext.registerTool(
+        {
+          name: 'navigate_to_section',
+          description:
+            'Smooth scroll to a specific section of the portfolio (e.g., home, about, skills, projects, contact, experience, education, publications, awards, certifications, blog, game).',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              section: {
+                type: 'string',
+                description: 'The target section name (e.g., projects, experience, contact).',
+              },
+            },
+            required: ['section'],
+          },
+          execute: async input => {
+            return this.navigateToSection([null, input.section]);
+          },
+        },
+        { signal }
+      );
+
+      // 2. Download resume
+      navigator.modelContext.registerTool(
+        {
+          name: 'download_resume',
+          description: "Initiate the download of Mangesh's resume PDF.",
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.downloadResume();
+          },
+        },
+        { signal }
+      );
+
+      // 3. Schedule meeting
+      navigator.modelContext.registerTool(
+        {
+          name: 'schedule_meeting',
+          description: 'Open the Calendly booking popup to schedule a meeting with Mangesh.',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.scheduleMeeting();
+          },
+        },
+        { signal }
+      );
+
+      // 4. Send message (open contact form)
+      navigator.modelContext.registerTool(
+        {
+          name: 'open_contact_form',
+          description: 'Scroll to and open/focus the contact form to let the user send a message.',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.openContactForm();
+          },
+        },
+        { signal }
+      );
+
+      // 5. Copy contact info
+      navigator.modelContext.registerTool(
+        {
+          name: 'copy_contact_info',
+          description: "Copy Mangesh's contact details (email, LinkedIn, GitHub) to clipboard.",
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.copyContactInfo();
+          },
+        },
+        { signal }
+      );
+
+      // 6. Search portfolio
+      navigator.modelContext.registerTool(
+        {
+          name: 'search_portfolio',
+          description:
+            'Open the search overlay and query for specific skills, technologies, or keywords.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              query: {
+                type: 'string',
+                description: 'The search query to enter.',
+              },
+            },
+            required: ['query'],
+          },
+          execute: async input => {
+            return this.performSearch([null, input.query]);
+          },
+          annotations: { readOnlyHint: true },
+        },
+        { signal }
+      );
+
+      // 7. Filter projects
+      navigator.modelContext.registerTool(
+        {
+          name: 'filter_projects',
+          description:
+            'Filter visible project cards by a specific technology or programming language.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              technology: {
+                type: 'string',
+                description: 'The technology tag or language (e.g. React, Java, AWS, Python).',
+              },
+            },
+            required: ['technology'],
+          },
+          execute: async input => {
+            return this.filterProjects([null, input.technology]);
+          },
+          annotations: { readOnlyHint: true },
+        },
+        { signal }
+      );
+
+      // 8. Open social media
+      navigator.modelContext.registerTool(
+        {
+          name: 'open_social_media',
+          description: "Open Mangesh's profiles (github, linkedin, twitter) in a new tab.",
+          inputSchema: {
+            type: 'object',
+            properties: {
+              platform: {
+                type: 'string',
+                description: 'The social network name: github, linkedin, or twitter.',
+              },
+            },
+            required: ['platform'],
+          },
+          execute: async input => {
+            return this.openSocialMedia([null, input.platform]);
+          },
+        },
+        { signal }
+      );
+
+      // 9. Toggle theme
+      navigator.modelContext.registerTool(
+        {
+          name: 'toggle_theme',
+          description: 'Toggle dark mode or light mode on the website.',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.toggleTheme();
+          },
+        },
+        { signal }
+      );
+
+      // Clean up on page unload to avoid WebMCP registry conflicts
+      window.addEventListener(
+        'beforeunload',
+        () => {
+          if (this.abortController) {
+            this.abortController.abort();
+          }
+        },
+        { once: true }
+      );
+    } catch (error) {
+      console.error('❌ Failed to register WebMCP tools:', error);
+    }
   }
 
   /**

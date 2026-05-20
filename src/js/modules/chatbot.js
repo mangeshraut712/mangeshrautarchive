@@ -312,6 +312,7 @@ class AppleIntelligenceChatbot {
     document.addEventListener('click', e => {
       if (
         this.isOpen &&
+        e.isTrusted &&
         !this.elements.widget.contains(e.target) &&
         !this.elements.toggle.contains(e.target)
       ) {
@@ -568,6 +569,18 @@ class AppleIntelligenceChatbot {
         // Render markdown
         const renderedHTML = this.renderMarkdown(fullText);
         contentDiv.innerHTML = renderedHTML;
+
+        // Prepend action badge if this response was an executed agentic action
+        if (response && (response.type === 'action' || response.source === 'agentic-action')) {
+          messageDiv.classList.add('action-message');
+          const badge = document.createElement('div');
+          badge.className = 'action-badge';
+          badge.innerHTML = `
+            <span class="action-badge-icon">⚡</span>
+            <span class="action-badge-text">ACTION EXECUTED</span>
+          `;
+          contentDiv.prepend(badge);
+        }
 
         // Apply syntax highlighting
         if (window.Prism) {
