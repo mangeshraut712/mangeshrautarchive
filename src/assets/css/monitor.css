@@ -1396,9 +1396,4 @@ body.monitor-page main > section.section:not(#home) {
     align-items: flex-start;
     gap: 12px;
   }
-
-  .health-metrics {
-    width: 100%;
-    justify-content: space-between;
-  }
 }

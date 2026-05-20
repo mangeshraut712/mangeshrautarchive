@@ -1,0 +1,490 @@
+import os
+from datetime import datetime, timezone
+from typing import Optional, Dict
+from fastapi import APIRouter, HTTPException
+
+from api.monitoring import system_monitor, SystemMonitor, EventType
+
+router = APIRouter()
+
+
+@router.get("/monitor/health", tags=["system-monitor"], summary="Detailed monitor health")
+@router.get(
+    "/api/monitor/health", tags=["system-monitor"], summary="Detailed monitor health"
+)
+async def get_monitor_health():
+    """
+    Comprehensive health check with all service statuses
+    """
+    if system_monitor is None:
+        return {
+            "status": "degraded",
+            "checks": [],
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
+    health = await system_monitor.check_health()
+    return health
+
+
+@router.get("/monitor/metrics", tags=["system-monitor"], summary="Monitor metrics")
+@router.get("/api/monitor/metrics", tags=["system-monitor"], summary="Monitor metrics")
+async def get_monitor_metrics():
+    """
+    Get system metrics including endpoint performance
+    """
+    if system_monitor is None:
+        return {
+            "status": "degraded",
+            "uptime_seconds": 0,
+            "uptime_human": "unknown",
+            "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0, "total": 0},
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
+    metrics = system_monitor.get_metrics()
+    return metrics
+
+
+@router.get("/monitor/docs", tags=["system-monitor"], summary="Monitor API reference")
+@router.get("/api/monitor/docs", tags=["system-monitor"], summary="Monitor API reference")
+async def get_monitor_docs():
+    """
+    Structured monitor reference data for the System Monitor frontend and API docs shortcuts.
+    """
+    return {
+        "title": "System Monitor API",
+        "description": "Reference metadata for monitor endpoints, status meanings, and documentation links.",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "docs_links": {
+            "openapi": "/api/docs",
+            "redoc": "/api/redoc",
+            "health_json": "/api/monitor/health",
+            "status_json": "/api/monitor/status",
+            "hosting_surfaces": "/api/monitor/hosting-surfaces",
+            "external_services": "/api/monitor/external-services",
+        },
+        "status_legend": [
+            {
+                "status": "healthy",
+                "label": "Healthy",
+                "description": "Service is responding normally and within expected thresholds.",
+            },
+            {
+                "status": "degraded",
+                "label": "Degraded",
+                "description": "Service is responding but has configuration, latency, or quota pressure.",
+            },
+            {
+                "status": "unhealthy",
+                "label": "Unhealthy",
+                "description": "Service is unavailable or returning failed checks.",
+            },
+            {
+                "status": "unknown",
+                "label": "Unknown",
+                "description": "No reliable signal is currently available for that check.",
+            },
+        ],
+        "event_types": [
+            {
+                "type": "critical",
+                "description": "Immediate action required. User-facing failure or major outage.",
+            },
+            {
+                "type": "error",
+                "description": "A request or integration failed and should be investigated.",
+            },
+            {
+                "type": "warning",
+                "description": "Non-fatal degradation, quota pressure, or performance anomaly.",
+            },
+            {
+                "type": "info",
+                "description": "Operational informational event or monitoring update.",
+            },
+            {
+                "type": "success",
+                "description": "Successful remediation or recovery event.",
+            },
+        ],
+        "endpoint_groups": [
+            {
+                "title": "Overview & Health",
+                "description": "Use these endpoints for top-level status and health diagnostics.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/status",
+                        "summary": "Quick status payload for lightweight checks and summaries.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/health",
+                        "summary": "Detailed health report with component checks and overall status.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/metrics",
+                        "summary": "Aggregated request metrics, endpoint performance, and event counts.",
+                    },
+                ],
+            },
+            {
+                "title": "Events & Incidents",
+                "description": "Inspect warnings, errors, and resolution history from the monitor.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/events",
+                        "summary": "Fetch recent monitor events with optional filtering.",
+                    },
+                    {
+                        "method": "POST",
+                        "path": "/api/monitor/events/{event_id}/resolve",
+                        "summary": "Mark an event as resolved from the dashboard.",
+                    },
+                ],
+            },
+            {
+                "title": "Integrations & Docs",
+                "description": "Reference integration health and documentation surfaces.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/external-services",
+                        "summary": "Live health for external services such as OpenRouter, GitHub, Vercel platform status, Last.fm, and analytics.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/hosting-surfaces",
+                        "summary": "Status for custom-domain, Vercel deployment, GitHub Pages, and safe runtime env presence.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/docs",
+                        "summary": "Structured monitor reference data for the frontend docs panel.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/docs",
+                        "summary": "Interactive OpenAPI explorer for the full backend.",
+                    },
+                ],
+            },
+        ],
+    }
+
+
+@router.get(
+    "/monitor/external-services",
+    tags=["system-monitor"],
+    summary="External service status",
+)
+@router.get(
+    "/api/monitor/external-services",
+    tags=["system-monitor"],
+    summary="External service status",
+)
+async def get_monitor_external_services():
+    """
+    Live status for external and integration services surfaced in the monitor UI
+    """
+    if system_monitor is None:
+        return {
+            "services": [],
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
+    return await system_monitor.get_external_services_status()
+
+
+@router.get(
+    "/monitor/hosting-surfaces",
+    tags=["system-monitor"],
+    summary="Deployment surface status",
+)
+@router.get(
+    "/api/monitor/hosting-surfaces",
+    tags=["system-monitor"],
+    summary="Deployment surface status",
+)
+async def get_monitor_hosting_surfaces():
+    """
+    Live status for public hosting surfaces and safe runtime env presence.
+    """
+    if system_monitor is None:
+        return {
+            "surfaces": [],
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
+    return await system_monitor.get_hosting_surfaces_status()
+
+
+@router.get("/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
+@router.get("/api/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
+async def get_monitor_events(
+    limit: int = 100,
+    event_type: Optional[str] = None,
+    resolved_only: Optional[bool] = None,
+):
+    """
+    Get system events with optional filtering
+    """
+    event_type_enum = None
+    if event_type:
+        try:
+            event_type_enum = EventType(event_type)
+        except ValueError:
+            raise HTTPException(
+                status_code=400, detail=f"Invalid event type: {event_type}"
+            )
+
+    if system_monitor is None:
+        return {
+            "events": [],
+            "count": 0,
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "note": "System monitor not initialized - using fallback",
+        }
+    events = system_monitor.get_events(
+        limit=limit, event_type=event_type_enum, resolved_only=resolved_only
+    )
+    return {
+        "events": events,
+        "count": len(events),
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+
+
+@router.post(
+    "/api/monitor/events/{event_id}/resolve",
+    tags=["system-monitor"],
+    summary="Resolve a monitor event",
+)
+async def resolve_monitor_event(event_id: str):
+    """
+    Mark a system event as resolved
+    """
+    if system_monitor is None:
+        raise HTTPException(status_code=503, detail="Monitor service temporarily unavailable")
+    success = system_monitor.resolve_event(event_id)
+    if not success:
+        raise HTTPException(status_code=404, detail=f"Event not found: {event_id}")
+
+    return {
+        "success": True,
+        "message": "Event resolved",
+        "event_id": event_id,
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+
+
+@router.get("/monitor/status", tags=["system-monitor"], summary="Quick monitor status")
+@router.get("/api/monitor/status", tags=["system-monitor"], summary="Quick monitor status")
+async def get_monitor_status():
+    """
+    Quick status check for load balancers
+    """
+    if system_monitor is None:
+        return {
+            "status": "degraded",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "version": "3.0.0",
+            "environment": os.getenv("VERCEL_ENV", "local"),
+            "uptime_seconds": 0,
+            "uptime_human": "unknown",
+            "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0, "total": 0},
+            "runtime": {"environment": os.getenv("VERCEL_ENV", "local"), "platform": "vercel"},
+            "docs": {
+                "openapi": "/api/docs",
+                "redoc": "/api/redoc",
+            },
+            "note": "System monitor not initialized - using fallback",
+        }
+
+    metrics = system_monitor.get_metrics()
+    return {
+        "status": "ok",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "version": "3.0.0",
+        "environment": os.getenv("VERCEL_ENV", "local"),
+        "uptime_seconds": metrics["uptime_seconds"],
+        "uptime_human": metrics["uptime_human"],
+        "summary": metrics["summary"],
+        "runtime": system_monitor.get_runtime_environment(),
+        "docs": {
+            "openapi": "/api/docs",
+            "redoc": "/api/redoc",
+            "monitor_reference": "/api/monitor/docs",
+            "hosting_surfaces": "/api/monitor/hosting-surfaces",
+        },
+    }
+
+
+@router.get("/api/monitor/real-time")
+async def get_real_time_metrics():
+    """Get real-time system metrics for live dashboard"""
+    monitor = SystemMonitor()
+    return monitor.real_time_metrics
+
+
+@router.get("/api/monitor/deployments")
+async def get_deployment_history():
+    """Get deployment history and change tracking"""
+    monitor = SystemMonitor()
+    return {
+        "current_deployment": monitor.current_deployment,
+        "deployment_history": list(monitor.deployment_history),
+        "recent_changes": list(monitor.deployment_changes)[-10:],  # Last 10 changes
+    }
+
+
+@router.post("/api/monitor/web-vitals")
+async def track_web_vitals(vitals: Dict[str, float]):
+    """Track Core Web Vitals from frontend"""
+    monitor = SystemMonitor()
+    monitor.track_web_vitals(vitals)
+    return {"status": "recorded"}
+
+
+@router.get("/api/monitor/security")
+async def get_security_status():
+    """Get security monitoring data"""
+    monitor = SystemMonitor()
+    return {
+        "security_events": list(monitor.security_events)[-20:],  # Last 20 events
+        "suspicious_ips": list(monitor.suspicious_ips),
+        "rate_limits": dict(monitor.rate_limits),
+    }
+
+
+@router.get("/api/monitor/ai-metrics")
+async def get_ai_metrics():
+    """Get AI usage and performance metrics"""
+    monitor = SystemMonitor()
+    return monitor.ai_metrics
+
+
+@router.get("/api/docs/reference")
+async def get_api_documentation():
+    """Enhanced API documentation with 2026-era features"""
+    base_url = os.getenv("VERCEL_URL", "http://localhost:8001")
+
+    return {
+        "title": "AssistMe API - 2026 Edition",
+        "version": "3.0.0",
+        "description": "AI-powered portfolio backend with advanced monitoring and analytics",
+        "base_url": f"https://{base_url}"
+        if base_url != "localhost:8001"
+        else f"http://{base_url}",
+        "endpoints": {
+            "music": {
+                "recent": {
+                    "url": "/api/music/recent",
+                    "method": "GET",
+                    "description": "Get recent Last.fm listening history",
+                    "parameters": {
+                        "user": "Last.fm username (default: mbr63)",
+                        "limit": "Number of tracks to return (default: 10)",
+                    },
+                }
+            },
+            "chat": {
+                "conversation": {
+                    "url": "/api/chat",
+                    "method": "POST",
+                    "description": "AI-powered conversation with context awareness",
+                    "features": [
+                        "Streaming responses",
+                        "Memory management",
+                        "Multi-model support",
+                    ],
+                }
+            },
+            "monitoring": {
+                "health": {
+                    "url": "/api/monitor/health",
+                    "method": "GET",
+                    "description": "Comprehensive system health check",
+                },
+                "metrics": {
+                    "url": "/api/monitor/metrics",
+                    "method": "GET",
+                    "description": "Real-time performance metrics",
+                },
+                "real_time": {
+                    "url": "/api/monitor/real-time",
+                    "method": "GET",
+                    "description": "Live system metrics for dashboard",
+                },
+                "deployments": {
+                    "url": "/api/monitor/deployments",
+                    "method": "GET",
+                    "description": "Deployment history and change tracking",
+                },
+                "security": {
+                    "url": "/api/monitor/security",
+                    "method": "GET",
+                    "description": "Security monitoring and threat detection",
+                },
+                "ai_metrics": {
+                    "url": "/api/monitor/ai-metrics",
+                    "method": "GET",
+                    "description": "AI model usage and performance analytics",
+                },
+                "events": {
+                    "url": "/api/monitor/events",
+                    "method": "GET",
+                    "description": "System events and audit log",
+                },
+            },
+            "github": {
+                "repos": {
+                    "url": "/api/github/repos/public",
+                    "method": "GET",
+                    "description": "Fetch public GitHub repositories with metrics",
+                },
+                "proxy": {
+                    "url": "/api/github/proxy",
+                    "method": "GET",
+                    "description": "GitHub API proxy for additional endpoints",
+                },
+            },
+            "analytics": {
+                "track": {
+                    "url": "/api/analytics/track",
+                    "method": "POST",
+                    "description": "Track user interactions and events",
+                }
+            },
+        },
+        "features": {
+            "ai_integration": "Multi-model AI with OpenRouter and Anthropic",
+            "real_time_monitoring": "Live system metrics and health checks",
+            "deployment_tracking": "Automated deployment change auditing",
+            "security_monitoring": "Threat detection and rate limiting",
+            "performance_analytics": "Core Web Vitals and response time tracking",
+            "external_integrations": "GitHub, Last.fm, and analytics services",
+        },
+        "monitoring": {
+            "health_checks": "Automated health verification for all services",
+            "real_time_metrics": "Live dashboard with system performance",
+            "deployment_auditing": "Complete change tracking during deployments",
+            "security_alerts": "Real-time threat detection and notifications",
+            "ai_performance": "Model usage analytics and optimization",
+        },
+        "deployment": {
+            "platform": "Vercel with automated CI/CD",
+            "monitoring": "Comprehensive system monitoring and alerting",
+            "scaling": "Auto-scaling based on load and performance metrics",
+            "backup": "Automated data backup and recovery systems",
+        },
+        "security": {
+            "api_keys": "Environment-based key management",
+            "rate_limiting": "Intelligent rate limiting per IP",
+            "threat_detection": "Automated suspicious activity monitoring",
+            "audit_logging": "Complete audit trail for all system changes",
+        },
+    }

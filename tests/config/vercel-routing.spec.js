@@ -21,7 +21,7 @@ describe('Vercel FastAPI routing', () => {
 
     const apiEntrypoint = readProjectFile('api/index.py');
     expect(apiEntrypoint).toContain('app = FastAPI(');
-    expect(apiEntrypoint).toContain('@app.get("/api/monitor/status"');
-    expect(apiEntrypoint).toContain('@app.get("/api/analytics/reach"');
+    expect(readProjectFile('api/routes/monitor.py')).toContain('@router.get("/api/monitor/status"');
+    expect(readProjectFile('api/routes/analytics.py')).toContain('@router.get("/api/analytics/reach"');
   });
 });

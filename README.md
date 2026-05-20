@@ -86,7 +86,7 @@ flowchart TB
 ### Deployment Model
 
 - Vercel builds the frontend with `npm run build` and serves `dist/`.
-- Vercel treats `api/index.py` as the Python/FastAPI handler.
+- Vercel treats `api/index.py` as the Python/FastAPI handler (which imports and mounts modular sub-routers from `api/routes/`).
 - A `vercel.json` rewrite routes `/api/:path*` to `/api/index` to handle nested API routes correctly.
 - GitHub Pages is static-only. Runtime features that need a backend call `https://mangeshraut.pro/api/*` through public configuration.
 - Secrets stay server-side in Vercel environment variables. Public config is limited to safe values such as API origin, app title, model name, and site URL.
@@ -216,10 +216,19 @@ Never commit `.env`, API keys, tokens, or downloaded credential files.
 mangeshrautarchive/
 ├── api/
 │   ├── analytics_store.py        # Portfolio view/reach persistence
-│   ├── index.py                  # FastAPI app and Vercel entrypoint
+│   ├── config.py                 # Central configurations, models, and helper functions
+│   ├── index.py                  # FastAPI app and Vercel entrypoint (router mount point)
 │   ├── integrations/             # Provider clients
 │   ├── memory_manager.py         # Assistant memory helpers
-│   └── monitoring.py             # Health checks, events, metrics
+│   ├── monitoring.py             # Health checks, events, metrics
+│   └── routes/                   # Modular API routers
+│       ├── analytics.py          # /api/analytics endpoints
+│       ├── chat.py               # /api/chat & /api/models endpoints
+│       ├── general.py            # Root, contact, and download endpoints
+│       ├── github.py             # /api/github endpoints
+│       ├── media.py              # Last.fm and TMDB/Google Books proxy endpoints
+│       ├── monitor.py            # /api/monitor operational endpoints
+│       └── personalization.py    # GDPR and memory customization endpoints
 ├── src/
 │   ├── index.html                # Main portfolio page
 │   ├── monitor.html              # System monitor dashboard
