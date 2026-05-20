@@ -620,7 +620,7 @@ class IntelligentAssistant {
 
     if (lower.includes('experience') || lower.includes('employment')) {
       result.answer =
-        'Mangesh is currently a Software Engineer at IoasiZ, building scalable microservices. Previously, he worked at Aramark as a Student Software Engineer, optimizing cloud resources and automating workflows.';
+        'Mangesh is currently a Software Engineer at Customized Energy Solutions, optimizing energy forecasting and analytics systems. Previously, he built scalable microservices at IoasiZ and automated cloud workflows at Aramark.';
       result.type = 'portfolio';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
@@ -629,7 +629,7 @@ class IntelligentAssistant {
 
     if (lower.includes('portfolio') || lower.includes('work') || lower.includes('experience')) {
       result.answer =
-        'Mangesh is a Software Engineer specializing in Java Spring Boot, AngularJS, AWS, and machine learning. Check out his GitHub: github.com/mangeshraut712';
+        'Mangesh is a Software Engineer specializing in Java Spring Boot, React, Angular, AWS, and Machine Learning. Explore his interactive work on github.com/mangeshraut712';
       result.type = 'portfolio';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
@@ -647,7 +647,7 @@ class IntelligentAssistant {
 
     if (lower.includes('java')) {
       result.answer =
-        'Mangesh has extensive experience with Java, particularly Spring Boot. He refactored legacy monoliths into microservices at IoasiZ and built energy analytics dashboards using Java backend.';
+        'Mangesh has extensive experience with Java, particularly Spring Boot. He built scalable enterprise microservices at IoasiZ, optimized relational databases, and architected backend systems integrated with AWS.';
       result.type = 'portfolio';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
@@ -656,7 +656,7 @@ class IntelligentAssistant {
 
     if (lower.includes('aws') || lower.includes('cloud')) {
       result.answer =
-        'Mangesh is skilled in AWS services like Lambda, EC2, and RDS. He automated workflows using Terraform and Python, and managed cloud infrastructure at Aramark and IoasiZ.';
+        'Mangesh is skilled in AWS services like Lambda, EC2, ECS, and S3. He automated infrastructure with Terraform, and engineered highly-scalable cloud solutions at Customized Energy Solutions and IoasiZ.';
       result.type = 'portfolio';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');

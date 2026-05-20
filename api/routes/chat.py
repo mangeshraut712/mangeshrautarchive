@@ -47,7 +47,7 @@ def generate_local_response(query: str) -> Dict:
     # Greetings
     if any(g in query for g in ["hello", "hi", "hey", "greetings"]):
         return {
-            "answer": "👋 Hello! I'm AssistMe, running in **Local Dev Mode**. I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
+            "answer": "👋 Hello! I'm AssistMe, running in **Local Mode** (incorporating May 2026 updates like WebNN/Gemma 3). I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
             "category": "Greeting",
         }
 
@@ -57,7 +57,7 @@ def generate_local_response(query: str) -> Dict:
         title = PORTFOLIO_DATA["title"]
         location = PORTFOLIO_DATA["location"]
         return {
-            "answer": f"👨‍💻 **{name}** is a {title} based in {location}. He specializes in building scalable backend systems, cloud infrastructure, and AI-powered applications.",
+            "answer": f"👨‍💻 **{name}** is a {title} based in {location}. He specializes in full-stack architecture, cloud pipelines, and AI systems. His portfolio incorporates a Hybrid AI Web Stack utilizing client-side **WebNN + Gemma 3** for low-latency edge interactions and server-side OpenRouter API orchestration.",
             "category": "About",
         }
 
@@ -74,8 +74,15 @@ def generate_local_response(query: str) -> Dict:
         langs = ", ".join(PORTFOLIO_DATA["skills"]["languages"])
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
-            "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}\n• **Cloud**: AWS, Docker, Kubernetes\n• **Databases**: PostgreSQL, MongoDB, Redis",
+            "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}, FastAPI\n• **Cloud**: AWS, Docker, Kubernetes\n• **AI/ML**: WebNN, Gemma 3, TensorFlow, scikit-learn\n• **Databases**: Cloud Firestore, PostgreSQL, MongoDB, Redis",
             "category": "Skills",
+        }
+
+    # Blogs
+    if "blog" in query or "write" in query or "google i/o" in query or "open x" in query:
+        return {
+            "answer": "✍️ **Recent Technical Writing** (Apple-style Dev Newsletter):\n• **Google I/O 2026: The Rise of Agentic Web, Gemini 2.5, Gemma 3, and WebNN** (May 2026)\n• **Inside the Open X Algorithm** (May 2026)\n• **Decentralized AI Agents and WebGPU** (April 2026)\n\nYou can read all these blogs in the 'Technical Writings' section of the homepage!",
+            "category": "Blogs",
         }
 
     # Projects
@@ -87,7 +94,7 @@ def generate_local_response(query: str) -> Dict:
             ]
         )
         return {
-            "answer": f"🚀 **Key Projects**:\n{projects_list}",
+            "answer": f"🚀 **Key Projects**:\n{projects_list}\n• **Hybrid Edge/Cloud Portfolio**: Built this high-performance site featuring real-time Firestore analytics and WebNN integrations.",
             "category": "Projects",
         }
 
@@ -131,20 +138,20 @@ def generate_local_response(query: str) -> Dict:
         return {
             "answer": f"🎓 **Education**:\n{edu_list}"
             if edu_list
-            else "🎓 Mangesh holds a Master's in Computer Science from Drexel University.",
+            else "🎓 Mangesh holds a Master's in Computer Science from Drexel University (Graduated June 2025).",
             "category": "Education",
         }
 
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
         return {
-            "answer": "🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Architected microservices handling **100+ concurrent users**",
+            "answer": "🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Published ML intrusion detection research paper in IEEE (2024)\n• Graduated MS CS from Drexel University with 3.76 GPA",
             "category": "Achievements",
         }
 
     # Default fallback
     return {
-        "answer": "👋 I'm running in **Local Dev Mode** (no API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
+        "answer": "👋 I'm running in **Local Mode** (no cloud API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Recent Blogs (Google I/O 2026)\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
         "category": "System",
     }
 

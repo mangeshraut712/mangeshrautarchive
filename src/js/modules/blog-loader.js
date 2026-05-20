@@ -117,26 +117,151 @@ class BlogLoader {
         `;
 
     this.modal.classList.remove('hidden');
+    // Force browser reflow to enable CSS transition
+    this.modal.offsetHeight;
+    this.modal.classList.add('active');
     this.modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
   }
 
   closeModal() {
-    this.modal.classList.add('hidden');
+    this.modal.classList.remove('active');
     this.modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    
+    // Delay hidden class to let fade-out transition complete
+    setTimeout(() => {
+      if (!this.modal.classList.contains('active')) {
+        this.modal.classList.add('hidden');
+      }
+    }, 300);
   }
 
   parseContent(content) {
-    // Simple Markdown parser
-    return content
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-      .replace(/`([^`]+)`/gim, '<code>$1</code>')
-      .replace(/```([\s\S]*?)```/gm, '<pre><code>$1</code></pre>')
-      .replace(/\n/gim, '<br>');
+    if (!content) return '';
+
+    // Extract code blocks first to protect them from regexes
+    const codeBlocks = [];
+    let placeholderCount = 0;
+    
+    let processedContent = content.replace(/```([\s\S]*?)```/g, (match, code) => {
+      const placeholder = `__CODE_BLOCK_PLACEHOLDER_${placeholderCount}__`;
+      codeBlocks.push({
+        placeholder,
+        code: code.trim()
+      });
+      placeholderCount++;
+      return placeholder;
+    });
+
+    const paragraphs = processedContent.split(/\n\n+/);
+    const html = [];
+    let inList = false;
+    let listItems = [];
+
+    const closeList = () => {
+      if (inList) {
+        html.push(`<ul class="article-list">${listItems.join('')}</ul>`);
+        listItems = [];
+        inList = false;
+      }
+    };
+
+    for (let block of paragraphs) {
+      block = block.trim();
+      if (!block) continue;
+
+      // Code block placeholder check
+      if (block.startsWith('__CODE_BLOCK_PLACEHOLDER_')) {
+        closeList();
+        const placeholder = block;
+        const found = codeBlocks.find(c => c.placeholder === placeholder);
+        if (found) {
+          const escapedCode = found.code
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+          html.push(`<pre class="article-code-block"><code>${escapedCode}</code></pre>`);
+        }
+        continue;
+      }
+
+      // Headers
+      if (block.startsWith('# ')) {
+        closeList();
+        html.push(`<h1 class="article-h1">${this.parseInline(block.substring(2))}</h1>`);
+        continue;
+      }
+      if (block.startsWith('## ')) {
+        closeList();
+        html.push(`<h2 class="article-h2">${this.parseInline(block.substring(3))}</h2>`);
+        continue;
+      }
+      if (block.startsWith('### ')) {
+        closeList();
+        html.push(`<h3 class="article-h3">${this.parseInline(block.substring(4))}</h3>`);
+        continue;
+      }
+
+      // Horizontal Rule
+      if (block === '---' || block === '***') {
+        closeList();
+        html.push('<hr class="article-hr">');
+        continue;
+      }
+
+      // Blockquotes
+      if (block.startsWith('>')) {
+        closeList();
+        const lines = block.split('\n').map(line => line.replace(/^>\s*/, ''));
+        html.push(`<blockquote class="article-blockquote">${this.parseInline(lines.join('<br>'))}</blockquote>`);
+        continue;
+      }
+
+      // Unordered Lists
+      const lines = block.split('\n');
+      const firstLine = lines[0].trim();
+      if (firstLine.startsWith('- ') || firstLine.startsWith('* ') || firstLine.startsWith('• ')) {
+        if (!inList) {
+          inList = true;
+          listItems = [];
+        }
+        for (let line of lines) {
+          line = line.trim();
+          if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('• ')) {
+            listItems.push(`<li class="article-list-item">${this.parseInline(line.replace(/^[-*•]\s*/, ''))}</li>`);
+          } else if (line) {
+            if (listItems.length > 0) {
+              listItems[listItems.length - 1] += ' ' + this.parseInline(line);
+            } else {
+              listItems.push(`<li class="article-list-item">${this.parseInline(line)}</li>`);
+            }
+          }
+        }
+        continue;
+      }
+
+      // Normal Paragraph
+      closeList();
+      html.push(`<p class="article-p">${this.parseInline(block)}</p>`);
+    }
+
+    closeList();
+    return html.join('\n');
+  }
+
+  parseInline(text) {
+    if (!text) return '';
+    return text
+      // Bold: **text**
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Italic: *text* or _text_
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/_(.*?)_/g, '<em>$1</em>')
+      // Inline code: `code`
+      .replace(/`(.*?)`/g, '<code class="article-inline-code">$1</code>')
+      // Links: [text](url)
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="article-link">$1</a>');
   }
 }
 

@@ -11,13 +11,25 @@
   <link rel="dns-prefetch" href="https://lastfm.freetls.fastly.net" />
 
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HVKF4N150Y"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    window.gtag = function(){window.dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-HVKF4N150Y');
+
+    window.addEventListener('load', () => {
+      const initGTM = () => {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HVKF4N150Y';
+        document.head.appendChild(script);
+      };
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(initGTM);
+      } else {
+        setTimeout(initGTM, 1500);
+      }
+    }, { once: true });
   </script>
 
   <!-- Vercel Analytics -->
@@ -399,7 +411,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   </noscript>
   <link rel="stylesheet" data-href="assets/css/style.css?v=20260423a" data-lazy-style-key="interactive" />
-  <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260423a" />
+  <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260423a" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260423a" />
   <link rel="stylesheet" data-href="assets/css/contact.css?v=20260423a" data-lazy-style-key="contact" />
 
@@ -432,7 +444,7 @@
   <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260423a" data-lazy-style-key="projects" />
 
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
-  <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
+  <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" media="print" onload="this.media='all'" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 

@@ -22,7 +22,7 @@ LASTFM_API_KEY = (
 LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "x-ai/grok-4.1-fast").strip()
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-2.5-flash").strip()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
 SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
@@ -54,25 +54,31 @@ SESSION_ID_PATTERN = re.compile(r"^[a-f0-9]{16,64}$", re.I)
 # Models - Support multiple models
 MODELS = [
     {
-        "id": "x-ai/grok-4.1-fast",
-        "name": "Grok 4.1 Fast",
+        "id": "google/gemini-2.5-flash",
+        "name": "Gemini 2.5 Flash",
         "priority": 1,
         "streaming": True,
     },
     {
-        "id": "x-ai/grok-2-1212",
-        "name": "Grok 2 (Legacy)",
+        "id": "google/gemini-2.5-pro",
+        "name": "Gemini 2.5 Pro",
         "priority": 2,
+        "streaming": True,
+    },
+    {
+        "id": "x-ai/grok-4.1-fast",
+        "name": "Grok 4.1 Fast",
+        "priority": 3,
         "streaming": True,
     },
     {
         "id": "anthropic/claude-3.5-sonnet",
         "name": "Claude 3.5 Sonnet",
-        "priority": 3,
+        "priority": 4,
         "streaming": True,
     },
 ]
-DEFAULT_MODEL = OPENROUTER_MODEL or "x-ai/grok-4.1-fast"
+DEFAULT_MODEL = OPENROUTER_MODEL or "google/gemini-2.5-flash"
 
 # Poster cache
 poster_cache = {}
@@ -103,7 +109,7 @@ PORTFOLIO_DATA = {
     "website": "https://mangeshraut.pro",
     "resume_url": "/assets/files/Mangesh_Raut_Resume.pdf",
     "summary": (
-        "Software Engineer with expertise in Java Spring Boot, Python, AngularJS, AWS, and machine learning. "
+        "Software Engineer with 6+ years of experience in Java Spring Boot, Python, React, Angular, AWS, and machine learning. "
         "Currently optimizing energy analytics at Customized Energy Solutions with 40% efficiency gains."
     ),
     "experience": [
@@ -220,21 +226,23 @@ PORTFOLIO_DATA = {
     ],
 }
 
-SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code.
+SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code. Updated as of May 2026.
 
 ## Your Identity
 You're an intelligent, conversational AI that answers any question with clarity and depth. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
 
 ## Mangesh Raut — Quick Profile
-- Software Engineer at Customized Energy Solutions (Philadelphia, PA)
-- Full-Stack Developer with Java Spring Boot, Python, React, Angular expertise
-- AI/ML Engineer with TensorFlow and scikit-learn experience
-- MS in Computer Science from Drexel University (Completed 2025, GPA 3.76)
+- Software Engineer at Customized Energy Solutions (Philadelphia, PA, Aug 2024 - Present, ~2 years)
+- Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
+- Core stack: Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, Lambda), Docker, Kubernetes
+- MS in Computer Science from Drexel University (Completed June 2025, GPA 3.76)
 - BE in Computer Engineering from Savitribai Phule Pune University (2014-2017, GPA 3.6)
-- Key achievements: 40% dashboard latency reduction, 35% faster CI/CD, 25% ML accuracy improvement
+- Key achievements: 40% dashboard latency reduction, 35% faster CI/CD, 25% ML accuracy improvement, 3x faster data retrieval using Redis
+- Hybrid AI Web Stack: Architected the portfolio's edge/cloud execution pipeline, enabling client-side browser inference via WebNN + Gemma 3 and cloud fallback via OpenRouter (Gemini 2.5 Pro/Flash).
 - Published: IEEE paper on ML algorithms for network intrusion detection (2024)
 - Certifications: AWS Cloud Practitioner, Oracle Certified Java SE, TensorFlow Developer
 - Awards: Dean's List (Drexel, 3 semesters), Best Project Award (Pune University)
+- Recent content: Authored a technical blog on "Google I/O 2026: The Rise of Agentic Web, Gemini 2.5, Gemma 3, and WebNN" (May 2026) and "Inside the Open X Algorithm" (May 2026).
 
 ## Response Style — Write Naturally
 

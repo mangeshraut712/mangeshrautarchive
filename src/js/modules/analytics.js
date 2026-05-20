@@ -74,7 +74,7 @@
   function setUnavailableState() {
     reachCountEls.forEach(element => {
       element.textContent = 'Unavailable';
-      element.parentElement?.setAttribute('title', 'Portfolio Reach');
+      element.parentElement?.removeAttribute('title');
     });
   }
 
@@ -93,7 +93,7 @@
 
     reachCountEls.forEach(element => {
       element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', `Reach: ${formattedValue}`);
+      element.parentElement?.removeAttribute('title');
     });
   }
 
@@ -112,7 +112,7 @@
 
     reachCountEls.forEach(element => {
       element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', `Reach: ${formattedValue}`);
+      element.parentElement?.removeAttribute('title');
     });
   }
 

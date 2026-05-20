@@ -1,5 +1,3 @@
-import { blogPosts } from './blog-data.js';
-
 const ROLE_WORDS = [
   'AI Systems Builder',
   'Cloud-Native Problem Solver',
@@ -60,11 +58,16 @@ function initHeroLocalTimes() {
   window.setInterval(update, 30000);
 }
 
-function initBlogPostCount() {
+async function initBlogPostCount() {
   const count = document.getElementById('blog-post-count');
   if (!count) return;
 
-  count.textContent = `(${blogPosts.length})`;
+  try {
+    const { blogPosts } = await import('./blog-data.js');
+    count.textContent = `(${blogPosts.length})`;
+  } catch (error) {
+    console.warn('Failed to load blog posts count:', error);
+  }
 }
 
 export function initPortfolioFeatureUpgrades() {
