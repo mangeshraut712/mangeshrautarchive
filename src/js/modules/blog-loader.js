@@ -128,7 +128,7 @@ class BlogLoader {
     this.modal.classList.remove('active');
     this.modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    
+
     // Delay hidden class to let fade-out transition complete
     setTimeout(() => {
       if (!this.modal.classList.contains('active')) {
@@ -143,12 +143,12 @@ class BlogLoader {
     // Extract code blocks first to protect them from regexes
     const codeBlocks = [];
     let placeholderCount = 0;
-    
+
     let processedContent = content.replace(/```([\s\S]*?)```/g, (match, code) => {
       const placeholder = `__CODE_BLOCK_PLACEHOLDER_${placeholderCount}__`;
       codeBlocks.push({
         placeholder,
-        code: code.trim()
+        code: code.trim(),
       });
       placeholderCount++;
       return placeholder;
@@ -216,7 +216,9 @@ class BlogLoader {
       if (block.startsWith('>')) {
         closeList();
         const lines = block.split('\n').map(line => line.replace(/^>\s*/, ''));
-        html.push(`<blockquote class="article-blockquote">${this.parseInline(lines.join('<br>'))}</blockquote>`);
+        html.push(
+          `<blockquote class="article-blockquote">${this.parseInline(lines.join('<br>'))}</blockquote>`
+        );
         continue;
       }
 
@@ -231,7 +233,9 @@ class BlogLoader {
         for (let line of lines) {
           line = line.trim();
           if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('• ')) {
-            listItems.push(`<li class="article-list-item">${this.parseInline(line.replace(/^[-*•]\s*/, ''))}</li>`);
+            listItems.push(
+              `<li class="article-list-item">${this.parseInline(line.replace(/^[-*•]\s*/, ''))}</li>`
+            );
           } else if (line) {
             if (listItems.length > 0) {
               listItems[listItems.length - 1] += ' ' + this.parseInline(line);
@@ -254,16 +258,21 @@ class BlogLoader {
 
   parseInline(text) {
     if (!text) return '';
-    return text
-      // Bold: **text**
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      // Italic: *text* or _text_
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/_(.*?)_/g, '<em>$1</em>')
-      // Inline code: `code`
-      .replace(/`(.*?)`/g, '<code class="article-inline-code">$1</code>')
-      // Links: [text](url)
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="article-link">$1</a>');
+    return (
+      text
+        // Bold: **text**
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        // Italic: *text* or _text_
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/_(.*?)_/g, '<em>$1</em>')
+        // Inline code: `code`
+        .replace(/`(.*?)`/g, '<code class="article-inline-code">$1</code>')
+        // Links: [text](url)
+        .replace(
+          /\[(.*?)\]\((.*?)\)/g,
+          '<a href="$2" target="_blank" rel="noopener noreferrer" class="article-link">$1</a>'
+        )
+    );
   }
 }
 

@@ -39,25 +39,33 @@ test.describe('Post-deploy Chrome checks', () => {
     // Run independent API requests in parallel
     const [statusResponse, reachResponse] = await Promise.all([
       request.get(resolveApiUrl(targetUrl, '/api/monitor/status')),
-      request.get(resolveApiUrl(targetUrl, '/api/analytics/reach'))
+      request.get(resolveApiUrl(targetUrl, '/api/analytics/reach')),
     ]);
 
     // Log API status for debugging but don't fail the build if APIs aren't ready yet
     if (!statusResponse.ok()) {
-      console.warn(`Monitor API not ready: ${statusResponse.status()} - ${await statusResponse.text()}`);
+      console.warn(
+        `Monitor API not ready: ${statusResponse.status()} - ${await statusResponse.text()}`
+      );
     }
     if (!reachResponse.ok()) {
-      console.warn(`Reach API not ready: ${reachResponse.status()} - ${await reachResponse.text()}`);
+      console.warn(
+        `Reach API not ready: ${reachResponse.status()} - ${await reachResponse.text()}`
+      );
     }
 
     // Soft assertions - log warnings but don't fail CI if APIs are warming up
     // The critical user-facing tests (landmarks, accessibility) are more important
-    expect.soft(statusResponse.ok(), `Monitor API should be available: ${await statusResponse.text()}`).toBe(true);
+    expect
+      .soft(statusResponse.ok(), `Monitor API should be available: ${await statusResponse.text()}`)
+      .toBe(true);
     if (statusResponse.ok()) {
       expect.soft(statusResponse.headers()['content-type']).toContain('application/json');
     }
 
-    expect.soft(reachResponse.ok(), `Reach API should be available: ${await reachResponse.text()}`).toBe(true);
+    expect
+      .soft(reachResponse.ok(), `Reach API should be available: ${await reachResponse.text()}`)
+      .toBe(true);
     if (reachResponse.ok()) {
       const reachPayload = await reachResponse.json();
       expect.soft(reachPayload.success).toBe(true);

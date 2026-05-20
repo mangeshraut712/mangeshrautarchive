@@ -403,7 +403,6 @@ html.dark #projects .github-graph-scroll {
   margin-bottom: 0.72rem;
 }
 
-
 #projects .graph-loading .loading-spinner {
   width: 32px;
   height: 32px;
@@ -1584,8 +1583,6 @@ html.dark .project-xr-status {
   .project-xr-insights-grid {
     grid-template-columns: 1fr;
   }
-
-
 
   .project-xr-actions {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;

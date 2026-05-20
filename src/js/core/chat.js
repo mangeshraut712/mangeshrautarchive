@@ -396,7 +396,7 @@ class IntelligentAssistant {
         let metadata = {};
         let buffer = '';
 
-        const processChunk = (chunk) => {
+        const processChunk = chunk => {
           buffer += decoder.decode(chunk, { stream: true });
           const lines = buffer.split('\n');
           buffer = buffer.endsWith('\n') ? '' : lines.pop();

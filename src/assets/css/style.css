@@ -2639,8 +2639,6 @@ html.dark .project-card a.text-accent:hover {
     padding: 0 24px;
   }
 
-
-
   h1 {
     font-size: 3.5rem;
   }
@@ -5134,7 +5132,6 @@ html.dark .author-name {
 html.dark .author-title {
   color: #a1a1a6 !important;
 }
-
 
 /* Experience elements */
 .experience-content h3 {

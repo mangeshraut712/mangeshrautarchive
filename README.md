@@ -14,13 +14,14 @@ Production-grade portfolio, AI assistant, travel atlas, and system monitor platf
 
 ## 📖 Welcome to the Future of the Web (May 2026 Edition)
 
-This is not a static resume page. It is a full-stack portfolio system built to showcase **production-level engineering habits**: a polished Apple-inspired responsive frontend, a high-performance **FastAPI** backend, modular integrations, telemetry, and automated regression testing. 
+This is not a static resume page. It is a full-stack portfolio system built to showcase **production-level engineering habits**: a polished Apple-inspired responsive frontend, a high-performance **FastAPI** backend, modular integrations, telemetry, and automated regression testing.
 
 In **May 2026**, the web has transitioned from static layouts to **Agentic Web Applications**. This repository features:
-*   **Hybrid AI Execution:** Instant, offline-capable browser intelligence via **WebNN** + **Gemma 3**, with a serverless cloud fallback to **Gemini 2.5 Flash / Pro** via OpenRouter.
-*   **Authoritative Engagement Telemetry:** A simple, direct, real-time visitor reach counter built on **Cloud Firestore** and cross-checked with **Vercel Analytics**.
-*   **Operational Visibility:** A live operations dashboard at `/monitor` showing endpoint latencies, third-party provider checks, event logging, and hosting surface status.
-*   **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites.
+
+- **Hybrid AI Execution:** Instant, offline-capable browser intelligence via **WebNN** + **Gemma 3**, with a serverless cloud fallback to **Gemini 2.5 Flash / Pro** via OpenRouter.
+- **Authoritative Engagement Telemetry:** A simple, direct, real-time visitor reach counter built on **Cloud Firestore** and cross-checked with **Vercel Analytics**.
+- **Operational Visibility:** A live operations dashboard at `/monitor` showing endpoint latencies, third-party provider checks, event logging, and hosting surface status.
+- **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites.
 
 ---
 
@@ -91,16 +92,17 @@ content-type: application/json
 cache-control: no-cache
 
 {
-  "status": "healthy",
-  "version": "2.1.0",
-  "environment": "production",
-  "timestamp": 1779340800000,
-  "services": {
-    "firestore": "connected",
-    "openrouter": "online",
-    "lastfm": "online"
-  }
+"status": "healthy",
+"version": "2.1.0",
+"environment": "production",
+"timestamp": 1779340800000,
+"services": {
+"firestore": "connected",
+"openrouter": "online",
+"lastfm": "online"
+}
 }</code></pre>
+
 </details>
 
 <details>
@@ -110,30 +112,31 @@ content-type: application/json
 cache-control: public, max-age=300
 
 {
-  "success": true,
-  "visitor_reach": 1584,
-  "data_sources": {
-    "firestore_views": 1562,
-    "github_stars": 16,
-    "github_forks": 6
-  },
-  "timestamp": "2026-05-20T05:38:00Z"
+"success": true,
+"visitor_reach": 1584,
+"data_sources": {
+"firestore_views": 1562,
+"github_stars": 16,
+"github_forks": 6
+},
+"timestamp": "2026-05-20T05:38:00Z"
 }</code></pre>
+
 </details>
 
 ---
 
 ## 🛠️ The 2026 Tech Stack
 
-| Layer | Technologies | Role in System |
-| :--- | :--- | :--- |
-| **Client Core** | HTML5, Vanilla CSS3, ES Modules, Canvas | Responsive layout, modern variables, fluid animations without heavy framework overhead. |
-| **Client AI** | **WebNN API**, Gemma 3 | Running client-side neural nets on browser hardware for instant local interactions. |
-| **Serverless API** | **FastAPI**, Pydantic, HTTPX, Uvicorn | High-performance Python backend routes running as Vercel Serverless Functions. |
-| **Cloud AI** | **Gemini 2.5 Pro / Flash** | OpenRouter cloud completions for complex reasoning and portfolio exploration. |
-| **Telemetry** | **Cloud Firestore** | Real-time visitor counts, counter tracking, and performance persistence. |
-| **Testing** | Playwright, Vitest, axe-core, Lighthouse | End-to-end integration tests, accessibility gates, and performance budgets. |
-| **Hosting** | Vercel (Prod), GitHub Pages (Static Fallback) | Dual-surface deployment architecture ensuring maximum availability. |
+| Layer              | Technologies                                  | Role in System                                                                          |
+| :----------------- | :-------------------------------------------- | :-------------------------------------------------------------------------------------- |
+| **Client Core**    | HTML5, Vanilla CSS3, ES Modules, Canvas       | Responsive layout, modern variables, fluid animations without heavy framework overhead. |
+| **Client AI**      | **WebNN API**, Gemma 3                        | Running client-side neural nets on browser hardware for instant local interactions.     |
+| **Serverless API** | **FastAPI**, Pydantic, HTTPX, Uvicorn         | High-performance Python backend routes running as Vercel Serverless Functions.          |
+| **Cloud AI**       | **Gemini 2.5 Pro / Flash**                    | OpenRouter cloud completions for complex reasoning and portfolio exploration.           |
+| **Telemetry**      | **Cloud Firestore**                           | Real-time visitor counts, counter tracking, and performance persistence.                |
+| **Testing**        | Playwright, Vitest, axe-core, Lighthouse      | End-to-end integration tests, accessibility gates, and performance budgets.             |
+| **Hosting**        | Vercel (Prod), GitHub Pages (Static Fallback) | Dual-surface deployment architecture ensuring maximum availability.                     |
 
 ---
 
@@ -177,11 +180,11 @@ flowchart TD
     ChatJS --> WebNN
     ChatJS -- Cloud Fallback --> ChatAPI
     AnalyticsJS --> AnalyticsAPI
-    
+
     FastAPI --> ChatAPI
     FastAPI --> AnalyticsAPI
     FastAPI --> MonitorAPI
-    
+
     AnalyticsAPI --> Firestore
     ChatAPI --> OpenRouter
     AnalyticsAPI --> GitHubAPI
@@ -189,6 +192,7 @@ flowchart TD
 ```
 
 ### Key Design Decisions
+
 1. **Dual-Surface Deploy:** Frontend assets are statically built to `dist/`. The main domain routes through Vercel CDN. In case of main server outages, GitHub Pages serves as a static fallback and proxies API queries back to `mangeshraut.pro/api` securely.
 2. **Visitor Counter simple logic:** Instead of fake random calculations, `api/routes/analytics.py` maintains an incremental counter inside Cloud Firestore, adding GitHub repo stars and forks to form the **Portfolio Reach** metric. No local storage hover tooltips or complex charts are used.
 3. **Protected Server Secrets:** API keys for OpenRouter and Google Cloud credentials never touch the browser. The FastAPI server handles authorization, rate-limiting, and payload sanitization.
@@ -206,34 +210,39 @@ mangeshrautarchive/
 ```
 
 Every commit must pass the following pipeline before deployment:
-*   **Security Posture Check:** `scripts/security-check.js` scans all files to ensure no API keys or GCP credentials are leaked.
-*   **Performance Budgets:** Lighthouse CI ensures mobile index score is above **90** (LCP optimized via critical font-preloading and lazy-image tags) and desktop is above **95**.
-*   **API Routing Tests:** Playwright E2E tests (`tests/config/vercel-routing.spec.js`) verify that FastAPI is routing requests correctly.
-*   **Post-Deployment Verification:** Deployed routes like `/api/monitor/status` and `/api/analytics/reach` are verified after Vercel completes the build.
+
+- **Security Posture Check:** `scripts/security-check.js` scans all files to ensure no API keys or GCP credentials are leaked.
+- **Performance Budgets:** Lighthouse CI ensures mobile index score is above **90** (LCP optimized via critical font-preloading and lazy-image tags) and desktop is above **95**.
+- **API Routing Tests:** Playwright E2E tests (`tests/config/vercel-routing.spec.js`) verify that FastAPI is routing requests correctly.
+- **Post-Deployment Verification:** Deployed routes like `/api/monitor/status` and `/api/analytics/reach` are verified after Vercel completes the build.
 
 ---
 
 ## ⚡ Quick Start
 
 ### Prerequisites
-*   Node.js `>=20`
-*   Python `>=3.10`
-*   Google Cloud Project (with Firestore enabled in Native Mode)
+
+- Node.js `>=20`
+- Python `>=3.10`
+- Google Cloud Project (with Firestore enabled in Native Mode)
 
 ### Development Setup
 
 1.  **Clone the Repository:**
+
     ```bash
     git clone https://github.com/mangeshraut712/mangeshrautarchive.git
     cd mangeshrautarchive
     ```
 
 2.  **Install Node Dependencies:**
+
     ```bash
     npm install --no-audit --no-fund
     ```
 
 3.  **Setup Python Virtual Environment & Dependencies:**
+
     ```bash
     python -m venv venv
     source venv/bin/activate
@@ -242,32 +251,36 @@ Every commit must pass the following pipeline before deployment:
 
 4.  **Configure Environment:**
     Create a `.env` file based on `.env.example`:
+
     ```bash
     cp .env.example .env
     ```
+
     Add your `OPENROUTER_API_KEY`, Firestore credentials, and optional keys (`GITHUB_PAT`, `LASTFM_API_KEY`).
 
 5.  **Run Development Server:**
+
     ```bash
     npm run dev
     ```
-    *   **Frontend UI:** `http://127.0.0.1:4000`
-    *   **FastAPI Backend:** `http://127.0.0.1:8001`
-    *   **OpenAPI docs:** `http://127.0.0.1:8001/docs`
+
+    - **Frontend UI:** `http://127.0.0.1:4000`
+    - **FastAPI Backend:** `http://127.0.0.1:8001`
+    - **OpenAPI docs:** `http://127.0.0.1:8001/docs`
 
 ---
 
 ## 🧪 Development Commands
 
-| Command | Action |
-| :--- | :--- |
-| `npm run dev` | Spins up local frontend (with API proxy) and FastAPI backend concurrently. |
-| `npm run build` | Bundles static assets to `dist/` and writes public client configs. |
-| `npm run lint` | Lints and formats JavaScript & CSS modules. |
-| `npm run test` | Runs backend python tests and frontend Vitest unit tests. |
-| `npm run test:e2e:chrome` | Runs Playwright Chromium E2E user-flow checks. |
-| `npm run qa:lighthouse:mobile` | Compares mobile Lighthouse performance against the 90+ threshold. |
-| `npm run qa:prod-ready` | Executes full pre-flight check (build, lint, test, security). |
+| Command                        | Action                                                                     |
+| :----------------------------- | :------------------------------------------------------------------------- |
+| `npm run dev`                  | Spins up local frontend (with API proxy) and FastAPI backend concurrently. |
+| `npm run build`                | Bundles static assets to `dist/` and writes public client configs.         |
+| `npm run lint`                 | Lints and formats JavaScript & CSS modules.                                |
+| `npm run test`                 | Runs backend python tests and frontend Vitest unit tests.                  |
+| `npm run test:e2e:chrome`      | Runs Playwright Chromium E2E user-flow checks.                             |
+| `npm run qa:lighthouse:mobile` | Compares mobile Lighthouse performance against the 90+ threshold.          |
+| `npm run qa:prod-ready`        | Executes full pre-flight check (build, lint, test, security).              |
 
 ---
 
@@ -275,7 +288,7 @@ Every commit must pass the following pipeline before deployment:
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
-*   **Portfolio:** [mangeshraut.pro](https://mangeshraut.pro)
-*   **LinkedIn:** [in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
-*   **GitHub:** [github.com/mangeshraut712](https://github.com/mangeshraut712)
-*   **Email:** [mbr63@drexel.edu](mailto:mbr63@drexel.edu) / [mbr63drexel@gmail.com](mailto:mbr63drexel@gmail.com)
+- **Portfolio:** [mangeshraut.pro](https://mangeshraut.pro)
+- **LinkedIn:** [in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
+- **GitHub:** [github.com/mangeshraut712](https://github.com/mangeshraut712)
+- **Email:** [mbr63@drexel.edu](mailto:mbr63@drexel.edu) / [mbr63drexel@gmail.com](mailto:mbr63drexel@gmail.com)
