@@ -74,13 +74,13 @@
   function setUnavailableState() {
     reachCountEls.forEach(element => {
       element.textContent = 'Unavailable';
-      element.parentElement?.setAttribute('title', 'Portfolio reach temporarily unavailable');
+      element.parentElement?.setAttribute('title', 'Portfolio Reach');
     });
   }
 
   /**
    * Display the aggregated reach from the /api/analytics/reach endpoint.
-   * Shows total_reach (page views + GitHub stars + forks + watchers).
+   * Shows total_reach (page views).
    */
   function updateDisplayFromReach(payload) {
     if (!payload?.success) {
@@ -89,33 +89,11 @@
     }
 
     const totalReach = payload.total_reach ?? 0;
-    const b = payload.breakdown || {};
-    const pv = b.page_views || {};
-    const gh = b.github || {};
-
-    const tooltipLines = [
-      `Total Reach: ${formatNumber(totalReach)}`,
-      '',
-      '— Page Views —',
-      `  Total Views: ${formatNumber(pv.total ?? 0)}`,
-      `  Unique Visitors: ${formatNumber(pv.unique_visitors ?? 0)}`,
-      `  Homepage: ${formatNumber(pv.homepage_views ?? 0)}`,
-      '',
-      '— GitHub —',
-      `  Stars: ${formatNumber(gh.stars ?? 0)}`,
-      `  Forks: ${formatNumber(gh.forks ?? 0)}`,
-      `  Watchers: ${formatNumber(gh.watchers ?? 0)}`,
-      `  Repos: ${gh.repos_counted ?? 0}`,
-      '',
-      `Formula: page_views + stars + forks + watchers`,
-      `Cached: ${payload.cache_ttl_seconds ?? 300}s`,
-    ].filter(Boolean);
-
     const formattedValue = formatNumber(totalReach);
 
     reachCountEls.forEach(element => {
       element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', tooltipLines.join('\n'));
+      element.parentElement?.setAttribute('title', `Reach: ${formattedValue}`);
     });
   }
 
@@ -129,26 +107,12 @@
       return;
     }
 
-    const displayValue = views.unique_visitors ?? views.homepage_total ?? views.total ?? 0;
-    const tooltipLines = [
-      `Total Views: ${formatNumber(views.total ?? 0)}`,
-      `Homepage Views: ${formatNumber(views.homepage_total ?? 0)}`,
-      `Unique Visitors: ${formatNumber(views.unique_visitors ?? 0)}`,
-      '',
-      `Today: ${formatNumber(views.today ?? 0)}`,
-      `This Week: ${formatNumber(views.this_week ?? 0)}`,
-      `This Month: ${formatNumber(views.this_month ?? 0)}`,
-      '',
-      `Avg ${payload.avg_views_per_day ?? '0.0'}/day`,
-      `Age: ${payload.portfolio_age_days ?? 1} day${payload.portfolio_age_days === 1 ? '' : 's'}`,
-      payload.storage?.backend ? `Store: ${payload.storage.backend}` : '',
-    ].filter(Boolean);
-
+    const displayValue = views.total ?? 0;
     const formattedValue = formatNumber(displayValue);
 
     reachCountEls.forEach(element => {
       element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', tooltipLines.join('\n'));
+      element.parentElement?.setAttribute('title', `Reach: ${formattedValue}`);
     });
   }
 

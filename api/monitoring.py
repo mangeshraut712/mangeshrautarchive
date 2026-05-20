@@ -923,7 +923,7 @@ class SystemMonitor:
 
     async def _probe_analytics_service(self) -> Dict[str, Any]:
         try:
-            from .index import get_analytics_views
+            from api.routes.analytics import get_analytics_views
 
             payload = await get_analytics_views()
             views = payload.get("views", {}).get("total", 0)

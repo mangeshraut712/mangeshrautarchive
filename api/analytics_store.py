@@ -34,11 +34,22 @@ class PortfolioAnalyticsStore:
             or os.getenv("REDIS_REST_TOKEN", "").strip()
             or os.getenv("KV_REST_API_TOKEN", "").strip()
         )
+        self._firebase_api_key = (
+            os.getenv("GEMINI_FIREBASE_API_KEY")
+            or os.getenv("FIREBASE_API_KEY")
+            or ""
+        ).strip()
         self._memory_data = self._initial_data()
         self._file_sync_disabled = False
 
     @property
+    def firestore_enabled(self) -> bool:
+        return bool(self._firebase_api_key)
+
+    @property
     def backend_name(self) -> str:
+        if self.firestore_enabled:
+            return "firestore"
         if self.redis_enabled:
             return "redis"
         if self._file_sync_disabled:
@@ -125,6 +136,8 @@ class PortfolioAnalyticsStore:
         referrer: str = "",
         user_agent: str = "",
     ) -> Dict[str, Any]:
+        if self.firestore_enabled:
+            return await self._track_visit_firestore(session_id, path, is_homepage, referrer, user_agent)
         if self.redis_enabled:
             return await self._track_visit_redis(session_id, path, is_homepage)
         return await self._track_visit_file(session_id, path, is_homepage, referrer, user_agent)
@@ -211,6 +224,8 @@ class PortfolioAnalyticsStore:
         return await self.get_metrics()
 
     async def get_metrics(self) -> Dict[str, Any]:
+        if self.firestore_enabled:
+            return await self._get_metrics_firestore()
         if self.redis_enabled:
             return await self._get_metrics_redis()
         return await self._get_metrics_file()
@@ -279,6 +294,83 @@ class PortfolioAnalyticsStore:
             "storage": {"backend": self.backend_name, "persistent": False},
             "timestamp": data.get("last_updated")
             or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+
+    async def _track_visit_firestore(
+        self,
+        session_id: str,
+        path: str,
+        is_homepage: bool,
+        referrer: str = "",
+        user_agent: str = "",
+    ) -> Dict[str, Any]:
+        url = f"https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics?key={self._firebase_api_key}"
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            try:
+                res = await client.get(url)
+                if res.status_code == 200:
+                    data = res.json()
+                    total_views = int(data.get("fields", {}).get("total_views", {}).get("integerValue", 0))
+                else:
+                    total_views = 0
+            except Exception:
+                total_views = 0
+
+            total_views += 1
+
+            doc = {
+                "fields": {
+                    "total_views": {"integerValue": str(total_views)}
+                }
+            }
+            try:
+                await client.patch(url, json=doc)
+            except Exception as e:
+                logger.error(f"Failed to save analytics to Firestore: {e}")
+
+        return {
+            "success": True,
+            "views": {
+                "total": total_views,
+                "homepage_total": total_views,
+                "unique_visitors": total_views,
+                "today": total_views,
+                "this_week": total_views,
+                "this_month": total_views,
+            },
+            "portfolio_age_days": 1,
+            "avg_views_per_day": 0.0,
+            "storage": {"backend": self.backend_name, "persistent": True},
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+
+    async def _get_metrics_firestore(self) -> Dict[str, Any]:
+        url = f"https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics?key={self._firebase_api_key}"
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            try:
+                res = await client.get(url)
+                if res.status_code == 200:
+                    data = res.json()
+                    total_views = int(data.get("fields", {}).get("total_views", {}).get("integerValue", 0))
+                else:
+                    total_views = 0
+            except Exception:
+                total_views = 0
+
+        return {
+            "success": True,
+            "views": {
+                "total": total_views,
+                "homepage_total": total_views,
+                "unique_visitors": total_views,
+                "today": total_views,
+                "this_week": total_views,
+                "this_month": total_views,
+            },
+            "portfolio_age_days": 1,
+            "avg_views_per_day": 0.0,
+            "storage": {"backend": self.backend_name, "persistent": True},
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
 
 
