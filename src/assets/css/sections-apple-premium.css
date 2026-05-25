@@ -649,10 +649,27 @@ html.dark #experience {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 2rem 0 1.5rem;
-  padding: 0;
-  background: transparent;
-  border: none;
+  margin: 2.5rem 0 1.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  margin-left: 80px;
+}
+
+#experience .timeline-section-header::before {
+  content: '';
+  position: absolute;
+  left: -56px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--apple-blue);
+  border-radius: 50%;
+  border: 3px solid var(--bg-primary);
+  box-shadow: 0 0 0 2px var(--border-subtle);
 }
 
 #experience .timeline-section-header:first-child {
@@ -660,14 +677,22 @@ html.dark #experience {
 }
 
 html.dark #experience .timeline-section-header {
-  background: transparent;
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-subtle-dark);
+}
+
+html.dark #experience .timeline-section-header::before {
+  background: var(--apple-blue-dark);
+  border-color: var(--bg-primary-dark);
+  box-shadow: 0 0 0 2px var(--border-subtle-dark);
 }
 
 #experience .timeline-section-header h3 {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 html.dark #experience .timeline-section-header h3 {
