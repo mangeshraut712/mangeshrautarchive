@@ -1,4 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 80" width="120" height="40">
-  <!-- Terracotta colored Claude wordmark in Georgia font -->
-  <text x="15" y="56" fill="#D97753" font-family="'Georgia', 'Times New Roman', serif" font-weight="bold" font-size="46" letter-spacing="-1.5">Claude</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="120" height="40">
+  <!-- Claude Icon (8-Spoked Organic Wavy Asterisk) -->
+  <g transform="translate(15, 10)">
+    <g fill="#D97753">
+      <!-- Petal 1 (Top) -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(0, 20, 20)"/>
+      <!-- Petal 2 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(45, 20, 20)"/>
+      <!-- Petal 3 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(90, 20, 20)"/>
+      <!-- Petal 4 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(135, 20, 20)"/>
+      <!-- Petal 5 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(180, 20, 20)"/>
+      <!-- Petal 6 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(225, 20, 20)"/>
+      <!-- Petal 7 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(270, 20, 20)"/>
+      <!-- Petal 8 -->
+      <path d="M 20 20 C 20 12, 15.5 3, 20 3 C 24.5 3, 20 12, 20 20 Z" transform="rotate(315, 20, 20)"/>
+      <!-- Center Circle to blend -->
+      <circle cx="20" cy="20" r="6" />
+    </g>
+  </g>
+  <!-- Wordmark Text -->
+  <text x="65" y="42" fill="#D97753" font-family="'Georgia', 'Times New Roman', serif" font-weight="bold" font-size="34" letter-spacing="-1">Claude</text>
 </svg>
