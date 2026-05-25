@@ -988,6 +988,134 @@ html.dark .support-coffee-btn.premium svg {
   color: #000000 !important;
 }
 
+/* Support Divider */
+.support-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.support-divider::before,
+.support-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.support-divider span {
+  padding: 0 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+html.dark .support-divider::before,
+html.dark .support-divider::after {
+  background: var(--border-subtle-dark);
+}
+
+html.dark .support-divider span {
+  color: var(--text-secondary-dark);
+}
+
+/* Crypto Support Mini Section */
+.crypto-support-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.crypto-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-align: center;
+}
+
+html.dark .crypto-label {
+  color: var(--text-secondary-dark);
+}
+
+.crypto-wallets {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.crypto-mini-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.crypto-mini-btn:hover {
+  background: var(--fill-quaternary);
+  border-color: var(--border-default);
+  transform: translateY(-2px);
+}
+
+html.dark .crypto-mini-btn {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-subtle-dark);
+}
+
+.crypto-mini-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.crypto-mini-btn span {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+html.dark .crypto-mini-btn span {
+  color: var(--text-secondary-dark);
+}
+
+/* Coinbase Mini Button */
+.coinbase-mini-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #0052ff 0%, #0039b3 100%);
+  color: white;
+  border-radius: 100px;
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 82, 255, 0.25);
+}
+
+.coinbase-mini-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 82, 255, 0.35);
+}
+
+.coinbase-mini-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
 /* Accessibility fixes for color contrast */
 .footer-tagline,
 .footer-copy {
