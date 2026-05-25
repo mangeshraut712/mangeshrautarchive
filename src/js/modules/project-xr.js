@@ -99,6 +99,7 @@ class ProjectXR {
     const sizeKb = parseNumber(trigger.dataset.projectSizeKb);
     const commits30d = parseNumber(trigger.dataset.projectCommits30d);
     const contributors = parseNumber(trigger.dataset.projectContributors);
+    const commitsSinceRelease = parseNumber(trigger.dataset.projectReleaseCommitsSince);
     const stats = [];
     if (stars !== null) {
       stats.push({ label: 'Stars', value: String(stars), key: 'stars' });
@@ -157,6 +158,13 @@ class ProjectXR {
       sizeKb,
       commits30d,
       contributors,
+      commitsSinceRelease,
+      releaseStatus: trigger.dataset.projectReleaseStatus || '',
+      releaseStatusLabel: trigger.dataset.projectReleaseStatusLabel || '',
+      releaseTag: trigger.dataset.projectReleaseTag || '',
+      releaseUrl: trigger.dataset.projectReleaseUrl || '',
+      releasePublishedAt: trigger.dataset.projectReleasePublishedAt || '',
+      releaseChecked: trigger.dataset.projectReleaseChecked === 'true',
       license: trigger.dataset.projectLicense || '',
       defaultBranch: trigger.dataset.projectDefaultBranch || '',
       pushedAt: trigger.dataset.projectPushedAt || '',
@@ -378,6 +386,21 @@ class ProjectXR {
     }
   }
 
+  normalizeReleasePayload(release) {
+    if (!release || typeof release !== 'object') return null;
+    const tagName = String(release.tag_name || '').trim();
+    if (!tagName) return null;
+
+    return {
+      tagName,
+      name: String(release.name || tagName).trim(),
+      htmlUrl: String(release.html_url || '').trim(),
+      publishedAt: release.published_at || '',
+      createdAt: release.created_at || '',
+      prerelease: Boolean(release.prerelease),
+    };
+  }
+
   extractCommitDate(commit) {
     return commit?.commit?.author?.date || commit?.commit?.committer?.date || '';
   }
@@ -459,6 +482,13 @@ class ProjectXR {
       latestCommitDate: projectContext.pushedAt || projectContext.updatedAt || '',
       commits30d: activity.last30,
       contributors: activity.contributorsCount,
+      commitsSinceRelease: projectContext.commitsSinceRelease ?? null,
+      latestReleaseTag: projectContext.releaseTag || '',
+      latestReleaseUrl: projectContext.releaseUrl || '',
+      releasePublishedAt: projectContext.releasePublishedAt || '',
+      releaseChecked: projectContext.releaseChecked || false,
+      releaseStatus: projectContext.releaseStatus || '',
+      releaseStatusLabel: projectContext.releaseStatusLabel || '',
     };
 
     return {
@@ -569,25 +599,39 @@ class ProjectXR {
 
     const defaultBranch = repoData.default_branch || 'main';
     const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const [commitsData, contributorsData, languagesData, treeData] = await Promise.all([
-      this.fetchJson(
-        `${baseUrl}/commits?per_page=100&since=${encodeURIComponent(since30d)}`,
-        headers
-      ),
-      this.fetchJson(`${baseUrl}/contributors?per_page=100&anon=1`, headers),
-      this.fetchJson(`${baseUrl}/languages`, headers),
-      this.fetchJson(
-        `${baseUrl}/git/trees/${encodeURIComponent(defaultBranch)}?recursive=1`,
-        headers
-      ),
-    ]);
+    const [commitsData, contributorsData, languagesData, treeData, latestReleaseData] =
+      await Promise.all([
+        this.fetchJson(
+          `${baseUrl}/commits?per_page=100&since=${encodeURIComponent(since30d)}`,
+          headers
+        ),
+        this.fetchJson(`${baseUrl}/contributors?per_page=100&anon=1`, headers),
+        this.fetchJson(`${baseUrl}/languages`, headers),
+        this.fetchJson(
+          `${baseUrl}/git/trees/${encodeURIComponent(defaultBranch)}?recursive=1`,
+          headers
+        ),
+        this.fetchJson(`${baseUrl}/releases/latest`, headers),
+      ]);
 
     const commits = Array.isArray(commitsData) ? commitsData : [];
     const contributors = Array.isArray(contributorsData) ? contributorsData : [];
     const languages = languagesData && typeof languagesData === 'object' ? languagesData : {};
     const treeEntries = Array.isArray(treeData?.tree) ? treeData.tree.slice(0, 800) : [];
+    const latestRelease = this.normalizeReleasePayload(latestReleaseData);
     const latestCommitDate = this.extractCommitDate(commits[0]) || '';
     const activity = this.buildActivityOverview(commits, contributors);
+    let commitsSinceRelease = projectContext.commitsSinceRelease ?? null;
+    const releaseDate = latestRelease?.publishedAt || latestRelease?.createdAt || '';
+    if (releaseDate) {
+      const releaseCommitsData = await this.fetchJson(
+        `${baseUrl}/commits?per_page=100&since=${encodeURIComponent(releaseDate)}`,
+        headers
+      );
+      if (Array.isArray(releaseCommitsData)) {
+        commitsSinceRelease = releaseCommitsData.length >= 100 ? 100 : releaseCommitsData.length;
+      }
+    }
 
     const details = {
       openIssues: repoData.open_issues_count ?? null,
@@ -599,6 +643,13 @@ class ProjectXR {
       latestCommitDate,
       commits30d: activity.last30,
       contributors: activity.contributorsCount,
+      commitsSinceRelease,
+      latestReleaseTag: latestRelease?.tagName || '',
+      latestReleaseUrl: latestRelease?.htmlUrl || '',
+      releasePublishedAt: releaseDate,
+      releaseChecked: Boolean(latestRelease) || projectContext.releaseChecked || false,
+      releaseStatus: projectContext.releaseStatus || '',
+      releaseStatusLabel: projectContext.releaseStatusLabel || '',
     };
 
     const dataset = {
@@ -621,6 +672,8 @@ class ProjectXR {
     const descriptors = [];
     descriptors.push(`updated ${updated}`);
     if (merged.language) descriptors.push(`built in ${merged.language}`);
+    if (merged.latestReleaseTag) descriptors.push(`release ${merged.latestReleaseTag}`);
+    else if (merged.releaseChecked) descriptors.push('no GitHub release');
     if (merged.defaultBranch) descriptors.push(`branch ${merged.defaultBranch}`);
     descriptors.push(`health ${health}/100`);
     return descriptors.join(' · ');
@@ -642,6 +695,16 @@ class ProjectXR {
       updatedAt: projectContext.updatedAt || '',
       createdAt: projectContext.createdAt || '',
       language: projectContext.language || '',
+      commitsSinceRelease:
+        repoDetails?.commitsSinceRelease ?? projectContext.commitsSinceRelease ?? null,
+      latestReleaseTag: repoDetails?.latestReleaseTag || projectContext.releaseTag || '',
+      latestReleaseUrl: repoDetails?.latestReleaseUrl || projectContext.releaseUrl || '',
+      releasePublishedAt:
+        repoDetails?.releasePublishedAt || projectContext.releasePublishedAt || '',
+      releaseChecked: repoDetails?.releaseChecked ?? projectContext.releaseChecked ?? false,
+      releaseStatus: repoDetails?.releaseStatus || projectContext.releaseStatus || '',
+      releaseStatusLabel:
+        repoDetails?.releaseStatusLabel || projectContext.releaseStatusLabel || '',
     };
   }
 
@@ -699,6 +762,101 @@ class ProjectXR {
     card.appendChild(valueEl);
     card.appendChild(labelEl);
     return card;
+  }
+
+  getReleasePanelState(details) {
+    const tag = details.latestReleaseTag || '';
+    const publishedAt = details.releasePublishedAt || '';
+    const commitsSinceRelease = this.toFiniteMetric(details.commitsSinceRelease);
+    const releaseAgeDays = this.getDayDiff(publishedAt);
+
+    let key = details.releaseStatus || 'open';
+    let label = details.releaseStatusLabel || 'Open repo';
+    if (!tag && !details.releaseChecked) {
+      key = 'open';
+      label = 'Checking release';
+    } else if (!tag) {
+      key = releaseAgeDays > 120 ? 'attention' : key;
+      label = details.releaseStatusLabel || 'No release yet';
+    } else if (commitsSinceRelease !== null && commitsSinceRelease >= 25) {
+      key = 'attention';
+      label = 'Needs release';
+    } else if (commitsSinceRelease !== null && commitsSinceRelease >= 10) {
+      key = 'busy';
+      label = 'Busy';
+    } else if (releaseAgeDays <= 45) {
+      key = 'fresh';
+      label = 'Fresh';
+    } else if (!details.releaseStatusLabel) {
+      key = 'released';
+      label = 'Released';
+    }
+
+    return {
+      key,
+      label,
+      tag: tag || 'No release',
+      publishedLabel: publishedAt ? this.formatDateLabel(publishedAt) : 'No release date',
+      relativeLabel: publishedAt ? this.formatRelativeTime(publishedAt) : 'not published',
+      commitsLabel: commitsSinceRelease === null ? 'n/a' : String(commitsSinceRelease),
+      releaseUrl: details.latestReleaseUrl || '',
+    };
+  }
+
+  renderReleasePanel(panel, details) {
+    if (!panel) return;
+
+    const state = this.getReleasePanelState(details);
+    panel.innerHTML = '';
+
+    const head = this.documentRef.createElement('div');
+    head.className = 'project-xr-section-head';
+    const heading = this.documentRef.createElement('h4');
+    heading.innerHTML = '<i class="fas fa-rocket"></i> Release Freshness';
+    const badge = this.documentRef.createElement('span');
+    badge.className = `project-xr-release-badge project-xr-release-${state.key}`;
+    badge.textContent = state.label;
+    head.appendChild(heading);
+    head.appendChild(badge);
+
+    const body = this.documentRef.createElement('div');
+    body.className = 'project-xr-release-body';
+
+    const tag = this.documentRef.createElement('strong');
+    tag.className = 'project-xr-release-tag';
+    tag.textContent = state.tag;
+
+    const meta = this.documentRef.createElement('div');
+    meta.className = 'project-xr-release-meta';
+    const published = this.documentRef.createElement('span');
+    published.textContent = `Published ${state.relativeLabel} · ${state.publishedLabel}`;
+    const commits = this.documentRef.createElement('span');
+    commits.textContent = `${state.commitsLabel} commits since release`;
+    meta.appendChild(published);
+    meta.appendChild(commits);
+
+    body.appendChild(tag);
+    body.appendChild(meta);
+
+    if (this.isSafeHttpUrl(state.releaseUrl)) {
+      const link = this.documentRef.createElement('a');
+      link.className = 'project-xr-release-link';
+      link.href = state.releaseUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.innerHTML = '<i class="fas fa-arrow-up-right-from-square"></i> Open release';
+      body.appendChild(link);
+    }
+
+    panel.appendChild(head);
+    panel.appendChild(body);
+  }
+
+  createReleasePanel(details) {
+    const panel = this.documentRef.createElement('div');
+    panel.className = 'project-xr-release-panel';
+    this.renderReleasePanel(panel, details);
+    return panel;
   }
 
   createLoadingSection(title, description) {
@@ -815,6 +973,7 @@ class ProjectXR {
       this.createFactCard('License', initialDetails.license || '--', 'license')
     );
     factsWrap.appendChild(this.createFactCard('Health Score', `${initialHealth}/100`, 'health'));
+    const releasePanel = this.createReleasePanel(initialDetails);
 
     // ── Live data sections ──────────────────────────────────────────
     const langSection = this.createLoadingSection(
@@ -866,6 +1025,7 @@ class ProjectXR {
     dialog.appendChild(descEl);
     dialog.appendChild(spatialBrief);
     dialog.appendChild(factsWrap);
+    dialog.appendChild(releasePanel);
     dialog.appendChild(insightsGrid);
     dialog.appendChild(repoSection);
     dialog.appendChild(actions);
@@ -927,6 +1087,7 @@ class ProjectXR {
       if (summaryText) {
         summaryText.textContent = this.buildRealitySummary(projectContext, details);
       }
+      this.renderReleasePanel(releasePanel, mergedDetails);
 
       // ── Render Language Bar ──────────────────────────────────────
       this.renderLanguageBar(langSection, languages);

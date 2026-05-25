@@ -3,6 +3,7 @@ import './project-xr.js';
 
 const DEFAULT_USERNAME = 'mangeshraut712';
 const PROJECT_ROWS_LIMIT = 2;
+const DEFAULT_PROJECT_LENS = 'all';
 
 function getProjectGridColumns(container) {
   if (
@@ -101,8 +102,11 @@ function applyTiltEffects(container) {
   });
 }
 
-function renderNoResults(container, query = '') {
-  const suffix = query ? ` for "${query}"` : '';
+function renderNoResults(container, query = '', lensLabel = '') {
+  const parts = [];
+  if (query) parts.push(`"${query}"`);
+  if (lensLabel) parts.push(lensLabel);
+  const suffix = parts.length ? ` for ${parts.join(' and ')}` : '';
   container.innerHTML = `
     <div class="col-span-full projects-empty-state">
       <i class="fas fa-folder-open"></i>
@@ -112,7 +116,7 @@ function renderNoResults(container, query = '') {
   `;
 }
 
-function updateActivityStats(allRepos, visibleRepos = []) {
+function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null) {
   const source = Array.isArray(allRepos) ? allRepos : [];
 
   // Remove skeleton classes from stat items
@@ -146,6 +150,19 @@ function updateActivityStats(allRepos, visibleRepos = []) {
         acc.totalContributors += contributors ?? 0;
       }
 
+      const releaseSignal =
+        githubProjects && typeof githubProjects.getReleaseSignal === 'function'
+          ? githubProjects.getReleaseSignal(repo, activity || {})
+          : null;
+      if (releaseSignal?.releaseChecked) {
+        acc.releaseCheckedRepos += 1;
+        if (releaseSignal.hasRelease) acc.releasedRepos += 1;
+        if (releaseSignal.filters?.has('attention')) acc.attentionRepos += 1;
+        if (releaseSignal.commitsSinceRelease !== null) {
+          acc.totalCommitsSinceRelease += releaseSignal.commitsSinceRelease;
+        }
+      }
+
       const updatedTime = new Date(repo.updated_at || 0).getTime();
       if (Number.isFinite(updatedTime) && updatedTime > acc.latestUpdate) {
         acc.latestUpdate = updatedTime;
@@ -158,13 +175,21 @@ function updateActivityStats(allRepos, visibleRepos = []) {
       totalForks: 0,
       totalCommits30d: 0,
       totalContributors: 0,
+      totalCommitsSinceRelease: 0,
       activityRepos: 0,
+      releaseCheckedRepos: 0,
+      releasedRepos: 0,
+      attentionRepos: 0,
       languages: new Set(),
       latestUpdate: 0,
     }
   );
 
   setTextById('stat-repos', source.length);
+  setTextById(
+    'stat-released',
+    totals.releaseCheckedRepos ? formatCompactNumber(totals.releasedRepos) : '--'
+  );
   setTextById('stat-stars', formatCompactNumber(totals.totalStars));
   setTextById('stat-forks', formatCompactNumber(totals.totalForks));
   setTextById(
@@ -172,13 +197,22 @@ function updateActivityStats(allRepos, visibleRepos = []) {
     totals.activityRepos ? formatCompactNumber(totals.totalCommits30d) : '--'
   );
   setTextById(
-    'stat-contributors',
-    totals.activityRepos ? formatCompactNumber(totals.totalContributors) : '--'
+    'stat-release-commits',
+    totals.releaseCheckedRepos ? formatCompactNumber(totals.totalCommitsSinceRelease) : '--'
+  );
+  setTextById(
+    'stat-attention',
+    totals.releaseCheckedRepos ? formatCompactNumber(totals.attentionRepos) : '--'
   );
   setTextById('stat-languages', totals.languages.size);
 
   const captionEl = document.getElementById('projects-activity-caption');
   if (!captionEl) return;
+
+  if (totals.releaseCheckedRepos > 0) {
+    captionEl.textContent = `${totals.releaseCheckedRepos} repositories checked for latest releases; ${totals.attentionRepos} need a release pass.`;
+    return;
+  }
 
   if (totals.activityRepos > 0) {
     captionEl.textContent = `${totals.activityRepos} repositories with live commit history and contributor activity in the last sync.`;
@@ -272,6 +306,48 @@ function createSearchMatcher(query) {
   };
 }
 
+function normalizeLens(value) {
+  const lens = String(value || DEFAULT_PROJECT_LENS)
+    .trim()
+    .toLowerCase();
+  return ['all', 'attention', 'hot', 'busy', 'fresh', 'released'].includes(lens)
+    ? lens
+    : DEFAULT_PROJECT_LENS;
+}
+
+function getLensLabel(lens) {
+  const labels = {
+    attention: 'need attention',
+    hot: 'hot projects',
+    busy: 'busy projects',
+    fresh: 'fresh projects',
+    released: 'released projects',
+  };
+  return labels[lens] || '';
+}
+
+function createLensMatcher(lens, githubProjects) {
+  const normalizedLens = normalizeLens(lens);
+  if (normalizedLens === DEFAULT_PROJECT_LENS) return () => true;
+
+  return repo => {
+    if (!githubProjects || typeof githubProjects.getReleaseSignal !== 'function') {
+      return true;
+    }
+
+    const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
+    return signal.filters.has(normalizedLens);
+  };
+}
+
+function updateLensButtons(buttons, activeLens) {
+  buttons.forEach(button => {
+    const isActive = normalizeLens(button.dataset.projectLens) === activeLens;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+}
+
 export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) {
   const container = document.getElementById('github-projects-container');
   if (!container) return;
@@ -313,17 +389,21 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     const searchInput = document.getElementById('project-search-input');
     const sortSelect = document.getElementById('project-sort-select');
+    const lensButtons = Array.from(document.querySelectorAll('[data-project-lens]'));
+    let activeLens = DEFAULT_PROJECT_LENS;
 
     const getCurrentQuery = () => String(searchInput?.value || '').trim();
     const getCurrentSort = () =>
       String(sortSelect?.value || 'popularity')
         .trim()
         .toLowerCase();
+    const getCurrentLens = () => activeLens;
 
     const getDisplayRepos = () => {
       const query = getCurrentQuery();
       const matcher = createSearchMatcher(query);
-      const filtered = allShowcaseRepos.filter(matcher);
+      const lensMatcher = createLensMatcher(getCurrentLens(), githubProjects);
+      const filtered = allShowcaseRepos.filter(repo => matcher(repo) && lensMatcher(repo));
       const sorted = [...filtered].toSorted(createSortComparator(getCurrentSort(), githubProjects));
       const maxItems = getTwoRowLimit(container);
       return sorted.slice(0, maxItems);
@@ -334,11 +414,12 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const renderProjects = async () => {
       const currentToken = ++renderToken;
       const query = getCurrentQuery();
+      const lens = getCurrentLens();
       const displayRepos = getDisplayRepos();
 
       if (displayRepos.length === 0) {
-        renderNoResults(container, query);
-        updateActivityStats(allRepos, []);
+        renderNoResults(container, query, getLensLabel(lens));
+        updateActivityStats(allRepos, [], githubProjects);
         return;
       }
 
@@ -347,7 +428,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         .join('');
 
       applyTiltEffects(container);
-      updateActivityStats(allRepos, displayRepos);
+      updateActivityStats(allRepos, displayRepos, githubProjects);
 
       const reposToHydrate = displayRepos.filter(repo => !repo.__activityLoaded);
       if (reposToHydrate.length === 0) return;
@@ -365,7 +446,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
           .join('');
 
         applyTiltEffects(container);
-        updateActivityStats(allRepos, rerenderRepos);
+        updateActivityStats(allRepos, rerenderRepos, githubProjects);
       }
     };
 
@@ -387,6 +468,17 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         });
       });
     }
+
+    lensButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        activeLens = normalizeLens(button.dataset.projectLens);
+        updateLensButtons(lensButtons, activeLens);
+        renderProjects().catch(error => {
+          console.error('Project showcase lens render failed:', error);
+        });
+      });
+    });
+    updateLensButtons(lensButtons, activeLens);
 
     document.addEventListener('input', event => {
       const target = event.target;
@@ -423,7 +515,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       .hydrateReposWithActivity(topReposForActivity)
       .then(() => {
         if (renderToken === 0) return;
-        updateActivityStats(allRepos, getDisplayRepos());
+        updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
       })
       .catch(() => {
         // Non-blocking enhancement; UI already rendered with fallback stats.

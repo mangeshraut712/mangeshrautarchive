@@ -1215,18 +1215,18 @@
     <section id="projects" class="fade-in py-12">
       <div class="container">
         <h2>Project Showcase</h2>
-        <p class="section-subtitle">Apple-grade software craftsmanship with live GitHub activity signals.</p>
+        <p class="section-subtitle">Spatial software cards with live GitHub activity and release-freshness signals.</p>
 
         <div id="projects-showcase-shell" class="projects-showcase-shell">
           <!-- GitHub Activity Overview -->
           <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
             <div class="activity-overview-head">
               <div class="activity-overview-title-wrap">
-                <p class="activity-eyebrow">GitHub Activity</p>
-                <h3 class="activity-title">Live engineering momentum</h3>
+                <p class="activity-eyebrow">GitHub Operating View</p>
+                <h3 class="activity-title">Release-aware engineering momentum</h3>
               </div>
               <p id="projects-activity-caption" class="projects-activity-caption">
-                Syncing repository stars, forks, commits, and contributors...
+                Syncing repository stars, forks, commits, releases, and contributor activity...
               </p>
             </div>
 
@@ -1234,6 +1234,10 @@
               <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-repos">--</span>
                 <span class="activity-stat-label">Public Repos</span>
+              </div>
+              <div class="activity-stat-item skeleton">
+                <span class="activity-stat-value" id="stat-released">--</span>
+                <span class="activity-stat-label">Released</span>
               </div>
               <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-stars">--</span>
@@ -1248,8 +1252,12 @@
                 <span class="activity-stat-label">Commits (30d)</span>
               </div>
               <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-contributors">--</span>
-                <span class="activity-stat-label">Contributors</span>
+                <span class="activity-stat-value" id="stat-release-commits">--</span>
+                <span class="activity-stat-label">Since Release</span>
+              </div>
+              <div class="activity-stat-item skeleton">
+                <span class="activity-stat-value" id="stat-attention">--</span>
+                <span class="activity-stat-label">Need Attention</span>
               </div>
               <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-languages">--</span>
@@ -1371,6 +1379,27 @@
                 });
               })();
             </script>
+          </div>
+
+          <div class="project-lens-bar" role="group" aria-label="Filter projects by release freshness">
+            <button type="button" class="project-lens-chip active" data-project-lens="all" aria-pressed="true">
+              All
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="attention" aria-pressed="false">
+              Need attention
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="hot" aria-pressed="false">
+              Hot
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="busy" aria-pressed="false">
+              Busy
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="fresh" aria-pressed="false">
+              Fresh
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="released" aria-pressed="false">
+              Released
+            </button>
           </div>
 
           <!-- Project Search & Filter -->

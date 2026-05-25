@@ -40,7 +40,7 @@ class GitHubProjects {
 
     this.activityCacheDuration = 15 * 60 * 1000;
     this.activityStoragePrefix = `github_repo_activity_${username}_`;
-    this.activitySchemaVersion = 2;
+    this.activitySchemaVersion = 3;
     this.repoActivityCache = new Map();
 
     this.featuredProjectOrder = [
@@ -522,6 +522,105 @@ class GitHubProjects {
     return `AI brief: ${signals.join(' · ')}. Quality signal: ${confidenceBand} (${showcaseScore.score}/100).`;
   }
 
+  normalizeReleasePayload(release) {
+    if (!release || typeof release !== 'object') return null;
+
+    const tagName = String(release.tag_name || '').trim();
+    if (!tagName) return null;
+
+    return {
+      tagName,
+      name: String(release.name || tagName).trim(),
+      htmlUrl: this.normalizeHomepageUrl(release.html_url || ''),
+      publishedAt: release.published_at || '',
+      createdAt: release.created_at || '',
+      prerelease: Boolean(release.prerelease),
+      draft: Boolean(release.draft),
+    };
+  }
+
+  getReleaseSignal(repo, activity = {}) {
+    const latestRelease = activity.latestRelease || null;
+    const releaseChecked = activity.releaseChecked === true;
+    const hasRelease = Boolean(latestRelease?.tagName);
+    const commitsSinceRelease = this.toFiniteMetric(activity.commitsSinceRelease);
+    const commits30d = this.toFiniteMetric(activity.commits30d);
+    const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
+    const updatedAgeDays = this.getRepoAgeDays(repo?.updated_at || repo?.pushed_at);
+    const activeAgeDays = Math.min(pushedAgeDays, updatedAgeDays);
+    const releaseDate = latestRelease?.publishedAt || latestRelease?.createdAt || '';
+    const releaseAgeDays = this.getRepoAgeDays(releaseDate);
+
+    let key = 'open';
+    let label = 'Open repo';
+    let meta = 'No GitHub release yet';
+
+    if (!releaseChecked) {
+      if (activeAgeDays <= 14) key = 'hot';
+      else if (activeAgeDays <= 45) key = 'fresh';
+      else if (activeAgeDays > 120) key = 'attention';
+      label = 'Checking release';
+      meta = 'Syncing latest GitHub release';
+    } else if (!hasRelease) {
+      if (activeAgeDays <= 14) {
+        key = 'hot';
+        label = 'Hot';
+      } else if (activeAgeDays > 120) {
+        key = 'attention';
+        label = 'Needs release';
+      }
+    } else if (commitsSinceRelease !== null && commitsSinceRelease >= 25) {
+      key = 'attention';
+      label = 'Needs release';
+      meta = `${this.formatCompactNumber(commitsSinceRelease)} commits since ${latestRelease.tagName}`;
+    } else if (releaseAgeDays > 180) {
+      key = 'attention';
+      label = 'Aging release';
+      meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
+    } else if (commitsSinceRelease !== null && commitsSinceRelease >= 10) {
+      key = 'busy';
+      label = 'Busy';
+      meta = `${this.formatCompactNumber(commitsSinceRelease)} commits since ${latestRelease.tagName}`;
+    } else if (releaseAgeDays <= 45) {
+      key = 'fresh';
+      label = 'Fresh';
+      meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
+    } else {
+      key = 'released';
+      label = 'Released';
+      meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
+    }
+
+    const filters = new Set(['all', key]);
+    if (hasRelease) filters.add('released');
+    if (commits30d !== null && commits30d >= 8) filters.add('busy');
+    if (activeAgeDays <= 14) filters.add('hot');
+    if (activeAgeDays <= 45 || (hasRelease && releaseAgeDays <= 45)) filters.add('fresh');
+    if (
+      key === 'attention' ||
+      (releaseChecked && !hasRelease && activeAgeDays > 120) ||
+      (hasRelease && commitsSinceRelease !== null && commitsSinceRelease >= 25)
+    ) {
+      filters.add('attention');
+    }
+
+    return {
+      key,
+      label,
+      meta,
+      filters,
+      hasRelease,
+      releaseChecked,
+      latestRelease,
+      tagName: latestRelease?.tagName || '',
+      releaseDate,
+      releaseDateLabel: releaseDate ? this.formatAbsoluteDate(releaseDate) : '',
+      releaseRelative: releaseDate ? this.formatRelativeDateCompact(releaseDate) : '',
+      releaseAgeDays,
+      commitsSinceRelease,
+    };
+  }
+
   isRepositoryShowcaseReady(repo) {
     if (!repo || repo.fork || repo.archived) return false;
 
@@ -778,6 +877,9 @@ class GitHubProjects {
         commits30d: null,
         commitSample: 0,
         contributors: null,
+        commitsSinceRelease: null,
+        latestRelease: null,
+        releaseChecked: false,
         latestCommitAt: repo?.pushed_at || repo?.updated_at || '',
         unavailable: true,
       };
@@ -790,16 +892,19 @@ class GitHubProjects {
     const baseUrl = `https://api.github.com/repos/${identity.owner}/${identity.name}`;
     const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    const [commitsMeta, contributorsMeta] = await Promise.all([
+    const [commitsMeta, contributorsMeta, releaseMeta] = await Promise.all([
       this.fetchJsonWithMeta(
         `${baseUrl}/commits?per_page=1&since=${encodeURIComponent(since30d)}`,
         headers
       ),
       this.fetchJsonWithMeta(`${baseUrl}/contributors?per_page=1&anon=1`, headers),
+      this.fetchJsonWithMeta(`${baseUrl}/releases/latest`, headers),
     ]);
 
     const commitsPayload = Array.isArray(commitsMeta.data) ? commitsMeta.data : null;
     const contributorsPayload = Array.isArray(contributorsMeta.data) ? contributorsMeta.data : null;
+    const latestRelease = releaseMeta.ok ? this.normalizeReleasePayload(releaseMeta.data) : null;
+    const releaseChecked = releaseMeta.ok || releaseMeta.status === 404;
 
     let commits30d = null;
     let latestCommitAt = repo?.pushed_at || repo?.updated_at || '';
@@ -823,12 +928,36 @@ class GitHubProjects {
       }
     }
 
-    const unavailable = commits30d === null && contributorCount === null;
+    let commitsSinceRelease = null;
+    const releaseDate = latestRelease?.publishedAt || latestRelease?.createdAt || '';
+    if (releaseDate) {
+      const releaseCommitsMeta = await this.fetchJsonWithMeta(
+        `${baseUrl}/commits?per_page=1&since=${encodeURIComponent(releaseDate)}`,
+        headers
+      );
+      const releaseCommitsPayload = Array.isArray(releaseCommitsMeta.data)
+        ? releaseCommitsMeta.data
+        : null;
+
+      if (releaseCommitsMeta.ok && releaseCommitsPayload) {
+        if (releaseCommitsPayload.length === 0) {
+          commitsSinceRelease = 0;
+        } else {
+          const pageCount = this.getLastPageFromLink(releaseCommitsMeta.link);
+          commitsSinceRelease = pageCount || releaseCommitsPayload.length;
+        }
+      }
+    }
+
+    const unavailable = commits30d === null && contributorCount === null && !releaseChecked;
 
     const activity = {
       commits30d,
       commitSample: Number.isFinite(commits30d) ? commits30d : 0,
       contributors: contributorCount,
+      commitsSinceRelease,
+      latestRelease,
+      releaseChecked,
       latestCommitAt,
       unavailable,
     };
@@ -867,6 +996,12 @@ class GitHubProjects {
     const commits30d = this.toFiniteMetric(activity.commits30d);
     const contributors = this.toFiniteMetric(activity.contributors);
     const latestCommitAt = activity.latestCommitAt || repo.pushed_at || repo.updated_at || '';
+    const releaseSignal = this.getReleaseSignal(repo, activity);
+    const releaseKey = ['attention', 'hot', 'busy', 'fresh', 'released', 'open'].includes(
+      releaseSignal.key
+    )
+      ? releaseSignal.key
+      : 'open';
 
     const homepage = this.normalizeHomepageUrl(repo.homepage);
     const hasDemo = Boolean(homepage);
@@ -894,6 +1029,18 @@ class GitHubProjects {
     const safeBranch = this.escapeHtml(repoBranch);
     const safeRepoSize = this.escapeHtml(repoSize);
     const safeOpenIssues = this.escapeHtml(openIssues);
+    const safeReleaseKey = this.escapeHtml(releaseKey);
+    const safeReleaseLabel = this.escapeHtml(releaseSignal.label);
+    const safeReleaseMeta = this.escapeHtml(releaseSignal.meta);
+    const safeReleaseTag = this.escapeHtml(releaseSignal.tagName || 'No release');
+    const safeReleaseDate = this.escapeHtml(releaseSignal.releaseDate || '');
+    const safeReleaseDateLabel = this.escapeHtml(
+      releaseSignal.releaseDateLabel || 'No release date'
+    );
+    const safeReleaseUrl = this.escapeHtml(releaseSignal.latestRelease?.htmlUrl || '');
+    const safeReleaseCommits = this.escapeHtml(
+      releaseSignal.commitsSinceRelease === null ? '' : releaseSignal.commitsSinceRelease
+    );
 
     const topics = this.getTopics(repo);
     const topicsJson = this.escapeHtml(JSON.stringify(topics));
@@ -905,9 +1052,13 @@ class GitHubProjects {
 
     const commitsText = commits30d === null ? '--' : this.formatCompactNumber(commits30d);
     const contributorsText = contributors === null ? '--' : this.formatCompactNumber(contributors);
+    const releaseCommitsText =
+      releaseSignal.commitsSinceRelease === null
+        ? 'n/a'
+        : this.formatCompactNumber(releaseSignal.commitsSinceRelease);
 
     return `
-      <article class="showcase-project-card apple-3d-project group" aria-label="${safeName} project card">
+      <article class="showcase-project-card apple-3d-project group" data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
         <div class="project-header">
           <div class="project-head-top">
             <div class="project-title-wrap">
@@ -925,6 +1076,23 @@ class GitHubProjects {
           </div>
 
           <p class="project-description">${safeDescription || 'No description available'}</p>
+
+          <div class="project-release-strip" data-release-status="${safeReleaseKey}">
+            <div class="project-release-copy">
+              <span class="project-release-status project-release-${safeReleaseKey}">${safeReleaseLabel}</span>
+              <strong>${safeReleaseTag}</strong>
+            </div>
+            <div class="project-release-meta">
+              <span title="${safeReleaseDateLabel}">
+                <i class="fas fa-tag"></i>
+                ${safeReleaseMeta}
+              </span>
+              <span title="Commits since latest release">
+                <i class="fas fa-code-branch"></i>
+                ${releaseCommitsText}
+              </span>
+            </div>
+          </div>
 
           <div class="project-signal-row">
             <span class="project-signal-pill" title="Stars">
@@ -984,6 +1152,13 @@ class GitHubProjects {
             data-project-default-branch="${safeBranch}"
             data-project-pushed-at="${pushedAt}"
             data-project-last-commit-at="${lastCommitAtSafe}"
+            data-project-release-status="${safeReleaseKey}"
+            data-project-release-status-label="${safeReleaseLabel}"
+            data-project-release-tag="${safeReleaseTag}"
+            data-project-release-url="${safeReleaseUrl}"
+            data-project-release-published-at="${safeReleaseDate}"
+            data-project-release-commits-since="${safeReleaseCommits}"
+            data-project-release-checked="${releaseSignal.releaseChecked ? 'true' : 'false'}"
             data-project-commits-30d="${commits30d === null ? '' : commits30d}"
             data-project-contributors="${contributors === null ? '' : contributors}"
             data-project-score="${safeScore}"

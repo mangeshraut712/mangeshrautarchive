@@ -22,6 +22,7 @@ In **May 2026**, the web has transitioned from static layouts to **Agentic Web A
 - **WebMCP Agentic Actions:** Native browser capability integration using the W3C `navigator.modelContext.registerTool` protocol, exposing 9 core interactive tools (e.g., section navigation, resume download, contact overlay, theme toggles) to agentic orchestrators.
 - **Premium Agentic UX Feedback:** High-fidelity visual micro-animations, glassmorphic `.action-message` rendering, and pulsing action badges (`ACTION EXECUTED`) that provide tactile, real-time visual feedback when local tools are executed by the AI.
 - **Authoritative Engagement Telemetry:** A simple, direct, real-time visitor reach counter built on **Cloud Firestore** and cross-checked with **Vercel Analytics**.
+- **Release-Aware GitHub Showcase:** Apple-inspired spatial project cards sync public repository metadata, latest GitHub releases, commits since release, activity filters, and live repository structure inside the portfolio.
 - **Operational Visibility:** A live operations dashboard at `/monitor` showing endpoint latencies, third-party provider checks, event logging, and hosting surface status.
 - **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites (including chatbot WebMCP action suites).
 
@@ -130,15 +131,16 @@ cache-control: public, max-age=300
 
 ## 🛠️ The 2026 Tech Stack
 
-| Layer              | Technologies                                  | Role in System                                                                          |
-| :----------------- | :-------------------------------------------- | :-------------------------------------------------------------------------------------- |
-| **Client Core**    | HTML5, Vanilla CSS3, ES Modules, Canvas       | Responsive layout, modern variables, fluid animations without heavy framework overhead. |
-| **Client AI**      | **WebNN API**, Gemma 3                        | Running client-side neural nets on browser hardware for instant local interactions.     |
-| **Serverless API** | **FastAPI**, Pydantic, HTTPX, Uvicorn         | High-performance Python backend routes running as Vercel Serverless Functions.          |
-| **Cloud AI**       | **Gemini 2.5 Pro / Flash**                    | OpenRouter cloud completions for complex reasoning and portfolio exploration.           |
-| **Telemetry**      | **Cloud Firestore**                           | Real-time visitor counts, counter tracking, and performance persistence.                |
-| **Testing**        | Playwright, Vitest, axe-core, Lighthouse      | End-to-end integration tests, accessibility gates, and performance budgets.             |
-| **Hosting**        | Vercel (Prod), GitHub Pages (Static Fallback) | Dual-surface deployment architecture ensuring maximum availability.                     |
+| Layer                | Technologies                                          | Role in System                                                                             |
+| :------------------- | :---------------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| **Client Core**      | HTML5, Vanilla CSS3, ES Modules, Canvas               | Responsive layout, modern variables, fluid animations without heavy framework overhead.    |
+| **Client AI**        | **WebNN API**, Gemma 3                                | Running client-side neural nets on browser hardware for instant local interactions.        |
+| **Serverless API**   | **FastAPI**, Pydantic, HTTPX, Uvicorn                 | High-performance Python backend routes running as Vercel Serverless Functions.             |
+| **Cloud AI**         | **Gemini 2.5 Pro / Flash**                            | OpenRouter cloud completions for complex reasoning and portfolio exploration.              |
+| **Telemetry**        | **Cloud Firestore**                                   | Real-time visitor counts, counter tracking, and performance persistence.                   |
+| **Repository Intel** | GitHub REST API, release metadata, contribution graph | Live project cards, release freshness, commits-since-release, and spatial repo inspection. |
+| **Testing**          | Playwright, Vitest, axe-core, Lighthouse              | End-to-end integration tests, accessibility gates, and performance budgets.                |
+| **Hosting**          | Vercel (Prod), GitHub Pages (Static Fallback)         | Dual-surface deployment architecture ensuring maximum availability.                        |
 
 ---
 
@@ -198,6 +200,7 @@ flowchart TD
 1. **Dual-Surface Deploy:** Frontend assets are statically built to `dist/`. The main domain routes through Vercel CDN. In case of main server outages, GitHub Pages serves as a static fallback and proxies API queries back to `mangeshraut.pro/api` securely.
 2. **Visitor Counter simple logic:** Instead of fake random calculations, `api/routes/analytics.py` maintains an incremental counter inside Cloud Firestore, adding GitHub repo stars and forks to form the **Portfolio Reach** metric. No local storage hover tooltips or complex charts are used.
 3. **Protected Server Secrets:** API keys for OpenRouter and Google Cloud credentials never touch the browser. The FastAPI server handles authorization, rate-limiting, and payload sanitization.
+4. **Release-Aware Project Intelligence:** The projects section keeps the existing portfolio cards but enriches them with latest GitHub release metadata, commits since release, release-health lenses, and a Spatial View modal that maps repository structure, languages, activity, and release freshness.
 
 ---
 

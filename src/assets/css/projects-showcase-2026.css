@@ -309,7 +309,7 @@ html.dark #projects .projects-activity-caption {
   padding-top: 0.95rem;
   border-top: 1px solid var(--project-border-light);
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.56rem;
 }
 
@@ -601,6 +601,59 @@ html.dark #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
   box-shadow: 0 8px 20px rgb(10 111 239 / 15%);
 }
 
+/* Release freshness lens */
+#projects .project-lens-bar {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+  align-items: center;
+}
+
+#projects .project-lens-chip {
+  min-height: 38px;
+  border: 1px solid var(--project-border-light);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 86%);
+  color: var(--project-muted-light);
+  padding: 0 0.86rem;
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+#projects .project-lens-chip:hover,
+#projects .project-lens-chip.active {
+  transform: translateY(-1px);
+  border-color: rgb(10 111 239 / 44%);
+  background: var(--project-accent-soft);
+  color: #0a58be;
+}
+
+#projects .project-lens-chip:focus-visible {
+  outline: 2px solid rgb(10 111 239 / 58%);
+  outline-offset: 2px;
+}
+
+html.dark #projects .project-lens-chip {
+  border-color: var(--project-border-dark);
+  background: rgb(255 255 255 / 3%);
+  color: var(--project-muted-dark);
+}
+
+html.dark #projects .project-lens-chip:hover,
+html.dark #projects .project-lens-chip.active {
+  border-color: rgb(123 182 255 / 44%);
+  background: rgb(88 166 255 / 15%);
+  color: #9dccff;
+}
+
 /* Responsive graph header */
 @media (max-width: 680px) {
   #projects .graph-header {
@@ -644,7 +697,7 @@ html.dark #projects .projects-empty-state {
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
-  min-height: 355px !important;
+  min-height: 405px !important;
   height: 100% !important;
   border-radius: 20px !important;
   border: 1px solid var(--project-border-light) !important;
@@ -785,6 +838,115 @@ html.dark #projects #github-projects-container .project-repo-link {
 
 html.dark #projects #github-projects-container .project-description {
   color: #d4dde8 !important;
+}
+
+#projects #github-projects-container .project-release-strip {
+  border: 1px solid var(--project-border-light);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 78%);
+  padding: 0.62rem 0.68rem;
+  display: grid;
+  gap: 0.45rem;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 70%);
+}
+
+html.dark #projects #github-projects-container .project-release-strip {
+  border-color: var(--project-border-dark);
+  background: rgb(255 255 255 / 3%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+}
+
+#projects #github-projects-container .project-release-copy,
+#projects #github-projects-container .project-release-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.46rem;
+  min-width: 0;
+}
+
+#projects #github-projects-container .project-release-copy strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--project-text-light);
+  font-size: 0.84rem;
+}
+
+html.dark #projects #github-projects-container .project-release-copy strong {
+  color: var(--project-text-dark);
+}
+
+#projects #github-projects-container .project-release-status {
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 0.22rem 0.52rem;
+  font-size: 0.68rem;
+  font-weight: 760;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+#projects #github-projects-container .project-release-meta {
+  justify-content: space-between;
+  color: var(--project-muted-light);
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+#projects #github-projects-container .project-release-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
+html.dark #projects #github-projects-container .project-release-meta {
+  color: var(--project-muted-dark);
+}
+
+#projects .project-release-fresh,
+#projects .project-release-hot {
+  background: rgb(34 197 94 / 13%);
+  color: #147d3f;
+}
+
+#projects .project-release-busy {
+  background: rgb(245 158 11 / 15%);
+  color: #9a5b00;
+}
+
+#projects .project-release-attention {
+  background: rgb(239 68 68 / 13%);
+  color: #b42318;
+}
+
+#projects .project-release-released,
+#projects .project-release-open {
+  background: rgb(10 111 239 / 12%);
+  color: #0a58be;
+}
+
+html.dark #projects .project-release-fresh,
+html.dark #projects .project-release-hot {
+  background: rgb(34 197 94 / 16%);
+  color: #85e0a3;
+}
+
+html.dark #projects .project-release-busy {
+  background: rgb(245 158 11 / 16%);
+  color: #ffd48a;
+}
+
+html.dark #projects .project-release-attention {
+  background: rgb(248 113 113 / 17%);
+  color: #ffaaa5;
+}
+
+html.dark #projects .project-release-released,
+html.dark #projects .project-release-open {
+  background: rgb(88 166 255 / 15%);
+  color: #9dccff;
 }
 
 #projects #github-projects-container .project-signal-row {
@@ -964,7 +1126,7 @@ html.dark #projects #github-projects-container .project-action-btn:disabled {
 }
 
 .project-xr-dialog {
-  width: min(820px, calc(100vw - 18px)) !important;
+  width: min(940px, calc(100vw - 18px)) !important;
   max-height: calc(100dvh - 18px) !important;
   overflow: auto !important;
   border-radius: 20px !important;
@@ -1162,6 +1324,127 @@ html.dark .project-xr-fact-card {
 
 html.dark .project-xr-fact-label {
   color: var(--project-muted-dark);
+}
+
+.project-xr-release-panel {
+  border: 1px solid var(--project-border-light);
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgb(255 255 255 / 90%) 0%, rgb(246 249 255 / 92%) 100%);
+  padding: 0.68rem 0.78rem;
+  display: grid;
+  gap: 0.52rem;
+}
+
+html.dark .project-xr-release-panel {
+  border-color: var(--project-border-dark);
+  background: linear-gradient(160deg, rgb(255 255 255 / 4%) 0%, rgb(88 166 255 / 8%) 100%);
+}
+
+.project-xr-release-badge {
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 0.24rem 0.58rem;
+  font-size: 0.66rem;
+  font-weight: 760;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.project-xr-release-fresh,
+.project-xr-release-hot {
+  background: rgb(34 197 94 / 13%);
+  color: #147d3f;
+}
+
+.project-xr-release-busy {
+  background: rgb(245 158 11 / 15%);
+  color: #9a5b00;
+}
+
+.project-xr-release-attention {
+  background: rgb(239 68 68 / 13%);
+  color: #b42318;
+}
+
+.project-xr-release-released,
+.project-xr-release-open {
+  background: rgb(10 111 239 / 12%);
+  color: #0a58be;
+}
+
+html.dark .project-xr-release-fresh,
+html.dark .project-xr-release-hot {
+  background: rgb(34 197 94 / 16%);
+  color: #85e0a3;
+}
+
+html.dark .project-xr-release-busy {
+  background: rgb(245 158 11 / 16%);
+  color: #ffd48a;
+}
+
+html.dark .project-xr-release-attention {
+  background: rgb(248 113 113 / 17%);
+  color: #ffaaa5;
+}
+
+html.dark .project-xr-release-released,
+html.dark .project-xr-release-open {
+  background: rgb(88 166 255 / 15%);
+  color: #9dccff;
+}
+
+.project-xr-release-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.project-xr-release-tag {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--project-text-light);
+  font-size: 0.95rem;
+}
+
+html.dark .project-xr-release-tag {
+  color: var(--project-text-dark);
+}
+
+.project-xr-release-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem 0.72rem;
+  color: var(--project-muted-light);
+  font-size: 0.75rem;
+}
+
+html.dark .project-xr-release-meta {
+  color: var(--project-muted-dark);
+}
+
+.project-xr-release-link {
+  border: 1px solid rgb(7 91 199 / 40%);
+  border-radius: 10px;
+  background: var(--project-accent-soft);
+  color: #0a58be;
+  padding: 0.42rem 0.68rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 680;
+  white-space: nowrap;
+}
+
+html.dark .project-xr-release-link {
+  border-color: rgb(88 166 255 / 36%);
+  background: rgb(88 166 255 / 13%);
+  color: #9dccff;
 }
 
 .project-xr-section-head {
@@ -1551,7 +1834,7 @@ html.dark .project-xr-status {
   }
 
   #projects .activity-overview-inner {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   #projects .proj-search-container {
@@ -1591,7 +1874,7 @@ html.dark .project-xr-status {
 
 @media (max-width: 680px) {
   #projects .activity-overview-inner {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
   #projects .projects-activity-overview {
@@ -1631,6 +1914,12 @@ html.dark .project-xr-status {
     margin-left: 0;
   }
 
+  #projects #github-projects-container .project-release-copy,
+  #projects #github-projects-container .project-release-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .project-xr-head {
     flex-direction: column;
   }
@@ -1642,5 +1931,9 @@ html.dark .project-xr-status {
 
   .project-xr-updated-chip {
     align-self: flex-start;
+  }
+
+  .project-xr-release-body {
+    grid-template-columns: 1fr;
   }
 }
