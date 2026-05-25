@@ -107,28 +107,7 @@ html.dark .experience-icon {
   color: #fff;
 }
 
-/* Section Header within Timeline (e.g. Full-Time) - Clean, no card styling */
-.timeline-section-header {
-  margin-left: 90px;
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.timeline-section-header h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-secondary) !important;
-  background: transparent;
-  display: inline-block;
-  padding: 0;
-  border: none;
-}
-
-html.dark .timeline-section-header h3 {
-  background: transparent;
-  color: var(--text-secondary-dark) !important;
-  border: none;
-}
+/* Section Header styles now in sections-apple-premium.css */
 
 /* ========================================
    EXPERIENCE CARD (Content)
