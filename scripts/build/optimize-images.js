@@ -7,15 +7,14 @@
 
 import sharp from 'sharp';
 import { existsSync, mkdirSync, statSync, readdirSync } from 'fs';
-import { join, basename, extname } from 'path';
+import { join, basename, extname, relative, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const INPUT_DIR = join(__dirname, '../src/assets/images');
-const OUTPUT_DIR = join(__dirname, '../src/assets/images/optimized');
+const INPUT_DIR = join(__dirname, '../../src/assets/images');
+const OUTPUT_DIR = join(__dirname, '../../src/assets/images/optimized');
 
 // Responsive image sizes
 const SIZES = [
@@ -86,13 +85,38 @@ async function optimizeImage(inputPath, outputPath, width = null) {
 }
 
 /**
- * Process all images in directory
+ * Recursively get all image files from directory
+ */
+function getImageFiles(dir, relativePath = '') {
+  const files = [];
+  const items = readdirSync(dir, { withFileTypes: true });
+
+  for (const item of items) {
+    const fullPath = join(dir, item.name);
+    const relPath = join(relativePath, item.name);
+
+    if (item.isDirectory()) {
+      files.push(...getImageFiles(fullPath, relPath));
+    } else if (/\.(jpg|jpeg|png)$/i.test(item.name)) {
+      files.push({
+        fullPath,
+        relativePath: relPath,
+        dir: relativePath,
+        name: item.name
+      });
+    }
+  }
+
+  return files;
+}
+
+/**
+ * Process all images in directory (recursively)
  */
 async function processImages() {
   console.log('🚀 Starting image optimization...\n');
 
-  const files = readdirSync(INPUT_DIR);
-  const imageFiles = files.filter(file => /\.(jpg|jpeg|png)$/i.test(file));
+  const imageFiles = getImageFiles(INPUT_DIR);
 
   if (imageFiles.length === 0) {
     console.log('⚠️  No images found to optimize');
@@ -101,32 +125,55 @@ async function processImages() {
 
   console.log(`📸 Found ${imageFiles.length} images to process\n`);
 
+  let totalSavings = 0;
+  let processedCount = 0;
+
   await Promise.all(
     imageFiles.map(async file => {
-      const inputPath = join(INPUT_DIR, file);
-      const baseName = basename(file, extname(file));
+      const baseName = basename(file.name, extname(file.name));
+      const outputSubdir = join(OUTPUT_DIR, file.dir);
 
-      console.log(`\n📷 Processing: ${file}`);
+      // Ensure subdirectory exists
+      if (!existsSync(outputSubdir)) {
+        mkdirSync(outputSubdir, { recursive: true });
+      }
 
-      // Generate WebP versions at different sizes
-      await Promise.all(
-        SIZES.map(size => {
-          const webpPath = join(OUTPUT_DIR, `${baseName}${size.suffix}.webp`);
-          return convertToWebP(inputPath, webpPath, size.width);
-        })
-      );
+      console.log(`\n📷 Processing: ${file.relativePath}`);
 
-      // Generate original format optimized version
-      const optimizedPath = join(OUTPUT_DIR, file);
-      await optimizeImage(inputPath, optimizedPath);
+      // Get original size
+      const originalStats = statSync(file.fullPath);
+      const originalSize = originalStats.size;
+
+      // Generate WebP version (single high-quality version, not multiple sizes)
+      const webpPath = join(outputSubdir, `${baseName}.webp`);
+      await convertToWebP(file.fullPath, webpPath, null);
+
+      // Calculate savings
+      try {
+        const webpStats = statSync(webpPath);
+        const savings = originalSize - webpStats.size;
+        const percentSaved = ((savings / originalSize) * 100).toFixed(1);
+        totalSavings += savings;
+        processedCount++;
+        console.log(`   💾 Saved: ${(savings / 1024).toFixed(2)} KB (${percentSaved}%)`);
+      } catch (_e) {
+        // WebP creation failed, skip savings calc
+      }
+
+      // Generate optimized original format
+      const optimizedPath = join(outputSubdir, file.name);
+      await optimizeImage(file.fullPath, optimizedPath);
     })
   );
 
   console.log('\n✨ Image optimization complete!');
   console.log(`📁 Optimized images saved to: ${OUTPUT_DIR}`);
+  console.log(`📊 Total: ${processedCount} images, ${(totalSavings / 1024 / 1024).toFixed(2)} MB saved`);
 
   // Generate usage examples
-  generateUsageExamples(imageFiles[0]);
+  if (imageFiles.length > 0) {
+    generateUsageExamples(imageFiles[0].name);
+  }
 }
 
 /**
@@ -136,23 +183,12 @@ function generateUsageExamples(sampleFile) {
   const baseName = basename(sampleFile, extname(sampleFile));
 
   console.log('\n📝 Example HTML usage:\n');
-  console.log('<!-- Responsive WebP with fallback -->');
+  console.log('<!-- WebP with fallback -->');
   console.log('<picture>');
-  console.log(`  <source`);
-  console.log(`    type="image/webp"`);
-  console.log(`    srcset="`);
-  console.log(`      assets/images/optimized/${baseName}-mobile.webp 320w,`);
-  console.log(`      assets/images/optimized/${baseName}-tablet.webp 768w,`);
-  console.log(`      assets/images/optimized/${baseName}-desktop.webp 1200w,`);
-  console.log(`      assets/images/optimized/${baseName}-hd.webp 1920w"`);
-  console.log(`    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />`);
-  console.log(`  <img`);
-  console.log(`    src="assets/images/optimized/${sampleFile}"`);
-  console.log(`    alt="Description"`);
-  console.log(`    loading="lazy"`);
-  console.log(`    width="1200"`);
-  console.log(`    height="800" />`);
+  console.log(`  <source type="image/webp" srcset="assets/images/optimized/${baseName}.webp" />`);
+  console.log(`  <img src="assets/images/optimized/${sampleFile}" alt="Description" loading="lazy" />`);
   console.log('</picture>\n');
+  console.log('💡 Tip: Use <picture> element to serve WebP to modern browsers with fallback to original format\n');
 }
 
 // Run the script

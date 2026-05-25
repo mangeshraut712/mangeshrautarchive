@@ -156,7 +156,7 @@ export function measureWebVitals(callback) {
 
   try {
     observer.observe({ entryTypes: ['web-vitals'] });
-  } catch (e) {
+  } catch (_e) {
     // Fallback for browsers that don't support web-vitals entry type
     observer.observe({ entryTypes: ['measure', 'navigation'] });
   }
