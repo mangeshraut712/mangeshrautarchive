@@ -2623,6 +2623,67 @@
       </div>
     </section>
 
+    <!-- Crypto Support Section -->
+    <section id="crypto" class="fade-in py-12">
+      <div class="container">
+        <h2>Support My Work</h2>
+        <p class="section-subtitle">If you found my work helpful, consider supporting with crypto</p>
+        
+        <div class="crypto-grid">
+          <!-- Bitcoin -->
+          <div class="crypto-card">
+            <div class="crypto-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6zm4 4h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <h3>Bitcoin</h3>
+            <p class="crypto-address">bc1q...your_address</p>
+            <button class="crypto-copy" onclick="copyToClipboard('bc1q...your_address')">Copy Address</button>
+          </div>
+          
+          <!-- Ethereum -->
+          <div class="crypto-card">
+            <div class="crypto-icon eth">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l-5.5 9 5.5 3 5.5-3-5.5-9zm0 13l-5.5-3L12 22l5.5-10-5.5 3z"/>
+              </svg>
+            </div>
+            <h3>Ethereum</h3>
+            <p class="crypto-address">0x...your_address</p>
+            <button class="crypto-copy" onclick="copyToClipboard('0x...your_address')">Copy Address</button>
+          </div>
+          
+          <!-- USDC -->
+          <div class="crypto-card">
+            <div class="crypto-icon usdc">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10"/>
+                <text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">$</text>
+              </svg>
+            </div>
+            <h3>USDC</h3>
+            <p class="crypto-address">0x...your_address</p>
+            <button class="crypto-copy" onclick="copyToClipboard('0x...your_address')">Copy Address</button>
+          </div>
+        </div>
+        
+        <!-- Coinbase Commerce Button -->
+        <div class="coinbase-commerce">
+          <p class="or-divider">OR</p>
+          <a href="https://commerce.coinbase.com/checkout/YOUR_CHECKOUT_ID" target="_blank" rel="noopener noreferrer" class="coinbase-btn">
+            <svg class="coinbase-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+              <circle cx="12" cy="12" r="4"/>
+            </svg>
+            Pay with Coinbase Commerce
+          </a>
+          <p class="crypto-note">Accepts BTC, ETH, USDC, LTC, BCH, DAI</p>
+        </div>
+      </div>
+    </section>
+
     <footer>
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Social Icons First (Centered) -->
@@ -2798,6 +2859,36 @@
     <script type="module" defer src="js/core/bootstrap.js?v=20260423a"></script>
     <script defer src="js/modules/scroll-animations.js?v=20260423a"></script>
     <script defer src="js/modules/name-pronounce.js?v=20260506a"></script>
+    
+    <!-- Crypto Copy Function -->
+    <script>
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          // Show toast notification
+          const toast = document.createElement('div');
+          toast.textContent = 'Address copied!';
+          toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--apple-gray-600);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 9999;
+            animation: fadeInOut 2s ease forwards;
+          `;
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2000);
+        }).catch(err => {
+          console.error('Failed to copy:', err);
+          alert('Failed to copy address');
+        });
+      }
+    </script>
 </body>
 
 </html>
