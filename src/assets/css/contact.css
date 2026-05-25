@@ -2349,13 +2349,22 @@ html.dark .dream-company-item[title='Claude']:hover .company-logo {
   filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
 }
 
-/* Broadcom - Red rectangle logo, keep vibrant */
+/* Broadcom - Red circle and black text, invert text to white while keeping red red */
 html.dark .dream-company-item[title='Broadcom'] .company-logo {
-  filter: brightness(1.05);
+  filter: invert(1) hue-rotate(180deg) brightness(1.1);
 }
 
 html.dark .dream-company-item[title='Broadcom']:hover .company-logo {
-  filter: brightness(1.15) drop-shadow(0 4px 12px rgb(204 0 0 / 40%));
+  filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 4px 12px rgb(204 9 47 / 40%));
+}
+
+/* NVIDIA - green claw and black text, invert text to white while keeping claw green */
+html.dark .dream-company-item[title='NVIDIA'] .company-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.15);
+}
+
+html.dark .dream-company-item[title='NVIDIA']:hover .company-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.25) drop-shadow(0 4px 12px rgb(118 185 0 / 40%));
 }
 
 /* TSMC - SVG logo, invert dark text while keeping red wafer red */
