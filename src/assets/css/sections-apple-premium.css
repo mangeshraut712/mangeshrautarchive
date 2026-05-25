@@ -37,6 +37,19 @@
   --apple-dark-elevated: #2c2c2e;
   --apple-dark-border: rgb(255 255 255 / 12%);
   
+  /* Semantic Color Variables - Theme Aware */
+  --bg-primary: var(--bg-primary);
+  --bg-secondary: var(--apple-gray-50);
+  --bg-tertiary: #fafafa;
+  --text-primary: var(--apple-gray-600);
+  --text-secondary: var(--apple-gray-400);
+  --text-tertiary: var(--apple-gray-300);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-default: rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  
   /* Glass Morphism System */
   --glass-bg-light: rgb(255 255 255 / 75%);
   --glass-bg-dark: rgb(28 28 30 / 75%);
@@ -96,8 +109,8 @@ section .section-subtitle {
   justify-content: center;
   background: linear-gradient(180deg, 
     var(--apple-gray-50) 0%, 
-    #ffffff 20%, 
-    #ffffff 80%, 
+    var(--bg-primary) 20%, 
+    var(--bg-primary) 80%, 
     var(--apple-gray-50) 100%);
   position: relative;
   overflow: hidden;
@@ -177,7 +190,7 @@ html.dark #home::before {
 }
 
 html.dark #home .hero-name-text {
-  background: linear-gradient(135deg, #ffffff 0%, var(--apple-gray-200) 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--apple-gray-200) 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -273,14 +286,26 @@ html.dark #home .hero-role-flip strong {
 }
 
 #home .vibe-coder-badge {
-  background: linear-gradient(135deg, var(--apple-yellow) 0%, #ffd60a 100%);
-  color: var(--apple-gray-600);
-  box-shadow: 0 4px 12px rgb(255 204 0 / 30%);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 #home .vibe-coder-badge:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgb(255 204 0 / 40%);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-md);
+}
+
+html.dark #home .vibe-coder-badge {
+  background: var(--bg-primary-dark);
+  border-color: var(--border-subtle-dark);
+  color: var(--text-primary-dark);
+}
+
+html.dark #home .vibe-coder-badge:hover {
+  background: var(--bg-secondary-dark);
 }
 
 #home .portfolio-reach-badge {
@@ -460,7 +485,7 @@ html.dark #home .hero-cta:last-child {
 
 /* ===== ABOUT SECTION - PREMIUM UPGRADE ===== */
 #about {
-  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
 }
 
 html.dark #about {
@@ -552,7 +577,7 @@ html.dark #about .about-text-card {
 }
 
 html.dark #about .about-intro-title {
-  color: #ffffff;
+  color: var(--bg-primary);
 }
 
 #about .about-intro-text,
@@ -581,7 +606,7 @@ html.dark #about .about-description strong {
 
 /* ===== SKILLS SECTION - PREMIUM UPGRADE ===== */
 #skills {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
 }
 
 html.dark #skills {
@@ -590,7 +615,7 @@ html.dark #skills {
 
 /* ===== EXPERIENCE SECTION - PREMIUM UPGRADE ===== */
 #experience {
-  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
 }
 
 html.dark #experience {
@@ -627,7 +652,7 @@ html.dark #experience .timeline-section-header {
 }
 
 html.dark #experience .timeline-section-header h3 {
-  color: #ffffff;
+  color: var(--bg-primary);
 }
 
 #experience .experience-item {
@@ -677,7 +702,7 @@ html.dark #experience .experience-item {
 }
 
 html.dark #experience .experience-content h3 {
-  color: #ffffff;
+  color: var(--bg-primary);
 }
 
 #experience .experience-content .text-accent {
@@ -773,7 +798,7 @@ html.dark #experience .experience-tag:hover {
 
 /* ===== EDUCATION SECTION - PREMIUM UPGRADE ===== */
 #education {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
 }
 
 html.dark #education {
@@ -782,7 +807,7 @@ html.dark #education {
 
 /* ===== PUBLICATIONS SECTION - PREMIUM UPGRADE ===== */
 #publications {
-  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
 }
 
 html.dark #publications {
@@ -791,7 +816,7 @@ html.dark #publications {
 
 /* ===== AWARDS SECTION - PREMIUM UPGRADE ===== */
 #awards {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
 }
 
 html.dark #awards {
@@ -800,7 +825,7 @@ html.dark #awards {
 
 /* ===== RECOMMENDATIONS SECTION - PREMIUM UPGRADE ===== */
 #recommendations {
-  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
 }
 
 html.dark #recommendations {
@@ -809,7 +834,7 @@ html.dark #recommendations {
 
 /* ===== CERTIFICATIONS SECTION - PREMIUM UPGRADE ===== */
 #certifications {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
 }
 
 html.dark #certifications {
@@ -818,7 +843,7 @@ html.dark #certifications {
 
 /* ===== BLOG SECTION - PREMIUM UPGRADE ===== */
 #blog {
-  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
 }
 
 html.dark #blog {
@@ -827,7 +852,7 @@ html.dark #blog {
 
 /* ===== CONTACT SECTION - PREMIUM UPGRADE ===== */
 #contact {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 50%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 50%, var(--apple-gray-50) 100%);
 }
 
 html.dark #contact {
@@ -836,7 +861,7 @@ html.dark #contact {
 
 /* ===== GAME SECTION - PREMIUM UPGRADE ===== */
 #debug-runner-section {
-  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
 }
 
 html.dark #debug-runner-section {
@@ -961,6 +986,21 @@ html.dark #go-to-top {
   #home .playing-indicator span {
     animation: none !important;
   }
+}
+
+/* Dark Mode Semantic Variable Overrides */
+html.dark {
+  --bg-primary: var(--apple-dark-bg);
+  --bg-secondary: var(--apple-dark-surface);
+  --bg-tertiary: var(--apple-dark-elevated);
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #8e8e93;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-default: rgba(255, 255, 255, 0.15);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* ===== PRINT STYLES ===== */

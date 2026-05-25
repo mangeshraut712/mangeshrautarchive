@@ -6,11 +6,11 @@
 
 /* Blog Section Background */
 #blog {
-  background: #fff !important;
+  background: var(--bg-primary, #fff) !important;
 }
 
 html.dark #blog {
-  background: #000 !important;
+  background: var(--bg-primary-dark, #000) !important;
 }
 
 /* Blog Posts Container */
@@ -32,16 +32,16 @@ html.dark #blog {
   margin: 2.25rem auto 0;
   padding: clamp(1.25rem, 3vw, 2rem);
   color: var(--text-primary);
-  background: #fff !important;
-  border: 1px solid var(--card-border-light);
+  background: var(--bg-elevated, #fff) !important;
+  border: 1px solid var(--border-subtle, rgba(0,0,0,0.1));
   border-radius: 20px;
   box-shadow: var(--shadow-md);
 }
 
 html.dark .newsletter-card {
   color: var(--text-primary-dark);
-  background: #000 !important;
-  border-color: var(--card-border-dark);
+  background: var(--bg-elevated-dark, #1c1c1e) !important;
+  border-color: var(--border-subtle-dark, rgba(255,255,255,0.1));
 }
 
 .newsletter-icon {
@@ -94,9 +94,9 @@ html.dark .newsletter-card {
 
 /* Blog Card */
 .blog-card {
-  background: #fff !important;
+  background: var(--bg-elevated, #fff) !important;
   border-radius: 20px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-subtle, rgba(0,0,0,0.1));
   overflow: hidden;
   transition:
     transform 0.3s ease,
@@ -112,8 +112,8 @@ html.dark .newsletter-card {
 }
 
 html.dark .blog-card {
-  background: #000 !important;
-  border-color: rgb(255 255 255 / 10%);
+  background: var(--bg-elevated-dark, #1c1c1e) !important;
+  border-color: var(--border-subtle-dark, rgba(255,255,255,0.1));
   box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
 

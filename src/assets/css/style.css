@@ -274,9 +274,9 @@ body {
   margin: 0;
   overflow-x: clip;
   padding: 0;
-  background-color: #fff !important;
+  background-color: var(--bg-primary, #fff) !important;
 
-  /* Force solid white */
+  /* Theme-aware solid background */
 }
 
 html {
@@ -807,7 +807,7 @@ body.menu-open .overlay-nav-link:nth-child(n + 7) {
 
 section {
   position: relative;
-  background: #fff !important;
+  background: var(--bg-primary, #fff) !important;
   min-height: auto;
   /* Removed 100vh forcing to eliminate extra space */
   display: flex;
@@ -825,7 +825,7 @@ section {
 }
 
 html.dark section {
-  background: #000 !important;
+  background: var(--bg-primary-dark, #000) !important;
 }
 
 /* Section Padding - Apple Inspired */
@@ -836,7 +836,7 @@ section#home {
 }
 
 html.dark section#home {
-  background: #000;
+  background: var(--bg-primary-dark, #000);
 }
 
 /* Home Section Spacing */
