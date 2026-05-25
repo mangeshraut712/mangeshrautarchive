@@ -13,25 +13,6 @@ html.dark #experience {
   background-image: none !important;
 }
 
-#experience h2 {
-  margin: 0 0 3rem !important;
-  background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 56%, #5e5ce6 100%) !important;
-  background-clip: text !important;
-  color: transparent !important;
-  font-size: clamp(2.1rem, 4vw, 3.35rem) !important;
-  font-weight: 800 !important;
-  letter-spacing: 0 !important;
-  line-height: 1.08 !important;
-  text-align: center !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
-html.dark #experience h2 {
-  background: linear-gradient(135deg, #f5f5f7 0%, #58a6ff 58%, #5e5ce6 100%) !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-}
-
 .experience-timeline {
   max-width: 980px;
   margin: 0 auto;
@@ -347,10 +328,6 @@ html.dark #experience .experience-tag {
 @media (width <= 768px) {
   #experience {
     padding: 3.5rem 0 !important;
-  }
-
-  #experience h2 {
-    margin-bottom: 2rem !important;
   }
 
   .experience-timeline::before {
