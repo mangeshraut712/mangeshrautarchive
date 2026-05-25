@@ -1084,13 +1084,13 @@ html.dark .crypto-mini-btn {
 .crypto-mini-btn span {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: white;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 html.dark .crypto-mini-btn span {
-  color: var(--text-secondary-dark);
+  color: white;
 }
 
 /* Coinbase Mini Button */
