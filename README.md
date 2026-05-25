@@ -37,9 +37,10 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 **Core Innovation**: An AI assistant that doesn't just chat — it **acts**. Navigate sections, download resumes, schedule meetings, filter projects, toggle themes — all executed instantly in-browser via 9 deterministic WebMCP tools. No page reloads, zero network latency for local actions.
 
 **Built as a reference implementation** — every subsystem over-engineered to production standards:
+
 - **9 WebMCP Tools**: Registered with `navigator.modelContext` for native AI agent compatibility
-- **Hybrid Execution**: Local actions (<50ms) + OpenRouter Gemini 2.5 (streaming)  
-- **Multi-Tier Resilience**: 4-layer fallback chain works on Vercel *and* static GitHub Pages
+- **Hybrid Execution**: Local actions (<50ms) + OpenRouter Gemini 2.5 (streaming)
+- **Multi-Tier Resilience**: 4-layer fallback chain works on Vercel _and_ static GitHub Pages
 - **Extreme Testing**: 12+ real browser/device configs (Chrome, Safari, Firefox, Edge, Pixel 7, iPhone 14, iPad Pro)
 - **Zero-Downtime Deploys**: Dual-surface (Vercel + GitHub Pages) with automated verification
 
@@ -68,13 +69,13 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 ## 🚀 Live Demos
 
-| Experience                  | Link                                                                 | Highlights |
-|-----------------------------|----------------------------------------------------------------------|----------|
-| Main Portfolio              | [mangeshraut.pro](https://mangeshraut.pro)                           | Agentic chat, spatial projects, travel atlas |
-| System Monitor              | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)           | Real-time latency, service health, deployment surface status |
-| Travel Atlas                | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)             | MapLibre-powered visited places with narrative intelligence |
-| GitHub Pages Fallback       | [mangeshraut712.github.io/...](https://mangeshraut712.github.io/mangeshrautarchive) | Full functionality via absolute domain proxy fallbacks |
-| AI Assistant (Agentic)      | Open chat on any page                                                | Try: “download resume”, “go to projects”, “schedule a meeting” |
+| Experience             | Link                                                                                | Highlights                                                     |
+| ---------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Main Portfolio         | [mangeshraut.pro](https://mangeshraut.pro)                                          | Agentic chat, spatial projects, travel atlas                   |
+| System Monitor         | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                          | Real-time latency, service health, deployment surface status   |
+| Travel Atlas           | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                            | MapLibre-powered visited places with narrative intelligence    |
+| GitHub Pages Fallback  | [mangeshraut712.github.io/...](https://mangeshraut712.github.io/mangeshrautarchive) | Full functionality via absolute domain proxy fallbacks         |
+| AI Assistant (Agentic) | Open chat on any page                                                               | Try: “download resume”, “go to projects”, “schedule a meeting” |
 
 > **Pro tip**: The agentic engine runs locally first. Try natural language commands — many execute with zero network round-trip.
 
@@ -89,6 +90,7 @@ How the key systems actually work — implementation details, not buzzwords.
 **What was built**: A complete deterministic agentic runtime that turns the chat from a passive Q&A box into an active system that performs real UI actions.
 
 **How it works**:
+
 - Two parallel detection systems run on every user message.
 - **Primary path** (`chat.js:256`): `agenticActions.detectAndExecute()` is called **before** any LLM request. If a confident match is found, the action executes locally and the LLM is skipped entirely.
 - **Secondary path**: Full WebMCP tool registration in `agentic-actions.js` using `navigator.modelContext.registerTool()` with proper JSON Schema input definitions. This makes the tools discoverable by future native AI agents.
@@ -102,6 +104,7 @@ How the key systems actually work — implementation details, not buzzwords.
 **What was built**: A live, release-aware project showcase that never breaks — even on static GitHub Pages hosting.
 
 **How it works**:
+
 - Four-tier fallback chain in `github-projects.js`:
   1. Local backend proxy (`/api/github/repos/public`)
   2. Production absolute domain fallbacks (`https://mangeshraut.pro/api/...`)
@@ -117,6 +120,7 @@ How the key systems actually work — implementation details, not buzzwords.
 **What was built**: A fully interactive visited-places atlas using MapLibre GL (not the more common Leaflet).
 
 **How it works**:
+
 - Custom `travel-engine.js` transforms raw location data into rich narrative objects (stories, categories, photo references).
 - Advanced client-side search + multi-category filtering + “featured only” mode.
 - Auto-tour mode that cycles through locations with smooth camera flights.
@@ -128,6 +132,7 @@ How the key systems actually work — implementation details, not buzzwords.
 **What was built**: A real `/monitor` page that exposes live system health.
 
 **How it works**:
+
 - `api/monitoring.py` (1,300+ lines) implements async health probes using `httpx` + optional `psutil`.
 - Measures latency to OpenRouter, GitHub, Firestore, and Last.fm on every request.
 - Structured event logging with severity levels and recent event ring buffer.
@@ -139,6 +144,7 @@ How the key systems actually work — implementation details, not buzzwords.
 **What was built**: A purpose-built, zero-config-heavy build system.
 
 **How it works**:
+
 - `scripts/build/build.js` uses esbuild directly for JS transformation.
 - Intelligent `dist` directory selection: falls back to `/tmp/mangeshrautarchive-dist` when running inside macOS-protected folders (Downloads/Desktop) to avoid `EPERM` errors.
 - Safe public configuration injection only (`build-config.json` + `build-config.js`) — **zero secrets** ever reach the browser.
@@ -150,6 +156,7 @@ How the key systems actually work — implementation details, not buzzwords.
 **What was built**: One of the most thorough personal project test setups visible on GitHub.
 
 **How it works**:
+
 - `playwright.config.js` defines 12+ named projects including specific browser channels (Chrome, msedge) and real mobile devices.
 - Separate suites for smoke, accessibility (axe-core), visual regression, and post-deploy.
 - Post-deploy tests explicitly run against **both** Vercel and GitHub Pages surfaces after every production release.
@@ -159,6 +166,7 @@ How the key systems actually work — implementation details, not buzzwords.
 ### 7. Hybrid AI Execution with Strict Priority
 
 Unlike most “AI portfolio” sites that always hit the LLM:
+
 - Agentic action detection happens first and short-circuits the request when possible.
 - Only genuinely reasoning-heavy questions reach OpenRouter.
 - Rich response metadata (model, runtime, source, confidence, category) is returned and displayed for transparency.
@@ -169,17 +177,17 @@ Unlike most “AI portfolio” sites that always hit the LLM:
 
 9 deterministic tools are registered and executable today:
 
-| Tool                    | What It Does |
-|-------------------------|--------------|
-| `navigate_to_section`   | Instant smooth scroll to any portfolio section |
-| `download_resume`       | Direct PDF download |
-| `schedule_meeting`      | Open Calendly popup |
-| `open_contact_form`     | Focus and open contact overlay |
-| `copy_contact_info`     | Copy email/LinkedIn |
-| `search_portfolio`      | Trigger global search |
-| `filter_projects`       | Filter the live GitHub showcase |
-| `open_social_media`     | Open GitHub / LinkedIn / X |
-| `toggle_theme`          | Switch light/dark/system |
+| Tool                  | What It Does                                   |
+| --------------------- | ---------------------------------------------- |
+| `navigate_to_section` | Instant smooth scroll to any portfolio section |
+| `download_resume`     | Direct PDF download                            |
+| `schedule_meeting`    | Open Calendly popup                            |
+| `open_contact_form`   | Focus and open contact overlay                 |
+| `copy_contact_info`   | Copy email/LinkedIn                            |
+| `search_portfolio`    | Trigger global search                          |
+| `filter_projects`     | Filter the live GitHub showcase                |
+| `open_social_media`   | Open GitHub / LinkedIn / X                     |
+| `toggle_theme`        | Switch light/dark/system                       |
 
 All tools are fully functional via natural language in the chat **and** exposed via WebMCP for future agent ecosystems.
 
@@ -197,17 +205,17 @@ All tools are fully functional via natural language in the chat **and** exposed 
 
 ## 🛠 Tech Stack
 
-| Layer              | Technologies |
-|--------------------|--------------|
-| **Frontend**       | Vanilla ES2024, Tailwind CSS 4, Custom Design System |
-| **Agentic Runtime**| WebMCP + Custom Action Handler with priority execution |
-| **AI**             | OpenRouter (Gemini 2.5 Flash/Pro) + local deterministic actions |
-| **Backend**        | FastAPI 0.136 + Pydantic v2 (Vercel Serverless) |
-| **Data**           | Cloud Firestore, GitHub REST, Last.fm |
-| **Build**          | esbuild + Sharp + custom Node pipeline |
-| **Testing**        | Playwright 1.58 (12+ configs), Vitest 4, axe-core, Lighthouse CI |
-| **Quality**        | ESLint 9, Stylelint, Ruff, Vulture, Security Scanner |
-| **Hosting**        | Vercel (primary) + GitHub Pages (resilient static fallback) |
+| Layer               | Technologies                                                     |
+| ------------------- | ---------------------------------------------------------------- |
+| **Frontend**        | Vanilla ES2024, Tailwind CSS 4, Custom Design System             |
+| **Agentic Runtime** | WebMCP + Custom Action Handler with priority execution           |
+| **AI**              | OpenRouter (Gemini 2.5 Flash/Pro) + local deterministic actions  |
+| **Backend**         | FastAPI 0.136 + Pydantic v2 (Vercel Serverless)                  |
+| **Data**            | Cloud Firestore, GitHub REST, Last.fm                            |
+| **Build**           | esbuild + Sharp + custom Node pipeline                           |
+| **Testing**         | Playwright 1.58 (12+ configs), Vitest 4, axe-core, Lighthouse CI |
+| **Quality**         | ESLint 9, Stylelint, Ruff, Vulture, Security Scanner             |
+| **Hosting**         | Vercel (primary) + GitHub Pages (resilient static fallback)      |
 
 ---
 
@@ -238,6 +246,7 @@ flowchart TD
 ```
 
 **Guiding Principles**:
+
 - Local-first for speed and privacy
 - Cloud LLM only for deep reasoning
 - Dual deployment surface with absolute fallbacks
@@ -272,18 +281,19 @@ npm run dev
 ```
 
 Local endpoints:
+
 - Frontend: `http://127.0.0.1:4000`
 - FastAPI: `http://127.0.0.1:8001`
 - Docs: `http://127.0.0.1:8001/docs`
 
 **Key Commands**
 
-| Command                    | Purpose |
-|----------------------------|---------|
-| `npm run dev`              | Hot-reloading frontend + backend |
-| `npm run build`            | Production build to `dist/` |
-| `npm run qa:prod-ready`    | Full security + lint + test + E2E + Lighthouse pipeline |
-| `npm run test:e2e:all`     | Complete multi-device Playwright matrix |
+| Command                 | Purpose                                                 |
+| ----------------------- | ------------------------------------------------------- |
+| `npm run dev`           | Hot-reloading frontend + backend                        |
+| `npm run build`         | Production build to `dist/`                             |
+| `npm run qa:prod-ready` | Full security + lint + test + E2E + Lighthouse pipeline |
+| `npm run test:e2e:all`  | Complete multi-device Playwright matrix                 |
 
 ---
 

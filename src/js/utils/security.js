@@ -15,7 +15,7 @@ const HTML_ESCAPE_MAP = {
   "'": '&#x27;',
   '/': '&#x2F;',
   '`': '&#x60;',
-  '=': '&#x3D;'
+  '=': '&#x3D;',
 };
 
 /**
@@ -51,9 +51,9 @@ export function sanitizeUrl(url) {
   if (typeof url !== 'string') {
     return '';
   }
-  
+
   const trimmed = url.trim().toLowerCase();
-  
+
   // Block dangerous protocols
   const dangerousProtocols = [
     'javascript:',
@@ -62,24 +62,24 @@ export function sanitizeUrl(url) {
     'file:',
     'about:',
     'chrome:',
-    'resource:'
+    'resource:',
   ];
-  
+
   if (dangerousProtocols.some(protocol => trimmed.startsWith(protocol))) {
     return '';
   }
-  
+
   // Allow safe protocols
   const safeProtocols = ['https:', 'http:', 'mailto:', 'tel:'];
   if (safeProtocols.some(protocol => trimmed.startsWith(protocol))) {
     return url.trim();
   }
-  
+
   // Allow relative URLs and anchors
   if (trimmed.startsWith('/') || trimmed.startsWith('#') || trimmed.startsWith('./')) {
     return url.trim();
   }
-  
+
   // Default to empty for unknown protocols
   return '';
 }
@@ -93,22 +93,22 @@ export function sanitizeEmail(email) {
   if (typeof email !== 'string') {
     return null;
   }
-  
+
   const trimmed = email.trim().toLowerCase();
-  
+
   // Basic email validation regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
+
   if (!emailRegex.test(trimmed)) {
     return null;
   }
-  
+
   // Check for dangerous characters
   const dangerousChars = /[<>'"`]/;
   if (dangerousChars.test(trimmed)) {
     return null;
   }
-  
+
   return trimmed;
 }
 
@@ -123,41 +123,56 @@ export function createSanitizedFragment(html, documentRef = document) {
   if (typeof html !== 'string') {
     return documentRef.createDocumentFragment();
   }
-  
+
   const allowedTags = new Set([
-    'p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'del',
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'ul', 'ol', 'li',
-    'a', 'span', 'div'
+    'p',
+    'br',
+    'strong',
+    'b',
+    'em',
+    'i',
+    'u',
+    's',
+    'del',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'ul',
+    'ol',
+    'li',
+    'a',
+    'span',
+    'div',
   ]);
-  
-  const allowedAttrs = new Set([
-    'href', 'title', 'class', 'id', 'target', 'rel'
-  ]);
-  
+
+  const allowedAttrs = new Set(['href', 'title', 'class', 'id', 'target', 'rel']);
+
   const template = documentRef.createElement('template');
   template.innerHTML = html;
-  
+
   const fragment = documentRef.createDocumentFragment();
-  
+
   // Deep clone and sanitize
   function sanitizeNode(node) {
     if (node.nodeType === Node.TEXT_NODE) {
       return node.cloneNode(true);
     }
-    
+
     if (node.nodeType === Node.ELEMENT_NODE) {
       const tagName = node.tagName.toLowerCase();
-      
+
       if (!allowedTags.has(tagName)) {
         // Convert disallowed tags to span
         const span = documentRef.createElement('span');
         span.textContent = node.textContent;
         return span;
       }
-      
+
       const clone = documentRef.createElement(tagName);
-      
+
       // Copy allowed attributes
       for (const attr of node.attributes) {
         if (allowedAttrs.has(attr.name.toLowerCase())) {
@@ -176,7 +191,7 @@ export function createSanitizedFragment(html, documentRef = document) {
           }
         }
       }
-      
+
       // Recursively sanitize children
       for (const child of node.childNodes) {
         const sanitized = sanitizeNode(child);
@@ -184,20 +199,20 @@ export function createSanitizedFragment(html, documentRef = document) {
           clone.appendChild(sanitized);
         }
       }
-      
+
       return clone;
     }
-    
+
     return null;
   }
-  
+
   for (const child of template.content.childNodes) {
     const sanitized = sanitizeNode(child);
     if (sanitized) {
       fragment.appendChild(sanitized);
     }
   }
-  
+
   return fragment;
 }
 
@@ -211,20 +226,22 @@ export function createSanitizedFragment(html, documentRef = document) {
  */
 export function rateLimit(fn, limit = 10, windowMs = 60000) {
   const calls = [];
-  
-  return function(...args) {
+
+  return function (...args) {
     const now = Date.now();
-    
+
     // Remove old calls outside the window
     while (calls.length > 0 && calls[0] < now - windowMs) {
       calls.shift();
     }
-    
+
     if (calls.length >= limit) {
-      console.warn(`Rate limit exceeded. Try again in ${Math.ceil((calls[0] + windowMs - now) / 1000)}s`);
+      console.warn(
+        `Rate limit exceeded. Try again in ${Math.ceil((calls[0] + windowMs - now) / 1000)}s`
+      );
       return null;
     }
-    
+
     calls.push(now);
     return fn.apply(this, args);
   };
@@ -239,17 +256,17 @@ export function validateGitHubUsername(username) {
   if (typeof username !== 'string') {
     return null;
   }
-  
+
   const trimmed = username.trim();
-  
+
   // GitHub username rules: alphanumeric, hyphens, 1-39 chars
   // Cannot start/end with hyphen, no consecutive hyphens
   const usernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/;
-  
+
   if (!usernameRegex.test(trimmed) || trimmed.length > 39) {
     return null;
   }
-  
+
   return trimmed;
 }
 
@@ -261,7 +278,7 @@ export function validateGitHubUsername(username) {
 export function generateSecureToken(length = 32) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let token = '';
-  
+
   if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
     const array = new Uint32Array(length);
     crypto.getRandomValues(array);
@@ -274,7 +291,7 @@ export function generateSecureToken(length = 32) {
       token += chars[Math.floor(Math.random() * chars.length)];
     }
   }
-  
+
   return token;
 }
 
@@ -285,5 +302,5 @@ export default {
   createSanitizedFragment,
   rateLimit,
   validateGitHubUsername,
-  generateSecureToken
+  generateSecureToken,
 };

@@ -504,7 +504,6 @@
     }
     initTypingEffect();
     initHoverSounds(); // Enabled only when localStorage flag is present
-
   }
 
   // Run when DOM is ready

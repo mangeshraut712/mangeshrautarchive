@@ -30,7 +30,6 @@ export class AccessibilityEnhancer {
   async init() {
     if (this.isInitialized) return;
 
-
     // Create ARIA live region for announcements
     this.createLiveRegion();
 
@@ -269,8 +268,7 @@ export class AccessibilityEnhancer {
     });
 
     // Track focus for debugging
-    document.addEventListener('focusin', _e => {
-    });
+    document.addEventListener('focusin', _e => {});
   }
 
   /**

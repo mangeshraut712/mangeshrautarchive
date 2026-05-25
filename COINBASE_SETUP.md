@@ -1,6 +1,7 @@
 # Coinbase Commerce Crypto Payment Setup Guide
 
 ## Overview
+
 This guide explains how to properly set up Coinbase Commerce to receive crypto payments in your portfolio.
 
 ---
@@ -61,6 +62,7 @@ This guide explains how to properly set up Coinbase Commerce to receive crypto p
 ## Step 5: Configure Webhooks (For Notifications)
 
 ### Why Webhooks?
+
 - Get notified when someone pays
 - Auto-confirm payments
 - Send thank you emails
@@ -86,37 +88,37 @@ const router = express.Router();
 // Your webhook secret from Coinbase Commerce
 const WEBHOOK_SECRET = process.env.COINBASE_WEBHOOK_SECRET;
 
-router.post('/webhooks/coinbase', express.raw({type: 'application/json'}), (req, res) => {
+router.post('/webhooks/coinbase', express.raw({ type: 'application/json' }), (req, res) => {
   const payload = req.body;
   const signature = req.headers['x-cc-webhook-signature'];
-  
+
   // Verify webhook signature
   const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
   hmac.update(payload);
   const computedSig = hmac.digest('hex');
-  
+
   if (signature !== computedSig) {
     return res.status(400).send('Invalid signature');
   }
-  
+
   const event = JSON.parse(payload);
-  
+
   switch (event.event.type) {
     case 'charge:confirmed':
       // Payment confirmed! Send thank you email
       console.log('Payment received:', event.data);
       // TODO: Save to database, send email, etc.
       break;
-      
+
     case 'charge:created':
       console.log('Payment pending:', event.data);
       break;
-      
+
     case 'charge:failed':
       console.log('Payment failed:', event.data);
       break;
   }
-  
+
   res.status(200).send('OK');
 });
 
@@ -145,25 +147,25 @@ async function createCharge(amount, currency = 'USD') {
         pricing_type: 'fixed_price',
         local_price: {
           amount: amount,
-          currency: currency
+          currency: currency,
         },
         metadata: {
           customer_name: 'Portfolio Visitor',
-          customer_email: 'optional@email.com'
-        }
+          customer_email: 'optional@email.com',
+        },
       },
       {
         headers: {
           'X-CC-Api-Key': COINBASE_API_KEY,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       }
     );
-    
+
     return {
       id: response.data.data.id,
       url: response.data.data.hosted_url,
-      qr: response.data.data.qr_code
+      qr: response.data.data.qr_code,
     };
   } catch (error) {
     console.error('Error creating charge:', error);
@@ -174,13 +176,13 @@ async function createCharge(amount, currency = 'USD') {
 // Usage in your API route
 app.post('/api/create-crypto-charge', async (req, res) => {
   const { amount } = req.body;
-  
+
   try {
     const charge = await createCharge(amount);
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       paymentUrl: charge.url,
-      qrCode: charge.qr
+      qrCode: charge.qr,
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -219,14 +221,14 @@ USDC_ADDRESS=your_usdc_address
 const CRYPTO_ADDRESSES = {
   btc: process.env.BTC_ADDRESS,
   eth: process.env.ETH_ADDRESS,
-  usdc: process.env.USDC_ADDRESS
+  usdc: process.env.USDC_ADDRESS,
 };
 ```
 
 Or if using static HTML, manually update:
 
 ```html
-<button onclick="copyToClipboard('bc1qXXXXXXXXXXXXXXXXXXXX')">
+<button onclick="copyToClipboard('bc1qXXXXXXXXXXXXXXXXXXXX')"></button>
 ```
 
 ---
@@ -234,11 +236,13 @@ Or if using static HTML, manually update:
 ## Step 9: Testing
 
 ### Test Mode:
+
 1. In Coinbase Commerce, use test API key
 2. Payments go to testnet (not real money)
 3. Test all flows before going live
 
 ### Live Testing:
+
 1. Make a small $1 payment to yourself
 2. Verify you receive the notification
 3. Check your Coinbase Commerce dashboard
@@ -248,6 +252,7 @@ Or if using static HTML, manually update:
 ## Step 10: Security Best Practices
 
 ### ✅ DO:
+
 - [ ] Store API keys in environment variables
 - [ ] Use HTTPS for webhooks
 - [ ] Verify webhook signatures
@@ -256,6 +261,7 @@ Or if using static HTML, manually update:
 - [ ] Use testnet for development
 
 ### ❌ DON'T:
+
 - [ ] Hardcode API keys in frontend
 - [ ] Commit .env files to git
 - [ ] Expose webhook secrets

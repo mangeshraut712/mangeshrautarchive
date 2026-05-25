@@ -1700,7 +1700,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Vercel Web Analytics
   initializeVercelAnalytics();
-
 });
 
 export { ChatUI };

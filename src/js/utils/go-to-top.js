@@ -111,6 +111,5 @@
     // Set initial accessibility state
     goToTopBtn.setAttribute('aria-hidden', 'true');
     goToTopBtn.tabIndex = -1;
-
   });
 })();

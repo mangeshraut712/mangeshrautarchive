@@ -10,7 +10,7 @@
 const LAZY_LOAD_CONFIG = {
   root: null,
   rootMargin: '50px 0px',
-  threshold: 0.01
+  threshold: 0.01,
 };
 
 /**
@@ -33,8 +33,8 @@ export function createLazyObserver(selector, callback, options = {}) {
   }
 
   const config = { ...LAZY_LOAD_CONFIG, ...options };
-  
-  const observer = new IntersectionObserver((entries) => {
+
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         callback(entry.target);
@@ -58,8 +58,8 @@ export function createLazyObserver(selector, callback, options = {}) {
  */
 export function debounce(fn, delay = 300) {
   let timeoutId;
-  
-  return function(...args) {
+
+  return function (...args) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), delay);
   };
@@ -76,12 +76,12 @@ export function debounce(fn, delay = 300) {
  */
 export function throttle(fn, limit = 100) {
   let inThrottle;
-  
-  return function(...args) {
+
+  return function (...args) {
     if (!inThrottle) {
       fn.apply(this, args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
   };
 }
@@ -94,18 +94,18 @@ export function throttle(fn, limit = 100) {
  */
 export function prefetch(url, as = 'document') {
   if (!url || typeof document === 'undefined') return null;
-  
+
   const link = document.createElement('link');
   link.rel = 'prefetch';
   link.href = url;
   link.as = as;
-  
+
   // Only add if not already present
   const existing = document.querySelector(`link[rel="prefetch"][href="${url}"]`);
   if (!existing) {
     document.head.appendChild(link);
   }
-  
+
   return link;
 }
 
@@ -116,15 +116,15 @@ export function prefetch(url, as = 'document') {
  */
 export function preconnect(domain) {
   if (!domain || typeof document === 'undefined') return null;
-  
+
   const existing = document.querySelector(`link[rel="preconnect"][href="${domain}"]`);
   if (existing) return existing;
-  
+
   const link = document.createElement('link');
   link.rel = 'preconnect';
   link.href = domain;
   link.crossOrigin = 'anonymous';
-  
+
   document.head.appendChild(link);
   return link;
 }
@@ -143,13 +143,13 @@ export function measureWebVitals(callback) {
     return () => {};
   }
 
-  const observer = new PerformanceObserver((list) => {
+  const observer = new PerformanceObserver(list => {
     for (const entry of list.getEntries()) {
       callback({
         name: entry.name,
         value: entry.value || entry.startTime,
         rating: entry.rating || 'good',
-        delta: entry.delta
+        delta: entry.delta,
       });
     }
   });
@@ -188,7 +188,7 @@ export function loadScript(src, options = {}) {
 
     const script = document.createElement('script');
     script.src = src;
-    
+
     if (options.async) script.async = true;
     if (options.defer) script.defer = true;
     if (options.module) script.type = 'module';
@@ -228,7 +228,11 @@ export async function batchProcess(items, processor, concurrency = 3) {
     }
 
     // Clean up completed promises
-    executing.splice(0, executing.findIndex(p => p === promise), 1);
+    executing.splice(
+      0,
+      executing.findIndex(p => p === promise),
+      1
+    );
   }
 
   await Promise.all(executing);
@@ -245,23 +249,23 @@ export async function batchProcess(items, processor, concurrency = 3) {
  */
 export function memoize(fn, keyGenerator = (...args) => JSON.stringify(args)) {
   const cache = new Map();
-  
-  return function(...args) {
+
+  return function (...args) {
     const key = keyGenerator(...args);
-    
+
     if (cache.has(key)) {
       return cache.get(key);
     }
-    
+
     const result = fn.apply(this, args);
     cache.set(key, result);
-    
+
     // Limit cache size to prevent memory leaks
     if (cache.size > 100) {
       const firstKey = cache.keys().next().value;
       cache.delete(firstKey);
     }
-    
+
     return result;
   };
 }
@@ -276,7 +280,7 @@ export function requestIdleCallback(callback, options = {}) {
   if ('requestIdleCallback' in window) {
     return window.requestIdleCallback(callback, options);
   }
-  
+
   // Fallback using setTimeout
   return setTimeout(callback, 1);
 }
@@ -304,5 +308,5 @@ export default {
   batchProcess,
   memoize,
   requestIdleCallback,
-  cancelIdleCallback
+  cancelIdleCallback,
 };

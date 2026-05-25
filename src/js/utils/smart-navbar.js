@@ -468,7 +468,6 @@ function initSmartNavbar() {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
-
 }
 
 if (document.readyState === 'loading') {
