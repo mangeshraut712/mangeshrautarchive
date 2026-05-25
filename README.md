@@ -326,7 +326,17 @@ Full OpenAPI spec available at `/docs` when running the backend.
 
 ---
 
-## 🗺 Roadmap
+## � Recent Updates
+
+### May 2025
+- **Dream Companies & Cars**: Added official SVG logos for NVIDIA, OpenAI, Ferrari, McLaren, Koenigsegg, Lamborghini, Bugatti
+- **Crypto Support**: Integrated Coinbase Commerce for BTC, ETH, USDC donations in Contact section
+- **Theme Optimization**: Enhanced dark mode visibility for all logos with CSS filters
+- **Root Cleanup**: Removed AI config files (.windsurf, .windsurfrules, .vscode), optimized git repository (8.4MB saved)
+
+---
+
+## �🗺 Roadmap
 
 - Full WebNN + Gemma 3 client-side inference
 - Voice + vision agentic capabilities

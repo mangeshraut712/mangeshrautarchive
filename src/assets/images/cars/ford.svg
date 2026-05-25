@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" width="120" height="60">
+  <!-- Outer Blue Oval -->
+  <ellipse cx="80" cy="40" rx="72" ry="34" fill="#002C5F" stroke="#FFFFFF" stroke-width="3" />
+  <!-- Inner Thin Silver/White Oval Line -->
+  <ellipse cx="80" cy="40" rx="66" ry="28" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.9" />
+  
+  <!-- Cursive "Ford" Script Wordmark -->
+  <g fill="#FFFFFF" transform="translate(42, 22)">
+    <!-- Script 'F' -->
+    <path d="M 12 1 C 8 -1, 3 1, 2 5 C 1 8, 4 9, 6 7 C 7 6, 8 4, 10 4 C 11 4, 12 5, 12 7 C 12 10, 8 20, 6 25 C 4 30, 2 35, 3 37 C 4 39, 7 38, 9 35 C 11 32, 16 16, 17 12 C 18 8, 16 2, 12 1 Z
+             M 6 15 C 8 15, 12 13, 14 11 C 15 10, 16 10, 16 11 C 15 13, 12 16, 9 17 C 7 18, 5 17, 6 15 Z" />
+    <!-- Script 'o' -->
+    <path d="M 23 15 C 21 15, 19 18, 19 21 C 19 24, 21 26, 24 26 C 27 26, 29 23, 29 20 C 29 17, 26 15, 23 15 Z
+             M 24 18 C 25 18, 26 19, 26 21 C 26 22, 25 23, 24 23 C 23 23, 22 22, 22 21 C 22 19, 23 18, 24 18 Z" />
+    <!-- Script 'r' -->
+    <path d="M 33 16 C 31 16, 30 18, 30 20 L 30 26 L 32.5 26 L 32.5 21 C 32.5 19, 34 18, 35 19 L 36 17 C 35 16, 34 16, 33 16 Z" />
+    <!-- Script 'd' -->
+    <path d="M 43 12 L 43 19 C 41 18, 39 19, 39 21 C 39 24, 41 26, 43 26 L 43 27 C 43 28, 44 29, 45 29 C 46 29, 47 28, 47 26 L 47 10 L 45 10 L 45 12 Z
+             M 43 21 C 44 21, 45 22, 45 23 C 45 24, 44 25, 43 25 C 42 25, 41 24, 41 23 C 41 22, 42 21, 43 21 Z" />
+    <!-- Flourishes/Connections -->
+    <path d="M 26 21 Q 29 22, 31 19" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M 35 21 Q 38 23, 40 21" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M 46 25 Q 52 25, 58 21" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 70" width="120" height="70">
+  <g transform="translate(0, 5)">
+    <!-- Outer Ellipse Ring -->
+    <ellipse cx="60" cy="22" rx="35" ry="21" fill="none" stroke="#EB0A1E" stroke-width="4.5"/>
+    <!-- Inner Horizontal Ellipse -->
+    <ellipse cx="60" cy="14" rx="23" ry="8" fill="none" stroke="#EB0A1E" stroke-width="4"/>
+    <!-- Inner Vertical Ellipse -->
+    <ellipse cx="60" cy="22" rx="8" ry="21" fill="none" stroke="#EB0A1E" stroke-width="4"/>
+    
+    <!-- TOYOTA Wordmark below the emblem -->
+    <text x="60" y="58" fill="#1D1D1F" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="900" font-size="13" text-anchor="middle" letter-spacing="2">TOYOTA</text>
+  </g>
+</svg>
