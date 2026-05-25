@@ -107,28 +107,27 @@ html.dark .experience-icon {
   color: #fff;
 }
 
-/* Section Header within Timeline (e.g. Full-Time) */
+/* Section Header within Timeline (e.g. Full-Time) - Clean, no card styling */
 .timeline-section-header {
   margin-left: 90px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
 .timeline-section-header h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0071e3 !important;
-  background: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary) !important;
+  background: transparent;
   display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  border: 1px solid rgb(0 0 0 / 10%);
+  padding: 0;
+  border: none;
 }
 
 html.dark .timeline-section-header h3 {
-  background: #000;
-  color: #58a6ff !important;
-  border-color: rgb(255 255 255 / 15%);
+  background: transparent;
+  color: var(--text-secondary-dark) !important;
+  border: none;
 }
 
 /* ========================================
@@ -136,54 +135,29 @@ html.dark .timeline-section-header h3 {
    ======================================== */
 
 .experience-content {
-  background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
-  border-radius: 24px !important;
-  padding: 2.5rem !important;
-  box-shadow:
-    0 4px 24px rgb(0 0 0 / 4%),
-    0 1px 2px rgb(0 0 0 / 2%) !important;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all 0.3s ease !important;
   position: relative;
-  overflow: hidden;
-}
-
-/* Subtle Top Border Glow */
-.experience-content::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, rgb(0 113 227 / 15%), transparent);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-html.dark .experience-content {
-  background: #000 !important;
-  border-color: rgb(255 255 255 / 12%) !important;
-  box-shadow: 0 10px 40px rgb(0 0 0 / 60%) !important;
-}
-
-html.dark .experience-content::after {
-  background: linear-gradient(90deg, transparent, rgb(41 151 255 / 20%), transparent);
 }
 
 .experience-content:hover {
-  transform: translateY(-8px) scale(1.005) !important;
-  box-shadow: 0 24px 60px rgb(0 0 0 / 12%) !important;
-  border-color: rgb(0 113 227 / 30%) !important;
+  box-shadow: var(--shadow-md) !important;
+  border-color: var(--border-default) !important;
 }
 
-.experience-content:hover::after {
-  opacity: 1;
+html.dark .experience-content {
+  background: var(--bg-primary-dark) !important;
+  border-color: var(--border-subtle-dark) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 html.dark .experience-content:hover {
-  box-shadow: 0 30px 80px rgb(0 0 0 / 80%) !important;
-  border-color: rgb(41 151 255 / 40%) !important;
+  border-color: var(--border-default-dark) !important;
+  box-shadow: var(--shadow-md) !important;
 }
 
 /* ========================================

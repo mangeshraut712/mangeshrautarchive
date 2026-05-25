@@ -633,11 +633,11 @@ html.dark #skills {
 
 /* ===== EXPERIENCE SECTION - PREMIUM UPGRADE ===== */
 #experience {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
+  background: var(--bg-primary);
 }
 
 html.dark #experience {
-  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+  background: var(--bg-primary-dark);
 }
 
 #experience .experience-timeline {
@@ -649,10 +649,9 @@ html.dark #experience {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 3rem 0 1.5rem;
-  padding: 0.75rem 1rem;
-  background: var(--bg-secondary);
-  border-radius: 12px;
+  margin: 2rem 0 1.5rem;
+  padding: 0;
+  background: transparent;
   border: none;
 }
 
@@ -661,7 +660,7 @@ html.dark #experience {
 }
 
 html.dark #experience .timeline-section-header {
-  background: var(--bg-secondary-dark);
+  background: transparent;
 }
 
 #experience .timeline-section-header h3 {
@@ -680,27 +679,11 @@ html.dark #experience .timeline-section-header h3 {
   grid-template-columns: auto 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-normal) var(--apple-ease);
-}
-
-#experience .experience-item:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--border-default);
-}
-
-html.dark #experience .experience-item {
-  background: var(--bg-primary-dark);
-  border-color: var(--border-subtle-dark);
-}
-
-html.dark #experience .experience-item:hover {
-  border-color: var(--border-default-dark);
+  padding-left: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 #experience .experience-icon {
