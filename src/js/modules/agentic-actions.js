@@ -31,11 +31,9 @@ export class AgenticActionHandler {
       !navigator.modelContext ||
       !navigator.modelContext.registerTool
     ) {
-      console.log('🔌 WebMCP client-side API not supported by this browser.');
       return;
     }
 
-    console.log('🔌 WebMCP detected! Registering client-side tools...');
     this.abortController = new AbortController();
     const signal = this.abortController.signal;
 
@@ -346,7 +344,6 @@ export class AgenticActionHandler {
     if (!detected) return { actionDetected: false };
 
     const { actionName, config, match } = detected;
-    console.log(`🎯 Action detected: ${actionName}`);
 
     try {
       const result = await config.handler(match);
@@ -431,8 +428,7 @@ export class AgenticActionHandler {
         try {
           const response = await fetch(link, { method: 'HEAD' });
           return response.ok ? link : null;
-        } catch (error) {
-          console.log(`Failed to fetch from ${link}:`, error);
+        } catch (_error) {
           return null;
         }
       })

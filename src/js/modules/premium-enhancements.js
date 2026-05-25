@@ -505,7 +505,6 @@
     initTypingEffect();
     initHoverSounds(); // Enabled only when localStorage flag is present
 
-    console.log(`✨ Premium enhancements initialized${lowPowerDevice ? ' (low-power mode)' : ''}`);
   }
 
   // Run when DOM is ready

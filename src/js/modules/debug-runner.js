@@ -401,7 +401,6 @@ class DebugRunner {
     this.gameLoop = requestAnimationFrame(loop);
 
     this.vibrate(30);
-    console.log('🚀 Game Started');
   }
 
   stop() {
@@ -421,7 +420,6 @@ class DebugRunner {
       cancelAnimationFrame(this.gameLoop);
       this.gameLoop = null;
     }
-    console.log('⏸️ Game Paused');
   }
 
   resume() {
@@ -435,7 +433,6 @@ class DebugRunner {
       this.gameLoop = requestAnimationFrame(loop);
     };
     this.gameLoop = requestAnimationFrame(loop);
-    console.log('▶️ Game Resumed');
   }
 
   jump() {

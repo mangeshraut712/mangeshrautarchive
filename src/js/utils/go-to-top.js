@@ -112,6 +112,5 @@
     goToTopBtn.setAttribute('aria-hidden', 'true');
     goToTopBtn.tabIndex = -1;
 
-    console.log('✅ Go to Top button enhanced for accessibility');
   });
 })();

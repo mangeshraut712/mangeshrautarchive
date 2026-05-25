@@ -30,7 +30,6 @@ export class AccessibilityEnhancer {
   async init() {
     if (this.isInitialized) return;
 
-    console.log('♿ Initializing Accessibility Enhancements...');
 
     // Create ARIA live region for announcements
     this.createLiveRegion();
@@ -65,7 +64,6 @@ export class AccessibilityEnhancer {
 
     this.isInitialized = true;
     this.announce('Accessibility features enabled', 'polite');
-    console.log('✅ Accessibility Enhancements initialized');
   }
 
   shouldShowToolbar() {
@@ -271,8 +269,7 @@ export class AccessibilityEnhancer {
     });
 
     // Track focus for debugging
-    document.addEventListener('focusin', e => {
-      console.log('Focus:', e.target);
+    document.addEventListener('focusin', _e => {
     });
   }
 

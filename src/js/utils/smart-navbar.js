@@ -469,7 +469,6 @@ function initSmartNavbar() {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
 
-  console.log('✅ Apple-inspired navbar initialized');
 }
 
 if (document.readyState === 'loading') {

@@ -34,13 +34,11 @@ export async function initializeVercelAnalytics() {
   const hostname = window.location.hostname || '';
 
   if (!shouldEnableVercelAnalytics(hostname)) {
-    console.log('ℹ️ Vercel Analytics skipped on this host');
     return;
   }
 
   try {
     if (window.__vercelAnalyticsReady) {
-      console.log('✓ Vercel Web Analytics already loaded');
       return;
     }
 
@@ -55,7 +53,6 @@ export async function initializeVercelAnalytics() {
     if (window.va) {
       window.__vercelAnalyticsReady = true;
       window.dispatchEvent(new CustomEvent('vercel-analytics-ready'));
-      console.log('✓ Vercel Web Analytics initialized');
     }
   } catch (error) {
     console.warn('⚠ Vercel Web Analytics initialization failed:', error.message);

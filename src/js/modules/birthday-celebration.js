@@ -28,7 +28,6 @@ class BirthdayCelebration {
 
   init() {
     if (this.testMode) {
-      console.log('🧪 TEST MODE: 2026 Engine Active');
       setTimeout(() => this.showBirthdayCelebration(), 500);
       return;
     }

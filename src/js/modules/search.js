@@ -66,7 +66,6 @@ class PortfolioSearch {
           });
         });
 
-        console.log(`Indexed ${projects.length} GitHub projects for search`);
       }
     } catch (error) {
       console.warn('Failed to index GitHub projects:', error);

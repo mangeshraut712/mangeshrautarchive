@@ -1606,10 +1606,9 @@ class ChatUI {
    * Show interim voice recognition results
    * @param {string} transcript - Real-time transcript
    */
-  updateInterimTranscript(transcript) {
+  updateInterimTranscript(_transcript) {
     // Could show live transcription as user speaks
-    // For now, keep simple and just log
-    console.log('🎤 Interim transcript:', transcript);
+    // For now, keep simple
   }
 
   /**
@@ -1702,7 +1701,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Vercel Web Analytics
   initializeVercelAnalytics();
 
-  console.log('✅ ChatUI initialized and ready');
 });
 
 export { ChatUI };
