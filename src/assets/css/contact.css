@@ -1701,60 +1701,58 @@ html.dark .follow-section {
   width: 44px !important;
   height: 44px !important;
   border-radius: 12px !important;
-  background: rgba(142, 142, 147, 0.08) !important;
-  /* Lighter Apple Grey */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   transition: all 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
   position: relative !important;
+  overflow: hidden !important;
 }
 
-html.dark #contact .wrapper .icon {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Original Brand Colors - Logos */
+/* Social Media Icons with Brand Background Colors */
 #contact .wrapper .facebook {
-  color: #1877f2 !important;
+  background: #1877f2 !important;
+  color: #ffffff !important;
 }
 
 #contact .wrapper .instagram {
-  color: #e4405f !important;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  color: #ffffff !important;
 }
 
 #contact .wrapper .linkedin {
-  color: #0077b5 !important;
+  background: #0077b5 !important;
+  color: #ffffff !important;
 }
 
 #contact .wrapper .youtube {
-  color: #ff0000 !important;
+  background: #ff0000 !important;
+  color: #ffffff !important;
 }
 
 #contact .wrapper .github {
-  color: #1d1d1f !important;
+  background: #1d1d1f !important;
+  color: #ffffff !important;
 }
 
 #contact .wrapper .x {
-  color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
 }
 
 #contact .wrapper .leetcode {
-  color: #ffa116 !important;
+  background: #ffa116 !important;
+  color: #1d1d1f !important;
 }
 
 #contact .wrapper .telegram {
-  color: #0088cc !important;
-}
-
-html.dark #contact .wrapper .github {
+  background: #0088cc !important;
   color: #ffffff !important;
 }
 
-html.dark #contact .wrapper .x {
-  color: #ffffff !important;
+#contact .wrapper .snapchat {
+  background: #fffc00 !important;
+  color: #000000 !important;
 }
 
 #contact .wrapper .icon:hover {
