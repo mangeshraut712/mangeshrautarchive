@@ -717,6 +717,8 @@ class ChatUI {
 
         // Copy Button
         const copyBtn = document.createElement('button');
+        copyBtn.setAttribute('type', 'button');
+        copyBtn.type = 'button';
         copyBtn.className = 'msg-action-btn';
         copyBtn.title = 'Copy';
         copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
@@ -728,6 +730,8 @@ class ChatUI {
 
         // Speak/Stop Button
         const speakBtn = document.createElement('button');
+        speakBtn.setAttribute('type', 'button');
+        speakBtn.type = 'button';
         speakBtn.className = 'msg-action-btn';
         speakBtn.title = 'Read Aloud';
         speakBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -754,12 +758,16 @@ class ChatUI {
 
       // Copy & Speak
       const copyBtn = document.createElement('button');
+      copyBtn.setAttribute('type', 'button');
+      copyBtn.type = 'button';
       copyBtn.className = 'msg-action-btn';
       copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
       copyBtn.onclick = () => this._copyMessageText(contentDiv.textContent, copyBtn);
       actionsDiv.appendChild(copyBtn);
 
       const speakBtn = document.createElement('button');
+      speakBtn.setAttribute('type', 'button');
+      speakBtn.type = 'button';
       speakBtn.className = 'msg-action-btn';
       speakBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
       speakBtn.onclick = e => {
@@ -776,6 +784,8 @@ class ChatUI {
 
     if (metadata.error) {
       const retryBtn = document.createElement('button');
+      retryBtn.setAttribute('type', 'button');
+      retryBtn.type = 'button';
       retryBtn.className = 'msg-retry-btn';
       retryBtn.innerHTML = '🔄 Retry';
       retryBtn.onclick = () => this._retryLastMessage();
@@ -1166,8 +1176,9 @@ class ChatUI {
 
     suggestions.forEach(suggestion => {
       const button = document.createElement('button');
-      button.className = 'suggestion-button';
+      button.setAttribute('type', 'button');
       button.type = 'button';
+      button.className = 'suggestion-button';
       button.textContent = suggestion;
       button.addEventListener('click', () => {
         if (this.elements.input) {

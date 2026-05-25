@@ -238,8 +238,9 @@ class DebugRunner {
 
   createControlButton(text, type) {
     const btn = document.createElement('button');
-    btn.className = `debug-game-btn debug-game-btn--${type}`;
+    btn.setAttribute('type', 'button');
     btn.type = 'button';
+    btn.className = `debug-game-btn debug-game-btn--${type}`;
 
     const icon = document.createElement('i');
     icon.className = type === 'jump' ? 'fas fa-arrow-up' : 'fas fa-arrow-down';

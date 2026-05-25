@@ -426,6 +426,7 @@ class AppleIntelligenceChatbot {
 
   createWelcomeActionChip(iconClass, label, prompt) {
     const button = document.createElement('button');
+    button.setAttribute('type', 'button');
     button.type = 'button';
     button.className = 'welcome-action-chip';
     const icon = document.createElement('i');
@@ -824,6 +825,8 @@ class AppleIntelligenceChatbot {
 
   createActionButton(iconClass, title, onClick) {
     const btn = document.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.type = 'button';
     btn.className = 'msg-action-btn';
     btn.title = title;
     const icon = document.createElement('i');
@@ -938,6 +941,8 @@ class AppleIntelligenceChatbot {
 
     // Retry button
     const retryBtn = document.createElement('button');
+    retryBtn.setAttribute('type', 'button');
+    retryBtn.type = 'button';
     retryBtn.className = 'chatbot-retry-btn';
     retryBtn.innerHTML = '<i class="fas fa-redo"></i> Retry';
     retryBtn.onclick = e => {
@@ -969,6 +974,7 @@ class AppleIntelligenceChatbot {
 
     chips.forEach(label => {
       const btn = document.createElement('button');
+      btn.setAttribute('type', 'button');
       btn.type = 'button';
       btn.className = 'followup-chip';
       btn.textContent = label;

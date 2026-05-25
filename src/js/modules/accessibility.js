@@ -923,6 +923,8 @@ export class AccessibilityEnhancer {
 
     buttons.forEach(btn => {
       const button = document.createElement('button');
+      button.setAttribute('type', 'button');
+      button.type = 'button';
       button.setAttribute('aria-label', btn.label);
       button.setAttribute('data-label', btn.label);
       const iconClass = btn.icon.startsWith('A') ? 'a11y-toolbar-button__icon--text' : '';
