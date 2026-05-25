@@ -649,13 +649,15 @@ html.dark #experience {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 2.5rem 0 1.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
+  margin: 3rem 0 1.5rem 80px;
+  padding: 0;
+  background: transparent;
+  border: none;
   position: relative;
-  margin-left: 80px;
+}
+
+#experience .timeline-section-header:first-child {
+  margin-top: 0;
 }
 
 #experience .timeline-section-header::before {
@@ -664,35 +666,23 @@ html.dark #experience {
   left: -56px;
   top: 50%;
   transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  background: var(--apple-blue);
+  width: 14px;
+  height: 14px;
+  background: var(--bg-primary);
   border-radius: 50%;
-  border: 3px solid var(--bg-primary);
-  box-shadow: 0 0 0 2px var(--border-subtle);
-}
-
-#experience .timeline-section-header:first-child {
-  margin-top: 0;
-}
-
-html.dark #experience .timeline-section-header {
-  background: var(--bg-secondary-dark);
-  border-color: var(--border-subtle-dark);
+  border: 3px solid var(--apple-blue);
 }
 
 html.dark #experience .timeline-section-header::before {
-  background: var(--apple-blue-dark);
-  border-color: var(--bg-primary-dark);
-  box-shadow: 0 0 0 2px var(--border-subtle-dark);
+  background: var(--bg-primary-dark);
+  border-color: var(--apple-blue-dark);
 }
 
 #experience .timeline-section-header h3 {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
 }
 
 html.dark #experience .timeline-section-header h3 {
