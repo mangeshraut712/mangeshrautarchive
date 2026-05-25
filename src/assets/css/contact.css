@@ -2399,7 +2399,7 @@ html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
 /* Bentley - silver wings */
 /* Rolls-Royce - Already generated with good contrast */
 
-/* Ferrari - PNG logo with yellow background and black text */
+/* Ferrari - SVG logo with yellow background and black text */
 html.dark .dream-car-item[title='Ferrari'] .car-logo {
   filter: brightness(1.1);
 }
@@ -2408,7 +2408,7 @@ html.dark .dream-car-item[title='Ferrari']:hover .car-logo {
   filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 200 0 / 40%));
 }
 
-/* McLaren - PNG logo with orange elements */
+/* McLaren - SVG logo with orange elements */
 html.dark .dream-car-item[title='McLaren'] .car-logo {
   filter: brightness(1.15);
 }
@@ -2417,7 +2417,7 @@ html.dark .dream-car-item[title='McLaren']:hover .car-logo {
   filter: brightness(1.25) drop-shadow(0 4px 12px rgb(255 153 0 / 40%));
 }
 
-/* Koenigsegg - PNG logo, ensure visibility */
+/* Koenigsegg - SVG logo, ensure visibility */
 html.dark .dream-car-item[title='Koenigsegg'] .car-logo {
   filter: brightness(1.2);
 }
