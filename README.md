@@ -1,325 +1,362 @@
-# 🚀 Mangesh Raut | AI-First Full-Stack Engineering Showcase
+# 🚀 Mangesh Raut | Agentic Full-Stack Engineering Platform (2026)
 
-Production-grade projects showcase, travel atlas, system monitor, and AI assistant platform powering [mangeshraut.pro](https://mangeshraut.pro).
+**Production-grade AI-first portfolio** powering [mangeshraut.pro](https://mangeshraut.pro) — a hybrid agentic web application featuring deterministic client-side tool calling, streaming cloud intelligence, and enterprise-grade quality gates.
 
 <p align="center">
-  <a href="https://mangeshraut.pro"><img alt="Live site" src="https://img.shields.io/badge/live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white"></a>
-  <a href="https://mangeshraut.pro/monitor"><img alt="System monitor" src="https://img.shields.io/badge/monitor-live-34c759?style=for-the-badge&logo=fastapi&logoColor=white"></a>
-  <a href="https://mangeshraut712.github.io/mangeshrautarchive"><img alt="GitHub Pages" src="https://img.shields.io/badge/github_pages-static_fallback-181717?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://mangeshraut.pro"><img alt="Live Site" src="https://img.shields.io/badge/live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white"></a>
+  <a href="https://mangeshraut.pro/monitor"><img alt="System Monitor" src="https://img.shields.io/badge/monitor-live-34c759?style=for-the-badge&logo=fastapi&logoColor=white"></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive"><img alt="GitHub Pages" src="https://img.shields.io/badge/github_pages-fallback-181717?style=for-the-badge&logo=github&logoColor=white"></a>
   <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/mangeshraut712/mangeshrautarchive?style=for-the-badge"></a>
 </p>
 
----
-
-## 📖 Welcome to the Future of the Web (May 2026 Edition)
-
-This is not a static resume page. It is a full-stack projects platform built to showcase **production-level engineering habits**: a polished Apple-inspired responsive frontend, a high-performance **FastAPI** backend, modular integrations, telemetry, and automated regression testing.
-
-In **May 2026**, the web has transitioned from static layouts to **Agentic Web Applications**. This repository features:
-
-- **Unified Navigation Architecture:** Cleaned up page navigation references, establishing a consistent global section nomenclature mapping directly to the `Projects` showcase across primary headers, mobile menus, and return-navigation overlays.
-- **Robust GitHub Projects Showcase:** Apple-inspired spatial project cards sync public repository metadata, latest releases, commits since release, and activity filters. Implemented a dual-layered pipeline:
-  - **Absolute Domain Fallbacks:** Configured `https://mangeshraut.pro/api/github/repos/public` and `/api/github/repos` as absolute proxy endpoints to ensure repository metadata loads successfully even on static hosting surfaces (such as `github.io`).
-  - **Featured Project Overrides:** Bypassed traditional repository signal checks (stars, description, homepage) for explicitly featured items to guarantee featured projects are never filtered out.
-  - **Enriched Offline Cache:** Enriched the local `fallbackRepos` array with complete and accurate metadata for all 8 featured projects, providing a seamless user experience under offline or rate-limiting conditions.
-- **Hybrid AI Execution:** Instant, offline-capable browser inference via **WebNN** + **Gemma 3**, with a serverless cloud fallback to **Gemini 2.5 Flash / Pro** via OpenRouter.
-- **WebMCP Agentic Actions:** Native browser capability integration using the W3C `navigator.modelContext.registerTool` protocol, exposing 9 core interactive tools (e.g., section navigation, resume download, contact overlay, theme toggles) to agentic orchestrators.
-- **Premium Agentic UX Feedback:** High-fidelity visual micro-animations, glassmorphic `.action-message` rendering, and pulsing action badges (`ACTION EXECUTED`) that provide tactile, real-time visual feedback when local tools are executed by the AI.
-- **Authoritative Engagement Telemetry:** A simple, direct, real-time visitor reach counter built on **Cloud Firestore** and cross-checked with **Vercel Analytics**.
-- **Operational Visibility:** A live operations dashboard at `/monitor` showing endpoint latencies, third-party provider checks, event logging, and hosting surface status.
-- **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites (including chatbot WebMCP action suites).
+<p align="center">
+  <a href="#-table-of-contents"><strong>📑 Jump to Table of Contents</strong></a> •
+  <a href="https://mangeshraut.pro">🌐 Try the Live Site</a> •
+  <a href="#-live-demo-links">🚀 Explore Live Demos</a>
+</p>
 
 ---
 
-## 🕹️ Interactive Sandbox (Click to Expand)
+## 📑 Table of Contents
 
-Explore the system operations directly from this README by interacting with the panels below:
+- [🌟 Highlights & Real Results (2026)](#-highlights--real-results-2026)
+- [🚀 Live Demo Links](#-live-demo-links)
+- [🕹️ Interactive Sandbox](#-interactive-sandbox)
+- [🛠️ 2026 Production Tech Stack](#-2026-production-tech-stack)
+- [🧠 Agentic Capabilities — 9 Registered WebMCP Tools](#-agentic-capabilities--9-registered-webmcp-tools)
+- [📐 Architecture (Hybrid Agentic)](#-architecture-hybrid-agentic)
+- [🧪 Testing & Quality Matrix](#-testing--quality-matrix)
+- [🌍 Deployment & Availability](#-deployment--availability)
+- [⚡ Quick Start](#-quick-start)
+- [📊 Observability & Monitoring](#-observability--monitoring)
+- [📁 Project Structure Overview](#-project-structure-overview)
+- [📄 License & Contact](#-license--contact)
+- [⬆️ Back to Top](#-back-to-top)
 
-### 💬 Talk to AssistMe AI (Simulated Chatbot Session)
+---
 
-Select a prompt below to see how the AssistMe AI agent responds using Mangesh's profile details:
+## 🌟 Highlights & Real Results (2026)
+
+This is not a static resume — it is a **live production agentic platform** that demonstrates the shift from chatbots to systems that can **act**.
+
+**Key 2026 Differentiators**
+- **Native Agentic Tool Calling (WebMCP)**: 9 deterministic client-side tools registered via the emerging `navigator.modelContext.registerTool` API. AI agents can directly navigate, download files, filter projects, toggle themes, open contact flows, and more — all instantly in the browser.
+- **Hybrid Intelligence**: Local-first agentic actions (zero latency, private) + streaming cloud LLM via **OpenRouter (Gemini 2.5 Flash / Pro)** with structured tool-use.
+- **Premium Apple-Inspired UX**: Spatial project cards, glassmorphism, micro-animations, real-time “ACTION EXECUTED” visual feedback, and instant streaming Markdown chat.
+- **Live GitHub Intelligence**: Dual-layer project showcase with release metadata, commits-since-release, language breakdowns, and interactive spatial repository views. Works flawlessly even on static GitHub Pages via absolute domain fallbacks.
+- **Real-Time Telemetry**: Visitor reach counter powered by **Cloud Firestore** + **Vercel Analytics** cross-validation.
+- **Full Operational Transparency**: Live `/monitor` dashboard with endpoint latencies, third-party health checks, and deployment surface status.
+- **Enterprise-Grade Quality Gates**:
+  - Playwright 1.58 matrix across **12+ configurations** (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro + responsive viewports)
+  - Accessibility (axe-core) + manual contrast validation
+  - Lighthouse CI (Desktop ≥95, Mobile ≥90)
+  - Visual regression, security scanning, dead-code detection (Ruff + Vulture), and post-deploy verification on both hosting surfaces
+
+**Proven Results**
+- 40% React dashboard latency reduction delivered in production at Customized Energy Solutions
+- Lighthouse scores consistently gated above 90+ on mobile and 95+ on desktop
+- Zero-downtime dual-surface deployment (Vercel primary + GitHub Pages static fallback with secure API proxying)
+
+---
+
+## 🚀 Live Demo Links
+
+Try the production features directly:
+
+| Feature                        | Live URL                                      | What to Try |
+|--------------------------------|-----------------------------------------------|-------------|
+| **Main Portfolio**             | [mangeshraut.pro](https://mangeshraut.pro)    | Agentic chat, spatial projects, travel atlas |
+| **System Monitor Dashboard**   | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor) | Latency probes, service health, deployment status |
+| **Travel Atlas**               | [mangeshraut.pro/travel](https://mangeshraut.pro/travel) (or click Travel in nav) | Interactive world map, photo memories, location search |
+| **GitHub Pages Fallback**      | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) | See absolute domain fallbacks in action |
+| **AssistMe AI Chat**           | Open on homepage → click the chat icon        | Try agentic commands: “download resume”, “go to projects”, “toggle dark mode” |
+| **API Health**                 | [mangeshraut.pro/api/health](https://mangeshraut.pro/api/health) | JSON health + service status |
+| **Real-Time Reach Counter**    | [mangeshraut.pro/api/analytics/reach](https://mangeshraut.pro/api/analytics/reach) | Live visitor + GitHub stars/forks metric |
+
+---
+
+## 🕹️ Interactive Sandbox
+
+### 💬 AssistMe AI — Agentic Chat (2026 Edition)
+
+Select a prompt to see realistic agentic behavior (these work identically on the live site):
 
 <details>
-<summary><b>❓ Prompt: "Who is Mangesh Raut?"</b></summary>
+<summary><b>❓ "Who is Mangesh Raut?"</b></summary>
 <br>
 <blockquote>
-🤖 <b>AssistMe</b> <a href="https://mangeshraut.pro"><sup>[google/gemini-2.5-flash]</sup></a>:
-<br><br>
-<b>Mangesh Raut</b> is an AI-First Software Engineer based in Philadelphia, PA, specializing in building high-scale backend microservices, cloud platforms, and machine learning pipelines. He holds a <b>Master of Science in Computer Science</b> from Drexel University (GPA 3.76) and has over 6 years of software engineering experience.
-<br><br>
-Currently, he is a Software Engineer at <b>Customized Energy Solutions</b>, where he designs cloud pipelines and has delivered 40% React dashboard latency gains.
-<br><br>
-Would you like to explore his technical stack or review his recent machine learning publications?
+<b>AssistMe</b> <sup>[gemini-2.5-flash]</sup><br><br>
+Mangesh Raut is an AI-first Software Engineer based in Philadelphia, PA. He holds an M.S. in Computer Science from Drexel University (GPA 3.76) and has 6+ years building production systems in Java, Python, Spring Boot, AWS, and ML pipelines.<br><br>
+Currently at <b>Customized Energy Solutions</b>, he has delivered 40% React dashboard latency improvements and leads cloud-native data platform initiatives.<br><br>
+Would you like me to show his most impactful projects, technical writing, or schedule a meeting?
 </blockquote>
 </details>
 
 <details>
-<summary><b>🛠️ Prompt: "What is the 2026 Hybrid AI Stack used here?"</b></summary>
+<summary><b>🤖 "Download his resume and navigate to projects"</b></summary>
 <br>
 <blockquote>
-🤖 <b>AssistMe</b> <a href="https://mangeshraut.pro"><sup>[google/gemini-2.5-pro]</sup></a>:
-<br><br>
-This website showcases the <b>Agentic Web</b> paradigm:
-<ol>
-  <li><b>Edge Inference:</b> Browser-side execution of <b>Gemma 3</b> via the W3C <b>WebNN</b> API for ultra-low latency, offline-ready conversation helper tools.</li>
-  <li><b>Cloud Inference:</b> <b>Gemini 2.5 Flash & Pro</b> via OpenRouter, utilizing adaptive temperature and structured memory managers.</li>
-  <li><b>FastAPI Backend:</b> Serves JSON streaming endpoints, processes integration proxies, and manages Firestore database transactions.</li>
-</ol>
-Would you like to look at the project's repository structure or setup guidelines?
+<b>AssistMe</b> <sup>[agentic-action]</sup><br><br>
+✅ Executing agentic actions:<br>
+📥 Downloading <b>Mangesh_Raut_Resume.pdf</b><br>
+🧭 Navigating to <b>Projects</b> section<br><br>
+Both actions were performed locally via registered WebMCP tools — no page reload required.
 </blockquote>
 </details>
 
 <details>
-<summary><b>📂 Prompt: "What projects are featured in the showcase?"</b></summary>
+<summary><b>🧠 "What makes this portfolio agentic in 2026?"</b></summary>
 <br>
 <blockquote>
-🤖 <b>AssistMe</b> <a href="https://mangeshraut.pro"><sup>[Direct Action]</sup></a>:
-<br><br>
-The Projects Showcase dynamically loads live metadata for Mangesh's primary engineering projects:
-<ol>
-  <li><b>mangeshrautarchive:</b> This full-stack showcase platform (Vanilla CSS/JS + FastAPI).</li>
-  <li><b>AssistMe-VirtualAssistant:</b> Multi-modal voice-enabled React/FastAPI AI assistant.</li>
-  <li><b>Bug-Reporting-System:</b> Full-stack bug tracker using Django REST framework and React.</li>
-  <li><b>ces-ltd.com:</b> Redesign concept for Customized Energy Solutions using Next.js & Three.js.</li>
-  <li><b>kashishbeautyparlour:</b> Small business reservation platform built with Next.js & Tailwind.</li>
-  <li><b>Real-Time-Face-Emotion-Recognition-System:</b> TensorFlow-powered computer vision tool with React dashboard.</li>
-  <li><b>Crime-Investigation-System:</b> Java and MySQL database management application.</li>
-  <li><b>Starlight-Blogging-Website:</b> Full-stack Angular frontend + Flask backend.</li>
-</ol>
-Would you like to filter these projects by language or explore their GitHub structures?
-</blockquote>
-</details>
-
-<details>
-<summary><b>📫 Prompt: "How can I contact Mangesh or download his resume?"</b></summary>
-<br>
-<blockquote>
-🤖 <b>AssistMe</b> <a href="https://mangeshraut.pro"><sup>[Direct Action]</sup></a>:
-<br><br>
-📬 You can connect with Mangesh via the following channels:
-<ul>
-  <li><b>Email:</b> <a href="mailto:mbr63@drexel.edu">mbr63@drexel.edu</a> / <a href="mailto:mbr63drexel@gmail.com">mbr63drexel@gmail.com</a></li>
-  <li><b>LinkedIn:</b> <a href="https://linkedin.com/in/mangeshraut71298" target="_blank">linkedin.com/in/mangeshraut71298</a></li>
-  <li><b>GitHub:</b> <a href="https://github.com/mangeshraut712" target="_blank">github.com/mangeshraut712</a></li>
-</ul>
-📄 Or directly download his resume here: <a href="https://mangeshraut.pro/assets/files/Mangesh_Raut_Resume.pdf" target="_blank">Mangesh_Raut_Resume.pdf</a>.
+<b>AssistMe</b> <sup>[gemini-2.5-pro]</sup><br><br>
+This platform demonstrates the shift from conversational AI to <b>agentic systems</b> that can act:<br><br>
+• <b>WebMCP Tool Registry</b>: 9 deterministic client-side tools exposed to AI agents via the native browser API.<br>
+• <b>Hybrid Execution</b>: Local actions run instantly; complex reasoning falls back to Gemini 2.5 via OpenRouter.<br>
+• <b>Streaming + Structured Feedback</b>: Real-time Markdown streaming with visual "action executed" micro-interactions.<br>
+• <b>Production Guardrails</b>: Full E2E matrix, accessibility, performance budgets, and security scanning in CI.<br><br>
+This is the architecture pattern for 2026+ agentic web applications.
 </blockquote>
 </details>
 
 ---
 
-### 💻 System Monitor API Simulator (Mock CLI Output)
+### 📡 System Monitor — Live API Examples
 
-Simulate querying the portfolio's active backend routers using standard cURL commands:
+```bash
+# Health & service status
+curl -i https://mangeshraut.pro/api/health
 
-<details>
-<summary><b>📡 <code>curl -i https://mangeshraut.pro/api/health</code></b></summary>
-<pre><code>HTTP/2 200 OK
-content-type: application/json
-cache-control: no-cache
+# Real-time visitor reach (Firestore + GitHub)
+curl -i https://mangeshraut.pro/api/analytics/reach
 
-{
-"status": "healthy",
-"version": "2.2.0",
-"environment": "production",
-"timestamp": 1779340800000,
-"services": {
-"firestore": "connected",
-"openrouter": "online",
-"lastfm": "online"
-}
-}</code></pre>
-
-</details>
-
-<details>
-<summary><b>📊 <code>curl -i https://mangeshraut.pro/api/analytics/reach</code></b></summary>
-<pre><code>HTTP/2 200 OK
-content-type: application/json
-cache-control: public, max-age=300
-
-{
-"success": true,
-"visitor_reach": 1584,
-"data_sources": {
-"firestore_views": 1562,
-"github_stars": 16,
-"github_forks": 6
-},
-"timestamp": "2026-05-25T06:50:00Z"
-}</code></pre>
-
-</details>
+# GitHub project intelligence (release-aware)
+curl -i https://mangeshraut.pro/api/github/repos/public
+```
 
 ---
 
-## 🛠️ The 2026 Tech Stack
+## 🛠️ 2026 Production Tech Stack
 
-| Layer                | Technologies                                          | Role in System                                                                             |
-| :------------------- | :---------------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| **Client Core**      | HTML5, Vanilla CSS3, ES Modules, Canvas               | Responsive layout, modern variables, fluid animations without heavy framework overhead.    |
-| **Client AI**        | **WebNN API**, Gemma 3                                | Running client-side neural nets on browser hardware for instant local interactions.        |
-| **Serverless API**   | **FastAPI**, Pydantic, HTTPX, Uvicorn                 | High-performance Python backend routes running as Vercel Serverless Functions.             |
-| **Cloud AI**         | **Gemini 2.5 Pro / Flash**                            | OpenRouter cloud completions for complex reasoning and projects exploration.               |
-| **Telemetry**        | **Cloud Firestore**                                   | Real-time visitor counts, counter tracking, and performance persistence.                   |
-| **Repository Intel** | GitHub REST API, release metadata, contribution graph | Live project cards, release freshness, commits-since-release, and spatial repo inspection. |
-| **Testing**          | Playwright, Vitest, axe-core, Lighthouse              | End-to-end integration tests, accessibility gates, and performance budgets.                |
-| **Hosting**          | Vercel (Prod), GitHub Pages (Static Fallback)         | Dual-surface deployment architecture ensuring maximum availability.                        |
+| Layer                  | Technology                                                                 | Role |
+|------------------------|----------------------------------------------------------------------------|------|
+| **Frontend Core**      | Vanilla ES2024 + Tailwind CSS 4 + Custom Design System                     | Zero-framework, high-performance, Apple-grade UI |
+| **Agentic Runtime**    | WebMCP (`navigator.modelContext`), Custom Agentic Action Engine            | Deterministic client-side tool calling for AI agents |
+| **AI Orchestration**   | OpenRouter + Gemini 2.5 Flash/Pro + Streaming + Markdown Service           | Cloud reasoning with structured tool-use patterns |
+| **Backend**            | FastAPI 0.136 + Pydantic v2 + Uvicorn + HTTPX                              | Serverless Python API on Vercel (chat, analytics, GitHub, monitor) |
+| **Telemetry**          | Cloud Firestore + Vercel Analytics                                         | Real-time reach counter + production analytics |
+| **Project Intelligence**| GitHub REST API + Release Metadata + Spatial Views                        | Live cards with freshness signals and repo structure |
+| **Build & Tooling**    | esbuild + Sharp + Tailwind CLI 4 + Node 22                                 | Blazing-fast builds, image optimization, zero-config DX |
+| **Quality & Testing**  | Playwright 1.58 (12+ projects) + Vitest 4 + axe-core + Lighthouse CI       | Cross-browser, mobile, a11y, visual, post-deploy, performance gates |
+| **Linting & Safety**   | ESLint 9 + Stylelint + Ruff + Vulture + Security Scanner                   | Dead-code elimination, style consistency, secret detection |
+| **Hosting**            | Vercel (Primary) + GitHub Pages (Static Fallback) + PWA + Service Worker   | Maximum availability and offline capability |
 
 ---
 
-## 📐 Architecture & Data Flow
+## 🧠 Agentic Capabilities — 9 Registered WebMCP Tools
 
-This application is built with a hybrid edge/cloud architecture designed for maximum performance, offline capability, and fail-safe operation:
+The platform registers the following deterministic tools that any compatible AI agent (via `navigator.modelContext`) can invoke directly:
+
+| Tool                    | Description |
+|-------------------------|-------------|
+| `navigate_to_section`   | Smooth-scroll to any major section (home, about, skills, projects, contact, experience, education, publications, awards, certifications, blog, game, travel) |
+| `download_resume`       | Instantly download the latest resume PDF |
+| `schedule_meeting`      | Open Calendly scheduling popup |
+| `open_contact_form`     | Open the contact / message overlay |
+| `copy_contact_info`     | Copy email or LinkedIn to clipboard |
+| `search_portfolio`      | Trigger global search with a query |
+| `filter_projects`       | Filter the GitHub projects showcase by language or topic |
+| `open_social_media`     | Open GitHub, LinkedIn, or other profiles |
+| `toggle_theme`          | Switch between light / dark / system theme |
+
+These tools run **entirely in the browser** with zero network round-trip when triggered by local agentic logic or by future WebMCP-compatible AI agents.
+
+---
+
+## 📐 Architecture (Hybrid Agentic)
 
 ```mermaid
 flowchart TD
-    %% Browser Layer
-    subgraph Browser [Edge Runtime / User Browser]
-        UI[Apple-Style UI / Index.html]
-        WebNN[WebNN Engine - Gemma 3 Local]
-        AnalyticsJS[Analytics.js views/reach Client]
-        ChatJS[Chatbot.js UI Handler]
+    subgraph Browser["Edge / Browser (2026)"]
+        UI["Premium Vanilla UI + Tailwind 4"]
+        Agentic["Agentic Action Engine + WebMCP Tools"]
+        Chat["Streaming Chat + Markdown Service"]
     end
 
-    %% Hosting Layer
-    subgraph Vercel [Vercel Serverless Platform]
-        CDN[Edge CDN - Static Web Assets]
-        FastAPI[FastAPI Router - api/index.py]
-        ChatAPI[Chat Route - api/routes/chat.py]
-        AnalyticsAPI[Analytics Route - api/routes/analytics.py]
-        MonitorAPI[Monitor Route - api/routes/monitor.py]
+    subgraph Vercel["Vercel Serverless"]
+        FastAPI["FastAPI Router (api/index.py)"]
+        ChatAPI["/api/chat — OpenRouter Streaming"]
+        AnalyticsAPI["/api/analytics — Firestore"]
+        GitHubAPI["/api/github — Live Repo Intel"]
+        Monitor["/api/monitor — Health & Latency"]
     end
 
-    %% Telemetry & Storage Layer
-    subgraph Database [Google Cloud Platform]
-        Firestore[(Cloud Firestore Database)]
+    subgraph External["External Services"]
+        OpenRouter["OpenRouter (Gemini 2.5)"]
+        GitHub["GitHub API"]
+        Firestore["Cloud Firestore"]
     end
 
-    %% Cloud AI Layer
-    subgraph Provider [External Services]
-        OpenRouter[OpenRouter AI - Gemini 2.5]
-        GitHubAPI[GitHub Developer API]
-        LastFM[Last.fm Proxy]
-    end
-
-    %% Connections
-    UI --> CDN
-    ChatJS --> WebNN
-    ChatJS -- Cloud Fallback --> ChatAPI
-    AnalyticsJS --> AnalyticsAPI
-
-    FastAPI --> ChatAPI
-    FastAPI --> AnalyticsAPI
-    FastAPI --> MonitorAPI
-
+    UI --> Agentic
+    Chat --> Agentic
+    Chat -- Cloud Fallback --> ChatAPI
     AnalyticsAPI --> Firestore
     ChatAPI --> OpenRouter
-    AnalyticsAPI --> GitHubAPI
-    MonitorAPI --> Provider
+    GitHubAPI --> GitHub
+    Monitor --> OpenRouter
+    Monitor --> GitHub
 ```
 
-### Key Design Decisions
-
-1. **Dual-Surface Deploy:** Frontend assets are statically built to `dist/`. The main domain routes through Vercel CDN. In case of main server outages, GitHub Pages serves as a static fallback and proxies API queries back to `mangeshraut.pro/api` securely.
-2. **Visitor Counter simple logic:** Instead of fake random calculations, `api/routes/analytics.py` maintains an incremental counter inside Cloud Firestore, adding GitHub repo stars and forks to form the **Projects Reach** metric. No local storage hover tooltips or complex charts are used.
-3. **Protected Server Secrets:** API keys for OpenRouter and Google Cloud credentials never touch the browser. The FastAPI server handles authorization, rate-limiting, and payload sanitization.
-4. **Release-Aware Project Intelligence:** The projects section keeps the existing projects cards but enriches them with latest GitHub release metadata, commits since release, release-health lenses, and a Spatial View modal that maps repository structure, languages, activity, and release freshness.
+**Key 2026 Design Principles**
+- Local-first agentic actions for instant, private, zero-latency interactions
+- Cloud LLM only when reasoning depth is required
+- Static assets + serverless API for global low-latency delivery
+- Comprehensive observability and automated quality enforcement
 
 ---
 
-## 🚦 Production Guardrails & Quality Gates
+## 🧪 Testing & Quality Matrix
 
-The codebase enforces strict quality checks through automated GitHub Actions workflows:
+Every commit must pass the full pipeline before deployment:
 
-```text
-mangeshrautarchive/
-├── .github/workflows/
-│   └── deploy.yml          # Deploys to Vercel, syncs GitHub Pages, runs quality gates
-```
+**Automated Checks**
+- Security scanning (`scripts/deployment/security-check.js`)
+- Linting: ESLint 9, Stylelint, Ruff + Vulture dead-code detection
+- Unit tests: Vitest 4
+- E2E: Playwright 1.58 across **12+ browser/device configurations**
 
-Every commit must pass the following pipeline before deployment:
+**Full Playwright Matrix Includes**
+- Desktop: Chrome (with channel), Safari, Firefox, Edge
+- Mobile: Pixel 7 Chrome, Pixel 7 Pro, Samsung Galaxy S23, iPhone 14 Safari, iPhone 14 Pro Max
+- Tablet: iPad Pro Safari
+- Responsive viewports: Mobile Small, Tablet, Desktop Large
+- Accessibility: axe-core scans on Chrome & Safari
+- Visual regression: Controlled viewport snapshots
+- Post-deploy: Smoke + routing verification on Vercel + GitHub Pages
 
-- **Security Posture Check:** `scripts/security-check.js` scans all files to ensure no API keys or GCP credentials are leaked.
-- **Performance Budgets:** Lighthouse CI ensures mobile index score is above **90** (LCP optimized via critical font-preloading and lazy-image tags) and desktop is above **95**.
-- **API Routing Tests:** Playwright E2E tests (`tests/config/vercel-routing.spec.js`) verify that FastAPI is routing requests correctly.
-- **Post-Deployment Verification:** Deployed routes like `/api/monitor/status` and `/api/analytics/reach` are verified after Vercel completes the build.
+**Performance Budgets (Lighthouse CI)**
+- Desktop: Performance ≥95, Accessibility ≥90, Best Practices ≥90, SEO ≥90
+- Mobile: Performance ≥90, Accessibility ≥90, Best Practices ≥90, SEO ≥90
+
+**Additional Gates**
+- Visual regression with Playwright
+- Pre-commit hooks (security + lint)
+- `npm run qa:prod-ready` one-command full validation
+
+---
+
+## 🌍 Deployment & Availability
+
+**Dual-Surface Architecture**
+- **Primary**: Vercel (edge CDN + serverless FastAPI functions)
+- **Static Fallback**: GitHub Pages — serves the same `dist/` build with API calls securely proxied back to `https://mangeshraut.pro/api`
+
+**PWA & Offline**
+- Full Progressive Web App with service worker
+- Offline caching for core assets and chat interface
+- Installable on mobile/desktop
+- Fast subsequent loads via aggressive immutable caching headers
+
+**Zero-Downtime Updates**
+- Atomic deploys on Vercel
+- GitHub Pages syncs automatically after successful production build
+- Post-deploy E2E verification runs on both surfaces
 
 ---
 
 ## ⚡ Quick Start
 
 ### Prerequisites
+- Node.js ≥ 22
+- Python ≥ 3.12
+- Google Cloud project with Firestore (Native mode) — optional for local telemetry
 
-- Node.js `>=22`
-- Python `>=3.12`
-- Google Cloud Project (with Firestore enabled in Native Mode)
+### Setup
 
-### Development Setup
+```bash
+git clone https://github.com/mangeshraut712/mangeshrautarchive.git
+cd mangeshrautarchive
 
-1.  **Clone the Repository:**
+npm install --no-audit --no-fund
 
-    ```bash
-    git clone https://github.com/mangeshraut712/mangeshrautarchive.git
-    cd mangeshrautarchive
-    ```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 
-2.  **Install Node Dependencies:**
+cp .env.example .env   # Add OPENROUTER_API_KEY + optional Firestore keys
+npm run dev
+```
 
-    ```bash
-    npm install --no-audit --no-fund
-    ```
+**Local Endpoints**
+- Frontend: http://127.0.0.1:4000
+- FastAPI: http://127.0.0.1:8001
+- OpenAPI Docs: http://127.0.0.1:8001/docs
 
-3.  **Setup Python Virtual Environment & Dependencies:**
+### Essential Commands
 
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    ```
-
-4.  **Configure Environment:**
-    Create a `.env` file based on `.env.example`:
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    Add your `OPENROUTER_API_KEY`, Firestore credentials, and optional keys (`GITHUB_PAT`, `LASTFM_API_KEY`).
-
-5.  **Run Development Server:**
-
-    ```bash
-    npm run dev
-    ```
-
-    - **Frontend UI:** `http://127.0.0.1:4000`
-    - **FastAPI Backend:** `http://127.0.0.1:8001`
-    - **OpenAPI docs:** `http://127.0.0.1:8001/docs`
+| Command                        | Purpose |
+|--------------------------------|---------|
+| `npm run dev`                  | Concurrent frontend + FastAPI dev servers with hot reload |
+| `npm run build`                | Production build to `dist/` (esbuild + Sharp image optimization) |
+| `npm run qa:prod-ready`        | Full pre-flight (security + lint + test + full E2E matrix + Lighthouse) |
+| `npm run test:e2e:all`         | Run complete Playwright matrix (all browsers + devices) |
+| `npm run qa:lighthouse:mobile` | Mobile performance + accessibility gate |
+| `npm run qa:lighthouse:desktop`| Desktop performance gate |
+| `npm run lint:dead-code`       | Ruff + Vulture analysis |
+| `npm run test`                 | Vitest unit tests |
+| `npm run format`               | Prettier formatting |
 
 ---
 
-## 🧪 Development Commands
+## 📊 Observability & Monitoring
 
-| Command                        | Action                                                                     |
-| :----------------------------- | :------------------------------------------------------------------------- |
-| `npm run dev`                  | Spins up local frontend (with API proxy) and FastAPI backend concurrently. |
-| `npm run build`                | Bundles static assets to `dist/` and writes public client configs.         |
-| `npm run format`               | Runs Prettier to style-check and format all source files.                  |
-| `npm run lint`                 | Runs ESLint modules check to ensure strict syntax safety.                  |
-| `npm run test`                 | Runs backend python tests and frontend Vitest unit tests.                  |
-| `npm run test:e2e:chrome`      | Runs Playwright Chromium E2E user-flow checks.                             |
-| `npm run qa:lighthouse:mobile` | Compares mobile Lighthouse performance against the 90+ threshold.          |
-| `npm run qa:prod-ready`        | Executes full pre-flight check (build, lint, test, security).              |
+- **Live Dashboard**: https://mangeshraut.pro/monitor — real-time latency, third-party provider health, and deployment surface status
+- **Custom Telemetry**: Firestore-backed visitor reach counter (incremental, no fake numbers)
+- **Vercel Analytics**: Automatic web vitals and page views
+- **API Health Endpoint**: `/api/health` returns status of Firestore, OpenRouter, Last.fm, and GitHub connectivity
+- **Structured Logging**: All routes emit consistent JSON logs for easy debugging
+
+---
+
+## 📁 Project Structure Overview
+
+```
+mangeshrautarchive/
+├── api/                    # FastAPI backend (routes, monitoring, integrations)
+│   ├── routes/             # chat, analytics, github, monitor, media, etc.
+│   └── index.py            # Main ASGI app
+├── src/                    # Frontend source
+│   ├── index.html          # Main portfolio
+│   ├── monitor.html        # Operations dashboard
+│   ├── travel.html         # Travel atlas experience
+│   ├── js/                 # Vanilla ES modules (chat, agentic actions, projects, etc.)
+│   └── assets/             # CSS, images, manifest, service-worker
+├── scripts/                # Build, deployment, QA, security, and optimization tooling
+├── tests/e2e/              # Playwright test suites (smoke, accessibility, post-deploy, chatbot actions)
+├── .github/workflows/      # CI/CD (deploy + quality gates)
+└── package.json / requirements.txt
+```
 
 ---
 
 ## 📄 License & Contact
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+MIT License — see [LICENSE](LICENSE).
 
-- **Projects Website:** [mangeshraut.pro](https://mangeshraut.pro)
-- **LinkedIn:** [in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
-- **GitHub:** [github.com/mangeshraut712](https://github.com/mangeshraut712)
-- **Email:** [mbr63@drexel.edu](mailto:mbr63@drexel.edu) / [mbr63drexel@gmail.com](mailto:mbr63drexel@gmail.com)
+**Mangesh Raut**
+- **Live Site**: [mangeshraut.pro](https://mangeshraut.pro)
+- **LinkedIn**: [linkedin.com/in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
+- **GitHub**: [github.com/mangeshraut712](https://github.com/mangeshraut712)
+- **Email**: mbr63@drexel.edu
+
+---
+
+## ⬆️ Back to Top
+
+<p align="center">
+  <a href="#-mangesh-raut--agentic-full-stack-engineering-platform-2026"><strong>⬆️ Back to Top</strong></a>
+</p>
+
+<p align="center">
+  <sub>Built with ❤️ in 2026 — Agentic Web, done right.</sub>
+</p>

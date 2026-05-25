@@ -1,0 +1,980 @@
+/*
+  Sections Apple Premium Upgrade - Comprehensive Section Improvements
+  Apple-inspired design system with glass morphism, refined typography,
+  and enhanced visual hierarchy for all portfolio sections.
+  Version: 2026.05.25
+*/
+
+/* ===== APPLE DESIGN SYSTEM VARIABLES ===== */
+:root {
+  /* Apple Signature Colors */
+  --apple-blue: #0071e3;
+  --apple-blue-dark: #0a84ff;
+  --apple-blue-light: #5ac8fa;
+  --apple-blue-soft: rgb(0 113 227 / 12%);
+  --apple-blue-glow: rgb(0 113 227 / 24%);
+  --apple-indigo: #5856d6;
+  --apple-purple: #af52de;
+  --apple-pink: #ff2d55;
+  --apple-red: #ff3b30;
+  --apple-orange: #ff9500;
+  --apple-yellow: #ffcc00;
+  --apple-green: #34c759;
+  --apple-teal: #5ac8fa;
+  
+  /* Apple Gray Scale */
+  --apple-gray-50: #f5f5f7;
+  --apple-gray-100: #e8e8ed;
+  --apple-gray-200: #d2d2d7;
+  --apple-gray-300: #86868b;
+  --apple-gray-400: #6e6e73;
+  --apple-gray-500: #424245;
+  --apple-gray-600: #1d1d1f;
+  
+  /* Dark Mode Surface Colors */
+  --apple-dark-bg: #000000;
+  --apple-dark-surface: #1c1c1e;
+  --apple-dark-elevated: #2c2c2e;
+  --apple-dark-border: rgb(255 255 255 / 12%);
+  
+  /* Glass Morphism System */
+  --glass-bg-light: rgb(255 255 255 / 75%);
+  --glass-bg-dark: rgb(28 28 30 / 75%);
+  --glass-border-light: rgb(255 255 255 / 45%);
+  --glass-border-dark: rgb(255 255 255 / 10%);
+  --glass-blur: 24px;
+  
+  /* Premium Shadow System */
+  --shadow-apple-xs: 0 1px 2px rgb(0 0 0 / 4%);
+  --shadow-apple-sm: 0 2px 8px rgb(0 0 0 / 6%);
+  --shadow-apple-md: 0 4px 16px rgb(0 0 0 / 8%);
+  --shadow-apple-lg: 0 8px 28px rgb(0 0 0 / 12%);
+  --shadow-apple-xl: 0 16px 48px rgb(0 0 0 / 16%);
+  --shadow-apple-blue: 0 8px 32px rgb(0 113 227 / 20%);
+  --shadow-apple-glow: 0 0 40px rgb(0 113 227 / 15%);
+  
+  /* Animation Timing - Apple Spring Curves */
+  --apple-ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --apple-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --apple-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+}
+
+/* ===== SECTION BASE STYLES ===== */
+section {
+  scroll-margin-top: 80px;
+  position: relative;
+}
+
+section h2 {
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+section .section-subtitle {
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 50ch;
+  margin: 0 auto 2.5rem;
+}
+
+/* ===== HOME/HERO SECTION - PREMIUM UPGRADE ===== */
+#home {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, 
+    var(--apple-gray-50) 0%, 
+    #ffffff 20%, 
+    #ffffff 80%, 
+    var(--apple-gray-50) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+#home::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgb(0 113 227 / 8%), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgb(88 166 255 / 5%), transparent);
+  pointer-events: none;
+}
+
+html.dark #home {
+  background: linear-gradient(180deg, 
+    var(--apple-dark-bg) 0%, 
+    var(--apple-dark-surface) 20%, 
+    var(--apple-dark-surface) 80%, 
+    var(--apple-dark-bg) 100%);
+}
+
+html.dark #home::before {
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgb(10 132 255 / 12%), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgb(88 166 255 / 8%), transparent);
+}
+
+/* Hero Profile Image - Enhanced */
+#home .profile-image-wrapper {
+  position: relative;
+  width: 140px !important;
+  height: 140px !important;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--apple-blue), var(--apple-blue-light));
+  box-shadow: 
+    0 20px 40px rgb(0 113 227 / 25%),
+    0 0 0 8px rgb(255 255 255 / 80%);
+  transition: all var(--duration-normal) var(--apple-spring);
+  cursor: pointer;
+}
+
+#home .profile-image-wrapper:hover {
+  transform: scale(1.05) translateY(-4px);
+  box-shadow: 
+    0 30px 60px rgb(0 113 227 / 30%),
+    0 0 0 12px rgb(255 255 255 / 90%);
+}
+
+#home .profile-image-wrapper img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+}
+
+/* Hero Name - Premium Typography */
+#home .hero-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+#home .hero-name-text {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--apple-gray-600) 0%, var(--apple-gray-600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html.dark #home .hero-name-text {
+  background: linear-gradient(135deg, #ffffff 0%, var(--apple-gray-200) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Verified Badge */
+#home .hero-verified-badge {
+  width: 32px;
+  height: 32px;
+  color: var(--apple-blue);
+  flex-shrink: 0;
+}
+
+html.dark #home .hero-verified-badge {
+  color: var(--apple-blue-dark);
+}
+
+/* Pronunciation Button */
+#home .name-pronounce-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--apple-gray-200);
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(12px);
+  color: var(--apple-gray-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--apple-ease);
+}
+
+#home .name-pronounce-btn:hover {
+  border-color: var(--apple-blue);
+  color: var(--apple-blue);
+  background: var(--apple-blue-soft);
+  transform: scale(1.1);
+}
+
+/* Hero Title & Role */
+#home .hero-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--apple-gray-400);
+  margin-bottom: 0.5rem;
+}
+
+#home .hero-role-flip {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+#home .hero-role-flip span {
+  color: var(--apple-gray-400);
+}
+
+#home .hero-role-flip strong {
+  color: var(--apple-blue);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html.dark #home .hero-role-flip strong {
+  background: linear-gradient(135deg, var(--apple-blue-dark) 0%, var(--apple-blue-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Vibe Coder Badge - Premium */
+#home .vibe-coder-badge-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+#home .vibe-coder-badge,
+#home .portfolio-reach-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all var(--duration-fast) var(--apple-ease);
+}
+
+#home .vibe-coder-badge {
+  background: linear-gradient(135deg, var(--apple-yellow) 0%, #ffd60a 100%);
+  color: var(--apple-gray-600);
+  box-shadow: 0 4px 12px rgb(255 204 0 / 30%);
+}
+
+#home .vibe-coder-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgb(255 204 0 / 40%);
+}
+
+#home .portfolio-reach-badge {
+  background: var(--apple-blue-soft);
+  border: 1px solid var(--apple-blue-glow);
+  color: var(--apple-blue);
+}
+
+html.dark #home .portfolio-reach-badge {
+  background: rgb(10 132 255 / 15%);
+  border-color: rgb(10 132 255 / 30%);
+  color: var(--apple-blue-dark);
+}
+
+/* Music Card - Apple Style */
+#home .music-card {
+  max-width: 360px;
+  margin: 0 auto 1.5rem;
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 16px;
+  padding: 0.75rem;
+  box-shadow: var(--shadow-apple-md);
+  transition: all var(--duration-normal) var(--apple-ease);
+}
+
+#home .music-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-apple-lg);
+}
+
+html.dark #home .music-card {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+}
+
+#home .music-card-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+#home .album-art-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+#home .album-art {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: var(--shadow-apple-sm);
+}
+
+#home .playing-indicator {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  display: flex;
+  gap: 2px;
+  padding: 4px 6px;
+  background: var(--apple-green);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgb(52 199 89 / 40%);
+}
+
+#home .playing-indicator span {
+  width: 3px;
+  height: 12px;
+  background: white;
+  border-radius: 2px;
+  animation: sound-bar 0.8s ease-in-out infinite;
+}
+
+#home .playing-indicator span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+#home .playing-indicator span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes sound-bar {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+#home .track-info {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+#home .track-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--apple-gray-600);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#home .artist-name {
+  font-size: 0.8125rem;
+  color: var(--apple-gray-400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hero Description */
+#home .hero-description {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--apple-gray-400);
+  max-width: 50ch;
+  margin: 0 auto 2rem;
+}
+
+html.dark #home .hero-description {
+  color: var(--apple-gray-300);
+}
+
+/* Hero CTA Buttons */
+#home .hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+#home .hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 100px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--apple-spring);
+  cursor: pointer;
+  border: none;
+}
+
+#home .hero-cta:first-child {
+  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-dark) 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgb(0 113 227 / 35%);
+}
+
+#home .hero-cta:first-child:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgb(0 113 227 / 45%);
+}
+
+#home .hero-cta:last-child {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border-light);
+  color: var(--apple-gray-600);
+}
+
+html.dark #home .hero-cta:last-child {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+  color: var(--apple-gray-200);
+}
+
+#home .hero-cta:last-child:hover {
+  background: var(--apple-gray-100);
+  transform: translateY(-2px);
+}
+
+/* ===== ABOUT SECTION - PREMIUM UPGRADE ===== */
+#about {
+  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+}
+
+html.dark #about {
+  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+}
+
+#about .about-content {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#about .about-main {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 3rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  #about .about-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+#about .about-image-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-apple-xl);
+}
+
+#about .about-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform var(--duration-slow) var(--apple-ease);
+}
+
+#about .about-image-wrapper:hover .about-image {
+  transform: scale(1.03);
+}
+
+#about .about-image-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--apple-gray-600);
+  box-shadow: var(--shadow-apple-md);
+}
+
+html.dark #about .about-image-badge {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+  color: var(--apple-gray-200);
+}
+
+#about .about-text-card {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-apple-lg);
+}
+
+html.dark #about .about-text-card {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+}
+
+#about .about-intro-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--apple-gray-600);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+html.dark #about .about-intro-title {
+  color: #ffffff;
+}
+
+#about .about-intro-text,
+#about .about-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--apple-gray-400);
+  margin-bottom: 1rem;
+}
+
+#about .about-intro-text strong,
+#about .about-description strong {
+  color: var(--apple-gray-600);
+  font-weight: 600;
+}
+
+html.dark #about .about-intro-text,
+html.dark #about .about-description {
+  color: var(--apple-gray-300);
+}
+
+html.dark #about .about-intro-text strong,
+html.dark #about .about-description strong {
+  color: var(--apple-gray-200);
+}
+
+/* ===== SKILLS SECTION - PREMIUM UPGRADE ===== */
+#skills {
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+}
+
+html.dark #skills {
+  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+}
+
+/* ===== EXPERIENCE SECTION - PREMIUM UPGRADE ===== */
+#experience {
+  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+}
+
+html.dark #experience {
+  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+}
+
+#experience .experience-timeline {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#experience .timeline-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--apple-gray-200);
+}
+
+#experience .timeline-section-header:first-child {
+  margin-top: 0;
+}
+
+html.dark #experience .timeline-section-header {
+  border-color: var(--apple-dark-border);
+}
+
+#experience .timeline-section-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--apple-gray-600);
+  letter-spacing: -0.02em;
+}
+
+html.dark #experience .timeline-section-header h3 {
+  color: #ffffff;
+}
+
+#experience .experience-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border-light);
+  border-radius: 20px;
+  box-shadow: var(--shadow-apple-md);
+  transition: all var(--duration-normal) var(--apple-ease);
+}
+
+#experience .experience-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-apple-lg);
+  border-color: var(--apple-blue-glow);
+}
+
+html.dark #experience .experience-item {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+}
+
+#experience .experience-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-dark) 100%);
+  border-radius: 14px;
+  color: white;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+#experience .experience-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--apple-gray-600);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+html.dark #experience .experience-content h3 {
+  color: #ffffff;
+}
+
+#experience .experience-content .text-accent {
+  color: var(--apple-blue);
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+html.dark #experience .experience-content .text-accent {
+  color: var(--apple-blue-dark);
+}
+
+#experience .experience-date-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  background: var(--apple-blue-soft);
+  border: 1px solid var(--apple-blue-glow);
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--apple-blue);
+}
+
+html.dark #experience .experience-date-badge {
+  background: rgb(10 132 255 / 15%);
+  border-color: rgb(10 132 255 / 25%);
+  color: var(--apple-blue-dark);
+}
+
+#experience .experience-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+#experience .experience-content li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--apple-gray-400);
+}
+
+#experience .experience-content li svg {
+  width: 18px;
+  height: 18px;
+  color: var(--apple-green);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+#experience .experience-content li strong {
+  color: var(--apple-gray-600);
+  font-weight: 600;
+}
+
+#experience .experience-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+#experience .experience-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  background: var(--apple-gray-100);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--apple-gray-500);
+  transition: all var(--duration-fast) var(--apple-ease);
+}
+
+#experience .experience-tag:hover {
+  background: var(--apple-blue-soft);
+  color: var(--apple-blue);
+}
+
+html.dark #experience .experience-tag {
+  background: var(--apple-dark-elevated);
+  color: var(--apple-gray-300);
+}
+
+html.dark #experience .experience-tag:hover {
+  background: rgb(10 132 255 / 20%);
+  color: var(--apple-blue-dark);
+}
+
+/* ===== EDUCATION SECTION - PREMIUM UPGRADE ===== */
+#education {
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+}
+
+html.dark #education {
+  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+}
+
+/* ===== PUBLICATIONS SECTION - PREMIUM UPGRADE ===== */
+#publications {
+  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+}
+
+html.dark #publications {
+  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+}
+
+/* ===== AWARDS SECTION - PREMIUM UPGRADE ===== */
+#awards {
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+}
+
+html.dark #awards {
+  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+}
+
+/* ===== RECOMMENDATIONS SECTION - PREMIUM UPGRADE ===== */
+#recommendations {
+  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+}
+
+html.dark #recommendations {
+  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+}
+
+/* ===== CERTIFICATIONS SECTION - PREMIUM UPGRADE ===== */
+#certifications {
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 100%);
+}
+
+html.dark #certifications {
+  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+}
+
+/* ===== BLOG SECTION - PREMIUM UPGRADE ===== */
+#blog {
+  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+}
+
+html.dark #blog {
+  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+}
+
+/* ===== CONTACT SECTION - PREMIUM UPGRADE ===== */
+#contact {
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, #ffffff 50%, var(--apple-gray-50) 100%);
+}
+
+html.dark #contact {
+  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 50%, var(--apple-dark-bg) 100%);
+}
+
+/* ===== GAME SECTION - PREMIUM UPGRADE ===== */
+#debug-runner-section {
+  background: linear-gradient(180deg, #ffffff 0%, var(--apple-gray-50) 100%);
+}
+
+html.dark #debug-runner-section {
+  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+}
+
+/* ===== FOOTER - PREMIUM UPGRADE ===== */
+footer {
+  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--apple-gray-100) 100%);
+  border-top: 1px solid var(--apple-gray-200);
+  padding: 3rem 0 2rem;
+}
+
+html.dark footer {
+  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, #000000 100%);
+  border-color: var(--apple-dark-border);
+}
+
+footer .footer-copy {
+  color: var(--apple-gray-400);
+  font-size: 0.875rem;
+}
+
+footer .footer-tagline {
+  color: var(--apple-gray-300);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+html.dark footer .footer-copy {
+  color: var(--apple-gray-300);
+}
+
+html.dark footer .footer-tagline {
+  color: var(--apple-gray-400);
+}
+
+/* ===== GO TO TOP BUTTON ===== */
+#go-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border-light);
+  color: var(--apple-gray-600);
+  font-size: 1.125rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-apple-lg);
+  transition: all var(--duration-normal) var(--apple-spring);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  z-index: 1000;
+}
+
+#go-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#go-to-top:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-apple-xl);
+  background: var(--apple-blue);
+  color: white;
+  border-color: var(--apple-blue);
+}
+
+html.dark #go-to-top {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+  color: var(--apple-gray-200);
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  section h2 {
+    font-size: 2rem;
+  }
+  
+  section .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  #home .hero-name-text {
+    font-size: 2.25rem;
+  }
+  
+  #home .profile-image-wrapper {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  
+  #experience .experience-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  #experience .experience-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  #home .playing-indicator span {
+    animation: none !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  #home::before,
+  .music-card,
+  #go-to-top,
+  #chatbot-toggle,
+  #chatbot-widget {
+    display: none !important;
+  }
+  
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
