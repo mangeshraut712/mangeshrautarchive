@@ -675,11 +675,10 @@ html.dark #experience .timeline-section-header h3 {
 }
 
 #experience .experience-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.5rem;
+  display: block;
+  position: relative;
   margin-bottom: 2rem;
-  padding-left: 0;
+  padding-left: 80px;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -687,23 +686,26 @@ html.dark #experience .timeline-section-header h3 {
 }
 
 #experience .experience-icon {
-  width: 44px;
-  height: 44px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  color: var(--apple-blue);
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  border: 1px solid var(--border-subtle);
+  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-dark) 100%);
+  border-radius: 50%;
+  color: white;
+  font-size: 1.25rem;
+  border: 4px solid var(--bg-primary);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }
 
 html.dark #experience .experience-icon {
-  background: var(--bg-secondary-dark);
-  color: var(--apple-blue-dark);
-  border-color: var(--border-subtle-dark);
+  background: linear-gradient(135deg, var(--apple-blue-dark) 0%, var(--apple-blue) 100%);
+  border-color: var(--bg-primary-dark);
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
 }
 
 #experience .experience-content h3 {
