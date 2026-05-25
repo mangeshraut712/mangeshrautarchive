@@ -648,16 +648,37 @@ html.dark #experience {
 #experience .timeline-section-header {
   display: inline-flex;
   align-items: center;
-  margin: 2rem 0 1.5rem 28px;
-  padding: 0.5rem 1rem;
+  margin: 2.5rem 0 1.5rem;
+  padding: 0.4rem 0.875rem;
   background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: 100px;
   position: relative;
+  margin-left: 90px;
 }
 
 #experience .timeline-section-header:first-child {
   margin-top: 0;
+}
+
+#experience .timeline-section-header::before {
+  content: '';
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background: var(--apple-blue);
+  border-radius: 50%;
+  border: 2px solid var(--bg-primary);
+  box-shadow: 0 0 0 1px var(--border-subtle);
+}
+
+html.dark #experience .timeline-section-header::before {
+  background: var(--apple-blue-dark);
+  border-color: var(--bg-primary-dark);
+  box-shadow: 0 0 0 1px var(--border-subtle-dark);
 }
 
 html.dark #experience .timeline-section-header {
@@ -666,10 +687,10 @@ html.dark #experience .timeline-section-header {
 }
 
 #experience .timeline-section-header h3 {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   margin: 0;
 }
