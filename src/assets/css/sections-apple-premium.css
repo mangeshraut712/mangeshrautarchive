@@ -646,13 +646,13 @@ html.dark #experience {
 }
 
 #experience .timeline-section-header {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 1rem;
-  margin: 3rem 0 1.5rem 80px;
-  padding: 0;
-  background: transparent;
-  border: none;
+  margin: 2rem 0 1.5rem 28px;
+  padding: 0.5rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
   position: relative;
 }
 
@@ -660,29 +660,18 @@ html.dark #experience {
   margin-top: 0;
 }
 
-#experience .timeline-section-header::before {
-  content: '';
-  position: absolute;
-  left: -56px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
-  background: var(--bg-primary);
-  border-radius: 50%;
-  border: 3px solid var(--apple-blue);
-}
-
-html.dark #experience .timeline-section-header::before {
-  background: var(--bg-primary-dark);
-  border-color: var(--apple-blue-dark);
+html.dark #experience .timeline-section-header {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-subtle-dark);
 }
 
 #experience .timeline-section-header h3 {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 html.dark #experience .timeline-section-header h3 {
