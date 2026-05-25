@@ -631,7 +631,7 @@ html.dark #skills {
   background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
 }
 
-/* ===== EXPERIENCE SECTION - PREMIUM UPGRADE ===== */
+/* ===== EXPERIENCE SECTION - APPLE INSPIRED ===== */
 #experience {
   background: var(--bg-primary);
 }
@@ -641,19 +641,20 @@ html.dark #experience {
 }
 
 #experience .experience-timeline {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
+/* Timeline Section Header - Apple Style */
 #experience .timeline-section-header {
-  display: inline-block;
-  margin: 2rem 0 1.5rem 80px;
-  padding: 0.5rem 1rem;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-default);
-  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2.5rem 0 1.25rem 90px;
+  padding: 0;
+  background: transparent;
+  border: none;
   position: relative;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 #experience .timeline-section-header:first-child {
@@ -663,11 +664,11 @@ html.dark #experience {
 #experience .timeline-section-header::before {
   content: '';
   position: absolute;
-  left: -56px;
+  left: -66px;
   top: 50%;
   transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: var(--apple-blue);
   border-radius: 50%;
   border: 2px solid var(--bg-primary);
@@ -678,16 +679,12 @@ html.dark #experience .timeline-section-header::before {
   border-color: var(--bg-primary-dark);
 }
 
-html.dark #experience .timeline-section-header {
-  background: var(--bg-primary-dark);
-  border-color: var(--border-default-dark);
-}
-
 #experience .timeline-section-header h3 {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   margin: 0;
 }
 
@@ -695,38 +692,39 @@ html.dark #experience .timeline-section-header h3 {
   color: var(--text-secondary-dark);
 }
 
+/* Experience Item - Apple Style */
 #experience .experience-item {
   display: block;
   position: relative;
-  margin-bottom: 2rem;
-  padding-left: 80px;
+  margin-bottom: 1.5rem;
+  padding-left: 90px;
   background: transparent;
   border: none;
   border-radius: 0;
   box-shadow: none;
 }
 
+/* Experience Icon - Apple Style (Minimal) */
 #experience .experience-icon {
   position: absolute;
   left: 0;
   top: 0;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-dark) 100%);
-  border-radius: 50%;
-  color: white;
-  font-size: 1.25rem;
-  border: 4px solid var(--bg-primary);
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  color: var(--apple-blue);
+  font-size: 1.1rem;
+  border: 1px solid var(--border-subtle);
 }
 
 html.dark #experience .experience-icon {
-  background: linear-gradient(135deg, var(--apple-blue-dark) 0%, var(--apple-blue) 100%);
-  border-color: var(--bg-primary-dark);
-  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+  background: var(--bg-secondary-dark);
+  color: var(--apple-blue-dark);
+  border-color: var(--border-subtle-dark);
 }
 
 #experience .experience-content h3 {
