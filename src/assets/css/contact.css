@@ -2739,8 +2739,7 @@ html.dark .watch-btn.book-btn {
 #contact .ios-reminders-section,
 #contact .calendly-panel,
 #contact .reminder-card,
-#contact .contact-link-item,
-#contact .wrapper .icon {
+#contact .contact-link-item {
   background: #ffffff !important;
   background-color: #ffffff !important;
   backdrop-filter: none !important;
@@ -2758,8 +2757,7 @@ html.dark #contact .ios-calendar-section,
 html.dark #contact .ios-reminders-section,
 html.dark #contact .calendly-panel,
 html.dark #contact .reminder-card,
-html.dark #contact .contact-link-item,
-html.dark #contact .wrapper .icon {
+html.dark #contact .contact-link-item {
   background: #000000 !important;
   background-color: #000000 !important;
 }
@@ -2768,7 +2766,8 @@ html.dark #contact .wrapper .icon {
 #contact .support-donation-card,
 #contact .currently-card,
 #contact .calendar-wrapper-clean,
-#contact .ios-widget-wrapper {
+#contact .ios-widget-wrapper,
+#contact .wrapper .icon {
   border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -2776,7 +2775,8 @@ html.dark #contact .contact-card,
 html.dark #contact .support-donation-card,
 html.dark #contact .currently-card,
 html.dark #contact .calendar-wrapper-clean,
-html.dark #contact .ios-widget-wrapper {
+html.dark #contact .ios-widget-wrapper,
+html.dark #contact .wrapper .icon {
   border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
