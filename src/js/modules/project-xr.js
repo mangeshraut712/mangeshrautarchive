@@ -290,6 +290,7 @@ class ProjectXR {
     actions.className = 'project-xr-overlay-actions';
 
     const close = this.documentRef.createElement('button');
+    close.setAttribute('type', 'button');
     close.type = 'button';
     close.className = 'project-xr-close-btn';
     close.textContent = 'Close AR';
@@ -933,6 +934,7 @@ class ProjectXR {
     updatedChip.className = 'project-xr-updated-chip';
     updatedChip.textContent = updatedChipValue;
     const topClose = this.documentRef.createElement('button');
+    topClose.setAttribute('type', 'button');
     topClose.type = 'button';
     topClose.className = 'project-xr-top-close';
     topClose.setAttribute('aria-label', 'Close spatial detail card');

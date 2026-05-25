@@ -49,6 +49,7 @@ const outputFile = join(tmpdir(), `lh-${formFactor}-${Date.now()}.json`);
 const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 
 const lighthouseArgs = [
+  '-y',
   'lighthouse',
   url,
   '--chrome-flags=--headless=new --no-sandbox --disable-dev-shm-usage',
