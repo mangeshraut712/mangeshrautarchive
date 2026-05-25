@@ -2394,6 +2394,15 @@ html.dark .dream-company-item[title='LG']:hover .company-logo {
   filter: invert(1) hue-rotate(180deg) brightness(1.25) drop-shadow(0 4px 12px rgb(165 0 52 / 40%));
 }
 
+/* JPMorgan Chase - SVG logo with black paths, needs inversion to white in dark mode */
+html.dark .dream-company-item[title='JPMorgan Chase'] .company-logo {
+  filter: brightness(0) invert(1);
+}
+
+html.dark .dream-company-item[title='JPMorgan Chase']:hover .company-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
+}
+
 /* ============================================
    CAR LOGOS - Theme Handling
    ============================================ */
@@ -2487,6 +2496,15 @@ html.dark .dream-car-item[title='Jeep'] .car-logo {
 
 html.dark .dream-car-item[title='Jeep']:hover .car-logo {
   filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgb(255 255 255 / 30%));
+}
+
+/* Volkswagen - Blue/white emblem, invert blue to light blue while keeping logo white elements */
+html.dark .dream-car-item[title='Volkswagen'] .car-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.20);
+}
+
+html.dark .dream-car-item[title='Volkswagen']:hover .car-logo {
+  filter: invert(1) hue-rotate(180deg) brightness(1.30) drop-shadow(0 4px 12px rgb(0 30 80 / 40%));
 }
 
 /* Marquee Animation */
