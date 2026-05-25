@@ -42,7 +42,21 @@ html.dark #experience h2 {
   padding-left: 0;
 }
 
-/* Timeline line removed for cleaner Apple-inspired design */
+/* Timeline Vertical Line - Restored */
+.experience-timeline::before {
+  content: '';
+  position: absolute;
+  left: 32px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--apple-blue), var(--apple-blue-dark));
+  z-index: 0;
+}
+
+html.dark .experience-timeline::before {
+  background: linear-gradient(to bottom, var(--apple-blue-dark), var(--apple-blue));
+}
 
 /* Timeline Item Container */
 .experience-item {
