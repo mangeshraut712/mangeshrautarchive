@@ -124,6 +124,7 @@ class AppleIntelligenceChatbot {
     this.lastUserMessage = '';
     this.messageCount = 0;
     this.retryCount = 0;
+    this.textareaWidth = 0;
 
     if (!this.elements.widget || !this.elements.toggle) {
       console.error('Chatbot elements not found');
@@ -272,7 +273,10 @@ class AppleIntelligenceChatbot {
 
   autoResizeTextarea(textarea) {
     if (!textarea || !this.shadowDiv) return;
-    this.shadowDiv.style.width = textarea.clientWidth + 'px';
+    if (!this.textareaWidth || this.textareaWidth !== textarea.clientWidth) {
+      this.textareaWidth = textarea.clientWidth;
+      this.shadowDiv.style.width = this.textareaWidth + 'px';
+    }
     this.shadowDiv.textContent = textarea.value + '\u200b';
     const maxHeight = 120;
     const newHeight = Math.min(this.shadowDiv.scrollHeight, maxHeight);
@@ -325,6 +329,10 @@ class AppleIntelligenceChatbot {
         this.closeWidget();
       }
     });
+
+    window.addEventListener('resize', () => {
+      this.textareaWidth = 0;
+    }, { passive: true });
   }
 
   toggleWidget() {

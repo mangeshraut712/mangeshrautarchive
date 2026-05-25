@@ -11,6 +11,7 @@ class DebugRunner {
     this.ctx = null;
     this.gameRunning = false;
     this.gameOver = false;
+    this.paused = false;
     this.score = 0;
     this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore')) || 0;
     this.speed = 8;
@@ -377,6 +378,7 @@ class DebugRunner {
 
     this.gameRunning = true;
     this.gameOver = false;
+    this.paused = false;
     this.score = 0;
     this.speed = 8;
     this.obstacles = [];
@@ -385,8 +387,17 @@ class DebugRunner {
     this.resetHero();
     this.updateSideStats();
 
-    if (this.gameLoop) clearInterval(this.gameLoop);
-    this.gameLoop = setInterval(() => this.update(), 1000 / 60);
+    if (this.gameLoop) {
+      cancelAnimationFrame(this.gameLoop);
+      this.gameLoop = null;
+    }
+
+    const loop = () => {
+      if (!this.gameRunning || this.paused) return;
+      this.update();
+      this.gameLoop = requestAnimationFrame(loop);
+    };
+    this.gameLoop = requestAnimationFrame(loop);
 
     this.vibrate(30);
     console.log('🚀 Game Started');
@@ -394,9 +405,36 @@ class DebugRunner {
 
   stop() {
     this.gameRunning = false;
-    clearInterval(this.gameLoop);
+    if (this.gameLoop) {
+      cancelAnimationFrame(this.gameLoop);
+      this.gameLoop = null;
+    }
     this.vibrate([50, 100, 50]);
     this.drawGameOver();
+  }
+
+  pause() {
+    if (!this.gameRunning || this.gameOver) return;
+    this.paused = true;
+    if (this.gameLoop) {
+      cancelAnimationFrame(this.gameLoop);
+      this.gameLoop = null;
+    }
+    console.log('⏸️ Game Paused');
+  }
+
+  resume() {
+    if (!this.gameRunning || !this.paused || this.gameOver) return;
+    this.paused = false;
+    
+    if (this.gameLoop) cancelAnimationFrame(this.gameLoop);
+    const loop = () => {
+      if (!this.gameRunning || this.paused) return;
+      this.update();
+      this.gameLoop = requestAnimationFrame(loop);
+    };
+    this.gameLoop = requestAnimationFrame(loop);
+    console.log('▶️ Game Resumed');
   }
 
   jump() {
@@ -854,6 +892,30 @@ const initDebugRunner = () => {
     const game = new DebugRunner();
     const canvas = game.init();
     container.appendChild(canvas);
+
+    // Pause/Resume game based on Tab Visibility
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        game.pause();
+      } else {
+        game.resume();
+      }
+    });
+
+    // Pause/Resume game based on IntersectionObserver
+    const observerOptions = {
+      threshold: 0.1
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          game.resume();
+        } else {
+          game.pause();
+        }
+      });
+    }, observerOptions);
+    observer.observe(container);
   }
 };
 

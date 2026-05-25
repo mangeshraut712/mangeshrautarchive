@@ -78,6 +78,9 @@ html.dark .skill-category h3 {
   padding: 0.75rem 0;
   width: max-content;
   animation: skillMarquee 40s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .skill-scroll-container:hover .skill-scroll-wrapper {
