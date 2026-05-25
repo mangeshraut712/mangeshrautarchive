@@ -1,6 +1,6 @@
 # 🚀 Mangesh Raut | AI-First Full-Stack Engineering Showcase
 
-Production-grade portfolio, AI assistant, travel atlas, and system monitor platform powering [mangeshraut.pro](https://mangeshraut.pro).
+Production-grade projects showcase, travel atlas, system monitor, and AI assistant platform powering [mangeshraut.pro](https://mangeshraut.pro).
 
 <p align="center">
   <a href="https://mangeshraut.pro"><img alt="Live site" src="https://img.shields.io/badge/live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white"></a>
@@ -14,15 +14,19 @@ Production-grade portfolio, AI assistant, travel atlas, and system monitor platf
 
 ## 📖 Welcome to the Future of the Web (May 2026 Edition)
 
-This is not a static resume page. It is a full-stack portfolio system built to showcase **production-level engineering habits**: a polished Apple-inspired responsive frontend, a high-performance **FastAPI** backend, modular integrations, telemetry, and automated regression testing.
+This is not a static resume page. It is a full-stack projects platform built to showcase **production-level engineering habits**: a polished Apple-inspired responsive frontend, a high-performance **FastAPI** backend, modular integrations, telemetry, and automated regression testing.
 
 In **May 2026**, the web has transitioned from static layouts to **Agentic Web Applications**. This repository features:
 
-- **Hybrid AI Execution:** Instant, offline-capable browser intelligence via **WebNN** + **Gemma 3**, with a serverless cloud fallback to **Gemini 2.5 Flash / Pro** via OpenRouter.
+- **Unified Navigation Architecture:** Cleaned up page navigation references, establishing a consistent global section nomenclature mapping directly to the `Projects` showcase across primary headers, mobile menus, and return-navigation overlays.
+- **Robust GitHub Projects Showcase:** Apple-inspired spatial project cards sync public repository metadata, latest releases, commits since release, and activity filters. Implemented a dual-layered pipeline:
+  - **Absolute Domain Fallbacks:** Configured `https://mangeshraut.pro/api/github/repos/public` and `/api/github/repos` as absolute proxy endpoints to ensure repository metadata loads successfully even on static hosting surfaces (such as `github.io`).
+  - **Featured Project Overrides:** Bypassed traditional repository signal checks (stars, description, homepage) for explicitly featured items to guarantee featured projects are never filtered out.
+  - **Enriched Offline Cache:** Enriched the local `fallbackRepos` array with complete and accurate metadata for all 8 featured projects, providing a seamless user experience under offline or rate-limiting conditions.
+- **Hybrid AI Execution:** Instant, offline-capable browser inference via **WebNN** + **Gemma 3**, with a serverless cloud fallback to **Gemini 2.5 Flash / Pro** via OpenRouter.
 - **WebMCP Agentic Actions:** Native browser capability integration using the W3C `navigator.modelContext.registerTool` protocol, exposing 9 core interactive tools (e.g., section navigation, resume download, contact overlay, theme toggles) to agentic orchestrators.
 - **Premium Agentic UX Feedback:** High-fidelity visual micro-animations, glassmorphic `.action-message` rendering, and pulsing action badges (`ACTION EXECUTED`) that provide tactile, real-time visual feedback when local tools are executed by the AI.
 - **Authoritative Engagement Telemetry:** A simple, direct, real-time visitor reach counter built on **Cloud Firestore** and cross-checked with **Vercel Analytics**.
-- **Release-Aware GitHub Showcase:** Apple-inspired spatial project cards sync public repository metadata, latest GitHub releases, commits since release, activity filters, and live repository structure inside the portfolio.
 - **Operational Visibility:** A live operations dashboard at `/monitor` showing endpoint latencies, third-party provider checks, event logging, and hosting surface status.
 - **Rigorous Quality Gates:** Lighthouse scores gated in CI/CD (Desktop **99**, Mobile **92**), unit tests, playbooks, and E2E regression suites (including chatbot WebMCP action suites).
 
@@ -67,6 +71,27 @@ Would you like to look at the project's repository structure or setup guidelines
 </details>
 
 <details>
+<summary><b>📂 Prompt: "What projects are featured in the showcase?"</b></summary>
+<br>
+<blockquote>
+🤖 <b>AssistMe</b> <a href="https://mangeshraut.pro"><sup>[Direct Action]</sup></a>:
+<br><br>
+The Projects Showcase dynamically loads live metadata for Mangesh's primary engineering projects:
+<ol>
+  <li><b>mangeshrautarchive:</b> This full-stack showcase platform (Vanilla CSS/JS + FastAPI).</li>
+  <li><b>AssistMe-VirtualAssistant:</b> Multi-modal voice-enabled React/FastAPI AI assistant.</li>
+  <li><b>Bug-Reporting-System:</b> Full-stack bug tracker using Django REST framework and React.</li>
+  <li><b>ces-ltd.com:</b> Redesign concept for Customized Energy Solutions using Next.js & Three.js.</li>
+  <li><b>kashishbeautyparlour:</b> Small business reservation platform built with Next.js & Tailwind.</li>
+  <li><b>Real-Time-Face-Emotion-Recognition-System:</b> TensorFlow-powered computer vision tool with React dashboard.</li>
+  <li><b>Crime-Investigation-System:</b> Java and MySQL database management application.</li>
+  <li><b>Starlight-Blogging-Website:</b> Full-stack Angular frontend + Flask backend.</li>
+</ol>
+Would you like to filter these projects by language or explore their GitHub structures?
+</blockquote>
+</details>
+
+<details>
 <summary><b>📫 Prompt: "How can I contact Mangesh or download his resume?"</b></summary>
 <br>
 <blockquote>
@@ -96,7 +121,7 @@ cache-control: no-cache
 
 {
 "status": "healthy",
-"version": "2.1.0",
+"version": "2.2.0",
 "environment": "production",
 "timestamp": 1779340800000,
 "services": {
@@ -122,7 +147,7 @@ cache-control: public, max-age=300
 "github_stars": 16,
 "github_forks": 6
 },
-"timestamp": "2026-05-20T05:38:00Z"
+"timestamp": "2026-05-25T06:50:00Z"
 }</code></pre>
 
 </details>
@@ -136,7 +161,7 @@ cache-control: public, max-age=300
 | **Client Core**      | HTML5, Vanilla CSS3, ES Modules, Canvas               | Responsive layout, modern variables, fluid animations without heavy framework overhead.    |
 | **Client AI**        | **WebNN API**, Gemma 3                                | Running client-side neural nets on browser hardware for instant local interactions.        |
 | **Serverless API**   | **FastAPI**, Pydantic, HTTPX, Uvicorn                 | High-performance Python backend routes running as Vercel Serverless Functions.             |
-| **Cloud AI**         | **Gemini 2.5 Pro / Flash**                            | OpenRouter cloud completions for complex reasoning and portfolio exploration.              |
+| **Cloud AI**         | **Gemini 2.5 Pro / Flash**                            | OpenRouter cloud completions for complex reasoning and projects exploration.               |
 | **Telemetry**        | **Cloud Firestore**                                   | Real-time visitor counts, counter tracking, and performance persistence.                   |
 | **Repository Intel** | GitHub REST API, release metadata, contribution graph | Live project cards, release freshness, commits-since-release, and spatial repo inspection. |
 | **Testing**          | Playwright, Vitest, axe-core, Lighthouse              | End-to-end integration tests, accessibility gates, and performance budgets.                |
@@ -198,9 +223,9 @@ flowchart TD
 ### Key Design Decisions
 
 1. **Dual-Surface Deploy:** Frontend assets are statically built to `dist/`. The main domain routes through Vercel CDN. In case of main server outages, GitHub Pages serves as a static fallback and proxies API queries back to `mangeshraut.pro/api` securely.
-2. **Visitor Counter simple logic:** Instead of fake random calculations, `api/routes/analytics.py` maintains an incremental counter inside Cloud Firestore, adding GitHub repo stars and forks to form the **Portfolio Reach** metric. No local storage hover tooltips or complex charts are used.
+2. **Visitor Counter simple logic:** Instead of fake random calculations, `api/routes/analytics.py` maintains an incremental counter inside Cloud Firestore, adding GitHub repo stars and forks to form the **Projects Reach** metric. No local storage hover tooltips or complex charts are used.
 3. **Protected Server Secrets:** API keys for OpenRouter and Google Cloud credentials never touch the browser. The FastAPI server handles authorization, rate-limiting, and payload sanitization.
-4. **Release-Aware Project Intelligence:** The projects section keeps the existing portfolio cards but enriches them with latest GitHub release metadata, commits since release, release-health lenses, and a Spatial View modal that maps repository structure, languages, activity, and release freshness.
+4. **Release-Aware Project Intelligence:** The projects section keeps the existing projects cards but enriches them with latest GitHub release metadata, commits since release, release-health lenses, and a Spatial View modal that maps repository structure, languages, activity, and release freshness.
 
 ---
 
@@ -227,8 +252,8 @@ Every commit must pass the following pipeline before deployment:
 
 ### Prerequisites
 
-- Node.js `>=20`
-- Python `>=3.10`
+- Node.js `>=22`
+- Python `>=3.12`
 - Google Cloud Project (with Firestore enabled in Native Mode)
 
 ### Development Setup
@@ -249,7 +274,7 @@ Every commit must pass the following pipeline before deployment:
 3.  **Setup Python Virtual Environment & Dependencies:**
 
     ```bash
-    python -m venv venv
+    python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     ```
@@ -281,7 +306,8 @@ Every commit must pass the following pipeline before deployment:
 | :----------------------------- | :------------------------------------------------------------------------- |
 | `npm run dev`                  | Spins up local frontend (with API proxy) and FastAPI backend concurrently. |
 | `npm run build`                | Bundles static assets to `dist/` and writes public client configs.         |
-| `npm run lint`                 | Lints and formats JavaScript & CSS modules.                                |
+| `npm run format`               | Runs Prettier to style-check and format all source files.                  |
+| `npm run lint`                 | Runs ESLint modules check to ensure strict syntax safety.                  |
 | `npm run test`                 | Runs backend python tests and frontend Vitest unit tests.                  |
 | `npm run test:e2e:chrome`      | Runs Playwright Chromium E2E user-flow checks.                             |
 | `npm run qa:lighthouse:mobile` | Compares mobile Lighthouse performance against the 90+ threshold.          |
@@ -293,7 +319,7 @@ Every commit must pass the following pipeline before deployment:
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
-- **Portfolio:** [mangeshraut.pro](https://mangeshraut.pro)
+- **Projects Website:** [mangeshraut.pro](https://mangeshraut.pro)
 - **LinkedIn:** [in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
 - **GitHub:** [github.com/mangeshraut712](https://github.com/mangeshraut712)
 - **Email:** [mbr63@drexel.edu](mailto:mbr63@drexel.edu) / [mbr63drexel@gmail.com](mailto:mbr63drexel@gmail.com)
