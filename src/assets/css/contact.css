@@ -2331,6 +2331,33 @@ html.dark .dream-company-item[title='Adobe']:hover .company-logo {
   filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 0 0 / 50%));
 }
 
+/* Anthropic - PNG logo with dark text, needs brightness boost in dark mode */
+html.dark .dream-company-item[title='Anthropic'] .company-logo {
+  filter: brightness(1.2);
+}
+
+html.dark .dream-company-item[title='Anthropic']:hover .company-logo {
+  filter: brightness(1.3) drop-shadow(0 4px 12px rgb(200 200 200 / 40%));
+}
+
+/* Broadcom - PNG logo, ensure visibility in both modes */
+html.dark .dream-company-item[title='Broadcom'] .company-logo {
+  filter: brightness(1.15);
+}
+
+html.dark .dream-company-item[title='Broadcom']:hover .company-logo {
+  filter: brightness(1.25) drop-shadow(0 4px 12px rgb(200 200 200 / 40%));
+}
+
+/* TSMC - PNG logo, ensure visibility */
+html.dark .dream-company-item[title='TSMC'] .company-logo {
+  filter: brightness(1.2);
+}
+
+html.dark .dream-company-item[title='TSMC']:hover .company-logo {
+  filter: brightness(1.3) drop-shadow(0 4px 12px rgb(200 200 200 / 40%));
+}
+
 /* ============================================
    CAR LOGOS - Theme Handling
    ============================================ */
@@ -2371,6 +2398,33 @@ html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
 /* Land Rover - green */
 /* Bentley - silver wings */
 /* Rolls-Royce - Already generated with good contrast */
+
+/* Ferrari - PNG logo with yellow background and black text */
+html.dark .dream-car-item[title='Ferrari'] .car-logo {
+  filter: brightness(1.1);
+}
+
+html.dark .dream-car-item[title='Ferrari']:hover .car-logo {
+  filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 200 0 / 40%));
+}
+
+/* McLaren - PNG logo with orange elements */
+html.dark .dream-car-item[title='McLaren'] .car-logo {
+  filter: brightness(1.15);
+}
+
+html.dark .dream-car-item[title='McLaren']:hover .car-logo {
+  filter: brightness(1.25) drop-shadow(0 4px 12px rgb(255 153 0 / 40%));
+}
+
+/* Koenigsegg - PNG logo, ensure visibility */
+html.dark .dream-car-item[title='Koenigsegg'] .car-logo {
+  filter: brightness(1.2);
+}
+
+html.dark .dream-car-item[title='Koenigsegg']:hover .car-logo {
+  filter: brightness(1.3) drop-shadow(0 4px 12px rgb(200 200 200 / 40%));
+}
 
 /* Marquee Animation */
 @keyframes marquee-scroll {
