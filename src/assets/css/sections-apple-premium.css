@@ -649,8 +649,7 @@ html.dark #experience {
 #experience .timeline-section-header {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  margin: 2.5rem 0 1.25rem 90px;
+  margin: 2rem 0 1rem 60px;
   padding: 0;
   background: transparent;
   border: none;
@@ -664,11 +663,11 @@ html.dark #experience {
 #experience .timeline-section-header::before {
   content: '';
   position: absolute;
-  left: -66px;
+  left: -29px;
   top: 50%;
   transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: var(--apple-blue);
   border-radius: 50%;
   border: 2px solid var(--bg-primary);
@@ -680,10 +679,10 @@ html.dark #experience .timeline-section-header::before {
 }
 
 #experience .timeline-section-header h3 {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   margin: 0;
 }
@@ -697,7 +696,7 @@ html.dark #experience .timeline-section-header h3 {
   display: block;
   position: relative;
   margin-bottom: 1.5rem;
-  padding-left: 90px;
+  padding-left: 60px;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -709,15 +708,15 @@ html.dark #experience .timeline-section-header h3 {
   position: absolute;
   left: 0;
   top: 0;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-secondary);
-  border-radius: 12px;
+  border-radius: 10px;
   color: var(--apple-blue);
-  font-size: 1.1rem;
+  font-size: 1rem;
   border: 1px solid var(--border-subtle);
 }
 
@@ -994,22 +993,21 @@ html.dark #go-to-top {
   }
   
   #experience .experience-item {
-    padding-left: 70px;
+    padding-left: 50px;
   }
   
   #experience .timeline-section-header {
-    margin-left: 70px;
-    padding: 0.4rem 0.875rem;
+    margin-left: 50px;
   }
   
   #experience .timeline-section-header::before {
-    left: -50px;
+    left: -24px;
   }
   
   #experience .experience-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
 }
 

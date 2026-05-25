@@ -61,10 +61,8 @@ html.dark .experience-timeline::before {
 /* Timeline Item Container */
 .experience-item {
   position: relative;
-  padding-left: 90px;
-
-  /* Space for icon */
-  margin-bottom: 3rem;
+  padding-left: 60px;
+  margin-bottom: 1.5rem;
 }
 
 .experience-item:last-child {
