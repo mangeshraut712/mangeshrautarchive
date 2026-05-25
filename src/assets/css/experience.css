@@ -288,9 +288,7 @@ html.dark .experience-tag {
     padding-left: 70px !important;
   }
 
-  .timeline-section-header {
-    margin-left: 70px !important;
-  }
+  /* Timeline section header margin handled in sections-apple-premium.css */
 
   .experience-icon {
     width: 48px !important;

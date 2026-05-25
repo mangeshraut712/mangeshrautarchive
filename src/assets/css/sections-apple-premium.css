@@ -996,8 +996,16 @@ html.dark #go-to-top {
   }
   
   #experience .experience-item {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    padding-left: 70px;
+  }
+  
+  #experience .timeline-section-header {
+    margin-left: 70px;
+    padding: 0.4rem 0.875rem;
+  }
+  
+  #experience .timeline-section-header::before {
+    left: -50px;
   }
   
   #experience .experience-icon {
