@@ -1056,24 +1056,30 @@ html.dark .crypto-label {
   align-items: center;
   gap: 0.5rem;
   padding: 1rem;
-  background: var(--bg-secondary);
-  border: none;
+  background: white;
+  border: 2px solid var(--border-default);
   border-radius: 50%;
   width: 80px;
   height: 80px;
   cursor: pointer;
   transition: all 0.25s var(--apple-ease);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .crypto-mini-btn:hover {
-  background: var(--fill-quaternary);
   transform: translateY(-3px) scale(1.05);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  border-color: var(--apple-blue);
 }
 
 html.dark .crypto-mini-btn {
   background: var(--bg-secondary-dark);
+  border-color: var(--border-default-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .crypto-mini-btn:hover {
+  border-color: var(--apple-blue-dark);
 }
 
 .crypto-mini-btn svg {
@@ -1081,16 +1087,31 @@ html.dark .crypto-mini-btn {
   height: 28px;
 }
 
+/* BTC - Orange */
+.crypto-mini-btn:nth-child(1) svg {
+  color: #F7931A;
+}
+
+/* ETH - Purple */
+.crypto-mini-btn:nth-child(2) svg {
+  color: #627EEA;
+}
+
+/* USDC - Blue */
+.crypto-mini-btn:nth-child(3) svg {
+  color: #2775CA;
+}
+
 .crypto-mini-btn span {
   font-size: 0.75rem;
   font-weight: 600;
-  color: white;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 html.dark .crypto-mini-btn span {
-  color: white;
+  color: var(--text-primary-dark);
 }
 
 /* Coinbase Mini Button */
