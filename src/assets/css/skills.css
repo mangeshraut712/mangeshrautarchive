@@ -419,6 +419,11 @@ html.dark .skill-badge-percentage {
   .skill-badge {
     animation-duration: 0.4s, 12s;
   }
+
+  /* Speed up marquee on mobile to match desktop perception */
+  .skill-scroll-wrapper {
+    animation: skillMarquee 25s linear infinite;
+  }
 }
 
 /* Small Mobile */

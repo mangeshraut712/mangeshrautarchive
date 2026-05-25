@@ -309,15 +309,26 @@ html.dark #home .vibe-coder-badge:hover {
 }
 
 #home .portfolio-reach-badge {
-  background: var(--apple-blue-soft);
-  border: 1px solid var(--apple-blue-glow);
-  color: var(--apple-blue);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+#home .portfolio-reach-badge:hover {
+  transform: translateY(-2px);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-md);
 }
 
 html.dark #home .portfolio-reach-badge {
-  background: rgb(10 132 255 / 15%);
-  border-color: rgb(10 132 255 / 30%);
-  color: var(--apple-blue-dark);
+  background: var(--bg-primary-dark);
+  border-color: var(--border-subtle-dark);
+  color: var(--text-primary-dark);
+}
+
+html.dark #home .portfolio-reach-badge:hover {
+  background: var(--bg-secondary-dark);
 }
 
 /* Music Card - Apple Style */
@@ -357,9 +368,15 @@ html.dark #home .music-card {
 #home .album-art {
   width: 56px;
   height: 56px;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
   box-shadow: var(--shadow-apple-sm);
+  animation: albumSpin 8s linear infinite;
+}
+
+@keyframes albumSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 #home .playing-indicator {
@@ -661,23 +678,26 @@ html.dark #experience .timeline-section-header h3 {
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border-light);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
   border-radius: 20px;
-  box-shadow: var(--shadow-apple-md);
+  box-shadow: var(--shadow-md);
   transition: all var(--duration-normal) var(--apple-ease);
 }
 
 #experience .experience-item:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-apple-lg);
-  border-color: var(--apple-blue-glow);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-default);
 }
 
 html.dark #experience .experience-item {
-  background: var(--glass-bg-dark);
-  border-color: var(--glass-border-dark);
+  background: var(--bg-primary-dark);
+  border-color: var(--border-subtle-dark);
+}
+
+html.dark #experience .experience-item:hover {
+  border-color: var(--border-default-dark);
 }
 
 #experience .experience-icon {
