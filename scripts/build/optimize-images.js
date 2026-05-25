@@ -7,7 +7,7 @@
 
 import sharp from 'sharp';
 import { existsSync, mkdirSync, statSync, readdirSync } from 'fs';
-import { join, basename, extname, relative, dirname } from 'path';
+import { join, basename, extname, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,14 +15,6 @@ const __dirname = dirname(__filename);
 
 const INPUT_DIR = join(__dirname, '../../src/assets/images');
 const OUTPUT_DIR = join(__dirname, '../../src/assets/images/optimized');
-
-// Responsive image sizes
-const SIZES = [
-  { width: 320, suffix: '-mobile' },
-  { width: 768, suffix: '-tablet' },
-  { width: 1200, suffix: '-desktop' },
-  { width: 1920, suffix: '-hd' },
-];
 
 // Quality settings
 const WEBP_QUALITY = 85;
