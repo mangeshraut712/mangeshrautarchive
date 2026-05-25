@@ -423,8 +423,6 @@
   <link rel="stylesheet" data-href="assets/css/skills.css?v=20260423a" data-lazy-style-key="skills" />
   <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260423a" data-lazy-style-key="certifications" />
   <link rel="stylesheet" href="assets/css/homepage.css?v=20260423a" />
-  <link rel="stylesheet" data-href="assets/css/experience.css?v=20260423a" data-lazy-style-key="experience" />
-
   <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260423a" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260423a" data-lazy-style-key="assistant" />
 
@@ -448,6 +446,9 @@
 
   <!-- Sections Apple Premium Upgrade - All Sections Enhanced -->
   <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260525a" />
+
+  <!-- Experience section owns its final timeline rules after global premium overrides. -->
+  <link rel="stylesheet" data-href="assets/css/experience.css?v=20260525a" data-lazy-style-key="experience" />
 
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" media="print" onload="this.media='all'" />
@@ -932,7 +933,29 @@
     <!-- Experience Section -->
     <section id="experience" class="fade-in py-12">
       <div class="container">
-        <h2>Professional Experience</h2>
+        <div class="experience-heading">
+          <span class="experience-eyebrow">Career System</span>
+          <h2>Professional Experience</h2>
+          <p class="experience-subtitle">
+            Production engineering work across energy analytics, enterprise software, cloud automation, and data
+            systems.
+          </p>
+        </div>
+
+        <div class="experience-overview" aria-label="Experience highlights">
+          <div class="experience-overview-card">
+            <span class="experience-overview-value">5+</span>
+            <span class="experience-overview-label">Years building software and data systems</span>
+          </div>
+          <div class="experience-overview-card">
+            <span class="experience-overview-value">40%</span>
+            <span class="experience-overview-label">Lower dashboard rendering latency</span>
+          </div>
+          <div class="experience-overview-card">
+            <span class="experience-overview-value">AWS</span>
+            <span class="experience-overview-label">Cloud, automation, and analytics delivery</span>
+          </div>
+        </div>
 
         <div class="experience-timeline">
 
@@ -947,7 +970,7 @@
               <i class="fas fa-laptop-code"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div class="experience-role-row flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                 <div>
                   <h3 class="text-xl">Software Engineer</h3>
                   <span class="text-accent">Customized Energy Solutions - Philadelphia, PA</span>
@@ -997,7 +1020,7 @@
               <i class="fas fa-code-branch"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div class="experience-role-row flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                 <div>
                   <h3 class="text-xl">Software Engineer</h3>
                   <span class="text-accent">IoasiZ - Piscataway, NJ</span>
@@ -1046,7 +1069,7 @@
               <i class="fas fa-network-wired"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div class="experience-role-row flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                 <div>
                   <h3 class="text-xl">Network Engineer</h3>
                   <span class="text-accent">Harshwardhan Enterprises - Pune, India</span>
@@ -1100,7 +1123,7 @@
               <i class="fas fa-database"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div class="experience-role-row flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                 <div>
                   <h3 class="text-xl">Database Administrator</h3>
                   <span class="text-accent">Aramark - Philadelphia, PA</span>
@@ -1145,7 +1168,7 @@
               <i class="fas fa-university"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div class="experience-role-row flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                 <div>
                   <h3 class="text-xl">Database Administrator</h3>
                   <span class="text-accent">Drexel University - Philadelphia, PA</span>
@@ -1191,7 +1214,7 @@
               <i class="fas fa-hands-helping"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div class="experience-role-row flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                 <div>
                   <h3 class="text-xl">COVID-19 Testing Assistant</h3>
                   <span class="text-accent">Drexel University - Philadelphia, PA</span>
