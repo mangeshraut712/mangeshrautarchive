@@ -435,11 +435,19 @@ html.dark .portfolio-reach-badge {
   align-items: baseline;
   justify-content: center;
   gap: 0.45rem;
-  min-height: 1.75rem;
+  width: min(100%, 680px);
+  min-height: 2rem;
   margin: -0.4rem auto 0.8rem;
-  color: #6e6e73;
-  font-size: clamp(0.95rem, 1vw, 1.08rem);
+  color: #515154;
+  font-size: clamp(1rem, 1vw, 1.1rem);
   font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.hero-role-flip span,
+.hero-role-flip strong {
+  white-space: nowrap;
 }
 
 .hero-role-flip strong {
@@ -915,6 +923,10 @@ html.dark .hero-title {
   color: #434346 !important;
   opacity: 0.9;
   letter-spacing: -0.01em !important;
+}
+
+.hero-description span {
+  display: block;
 }
 
 html.dark .hero-description {
@@ -1518,15 +1530,48 @@ html:not(.dark) .hero-stat-label {
   }
 
   .hero-title {
-    font-size: 1.65rem;
-    line-height: 1.2;
-    margin-bottom: 0.65rem;
+    font-size: 1.35rem;
+    line-height: 1.18;
+    margin-bottom: 0.5rem;
+    color: #515154 !important;
+  }
+
+  .hero-role-flip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.18rem;
+    width: 100%;
+    min-height: 4.35rem;
+    margin: -0.15rem auto 0.85rem;
+    font-size: 1.1rem;
+    color: #515154;
+  }
+
+  html.dark .hero-title,
+  html.dark .hero-role-flip {
+    color: #a1a1a6 !important;
+  }
+
+  .hero-role-flip strong {
+    font-size: clamp(1.65rem, 8.4vw, 2rem);
+    line-height: 1.08;
+    white-space: normal;
+    max-width: min(100%, 360px);
+    text-align: center;
   }
 
   .hero-description {
-    font-size: 1rem;
-    padding: 0 1rem;
+    font-size: 0.98rem;
+    line-height: 1.44 !important;
+    padding: 0 0.9rem;
     margin-bottom: 1.25rem;
+    color: #515154 !important;
+    text-wrap: balance;
+  }
+
+  html.dark .hero-description {
+    color: #d2d2d7 !important;
   }
 
   .hero-2026-rail {

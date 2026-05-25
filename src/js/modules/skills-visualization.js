@@ -6,6 +6,7 @@
 
 class SkillsVisualization {
   constructor() {
+    this.marqueeObserver = null;
     this.skills = {
       'Programming Languages': [
         { name: 'Python', level: 95, icon: 'fab fa-python', color: '#3776AB' },
@@ -212,6 +213,40 @@ class SkillsVisualization {
 
     // Add CSS styles
     this.injectStyles();
+    this.syncMarqueeMotion(container);
+  }
+
+  /**
+   * Keep marquee speed consistent across desktop, tablet, and mobile.
+   */
+  syncMarqueeMotion(container) {
+    const wrappers = Array.from(container.querySelectorAll('.skill-scroll-wrapper'));
+    const pixelsPerSecond = 30;
+
+    const updateWrapper = wrapper => {
+      const distance = Math.round(wrapper.scrollWidth / 3);
+      const duration = Math.max(22, distance / pixelsPerSecond);
+
+      wrapper.style.setProperty('--skill-marquee-distance', `-${distance}px`);
+      wrapper.style.setProperty('--skill-marquee-duration', `${duration.toFixed(2)}s`);
+    };
+
+    const updateAll = () => {
+      wrappers.forEach(updateWrapper);
+    };
+
+    requestAnimationFrame(updateAll);
+
+    if ('ResizeObserver' in window) {
+      this.marqueeObserver?.disconnect();
+      const observer = new ResizeObserver(updateAll);
+      observer.observe(container);
+      wrappers.forEach(wrapper => observer.observe(wrapper));
+      this.marqueeObserver = observer;
+      return;
+    }
+
+    window.addEventListener('resize', updateAll, { passive: true });
   }
 
   /**

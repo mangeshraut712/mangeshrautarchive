@@ -5,6 +5,10 @@
 
 /* Skills Section - Match other sections */
 #skills {
+  --skill-marquee-distance: -33.333%;
+  --skill-marquee-duration: 40s;
+  --skill-motion-spring: cubic-bezier(0.16, 1, 0.3, 1);
+
   background-color: #fff !important;
   overflow: hidden;
   /* CRITICAL: Prevent marquee from expanding section */
@@ -77,10 +81,12 @@ html.dark .skill-category h3 {
   gap: 1rem;
   padding: 0.75rem 0;
   width: max-content;
-  animation: skillMarquee 40s linear infinite;
+  min-width: max-content;
+  animation: skillMarquee var(--skill-marquee-duration, 40s) linear infinite;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .skill-scroll-container:hover .skill-scroll-wrapper {
@@ -89,14 +95,12 @@ html.dark .skill-category h3 {
 
 @keyframes skillMarquee {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   100% {
-    transform: translateX(-33.33%);
+    transform: translate3d(var(--skill-marquee-distance, -33.333%), 0, 0);
   }
-
-  /* Move 1/3 because we tripled the content */
 }
 
 /* Skill Badge - SOLID THEME */
@@ -114,7 +118,11 @@ html.dark .skill-category h3 {
   backdrop-filter: none !important;
   border-radius: 12px;
   border: 1px solid rgb(0 0 0 / 10%);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition:
+    transform 0.42s var(--skill-motion-spring),
+    box-shadow 0.42s var(--skill-motion-spring),
+    border-color 0.32s ease,
+    background-color 0.32s ease;
   box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
   position: relative;
   overflow: hidden;
@@ -124,7 +132,19 @@ html.dark .skill-category h3 {
   perspective: 1000px;
 
   /* Animation hooks */
-  animation: slideInBadge 0.6s ease-out forwards;
+  animation: slideInBadge 0.72s var(--skill-motion-spring) forwards;
+}
+
+@keyframes slideInBadge {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 html.dark #skills-container .skill-badge,
@@ -390,9 +410,8 @@ html.dark .skill-badge-percentage {
   .skill-scroll-wrapper {
     padding: 0.5rem 0;
     gap: 0.75rem;
-    width: 100%;
-    max-width: 100%;
-    overflow: clip;
+    width: max-content;
+    min-width: max-content;
   }
 
   .skill-badge {
@@ -417,12 +436,7 @@ html.dark .skill-badge-percentage {
   }
 
   .skill-badge {
-    animation-duration: 0.4s, 12s;
-  }
-
-  /* Speed up marquee on mobile to match desktop perception */
-  .skill-scroll-wrapper {
-    animation: skillMarquee 25s linear infinite;
+    animation-duration: 0.5s;
   }
 }
 

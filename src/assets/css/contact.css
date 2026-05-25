@@ -1089,17 +1089,17 @@ html.dark .crypto-mini-btn:hover {
 
 /* BTC - Orange */
 .crypto-mini-btn:nth-child(1) svg {
-  color: #F7931A;
+  color: #f7931a;
 }
 
 /* ETH - Purple */
 .crypto-mini-btn:nth-child(2) svg {
-  color: #627EEA;
+  color: #627eea;
 }
 
 /* USDC - Blue */
 .crypto-mini-btn:nth-child(3) svg {
-  color: #2775CA;
+  color: #2775ca;
 }
 
 .crypto-mini-btn span {
@@ -1122,17 +1122,30 @@ html.dark .crypto-mini-btn span {
   gap: 0.6rem;
   padding: 0.85rem 1.5rem;
   background: linear-gradient(135deg, #0052ff 0%, #0039b3 100%);
-  color: white;
+  color: #ffffff !important;
   border-radius: 100px;
   text-decoration: none;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0;
   transition: all 0.25s var(--apple-ease);
   box-shadow: 0 4px 14px rgba(0, 82, 255, 0.3);
   margin-top: 0.5rem;
 }
 
+.coinbase-mini-btn span {
+  color: #ffffff !important;
+}
+
+html.dark #contact .coinbase-mini-btn,
+html.dark #contact .coinbase-mini-btn span,
+html.dark #contact .coinbase-mini-btn svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
 .coinbase-mini-btn:hover {
+  color: #ffffff !important;
   transform: translateY(-2px) scale(1.02);
   box-shadow: 0 6px 20px rgba(0, 82, 255, 0.4);
 }
@@ -1140,7 +1153,8 @@ html.dark .crypto-mini-btn span {
 .coinbase-mini-btn svg {
   width: 20px;
   height: 20px;
-  fill: white;
+  color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 /* Accessibility fixes for color contrast */
@@ -1716,7 +1730,14 @@ html.dark .follow-section {
 }
 
 #contact .wrapper .instagram {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  background: linear-gradient(
+    45deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  ) !important;
   color: #ffffff !important;
 }
 
@@ -2069,6 +2090,9 @@ html.dark .media-poster {
 /* Marquee Container */
 .dream-companies-marquee,
 .dream-cars-marquee {
+  --contact-marquee-gap: clamp(1.75rem, 4vw, 3rem);
+  --contact-marquee-duration: 52s;
+
   width: 100%;
   max-width: 100%;
   overflow: hidden;
@@ -2093,10 +2117,16 @@ html.dark .media-poster {
 .dream-companies-track,
 .dream-cars-track {
   display: flex;
-  gap: 3rem;
+  gap: var(--contact-marquee-gap);
   align-items: center;
   width: max-content;
-  animation: marquee-scroll 35s linear infinite;
+  min-width: max-content;
+  animation: marquee-scroll var(--contact-marquee-duration) linear infinite;
+  will-change: transform;
+}
+
+.dream-cars-track {
+  animation-duration: 58s;
 }
 
 .dream-companies-track:hover,
@@ -2136,9 +2166,75 @@ html.dark .media-poster {
   outline: none !important;
 }
 
+.company-wordmark,
+.car-wordmark {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: #1d1d1f;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.dream-company-item[title='NVIDIA'] .company-wordmark {
+  color: #76b900;
+}
+
+.dream-company-item[title='OpenAI'] .company-wordmark {
+  color: #111111;
+}
+
+.dream-company-item[title='SpaceX'] .company-wordmark {
+  color: #1d1d1f;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.dream-company-item[title='Stripe'] .company-wordmark {
+  color: #635bff;
+}
+
+.dream-company-item[title='Coinbase'] .company-wordmark {
+  color: #0052ff;
+}
+
+.dream-company-item[title='Salesforce'] .company-wordmark {
+  color: #00a1e0;
+}
+
+.dream-car-item[title='Ferrari'] .car-wordmark {
+  color: #d40000;
+}
+
+.dream-car-item[title='Lamborghini'] .car-wordmark {
+  color: #a67614;
+}
+
+.dream-car-item[title='McLaren'] .car-wordmark {
+  color: #ff8700;
+}
+
+.dream-car-item[title='Bugatti'] .car-wordmark {
+  color: #003a70;
+}
+
+.dream-car-item[title='Koenigsegg'] .car-wordmark {
+  color: #1d1d1f;
+}
+
+.dream-car-item[title='Lucid'] .car-wordmark {
+  color: #7d7268;
+  text-transform: uppercase;
+}
+
 /* Hover - Enhanced */
 .dream-company-item:hover .company-logo,
-.dream-car-item:hover .car-logo {
+.dream-car-item:hover .car-logo,
+.dream-company-item:hover .company-wordmark,
+.dream-car-item:hover .car-wordmark {
   opacity: 1;
   filter: drop-shadow(0 4px 12px rgb(0 0 0 / 20%));
 }
@@ -2160,15 +2256,25 @@ html.dark .media-poster {
 
 /* Default dark mode - all logos keep original colors with slight brightness boost */
 html.dark .company-logo,
-html.dark .car-logo {
+html.dark .car-logo,
+html.dark .company-wordmark,
+html.dark .car-wordmark {
   opacity: 1;
   filter: brightness(1.15);
 }
 
 html.dark .dream-company-item:hover .company-logo,
-html.dark .dream-car-item:hover .car-logo {
+html.dark .dream-car-item:hover .car-logo,
+html.dark .dream-company-item:hover .company-wordmark,
+html.dark .dream-car-item:hover .car-wordmark {
   opacity: 1;
   filter: brightness(1.2) drop-shadow(0 4px 12px rgb(255 255 255 / 25%));
+}
+
+html.dark .dream-company-item[title='OpenAI'] .company-wordmark,
+html.dark .dream-company-item[title='SpaceX'] .company-wordmark,
+html.dark .dream-car-item[title='Koenigsegg'] .car-wordmark {
+  color: #f5f5f7;
 }
 
 /* Apple logo is pure black - needs inversion in dark mode */
@@ -2281,8 +2387,7 @@ html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
 @media (width <=1024px) {
   .dream-companies-track,
   .dream-cars-track {
-    gap: 2.5rem;
-    animation-duration: 30s;
+    gap: 2.25rem;
   }
 
   .company-logo,
@@ -2303,25 +2408,23 @@ html.dark .dream-car-item[title='Rolls-Royce']:hover .car-logo {
   .dream-companies-track,
   .dream-cars-track {
     gap: 2rem;
-    width: 100%;
-    max-width: 100%;
-    overflow: clip;
-    animation-duration: 25s;
   }
 
   .company-logo,
-  .car-logo {
-    height: 28px;
-    max-width: 80px;
+  .car-logo,
+  .company-wordmark,
+  .car-wordmark {
+    height: 32px;
+    max-width: 96px;
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 768px) {
   .dream-companies-track,
   .dream-cars-track {
-    width: 100%;
-    max-width: 100%;
-    overflow: clip;
+    width: max-content;
+    min-width: max-content;
   }
 }
 
@@ -2846,6 +2949,76 @@ html.dark #contact .currently-tab:not(.active):hover {
 
 #contact .contact-item .contact-link-wrapper > .contact-link-item .link-text {
   line-height: 1.25 !important;
+}
+
+/* Newsletter guardrails live here too because Contact is often opened directly below Blog. */
+#blog .newsletter-card {
+  color: #1d1d1f !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark #blog .newsletter-card {
+  color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+#blog .newsletter-card h3 {
+  color: #1d1d1f !important;
+}
+
+#blog .newsletter-card p {
+  color: #515154 !important;
+}
+
+html.dark #blog .newsletter-card h3 {
+  color: #f5f5f7 !important;
+}
+
+html.dark #blog .newsletter-card p {
+  color: #a1a1a6 !important;
+}
+
+#blog .newsletter-form .apple-input {
+  color: #1d1d1f !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: none !important;
+}
+
+html.dark #blog .newsletter-form .apple-input {
+  color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+html.dark body #blog .newsletter-card .newsletter-form input.apple-input {
+  color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: none !important;
+}
+
+#blog .newsletter-form .btn-primary {
+  color: #ffffff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+#blog .newsletter-form .btn-primary:hover {
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  border-color: #0077ed !important;
 }
 
 /* Responsive adjustments */

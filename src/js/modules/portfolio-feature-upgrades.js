@@ -1,8 +1,9 @@
 const ROLE_WORDS = [
-  'AI Systems Builder',
-  'Cloud-Native Problem Solver',
-  'Research-Driven Builder',
-  'Product-Minded Technologist',
+  'Systems Builder',
+  'Product Engineer',
+  'Cloud Builder',
+  'Full-Stack Solver',
+  'Research Technologist',
 ];
 const IST_TIME_ZONE = 'Asia/Kolkata';
 const EASTERN_TIME_ZONE = 'America/New_York';
