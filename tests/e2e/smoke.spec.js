@@ -208,9 +208,7 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('section#contact')).toBeVisible();
   });
 
-  test('mobile overlay menu does not snap the page back near the top', async ({
-    page,
-  }) => {
+  test('mobile overlay menu does not snap the page back near the top', async ({ page }) => {
     const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
     if (!isMobile) {
       return;
@@ -263,9 +261,7 @@ test.describe('Chrome smoke tests', () => {
     expect(afterState.y).toBeGreaterThan(500);
   });
 
-  test('navbar fast clicks land on intended sections during lazy loading', async ({
-    page,
-  }) => {
+  test('navbar fast clicks land on intended sections during lazy loading', async ({ page }) => {
     const targets = ['projects', 'education', 'contact'];
     const context = page.context();
 
@@ -274,7 +270,9 @@ test.describe('Chrome smoke tests', () => {
         const targetPage = await context.newPage();
         try {
           await targetPage.goto('/', { waitUntil: 'domcontentloaded' });
-          const isMobile = targetPage.viewportSize() ? targetPage.viewportSize().width <= 768 : false;
+          const isMobile = targetPage.viewportSize()
+            ? targetPage.viewportSize().width <= 768
+            : false;
           await targetPage.waitForTimeout(isMobile ? 250 : 350);
 
           if (isMobile) {

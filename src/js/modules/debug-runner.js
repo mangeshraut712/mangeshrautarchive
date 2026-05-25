@@ -427,7 +427,7 @@ class DebugRunner {
   resume() {
     if (!this.gameRunning || !this.paused || this.gameOver) return;
     this.paused = false;
-    
+
     if (this.gameLoop) cancelAnimationFrame(this.gameLoop);
     const loop = () => {
       if (!this.gameRunning || this.paused) return;
@@ -905,9 +905,9 @@ const initDebugRunner = () => {
 
     // Pause/Resume game based on IntersectionObserver
     const observerOptions = {
-      threshold: 0.1
+      threshold: 0.1,
     };
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           game.resume();

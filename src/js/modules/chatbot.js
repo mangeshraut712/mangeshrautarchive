@@ -330,9 +330,13 @@ class AppleIntelligenceChatbot {
       }
     });
 
-    window.addEventListener('resize', () => {
-      this.textareaWidth = 0;
-    }, { passive: true });
+    window.addEventListener(
+      'resize',
+      () => {
+        this.textareaWidth = 0;
+      },
+      { passive: true }
+    );
   }
 
   toggleWidget() {
