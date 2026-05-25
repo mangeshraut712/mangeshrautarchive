@@ -646,15 +646,14 @@ html.dark #experience {
 }
 
 #experience .timeline-section-header {
-  display: inline-flex;
-  align-items: center;
-  margin: 2.5rem 0 1.5rem;
-  padding: 0.4rem 0.875rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
+  display: inline-block;
+  margin: 2rem 0 1.5rem 80px;
+  padding: 0.6rem 1.25rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
   border-radius: 100px;
   position: relative;
-  margin-left: 90px;
+  box-shadow: var(--shadow-sm);
 }
 
 #experience .timeline-section-header:first-child {
@@ -664,39 +663,36 @@ html.dark #experience {
 #experience .timeline-section-header::before {
   content: '';
   position: absolute;
-  left: -60px;
+  left: -54px;
   top: 50%;
   transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: var(--apple-blue);
   border-radius: 50%;
   border: 2px solid var(--bg-primary);
-  box-shadow: 0 0 0 1px var(--border-subtle);
 }
 
 html.dark #experience .timeline-section-header::before {
   background: var(--apple-blue-dark);
   border-color: var(--bg-primary-dark);
-  box-shadow: 0 0 0 1px var(--border-subtle-dark);
 }
 
 html.dark #experience .timeline-section-header {
-  background: var(--bg-secondary-dark);
-  border-color: var(--border-subtle-dark);
+  background: var(--bg-primary-dark);
+  border-color: var(--border-default-dark);
 }
 
 #experience .timeline-section-header h3 {
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  color: var(--apple-blue);
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
 html.dark #experience .timeline-section-header h3 {
-  color: var(--text-secondary-dark);
+  color: var(--apple-blue-dark);
 }
 
 #experience .experience-item {
