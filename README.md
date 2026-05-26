@@ -329,6 +329,7 @@ Full OpenAPI spec available at `/docs` when running the backend.
 ## � Recent Updates
 
 ### May 2025
+
 - **Dream Companies & Cars**: Added official SVG logos for NVIDIA, OpenAI, Ferrari, McLaren, Koenigsegg, Lamborghini, Bugatti
 - **Crypto Support**: Integrated Coinbase Commerce for BTC, ETH, USDC donations in Contact section
 - **Theme Optimization**: Enhanced dark mode visibility for all logos with CSS filters

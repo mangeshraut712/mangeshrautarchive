@@ -126,6 +126,7 @@ out
 __pycache__/
 *.py[cod]
 venv/
+.venv/
 
 
 #Ignore cursor AI rules

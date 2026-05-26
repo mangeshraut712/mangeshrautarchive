@@ -616,8 +616,6 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   box-shadow: 0 0 0 4px rgb(78 161 255 / 20%);
 }
 
-
-
 /* Ensure links stay visible until mobile breakpoint */
 @media (min-width: 769px) {
   .global-nav.dynamic-island .nav-links {

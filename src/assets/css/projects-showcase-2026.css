@@ -592,8 +592,6 @@ html.dark #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
   color: var(--project-text-dark) !important;
 }
 
-
-
 #projects .activity-stat-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgb(10 111 239 / 15%);

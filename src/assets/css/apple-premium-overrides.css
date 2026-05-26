@@ -13,7 +13,7 @@
 .award-card,
 .recommendation-card,
 .cert-card {
-background: #fff !important;
+  background: #fff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
@@ -27,7 +27,7 @@ background: #fff !important;
 /* Make skill category transparent to blend with section */
 
 .skill-category {
-background: transparent !important;
+  background: transparent !important;
   box-shadow: none !important;
   border: none !important;
   padding: 20px 0 !important;
@@ -41,7 +41,7 @@ html.dark .publication-card,
 html.dark .award-card,
 html.dark .recommendation-card,
 html.dark .cert-card {
-background: #000 !important;
+  background: #000 !important;
   border: 1px solid rgb(255 255 255 / 15%) !important;
   box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
 }
@@ -55,7 +55,7 @@ background: #000 !important;
 .award-card:hover,
 .recommendation-card:hover,
 .cert-card:hover {
-transform: translateY(-8px) scale(1.01) !important;
+  transform: translateY(-8px) scale(1.01) !important;
   box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
   background: #fff !important;
   border-color: rgb(0 113 227 / 30%) !important;
@@ -68,7 +68,7 @@ html.dark .publication-card:hover,
 html.dark .award-card:hover,
 html.dark .recommendation-card:hover,
 html.dark .cert-card:hover {
-background: #000 !important;
+  background: #000 !important;
   box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
   border-color: rgb(41 151 255 / 40%) !important;
 }
@@ -86,12 +86,12 @@ p,
 span,
 a,
 li {
-font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, sans-serif !important;
   letter-spacing: -0.01em !important;
 }
 
 h2 {
-letter-spacing: -0.02em !important;
+  letter-spacing: -0.02em !important;
 }
 
 /* 2.1 Global Section Headings - Unified Style */
@@ -108,7 +108,7 @@ letter-spacing: -0.02em !important;
 #contact h2,
 #certifications h2,
 #debug-runner-section h2 {
-font-size: clamp(2rem, 4vw, 3rem) !important;
+  font-size: clamp(2rem, 4vw, 3rem) !important;
   font-weight: 800 !important;
   text-align: center !important;
   margin-bottom: 3rem !important;
@@ -132,7 +132,7 @@ html.dark #blog h2,
 html.dark #contact h2,
 html.dark #certifications h2,
 html.dark #debug-runner-section h2 {
-background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
+  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
@@ -150,7 +150,7 @@ background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
 #recommendations,
 #certifications,
 #debug-runner-section {
-background: #fff !important;
+  background: #fff !important;
   background-image: none !important;
   background-color: #fff !important;
   opacity: 1 !important;
@@ -167,7 +167,7 @@ html.dark #awards,
 html.dark #recommendations,
 html.dark #certifications,
 html.dark #debug-runner-section {
-background: #000 !important;
+  background: #000 !important;
   background-image: none !important;
   background-color: #000 !important;
   opacity: 1 !important;
@@ -179,7 +179,7 @@ background: #000 !important;
 button,
 .project-action-btn,
 .projects-view-all-btn {
-border-radius: 980px !important;
+  border-radius: 980px !important;
 
   /* Pill shape */
   font-weight: 500 !important;
@@ -192,7 +192,7 @@ border-radius: 980px !important;
 /* Premium Close Button */
 
 .premium-close-btn {
-width: 44px !important;
+  width: 44px !important;
   height: 44px !important;
   background: rgba(0, 113, 227, 0.1) !important;
   color: #0071e3 !important;
@@ -209,43 +209,43 @@ width: 44px !important;
 }
 
 #search-close.premium-close-btn {
-position: absolute;
+  position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
 }
 
 #close-menu-btn.premium-close-btn {
-position: absolute;
+  position: absolute;
   top: 24px;
   right: 24px;
 }
 
 .premium-close-btn:hover {
-background: #0071e3 !important;
+  background: #0071e3 !important;
   color: #fff !important;
   transform: scale(1.1) !important;
 }
 
 #search-close.premium-close-btn:hover {
-transform: translateY(-50%) scale(1.1) !important;
+  transform: translateY(-50%) scale(1.1) !important;
 }
 
 html.dark .premium-close-btn {
-background: rgba(10, 132, 255, 0.1) !important;
+  background: rgba(10, 132, 255, 0.1) !important;
   color: #0a84ff !important;
   border-color: rgba(10, 132, 255, 0.2) !important;
 }
 
 html.dark .premium-close-btn:hover {
-background: #0a84ff !important;
+  background: #0a84ff !important;
   color: #fff !important;
 }
 
 /* Search Input - Premium Box Style */
 
 #search-input {
-background: transparent !important;
+  background: transparent !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   border-radius: 12px !important;
   padding: 16px 50px !important;
@@ -256,17 +256,17 @@ background: transparent !important;
 }
 
 html.dark #search-input {
-border-color: rgb(255 255 255 / 20%) !important;
+  border-color: rgb(255 255 255 / 20%) !important;
   color: #fff !important;
 }
 
 #search-input:focus {
-border-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   box-shadow: 0 0 0 4px rgb(0 113 227 / 10%) !important;
 }
 
 html.dark #search-input:focus {
-border-color: #0a84ff !important;
+  border-color: #0a84ff !important;
   box-shadow: 0 0 0 4px rgb(10 132 255 / 20%) !important;
 }
 
@@ -290,11 +290,11 @@ border-color: #0a84ff !important;
 }
 
 .menu-section {
-margin-bottom: 2.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .menu-section-title {
-font-size: 0.85rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #4a4a4f;
@@ -304,7 +304,7 @@ font-size: 0.85rem;
 }
 
 html.dark .menu-section-title {
-color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 .menu-grid {
@@ -355,19 +355,19 @@ html.dark .menu-item {
 }
 
 .menu-item:hover {
-background: #0071e3;
+  background: #0071e3;
   color: #fff;
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgb(0 113 227 / 25%);
 }
 
 html.dark .menu-item:hover {
-background: #0a84ff;
+  background: #0a84ff;
   box-shadow: 0 8px 20px rgb(10 132 255 / 40%);
 }
 
 .menu-icon {
-width: 32px;
+  width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
@@ -400,75 +400,75 @@ width: 32px;
 }
 
 #close-menu-btn:hover {
-transform: scale(1.1) !important;
+  transform: scale(1.1) !important;
 }
 
 /* Mobile Adjustments */
 
 @media (width <=640px) {
-.menu-grid {
-grid-template-columns: 1fr;
+  .menu-grid {
+    grid-template-columns: 1fr;
 
     /* Stack on mobile */
-}
+  }
 
-.menu-item {
-padding: 1rem;
+  .menu-item {
+    padding: 1rem;
     background: transparent;
 
     /* Cleaner on mobile */
     border-bottom: 1px solid rgb(0 0 0 / 5%);
     border-radius: 0;
-}
+  }
 
-html.dark .menu-item {
-background: transparent;
+  html.dark .menu-item {
+    background: transparent;
     border-bottom: 1px solid rgb(255 255 255 / 10%);
-}
+  }
 
-.menu-item:hover {
-background: rgb(0 113 227 / 10%);
+  .menu-item:hover {
+    background: rgb(0 113 227 / 10%);
     color: #0071e3;
     transform: none;
     box-shadow: none;
-}
+  }
 
-html.dark .menu-item:hover {
-background: rgb(10 132 255 / 15%);
+  html.dark .menu-item:hover {
+    background: rgb(10 132 255 / 15%);
     color: #0a84ff;
-}
+  }
 
-#search-overlay {
-padding-top: 0 !important;
+  #search-overlay {
+    padding-top: 0 !important;
     align-items: flex-start !important;
     background: rgb(255 255 255 / 98%) !important;
-}
+  }
 
-html.dark #search-overlay {
-background: rgb(0 0 0 / 95%) !important;
-}
+  html.dark #search-overlay {
+    background: rgb(0 0 0 / 95%) !important;
+  }
 
-.search-container {
-width: 100% !important;
+  .search-container {
+    width: 100% !important;
     padding: 20px;
     margin-top: 0;
-}
+  }
 
-#search-input {
-background: rgb(0 0 0 / 5%) !important;
+  #search-input {
+    background: rgb(0 0 0 / 5%) !important;
     border: none !important;
-}
+  }
 
-html.dark #search-input {
-background: rgb(255 255 255 / 10%) !important;
-}
+  html.dark #search-input {
+    background: rgb(255 255 255 / 10%) !important;
+  }
 }
 
 /* 6. Desktop Navbar Optimization (Fit all links) */
 
 @media (width >=1151px) {
-.nav-links {
-gap: 18px !important;
+  .nav-links {
+    gap: 18px !important;
 
     /* Adjusted gap */
     font-size: 15px !important;
@@ -480,38 +480,38 @@ gap: 18px !important;
     width: auto !important;
     flex: 1;
     justify-content: center;
-}
+  }
 
-.nav-container {
-max-width: 100% !important;
+  .nav-container {
+    max-width: 100% !important;
 
     /* Full width */
     padding: 0 32px !important;
     gap: 20px !important;
-}
+  }
 
-.nav-link {
-padding: 4px 0 !important;
+  .nav-link {
+    padding: 4px 0 !important;
     letter-spacing: -0.01em !important;
     transition: color 0.2s ease !important;
-}
+  }
 
-.nav-link:hover {
-color: var(--nav-hover) !important;
-}
+  .nav-link:hover {
+    color: var(--nav-hover) !important;
+  }
 }
 
 /* 7. Mobile Menu Improvements (Absolute Compact Top) */
 
 html.dark #close-menu-btn {
-background: rgb(60 60 60 / 60%) !important;
+  background: rgb(60 60 60 / 60%) !important;
   color: #fff !important;
 }
 
 /* Menu Background */
 
 .overlay-menu {
-background: rgb(255 255 255 / 96%) !important;
+  background: rgb(255 255 255 / 96%) !important;
   backdrop-filter: blur(30px) saturate(180%) !important;
   display: flex !important;
   align-items: flex-start !important;
@@ -521,45 +521,45 @@ background: rgb(255 255 255 / 96%) !important;
 }
 
 html.dark .overlay-menu {
-background: rgb(0 0 0 / 96%) !important;
+  background: rgb(0 0 0 / 96%) !important;
 }
 
 /* Remove Section Styles */
 
 .menu-section,
 .menu-section-title {
-display: none !important;
+  display: none !important;
 }
 
 /* Detailed List Layout */
 
 html.dark .menu-grid {
-background: transparent !important;
+  background: transparent !important;
   box-shadow: none !important;
 }
 
 /* Enhanced Menu Items (Absolute Compact) */
 
 .menu-item:last-child {
-border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 .menu-item:hover,
 .menu-item:active {
-background: transparent !important;
+  background: transparent !important;
   opacity: 0.6;
 }
 
 html.dark .menu-item:hover,
 html.dark .menu-item:active {
-background: transparent !important;
+  background: transparent !important;
   opacity: 0.6;
 }
 
 /* Menu Icons */
 
 .premium-menu-icon {
-font-size: 14px !important;
+  font-size: 14px !important;
 
   /* Micro Icon */
   color: #007aff !important;
@@ -575,7 +575,7 @@ font-size: 14px !important;
 }
 
 .premium-menu-icon i {
-font-style: normal !important;
+  font-style: normal !important;
   color: #007aff !important;
 }
 
@@ -585,7 +585,7 @@ html.dark .premium-menu-icon i {
 }
 
 .menu-item span {
-font-size: 0.9rem !important;
+  font-size: 0.9rem !important;
 
   /* Readable Micro Text */
   font-weight: 500;
@@ -595,13 +595,13 @@ font-size: 0.9rem !important;
 }
 
 html.dark .menu-item span {
-color: #fff;
+  color: #fff;
 }
 
 /* Calendar Card - Premium Style */
 
 .calendar-card {
-background: #fff !important;
+  background: #fff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
   border-radius: 20px !important;
@@ -612,18 +612,18 @@ background: #fff !important;
 }
 
 html.dark .calendar-card {
-background: #000 !important;
+  background: #000 !important;
   border: 1px solid rgb(255 255 255 / 15%) !important;
   box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
 }
 
 .calendar-card:hover {
-transform: translateY(-5px) !important;
+  transform: translateY(-5px) !important;
   box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
 }
 
 html.dark .calendar-card:hover {
-box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
 }
 
 /* 8. Fix Rogue Vertical Line */
@@ -636,7 +636,7 @@ html::after,
 #main-content::after,
 .wrapper::before,
 .wrapper::after {
-display: none !important;
+  display: none !important;
   content: none !important;
   border: none !important;
   width: 0 !important;
@@ -646,7 +646,7 @@ display: none !important;
 /* 9. Schedule Meeting Card */
 
 .schedule-card {
-display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -659,7 +659,7 @@ display: flex;
 }
 
 .schedule-icon {
-font-size: 3.5rem;
+  font-size: 3.5rem;
   color: #0071e3;
   margin-bottom: 1.5rem;
   background: rgb(0 113 227 / 10%);
@@ -672,25 +672,25 @@ font-size: 3.5rem;
 }
 
 html.dark .schedule-icon {
-color: #0a84ff;
+  color: #0a84ff;
   background: rgb(10 132 255 / 15%);
 }
 
 .schedule-title {
-font-size: 1.75rem;
+  font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
 
 .schedule-text {
-color: #4a4a4f;
+  color: #4a4a4f;
   margin-bottom: 2rem;
   max-width: 320px;
   line-height: 1.5;
 }
 
 html.dark .schedule-text {
-color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 /* ========================================
@@ -702,7 +702,7 @@ color: #a1a1a6;
 
 .calendar-card:has(.ios-widget-wrapper),
 .calendar-card.compact-widget {
-background: transparent !important;
+  background: transparent !important;
   box-shadow: none !important;
   border: none !important;
   padding: 0 !important;
@@ -710,7 +710,7 @@ background: transparent !important;
 }
 
 .ios-widget-wrapper {
-display: flex;
+  display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 100%;
@@ -732,7 +732,7 @@ display: flex;
 }
 
 html.dark .ios-widget-wrapper {
-background: #000 !important;
+  background: #000 !important;
 
   /* Solid Black */
   border: 1px solid rgb(255 255 255 / 15%) !important;
@@ -740,14 +740,14 @@ background: #000 !important;
 }
 
 .ios-widget-wrapper:hover {
-transform: translateY(-5px);
+  transform: translateY(-5px);
 
   /* Match Global Card Hover */
   box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
 }
 
 .calendly-panel {
-display: grid;
+  display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.85rem 1rem;
   align-items: center;
@@ -757,12 +757,12 @@ display: grid;
 }
 
 html.dark .calendly-panel {
-background: #000 !important;
+  background: #000 !important;
   border-top-color: rgb(255 255 255 / 10%);
 }
 
 .calendly-panel-icon {
-display: grid;
+  display: grid;
   place-items: center;
   width: 48px;
   height: 48px;
@@ -773,12 +773,12 @@ display: grid;
 }
 
 .calendly-panel-copy {
-min-width: 0;
+  min-width: 0;
   text-align: left;
 }
 
 .calendly-panel-kicker {
-display: block;
+  display: block;
   margin-bottom: 0.15rem;
   color: var(--text-secondary);
   font-size: 0.72rem;
@@ -788,25 +788,25 @@ display: block;
 }
 
 .calendly-panel h4 {
-margin: 0;
+  margin: 0;
   color: var(--text-primary);
   font-size: 1.05rem;
   line-height: 1.2;
 }
 
 html.dark .calendly-panel h4 {
-color: var(--text-primary-dark);
+  color: var(--text-primary-dark);
 }
 
 .calendly-panel p {
-margin: 0.25rem 0 0;
+  margin: 0.25rem 0 0;
   color: var(--text-secondary);
   font-size: 0.875rem;
   line-height: 1.45;
 }
 
 .calendly-panel-button {
-grid-column: 1 / -1;
+  grid-column: 1 / -1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -826,41 +826,41 @@ grid-column: 1 / -1;
 }
 
 .calendly-panel-button:hover {
-background: #006edb;
+  background: #006edb;
   box-shadow: 0 12px 28px rgb(0 122 255 / 25%);
   transform: translateY(-1px);
 }
 
 html.dark .calendly-panel-button {
-background: #0a84ff;
+  background: #0a84ff;
 }
 
 @media (width >= 1180px) {
-.calendly-panel {
-grid-template-columns: auto minmax(0, 1fr) auto;
-}
+  .calendly-panel {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
 
-.calendly-panel-button {
-grid-column: auto;
+  .calendly-panel-button {
+    grid-column: auto;
     width: auto;
     padding: 0 1rem;
     white-space: nowrap;
-}
+  }
 }
 
 /* Calendar Section */
 
 .ios-calendar-section {
-padding: 24px !important;
+  padding: 24px !important;
   border-bottom: 1px solid rgb(0 0 0 / 5%);
 }
 
 html.dark .ios-calendar-section {
-border-bottom: 1px solid rgb(255 255 255 / 10%);
+  border-bottom: 1px solid rgb(255 255 255 / 10%);
 }
 
 .ios-header {
-display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px !important;
@@ -869,13 +869,13 @@ display: flex;
 }
 
 .ios-actions {
-display: flex;
+  display: flex;
   align-items: center;
   gap: 12px;
 }
 
 .month-title {
-font-size: 1.5rem !important;
+  font-size: 1.5rem !important;
 
   /* Big, Bold Title */
   font-weight: 700;
@@ -887,11 +887,11 @@ font-size: 1.5rem !important;
 }
 
 html.dark .month-title {
-color: #f5f5f7;
+  color: #f5f5f7;
 }
 
 .ios-btn {
-background: #fff !important;
+  background: #fff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   color: #1d1d1f;
   cursor: pointer;
@@ -906,22 +906,22 @@ background: #fff !important;
 }
 
 html.dark .ios-btn {
-background: #000 !important;
+  background: #000 !important;
   border-color: rgb(255 255 255 / 14%) !important;
   color: #f5f5f7;
 }
 
 .ios-btn:hover {
-background: #f5f5f7 !important;
+  background: #f5f5f7 !important;
   transform: scale(1.05);
 }
 
 html.dark .ios-btn:hover {
-background: #111 !important;
+  background: #111 !important;
 }
 
 .today-btn {
-color: #007aff !important;
+  color: #007aff !important;
   background: #fff !important;
   width: auto !important;
   padding: 0 12px !important;
@@ -930,11 +930,11 @@ color: #007aff !important;
 }
 
 .today-btn:hover {
-background: #f5f5f7 !important;
+  background: #f5f5f7 !important;
 }
 
 .ios-weekdays {
-display: grid;
+  display: grid;
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-size: 0.8rem;
@@ -946,11 +946,11 @@ display: grid;
 }
 
 html.dark .ios-weekdays {
-color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 .ios-grid {
-display: grid;
+  display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
 
@@ -961,7 +961,7 @@ display: grid;
 /* Interactive Day Cells - Pop Effect */
 
 .day-cell {
-aspect-ratio: 1;
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -982,7 +982,7 @@ aspect-ratio: 1;
 }
 
 .day-cell:hover:not(.empty, .selected, .today) {
-background: rgb(0 0 0 / 5%);
+  background: rgb(0 0 0 / 5%);
   transform: scale(1.15);
 
   /* Zoom effect */
@@ -991,18 +991,18 @@ background: rgb(0 0 0 / 5%);
 }
 
 html.dark .day-cell:hover:not(.empty, .selected, .today) {
-background: rgb(255 255 255 / 15%);
+  background: rgb(255 255 255 / 15%);
   box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
 }
 
 .day-cell:active:not(.empty) {
-transform: scale(0.9);
+  transform: scale(0.9);
 }
 
 /* Today Pulse */
 
 .day-cell.today {
-background: #ff3b30;
+  background: #ff3b30;
   color: white !important;
   font-weight: 700;
   box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
@@ -1010,7 +1010,6 @@ background: #ff3b30;
 }
 
 @keyframes gentle-pulse {
-
   0%,
   100% {
     box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
@@ -1021,13 +1020,12 @@ background: #ff3b30;
     box-shadow: 0 8px 20px rgb(255 59 48 / 60%);
     transform: scale(1.05);
   }
-
 }
 
 /* Selected State */
 
 .day-cell.selected {
-background: #007aff;
+  background: #007aff;
   color: white !important;
   font-weight: 700;
   transform: scale(1.1);
@@ -1037,7 +1035,7 @@ background: #007aff;
 /* Reminder Checkmark Animation */
 
 .reminder-checkbox::after {
-content: '✓';
+  content: '✓';
   color: white !important;
   font-size: 12px !important;
   font-weight: bold !important;
@@ -1046,7 +1044,7 @@ content: '✓';
 }
 
 .reminder-item.completed .reminder-checkbox::after {
-transform: scale(1);
+  transform: scale(1);
 
   /* Pop in */
 }
@@ -1055,7 +1053,7 @@ transform: scale(1);
 
 .reminder-item.completed .reminder-text,
 .reminder-item.completed .reminder-meta {
-opacity: 0.7 !important;
+  opacity: 0.7 !important;
   transition: opacity 0.3s ease;
 }
 
@@ -1064,13 +1062,13 @@ opacity: 0.7 !important;
 .ios-btn:active,
 .ios-btn-small:active,
 .today-btn:active {
-transform: scale(0.92) !important;
+  transform: scale(0.92) !important;
 }
 
 /* Add Event Button - Make is shine */
 
 .ios-btn-small {
-position: relative;
+  position: relative;
   overflow: hidden;
   height: 32px !important;
   font-size: 0.9rem !important;
@@ -1105,7 +1103,7 @@ position: relative;
 }
 
 .event-dot {
-width: 5px;
+  width: 5px;
   height: 5px;
   background: #007aff;
   border-radius: 50%;
@@ -1115,23 +1113,23 @@ width: 5px;
 }
 
 .day-cell.today .event-dot {
-background: white;
+  background: white;
 }
 
 html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
-background: #0a84ff;
+  background: #0a84ff;
 }
 
 /* Sunday Column Styling */
 
 .ios-weekdays span:first-child,
 .day-cell:nth-child(7n + 1) {
-color: #ff3b30;
+  color: #ff3b30;
 }
 
 .day-cell.today:nth-child(7n + 1),
 .day-cell.selected:nth-child(7n + 1) {
-color: white !important;
+  color: white !important;
 }
 
 /* =================================================================
@@ -1139,7 +1137,7 @@ color: white !important;
    ================================================================= */
 
 .ios-reminders-section {
-padding: 16px 20px !important;
+  padding: 16px 20px !important;
 
   /* Reduced section padding */
   background: transparent !important;
@@ -1147,11 +1145,11 @@ padding: 16px 20px !important;
 }
 
 html.dark .ios-reminders-section {
-border-top: 1px solid rgb(255 255 255 / 10%) !important;
+  border-top: 1px solid rgb(255 255 255 / 10%) !important;
 }
 
 .reminders-title {
-font-size: 1rem !important;
+  font-size: 1rem !important;
 
   /* Smaller Header */
   font-weight: 700 !important;
@@ -1165,19 +1163,19 @@ font-size: 1rem !important;
 }
 
 html.dark .reminders-title {
-color: #f5f5f7 !important;
+  color: #f5f5f7 !important;
 }
 
 /* New Button Fix (Solid Blue - Like Tick) */
 
 .ios-btn-small:active {
-transform: scale(0.95) !important;
+  transform: scale(0.95) !important;
 }
 
 /* Edit Button (Pencil) */
 
 .edit-btn {
-width: 24px;
+  width: 24px;
   height: 24px;
   border-radius: 50%;
   background: rgb(0 0 0 / 5%);
@@ -1192,25 +1190,25 @@ width: 24px;
 }
 
 html.dark .edit-btn {
-background: rgb(255 255 255 / 10%);
+  background: rgb(255 255 255 / 10%);
   color: #a1a1a6;
 }
 
 .reminder-card:hover .edit-btn {
-opacity: 1;
+  opacity: 1;
 
   /* Show on hover */
 }
 
 .edit-btn:hover {
-background: #007aff;
+  background: #007aff;
   color: white;
 }
 
 /* Card Grid container */
 
 .reminder-cards-grid {
-display: flex;
+  display: flex;
   flex-direction: column;
   gap: 8px !important;
 
@@ -1220,7 +1218,7 @@ display: flex;
 /* Individual Card - Compact */
 
 .reminder-card {
-position: relative;
+  position: relative;
   background: #fff !important;
 
   /* Solid White */
@@ -1244,7 +1242,7 @@ position: relative;
 }
 
 html.dark .reminder-card {
-background: #000 !important;
+  background: #000 !important;
 
   /* Solid Black */
   border: 1px solid rgb(255 255 255 / 15%) !important;
@@ -1256,20 +1254,20 @@ background: #000 !important;
 /* Hover Effect */
 
 .reminder-card:hover {
-transform: scale(1.02);
+  transform: scale(1.02);
   z-index: 2;
   box-shadow: 0 8px 16px rgb(0 0 0 / 12%) !important;
 }
 
 html.dark .reminder-card:hover {
-border-color: rgb(255 255 255 / 30%) !important;
+  border-color: rgb(255 255 255 / 30%) !important;
   box-shadow: 0 8px 24px rgb(255 255 255 / 10%) !important;
 }
 
 /* Accent Strip (Left Color Bar) */
 
 .card-accent-strip {
-position: absolute;
+  position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
@@ -1282,25 +1280,25 @@ position: absolute;
 /* Accent Colors */
 
 .reminder-card.accent-blue .card-accent-strip {
-background: #007aff;
+  background: #007aff;
 }
 
 .reminder-card.accent-red .card-accent-strip {
-background: #ff3b30;
+  background: #ff3b30;
 }
 
 .reminder-card.accent-orange .card-accent-strip {
-background: #ff9500;
+  background: #ff9500;
 }
 
 .reminder-card.accent-green .card-accent-strip {
-background: #34c759;
+  background: #34c759;
 }
 
 /* Completed State */
 
 .reminder-card.completed {
-opacity: 0.7;
+  opacity: 0.7;
 
   /* Less dim */
   background: #f5f5f7 !important;
@@ -1308,26 +1306,26 @@ opacity: 0.7;
 }
 
 html.dark .reminder-card.completed {
-background: #151516 !important;
+  background: #151516 !important;
 }
 
 .reminder-card.completed .card-title {
-text-decoration: line-through;
+  text-decoration: line-through;
   color: #4a4a4f !important;
 }
 
 html.dark .reminder-card.completed .card-title {
-color: #a1a1a6 !important;
+  color: #a1a1a6 !important;
 }
 
 .reminder-card.completed .card-accent-strip {
-background: #d1d1d6 !important;
+  background: #d1d1d6 !important;
 }
 
 /* Content Area */
 
 .card-content {
-flex: 1;
+  flex: 1;
   padding-left: 10px;
   display: flex;
   flex-direction: column;
@@ -1339,7 +1337,7 @@ flex: 1;
 /* Header Row (Time + Tag) */
 
 .card-header-flex {
-display: flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.7rem !important;
@@ -1352,28 +1350,28 @@ display: flex;
 }
 
 html.dark .card-meta {
-color: #a1a1a6;
+  color: #a1a1a6;
 }
 
 .card-time i {
-margin-right: 3px;
+  margin-right: 3px;
   font-size: 0.9em;
 }
 
 .card-tag {
-background: rgb(0 0 0 / 5%);
+  background: rgb(0 0 0 / 5%);
   padding: 1px 5px;
   border-radius: 4px;
 }
 
 html.dark .card-tag {
-background: rgb(255 255 255 / 10%);
+  background: rgb(255 255 255 / 10%);
 }
 
 /* Title */
 
 .card-title {
-font-size: 0.9rem !important;
+  font-size: 0.9rem !important;
 
   /* Compact Title */
   font-weight: 600 !important;
@@ -1387,17 +1385,17 @@ font-size: 0.9rem !important;
 }
 
 html.dark .card-title {
-color: #fff;
+  color: #fff;
 }
 
 /* Action Area (Check Circle) */
 
 .card-action-area {
-margin-left: 12px;
+  margin-left: 12px;
 }
 
 .status-circle {
-width: 24px !important;
+  width: 24px !important;
 
   /* Smaller Circle */
   height: 24px !important;
@@ -1413,22 +1411,22 @@ width: 24px !important;
 }
 
 html.dark .status-circle {
-border-color: #636366;
+  border-color: #636366;
 }
 
 .reminder-card:hover .status-circle {
-border-color: #007aff;
+  border-color: #007aff;
   background: rgb(0 122 255 / 5%);
 }
 
 .reminder-card.completed .status-circle {
-background: #007aff;
+  background: #007aff;
   border-color: #007aff;
   color: white;
 }
 
 .status-circle i {
-font-size: 11px !important;
+  font-size: 11px !important;
 
   /* Smaller tick */
   display: block;
@@ -1439,7 +1437,7 @@ font-size: 11px !important;
 /* AI Suggestion - Card Style */
 
 .ai-suggestion {
-margin-top: 1.5rem;
+  margin-top: 1.5rem;
   background: linear-gradient(135deg, rgb(0 122 255 / 10%), rgb(88 86 214 / 10%)) !important;
   border: 1px solid rgb(0 122 255 / 20%) !important;
   border-radius: 16px;
@@ -1454,12 +1452,12 @@ margin-top: 1.5rem;
 }
 
 .ai-suggestion:hover {
-transform: scale(1.02);
+  transform: scale(1.02);
   box-shadow: 0 4px 12px rgb(0 122 255 / 20%);
 }
 
 html.dark .ai-suggestion {
-color: #0a84ff;
+  color: #0a84ff;
   border-color: rgb(10 132 255 / 30%) !important;
 }
 
@@ -1468,7 +1466,7 @@ color: #0a84ff;
 .project-tag,
 .experience-tag,
 .skill-tag {
-/* Slightly rounded rects are more modern than full pills for tags sometimes, but let's stick to pills for consistency */
+  /* Slightly rounded rects are more modern than full pills for tags sometimes, but let's stick to pills for consistency */
   border-radius: 980px !important;
   padding: 6px 14px !important;
   font-size: 13px !important;
@@ -2571,7 +2569,6 @@ html.dark #about .about-description {
   gap: clamp(14px, 1.5vw, 24px) !important;
 }
 
-
 .section-subtitle {
   margin: 0 auto clamp(1.6rem, 3vh, 2.6rem) !important;
   max-width: 72ch !important;
@@ -2715,8 +2712,6 @@ html.dark .legend-emoji {
     0 2px 8px rgb(0 0 0 / 30%),
     inset 0 1px 0 rgb(255 255 255 / 0.05) !important;
 }
-
-
 
 /* --- General Icon Visibility Fix --- */
 i.fas,

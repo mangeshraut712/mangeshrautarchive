@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 :root {
---ios-font: -apple-system, blinkmacsystemfont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+  --ios-font: -apple-system, blinkmacsystemfont, 'SF Pro Display', 'SF Pro Text', sans-serif;
   --ios-bg: #000;
   --ios-text: #fff;
 }
@@ -16,7 +16,7 @@
 /* ...Keeping the notification styles as you said they were perfect... */
 
 .birthday-notification {
-position: fixed;
+  position: fixed;
   z-index: 999999;
   width: 92%;
   max-width: 380px;
@@ -54,39 +54,35 @@ html.dark .birthday-notification {
 /* Mobile Animation */
 
 @keyframes iosSlideInMobile {
-
   to {
     transform: translateX(-50%) translateY(0);
   }
-
 }
 
 /* Desktop Overrides: Top Right */
 
 @media screen and (width >=769px) {
-.birthday-notification {
-top: 110px;
+  .birthday-notification {
+    top: 110px;
     right: 24px;
     left: auto;
     transform: translateX(120%);
 
     /* Start off-screen right */
     animation: iosSlideInDesktop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
-}
+  }
 }
 
 @keyframes iosSlideInDesktop {
-
   to {
     transform: translateX(0);
   }
-
 }
 
 /* Header Elements */
 
 .ios-header {
-display: flex;
+  display: flex;
   align-items: center;
   gap: 6px;
   margin-bottom: 8px;
@@ -94,7 +90,7 @@ display: flex;
 }
 
 .ios-icon-container {
-width: 20px;
+  width: 20px;
   height: 20px;
   border-radius: 5px;
   background: white;
@@ -106,14 +102,14 @@ width: 20px;
 }
 
 .ios-calendar-icon {
-width: 100%;
+  width: 100%;
   height: 100%;
   position: relative;
   background: #fff;
 }
 
 .ios-calendar-header {
-height: 6px;
+  height: 6px;
   background: #ff3b30;
   width: 100%;
   position: absolute;
@@ -121,7 +117,7 @@ height: 6px;
 }
 
 .ios-calendar-date {
-font-size: 11px;
+  font-size: 11px;
   font-weight: 700;
   color: #1d1d1f;
   position: absolute;
@@ -132,7 +128,7 @@ font-size: 11px;
 }
 
 .ios-app-name {
-font-size: 13px;
+  font-size: 13px;
   font-weight: 400;
   text-transform: uppercase;
   color: #000;
@@ -142,34 +138,34 @@ font-size: 13px;
 }
 
 .ios-time {
-font-size: 13px;
+  font-size: 13px;
   color: #3c3c43;
   opacity: 0.6;
 }
 
 html.dark .ios-app-name {
-color: #fff;
+  color: #fff;
 }
 
 html.dark .ios-time {
-color: #ebebf5;
+  color: #ebebf5;
 }
 
 .ios-title {
-font-size: 15px;
+  font-size: 15px;
   font-weight: 600;
   color: #000;
   margin-bottom: 2px;
 }
 
 .ios-body {
-font-size: 15px;
+  font-size: 15px;
   color: #000;
 }
 
 html.dark .ios-title,
 html.dark .ios-body {
-color: #fff;
+  color: #fff;
 }
 
 /* Close Button Removed as per User Request for cleaner UI */
@@ -200,7 +196,7 @@ color: #fff;
 /* 1. Cinematic Background */
 
 .birthday-bg-art {
-position: absolute;
+  position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -209,7 +205,7 @@ position: absolute;
 }
 
 .aurora-gradient {
-position: absolute;
+  position: absolute;
   animation: auroraMove 15s infinite alternate ease-in-out;
   animation-fill-mode: forwards;
   animation-name: auroraIn, auroraMove;
@@ -224,7 +220,6 @@ position: absolute;
 }
 
 @keyframes auroraIn {
-
   from {
     opacity: 0;
   }
@@ -232,11 +227,9 @@ position: absolute;
   to {
     opacity: 1;
   }
-
 }
 
 @keyframes auroraMove {
-
   0% {
     transform: rotate(0deg) scale(1);
   }
@@ -244,13 +237,12 @@ position: absolute;
   100% {
     transform: rotate(5deg) scale(1.1);
   }
-
 }
 
 /* 2. Physics Canvas Layer */
 
 #celebration-canvas {
-position: absolute;
+  position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -263,7 +255,7 @@ position: absolute;
 /* 3. Typography - Apple TV Style (High Contrast) */
 
 .birthday-hero {
-z-index: 20;
+  z-index: 20;
   position: relative;
   text-align: center;
   font-family: var(--ios-font);
@@ -278,7 +270,7 @@ z-index: 20;
 /* Effect: "Typewriter" Reveal */
 
 .hero-title {
-font-size: clamp(4rem, 15vw, 9rem);
+  font-size: clamp(4rem, 15vw, 9rem);
   font-weight: 800;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -292,7 +284,7 @@ font-size: clamp(4rem, 15vw, 9rem);
 }
 
 .hero-subtitle {
-font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 500;
   opacity: 0;
   transform: translateY(20px);
@@ -302,7 +294,7 @@ font-size: clamp(1.5rem, 5vw, 2.5rem);
 }
 
 .hero-badge {
-margin-top: 10px;
+  margin-top: 10px;
   padding: 8px 20px;
   border: 1px solid rgb(255 255 255 / 20%);
   font-size: 14px;
@@ -320,18 +312,16 @@ margin-top: 10px;
 }
 
 @keyframes heroReveal {
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-
 }
 
 /* 4. Action Button - Apple Glass */
 
 .action-area {
-margin-top: 60px;
+  margin-top: 60px;
   z-index: 30;
   opacity: 0;
   animation: fadeIn 1s ease forwards 2s;
@@ -359,7 +349,7 @@ margin-top: 60px;
 }
 
 .glass-btn::before {
-content: '';
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, transparent, rgb(255 255 255 / 40%), transparent);
@@ -377,19 +367,16 @@ content: '';
 }
 
 .glass-btn:hover::before {
-transform: translateX(100%);
+  transform: translateX(100%);
 }
 
 @keyframes fadeIn {
-
   to {
     opacity: 1;
   }
-
 }
 
 @keyframes slideDown {
-
   from {
     transform: translateX(-50%) translateY(-120px);
     opacity: 0;
@@ -399,11 +386,9 @@ transform: translateX(100%);
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
-
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     transform: translateX(-50%) translateY(0) scale(1);
@@ -412,13 +397,12 @@ transform: translateX(100%);
   50% {
     transform: translateX(-50%) translateY(0) scale(1.02);
   }
-
 }
 
 /* Calendar Icon */
 
 .birthday-calendar-icon {
-width: 60px;
+  width: 60px;
   height: 60px;
   background: white;
   border-radius: 12px;
@@ -433,7 +417,7 @@ width: 60px;
 }
 
 .birthday-calendar-icon::before {
-content: '';
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -444,7 +428,7 @@ content: '';
 }
 
 .calendar-month {
-font-size: 10px;
+  font-size: 10px;
   font-weight: 700;
   color: #ff3b30;
   text-transform: uppercase;
@@ -453,7 +437,7 @@ font-size: 10px;
 }
 
 .calendar-day {
-font-size: 28px;
+  font-size: 28px;
   font-weight: 700;
   color: #1d1d1f;
   line-height: 1;
@@ -463,22 +447,22 @@ font-size: 28px;
 /* Notification Text */
 
 .birthday-notification-content {
-flex: 1;
+  flex: 1;
 }
 
 .birthday-notification-title {
-font-size: 16px;
+  font-size: 16px;
   font-weight: 600;
   color: #1d1d1f;
   margin: 0 0 4px;
 }
 
 html.dark .birthday-notification-title {
-color: #fff;
+  color: #fff;
 }
 
 .birthday-notification-subtitle {
-font-size: 14px;
+  font-size: 14px;
   color: #86868b;
   margin: 0;
 }
@@ -486,7 +470,7 @@ font-size: 14px;
 /* Close Button - FIXED VISIBILITY */
 
 .birthday-notification-close {
-width: 28px;
+  width: 28px;
   height: 28px;
   border-radius: 50%;
   background: rgb(120 120 128 / 16%);
@@ -501,23 +485,23 @@ width: 28px;
 }
 
 .birthday-notification-close:hover {
-background: rgb(120 120 128 / 24%);
+  background: rgb(120 120 128 / 24%);
   transform: scale(1.1);
 }
 
 .birthday-notification-close svg {
-width: 12px;
+  width: 12px;
   height: 12px;
   fill: currentcolor;
 }
 
 html.dark .birthday-notification-close {
-background: rgb(120 120 128 / 24%);
+  background: rgb(120 120 128 / 24%);
   color: #fff;
 }
 
 html.dark .birthday-notification-close:hover {
-background: rgb(120 120 128 / 36%);
+  background: rgb(120 120 128 / 36%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -527,7 +511,7 @@ background: rgb(120 120 128 / 36%);
 /* Light Mode - Bright Celebration */
 
 html:not(.dark) .birthday-celebration {
-background: linear-gradient(
+  background: linear-gradient(
     135deg,
     #f5f7fa 0%,
     #c3cfe2 25%,
@@ -541,7 +525,7 @@ background: linear-gradient(
 /* Dark Mode - Elegant Deep Gradient */
 
 html.dark .birthday-celebration {
-background: linear-gradient(
+  background: linear-gradient(
     135deg,
     #0a0a0f 0%,
     #1a1a2e 25%,
@@ -553,7 +537,6 @@ background: linear-gradient(
 }
 
 @keyframes fadeIn {
-
   from {
     opacity: 0;
   }
@@ -561,11 +544,9 @@ background: linear-gradient(
   to {
     opacity: 1;
   }
-
 }
 
 @keyframes bgShift {
-
   0%,
   100% {
     background-position: 0% 50%;
@@ -574,13 +555,12 @@ background: linear-gradient(
   50% {
     background-position: 100% 50%;
   }
-
 }
 
 /* Birthday Message */
 
 .birthday-message {
-text-align: center;
+  text-align: center;
   color: white;
   z-index: 10;
   animation:
@@ -589,7 +569,6 @@ text-align: center;
 }
 
 @keyframes scaleIn {
-
   from {
     transform: scale(0.5) translateY(50px);
     opacity: 0;
@@ -599,11 +578,9 @@ text-align: center;
     transform: scale(1) translateY(0);
     opacity: 1;
   }
-
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);
@@ -612,11 +589,10 @@ text-align: center;
   50% {
     transform: translateY(-15px);
   }
-
 }
 
 .birthday-title {
-font-size: clamp(2.5rem, 8vw, 5rem);
+  font-size: clamp(2.5rem, 8vw, 5rem);
   font-weight: 800;
   margin: 0 0 20px;
   -webkit-text-fill-color: transparent;
@@ -630,7 +606,6 @@ font-size: clamp(2.5rem, 8vw, 5rem);
 }
 
 @keyframes shimmer {
-
   0%,
   100% {
     background-position: 0% 50%;
@@ -639,11 +614,10 @@ font-size: clamp(2.5rem, 8vw, 5rem);
   50% {
     background-position: 100% 50%;
   }
-
 }
 
 .birthday-subtitle {
-font-size: clamp(1.2rem, 4vw, 2rem);
+  font-size: clamp(1.2rem, 4vw, 2rem);
   margin: 0 0 30px;
   opacity: 0.95;
   font-weight: 500;
@@ -651,7 +625,7 @@ font-size: clamp(1.2rem, 4vw, 2rem);
 }
 
 .birthday-age {
-font-size: clamp(1rem, 3vw, 1.5rem);
+  font-size: clamp(1rem, 3vw, 1.5rem);
   opacity: 0.9;
   margin: 0 0 40px;
   font-weight: 600;
@@ -661,7 +635,7 @@ font-size: clamp(1rem, 3vw, 1.5rem);
 /* Cake Animation - iMessage Style */
 
 .birthday-cake {
-font-size: clamp(4rem, 15vw, 8rem);
+  font-size: clamp(4rem, 15vw, 8rem);
   animation:
     cakeBounce 1s ease-in-out 1.2s backwards,
     rotate 3s ease-in-out 2s infinite,
@@ -670,7 +644,6 @@ font-size: clamp(4rem, 15vw, 8rem);
 }
 
 @keyframes cakeBounce {
-
   0% {
     transform: translateY(-200px) scale(0) rotate(-180deg);
     opacity: 0;
@@ -688,11 +661,9 @@ font-size: clamp(4rem, 15vw, 8rem);
     transform: translateY(0) scale(1) rotate(0deg);
     opacity: 1;
   }
-
 }
 
 @keyframes rotate {
-
   0%,
   100% {
     transform: rotate(-5deg) scale(1);
@@ -701,11 +672,9 @@ font-size: clamp(4rem, 15vw, 8rem);
   50% {
     transform: rotate(5deg) scale(1.05);
   }
-
 }
 
 @keyframes shadowPulse {
-
   0%,
   100% {
     filter: drop-shadow(0 10px 30px rgb(0 0 0 / 30%));
@@ -714,13 +683,12 @@ font-size: clamp(4rem, 15vw, 8rem);
   50% {
     filter: drop-shadow(0 15px 40px rgb(255 215 0 / 50%));
   }
-
 }
 
 /* Continue Button - Apple Style */
 
 .birthday-continue-btn {
-margin-top: 40px;
+  margin-top: 40px;
   padding: 16px 40px;
   font-size: 1.1rem;
   font-weight: 600;
@@ -745,7 +713,6 @@ html.dark .birthday-continue-btn {
 }
 
 @keyframes fadeInUp {
-
   from {
     transform: translateY(30px);
     opacity: 0;
@@ -755,11 +722,9 @@ html.dark .birthday-continue-btn {
     transform: translateY(0);
     opacity: 1;
   }
-
 }
 
 @keyframes btnPulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -770,7 +735,6 @@ html.dark .birthday-continue-btn {
     transform: scale(1.05);
     box-shadow: 0 15px 40px rgb(255 215 0 / 40%);
   }
-
 }
 
 .birthday-continue-btn:hover {
@@ -779,11 +743,11 @@ html.dark .birthday-continue-btn {
 }
 
 .birthday-continue-btn:active {
-transform: translateY(-2px) scale(1.02);
+  transform: translateY(-2px) scale(1.02);
 }
 
 html.dark .birthday-continue-btn:hover {
-box-shadow: 0 15px 40px rgb(255 255 255 / 20%);
+  box-shadow: 0 15px 40px rgb(255 255 255 / 20%);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -791,7 +755,7 @@ box-shadow: 0 15px 40px rgb(255 255 255 / 20%);
    ═══════════════════════════════════════════════════════════ */
 
 .confetti {
-position: absolute;
+  position: absolute;
   width: 10px;
   height: 10px;
   background: #ffd700;
@@ -800,79 +764,77 @@ position: absolute;
 }
 
 @keyframes confettiFall {
-
   to {
     transform: translateY(100vh) rotate(360deg);
     opacity: 0;
   }
-
 }
 
 .confetti:nth-child(1) {
-left: 10%;
+  left: 10%;
   animation-duration: 3s;
   animation-delay: 0s;
   background: #ff6b6b;
 }
 
 .confetti:nth-child(2) {
-left: 20%;
+  left: 20%;
   animation-duration: 2.5s;
   animation-delay: 0.2s;
   background: #4ecdc4;
 }
 
 .confetti:nth-child(3) {
-left: 30%;
+  left: 30%;
   animation-duration: 3.5s;
   animation-delay: 0.4s;
   background: #ffd700;
 }
 
 .confetti:nth-child(4) {
-left: 40%;
+  left: 40%;
   animation-duration: 2.8s;
   animation-delay: 0.1s;
   background: #95e1d3;
 }
 
 .confetti:nth-child(5) {
-left: 50%;
+  left: 50%;
   animation-duration: 3.2s;
   animation-delay: 0.3s;
   background: #ff6b6b;
 }
 
 .confetti:nth-child(6) {
-left: 60%;
+  left: 60%;
   animation-duration: 2.6s;
   animation-delay: 0.5s;
   background: #4ecdc4;
 }
 
 .confetti:nth-child(7) {
-left: 70%;
+  left: 70%;
   animation-duration: 3.3s;
   animation-delay: 0.2s;
   background: #ffd700;
 }
 
 .confetti:nth-child(8) {
-left: 80%;
+  left: 80%;
   animation-duration: 2.9s;
   animation-delay: 0.4s;
   background: #95e1d3;
 }
 
 .confetti:nth-child(9) {
-left: 90%;
+  left: 90%;
   animation-duration: 3.1s;
   animation-delay: 0.1s;
   background: #ff6b6b;
 }
 
 .confetti:nth-child(10) {
-left: 15%;
+  left: 15%;
   animation-duration: 2.7s;
   animation-delay: 0.6s;
   background: #4ecdc4;
@@ -883,7 +845,7 @@ left: 15%;
    ═══════════════════════════════════════════════════════════ */
 
 .balloon {
-position: absolute;
+  position: absolute;
   bottom: -100px;
   font-size: 3rem;
   animation: balloonFloat 4s ease-in-out infinite;
@@ -891,7 +853,6 @@ position: absolute;
 }
 
 @keyframes balloonFloat {
-
   0%,
   100% {
     transform: translateY(0) rotate(-5deg);
@@ -900,29 +861,28 @@ position: absolute;
   50% {
     transform: translateY(-30px) rotate(5deg);
   }
-
 }
 
 .balloon:nth-child(1) {
-left: 5%;
+  left: 5%;
   animation-delay: 0s;
   animation-duration: 3.5s;
 }
 
 .balloon:nth-child(2) {
-left: 15%;
+  left: 15%;
   animation-delay: 0.5s;
   animation-duration: 4s;
 }
 
 .balloon:nth-child(3) {
-left: 85%;
+  left: 85%;
   animation-delay: 1s;
   animation-duration: 3.8s;
 }
 
 .balloon:nth-child(4) {
-left: 95%;
+  left: 95%;
   animation-delay: 0.3s;
   animation-duration: 4.2s;
 }
@@ -932,7 +892,7 @@ left: 95%;
    ═══════════════════════════════════════════════════════════ */
 
 .firework {
-position: absolute;
+  position: absolute;
   width: 4px;
   height: 4px;
   border-radius: 50%;
@@ -940,7 +900,6 @@ position: absolute;
 }
 
 @keyframes fireworkExplode {
-
   0% {
     transform: translate(0, 0) scale(0);
     opacity: 1;
@@ -950,7 +909,6 @@ position: absolute;
     transform: translate(var(--tx), var(--ty)) scale(1);
     opacity: 0;
   }
-
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -958,14 +916,13 @@ position: absolute;
    ═══════════════════════════════════════════════════════════ */
 
 .sparkle {
-position: absolute;
+  position: absolute;
   font-size: 1.5rem;
   animation: sparkleFloat 2s ease-in-out infinite;
   opacity: 0;
 }
 
 @keyframes sparkleFloat {
-
   0%,
   100% {
     opacity: 0;
@@ -976,15 +933,14 @@ position: absolute;
     opacity: 1;
     transform: translateY(-50px) scale(1);
   }
-
 }
 
 .sparkle:nth-child(odd) {
-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 .sparkle:nth-child(even) {
-animation-delay: 1s;
+  animation-delay: 1s;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -992,16 +948,14 @@ animation-delay: 1s;
    ═══════════════════════════════════════════════════════════ */
 
 .birthday-celebration.fade-out {
-animation: fadeOut 1s ease-in forwards;
+  animation: fadeOut 1s ease-in forwards;
 }
 
 @keyframes fadeOut {
-
   to {
     opacity: 0;
     pointer-events: none;
   }
-
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1009,37 +963,37 @@ animation: fadeOut 1s ease-in forwards;
    ═══════════════════════════════════════════════════════════ */
 
 @media (width <=768px) {
-.birthday-notification {
-max-width: calc(100% - 20px);
+  .birthday-notification {
+    max-width: calc(100% - 20px);
     padding: 12px 16px;
     top: 10px;
-}
+  }
 
-.birthday-calendar-icon {
-width: 50px;
+  .birthday-calendar-icon {
+    width: 50px;
     height: 50px;
-}
+  }
 
-.calendar-day {
-font-size: 24px;
-}
+  .calendar-day {
+    font-size: 24px;
+  }
 
-.birthday-notification-title {
-font-size: 14px;
-}
+  .birthday-notification-title {
+    font-size: 14px;
+  }
 
-.birthday-notification-subtitle {
-font-size: 12px;
-}
+  .birthday-notification-subtitle {
+    font-size: 12px;
+  }
 
-.birthday-cake {
-font-size: 4rem;
-}
+  .birthday-cake {
+    font-size: 4rem;
+  }
 
-.birthday-continue-btn {
-padding: 12px 30px;
+  .birthday-continue-btn {
+    padding: 12px 30px;
     font-size: 1rem;
-}
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1049,12 +1003,12 @@ padding: 12px 30px;
 
 .birthday-subtitle,
 .birthday-age {
-color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.82);
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
 }
 
 @media (prefers-reduced-motion: reduce) {
-.birthday-notification,
+  .birthday-notification,
   .aurora-gradient,
   .hero-title,
   .hero-subtitle,
@@ -1065,9 +1019,9 @@ color: rgba(255, 255, 255, 0.82);
   .confetti,
   .balloon,
   .sparkle {
-animation: none !important;
+    animation: none !important;
     transition: none !important;
-}
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1075,17 +1029,17 @@ animation: none !important;
    ═══════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-.birthday-notification,
+  .birthday-notification,
   .birthday-celebration,
   .confetti,
   .balloon,
   .firework,
   .sparkle,
   .birthday-cake {
-animation: none !important;
-}
+    animation: none !important;
+  }
 
-.birthday-title {
--webkit-text-fill-color: white;
-}
+  .birthday-title {
+    -webkit-text-fill-color: white;
+  }
 }

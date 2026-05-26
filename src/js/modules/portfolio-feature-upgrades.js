@@ -1,8 +1,4 @@
-const ROLE_WORDS = [
-  'Full-Stack Developer',
-  'Systems Engineer',
-  'Research Scholar',
-];
+const ROLE_WORDS = ['Full-Stack Developer', 'Systems Engineer', 'Research Scholar'];
 const IST_TIME_ZONE = 'Asia/Kolkata';
 const EASTERN_TIME_ZONE = 'America/New_York';
 

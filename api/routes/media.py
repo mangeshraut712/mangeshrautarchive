@@ -22,6 +22,23 @@ from api.monitoring import system_monitor
 router = APIRouter()
 
 
+def build_lastfm_unconfigured_response(user: str):
+    return {
+        "recenttracks": {
+            "track": [],
+            "@attr": {
+                "user": user,
+                "total": "0",
+                "page": "1",
+                "perPage": "0",
+                "totalPages": "0",
+            },
+        },
+        "source": "lastfm-unconfigured",
+        "message": "Last.fm API key is not configured for this environment.",
+    }
+
+
 async def get_cached_poster(cache_key: str) -> Optional[str]:
     """Get cached poster URL"""
     cached = poster_cache.get(cache_key)
@@ -219,6 +236,11 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     cached = lastfm_recent_cache.get(cache_key)
     if cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL:
         return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+
+    if not LASTFM_API_KEY:
+        data = build_lastfm_unconfigured_response(user)
+        lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
+        return JSONResponse(content=data, headers=LASTFM_CACHE_HEADERS)
 
     url = (
         "https://ws.audioscrobbler.com/2.0/"

@@ -19,15 +19,15 @@
    0. CSS LAYERS ARCHITECTURE
    ========================================================================== */
 
-@layer reset, tokens, typography, colors, layout, components, glassmorphism, motion, utilities, overrides;;
+@layer reset, tokens, typography, colors, layout, components, glassmorphism, motion, utilities, overrides;
 
 /* ==========================================================================
    1. DESIGN TOKENS (tokens layer)
    ========================================================================== */
 
 @layer tokens {
-:root {
-/* ----------------------------------------------------------------------
+  :root {
+    /* ----------------------------------------------------------------------
        1.1 TYPOGRAPHY - San Francisco System Font Stack
        Precision tracking, leading, and weight variations
        ---------------------------------------------------------------------- */

@@ -5,7 +5,6 @@ Provides comprehensive health monitoring, logging, and metrics collection.
 import asyncio
 import os
 import time
-import json
 import hashlib
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Any
@@ -13,7 +12,6 @@ from dataclasses import dataclass, field
 from collections import deque
 from enum import Enum
 import logging
-from urllib.parse import urlsplit
 
 # Optional psutil import - graceful fallback if not available
 try:
@@ -801,9 +799,6 @@ class SystemMonitor:
             return datetime.now(event_time.tzinfo) - event_time < timedelta(hours=hours)
         except Exception:
             return False
-
-
-
 
 
 # Global monitor instance with error handling for serverless environments

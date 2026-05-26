@@ -210,7 +210,7 @@ class DebugRunner {
         osc.frequency.setValueAtTime(250, now);
         osc.frequency.setValueAtTime(370, now + 0.08);
         osc.frequency.setValueAtTime(550, now + 0.16);
-        gain.gain.setValueAtTime(0.10, now);
+        gain.gain.setValueAtTime(0.1, now);
         gain.gain.linearRampToValueAtTime(0.01, now + 0.24);
         osc.start(now);
         osc.stop(now + 0.24);
@@ -290,7 +290,7 @@ class DebugRunner {
           filter.connect(gain);
         }
 
-        const tempo = Math.max(0.2, 0.42 - (this.speed * 0.015));
+        const tempo = Math.max(0.2, 0.42 - this.speed * 0.015);
 
         gain.gain.setValueAtTime(0, this.nextNoteTime);
         gain.gain.linearRampToValueAtTime(0.03, this.nextNoteTime + 0.02);
@@ -356,7 +356,7 @@ class DebugRunner {
 
     const bindAction = (btn, action, endAction) => {
       btn.style.touchAction = 'none';
-      const start = (e) => {
+      const start = e => {
         if (e) e.preventDefault();
         if (!this.gameRunning || this.gameOver) {
           this.start();
@@ -366,7 +366,7 @@ class DebugRunner {
         btn.style.transform = 'scale(0.92)';
       };
 
-      const end = (e) => {
+      const end = e => {
         if (e) e.preventDefault();
         if (endAction) endAction();
         btn.style.transform = 'scale(1)';
@@ -716,7 +716,7 @@ class DebugRunner {
 
   updateObstacles() {
     // Spawning frequency proportional to speed
-    const spawnRate = 0.012 + (this.level * 0.002);
+    const spawnRate = 0.012 + this.level * 0.002;
     if (Math.random() < Math.min(0.03, spawnRate)) {
       const type = Math.random();
       const obstacle = { x: 1250, speed: this.speed };
@@ -728,7 +728,7 @@ class DebugRunner {
         obstacle.width = 32;
         obstacle.height = 32;
         obstacle.color = this.colors.bug;
-      } else if (type < 0.50) {
+      } else if (type < 0.5) {
         // Merge Conflict obstacle
         obstacle.type = 'conflict';
         obstacle.y = this.groundY - 48;
@@ -753,7 +753,7 @@ class DebugRunner {
 
       // Check distance from last obstacle
       const lastObs = this.obstacles[this.obstacles.length - 1];
-      if (!lastObs || 1200 - lastObs.x > 260 + (this.speed * 8)) {
+      if (!lastObs || 1200 - lastObs.x > 260 + this.speed * 8) {
         this.obstacles.push(obstacle);
       }
     }
@@ -828,9 +828,13 @@ class DebugRunner {
 
     // Near miss detection
     for (const obs of this.obstacles) {
-      if (!obs.nearMissChecked && obs.x < this.dev.x + this.dev.width && obs.x + obs.width > this.dev.x) {
+      if (
+        !obs.nearMissChecked &&
+        obs.x < this.dev.x + this.dev.width &&
+        obs.x + obs.width > this.dev.x
+      ) {
         obs.nearMissChecked = true;
-        const distY = Math.abs((this.dev.y + this.dev.height / 2) - (obs.y + obs.height / 2));
+        const distY = Math.abs(this.dev.y + this.dev.height / 2 - (obs.y + obs.height / 2));
         if (distY > 15 && distY < 85) {
           this.score += 200;
           this.playSound('nearmiss');
@@ -978,7 +982,8 @@ class DebugRunner {
 
       // Draw floating icon container
       const bounce = Math.sin(this.frame * 0.12) * 5;
-      this.ctx.fillStyle = p.type === 'coffee' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(191, 90, 242, 0.2)';
+      this.ctx.fillStyle =
+        p.type === 'coffee' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(191, 90, 242, 0.2)';
       this.ctx.strokeStyle = p.type === 'coffee' ? this.colors.coffee : this.colors.stackOverflow;
       this.ctx.lineWidth = 2;
       this.drawRoundedRect(this.ctx, p.x, p.y + bounce, p.width, p.height, 8);
@@ -1003,7 +1008,7 @@ class DebugRunner {
         // Draw Cyberbug animated beetle
         const bugX = obs.x + obs.width / 2;
         const bugY = obs.y + obs.height / 2;
-        
+
         // Legs wiggling
         this.ctx.strokeStyle = obs.color;
         this.ctx.lineWidth = 2;
@@ -1229,18 +1234,21 @@ class DebugRunner {
       this.ctx.strokeStyle = this.colors.text;
       this.ctx.lineWidth = 1.5;
       this.ctx.beginPath();
-      this.ctx.arc(1154, 35, 6, -Math.PI/3, Math.PI/3);
+      this.ctx.arc(1154, 35, 6, -Math.PI / 3, Math.PI / 3);
       this.ctx.stroke();
       this.ctx.beginPath();
-      this.ctx.arc(1154, 35, 10, -Math.PI/3, Math.PI/3);
+      this.ctx.arc(1154, 35, 10, -Math.PI / 3, Math.PI / 3);
       this.ctx.stroke();
     }
 
     // Level progress bar
     const nextLevelScore = this.level * 1200;
     const prevLevelScore = (this.level - 1) * 1200;
-    const progress = Math.max(0, Math.min(1, (this.score - prevLevelScore) / (nextLevelScore - prevLevelScore)));
-    
+    const progress = Math.max(
+      0,
+      Math.min(1, (this.score - prevLevelScore) / (nextLevelScore - prevLevelScore))
+    );
+
     const barWidth = 200;
     const barHeight = 8;
     const barX = this.canvas.width / 2 - barWidth / 2;
@@ -1323,7 +1331,8 @@ class DebugRunner {
   }
 
   drawStartScreen() {
-    this.ctx.fillStyle = this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.75)' : 'rgba(245, 245, 247, 0.75)';
+    this.ctx.fillStyle =
+      this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.75)' : 'rgba(245, 245, 247, 0.75)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.save();
@@ -1341,7 +1350,9 @@ class DebugRunner {
 
     this.ctx.font = '14px monospace';
     this.ctx.fillStyle = this.colors.textSecondary;
-    const controlsInfo = this.isMobile ? 'Use buttons below to Jump & Duck' : 'W/Space = Jump, S/Arrow Down = Duck';
+    const controlsInfo = this.isMobile
+      ? 'Use buttons below to Jump & Duck'
+      : 'W/Space = Jump, S/Arrow Down = Duck';
     this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 75);
     this.ctx.restore();
   }
@@ -1361,7 +1372,8 @@ class DebugRunner {
   }
 
   drawGameOver() {
-    this.ctx.fillStyle = this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.88)' : 'rgba(245, 245, 247, 0.88)';
+    this.ctx.fillStyle =
+      this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.88)' : 'rgba(245, 245, 247, 0.88)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.save();

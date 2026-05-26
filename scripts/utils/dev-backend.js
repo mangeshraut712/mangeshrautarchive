@@ -68,14 +68,14 @@ async function runBackend() {
     env: process.env,
   });
 
-  const forwardSignal = signal => {
+  const forwardSignal = () => {
     if (!child.killed) {
-      child.kill(signal);
+      child.kill('SIGTERM');
     }
   };
 
-  process.on('SIGINT', () => forwardSignal('SIGINT'));
-  process.on('SIGTERM', () => forwardSignal('SIGTERM'));
+  process.on('SIGINT', forwardSignal);
+  process.on('SIGTERM', forwardSignal);
 
   child.on('exit', code => {
     process.exit(code ?? 0);

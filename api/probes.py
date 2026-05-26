@@ -186,6 +186,15 @@ async def probe_vercel_platform_service(monitor) -> Dict[str, Any]:
 async def probe_lastfm_service(monitor) -> Dict[str, Any]:
     """Verify that Last.fm API can query listening history data."""
     start = time.time()
+    if not monitor.lastfm_api_key:
+        return {
+            "name": "Last.fm API",
+            "status": HealthStatus.DEGRADED.value,
+            "message": "Last.fm API key is not configured in this environment.",
+            "metric_value": "SKIPPED",
+            "metric_label": "missing key",
+        }
+
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(

@@ -147,9 +147,11 @@ test.describe('Chrome smoke tests', () => {
     // Check that monitor buttons are functional
     const refreshButton = page.locator('button', { hasText: 'Refresh Surfaces' });
     await expect(refreshButton).toBeVisible();
-    
+
     // Wait for response from API during refresh
-    const responsePromise = page.waitForResponse(response => response.url().includes('/api/'), { timeout: 10000 }).catch(() => null);
+    const responsePromise = page
+      .waitForResponse(response => response.url().includes('/api/'), { timeout: 10000 })
+      .catch(() => null);
     await refreshButton.click();
     await responsePromise;
 
@@ -350,7 +352,10 @@ test.describe('Chrome smoke tests', () => {
 
     const currentSection = page.locator('#currently-section');
     await currentSection.scrollIntoViewIfNeeded();
-    await page.locator('#shows-grid .media-card').first().waitFor({ state: 'visible', timeout: 10000 });
+    await page
+      .locator('#shows-grid .media-card')
+      .first()
+      .waitFor({ state: 'visible', timeout: 10000 });
 
     await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
 
