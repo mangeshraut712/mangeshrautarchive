@@ -366,6 +366,7 @@ footer,
 .container,
 .page-wrapper {
   background: #fff !important;
+  background-color: #fff !important;
 }
 
 html.dark,
@@ -377,6 +378,7 @@ html.dark footer,
 html.dark .container,
 html.dark .page-wrapper {
   background: #000 !important;
+  background-color: #000 !important;
 }
 
 /* Social icons wrapper should be transparent */
@@ -528,27 +530,7 @@ html.dark .meta {
    Final override to ensure no grey backgrounds persist
    ======================================== */
 
-html,
-body,
-main,
-section,
-header,
-footer,
-.container,
-.page-wrapper {
-  background-color: #fff !important;
-}
 
-html.dark,
-html.dark body,
-html.dark main,
-html.dark section,
-html.dark header,
-html.dark footer,
-html.dark .container,
-html.dark .page-wrapper {
-  background-color: #000 !important;
-}
 
 /* Force Cards to be Solid */
 .card,

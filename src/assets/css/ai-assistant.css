@@ -4,7 +4,7 @@
 */
 
 :root {
-  /* Premium Palette - Neural Glassmorphism 4.0 */
+/* Premium Palette - Neural Glassmorphism 4.0 */
   --ai-bg-light: rgba(255, 255, 255, 0.85);
   --ai-bg-dark: rgba(18, 18, 20, 0.92);
   --ai-accent: #0071e3;
@@ -1276,7 +1276,7 @@ html.dark #chatbot-toggle:hover {
   }
 }
 
-.welcome-title {
+.welcome-message .welcome-title {
   font-size: 18px;
   font-weight: 700;
   color: #1d1d1f;
@@ -1287,19 +1287,19 @@ html.dark #chatbot-toggle:hover {
   background-clip: text;
 }
 
-html.dark .welcome-title {
+html.dark .welcome-message .welcome-title {
   background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
 
-.welcome-subtitle {
+.welcome-message .welcome-subtitle {
   font-size: 14px;
   color: #86868b;
   line-height: 1.4;
 }
 
-html.dark .welcome-subtitle {
+html.dark .welcome-message .welcome-subtitle {
   color: #a1a1a6;
 }
 
@@ -1465,7 +1465,7 @@ html.dark .chatbot-retry-btn:hover {
   gap: 8px;
 }
 
-.welcome-icon {
+.welcome-brand .welcome-icon {
   font-size: 18px;
   background: var(--ai-accent-gradient);
   background-clip: text;

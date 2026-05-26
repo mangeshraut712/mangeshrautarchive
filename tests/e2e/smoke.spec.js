@@ -133,8 +133,8 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('#runtime-snapshot-card')).toBeVisible();
 
     // Wait for monitor to load - simplified check
-    await page.waitForTimeout(2000); // Give time for initial load
     const statusEl = page.locator('#backend-status');
+    await statusEl.waitFor({ state: 'visible', timeout: 5000 });
     await expect(statusEl).toBeVisible();
 
     const beforeTheme = await page.evaluate(() =>
@@ -142,22 +142,20 @@ test.describe('Chrome smoke tests', () => {
     );
 
     await page.locator('.monitor-header .header-actions .btn').first().click();
-    await page.waitForTimeout(500);
-
     await page.locator('#event-filter').selectOption('warning');
-    await page.waitForTimeout(300);
 
     // Check that monitor buttons are functional
     const refreshButton = page.locator('button', { hasText: 'Refresh Surfaces' });
     await expect(refreshButton).toBeVisible();
+    
+    // Wait for response from API during refresh
+    const responsePromise = page.waitForResponse(response => response.url().includes('/api/'), { timeout: 10000 }).catch(() => null);
     await refreshButton.click();
-
-    // Wait for potential data loading
-    await page.waitForTimeout(2000);
+    await responsePromise;
 
     // Verify theme toggle works
     await page.locator('#theme-toggle').click();
-    await page.waitForTimeout(200);
+    await expect(page.locator('html')).not.toHaveAttribute('data-theme', beforeTheme || '');
 
     const afterTheme = await page.evaluate(() =>
       document.documentElement.getAttribute('data-theme')
@@ -167,7 +165,7 @@ test.describe('Chrome smoke tests', () => {
 
   test('search overlay opens and closes', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
-    await page.waitForTimeout(1000);
+    await page.locator('#search-toggle').waitFor({ state: 'visible' });
 
     const openSearch = page.locator('#search-toggle');
     const closeSearch = page.locator('#search-close');
@@ -197,9 +195,8 @@ test.describe('Chrome smoke tests', () => {
     const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
     if (isMobile) {
       await page.locator('#menu-btn').click();
-      await page.waitForTimeout(250);
+      await page.locator('#overlay-menu').waitFor({ state: 'visible' });
       await page.locator('#overlay-menu a.menu-item[href="#contact"]').click();
-      await page.waitForTimeout(1200);
     } else {
       await page.locator('a.nav-link[href="#contact"]').first().click();
     }
@@ -214,19 +211,18 @@ test.describe('Chrome smoke tests', () => {
       return;
     }
 
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(1200);
+    await page.goto('/', { waitUntil: 'networkidle' });
 
     await page.evaluate(() => {
       const scrollHeight = document.documentElement.scrollHeight;
       window.scrollTo(0, Math.max(0, scrollHeight - window.innerHeight - 1000));
     });
-    await page.waitForTimeout(600);
+    await page.waitForFunction(() => window.scrollY > 100);
 
     const beforeY = await page.evaluate(() => window.scrollY);
     await page.locator('#menu-btn').click();
     await page.waitForSelector('body.menu-open');
-    await page.waitForTimeout(250);
+    await page.locator('#overlay-menu').waitFor({ state: 'visible' });
 
     const openState = await page.evaluate(beforeScrollY => {
       return {
@@ -248,7 +244,7 @@ test.describe('Chrome smoke tests', () => {
     await page.evaluate(() => {
       document.getElementById('close-menu-btn')?.click();
     });
-    await page.waitForTimeout(300);
+    await page.waitForFunction(() => !document.body.classList.contains('menu-open'));
 
     const afterState = await page.evaluate(() => ({
       y: window.scrollY,
@@ -273,11 +269,9 @@ test.describe('Chrome smoke tests', () => {
           const isMobile = targetPage.viewportSize()
             ? targetPage.viewportSize().width <= 768
             : false;
-          await targetPage.waitForTimeout(isMobile ? 250 : 350);
-
           if (isMobile) {
             await targetPage.locator('#menu-btn').click();
-            await targetPage.waitForTimeout(250);
+            await targetPage.locator('#overlay-menu').waitFor({ state: 'visible' });
             await targetPage.locator(`#overlay-menu a.menu-item[href="#${sectionId}"]`).click();
           } else {
             await targetPage.locator(`a.nav-link[href="#${sectionId}"]`).first().click();
@@ -308,29 +302,29 @@ test.describe('Chrome smoke tests', () => {
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' });
 
-    await Promise.all(
-      ['light', 'dark'].map(async theme => {
-        await page.evaluate(mode => {
-          globalThis.document.documentElement.classList.toggle('dark', mode === 'dark');
-          globalThis.localStorage.setItem('theme', mode);
-        }, theme);
-        await page.waitForTimeout(200);
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate(mode => {
+        globalThis.document.documentElement.classList.toggle('dark', mode === 'dark');
+        globalThis.localStorage.setItem('theme', mode);
+      }, theme);
+      await page.waitForFunction(mode => {
+        return document.documentElement.classList.contains('dark') === (mode === 'dark');
+      }, theme);
 
-        await Promise.all(
-          criticalLayoutChecks.map(async check => {
-            const sectionNode = page.locator(check.selector);
-            await expect(sectionNode, `${check.name} exists in ${theme}`).toBeAttached();
-            const display = await sectionNode.evaluate(
-              node => globalThis.getComputedStyle(node).display
-            );
-            expect(
-              display,
-              `${check.name} should render as ${check.expectedDisplay} in ${theme}`
-            ).toBe(check.expectedDisplay);
-          })
-        );
-      })
-    );
+      await Promise.all(
+        criticalLayoutChecks.map(async check => {
+          const sectionNode = page.locator(check.selector);
+          await expect(sectionNode, `${check.name} exists in ${theme}`).toBeAttached();
+          const display = await sectionNode.evaluate(
+            node => globalThis.getComputedStyle(node).display
+          );
+          expect(
+            display,
+            `${check.name} should render as ${check.expectedDisplay} in ${theme}`
+          ).toBe(check.expectedDisplay);
+        })
+      );
+    }
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
@@ -341,7 +335,7 @@ test.describe('Chrome smoke tests', () => {
         const sectionNode = page.locator(check.selector);
         await expect(sectionNode, `${check.name} exists`).toBeAttached();
         await sectionNode.scrollIntoViewIfNeeded();
-        await page.waitForTimeout(120);
+        await page.evaluate(() => new Promise(requestAnimationFrame));
 
         const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
         expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
@@ -356,7 +350,7 @@ test.describe('Chrome smoke tests', () => {
 
     const currentSection = page.locator('#currently-section');
     await currentSection.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1200);
+    await page.locator('#shows-grid .media-card').first().waitFor({ state: 'visible', timeout: 10000 });
 
     await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
 
@@ -364,7 +358,6 @@ test.describe('Chrome smoke tests', () => {
     const booksTab = page.locator('.currently-tab[data-tab="books"]');
 
     await showsTab.click();
-    await page.waitForTimeout(400);
     await expect(page.locator('#shows-content')).toHaveClass(/active/);
 
     const showTitles = await page.locator('#shows-grid .media-card h4').allTextContents();
@@ -383,7 +376,6 @@ test.describe('Chrome smoke tests', () => {
     ).toBe(true);
 
     await booksTab.click();
-    await page.waitForTimeout(400);
     await expect(page.locator('#books-content')).toHaveClass(/active/);
 
     const bookTitles = await page.locator('#books-grid .media-card h4').allTextContents();
@@ -405,8 +397,6 @@ test.describe('Chrome smoke tests', () => {
 
     const currentSection = page.locator('#currently-section');
     await currentSection.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1200);
-
     await page.locator('.currently-tab[data-tab="music"]').click();
     await expect(page.locator('#music-content')).toHaveClass(/active/);
 

@@ -16,9 +16,7 @@ load_dotenv()
 # API Keys and Settings
 TMDB_API_KEY = os.getenv("TMDB_API_KEY", "").strip()
 GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
-LASTFM_API_KEY = (
-    os.getenv("LASTFM_API_KEY", "").strip() or "bef46b0d7702dac5b071906cd186bd28"
-)
+LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "").strip()
 LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()

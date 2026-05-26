@@ -1,9 +1,7 @@
 const ROLE_WORDS = [
-  'Systems Builder',
-  'Product Engineer',
-  'Cloud Builder',
-  'Full-Stack Solver',
-  'Research Technologist',
+  'Full-Stack Developer',
+  'Systems Engineer',
+  'Research Scholar',
 ];
 const IST_TIME_ZONE = 'Asia/Kolkata';
 const EASTERN_TIME_ZONE = 'America/New_York';

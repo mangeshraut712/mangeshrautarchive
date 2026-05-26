@@ -51,13 +51,20 @@ async def fetch_github_repos_cached(username: str) -> list:
                         timeout=12,
                     )
                     repos = json.loads(gh_run.stdout) if gh_run.stdout else []
-                except Exception:
+                except (subprocess.SubprocessError, json.JSONDecodeError) as inner_exc:
+                    print(f"⚠️ Fallback to httpx due to gh CLI failure: {type(inner_exc).__name__}")
                     resp.raise_for_status()
                     repos = resp.json()
             else:
                 resp.raise_for_status()
                 repos = resp.json()
-    except Exception:
+    except (httpx.HTTPStatusError, httpx.RequestError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+        print(f"⚠️ Error fetching GitHub repos: {type(exc).__name__} - {str(exc)}")
+        if entry and entry.get("data"):
+            return entry["data"]
+        raise
+    except Exception as exc:
+        print(f"⚠️ Unexpected error fetching GitHub repos: {type(exc).__name__} - {str(exc)}")
         if entry and entry.get("data"):
             return entry["data"]
         raise
@@ -283,8 +290,12 @@ async def get_github_profile(username: str = "mangeshraut712"):
             "ai_summary": github_connector.generate_github_summary_for_ai(activity),
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
+    except httpx.HTTPError as e:
+        print(f"❌ get_github_profile HTTP error: {str(e)}")
+        raise HTTPException(status_code=502, detail=f"GitHub API gateway error: {str(e)}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
+        print(f"❌ get_github_profile unexpected error: {type(e).__name__} - {str(e)}")
+        raise HTTPException(status_code=500, detail=f"GitHub integration error: {str(e)}")
 
 
 @router.get("/github/repos")
@@ -312,5 +323,9 @@ async def get_github_repos(
             "data": repos,
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
+    except httpx.HTTPError as e:
+        print(f"❌ get_github_repos HTTP error: {str(e)}")
+        raise HTTPException(status_code=502, detail=f"GitHub API gateway error: {str(e)}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"GitHub API error: {str(e)}")
+        print(f"❌ get_github_repos unexpected error: {type(e).__name__} - {str(e)}")
+        raise HTTPException(status_code=500, detail=f"GitHub integration error: {str(e)}")

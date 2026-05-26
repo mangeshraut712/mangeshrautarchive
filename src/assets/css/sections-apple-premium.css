@@ -148,10 +148,10 @@ html.dark #home::before {
 /* Hero Profile Image - Enhanced */
 #home .profile-image-wrapper {
   position: relative;
-  width: 140px !important;
-  height: 140px !important;
+  width: 120px !important;
+  height: 120px !important;
   border-radius: 50%;
-  padding: 4px;
+  padding: 3px;
   background: linear-gradient(135deg, var(--apple-blue), var(--apple-blue-light));
   box-shadow:
     0 20px 40px rgb(0 113 227 / 25%),
@@ -181,7 +181,7 @@ html.dark #home::before {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin: 1.5rem 0 0.5rem;
+  margin: 0.75rem 0 0.25rem;
 }
 
 #home .hero-name-text {
@@ -246,7 +246,7 @@ html.dark #home .hero-verified-badge {
 #home .hero-role-flip {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
 #home .hero-role-flip span {
@@ -273,8 +273,8 @@ html.dark #home .hero-role-flip strong {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -339,7 +339,7 @@ html.dark #home .portfolio-reach-badge:hover {
 /* Music Card - Apple Style */
 #home .music-card {
   max-width: 360px;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 0.75rem;
   background: var(--glass-bg-light);
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border-light);
@@ -455,7 +455,7 @@ html.dark #home .music-card {
   line-height: 1.7;
   color: var(--apple-gray-400);
   max-width: 50ch;
-  margin: 0 auto 2rem;
+  margin: 0 auto 1rem;
 }
 
 html.dark #home .hero-description {
@@ -467,8 +467,9 @@ html.dark #home .hero-description {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  margin-top: 0.5rem;
 }
 
 #home .hero-cta {
@@ -767,7 +768,6 @@ html.dark footer .footer-tagline {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: none;
   background: var(--glass-bg-light);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border-light);

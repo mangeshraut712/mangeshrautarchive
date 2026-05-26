@@ -80,8 +80,20 @@ async def fetch_tmdb_poster(title: str, media_type: str = "movie") -> str:
                     system_monitor.record_poster_request(True)
                 return poster_url
 
+    except httpx.HTTPStatusError as e:
+        print(f"TMDB HTTP status error for {title}: {e.response.status_code} - {e.response.text}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
+    except httpx.RequestError as e:
+        print(f"TMDB request error for {title}: {str(e)}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
+    except json.JSONDecodeError:
+        print(f"TMDB invalid JSON response for {title}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
     except Exception as e:
-        print(f"TMDB fetch error for {title}: {str(e)}")
+        print(f"TMDB unexpected fetch error for {title}: {type(e).__name__} - {str(e)}")
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
 
@@ -129,8 +141,20 @@ async def fetch_google_books_cover(title: str, author: str = "") -> str:
                     system_monitor.record_poster_request(True)
                 return cover_url
 
+    except httpx.HTTPStatusError as e:
+        print(f"Google Books HTTP status error for {title}: {e.response.status_code} - {e.response.text}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
+    except httpx.RequestError as e:
+        print(f"Google Books request error for {title}: {str(e)}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
+    except json.JSONDecodeError:
+        print(f"Google Books invalid JSON response for {title}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
     except Exception as e:
-        print(f"Google Books fetch error for {title}: {str(e)}")
+        print(f"Google Books unexpected fetch error for {title}: {type(e).__name__} - {str(e)}")
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
 
@@ -163,8 +187,20 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
                     system_monitor.record_poster_request(True)
                 return cover_url
 
+    except httpx.HTTPStatusError as e:
+        print(f"Open Library HTTP status error for {title}: {e.response.status_code} - {e.response.text}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
+    except httpx.RequestError as e:
+        print(f"Open Library request error for {title}: {str(e)}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
+    except json.JSONDecodeError:
+        print(f"Open Library invalid JSON response for {title}")
+        if system_monitor is not None:
+            system_monitor.record_poster_request(False)
     except Exception as e:
-        print(f"Open Library fetch error for {title}: {str(e)}")
+        print(f"Open Library unexpected fetch error for {title}: {type(e).__name__} - {str(e)}")
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
 
@@ -285,8 +321,19 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
                 "details": "Unable to connect to Last.fm servers",
             },
         )
+    except json.JSONDecodeError as e:
+        print(f"💥 Music Proxy JSON Parse Exception: {str(e)}")
+        if cached:
+            return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+        return JSONResponse(
+            status_code=502,
+            content={
+                "error": "Bad gateway",
+                "details": "Failed to parse JSON response from Last.fm",
+            },
+        )
     except Exception as e:
-        print(f"💥 Music Proxy Exception: {str(e)}")
+        print(f"💥 Music Proxy Exception: {type(e).__name__} - {str(e)}")
         if cached:
             return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
         return JSONResponse(

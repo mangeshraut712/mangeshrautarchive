@@ -46,7 +46,6 @@ html.dark #debug-runner-container {
   background: var(--card-surface-light) !important;
   background-color: var(--card-surface-light) !important;
   /* Crisp rendering */
-  image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
 

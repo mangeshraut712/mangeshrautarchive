@@ -1,6 +1,5 @@
 import { analytics } from '../services/AnalyticsService.js';
 
-const LASTFM_PUBLIC_API_KEY = 'bef46b0d7702dac5b071906cd186bd28';
 const LASTFM_JSONP_TIMEOUT_MS = 4500;
 const LASTFM_PROXY_TIMEOUT_MS = 3500;
 
@@ -24,7 +23,7 @@ class LastFmService {
     this.publicApiKey =
       globalThis.APP_CONFIG?.lastfmApiKey ||
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.lastfmApiKey) ||
-      LASTFM_PUBLIC_API_KEY;
+      '';
 
     this.hero = null;
     this.currently = null;

@@ -404,12 +404,48 @@ async def stream_openrouter_response(
                 )
             else:
                 await asyncio.sleep(1)
-        except Exception as e:
-            print(f"❌ Critical stream error: {type(e).__name__}")
+        except httpx.HTTPStatusError as e:
+            print(f"❌ OpenRouter HTTP error: {e.response.status_code} - {e.response.text}")
             yield (
                 json.dumps(
                     {
-                        "error": "AI service failed before a complete response was produced.",
+                        "error": f"AI service returned HTTP {e.response.status_code}. Please try again later.",
+                        "type": "error",
+                    }
+                )
+                + "\n"
+            )
+            return
+        except httpx.RequestError as e:
+            print(f"❌ Request error during AI stream: {str(e)}")
+            yield (
+                json.dumps(
+                    {
+                        "error": "Failed to connect to the AI service. Check your connection.",
+                        "type": "error",
+                    }
+                )
+                + "\n"
+            )
+            return
+        except asyncio.TimeoutError:
+            print("❌ AI stream timed out")
+            yield (
+                json.dumps(
+                    {
+                        "error": "AI response timed out. The model is currently under high load.",
+                        "type": "error",
+                    }
+                )
+                + "\n"
+            )
+            return
+        except Exception as e:
+            print(f"❌ Critical stream error: {type(e).__name__} - {str(e)}")
+            yield (
+                json.dumps(
+                    {
+                        "error": "An unexpected error occurred during the AI stream.",
                         "type": "error",
                     }
                 )
@@ -594,8 +630,32 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
     except HTTPException:
         raise
+    except httpx.HTTPStatusError as e:
+        print(f"❌ Chat endpoint HTTP status error: {e.response.status_code} - {e.response.text}")
+        return {
+            "error": f"HTTP status error: {e.response.status_code}",
+            "answer": "⚠️ The AI service returned an error status. Please try again.",
+            "source": "Error",
+            "model": "None",
+        }
+    except httpx.RequestError as e:
+        print(f"❌ Chat endpoint connection/request error: {str(e)}")
+        return {
+            "error": "Connection error",
+            "answer": "⚠️ Could not establish a connection to the AI service. Please check your internet.",
+            "source": "Error",
+            "model": "None",
+        }
+    except asyncio.TimeoutError:
+        print("❌ Chat endpoint request timed out")
+        return {
+            "error": "Timeout error",
+            "answer": "⚠️ The AI response timed out. Please try a simpler prompt.",
+            "source": "Error",
+            "model": "None",
+        }
     except Exception as e:
-        print(f"❌ Chat endpoint error: {type(e).__name__}")
+        print(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}")
         return {
             "error": "Internal server error",
             "answer": "⚠️ Something went wrong. Please try again.",

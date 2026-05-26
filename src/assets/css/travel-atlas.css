@@ -17,7 +17,6 @@
 .travel-layout {
   position: relative;
   width: 100vw;
-  height: 100vh;
   height: 100dvh;
   overflow: hidden;
 }
@@ -619,6 +618,12 @@
 .travel-stop__image {
   transition: opacity 0.3s ease;
   opacity: 0;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .travel-stop__image.loaded {
@@ -635,16 +640,17 @@
 }
 
 .travel-stop__detail-label {
-  margin-bottom: 3px;
+  margin-bottom: 0.2rem;
   color: var(--text-tertiary);
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .travel-stop__detail-text {
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: 0.9rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -979,32 +985,13 @@ html.dark .maplibregl-ctrl-group button {
   letter-spacing: 0;
 }
 
-.travel-stop__image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: var(--radius-md, 8px);
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+
 
 .travel-stop__detail-section {
   margin-top: 0.8rem;
 }
 
-.travel-stop__detail-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-tertiary);
-  margin-bottom: 0.2rem;
-  font-weight: 700;
-}
 
-.travel-stop__detail-text {
-  font-size: 0.9rem;
-  color: var(--text-primary);
-}
 
 /* ─── Photo Gallery Modal ─── */
 .photo-gallery-modal {

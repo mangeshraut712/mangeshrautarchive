@@ -324,6 +324,10 @@ html.dark #projects .activity-overview-inner {
   padding: 0.75rem 0.85rem;
   display: grid;
   gap: 0.24rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: default;
 }
 
 html.dark #projects .activity-stat-item {
@@ -588,13 +592,7 @@ html.dark #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
   color: var(--project-text-dark) !important;
 }
 
-/* Enhanced stat item hover effects */
-#projects .activity-stat-item {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  cursor: default;
-}
+
 
 #projects .activity-stat-item:hover {
   transform: translateY(-2px);

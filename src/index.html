@@ -352,6 +352,7 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
+  <script src="build-config.js"></script>
   <script>
     (function () {
       const isGitHubPages = window.location.hostname.endsWith('github.io');
@@ -362,7 +363,7 @@
         siteUrl: window.location.origin,
         appTitle: 'AssistMe Portfolio Assistant',
         selectedModel: 'x-ai/grok-4.1-fast',
-        lastfmApiKey: 'bef46b0d7702dac5b071906cd186bd28',
+        lastfmApiKey: window.APP_CONFIG?.lastfmApiKey || '',
         musicDirectFallback: true
       });
 

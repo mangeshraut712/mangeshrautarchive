@@ -8,6 +8,7 @@
    ============================================ */
 
 .global-nav.dynamic-island {
+  /* Variables */
   --island-font:
     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', Inter, sans-serif;
   --island-height: 52px;
@@ -30,22 +31,8 @@
   --island-control-border: rgba(0, 0, 0, 0.08);
   --island-control-bg: rgba(255, 255, 255, 0);
   --island-control-bg-hover: rgba(0, 0, 0, 0.06);
-}
 
-html.dark .global-nav.dynamic-island {
-  --island-link-color: rgba(255, 255, 255, 0.92);
-  --island-link-color-active: #fff;
-  --island-link-color-hover: #4ea1ff;
-  --island-link-underline: #4ea1ff;
-  --island-link-active-bg: rgba(78, 161, 255, 0.2);
-  --island-control-color: rgba(255, 255, 255, 0.94);
-  --island-control-border: rgba(255, 255, 255, 0.18);
-  --island-control-bg: rgba(255, 255, 255, 0);
-  --island-control-bg-hover: rgba(255, 255, 255, 0.12);
-}
-
-.global-nav.dynamic-island {
-  /* Fixed positioning at very top with floating pill potential */
+  /* Layout and Styling */
   position: fixed;
   top: 0;
   left: 0;
@@ -81,8 +68,16 @@ html.dark .global-nav.dynamic-island {
   text-rendering: optimizeLegibility;
 }
 
-/* Dark mode variant */
 html.dark .global-nav.dynamic-island {
+  --island-link-color: rgba(255, 255, 255, 0.92);
+  --island-link-color-active: #fff;
+  --island-link-color-hover: #4ea1ff;
+  --island-link-underline: #4ea1ff;
+  --island-link-active-bg: rgba(78, 161, 255, 0.2);
+  --island-control-color: rgba(255, 255, 255, 0.94);
+  --island-control-border: rgba(255, 255, 255, 0.18);
+  --island-control-bg: rgba(255, 255, 255, 0);
+  --island-control-bg-hover: rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.92);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -198,12 +193,30 @@ html.dark .global-nav.dynamic-island.scrolled {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: var(--island-link-gap) !important;
+  gap: 20px !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.01em !important;
   min-width: 0;
   font-family: var(--island-font) !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  padding: 0 15px !important;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15px,
+    black calc(100% - 15px),
+    transparent
+  ) !important;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15px,
+    black calc(100% - 15px),
+    transparent
+  ) !important;
 }
 
 /* Individual nav links - Apple style */
@@ -473,9 +486,6 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
 @media (max-width: 1150px) {
   .global-nav.dynamic-island {
     --island-side-pad: 24px;
-  }
-
-  .global-nav.dynamic-island {
     --island-control-size: 36px;
     --island-control-icon-size: 15px;
   }
@@ -606,34 +616,7 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   box-shadow: 0 0 0 4px rgb(78 161 255 / 20%);
 }
 
-/* --- Added Fixes for Responsiveness & Performance --- */
 
-/* Horizontal Scrolling for Nav Links on Desktop/Tablet */
-.global-nav.dynamic-island .nav-links {
-  overflow-x: auto !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  padding: 0 15px !important;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 15px,
-    black calc(100% - 15px),
-    transparent
-  ) !important;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 15px,
-    black calc(100% - 15px),
-    transparent
-  ) !important;
-  gap: 20px !important;
-}
-
-.global-nav.dynamic-island .nav-links::-webkit-scrollbar {
-  display: none !important;
-}
 
 /* Ensure links stay visible until mobile breakpoint */
 @media (min-width: 769px) {

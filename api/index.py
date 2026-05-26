@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 # Monitoring
 from api.monitoring import (
     system_monitor,
-    MonitoringMiddleware,
     EventType,
 )
+from api.middleware import MonitoringMiddleware
 
 # Routes
 from api.routes import (

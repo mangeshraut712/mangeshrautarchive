@@ -5,11 +5,7 @@ import './core/bootstrap.js';
 import './core/chat.js';
 import './core/config.js';
 import './core/modern-input.js';
-import './core/script.js';
-
 import './data/media-data.js';
-import './data/photo-locations.js';
-import './data/travel-data.js';
 import './data/travel-engine.js';
 import './data/travel-locations.js';
 

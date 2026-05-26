@@ -43,7 +43,7 @@ async function injectApiKeys(distDir) {
     siteUrl: process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
-    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || 'bef46b0d7702dac5b071906cd186bd28',
+    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || '',
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `v${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,

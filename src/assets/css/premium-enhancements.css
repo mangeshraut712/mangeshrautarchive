@@ -31,7 +31,6 @@ html.dark .scroll-progress {
 section h2 {
   position: relative;
   display: block;
-  width: -moz-fit-content;
   width: fit-content;
   margin-left: auto;
   margin-right: auto;

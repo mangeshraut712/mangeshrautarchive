@@ -5,7 +5,7 @@
     "selector-class-pattern": null,
     "custom-property-pattern": null,
     "import-notation": "string",
-    "no-duplicate-selectors": null,
+    "no-duplicate-selectors": true,
     "keyframes-name-pattern": null,
     "color-function-notation": null,
     "alpha-value-notation": null,
@@ -22,7 +22,7 @@
     "declaration-empty-line-before": null,
     "selector-not-notation": null,
     "length-zero-no-unit": null,
-    "declaration-block-no-duplicate-properties": null,
+    "declaration-block-no-duplicate-properties": true,
     "custom-property-empty-line-before": null
   }
 }
