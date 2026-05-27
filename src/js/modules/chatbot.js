@@ -17,6 +17,7 @@
 import { privacyDashboard } from './privacy-dashboard.js';
 import { intelligentAssistant as chatAssistant } from '../core/chat.js';
 import { markdownService } from '../services/MarkdownService.js';
+import appleSounds from './apple-sounds.js';
 
 const MAX_CHAT_INPUT_LENGTH = 1800;
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
@@ -352,7 +353,7 @@ class AppleIntelligenceChatbot {
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
     this.isOpen = true;
-
+    appleSounds.playNotification();
     setTimeout(() => {
       this.elements.input?.focus();
     }, 300);
@@ -482,6 +483,7 @@ class AppleIntelligenceChatbot {
     this.lastUserMessage = text;
     this.retryCount = 0;
     this.removeFollowupChips();
+    appleSounds.playClick();
 
     // Add user message
     this.addMessage(text, 'user');

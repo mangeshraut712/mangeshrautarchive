@@ -1,4 +1,5 @@
 // Theme toggle functionality
+import appleSounds from '../modules/apple-sounds.js';
 const themeToggle = document.getElementById('theme-toggle');
 const themeToggleIcon = document.getElementById('theme-toggle-icon');
 const themeColorMetas = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
@@ -57,6 +58,7 @@ function initThemeToggle() {
     applyThemeState(isDark);
     renderThemeIcon(isDark);
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    appleSounds.playThemeToggle();
   });
 }
 

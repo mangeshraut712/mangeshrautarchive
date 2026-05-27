@@ -1016,7 +1016,8 @@ html.dark .music-card:hover .music-card-inner {
   box-shadow:
     0 2px 8px rgb(0 0 0 / 15%),
     inset 0 0 0 1px rgb(255 255 255 / 20%);
-  transition: transform 0.3s ease;
+  /* Smooth crossfade when src changes */
+  transition: transform 0.3s ease, opacity 0.4s ease;
   aspect-ratio: 1 / 1 !important;
 }
 
@@ -1064,35 +1065,40 @@ html.dark .music-card:hover .music-card-inner {
 }
 
 .playing-indicator span {
-  width: 2px;
-  border-radius: 1px;
+  width: 2.5px;
+  border-radius: 2px;
   background: #fff;
-  animation: playingBars 1s ease-in-out infinite;
+  animation: playingBars 0.9s ease-in-out infinite alternate;
+  transform-origin: bottom;
 }
 
 .playing-indicator span:nth-child(1) {
-  height: 6px;
+  height: 5px;
+  animation-duration: 0.7s;
   animation-delay: 0s;
 }
 
 .playing-indicator span:nth-child(2) {
   height: 10px;
-  animation-delay: 0.2s;
+  animation-duration: 0.9s;
+  animation-delay: 0.15s;
 }
 
 .playing-indicator span:nth-child(3) {
-  height: 8px;
-  animation-delay: 0.4s;
+  height: 7px;
+  animation-duration: 0.8s;
+  animation-delay: 0.3s;
 }
 
 @keyframes playingBars {
-  0%,
-  100% {
-    transform: scaleY(1);
+  from {
+    transform: scaleY(0.4);
+    opacity: 0.7;
   }
 
-  50% {
-    transform: scaleY(1.5);
+  to {
+    transform: scaleY(1.6);
+    opacity: 1;
   }
 }
 

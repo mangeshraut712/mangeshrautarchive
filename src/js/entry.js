@@ -12,6 +12,7 @@ import './data/travel-locations.js';
 import './modules/accessibility.js';
 import './modules/agentic-actions.js';
 import './modules/analytics.js';
+import './modules/apple-sounds.js';
 import './modules/avatar-toggle.js';
 import './modules/birthday-celebration.js';
 import './modules/blog-data.js';

@@ -7,13 +7,15 @@ class LastFmService {
   constructor() {
     this.USERNAME = 'mbr63';
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
-    this.UPDATE_INTERVAL_MS = 30000;
+    this.UPDATE_INTERVAL_MS = 20000; // 20s — beats 25s backend cache TTL
+    this.ARTWORK_CACHE_TTL_MS = 10 * 60 * 1000; // 10 min artwork cache
     this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent';
     this.LOCAL_STALE_TTL_MS = 24 * 60 * 60 * 1000;
-    this.artworkCache = new Map();
+    this.artworkCache = new Map(); // key => { url, ts }
     this.cachedTracks = null;
     this.started = false;
     this.intervalId = null;
+    this._currentTrackId = null; // track identity for change detection
 
     const apiBaseUrl =
       globalThis.APP_CONFIG?.apiBaseUrl ||
@@ -111,8 +113,11 @@ class LastFmService {
   async fetchAppleMusicArtwork(trackName = '', artistName = '') {
     const cacheKey = `${trackName}::${artistName}`.trim().toLowerCase();
     if (!cacheKey) return null;
-    if (this.artworkCache.has(cacheKey)) {
-      return this.artworkCache.get(cacheKey);
+
+    // Check cache with TTL
+    const cached = this.artworkCache.get(cacheKey);
+    if (cached && Date.now() - cached.ts < this.ARTWORK_CACHE_TTL_MS) {
+      return cached.promise;
     }
 
     const pending = fetch(
@@ -125,17 +130,15 @@ class LastFmService {
       })
       .catch(() => null);
 
-    this.artworkCache.set(cacheKey, pending);
+    this.artworkCache.set(cacheKey, { promise: pending, ts: Date.now() });
     return pending;
   }
 
   hydrateFallbackArtwork(imageNode, track) {
     if (!imageNode || !track) return;
-    const currentSrc = String(imageNode.getAttribute('src') || '');
-    if (!currentSrc.startsWith('data:image/')) return;
-
+    // Always attempt iTunes artwork — it's the highest-quality source
     this.fetchAppleMusicArtwork(track.name || '', this.getArtistName(track)).then(artworkUrl => {
-      if (artworkUrl) {
+      if (artworkUrl && imageNode.src !== artworkUrl) {
         imageNode.src = artworkUrl;
       }
     });
@@ -301,16 +304,29 @@ class LastFmService {
     const trackName = track?.name || 'Unknown Track';
     const artistName = this.getArtistName(track);
     const isNowPlaying = track?.['@attr']?.nowplaying === 'true';
+    const trackId = `${trackName}::${artistName}`;
+
+    // Detect track change — reset artwork src to placeholder immediately
+    if (this._currentTrackId !== trackId) {
+      this._currentTrackId = trackId;
+      // Show placeholder while real artwork loads
+      this.hero.albumArt.src = this.getArtworkPlaceholder(trackName, artistName);
+    }
+
     const artwork = this.getBestImage(track, ['extralarge', 'large', 'medium']);
 
     this.hero.trackName.textContent = trackName;
     this.hero.artistName.textContent = artistName;
     this.hero.statusText.textContent = isNowPlaying ? 'Now playing' : 'Recently played';
     this.hero.albumArt.alt = `${trackName} by ${artistName}`;
-    this.hero.albumArt.src = artwork;
+    // Only update src if we have a real (non-placeholder) Last.fm image
+    if (this.isUsableArtwork(artwork)) {
+      this.hero.albumArt.src = artwork;
+    }
     this.hero.lastfmLink.href = this.buildSpotifySearchUrl(trackName, artistName);
     this.hero.playingIndicator.classList.toggle('active', isNowPlaying);
     this.hero.musicCard.classList.toggle('is-playing', isNowPlaying);
+    // Always attempt iTunes high-res artwork hydration
     this.hydrateFallbackArtwork(this.hero.albumArt, track);
   }
 

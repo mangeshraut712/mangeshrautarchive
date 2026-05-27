@@ -31,11 +31,12 @@ RATE_LIMIT_REQUESTS = 20  # requests per window
 RATE_LIMIT_WINDOW = 60  # seconds
 
 # Last.fm Cache and Config
-LASTFM_CACHE_TTL = 120  # seconds
+# 25s TTL ensures "Now Playing" refreshes faster than the 30s frontend poll interval
+LASTFM_CACHE_TTL = 25  # seconds
 LASTFM_CACHE_HEADERS = {
-    "Cache-Control": "public, s-maxage=120, stale-while-revalidate=900",
-    "CDN-Cache-Control": "public, s-maxage=120, stale-while-revalidate=900",
-    "Vercel-CDN-Cache-Control": "public, s-maxage=120, stale-while-revalidate=900",
+    "Cache-Control": "public, s-maxage=25, stale-while-revalidate=60",
+    "CDN-Cache-Control": "public, s-maxage=25, stale-while-revalidate=60",
+    "Vercel-CDN-Cache-Control": "public, s-maxage=25, stale-while-revalidate=60",
     "X-Music-Source": "lastfm-proxy",
 }
 lastfm_recent_cache: Dict[str, Dict[str, Any]] = {}

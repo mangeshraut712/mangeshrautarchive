@@ -3,6 +3,7 @@
  * Engine: Canvas Physics Particle System
  * Design: Apple Design 2026
  */
+import appleSounds from './apple-sounds.js';
 
 class BirthdayCelebration {
   constructor(testMode = false) {
@@ -129,22 +130,32 @@ class BirthdayCelebration {
     // DOM Overlay
     const overlay = document.createElement('div');
     overlay.className = 'birthday-celebration';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-label', `Happy ${this.getOrdinal(age)} Birthday, ${this.name}`);
 
     overlay.innerHTML = `
-            <div class="birthday-bg-art">
-                <div class="aurora-gradient"></div>
-            </div>
-            <canvas id="celebration-canvas"></canvas>
-            <div class="birthday-hero">
-                <div class="hero-title">Happy Birthday</div>
-                <div class="hero-subtitle">${this.name}</div>
-                <div class="hero-badge">Celebrating ${age} Years</div>
-                
-                <div class="action-area">
-                    <button class="glass-btn">Enter Portfolio</button>
-                </div>
-            </div>
-        `;
+      <div class="birthday-bg-art">
+        <div class="aurora-gradient"></div>
+      </div>
+      <canvas id="celebration-canvas" aria-hidden="true"></canvas>
+      <div class="birthday-hero">
+        <div class="birthday-emoji-row" aria-hidden="true">
+          <span class="b-emoji" style="--d:0s">🎉</span>
+          <span class="b-emoji" style="--d:.15s">🎂</span>
+          <span class="b-emoji" style="--d:.3s">🎁</span>
+          <span class="b-emoji" style="--d:.45s">🥳</span>
+          <span class="b-emoji" style="--d:.6s">✨</span>
+        </div>
+        <div class="hero-title">Happy Birthday</div>
+        <div class="hero-subtitle">${this.name}</div>
+        <div class="hero-badge">Celebrating ${this.getOrdinal(age)} Year ✦ Born Dec 7</div>
+        <div class="action-area">
+          <button class="glass-btn" id="birthday-enter-btn">
+            <span class="glass-btn-icon">🚀</span> Enter Portfolio
+          </button>
+        </div>
+      </div>
+    `;
 
     document.body.appendChild(overlay);
 
@@ -152,21 +163,27 @@ class BirthdayCelebration {
     this.canvas = document.getElementById('celebration-canvas');
     this.ctx = this.canvas.getContext('2d');
     this.resize();
-    window.addEventListener('resize', () => this.resize());
+    this._resizeHandler = () => this.resize();
+    window.addEventListener('resize', this._resizeHandler);
 
     // Launch Physics
     this.createParticles();
     this.createBalloons();
     this.startLoop();
-    this.playBirthdaySound();
 
-    // Close Interaction
-    overlay.querySelector('.glass-btn').addEventListener('click', () => {
-      overlay.style.cssText = 'opacity: 0; transition: opacity 0.8s ease;';
+    // Close Interaction — sound plays here (inside user gesture)
+    const enterBtn = overlay.querySelector('#birthday-enter-btn');
+    enterBtn.addEventListener('click', () => {
+      appleSounds.playBirthday();
+      overlay.style.cssText = 'opacity: 0; transition: opacity 0.8s ease; pointer-events: none;';
       cancelAnimationFrame(this.animationId);
+      window.removeEventListener('resize', this._resizeHandler);
       setTimeout(() => overlay.remove(), 800);
       sessionStorage.setItem('birthday-celebrated', today);
     });
+
+    // Also play on overlay show after a brief delay
+    setTimeout(() => appleSounds.playBirthday(), 600);
   }
 
   resize() {
@@ -249,6 +266,12 @@ class BirthdayCelebration {
       b.wobble += b.wobbleSpeed;
       b.x += Math.sin(b.wobble) * 0.5;
 
+      // Recycle balloons that float off the top
+      if (b.y + b.radius < 0) {
+        b.y = this.height + b.radius * 2;
+        b.x = Math.random() * this.width;
+      }
+
       // Draw String
       this.ctx.beginPath();
       this.ctx.moveTo(b.x, b.y + b.radius * 1.2);
@@ -291,24 +314,9 @@ class BirthdayCelebration {
   }
 
   playBirthdaySound() {
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      const ctx = new AudioContext();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.connect(g);
-      g.connect(ctx.destination);
-      o.type = 'sine';
-      o.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-      o.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
-      g.gain.setValueAtTime(0.1, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-      o.start();
-      o.stop(ctx.currentTime + 0.5);
-    } catch {
-      /* ignore */
-    }
+    // Kept for backward compat — actual sound is now triggered by user gesture
+    // in showBirthdayCelebration's click handler to comply with browser autoplay policy
+    appleSounds.playBirthday();
   }
 }
 
