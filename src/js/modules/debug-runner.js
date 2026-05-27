@@ -291,10 +291,11 @@ class DebugRunner {
         }
 
         const tempo = Math.max(0.2, 0.42 - this.speed * 0.015);
+        const rampEnd = Math.max(this.nextNoteTime + 0.04, this.nextNoteTime + tempo - 0.02);
 
         gain.gain.setValueAtTime(0, this.nextNoteTime);
         gain.gain.linearRampToValueAtTime(0.03, this.nextNoteTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.nextNoteTime + tempo - 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, rampEnd);
 
         osc.start(this.nextNoteTime);
         osc.stop(this.nextNoteTime + tempo);
@@ -826,20 +827,27 @@ class DebugRunner {
       }
     }
 
-    // Near miss detection
-    for (const obs of this.obstacles) {
-      if (
-        !obs.nearMissChecked &&
-        obs.x < this.dev.x + this.dev.width &&
-        obs.x + obs.width > this.dev.x
-      ) {
-        obs.nearMissChecked = true;
-        const distY = Math.abs(this.dev.y + this.dev.height / 2 - (obs.y + obs.height / 2));
-        if (distY > 15 && distY < 85) {
-          this.score += 200;
-          this.playSound('nearmiss');
-          this.createFloatingText(obs.x + obs.width / 2, obs.y - 12, '+200 NEAR MISS!', '#00E5FF');
-          this.createParticles(obs.x + obs.width / 2, obs.y, 6, '#00E5FF');
+    // Near miss detection (skip when invincible — passing through doesn't count)
+    if (!this.invincible) {
+      for (const obs of this.obstacles) {
+        if (
+          !obs.nearMissChecked &&
+          obs.x < this.dev.x + this.dev.width &&
+          obs.x + obs.width > this.dev.x
+        ) {
+          obs.nearMissChecked = true;
+          const distY = Math.abs(this.dev.y + this.dev.height / 2 - (obs.y + obs.height / 2));
+          if (distY > 15 && distY < 85) {
+            this.score += 200;
+            this.playSound('nearmiss');
+            this.createFloatingText(
+              obs.x + obs.width / 2,
+              obs.y - 12,
+              '+200 NEAR MISS!',
+              '#00E5FF'
+            );
+            this.createParticles(obs.x + obs.width / 2, obs.y, 6, '#00E5FF');
+          }
         }
       }
     }
@@ -1264,8 +1272,11 @@ class DebugRunner {
     gradFill.addColorStop(0, '#00E5FF');
     gradFill.addColorStop(1, this.colors.accent);
     this.ctx.fillStyle = gradFill;
-    this.drawRoundedRect(this.ctx, barX, barY, barWidth * progress, barHeight, 4);
-    this.ctx.fill();
+    const fillWidth = barWidth * progress;
+    if (fillWidth > 1) {
+      this.drawRoundedRect(this.ctx, barX, barY, fillWidth, barHeight, 4);
+      this.ctx.fill();
+    }
 
     // Progress Level Label
     this.ctx.fillStyle = this.colors.textSecondary;

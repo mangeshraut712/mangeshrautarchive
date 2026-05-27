@@ -7,6 +7,7 @@ let shuttingDown = false;
 
 function spawnScript(name) {
   const child = spawn('npm', ['run', name], {
+    detached: true,
     env: process.env,
     stdio: 'inherit',
   });
@@ -47,7 +48,11 @@ function spawnScript(name) {
 function stopChildren() {
   for (const child of children) {
     if (!child.killed) {
-      child.kill('SIGTERM');
+      try {
+        process.kill(-child.pid, 'SIGTERM');
+      } catch {
+        child.kill('SIGTERM');
+      }
     }
   }
 }
