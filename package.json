@@ -1,11 +1,11 @@
 {
   "name": "mangeshrautarchive",
   "type": "module",
-  "main": "src/index.js",
+  "main": "src/js/entry.js",
   "scripts": {
     "build": "node scripts/build/build.js",
     "build:css": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./src/assets/css/tailwind-output.css --minify",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "node scripts/utils/dev-all.js",
     "dev:frontend": "API_TARGET=http://127.0.0.1:8001 node scripts/utils/local-server.js",
     "dev:backend": "node scripts/utils/dev-backend.js",
     "serve:dist": "node scripts/utils/serve-dist.js",
@@ -76,7 +76,6 @@
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
-    "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "esbuild": "^0.27.7",
     "express": "^4.21.2"
