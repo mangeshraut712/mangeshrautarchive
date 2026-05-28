@@ -875,7 +875,7 @@ html.dark #go-to-top {
 /* Dark Mode Semantic Variable Overrides */
 html.dark {
   --bg-primary: var(--apple-dark-bg);
-  --bg-secondary: var(--apple-dark-surface);
+  --bg-secondary: #000 !important;
   --bg-tertiary: var(--apple-dark-elevated);
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
