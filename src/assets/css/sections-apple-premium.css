@@ -188,15 +188,16 @@ html.dark #home::before {
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--apple-gray-600) 0%, var(--apple-gray-600) 100%);
+  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 html.dark #home .hero-name-text {
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--apple-gray-200) 100%);
+  background: linear-gradient(135deg, #2997ff 0%, #0a84ff 100%);
   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
