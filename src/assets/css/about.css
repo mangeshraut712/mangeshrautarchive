@@ -132,10 +132,10 @@ html.dark .about-text-card:hover {
 .about-intro-title {
   font-size: 2.5rem;
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--text-primary);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 1rem 0;
 }
 
 html.dark .about-intro-title {
@@ -147,15 +147,16 @@ html:not(.dark) .about-intro-title {
 }
 
 .about-intro-text {
-  font-size: 1.25rem;
-  line-height: 1.5;
-  letter-spacing: -0.008em;
+  font-size: 1.1875rem;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
-  margin: 0 0 1.75rem 0;
+  margin: 0 0 2rem 0;
+  font-weight: 400;
 }
 
 html.dark .about-intro-text {
-  color: #d1d1d6;
+  color: #e8e8ed;
 }
 
 html:not(.dark) .about-intro-text {
@@ -168,28 +169,37 @@ html:not(.dark) .about-intro-text {
 }
 
 html.dark .about-intro-text strong {
-  color: #2997ff;
+  color: #0a84ff;
 }
 
 .about-description {
   font-size: 1.0625rem;
-  line-height: 1.65;
-  letter-spacing: -0.003em;
+  line-height: 1.7;
+  letter-spacing: -0.005em;
   color: var(--text-secondary);
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.75rem 0;
+  font-weight: 400;
 }
 
 html.dark .about-description {
-  color: #a1a1a6;
+  color: #86868b;
 }
 
 html:not(.dark) .about-description {
-  color: #6e6e73;
+  color: #424245;
 }
 
 .about-description strong {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+html.dark .about-description strong {
+  color: #f5f5f7;
+}
+
+html:not(.dark) .about-description strong {
+  color: #1d1d1f;
 }
 
 .about-description:last-child {
