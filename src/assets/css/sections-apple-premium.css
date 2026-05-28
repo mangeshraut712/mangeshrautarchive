@@ -609,7 +609,7 @@ html.dark #about .about-text-card {
 }
 
 html.dark #about .about-intro-title {
-  color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 #about .about-intro-text,
@@ -620,20 +620,30 @@ html.dark #about .about-intro-title {
   margin-bottom: 1rem;
 }
 
-#about .about-intro-text strong,
+#about .about-intro-text strong {
+  color: #0071e3;
+  font-weight: 600;
+}
+
 #about .about-description strong {
   color: var(--apple-gray-600);
   font-weight: 600;
 }
 
-html.dark #about .about-intro-text,
-html.dark #about .about-description {
-  color: var(--apple-gray-300);
+html.dark #about .about-intro-text {
+  color: #d1d1d6;
 }
 
-html.dark #about .about-intro-text strong,
+html.dark #about .about-description {
+  color: #a1a1a6;
+}
+
+html.dark #about .about-intro-text strong {
+  color: #2997ff;
+}
+
 html.dark #about .about-description strong {
-  color: var(--apple-gray-200);
+  color: #ffffff;
 }
 
 /* ===== SKILLS SECTION - PREMIUM UPGRADE ===== */
