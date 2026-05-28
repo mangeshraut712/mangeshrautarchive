@@ -8,7 +8,7 @@
   --project-surface-light: #fff;
   --project-text-light: #111827;
   --project-muted-light: #5f6b7a;
-  --project-border-light: rgb(17 24 39 / 14%);
+  --project-border-light: rgb(0 0 0 / 6%);
   --project-shadow-light: 0 14px 30px rgb(15 23 42 / 8%);
   --project-shadow-light-hover: 0 18px 38px rgb(15 23 42 / 12%);
 
@@ -16,14 +16,14 @@
   --project-surface-dark: #000;
   --project-text-dark: #f5f7ff;
   --project-muted-dark: #9aa5b5;
-  --project-border-dark: rgb(255 255 255 / 20%);
+  --project-border-dark: rgb(255 255 255 / 8%);
   --project-shadow-dark: 0 18px 34px rgb(0 0 0 / 58%);
   --project-shadow-dark-hover: 0 22px 46px rgb(0 0 0 / 70%);
 
   --project-accent: #0a6fef;
   --project-accent-strong: #0059d7;
   --project-accent-soft: rgb(10 111 239 / 12%);
-  --project-accent-soft-border: rgb(10 111 239 / 22%);
+  --project-accent-soft-border: rgb(0 113 227 / 15%);
 }
 
 /* Projects grid baseline - Compact 3-column layout */

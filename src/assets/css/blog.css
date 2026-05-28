@@ -33,7 +33,7 @@ html.dark #blog {
   padding: clamp(1.25rem, 3vw, 2rem);
   color: #1d1d1f;
   background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(0 0 0 / 6%);
   border-radius: 24px;
   box-shadow:
     0 12px 34px rgba(15, 23, 42, 0.05),
@@ -43,7 +43,7 @@ html.dark #blog {
 html.dark .newsletter-card {
   color: #f5f5f7;
   background: #000000 !important;
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgb(255 255 255 / 8%);
   box-shadow:
     0 18px 42px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -102,7 +102,7 @@ html.dark .newsletter-card p {
   width: 100%;
   color: #1d1d1f !important;
   background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   box-shadow: none !important;
 }
 
@@ -113,7 +113,7 @@ html.dark .newsletter-card p {
 html.dark .newsletter-form .apple-input {
   color: #f5f5f7 !important;
   background: #000000 !important;
-  border-color: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
 }
 
 html.dark .newsletter-form .apple-input::placeholder {
@@ -141,11 +141,12 @@ html.dark .newsletter-form .apple-input::placeholder {
 .blog-card {
   background: var(--bg-elevated, #fff) !important;
   border-radius: 20px;
-  border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
+  border: 1px solid rgb(0 0 0 / 6%);
   overflow: hidden;
   transition:
     transform 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
   box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
   display: flex;
   flex-direction: column;

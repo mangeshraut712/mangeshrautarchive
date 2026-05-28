@@ -116,7 +116,7 @@ html.dark .skill-category h3 {
   /* Force Solid White */
   backdrop-filter: none !important;
   border-radius: 12px;
-  border: 1px solid rgb(0 0 0 / 10%);
+  border: 1px solid rgb(0 0 0 / 6%);
   transition:
     transform 0.42s var(--skill-motion-spring),
     box-shadow 0.42s var(--skill-motion-spring),
@@ -152,7 +152,7 @@ html.dark .skill-badge {
   background-image: none !important;
 
   /* Force Solid Black */
-  border-color: rgb(255 255 255 / 15%);
+  border-color: rgb(255 255 255 / 8%);
   box-shadow: 0 2px 8px rgb(0 0 0 / 40%);
 }
 
@@ -160,7 +160,7 @@ html.dark .skill-badge {
 .skill-badge:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 12px 32px rgb(0 0 0 / 15%);
-  border-color: rgb(0 113 227 / 40%);
+  border-color: rgb(0 113 227 / 15%);
   z-index: 10;
   background-color: #fff !important;
 }

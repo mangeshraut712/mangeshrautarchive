@@ -22,7 +22,7 @@ html.dark #certifications {
 /* Card Design - Compact */
 .certification-card {
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   border-radius: 20px !important;
   padding: 2rem !important;
 
@@ -43,7 +43,7 @@ html.dark #certifications {
 /* Dark Mode */
 html.dark .certification-card {
   background: #000 !important;
-  border-color: rgb(255 255 255 / 15%) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
   box-shadow: 0 4px 16px rgb(0 0 0 / 40%) !important;
 }
 
@@ -51,12 +51,12 @@ html.dark .certification-card {
 .certification-card:hover {
   transform: translateY(-6px) !important;
   box-shadow: 0 12px 32px rgb(0 0 0 / 10%) !important;
-  border-color: rgb(0 113 227 / 30%) !important;
+  border-color: rgb(0 113 227 / 15%) !important;
 }
 
 html.dark .certification-card:hover {
   box-shadow: 0 16px 40px rgb(0 0 0 / 60%) !important;
-  border-color: rgb(41 151 255 / 40%) !important;
+  border-color: rgb(41 151 255 / 20%) !important;
 }
 
 /* Gradient Top Bar */
@@ -115,7 +115,7 @@ html.dark .certification-category {
   height: 40px !important;
   border-radius: 10px !important;
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -125,7 +125,7 @@ html.dark .certification-category {
 
 html.dark .certification-logo-container {
   background: #ffffff !important;
-  border-color: rgb(255 255 255 / 15%) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
   border-radius: 8px !important;
   padding: 4px !important;
 }
@@ -177,7 +177,7 @@ html.dark .certification-issuer {
 }
 
 html.dark .certification-details {
-  border-top-color: rgb(255 255 255 / 10%) !important;
+  border-top-color: rgb(255 255 255 / 8%) !important;
 }
 
 .certification-date {

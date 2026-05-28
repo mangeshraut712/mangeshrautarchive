@@ -100,7 +100,7 @@ html.dark .education-icon {
 
 .education-content {
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   border-radius: 24px !important;
   padding: 2.5rem !important;
   box-shadow:
@@ -126,7 +126,7 @@ html.dark .education-icon {
 
 html.dark .education-content {
   background: #000 !important;
-  border-color: rgb(255 255 255 / 12%) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
   box-shadow: 0 10px 40px rgb(0 0 0 / 60%) !important;
 }
 
@@ -137,7 +137,7 @@ html.dark .education-content::after {
 .education-content:hover {
   transform: translateY(-8px) scale(1.005) !important;
   box-shadow: 0 24px 60px rgb(0 0 0 / 12%) !important;
-  border-color: rgb(0 113 227 / 30%) !important;
+  border-color: rgb(0 113 227 / 15%) !important;
 }
 
 .education-content:hover::after {
@@ -146,7 +146,7 @@ html.dark .education-content::after {
 
 html.dark .education-content:hover {
   box-shadow: 0 30px 80px rgb(0 0 0 / 80%) !important;
-  border-color: rgb(41 151 255 / 40%) !important;
+  border-color: rgb(41 151 255 / 20%) !important;
 }
 
 /* ========================================

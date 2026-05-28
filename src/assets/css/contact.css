@@ -97,7 +97,7 @@
   background: rgba(255, 255, 255, 0.72) !important;
   backdrop-filter: saturate(180%) blur(20px) !important;
   -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04) !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
@@ -107,7 +107,7 @@ html.dark .contact-card {
   background: rgba(0, 0, 0, 0.72) !important;
   backdrop-filter: saturate(180%) blur(20px) !important;
   -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgb(255 255 255 / 8%) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
 }
 
@@ -319,14 +319,14 @@ html.dark .icon-box.location {
   justify-content: center;
   text-align: center;
   padding: 1.5rem !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   background: #fff !important;
   box-shadow: none !important;
   flex: 0 0 auto;
 }
 
 html.dark .contact-assistme-card {
-  border-color: rgb(255 255 255 / 10%) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
   background: #000 !important;
 }
 
@@ -432,7 +432,7 @@ html.dark .contact-assistme-note {
   padding: 0.75rem 0.9rem !important;
   background: #fff !important;
   /* solid white */
-  border: 1px solid rgb(0 0 0 / 15%) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   /* slightly stronger border for visibility */
   border-radius: 12px !important;
   font-size: 0.9rem !important;
@@ -459,7 +459,7 @@ html.dark .contact-assistme-note {
 html.dark .contact-input {
   background: #000 !important;
   /* solid black */
-  border-color: rgb(255 255 255 / 20%) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
   /* stronger border for dark mode */
   color: #fff !important;
 }
@@ -541,7 +541,7 @@ html.dark .contact-label {
 }
 
 html.dark .social-section {
-  border-top: 1px solid rgb(255 255 255 / 10%);
+  border-top: 1px solid rgb(255 255 255 / 8%);
 }
 
 /* ----------------------------------------
@@ -560,7 +560,7 @@ html.dark .social-section {
   background: rgba(255, 255, 255, 0.72) !important;
   border-radius: 24px;
   padding: 1.5rem 1.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
@@ -581,7 +581,7 @@ html.dark .social-section {
 
 html.dark .support-donation-card {
   background: rgba(0, 0, 0, 0.72) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgb(255 255 255 / 8%) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
@@ -743,7 +743,7 @@ html.dark .support-subheadline {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgb(0 0 0 / 10%);
+  border: 3px solid rgb(0 0 0 / 6%);
   box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
   position: relative;
   z-index: 2;
@@ -752,7 +752,7 @@ html.dark .support-subheadline {
 }
 
 html.dark .hanuman-blessing-img {
-  border-color: rgb(255 255 255 / 15%);
+  border-color: rgb(255 255 255 / 8%);
   box-shadow: 0 4px 20px rgb(0 0 0 / 50%);
 }
 
@@ -766,7 +766,7 @@ html.dark .hanuman-blessing-img {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgb(0 0 0 / 10%);
+  border: 3px solid rgb(0 0 0 / 6%);
   box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
   position: relative;
   z-index: 2;
@@ -775,7 +775,7 @@ html.dark .hanuman-blessing-img {
 }
 
 html.dark .ganesh-blessing-img {
-  border-color: rgb(255 255 255 / 15%);
+  border-color: rgb(255 255 255 / 8%);
   box-shadow: 0 4px 20px rgb(0 0 0 / 50%);
 }
 
@@ -851,8 +851,8 @@ html.dark .blessing-text {
 }
 
 html.dark .support-quote {
-  border-top-color: rgb(255 255 255 / 10%);
-  border-bottom-color: rgb(255 255 255 / 10%);
+  border-top-color: rgb(255 255 255 / 8%);
+  border-bottom-color: rgb(255 255 255 / 8%);
 }
 
 .support-quote blockquote {

@@ -46,7 +46,7 @@ html.dark .publications-divider {
 
 .publication-card {
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border: 1px solid rgb(0 0 0 / 6%) !important;
   border-radius: 20px !important;
   padding: 2rem !important;
   box-shadow: 0 4px 24px rgb(0 0 0 / 5%) !important;
@@ -55,19 +55,19 @@ html.dark .publications-divider {
 
 html.dark .publication-card {
   background: #000 !important;
-  border-color: rgb(255 255 255 / 15%) !important;
+  border-color: rgb(255 255 255 / 8%) !important;
   box-shadow: 0 4px 24px rgb(0 0 0 / 40%) !important;
 }
 
 .publication-card:hover {
   transform: translateY(-6px) !important;
   box-shadow: 0 16px 48px rgb(0 0 0 / 10%) !important;
-  border-color: rgb(0 113 227 / 30%) !important;
+  border-color: rgb(0 113 227 / 15%) !important;
 }
 
 html.dark .publication-card:hover {
   box-shadow: 0 20px 60px rgb(0 0 0 / 60%) !important;
-  border-color: rgb(41 151 255 / 40%) !important;
+  border-color: rgb(41 151 255 / 20%) !important;
 }
 
 /* ========================================
