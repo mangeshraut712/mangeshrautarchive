@@ -51,7 +51,6 @@
     "qa:chrome": "npm run qa:smoke && npm run qa:a11y && npm run qa:lighthouse:desktop && npm run qa:lighthouse:mobile",
     "qa:prod-ready": "npm run security-check && npm run lint && npm test && npm run qa:chrome",
     "check": "npm run lint && npm run test",
-    "audit:css-duplicates": "node scripts/find-css-duplicates.js",
     "clean": "node scripts/build/clean.js",
     "open": "open src/index.html",
     "pre-commit": "npm run security-check && npm run lint",

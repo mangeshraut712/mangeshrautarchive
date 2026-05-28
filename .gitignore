@@ -24,6 +24,7 @@ dist/
 # IDE files
 .vscode/
 .idea/
+.cursor/
 *.swp
 *.swo
 
@@ -53,8 +54,6 @@ scratch/
 backend_test.log
 dev_server.log
 locations.json
-test-*.js
-test-*.mjs
 
 # nyc test coverage
 .nyc_output
@@ -128,16 +127,17 @@ __pycache__/
 venv/
 .venv/
 
+# Python cache
+.pytest_cache/
+.mypy_cache/
 
-#Ignore cursor AI rules
+# Ignore cursor AI rules
 .cursor/rules/codacy.mdc
 github_upgrade.sh
 
-
-#Ignore windsurf AI rules
+# Ignore windsurf AI rules
 .windsurfrules
 .env*.local
-
 .windsurf/
 
 # Environment variables (security - never commit secrets)
@@ -147,3 +147,8 @@ secrets.*
 *.pem
 *.key
 .vercel/
+
+# Additional cache directories
+.eslintcache
+.stylelintcache
+.prettierignore
