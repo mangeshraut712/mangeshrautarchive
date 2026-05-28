@@ -4,6 +4,9 @@
   <a href="https://mangeshraut.pro">
     <img src="https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Site">
   </a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/">
+    <img src="https://img.shields.io/badge/📄_GitHub_Pages-mangeshraut712-24292e?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages">
+  </a>
   <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white" alt="CI Status">
   </a>
@@ -22,6 +25,8 @@
 
 <p align="center">
   <a href="https://mangeshraut.pro"><strong>🌐 Open Live Experience</strong></a>
+  &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/"><strong>📄 GitHub Pages</strong></a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://mangeshraut.pro/monitor"><strong>📊 Live Operations Dashboard</strong></a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
@@ -74,9 +79,9 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 | Experience | Link | Highlights |
 |---|---|---|
 | Main Portfolio | [mangeshraut.pro](https://mangeshraut.pro) | Agentic chat, spatial projects, travel atlas |
+| GitHub Pages | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks |
 | System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor) | Real-time latency, service health, deploy status |
 | Travel Atlas | [mangeshraut.pro/travel](https://mangeshraut.pro/travel) | MapLibre-powered visited places with narrative AI |
-| GitHub Pages Fallback | [mangeshraut712.github.io/…](https://mangeshraut712.github.io/mangeshrautarchive) | Full functionality via absolute domain proxy fallbacks |
 | AI Assistant | Open chat on any page | Try: "download resume", "go to projects", "schedule a meeting" |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
@@ -346,6 +351,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### May 2026
 
+- **GitHub Pages Deployment** — added static hosting at [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) with full API fallback support
 - **Apple Sound System** — procedural Web Audio API engine: theme toggle plink, chatbot tri-tone, birthday melody (Happy Birthday first phrase), no external audio files
 - **Birthday Page Overhaul** — emoji ticker row, balloon physics recycling, AudioContext autoplay policy fix, improved ordinal age display
 - **Music Card** — artwork crossfade transition, enhanced animated equalizer bars, `aria-live` for screen readers, 25s backend cache TTL for real-time Now Playing
