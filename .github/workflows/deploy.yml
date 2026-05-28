@@ -113,6 +113,8 @@ jobs:
           OPENROUTER_MODEL: x-ai/grok-4.1-fast
           NODE_ENV: production
           GITHUB_PAGES: true
+          # Last.fm API key (public key, safe to include)
+          NEXT_PUBLIC_LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
