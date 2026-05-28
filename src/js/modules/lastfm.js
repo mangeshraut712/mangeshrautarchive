@@ -17,11 +17,15 @@ class LastFmService {
     this.intervalId = null;
     this._currentTrackId = null; // track identity for change detection
 
-    const apiBaseUrl =
+    let apiBaseUrl =
       globalThis.APP_CONFIG?.apiBaseUrl ||
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
       '';
-    this.apiUrl = apiBaseUrl ? `${apiBaseUrl}/api/music/recent` : '/api/music/recent';
+    if (!apiBaseUrl && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+      apiBaseUrl = 'https://mangeshraut.pro';
+    }
+    const apiBaseNormalized = apiBaseUrl ? apiBaseUrl.replace(/\/$/, '') : '';
+    this.apiUrl = apiBaseNormalized ? `${apiBaseNormalized}/api/music/recent` : '/api/music/recent';
     this.publicApiKey =
       globalThis.APP_CONFIG?.lastfmApiKey ||
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.lastfmApiKey) ||

@@ -9,6 +9,18 @@
  * - Preference customization
  */
 
+function getApiUrl(path) {
+  const base = globalThis.APP_CONFIG?.apiBaseUrl || (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+  let apiBase = base;
+  if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+    apiBase = 'https://mangeshraut.pro';
+  }
+  const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
+  return apiBaseNormalized
+    ? `${apiBaseNormalized}${path.startsWith('/') ? path : `/${path}`}`
+    : path;
+}
+
 export class PrivacyDashboard {
   constructor() {
     this.settings = this.loadSettings();
@@ -46,7 +58,7 @@ export class PrivacyDashboard {
 
   async syncWithBackend() {
     try {
-      const response = await fetch('/api/personalization/preferences', {
+      const response = await fetch(getApiUrl('/api/personalization/preferences'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -253,7 +265,7 @@ export class PrivacyDashboard {
 
   async exportUserData() {
     try {
-      const response = await fetch('/api/personalization/export');
+      const response = await fetch(getApiUrl('/api/personalization/export'));
       if (!response.ok) throw new Error('Export failed');
 
       const data = await response.json();
@@ -294,7 +306,7 @@ export class PrivacyDashboard {
       localStorage.removeItem('assistme_privacy_settings');
       localStorage.removeItem('assistme_session_id');
 
-      await fetch('/api/personalization/delete', { method: 'DELETE' });
+      await fetch(getApiUrl('/api/personalization/delete'), { method: 'DELETE' });
 
       this.showToast('✅ All data deleted. Refreshing page...');
       setTimeout(() => window.location.reload(), 2000);

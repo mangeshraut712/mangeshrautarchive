@@ -415,10 +415,17 @@ export class AgenticActionHandler {
   }
 
   async downloadResume(_match) {
+    const base = globalThis.APP_CONFIG?.apiBaseUrl || (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+    let apiBase = base;
+    if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+      apiBase = 'https://mangeshraut.pro';
+    }
+    const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
+
     // Correct resume file paths in the project
     const resumeLinks = [
       '/assets/files/Mangesh_Raut_Resume.pdf', // Primary location
-      '/api/resume', // API endpoint
+      apiBaseNormalized ? `${apiBaseNormalized}/api/resume` : '/api/resume', // API endpoint
       'assets/files/Mangesh_Raut_Resume.pdf', // Relative path
       '../assets/files/Mangesh_Raut_Resume.pdf', // Parent relative
     ];
