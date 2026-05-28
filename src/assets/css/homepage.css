@@ -1019,16 +1019,21 @@ html.dark .music-card:hover .music-card-inner {
   /* Smooth crossfade when src changes */
   transition: transform 0.3s ease, opacity 0.4s ease;
   aspect-ratio: 1 / 1 !important;
+  animation: albumSpin 8s linear infinite;
+  animation-play-state: paused;
 }
 
 @media (max-width: 768px) {
   .album-art {
     border-radius: 12px;
   }
+  .music-card.is-playing .album-art {
+    animation: none; /* Disable spin for square/rounded-corner art on mobile */
+  }
 }
 
 .music-card.is-playing .album-art {
-  animation: albumSpin 8s linear infinite;
+  animation-play-state: running;
 }
 
 @keyframes albumSpin {

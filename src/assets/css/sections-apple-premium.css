@@ -377,6 +377,12 @@ html.dark #home .music-card {
   object-fit: cover;
   box-shadow: var(--shadow-apple-sm);
   animation: albumSpin 8s linear infinite;
+  animation-play-state: paused;
+  transition: transform 0.3s ease, opacity 0.4s ease;
+}
+
+#home .music-card.is-playing .album-art {
+  animation-play-state: running;
 }
 
 @keyframes albumSpin {
