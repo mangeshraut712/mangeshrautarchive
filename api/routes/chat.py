@@ -149,6 +149,78 @@ def generate_local_response(query: str) -> Dict:
             "category": "Achievements",
         }
 
+    # Astrology & Horoscope
+    if any(k in query for k in ["horoscope", "astrology", "birth chart", "vedic"]):
+        return {
+            "answer": (
+                "✨ **Vedic Astrology & Horoscope**:\n"
+                "Mangesh was born under the **Libra Ascendant** (तुला लग्न) and **Cancer Moon Sign** (कर्क राशि). In Vedic Astrology, this combination represents a highly balanced, analytical, and emotionally intelligent individual who is deeply driven by professional growth and family values.\n\n"
+                "**Vedic Details**:\n"
+                "• **Ascendant (Lagna)**: Libra (तुला - House No. 7, ruled by Venus) — Gives him a balanced, diplomatic, analytical, just, and magnetic personality with a 6-foot stature.\n"
+                "• **Moon Sign (Rashi)**: Cancer (कर्क - House No. 4, ruled by Moon) — Instills deep emotional intelligence, sensitivity, and a protective bond with his mother and motherland.\n"
+                "• **Gotra**: Kashyap\n"
+                "• **Devak**: Pach Palvi (पाच पालवी)\n"
+                "• **Kula Devata**: Shree Tulja Bhavani Mata (Tuljapur, Maharashtra)\n"
+                "• **Nadi**: Madhya (मध्य) | **Gana**: Dev (देव) | **Varna**: Vipra (Intellectual/Analytical)\n"
+                "• **Lineage Roots (Natesambandha)**: Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal\n\n"
+                "**Major Yogas**:\n"
+                "• **Budhaditya & Lakshmi Narayan Yoga**: A powerful conjunction of the Sun, Mercury, and Venus resides in his 2nd House (Wealth & Family), indicating that his primary wealth generation comes through his sharp intellect, tech skills, and strategic communication (Software Engineering)."
+            ),
+            "category": "Astrology",
+        }
+
+    # Foreign Settlement & USA Career Context
+    if any(k in query for k in ["foreign", "settlement", "abroad", "settle", "relocation", "visa", "h1b", "relocate", "usa career"]):
+        return {
+            "answer": (
+                "🌍 **Foreign Settlement & USA Career Context**:\n"
+                "Yes, absolutely. Mangesh's chart displays a powerful placement of the Ascendant Lord (Venus) aligned with wealth-generating planets, strongly favoring a career tied to international tech landscapes, multinational corporations, and long-term residency in foreign lands like the USA.\n\n"
+                "**The Corporate Narrative**:\n"
+                "\"Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at CES in the US. Due to a technical/administrative delay during an H1B visa transfer protocol to a new corporate entity, he temporarily transited back to his home operations in Pune, India. He remains fully employed, handling global engineering assignments remotely while actively executing structural paths to transition seamlessly back into the US tech industry.\"\n\n"
+                "**Optimal Locations (Astro-Geographical Alignment)**:\n"
+                "His absolute best geographical zones for maximizing wealth and long-term tech status within the USA are the **North-East Corridor** (New York, New Jersey, Boston) and the **North-West Coast** (Seattle, Silicon Valley/Northern California)."
+            ),
+            "category": "Astrology",
+        }
+
+    # Personality Traits
+    if any(k in query for k in ["personality", "trait", "character"]):
+        return {
+            "answer": (
+                "🧠 **Personality Traits (Astrological)**:\n"
+                "According to his North Indian chart, Mangesh possesses strong leadership qualities, high resilience in testing times (due to Saturn's placement), a sharp technical intellect, and a profound protective instinct toward his family, especially his mother. His Venus-ruled Libra Ascendant gives him a balanced, diplomatic, and magnetic personality."
+            ),
+            "category": "Astrology",
+        }
+
+    # Family Structure & Values
+    if any(k in query for k in ["family", "parents", "mother", "father", "sister", "vidya", "meena", "bharat"]):
+        return {
+            "answer": (
+                "👨‍👩‍👧‍👦 **Family Structure & Values**:\n"
+                "Mangesh comes from a close-knit and supportive family:\n"
+                "• **Father**: Mr. Bharat Ambarushi Raut\n"
+                "• **Mother**: Mrs. Meena Bharat Raut, a Proprietor at Kashish Beauty Parlour & Training Center (Dange Chowk, Pune). Mangesh is deeply devoted to his mother; his primary core drive in life is to provide her with absolute financial comfort, peace of mind, and happiness.\n"
+                "• **Sister**: Ms. Vidya Bharat Raut, a highly accomplished scholar (M.Sc Physics, B.Ed, currently pursuing M.Tech in Energy Technology at Pune University) who works as a Researcher & Analyst at CES, Pune.\n"
+                "• **Lineage Roots (Natesambandha)**: Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal."
+            ),
+            "category": "Family",
+        }
+
+    # Personal Identity details (Navaras/Hinoji, Height, Address)
+    if any(k in query for k in ["hinoji", "birth name", "call name", "navaras", "height", "complexion", "blood group", "address", "residence", "hometown"]):
+        return {
+            "answer": (
+                "👤 **Personal & Cultural Identity**:\n"
+                "• **Full Name**: Mangesh Bharat Raut\n"
+                "• **Birth Name (Navaras / Call Name)**: Hinoji (हिनोजी)\n"
+                "• **Physical Attributes**: Height: 6'0\" | Complexion: Fair | Blood Group: O Positive (O +ve)\n"
+                "• **Languages**: Marathi (Native), English (Professional), Hindi\n"
+                "• **Permanent Residence Address**: Kamble Corner, Panchsheelnagar, Pimple Nilakh, Pune - 411027, Maharashtra, India"
+            ),
+            "category": "Identity",
+        }
+
     # Default fallback
     return {
         "answer": "👋 I'm running in **Local Mode** (no cloud API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Recent Blogs (Google I/O 2026)\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
