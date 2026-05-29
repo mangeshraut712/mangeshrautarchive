@@ -30,6 +30,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
@@ -44,17 +45,27 @@ jobs:
         run: npm test
 
       - name: 🐍 Python — setup and lint
-        uses: actions/setup-python@v6
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: '3.12'
+          enable-cache: true
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt -r requirements-dev.txt
+        run: uv pip install --system -r requirements.txt -r requirements-dev.txt
 
       - name: 🐍 Python — lint and dead-code scan
         run: |
           npm run lint:dead-code
           python -m flake8 api/ --max-line-length=120 --ignore=E501,W503
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: 🌐 Setup Chrome for Playwright
         run: npx playwright install --with-deps chromium
@@ -95,6 +106,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -147,9 +159,19 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Setup Chrome for Playwright
         run: npx playwright install --with-deps chromium
