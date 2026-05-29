@@ -50,7 +50,7 @@ jobs:
           enable-cache: true
 
       - name: Install Python dependencies
-        run: uv pip install --system -r requirements.txt -r requirements-dev.txt
+        run: uv pip install -r requirements.txt -r requirements-dev.txt
 
       - name: 🐍 Python — lint and dead-code scan
         run: |
