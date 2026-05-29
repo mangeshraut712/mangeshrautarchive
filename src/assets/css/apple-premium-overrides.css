@@ -3252,31 +3252,22 @@ html.dark #home.hero-section.home-hero {
 }
 
 #home.hero-section .profile-image-wrapper {
-  background: #fff !important;
-  box-shadow:
-    0 10px 28px rgb(0 0 0 / 8%),
-    0 0 0 1px rgb(0 0 0 / 6%) !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0, 113, 227, 0.25) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
 }
 
 html.dark #home.hero-section .profile-image-wrapper {
-  background: #050505 !important;
-  box-shadow:
-    0 12px 32px rgb(0 0 0 / 42%),
-    0 0 0 1px rgb(255 255 255 / 8%) !important;
+  background: transparent !important;
+  box-shadow: 0 10px 30px rgba(41, 151, 255, 0.35) !important;
 }
 
 #home.hero-section .profile-ring {
-  background: none !important;
-  filter: none !important;
-  opacity: 1 !important;
-  animation: none !important;
-  border: 2px solid rgb(0 113 227 / 14%) !important;
-}
-
-html.dark #home.hero-section .profile-ring {
-  border-color: rgb(255 255 255 / 12%) !important;
+  display: none !important;
 }
 
 /* Final homepage hero guardrail: keep background, name, tick, and avatar interaction stable */
@@ -3298,6 +3289,14 @@ html.dark #home.hero-section .profile-ring {
 #home.hero-section #profile-image {
   -webkit-user-drag: none;
   user-select: none;
+  border: 4px solid #ffffff !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  box-sizing: border-box !important;
+}
+
+html.dark #home.hero-section #profile-image {
+  border-color: #000000 !important;
 }
 
 #home.hero-section .hero-name {
