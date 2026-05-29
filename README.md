@@ -372,9 +372,20 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### May 2025
 
 - **Dream Companies & Cars** — added official SVG logos for NVIDIA, OpenAI, Ferrari, McLaren, Koenigsegg, Lamborghini, Bugatti
-- **Support Integration** — Integrated direct checkout and donation channels via Stripe and PayPal, alongside direct crypto wallets (SOL, BTC, USDC, ETH, DOGE, SHIB) with one-click copy.
+- **Support Integration** — Integrated direct checkout and donation channels via Stripe and PayPal.
 - **Theme Optimisation** — enhanced dark mode visibility for all logos
 - **Root Cleanup** — removed AI config files, optimised git repository (8.4 MB saved)
+
+---
+
+## 💖 Support & Sponsorship
+
+If you find this project useful or use it as a reference for your own agentic applications, you can support my work via:
+
+- **Stripe**: [Sponsor via Stripe](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401)
+- **PayPal**: [Sponsor via PayPal](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82)
+
+*Support channels have been streamlined to Stripe and PayPal to maintain security and simplicity.*
 
 ---
 
