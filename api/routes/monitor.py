@@ -172,6 +172,32 @@ async def get_monitor_docs():
                     },
                 ],
             },
+            {
+                "title": "Media & Analytics APIs",
+                "description": "Access recent media activity, TMDB/Google Books posters, and reach metrics.",
+                "endpoints": [
+                    {
+                        "method": "GET",
+                        "path": "/api/music/recent",
+                        "summary": "Fetch recent Last.fm listening history with 25s cache.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/posters/movie",
+                        "summary": "Fetch movie and TV show poster URLs from TMDB API.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/posters/book",
+                        "summary": "Fetch book covers from Google Books or Open Library.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/analytics/reach",
+                        "summary": "Authoritative reach and total views count from Firestore.",
+                    },
+                ],
+            },
         ],
     }
 
@@ -452,11 +478,49 @@ async def get_api_documentation():
                     "description": "GitHub API proxy for additional endpoints",
                 },
             },
+            "posters": {
+                "movie": {
+                    "url": "/api/posters/movie",
+                    "method": "GET",
+                    "description": "Get movie or TV show poster from TMDB",
+                    "parameters": {
+                        "title": "Movie or show title",
+                        "media_type": "movie or tv (default: movie)"
+                    }
+                },
+                "book": {
+                    "url": "/api/posters/book",
+                    "method": "GET",
+                    "description": "Get book cover from Google Books or Open Library",
+                    "parameters": {
+                        "title": "Book title",
+                        "author": "Book author (optional)"
+                    }
+                },
+                "batch": {
+                    "url": "/api/posters/batch",
+                    "method": "GET",
+                    "description": "Fetch posters/covers for a list of items in batch",
+                    "parameters": {
+                        "items": "JSON array of items with type, title, author, id"
+                    }
+                }
+            },
             "analytics": {
+                "views": {
+                    "url": "/api/analytics/views",
+                    "method": "GET",
+                    "description": "Get views metrics including total and daily counts",
+                },
                 "track": {
                     "url": "/api/analytics/track",
                     "method": "POST",
                     "description": "Track user interactions and events",
+                },
+                "reach": {
+                    "url": "/api/analytics/reach",
+                    "method": "GET",
+                    "description": "Get single authoritative Reach/impressions views count from Firestore",
                 }
             },
         },

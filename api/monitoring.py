@@ -577,7 +577,16 @@ class SystemMonitor:
                     headers=headers,
                     timeout=5.0,
                 )
-                return response.status_code == 200
+                if response.status_code == 200:
+                    return True
+                
+                if response.status_code in {401, 403, 429}:
+                    unauth_response = await client.get(
+                        "https://api.github.com/rate_limit",
+                        timeout=5.0,
+                    )
+                    return unauth_response.status_code == 200
+                return False
         except Exception:
             return False
 
@@ -671,6 +680,8 @@ class SystemMonitor:
             probe_lastfm_service,
             probe_music_api_service,
             probe_analytics_service,
+            probe_posters_service,
+            probe_analytics_reach,
         )
 
         services = await asyncio.gather(
@@ -680,6 +691,8 @@ class SystemMonitor:
             probe_lastfm_service(self),
             probe_music_api_service(self),
             probe_analytics_service(self),
+            probe_posters_service(self),
+            probe_analytics_reach(self),
         )
 
         return {

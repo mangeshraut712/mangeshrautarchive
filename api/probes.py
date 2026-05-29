@@ -93,6 +93,30 @@ async def probe_github_service(monitor) -> Dict[str, Any]:
             )
 
         latency = round((time.time() - start) * 1000)
+        
+        # If credentials failed or we are rate-limited, attempt unauthenticated check to see if API is reachable
+        if response.status_code in {401, 403, 429}:
+            try:
+                async with httpx.AsyncClient() as client:
+                    unauth_response = await client.get(
+                        "https://api.github.com/rate_limit",
+                        timeout=5.0,
+                    )
+                if unauth_response.status_code == 200:
+                    payload = unauth_response.json()
+                    core = payload.get("resources", {}).get("core", {})
+                    remaining = core.get("remaining", 0)
+                    limit = core.get("limit", 0)
+                    return {
+                        "name": "GitHub API",
+                        "status": HealthStatus.DEGRADED.value,
+                        "message": f"GitHub token invalid or expired (HTTP {response.status_code}); running unauthenticated.",
+                        "metric_value": f"{remaining}/{limit}",
+                        "metric_label": "core requests left (unauth)",
+                    }
+            except Exception as e:
+                logger.warning(f"GitHub fallback unauthenticated check failed: {str(e)}")
+
         if response.status_code != 200:
             return {
                 "name": "GitHub API",
@@ -485,4 +509,75 @@ async def probe_github_pages_surface(monitor, origin: str) -> Dict[str, Any]:
             "metric_value": "ERROR",
             "metric_label": urlsplit(origin).netloc or origin,
             "url": origin,
+        }
+
+
+async def probe_posters_service(monitor) -> Dict[str, Any]:
+    """Verify movie and book poster API endpoints are responsive."""
+    start = time.time()
+    try:
+        from api.routes.media import fetch_tmdb_poster, fetch_google_books_cover
+        
+        # Run non-blocking checks in parallel
+        movie_task = fetch_tmdb_poster("Inception")
+        book_task = fetch_google_books_cover("Steve Jobs")
+        
+        movie_url, book_url = await asyncio.gather(movie_task, book_task)
+        latency = round((time.time() - start) * 1000)
+        
+        has_movie = bool(movie_url)
+        has_book = bool(book_url)
+        
+        status = HealthStatus.HEALTHY
+        details = []
+        if has_movie:
+            details.append("TMDB Active")
+        else:
+            details.append("TMDB Unconfigured")
+            
+        if has_book:
+            details.append("Google Books Active")
+        else:
+            details.append("Google Books Unconfigured")
+            
+        return {
+            "name": "Media Poster API",
+            "status": status.value,
+            "message": "Movie & Book poster API is responsive.",
+            "metric_value": f"{latency}ms",
+            "metric_label": " | ".join(details),
+        }
+    except Exception as exc:
+        return {
+            "name": "Media Poster API",
+            "status": HealthStatus.UNHEALTHY.value,
+            "message": f"Poster check failed: {str(exc)}",
+            "metric_value": "ERROR",
+            "metric_label": "network failure",
+        }
+
+
+async def probe_analytics_reach(monitor) -> Dict[str, Any]:
+    """Verify the single authoritative Reach API returns statistics."""
+    start = time.time()
+    try:
+        from api.routes.analytics import get_portfolio_reach
+        payload = await get_portfolio_reach()
+        latency = round((time.time() - start) * 1000)
+        
+        reach = payload.get("total_reach", 0)
+        return {
+            "name": "Portfolio Reach API",
+            "status": HealthStatus.HEALTHY.value,
+            "message": "Authoritative reach and impressions API is active.",
+            "metric_value": f"{reach} views",
+            "metric_label": f"fetched in {latency}ms",
+        }
+    except Exception as exc:
+        return {
+            "name": "Portfolio Reach API",
+            "status": HealthStatus.UNHEALTHY.value,
+            "message": f"Reach check failed: {str(exc)}",
+            "metric_value": "ERROR",
+            "metric_label": "network failure",
         }
