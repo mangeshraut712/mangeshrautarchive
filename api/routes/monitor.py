@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from typing import Optional, Dict
 from fastapi import APIRouter, HTTPException
 
-from api.monitoring import system_monitor, SystemMonitor, EventType
+from api.monitoring import system_monitor, EventType
 
 router = APIRouter()
 
