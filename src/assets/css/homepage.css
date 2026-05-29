@@ -483,14 +483,14 @@ html.dark .hero-role-flip strong {
   gap: 0.4rem;
   min-height: 34px;
   padding: 0.42rem 0.8rem;
-  border: 1px solid rgb(0 0 0 / 9%);
+  border: 1px solid rgb(0 0 0 / 15%) !important;
   border-radius: 999px;
-  background: rgb(255 255 255 / 70%);
+  background: #ffffff !important;
   color: #424245;
   font-size: 0.8rem;
   font-weight: 720;
   letter-spacing: -0.01em;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 5%);
+  box-shadow: none !important;
 }
 
 .hero-identity-strip i {
@@ -499,10 +499,10 @@ html.dark .hero-role-flip strong {
 }
 
 html.dark .hero-identity-item {
-  border-color: rgb(255 255 255 / 11%);
-  background: rgb(28 28 30 / 74%);
+  border-color: rgb(255 255 255 / 20%) !important;
+  background: #000000 !important;
   color: #d2d2d7;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 24%);
+  box-shadow: none !important;
 }
 
 html.dark .hero-identity-strip i {
@@ -963,40 +963,25 @@ html.dark .hero-2026-item::before {
   align-items: center;
   gap: 0.75rem;
   padding: 0.55rem 1rem 0.55rem 0.55rem;
-  background: rgb(255 255 255 / 85%);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgb(0 0 0 / 8%);
-  border-radius: 100px;
-  box-shadow:
-    0 4px 24px rgb(0 0 0 / 8%),
-    0 1px 2px rgb(0 0 0 / 4%),
-    inset 0 1px 0 rgb(255 255 255 / 60%);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 html.dark .music-card-inner {
-  background: rgb(0 0 0 / 85%);
-  border-color: rgb(255 255 255 / 10%);
-  box-shadow:
-    0 4px 24px rgb(0 0 0 / 40%),
-    0 1px 2px rgb(0 0 0 / 20%),
-    inset 0 1px 0 rgb(255 255 255 / 10%);
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .music-card:hover .music-card-inner {
   transform: translateY(-2px) scale(1.02);
-  box-shadow:
-    0 8px 32px rgb(0 0 0 / 12%),
-    0 2px 4px rgb(0 0 0 / 6%),
-    inset 0 1px 0 rgb(255 255 255 / 60%);
+  box-shadow: none !important;
 }
 
 html.dark .music-card:hover .music-card-inner {
-  box-shadow:
-    0 8px 32px rgb(0 0 0 / 50%),
-    0 2px 4px rgb(0 0 0 / 30%),
-    inset 0 1px 0 rgb(255 255 255 / 10%);
+  box-shadow: none !important;
 }
 
 /* Album Art Container - Circular Design */

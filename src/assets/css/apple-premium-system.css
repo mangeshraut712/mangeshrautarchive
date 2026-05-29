@@ -112,8 +112,8 @@
 
     /* Semantic Colors - Light Mode */
     --bg-primary: #ffffff;
-    --bg-secondary: #f5f5f7;
-    --bg-tertiary: #fafafa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #ffffff;
     --bg-elevated: #ffffff;
 
     --text-primary: #1d1d1f;
@@ -135,8 +135,8 @@
     /* Semantic Colors - Dark Mode */
     --bg-primary-dark: #000000;
     --bg-secondary-dark: #000000;
-    --bg-tertiary-dark: #1c1c1e;
-    --bg-elevated-dark: #2c2c2e;
+    --bg-tertiary-dark: #000000;
+    --bg-elevated-dark: #000000;
 
     --text-primary-dark: #f5f5f7;
     --text-secondary-dark: #a1a1a6;

@@ -341,23 +341,22 @@ html.dark #home .portfolio-reach-badge:hover {
 #home .music-card {
   max-width: 360px;
   margin: 0 auto 0.75rem;
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--glass-border-light);
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
   border-radius: 16px;
   padding: 0.75rem;
-  box-shadow: var(--shadow-apple-md);
+  box-shadow: none !important;
   transition: all var(--duration-normal) var(--apple-ease);
 }
 
 #home .music-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-apple-lg);
+  box-shadow: none !important;
 }
 
 html.dark #home .music-card {
-  background: var(--glass-bg-dark);
-  border-color: var(--glass-border-dark);
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
 #home .music-card-inner {
