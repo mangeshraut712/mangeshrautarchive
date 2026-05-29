@@ -79,8 +79,8 @@ async def probe_github_service(monitor) -> Dict[str, Any]:
     try:
         headers = {}
         access_token = (
-            os.getenv("GITHUB_TOKEN", "").strip()
-            or os.getenv("GITHUB_PAT", "").strip()
+            os.getenv("GITHUB_PAT", "").strip()
+            or os.getenv("GITHUB_TOKEN", "").strip()
         )
         if access_token:
             headers["Authorization"] = f"Bearer {access_token}"
