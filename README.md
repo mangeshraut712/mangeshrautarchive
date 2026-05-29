@@ -372,7 +372,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### May 2025
 
 - **Dream Companies & Cars** — added official SVG logos for NVIDIA, OpenAI, Ferrari, McLaren, Koenigsegg, Lamborghini, Bugatti
-- **Crypto Support** — Coinbase Commerce integration for BTC, ETH, USDC donations
+- **Crypto Support** — Robinhood wallet integration for SOL, BTC, USDC, ETH, DOGE, SHIB, CRO, PEPE donations with one-click address copy
 - **Theme Optimisation** — enhanced dark mode visibility for all logos
 - **Root Cleanup** — removed AI config files, optimised git repository (8.4 MB saved)
 
