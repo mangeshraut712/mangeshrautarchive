@@ -141,8 +141,25 @@ const chatbotPath = join(projectRoot, 'chatbot');
 app.use('/chatbot', express.static(chatbotPath));
 
 const host = process.env.HOST || '127.0.0.1';
-app.listen(port, host, () => {
-  console.log(`\n🚀 Local development server running!`);
-  console.log(`   - Frontend: http://${host}:${port}`);
-  console.log(`   - API proxy target: ${apiTarget}`);
-});
+
+function startServer(port) {
+  const server = app.listen(port, host);
+
+  server.on('listening', () => {
+    console.log(`\n🚀 Local development server running!`);
+    console.log(`   - Frontend: http://${host}:${port}`);
+    console.log(`   - API proxy target: ${apiTarget}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`⚠️  Port ${port} is in use, trying port ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('Failed to start server:', err.message);
+      process.exit(1);
+    }
+  });
+}
+
+startServer(port);
