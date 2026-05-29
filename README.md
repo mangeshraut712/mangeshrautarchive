@@ -20,6 +20,9 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/mangeshraut712/mangeshrautarchive?style=for-the-badge" alt="MIT License">
   </a>
+  <a href="https://mangeshraut.pro/monitor">
+    <img src="https://img.shields.io/badge/📊_System_Monitor-Online-30d158?style=for-the-badge" alt="System Monitor">
+  </a>
 </p>
 
 <p align="center">
@@ -208,7 +211,7 @@ All tools are functional via natural language in the chat **and** exposed via We
 
 ## 🎨 Premium User Experience
 
-- **Zero heavy framework** — pure ES modules + Tailwind CSS 4.0.9 + custom Apple 2026 design system
+- **Zero heavy framework** — pure ES modules + Tailwind CSS 4.0.9 + custom Apple 2026 design system (no React/Vue/Svelte)
 - **Procedural sound engine** — synthesized Web Audio API sounds (theme toggle, chat open, birthday)
 - **Glassmorphism & micro-interactions** — spatial cards, buttery transitions, real-time action toasts
 - **Streaming Markdown responses** with contextual follow-up chips
@@ -224,7 +227,7 @@ All tools are functional via natural language in the chat **and** exposed via We
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | Vanilla ES2024, Tailwind CSS 4.0.9, Apple 2026 Design System, React 18.3.1 |
+| **Frontend** | Vanilla ES2024, Tailwind CSS 4.0.9, Apple 2026 Design System |
 | **Agentic Runtime** | WebMCP + Custom Action Handler with priority execution |
 | **AI** | OpenRouter (Gemini 2.5 Flash/Pro) + local deterministic actions |
 | **Backend** | FastAPI 0.136 + Pydantic v2 (Vercel Serverless) |
@@ -329,6 +332,7 @@ mangeshrautarchive/
 │   ├── monitor.html        # Public operations dashboard
 │   ├── travel.html         # MapLibre travel atlas
 │   ├── assets/css/         # 30+ modular CSS files (Apple 2026 design system)
+│   ├── assets/images/      # Optimized responsive images (WebP + fallbacks)
 │   └── js/
 │       ├── core/           # Bootstrap, chat, config, modern-input
 │       ├── modules/        # Agentic engine, chatbot, sound system, birthday, Last.fm, …
@@ -336,6 +340,7 @@ mangeshrautarchive/
 │       └── utils/          # Theme, navbar, calendly, go-to-top
 ├── scripts/                # Custom build, optimisation, security, and QA tooling
 ├── tests/e2e/              # 12+ Playwright configurations + visual tests
+├── tests/config/           # Vercel routing, deployment config tests
 └── .github/workflows/      # Production CI/CD with quality gates
 ```
 
@@ -358,11 +363,16 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### May 2026
 
+- **Cleanup & Optimization** — removed 12MB of duplicate `optimized/` image assets, deleted orphaned `docs/` preview images, and consolidated certification assets
+- **Vibe Coder Badge** — added live portfolio reach counter and "Vibe Coder" identity badge to the hero section
 - **GitHub Pages Deployment** — added static hosting at [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) with full API fallback support
 - **Lighthouse 100/100 Optimization** — achieved perfect 100/100 Lighthouse scores across Performance, Accessibility, Best Practices, and SEO for both mobile and desktop
 - **Apple Sound System** — procedural Web Audio API engine with theme toggle, chatbot, and birthday sounds
 - **Consistent Border Styling** — applied Apple-inspired border styling across all sections with theme-aware colors
 - **Performance Optimizations** — Google Fonts preconnect, duplicate keyframes removed, CSS improvements
+- **Tailwind CSS 4.0.9 Migration** — modern CSS-first configuration with `@tailwindcss/cli`
+- **Playwright 1.58.2 Matrix** — expanded to 12+ real device/browser configurations in CI pipeline
+- **Tech Stack Refactored** — removed unused React dependencies from frontend; pure ES module architecture confirmed
 
 ---
 
