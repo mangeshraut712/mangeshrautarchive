@@ -55,6 +55,7 @@ export function initAboutInteractivity() {
       if (panel.id === activePanelId) {
         panel.style.display = 'block';
         panel.setAttribute('aria-hidden', 'false');
+        panel.scrollTop = 0;
       } else {
         panel.style.display = 'none';
         panel.setAttribute('aria-hidden', 'true');
@@ -119,6 +120,9 @@ export function initAboutInteractivity() {
     // Remove active highlight, add to current
     paragraphsToSpeak.forEach(n => n.classList.remove('is-speaking'));
     node.classList.add('is-speaking');
+
+    // Smoothly scroll the active paragraph into view
+    node.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
     // Extract speech text, clean extra markup text if needed
     const text = node.textContent.trim();

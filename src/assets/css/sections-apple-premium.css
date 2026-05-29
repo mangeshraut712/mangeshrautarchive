@@ -654,6 +654,80 @@ html.dark #about .about-description strong {
   color: #ffffff;
 }
 
+/* Desktop sizing harmony to align image and text card */
+@media (min-width: 1024px) {
+  #about .about-main {
+    grid-template-columns: 1fr 1.6fr; /* 1:1.6 Golden Ratio layout */
+    gap: 3.5rem;
+    align-items: stretch;
+  }
+
+  #about .about-image-wrapper {
+    height: 580px;
+    position: relative;
+  }
+
+  #about .about-image-wrapper picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #about .about-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #about .about-text-card {
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    padding: 2.25rem 2.5rem !important; /* Slightly tighter top/bottom padding */
+  }
+
+  #about .about-tab-panel {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 1rem;
+    
+    /* Thin scrollbar for Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  }
+
+  html.dark #about .about-tab-panel {
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+
+  /* Custom thin scrollbar for Webkit (Chrome, Safari, Edge) */
+  #about .about-tab-panel::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #about .about-tab-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #about .about-tab-panel::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+  }
+
+  #about .about-tab-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  html.dark #about .about-tab-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  html.dark #about .about-tab-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
 /* ===== SKILLS SECTION - PREMIUM UPGRADE ===== */
 #skills {
   background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
