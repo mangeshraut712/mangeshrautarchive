@@ -30,12 +30,22 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
             if self.monitor is None:
                 return response
 
+            # Extract user agent and client IP
+            user_agent = request.headers.get("user-agent", "unknown")
+            forwarded = request.headers.get("x-forwarded-for")
+            if forwarded:
+                client_ip = forwarded.split(",")[0].strip()
+            else:
+                client_ip = request.client.host if request.client else "unknown"
+
             # Record metrics
             self.monitor.record_request(
                 path=request.url.path,
                 method=request.method,
                 status_code=response.status_code,
                 response_time_ms=response_time,
+                user_agent=user_agent,
+                client_ip=client_ip,
             )
 
             # Log slow requests
@@ -74,12 +84,22 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
                     "exception",
                 )
 
+                # Extract user agent and client IP for error logging
+                user_agent = request.headers.get("user-agent", "unknown")
+                forwarded = request.headers.get("x-forwarded-for")
+                if forwarded:
+                    client_ip = forwarded.split(",")[0].strip()
+                else:
+                    client_ip = request.client.host if request.client else "unknown"
+
                 # Record as failed request
                 self.monitor.record_request(
                     path=request.url.path,
                     method=request.method,
                     status_code=500,
                     response_time_ms=response_time,
+                    user_agent=user_agent,
+                    client_ip=client_ip,
                 )
 
             # Re-raise to let FastAPI handle it with proper error responses

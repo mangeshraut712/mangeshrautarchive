@@ -352,45 +352,96 @@ async def get_monitor_status():
 @router.get("/api/monitor/real-time")
 async def get_real_time_metrics():
     """Get real-time system metrics for live dashboard"""
-    monitor = SystemMonitor()
-    return monitor.real_time_metrics
+    if system_monitor is None:
+        return {
+            "active_connections": 0,
+            "requests_per_second": 0.0,
+            "error_rate_per_minute": 0.0,
+            "memory_trend": [],
+            "cpu_trend": [],
+            "response_time_trend": [],
+            "uptime_seconds": 0.0,
+            "last_deployment": None,
+        }
+    metrics = dict(system_monitor.real_time_metrics)
+    metrics["memory_trend"] = list(system_monitor.real_time_metrics["memory_trend"])
+    metrics["cpu_trend"] = list(system_monitor.real_time_metrics["cpu_trend"])
+    metrics["response_time_trend"] = list(system_monitor.real_time_metrics["response_time_trend"])
+    return metrics
 
 
 @router.get("/api/monitor/deployments")
 async def get_deployment_history():
     """Get deployment history and change tracking"""
-    monitor = SystemMonitor()
+    if system_monitor is None:
+        return {
+            "current_deployment": None,
+            "deployment_history": [],
+            "recent_changes": [],
+        }
     return {
-        "current_deployment": monitor.current_deployment,
-        "deployment_history": list(monitor.deployment_history),
-        "recent_changes": list(monitor.deployment_changes)[-10:],  # Last 10 changes
+        "current_deployment": system_monitor.current_deployment,
+        "deployment_history": list(system_monitor.deployment_history),
+        "recent_changes": list(system_monitor.deployment_changes)[-10:],  # Last 10 changes
     }
 
 
 @router.post("/api/monitor/web-vitals")
 async def track_web_vitals(vitals: Dict[str, float]):
     """Track Core Web Vitals from frontend"""
-    monitor = SystemMonitor()
-    monitor.track_web_vitals(vitals)
+    if system_monitor is not None:
+        system_monitor.track_web_vitals(vitals)
     return {"status": "recorded"}
 
 
 @router.get("/api/monitor/security")
 async def get_security_status():
     """Get security monitoring data"""
-    monitor = SystemMonitor()
+    if system_monitor is None:
+        return {
+            "security_events": [],
+            "suspicious_ips": [],
+            "rate_limits": {},
+        }
+    
+    # Import rate limiting info from config to build dynamic stats
+    from api.config import rate_limit_store, RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW
+    import time
+    
+    active_rate_limits = {}
+    now = time.time()
+    for ip, timestamps in rate_limit_store.items():
+        # Filter timestamps to the current window
+        recent = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
+        if recent:
+            active_rate_limits[ip] = {
+                "count": len(recent),
+                "limit": RATE_LIMIT_REQUESTS,
+                "remaining": max(0, RATE_LIMIT_REQUESTS - len(recent)),
+                "reset_seconds": max(0, round(RATE_LIMIT_WINDOW - (now - recent[0]))) if len(recent) > 0 else 0
+            }
+
     return {
-        "security_events": list(monitor.security_events)[-20:],  # Last 20 events
-        "suspicious_ips": list(monitor.suspicious_ips),
-        "rate_limits": dict(monitor.rate_limits),
+        "security_events": list(system_monitor.security_events)[-20:],  # Last 20 events
+        "suspicious_ips": list(system_monitor.suspicious_ips),
+        "rate_limits": active_rate_limits,
     }
 
 
 @router.get("/api/monitor/ai-metrics")
 async def get_ai_metrics():
     """Get AI usage and performance metrics"""
-    monitor = SystemMonitor()
-    return monitor.ai_metrics
+    if system_monitor is None:
+        return {
+            "openrouter_requests": 0,
+            "openrouter_errors": 0,
+            "ai_response_times": [],
+            "model_usage": {},
+            "token_usage": {"input": 0, "output": 0},
+        }
+    metrics = dict(system_monitor.ai_metrics)
+    metrics["ai_response_times"] = list(system_monitor.ai_metrics["ai_response_times"])
+    return metrics
 
 
 @router.get("/api/docs/reference")

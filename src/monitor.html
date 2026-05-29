@@ -350,14 +350,82 @@
         </div>
       </div>
 
+      <!-- Real-Time Performance Section -->
+      <section class="section" id="realtime-metrics-section">
+        <div class="section-header">
+          <h2 class="section-title">Real-Time Performance</h2>
+          <div class="section-actions">
+            <span class="status-badge healthy" style="text-transform: none; font-weight: 500;">
+              <span class="status-dot"></span> Live Feed
+            </span>
+          </div>
+        </div>
+        <div class="resource-trends-grid">
+          <!-- Latency Graph -->
+          <div class="doc-card" style="grid-column: span 2; position: relative;">
+            <p class="doc-card-kicker">API Latency History (Last 30 probes)</p>
+            <div class="chart-container">
+              <svg class="chart-svg" id="latency-svg" viewBox="0 0 800 220" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--accent-blue)" stop-opacity="0.4"></stop>
+                    <stop offset="100%" stop-color="var(--accent-blue)" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                </defs>
+                <g id="chart-grid-group"></g>
+                <path id="chart-area-path" class="chart-path-area" d=""></path>
+                <path id="chart-line-path" class="chart-path-line" d=""></path>
+                <g id="chart-nodes-group"></g>
+              </svg>
+              <div id="chart-tooltip" class="chart-tooltip"></div>
+            </div>
+          </div>
+          <!-- System Resource Progress Bars -->
+          <div class="doc-card">
+            <p class="doc-card-kicker">Environment Resource Load</p>
+            <p class="doc-card-description" style="margin-bottom: 24px;">Serverless ephemeral container capacity indicator.</p>
+            
+            <div class="resource-bar-wrapper">
+              <div class="resource-bar-header">
+                <span>CPU Load</span>
+                <span id="resource-cpu-value">--%</span>
+              </div>
+              <div class="resource-bar-track">
+                <div id="resource-cpu-fill" class="resource-bar-fill normal" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="resource-bar-wrapper" style="margin-top: 24px;">
+              <div class="resource-bar-header">
+                <span>Memory Allocation</span>
+                <span id="resource-memory-value">--%</span>
+              </div>
+              <div class="resource-bar-track">
+                <div id="resource-memory-fill" class="resource-bar-fill normal" style="width: 0%;"></div>
+              </div>
+            </div>
+            
+            <div class="resource-bar-wrapper" style="margin-top: 24px;">
+              <div class="resource-bar-header">
+                <span>API Traffic Rate</span>
+                <span id="resource-traffic-value">-- req/sec</span>
+              </div>
+              <div class="resource-bar-track">
+                <div id="resource-traffic-fill" class="resource-bar-fill normal" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Health Checks -->
       <section class="section" id="health-checks-section">
         <div class="section-header">
           <h2 class="section-title">Health Checks</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="runHealthChecks()">
+            <button class="btn btn-secondary" id="btn-run-health-checks" onclick="runHealthChecks()">
               <i class="fas fa-stethoscope"></i>
-              Run Checks
+              <span>Run Checks</span>
             </button>
           </div>
         </div>
@@ -409,9 +477,9 @@
         <div class="section-header">
           <h2 class="section-title">Provider APIs</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="checkExternalApis()">
+            <button class="btn btn-secondary" id="btn-refresh-providers" onclick="checkExternalApis()">
               <i class="fas fa-sync"></i>
-              Refresh Providers
+              <span>Refresh Providers</span>
             </button>
           </div>
         </div>
@@ -427,9 +495,9 @@
         <div class="section-header">
           <h2 class="section-title">Deployment Surfaces</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="refreshHostingSurfaces()">
+            <button class="btn btn-secondary" id="btn-refresh-surfaces" onclick="refreshHostingSurfaces()">
               <i class="fas fa-globe"></i>
-              Refresh Surfaces
+              <span>Refresh Surfaces</span>
             </button>
           </div>
         </div>
@@ -456,21 +524,40 @@
       <!-- Event Log -->
       <section class="section" id="event-log-section">
         <div class="section-header">
-          <h2 class="section-title">Event Log</h2>
+          <h2 class="section-title">System Event Audit Log</h2>
           <div class="section-actions">
-            <select class="btn btn-secondary" id="event-filter" onchange="filterEvents()">
-              <option value="">All Events</option>
-              <option value="critical">Critical</option>
-              <option value="error">Errors</option>
-              <option value="warning">Warnings</option>
-              <option value="info">Info</option>
-            </select>
-            <button class="btn btn-secondary" onclick="clearResolved()">
+            <button class="btn btn-secondary" id="btn-clear-resolved" onclick="clearResolved()">
               <i class="fas fa-check-double"></i>
-              Clear Resolved
+              <span>Clear Resolved</span>
             </button>
           </div>
         </div>
+        
+        <div class="log-filter-bar">
+          <div class="log-search-wrapper">
+            <i class="fas fa-search log-search-icon"></i>
+            <input type="text" id="log-search-input" class="log-search-input" placeholder="Search events by keyword, source, or IP..." oninput="handleLogFilterChange()">
+          </div>
+          <div class="log-tabs">
+            <button class="log-tab-btn active" data-filter="" onclick="selectLogTab(this)">All</button>
+            <button class="log-tab-btn" data-filter="critical" onclick="selectLogTab(this)">Critical</button>
+            <button class="log-tab-btn" data-filter="error" onclick="selectLogTab(this)">Errors</button>
+            <button class="log-tab-btn" data-filter="warning" onclick="selectLogTab(this)">Warnings</button>
+            <button class="log-tab-btn" data-filter="success" onclick="selectLogTab(this)">Success</button>
+            <button class="log-tab-btn" data-filter="info" onclick="selectLogTab(this)">Info</button>
+          </div>
+        </div>
+
+        <!-- Hidden legacy filter element to keep backward compatibility -->
+        <select id="event-filter" style="position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; overflow: hidden;" onchange="filterEvents()">
+          <option value="">All Events</option>
+          <option value="critical">Critical</option>
+          <option value="error">Errors</option>
+          <option value="warning">Warnings</option>
+          <option value="success">Success</option>
+          <option value="info">Info</option>
+        </select>
+
         <div class="event-list" id="event-list">
           <div class="empty-state">
             <i class="fas fa-spinner fa-spin"></i>
@@ -484,9 +571,9 @@
         <div class="section-header">
           <h2 class="section-title">Client-Side Latency</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="runClientProbes()">
+            <button class="btn btn-secondary" id="btn-run-probes" onclick="runClientProbes()">
               <i class="fas fa-satellite-dish"></i>
-              Run Probes
+              <span>Run Probes</span>
             </button>
           </div>
         </div>
@@ -503,22 +590,47 @@
         </div>
       </section>
 
-      <!-- Security Audit -->
+      <!-- Security & Rate Limiting -->
       <section class="section" id="security-section">
         <div class="section-header">
-          <h2 class="section-title">Security Audit</h2>
+          <h2 class="section-title">Security & Rate Limiting</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="refreshSecurity()">
+            <button class="btn btn-secondary" id="btn-refresh-security" onclick="refreshSecurity()">
               <i class="fas fa-shield-halved"></i>
-              Run Audit
+              <span>Run Audit</span>
             </button>
           </div>
         </div>
-        <div class="health-grid" id="security-checks">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin"></i>
-            <h3>Loading security audit...</h3>
+        
+        <div class="security-summary">
+          <!-- Left Column: Active Threat Intrusion Logs -->
+          <div class="doc-card" style="display: flex; flex-direction: column;">
+            <p class="doc-card-kicker">Suspicious Intrusion Events</p>
+            <p class="doc-card-description">Scans for pattern traversal or unauthorized headers.</p>
+            <div id="security-threats-log" class="security-log-container">
+              <div class="empty-state compact" style="padding: 20px;">
+                <i class="fas fa-shield-check" style="color: var(--accent-green);"></i>
+                <h3>No security threats detected</h3>
+                <p>Environment is safe</p>
+              </div>
+            </div>
           </div>
+          
+          <!-- Right Column: Active Rate Limits and Suspicious IPs -->
+          <div class="doc-card">
+            <p class="doc-card-kicker">Active IP Rate Limits & Suspicious Hosts</p>
+            <p class="doc-card-description">Tracks request volume per-IP and flagged suspicious nodes.</p>
+            <div id="rate-limits-container">
+              <div class="empty-state compact" style="padding: 20px;">
+                <i class="fas fa-gauge"></i>
+                <h3>No active rate limit pressure</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="health-grid" id="security-checks" style="display: none;">
+          <!-- Fallback checks container to keep compatibility -->
         </div>
       </section>
 
@@ -527,9 +639,9 @@
         <div class="section-header">
           <h2 class="section-title">AI Provider Metrics</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="refreshAIMetrics()">
+            <button class="btn btn-secondary" id="btn-refresh-ai" onclick="refreshAIMetrics()">
               <i class="fas fa-brain"></i>
-              Refresh
+              <span>Refresh</span>
             </button>
           </div>
         </div>
@@ -723,18 +835,17 @@
         return fetchMonitorJson('/api/monitor/docs', 'Monitor docs');
       }
 
-      async function fetchEvents(filter = '') {
+      async function fetchEvents() {
         try {
           await ensureApiOrigin();
           if (!monitorApiAvailable) return [];
-          const url = new URL(buildApiUrl('/api/monitor/events'), window.location.origin);
-          if (filter) url.searchParams.set('event_type', filter);
-          const response = await fetch(url, { cache: 'no-store' });
+          const response = await fetch(buildApiUrl('/api/monitor/events?limit=250'), { cache: 'no-store' });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const contentType = response.headers.get('content-type') || '';
           if (!contentType.includes('application/json')) return [];
           const data = await response.json();
-          return data.events || [];
+          cachedEventsList = data.events || [];
+          return cachedEventsList;
         } catch (error) {
           if (monitorApiAvailable) {
             console.warn('Events unavailable:', error.message || error);
@@ -752,7 +863,7 @@
           });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           showToast('Event resolved successfully', 'success');
-          refreshData();
+          refreshData({ silent: true });
           return true;
         } catch (error) {
           console.error('Failed to resolve event:', error);
@@ -1336,42 +1447,77 @@
           errorIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
         } else if (data.error_rate < 5) {
           errorIcon.className = 'overview-icon yellow';
+          errorIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
         } else {
           errorIcon.className = 'overview-icon red';
+          errorIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+        }
+      }
+
+      // Action Handlers
+      function setButtonLoading(btnSelector, isLoading, loadingText = '') {
+        const btn = document.querySelector(btnSelector);
+        if (!btn) return;
+        
+        btn.disabled = isLoading;
+        const icon = btn.querySelector('i');
+        const textSpan = btn.querySelector('span') || btn;
+        
+        if (isLoading) {
+          btn.dataset.originalIcon = icon ? icon.className : '';
+          btn.dataset.originalText = textSpan.textContent;
+          
+          if (icon) icon.className = 'fas fa-spinner btn-loader';
+          if (textSpan !== btn && loadingText) textSpan.textContent = loadingText;
+        } else {
+          if (icon) icon.className = btn.dataset.originalIcon || '';
+          if (textSpan !== btn) textSpan.textContent = btn.dataset.originalText || '';
         }
       }
 
       async function checkExternalApis() {
+        setButtonLoading('#btn-refresh-providers', true, 'Refreshing...');
         showToast('Checking provider APIs...', 'info');
         const integrations = await fetchExternalServices();
         renderExternalServices(integrations);
         showToast('Provider APIs updated', integrations ? 'success' : 'error');
+        setButtonLoading('#btn-refresh-providers', false);
       }
 
       async function refreshHostingSurfaces() {
+        setButtonLoading('#btn-refresh-surfaces', true, 'Refreshing...');
         showToast('Checking deployment surfaces...', 'info');
         const hosting = await fetchHostingSurfaces();
         renderRuntimeSnapshot(hosting);
         renderDeploymentSurfaces(hosting);
         showToast('Deployment surfaces updated', hosting ? 'success' : 'error');
+        setButtonLoading('#btn-refresh-surfaces', false);
       }
 
-      // Actions
+      async function fetchRealTimeMetrics() {
+        return fetchMonitorJson('/api/monitor/real-time', 'Real-time metrics');
+      }
+
       async function refreshData(options = {}) {
         const silent = options.silent === true;
-        if (!silent) showToast('Refreshing data...', 'info');
+        if (!silent) {
+          showToast('Refreshing data...', 'info');
+          setButtonLoading('.header-actions button:first-child', true, 'Refreshing...');
+        }
         await ensureApiOrigin({ force: true });
 
-        const [health, metrics, integrations, status, docs, hosting] = await Promise.all([
+        const [health, metrics, integrations, status, docs, hosting, realTime, secData] = await Promise.all([
           fetchHealth(),
           fetchMetrics(),
           fetchExternalServices(),
           fetchStatus(),
           fetchMonitorDocs(),
           fetchHostingSurfaces(),
+          fetchRealTimeMetrics(),
+          fetchSecurity()
         ]);
 
-        const events = await fetchEvents(document.getElementById('event-filter').value);
+        await fetchEvents();
         lastRefreshIso = new Date().toISOString();
 
         renderHealthChecks(health);
@@ -1383,17 +1529,28 @@
         renderOverallStatus(health, integrations, hosting);
         renderSummary(status, metrics, health, integrations, hosting);
         renderMonitorDocs(docs);
-        renderEvents(events);
+        applyClientSideLogFiltering();
+
+        if (realTime) {
+          drawLatencyChart(realTime.response_time_trend);
+          renderResourceMeters(realTime);
+        }
+
+        if (secData) {
+          renderSecurityAudit(secData);
+        }
 
         if (!silent) {
           showToast(
             monitorApiAvailable ? 'Data refreshed' : 'Monitor API unavailable',
             monitorApiAvailable ? 'success' : 'error'
           );
+          setButtonLoading('.header-actions button:first-child', false);
         }
       }
 
       async function runHealthChecks() {
+        setButtonLoading('#btn-run-health-checks', true, 'Checking...');
         showToast('Running health checks...', 'info');
         const health = await fetchHealth();
         if (health) {
@@ -1402,25 +1559,73 @@
         } else {
           showToast('Health checks failed', 'error');
         }
+        setButtonLoading('#btn-run-health-checks', false);
+      }
+
+      function selectLogTab(button) {
+        const tabs = document.querySelectorAll('.log-tab-btn');
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        button.classList.add('active');
+        currentActiveFilterTab = button.getAttribute('data-filter') || '';
+        
+        // Sync with hidden select dropdown to keep compatibility
+        document.getElementById('event-filter').value = currentActiveFilterTab;
+        
+        applyClientSideLogFiltering();
+      }
+
+      function handleLogFilterChange() {
+        applyClientSideLogFiltering();
+      }
+
+      function applyClientSideLogFiltering() {
+        const query = document.getElementById('log-search-input').value.toLowerCase().trim();
+        let filtered = cachedEventsList;
+        
+        if (currentActiveFilterTab) {
+          filtered = filtered.filter(e => e.type === currentActiveFilterTab);
+        }
+        
+        if (query) {
+          filtered = filtered.filter(e => {
+            const messageMatch = (e.message || '').toLowerCase().includes(query);
+            const sourceMatch = (e.source || '').toLowerCase().includes(query);
+            const ipMatch = (e.details?.ip || e.details?.client_ip || '').toLowerCase().includes(query);
+            return messageMatch || sourceMatch || ipMatch;
+          });
+        }
+        
+        renderEvents(filtered);
       }
 
       async function filterEvents() {
         const filter = document.getElementById('event-filter').value;
-        const events = await fetchEvents(filter);
-        renderEvents(events);
+        const tabs = document.querySelectorAll('.log-tab-btn');
+        tabs.forEach(t => {
+          if ((t.getAttribute('data-filter') || '') === filter) {
+            t.classList.add('active');
+          } else {
+            t.classList.remove('active');
+          }
+        });
+        currentActiveFilterTab = filter;
+        applyClientSideLogFiltering();
       }
 
       async function clearResolved() {
-        const events = await fetchEvents(document.getElementById('event-filter').value);
-        const unresolved = events.filter(e => !e.resolved);
-        const clearedCount = events.length - unresolved.length;
-        renderEvents(unresolved);
+        setButtonLoading('#btn-clear-resolved', true, 'Clearing...');
+        const unresolved = cachedEventsList.filter(e => !e.resolved);
+        const clearedCount = cachedEventsList.length - unresolved.length;
+        cachedEventsList = unresolved;
+        applyClientSideLogFiltering();
         showToast(
           clearedCount > 0
             ? `Cleared ${clearedCount} resolved event${clearedCount === 1 ? '' : 's'}`
             : 'No resolved events to clear',
           'success'
         );
+        setButtonLoading('#btn-clear-resolved', false);
       }
 
       function exportMetrics() {
@@ -1511,6 +1716,7 @@
       }
 
       async function runClientProbes() {
+        setButtonLoading('#btn-run-probes', true, 'Probing...');
         const container = document.getElementById('client-probes');
         container.innerHTML = `<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Probing ${PROBE_TARGETS.length} surfaces...</h3></div>`;
         showToast('Running latency probes...', 'info');
@@ -1547,6 +1753,7 @@
           })
           .join('');
         showToast('Latency probes complete', 'success');
+        setButtonLoading('#btn-run-probes', false);
       }
 
       // ========================================
@@ -1564,76 +1771,259 @@
         }
       }
 
-      function renderSecurity(data) {
-        const container = document.getElementById('security-checks');
-        if (!data) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-shield-halved"></i>
+      function renderSecurityAudit(secData) {
+        const threatsLog = document.getElementById('security-threats-log');
+        const limitsContainer = document.getElementById('rate-limits-container');
+        
+        if (!secData) {
+          threatsLog.innerHTML = `
+            <div class="empty-state compact" style="padding: 20px;">
+              <i class="fas fa-shield-halved" style="color: var(--accent-yellow);"></i>
               <h3>Security audit unavailable</h3>
-              <p>Backend API not reachable — try again from Vercel or localhost.</p>
+              <p>Check backend API connectivity.</p>
+            </div>`;
+          limitsContainer.innerHTML = '';
+          return;
+        }
+
+        // Render suspicious threats log
+        const events = secData.security_events || [];
+        if (events.length === 0) {
+          threatsLog.innerHTML = `
+            <div class="empty-state compact" style="padding: 20px;">
+              <i class="fas fa-shield-check" style="color: var(--accent-green);"></i>
+              <h3>No security threats detected</h3>
+              <p>Environment is safe</p>
+            </div>`;
+        } else {
+          threatsLog.innerHTML = [...events].reverse().map(e => {
+            const timeAgo = formatTimeAgo(e.timestamp);
+            return `
+              <div class="security-log-row">
+                <span class="security-severity ${e.severity || 'low'}">${e.severity || 'low'}</span>
+                <div>
+                  <div class="security-threat-title">${escapeHtml(e.event)}</div>
+                  <div class="security-threat-path">${escapeHtml(e.method)} ${escapeHtml(e.path)} (from ${escapeHtml(e.ip)})</div>
+                </div>
+                <div class="security-time">${timeAgo}</div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Render rate limit buckets and suspicious IPs
+        let limitHtml = '<div class="rate-limits-list">';
+        const rateLimits = secData.rate_limits || {};
+        const suspiciousIps = secData.suspicious_ips || [];
+        
+        if (Object.keys(rateLimits).length === 0 && suspiciousIps.length === 0) {
+          limitsContainer.innerHTML = `
+            <div class="empty-state compact" style="padding: 20px;">
+              <i class="fas fa-gauge"></i>
+              <h3>No active rate limit pressure</h3>
+              <p>All client IP budgets are clear.</p>
             </div>`;
           return;
         }
 
-        const checks = Array.isArray(data.checks)
-          ? data.checks
-          : [
-              {
-                name: 'Security Events',
-                status: data.security_events?.length ? 'degraded' : 'healthy',
-                message: data.security_events?.length
-                  ? `${data.security_events.length} security event${data.security_events.length === 1 ? '' : 's'} recorded`
-                  : 'No security events recorded',
-              },
-              {
-                name: 'Suspicious IPs',
-                status: data.suspicious_ips?.length ? 'degraded' : 'healthy',
-                message: data.suspicious_ips?.length
-                  ? `${data.suspicious_ips.length} suspicious IP${data.suspicious_ips.length === 1 ? '' : 's'} detected`
-                  : 'No suspicious IPs detected',
-              },
-              {
-                name: 'Rate Limits',
-                status: 'healthy',
-                message: Object.keys(data.rate_limits || {}).length
-                  ? `${Object.keys(data.rate_limits).length} rate limit bucket${Object.keys(data.rate_limits).length === 1 ? '' : 's'} tracked`
-                  : 'No active rate limit pressure',
-              },
-            ];
+        if (Object.keys(rateLimits).length > 0) {
+          limitHtml += '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-bottom:8px;">Active IP Request Budgets</p>';
+          for (const [ip, data] of Object.entries(rateLimits)) {
+            const isCritical = data.remaining === 0;
+            limitHtml += `
+              <div class="rate-limit-item">
+                <div>
+                  <span class="rate-limit-ip">${escapeHtml(ip)}</span>
+                  <div style="font-size:11px; color:var(--text-secondary);">Resets in ${data.reset_seconds}s</div>
+                </div>
+                <span class="rate-limit-usage ${isCritical ? 'critical' : ''}">
+                  ${data.count}/${data.limit} req
+                </span>
+              </div>
+            `;
+          }
+        }
 
-        container.innerHTML = checks
-          .map(
-            check => `
-          <div class="health-item ${check.status}">
-            <div class="health-item-left">
-              <div class="health-status-icon ${check.status}">
-                <i class="fas fa-${check.status === 'pass' || check.status === 'healthy' ? 'check' : check.status === 'warn' || check.status === 'degraded' ? 'exclamation' : 'times'}"></i>
+        if (suspiciousIps.length > 0) {
+          limitHtml += '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-top:16px; margin-bottom:8px;">Blocked / Suspicious Hosts</p>';
+          suspiciousIps.forEach(ip => {
+            limitHtml += `
+              <div class="rate-limit-item" style="border-color: rgba(255, 59, 48, 0.25); background: rgba(255, 59, 48, 0.05);">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <i class="fas fa-ban" style="color:var(--accent-red);"></i>
+                  <span class="rate-limit-ip" style="color:var(--accent-red);">${escapeHtml(ip)}</span>
+                </div>
+                <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--accent-red);">Flagged</span>
               </div>
-              <div class="health-info">
-                <h4>${escapeHtml(check.name || check.check)}</h4>
-                <p>${escapeHtml(check.message || check.detail || '')}</p>
-              </div>
-            </div>
-            <div class="health-metrics">
-              <div class="health-metric">
-                <div class="health-metric-value" style="text-transform:uppercase;">${escapeHtml(check.status)}</div>
-                <div class="health-metric-label">Result</div>
-              </div>
-            </div>
-          </div>`
-          )
-          .join('');
+            `;
+          });
+        }
+        
+        limitHtml += '</div>';
+        limitsContainer.innerHTML = limitHtml;
       }
 
       async function refreshSecurity() {
+        setButtonLoading('#btn-refresh-security', true, 'Auditing...');
         showToast('Running security audit...', 'info');
         const data = await fetchSecurity();
-        renderSecurity(data);
+        renderSecurityAudit(data);
         showToast(
           data ? 'Security audit complete' : 'Security audit failed',
           data ? 'success' : 'error'
         );
+        setButtonLoading('#btn-refresh-security', false);
+      }
+
+      // ========================================
+      // SVG CHART & RESOURCE METERS RENDERING
+      // ========================================
+      function drawLatencyChart(trendData) {
+        const gridGroup = document.getElementById('chart-grid-group');
+        const areaPath = document.getElementById('chart-area-path');
+        const linePath = document.getElementById('chart-line-path');
+        const nodesGroup = document.getElementById('chart-nodes-group');
+        
+        if (!trendData || trendData.length === 0) {
+          if (linePath) linePath.setAttribute('d', '');
+          if (areaPath) areaPath.setAttribute('d', '');
+          if (gridGroup) gridGroup.innerHTML = '';
+          if (nodesGroup) nodesGroup.innerHTML = '';
+          return;
+        }
+
+        const width = 800;
+        const height = 180;
+        const paddingLeft = 50;
+        const paddingRight = 30;
+        const paddingTop = 20;
+        const chartWidth = width - paddingLeft - paddingRight;
+        const chartHeight = height - paddingTop;
+
+        const values = trendData.map(d => Number(d.value || 0));
+        const maxVal = Math.max(...values, 200);
+        const minVal = 0;
+
+        let gridHtml = '';
+        const yTicks = 4;
+        for (let i = 0; i <= yTicks; i++) {
+          const val = Math.round(minVal + (maxVal - minVal) * (i / yTicks));
+          const y = height - (i / yTicks) * chartHeight;
+          gridHtml += `
+            <line class="chart-grid-line" x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}"></line>
+            <text class="chart-axis-text" x="${paddingLeft - 10}" y="${y + 4}" text-anchor="end">${val}ms</text>
+          `;
+        }
+
+        const points = trendData.map((d, index) => {
+          const x = paddingLeft + (index / (trendData.length - 1)) * chartWidth;
+          const pct = (d.value - minVal) / (maxVal - minVal);
+          const y = height - pct * chartHeight;
+          return { x, y, data: d };
+        });
+
+        let lineD = '';
+        let areaD = `M ${points[0].x} ${height} `;
+        
+        points.forEach((p, index) => {
+          if (index === 0) {
+            lineD += `M ${p.x} ${p.y} `;
+          } else {
+            lineD += `L ${p.x} ${p.y} `;
+          }
+          areaD += `L ${p.x} ${p.y} `;
+        });
+
+        areaD += `L ${points[points.length - 1].x} ${height} Z`;
+
+        if (linePath) linePath.setAttribute('d', lineD);
+        if (areaPath) areaPath.setAttribute('d', areaD);
+
+        let nodesHtml = '';
+        points.forEach((p) => {
+          nodesHtml += `
+            <circle class="chart-data-node" cx="${p.x}" cy="${p.y}" r="4.5" 
+              onmouseenter="showChartTooltip(event, ${p.x}, ${p.y}, '${escapeHtml(p.data.path || '')}', ${p.data.value}, '${escapeHtml(p.data.timestamp || '')}')"
+              onmouseleave="hideChartTooltip()">
+            </circle>
+          `;
+        });
+        
+        if (points.length >= 2) {
+          const firstTime = formatChartTime(points[0].data.timestamp);
+          const lastTime = formatChartTime(points[points.length - 1].data.timestamp);
+          gridHtml += `
+            <text class="chart-axis-text" x="${paddingLeft}" y="${height + 25}" text-anchor="start">${firstTime}</text>
+            <text class="chart-axis-text" x="${width - paddingRight}" y="${height + 25}" text-anchor="end">${lastTime}</text>
+          `;
+        }
+
+        if (gridGroup) gridGroup.innerHTML = gridHtml;
+        if (nodesGroup) nodesGroup.innerHTML = nodesHtml;
+      }
+
+      function formatChartTime(isoString) {
+        if (!isoString) return '';
+        const d = new Date(isoString);
+        return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }
+
+      function showChartTooltip(event, x, y, path, value, timestamp) {
+        const tooltip = document.getElementById('chart-tooltip');
+        const container = document.querySelector('.chart-container');
+        if (!tooltip || !container) return;
+
+        const rect = container.getBoundingClientRect();
+        const svgWidth = 800;
+        const relativeX = (x / svgWidth) * rect.width;
+        
+        const d = new Date(timestamp);
+        const timeStr = d.toLocaleTimeString();
+
+        tooltip.innerHTML = `
+          <div class="chart-tooltip-time">${path} @ ${timeStr}</div>
+          <div class="chart-tooltip-value">${value.toFixed(1)}ms</div>
+        `;
+        
+        tooltip.style.left = `${relativeX}px`;
+        tooltip.style.top = `${(y / 220) * rect.height}px`;
+        tooltip.classList.add('visible');
+      }
+
+      function hideChartTooltip() {
+        const tooltip = document.getElementById('chart-tooltip');
+        if (tooltip) tooltip.classList.remove('visible');
+      }
+
+      function renderResourceMeters(realTimeData) {
+        const cpuVal = realTimeData?.cpu_trend?.slice(-1)[0]?.value ?? 1.5;
+        const memVal = realTimeData?.memory_trend?.slice(-1)[0]?.value ?? 45.0;
+        const rpsVal = realTimeData?.requests_per_second ?? 0.0;
+        
+        const cpuValEl = document.getElementById('resource-cpu-value');
+        if (cpuValEl) cpuValEl.textContent = `${cpuVal.toFixed(1)}%`;
+        const cpuFill = document.getElementById('resource-cpu-fill');
+        if (cpuFill) {
+          cpuFill.style.width = `${cpuVal}%`;
+          cpuFill.className = `resource-bar-fill ${cpuVal < 60 ? 'normal' : cpuVal < 85 ? 'warning' : 'critical'}`;
+        }
+
+        const memValEl = document.getElementById('resource-memory-value');
+        if (memValEl) memValEl.textContent = `${memVal.toFixed(1)}%`;
+        const memFill = document.getElementById('resource-memory-fill');
+        if (memFill) {
+          memFill.style.width = `${memVal}%`;
+          memFill.className = `resource-bar-fill ${memVal < 70 ? 'normal' : memVal < 90 ? 'warning' : 'critical'}`;
+        }
+
+        const trafficValEl = document.getElementById('resource-traffic-value');
+        if (trafficValEl) trafficValEl.textContent = `${rpsVal.toFixed(2)} req/sec`;
+        const trafficFill = document.getElementById('resource-traffic-fill');
+        if (trafficFill) {
+          const trafficPct = Math.min((rpsVal / 5) * 100, 100);
+          trafficFill.style.width = `${trafficPct}%`;
+          trafficFill.className = `resource-bar-fill ${rpsVal < 2 ? 'normal' : rpsVal < 4 ? 'warning' : 'critical'}`;
+        }
       }
 
       // ========================================
@@ -1763,14 +2153,17 @@
       }
 
       async function refreshAIMetrics() {
+        setButtonLoading('#btn-refresh-ai', true, 'Refreshing...');
         showToast('Fetching AI metrics...', 'info');
         const data = await fetchAIMetrics();
         renderAIMetrics(data);
         showToast(data ? 'AI metrics updated' : 'AI metrics failed', data ? 'success' : 'error');
+        setButtonLoading('#btn-refresh-ai', false);
       }
 
       function showToast(message, type = 'info') {
         const container = document.getElementById('toast-container');
+        if (!container) return;
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.innerHTML = `
@@ -1786,10 +2179,6 @@
       document.addEventListener('DOMContentLoaded', async () => {
         monitorConfig = await loadPublicConfig();
         refreshData({ silent: true });
-
-        // Also fetch security + AI metrics on load
-        fetchSecurity().then(renderSecurity);
-        fetchAIMetrics().then(renderAIMetrics);
 
         // Auto-refresh every 30 seconds
         setInterval(() => refreshData({ silent: true }), 30000);

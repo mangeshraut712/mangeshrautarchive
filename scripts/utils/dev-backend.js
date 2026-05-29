@@ -43,7 +43,7 @@ async function isAssistMeBackendRunning() {
 
     if (!response.ok) return false;
     const data = await response.json();
-    return data?.service === 'assistme-api';
+    return data?.service === 'assistme-api' || data?.status === 'healthy';
   } catch {
     return false;
   }
