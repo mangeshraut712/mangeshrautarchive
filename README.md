@@ -1,6 +1,10 @@
 # Mangesh Raut — Agentic Full-Stack Portfolio
 
 <p align="center">
+  <img src="src/assets/images/profile-hd.webp" alt="Mangesh Raut" width="200" height="200" style="border-radius: 50%; object-fit: cover;">
+</p>
+
+<p align="center">
   <a href="https://mangeshraut.pro">
     <img src="https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Site">
   </a>
@@ -46,9 +50,10 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (<50ms) + OpenRouter streaming LLM
 - **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel *and* static GitHub Pages
-- **Apple 2026 Design System** — procedural sound engine, glassmorphism, fluid typography
+- **Apple 2026 Design System** — procedural sound engine, glassmorphism, fluid typography, consistent border styling
 - **Extreme Testing** — 12+ real browser/device configs (Chrome, Safari, Firefox, Edge, Pixel 7, iPhone 14, iPad Pro)
 - **Zero-Downtime Deploys** — dual-surface (Vercel + GitHub Pages) with automated verification
+- **Modern Build Pipeline** — esbuild 0.27.7 for fast JS transformation, Sharp 0.34.5 for image optimization
 
 **Study it. Fork it. Build on it.**
 
@@ -203,7 +208,7 @@ All tools are functional via natural language in the chat **and** exposed via We
 
 ## 🎨 Premium User Experience
 
-- **Zero heavy framework** — pure ES modules + Tailwind 4 + custom Apple 2026 design system
+- **Zero heavy framework** — pure ES modules + Tailwind CSS 4.0.9 + custom Apple 2026 design system
 - **Procedural sound engine** — synthesized Web Audio API sounds (theme toggle, chat open, birthday)
 - **Glassmorphism & micro-interactions** — spatial cards, buttery transitions, real-time action toasts
 - **Streaming Markdown responses** with contextual follow-up chips
@@ -211,6 +216,7 @@ All tools are functional via natural language in the chat **and** exposed via We
 - **Last.fm Now Playing** — real-time track updates with spinning album art and animated equalizer bars
 - **Progressive Web App** with service worker and offline-first caching
 - **Real-time visitor counter** via Firestore + Vercel Analytics (no fake numbers)
+- **Consistent Apple-inspired design** — unified border styling, theme awareness, fluid typography across all sections
 
 ---
 
@@ -218,15 +224,16 @@ All tools are functional via natural language in the chat **and** exposed via We
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | Vanilla ES2024, Tailwind CSS 4, Apple 2026 Design System |
+| **Frontend** | Vanilla ES2024, Tailwind CSS 4.0.9, Apple 2026 Design System, React 18.3.1 |
 | **Agentic Runtime** | WebMCP + Custom Action Handler with priority execution |
 | **AI** | OpenRouter (Gemini 2.5 Flash/Pro) + local deterministic actions |
 | **Backend** | FastAPI 0.136 + Pydantic v2 (Vercel Serverless) |
 | **Data** | Cloud Firestore, GitHub REST, Last.fm |
-| **Build** | esbuild + Sharp + custom Node pipeline |
-| **Testing** | Playwright 1.58 (12+ configs), Vitest 4, axe-core, Lighthouse CI |
-| **Quality** | ESLint 9, Stylelint, Ruff, Vulture, Security Scanner |
+| **Build** | esbuild 0.27.7 + Sharp 0.34.5 + custom Node pipeline |
+| **Testing** | Playwright 1.58.2 (12+ configs), Vitest 4.1.6, @axe-core/playwright 4.11.1, Lighthouse CI |
+| **Quality** | ESLint 9.21.0, Stylelint 16.14.1, Prettier 3.8.1, Security Scanner |
 | **Hosting** | Vercel (primary) + GitHub Pages (resilient static fallback) |
+| **Node** | Node.js 22.0.0+ |
 
 ---
 
@@ -270,10 +277,10 @@ flowchart TD
 ## 🧪 Quality & Testing
 
 - **12+ real Playwright projects** (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro + responsive viewports)
-- axe-core accessibility + manual contrast validation (WCAG AA)
+- @axe-core/playwright 4.11.1 accessibility + manual contrast validation (WCAG AA)
 - Lighthouse CI (Desktop ≥95, Mobile ≥90)
 - Visual regression + post-deploy verification on **both** hosting surfaces
-- Pre-commit security + lint hooks
+- Pre-commit security + lint hooks (ESLint 9.21.0, Stylelint 16.14.1)
 - `npm run qa:prod-ready` = complete local validation
 
 ---
@@ -357,6 +364,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 - **Music Card** — artwork crossfade transition, enhanced animated equalizer bars, `aria-live` for screen readers, 25s backend cache TTL for real-time Now Playing
 - **Critical CSS Fix** — missing `html.dark` selector on `.education-card p` causing white-on-white text in light mode
 - **Performance** — Google Fonts preconnect moved to `<head>` line 7 (was line 406), duplicate `@keyframes` removed
+- **Consistent Border Styling** — applied Apple-inspired border styling across all sections (skills, experience, education, projects, publications, awards, recommendations, certifications, blog, contact, homepage, game) with theme-aware colors
 
 ### May 2025
 

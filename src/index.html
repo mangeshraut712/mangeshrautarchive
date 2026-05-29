@@ -882,18 +882,86 @@
             </div>
 
             <div class="about-text-card">
-              <h3 class="about-intro-title">Hello, I'm Mangesh Raut</h3>
-              <p class="about-intro-text">
-                I'm a <strong>Software Development Engineer</strong> with 5+ years of experience building scalable, high-performance systems across full-stack development, cloud engineering, and machine learning.
-              </p>
+              <div class="about-card-header">
+                <div class="about-segmented-control" role="tablist" aria-label="About Story Mode">
+                  <button class="about-tab-btn active" role="tab" aria-selected="true" aria-controls="full-story-panel" id="tab-full-story">Full Story</button>
+                  <button class="about-tab-btn" role="tab" aria-selected="false" aria-controls="quick-summary-panel" id="tab-quick-summary">Quick Summary</button>
+                  <div class="segmented-control-bg"></div>
+                </div>
+                <button class="about-speak-btn" aria-label="Read Aloud" title="Read Aloud">
+                  <i class="fas fa-volume-up speak-icon"></i>
+                  <span class="speak-text">Speak</span>
+                </button>
+              </div>
 
-              <p class="about-description">
-                Currently, I work as a Software Engineer at <strong>Customized Energy Solutions</strong>, where I build advanced energy analytics platforms, optimize backend performance, and improve data-driven workflows. My work spans distributed microservices, CI/CD pipelines, cloud infrastructure, and AI-driven features that transform complex data into actionable business value.
-              </p>
+              <!-- Full Story Panel -->
+              <div id="full-story-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-full-story" aria-hidden="false">
+                <h3 class="about-intro-title">Hi, I'm Mangesh Raut.</h3>
+                
+                <p class="about-paragraph highlight-target">
+                  I’m a <strong>Software Engineer</strong>, <strong>AI Builder</strong>, and lifelong learner who enjoys turning ambitious ideas into real products.
+                </p>
 
-              <p class="about-description">
-                I hold a Master of Science in Computer Science from <strong>Drexel University</strong>. I care deeply about clean architecture, performance, reliability, and thoughtful user experiences. Whether building cloud-native systems, developing full-stack applications, or experimenting with AI/ML models, I bring a strong focus on craftsmanship, clarity, and engineering excellence.
-              </p>
+                <p class="about-paragraph highlight-target">
+                  Originally from India and educated in the United States, I earned a <strong>Master’s degree in Computer Science</strong> from <strong>Drexel University</strong> and have spent years building software across web applications, artificial intelligence, cloud platforms, automation systems, and developer tools.
+                </p>
+
+                <p class="about-paragraph highlight-target">
+                  What excites me most isn’t technology itself—it’s what technology enables.
+                </p>
+
+                <p class="about-paragraph highlight-target">
+                  Whether it’s an AI system that makes knowledge more accessible, a platform that helps people make better decisions, or a product that saves someone hours of work, I enjoy building things that solve real problems and create measurable impact.
+                </p>
+
+                <p class="about-paragraph highlight-target">
+                  Today, much of my work focuses on <strong>artificial intelligence</strong>, <strong>large language models</strong>, <strong>agentic systems</strong>, <strong>developer productivity tools</strong>, and <strong>full-stack software engineering</strong>. Recent projects include <strong>HindAI</strong>, an AI-powered platform built on Google’s Gemma models to explore Indian knowledge systems and philosophy, AI-enhanced web applications, intelligent assistants, and modern digital experiences inspired by Apple’s design philosophy.
+                </p>
+
+                <p class="about-paragraph highlight-target">
+                  I believe the future belongs to builders who can combine engineering, creativity, and product thinking. The best software isn’t just technically impressive—it feels <strong>intuitive</strong>, <strong>useful</strong>, and <strong>human</strong>.
+                </p>
+
+                <p class="about-paragraph highlight-target">
+                  Outside of software, interests include cricket, fitness, health optimization, emerging technologies, entrepreneurship, and understanding how AI can be used responsibly to improve people’s lives.
+                </p>
+
+                <p class="about-paragraph highlight-target">
+                  Every project is an opportunity to learn something new. Every challenge is a chance to build something better.
+                </p>
+              </div>
+
+              <!-- Quick Summary Panel -->
+              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" style="display: none;">
+                <h3 class="about-intro-title">Quick Summary</h3>
+                
+                <div class="summary-grid">
+                  <div class="summary-item highlight-target">
+                    <span class="summary-label">Role & Education</span>
+                    <p class="summary-text"><strong>Software Engineer & AI Builder</strong> with an <strong>M.S. in Computer Science</strong> from <strong>Drexel University</strong>.</p>
+                  </div>
+                  
+                  <div class="summary-item highlight-target">
+                    <span class="summary-label">Expertise</span>
+                    <p class="summary-text">Distributed full-stack web systems, large language models (LLMs), agentic workflows, cloud infrastructure, and developer productivity tools.</p>
+                  </div>
+                  
+                  <div class="summary-item highlight-target">
+                    <span class="summary-label">Key Projects</span>
+                    <p class="summary-text"><strong>HindAI</strong> (exploring Indian philosophy via Gemma LLM), intelligent web applications, AI assistants, and Apple-inspired modern interfaces.</p>
+                  </div>
+                  
+                  <div class="summary-item highlight-target">
+                    <span class="summary-label">Philosophy</span>
+                    <p class="summary-text">Crafting software that isn't just technically scalable, but feels <strong>intuitive, purposeful, and human</strong>.</p>
+                  </div>
+
+                  <div class="summary-item highlight-target">
+                    <span class="summary-label">Interests</span>
+                    <p class="summary-text">Emerging tech, entrepreneurship, cricket, physical fitness, health optimization, and responsible AI alignment.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

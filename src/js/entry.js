@@ -9,6 +9,7 @@ import './data/media-data.js';
 import './data/travel-engine.js';
 import './data/travel-locations.js';
 
+import './modules/about-interactivity.js';
 import './modules/accessibility.js';
 import './modules/agentic-actions.js';
 import './modules/analytics.js';

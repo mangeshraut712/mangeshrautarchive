@@ -17,6 +17,11 @@ const INTERACTION_MODULES = [
 
 const SECTION_MODULES = [
   {
+    sectionId: 'about',
+    modulePath: '../modules/about-interactivity.js',
+    rootMargin: '900px 0px',
+  },
+  {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
     rootMargin: '900px 0px',
@@ -68,6 +73,7 @@ const MODULE_IMPORTERS = {
   '../modules/debug-runner.js': () => import('../modules/debug-runner.js'),
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
   '../modules/search.js': () => import('../modules/search.js'),
+  '../modules/about-interactivity.js': () => import('../modules/about-interactivity.js'),
 };
 
 function getModuleImporter(modulePath) {
