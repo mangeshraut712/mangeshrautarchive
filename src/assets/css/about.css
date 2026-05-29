@@ -340,19 +340,21 @@ html.dark .about-card-header {
 }
 
 /* iOS Segmented Control */
+/* iOS Segmented Control - Solid Theme Override */
 .about-segmented-control {
   display: inline-flex;
-  background: rgba(120, 120, 128, 0.08);
+  background: #ffffff !important;
   border-radius: 12px;
   padding: 3px;
   position: relative;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
   user-select: none;
   min-width: 240px;
 }
 
 html.dark .about-segmented-control {
-  background: rgba(255, 255, 255, 0.08);
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 .about-tab-btn {
@@ -365,7 +367,7 @@ html.dark .about-segmented-control {
   border-radius: 9px;
   cursor: pointer;
   transition: color 0.25s ease, font-weight 0.25s ease;
-  color: var(--apple-gray-400);
+  color: #86868b;
   position: relative;
   z-index: 2;
   font-family: inherit;
@@ -373,12 +375,12 @@ html.dark .about-segmented-control {
 }
 
 .about-tab-btn.active {
-  color: #000000;
+  color: #ffffff !important;
   font-weight: 600;
 }
 
 html.dark .about-tab-btn.active {
-  color: #ffffff;
+  color: #000000 !important;
 }
 
 .segmented-control-bg {
@@ -387,25 +389,25 @@ html.dark .about-tab-btn.active {
   bottom: 3px;
   left: 3px;
   border-radius: 9px;
-  background: #ffffff;
+  background: #000000 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.04);
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 }
 
 html.dark .segmented-control-bg {
-  background: #2c2c2e;
+  background: #ffffff !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-/* Speak Button */
+/* Speak Button - Solid Theme Override */
 .about-speak-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 113, 227, 0.08);
-  color: #0071e3;
-  border: none;
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
   border-radius: 100px;
   padding: 8px 16px;
   font-size: 0.85rem;
@@ -416,7 +418,9 @@ html.dark .segmented-control-bg {
 }
 
 .about-speak-btn:hover {
-  background: rgba(0, 113, 227, 0.14);
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
 }
 
 .about-speak-btn:active {
@@ -424,23 +428,28 @@ html.dark .segmented-control-bg {
 }
 
 .about-speak-btn.is-speaking {
-  background: #0071e3;
-  color: #ffffff;
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
   box-shadow: 0 0 12px rgba(0, 113, 227, 0.3);
 }
 
 html.dark .about-speak-btn {
-  background: rgba(41, 151, 255, 0.12);
-  color: #2997ff;
+  background: #000000 !important;
+  color: #2997ff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 html.dark .about-speak-btn:hover {
-  background: rgba(41, 151, 255, 0.2);
+  background: #2997ff !important;
+  color: #000000 !important;
+  border-color: #2997ff !important;
 }
 
 html.dark .about-speak-btn.is-speaking {
-  background: #2997ff;
-  color: #000000;
+  background: #2997ff !important;
+  color: #000000 !important;
+  border-color: #2997ff !important;
   box-shadow: 0 0 12px rgba(41, 151, 255, 0.4);
 }
 

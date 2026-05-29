@@ -912,12 +912,14 @@ html.dark .ios-btn {
 }
 
 .ios-btn:hover {
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.4) !important;
   transform: scale(1.05);
 }
 
 html.dark .ios-btn:hover {
-  background: #111 !important;
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .today-btn {
@@ -930,7 +932,8 @@ html.dark .ios-btn:hover {
 }
 
 .today-btn:hover {
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.4) !important;
 }
 
 .ios-weekdays {
@@ -1295,18 +1298,16 @@ html.dark .reminder-card:hover {
   background: #34c759;
 }
 
-/* Completed State */
-
 .reminder-card.completed {
   opacity: 0.7;
-
-  /* Less dim */
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
+  border: 1px dashed rgba(0, 0, 0, 0.2) !important;
   box-shadow: none !important;
 }
 
 html.dark .reminder-card.completed {
-  background: #151516 !important;
+  background: #000000 !important;
+  border: 1px dashed rgba(255, 255, 255, 0.2) !important;
 }
 
 .reminder-card.completed .card-title {
@@ -1578,9 +1579,8 @@ html.dark .skill-badge {
 .skill-badge:hover {
   transform: translateY(-4px) scale(1.02) !important;
   box-shadow: 0 12px 24px rgb(0 0 0 / 12%) !important;
-  background: #f5f5f7 !important;
-
-  /* Off-white hover */
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
   z-index: 10;
 }
 
@@ -3130,12 +3130,12 @@ html.dark .artist-name {
 
 /* Broken image fallback styling */
 .media-poster img {
-  background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+  background: #ffffff !important;
   min-height: 100%;
 }
 
 html.dark .media-poster img {
-  background: linear-gradient(135deg, #000000 0%, #000000 100%);
+  background: #000000 !important;
 }
 
 /* Image loading state */
@@ -3150,13 +3150,13 @@ html.dark .media-poster img {
 
 /* Error state for images */
 .media-poster img.error {
-  background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%) !important;
+  background: #ffffff !important;
   object-fit: contain !important;
   padding: 20%;
 }
 
 html.dark .media-poster img.error {
-  background: linear-gradient(135deg, #000000 0%, #000000 100%) !important;
+  background: #000000 !important;
 }
 
 /* Hide broken image icon, show placeholder effect */
@@ -3193,12 +3193,12 @@ html.dark .media-poster img.error {
 /* Empty/error state styling */
 .media-card.empty .media-poster,
 .media-card.loading .media-poster {
-  background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+  background: #ffffff !important;
 }
 
 html.dark .media-card.empty .media-poster,
 html.dark .media-card.loading .media-poster {
-  background: linear-gradient(135deg, #000000 0%, #000000 100%);
+  background: #000000 !important;
 }
 
 /* Watch button improvements */
