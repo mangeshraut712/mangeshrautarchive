@@ -112,7 +112,7 @@
 
     /* Glassmorphism 2026 */
     --glass-bg: rgba(255, 255, 255, 0.72);
-    --glass-bg-dark: rgba(30, 30, 30, 0.72);
+    --glass-bg-dark: #000000;
     --glass-backdrop: saturate(180%) blur(20px);
     --glass-border: rgba(255, 255, 255, 0.2);
     --glass-border-dark: rgba(255, 255, 255, 0.1);
@@ -618,7 +618,7 @@
   .publication-card,
   .award-card,
   .recommendation-card,
-  .cert-card {
+  .certification-card {
     background: var(--bg-primary);
     border-radius: var(--radius-xl);
     border: 1px solid var(--separator);
@@ -638,7 +638,7 @@
   .publication-card:hover,
   .award-card:hover,
   .recommendation-card:hover,
-  .cert-card:hover {
+  .certification-card:hover {
     transform: translateY(-4px) scale(1.005);
     box-shadow: var(--shadow-xl);
   }
@@ -650,7 +650,7 @@
   html.dark .publication-card,
   html.dark .award-card,
   html.dark .recommendation-card,
-  html.dark .cert-card {
+  html.dark .certification-card {
     background: var(--bg-secondary-dark);
     border-color: var(--separator-dark);
   }

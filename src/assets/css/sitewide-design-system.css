@@ -564,3 +564,20 @@ section::before,
 section::after {
   display: none !important;
 }
+
+/* ========================================
+   9. LAZY-LOAD ACCESSIBILITY OVERRIDES (Eager)
+   ======================================== */
+.contact-link-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.contact-link-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0.75rem 1rem !important;
+  min-height: 48px !important;
+  box-sizing: border-box !important;
+}

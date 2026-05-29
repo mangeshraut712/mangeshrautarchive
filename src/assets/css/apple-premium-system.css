@@ -283,8 +283,8 @@
     --glass-border-light: rgba(255, 255, 255, 0.5);
 
     /* Glass Backgrounds - Dark Mode */
-    --glass-dark: rgba(28, 28, 30, 0.72);
-    --glass-dark-elevated: rgba(44, 44, 46, 0.85);
+    --glass-dark: #000000;
+    --glass-dark-elevated: #000000;
     --glass-border-dark: rgba(255, 255, 255, 0.1);
   }
 

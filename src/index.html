@@ -34,9 +34,6 @@
     }, { once: true });
   </script>
 
-  <!-- Vercel Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
-
   <meta charset="UTF-8" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
@@ -888,14 +885,14 @@
                   <button class="about-tab-btn" role="tab" aria-selected="false" aria-controls="quick-summary-panel" id="tab-quick-summary">Quick Summary</button>
                   <div class="segmented-control-bg"></div>
                 </div>
-                <button class="about-speak-btn" aria-label="Read Aloud" title="Read Aloud">
+                <button class="about-speak-btn" aria-label="Speak" title="Speak">
                   <i class="fas fa-volume-up speak-icon"></i>
                   <span class="speak-text">Speak</span>
                 </button>
               </div>
 
               <!-- Full Story Panel -->
-              <div id="full-story-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-full-story" aria-hidden="false">
+              <div id="full-story-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-full-story" aria-hidden="false" tabindex="0">
                 <h3 class="about-intro-title">Hi, I'm Mangesh Raut.</h3>
                 
                 <p class="about-paragraph highlight-target">
@@ -932,7 +929,7 @@
               </div>
 
               <!-- Quick Summary Panel -->
-              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" style="display: none;">
+              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" style="display: none;" tabindex="0">
                 <h3 class="about-intro-title">Quick Summary</h3>
                 
                 <div class="summary-grid">

@@ -173,11 +173,14 @@ html.dark .experience-icon {
     box-shadow 0.25s var(--apple-ease) !important;
 }
 
+/* ID-based hover overrides removed to let global card hover styles apply consistently */
+/*
 #experience .experience-content:hover {
   border-color: rgb(0 113 227 / 15%) !important;
   box-shadow: 0 18px 44px rgb(0 0 0 / 10%) !important;
   transform: translateY(-3px) !important;
 }
+*/
 
 html.dark #experience .experience-content {
   border-color: rgb(255 255 255 / 8%) !important;
@@ -185,9 +188,11 @@ html.dark #experience .experience-content {
   box-shadow: 0 14px 38px rgb(0 0 0 / 42%) !important;
 }
 
+/*
 html.dark #experience .experience-content:hover {
   border-color: rgb(41 151 255 / 20%) !important;
 }
+*/
 
 .experience-content h3.text-xl {
   margin-bottom: 0.25rem;

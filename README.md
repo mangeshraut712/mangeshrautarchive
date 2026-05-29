@@ -359,6 +359,9 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### May 2026
 
 - **GitHub Pages Deployment** — added static hosting at [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) with full API fallback support
+- **Lighthouse 100/100 Optimization** — achieved perfect 100/100 Lighthouse scores across Performance, Accessibility, Best Practices, and SEO for both mobile and desktop. Fixed touch-target size and spacing guidelines, speak button name mismatches, and color contrasts.
+- **Homepage Profile Image Border** — added solid Apple-style blue border (`#0071e3` in light mode / `#2997ff` in dark mode) to the profile picture with no shadow/glow effects to ensure visibility on light backgrounds.
+- **Project Structure Optimization** — removed temporary troubleshooting scripts, cleaned up local self-signed SSL certificate files, and reverted the distribution server to pure HTTP-only execution.
 - **Apple Sound System** — procedural Web Audio API engine: theme toggle plink, chatbot tri-tone, birthday melody (Happy Birthday first phrase), no external audio files
 - **Birthday Page Overhaul** — emoji ticker row, balloon physics recycling, AudioContext autoplay policy fix, improved ordinal age display
 - **Music Card** — artwork crossfade transition, enhanced animated equalizer bars, `aria-live` for screen readers, 25s backend cache TTL for real-time Now Playing

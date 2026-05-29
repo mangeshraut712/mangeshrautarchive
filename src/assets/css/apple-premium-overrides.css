@@ -7,21 +7,43 @@
 
 .experience-content,
 .education-card,
+.education-content,
 .stat-card,
 .blog-card,
 .publication-card,
 .award-card,
 .recommendation-card,
-.cert-card {
+.certification-card,
+.showcase-project-card,
+.about-highlight-card,
+.about-text-card,
+.contact-card,
+.newsletter-card,
+.support-donation-card,
+.media-card,
+.currently-card,
+.calendar-card,
+.ios-widget-wrapper,
+.legend-card,
+.music-card-inner,
+.reminder-card,
+.monitor-summary-card,
+.overview-card,
+.doc-card,
+.health-item,
+.travel-stop,
+.place-guide-card {
   background: #fff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
+  border-radius: 20px !important;
   box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
   transition:
-    transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background 0.4s ease !important;
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background 0.3s ease !important;
 }
 
 /* Make skill category transparent to blend with section */
@@ -35,42 +57,145 @@
 
 html.dark .experience-content,
 html.dark .education-card,
+html.dark .education-content,
 html.dark .stat-card,
 html.dark .blog-card,
 html.dark .publication-card,
 html.dark .award-card,
 html.dark .recommendation-card,
-html.dark .cert-card {
-  background: #000 !important;
-  border: 1px solid rgb(255 255 255 / 15%) !important;
+html.dark .certification-card,
+html.dark .showcase-project-card,
+html.dark .about-highlight-card,
+html.dark .about-text-card,
+html.dark .contact-card,
+html.dark .newsletter-card,
+html.dark .support-donation-card,
+html.dark .media-card,
+html.dark .currently-card,
+html.dark .calendar-card,
+html.dark .ios-widget-wrapper,
+html.dark .legend-card,
+html.dark .music-card-inner,
+html.dark .reminder-card,
+html.dark .monitor-summary-card,
+html.dark .overview-card,
+html.dark .doc-card,
+html.dark .health-item,
+html.dark .travel-stop,
+html.dark .place-guide-card {
+  background: #000000 !important;
+  border: 1px solid rgb(255 255 255 / 12%) !important;
   box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
 }
 
-/* Hover Effects - Lift & Glow */
+/* Hover Effects - Uniform Lift & Blue Border Glow */
 
 .experience-content:hover,
 .education-card:hover,
+.education-content:hover,
+.stat-card:hover,
 .blog-card:hover,
 .publication-card:hover,
 .award-card:hover,
 .recommendation-card:hover,
-.cert-card:hover {
-  transform: translateY(-8px) scale(1.01) !important;
-  box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
-  background: #fff !important;
-  border-color: rgb(0 113 227 / 30%) !important;
+.certification-card:hover,
+.showcase-project-card:hover,
+.about-highlight-card:hover,
+.about-text-card:hover,
+.contact-card:hover,
+.newsletter-card:hover,
+.support-donation-card:hover,
+.media-card:hover,
+.currently-card:hover,
+.calendar-card:hover,
+.ios-widget-wrapper:hover,
+.legend-card:hover,
+.music-card-inner:hover,
+.reminder-card:hover,
+.monitor-summary-card:hover,
+.overview-card:hover,
+.doc-card:hover,
+.health-item:hover,
+.travel-stop:hover,
+.place-guide-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 16px 36px rgba(0, 113, 227, 0.16) !important;
+  background: #ffffff !important;
 }
 
 html.dark .experience-content:hover,
 html.dark .education-card:hover,
+html.dark .education-content:hover,
+html.dark .stat-card:hover,
 html.dark .blog-card:hover,
 html.dark .publication-card:hover,
 html.dark .award-card:hover,
 html.dark .recommendation-card:hover,
-html.dark .cert-card:hover {
-  background: #000 !important;
-  box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
-  border-color: rgb(41 151 255 / 40%) !important;
+html.dark .certification-card:hover,
+html.dark .showcase-project-card:hover,
+html.dark .about-highlight-card:hover,
+html.dark .about-text-card:hover,
+html.dark .contact-card:hover,
+html.dark .newsletter-card:hover,
+html.dark .support-donation-card:hover,
+html.dark .media-card:hover,
+html.dark .currently-card:hover,
+html.dark .calendar-card:hover,
+html.dark .ios-widget-wrapper:hover,
+html.dark .legend-card:hover,
+html.dark .music-card-inner:hover,
+html.dark .reminder-card:hover,
+html.dark .monitor-summary-card:hover,
+html.dark .overview-card:hover,
+html.dark .doc-card:hover,
+html.dark .health-item:hover,
+html.dark .travel-stop:hover,
+html.dark .place-guide-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 16px 36px rgba(41, 151, 255, 0.3) !important;
+  background: #000000 !important;
+}
+
+/* Maintain specific status borders for health items */
+.health-item {
+  border-left: 4px solid var(--border-color) !important;
+}
+.health-item.healthy {
+  border-left: 4px solid var(--accent-green) !important;
+}
+.health-item.degraded {
+  border-left: 4px solid var(--accent-yellow) !important;
+}
+.health-item.unhealthy {
+  border-left: 4px solid var(--accent-red) !important;
+}
+
+.health-item:hover {
+  border-left-width: 4px !important;
+}
+.health-item.healthy:hover {
+  border-left-color: var(--accent-green) !important;
+}
+.health-item.degraded:hover {
+  border-left-color: var(--accent-yellow) !important;
+}
+.health-item.unhealthy:hover {
+  border-left-color: var(--accent-red) !important;
+}
+
+html.dark .health-item:hover {
+  border-left-width: 4px !important;
+}
+html.dark .health-item.healthy:hover {
+  border-left-color: var(--accent-green) !important;
+}
+html.dark .health-item.degraded:hover {
+  border-left-color: var(--accent-yellow) !important;
+}
+html.dark .health-item.unhealthy:hover {
+  border-left-color: var(--accent-red) !important;
 }
 
 /* 2. Typography - SF Pro / Modern */
@@ -2013,12 +2138,12 @@ html.dark .profile-image-wrapper {
   height: 100% !important;
   object-fit: cover !important;
   border-radius: 50% !important;
-  border: 2px solid rgba(255, 255, 255, 0.8) !important;
+  border: 3px solid #0071e3 !important;
   display: block !important;
 }
 
 html.dark .profile-image {
-  border-color: rgba(0, 0, 0, 0.8) !important;
+  border-color: #2997ff !important;
 }
 
 /* Subtle Spatial Glow instead of the simple ring */
@@ -3256,8 +3381,7 @@ html.dark #home.hero-section.home-hero {
 
 #home.hero-section .profile-image-wrapper {
   background: transparent !important;
-  border: none !important;
-  box-shadow: 0 10px 30px rgba(0, 113, 227, 0.25) !important;
+  box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border-radius: 50% !important;
@@ -3266,7 +3390,7 @@ html.dark #home.hero-section.home-hero {
 
 html.dark #home.hero-section .profile-image-wrapper {
   background: transparent !important;
-  box-shadow: 0 10px 30px rgba(41, 151, 255, 0.35) !important;
+  box-shadow: none !important;
 }
 
 #home.hero-section .profile-ring {
@@ -3292,14 +3416,15 @@ html.dark #home.hero-section .profile-image-wrapper {
 #home.hero-section #profile-image {
   -webkit-user-drag: none;
   user-select: none;
-  border: 4px solid #ffffff !important;
+  border: 3px solid #0071e3 !important;
   border-radius: 50% !important;
   object-fit: cover !important;
   box-sizing: border-box !important;
+  box-shadow: none !important;
 }
 
 html.dark #home.hero-section #profile-image {
-  border-color: #000000 !important;
+  border-color: #2997ff !important;
 }
 
 #home.hero-section .hero-name {

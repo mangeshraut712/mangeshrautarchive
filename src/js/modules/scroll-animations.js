@@ -59,7 +59,7 @@ class ScrollAnimations {
       '.award-card',
       '.blog-card',
       '.recommendation-card',
-      '.cert-card',
+      '.certification-card',
       'section h2',
       '.skill-badge',
       '.stat-card',

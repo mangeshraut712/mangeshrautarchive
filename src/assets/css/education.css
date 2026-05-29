@@ -134,20 +134,25 @@ html.dark .education-content::after {
   background: linear-gradient(90deg, transparent, rgb(41 151 255 / 20%), transparent);
 }
 
+/* Hover overrides removed — unified card hover in apple-premium-overrides.css */
+/*
 .education-content:hover {
   transform: translateY(-8px) scale(1.005) !important;
   box-shadow: 0 24px 60px rgb(0 0 0 / 12%) !important;
   border-color: rgb(0 113 227 / 15%) !important;
 }
+*/
 
 .education-content:hover::after {
   opacity: 1;
 }
 
+/*
 html.dark .education-content:hover {
   box-shadow: 0 30px 80px rgb(0 0 0 / 80%) !important;
   border-color: rgb(41 151 255 / 20%) !important;
 }
+*/
 
 /* ========================================
    TYPOGRAPHY & VISIBILITY

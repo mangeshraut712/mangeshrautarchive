@@ -718,11 +718,14 @@ html.dark #projects .projects-empty-state {
   transition: opacity 0.24s ease;
 }
 
+/* Hover style removed to avoid conflicts with global card overrides */
+/*
 #projects #github-projects-container .showcase-project-card:hover {
   transform: translateY(-4px) !important;
   border-color: rgb(10 111 239 / 40%) !important;
   box-shadow: 0 22px 40px rgb(15 23 42 / 14%) !important;
 }
+*/
 
 #projects #github-projects-container .showcase-project-card:hover::after {
   opacity: 1;
@@ -730,15 +733,18 @@ html.dark #projects .projects-empty-state {
 
 html.dark #projects #github-projects-container .showcase-project-card {
   border-color: var(--project-border-dark) !important;
-  background: linear-gradient(175deg, #000 0%, #060c15 100%) !important;
+  background: #000000 !important; /* Solid black theme background */
   color: var(--project-text-dark) !important;
   box-shadow: var(--project-shadow-dark) !important;
 }
 
+/* Dark mode hover style removed to avoid conflicts with global overrides */
+/*
 html.dark #projects #github-projects-container .showcase-project-card:hover {
   border-color: rgb(123 182 255 / 42%) !important;
   box-shadow: var(--project-shadow-dark-hover) !important;
 }
+*/
 
 #projects #github-projects-container .project-header {
   padding: 1rem 1rem 0.8rem !important;

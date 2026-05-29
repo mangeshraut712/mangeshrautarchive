@@ -114,6 +114,8 @@ html.dark .about-text-card {
     0 1px 4px rgb(0 0 0 / 15%);
 }
 
+/* Hover overrides removed — unified card hover in apple-premium-overrides.css */
+/*
 .about-text-card:hover {
   transform: translateY(-2px);
   box-shadow:
@@ -128,6 +130,7 @@ html.dark .about-text-card:hover {
     0 2px 8px rgb(0 0 0 / 20%);
   border-color: rgb(41 151 255 / 20%);
 }
+*/
 
 .about-intro-title {
   font-size: 2.5rem;
@@ -224,6 +227,8 @@ html:not(.dark) .about-description strong {
     box-shadow 0.3s ease;
 }
 
+/* Hover overrides removed — unified card hover in apple-premium-overrides.css */
+/*
 .about-highlight-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
@@ -238,6 +243,7 @@ html.dark .about-highlight-card {
 html.dark .about-highlight-card:hover {
   box-shadow: 0 20px 56px rgb(0 0 0 / 55%);
 }
+*/
 
 .about-highlight-icon {
   width: 56px;
@@ -367,19 +373,25 @@ html.dark .about-segmented-control {
   border-radius: 9px;
   cursor: pointer;
   transition: color 0.25s ease, font-weight 0.25s ease;
-  color: #86868b;
+  color: #55555a;
   position: relative;
   z-index: 2;
   font-family: inherit;
   text-align: center;
 }
 
+html.dark .about-tab-btn {
+  color: #a1a1a6;
+}
+
 .about-tab-btn.active {
+  background: #000000 !important;
   color: #ffffff !important;
   font-weight: 600;
 }
 
 html.dark .about-tab-btn.active {
+  background: #ffffff !important;
   color: #000000 !important;
 }
 

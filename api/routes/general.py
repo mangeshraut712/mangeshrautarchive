@@ -90,3 +90,21 @@ async def send_contact_message(payload: ContactMessage, req: Request):
     except httpx.RequestError as exc:
         print(f"❌ Network error saving contact: {exc}")
         raise HTTPException(status_code=503, detail="Network error. Please try again.")
+
+
+@router.get("/api/health", tags=["core"], summary="General health check")
+async def health_check():
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "success": True
+    }
+
+
+@router.get("/api/status", tags=["core"], summary="General status check")
+async def status_check():
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "success": True
+    }

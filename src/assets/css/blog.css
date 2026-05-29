@@ -152,20 +152,25 @@ html.dark .newsletter-form .apple-input::placeholder {
   flex-direction: column;
 }
 
+/* Hover overrides removed — unified card hover in apple-premium-overrides.css */
+/*
 .blog-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
 }
+*/
 
 html.dark .blog-card {
-  background: var(--bg-elevated-dark, #1c1c1e) !important;
-  border-color: var(--border-subtle-dark, rgba(255, 255, 255, 0.1));
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 12%);
   box-shadow: 0 18px 48px rgb(0 0 0 / 45%);
 }
 
+/*
 html.dark .blog-card:hover {
   box-shadow: 0 20px 56px rgb(0 0 0 / 55%);
 }
+*/
 
 /* Blog Card Content */
 .blog-card-content {

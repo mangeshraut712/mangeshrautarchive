@@ -84,9 +84,7 @@ html:not(.dark) .home-hero {
   height: 100% !important;
   object-fit: cover !important;
   border-radius: 50% !important;
-  box-shadow:
-    0 16px 40px rgb(0 113 227 / 22%),
-    0 2px 10px rgb(0 0 0 / 10%);
+  box-shadow: none !important;
   position: relative;
   z-index: 2;
   display: block;
@@ -510,7 +508,7 @@ html.dark .hero-identity-strip i {
 }
 
 .section-count {
-  color: #86868b;
+  color: #55555a;
   font-size: 0.55em;
   font-weight: 700;
   vertical-align: middle;

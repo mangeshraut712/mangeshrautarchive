@@ -48,6 +48,8 @@ html.dark .certification-card {
 }
 
 /* Hover Effect */
+/* Hover overrides removed — unified card hover in apple-premium-overrides.css */
+/*
 .certification-card:hover {
   transform: translateY(-6px) !important;
   box-shadow: 0 12px 32px rgb(0 0 0 / 10%) !important;
@@ -58,6 +60,7 @@ html.dark .certification-card:hover {
   box-shadow: 0 16px 40px rgb(0 0 0 / 60%) !important;
   border-color: rgb(41 151 255 / 20%) !important;
 }
+*/
 
 /* Gradient Top Bar */
 .certification-card::before {
@@ -124,8 +127,8 @@ html.dark .certification-category {
 }
 
 html.dark .certification-logo-container {
-  background: #ffffff !important;
-  border-color: rgb(255 255 255 / 8%) !important;
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
   border-radius: 8px !important;
   padding: 4px !important;
 }

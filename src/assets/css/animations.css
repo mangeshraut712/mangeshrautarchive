@@ -156,7 +156,7 @@
 .award-card.animate-in,
 .blog-card.animate-in,
 .recommendation-card.animate-in,
-.cert-card.animate-in {
+.certification-card.animate-in {
   animation: fadeInUp 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
@@ -321,17 +321,19 @@ img.rounded-full {
 .publication-card,
 .award-card,
 .recommendation-card,
-.cert-card {
+.certification-card {
   transition:
     transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Enhanced hover with subtle 3D effect */
+/* 3D transforms removed to keep card hover animations consistent with experience card styling */
+/*
 .showcase-project-card:hover,
 .blog-card:hover {
   transform: translateY(-8px) scale(1.01) perspective(1000px) rotateY(2deg);
 }
+*/
 
 /* ═══════════════════════════════════════════════════════════
    TIMELINE ANIMATIONS
@@ -418,7 +420,7 @@ img.loaded {
   .blog-card,
   .award-card,
   .recommendation-card,
-  .cert-card,
+  .certification-card,
   .publication-card,
   .stat-card,
   .dream-car-item,

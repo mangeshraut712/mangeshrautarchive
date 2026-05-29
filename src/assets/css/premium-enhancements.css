@@ -144,7 +144,7 @@ html.dark .skill-progress-value.counting {
 .education-card,
 .blog-card,
 .publication-card,
-.cert-card {
+.certification-card {
   position: relative;
   overflow: hidden;
 }
@@ -334,6 +334,8 @@ html.dark .skill-category-btn::after {
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* Hover styling removed to avoid conflicts with global overrides */
+/*
 .showcase-project-card:hover,
 .blog-card:hover {
   border-color: rgba(0, 113, 227, 0.3);
@@ -350,6 +352,7 @@ html.dark .blog-card:hover {
     0 0 0 1px rgba(41, 151, 255, 0.2),
     0 0 30px rgba(41, 151, 255, 0.1);
 }
+*/
 
 /* ═══════════════════════════════════════════════════════════════════
    12. EXPERIENCE TAG HOVER EFFECTS
@@ -484,24 +487,27 @@ html.dark #go-to-top:hover {
    17. CERTIFICATION CARD FLIP EFFECT HINT
    ═══════════════════════════════════════════════════════════════════ */
 
-.cert-card {
+.certification-card {
   transition:
     transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.4s ease;
 }
 
-.cert-card:hover {
+/* Certification tilt hover removed to avoid conflicts with global overrides */
+/*
+.certification-card:hover {
   transform: translateY(-8px) rotateX(5deg);
   box-shadow:
     0 25px 50px rgba(0, 0, 0, 0.15),
     0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-html.dark .cert-card:hover {
+html.dark .certification-card:hover {
   box-shadow:
     0 25px 50px rgba(0, 0, 0, 0.5),
     0 10px 20px rgba(41, 151, 255, 0.1);
 }
+*/
 
 /* ═══════════════════════════════════════════════════════════════════
    18. IMPROVED MOBILE FLOATING BUTTONS
