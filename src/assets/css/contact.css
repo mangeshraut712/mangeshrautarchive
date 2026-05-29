@@ -1472,58 +1472,7 @@ html.dark .support-stripe-btn.premium svg {
   fill: #ffffff !important;
 }
 
-/* Premium Cash App Button - Compact Apple Style */
 
-.support-cashapp-btn.premium {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #00c244 0%, #00d632 50%, #00b238 100%);
-  color: #ffffff !important;
-  font-weight: 600;
-  font-size: 0.85rem;
-  border-radius: 12px;
-  text-decoration: none;
-  box-shadow: none !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: visible;
-  letter-spacing: 0.01em;
-  min-height: 40px;
-}
-
-.support-cashapp-btn.premium span,
-.support-cashapp-btn.premium i,
-.support-cashapp-btn.premium svg {
-  color: #ffffff !important;
-  position: relative;
-  z-index: 1;
-}
-
-.support-cashapp-btn.premium::before {
-  content: none !important;
-  display: none !important;
-}
-
-.support-cashapp-btn.premium:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 4px 12px rgb(0 194 68 / 30%) !important;
-}
-
-/* Dark mode support for Cash App button */
-
-html.dark .support-cashapp-btn.premium {
-  background: linear-gradient(135deg, #00c244 0%, #00d632 50%, #00b238 100%);
-  color: #ffffff !important;
-}
-
-html.dark .support-cashapp-btn.premium span,
-html.dark .support-cashapp-btn.premium i,
-html.dark .support-cashapp-btn.premium svg {
-  color: #ffffff !important;
-}
 
 /* Premium PayPal Button - Compact Apple Style */
 
@@ -2016,7 +1965,6 @@ html.dark .currently-card {
 .contact-assistme-btn,
 .contact-form button[type='submit'],
 .support-stripe-btn.premium,
-.support-cashapp-btn.premium,
 .support-paypal-btn.premium,
 .support-coffee-btn.premium {
   border-radius: 999px !important;
@@ -2028,7 +1976,6 @@ html.dark .currently-card {
 .contact-assistme-btn:hover,
 .contact-form button[type='submit']:hover,
 .support-stripe-btn.premium:hover,
-.support-cashapp-btn.premium:hover,
 .support-paypal-btn.premium:hover,
 .support-coffee-btn.premium:hover {
   transform: translateY(-2px) scale(1.01);
