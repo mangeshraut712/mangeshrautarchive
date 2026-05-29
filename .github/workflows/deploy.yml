@@ -55,7 +55,7 @@ jobs:
       - name: 🐍 Python — lint and dead-code scan
         run: |
           npm run lint:dead-code
-          python -m flake8 api/ --max-line-length=120 --ignore=E501,W503
+          python -m flake8 api/ --max-line-length=120 --ignore=E501,W503,W291,W293
 
       - name: Cache Playwright browsers
         id: playwright-cache

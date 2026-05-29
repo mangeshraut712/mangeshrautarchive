@@ -359,22 +359,10 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### May 2026
 
 - **GitHub Pages Deployment** — added static hosting at [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) with full API fallback support
-- **Lighthouse 100/100 Optimization** — achieved perfect 100/100 Lighthouse scores across Performance, Accessibility, Best Practices, and SEO for both mobile and desktop. Fixed touch-target size and spacing guidelines, speak button name mismatches, and color contrasts.
-- **Homepage Profile Image Border** — added solid Apple-style blue border (`#0071e3` in light mode / `#2997ff` in dark mode) to the profile picture with no shadow/glow effects to ensure visibility on light backgrounds.
-- **Project Structure Optimization** — removed temporary troubleshooting scripts, cleaned up local self-signed SSL certificate files, and reverted the distribution server to pure HTTP-only execution.
-- **Apple Sound System** — procedural Web Audio API engine: theme toggle plink, chatbot tri-tone, birthday melody (Happy Birthday first phrase), no external audio files
-- **Birthday Page Overhaul** — emoji ticker row, balloon physics recycling, AudioContext autoplay policy fix, improved ordinal age display
-- **Music Card** — artwork crossfade transition, enhanced animated equalizer bars, `aria-live` for screen readers, 25s backend cache TTL for real-time Now Playing
-- **Critical CSS Fix** — missing `html.dark` selector on `.education-card p` causing white-on-white text in light mode
-- **Performance** — Google Fonts preconnect moved to `<head>` line 7 (was line 406), duplicate `@keyframes` removed
-- **Consistent Border Styling** — applied Apple-inspired border styling across all sections (skills, experience, education, projects, publications, awards, recommendations, certifications, blog, contact, homepage, game) with theme-aware colors
-
-### May 2025
-
-- **Dream Companies & Cars** — added official SVG logos for NVIDIA, OpenAI, Ferrari, McLaren, Koenigsegg, Lamborghini, Bugatti
-- **Support Integration** — Integrated direct checkout and donation channels via Stripe and PayPal.
-- **Theme Optimisation** — enhanced dark mode visibility for all logos
-- **Root Cleanup** — removed AI config files, optimised git repository (8.4 MB saved)
+- **Lighthouse 100/100 Optimization** — achieved perfect 100/100 Lighthouse scores across Performance, Accessibility, Best Practices, and SEO for both mobile and desktop
+- **Apple Sound System** — procedural Web Audio API engine with theme toggle, chatbot, and birthday sounds
+- **Consistent Border Styling** — applied Apple-inspired border styling across all sections with theme-aware colors
+- **Performance Optimizations** — Google Fonts preconnect, duplicate keyframes removed, CSS improvements
 
 ---
 
