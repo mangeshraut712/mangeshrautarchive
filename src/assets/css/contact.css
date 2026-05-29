@@ -1128,18 +1128,6 @@ html.dark .crypto-mini-btn:hover {
   color: #ffa409;
 }
 
-/* CRO - Navy */
-
-.crypto-mini-btn:nth-child(7) svg {
-  color: #002d74;
-}
-
-/* PEPE - Green */
-
-.crypto-mini-btn:nth-child(8) svg {
-  color: #4c9141;
-}
-
 .crypto-mini-btn span {
   font-size: 0.6rem;
   font-weight: 600;
