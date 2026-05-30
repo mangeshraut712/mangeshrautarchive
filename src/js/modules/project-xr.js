@@ -289,11 +289,9 @@ class ProjectXR {
     const actions = this.documentRef.createElement('div');
     actions.className = 'project-xr-overlay-actions';
 
-    const close = this.documentRef.createElement('button');
-    close.setAttribute('type', 'button');
-    close.type = 'button';
-    close.className = 'project-xr-close-btn';
-    close.textContent = 'Close AR';
+    const closeContainer = this.documentRef.createElement('div');
+    closeContainer.innerHTML = '<button type="button" class="project-xr-close-btn">Close AR</button>';
+    const close = closeContainer.firstElementChild;
 
     actions.appendChild(close);
 
@@ -941,12 +939,9 @@ class ProjectXR {
     const updatedChip = this.documentRef.createElement('span');
     updatedChip.className = 'project-xr-updated-chip';
     updatedChip.textContent = updatedChipValue;
-    const topClose = this.documentRef.createElement('button');
-    topClose.setAttribute('type', 'button');
-    topClose.type = 'button';
-    topClose.className = 'project-xr-top-close';
-    topClose.setAttribute('aria-label', 'Close spatial detail card');
-    topClose.innerHTML = '<i class="fas fa-arrow-left"></i>';
+    const topCloseContainer = this.documentRef.createElement('div');
+    topCloseContainer.innerHTML = '<button type="button" class="project-xr-top-close" aria-label="Close spatial detail card"><i class="fas fa-arrow-left"></i></button>';
+    const topClose = topCloseContainer.firstElementChild;
     const headActions = this.documentRef.createElement('div');
     headActions.className = 'project-xr-head-actions';
     headActions.appendChild(updatedChip);

@@ -1,3 +1,4 @@
-// Entry point for React Review and other static analysis/dependency tracking tools.
-// This file is not loaded at runtime by the website HTML files.
+// Src entry point for static analysis tools to trace dependency tree
 import './js/entry.js';
+import 'react';
+import 'react-dom';
