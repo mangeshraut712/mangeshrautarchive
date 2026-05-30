@@ -212,11 +212,11 @@ span,
 a,
 li {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, sans-serif !important;
-  letter-spacing: -0.01em !important;
+  letter-spacing: -0.01em;
 }
 
 h2 {
-  letter-spacing: -0.02em !important;
+  letter-spacing: -0.02em;
 }
 
 /* 2.1 Global Section Headings - Unified Style */

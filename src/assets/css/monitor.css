@@ -26,8 +26,8 @@
 
 [data-theme='dark'] {
   --bg-primary: #000000;
-  --bg-secondary: #101010;
-  --surface-elevated: rgba(28, 28, 30, 0.82);
+  --bg-secondary: #000000;
+  --surface-elevated: #000000;
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
   --border-color: rgba(255, 255, 255, 0.14);
@@ -77,7 +77,7 @@ body.monitor-page {
 .monitor-nav-kicker {
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase;
   color: var(--accent-blue);
 }
@@ -85,7 +85,7 @@ body.monitor-page {
 .monitor-nav-label {
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: 0 !important;
   color: var(--text-primary);
 }
 
@@ -134,7 +134,7 @@ html.dark .monitor-nav-label {
 
 [data-theme='dark'] .header-content,
 html.dark .header-content {
-  background: rgba(30, 30, 30, 0.85);
+  background: #000000;
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.4),
@@ -180,7 +180,7 @@ html.dark .header-content {
 .monitor-summary-eyebrow {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase;
   color: var(--accent-blue);
   margin-bottom: 8px;
@@ -479,19 +479,19 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
 
 [data-theme='dark'] .summary-chip,
 html.dark .summary-chip {
-  background: rgba(255, 255, 255, 0.04);
+  background: #000000;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
 [data-theme='dark'] .monitor-summary-panel,
 html.dark .monitor-summary-panel {
-  background: rgba(255, 255, 255, 0.04);
+  background: #000000;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
 [data-theme='dark'] .env-pill,
 html.dark .env-pill {
-  background: rgba(255, 255, 255, 0.04);
+  background: #000000;
   border-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -1029,7 +1029,7 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 [data-theme='dark'] .event-details {
-  background: rgba(255, 255, 255, 0.05);
+  background: #000000;
 }
 
 .event-actions {
@@ -1565,7 +1565,7 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 [data-theme='dark'] .security-log-container {
-  background: rgba(255, 255, 255, 0.02);
+  background: #000000;
 }
 
 .security-log-row {
@@ -1704,7 +1704,7 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 [data-theme='dark'] .log-tabs {
-  background: rgba(255, 255, 255, 0.04);
+  background: #000000;
 }
 
 .log-tab-btn {
