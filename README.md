@@ -1,8 +1,9 @@
 # Mangesh Raut — Agentic Full-Stack Portfolio
 
 <p align="center">
-  <img src="src/assets/images/profile-hd.webp" alt="Mangesh Raut" width="200" height="200" style="border-radius: 50%; object-fit: cover;">
+  <img src="src/assets/images/home-hd.webp" alt="Mangesh Raut — Agentic Portfolio" width="700" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);">
 </p>
+
 
 <p align="center">
   <a href="https://mangeshraut.pro">
