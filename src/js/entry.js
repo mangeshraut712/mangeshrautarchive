@@ -4,7 +4,6 @@
 import './core/bootstrap.js';
 import './core/chat.js';
 import './core/config.js';
-import './core/modern-input.js';
 import './data/media-data.js';
 import './data/travel-engine.js';
 import './data/travel-locations.js';
@@ -48,8 +47,6 @@ import './utils/calendly.js';
 import './utils/go-to-top.js';
 import './utils/smart-navbar.js';
 import './utils/theme.js';
-import './utils/security.js';
-import './utils/performance.js';
 
 // Register React usage for static dependency checks
 import 'react';
