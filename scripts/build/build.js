@@ -218,13 +218,10 @@ async function minifyHtmlFiles(dir) {
       content = content
         // Remove HTML comments (except conditional comments)
         .replace(/<!--(?![\s[]*if)[\s\S]*?-->/g, '')
-        // Collapse whitespace
-        .replace(/>\s+</g, '><')
-        // Remove whitespace between tags
-        .replace(/\n\s*\n/g, '\n')
-        // Trim leading/trailing whitespace in text nodes
-        .replace(/>\s+([^<]*)</g, '>$1<')
-        .replace(/>([^<]*)\s+</g, '>$1<');
+        // Collapse multiple spaces and tabs to a single space
+        .replace(/[ \t]+/g, ' ')
+        // Collapse multiple newlines to a single newline
+        .replace(/\r?\n\s*\r?\n/g, '\n');
 
       await writeFile(filePath, content, 'utf8');
       console.log(`📄 Minified ${relative(projectRoot, filePath)}`);
