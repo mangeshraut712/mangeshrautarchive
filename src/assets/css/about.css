@@ -499,10 +499,10 @@ html.dark .about-speak-btn.is-speaking {
 
 .about-paragraph {
   font-size: 1.0625rem !important;
-  line-height: 1.8 !important;
-  letter-spacing: -0.005em !important;
+  line-height: 1.55 !important;
+  letter-spacing: -0.015em !important;
   color: #3c3c43 !important;
-  margin-bottom: 1.5rem !important;
+  margin-bottom: 1.25rem !important;
   transition: opacity 0.3s ease, color 0.3s ease;
 }
 
@@ -584,7 +584,8 @@ html.dark .summary-label {
 
 .summary-text {
   font-size: 0.98rem !important;
-  line-height: 1.65 !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.01em !important;
   margin: 0 !important;
   color: #3c3c43 !important;
 }
