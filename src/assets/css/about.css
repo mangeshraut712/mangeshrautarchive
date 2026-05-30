@@ -498,20 +498,29 @@ html.dark .about-speak-btn.is-speaking {
 }
 
 .about-paragraph {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--apple-gray-600);
-  margin-bottom: 1.5rem;
+  font-size: 1.0625rem !important;
+  line-height: 1.8 !important;
+  letter-spacing: -0.005em !important;
+  color: #3c3c43 !important;
+  margin-bottom: 1.5rem !important;
   transition: opacity 0.3s ease, color 0.3s ease;
 }
 
+.about-paragraph:last-child {
+  margin-bottom: 0 !important;
+}
+
 html.dark .about-paragraph {
-  color: var(--apple-gray-300);
+  color: #d2d2d7 !important;
 }
 
 .about-paragraph strong {
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 600 !important;
+  color: #000000 !important;
+}
+
+html.dark .about-paragraph strong {
+  color: #ffffff !important;
 }
 
 /* Highlight speech effects */
@@ -574,19 +583,23 @@ html.dark .summary-label {
 }
 
 .summary-text {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0;
-  color: var(--apple-gray-600);
+  font-size: 0.98rem !important;
+  line-height: 1.65 !important;
+  margin: 0 !important;
+  color: #3c3c43 !important;
 }
 
 html.dark .summary-text {
-  color: var(--apple-gray-200);
+  color: #d2d2d7 !important;
 }
 
 .summary-text strong {
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 600 !important;
+  color: #000000 !important;
+}
+
+html.dark .summary-text strong {
+  color: #ffffff !important;
 }
 
 @media (width <= 640px) {
