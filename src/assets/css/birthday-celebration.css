@@ -352,8 +352,13 @@ html.dark .ios-body {
 }
 
 @keyframes rocketWiggle {
-  0%, 100% { transform: rotate(-10deg) scale(1); }
-  50%       { transform: rotate(10deg) scale(1.1); }
+  0%,
+  100% {
+    transform: rotate(-10deg) scale(1);
+  }
+  50% {
+    transform: rotate(10deg) scale(1.1);
+  }
 }
 
 .action-area {
@@ -362,7 +367,6 @@ html.dark .ios-body {
   opacity: 0;
   animation: fadeIn 1s ease forwards 2s;
 }
-
 
 .glass-btn {
   padding: 16px 40px;

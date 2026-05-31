@@ -4,7 +4,6 @@
   <img src="src/assets/images/home-hd.webp" alt="Mangesh Raut — Agentic Portfolio" width="700" style="border-radius: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);">
 </p>
 
-
 <p align="center">
   <a href="https://mangeshraut.pro">
     <img src="https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Site">
@@ -53,7 +52,7 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (<50ms) + OpenRouter streaming LLM
-- **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel *and* static GitHub Pages
+- **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel _and_ static GitHub Pages
 - **Apple 2026 Design System** — procedural sound engine, glassmorphism, fluid typography, consistent border styling
 - **Extreme Testing** — 12+ real browser/device configs (Chrome, Safari, Firefox, Edge, Pixel 7, iPhone 14, iPad Pro)
 - **Zero-Downtime Deploys** — dual-surface (Vercel + GitHub Pages) with automated verification
@@ -85,13 +84,13 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 ## 🚀 Live Demos
 
-| Experience | Link | Highlights |
-|---|---|---|
-| Main Portfolio | [mangeshraut.pro](https://mangeshraut.pro) | Agentic chat, spatial projects, travel atlas |
-| GitHub Pages | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks |
-| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor) | Real-time latency, service health, deploy status |
-| Travel Atlas | [mangeshraut.pro/travel](https://mangeshraut.pro/travel) | MapLibre-powered visited places with narrative AI |
-| AI Assistant | Open chat on any page | Try: "download resume", "go to projects", "schedule a meeting" |
+| Experience     | Link                                                                                                | Highlights                                                     |
+| -------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Main Portfolio | [mangeshraut.pro](https://mangeshraut.pro)                                                          | Agentic chat, spatial projects, travel atlas                   |
+| GitHub Pages   | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks       |
+| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Real-time latency, service health, deploy status               |
+| Travel Atlas   | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre-powered visited places with narrative AI              |
+| AI Assistant   | Open chat on any page                                                                               | Try: "download resume", "go to projects", "schedule a meeting" |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
 
@@ -194,17 +193,17 @@ How the key systems actually work — implementation details, not buzzwords.
 
 9 deterministic tools registered and executable today:
 
-| Tool | What It Does |
-|---|---|
+| Tool                  | What It Does                                   |
+| --------------------- | ---------------------------------------------- |
 | `navigate_to_section` | Instant smooth scroll to any portfolio section |
-| `download_resume` | Direct PDF download |
-| `schedule_meeting` | Open Calendly popup |
-| `open_contact_form` | Focus and open contact overlay |
-| `copy_contact_info` | Copy email / LinkedIn |
-| `search_portfolio` | Trigger global search |
-| `filter_projects` | Filter the live GitHub showcase |
-| `open_social_media` | Open GitHub / LinkedIn / X |
-| `toggle_theme` | Switch light / dark / system |
+| `download_resume`     | Direct PDF download                            |
+| `schedule_meeting`    | Open Calendly popup                            |
+| `open_contact_form`   | Focus and open contact overlay                 |
+| `copy_contact_info`   | Copy email / LinkedIn                          |
+| `search_portfolio`    | Trigger global search                          |
+| `filter_projects`     | Filter the live GitHub showcase                |
+| `open_social_media`   | Open GitHub / LinkedIn / X                     |
+| `toggle_theme`        | Switch light / dark / system                   |
 
 All tools are functional via natural language in the chat **and** exposed via WebMCP for future agent ecosystems.
 
@@ -226,18 +225,18 @@ All tools are functional via natural language in the chat **and** exposed via We
 
 ## 🛠 Tech Stack
 
-| Layer | Technologies |
-|---|---|
-| **Frontend** | Vanilla ES2024, Tailwind CSS 4.0.9, Apple 2026 Design System |
-| **Agentic Runtime** | WebMCP + Custom Action Handler with priority execution |
-| **AI** | OpenRouter (Gemini 2.5 Flash/Pro) + local deterministic actions |
-| **Backend** | FastAPI 0.136 + Pydantic v2 (Vercel Serverless) |
-| **Data** | Cloud Firestore, GitHub REST, Last.fm |
-| **Build** | esbuild 0.27.7 + Sharp 0.34.5 + custom Node pipeline |
-| **Testing** | Playwright 1.58.2 (12+ configs), Vitest 4.1.6, @axe-core/playwright 4.11.1, Lighthouse CI |
-| **Quality** | ESLint 9.21.0, Stylelint 16.14.1, Prettier 3.8.1, Security Scanner |
-| **Hosting** | Vercel (primary) + GitHub Pages (resilient static fallback) |
-| **Node** | Node.js 22.0.0+ |
+| Layer               | Technologies                                                                              |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| **Frontend**        | Vanilla ES2024, Tailwind CSS 4.0.9, Apple 2026 Design System                              |
+| **Agentic Runtime** | WebMCP + Custom Action Handler with priority execution                                    |
+| **AI**              | OpenRouter (Gemini 2.5 Flash/Pro) + local deterministic actions                           |
+| **Backend**         | FastAPI 0.136 + Pydantic v2 (Vercel Serverless)                                           |
+| **Data**            | Cloud Firestore, GitHub REST, Last.fm                                                     |
+| **Build**           | esbuild 0.27.7 + Sharp 0.34.5 + custom Node pipeline                                      |
+| **Testing**         | Playwright 1.58.2 (12+ configs), Vitest 4.1.6, @axe-core/playwright 4.11.1, Lighthouse CI |
+| **Quality**         | ESLint 9.21.0, Stylelint 16.14.1, Prettier 3.8.1, Security Scanner                        |
+| **Hosting**         | Vercel (primary) + GitHub Pages (resilient static fallback)                               |
+| **Node**            | Node.js 22.0.0+                                                                           |
 
 ---
 
@@ -312,12 +311,12 @@ Local endpoints:
 
 **Key Commands**
 
-| Command | Purpose |
-|---|---|
-| `npm run dev` | Hot-reloading frontend + backend |
-| `npm run build` | Production build to `dist/` |
+| Command                 | Purpose                                                 |
+| ----------------------- | ------------------------------------------------------- |
+| `npm run dev`           | Hot-reloading frontend + backend                        |
+| `npm run build`         | Production build to `dist/`                             |
 | `npm run qa:prod-ready` | Full security + lint + test + E2E + Lighthouse pipeline |
-| `npm run test:e2e:all` | Complete multi-device Playwright matrix |
+| `npm run test:e2e:all`  | Complete multi-device Playwright matrix                 |
 
 ---
 
@@ -384,7 +383,7 @@ If you find this project useful or use it as a reference for your own agentic ap
 - **Stripe**: [Sponsor via Stripe](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401)
 - **PayPal**: [Sponsor via PayPal](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82)
 
-*Support channels have been streamlined to Stripe and PayPal to maintain security and simplicity.*
+_Support channels have been streamlined to Stripe and PayPal to maintain security and simplicity._
 
 ---
 

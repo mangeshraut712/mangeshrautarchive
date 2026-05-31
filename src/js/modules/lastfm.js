@@ -21,7 +21,11 @@ class LastFmService {
       globalThis.APP_CONFIG?.apiBaseUrl ||
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
       '';
-    if (!apiBaseUrl && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+    if (
+      !apiBaseUrl &&
+      typeof window !== 'undefined' &&
+      window.location.hostname.endsWith('github.io')
+    ) {
       apiBaseUrl = 'https://mangeshraut.pro';
     }
     const apiBaseNormalized = apiBaseUrl ? apiBaseUrl.replace(/\/$/, '') : '';

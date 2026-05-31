@@ -26,13 +26,13 @@ export function initAboutInteractivity() {
   // 1. Tab Switching Functionality
   // ─────────────────────────────────────────────
 
-  const updateSlider = (activeBtn) => {
+  const updateSlider = activeBtn => {
     if (!slider || !activeBtn) return;
     slider.style.transform = `translateX(${activeBtn.offsetLeft - 3}px)`;
     slider.style.width = `${activeBtn.offsetWidth}px`;
   };
 
-  const switchTab = (targetBtn) => {
+  const switchTab = targetBtn => {
     if (!targetBtn || targetBtn.classList.contains('active')) return;
 
     // Stop speaking if speech is active
@@ -109,7 +109,7 @@ export function initAboutInteractivity() {
     }
   };
 
-  const playParagraph = (index) => {
+  const playParagraph = index => {
     if (index >= paragraphsToSpeak.length) {
       stopSpeech();
       return;
@@ -130,12 +130,14 @@ export function initAboutInteractivity() {
 
     // Dynamic voice selection (prefer natural English speaker)
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => 
-      v.lang.startsWith('en') && 
-      (v.name.toLowerCase().includes('natural') || 
-       v.name.toLowerCase().includes('premium') || 
-       v.localService)
-    ) || voices.find(v => v.lang.startsWith('en'));
+    const preferredVoice =
+      voices.find(
+        v =>
+          v.lang.startsWith('en') &&
+          (v.name.toLowerCase().includes('natural') ||
+            v.name.toLowerCase().includes('premium') ||
+            v.localService)
+      ) || voices.find(v => v.lang.startsWith('en'));
 
     if (preferredVoice) {
       utterance.voice = preferredVoice;
@@ -151,7 +153,7 @@ export function initAboutInteractivity() {
       }
     };
 
-    utterance.onerror = (event) => {
+    utterance.onerror = event => {
       // Don't error out on manual interruption
       if (event.error !== 'interrupted') {
         console.warn('SpeechSynthesis error:', event);
@@ -175,7 +177,7 @@ export function initAboutInteractivity() {
     card.classList.add('speech-active');
     speechState = 'speaking';
     updateSpeakButtonUI();
-    
+
     playParagraph(0);
   };
 
@@ -194,7 +196,7 @@ export function initAboutInteractivity() {
   const stopSpeech = () => {
     window.speechSynthesis.cancel();
     card.classList.remove('speech-active');
-    
+
     if (paragraphsToSpeak) {
       paragraphsToSpeak.forEach(n => n.classList.remove('is-speaking'));
     }
@@ -223,7 +225,7 @@ export function initAboutInteractivity() {
   window.addEventListener('beforeunload', () => {
     window.speechSynthesis.cancel();
   });
-  
+
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       // Pause speech if page goes into background

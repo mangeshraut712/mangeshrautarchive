@@ -701,32 +701,47 @@ class IntelligentAssistant {
       return result;
     }
 
-    if (lower.includes('horoscope') || lower.includes('astrology') || lower.includes('birth chart') || lower.includes('vedic')) {
+    if (
+      lower.includes('horoscope') ||
+      lower.includes('astrology') ||
+      lower.includes('birth chart') ||
+      lower.includes('vedic')
+    ) {
       result.answer =
-        "✨ Vedic Astrology & Horoscope:\nMangesh was born under the Libra Ascendant (तुला लग्न) and Cancer Moon Sign (कर्क राशि). In Vedic Astrology, this combination represents a highly balanced, analytical, and emotionally intelligent individual who is deeply driven by professional growth and family values.\n\n" +
-        "Vedic Details:\n" +
-        "• Ascendant (Lagna): Libra (तुला - House No. 7, ruled by Venus) — Gives a balanced, diplomatic, analytical, just, and magnetic personality with a 6-foot stature.\n" +
-        "• Moon Sign (Rashi): Cancer (कर्क - House No. 4, ruled by Moon) — Instills deep emotional intelligence, sensitivity, and a protective bond with his mother and motherland.\n" +
-        "• Gotra: Kashyap | Devak: Pach Palvi (पाच पालवी)\n" +
-        "• Kula Devata: Shree Tulja Bhavani Mata (Tuljapur, Maharashtra)\n" +
-        "• Nadi: Madhya (मध्य) | Gana: Dev (देव) | Varna: Vipra (Intellectual/Analytical)\n" +
-        "• Lineage Roots: Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal\n\n" +
-        "Major Yogas:\n" +
-        "• Budhaditya & Lakshmi Narayan Yoga: A powerful conjunction of the Sun, Mercury, and Venus in his 2nd House (Wealth & Family), indicating wealth generation through intellect, tech skills, and strategic communication (Software Engineering).";
+        '✨ Vedic Astrology & Horoscope:\nMangesh was born under the Libra Ascendant (तुला लग्न) and Cancer Moon Sign (कर्क राशि). In Vedic Astrology, this combination represents a highly balanced, analytical, and emotionally intelligent individual who is deeply driven by professional growth and family values.\n\n' +
+        'Vedic Details:\n' +
+        '• Ascendant (Lagna): Libra (तुला - House No. 7, ruled by Venus) — Gives a balanced, diplomatic, analytical, just, and magnetic personality with a 6-foot stature.\n' +
+        '• Moon Sign (Rashi): Cancer (कर्क - House No. 4, ruled by Moon) — Instills deep emotional intelligence, sensitivity, and a protective bond with his mother and motherland.\n' +
+        '• Gotra: Kashyap | Devak: Pach Palvi (पाच पालवी)\n' +
+        '• Kula Devata: Shree Tulja Bhavani Mata (Tuljapur, Maharashtra)\n' +
+        '• Nadi: Madhya (मध्य) | Gana: Dev (देव) | Varna: Vipra (Intellectual/Analytical)\n' +
+        '• Lineage Roots: Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal\n\n' +
+        'Major Yogas:\n' +
+        '• Budhaditya & Lakshmi Narayan Yoga: A powerful conjunction of the Sun, Mercury, and Venus in his 2nd House (Wealth & Family), indicating wealth generation through intellect, tech skills, and strategic communication (Software Engineering).';
       result.type = 'astrology';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
       return result;
     }
 
-    if (lower.includes('foreign') || lower.includes('settlement') || lower.includes('abroad') || lower.includes('settle') || lower.includes('relocation') || lower.includes('visa') || lower.includes('h1b') || lower.includes('relocate') || lower.includes('usa career')) {
+    if (
+      lower.includes('foreign') ||
+      lower.includes('settlement') ||
+      lower.includes('abroad') ||
+      lower.includes('settle') ||
+      lower.includes('relocation') ||
+      lower.includes('visa') ||
+      lower.includes('h1b') ||
+      lower.includes('relocate') ||
+      lower.includes('usa career')
+    ) {
       result.answer =
-        "🌍 Foreign Settlement & USA Career Context:\n" +
+        '🌍 Foreign Settlement & USA Career Context:\n' +
         "Yes, absolutely. Mangesh's chart displays a powerful placement of the Ascendant Lord (Venus) aligned with wealth-generating planets, strongly favoring a career tied to international tech landscapes, multinational corporations, and long-term residency in foreign lands like the USA.\n\n" +
-        "The Corporate Narrative:\n" +
-        "\"Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at CES in the US. Due to a technical/administrative delay during an H1B visa transfer protocol to a new corporate entity, he temporarily transited back to his home operations in Pune, India. He remains fully employed, handling global engineering assignments remotely while actively executing structural paths to transition seamlessly back into the US tech industry.\"\n\n" +
-        "Optimal Locations:\n" +
-        "His absolute best geographical zones for maximizing wealth and long-term tech status within the USA are the North-East Corridor (New York, New Jersey, Boston) and the North-West Coast (Seattle, Silicon Valley/Northern California).";
+        'The Corporate Narrative:\n' +
+        '"Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at CES in the US. Due to a technical/administrative delay during an H1B visa transfer protocol to a new corporate entity, he temporarily transited back to his home operations in Pune, India. He remains fully employed, handling global engineering assignments remotely while actively executing structural paths to transition seamlessly back into the US tech industry."\n\n' +
+        'Optimal Locations:\n' +
+        'His absolute best geographical zones for maximizing wealth and long-term tech status within the USA are the North-East Corridor (New York, New Jersey, Boston) and the North-West Coast (Seattle, Silicon Valley/Northern California).';
       result.type = 'astrology';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
@@ -735,7 +750,7 @@ class IntelligentAssistant {
 
     if (lower.includes('personality') || lower.includes('trait') || lower.includes('character')) {
       result.answer =
-        "🧠 Personality Traits (Astrological):\n" +
+        '🧠 Personality Traits (Astrological):\n' +
         "According to his North Indian chart, Mangesh possesses strong leadership qualities, high resilience in testing times (due to Saturn's placement), a sharp technical intellect, and a profound protective instinct toward his family, especially his mother. His Venus-ruled Libra Ascendant gives him a balanced, diplomatic, and magnetic personality.";
       result.type = 'astrology';
       result.source = 'assistme-portfolio';
@@ -743,28 +758,48 @@ class IntelligentAssistant {
       return result;
     }
 
-    if (lower.includes('family') || lower.includes('parents') || lower.includes('mother') || lower.includes('father') || lower.includes('sister') || lower.includes('vidya') || lower.includes('meena') || lower.includes('bharat')) {
+    if (
+      lower.includes('family') ||
+      lower.includes('parents') ||
+      lower.includes('mother') ||
+      lower.includes('father') ||
+      lower.includes('sister') ||
+      lower.includes('vidya') ||
+      lower.includes('meena') ||
+      lower.includes('bharat')
+    ) {
       result.answer =
-        "👨‍👩‍👧‍👦 Family Structure & Values:\n" +
-        "Mangesh comes from a close-knit and supportive family:\n" +
-        "• Father: Mr. Bharat Ambarushi Raut\n" +
-        "• Mother: Mrs. Meena Bharat Raut, a Proprietor at Kashish Beauty Parlour & Training Center (Dange Chowk, Pune). Mangesh is deeply devoted to his mother; his primary core drive in life is to provide her with absolute financial comfort, peace of mind, and happiness.\n" +
-        "• Sister: Ms. Vidya Bharat Raut, a highly accomplished scholar (M.Sc Physics, B.Ed, currently pursuing M.Tech in Energy Technology at Pune University) who works as a Researcher & Analyst at CES, Pune.\n" +
-        "• Lineage Roots (Natesambandha): Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal.";
+        '👨‍👩‍👧‍👦 Family Structure & Values:\n' +
+        'Mangesh comes from a close-knit and supportive family:\n' +
+        '• Father: Mr. Bharat Ambarushi Raut\n' +
+        '• Mother: Mrs. Meena Bharat Raut, a Proprietor at Kashish Beauty Parlour & Training Center (Dange Chowk, Pune). Mangesh is deeply devoted to his mother; his primary core drive in life is to provide her with absolute financial comfort, peace of mind, and happiness.\n' +
+        '• Sister: Ms. Vidya Bharat Raut, a highly accomplished scholar (M.Sc Physics, B.Ed, currently pursuing M.Tech in Energy Technology at Pune University) who works as a Researcher & Analyst at CES, Pune.\n' +
+        '• Lineage Roots (Natesambandha): Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal.';
       result.type = 'astrology';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
       return result;
     }
 
-    if (lower.includes('hinoji') || lower.includes('birth name') || lower.includes('call name') || lower.includes('navaras') || lower.includes('height') || lower.includes('complexion') || lower.includes('blood group') || lower.includes('address') || lower.includes('residence') || lower.includes('hometown')) {
+    if (
+      lower.includes('hinoji') ||
+      lower.includes('birth name') ||
+      lower.includes('call name') ||
+      lower.includes('navaras') ||
+      lower.includes('height') ||
+      lower.includes('complexion') ||
+      lower.includes('blood group') ||
+      lower.includes('address') ||
+      lower.includes('residence') ||
+      lower.includes('hometown')
+    ) {
       result.answer =
-        "👤 Personal & Cultural Identity:\n" +
-        "• Full Name: Mangesh Bharat Raut\n" +
-        "• Birth Name (Navaras / Call Name): Hinoji (हिनोजी)\n" +
-        "• Physical Attributes: Height: 6'0\" | Complexion: Fair | Blood Group: O Positive (O +ve)\n" +
-        "• Languages: Marathi (Native), English (Professional), Hindi\n" +
-        "• Permanent Residence Address: Kamble Corner, Panchsheelnagar, Pimple Nilakh, Pune - 411027, Maharashtra, India";
+        '👤 Personal & Cultural Identity:\n' +
+        '• Full Name: Mangesh Bharat Raut\n' +
+        '• Birth Name (Navaras / Call Name): Hinoji (हिनोजी)\n' +
+        '• Physical Attributes: Height: 6\'0" | Complexion: Fair | Blood Group: O Positive (O +ve)\n' +
+        '• Languages: Marathi (Native), English (Professional), Hindi\n' +
+        '• Permanent Residence Address: Kamble Corner, Panchsheelnagar, Pimple Nilakh, Pune - 411027, Maharashtra, India';
       result.type = 'astrology';
       result.source = 'assistme-portfolio';
       result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');

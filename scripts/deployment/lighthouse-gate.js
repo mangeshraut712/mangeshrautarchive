@@ -83,7 +83,9 @@ const report = JSON.parse(readFileSync(outputFile, 'utf8'));
 if (url.includes('localhost') || url.includes('127.0.0.1')) {
   if (report.audits && report.audits['robots-txt']) {
     if (report.audits['robots-txt'].score !== 1) {
-      console.log(`[lighthouse:${formFactor}] Localhost loopback robots.txt headless issue detected. Overriding score to 1.`);
+      console.log(
+        `[lighthouse:${formFactor}] Localhost loopback robots.txt headless issue detected. Overriding score to 1.`
+      );
       report.audits['robots-txt'].score = 1;
       if (report.categories && report.categories.seo && report.categories.seo.score < 1) {
         report.categories.seo.score = 1;
@@ -93,7 +95,11 @@ if (url.includes('localhost') || url.includes('127.0.0.1')) {
 }
 
 mkdirSync(outputDir, { recursive: true });
-writeFileSync(join(outputDir, `lighthouse-${formFactor}.json`), JSON.stringify(report, null, 2), 'utf8');
+writeFileSync(
+  join(outputDir, `lighthouse-${formFactor}.json`),
+  JSON.stringify(report, null, 2),
+  'utf8'
+);
 
 const scores = {
   performance: Math.round((report.categories.performance.score ?? 0) * 100),

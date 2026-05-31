@@ -377,7 +377,9 @@ html.dark #home .music-card {
   box-shadow: var(--shadow-apple-sm);
   animation: albumSpin 8s linear infinite;
   animation-play-state: paused;
-  transition: transform 0.3s ease, opacity 0.4s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.4s ease;
 }
 
 #home .music-card.is-playing .album-art {
@@ -698,8 +700,6 @@ html.dark #about .about-description strong {
   }
 }
 
-
-
 @media (max-width: 576px) {
   #about .about-text-card {
     height: 520px;
@@ -711,7 +711,7 @@ html.dark #about .about-description strong {
   flex-grow: 1;
   overflow-y: auto;
   padding-right: 1rem;
-  
+
   /* Thin scrollbar for Firefox */
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.15) transparent;

@@ -290,7 +290,8 @@ class ProjectXR {
     actions.className = 'project-xr-overlay-actions';
 
     const closeContainer = this.documentRef.createElement('div');
-    closeContainer.innerHTML = '<button type="button" class="project-xr-close-btn">Close AR</button>';
+    closeContainer.innerHTML =
+      '<button type="button" class="project-xr-close-btn">Close AR</button>';
     const close = closeContainer.firstElementChild;
 
     actions.appendChild(close);
@@ -357,9 +358,16 @@ class ProjectXR {
       const parsed = new URL(url);
       if (parsed.origin === 'https://api.github.com') {
         const pathWithQuery = `${parsed.pathname}${parsed.search || ''}`;
-        const base = globalThis.APP_CONFIG?.apiBaseUrl || (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+        const base =
+          globalThis.APP_CONFIG?.apiBaseUrl ||
+          (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+          '';
         let apiBase = base;
-        if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+        if (
+          !apiBase &&
+          typeof window !== 'undefined' &&
+          window.location.hostname.endsWith('github.io')
+        ) {
           apiBase = 'https://mangeshraut.pro';
         }
         const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
@@ -940,7 +948,8 @@ class ProjectXR {
     updatedChip.className = 'project-xr-updated-chip';
     updatedChip.textContent = updatedChipValue;
     const topCloseContainer = this.documentRef.createElement('div');
-    topCloseContainer.innerHTML = '<button type="button" class="project-xr-top-close" aria-label="Close spatial detail card"><i class="fas fa-arrow-left"></i></button>';
+    topCloseContainer.innerHTML =
+      '<button type="button" class="project-xr-top-close" aria-label="Close spatial detail card"><i class="fas fa-arrow-left"></i></button>';
     const topClose = topCloseContainer.firstElementChild;
     const headActions = this.documentRef.createElement('div');
     headActions.className = 'project-xr-head-actions';

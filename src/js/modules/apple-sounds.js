@@ -27,7 +27,9 @@ class AppleSoundSystem {
   _savePref(val) {
     try {
       localStorage.setItem('apple-sounds-enabled', String(val));
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   _bindInteraction() {
@@ -92,7 +94,9 @@ class AppleSoundSystem {
 
   // ─── Public API ─────────────────────────────────────────────────────────────
 
-  get enabled() { return this._enabled; }
+  get enabled() {
+    return this._enabled;
+  }
 
   toggle() {
     this._enabled = !this._enabled;
@@ -101,8 +105,14 @@ class AppleSoundSystem {
     return this._enabled;
   }
 
-  enable()  { this._enabled = true;  this._savePref(true); }
-  disable() { this._enabled = false; this._savePref(false); }
+  enable() {
+    this._enabled = true;
+    this._savePref(true);
+  }
+  disable() {
+    this._enabled = false;
+    this._savePref(false);
+  }
 
   // ── Click / Tap — soft UI tap (macOS Finder click feel) ──────────────────
   playClick() {
@@ -128,7 +138,9 @@ class AppleSoundSystem {
       g.connect(this._masterGain);
       o.start(t);
       o.stop(t + 0.07);
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   // ── Navigation — subtle macOS tab switch ──────────────────────────────────
@@ -139,7 +151,10 @@ class AppleSoundSystem {
     try {
       const t = ctx.currentTime;
       // Two quick sine tones (ascending)
-      [[440, 0], [554, 0.06]].forEach(([freq, delay]) => {
+      [
+        [440, 0],
+        [554, 0.06],
+      ].forEach(([freq, delay]) => {
         const g = ctx.createGain();
         const o = ctx.createOscillator();
         o.type = 'sine';
@@ -152,7 +167,9 @@ class AppleSoundSystem {
         o.start(t + delay);
         o.stop(t + delay + 0.12);
       });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   // ── Theme Toggle — Mac "plink" (two-tone ping) ───────────────────────────
@@ -163,7 +180,10 @@ class AppleSoundSystem {
     try {
       const t = ctx.currentTime;
       // High crystal ping + low resonance
-      [[1046, 0, 0.12], [523, 0.03, 0.18]].forEach(([freq, delay, dur]) => {
+      [
+        [1046, 0, 0.12],
+        [523, 0.03, 0.18],
+      ].forEach(([freq, delay, dur]) => {
         const g = ctx.createGain();
         const o = ctx.createOscillator();
         o.type = 'sine';
@@ -176,7 +196,9 @@ class AppleSoundSystem {
         o.start(t + delay);
         o.stop(t + delay + dur + 0.01);
       });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   // ── Success — iOS success chime (C major arpeggio) ───────────────────────
@@ -200,7 +222,9 @@ class AppleSoundSystem {
         o.start(t + i * 0.08);
         o.stop(t + i * 0.08 + 0.25);
       });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   // ── Error — soft low thump (macOS error alert feel) ───────────────────────
@@ -223,7 +247,9 @@ class AppleSoundSystem {
         o.start(t + i * 0.05);
         o.stop(t + i * 0.05 + 0.2);
       });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   // ── Birthday — first 4 notes of Happy Birthday ───────────────────────────
@@ -235,12 +261,12 @@ class AppleSoundSystem {
       const t = ctx.currentTime;
       // "Hap-py Birth-day to you" first phrase
       const melody = [
-        [392, 0.00, 0.20], // G4
-        [392, 0.22, 0.10], // G4
-        [440, 0.33, 0.30], // A4
-        [392, 0.65, 0.30], // G4
-        [523, 0.97, 0.30], // C5
-        [494, 1.30, 0.50], // B4
+        [392, 0.0, 0.2], // G4
+        [392, 0.22, 0.1], // G4
+        [440, 0.33, 0.3], // A4
+        [392, 0.65, 0.3], // G4
+        [523, 0.97, 0.3], // C5
+        [494, 1.3, 0.5], // B4
       ];
       melody.forEach(([freq, delay, dur]) => {
         const g = ctx.createGain();
@@ -255,7 +281,9 @@ class AppleSoundSystem {
         o.start(t + delay);
         o.stop(t + delay + dur + 0.01);
       });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   // ── Notification — iOS tri-tone ──────────────────────────────────────────
@@ -279,7 +307,9 @@ class AppleSoundSystem {
         o.start(t + i * 0.12);
         o.stop(t + i * 0.12 + 0.18);
       });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 }
 

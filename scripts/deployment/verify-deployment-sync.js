@@ -14,7 +14,7 @@ import path from 'path';
 import crypto from 'crypto';
 
 const CONFIG = {
-  githubPagesUrl: 'https://mangeshraut712.github.io/mangeshrautarchive',
+  githubPagesUrl: 'https://mangeshraut712.github.io/mangeshrautarchive/',
   vercelUrl: 'https://mangeshrautarchive.vercel.app',
   distDir: './dist',
   buildConfigFile: './dist/build-config.json',

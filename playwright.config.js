@@ -5,7 +5,7 @@ const target = process.env.TEST_TARGET || 'local';
 const baseURLs = {
   local: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4000',
   vercel: 'https://mangeshraut.pro',
-  github: 'https://mangeshraut712.github.io/mangeshrautarchive',
+  github: 'https://mangeshraut712.github.io/mangeshrautarchive/',
   dev: 'http://127.0.0.1:4173', // npm run dev port
 };
 

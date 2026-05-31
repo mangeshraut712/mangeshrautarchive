@@ -151,7 +151,7 @@ function startServer(port) {
     console.log(`   - API proxy target: ${apiTarget}`);
   });
 
-  server.on('error', (err) => {
+  server.on('error', err => {
     if (err.code === 'EADDRINUSE') {
       console.warn(`⚠️  Port ${port} is in use, trying port ${port + 1}...`);
       startServer(port + 1);

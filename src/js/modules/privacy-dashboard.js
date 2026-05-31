@@ -10,7 +10,10 @@
  */
 
 function getApiUrl(path) {
-  const base = globalThis.APP_CONFIG?.apiBaseUrl || (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+  const base =
+    globalThis.APP_CONFIG?.apiBaseUrl ||
+    (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+    '';
   let apiBase = base;
   if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
     apiBase = 'https://mangeshraut.pro';

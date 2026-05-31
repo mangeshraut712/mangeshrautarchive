@@ -11,7 +11,10 @@
 const VERCEL_ANALYTICS_SCRIPT = '/_vercel/insights/script.js';
 
 function isLocalHost(hostname = '') {
-  return ['localhost', '127.0.0.1', '0.0.0.0', 'lvh.me'].includes(hostname) || hostname.endsWith('.lvh.me');
+  return (
+    ['localhost', '127.0.0.1', '0.0.0.0', 'lvh.me'].includes(hostname) ||
+    hostname.endsWith('.lvh.me')
+  );
 }
 
 function shouldEnableVercelAnalytics(hostname = '') {

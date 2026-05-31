@@ -22,6 +22,11 @@ const sectionUrlPatterns = {
   contact: /#contact$/,
 };
 
+const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
+const sitePath = path => `${pathPrefix}${path}`;
+const gotoSite = (page, path = '/', options = { waitUntil: 'domcontentloaded' }) =>
+  page.goto(sitePath(path), options);
+
 const criticalLayoutChecks = [
   {
     name: 'projects grid',
@@ -54,7 +59,7 @@ const criticalOverflowChecks = [
 
 test.describe('Chrome smoke tests', () => {
   test('homepage renders critical landmarks', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
 
     await expect(page).toHaveTitle(/Mangesh Raut/i);
     await expect(page.locator('#global-nav')).toBeVisible();
@@ -66,7 +71,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('travel atlas search, empty state, and reset flow work', async ({ page }) => {
-    await page.goto('/travel.html', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page, '/travel.html');
 
     await expect(page).toHaveTitle(/Travel Atlas/i);
     await expect(page.locator('#travel-sidebar')).toBeVisible();
@@ -101,7 +106,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('skip links are keyboard reachable', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
 
     const skipLink = page.locator('.skip-link[href="#home"]').first();
 
@@ -111,7 +116,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('accessibility toolbar is visible with three actions', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
 
     await page.waitForSelector('.a11y-toolbar', { state: 'visible' });
     const toolbar = page.locator('.a11y-toolbar');
@@ -127,7 +132,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('system monitor actions respond', async ({ page }) => {
-    await page.goto('/monitor.html', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page, '/monitor.html');
 
     await expect(page.locator('h1')).toHaveText(/System Monitor/i);
     await expect(page.locator('#runtime-snapshot-card')).toBeVisible();
@@ -166,7 +171,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('search overlay opens and closes', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
     await page.locator('#search-toggle').waitFor({ state: 'visible' });
 
     const openSearch = page.locator('#search-toggle');
@@ -192,7 +197,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('contact nav route works', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
 
     const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
     if (isMobile) {
@@ -213,7 +218,7 @@ test.describe('Chrome smoke tests', () => {
       return;
     }
 
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
 
     await page.evaluate(() => {
       const scrollHeight = document.documentElement.scrollHeight;
@@ -267,7 +272,7 @@ test.describe('Chrome smoke tests', () => {
       targets.map(async sectionId => {
         const targetPage = await context.newPage();
         try {
-          await targetPage.goto('/', { waitUntil: 'domcontentloaded' });
+          await gotoSite(targetPage);
           const isMobile = targetPage.viewportSize()
             ? targetPage.viewportSize().width <= 768
             : false;
@@ -289,7 +294,7 @@ test.describe('Chrome smoke tests', () => {
 
   test('all primary nav sections are reachable', async ({ page }) => {
     test.setTimeout(60_000);
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
 
     await Promise.all(
       navSections.map(async sectionId => {
@@ -302,7 +307,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
 
     for (const theme of ['light', 'dark']) {
       await page.evaluate(mode => {
@@ -330,7 +335,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
 
     await Promise.all(
       criticalOverflowChecks.map(async check => {
@@ -348,7 +353,7 @@ test.describe('Chrome smoke tests', () => {
   test('contact page removes portfolio reach and keeps currently media deduplicated', async ({
     page,
   }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
 
     const currentSection = page.locator('#currently-section');
     await currentSection.scrollIntoViewIfNeeded();
@@ -398,7 +403,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('music tab renders featured listening state with high-quality artwork', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
 
     const currentSection = page.locator('#currently-section');
     await currentSection.scrollIntoViewIfNeeded();

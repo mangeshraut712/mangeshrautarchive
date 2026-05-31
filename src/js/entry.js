@@ -51,4 +51,3 @@ import './utils/theme.js';
 // Register React usage for static dependency checks
 import 'react';
 import 'react-dom';
-

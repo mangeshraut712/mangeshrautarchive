@@ -153,7 +153,12 @@ app.all('/api/*', (req, res) => {
   } else if (path.includes('/api/health') || path.includes('/api/status')) {
     res.json({ status: 'healthy', success: true });
   } else if (path.includes('/api/monitor/status')) {
-    res.json({ status: 'healthy', environment: 'production', version: '1.0.0', uptime_human: '24h' });
+    res.json({
+      status: 'healthy',
+      environment: 'production',
+      version: '1.0.0',
+      uptime_human: '24h',
+    });
   } else {
     res.json({ success: true });
   }
@@ -175,14 +180,22 @@ app.get('*', async (req, res) => {
   res.setHeader('Vary', 'Accept-Encoding');
   setAssetHeaders(res, filePath);
 
-  if (fileStat.size > 1024 && compressibleExtensions.has(extension) && acceptsEncoding.includes('br')) {
+  if (
+    fileStat.size > 1024 &&
+    compressibleExtensions.has(extension) &&
+    acceptsEncoding.includes('br')
+  ) {
     const compressed = getCompressedPayload(filePath, fileBuffer, 'br', fileStat);
     res.setHeader('Content-Encoding', 'br');
     res.send(compressed);
     return;
   }
 
-  if (fileStat.size > 1024 && compressibleExtensions.has(extension) && acceptsEncoding.includes('gzip')) {
+  if (
+    fileStat.size > 1024 &&
+    compressibleExtensions.has(extension) &&
+    acceptsEncoding.includes('gzip')
+  ) {
     const compressed = getCompressedPayload(filePath, fileBuffer, 'gzip', fileStat);
     res.setHeader('Content-Encoding', 'gzip');
     res.send(compressed);

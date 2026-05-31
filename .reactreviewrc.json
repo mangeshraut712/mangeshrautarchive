@@ -51,9 +51,7 @@
       "react",
       "react-dom"
     ],
-    "unused-dev-dependency": [
-      "lighthouse"
-    ]
+    "unused-dev-dependency": ["lighthouse"]
   },
   "notes": {
     "unused-file": "Files are loaded via dynamic imports in bootstrap.js - React Review doesn't detect this pattern",

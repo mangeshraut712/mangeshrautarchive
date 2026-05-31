@@ -22,9 +22,16 @@ class GitHubProjects {
       typeof window !== 'undefined' &&
       ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
 
-    const base = globalThis.APP_CONFIG?.apiBaseUrl || (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+    const base =
+      globalThis.APP_CONFIG?.apiBaseUrl ||
+      (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+      '';
     let apiBase = base;
-    if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+    if (
+      !apiBase &&
+      typeof window !== 'undefined' &&
+      window.location.hostname.endsWith('github.io')
+    ) {
       apiBase = 'https://mangeshraut.pro';
     }
     const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
@@ -927,9 +934,16 @@ class GitHubProjects {
       const parsed = new URL(url);
       if (parsed.origin !== 'https://api.github.com') return '';
       const pathWithQuery = `${parsed.pathname}${parsed.search || ''}`;
-      const base = globalThis.APP_CONFIG?.apiBaseUrl || (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) || '';
+      const base =
+        globalThis.APP_CONFIG?.apiBaseUrl ||
+        (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+        '';
       let apiBase = base;
-      if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+      if (
+        !apiBase &&
+        typeof window !== 'undefined' &&
+        window.location.hostname.endsWith('github.io')
+      ) {
         apiBase = 'https://mangeshraut.pro';
       }
       const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';

@@ -355,17 +355,22 @@
         <div class="section-header">
           <h2 class="section-title">Real-Time Performance</h2>
           <div class="section-actions">
-            <span class="status-badge healthy" style="text-transform: none; font-weight: 500;">
+            <span class="status-badge healthy" style="text-transform: none; font-weight: 500">
               <span class="status-dot"></span> Live Feed
             </span>
           </div>
         </div>
         <div class="resource-trends-grid">
           <!-- Latency Graph -->
-          <div class="doc-card" style="grid-column: span 2; position: relative;">
+          <div class="doc-card" style="grid-column: span 2; position: relative">
             <p class="doc-card-kicker">API Latency History (Last 30 probes)</p>
             <div class="chart-container">
-              <svg class="chart-svg" id="latency-svg" viewBox="0 0 800 220" preserveAspectRatio="none">
+              <svg
+                class="chart-svg"
+                id="latency-svg"
+                viewBox="0 0 800 220"
+                preserveAspectRatio="none"
+              >
                 <defs>
                   <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stop-color="var(--accent-blue)" stop-opacity="0.4"></stop>
@@ -383,35 +388,49 @@
           <!-- System Resource Progress Bars -->
           <div class="doc-card">
             <p class="doc-card-kicker">Environment Resource Load</p>
-            <p class="doc-card-description" style="margin-bottom: 24px;">Serverless ephemeral container capacity indicator.</p>
-            
+            <p class="doc-card-description" style="margin-bottom: 24px">
+              Serverless ephemeral container capacity indicator.
+            </p>
+
             <div class="resource-bar-wrapper">
               <div class="resource-bar-header">
                 <span>CPU Load</span>
                 <span id="resource-cpu-value">--%</span>
               </div>
               <div class="resource-bar-track">
-                <div id="resource-cpu-fill" class="resource-bar-fill normal" style="width: 0%;"></div>
+                <div
+                  id="resource-cpu-fill"
+                  class="resource-bar-fill normal"
+                  style="width: 0%"
+                ></div>
               </div>
             </div>
 
-            <div class="resource-bar-wrapper" style="margin-top: 24px;">
+            <div class="resource-bar-wrapper" style="margin-top: 24px">
               <div class="resource-bar-header">
                 <span>Memory Allocation</span>
                 <span id="resource-memory-value">--%</span>
               </div>
               <div class="resource-bar-track">
-                <div id="resource-memory-fill" class="resource-bar-fill normal" style="width: 0%;"></div>
+                <div
+                  id="resource-memory-fill"
+                  class="resource-bar-fill normal"
+                  style="width: 0%"
+                ></div>
               </div>
             </div>
-            
-            <div class="resource-bar-wrapper" style="margin-top: 24px;">
+
+            <div class="resource-bar-wrapper" style="margin-top: 24px">
               <div class="resource-bar-header">
                 <span>API Traffic Rate</span>
                 <span id="resource-traffic-value">-- req/sec</span>
               </div>
               <div class="resource-bar-track">
-                <div id="resource-traffic-fill" class="resource-bar-fill normal" style="width: 0%;"></div>
+                <div
+                  id="resource-traffic-fill"
+                  class="resource-bar-fill normal"
+                  style="width: 0%"
+                ></div>
               </div>
             </div>
           </div>
@@ -423,7 +442,11 @@
         <div class="section-header">
           <h2 class="section-title">Health Checks</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-run-health-checks" onclick="runHealthChecks()">
+            <button
+              class="btn btn-secondary"
+              id="btn-run-health-checks"
+              onclick="runHealthChecks()"
+            >
               <i class="fas fa-stethoscope"></i>
               <span>Run Checks</span>
             </button>
@@ -477,7 +500,11 @@
         <div class="section-header">
           <h2 class="section-title">Provider APIs</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-refresh-providers" onclick="checkExternalApis()">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-providers"
+              onclick="checkExternalApis()"
+            >
               <i class="fas fa-sync"></i>
               <span>Refresh Providers</span>
             </button>
@@ -495,7 +522,11 @@
         <div class="section-header">
           <h2 class="section-title">Deployment Surfaces</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-refresh-surfaces" onclick="refreshHostingSurfaces()">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-surfaces"
+              onclick="refreshHostingSurfaces()"
+            >
               <i class="fas fa-globe"></i>
               <span>Refresh Surfaces</span>
             </button>
@@ -532,24 +563,53 @@
             </button>
           </div>
         </div>
-        
+
         <div class="log-filter-bar">
           <div class="log-search-wrapper">
             <i class="fas fa-search log-search-icon"></i>
-            <input type="text" id="log-search-input" class="log-search-input" placeholder="Search events by keyword, source, or IP..." oninput="handleLogFilterChange()">
+            <input
+              type="text"
+              id="log-search-input"
+              class="log-search-input"
+              placeholder="Search events by keyword, source, or IP..."
+              oninput="handleLogFilterChange()"
+            />
           </div>
           <div class="log-tabs">
-            <button class="log-tab-btn active" data-filter="" onclick="selectLogTab(this)">All</button>
-            <button class="log-tab-btn" data-filter="critical" onclick="selectLogTab(this)">Critical</button>
-            <button class="log-tab-btn" data-filter="error" onclick="selectLogTab(this)">Errors</button>
-            <button class="log-tab-btn" data-filter="warning" onclick="selectLogTab(this)">Warnings</button>
-            <button class="log-tab-btn" data-filter="success" onclick="selectLogTab(this)">Success</button>
-            <button class="log-tab-btn" data-filter="info" onclick="selectLogTab(this)">Info</button>
+            <button class="log-tab-btn active" data-filter="" onclick="selectLogTab(this)">
+              All
+            </button>
+            <button class="log-tab-btn" data-filter="critical" onclick="selectLogTab(this)">
+              Critical
+            </button>
+            <button class="log-tab-btn" data-filter="error" onclick="selectLogTab(this)">
+              Errors
+            </button>
+            <button class="log-tab-btn" data-filter="warning" onclick="selectLogTab(this)">
+              Warnings
+            </button>
+            <button class="log-tab-btn" data-filter="success" onclick="selectLogTab(this)">
+              Success
+            </button>
+            <button class="log-tab-btn" data-filter="info" onclick="selectLogTab(this)">
+              Info
+            </button>
           </div>
         </div>
 
         <!-- Hidden legacy filter element to keep backward compatibility -->
-        <select id="event-filter" style="position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; overflow: hidden;" onchange="filterEvents()">
+        <select
+          id="event-filter"
+          style="
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
+            overflow: hidden;
+          "
+          onchange="filterEvents()"
+        >
           <option value="">All Events</option>
           <option value="critical">Critical</option>
           <option value="error">Errors</option>
@@ -601,35 +661,37 @@
             </button>
           </div>
         </div>
-        
+
         <div class="security-summary">
           <!-- Left Column: Active Threat Intrusion Logs -->
-          <div class="doc-card" style="display: flex; flex-direction: column;">
+          <div class="doc-card" style="display: flex; flex-direction: column">
             <p class="doc-card-kicker">Suspicious Intrusion Events</p>
             <p class="doc-card-description">Scans for pattern traversal or unauthorized headers.</p>
             <div id="security-threats-log" class="security-log-container">
-              <div class="empty-state compact" style="padding: 20px;">
-                <i class="fas fa-shield-check" style="color: var(--accent-green);"></i>
+              <div class="empty-state compact" style="padding: 20px">
+                <i class="fas fa-shield-check" style="color: var(--accent-green)"></i>
                 <h3>No security threats detected</h3>
                 <p>Environment is safe</p>
               </div>
             </div>
           </div>
-          
+
           <!-- Right Column: Active Rate Limits and Suspicious IPs -->
           <div class="doc-card">
             <p class="doc-card-kicker">Active IP Rate Limits & Suspicious Hosts</p>
-            <p class="doc-card-description">Tracks request volume per-IP and flagged suspicious nodes.</p>
+            <p class="doc-card-description">
+              Tracks request volume per-IP and flagged suspicious nodes.
+            </p>
             <div id="rate-limits-container">
-              <div class="empty-state compact" style="padding: 20px;">
+              <div class="empty-state compact" style="padding: 20px">
                 <i class="fas fa-gauge"></i>
                 <h3>No active rate limit pressure</h3>
               </div>
             </div>
           </div>
         </div>
-        
-        <div class="health-grid" id="security-checks" style="display: none;">
+
+        <div class="health-grid" id="security-checks" style="display: none">
           <!-- Fallback checks container to keep compatibility -->
         </div>
       </section>
@@ -839,7 +901,9 @@
         try {
           await ensureApiOrigin();
           if (!monitorApiAvailable) return [];
-          const response = await fetch(buildApiUrl('/api/monitor/events?limit=250'), { cache: 'no-store' });
+          const response = await fetch(buildApiUrl('/api/monitor/events?limit=250'), {
+            cache: 'no-store',
+          });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const contentType = response.headers.get('content-type') || '';
           if (!contentType.includes('application/json')) return [];
@@ -1458,15 +1522,15 @@
       function setButtonLoading(btnSelector, isLoading, loadingText = '') {
         const btn = document.querySelector(btnSelector);
         if (!btn) return;
-        
+
         btn.disabled = isLoading;
         const icon = btn.querySelector('i');
         const textSpan = btn.querySelector('span') || btn;
-        
+
         if (isLoading) {
           btn.dataset.originalIcon = icon ? icon.className : '';
           btn.dataset.originalText = textSpan.textContent;
-          
+
           if (icon) icon.className = 'fas fa-spinner btn-loader';
           if (textSpan !== btn && loadingText) textSpan.textContent = loadingText;
         } else {
@@ -1506,16 +1570,17 @@
         }
         await ensureApiOrigin({ force: true });
 
-        const [health, metrics, integrations, status, docs, hosting, realTime, secData] = await Promise.all([
-          fetchHealth(),
-          fetchMetrics(),
-          fetchExternalServices(),
-          fetchStatus(),
-          fetchMonitorDocs(),
-          fetchHostingSurfaces(),
-          fetchRealTimeMetrics(),
-          fetchSecurity()
-        ]);
+        const [health, metrics, integrations, status, docs, hosting, realTime, secData] =
+          await Promise.all([
+            fetchHealth(),
+            fetchMetrics(),
+            fetchExternalServices(),
+            fetchStatus(),
+            fetchMonitorDocs(),
+            fetchHostingSurfaces(),
+            fetchRealTimeMetrics(),
+            fetchSecurity(),
+          ]);
 
         await fetchEvents();
         lastRefreshIso = new Date().toISOString();
@@ -1565,13 +1630,13 @@
       function selectLogTab(button) {
         const tabs = document.querySelectorAll('.log-tab-btn');
         tabs.forEach(t => t.classList.remove('active'));
-        
+
         button.classList.add('active');
         currentActiveFilterTab = button.getAttribute('data-filter') || '';
-        
+
         // Sync with hidden select dropdown to keep compatibility
         document.getElementById('event-filter').value = currentActiveFilterTab;
-        
+
         applyClientSideLogFiltering();
       }
 
@@ -1582,20 +1647,22 @@
       function applyClientSideLogFiltering() {
         const query = document.getElementById('log-search-input').value.toLowerCase().trim();
         let filtered = cachedEventsList;
-        
+
         if (currentActiveFilterTab) {
           filtered = filtered.filter(e => e.type === currentActiveFilterTab);
         }
-        
+
         if (query) {
           filtered = filtered.filter(e => {
             const messageMatch = (e.message || '').toLowerCase().includes(query);
             const sourceMatch = (e.source || '').toLowerCase().includes(query);
-            const ipMatch = (e.details?.ip || e.details?.client_ip || '').toLowerCase().includes(query);
+            const ipMatch = (e.details?.ip || e.details?.client_ip || '')
+              .toLowerCase()
+              .includes(query);
             return messageMatch || sourceMatch || ipMatch;
           });
         }
-        
+
         renderEvents(filtered);
       }
 
@@ -1774,7 +1841,7 @@
       function renderSecurityAudit(secData) {
         const threatsLog = document.getElementById('security-threats-log');
         const limitsContainer = document.getElementById('rate-limits-container');
-        
+
         if (!secData) {
           threatsLog.innerHTML = `
             <div class="empty-state compact" style="padding: 20px;">
@@ -1796,9 +1863,11 @@
               <p>Environment is safe</p>
             </div>`;
         } else {
-          threatsLog.innerHTML = [...events].reverse().map(e => {
-            const timeAgo = formatTimeAgo(e.timestamp);
-            return `
+          threatsLog.innerHTML = [...events]
+            .reverse()
+            .map(e => {
+              const timeAgo = formatTimeAgo(e.timestamp);
+              return `
               <div class="security-log-row">
                 <span class="security-severity ${e.severity || 'low'}">${e.severity || 'low'}</span>
                 <div>
@@ -1808,14 +1877,15 @@
                 <div class="security-time">${timeAgo}</div>
               </div>
             `;
-          }).join('');
+            })
+            .join('');
         }
 
         // Render rate limit buckets and suspicious IPs
         let limitHtml = '<div class="rate-limits-list">';
         const rateLimits = secData.rate_limits || {};
         const suspiciousIps = secData.suspicious_ips || [];
-        
+
         if (Object.keys(rateLimits).length === 0 && suspiciousIps.length === 0) {
           limitsContainer.innerHTML = `
             <div class="empty-state compact" style="padding: 20px;">
@@ -1827,7 +1897,8 @@
         }
 
         if (Object.keys(rateLimits).length > 0) {
-          limitHtml += '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-bottom:8px;">Active IP Request Budgets</p>';
+          limitHtml +=
+            '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-bottom:8px;">Active IP Request Budgets</p>';
           for (const [ip, data] of Object.entries(rateLimits)) {
             const isCritical = data.remaining === 0;
             limitHtml += `
@@ -1845,7 +1916,8 @@
         }
 
         if (suspiciousIps.length > 0) {
-          limitHtml += '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-top:16px; margin-bottom:8px;">Blocked / Suspicious Hosts</p>';
+          limitHtml +=
+            '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-top:16px; margin-bottom:8px;">Blocked / Suspicious Hosts</p>';
           suspiciousIps.forEach(ip => {
             limitHtml += `
               <div class="rate-limit-item" style="border-color: rgba(255, 59, 48, 0.25); background: rgba(255, 59, 48, 0.05);">
@@ -1858,7 +1930,7 @@
             `;
           });
         }
-        
+
         limitHtml += '</div>';
         limitsContainer.innerHTML = limitHtml;
       }
@@ -1883,7 +1955,7 @@
         const areaPath = document.getElementById('chart-area-path');
         const linePath = document.getElementById('chart-line-path');
         const nodesGroup = document.getElementById('chart-nodes-group');
-        
+
         if (!trendData || trendData.length === 0) {
           if (linePath) linePath.setAttribute('d', '');
           if (areaPath) areaPath.setAttribute('d', '');
@@ -1924,7 +1996,7 @@
 
         let lineD = '';
         let areaD = `M ${points[0].x} ${height} `;
-        
+
         points.forEach((p, index) => {
           if (index === 0) {
             lineD += `M ${p.x} ${p.y} `;
@@ -1940,7 +2012,7 @@
         if (areaPath) areaPath.setAttribute('d', areaD);
 
         let nodesHtml = '';
-        points.forEach((p) => {
+        points.forEach(p => {
           nodesHtml += `
             <circle class="chart-data-node" cx="${p.x}" cy="${p.y}" r="4.5" 
               onmouseenter="showChartTooltip(event, ${p.x}, ${p.y}, '${escapeHtml(p.data.path || '')}', ${p.data.value}, '${escapeHtml(p.data.timestamp || '')}')"
@@ -1948,7 +2020,7 @@
             </circle>
           `;
         });
-        
+
         if (points.length >= 2) {
           const firstTime = formatChartTime(points[0].data.timestamp);
           const lastTime = formatChartTime(points[points.length - 1].data.timestamp);
@@ -1965,7 +2037,11 @@
       function formatChartTime(isoString) {
         if (!isoString) return '';
         const d = new Date(isoString);
-        return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        return d.toLocaleTimeString(undefined, {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        });
       }
 
       function showChartTooltip(event, x, y, path, value, timestamp) {
@@ -1976,7 +2052,7 @@
         const rect = container.getBoundingClientRect();
         const svgWidth = 800;
         const relativeX = (x / svgWidth) * rect.width;
-        
+
         const d = new Date(timestamp);
         const timeStr = d.toLocaleTimeString();
 
@@ -1984,7 +2060,7 @@
           <div class="chart-tooltip-time">${path} @ ${timeStr}</div>
           <div class="chart-tooltip-value">${value.toFixed(1)}ms</div>
         `;
-        
+
         tooltip.style.left = `${relativeX}px`;
         tooltip.style.top = `${(y / 220) * rect.height}px`;
         tooltip.classList.add('visible');
@@ -1999,7 +2075,7 @@
         const cpuVal = realTimeData?.cpu_trend?.slice(-1)[0]?.value ?? 1.5;
         const memVal = realTimeData?.memory_trend?.slice(-1)[0]?.value ?? 45.0;
         const rpsVal = realTimeData?.requests_per_second ?? 0.0;
-        
+
         const cpuValEl = document.getElementById('resource-cpu-value');
         if (cpuValEl) cpuValEl.textContent = `${cpuVal.toFixed(1)}%`;
         const cpuFill = document.getElementById('resource-cpu-fill');

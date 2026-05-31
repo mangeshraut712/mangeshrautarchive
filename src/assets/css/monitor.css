@@ -1425,7 +1425,7 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 .chart-path-area {
-  fill: url("#chart-gradient");
+  fill: url('#chart-gradient');
   opacity: 0.15;
   transition: d 0.3s ease;
 }
@@ -1444,7 +1444,9 @@ body.monitor-page main > section.section:not(#home) {
   stroke: var(--accent-blue);
   stroke-width: 2.5px;
   cursor: pointer;
-  transition: r 0.2s ease, stroke-width 0.2s ease;
+  transition:
+    r 0.2s ease,
+    stroke-width 0.2s ease;
 }
 
 .chart-data-node:hover {
@@ -1463,7 +1465,9 @@ body.monitor-page main > section.section:not(#home) {
   box-shadow: var(--shadow-md);
   opacity: 0;
   transform: translate(-50%, -100%) scale(0.95);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -1675,7 +1679,9 @@ body.monitor-page main > section.section:not(#home) {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   outline: none;
 }
 
@@ -1735,6 +1741,10 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 @keyframes spinner-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
