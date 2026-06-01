@@ -40,6 +40,9 @@ jobs:
       - name: 🧹 Lint — ESLint code quality check
         run: npm run lint
 
+      - name: 🩺 React Doctor — React codebase health check
+        run: npx react-doctor@latest --verbose --diff
+
       - name: 🧪 Tests — Vitest unit tests
         run: npm test
 
