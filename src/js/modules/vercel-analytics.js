@@ -91,12 +91,3 @@ function loadScript(src) {
     document.head.appendChild(script);
   });
 }
-
-/**
- * Track an event (noop if analytics not available)
- */
-export function track(event, properties) {
-  if (window.va) {
-    window.va('event', { name: event, ...properties });
-  }
-}

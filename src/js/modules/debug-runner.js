@@ -357,8 +357,8 @@ class DebugRunner {
 
     const bindAction = (btn, action, endAction) => {
       btn.style.touchAction = 'none';
-      const start = e => {
-        if (e) e.preventDefault();
+      btn.style.userSelect = 'none';
+      const start = () => {
         if (!this.gameRunning || this.gameOver) {
           this.start();
         }
@@ -367,17 +367,16 @@ class DebugRunner {
         btn.style.transform = 'scale(0.92)';
       };
 
-      const end = e => {
-        if (e) e.preventDefault();
+      const end = () => {
         if (endAction) endAction();
         btn.style.transform = 'scale(1)';
       };
 
-      btn.addEventListener('touchstart', start, { passive: false });
-      btn.addEventListener('mousedown', start);
-      btn.addEventListener('touchend', end, { passive: false });
-      btn.addEventListener('mouseup', end);
-      btn.addEventListener('mouseleave', end);
+      btn.addEventListener('touchstart', start, { passive: true });
+      btn.addEventListener('mousedown', start, { passive: true });
+      btn.addEventListener('touchend', end, { passive: true });
+      btn.addEventListener('mouseup', end, { passive: true });
+      btn.addEventListener('mouseleave', end, { passive: true });
     };
 
     const jumpBtn = this.createControlButton('JUMP', 'jump');

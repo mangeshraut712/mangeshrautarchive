@@ -1363,5 +1363,3 @@ if (typeof window !== 'undefined') {
     initProjectXR();
   }
 }
-
-export default ProjectXR;

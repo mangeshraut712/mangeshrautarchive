@@ -1095,5 +1095,3 @@ const intelligentAssistant = new IntelligentAssistant();
 
 export { intelligentAssistant };
 export { IntelligentAssistant };
-
-export default intelligentAssistant;

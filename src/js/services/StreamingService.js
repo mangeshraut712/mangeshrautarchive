@@ -210,5 +210,7 @@ class StreamingService extends EventTarget {
   }
 }
 
-// Singleton export
-export const streamingService = new StreamingService();
+// Singleton instance for browser-side service initialization.
+const streamingService = new StreamingService();
+
+window.streamingService = streamingService;

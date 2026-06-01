@@ -24,7 +24,7 @@ function getApiUrl(path) {
     : path;
 }
 
-export class PrivacyDashboard {
+class PrivacyDashboard {
   constructor() {
     this.settings = this.loadSettings();
     this.isOpen = false;

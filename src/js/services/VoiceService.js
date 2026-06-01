@@ -212,6 +212,8 @@ class VoiceService extends EventTarget {
 }
 
 // ─────────────────────────────────────────────
-// Singleton export — import this everywhere
+// Singleton instance for browser-side voice controls.
 // ─────────────────────────────────────────────
-export const voiceService = new VoiceService();
+const voiceService = new VoiceService();
+
+window.voiceService = voiceService;

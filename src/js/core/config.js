@@ -1,7 +1,7 @@
 // AssistMe Chatbot - Optimized Configuration
 // Focus: OpenRouter AI + Portfolio Intelligence
 
-export const ui = {
+const ui = {
   maxMessages: 100, // Increased for better conversation history
   maxInputLength: 1000, // Allow longer questions
   typingDelay: 300, // Faster response feel
@@ -9,7 +9,7 @@ export const ui = {
   animationDuration: 300,
 };
 
-export const features = {
+const features = {
   enableMarkdownRendering: true,
   enableTypingIndicator: true,
   enableHistory: true,
@@ -27,7 +27,7 @@ export const features = {
   enableOverlayNavigation: true,
 };
 
-export const chat = {
+const chat = {
   defaultGreeting:
     "👋 Hey there! I'm **AssistMe**, Mangesh's elite AI assistant. I can provide deep insights into his technical expertise, projects, and engineering achievements. Ask me anything about:\n\n• 🚀 **Experience** at Customized Energy Solutions\n• 💻 **Tech Stack**: Java, Python, Spring Boot, AWS\n• 🤖 **AI/ML Projects** & Research\n• 🎓 **Education** at Drexel University\n\nHow can I assist you today?",
   welcomeDelay: 400,
@@ -39,7 +39,7 @@ export const chat = {
   maxTokens: 2500,
 };
 
-export const errorMessages = {
+const errorMessages = {
   genericError: '🤖 I encountered an issue. Let me try that again...',
   networkError: '📡 Network connection lost. Please check your internet.',
   apiError: '🔧 AI service temporarily unavailable. Please retry.',
@@ -52,7 +52,7 @@ export const errorMessages = {
   emptyMessage: '💬 Please type a message first.',
 };
 
-export const api = {
+const api = {
   baseUrl: '', // Set dynamically
   endpoints: {
     chat: '/api/chat',
@@ -64,7 +64,7 @@ export const api = {
   retries: 2,
 };
 
-export const portfolio = {
+const portfolio = {
   name: 'Mangesh Raut',
   title: 'Software Engineer',
   location: 'Philadelphia, PA',
@@ -89,7 +89,7 @@ export const portfolio = {
   ],
 };
 
-export const suggestions = {
+const suggestions = {
   initial: [
     "📝 Tell me about Mangesh's experience",
     '💼 What skills does Mangesh have?',
@@ -106,7 +106,7 @@ export const suggestions = {
   },
 };
 
-export default {
+const chatbotConfig = {
   ui,
   features,
   chat,
@@ -115,3 +115,5 @@ export default {
   portfolio,
   suggestions,
 };
+
+window.chatbotConfig = chatbotConfig;

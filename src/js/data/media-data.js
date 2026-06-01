@@ -261,8 +261,3 @@ export const BOOKS = [
     link: 'https://www.amazon.com/s?k=shyamchi+aai+sane+guruji',
   },
 ];
-
-export const FALLBACKS = {
-  movie: '',
-  book: '',
-};

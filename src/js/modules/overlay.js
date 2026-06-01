@@ -211,12 +211,6 @@ export function initSmoothScroll(selector = 'a[href^="#"]', options = {}) {
   });
 }
 
-export default {
-  initOverlayMenu,
-  initOverlayNavigation,
-  initSmoothScroll,
-};
-
 // Auto-init on DOM ready as a safety net (in case inline scripts fail to run)
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {

@@ -55,7 +55,8 @@
     "open": "open src/index.html",
     "pre-commit": "npm run security-check && npm run lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "doctor": "react-doctor"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
@@ -66,6 +67,7 @@
     "eslint": "^9.21.0",
     "globals": "^15.15.0",
     "prettier": "^3.8.1",
+    "react-doctor": "^0.2.16",
     "sharp": "^0.34.5",
     "start-server-and-test": "^2.1.5",
     "stylelint": "^16.14.1",
