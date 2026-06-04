@@ -361,6 +361,16 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ## 📅 Recent Updates
 
+### June 2026
+
+- **Testimonials & Recommendations** — Updated LinkedIn verify links, company links, and names for Stephen Fernands, Lavella Kirkland, Hemant Panchmurthi, and Rakesh Kamble.
+- **Cross-Page View Transitions** — Implemented cross-page navigation animations using the View Transitions API across all 4 HTML pages.
+- **Chatbot Local Rate Limits** — Added a client-side query rate limiter (10 queries max) using `localStorage` with a dynamic remaining-queries badge in the chat window header.
+- **SVG Contribution Calendar** — Implemented a client-side SVG-based contribution calendar fallback that renders if external graph APIs fail to load.
+- **GitHub Actions Fixes** — Corrected non-existent action versions in `.github/workflows/deploy.yml` (pinning configure-pages to `@v5`, upload-pages-artifact to `@v3`, and deploy-pages to `@v4`) to ensure CI pipelines run successfully without runner errors.
+- **Resolved Unhandled Exceptions** — Fixed JavaScript errors on chatbot initialization (missing config imports) and the system monitor page logs filter (`currentActiveFilterTab is not defined`).
+- **Outstanding Lighthouse Audits** — Re-run Lighthouse gate checks against the updated code, attaining scoreboards of Desktop Performance 95 / Mobile Performance 91, and 97+ on Accessibility, Best Practices, and SEO.
+
 ### May 2026
 
 - **Cleanup & Optimization** — removed 12MB of duplicate `optimized/` image assets, deleted orphaned `docs/` preview images, and consolidated certification assets
