@@ -122,6 +122,9 @@
   --leetcode-color: #ffa116;
   --snapchat-color: #fffc00;
   --telegram-color: #229ed9;
+  --spotify-color: #1db954;
+  --strava-color: #fc4c02;
+  --whoop-color: #000000;
   --card-surface-light: #fff;
   --card-surface-dark: #000;
   --card-border-light: #e5e7eb;
@@ -4157,6 +4160,18 @@ html.dark .wrapper .icon:hover {
   color: var(--telegram-color);
 }
 
+.wrapper .spotify {
+  color: var(--spotify-color);
+}
+
+.wrapper .strava {
+  color: var(--strava-color);
+}
+
+.wrapper .whoop {
+  color: var(--whoop-color);
+}
+
 /* Hover effects - keep background change but ensure text is white */
 
 .wrapper .facebook:hover,
@@ -4222,6 +4237,27 @@ html.dark .wrapper .icon:hover {
   color: #fff;
 }
 
+.wrapper .spotify:hover,
+.wrapper .spotify:hover .tooltip,
+.wrapper .spotify:hover .tooltip::before {
+  background: var(--spotify-color);
+  color: #fff;
+}
+
+.wrapper .strava:hover,
+.wrapper .strava:hover .tooltip,
+.wrapper .strava:hover .tooltip::before {
+  background: var(--strava-color);
+  color: #fff;
+}
+
+.wrapper .whoop:hover,
+.wrapper .whoop:hover .tooltip,
+.wrapper .whoop:hover .tooltip::before {
+  background: var(--whoop-color);
+  color: #fff;
+}
+
 /* Dark mode - Override with specific brand colors for better visibility */
 
 html.dark .wrapper .facebook {
@@ -4258,6 +4294,25 @@ html.dark .wrapper .snapchat {
 
 html.dark .wrapper .telegram {
   color: #229ed9;
+}
+
+html.dark .wrapper .spotify {
+  color: #1db954;
+}
+
+html.dark .wrapper .strava {
+  color: #fc4c02;
+}
+
+html.dark .wrapper .whoop {
+  color: #ffffff;
+}
+
+html.dark .wrapper .whoop:hover,
+html.dark .wrapper .whoop:hover .tooltip,
+html.dark .wrapper .whoop:hover .tooltip::before {
+  background: #ffffff;
+  color: #000000;
 }
 
 /* Fix Hero Text Visibility */

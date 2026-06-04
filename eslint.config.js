@@ -12,6 +12,7 @@ export default [
       'artifacts/**',
       'test-results/**',
       'playwright-report/**',
+      'scratch/**',
     ],
   },
   // Browser Code (src)

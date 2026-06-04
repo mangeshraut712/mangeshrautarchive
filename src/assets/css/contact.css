@@ -1767,6 +1767,21 @@ html.dark .follow-section {
   color: #000000 !important;
 }
 
+#contact .wrapper .spotify {
+  background: #1db954 !important;
+  color: #ffffff !important;
+}
+
+#contact .wrapper .strava {
+  background: #fc4c02 !important;
+  color: #ffffff !important;
+}
+
+#contact .wrapper .whoop {
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+}
+
 #contact .wrapper .icon:hover {
   transform: translateY(-4px) scale(1.05) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
@@ -1821,8 +1836,32 @@ html.dark .follow-section {
   border-color: #333 !important;
 }
 
+#contact .wrapper .spotify:hover {
+  background: #1db954 !important;
+  color: #fff !important;
+  border-color: #1db954 !important;
+}
+
+#contact .wrapper .strava:hover {
+  background: #fc4c02 !important;
+  color: #fff !important;
+  border-color: #fc4c02 !important;
+}
+
+#contact .wrapper .whoop:hover {
+  background: #0a0a0a !important;
+  color: #fff !important;
+  border-color: #0a0a0a !important;
+}
+
 html.dark #contact .wrapper .icon:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.dark #contact .wrapper .whoop:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
 }
 
 /* Individual Brand Hover Effects using CSS Variables for cleanliness */
