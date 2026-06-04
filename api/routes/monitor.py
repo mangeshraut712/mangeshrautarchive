@@ -1,3 +1,4 @@
+import hashlib
 import os
 from datetime import datetime, timezone
 from typing import Optional, Dict
@@ -7,12 +8,44 @@ from api.monitoring import system_monitor, EventType
 
 router = APIRouter()
 
+MAX_CSP_REPORT_BYTES = 16 * 1024
+MAX_MONITOR_EVENTS_LIMIT = 100
+
+
+def _is_production_runtime() -> bool:
+    return os.getenv("VERCEL_ENV") == "production"
+
+
+def _mask_monitor_identifier(value: str) -> str:
+    """Return a stable, non-reversible label for public monitor output."""
+    digest = hashlib.sha256(value.encode("utf-8")).hexdigest()[:12]
+    return f"client:{digest}"
+
+
+def _require_monitor_admin(request: Request) -> None:
+    admin_token = os.getenv("MONITOR_ADMIN_TOKEN", "").strip()
+    if admin_token:
+        provided = request.headers.get("x-monitor-admin-token", "").strip()
+        if provided == admin_token:
+            return
+        raise HTTPException(status_code=403, detail="Monitor admin token required")
+
+    if _is_production_runtime():
+        raise HTTPException(status_code=403, detail="Monitor admin actions are disabled")
+
 
 @router.post("/api/csp-report", tags=["system-monitor"], summary="CSP violation report")
 async def receive_csp_report(request: Request):
     """
     Accept browser CSP violation reports without storing sensitive request bodies.
     """
+    try:
+        content_length = int(request.headers.get("content-length") or "0")
+    except ValueError:
+        content_length = 0
+    if content_length > MAX_CSP_REPORT_BYTES:
+        raise HTTPException(status_code=413, detail="CSP report is too large")
+
     try:
         payload = await request.json()
     except Exception:
@@ -306,8 +339,9 @@ async def get_monitor_events(
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "note": "System monitor not initialized - using fallback",
         }
+    safe_limit = max(1, min(limit, MAX_MONITOR_EVENTS_LIMIT))
     events = system_monitor.get_events(
-        limit=limit, event_type=event_type_enum, resolved_only=resolved_only
+        limit=safe_limit, event_type=event_type_enum, resolved_only=resolved_only
     )
     return {
         "events": events,
@@ -321,10 +355,12 @@ async def get_monitor_events(
     tags=["system-monitor"],
     summary="Resolve a monitor event",
 )
-async def resolve_monitor_event(event_id: str):
+async def resolve_monitor_event(event_id: str, request: Request):
     """
     Mark a system event as resolved
     """
+    # This route mutates monitor state; production requires an explicit admin token.
+    _require_monitor_admin(request)
     if system_monitor is None:
         raise HTTPException(status_code=503, detail="Monitor service temporarily unavailable")
     success = system_monitor.resolve_event(event_id)
@@ -446,16 +482,21 @@ async def get_security_status():
         # Filter timestamps to the current window
         recent = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
         if recent:
-            active_rate_limits[ip] = {
+            active_rate_limits[_mask_monitor_identifier(str(ip))] = {
                 "count": len(recent),
                 "limit": RATE_LIMIT_REQUESTS,
                 "remaining": max(0, RATE_LIMIT_REQUESTS - len(recent)),
-                "reset_seconds": max(0, round(RATE_LIMIT_WINDOW - (now - recent[0]))) if len(recent) > 0 else 0
+                "reset_seconds": max(0, round(RATE_LIMIT_WINDOW - (now - recent[0]))),
             }
 
+    suspicious_clients = [
+        _mask_monitor_identifier(str(value))
+        for value in list(system_monitor.suspicious_ips)
+    ]
     return {
         "security_events": list(system_monitor.security_events)[-20:],  # Last 20 events
-        "suspicious_ips": list(system_monitor.suspicious_ips),
+        "suspicious_clients": suspicious_clients,
+        "suspicious_ips": suspicious_clients,
         "rate_limits": active_rate_limits,
     }
 

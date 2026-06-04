@@ -124,8 +124,9 @@ async def github_api_proxy(path: str):
             response = JSONResponse(status_code=200, content=cached["data"])
             response.headers["x-data-stale"] = "1"
             return response
+        print(f"GitHub proxy request failed: {type(exc).__name__}")
         raise HTTPException(
-            status_code=503, detail=f"GitHub request failed: {str(exc)}"
+            status_code=503, detail="GitHub request failed"
         )
 
     if github_resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
@@ -292,10 +293,10 @@ async def get_github_profile(username: str = "mangeshraut712"):
         }
     except httpx.HTTPError as e:
         print(f"❌ get_github_profile HTTP error: {str(e)}")
-        raise HTTPException(status_code=502, detail=f"GitHub API gateway error: {str(e)}")
+        raise HTTPException(status_code=502, detail="GitHub API gateway error")
     except Exception as e:
         print(f"❌ get_github_profile unexpected error: {type(e).__name__} - {str(e)}")
-        raise HTTPException(status_code=500, detail=f"GitHub integration error: {str(e)}")
+        raise HTTPException(status_code=500, detail="GitHub integration error")
 
 
 @router.get("/github/repos")
@@ -325,7 +326,7 @@ async def get_github_repos(
         }
     except httpx.HTTPError as e:
         print(f"❌ get_github_repos HTTP error: {str(e)}")
-        raise HTTPException(status_code=502, detail=f"GitHub API gateway error: {str(e)}")
+        raise HTTPException(status_code=502, detail="GitHub API gateway error")
     except Exception as e:
         print(f"❌ get_github_repos unexpected error: {type(e).__name__} - {str(e)}")
-        raise HTTPException(status_code=500, detail=f"GitHub integration error: {str(e)}")
+        raise HTTPException(status_code=500, detail="GitHub integration error")

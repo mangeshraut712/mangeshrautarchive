@@ -20,7 +20,8 @@ async def get_analytics_views():
     try:
         return await portfolio_analytics_store.get_metrics()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analytics error: {str(e)}")
+        print(f"Analytics metrics error: {type(e).__name__}")
+        raise HTTPException(status_code=500, detail="Analytics service error")
 
 
 @router.post("/api/analytics/track")
@@ -42,7 +43,8 @@ async def track_analytics_view(payload: AnalyticsTrackRequest, request: Request)
         )
         return metrics
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analytics tracking error: {str(e)}")
+        print(f"Analytics tracking error: {type(e).__name__}")
+        raise HTTPException(status_code=500, detail="Analytics tracking error")
 
 
 # Alias for old analytics path

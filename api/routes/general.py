@@ -5,7 +5,13 @@ from fastapi import APIRouter, HTTPException, Request
 
 import httpx
 
-from api.config import ContactMessage
+from api.config import (
+    ContactMessage,
+    RATE_LIMIT_WINDOW,
+    api_error,
+    check_rate_limit,
+    get_client_ip,
+)
 
 router = APIRouter()
 
@@ -31,6 +37,15 @@ async def api_root():
 @router.post("/api/contact")
 async def send_contact_message(payload: ContactMessage, req: Request):
     """Save contact form submission to Firestore via REST API."""
+    client_ip = get_client_ip(req)
+    if not check_rate_limit(f"contact:{client_ip}"):
+        raise api_error(
+            code="RATE_LIMITED",
+            message="Too many contact submissions. Please wait before trying again.",
+            status=429,
+            retry_after=RATE_LIMIT_WINDOW,
+        )
+
     # Basic email validation
     email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
     if not email_re.match(payload.email):
@@ -84,7 +99,7 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             )
 
         doc_id = resp.json().get("name", "").split("/")[-1]
-        print(f"✅ Contact message saved: {doc_id} from {payload.email}")
+        print(f"✅ Contact message saved: {doc_id}")
         return {"success": True, "message": "Message sent successfully!", "id": doc_id}
 
     except httpx.RequestError as exc:

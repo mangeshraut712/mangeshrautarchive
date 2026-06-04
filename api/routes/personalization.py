@@ -25,7 +25,7 @@ async def update_user_preferences(request: Request, preferences: Dict[str, Any])
     Update user preferences (GDPR compliant)
     """
     try:
-        user_id = preferences.get("user_id", get_client_ip(request))
+        user_id = str(preferences.get("user_id") or get_client_ip(request))[:128]
         prefs = preferences.get("preferences", {})
 
         memory_manager.update_preferences(user_id, prefs)
@@ -37,9 +37,8 @@ async def update_user_preferences(request: Request, preferences: Dict[str, Any])
             "preferences": prefs,
         }
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error updating preferences: {str(e)}"
-        )
+        print(f"Preference update error: {type(e).__name__}")
+        raise HTTPException(status_code=500, detail="Error updating preferences")
 
 
 @router.get("/api/personalization/greeting")
