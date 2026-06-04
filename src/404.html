@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="view-transition" content="same-origin" />
     <title>Page Not Found | Mangesh Raut Portfolio</title>
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
     <style>
       * {
         margin: 0;
@@ -96,7 +98,11 @@
     </style>
   </head>
   <body>
-    <div class="error-container">
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+    </div>
+
+    <main class="error-container" id="main-content">
       <div class="error-code">404</div>
       <h1 class="error-title">Page Not Found</h1>
       <p class="error-message">
@@ -119,7 +125,7 @@
         </svg>
         Back to Home
       </a>
-    </div>
+    </main>
 
     <script type="module" src="js/utils/theme.js?v=20260423a"></script>
   </body>

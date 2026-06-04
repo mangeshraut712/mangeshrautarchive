@@ -1,11 +1,43 @@
 import os
 from datetime import datetime, timezone
 from typing import Optional, Dict
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 
 from api.monitoring import system_monitor, EventType
 
 router = APIRouter()
+
+
+@router.post("/api/csp-report", tags=["system-monitor"], summary="CSP violation report")
+async def receive_csp_report(request: Request):
+    """
+    Accept browser CSP violation reports without storing sensitive request bodies.
+    """
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = {}
+
+    report = payload.get("csp-report") if isinstance(payload, dict) else None
+    details = (
+        report
+        if isinstance(report, dict)
+        else {"report_keys": list(payload.keys())[:8] if isinstance(payload, dict) else []}
+    )
+
+    if system_monitor is not None:
+        system_monitor.log_event(
+            "CSP violation report received",
+            EventType.WARNING,
+            details,
+            "security_monitor",
+        )
+
+    return {
+        "success": True,
+        "accepted": True,
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
 
 
 @router.get("/monitor/health", tags=["system-monitor"], summary="Detailed monitor health")

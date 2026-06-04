@@ -46,7 +46,8 @@
     "qa:dev:chrome": "TEST_TARGET=dev node scripts/utils/run-playwright.js test tests/e2e/smoke.spec.js --project=\"Desktop Chrome\"",
     "qa:dev:safari": "TEST_TARGET=dev node scripts/utils/run-playwright.js test tests/e2e/smoke.spec.js --project=\"Desktop Safari\"",
     "qa:cross-browser": "npm run test:e2e:chrome && npm run test:e2e:safari && npm run test:e2e:firefox && npm run test:e2e:mobile-chrome && npm run test:e2e:mobile-safari",
-    "qa:visual": "VISUAL_TESTING=1 npm run test:e2e:chrome",
+    "qa:visual": "start-server-and-test \"PORT=4173 npm run dev\" http://127.0.0.1:4173 \"CI=1 VISUAL_TESTING=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run test:e2e:chrome\"",
+    "qa:visual:ci": "start-server-and-test \"PORT=4173 npm run dev\" http://127.0.0.1:4173 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4173 npm run qa:visual\"",
     "qa:visual:update": "VISUAL_TESTING=1 UPDATE_SNAPSHOTS=1 npm run test:e2e:chrome",
     "qa:chrome": "npm run qa:smoke && npm run qa:a11y && npm run qa:lighthouse:desktop && npm run qa:lighthouse:mobile",
     "qa:prod-ready": "npm run security-check && npm run lint && npm test && npm run qa:chrome",
@@ -79,7 +80,9 @@
     "@vercel/analytics": "^1.5.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.27.7",
-    "express": "^4.21.2",
+    "express": "^4.21.2"
+  },
+  "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

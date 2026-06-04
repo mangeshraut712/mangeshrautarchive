@@ -155,6 +155,65 @@ html:not(.dark) .home-hero {
 
 /* Hero Description */
 
+/* Availability Badge — recruiter-facing status indicator */
+
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 980px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #1a7a3a;
+  background: rgb(52 199 89 / 12%);
+  border: 1px solid rgb(52 199 89 / 25%);
+  margin: 0.5rem auto 0;
+  cursor: default;
+  transition: all 0.3s ease;
+}
+
+.availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c759;
+  box-shadow: 0 0 6px rgb(52 199 89 / 60%);
+  animation: availabilityPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes availabilityPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(0.85);
+  }
+}
+
+html.dark .availability-badge {
+  color: #30d158;
+  background: rgb(48 209 88 / 10%);
+  border-color: rgb(48 209 88 / 20%);
+}
+
+html.dark .availability-dot {
+  background: #30d158;
+  box-shadow: 0 0 8px rgb(48 209 88 / 50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .availability-dot {
+    animation: none;
+  }
+}
+
 .hero-description {
   font-size: clamp(1rem, 1.8vw, 1.25rem) !important;
   max-width: 600px;

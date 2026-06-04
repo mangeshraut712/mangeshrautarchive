@@ -34,11 +34,17 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: 🔒 Security — dependency vulnerability audit
+        run: npm audit --audit-level=high --omit=dev
+
       - name: 🔒 Security — scan for exposed API keys
         run: npm run security-check
 
       - name: 🧹 Lint — ESLint code quality check
         run: npm run lint
+
+      - name: 🎨 Lint — Stylelint CSS quality check
+        run: npm run lint:css
 
       - name: 🩺 React Doctor — React codebase health check
         run: npx react-doctor@latest --verbose --diff
@@ -77,6 +83,9 @@ jobs:
 
       - name: ♿ Chrome accessibility baseline
         run: npm run qa:a11y
+
+      - name: 📸 Chrome visual regression test
+        run: npm run qa:visual:ci
 
       - name: ⚡ Lighthouse desktop gate
         run: npm run qa:lighthouse:desktop

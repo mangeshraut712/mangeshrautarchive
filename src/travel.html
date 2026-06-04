@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="view-transition" content="same-origin" />
     <meta
       name="description"
       content="Mangesh Raut Travel Atlas — a 2026 map-led journal of countries, cities, landmarks, and destination guides."
@@ -46,6 +47,8 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
     />
 
     <!-- Design System -->
@@ -56,6 +59,7 @@
 
     <!-- Overrides for consistency -->
     <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260423a" />
+    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
     <script type="application/ld+json">
       [
         {
@@ -115,6 +119,10 @@
   </head>
 
   <body class="travel-body">
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+    </div>
+
     <!-- Theme init -->
     <script>
       if (
@@ -125,7 +133,7 @@
       }
     </script>
 
-    <main class="travel-layout" id="travel-app">
+    <main class="travel-layout" id="main-content" data-travel-app>
       <!-- ─── Map ─── -->
       <div class="travel-map-layer">
         <div id="map-container" class="travel-map"></div>

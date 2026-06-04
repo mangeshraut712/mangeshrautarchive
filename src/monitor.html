@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="view-transition" content="same-origin" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <title>System Monitor | AssistMe Dashboard</title>
@@ -65,9 +66,12 @@
     <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260423a" />
     <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260423a" />
     <link rel="stylesheet" href="assets/css/monitor.css?v=20260423a" />
+    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
     />
     <script type="application/ld+json">
       [
@@ -127,6 +131,10 @@
     </script>
   </head>
   <body class="monitor-page">
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+    </div>
+
     <nav
       id="global-nav"
       class="global-nav dynamic-island monitor-nav"
@@ -266,7 +274,7 @@
       </div>
     </header>
 
-    <main class="monitor-container">
+    <main class="monitor-container" id="main-content">
       <section
         class="monitor-summary-card"
         id="monitor-summary-section"
@@ -730,6 +738,8 @@
       let monitorApiAvailable = false;
       let monitorApiIssue = '';
       let lastRefreshIso = null;
+      let currentActiveFilterTab = '';
+      let cachedEventsList = [];
 
       function normalizeOrigin(rawValue, fallback = '') {
         if (!rawValue) return fallback;

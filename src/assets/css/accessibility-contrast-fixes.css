@@ -4,6 +4,44 @@
  * Target: 4.5:1 minimum contrast ratio for all text
  */
 
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+}
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  color: #ffffff;
+  background: #0057d8;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 20%);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 16px;
+  outline: 3px solid #ffcc00;
+  outline-offset: 3px;
+}
+
+html.dark .skip-link {
+  color: #000000;
+  background: #7dc8ff;
+  border-color: #000000;
+}
+
 /* ========================================
    1. EXPERIENCE SECTION - HIGH CONTRAST FIXES
    ======================================== */
@@ -437,5 +475,53 @@ html.dark .footer-tagline {
   html.dark .author-title,
   html.dark .activity-stat-label {
     color: #fff !important;
+  }
+}
+
+/* ========================================
+   13. SYSTEM FORCED COLORS (Windows High Contrast Mode)
+   ======================================== */
+
+@media (forced-colors: active) {
+  /* Ensure outlines are visible for focus states */
+  *:focus-visible {
+    outline: 2px solid SelectedText !important;
+    outline-offset: 3px !important;
+  }
+
+  /* Ensure game controls and keycaps have borders */
+  .game-kbd,
+  kbd {
+    border: 1px solid ButtonText !important;
+  }
+
+  /* Ensure card borders are visible when backgrounds are flattened */
+  .apple-card,
+  .experience-card,
+  .education-card,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .contact-card,
+  .currently-card,
+  .legend-card {
+    border: 1.5px solid ButtonText !important;
+  }
+
+  /* Icons should use the system canvas text color */
+  .fas,
+  .far,
+  .fab,
+  svg {
+    color: currentColor !important;
+    fill: currentColor !important;
+  }
+
+  /* Interactive items should clearly indicate focus/active status */
+  a:hover,
+  button:hover {
+    outline: 2px dashed SelectedText !important;
   }
 }

@@ -20,6 +20,8 @@ import { markdownService } from '../services/MarkdownService.js';
 import appleSounds from './apple-sounds.js';
 
 const MAX_CHAT_INPUT_LENGTH = 1800;
+const CLIENT_CHAT_MESSAGE_LIMIT = 12;
+const CLIENT_CHAT_RATE_KEY = 'assistme-chat-rate-v1';
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
 
 function stripUnsafeControlCharacters(value) {
@@ -127,6 +129,10 @@ class AppleIntelligenceChatbot {
     this.retryCount = 0;
     this.textareaWidth = 0;
 
+    // Local rate-limit visibility mirrors the backend throttle before requests are sent.
+    this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
+    this.lastFocusedElement = null;
+
     if (!this.elements.widget || !this.elements.toggle) {
       console.error('Chatbot elements not found');
       return;
@@ -137,6 +143,74 @@ class AppleIntelligenceChatbot {
     this.initVoiceRecognition();
     this.bindEvents();
     this.addWelcomeMessage();
+
+    // Set initial rate limit badge state
+    this.updateRateLimitBadge();
+  }
+
+  getTodayKey() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  getRemainingQueries() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(CLIENT_CHAT_RATE_KEY) || '{}');
+      if (stored.date === this.getTodayKey()) {
+        return Math.max(0, this.maxSessionMessages - (Number(stored.count) || 0));
+      }
+
+      localStorage.setItem(
+        CLIENT_CHAT_RATE_KEY,
+        JSON.stringify({ date: this.getTodayKey(), count: 0 })
+      );
+    } catch {
+      // Storage can be disabled in private browsing; the server still enforces real limits.
+    }
+
+    return this.maxSessionMessages;
+  }
+
+  updateRateLimitBadge() {
+    const badge = document.getElementById('chatbot-rate-limit-badge');
+    const status = this.elements.rateStatus;
+    const remaining = this.getRemainingQueries();
+
+    if (badge) {
+      badge.textContent = `${remaining} left`;
+
+      // Update styling class based on count
+      if (remaining <= 0) {
+        badge.className = 'rate-limit-empty';
+      } else if (remaining <= 3) {
+        badge.className = 'rate-limit-low';
+      } else {
+        badge.className = '';
+      }
+    }
+
+    if (status) {
+      status.textContent =
+        remaining > 0
+          ? `${remaining} free AI messages left today`
+          : 'Daily free-message estimate reached';
+    }
+  }
+
+  decrementRemainingQueries() {
+    let remaining = Math.max(0, this.getRemainingQueries() - 1);
+    try {
+      localStorage.setItem(
+        CLIENT_CHAT_RATE_KEY,
+        JSON.stringify({
+          date: this.getTodayKey(),
+          count: this.maxSessionMessages - remaining,
+        })
+      );
+    } catch {
+      remaining = this.maxSessionMessages;
+    }
+    this.updateRateLimitBadge();
+    return remaining;
   }
 
   async waitForChatAPI() {
@@ -236,6 +310,7 @@ class AppleIntelligenceChatbot {
       messages: document.getElementById('chatbot-messages'),
       sendBtn: document.querySelector('.chatbot-send-btn'),
       voiceBtn: document.getElementById('chatbot-voice-btn'),
+      rateStatus: document.getElementById('chatbot-rate-status'),
     };
 
     // Create Shadow Div for smooth resizing
@@ -328,6 +403,11 @@ class AppleIntelligenceChatbot {
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && this.isOpen) {
         this.closeWidget();
+        return;
+      }
+
+      if (e.key === 'Tab' && this.isOpen) {
+        this.trapFocus(e);
       }
     });
 
@@ -349,13 +429,15 @@ class AppleIntelligenceChatbot {
   }
 
   openWidget() {
+    this.lastFocusedElement = document.activeElement;
     document.body.classList.add('chatbot-open');
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
     this.isOpen = true;
+    this.updateRateLimitBadge();
     appleSounds.playNotification();
     setTimeout(() => {
-      this.elements.input?.focus();
+      (this.elements.input || this.elements.widget)?.focus();
     }, 300);
   }
 
@@ -364,7 +446,11 @@ class AppleIntelligenceChatbot {
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
     this.isOpen = false;
-    this.elements.toggle?.focus({ preventScroll: true });
+    const focusTarget =
+      this.lastFocusedElement && document.contains(this.lastFocusedElement)
+        ? this.lastFocusedElement
+        : this.elements.toggle;
+    focusTarget?.focus({ preventScroll: true });
   }
 
   clearChat() {
@@ -380,6 +466,7 @@ class AppleIntelligenceChatbot {
     this.lastUserMessage = '';
     this.messageCount = 0;
     this.addWelcomeMessage();
+    this.updateRateLimitBadge();
   }
 
   // ── Enhanced Welcome Message ──────────────────────
@@ -474,6 +561,20 @@ class AppleIntelligenceChatbot {
     const text = this.normalizeInput(this.elements.input?.value);
     if (!text || this.isProcessing) return;
 
+    // Check rate limit first
+    const remaining = this.getRemainingQueries();
+    if (remaining <= 0) {
+      this.addErrorMessage(
+        `You have reached the daily estimate of ${this.maxSessionMessages} free AI messages. Please try again later.`
+      );
+      if (this.elements.input) {
+        this.elements.input.value = '';
+        this.autoResizeTextarea(this.elements.input);
+      }
+      this.updateRateLimitBadge();
+      return;
+    }
+
     if (text.length > MAX_CHAT_INPUT_LENGTH) {
       this.addErrorMessage(`Please keep messages under ${MAX_CHAT_INPUT_LENGTH} characters.`);
       return;
@@ -484,6 +585,9 @@ class AppleIntelligenceChatbot {
     this.retryCount = 0;
     this.removeFollowupChips();
     appleSounds.playClick();
+
+    // Decrement query count
+    this.decrementRemainingQueries();
 
     // Add user message
     this.addMessage(text, 'user');
@@ -518,6 +622,39 @@ class AppleIntelligenceChatbot {
     } finally {
       this.isProcessing = false;
       this.messageCount++;
+    }
+  }
+
+  getFocusableElements() {
+    if (!this.elements.widget) return [];
+
+    return Array.from(
+      this.elements.widget.querySelectorAll(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(element => element.offsetParent !== null || element === document.activeElement);
+  }
+
+  trapFocus(event) {
+    const focusable = this.getFocusableElements();
+    if (focusable.length === 0) {
+      event.preventDefault();
+      this.elements.widget?.focus();
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
     }
   }
 

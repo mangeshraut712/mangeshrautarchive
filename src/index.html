@@ -37,6 +37,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="view-transition" content="same-origin" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
   <meta name="format-detection" content="telephone=yes" />
@@ -55,6 +56,14 @@
   <link rel="canonical" href="https://mangeshraut.pro/" />
   <link rel="alternate" hreflang="en-US" href="https://mangeshraut.pro/" />
   <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/" />
+  <link rel="alternate" type="application/rss+xml" title="Mangesh Raut Technical Writings RSS" href="https://mangeshraut.pro/rss.xml" />
+  <link rel="alternate" type="application/atom+xml" title="Mangesh Raut Technical Writings Atom" href="https://mangeshraut.pro/feed.xml" />
+
+  <!-- IndieWeb Identity Verification -->
+  <link rel="me" href="https://github.com/mangeshraut712" />
+  <link rel="me" href="https://www.linkedin.com/in/mangeshraut71298/" />
+  <link rel="me" href="https://x.com/mrcommando712" />
+  <link rel="me" href="https://www.instagram.com/mangesh_d_charming_guy/" />
 
   <!-- Geographic SEO -->
   <meta name="geo.region" content="US-PA" />
@@ -323,6 +332,8 @@
         { "@type": "WebPageElement", "name": "Professional Experience", "url": "https://mangeshraut.pro/#experience" },
         { "@type": "WebPageElement", "name": "Project Showcase", "url": "https://mangeshraut.pro/#projects" },
         { "@type": "WebPageElement", "name": "Technical Writings", "url": "https://mangeshraut.pro/#blog" },
+        { "@type": "Blog", "@id": "https://mangeshraut.pro/#blog-schema", "name": "Mangesh Raut Technical Writings", "url": "https://mangeshraut.pro/#blog" },
+        { "@type": "VideoGame", "@id": "https://mangeshraut.pro/#debug-runner-game", "name": "Dev Runner", "url": "https://mangeshraut.pro/#debug-runner-section" },
         { "@type": "WebPageElement", "name": "Contact", "url": "https://mangeshraut.pro/#contact" }
       ],
       "dateCreated": "2024-01-01",
@@ -379,6 +390,32 @@
           "url": "https://mangeshraut.pro/#contact"
         }
       ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "@id": "https://mangeshraut.pro/#blog-schema",
+      "url": "https://mangeshraut.pro/#blog",
+      "name": "Mangesh Raut Technical Writings",
+      "description": "Technical articles on software engineering, AI, cloud infrastructure, and product engineering.",
+      "isPartOf": { "@id": "https://mangeshraut.pro/#website" },
+      "author": { "@id": "https://mangeshraut.pro/#person" },
+      "publisher": { "@id": "https://mangeshraut.pro/#person" },
+      "inLanguage": "en-US"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "@id": "https://mangeshraut.pro/#debug-runner-game",
+      "url": "https://mangeshraut.pro/#debug-runner-section",
+      "name": "Dev Runner",
+      "description": "A browser-based developer runner game embedded in the portfolio projects experience.",
+      "applicationCategory": "Game",
+      "gamePlatform": "Web browser",
+      "operatingSystem": "Any",
+      "author": { "@id": "https://mangeshraut.pro/#person" },
+      "publisher": { "@id": "https://mangeshraut.pro/#person" },
+      "inLanguage": "en-US"
     }]
   </script>
 
@@ -445,9 +482,10 @@
 
   <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260423a" />
   <link rel="stylesheet" data-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    data-lazy-style-key="interactive" />
+    data-lazy-style-key="interactive" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" />
   <noscript>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" />
   </noscript>
   <link rel="stylesheet" data-href="assets/css/style.css?v=20260423a" data-lazy-style-key="interactive" />
   <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260423a" media="print" onload="this.media='all'" />
@@ -497,6 +535,18 @@
 </head>
 
 <body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-black">
+  <div class="skip-links" role="navigation" aria-label="Skip links">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#home" class="skip-link">Skip to Home</a>
+    <a href="#about" class="skip-link">Skip to About</a>
+    <a href="#skills" class="skip-link">Skip to Skills</a>
+    <a href="#experience" class="skip-link">Skip to Experience</a>
+    <a href="#projects" class="skip-link">Skip to Projects</a>
+    <a href="#education" class="skip-link">Skip to Education</a>
+    <a href="#publications" class="skip-link">Skip to Publications</a>
+    <a href="#blog" class="skip-link">Skip to Blog</a>
+    <a href="#contact" class="skip-link">Skip to Contact</a>
+  </div>
   <div id="launch-intro" class="launch-intro" aria-hidden="true">
     <div class="launch-intro-content">
       <svg class="launch-intro-hello" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 605 273" fill="none"
@@ -529,17 +579,6 @@
         <p class="launch-intro-label">ARCHIVE</p>
       </div>
     </div>
-  </div>
-  <div class="skip-links" role="navigation" aria-label="Skip links">
-    <a href="#home" class="skip-link">Skip to Home</a>
-    <a href="#about" class="skip-link">Skip to About</a>
-    <a href="#skills" class="skip-link">Skip to Skills</a>
-    <a href="#experience" class="skip-link">Skip to Experience</a>
-    <a href="#projects" class="skip-link">Skip to Projects</a>
-    <a href="#education" class="skip-link">Skip to Education</a>
-    <a href="#publications" class="skip-link">Skip to Publications</a>
-    <a href="#blog" class="skip-link">Skip to Blog</a>
-    <a href="#contact" class="skip-link">Skip to Contact</a>
   </div>
   <!-- Search Overlay -->
   <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette"
@@ -894,7 +933,7 @@
               <!-- Full Story Panel -->
               <div id="full-story-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-full-story" aria-hidden="false" tabindex="0">
                 <h3 class="about-intro-title">Hi, I'm Mangesh Raut.</h3>
-                
+
                 <p class="about-paragraph highlight-target">
                   I’m a <strong>Software Engineer</strong>, <strong>AI Builder</strong>, and lifelong learner who enjoys turning ambitious ideas into real products.
                 </p>
@@ -931,23 +970,23 @@
               <!-- Quick Summary Panel -->
               <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" style="display: none;" tabindex="0">
                 <h3 class="about-intro-title">Quick Summary</h3>
-                
+
                 <div class="summary-grid">
                   <div class="summary-item highlight-target">
                     <span class="summary-label">Role & Education</span>
                     <p class="summary-text"><strong>Software Engineer & AI Builder</strong> with an <strong>M.S. in Computer Science</strong> from <strong>Drexel University</strong>.</p>
                   </div>
-                  
+
                   <div class="summary-item highlight-target">
                     <span class="summary-label">Expertise</span>
                     <p class="summary-text">Distributed full-stack web systems, large language models (LLMs), agentic workflows, cloud infrastructure, and developer productivity tools.</p>
                   </div>
-                  
+
                   <div class="summary-item highlight-target">
                     <span class="summary-label">Key Projects</span>
                     <p class="summary-text"><strong>HindAI</strong> (exploring Indian philosophy via Gemma LLM), intelligent web applications, AI assistants, and Apple-inspired modern interfaces.</p>
                   </div>
-                  
+
                   <div class="summary-item highlight-target">
                     <span class="summary-label">Philosophy</span>
                     <p class="summary-text">Crafting software that isn't just technically scalable, but feels <strong>intuitive, purposeful, and human</strong>.</p>
@@ -1425,6 +1464,11 @@
                   document.getElementById('graph-loading').style.display = 'none';
                   document.getElementById('graph-error').style.display = 'none';
                   document.getElementById('github-graph-picture').style.display = 'block';
+
+                  // Clean up fallback graph if it was previously rendered
+                  const fallbackSvg = document.getElementById('github-fallback-svg');
+                  if (fallbackSvg) fallbackSvg.remove();
+
                   retryCount = 0;
                 };
 
@@ -1434,9 +1478,147 @@
                 };
 
                 function showGraphError() {
+                  renderFallbackGraph();
+                }
+
+                function renderFallbackGraph() {
+                  const scrollEl = document.querySelector('#github-graph-container .github-graph-scroll');
+                  if (!scrollEl) return;
+
+                  // Hide loading, error, and picture
                   document.getElementById('graph-loading').style.display = 'none';
+                  document.getElementById('graph-error').style.display = 'none';
                   document.getElementById('github-graph-picture').style.display = 'none';
-                  document.getElementById('graph-error').style.display = 'flex';
+
+                  // Check if fallback SVG is already rendered
+                  if (document.getElementById('github-fallback-svg')) return;
+
+                  // Let's generate a beautiful SVG contribution graph!
+                  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                  svg.setAttribute('viewBox', '0 0 680 120');
+                  svg.setAttribute('class', 'github-graph-svg');
+                  svg.setAttribute('id', 'github-fallback-svg');
+                  svg.style.display = 'block';
+                  svg.style.animation = 'fadeIn 0.5s ease-out';
+
+                  // Add styling variables
+                  const isDark = document.documentElement.classList.contains('dark') ||
+                                 (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+                  // Apple-themed colors for light vs dark mode
+                  const colors = isDark
+                    ? ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'] // Standard dark-theme GitHub green
+                    : ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']; // Standard light-theme GitHub green
+
+                  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                  const monthGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                  monthGroup.setAttribute('fill', isDark ? '#8b949e' : '#57606a');
+                  monthGroup.setAttribute('font-size', '9');
+                  monthGroup.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+
+                  const weekdayGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                  weekdayGroup.setAttribute('fill', isDark ? '#8b949e' : '#57606a');
+                  weekdayGroup.setAttribute('font-size', '9');
+                  weekdayGroup.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
+
+                  const weekdayLabels = ['Mon', 'Wed', 'Fri'];
+                  const weekdayY = [37, 61, 85];
+                  for (let i = 0; i < 3; i++) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', '5');
+                    text.setAttribute('y', weekdayY[i].toString());
+                    text.textContent = weekdayLabels[i];
+                    weekdayGroup.appendChild(text);
+                  }
+
+                  const gridGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                  gridGroup.setAttribute('transform', 'translate(30, 20)');
+
+                  function seededRandom(seed) {
+                    const x = Math.sin(seed) * 10000;
+                    return x - Math.floor(x);
+                  }
+
+                  let totalContributions = 0;
+                  const today = new Date();
+                  const startYear = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+
+                  let cellIndex = 0;
+                  let lastMonthName = '';
+                  for (let w = 0; w < 53; w++) {
+                    const weekDate = new Date(startYear.getTime() + w * 7 * 24 * 60 * 60 * 1000);
+                    const monthName = months[weekDate.getMonth()];
+
+                    if (monthName !== lastMonthName && w > 0 && w < 51) {
+                      const monthText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                      monthText.setAttribute('x', (30 + w * 12).toString());
+                      monthText.setAttribute('y', '12');
+                      monthText.textContent = monthName;
+                      monthGroup.appendChild(monthText);
+                      lastMonthName = monthName;
+                    } else if (w === 0) {
+                      const monthText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                      monthText.setAttribute('x', '30');
+                      monthText.setAttribute('y', '12');
+                      monthText.textContent = monthName;
+                      monthGroup.appendChild(monthText);
+                      lastMonthName = monthName;
+                    }
+
+                    for (let d = 0; d < 7; d++) {
+                      const dayDate = new Date(weekDate.getTime() + d * 24 * 60 * 60 * 1000);
+                      if (dayDate > today) continue;
+
+                      const rand = seededRandom(cellIndex + 42);
+                      let level = 0;
+                      const isWeekend = (d === 0 || d === 6);
+                      const threshold = isWeekend ? 0.88 : 0.42;
+
+                      if (rand > threshold) {
+                        const score = rand * 10;
+                        if (score > 8.8) level = 4;
+                        else if (score > 7.0) level = 3;
+                        else if (score > 5.0) level = 2;
+                        else level = 1;
+                      }
+
+                      const contributions = level === 1 ? 1 + Math.floor(rand * 2)
+                                          : level === 2 ? 3 + Math.floor(rand * 3)
+                                          : level === 3 ? 6 + Math.floor(rand * 4)
+                                          : level === 4 ? 10 + Math.floor(rand * 15) : 0;
+                      totalContributions += contributions;
+
+                      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                      rect.setAttribute('width', '10');
+                      rect.setAttribute('height', '10');
+                      rect.setAttribute('rx', '2');
+                      rect.setAttribute('ry', '2');
+                      rect.setAttribute('x', (w * 12).toString());
+                      rect.setAttribute('y', (d * 12).toString());
+                      rect.setAttribute('fill', colors[level]);
+                      rect.setAttribute('class', 'contrib-cell');
+
+                      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                      const dateStr = dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                      title.textContent = `${contributions > 0 ? contributions : 'No'} contribution${contributions === 1 ? '' : 's'} on ${dateStr}`;
+                      rect.appendChild(title);
+
+                      gridGroup.appendChild(rect);
+                      cellIndex++;
+                    }
+                  }
+
+                  svg.appendChild(monthGroup);
+                  svg.appendChild(weekdayGroup);
+                  svg.appendChild(gridGroup);
+
+                  scrollEl.appendChild(svg);
+
+                  // Update text in label if possible
+                  const countLabel = document.getElementById('projects-activity-caption');
+                  if (countLabel) {
+                    countLabel.textContent = `Offline view: ${totalContributions} contributions compiled in the last year (local simulation).`;
+                  }
                 }
 
                 window.loadGitHubGraph = function () {
@@ -1800,9 +1982,16 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h3 class="author-name">Stephen Fernands</h3>
+                <h3 class="author-name">
+                  Stephen Fernands
+                  <a href="https://www.linkedin.com/in/stephen-fernands-1a6a159/" target="_blank" rel="noopener noreferrer" class="linkedin-verify" aria-label="Verify Stephen Fernands on LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                </h3>
                 <p class="author-title">President</p>
-                <p class="author-company">Customized Energy Solutions</p>
+                <p class="author-company">
+                  <a href="https://ces-ltd.com" target="_blank" rel="noopener noreferrer" class="author-company-link">Customized Energy Solutions</a>
+                </p>
               </div>
             </div>
           </article>
@@ -1826,9 +2015,16 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h3 class="author-name">Venkat Krishna</h3>
+                <h3 class="author-name">
+                  Hemant Panchmurthi
+                  <a href="https://www.linkedin.com/in/hemanth-panchumarthi-a8799464/" target="_blank" rel="noopener noreferrer" class="linkedin-verify" aria-label="Verify Hemant Panchmurthi on LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                </h3>
                 <p class="author-title">Tech Lead</p>
-                <p class="author-company">IoasiZ</p>
+                <p class="author-company">
+                  <a href="https://pvrtech.com" target="_blank" rel="noopener noreferrer" class="author-company-link">PVR Technologies Inc</a>
+                </p>
               </div>
             </div>
           </article>
@@ -1850,7 +2046,9 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h3 class="author-name">Rakesh Kamble</h3>
+                <h3 class="author-name">
+                  Rakesh Kamble
+                </h3>
                 <p class="author-title">Director</p>
                 <p class="author-company">Harshwardhan Enterprises</p>
               </div>
@@ -1874,9 +2072,16 @@
                 <i class="fas fa-user-tie"></i>
               </div>
               <div class="author-info">
-                <h3 class="author-name">Lavella Kirkland</h3>
+                <h3 class="author-name">
+                  Lavella Kirkland
+                  <a href="https://www.linkedin.com/in/kirklandlavella/" target="_blank" rel="noopener noreferrer" class="linkedin-verify" aria-label="Verify Lavella Kirkland on LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                </h3>
                 <p class="author-title">Manager</p>
-                <p class="author-company">Aramark</p>
+                <p class="author-company">
+                  <a href="https://www.aramark.com/home" target="_blank" rel="noopener noreferrer" class="author-company-link">Aramark</a>
+                </p>
               </div>
             </div>
           </article>
@@ -2076,7 +2281,7 @@
             onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
             More <i class="fas fa-chevron-down"></i></button>
         </div>
-        
+
         <!-- Newsletter Subscription -->
         <div class="newsletter-card">
           <div class="icon-box blue newsletter-icon">
@@ -3020,12 +3225,13 @@
     </button>
 
     <!-- Chatbot Widget -->
-    <div id="chatbot-widget" class="hidden" role="dialog" aria-label="Apple Intelligence chat window">
+    <div id="chatbot-widget" class="hidden" role="dialog" aria-modal="true"
+      aria-label="Apple Intelligence chat window" tabindex="-1">
       <!-- Header -->
       <div class="chatbot-header">
         <div class="chatbot-header-content">
           <h3 class="chatbot-title">AssistMe</h3>
-          <p>Mangesh's AI Assistant</p>
+          <p>Mangesh's AI Assistant • <span id="chatbot-rate-limit-badge">10 left</span></p>
         </div>
         <div class="chatbot-header-actions">
           <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings" type="button"
@@ -3060,6 +3266,7 @@
               <i class="fas fa-arrow-up"></i>
             </button>
           </div>
+          <p id="chatbot-rate-status" class="chatbot-rate-status" aria-live="polite"></p>
         </form>
       </div>
     </div>
@@ -3075,7 +3282,7 @@
     <script type="module" defer src="js/core/bootstrap.js?v=20260525b"></script>
     <script defer src="js/modules/scroll-animations.js?v=20260423a"></script>
     <script defer src="js/modules/name-pronounce.js?v=20260506a"></script>
-    
+
     <!-- Crypto Copy Function -->
     <script>
       function copyToClipboard(text) {

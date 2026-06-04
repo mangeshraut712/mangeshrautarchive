@@ -2,6 +2,7 @@ import { fileURLToPath } from 'url';
 import { dirname, resolve, join, relative } from 'path';
 import { mkdir, rm, readdir, stat, readFile, writeFile } from 'fs/promises';
 import { transform } from 'esbuild';
+import { blogPosts } from '../../src/js/modules/blog-data.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -191,9 +192,107 @@ async function build() {
     optimizeCopiedAssets(distDir),
     addCacheBusting(distDir),
     minifyHtmlFiles(distDir),
+    updateSitemapDates(distDir),
+    generateFeeds(distDir),
   ]);
 
   console.log(`✨ Build complete. Static assets written to ${distDir}`);
+}
+
+function escapeXml(value = '') {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function getSortedBlogPosts() {
+  return blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+async function generateFeeds(distDir) {
+  const siteUrl = 'https://mangeshraut.pro';
+  const updatedAt = new Date().toUTCString();
+  const atomUpdatedAt = new Date().toISOString();
+  const posts = getSortedBlogPosts();
+
+  const rssItems = posts
+    .map(post => {
+      const postUrl = `${siteUrl}/#blog`;
+      return `    <item>
+      <title>${escapeXml(post.title)}</title>
+      <link>${postUrl}</link>
+      <guid isPermaLink="false">${escapeXml(`mangeshraut-blog-${post.id}`)}</guid>
+      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      <description>${escapeXml(post.summary)}</description>
+      ${(post.tags || []).map(tag => `<category>${escapeXml(tag)}</category>`).join('\n      ')}
+    </item>`;
+    })
+    .join('\n');
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mangesh Raut Technical Writings</title>
+    <link>${siteUrl}/#blog</link>
+    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Technical articles on software engineering, AI, cloud, and product engineering by Mangesh Raut.</description>
+    <language>en-us</language>
+    <lastBuildDate>${updatedAt}</lastBuildDate>
+${rssItems}
+  </channel>
+</rss>
+`;
+
+  const atomEntries = posts
+    .map(post => {
+      const postUrl = `${siteUrl}/#blog`;
+      return `  <entry>
+    <title>${escapeXml(post.title)}</title>
+    <link href="${postUrl}" />
+    <id>${escapeXml(`${siteUrl}/blog/${post.id}`)}</id>
+    <updated>${new Date(post.date).toISOString()}</updated>
+    <summary>${escapeXml(post.summary)}</summary>
+    ${(post.tags || []).map(tag => `<category term="${escapeXml(tag)}" />`).join('\n    ')}
+  </entry>`;
+    })
+    .join('\n');
+
+  const atom = `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mangesh Raut Technical Writings</title>
+  <link href="${siteUrl}/#blog" />
+  <link href="${siteUrl}/feed.xml" rel="self" />
+  <id>${siteUrl}/</id>
+  <updated>${atomUpdatedAt}</updated>
+  <author>
+    <name>Mangesh Raut</name>
+    <uri>${siteUrl}/</uri>
+  </author>
+  <subtitle>Technical articles on software engineering, AI, cloud, and product engineering.</subtitle>
+${atomEntries}
+</feed>
+`;
+
+  await Promise.all([
+    writeFile(resolve(distDir, 'rss.xml'), rss, 'utf8'),
+    writeFile(resolve(distDir, 'feed.xml'), atom, 'utf8'),
+  ]);
+  console.log('📰 Generated RSS and Atom feeds');
+}
+
+// Auto-update <lastmod> dates in sitemap.xml to today's date
+async function updateSitemapDates(distDir) {
+  const sitemapPath = resolve(distDir, 'sitemap.xml');
+  if (!(await pathExists(sitemapPath))) return;
+
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  let content = await readFile(sitemapPath, 'utf8');
+  content = content.replace(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g, `<lastmod>${today}</lastmod>`);
+  await writeFile(sitemapPath, content, 'utf8');
+  console.log(`📅 Sitemap dates updated to ${today}`);
 }
 
 // Minify HTML files for better PageSpeed scores

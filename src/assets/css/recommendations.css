@@ -223,3 +223,52 @@ html.dark .author-company {
 /* Animation */
 
 /* Animation removed for performance and visibility */
+
+/* LinkedIn Verification Links */
+.linkedin-verify {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  color: #0077b5; /* LinkedIn Signature Blue */
+  font-size: 0.9em;
+  vertical-align: middle;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+.linkedin-verify:hover {
+  opacity: 0.85;
+  transform: scale(1.15);
+  color: #0a66c2;
+}
+
+html.dark .linkedin-verify {
+  color: #2997ff;
+}
+
+.author-company-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(0, 113, 227, 0.4);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.author-company-link:hover {
+  color: #0071e3;
+  border-bottom-style: solid;
+  border-bottom-color: #0071e3;
+}
+
+html.dark .author-company-link {
+  border-bottom-color: rgba(41, 151, 255, 0.4);
+}
+
+html.dark .author-company-link:hover {
+  color: #2997ff;
+  border-bottom-color: #2997ff;
+}

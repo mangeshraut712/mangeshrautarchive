@@ -129,6 +129,11 @@ class DebugRunner {
     this.canvas.id = 'debug-runner-canvas';
     this.canvas.width = 1200;
     this.canvas.height = 400;
+    this.canvas.tabIndex = 0;
+    this.canvas.setAttribute(
+      'aria-label',
+      'Debug Runner Game - Use Space, Up arrow, or W to jump, and Down arrow or S to duck. Focus first to play.'
+    );
 
     Object.assign(this.canvas.style, {
       background: this.colors.bg,
@@ -149,6 +154,7 @@ class DebugRunner {
 
     // Click handler for sound toggle and start triggers
     this.canvas.addEventListener('click', e => {
+      this.canvas.focus(); // Ensure canvas is focused so keyboard controls work instantly
       const rect = this.canvas.getBoundingClientRect();
       const clickX = ((e.clientX - rect.left) / rect.width) * this.canvas.width;
       const clickY = ((e.clientY - rect.top) / rect.height) * this.canvas.height;
@@ -456,6 +462,9 @@ class DebugRunner {
   setupControls() {
     const handleInput = e => {
       if (['INPUT', 'TEXTAREA', 'SELECT', 'CONTENTEDITABLE'].includes(e.target.tagName)) return;
+
+      // Only handle game controls if the canvas has focus to avoid keyboard trapping / scroll hijacking
+      if (document.activeElement !== this.canvas) return;
 
       if (e.type === 'keydown') {
         if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
