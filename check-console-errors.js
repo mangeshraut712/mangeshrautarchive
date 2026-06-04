@@ -1,10 +1,9 @@
 import { chromium } from '@playwright/test';
-import { join } from 'path';
 
 async function run() {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 }
+    viewport: { width: 1440, height: 900 },
   });
   const page = await context.newPage();
 
@@ -35,8 +34,10 @@ async function run() {
 
   // Click chatbot to toggle
   console.log('Toggling Chatbot on Homepage...');
-  const chatToggle = page.locator('#chatbot-toggle, #chat-toggle, [aria-label="Toggle chat"]').first();
-  if (await chatToggle.count() > 0) {
+  const chatToggle = page
+    .locator('#chatbot-toggle, #chat-toggle, [aria-label="Toggle chat"]')
+    .first();
+  if ((await chatToggle.count()) > 0) {
     await chatToggle.click();
     await page.waitForTimeout(2000);
   }

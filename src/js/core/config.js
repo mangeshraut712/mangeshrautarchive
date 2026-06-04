@@ -118,13 +118,4 @@ const chatbotConfig = {
 
 window.chatbotConfig = chatbotConfig;
 
-export {
-  ui,
-  features,
-  chat,
-  errorMessages,
-  api,
-  portfolio,
-  suggestions,
-  chatbotConfig
-};
+export { ui, features, chat, errorMessages, api, portfolio, suggestions, chatbotConfig };
