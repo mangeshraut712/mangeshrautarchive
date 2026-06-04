@@ -1695,10 +1695,11 @@ html.dark .follow-section {
 
 #contact .contact-social-wrapper.wrapper {
   margin-top: 1rem !important;
-  margin-bottom: 1rem !important;
+  margin-bottom: 3.5rem !important;
   padding: 0 !important;
   justify-content: flex-start !important;
-  gap: 1rem !important;
+  column-gap: 1rem !important;
+  row-gap: 3.25rem !important;
 }
 
 #contact .wrapper .icon {
@@ -1710,7 +1711,7 @@ html.dark .follow-section {
   justify-content: center !important;
   transition: all 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
   position: relative !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 
 /* Social Media Icons with Brand Background Colors */
@@ -1877,8 +1878,10 @@ html.dark #contact .wrapper .whoop:hover {
 @media (max-width: 768px) {
   #contact .contact-social-wrapper.wrapper {
     justify-content: center !important;
-    gap: 0.85rem !important;
+    column-gap: 0.85rem !important;
+    row-gap: 3.25rem !important;
     padding: 0.5rem 0 !important;
+    margin-bottom: 3.5rem !important;
   }
 
   #contact .wrapper .icon {

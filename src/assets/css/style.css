@@ -4009,7 +4009,8 @@ html.dark .education-card .date-badge {
 .wrapper {
   display: flex;
   flex-flow: row wrap;
-  gap: 0.75rem;
+  column-gap: 0.75rem;
+  row-gap: 3.25rem;
   list-style: none;
   margin: 0 auto;
   justify-content: center;
@@ -4074,7 +4075,7 @@ html.dark .wrapper .x {
 
 .wrapper .tooltip {
   position: absolute;
-  top: -40px;
+  top: 48px;
   z-index: 1001;
   font-size: 12px;
   background: #1d1d1f;
@@ -4085,6 +4086,7 @@ html.dark .wrapper .x {
   opacity: 0;
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  white-space: nowrap;
 }
 
 html.dark .wrapper .tooltip {
@@ -4098,7 +4100,7 @@ html.dark .wrapper .tooltip {
   height: 8px;
   width: 8px;
   background: inherit;
-  bottom: -3px;
+  top: -3px;
   left: 50%;
   transform: translate(-50%) rotate(45deg);
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -4107,7 +4109,7 @@ html.dark .wrapper .tooltip {
 /* Icon Hover Animation - Premium Pop Effect */
 
 .wrapper .icon:hover .tooltip {
-  top: -48px;
+  top: 56px;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
