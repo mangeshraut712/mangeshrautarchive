@@ -60,7 +60,7 @@ function setAssetHeaders(res, filePath) {
   }
 
   if (['.css', '.js'].includes(extension)) {
-    res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     return;
   }
 

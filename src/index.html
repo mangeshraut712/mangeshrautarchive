@@ -101,7 +101,6 @@
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
-  <link rel="preload" href="assets/css/cross-browser-responsive.css?v=20260423a" as="style" />
   <link rel="stylesheet" href="assets/css/cross-browser-responsive.css?v=20260423a" />
   <style>
     .skip-links {
@@ -427,7 +426,7 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
-  <script src="build-config.js"></script>
+  <script src="build-config.js" defer></script>
   <script>
     (function () {
       const isGitHubPages = window.location.hostname.endsWith('github.io');
@@ -528,7 +527,7 @@
   <link rel="stylesheet" data-href="assets/css/experience.css?v=20260525b" data-lazy-style-key="experience" />
 
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
-  <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 

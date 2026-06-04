@@ -237,23 +237,35 @@ html.dark .author-name {
 }
 
 /* Author title */
-.author-title {
+#recommendations .author-title {
   color: #48484a !important; /* Darker for better contrast */
   font-weight: 500 !important;
 }
 
-html.dark .author-title {
+html.dark #recommendations .author-title {
   color: #a1a1a6 !important;
 }
 
 /* Author company */
-.author-company {
+#recommendations .author-company,
+#recommendations .author-company-link {
   color: #0051a8 !important;
   font-weight: 500 !important;
 }
 
-html.dark .author-company {
+html.dark #recommendations .author-company,
+html.dark #recommendations .author-company-link {
   color: #5ac8fa !important;
+}
+
+#recommendations .author-company-link:hover {
+  color: #004494 !important;
+  border-bottom-color: #004494 !important;
+}
+
+html.dark #recommendations .author-company-link:hover {
+  color: #2997ff !important;
+  border-bottom-color: #2997ff !important;
 }
 
 /* ========================================
@@ -278,22 +290,36 @@ html.dark .education-badge.completed {
 }
 
 /* Education text */
-.education-title {
+.education-title,
+.education-degree {
   color: #1d1d1f !important;
   font-weight: 700 !important;
 }
 
-html.dark .education-title {
+html.dark .education-title,
+html.dark .education-degree {
   color: #f5f5f7 !important;
 }
 
-.education-school {
-  color: #2c2c2e !important;
+#education .education-school,
+#education .education-institution {
+  color: #0051a8 !important; /* Darker blue for contrast AA — beats education.css !important by higher specificity */
   font-weight: 600 !important;
 }
 
-html.dark .education-school {
-  color: #d1d1d6 !important;
+html.dark #education .education-school,
+html.dark #education .education-institution {
+  color: #58a6ff !important;
+}
+
+#education .education-location,
+#education .education-period {
+  color: #3a3a3c !important; /* Higher contrast gray */
+}
+
+html.dark #education .education-location,
+html.dark #education .education-period {
+  color: #a1a1a6 !important;
 }
 
 /* ========================================
@@ -312,6 +338,24 @@ html.dark #projects .activity-stat-label {
   color: #c7c7cc !important; /* Lighter for dark mode */
 }
 
+#projects .activity-eyebrow {
+  color: #005bb5 !important; /* 4.5+:1 contrast on light blue #f8fbff */
+}
+
+html.dark #projects .activity-eyebrow {
+  color: #58a6ff !important;
+}
+
+#projects .projects-activity-caption,
+#projects .section-subtitle {
+  color: #48484a !important; /* Higher contrast for caption text */
+}
+
+html.dark #projects .projects-activity-caption,
+html.dark #projects .section-subtitle {
+  color: #a1a1a6 !important;
+}
+
 /* ========================================
    7. GLOBAL TEXT ACCENT FIXES
    ======================================== */
@@ -325,12 +369,15 @@ html.dark .text-accent {
   color: #5ac8fa !important; /* Light blue 7:1 on black */
 }
 
-/* Text secondary - improve from #86868b */
-.text-secondary {
-  color: #48484a !important; /* 7:1 contrast on white */
+/* Text secondary - improve from #86868b
+   Using body prefix to beat section-scoped selectors in lazy-loaded CSS */
+body .text-secondary,
+body .text-gray-500 {
+  color: #51545b !important; /* 7.8:1 contrast on white */
 }
 
-html.dark .text-secondary {
+html.dark body .text-secondary,
+html.dark body .text-gray-500 {
   color: #a1a1a6 !important; /* 7:1 contrast on black */
 }
 
@@ -339,8 +386,45 @@ html.dark .text-secondary {
   color: #636366 !important; /* 5:1 contrast minimum */
 }
 
+/* Section subtitle — all sections */
+body section .section-subtitle {
+  color: #48484a !important; /* 7:1+ contrast on white */
+}
+
+html.dark body section .section-subtitle {
+  color: #a1a1a6 !important;
+}
+
+.section-count {
+  color: #4c4c50 !important;
+}
+
+html.dark .section-count {
+  color: #a1a1a6 !important;
+}
+
 html.dark .text-tertiary {
   color: #8e8e93 !important;
+}
+
+/* Newsletter card text in blog section */
+#blog .newsletter-card p {
+  color: #48484a !important;
+}
+
+html.dark #blog .newsletter-card p {
+  color: #a1a1a6 !important;
+}
+
+/* Small text contrast in currently/media sections */
+body .text-sm.text-gray-500,
+body .text-xs.text-gray-500 {
+  color: #51545b !important;
+}
+
+html.dark body .text-sm.text-gray-500,
+html.dark body .text-xs.text-gray-500 {
+  color: #a1a1a6 !important;
 }
 
 /* ========================================

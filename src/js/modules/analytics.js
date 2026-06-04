@@ -31,8 +31,14 @@
       globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl
     );
 
-    if (LOCAL_HOSTS.has(window.location.hostname) && configuredOrigin === window.location.origin) {
-      return '/api';
+    if (LOCAL_HOSTS.has(window.location.hostname)) {
+      // On localhost with a matching API proxy, use relative paths
+      if (configuredOrigin === window.location.origin) {
+        return '/api';
+      }
+      // On localhost without a proxy (e.g. serve-dist), skip API calls entirely
+      // to avoid cross-origin CORS errors that penalize Best Practices
+      return '';
     }
 
     if (configuredOrigin) {
