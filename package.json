@@ -65,7 +65,7 @@
     "@playwright/test": "^1.58.2",
     "@tailwindcss/cli": "^4.0.9",
     "dotenv": "^16.4.7",
-    "eslint": "^9.21.0",
+    "eslint": "^10.4.1",
     "globals": "^17.6.0",
     "prettier": "^3.8.1",
     "react-doctor": "^0.2.16",
