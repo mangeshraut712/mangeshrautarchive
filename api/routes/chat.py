@@ -704,36 +704,32 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         raise
     except httpx.HTTPStatusError as e:
         print(f"❌ Chat endpoint HTTP status error: {e.response.status_code} - {e.response.text}")
-        return {
-            "error": f"HTTP status error: {e.response.status_code}",
-            "answer": "⚠️ The AI service returned an error status. Please try again.",
-            "source": "Error",
-            "model": "None",
-        }
+        raise api_error(
+            code="UPSTREAM_HTTP_ERROR",
+            message="The AI service returned an error status. Please try again.",
+            status=502,
+        )
     except httpx.RequestError as e:
         print(f"❌ Chat endpoint connection/request error: {str(e)}")
-        return {
-            "error": "Connection error",
-            "answer": "⚠️ Could not establish a connection to the AI service. Please check your internet.",
-            "source": "Error",
-            "model": "None",
-        }
+        raise api_error(
+            code="UPSTREAM_CONNECTION_ERROR",
+            message="Could not connect to the AI service. Please check your internet and try again.",
+            status=503,
+        )
     except asyncio.TimeoutError:
         print("❌ Chat endpoint request timed out")
-        return {
-            "error": "Timeout error",
-            "answer": "⚠️ The AI response timed out. Please try a simpler prompt.",
-            "source": "Error",
-            "model": "None",
-        }
+        raise api_error(
+            code="UPSTREAM_TIMEOUT",
+            message="The AI response timed out. Please try a simpler prompt.",
+            status=504,
+        )
     except Exception as e:
         print(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}")
-        return {
-            "error": "Internal server error",
-            "answer": "⚠️ Something went wrong. Please try again.",
-            "source": "Error",
-            "model": "None",
-        }
+        raise api_error(
+            code="CHAT_INTERNAL_ERROR",
+            message="Something went wrong while processing your message. Please try again.",
+            status=500,
+        )
 
 
 @router.get("/api/models")

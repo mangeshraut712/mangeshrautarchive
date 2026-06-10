@@ -69,6 +69,9 @@ jobs:
           npm run lint:dead-code
           python -m flake8 api/ --max-line-length=120 --ignore=E501,W503,W291,W293
 
+      - name: 🐍 Python — API tests
+        run: npm run test:api
+
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v5

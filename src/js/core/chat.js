@@ -301,6 +301,9 @@ class IntelligentAssistant {
 
       return response;
     } catch (error) {
+      if (error?.code === 'RATE_LIMITED') {
+        throw error;
+      }
       console.error('Error processing query:', error);
       const fallback = this.handleError(question, error);
       const fallbackText = this._extractAnswerText(fallback);
@@ -386,6 +389,28 @@ class IntelligentAssistant {
       if (!response.ok) {
         const errorText = await response.text().catch(() => 'No error details');
         console.error(`❌ Server error ${response.status}: ${errorText}`);
+
+        if (response.status === 429) {
+          let retryAfter = Number(response.headers.get('Retry-After')) || 60;
+          let message = 'You have sent too many requests. Please wait a moment before trying again.';
+          try {
+            const payload = JSON.parse(errorText);
+            const nested = payload?.error?.message?.error || payload?.error;
+            if (typeof nested?.message === 'string') {
+              message = nested.message;
+            }
+            if (nested?.retryAfter) {
+              retryAfter = Number(nested.retryAfter) || retryAfter;
+            }
+          } catch {
+            // Keep default rate-limit messaging when the body is not JSON.
+          }
+          const rateError = new Error(message);
+          rateError.code = 'RATE_LIMITED';
+          rateError.retryAfter = retryAfter;
+          throw rateError;
+        }
+
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
 
@@ -483,6 +508,9 @@ class IntelligentAssistant {
         return data;
       }
     } catch (error) {
+      if (error?.code === 'RATE_LIMITED') {
+        throw error;
+      }
       console.error('❌ API call failed:', error.message);
       this.markServerUnavailable();
       return null;

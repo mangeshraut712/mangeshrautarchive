@@ -192,7 +192,7 @@ async function build() {
     optimizeCopiedAssets(distDir),
     addCacheBusting(distDir),
     minifyHtmlFiles(distDir),
-    updateSitemapDates(distDir),
+    generateSitemap(distDir),
     generateFeeds(distDir),
   ]);
 
@@ -283,16 +283,42 @@ ${atomEntries}
   console.log('📰 Generated RSS and Atom feeds');
 }
 
-// Auto-update <lastmod> dates in sitemap.xml to today's date
-async function updateSitemapDates(distDir) {
-  const sitemapPath = resolve(distDir, 'sitemap.xml');
-  if (!(await pathExists(sitemapPath))) return;
+async function generateSitemap(distDir) {
+  const siteUrl = 'https://mangeshraut.pro';
+  const today = new Date().toISOString().slice(0, 10);
+  const posts = getSortedBlogPosts();
+  const latestPostDate = posts[0]?.date || today;
 
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  let content = await readFile(sitemapPath, 'utf8');
-  content = content.replace(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g, `<lastmod>${today}</lastmod>`);
-  await writeFile(sitemapPath, content, 'utf8');
-  console.log(`📅 Sitemap dates updated to ${today}`);
+  const staticPages = [
+    { loc: `${siteUrl}/`, lastmod: today, changefreq: 'weekly', priority: '1.0' },
+    { loc: `${siteUrl}/travel`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
+    { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'monthly', priority: '0.6' },
+    { loc: `${siteUrl}/#blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
+  ];
+
+  const urlEntries = [...staticPages]
+    .map(
+      page => `  <url>
+    <loc>${page.loc}</loc>
+    <lastmod>${page.lastmod}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`
+    )
+    .join('\n\n');
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+${urlEntries}
+</urlset>
+`;
+
+  await writeFile(resolve(distDir, 'sitemap.xml'), sitemap, 'utf8');
+  console.log(`📅 Sitemap generated with ${staticPages.length} URLs (latest blog: ${latestPostDate})`);
 }
 
 // Minify HTML files for better PageSpeed scores

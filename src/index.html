@@ -96,6 +96,8 @@
     content="5+ years building production-ready software. MS CS from Drexel University. View portfolio, projects, and resume." />
   <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
   <meta name="twitter:image:alt" content="Mangesh Raut Software Engineer Portfolio" />
+  <meta name="twitter:site" content="@mrcommando712" />
+  <meta name="twitter:creator" content="@mrcommando712" />
 
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-touch-fullscreen" content="yes" />
@@ -3260,7 +3262,8 @@
          ═══════════════════════════════════════════════════════════ -->
 
     <!-- Chatbot Toggle Button -->
-    <button id="chatbot-toggle" type="button" aria-label="Open AI Assistant">
+    <button id="chatbot-toggle" type="button" aria-label="Open AI Assistant" aria-expanded="false"
+      aria-controls="chatbot-widget">
       <span class="inline-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
           stroke-linejoin="round">
@@ -3276,7 +3279,7 @@
       <div class="chatbot-header">
         <div class="chatbot-header-content">
           <h3 class="chatbot-title">AssistMe</h3>
-          <p>Mangesh's AI Assistant • <span id="chatbot-rate-limit-badge">10 left</span></p>
+          <p>Mangesh's AI Assistant • <span id="chatbot-rate-limit-badge">12 left</span></p>
         </div>
         <div class="chatbot-header-actions">
           <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings" type="button"
@@ -3305,8 +3308,9 @@
             <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn" aria-label="Use voice input">
               <i class="fas fa-microphone"></i>
             </button>
+            <label for="chatbot-input" class="sr-only">Message AssistMe</label>
             <textarea id="chatbot-input" placeholder="Ask anything..." rows="1" autocomplete="off"
-              maxlength="1800"></textarea>
+              maxlength="1800" aria-describedby="chatbot-rate-status"></textarea>
             <button type="submit" class="chatbot-send-btn" aria-label="Send message">
               <i class="fas fa-arrow-up"></i>
             </button>
@@ -3325,7 +3329,6 @@
     <script type="module" defer src="js/utils/theme.js?v=20260423a"></script>
     <script defer src="js/utils/go-to-top.js?v=20260423a"></script>
     <script type="module" defer src="js/core/bootstrap.js?v=20260525b"></script>
-    <script defer src="js/modules/scroll-animations.js?v=20260423a"></script>
     <script defer src="js/modules/name-pronounce.js?v=20260506a"></script>
 
     <!-- Crypto Copy Function -->

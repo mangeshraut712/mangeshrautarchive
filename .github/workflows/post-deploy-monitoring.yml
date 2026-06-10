@@ -10,10 +10,20 @@ permissions:
 
 jobs:
   monitor:
-    name: 📈 Monitor Production Health
+    name: 📈 Monitor ${{ matrix.label }}
     runs-on: ubuntu-latest
-    env:
-      PRODUCTION_URL: 'https://mangeshraut.pro'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Vercel Production
+            url: https://mangeshraut.pro
+            health_url: https://mangeshraut.pro/api/health
+            artifact: vercel-monitoring
+          - label: GitHub Pages
+            url: https://mangeshraut712.github.io/mangeshrautarchive/
+            health_url: https://mangeshraut712.github.io/mangeshrautarchive/
+            artifact: github-pages-monitoring
     steps:
       - uses: actions/checkout@v6
 
@@ -25,15 +35,20 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Verify deployment health
+        run: |
+          curl --fail --silent --show-error "${{ matrix.health_url }}" >/dev/null
+          echo "✅ ${{ matrix.label }} is reachable at ${{ matrix.health_url }}"
+
       - name: Lighthouse desktop monitoring gate
-        run: node scripts/deployment/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=desktop --min-performance=88 --min-accessibility=90 --min-best-practices=90 --min-seo=90
+        run: node scripts/deployment/lighthouse-gate.js --url=${{ matrix.url }} --form-factor=desktop --min-performance=88 --min-accessibility=90 --min-best-practices=90 --min-seo=90
 
       - name: Lighthouse mobile monitoring gate
-        run: node scripts/deployment/lighthouse-gate.js --url=${PRODUCTION_URL} --form-factor=mobile --min-performance=60 --min-accessibility=90 --min-best-practices=90 --min-seo=90
+        run: node scripts/deployment/lighthouse-gate.js --url=${{ matrix.url }} --form-factor=mobile --min-performance=60 --min-accessibility=90 --min-best-practices=90 --min-seo=90
 
       - name: Upload monitoring artifacts
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: production-monitoring-artifacts
+          name: ${{ matrix.artifact }}
           path: artifacts/lighthouse

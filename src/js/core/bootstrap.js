@@ -7,7 +7,7 @@ import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
 
 const IDLE_MODULES = ['../modules/accessibility.js'];
 
-const DELAYED_MODULES = [];
+const DELAYED_MODULES = [{ modulePath: '../modules/scroll-animations.js', delay: 0 }];
 
 const INTERACTION_MODULES = [
   '../modules/agentic-actions.js',
@@ -74,6 +74,10 @@ const MODULE_IMPORTERS = {
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
   '../modules/search.js': () => import('../modules/search.js'),
   '../modules/about-interactivity.js': () => import('../modules/about-interactivity.js'),
+  '../modules/scroll-animations.js': () =>
+    import('../modules/scroll-animations.js').then(module => {
+      module.initScrollAnimations?.();
+    }),
 };
 
 function getModuleImporter(modulePath) {

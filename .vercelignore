@@ -1,0 +1,14 @@
+tests/
+artifacts/
+test-results/
+playwright-report/
+.playwright-mcp/
+scratch/
+.agent/
+.claude/
+.trae/
+.agents/
+skills/
+.github/
+*.md
+!README.md

@@ -27,6 +27,11 @@ const features = {
   enableOverlayNavigation: true,
 };
 
+const limits = {
+  /** Client-side daily AI message estimate (server enforces per-minute throttling separately). */
+  dailyChatMessages: 12,
+};
+
 const chat = {
   defaultGreeting:
     "👋 Hey there! I'm **AssistMe**, Mangesh's elite AI assistant. I can provide deep insights into his technical expertise, projects, and engineering achievements. Ask me anything about:\n\n• 🚀 **Experience** at Customized Energy Solutions\n• 💻 **Tech Stack**: Java, Python, Spring Boot, AWS\n• 🤖 **AI/ML Projects** & Research\n• 🎓 **Education** at Drexel University\n\nHow can I assist you today?",
@@ -110,6 +115,7 @@ const chatbotConfig = {
   ui,
   features,
   chat,
+  limits,
   errorMessages,
   api,
   portfolio,
@@ -118,4 +124,4 @@ const chatbotConfig = {
 
 window.chatbotConfig = chatbotConfig;
 
-export { ui, features, chat, errorMessages, api, portfolio, suggestions, chatbotConfig };
+export { ui, features, chat, limits, errorMessages, api, portfolio, suggestions, chatbotConfig };

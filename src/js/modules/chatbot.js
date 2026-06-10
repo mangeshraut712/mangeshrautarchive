@@ -16,11 +16,12 @@
 
 import { privacyDashboard } from './privacy-dashboard.js';
 import { intelligentAssistant as chatAssistant } from '../core/chat.js';
+import { limits } from '../core/config.js';
 import { markdownService } from '../services/MarkdownService.js';
 import appleSounds from './apple-sounds.js';
 
 const MAX_CHAT_INPUT_LENGTH = 1800;
-const CLIENT_CHAT_MESSAGE_LIMIT = 12;
+const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages;
 const CLIENT_CHAT_RATE_KEY = 'assistme-chat-rate-v1';
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
 
@@ -434,6 +435,7 @@ class AppleIntelligenceChatbot {
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
     this.isOpen = true;
+    this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
     appleSounds.playNotification();
     setTimeout(() => {
@@ -446,6 +448,7 @@ class AppleIntelligenceChatbot {
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
     this.isOpen = false;
+    this.elements.toggle?.setAttribute('aria-expanded', 'false');
     const focusTarget =
       this.lastFocusedElement && document.contains(this.lastFocusedElement)
         ? this.lastFocusedElement
@@ -586,9 +589,6 @@ class AppleIntelligenceChatbot {
     this.removeFollowupChips();
     appleSounds.playClick();
 
-    // Decrement query count
-    this.decrementRemainingQueries();
-
     // Add user message
     this.addMessage(text, 'user');
 
@@ -618,7 +618,13 @@ class AppleIntelligenceChatbot {
     } catch (error) {
       console.error('Error getting AI response:', error);
       this.hideTypingIndicator();
-      this.addErrorMessage("I'm having trouble connecting. Please try again in a moment.");
+      const rateLimited = error?.code === 'RATE_LIMITED';
+      this.addErrorMessage(
+        rateLimited
+          ? error.message ||
+              'You have sent too many requests. Please wait a moment before trying again.'
+          : "I'm having trouble connecting. Please try again in a moment."
+      );
     } finally {
       this.isProcessing = false;
       this.messageCount++;
@@ -772,7 +778,14 @@ class AppleIntelligenceChatbot {
 
       // Show contextual follow-up chips
       this.showFollowupChips(fullText);
+
+      if (!metadata.error) {
+        this.decrementRemainingQueries();
+      }
     } catch (error) {
+      if (error?.code === 'RATE_LIMITED') {
+        throw error;
+      }
       console.error('Streaming error:', error);
       messageDiv.classList.remove('streaming');
       if (!fullText) {
@@ -955,6 +968,7 @@ class AppleIntelligenceChatbot {
 
     this.addCondensedMetadata(messageDiv, contentDiv, metadata);
     this.showFollowupChips(text);
+    this.decrementRemainingQueries();
   }
 
   // ── Chip helpers ──────────────────────
@@ -1112,7 +1126,7 @@ class AppleIntelligenceChatbot {
 
     const container = document.createElement('div');
     container.className = 'chatbot-followup-chips';
-    container.setAttribute('role', 'list');
+    container.setAttribute('role', 'group');
     container.setAttribute('aria-label', 'Follow-up suggestions');
 
     chips.forEach(label => {
@@ -1121,7 +1135,6 @@ class AppleIntelligenceChatbot {
       btn.type = 'button';
       btn.className = 'followup-chip';
       btn.textContent = label;
-      btn.setAttribute('role', 'listitem');
       btn.addEventListener('click', () => {
         this.removeFollowupChips();
         this.ask(normalizeFollowupPrompt(label) || label);
