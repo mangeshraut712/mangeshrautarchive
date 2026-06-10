@@ -781,18 +781,30 @@ html.dark .launch-intro-label {
   color: inherit;
 }
 
+.hero-name-cluster {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.28rem, 0.55vw, 0.42rem);
+  max-width: 100%;
+  font-size: inherit;
+  line-height: 1;
+}
+
 .hero-verified-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  min-width: 24px;
-  min-height: 24px;
+  width: clamp(18px, 0.58em, 26px);
+  height: clamp(18px, 0.58em, 26px);
+  min-width: clamp(18px, 0.58em, 26px);
+  min-height: clamp(18px, 0.58em, 26px);
   position: relative;
-  top: -2px;
+  top: 0;
+  margin: 0;
+  translate: 0 0.04em;
   color: #0a84ff !important;
-  filter: drop-shadow(0 4px 10px rgb(10 132 255 / 22%));
+  filter: none;
   flex: 0 0 auto;
 }
 
@@ -804,7 +816,7 @@ html.dark .launch-intro-label {
 
 html.dark .hero-verified-badge {
   color: #2997ff !important;
-  filter: drop-shadow(0 4px 12px rgb(41 151 255 / 28%));
+  filter: none;
 }
 
 html.dark .hero-name-text {
@@ -819,22 +831,27 @@ html.dark .hero-name-text {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
-  max-width: 28px !important;
-  max-height: 28px !important;
+  width: clamp(28px, 0.72em, 34px) !important;
+  height: clamp(28px, 0.72em, 34px) !important;
+  min-width: clamp(28px, 0.72em, 34px) !important;
+  min-height: clamp(28px, 0.72em, 34px) !important;
+  max-width: clamp(28px, 0.72em, 34px) !important;
+  max-height: clamp(28px, 0.72em, 34px) !important;
   padding: 0 !important;
   margin: 0 !important;
-  border: none !important;
-  background: transparent !important;
-  color: #86868b !important;
+  border: 1px solid rgb(0 113 227 / 22%) !important;
+  background: rgb(0 113 227 / 8%) !important;
+  color: #0071e3 !important;
   cursor: pointer;
-  border-radius: 50% !important;
-  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  border-radius: 999px !important;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease !important;
   position: relative;
-  top: -2px;
+  top: 0;
+  translate: 0 0.02em;
   flex: 0 0 auto !important;
   outline: none !important;
   box-shadow: none !important;
@@ -845,17 +862,18 @@ html.dark .hero-name-text {
 }
 
 #name-pronounce-btn.name-pronounce-btn svg {
-  width: 18px !important;
-  height: 18px !important;
-  min-width: 18px !important;
-  min-height: 18px !important;
+  width: clamp(14px, 0.38em, 18px) !important;
+  height: clamp(14px, 0.38em, 18px) !important;
+  min-width: clamp(14px, 0.38em, 18px) !important;
+  min-height: clamp(14px, 0.38em, 18px) !important;
   display: block !important;
 }
 
 #name-pronounce-btn.name-pronounce-btn:hover {
   color: #0071e3 !important;
-  background: transparent !important;
-  transform: scale(1.12);
+  background: rgb(0 113 227 / 8%) !important;
+  border-color: rgb(0 113 227 / 28%) !important;
+  transform: scale(1.06);
 }
 
 #name-pronounce-btn.name-pronounce-btn:active {
@@ -924,12 +942,15 @@ html.dark .hero-name-text {
 }
 
 html.dark #name-pronounce-btn.name-pronounce-btn {
-  color: #636366 !important;
+  color: #a1a1a6 !important;
+  background: rgb(255 255 255 / 6%) !important;
+  border-color: rgb(255 255 255 / 14%) !important;
 }
 
 html.dark #name-pronounce-btn.name-pronounce-btn:hover {
   color: #2997ff !important;
-  background: transparent !important;
+  background: rgb(41 151 255 / 12%) !important;
+  border-color: rgb(41 151 255 / 34%) !important;
 }
 
 html.dark #name-pronounce-btn.name-pronounce-btn.is-playing {

@@ -510,7 +510,7 @@ html.dark .text-blue {
 
 /* Exclude buttons from text color override */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn):not(.projects-view-all-btn):not(.project-action-btn),
+button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(.projects-view-all-btn):not(.project-action-btn),
 .project-tag,
 .badge {
   color: #fff !important;

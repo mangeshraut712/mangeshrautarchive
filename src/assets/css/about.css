@@ -413,36 +413,42 @@ html.dark .about-tab-btn.active {
   display: none !important;
 }
 
-/* Speak Button - matches segmented control */
+/* Speak Button — matches About segmented control shell */
 .about-speak-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
   min-height: 38px;
+  min-width: 96px;
   background: #ffffff !important;
-  color: #1d1d1f !important;
+  color: #3a3a3c !important;
   border: 1px solid rgb(0 0 0 / 15%) !important;
-  border-radius: 12px;
-  padding: 8px 14px;
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition:
+    color 0.2s ease,
     border-color 0.2s ease,
+    background-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
   font-family: inherit;
   box-shadow: none !important;
+  line-height: 1.2;
 }
 
 .about-speak-btn .speak-icon {
-  color: #0071e3;
+  color: #0071e3 !important;
+  font-size: 0.92rem;
 }
 
 .about-speak-btn .speak-text {
   color: inherit !important;
   background: transparent !important;
+  -webkit-text-fill-color: currentColor !important;
 }
 
 .about-speak-btn:hover {
@@ -455,6 +461,11 @@ html.dark .about-tab-btn.active {
 
 .about-speak-btn:active {
   transform: scale(0.98);
+}
+
+.about-speak-btn:focus-visible {
+  outline: 2px solid rgb(0 113 227 / 45%);
+  outline-offset: 2px;
 }
 
 .about-speak-btn.is-speaking,
@@ -475,12 +486,12 @@ html.dark .about-speak-btn.is-paused {
 
 .about-speak-btn.is-speaking .speak-icon,
 .about-speak-btn.is-paused .speak-icon {
-  color: #0071e3;
+  color: #0071e3 !important;
 }
 
 html.dark .about-speak-btn.is-speaking .speak-icon,
 html.dark .about-speak-btn.is-paused .speak-icon {
-  color: #2997ff;
+  color: #2997ff !important;
 }
 
 html.dark .about-speak-btn {
@@ -490,7 +501,7 @@ html.dark .about-speak-btn {
 }
 
 html.dark .about-speak-btn .speak-icon {
-  color: #2997ff;
+  color: #2997ff !important;
 }
 
 html.dark .about-speak-btn:hover {
