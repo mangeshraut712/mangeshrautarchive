@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function initGoToTop() {
     const goToTopBtn = document.getElementById('go-to-top');
     const root = document.documentElement;
 
@@ -15,6 +15,11 @@
       console.warn('Go to Top button not found');
       return;
     }
+
+    if (goToTopBtn.dataset.goToTopBound === 'true') {
+      return;
+    }
+    goToTopBtn.dataset.goToTopBound = 'true';
 
     // Ensure button is accessible
     goToTopBtn.setAttribute('aria-label', 'Scroll to top of page');
@@ -24,11 +29,13 @@
       'display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;';
 
     // Add a visible label for better clarity (can be styled to appear on hover/focus)
-    const label = document.createElement('span');
-    label.className = 'go-to-top-label';
-    label.textContent = 'TOP';
-    label.style.cssText = 'font-size: 9px; font-weight: 700; opacity: 0.9;';
-    goToTopBtn.appendChild(label);
+    if (!goToTopBtn.querySelector('.go-to-top-label')) {
+      const label = document.createElement('span');
+      label.className = 'go-to-top-label';
+      label.textContent = 'TOP';
+      label.style.cssText = 'font-size: 9px; font-weight: 700; opacity: 0.9;';
+      goToTopBtn.appendChild(label);
+    }
 
     // Show/hide button based on scroll position - throttled for performance
     let isScrolling = false;
@@ -36,7 +43,7 @@
       if (!isScrolling) {
         window.requestAnimationFrame(() => {
           const scrollPosition = window.pageYOffset || root.scrollTop;
-          const showThreshold = 500;
+          const showThreshold = 320;
 
           if (scrollPosition > showThreshold) {
             goToTopBtn.classList.add('visible');
@@ -111,5 +118,11 @@
     // Set initial accessibility state
     goToTopBtn.setAttribute('aria-hidden', 'true');
     goToTopBtn.tabIndex = -1;
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGoToTop, { once: true });
+  } else {
+    initGoToTop();
+  }
 })();

@@ -1,5 +1,7 @@
 const IDLE_MODULES = ['../modules/accessibility.js'];
 
+import '../modules/apple-sounds.js';
+
 const DELAYED_MODULES = [];
 
 const INTERACTION_MODULES = [
@@ -326,8 +328,8 @@ function initLaunchIntro(documentRef = document) {
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = documentRef.documentElement;
-    const totalDuration = prefersReducedMotion ? 700 : 2600;
-    const fadeDuration = 520;
+    const totalDuration = prefersReducedMotion ? 420 : 980;
+    const fadeDuration = 280;
 
     const complete = () => {
       if (intro.dataset.launchIntroComplete === 'true') return;
@@ -338,11 +340,17 @@ function initLaunchIntro(documentRef = document) {
 
       window.setTimeout(() => {
         intro.hidden = true;
+        intro.setAttribute('aria-hidden', 'true');
       }, fadeDuration);
     };
 
     intro.hidden = false;
+    intro.removeAttribute('aria-hidden');
     root.classList.add('launch-intro-active');
+
+    if (globalThis.appleSounds?.playLaunch) {
+      globalThis.appleSounds.playLaunch();
+    }
 
     requestAnimationFrame(() => {
       intro.classList.add('is-playing');
@@ -351,7 +359,7 @@ function initLaunchIntro(documentRef = document) {
     window.setTimeout(complete, totalDuration);
   };
 
-  runWhenIdle(playIntro, 3500);
+  window.setTimeout(playIntro, 60);
 }
 
 function initGlobalErrorHandlers() {
@@ -811,9 +819,9 @@ async function initBootstrap() {
   initOnDemandModules();
   initLazyModules();
   initServiceWorker();
+  initLaunchIntro();
 
   runWhenIdle(() => {
-    initLaunchIntro();
     loadDeferredBootstrapModules().catch(error => {
       console.warn('Deferred bootstrap modules skipped:', error);
     });

@@ -33,7 +33,14 @@
 .doc-card,
 .health-item,
 .travel-stop,
-.place-guide-card {
+.place-guide-card,
+html body #about div.about-text-card,
+html body #about div.about-highlight-card,
+html body #projects #github-projects-container article.showcase-project-card,
+html body #blog div.newsletter-card,
+html body #contact div.contact-card,
+html body #contact div.support-donation-card,
+html body #contact div.media-card {
   background: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -84,7 +91,14 @@ html.dark .overview-card,
 html.dark .doc-card,
 html.dark .health-item,
 html.dark .travel-stop,
-html.dark .place-guide-card {
+html.dark .place-guide-card,
+html.dark body #about div.about-text-card,
+html.dark body #about div.about-highlight-card,
+html.dark body #projects #github-projects-container article.showcase-project-card,
+html.dark body #blog div.newsletter-card,
+html.dark body #contact div.contact-card,
+html.dark body #contact div.support-donation-card,
+html.dark body #contact div.media-card {
   background: #1c1c1e !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
@@ -120,7 +134,14 @@ html.dark .place-guide-card {
 .doc-card:hover,
 .health-item:hover,
 .travel-stop:hover,
-.place-guide-card:hover {
+.place-guide-card:hover,
+html body #about div.about-text-card:hover,
+html body #about div.about-highlight-card:hover,
+html body #projects #github-projects-container article.showcase-project-card:hover,
+html body #blog div.newsletter-card:hover,
+html body #contact div.contact-card:hover,
+html body #contact div.support-donation-card:hover,
+html body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
   border-color: #0071e3 !important;
   box-shadow: 0 16px 36px rgba(0, 113, 227, 0.16) !important;
@@ -155,7 +176,14 @@ html.dark .overview-card:hover,
 html.dark .doc-card:hover,
 html.dark .health-item:hover,
 html.dark .travel-stop:hover,
-html.dark .place-guide-card:hover {
+html.dark .place-guide-card:hover,
+html.dark body #about div.about-text-card:hover,
+html.dark body #about div.about-highlight-card:hover,
+html.dark body #projects #github-projects-container article.showcase-project-card:hover,
+html.dark body #blog div.newsletter-card:hover,
+html.dark body #contact div.contact-card:hover,
+html.dark body #contact div.support-donation-card:hover,
+html.dark body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
   border-color: #2997ff !important;
   box-shadow: 0 16px 36px rgba(41, 151, 255, 0.3) !important;

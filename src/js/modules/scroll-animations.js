@@ -52,6 +52,8 @@ class ScrollAnimations {
       'section h2',
       '.skill-badge',
       '.stat-card',
+      '.portfolio-reach-badge',
+      '.vibe-coder-badge',
     ];
 
     selectors.forEach(selector => {

@@ -418,9 +418,9 @@ html.dark .profile-image-wrapper {
 }
 
 .vibe-coder-badge {
-  background: rgb(255 255 255 / 80%);
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgb(0 0 0 / 10%);
   color: #1d1d1f;
   box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
@@ -443,10 +443,43 @@ html.dark .portfolio-reach-badge .inline-icon svg {
 }
 
 html.dark .vibe-coder-badge {
-  background: rgb(28 28 30 / 80%);
-  border-color: rgb(255 255 255 / 10%);
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 12%);
   color: #f5f5f7;
   box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+
+.vibe-coder-badge-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.vibe-coder-badge-wrapper .vibe-coder-badge,
+.vibe-coder-badge-wrapper .portfolio-reach-badge {
+  animation: heroBadgeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.vibe-coder-badge-wrapper .vibe-coder-badge {
+  animation-delay: 0.08s;
+}
+
+.vibe-coder-badge-wrapper .portfolio-reach-badge {
+  animation-delay: 0.16s;
+}
+
+@keyframes heroBadgeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 html.dark .vibe-coder-badge i,
@@ -455,17 +488,12 @@ html.dark .portfolio-reach-badge i {
 }
 
 .portfolio-reach-badge {
-  background: rgb(255 255 255 / 80%);
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgb(0 0 0 / 10%);
   color: #1d1d1f;
   box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
-}
-
-.portfolio-reach-badge .reach-label {
-  font-weight: 600;
-  white-space: nowrap;
 }
 
 .portfolio-reach-badge .reach-count {
@@ -473,13 +501,60 @@ html.dark .portfolio-reach-badge i {
   font-weight: 700;
   min-width: 3.25rem;
   text-align: left;
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease;
+}
+
+.portfolio-reach-badge.is-syncing .reach-count {
+  opacity: 0.72;
+}
+
+.portfolio-reach-badge .reach-count.is-updating {
+  animation: reachCountPulse 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  color: #0071e3;
+}
+
+.portfolio-reach-badge .reach-count.is-settled {
+  animation: reachCountSettle 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes reachCountPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes reachCountSettle {
+  from {
+    transform: translateY(-2px);
+    opacity: 0.82;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 html.dark .portfolio-reach-badge {
-  background: rgb(28 28 30 / 80%);
-  border-color: rgb(255 255 255 / 10%);
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 12%);
   color: #f5f5f7;
   box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+
+html.dark .portfolio-reach-badge .reach-count.is-updating {
+  color: #2997ff;
+}
+
+.portfolio-reach-badge .reach-label {
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .hero-role-flip {
@@ -584,11 +659,8 @@ html.dark .section-count {
   display: grid;
   place-items: center;
   padding: clamp(24px, 4vw, 48px);
-  background:
-    radial-gradient(circle at 18% 78%, rgb(244 178 120 / 28%) 0%, rgb(244 178 120 / 0%) 28%),
-    radial-gradient(circle at 62% 28%, rgb(248 214 109 / 26%) 0%, rgb(248 214 109 / 0%) 26%),
-    linear-gradient(180deg, #faf7f2 0%, #f7f3ed 100%);
-  color: #4d3a32;
+  background: #ffffff;
+  color: #1d1d1f;
   overflow: hidden;
   isolation: isolate;
 }
@@ -599,11 +671,8 @@ html.dark .section-count {
 }
 
 html.dark .launch-intro {
-  background:
-    radial-gradient(circle at 18% 78%, rgb(194 119 58 / 18%) 0%, rgb(194 119 58 / 0%) 30%),
-    radial-gradient(circle at 62% 28%, rgb(192 155 51 / 18%) 0%, rgb(192 155 51 / 0%) 28%),
-    linear-gradient(180deg, #0d0b0a 0%, #14100d 100%);
-  color: #f1e7dc;
+  background: #000000;
+  color: #f5f5f7;
 }
 
 html.launch-intro-active,
@@ -613,37 +682,7 @@ html.launch-intro-active body {
 
 .launch-intro::before,
 .launch-intro::after {
-  content: '';
-  position: absolute;
-  inset: auto;
-  border-radius: 50%;
-  filter: blur(18px);
-  z-index: 0;
-}
-
-.launch-intro::before {
-  top: 12%;
-  left: 50%;
-  width: min(44vw, 560px);
-  height: min(44vw, 560px);
-  background: radial-gradient(circle, rgb(245 207 103 / 20%) 0%, rgb(245 207 103 / 0%) 72%);
-  transform: translateX(-10%);
-}
-
-.launch-intro::after {
-  left: -12%;
-  bottom: -18%;
-  width: min(52vw, 720px);
-  height: min(52vw, 720px);
-  background: radial-gradient(circle, rgb(242 177 121 / 20%) 0%, rgb(242 177 121 / 0%) 72%);
-}
-
-html.dark .launch-intro::before {
-  background: radial-gradient(circle, rgb(242 196 78 / 16%) 0%, rgb(242 196 78 / 0%) 72%);
-}
-
-html.dark .launch-intro::after {
-  background: radial-gradient(circle, rgb(218 134 69 / 18%) 0%, rgb(218 134 69 / 0%) 72%);
+  display: none;
 }
 
 .launch-intro-content {
@@ -655,11 +694,11 @@ html.dark .launch-intro::after {
   justify-content: center;
   width: min(90vw, 960px);
   text-align: center;
-  transform: scale(0.985);
+  transform: scale(0.96);
   opacity: 0;
   transition:
-    opacity 0.55s ease,
-    transform 0.55s ease;
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .launch-intro.is-playing .launch-intro-content {
@@ -668,7 +707,7 @@ html.dark .launch-intro::after {
 }
 
 .launch-intro.is-exiting {
-  animation: launchIntroFadeOut 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: launchIntroFadeOut 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes launchIntroFadeOut {
@@ -704,7 +743,7 @@ html.dark .launch-intro-hello {
 .launch-intro-meta {
   margin-top: clamp(18px, 2.5vw, 28px);
   opacity: 0;
-  animation: launchIntroMetaIn 0.8s ease 4.15s forwards;
+  animation: launchIntroMetaIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.52s forwards;
 }
 
 .launch-intro-kicker,

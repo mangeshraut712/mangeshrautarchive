@@ -178,20 +178,78 @@ html.dark #chatbot-toggle {
   animation-duration: 6s;
 }
 
+#go-to-top {
+  position: fixed !important;
+  right: 1.5rem !important;
+  bottom: 1.75rem !important;
+  z-index: 9998 !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.92);
+  transition:
+    opacity 0.32s ease,
+    visibility 0.32s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s ease;
+}
+
 #go-to-top.visible {
-  background: rgb(255 255 255 / calc(68% + var(--lg-tint) * 28%));
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) scale(1) !important;
+  background: rgb(255 255 255 / calc(68% + var(--lg-tint) * 28%)) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control));
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control));
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / calc(50% + var(--lg-tint) * 30%)),
-    0 8px 24px rgb(0 0 0 / 12%);
+    0 8px 24px rgb(0 0 0 / 12%) !important;
+}
+
+html.dark #go-to-top {
+  background: #000000 !important;
+  color: #2997ff !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 36%) !important;
 }
 
 html.dark #go-to-top.visible {
-  background: rgb(0 0 0 / calc(72% + var(--lg-tint) * 24%));
+  background: rgb(0 0 0 / calc(72% + var(--lg-tint) * 24%)) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 8%),
-    0 8px 24px rgb(0 0 0 / 36%);
+    0 8px 24px rgb(0 0 0 / 36%) !important;
+}
+
+#go-to-top:hover,
+#go-to-top:focus-visible {
+  transform: translateY(-3px) scale(1.04) !important;
+}
+
+@media (width <=768px) {
+  #go-to-top {
+    right: 1.25rem !important;
+    bottom: 1.25rem !important;
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+  }
+
+  #chatbot-toggle {
+    bottom: 6.5rem !important;
+  }
 }
 
 /* ────────────────────────────────────────────────────────────────

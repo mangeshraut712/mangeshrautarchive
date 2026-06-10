@@ -9,7 +9,7 @@
 
 /* Target ALL buttons across the site to ensure they are BLUE */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn),
+button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -502,7 +502,7 @@ html.dark .text-blue {
 
 /* Exclude buttons from text color override */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn),
+button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn),
 .project-tag,
 .badge {
   color: #fff !important;

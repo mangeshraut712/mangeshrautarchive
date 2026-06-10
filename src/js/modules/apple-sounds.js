@@ -172,6 +172,35 @@ class AppleSoundSystem {
     }
   }
 
+  // ── Launch Welcome — brief Mac boot chime (C5 → E5) ─────────────────────
+  playLaunch() {
+    if (!this._enabled) return;
+    this._userInteracted = true;
+    const ctx = this._getCtx();
+    if (!ctx) return;
+    try {
+      const t = ctx.currentTime;
+      [
+        [523.25, 0, 0.14, 0.055],
+        [659.25, 0.09, 0.2, 0.045],
+      ].forEach(([freq, delay, dur, peak]) => {
+        const g = ctx.createGain();
+        const o = ctx.createOscillator();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, t + delay);
+        g.gain.setValueAtTime(0, t + delay);
+        g.gain.linearRampToValueAtTime(peak, t + delay + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + delay + dur);
+        o.connect(g);
+        g.connect(this._masterGain);
+        o.start(t + delay);
+        o.stop(t + delay + dur + 0.02);
+      });
+    } catch {
+      /* ignore */
+    }
+  }
+
   // ── Theme Toggle — Mac "plink" (two-tone ping) ───────────────────────────
   playThemeToggle() {
     if (!this._enabled) return;

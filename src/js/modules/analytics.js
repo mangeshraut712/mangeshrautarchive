@@ -80,8 +80,34 @@
   function setUnavailableState() {
     reachCountEls.forEach(element => {
       element.textContent = 'Unavailable';
+      element.classList.remove('is-updating', 'is-settled');
+      element.closest('.portfolio-reach-badge')?.classList.remove('is-syncing');
       element.parentElement?.setAttribute('title', 'Portfolio Reach unavailable');
     });
+  }
+
+  function animateReachValue(element, formattedValue, titleText) {
+    const badge = element.closest('.portfolio-reach-badge');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    badge?.classList.add('is-syncing');
+    element.textContent = formattedValue;
+    element.parentElement?.setAttribute('title', titleText);
+
+    if (prefersReducedMotion) {
+      badge?.classList.remove('is-syncing');
+      return;
+    }
+
+    element.classList.remove('is-settled');
+    element.classList.add('is-updating');
+
+    window.setTimeout(() => {
+      element.classList.remove('is-updating');
+      element.classList.add('is-settled');
+      badge?.classList.remove('is-syncing');
+      window.setTimeout(() => element.classList.remove('is-settled'), 480);
+    }, 360);
   }
 
   /**
@@ -98,8 +124,7 @@
     const formattedValue = formatNumber(totalReach);
 
     reachCountEls.forEach(element => {
-      element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', `Portfolio Reach: ${formattedValue}`);
+      animateReachValue(element, formattedValue, `Portfolio Reach: ${formattedValue}`);
     });
   }
 
@@ -117,8 +142,7 @@
     const formattedValue = formatNumber(displayValue);
 
     reachCountEls.forEach(element => {
-      element.textContent = formattedValue;
-      element.parentElement?.setAttribute('title', `Portfolio Reach: ${formattedValue}`);
+      animateReachValue(element, formattedValue, `Portfolio Reach: ${formattedValue}`);
     });
   }
 
