@@ -110,6 +110,7 @@
 
   /* Buttons - Fixed Size & Position */
   .chatbot-voice-btn,
+  .chatbot-writing-btn,
   .chatbot-send-btn {
     width: 40px !important;
     height: 40px !important;

@@ -27,7 +27,7 @@
 
 <p align="center">
   <strong>Production-grade AI-first portfolio with deterministic client-side tool calling</strong><br>
-  <sub>WebMCP · Hybrid Intelligence · Apple 2026 Design · 12+ Device Testing Matrix</sub>
+  <sub>WebMCP · Apple Intelligence AssistMe · Liquid Glass · Hybrid Intelligence · 12+ Device Testing Matrix</sub>
 </p>
 
 <p align="center">
@@ -90,7 +90,7 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 | GitHub Pages   | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks       |
 | System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Real-time latency, service health, deploy status               |
 | Travel Atlas   | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre-powered visited places with narrative AI              |
-| AI Assistant   | Open chat on any page                                                                               | Try: "download resume", "go to projects", "schedule a meeting" |
+| AI Assistant   | Open chat on any page                                                                               | Siri-style dictation, Writing Tools, conversation summarize, on-screen awareness |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
 
@@ -212,13 +212,18 @@ All tools are functional via natural language in the chat **and** exposed via We
 ## 🎨 Premium User Experience
 
 - **Zero heavy framework** — pure ES modules + Tailwind CSS 4.0.9 + custom Apple 2026 design system (not Next.js/React/Vue/Svelte in production)
+- **AssistMe (Apple Intelligence UX)** — liquid-glass chat widget, compact header, Siri orb + multicolor title shimmer, stretch layout between navbar and toggle
+- **Siri-style voice dictation** — live interim transcripts, dictation status, auto-send on pause, natural TTS voice selection for read-aloud
+- **Writing Tools & summarize** — proofread/rewrite composer text and one-tap conversation recap via the existing chat API
+- **On-screen awareness** — contextual prompt chips when opening chat based on the visible section
+- **Streaming Markdown responses** — throttled Apple Intelligence typography, Siri caret, contextual follow-up chips
 - **Procedural sound engine** — synthesized Web Audio API sounds (theme toggle, chat open, birthday)
 - **Glassmorphism & micro-interactions** — spatial cards, buttery transitions, real-time action toasts
-- **Streaming Markdown responses** with contextual follow-up chips
 - **Birthday celebration system** — Canvas physics (confetti + balloons), aurora gradient overlay, and Apple Happy Birthday melody
 - **Last.fm Now Playing** — real-time track updates with spinning album art and animated equalizer bars
 - **Progressive Web App** with service worker and offline-first caching
 - **Real-time visitor counter** via Firestore + Vercel Analytics (no fake numbers)
+- **Accessibility toolbar** — text scaling, high contrast, and liquid-glass tint control (`wwdc26-liquid-glass-tint`)
 - **Consistent Apple-inspired design** — unified border styling, theme awareness, fluid typography across all sections
 
 ---
@@ -333,7 +338,7 @@ mangeshrautarchive/
 │   ├── index.html          # Main portfolio experience
 │   ├── monitor.html        # Public operations dashboard
 │   ├── travel.html         # MapLibre travel atlas
-│   ├── assets/css/         # 30+ modular CSS files (Apple 2026 design system)
+│   ├── assets/css/         # 30+ modular CSS files (Apple 2026 + wwdc26-liquid-glass.css)
 │   ├── assets/images/      # Optimized responsive images (WebP + fallbacks)
 │   └── js/
 │       ├── core/           # Bootstrap, chat, config, modern-input
@@ -366,6 +371,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026
 
+- **AssistMe Apple Intelligence Upgrade** — WWDC26-style liquid-glass chat UI (`wwdc26-liquid-glass.css`), compact AssistMe header, stretch layout, dark-mode solid-black message cards, Writing Tools popover, conversation summarize, on-screen awareness chips, Siri streaming typography, and improved voice dictation with live interim text.
 - **Chat Reliability & API Hardening** — Chat quota is consumed only after successful responses, rate-limit errors return proper HTTP 429 envelopes, and Python API tests run in CI via `npm run test:api`.
 - **Dual-Surface Monitoring** — Scheduled production monitoring now checks both Vercel (`mangeshraut.pro`) and GitHub Pages in parallel.
 - **Vercel Deployment Tuning** — Added `.vercelignore`, function `maxDuration: 60` for streaming chat, and verified GitHub ↔ Vercel Git integration.
@@ -407,7 +413,7 @@ _Support channels have been streamlined to Stripe and PayPal to maintain securit
 ## 🗺 Roadmap
 
 - Full WebNN + Gemma 3 client-side inference
-- Voice + vision agentic capabilities
+- Vision agentic capabilities (voice dictation shipped in AssistMe)
 - Public documentation of the WebMCP tool registry
 - Extraction of reusable components into open-source packages
 

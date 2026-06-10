@@ -889,6 +889,76 @@ export class AccessibilityEnhancer {
             display: none;
           }
         }
+
+        .a11y-glass-popover {
+          position: fixed;
+          left: 20px;
+          bottom: calc(max(24px, env(safe-area-inset-bottom)) + 70px);
+          z-index: 9998;
+          display: none;
+          flex-direction: column;
+          gap: 10px;
+          width: 240px;
+          padding: 16px 18px;
+          border-radius: 20px;
+          background: rgb(255 255 255 / 92%);
+          border: 1px solid rgb(0 0 0 / 8%);
+          box-shadow:
+            inset 0 1px 0 rgb(255 255 255 / 60%),
+            0 16px 40px rgb(0 0 0 / 16%);
+          backdrop-filter: saturate(180%) blur(24px);
+          -webkit-backdrop-filter: saturate(180%) blur(24px);
+        }
+
+        .a11y-glass-popover.is-open {
+          display: flex;
+        }
+
+        .a11y-glass-popover__title {
+          margin: 0;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #1d1d1f;
+          letter-spacing: -0.01em;
+        }
+
+        .a11y-glass-popover input[type='range'] {
+          width: 100%;
+          accent-color: #0071e3;
+          cursor: pointer;
+        }
+
+        .a11y-glass-popover__scale {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.68rem;
+          font-weight: 600;
+          color: #86868b;
+        }
+
+        html.dark .a11y-glass-popover {
+          background: rgb(18 18 20 / 92%);
+          border-color: rgb(255 255 255 / 10%);
+          box-shadow:
+            inset 0 1px 0 rgb(255 255 255 / 8%),
+            0 16px 40px rgb(0 0 0 / 50%);
+        }
+
+        html.dark .a11y-glass-popover__title {
+          color: #f5f5f7;
+        }
+
+        html.dark .a11y-glass-popover input[type='range'] {
+          accent-color: #4ea1ff;
+        }
+
+        @media (max-width: 768px) {
+          .a11y-glass-popover {
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: calc(max(16px, env(safe-area-inset-bottom)) + 66px);
+          }
+        }
       `;
       document.head.appendChild(style);
     }
@@ -914,6 +984,11 @@ export class AccessibilityEnhancer {
         label: 'Decrease text size',
         action: () => this.adjustTextSize(0.9),
       },
+      {
+        icon: '◐',
+        label: 'Liquid Glass transparency',
+        action: () => this.toggleLiquidGlassPopover(),
+      },
     ];
 
     buttons.forEach(btn => {
@@ -929,6 +1004,75 @@ export class AccessibilityEnhancer {
     });
 
     document.body.appendChild(toolbar);
+  }
+
+  /**
+   * WWDC26 Liquid Glass transparency slider
+   * 0 = ultra-clear, 100 = fully tinted. Drives --lg-tint.
+   */
+  toggleLiquidGlassPopover() {
+    let popover = document.querySelector('.a11y-glass-popover');
+
+    if (!popover) {
+      popover = document.createElement('div');
+      popover.className = 'a11y-glass-popover';
+      popover.setAttribute('role', 'group');
+      popover.setAttribute('aria-label', 'Liquid Glass transparency');
+
+      const title = document.createElement('p');
+      title.className = 'a11y-glass-popover__title';
+      title.textContent = 'Liquid Glass';
+
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.min = '0';
+      slider.max = '100';
+      slider.step = '5';
+      slider.value = String(this.getStoredGlassTint());
+      slider.setAttribute('aria-label', 'Glass transparency, clear to tinted');
+
+      const scale = document.createElement('div');
+      scale.className = 'a11y-glass-popover__scale';
+      scale.innerHTML = '<span>Clear</span><span>Tinted</span>';
+
+      slider.addEventListener('input', () => {
+        this.applyGlassTint(Number(slider.value));
+      });
+
+      popover.append(title, slider, scale);
+      document.body.appendChild(popover);
+    }
+
+    const isOpen = popover.classList.toggle('is-open');
+    this.announce(isOpen ? 'Liquid Glass slider opened' : 'Liquid Glass slider closed');
+    if (isOpen) {
+      popover.querySelector('input')?.focus();
+    }
+  }
+
+  getStoredGlassTint() {
+    try {
+      const raw = localStorage.getItem('wwdc26-liquid-glass-tint');
+      if (raw !== null) {
+        const stored = Number(raw);
+        if (Number.isFinite(stored) && stored >= 0 && stored <= 100) {
+          return stored;
+        }
+      }
+    } catch (_error) {
+      // Storage unavailable — fall through to default.
+    }
+    return 55;
+  }
+
+  applyGlassTint(value) {
+    const clamped = Math.min(100, Math.max(0, value));
+    document.documentElement.style.setProperty('--lg-tint', String(clamped / 100));
+    try {
+      localStorage.setItem('wwdc26-liquid-glass-tint', String(clamped));
+    } catch (_error) {
+      // Persistence is best-effort.
+    }
   }
 
   /**

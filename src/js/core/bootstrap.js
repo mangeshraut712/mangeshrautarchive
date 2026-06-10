@@ -628,7 +628,21 @@ function initServiceWorker() {
   );
 }
 
+function applyStoredLiquidGlassTint() {
+  try {
+    const raw = localStorage.getItem('wwdc26-liquid-glass-tint');
+    if (raw === null) return;
+    const stored = Number(raw);
+    if (Number.isFinite(stored) && stored >= 0 && stored <= 100) {
+      document.documentElement.style.setProperty('--lg-tint', String(stored / 100));
+    }
+  } catch (_error) {
+    // Storage unavailable — keep the CSS default tint.
+  }
+}
+
 async function initBootstrap() {
+  applyStoredLiquidGlassTint();
   initLaunchIntro();
   initFooterYear();
   initGlobalErrorHandlers();

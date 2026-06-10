@@ -531,6 +531,9 @@
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
 
+  <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (scoped layer, must load last) -->
+  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260610a" />
+
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 
 </head>
@@ -3283,22 +3286,30 @@
       aria-label="Apple Intelligence chat window" tabindex="-1">
       <!-- Header -->
       <div class="chatbot-header">
-        <div class="chatbot-header-content">
-          <h3 class="chatbot-title">AssistMe</h3>
-          <p>Mangesh's AI Assistant • <span id="chatbot-rate-limit-badge">12 left</span></p>
-        </div>
-        <div class="chatbot-header-actions">
-          <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings" type="button"
-            title="Privacy &amp; Personal Intelligence Settings" id="chatbot-privacy-btn">
-            <i class="fas fa-shield-alt"></i>
-          </button>
-          <button class="chatbot-settings-btn" aria-label="Clear chat" title="Clear conversation" type="button"
-            id="chatbot-clear-btn">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-          <button class="chatbot-close-btn" aria-label="Close chat" type="button">
-            <i class="fas fa-times"></i>
-          </button>
+        <div class="chatbot-header-brand">
+          <div class="chatbot-header-main">
+            <div class="chatbot-title-row">
+              <span class="siri-orb" aria-hidden="true"></span>
+              <h3 class="chatbot-title">AssistMe</h3>
+            </div>
+            <div class="chatbot-header-actions">
+              <button class="chatbot-settings-btn" aria-label="Summarize conversation" type="button"
+                title="Apple Intelligence: Summarize conversation" id="chatbot-summarize-btn">
+                <i class="fas fa-wand-magic-sparkles"></i>
+              </button>
+              <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings" type="button"
+                title="Privacy &amp; Personal Intelligence Settings" id="chatbot-privacy-btn">
+                <i class="fas fa-shield-alt"></i>
+              </button>
+              <button class="chatbot-settings-btn" aria-label="Clear chat" title="Clear conversation" type="button"
+                id="chatbot-clear-btn">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              <button class="chatbot-close-btn" aria-label="Close chat" type="button">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -3309,18 +3320,25 @@
 
       <!-- Input Container -->
       <div class="chatbot-input-container">
-        <form id="chatbot-form">
-          <div class="input-wrapper">
-            <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn" aria-label="Use voice input">
-              <i class="fas fa-microphone"></i>
+        <form id="chatbot-form" class="chatbot-composer">
+          <div class="input-wrapper" id="chatbot-input-wrapper">
+            <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn"
+              aria-label="Dictate with Siri" aria-pressed="false" title="Apple Intelligence: Voice dictation">
+              <i class="fas fa-microphone" aria-hidden="true"></i>
+              <span class="siri-voice-ring" aria-hidden="true"></span>
             </button>
             <label for="chatbot-input" class="sr-only">Message AssistMe</label>
             <textarea id="chatbot-input" placeholder="Ask anything..." rows="1" autocomplete="off"
-              maxlength="1800" aria-describedby="chatbot-rate-status"></textarea>
+              maxlength="1800" aria-describedby="chatbot-dictation-status chatbot-rate-status"></textarea>
+            <button type="button" id="chatbot-writing-btn" class="chatbot-writing-btn"
+              aria-label="Writing Tools" title="Apple Intelligence: Writing Tools" aria-expanded="false">
+              <i class="fas fa-pen-nib"></i>
+            </button>
             <button type="submit" class="chatbot-send-btn" aria-label="Send message">
               <i class="fas fa-arrow-up"></i>
             </button>
           </div>
+          <p id="chatbot-dictation-status" class="chatbot-dictation-status" aria-live="polite"></p>
           <p id="chatbot-rate-status" class="chatbot-rate-status" aria-live="polite"></p>
         </form>
       </div>

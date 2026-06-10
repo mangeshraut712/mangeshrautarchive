@@ -1,0 +1,1028 @@
+/* ════════════════════════════════════════════════════════════════
+   WWDC 2026 — Liquid Glass refinements + Siri AI glow
+   Scoped layer: navbar, chatbot, floating controls ONLY.
+   No global element/button selectors — safe on top of the
+   existing Apple premium design system.
+
+   --lg-tint: 0 = ultra-clear … 1 = fully tinted (WWDC26 slider).
+   Persisted by the accessibility toolbar's Liquid Glass control.
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  --lg-tint: 0.55;
+  --siri-c1: #0a84ff;
+  --siri-c2: #5e5ce6;
+  --siri-c3: #bf5af2;
+  --siri-c4: #ff375f;
+  --siri-c5: #ff9f0a;
+  /* Chatbot vertical stretch: navbar clearance + toggle stack */
+  --chatbot-widget-top: calc(var(--island-height, 52px) + 12px);
+  --chatbot-widget-bottom: calc(96px + 60px + 14px);
+}
+
+@property --siri-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes siri-rotate {
+  to {
+    --siri-angle: 360deg;
+  }
+}
+
+@keyframes siri-orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: saturate(120%) blur(0);
+  }
+
+  50% {
+    transform: scale(1.12);
+    filter: saturate(160%) blur(0.4px);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   1. NAVBAR — WWDC26 Liquid Glass (improved contrast + layer
+      separation, transparency driven by the user slider)
+   ──────────────────────────────────────────────────────────────── */
+
+.global-nav.dynamic-island {
+  background: rgb(255 255 255 / calc(52% + var(--lg-tint) * 46%));
+  backdrop-filter: saturate(180%) blur(calc(16px + (1 - var(--lg-tint)) * 12px));
+  -webkit-backdrop-filter: saturate(180%) blur(calc(16px + (1 - var(--lg-tint)) * 12px));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 55%);
+}
+
+html.dark .global-nav.dynamic-island {
+  background: rgb(0 0 0 / calc(55% + var(--lg-tint) * 43%));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 7%);
+}
+
+.global-nav.dynamic-island.scrolled {
+  background: rgb(255 255 255 / calc(62% + var(--lg-tint) * 36%));
+  backdrop-filter: saturate(180%) blur(calc(20px + (1 - var(--lg-tint)) * 10px));
+  -webkit-backdrop-filter: saturate(180%) blur(calc(20px + (1 - var(--lg-tint)) * 10px));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 60%),
+    0 1px 0 rgb(0 0 0 / 4%),
+    0 4px 20px rgb(0 0 0 / 5%);
+}
+
+html.dark .global-nav.dynamic-island.scrolled {
+  background: rgb(0 0 0 / calc(64% + var(--lg-tint) * 34%));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 8%),
+    0 1px 0 rgb(255 255 255 / 4%),
+    0 4px 20px rgb(0 0 0 / 24%);
+}
+
+/* Fade hint on the scrollable nav rail where the last links can
+   clip at mid-desktop widths (rail scrolls horizontally) */
+@media (min-width: 1151px) and (max-width: 1700px) {
+  .global-nav.dynamic-island .nav-links.scrollable-nav {
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 48px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 48px), transparent 100%);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   2. FLOATING CONTROLS — chatbot toggle + go-to-top get the same
+      glass material with a specular top edge
+   ──────────────────────────────────────────────────────────────── */
+
+/* !important needed: sitewide-design-system.css paints every button
+   blue — restore the Apple circular gradient while keeping Siri glow */
+#chatbot-toggle {
+  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  border: none !important;
+  border-radius: 50% !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow:
+    0 4px 14px rgb(0 122 255 / 38%),
+    inset 0 1px 0 rgb(255 255 255 / 28%) !important;
+}
+
+html.dark #chatbot-toggle {
+  background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow:
+    0 4px 16px rgb(10 132 255 / 42%),
+    inset 0 1px 0 rgb(255 255 255 / 18%) !important;
+}
+
+#chatbot-toggle .inline-icon svg {
+  stroke: currentColor;
+}
+
+/* Siri glow on the chat toggle — refined hairline ring, soft
+   translucent hues, slow drift (no harsh rainbow band) */
+#chatbot-toggle::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--siri-angle),
+    rgb(10 132 255 / 75%),
+    rgb(94 92 230 / 55%),
+    rgb(191 90 242 / 70%),
+    rgb(94 92 230 / 45%),
+    rgb(10 132 255 / 75%)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.55;
+  filter: blur(0.4px) saturate(115%);
+  pointer-events: none;
+  animation: siri-rotate 14s linear infinite;
+  transition: opacity 0.4s ease;
+}
+
+#chatbot-toggle:hover::after {
+  opacity: 0.9;
+  animation-duration: 6s;
+}
+
+#go-to-top.visible {
+  backdrop-filter: saturate(180%) blur(calc(12px + (1 - var(--lg-tint)) * 8px));
+  -webkit-backdrop-filter: saturate(180%) blur(calc(12px + (1 - var(--lg-tint)) * 8px));
+}
+
+/* ────────────────────────────────────────────────────────────────
+   3. CHATBOT WIDGET — Liquid Glass surface, tint-aware
+   ──────────────────────────────────────────────────────────────── */
+
+#chatbot-widget {
+  background: rgb(255 255 255 / calc(58% + var(--lg-tint) * 38%));
+  backdrop-filter: blur(calc(34px + (1 - var(--lg-tint)) * 22px)) saturate(220%);
+  -webkit-backdrop-filter: blur(calc(34px + (1 - var(--lg-tint)) * 22px)) saturate(220%);
+}
+
+html.dark #chatbot-widget {
+  background: rgb(0 0 0 / calc(88% + var(--lg-tint) * 10%));
+}
+
+/* Siri edge glow around the open widget (stronger while thinking) */
+#chatbot-widget::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--siri-angle),
+    var(--siri-c1),
+    var(--siri-c2),
+    var(--siri-c3),
+    var(--siri-c4),
+    var(--siri-c5),
+    var(--siri-c1)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+
+#chatbot-widget.visible::after {
+  opacity: 0.5;
+  animation: siri-rotate 10s linear infinite;
+}
+
+#chatbot-widget.visible:has(.thinking-indicator)::after {
+  opacity: 0.95;
+  animation-duration: 3s;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   4. SIRI ORB — animated intelligence orb in the chat header
+   ──────────────────────────────────────────────────────────────── */
+
+.siri-orb {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: -1px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgb(255 255 255 / 85%), transparent 42%),
+    conic-gradient(
+      from var(--siri-angle),
+      var(--siri-c1),
+      var(--siri-c2),
+      var(--siri-c3),
+      var(--siri-c4),
+      var(--siri-c5),
+      var(--siri-c1)
+    );
+  box-shadow: 0 0 10px rgb(94 92 230 / 45%);
+  animation:
+    siri-rotate 6s linear infinite,
+    siri-orb-breathe 2.8s ease-in-out infinite;
+}
+
+/* Siri multicolor title shimmer (replaces single-hue glow) */
+#chatbot-widget .chatbot-title {
+  font-size: 16px;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(
+    100deg,
+    var(--siri-c1) 0%,
+    var(--siri-c2) 25%,
+    var(--siri-c3) 50%,
+    var(--siri-c4) 75%,
+    var(--siri-c5) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgb(94 92 230 / 22%));
+  animation: siri-title-sweep 6s ease-in-out infinite;
+}
+
+@keyframes siri-title-sweep {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   5. CHAT INPUT — Siri glow focus ring + gradient send button
+   ──────────────────────────────────────────────────────────────── */
+
+#chatbot-widget .input-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--siri-angle),
+    var(--siri-c1),
+    var(--siri-c2),
+    var(--siri-c3),
+    var(--siri-c4),
+    var(--siri-c5),
+    var(--siri-c1)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+#chatbot-widget .input-wrapper:focus-within {
+  transform: none !important;
+  border-color: transparent;
+  box-shadow:
+    0 8px 40px rgb(94 92 230 / 18%),
+    0 4px 16px rgb(10 132 255 / 14%);
+}
+
+html.dark #chatbot-widget .input-wrapper:focus-within {
+  border-color: transparent;
+  box-shadow:
+    0 8px 40px rgb(94 92 230 / 26%),
+    0 4px 16px rgb(10 132 255 / 20%);
+}
+
+#chatbot-widget .input-wrapper:focus-within::after {
+  opacity: 1;
+  animation: siri-rotate 4s linear infinite;
+}
+
+#chatbot-widget .chatbot-send-btn {
+  background: linear-gradient(135deg, var(--siri-c1) 0%, var(--siri-c2) 55%, var(--siri-c3) 100%);
+  box-shadow: 0 2px 10px rgb(94 92 230 / 35%);
+}
+
+#chatbot-widget .chatbot-send-btn:hover {
+  background: linear-gradient(135deg, var(--siri-c2) 0%, var(--siri-c3) 55%, var(--siri-c4) 100%);
+  box-shadow: 0 4px 14px rgb(191 90 242 / 40%);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   6. THINKING INDICATOR — Siri gradient brain + glow border
+   ──────────────────────────────────────────────────────────────── */
+
+#chatbot-widget .thinking-brain {
+  background: conic-gradient(
+    from var(--siri-angle),
+    var(--siri-c1),
+    var(--siri-c2),
+    var(--siri-c3),
+    var(--siri-c4),
+    var(--siri-c5),
+    var(--siri-c1)
+  );
+  animation:
+    brainPulse 1.5s ease-in-out infinite,
+    siri-rotate 4s linear infinite;
+}
+
+#chatbot-widget .thinking-content {
+  border-color: rgb(94 92 230 / 25%);
+  box-shadow: 0 2px 14px rgb(94 92 230 / 12%);
+}
+
+html.dark #chatbot-widget .thinking-content {
+  border-color: rgb(94 92 230 / 40%);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   7. APPLE INTELLIGENCE — Writing Tools (WWDC26)
+   ──────────────────────────────────────────────────────────────── */
+
+/* !important needed: sitewide-design-system.css repaints buttons blue */
+#chatbot-widget .chatbot-writing-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  flex-shrink: 0;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: linear-gradient(135deg, var(--siri-c2) 0%, var(--siri-c3) 100%) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgb(94 92 230 / 30%) !important;
+}
+
+#chatbot-widget .chatbot-writing-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgb(191 90 242 / 40%) !important;
+}
+
+#chatbot-widget .chatbot-writing-btn:active {
+  transform: scale(0.96);
+}
+
+#chatbot-widget .chatbot-writing-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+#chatbot-form {
+  position: relative;
+}
+
+#chatbot-widget .writing-tools-popover {
+  position: absolute;
+  right: 52px;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 190px;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgb(255 255 255 / 88%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgb(0 0 0 / 8%);
+  box-shadow:
+    0 12px 40px rgb(0 0 0 / 16%),
+    0 0 18px rgb(94 92 230 / 12%);
+  animation: writing-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html.dark #chatbot-widget .writing-tools-popover {
+  background: rgb(28 28 32 / 92%);
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow:
+    0 12px 40px rgb(0 0 0 / 50%),
+    0 0 18px rgb(94 92 230 / 22%);
+}
+
+@keyframes writing-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#chatbot-widget .writing-tools-title {
+  padding: 6px 10px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: linear-gradient(100deg, var(--siri-c1), var(--siri-c3));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* !important needed: sitewide-design-system.css paints every button
+   with the blue gradient — these must look like an AI menu instead */
+#chatbot-widget .writing-tool-option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px !important;
+  border: none !important;
+  border-radius: 11px !important;
+  background: transparent !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: none !important;
+  transition: background 0.18s ease;
+}
+
+html.dark #chatbot-widget .writing-tool-option {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+#chatbot-widget .writing-tool-option:hover {
+  background: rgb(94 92 230 / 14%) !important;
+  transform: none !important;
+}
+
+#chatbot-widget .writing-tool-option i {
+  width: 16px;
+  color: var(--siri-c2) !important;
+  -webkit-text-fill-color: var(--siri-c2) !important;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   8. SIRI AI — On-screen awareness chip (WWDC26)
+   ──────────────────────────────────────────────────────────────── */
+
+/* !important needed: overrides the sitewide blue-button gradient */
+#chatbot-widget .context-aware-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  align-self: flex-start;
+  width: auto !important;
+  max-width: 92%;
+  margin: 4px 0;
+  padding: 9px 14px !important;
+  border: 1px solid rgb(94 92 230 / 30%) !important;
+  border-radius: 16px !important;
+  background: rgb(94 92 230 / 9%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: none !important;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+html.dark #chatbot-widget .context-aware-chip {
+  background: rgb(94 92 230 / 18%) !important;
+  border-color: rgb(94 92 230 / 48%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+#chatbot-widget .context-aware-chip:hover {
+  background: rgb(94 92 230 / 18%) !important;
+  transform: translateY(-1px) !important;
+}
+
+#chatbot-widget .context-aware-chip i {
+  color: var(--siri-c2) !important;
+  -webkit-text-fill-color: var(--siri-c2) !important;
+  font-size: 12px;
+}
+
+#chatbot-widget .context-aware-chip .context-aware-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgb(10 132 255 / 10%) 40%,
+    rgb(191 90 242 / 12%) 60%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  animation: siri-title-sweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   9. COMPACT LAYOUT — reclaim chrome space for the conversation.
+   Before: header 159px + input area 161px = 50% of a 640px widget,
+   leaving the welcome card (330px) clipped inside 317px of messages.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Compact header: AssistMe + actions on one row */
+#chatbot-widget .chatbot-header {
+  position: relative;
+  display: block;
+  padding: 8px 12px 8px 14px !important;
+  min-height: 0;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgb(0 0 0 / 7%);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 78%) 0%, rgb(255 255 255 / 42%) 100%);
+  backdrop-filter: blur(24px) saturate(1.35);
+  -webkit-backdrop-filter: blur(24px) saturate(1.35);
+}
+
+#chatbot-widget .chatbot-header::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 12px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(94 92 230 / 18%) 35%,
+    rgb(48 209 88 / 14%) 65%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+html.dark #chatbot-widget .chatbot-header {
+  border-bottom-color: rgb(255 255 255 / 9%);
+  background:
+    linear-gradient(180deg, rgb(28 28 30 / 94%) 0%, rgb(16 16 18 / 78%) 100%);
+}
+
+#chatbot-widget .chatbot-header-brand {
+  display: block;
+  min-width: 0;
+}
+
+#chatbot-widget .chatbot-header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+#chatbot-widget .chatbot-title-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  flex: 1;
+}
+
+#chatbot-widget .chatbot-title-row .siri-orb {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+#chatbot-widget .chatbot-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+/* !important: sitewide button gradient override */
+#chatbot-widget .chatbot-settings-btn,
+#chatbot-widget .chatbot-close-btn {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  padding: 0 !important;
+  font-size: 12px;
+  border: none !important;
+  border-radius: 50% !important;
+  background: rgb(0 0 0 / 5%) !important;
+  color: rgb(60 60 67 / 82%) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#chatbot-widget .chatbot-settings-btn i,
+#chatbot-widget .chatbot-close-btn i {
+  color: inherit !important;
+  -webkit-text-fill-color: currentcolor !important;
+  pointer-events: none;
+}
+
+html.dark #chatbot-widget .chatbot-settings-btn,
+html.dark #chatbot-widget .chatbot-close-btn {
+  background: rgb(255 255 255 / 10%) !important;
+  color: rgb(235 235 245 / 86%) !important;
+}
+
+#chatbot-widget .chatbot-settings-btn:hover,
+#chatbot-widget .chatbot-close-btn:hover {
+  background: rgb(94 92 230 / 14%) !important;
+  color: var(--siri-c2) !important;
+  transform: none !important;
+}
+
+#chatbot-widget .chatbot-settings-btn:hover i,
+#chatbot-widget .chatbot-close-btn:hover i {
+  -webkit-text-fill-color: currentcolor !important;
+}
+
+#chatbot-widget .chatbot-close-btn:hover {
+  background: rgb(255 59 48 / 12%) !important;
+  color: #ff3b30 !important;
+}
+
+html.dark #chatbot-widget .chatbot-settings-btn:hover,
+html.dark #chatbot-widget .chatbot-close-btn:hover {
+  background: rgb(94 92 230 / 22%) !important;
+}
+
+/* Messages area: tighter padding, anchor welcome near composer */
+#chatbot-widget #chatbot-messages {
+  padding: 10px 10px 6px;
+  gap: 10px;
+}
+
+#chatbot-widget #chatbot-messages:not(:has(.user-message)) {
+  justify-content: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#chatbot-widget .message {
+  max-width: 96%;
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified {
+  margin-top: 0;
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified .message-content {
+  padding: 10px 11px !important;
+  gap: 6px;
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified .welcome-assistant-label {
+  display: none;
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified .welcome-title {
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+  font-weight: 650;
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified .welcome-subtitle {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified .welcome-chips {
+  gap: 5px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#chatbot-widget .welcome-message.welcome-message-simplified .welcome-action-chip {
+  padding: 7px 8px;
+  font-size: 12px;
+}
+
+/* Slimmer composer dock: pill + inline rate status */
+#chatbot-widget .chatbot-input-container {
+  padding: 6px 10px 7px !important;
+  padding-bottom: max(7px, env(safe-area-inset-bottom)) !important;
+}
+
+#chatbot-widget .chatbot-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+}
+
+#chatbot-widget .chatbot-voice-btn {
+  position: relative;
+  overflow: visible;
+}
+
+#chatbot-widget .chatbot-voice-btn .siri-voice-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+#chatbot-widget .chatbot-voice-btn.listening {
+  background: linear-gradient(135deg, #34c759 0%, #30d158 100%) !important;
+  animation: siri-voice-core 1.15s ease-in-out infinite;
+}
+
+#chatbot-widget .chatbot-voice-btn.listening .siri-voice-ring {
+  opacity: 1;
+  background: conic-gradient(
+    from var(--siri-angle),
+    var(--siri-c1),
+    var(--siri-c2),
+    var(--siri-c3),
+    var(--siri-c4),
+    var(--siri-c5),
+    var(--siri-c1)
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  animation: siri-rotate 2.8s linear infinite;
+}
+
+@keyframes siri-voice-core {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(48 209 88 / 35%);
+  }
+
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 8px rgb(48 209 88 / 0%);
+  }
+}
+
+#chatbot-widget .input-wrapper.dictating {
+  border-color: rgb(94 92 230 / 32%) !important;
+  box-shadow:
+    0 0 0 1px rgb(94 92 230 / 10%) inset,
+    0 0 22px rgb(94 92 230 / 16%) !important;
+}
+
+#chatbot-widget #chatbot-input.dictating {
+  caret-color: var(--siri-c2);
+}
+
+#chatbot-widget .chatbot-dictation-status {
+  margin: 0 6px 0 2px;
+  min-height: 0;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: 0.01em;
+  color: rgb(94 92 230 / 88%);
+}
+
+#chatbot-widget .chatbot-dictation-status:empty {
+  display: none;
+}
+
+html.dark #chatbot-widget .chatbot-dictation-status {
+  color: rgb(191 190 245 / 92%);
+}
+
+#chatbot-widget .input-wrapper {
+  padding: 4px 5px;
+  gap: 6px;
+  border-radius: 36px;
+}
+
+#chatbot-widget #chatbot-input {
+  font-size: 14.5px;
+  line-height: 1.35;
+  min-height: 22px;
+  padding: 4px 0;
+}
+
+#chatbot-widget .chatbot-voice-btn,
+#chatbot-widget .chatbot-send-btn,
+#chatbot-widget .chatbot-writing-btn {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  font-size: 14px;
+}
+
+#chatbot-widget #chatbot-rate-status {
+  margin: 0 6px 0 0;
+  min-height: 0 !important;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 500;
+  text-align: right;
+  opacity: 0.82;
+}
+
+/* Apple Intelligence response typography */
+#chatbot-widget .siri-intelligence-text {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    'SF Pro Display',
+    system-ui,
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: -0.018em;
+  font-weight: 400;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#chatbot-widget .assistant-message.streaming .siri-intelligence-text {
+  animation: siri-text-reveal 0.35s ease-out;
+}
+
+@keyframes siri-text-reveal {
+  from {
+    opacity: 0.88;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#chatbot-widget .siri-stream-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  background: linear-gradient(
+    180deg,
+    var(--siri-c2) 0%,
+    var(--siri-c4) 50%,
+    var(--siri-c1) 100%
+  );
+  box-shadow: 0 0 6px rgb(94 92 230 / 45%);
+  animation: siri-caret-pulse 0.95s ease-in-out infinite;
+}
+
+@keyframes siri-caret-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  50% {
+    opacity: 0.35;
+    transform: scaleY(0.82);
+  }
+}
+
+#chatbot-widget .assistant-message.streaming .message-content::after {
+  height: 2px;
+  opacity: 0.65;
+}
+
+/* Dark mode: solid black message cards (not grey translucent) */
+html.dark #chatbot-widget .assistant-message .message-content,
+html.dark #chatbot-widget .welcome-message .message-content,
+html.dark #chatbot-widget .thinking-content,
+html.dark #chatbot-widget .error-message .message-content {
+  background: #000 !important;
+  background-color: #000 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+}
+
+html.dark #chatbot-widget .assistant-message .message-content:hover {
+  background: #000 !important;
+}
+
+/* Welcome grid: 3 chips in one row on desktop, stack on narrow */
+
+/* Desktop/tablet: stretch between navbar and toggle — no dead gap above */
+@media (min-width: 769px) {
+  #chatbot-widget {
+    top: var(--chatbot-widget-top) !important;
+    bottom: var(--chatbot-widget-bottom) !important;
+    height: auto !important;
+    max-height: none !important;
+    width: 400px !important;
+    right: 24px !important;
+    left: auto !important;
+  }
+
+  @supports (position-anchor: --chatbot-toggle) {
+    #chatbot-widget {
+      position-anchor: --chatbot-toggle;
+      bottom: anchor(--chatbot-toggle top) !important;
+      margin-bottom: 14px !important;
+      top: var(--chatbot-widget-top) !important;
+      position-try-fallbacks: none;
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  #chatbot-widget {
+    width: 380px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #chatbot-widget .chatbot-header {
+    padding: 10px 12px !important;
+  }
+
+  #chatbot-widget .chatbot-title {
+    font-size: 17px;
+  }
+
+  #chatbot-widget .chatbot-settings-btn,
+  #chatbot-widget .chatbot-close-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  #chatbot-widget .welcome-message.welcome-message-simplified .welcome-chips {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   10. REDUCED MOTION — freeze every Siri animation
+   ──────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  #chatbot-toggle::after,
+  #chatbot-widget::after,
+  #chatbot-widget .input-wrapper::after,
+  #chatbot-widget .thinking-brain,
+  #chatbot-widget .chatbot-title,
+  #chatbot-widget .writing-tools-popover,
+  #chatbot-widget .context-aware-chip .context-aware-glow,
+  #chatbot-widget .siri-stream-caret,
+  #chatbot-widget .assistant-message.streaming .siri-intelligence-text,
+  #chatbot-widget .chatbot-voice-btn.listening,
+  #chatbot-widget .chatbot-voice-btn.listening .siri-voice-ring,
+  .siri-orb {
+    animation: none !important;
+  }
+}

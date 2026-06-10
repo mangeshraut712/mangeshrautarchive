@@ -70,6 +70,51 @@ function normalizeFollowupPrompt(label) {
   return label.replace(/^[^A-Za-z0-9]+/, '').trim();
 }
 
+// ── Apple Intelligence Writing Tools (WWDC26) ──────────────────
+const WRITING_TOOLS = [
+  {
+    id: 'proofread',
+    icon: 'fa-spell-check',
+    label: 'Proofread',
+    instruction:
+      'Proofread the following message. Fix spelling, grammar, and punctuation only. Reply with ONLY the corrected text, nothing else:',
+  },
+  {
+    id: 'friendly',
+    icon: 'fa-face-smile',
+    label: 'Friendly',
+    instruction:
+      'Rewrite the following message in a warm, friendly tone. Keep it short. Reply with ONLY the rewritten text, nothing else:',
+  },
+  {
+    id: 'professional',
+    icon: 'fa-briefcase',
+    label: 'Professional',
+    instruction:
+      'Rewrite the following message in a clear, professional tone. Reply with ONLY the rewritten text, nothing else:',
+  },
+  {
+    id: 'concise',
+    icon: 'fa-compress',
+    label: 'Concise',
+    instruction:
+      'Rewrite the following message to be as concise as possible while keeping the meaning. Reply with ONLY the rewritten text, nothing else:',
+  },
+];
+
+// On-screen awareness: section id → contextual prompt (Siri AI, WWDC26)
+const SECTION_CONTEXT_PROMPTS = {
+  about: ['About Me', 'Give me a quick intro to Mangesh'],
+  skills: ['Skills', "What are Mangesh's strongest skills?"],
+  experience: ['Experience', "Walk me through Mangesh's work experience"],
+  projects: ['Projects', "What are Mangesh's most impressive projects?"],
+  education: ['Education', "Tell me about Mangesh's education"],
+  publications: ['Publications', 'What research has Mangesh published?'],
+  certifications: ['Certifications', 'Which certifications does Mangesh hold?'],
+  blog: ['Insights', 'What does Mangesh write about?'],
+  contact: ['Contact', 'How do I get in touch with Mangesh?'],
+};
+
 // ── Agentic action patterns ──────────────────────
 const AGENTIC_PATTERNS = [
   {
@@ -125,6 +170,9 @@ class AppleIntelligenceChatbot {
     this.chatAPI = null;
     this.recognition = null;
     this.isListening = false;
+    this.dictationBase = '';
+    this.autoSendOnFinal = true;
+    this.dictationSendTimer = null;
     this.lastUserMessage = '';
     this.messageCount = 0;
     this.retryCount = 0;
@@ -144,6 +192,7 @@ class AppleIntelligenceChatbot {
     this.initVoiceRecognition();
     this.bindEvents();
     this.addWelcomeMessage();
+    this.preloadSpeechVoices();
 
     // Set initial rate limit badge state
     this.updateRateLimitBadge();
@@ -172,22 +221,8 @@ class AppleIntelligenceChatbot {
   }
 
   updateRateLimitBadge() {
-    const badge = document.getElementById('chatbot-rate-limit-badge');
     const status = this.elements.rateStatus;
     const remaining = this.getRemainingQueries();
-
-    if (badge) {
-      badge.textContent = `${remaining} left`;
-
-      // Update styling class based on count
-      if (remaining <= 0) {
-        badge.className = 'rate-limit-empty';
-      } else if (remaining <= 3) {
-        badge.className = 'rate-limit-low';
-      } else {
-        badge.className = '';
-      }
-    }
 
     if (status) {
       status.textContent =
@@ -250,40 +285,164 @@ class AppleIntelligenceChatbot {
     }
   }
 
+  preloadSpeechVoices() {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.addEventListener('voiceschanged', () => {}, { once: true });
+  }
+
   initVoiceRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      this.recognition = new SpeechRecognition();
-      this.recognition.continuous = false;
-      this.recognition.interimResults = true;
-      this.recognition.lang = 'en-US';
+    if (!SpeechRecognition) {
+      return;
+    }
 
-      this.recognition.onresult = event => {
-        const transcript = Array.from(event.results)
-          .map(result => result[0].transcript)
-          .join('');
+    this.recognition = new SpeechRecognition();
+    this.recognition.continuous = false;
+    this.recognition.interimResults = true;
+    this.recognition.lang = 'en-US';
+    this.recognition.maxAlternatives = 1;
 
-        if (this.elements.input) {
-          this.elements.input.value = transcript;
-          this.autoResizeTextarea(this.elements.input);
+    this.recognition.onstart = () => {
+      this.isListening = true;
+      this.updateVoiceButtonState();
+      this.setDictationStatus('Listening…');
+      this.elements.inputWrapper?.classList.add('dictating');
+      this.elements.input?.classList.add('dictating');
+    };
+
+    this.recognition.onresult = event => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const result = event.results[i];
+        const chunk = result[0]?.transcript || '';
+        if (result.isFinal) {
+          finalTranscript += chunk;
+        } else {
+          interimTranscript += chunk;
         }
+      }
 
-        const latestResult = event.results[event.results.length - 1];
-        if (latestResult && latestResult.isFinal) {
-          this.handleSendMessage();
+      if (finalTranscript) {
+        this.dictationBase += finalTranscript;
+      }
+
+      this.syncDictationToInput(interimTranscript);
+
+      if (interimTranscript) {
+        this.setDictationStatus('Dictating…');
+      }
+
+      const latestResult = event.results[event.results.length - 1];
+      if (latestResult?.isFinal && this.autoSendOnFinal) {
+        const text = this.normalizeInput(this.elements.input?.value);
+        if (text) {
+          clearTimeout(this.dictationSendTimer);
+          this.dictationSendTimer = setTimeout(() => {
+            this.stopDictation(false);
+            this.handleSendMessage();
+          }, 180);
         }
-      };
+      }
+    };
 
-      this.recognition.onend = () => {
-        this.isListening = false;
-        this.updateVoiceButtonState();
-      };
+    this.recognition.onend = () => {
+      this.isListening = false;
+      this.updateVoiceButtonState();
+      this.elements.inputWrapper?.classList.remove('dictating');
+      this.elements.input?.classList.remove('dictating');
+      if (!this.normalizeInput(this.elements.input?.value)) {
+        this.setDictationStatus('');
+      }
+    };
 
-      this.recognition.onerror = event => {
-        console.error('Speech recognition error:', event.error);
-        this.isListening = false;
-        this.updateVoiceButtonState();
+    this.recognition.onerror = event => {
+      console.error('Speech recognition error:', event.error);
+      this.isListening = false;
+      this.updateVoiceButtonState();
+      this.elements.inputWrapper?.classList.remove('dictating');
+      this.elements.input?.classList.remove('dictating');
+
+      const messages = {
+        'not-allowed': 'Microphone access denied. Allow mic permission to dictate.',
+        'no-speech': "Didn't catch that — tap the mic and try again.",
+        aborted: '',
+        network: 'Network error during dictation. Check your connection.',
       };
+      this.setDictationStatus(messages[event.error] || 'Dictation interrupted. Try again.');
+    };
+  }
+
+  syncDictationToInput(interimTranscript = '') {
+    if (!this.elements.input) return;
+
+    const composed = `${this.dictationBase}${interimTranscript}`.trimStart();
+    this.elements.input.value = composed.slice(0, MAX_CHAT_INPUT_LENGTH);
+    this.autoResizeTextarea(this.elements.input);
+  }
+
+  setDictationStatus(message) {
+    if (this.elements.dictationStatus) {
+      this.elements.dictationStatus.textContent = message || '';
+    }
+  }
+
+  stopDictation(resetDraft = false) {
+    clearTimeout(this.dictationSendTimer);
+    this.autoSendOnFinal = false;
+
+    if (this.recognition && this.isListening) {
+      try {
+        this.recognition.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+
+    this.isListening = false;
+    this.updateVoiceButtonState();
+    this.elements.inputWrapper?.classList.remove('dictating');
+    this.elements.input?.classList.remove('dictating');
+
+    if (resetDraft) {
+      this.dictationBase = '';
+      if (this.elements.input) {
+        this.elements.input.value = '';
+        this.autoResizeTextarea(this.elements.input);
+      }
+    }
+
+    this.setDictationStatus('');
+  }
+
+  startDictation() {
+    if (!this.recognition) {
+      this.addMessage(
+        'Voice dictation is not supported in your browser. Try Chrome, Edge, or Safari.',
+        'assistant'
+      );
+      return;
+    }
+
+    if (this.isProcessing) return;
+
+    this.autoSendOnFinal = true;
+    this.dictationBase = this.elements.input?.value?.trim()
+      ? `${this.elements.input.value.trim()} `
+      : '';
+
+    try {
+      this.recognition.start();
+      this.isListening = true;
+      this.updateVoiceButtonState();
+      window.voiceService?.dispatchEvent?.(new CustomEvent('listening-start'));
+    } catch (error) {
+      console.error('Voice recognition error:', error);
+      this.isListening = false;
+      this.updateVoiceButtonState();
+      this.setDictationStatus('Unable to start dictation. Check microphone permissions.');
     }
   }
 
@@ -291,10 +450,18 @@ class AppleIntelligenceChatbot {
     if (this.elements.voiceBtn) {
       if (this.isListening) {
         this.elements.voiceBtn.classList.add('listening');
-        this.elements.voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+        this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
+        this.elements.voiceBtn.setAttribute('aria-label', 'Stop dictation');
+        this.elements.voiceBtn.title = 'Stop dictation';
+        this.elements.voiceBtn.innerHTML =
+          '<i class="fas fa-stop" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
       } else {
         this.elements.voiceBtn.classList.remove('listening');
-        this.elements.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+        this.elements.voiceBtn.setAttribute('aria-pressed', 'false');
+        this.elements.voiceBtn.setAttribute('aria-label', 'Dictate with Siri');
+        this.elements.voiceBtn.title = 'Apple Intelligence: Voice dictation';
+        this.elements.voiceBtn.innerHTML =
+          '<i class="fas fa-microphone" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
       }
     }
   }
@@ -306,11 +473,15 @@ class AppleIntelligenceChatbot {
       closeBtn: document.querySelector('.chatbot-close-btn'),
       clearBtn: document.getElementById('chatbot-clear-btn'),
       privacyBtn: document.getElementById('chatbot-privacy-btn'),
+      summarizeBtn: document.getElementById('chatbot-summarize-btn'),
+      writingBtn: document.getElementById('chatbot-writing-btn'),
       form: document.getElementById('chatbot-form'),
       input: document.getElementById('chatbot-input'),
       messages: document.getElementById('chatbot-messages'),
       sendBtn: document.querySelector('.chatbot-send-btn'),
       voiceBtn: document.getElementById('chatbot-voice-btn'),
+      inputWrapper: document.getElementById('chatbot-input-wrapper'),
+      dictationStatus: document.getElementById('chatbot-dictation-status'),
       rateStatus: document.getElementById('chatbot-rate-status'),
     };
 
@@ -367,6 +538,8 @@ class AppleIntelligenceChatbot {
     this.elements.privacyBtn?.addEventListener('click', () => {
       privacyDashboard.open();
     });
+    this.elements.summarizeBtn?.addEventListener('click', () => this.summarizeConversation());
+    this.elements.writingBtn?.addEventListener('click', () => this.toggleWritingTools());
 
     this.elements.form?.addEventListener('submit', e => {
       e.preventDefault();
@@ -437,6 +610,7 @@ class AppleIntelligenceChatbot {
     this.isOpen = true;
     this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
+    this.showContextAwareness();
     appleSounds.playNotification();
     setTimeout(() => {
       (this.elements.input || this.elements.widget)?.focus();
@@ -444,6 +618,8 @@ class AppleIntelligenceChatbot {
   }
 
   closeWidget() {
+    this.closeWritingTools();
+    this.stopDictation(false);
     document.body.classList.remove('chatbot-open');
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
@@ -482,23 +658,13 @@ class AppleIntelligenceChatbot {
           'message assistant-message welcome-message welcome-message-simplified';
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-header">
-                            <div class="welcome-brand">
-                                <span class="welcome-name">AssistMe</span>
-                                <span class="welcome-helper-text">Portfolio Guide</span>
-                            </div>
-                            <div class="welcome-status-badge">
-                                <span class="chatbot-status-dot status-online"></span>
-                                <span class="chatbot-status-text">Connected</span>
-                            </div>
-                        </div>
-                        <div class="welcome-title">Welcome</div>
+                        <div class="welcome-title">Welcome to Mangesh's AI Assistant</div>
                         <div class="welcome-subtitle">Ask about projects, skills, experience, or contact details. Start with one quick option below.</div>
-                        
+
                         <div class="welcome-capabilities">
                             <span class="capability-badge"><i class="fas fa-briefcase"></i> Portfolio</span>
                             <span class="capability-badge"><i class="fas fa-brain"></i> AI/ML</span>
-                            <span class="capability-badge"><i class="fas fa-compass"></i> Navigation</span>
+                            <span class="capability-badge"><i class="fas fa-pen-nib"></i> Writing Tools</span>
                         </div>
 
                         <div class="welcome-chips">
@@ -509,7 +675,6 @@ class AppleIntelligenceChatbot {
         [
           ['fas fa-rocket', 'Top Projects', "What are Mangesh's top projects?"],
           ['fas fa-brain', 'AI/ML Work', 'What AI and ML projects has Mangesh built?'],
-          ['fas fa-briefcase', 'Experience', "Tell me about Mangesh's work experience"],
           ['fas fa-envelope', 'Contact', 'How can I contact Mangesh?'],
         ].forEach(([iconClass, label, prompt]) => {
           chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
@@ -561,6 +726,7 @@ class AppleIntelligenceChatbot {
   // ── Message Sending ──────────────────────
 
   async handleSendMessage() {
+    this.stopDictation(false);
     const text = this.normalizeInput(this.elements.input?.value);
     if (!text || this.isProcessing) return;
 
@@ -597,6 +763,7 @@ class AppleIntelligenceChatbot {
       this.elements.input.value = '';
       this.autoResizeTextarea(this.elements.input);
     }
+    this.dictationBase = '';
 
     // Detect and show agentic action
     const agenticAction = this.detectAgenticAction(text);
@@ -669,48 +836,107 @@ class AppleIntelligenceChatbot {
     return stripUnsafeControlCharacters(value).trim();
   }
 
+  // ── Apple Intelligence streaming paint ──────────────────────
+
+  paintStreamingContent(contentDiv, fullText) {
+    if (!contentDiv) return;
+
+    const useMarkdown = fullText.length >= 48 || /[*`#\n-]/.test(fullText);
+    if (useMarkdown) {
+      contentDiv.innerHTML = `${this.renderMarkdown(fullText)}<span class="siri-stream-caret" aria-hidden="true"></span>`;
+      return;
+    }
+
+    contentDiv.replaceChildren();
+    contentDiv.append(document.createTextNode(fullText));
+    const caret = document.createElement('span');
+    caret.className = 'siri-stream-caret';
+    caret.setAttribute('aria-hidden', 'true');
+    contentDiv.appendChild(caret);
+  }
+
+  finalizeStreamingContent(contentDiv, fullText, response) {
+    if (!contentDiv) return;
+
+    const renderedHTML = this.renderMarkdown(fullText);
+    contentDiv.innerHTML = renderedHTML;
+    contentDiv.classList.add('siri-intelligence-text');
+
+    if (response && (response.type === 'action' || response.source === 'agentic-action')) {
+      contentDiv.closest('.message')?.classList.add('action-message');
+      const badge = document.createElement('div');
+      badge.className = 'action-badge';
+      badge.innerHTML = `
+            <span class="action-badge-icon">⚡</span>
+            <span class="action-badge-text">ACTION EXECUTED</span>
+          `;
+      contentDiv.prepend(badge);
+    }
+
+    if (window.Prism) {
+      contentDiv.querySelectorAll('pre code').forEach(block => {
+        window.Prism.highlightElement(block);
+      });
+    } else if (window.hljs) {
+      contentDiv.querySelectorAll('pre code').forEach(block => {
+        window.hljs.highlightElement(block);
+      });
+    }
+  }
+
   // ── Streaming AI Response ──────────────────────
 
   async streamAIResponse(userMessage, startTime, isRetry = false) {
-    this.hideTypingIndicator();
-
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'message assistant-message';
-
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-    contentDiv.textContent = '';
-
-    messageDiv.appendChild(contentDiv);
-    this.elements.messages?.appendChild(messageDiv);
-    this.scrollToBottom();
-
     let fullText = '';
     let metadata = {};
+    let messageDiv = null;
+    let contentDiv = null;
+    let lastRender = 0;
+
+    const ensureStreamBubble = () => {
+      if (messageDiv) return;
+      this.hideTypingIndicator();
+      messageDiv = document.createElement('div');
+      messageDiv.className = 'message assistant-message streaming';
+      contentDiv = document.createElement('div');
+      contentDiv.className = 'message-content siri-intelligence-text';
+      messageDiv.appendChild(contentDiv);
+      this.elements.messages?.appendChild(messageDiv);
+      this.scrollToBottom();
+    };
 
     try {
-      messageDiv.classList.add('streaming');
-
-      // Update indicator to "Generating"
       this.updateThinkingStage('generating');
 
       const response = await this.chatAPI.ask(userMessage, {
         onChunk: chunk => {
+          if (!chunk) return;
           fullText += chunk;
-          contentDiv.textContent = fullText + '▊';
+          ensureStreamBubble();
+          const now = Date.now();
+          if (now - lastRender >= 72 || /[\n.!?]$/.test(chunk)) {
+            lastRender = now;
+            this.paintStreamingContent(contentDiv, fullText);
+          }
           this.scrollToBottom();
         },
       });
-      messageDiv.classList.remove('streaming');
+
+      if (messageDiv) {
+        messageDiv.classList.remove('streaming');
+      }
 
       // Fallback: If streaming yielded no text, use the direct answer
       if (!fullText && response && (response.answer || response.content)) {
         fullText = response.answer || response.content;
+        ensureStreamBubble();
       }
 
       // Auto-retry on empty response (1 silent retry)
       if (!fullText && !isRetry) {
-        messageDiv.remove();
+        messageDiv?.remove();
+        messageDiv = null;
+        contentDiv = null;
         this.retryCount++;
         this.showThinkingIndicator();
         await new Promise(r => setTimeout(r, 500));
@@ -719,37 +945,14 @@ class AppleIntelligenceChatbot {
 
       // Final fallback for completely empty responses (after retry)
       if (!fullText) {
+        ensureStreamBubble();
         fullText =
           'I received an empty response. Let me try a different approach — please rephrase your question or try one of the suggestions below.';
         contentDiv.textContent = fullText;
         metadata.error = true;
       } else {
-        // Render markdown
-        const renderedHTML = this.renderMarkdown(fullText);
-        contentDiv.innerHTML = renderedHTML;
-
-        // Prepend action badge if this response was an executed agentic action
-        if (response && (response.type === 'action' || response.source === 'agentic-action')) {
-          messageDiv.classList.add('action-message');
-          const badge = document.createElement('div');
-          badge.className = 'action-badge';
-          badge.innerHTML = `
-            <span class="action-badge-icon">⚡</span>
-            <span class="action-badge-text">ACTION EXECUTED</span>
-          `;
-          contentDiv.prepend(badge);
-        }
-
-        // Apply syntax highlighting
-        if (window.Prism) {
-          contentDiv.querySelectorAll('pre code').forEach(block => {
-            window.Prism.highlightElement(block);
-          });
-        } else if (window.hljs) {
-          contentDiv.querySelectorAll('pre code').forEach(block => {
-            window.hljs.highlightElement(block);
-          });
-        }
+        ensureStreamBubble();
+        this.finalizeStreamingContent(contentDiv, fullText, response);
       }
 
       // Extract metadata
@@ -787,11 +990,20 @@ class AppleIntelligenceChatbot {
         throw error;
       }
       console.error('Streaming error:', error);
-      messageDiv.classList.remove('streaming');
+      messageDiv?.classList.remove('streaming');
       if (!fullText) {
-        messageDiv.remove();
+        messageDiv?.remove();
         this.addErrorMessage('The response was interrupted. Please try again.');
         return;
+      }
+
+      if (!messageDiv) {
+        messageDiv = document.createElement('div');
+        messageDiv.className = 'message assistant-message';
+        contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content siri-intelligence-text';
+        messageDiv.appendChild(contentDiv);
+        this.elements.messages?.appendChild(messageDiv);
       }
 
       contentDiv.textContent = fullText;
@@ -1022,27 +1234,42 @@ class AppleIntelligenceChatbot {
   }
 
   speakText(text, button) {
-    if ('speechSynthesis' in window) {
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-        button.innerHTML = '<i class="fas fa-volume-up"></i>';
-        button.classList.remove('speaking');
-      } else {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+    if (!('speechSynthesis' in window)) return;
 
-        button.innerHTML = '<i class="fas fa-stop"></i>';
-        button.classList.add('speaking');
-
-        utterance.onend = () => {
-          button.innerHTML = '<i class="fas fa-volume-up"></i>';
-          button.classList.remove('speaking');
-        };
-
-        window.speechSynthesis.speak(utterance);
-      }
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      button.innerHTML = '<i class="fas fa-volume-up"></i>';
+      button.classList.remove('speaking');
+      return;
     }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.95;
+    utterance.pitch = 1.02;
+    utterance.volume = 0.85;
+
+    const voices = window.speechSynthesis.getVoices();
+    const preferred =
+      voices.find(
+        v =>
+          v.lang.startsWith('en') &&
+          (v.name.toLowerCase().includes('siri') ||
+            v.name.toLowerCase().includes('natural') ||
+            v.name.toLowerCase().includes('enhanced') ||
+            v.name.toLowerCase().includes('premium'))
+      ) || voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
+
+    if (preferred) utterance.voice = preferred;
+
+    button.innerHTML = '<i class="fas fa-stop"></i>';
+    button.classList.add('speaking');
+
+    utterance.onend = () => {
+      button.innerHTML = '<i class="fas fa-volume-up"></i>';
+      button.classList.remove('speaking');
+    };
+
+    window.speechSynthesis.speak(utterance);
   }
 
   getFallbackResponse(message) {
@@ -1203,30 +1430,177 @@ class AppleIntelligenceChatbot {
   }
 
   handleVoiceInput() {
-    if (!this.recognition) {
+    if (this.isListening) {
+      this.stopDictation(false);
+      return;
+    }
+
+    this.startDictation();
+  }
+
+  // ── Apple Intelligence: Conversation Summary (WWDC26) ──────────
+
+  summarizeConversation() {
+    if (this.isProcessing) return;
+
+    if (this.messageCount === 0) {
       this.addMessage(
-        'Voice input is not supported in your browser. Please try Chrome or Edge.',
+        'There is nothing to summarize yet — ask me something first, then I can recap the conversation.',
         'assistant'
       );
       return;
     }
 
-    if (this.isListening) {
-      this.recognition.stop();
-      this.isListening = false;
-    } else {
-      try {
-        this.recognition.start();
-        this.isListening = true;
-      } catch (error) {
-        console.error('Voice recognition error:', error);
-        this.addMessage(
-          'Unable to start voice input. Please check microphone permissions.',
-          'assistant'
-        );
+    this.ask('Summarize our conversation so far in 3 short bullet points.');
+  }
+
+  // ── Apple Intelligence: Writing Tools (WWDC26) ──────────────────
+
+  toggleWritingTools() {
+    const existing = this.elements.widget?.querySelector('.writing-tools-popover');
+    if (existing) {
+      this.closeWritingTools();
+      return;
+    }
+
+    const popover = document.createElement('div');
+    popover.className = 'writing-tools-popover';
+    popover.setAttribute('role', 'menu');
+    popover.setAttribute('aria-label', 'Writing Tools');
+
+    const title = document.createElement('div');
+    title.className = 'writing-tools-title';
+    title.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Writing Tools';
+    popover.appendChild(title);
+
+    WRITING_TOOLS.forEach(tool => {
+      const btn = document.createElement('button');
+      btn.setAttribute('type', 'button');
+      btn.type = 'button';
+      btn.className = 'writing-tool-option';
+      btn.setAttribute('role', 'menuitem');
+      const icon = document.createElement('i');
+      icon.className = TRUSTED_ICON_CLASS.test(tool.icon) ? `fas ${tool.icon}` : 'fas fa-circle';
+      btn.append(icon, document.createTextNode(` ${tool.label}`));
+      btn.addEventListener('click', () => this.applyWritingTool(tool));
+      popover.appendChild(btn);
+    });
+
+    this.elements.form?.appendChild(popover);
+    this.elements.writingBtn?.setAttribute('aria-expanded', 'true');
+  }
+
+  closeWritingTools() {
+    this.elements.widget?.querySelectorAll('.writing-tools-popover').forEach(el => el.remove());
+    this.elements.writingBtn?.setAttribute('aria-expanded', 'false');
+  }
+
+  async applyWritingTool(tool) {
+    const draft = this.normalizeInput(this.elements.input?.value);
+    this.closeWritingTools();
+
+    if (!draft) {
+      if (this.elements.rateStatus) {
+        this.elements.rateStatus.textContent = 'Type a message first, then pick a Writing Tool.';
+      }
+      this.elements.input?.focus();
+      return;
+    }
+
+    if (!this.chatAPI || typeof this.chatAPI.ask !== 'function') {
+      if (this.elements.rateStatus) {
+        this.elements.rateStatus.textContent = 'Writing Tools need the AI connection.';
+      }
+      return;
+    }
+
+    if (this.getRemainingQueries() <= 0) {
+      if (this.elements.rateStatus) {
+        this.elements.rateStatus.textContent = 'Daily free-message estimate reached.';
+      }
+      return;
+    }
+
+    const writingBtn = this.elements.writingBtn;
+    const originalIcon = writingBtn?.innerHTML;
+    if (writingBtn) {
+      writingBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      writingBtn.disabled = true;
+    }
+    this.isProcessing = true;
+
+    try {
+      const response = await this.chatAPI.ask(`${tool.instruction}\n\n"${draft}"`);
+      const rewritten = this.normalizeInput(response?.answer || response?.content || '')
+        .replace(/^["'\u201c]+/, '')
+        .replace(/["'\u201d]+$/, '');
+
+      if (rewritten) {
+        this.elements.input.value = rewritten;
+        this.autoResizeTextarea(this.elements.input);
+        this.decrementRemainingQueries();
+        if (this.elements.rateStatus) {
+          this.elements.rateStatus.textContent = `✦ ${tool.label} applied — review and send.`;
+        }
+      } else if (this.elements.rateStatus) {
+        this.elements.rateStatus.textContent = 'Writing Tools returned nothing. Try again.';
+      }
+    } catch (error) {
+      console.warn('Writing Tools failed:', error);
+      if (this.elements.rateStatus) {
+        this.elements.rateStatus.textContent =
+          error?.code === 'RATE_LIMITED'
+            ? 'Too many requests — give it a moment.'
+            : 'Writing Tools hit a snag. Try again.';
+      }
+    } finally {
+      this.isProcessing = false;
+      if (writingBtn) {
+        writingBtn.innerHTML = originalIcon;
+        writingBtn.disabled = false;
+      }
+      this.elements.input?.focus();
+    }
+  }
+
+  // ── Siri AI: On-Screen Awareness (WWDC26) ───────────────────────
+
+  getVisibleSectionContext() {
+    const viewportMid = window.innerHeight / 2;
+    for (const [sectionId, context] of Object.entries(SECTION_CONTEXT_PROMPTS)) {
+      const section = document.getElementById(sectionId);
+      if (!section) continue;
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= viewportMid && rect.bottom >= viewportMid) {
+        return { sectionId, label: context[0], prompt: context[1] };
       }
     }
-    this.updateVoiceButtonState();
+    return null;
+  }
+
+  showContextAwareness() {
+    const context = this.getVisibleSectionContext();
+    if (!context || context.sectionId === this.lastContextSectionId) return;
+    this.lastContextSectionId = context.sectionId;
+
+    this.elements.messages?.querySelectorAll('.context-aware-chip').forEach(el => el.remove());
+
+    const chip = document.createElement('button');
+    chip.setAttribute('type', 'button');
+    chip.type = 'button';
+    chip.className = 'context-aware-chip';
+    chip.innerHTML = `
+      <span class="context-aware-glow" aria-hidden="true"></span>
+      <i class="fas fa-eye" aria-hidden="true"></i>
+      <span>You're viewing <strong>${this.escapeHtml(context.label)}</strong> — ask me about it</span>
+    `;
+    chip.addEventListener('click', () => {
+      chip.remove();
+      this.ask(context.prompt);
+    });
+
+    this.elements.messages?.appendChild(chip);
+    this.scrollToBottom();
   }
 
   /**
