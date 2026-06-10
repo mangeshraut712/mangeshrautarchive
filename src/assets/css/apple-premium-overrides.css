@@ -3547,14 +3547,6 @@ html.dark #home.hero-section #profile-image {
   -webkit-text-fill-color: #0071e3 !important;
 }
 
-#home.hero-section .hero-name-cluster {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: clamp(0.28rem, 0.55vw, 0.42rem) !important;
-  max-width: 100%;
-}
-
 html.dark #home.hero-section .hero-name,
 html.dark #home.hero-section .hero-name-text {
   color: #2997ff !important;
@@ -3566,31 +3558,17 @@ html.dark #home.hero-section .hero-name-text {
 }
 
 #home.hero-section .hero-verified-badge {
-  width: clamp(18px, 0.58em, 26px) !important;
-  height: clamp(18px, 0.58em, 26px) !important;
-  min-width: clamp(18px, 0.58em, 26px) !important;
-  min-height: clamp(18px, 0.58em, 26px) !important;
-  top: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  top: -2px !important;
   margin: 0 !important;
-  translate: 0 0.06em !important;
   color: #0a84ff !important;
 }
 
 html.dark #home.hero-section .hero-verified-badge {
   color: #2997ff !important;
-}
-
-#home.hero-section #name-pronounce-btn.name-pronounce-btn {
-  color: #0071e3 !important;
-  background: rgb(0 113 227 / 8%) !important;
-  border: 1px solid rgb(0 113 227 / 22%) !important;
-  box-shadow: none !important;
-}
-
-html.dark #home.hero-section #name-pronounce-btn.name-pronounce-btn {
-  color: #a1a1a6 !important;
-  background: rgb(255 255 255 / 6%) !important;
-  border-color: rgb(255 255 255 / 14%) !important;
 }
 
 /* stylelint-enable no-duplicate-selectors */

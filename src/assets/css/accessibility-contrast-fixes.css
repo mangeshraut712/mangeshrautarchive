@@ -5,33 +5,41 @@
  */
 
 .skip-links {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 100000;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
 }
 
 .skip-link {
-  position: absolute;
-  top: -48px;
-  left: 16px;
+  position: fixed;
+  left: 1rem;
+  top: 0;
+  transform: translateY(-200%);
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0.875rem 1.25rem;
   color: #ffffff;
-  background: #0057d8;
+  background: #0071e3;
   border: 2px solid #ffffff;
-  border-radius: 999px;
+  border-radius: 0 0 12px 12px;
+  font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 10px 30px rgb(0 0 0 / 20%);
-  transition: top 0.2s ease;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 40%);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: auto;
+  white-space: nowrap;
 }
 
 .skip-link:focus,
 .skip-link:focus-visible {
-  top: 16px;
+  transform: translateY(0);
   outline: 3px solid #ffcc00;
   outline-offset: 3px;
 }
@@ -40,6 +48,7 @@ html.dark .skip-link {
   color: #000000;
   background: #7dc8ff;
   border-color: #000000;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
 }
 
 /* ========================================
@@ -620,30 +629,6 @@ html.dark #skills-container h3,
 html.dark #skills-container h3.text-xl,
 html.dark #skills-container h3.text-primary {
   color: #f5f5f7 !important;
-}
-
-.about-speak-btn,
-.about-speak-btn .speak-text {
-  background: #ffffff !important;
-  color: #3a3a3c !important;
-  border: 1px solid rgb(0 0 0 / 15%) !important;
-  -webkit-text-fill-color: currentColor !important;
-}
-
-.about-speak-btn .speak-icon {
-  color: #0071e3 !important;
-}
-
-html.dark .about-speak-btn,
-html.dark .about-speak-btn .speak-text {
-  background: #000000 !important;
-  color: #f5f5f7 !important;
-  border-color: rgb(255 255 255 / 22%) !important;
-  -webkit-text-fill-color: currentColor !important;
-}
-
-html.dark .about-speak-btn .speak-icon {
-  color: #2997ff !important;
 }
 
 .about-segmented-control {

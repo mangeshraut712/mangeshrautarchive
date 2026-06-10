@@ -1426,13 +1426,6 @@ html.dark .gemini-flashlight-card {
   }
 }
 
-#contact .wrapper .icon {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
-}
-
 /* Headings: crisp sizes and theme-aware color */
 
 h1,
@@ -4058,19 +4051,11 @@ html.dark .education-card .date-badge {
   text-decoration: none;
 }
 
-/* Dark mode support for icons */
-
+/* Dark mode — keep white circular tiles like light mode for brand fill on hover */
 html.dark .wrapper .icon {
-  background: #000000;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* Ensure GitHub and X are white in dark mode for visibility */
-
-html.dark .wrapper .github,
-html.dark .wrapper .x {
-  color: #fff;
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 6%);
+  box-shadow: 0 10px 10px rgb(0 0 0 / 28%);
 }
 
 .wrapper .tooltip {
@@ -4262,232 +4247,11 @@ html.dark .wrapper .icon:hover {
   color: #fff;
 }
 
-/* Dark mode - Override with specific brand colors for better visibility */
-
-html.dark .wrapper .facebook {
-  color: #0a84ff;
-}
-
-html.dark .wrapper .github {
-  color: #f5f5f7;
-}
-
-html.dark .wrapper .instagram {
-  color: #ff375f;
-}
-
-html.dark .wrapper .linkedin {
-  color: #0a66c2;
-}
-
-html.dark .wrapper .youtube {
-  color: #f00;
-}
-
-html.dark .wrapper .x {
-  color: #1da1f2;
-}
-
-html.dark .wrapper .leetcode {
-  color: #ffa116;
-}
-
-html.dark .wrapper .snapchat {
-  color: #fffc00;
-}
-
-html.dark .wrapper .telegram {
-  color: #229ed9;
-}
-
-html.dark .wrapper .spotify {
-  color: #1db954;
-}
-
-html.dark .wrapper .strava {
-  color: #fc4c02;
-}
-
-html.dark .wrapper .whoop {
-  color: #ffffff;
-}
-
-html.dark .wrapper .whoop:hover,
-html.dark .wrapper .whoop:hover .tooltip,
-html.dark .wrapper .whoop:hover .tooltip::before {
-  background: #ffffff;
-  color: #000000;
-}
-
-/* Footer social icons — brand-filled tiles (match contact section) */
-footer .wrapper .icon {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 18px rgb(0 0 0 / 8%) !important;
-}
-
-/* Keep footer tooltips above icons so they do not overlap copyright text */
-footer .wrapper .tooltip {
-  top: auto;
-  bottom: calc(100% + 10px);
-  transform: translate(-50%, 0) scale(0.9);
-}
-
-footer .wrapper .tooltip::before {
-  top: auto;
-  bottom: -4px;
-}
-
-footer .wrapper .icon:hover .tooltip {
-  transform: translate(-50%, -6px) scale(1);
-}
-
-footer .wrapper .facebook {
-  background: #1877f2 !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .instagram {
-  background: linear-gradient(
-    45deg,
-    #f09433 0%,
-    #e6683c 25%,
-    #dc2743 50%,
-    #cc2366 75%,
-    #bc1888 100%
-  ) !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .linkedin {
-  background: #0077b5 !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .youtube {
-  background: #ff0000 !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .github {
-  background: #1d1d1f !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .x {
-  background: #000000 !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .leetcode {
-  background: #ffa116 !important;
-  color: #1d1d1f !important;
-}
-
-footer .wrapper .telegram {
-  background: #0088cc !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .snapchat {
-  background: #fffc00 !important;
-  color: #000000 !important;
-}
-
-footer .wrapper .spotify {
-  background: #1db954 !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .strava {
-  background: #fc4c02 !important;
-  color: #ffffff !important;
-}
-
-footer .wrapper .whoop {
-  background: #0a0a0a !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .icon {
-  box-shadow: 0 8px 18px rgb(0 0 0 / 35%) !important;
-}
-
-html.dark footer .wrapper .facebook {
-  background: #1877f2 !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .instagram {
-  background: linear-gradient(
-    45deg,
-    #f09433 0%,
-    #e6683c 25%,
-    #dc2743 50%,
-    #cc2366 75%,
-    #bc1888 100%
-  ) !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .linkedin {
-  background: #0077b5 !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .youtube {
-  background: #ff0000 !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .github {
-  background: #24292e !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .x {
-  background: #000000 !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .leetcode {
-  background: #ffa116 !important;
-  color: #1d1d1f !important;
-}
-
-html.dark footer .wrapper .telegram {
-  background: #0088cc !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .snapchat {
-  background: #fffc00 !important;
-  color: #000000 !important;
-}
-
-html.dark footer .wrapper .spotify {
-  background: #1db954 !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .strava {
-  background: #fc4c02 !important;
-  color: #ffffff !important;
-}
-
-html.dark footer .wrapper .whoop {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
-
-footer .wrapper .icon:hover {
-  transform: translateY(-4px) scale(1.05) !important;
-  box-shadow: 0 10px 24px rgb(0 0 0 / 14%) !important;
-}
-
-html.dark footer .wrapper .icon:hover {
-  box-shadow: 0 10px 24px rgb(0 0 0 / 45%) !important;
+/* Footer + contact social rows — circular icons, tooltips below labels */
+footer .footer-social-wrapper.wrapper,
+#contact .contact-social-wrapper.wrapper {
+  row-gap: 2.5rem;
+  padding-bottom: 0.35rem;
 }
 
 /* Fix Hero Text Visibility */

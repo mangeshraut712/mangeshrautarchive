@@ -54,6 +54,8 @@
     "qa:prod-ready": "npm run security-check && npm run lint && npm run lint:css && npm test && npm run test:api && npm run qa:chrome",
     "check": "npm run lint && npm run lint:css && npm test && npm run test:api",
     "clean": "node scripts/build/clean.js",
+    "verify:deploy-sync": "node scripts/deployment/verify-deployment-sync.js",
+    "verify:deploy-sync:remote": "node scripts/deployment/verify-deployment-sync.js --remote",
     "open": "open src/index.html",
     "pre-commit": "npm run security-check && npm run lint",
     "format": "prettier --write .",

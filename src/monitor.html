@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="view-transition" content="same-origin" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <title>System Monitor | AssistMe Dashboard</title>
+    <title>System Monitor | Mangesh Raut</title>
     <meta
       name="description"
       content="Public system monitor for Mangesh Raut's portfolio, including backend health, API availability, deployment surfaces, security headers, and AI service diagnostics."
@@ -55,10 +55,12 @@
       })();
     </script>
     <script src="js/utils/theme-head.js"></script>
-    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260423a" />
-    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260423a" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260423a" />
-    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
+    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260610a" />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260610a" />
+    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260610a" />
+    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260610a" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260610a" />
+    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260610a" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -121,6 +123,43 @@
         }
       ]
     </script>
+    <style>
+      .skip-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100000;
+        width: 0;
+        height: 0;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      .skip-link {
+        position: fixed;
+        left: 1rem;
+        top: 0;
+        transform: translateY(-200%);
+        padding: 0.875rem 1.25rem;
+        background: #0071e3;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 0 0 12px 12px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        box-shadow: 0 8px 24px rgb(0 113 227 / 40%);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: auto;
+        white-space: nowrap;
+      }
+
+      .skip-link:focus,
+      .skip-link:focus-visible {
+        transform: translateY(0);
+        outline: 3px solid #ffcc00;
+        outline-offset: 3px;
+      }
+    </style>
   </head>
   <body class="monitor-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -254,6 +293,9 @@
           </div>
         </div>
         <div class="header-actions">
+          <p class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
+            Auto-refresh every 30s
+          </p>
           <button class="btn btn-secondary" onclick="refreshData()">
             <i class="fas fa-rotate"></i>
             Refresh
@@ -721,6 +763,7 @@
     <script type="module" src="js/utils/theme.js?v=20260423a"></script>
     <script>
       const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshrautarchive.vercel.app';
+      const REMOTE_API_SECONDARY_ORIGIN = 'https://mangeshraut.pro';
       const MONITOR_API_PROBE_PATH = '/api/monitor/status';
       const MONITOR_API_TIMEOUT_MS = 8000;
       const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
@@ -772,19 +815,20 @@
 
       function getApiOriginCandidates(config) {
         const hostname = window.location.hostname || '';
-
-        if (LOCAL_HOSTS.has(hostname)) {
-          return [''];
-        }
-
         const configuredOrigin = normalizeOrigin(config?.apiBaseUrl, '');
         const remoteConfiguredOrigin =
           configuredOrigin && configuredOrigin !== window.location.origin ? configuredOrigin : '';
         const fallbackOrigin =
           REMOTE_API_FALLBACK_ORIGIN !== window.location.origin ? REMOTE_API_FALLBACK_ORIGIN : '';
+        const secondaryOrigin =
+          REMOTE_API_SECONDARY_ORIGIN !== window.location.origin ? REMOTE_API_SECONDARY_ORIGIN : '';
+
+        if (LOCAL_HOSTS.has(hostname)) {
+          return uniqueOrigins(['', remoteConfiguredOrigin, fallbackOrigin, secondaryOrigin]);
+        }
 
         if (hostname.includes('github.io')) {
-          return uniqueOrigins([remoteConfiguredOrigin || fallbackOrigin]);
+          return uniqueOrigins([remoteConfiguredOrigin || fallbackOrigin || secondaryOrigin]);
         }
 
         return [''];
@@ -1012,10 +1056,11 @@
           return;
         }
 
-        const unresolvedEvents = metricsData?.summary?.unresolved_events ?? '--';
-        const totalServices =
+        const unresolvedEvents = metricsData?.summary?.unresolved_events ?? 0;
+        const serviceTotal =
           (servicesData?.summary?.total ?? servicesData?.services?.length ?? 0) +
-            (hostingData?.summary?.total ?? hostingData?.surfaces?.length ?? 0) || '--';
+          (hostingData?.summary?.total ?? hostingData?.surfaces?.length ?? 0);
+        const totalServices = Number.isFinite(serviceTotal) ? serviceTotal : '--';
         const uptimeText = statusData?.uptime_human || metricsData?.uptime_human || '--';
 
         const degradedChecks = (healthData?.checks || []).filter(
@@ -1303,34 +1348,40 @@
 
         tbody.innerHTML = data.endpoints
           .map(endpoint => {
+            const totalRequests = Number(endpoint.total_requests ?? endpoint.count ?? 0);
+            const successfulRequests = Number(
+              endpoint.successful_requests ?? totalRequests - (endpoint.failed_requests ?? 0)
+            );
+            const avgResponseMs = Number(
+              endpoint.avg_response_time_ms ?? endpoint.avg_response_ms ?? 0
+            );
+            const lastStatusCode = Number(endpoint.last_status_code ?? endpoint.status_code ?? 200);
             const successRate =
-              endpoint.total_requests > 0
-                ? ((endpoint.successful_requests / endpoint.total_requests) * 100).toFixed(1)
-                : 100;
+              totalRequests > 0 ? ((successfulRequests / totalRequests) * 100).toFixed(1) : '100.0';
 
             let responseClass = 'fast';
-            if (endpoint.avg_response_time_ms > 500) responseClass = 'medium';
-            if (endpoint.avg_response_time_ms > 2000) responseClass = 'slow';
+            if (avgResponseMs > 500) responseClass = 'medium';
+            if (avgResponseMs > 2000) responseClass = 'slow';
 
-            const responsePercent = Math.min((endpoint.avg_response_time_ms / 5000) * 100, 100);
+            const responsePercent = Math.min((avgResponseMs / 5000) * 100, 100);
 
             return `
                     <tr>
-                        <td><span class="endpoint-path">${endpoint.path}</span></td>
-                        <td>${endpoint.method}</td>
-                        <td>${endpoint.total_requests.toLocaleString()}</td>
+                        <td><span class="endpoint-path">${escapeHtml(endpoint.path)}</span></td>
+                        <td>${escapeHtml(endpoint.method)}</td>
+                        <td>${formatNumber(totalRequests)}</td>
                         <td>${successRate}%</td>
                         <td>
                             <div class="response-time">
-                                <span>${endpoint.avg_response_time_ms.toFixed(0)}ms</span>
+                                <span>${avgResponseMs.toFixed(0)}ms</span>
                                 <div class="response-time-bar">
                                     <div class="response-time-fill ${responseClass}" style="width: ${responsePercent}%"></div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <span class="status-code ${endpoint.last_status_code < 400 ? 'success' : 'error'}">
-                                ${endpoint.last_status_code}
+                            <span class="status-code ${lastStatusCode < 400 ? 'success' : 'error'}">
+                                ${lastStatusCode}
                             </span>
                         </td>
                     </tr>
@@ -1400,8 +1451,8 @@
         container.innerHTML = events
           .map(
             event => `
-                <div class="event-item ${event.type} ${event.resolved ? 'resolved' : ''}">
-                    <div class="event-icon ${event.type}">
+                <div class="event-item ${escapeHtml(event.type)} ${event.resolved ? 'resolved' : ''}">
+                    <div class="event-icon ${escapeHtml(event.type)}">
                         <i class="fas fa-${
                           event.type === 'critical'
                             ? 'exclamation-circle'
@@ -1416,15 +1467,15 @@
                     </div>
                     <div class="event-content">
                         <div class="event-header">
-                            <span class="event-title">${event.message}</span>
+                            <span class="event-title">${escapeHtml(event.message)}</span>
                             <span class="event-time">${formatTimeAgo(event.timestamp)}</span>
                         </div>
-                        <div class="event-source">${event.source}</div>
+                        <div class="event-source">${escapeHtml(event.source)}</div>
                         ${
                           Object.keys(event.details).length > 0
                             ? `
                             <div class="event-details">
-                                ${JSON.stringify(event.details, null, 2)}
+                                ${escapeHtml(JSON.stringify(event.details, null, 2))}
                             </div>
                         `
                             : ''
@@ -1434,12 +1485,12 @@
                       !event.resolved
                         ? `
                         <div class="event-actions">
-                            <button class="event-btn event-btn-resolve" onclick="resolveEvent('${event.id}')">
+                            <button class="event-btn event-btn-resolve" data-event-id="${escapeHtml(event.id)}" onclick="resolveEvent(this.dataset.eventId)">
                                 Resolve
                             </button>
                         </div>
                     `
-                        : '<span style="color: var(--accent-green); font-size: 12px;"><i class="fas fa-check"></i> Resolved</span>'
+                        : '<span class="event-resolved-badge"><i class="fas fa-check" aria-hidden="true"></i> Resolved</span>'
                     }
                 </div>
             `
@@ -1502,8 +1553,12 @@
         // Calculate avg response from endpoints
         const avgResponse =
           data.endpoints && data.endpoints.length > 0
-            ? data.endpoints.reduce((sum, e) => sum + (e.avg_response_time_ms || 0), 0) /
-              data.endpoints.length
+            ? data.endpoints.reduce((sum, endpoint) => {
+                const responseMs = Number(
+                  endpoint.avg_response_time_ms ?? endpoint.avg_response_ms ?? 0
+                );
+                return sum + responseMs;
+              }, 0) / data.endpoints.length
             : 0;
         avgResponseEl.textContent = avgResponse.toFixed(0) + 'ms';
 
@@ -1572,7 +1627,7 @@
         }
         await ensureApiOrigin({ force: true });
 
-        const [health, metrics, integrations, status, docs, hosting, realTime, secData] =
+        const [health, metrics, integrations, status, docs, hosting, realTime, secData, aiData] =
           await Promise.all([
             fetchHealth(),
             fetchMetrics(),
@@ -1582,6 +1637,7 @@
             fetchHostingSurfaces(),
             fetchRealTimeMetrics(),
             fetchSecurity(),
+            fetchAIMetrics(),
           ]);
 
         await fetchEvents();
@@ -1591,12 +1647,20 @@
         renderMetrics(metrics);
         renderOverview(metrics);
         renderExternalServices(integrations);
-        renderRuntimeSnapshot(hosting || status);
+        renderRuntimeSnapshot(status || hosting);
         renderDeploymentSurfaces(hosting);
         renderOverallStatus(health, integrations, hosting);
         renderSummary(status, metrics, health, integrations, hosting);
         renderMonitorDocs(docs);
+        renderAIMetrics(aiData);
         applyClientSideLogFiltering();
+
+        const refreshNote = document.getElementById('monitor-refresh-note');
+        if (refreshNote) {
+          refreshNote.textContent = monitorApiAvailable
+            ? `Updated ${formatLocalTime(lastRefreshIso)} · auto-refresh every 30s`
+            : 'Monitor API unavailable · retrying every 30s';
+        }
 
         if (realTime) {
           drawLatencyChart(realTime.response_time_trend);

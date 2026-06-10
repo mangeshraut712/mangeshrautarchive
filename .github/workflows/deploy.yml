@@ -13,8 +13,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # ─────────────────────────────────────────
@@ -133,15 +133,13 @@ jobs:
       - name: 🏗️ Build for GitHub Pages
         run: npm run build
         env:
-          # Public config only — NO API keys in build output
-          # GitHub Pages serves from /mangeshrautarchive/ subdirectory
-          # No API_BASE set — uses local intelligence due to CSP restrictions
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
           OPENROUTER_MODEL: x-ai/grok-4.1-fast
+          NEXT_PUBLIC_API_BASE: https://mangeshraut.pro
           NODE_ENV: production
           GITHUB_PAGES: true
-          # Last.fm API key (public key, safe to include)
+          GITHUB_SHA: ${{ github.sha }}
           NEXT_PUBLIC_LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
       - name: Upload artifact
@@ -164,10 +162,18 @@ jobs:
         uses: actions/deploy-pages@v4
 
   post_deploy_validation:
-    name: 🧪 Post-Deploy Chrome Validation
+    name: 🧪 Post-Deploy · ${{ matrix.label }}
     runs-on: ubuntu-latest
     needs: deploy
     if: github.ref == 'refs/heads/main'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: GitHub Pages
+            base_url: https://mangeshraut712.github.io/mangeshrautarchive/
+          - label: Vercel Production
+            base_url: https://mangeshraut.pro/
     steps:
       - uses: actions/checkout@v4
 
@@ -180,7 +186,6 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Cache Playwright browsers
-        id: playwright-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
@@ -193,21 +198,38 @@ jobs:
 
       - name: Wait for deployment to propagate
         run: |
-          echo "⏳ Waiting for deployment to propagate (30s)..."
+          echo "⏳ Waiting for ${{ matrix.label }} to propagate (30s)..."
           sleep 30
-          echo "✅ Continuing with post-deploy checks"
 
       - name: Run post-deploy smoke + baseline accessibility
         env:
-          PLAYWRIGHT_BASE_URL: ${{ needs.deploy.outputs.page_url }}
+          PLAYWRIGHT_BASE_URL: ${{ matrix.base_url }}
         run: npm run qa:postdeploy
-        # Allow the tests to continue even if APIs are warming up
         continue-on-error: true
 
       - name: Upload post-deploy QA artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: post-deploy-chrome-artifacts
+          name: post-deploy-${{ strategy.job-index }}-chrome-artifacts
           path: |
             artifacts/playwright-report
+
+  sync_deployments:
+    name: 🔗 Verify GitHub Pages ↔ Vercel Sync
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Compare live build-config across deployment surfaces
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: node scripts/deployment/verify-deployment-sync.js --remote --commit=${{ github.sha }} --retries=24 --wait=15
+        continue-on-error: true

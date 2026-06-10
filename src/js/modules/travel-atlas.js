@@ -1211,8 +1211,30 @@ function bindThemeToggle() {
   document.addEventListener('portfolio-theme-change', syncIcon);
 }
 
+function bindSidebarToggle() {
+  const sidebar = document.getElementById('travel-sidebar');
+  const panelToggle = document.getElementById('travel-sidebar-toggle');
+  const handleToggle = document.getElementById('travel-sidebar-handle');
+  if (!sidebar) return;
+
+  const setCollapsed = collapsed => {
+    sidebar.classList.toggle('is-collapsed', collapsed);
+    panelToggle?.classList.toggle('is-active', !collapsed);
+    panelToggle?.setAttribute('aria-expanded', String(!collapsed));
+    handleToggle?.setAttribute('aria-expanded', String(!collapsed));
+  };
+
+  const toggleSidebar = () => {
+    setCollapsed(!sidebar.classList.contains('is-collapsed'));
+  };
+
+  panelToggle?.addEventListener('click', toggleSidebar);
+  handleToggle?.addEventListener('click', toggleSidebar);
+}
+
 function init() {
   bindThemeToggle();
+  bindSidebarToggle();
   populateStats();
   renderCountryPills();
   bindFilters();

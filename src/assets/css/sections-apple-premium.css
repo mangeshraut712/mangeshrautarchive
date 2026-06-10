@@ -180,41 +180,33 @@ html.dark #home .profile-image {
 
 /* Pronunciation Button — subtle Apple icon control */
 #home .name-pronounce-btn {
-  width: clamp(28px, 0.72em, 34px);
-  height: clamp(28px, 0.72em, 34px);
-  border-radius: 999px;
-  border: 1px solid rgb(0 113 227 / 22%) !important;
-  background: rgb(0 113 227 / 8%) !important;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none !important;
+  background: transparent !important;
   box-shadow: none !important;
-  color: #0071e3;
+  color: #86868b;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 #home .name-pronounce-btn:hover {
   color: #0071e3;
   background: rgb(0 113 227 / 8%) !important;
-  border-color: rgb(0 113 227 / 28%) !important;
-  transform: scale(1.06);
+  transform: scale(1.15);
 }
 
 html.dark #home .name-pronounce-btn {
-  color: #a1a1a6;
-  background: rgb(255 255 255 / 6%) !important;
-  border-color: rgb(255 255 255 / 14%) !important;
+  color: #636366;
 }
 
 html.dark #home .name-pronounce-btn:hover {
   color: #2997ff;
-  background: rgb(41 151 255 / 12%) !important;
-  border-color: rgb(41 151 255 / 34%) !important;
+  background: rgb(41 151 255 / 10%) !important;
 }
 
 /* Hero Name - Premium Typography */
@@ -243,14 +235,16 @@ html.dark #home .hero-name-text {
   background-clip: text;
 }
 
-/* Verified Badge — inline with name cluster */
+/* Verified Badge — inline with name */
 #home .hero-verified-badge {
-  width: clamp(18px, 0.58em, 26px);
-  height: clamp(18px, 0.58em, 26px);
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
   color: var(--apple-blue);
   flex-shrink: 0;
-  position: static;
-  top: auto;
+  position: relative;
+  top: -2px;
 }
 
 html.dark #home .hero-verified-badge {

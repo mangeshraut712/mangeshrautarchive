@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url';
 import { dirname, resolve, join, relative } from 'path';
 import { mkdir, rm, readdir, stat, readFile, writeFile } from 'fs/promises';
+import { execSync } from 'child_process';
 import { transform } from 'esbuild';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
 
@@ -38,6 +39,15 @@ const staticExtras = ['perplexity-mcp.json', 'CNAME'];
 // Build-time public config injection for GitHub Pages
 // SECURITY: API keys must NEVER be written here — they live in backend env vars only.
 async function injectApiKeys(distDir) {
+  let gitCommit = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || '';
+  if (!gitCommit) {
+    try {
+      gitCommit = execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
+    } catch {
+      gitCommit = '';
+    }
+  }
+
   const config = {
     // Safe public configuration only — NO secrets
     apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshraut.pro',
@@ -48,6 +58,9 @@ async function injectApiKeys(distDir) {
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `v${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
+    gitCommit,
+    nodeEnv: process.env.NODE_ENV || 'production',
+    githubPages: process.env.GITHUB_PAGES === 'true',
   };
 
   // Create build config JSON file (safe to ship — contains no secrets)
