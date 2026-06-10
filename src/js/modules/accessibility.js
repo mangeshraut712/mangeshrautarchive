@@ -748,13 +748,6 @@ export class AccessibilityEnhancer {
           gap: 8px;
           padding: 8px;
           border-radius: 999px;
-          background: rgb(255 255 255 / 90%);
-          border: 1px solid rgb(0 0 0 / 8%);
-          box-shadow:
-            0 8px 32px rgb(0 0 0 / 12%),
-            0 4px 16px rgb(0 0 0 / 8%);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
           pointer-events: auto;
         }
 
@@ -762,11 +755,8 @@ export class AccessibilityEnhancer {
           position: relative;
           width: 42px;
           height: 42px;
-          border: 1px solid rgb(0 0 0 / 6%);
           border-radius: 999px;
-          background: rgb(255 255 255 / 72%);
           color: #0071e3;
-          box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
           cursor: pointer;
           display: inline-flex;
           align-items: center;
@@ -834,14 +824,10 @@ export class AccessibilityEnhancer {
         }
 
         html.dark .a11y-toolbar button {
-          border-color: rgb(255 255 255 / 10%);
-          background: rgb(18 18 20 / 82%);
           color: #4ea1ff;
-          box-shadow: 0 4px 12px rgb(0 0 0 / 24%);
         }
 
         html.dark .a11y-toolbar button:hover {
-          background: rgb(24 24 28 / 92%);
           box-shadow:
             0 10px 24px rgb(10 132 255 / 12%),
             0 4px 12px rgb(0 0 0 / 30%);
@@ -851,14 +837,6 @@ export class AccessibilityEnhancer {
           box-shadow:
             0 0 0 4px rgb(78 161 255 / 28%),
             0 12px 28px rgb(10 132 255 / 18%);
-        }
-
-        html.dark .a11y-toolbar {
-          background: rgb(0 0 0 / 88%);
-          border-color: rgb(255 255 255 / 10%);
-          box-shadow:
-            0 8px 32px rgb(0 0 0 / 40%),
-            0 4px 16px rgb(0 0 0 / 30%);
         }
 
         html.dark .a11y-toolbar button::after {
@@ -901,13 +879,6 @@ export class AccessibilityEnhancer {
           width: 240px;
           padding: 16px 18px;
           border-radius: 20px;
-          background: rgb(255 255 255 / 92%);
-          border: 1px solid rgb(0 0 0 / 8%);
-          box-shadow:
-            inset 0 1px 0 rgb(255 255 255 / 60%),
-            0 16px 40px rgb(0 0 0 / 16%);
-          backdrop-filter: saturate(180%) blur(24px);
-          -webkit-backdrop-filter: saturate(180%) blur(24px);
         }
 
         .a11y-glass-popover.is-open {
@@ -934,14 +905,6 @@ export class AccessibilityEnhancer {
           font-size: 0.68rem;
           font-weight: 600;
           color: #86868b;
-        }
-
-        html.dark .a11y-glass-popover {
-          background: rgb(18 18 20 / 92%);
-          border-color: rgb(255 255 255 / 10%);
-          box-shadow:
-            inset 0 1px 0 rgb(255 255 255 / 8%),
-            0 16px 40px rgb(0 0 0 / 50%);
         }
 
         html.dark .a11y-glass-popover__title {
@@ -997,6 +960,10 @@ export class AccessibilityEnhancer {
       button.type = 'button';
       button.setAttribute('aria-label', btn.label);
       button.setAttribute('data-label', btn.label);
+      if (btn.label === 'Liquid Glass transparency') {
+        button.setAttribute('aria-expanded', 'false');
+        button.setAttribute('aria-controls', 'a11y-glass-popover');
+      }
       const iconClass = btn.icon.startsWith('A') ? 'a11y-toolbar-button__icon--text' : '';
       button.innerHTML = `<span class="a11y-toolbar-button__icon ${iconClass}" aria-hidden="true">${btn.icon}</span>`;
       button.addEventListener('click', btn.action);
@@ -1006,16 +973,34 @@ export class AccessibilityEnhancer {
     document.body.appendChild(toolbar);
   }
 
+  formatGlassTintLabel(value) {
+    const clamped = Math.min(100, Math.max(0, value));
+    if (clamped <= 12) return 'Clear glass';
+    if (clamped >= 88) return 'Tinted glass';
+    return `${clamped}% material tint`;
+  }
+
+  updateGlassTintReadout(value, root = document) {
+    const readout = root.querySelector('.a11y-glass-popover__value');
+    if (readout) {
+      readout.textContent = this.formatGlassTintLabel(value);
+    }
+  }
+
   /**
    * WWDC26 Liquid Glass transparency slider
    * 0 = ultra-clear, 100 = fully tinted. Drives --lg-tint.
    */
   toggleLiquidGlassPopover() {
+    const glassButton = document.querySelector(
+      '.a11y-toolbar button[aria-label="Liquid Glass transparency"]'
+    );
     let popover = document.querySelector('.a11y-glass-popover');
 
     if (!popover) {
       popover = document.createElement('div');
       popover.className = 'a11y-glass-popover';
+      popover.id = 'a11y-glass-popover';
       popover.setAttribute('role', 'group');
       popover.setAttribute('aria-label', 'Liquid Glass transparency');
 
@@ -1023,29 +1008,39 @@ export class AccessibilityEnhancer {
       title.className = 'a11y-glass-popover__title';
       title.textContent = 'Liquid Glass';
 
+      const readout = document.createElement('p');
+      readout.className = 'a11y-glass-popover__value';
+      readout.setAttribute('aria-live', 'polite');
+
       const slider = document.createElement('input');
       slider.type = 'range';
       slider.min = '0';
       slider.max = '100';
-      slider.step = '5';
+      slider.step = '1';
       slider.value = String(this.getStoredGlassTint());
       slider.setAttribute('aria-label', 'Glass transparency, clear to tinted');
+      readout.textContent = this.formatGlassTintLabel(Number(slider.value));
 
       const scale = document.createElement('div');
       scale.className = 'a11y-glass-popover__scale';
       scale.innerHTML = '<span>Clear</span><span>Tinted</span>';
 
       slider.addEventListener('input', () => {
-        this.applyGlassTint(Number(slider.value));
+        const nextValue = Number(slider.value);
+        this.applyGlassTint(nextValue);
+        this.updateGlassTintReadout(nextValue);
       });
 
-      popover.append(title, slider, scale);
+      popover.append(title, readout, slider, scale);
       document.body.appendChild(popover);
     }
 
     const isOpen = popover.classList.toggle('is-open');
+    glassButton?.classList.toggle('a11y-glass-active', isOpen);
+    glassButton?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     this.announce(isOpen ? 'Liquid Glass slider opened' : 'Liquid Glass slider closed');
     if (isOpen) {
+      this.updateGlassTintReadout(this.getStoredGlassTint());
       popover.querySelector('input')?.focus();
     }
   }
@@ -1068,6 +1063,11 @@ export class AccessibilityEnhancer {
   applyGlassTint(value) {
     const clamped = Math.min(100, Math.max(0, value));
     document.documentElement.style.setProperty('--lg-tint', String(clamped / 100));
+    this.updateGlassTintReadout(clamped);
+    const slider = document.querySelector('.a11y-glass-popover input[type="range"]');
+    if (slider && Number(slider.value) !== clamped) {
+      slider.value = String(clamped);
+    }
     try {
       localStorage.setItem('wwdc26-liquid-glass-tint', String(clamped));
     } catch (_error) {

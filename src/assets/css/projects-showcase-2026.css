@@ -7,7 +7,7 @@
   --project-bg-light: #fff;
   --project-surface-light: #fff;
   --project-text-light: #111827;
-  --project-muted-light: #5f6b7a;
+  --project-muted-light: #48484a;
   --project-border-light: rgb(0 0 0 / 6%);
   --project-shadow-light: 0 14px 30px rgb(15 23 42 / 8%);
   --project-shadow-light-hover: 0 18px 38px rgb(15 23 42 / 12%);
@@ -20,7 +20,7 @@
   --project-shadow-dark: 0 18px 34px rgb(0 0 0 / 58%);
   --project-shadow-dark-hover: 0 22px 46px rgb(0 0 0 / 70%);
 
-  --project-accent: #0a6fef;
+  --project-accent: #005bb5;
   --project-accent-strong: #0059d7;
   --project-accent-soft: rgb(10 111 239 / 12%);
   --project-accent-soft-border: rgb(0 113 227 / 15%);

@@ -178,6 +178,25 @@ function areStyleKeysLoaded(styleKeys = [], documentRef = document) {
   );
 }
 
+const CRITICAL_STYLE_PATTERN = /accessibility-contrast-fixes|wwdc26-liquid-glass/;
+
+/** Keep WCAG + liquid-glass layers last so lazy section CSS cannot override them. */
+function pinCriticalStylesheetsLast(documentRef = document) {
+  const head = documentRef.head;
+  if (!head) return;
+
+  const links = Array.from(head.querySelectorAll('link[rel="stylesheet"]')).filter(link => {
+    const href = link.getAttribute('href') || link.dataset.href || '';
+    return CRITICAL_STYLE_PATTERN.test(href);
+  });
+
+  links.forEach(link => {
+    if (link.parentNode) {
+      head.appendChild(link);
+    }
+  });
+}
+
 async function loadDeferredStyles(styleKeys = [], documentRef = document) {
   const uniqueKeys = [...new Set(styleKeys.filter(Boolean))];
   if (uniqueKeys.length === 0) return true;
@@ -186,7 +205,11 @@ async function loadDeferredStyles(styleKeys = [], documentRef = document) {
   if (links.length === 0) return true;
 
   const results = await Promise.all(links.map(link => ensureDeferredStylesheetLoaded(link)));
-  return results.every(Boolean);
+  const loaded = results.every(Boolean);
+  if (loaded) {
+    pinCriticalStylesheetsLast(documentRef);
+  }
+  return loaded;
 }
 
 async function loadModule(path) {
@@ -643,6 +666,7 @@ function applyStoredLiquidGlassTint() {
 
 async function initBootstrap() {
   applyStoredLiquidGlassTint();
+  pinCriticalStylesheetsLast();
   initLaunchIntro();
   initFooterYear();
   initGlobalErrorHandlers();
