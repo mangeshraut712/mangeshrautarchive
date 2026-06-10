@@ -27,6 +27,7 @@ const SECTION_MODULES = [
     rootMargin: '900px 0px',
   },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '900px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '900px 0px' },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '1200px 0px' },
   {
     sectionId: 'currently-section',
@@ -67,6 +68,7 @@ const MODULE_IMPORTERS = {
   '../modules/birthday-celebration.js': () => import('../modules/birthday-celebration.js'),
   '../modules/skills-visualization.js': () => import('../modules/skills-visualization.js'),
   '../modules/blog-loader.js': () => import('../modules/blog-loader.js'),
+  '../modules/newsletter.js': () => import('../modules/newsletter.js'),
   '../modules/calendar.js': () => import('../modules/calendar.js'),
   '../modules/real-media-loader.js': () => import('../modules/real-media-loader.js'),
   '../modules/lastfm.js': () => import('../modules/lastfm.js'),

@@ -378,6 +378,10 @@ class ContactMessage(BaseModel):
     message: str = Field(..., min_length=1, max_length=2000)
 
 
+class NewsletterSubscribe(BaseModel):
+    email: str = Field(..., min_length=5, max_length=200)
+
+
 class AnalyticsTrackRequest(BaseModel):
     session_id: str = Field(..., min_length=6, max_length=128)
     path: str = Field(default="/", max_length=256)

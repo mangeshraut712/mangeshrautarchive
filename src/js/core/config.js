@@ -64,6 +64,7 @@ const api = {
     models: '/api/models',
     health: '/api/health',
     contact: '/api/contact',
+    newsletterSubscribe: '/api/newsletter/subscribe',
   },
   timeout: 30000, // 30 seconds
   retries: 2,

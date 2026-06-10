@@ -430,7 +430,26 @@ class LastFmService {
     }
   }
 
+  showHeroLoadingState() {
+    if (!this.hero) return;
+    this.hero.statusText.textContent = 'Syncing…';
+    this.hero.trackName.textContent = 'Fetching recent plays';
+    this.hero.artistName.textContent = '';
+    this.hero.playingIndicator?.classList.remove('active');
+    this.hero.musicCard?.classList.remove('is-playing');
+  }
+
+  showHeroEmptyState() {
+    if (!this.hero) return;
+    this.hero.statusText.textContent = 'Not playing';
+    this.hero.trackName.textContent = 'No recent plays';
+    this.hero.artistName.textContent = 'Open Spotify to scrobble';
+    this.hero.playingIndicator?.classList.remove('active');
+    this.hero.musicCard?.classList.remove('is-playing');
+  }
+
   showLoadingState() {
+    this.showHeroLoadingState();
     if (!this.currently) return;
     this.setCardVisibility(this.currently.loadingEl, true);
     this.setCardVisibility(this.currently.emptyEl, false);
@@ -439,6 +458,7 @@ class LastFmService {
   }
 
   showEmptyState() {
+    this.showHeroEmptyState();
     if (!this.currently) return;
     this.setCardVisibility(this.currently.loadingEl, false);
     this.setCardVisibility(this.currently.nowPlayingCard, false);
