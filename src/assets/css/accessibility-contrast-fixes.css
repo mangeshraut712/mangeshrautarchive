@@ -61,42 +61,48 @@ html.dark .experience-item .company-name {
 }
 
 /* Experience date badge - improve contrast */
-.experience-date-badge {
-  color: #003366 !important; /* Dark navy for 7:1 contrast */
-  background: rgb(0 51 102 / 12%) !important;
+.experience-date-badge,
+.experience-period {
+  color: #1d1d1f !important;
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
   font-weight: 600 !important;
 }
 
-html.dark .experience-date-badge {
-  color: #7dc8ff !important; /* Light blue for dark mode */
-  background: rgb(41 151 255 / 15%) !important;
+html.dark .experience-date-badge,
+html.dark .experience-period {
+  color: #f5f5f7 !important;
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 10%) !important;
 }
 
-/* Experience tags - ensure dark text on light background */
+/* Experience tags - solid theme */
 .experience-tag {
-  color: #1a1a1a !important; /* Near black for 15:1 contrast on #f5f5f7 */
-  background: #e8e8ed !important;
+  color: #1d1d1f !important;
+  background: #ffffff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   font-weight: 500 !important;
 }
 
 html.dark .experience-tag {
-  color: #f5f5f7 !important; /* White text for dark mode */
+  color: #f5f5f7 !important;
   background: #000000 !important;
-  border-color: rgb(255 255 255 / 15%) !important;
+  border-color: rgb(255 255 255 / 10%) !important;
 }
 
 /* Experience section headings */
 .experience-content h3,
 .experience-card h3,
-#experience h3.text-xl {
+#experience h3.text-xl,
+.experience-role {
   color: #1d1d1f !important;
   font-weight: 700 !important;
 }
 
 html.dark .experience-content h3,
 html.dark .experience-card h3,
-html.dark #experience h3.text-xl {
+html.dark #experience h3.text-xl,
+html.dark .experience-role {
   color: #f5f5f7 !important;
 }
 
@@ -619,13 +625,59 @@ html.dark #skills-container h3.text-primary {
 .about-speak-btn,
 .about-speak-btn .speak-text {
   background: #ffffff !important;
-  color: #005bb5 !important;
-  border: 1px solid rgb(0 0 0 / 18%) !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgb(0 0 0 / 15%) !important;
+}
+
+.about-speak-btn .speak-icon {
+  color: #0071e3 !important;
 }
 
 html.dark .about-speak-btn,
 html.dark .about-speak-btn .speak-text {
   background: #000000 !important;
-  color: #4db2ff !important;
-  border-color: rgb(255 255 255 / 28%) !important;
+  color: #f5f5f7 !important;
+  border-color: rgb(255 255 255 / 22%) !important;
+}
+
+html.dark .about-speak-btn .speak-icon {
+  color: #2997ff !important;
+}
+
+.about-segmented-control {
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 15%) !important;
+}
+
+html.dark .about-segmented-control {
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 25%) !important;
+}
+
+.about-tab-btn:not(.active) {
+  background-color: #ffffff !important;
+  color: #3a3a3c !important;
+}
+
+html.dark .about-tab-btn:not(.active) {
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+}
+
+.about-tab-btn.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.dark .about-tab-btn.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.about-text-card.speech-active .highlight-target {
+  color: #6e6e73 !important;
+}
+
+html.dark .about-text-card.speech-active .highlight-target {
+  color: #98989d !important;
 }

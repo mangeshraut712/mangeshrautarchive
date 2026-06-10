@@ -145,34 +145,68 @@ html.dark #home::before {
     radial-gradient(ellipse 60% 40% at 80% 60%, rgb(88 166 255 / 8%), transparent);
 }
 
-/* Hero Profile Image - Enhanced */
+/* Hero Profile Image - clean photo, no blue frame */
 #home .profile-image-wrapper {
   position: relative;
   width: 120px !important;
   height: 120px !important;
   border-radius: 50%;
-  padding: 3px;
-  background: linear-gradient(135deg, var(--apple-blue), var(--apple-blue-light));
-  box-shadow:
-    0 20px 40px rgb(0 113 227 / 25%),
-    0 0 0 8px rgb(255 255 255 / 80%);
-  transition: all var(--duration-normal) var(--apple-spring);
+  padding: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: transform var(--duration-normal) var(--apple-spring);
   cursor: pointer;
 }
 
 #home .profile-image-wrapper:hover {
-  transform: scale(1.05) translateY(-4px);
-  box-shadow:
-    0 30px 60px rgb(0 113 227 / 30%),
-    0 0 0 12px rgb(255 255 255 / 90%);
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: none !important;
 }
 
-#home .profile-image-wrapper img {
+#home .profile-image-wrapper img,
+#home .profile-image {
   width: 100% !important;
   height: 100% !important;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid white;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
+  box-shadow: none !important;
+}
+
+html.dark #home .profile-image-wrapper img,
+html.dark #home .profile-image {
+  border-color: rgb(255 255 255 / 12%) !important;
+}
+
+/* Pronunciation Button - minimal icon control */
+#home .name-pronounce-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #86868b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#home .name-pronounce-btn:hover {
+  color: #0071e3;
+  background: transparent !important;
+  transform: scale(1.12);
+}
+
+html.dark #home .name-pronounce-btn {
+  color: #a1a1a6;
+}
+
+html.dark #home .name-pronounce-btn:hover {
+  color: #2997ff;
+  background: transparent !important;
 }
 
 /* Hero Name - Premium Typography */
@@ -211,29 +245,6 @@ html.dark #home .hero-name-text {
 
 html.dark #home .hero-verified-badge {
   color: var(--apple-blue-dark);
-}
-
-/* Pronunciation Button */
-#home .name-pronounce-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--apple-gray-200);
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(12px);
-  color: var(--apple-gray-400);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--apple-ease);
-}
-
-#home .name-pronounce-btn:hover {
-  border-color: var(--apple-blue);
-  color: var(--apple-blue);
-  background: var(--apple-blue-soft);
-  transform: scale(1.1);
 }
 
 /* Hero Title & Role */
@@ -934,21 +945,21 @@ html.dark #go-to-top {
   }
 
   #experience .experience-item {
-    padding-left: 50px;
+    padding-left: 70px !important;
   }
 
   #experience .timeline-section-header {
-    margin-left: 50px;
+    margin-left: 0 !important;
+    padding-left: 70px !important;
   }
 
   #experience .timeline-section-header::before {
-    left: -24px;
+    left: 14px !important;
   }
 
   #experience .experience-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
+    width: 48px !important;
+    height: 48px !important;
   }
 }
 

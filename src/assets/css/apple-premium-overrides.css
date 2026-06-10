@@ -99,7 +99,7 @@ html.dark body #blog div.newsletter-card,
 html.dark body #contact div.contact-card,
 html.dark body #contact div.support-donation-card,
 html.dark body #contact div.media-card {
-  background: #1c1c1e !important;
+  background: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
 }
@@ -187,7 +187,7 @@ html.dark body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
   border-color: #2997ff !important;
   box-shadow: 0 16px 36px rgba(41, 151, 255, 0.3) !important;
-  background: #2c2c2e !important;
+  background: #000000 !important;
 }
 
 /* Maintain specific status borders for health items */
@@ -307,7 +307,7 @@ html.dark #debug-runner-section h2 {
 
 /* 3. Section Backgrounds - SOLID WHITE/BLACK */
 
-/* Alternating card-based sections use soft light gray f5f5f7 in light mode */
+/* All sections use solid white in light mode and solid black in dark mode */
 #about,
 #experience,
 #projects,
@@ -318,9 +318,9 @@ html.dark #debug-runner-section h2 {
 #certifications,
 #blog,
 #contact {
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
   background-image: none !important;
-  background-color: #f5f5f7 !important;
+  background-color: #ffffff !important;
   opacity: 1 !important;
 }
 
@@ -330,6 +330,13 @@ html.dark #debug-runner-section h2 {
   background-image: none !important;
   background-color: #ffffff !important;
   opacity: 1 !important;
+}
+
+footer {
+  background: #ffffff !important;
+  background-image: none !important;
+  background-color: #ffffff !important;
+  border-top: 1px solid rgb(0 0 0 / 8%) !important;
 }
 
 /* All sections are pure black in Dark Mode */
@@ -351,6 +358,13 @@ html.dark #about {
   opacity: 1 !important;
 }
 
+html.dark footer {
+  background: #000000 !important;
+  background-image: none !important;
+  background-color: #000000 !important;
+  border-top-color: rgb(255 255 255 / 10%) !important;
+}
+
 /* 4. Buttons - Apple Style */
 
 .btn,
@@ -363,6 +377,40 @@ button,
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.projects-view-all-btn,
+.project-action-btn.btn-demo {
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  box-shadow: 0 8px 20px rgb(15 23 42 / 6%) !important;
+  font-weight: 600 !important;
+}
+
+.projects-view-all-btn:hover,
+.project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 24px rgb(0 113 227 / 12%) !important;
+}
+
+html.dark .projects-view-all-btn,
+html.dark .project-action-btn.btn-demo {
+  background: #000000 !important;
+  color: #2997ff !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  box-shadow: 0 14px 24px rgb(0 0 0 / 52%) !important;
+}
+
+html.dark .projects-view-all-btn:hover,
+html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
+  background: #000000 !important;
+  color: #2997ff !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 12px 28px rgb(41 151 255 / 16%) !important;
 }
 
 /* 5. Premium Search & Mobile Menu */
@@ -1730,45 +1778,39 @@ html.dark .experience-icon {
 #skills-container .skill-badge,
 .skill-badge {
   background: #fff !important;
-
-  /* Solid White */
   backdrop-filter: none !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
-  border-radius: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 22px !important;
   padding: 12px 20px !important;
   gap: 12px !important;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 4%) !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
   min-width: 140px;
   justify-content: center;
 }
 
 html.dark #skills-container .skill-badge,
 html.dark .skill-badge {
-  background: #000 !important;
-
-  /* Solid Black */
-  border: 1px solid rgb(255 255 255 / 15%) !important;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 50%) !important;
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* Badge Hover */
 #skills-container .skill-badge:hover,
 .skill-badge:hover {
-  transform: translateY(-4px) scale(1.02) !important;
-  box-shadow: 0 12px 24px rgb(0 0 0 / 12%) !important;
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 36px rgba(0, 113, 227, 0.16) !important;
   background: #ffffff !important;
-  border-color: rgba(0, 0, 0, 0.25) !important;
+  border-color: #0071e3 !important;
   z-index: 10;
 }
 
 html.dark #skills-container .skill-badge:hover,
 html.dark .skill-badge:hover {
   background: #000000 !important;
-
-  /* Dark Grey hover */
-  box-shadow: 0 12px 24px rgb(255 255 255 / 10%) !important;
-  border-color: rgb(255 255 255 / 30%) !important;
+  box-shadow: 0 16px 36px rgba(41, 151, 255, 0.3) !important;
+  border-color: #2997ff !important;
 }
 
 /* Badge Text */
@@ -2190,12 +2232,13 @@ html.dark .profile-image-wrapper {
   height: 100% !important;
   object-fit: cover !important;
   border-radius: 50% !important;
-  border: 3px solid #0071e3 !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
+  box-shadow: none !important;
   display: block !important;
 }
 
 html.dark .profile-image {
-  border-color: #2997ff !important;
+  border-color: rgb(255 255 255 / 12%) !important;
 }
 
 /* Subtle Spatial Glow instead of the simple ring */
@@ -2880,7 +2923,7 @@ html.dark .game-stat-emoji {
 
 /* --- Legend/Info Icons --- */
 .legend-emoji {
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
   box-shadow:
     0 2px 8px rgb(0 0 0 / 6%),
     inset 0 1px 0 rgb(255 255 255 / 0.8) !important;
@@ -2974,34 +3017,49 @@ html.dark #theme-toggle .fa-moon {
   background-clip: text !important;
 }
 
-/* Theme toggle button styling */
+/* Theme toggle + search button styling */
+#search-toggle,
 #theme-toggle,
 .theme-toggle {
   background: transparent !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   border-radius: 50% !important;
-  width: 36px !important;
-  height: 36px !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   transition: all 0.3s ease !important;
+  box-shadow: none !important;
 }
 
+#search-toggle:hover,
 #theme-toggle:hover,
 .theme-toggle:hover {
   background: rgb(0 0 0 / 5%) !important;
-  transform: scale(1.1) !important;
+  transform: scale(1.05) !important;
+  box-shadow: none !important;
 }
 
+html.dark #search-toggle,
 html.dark #theme-toggle,
 html.dark .theme-toggle {
   border-color: rgb(255 255 255 / 20%) !important;
 }
 
+html.dark #search-toggle:hover,
 html.dark #theme-toggle:hover,
 html.dark .theme-toggle:hover {
   background: rgb(255 255 255 / 10%) !important;
+}
+
+#name-pronounce-btn.name-pronounce-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* ========================================

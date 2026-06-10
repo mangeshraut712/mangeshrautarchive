@@ -94,17 +94,18 @@ export function initAboutInteractivity() {
   const updateSpeakButtonUI = () => {
     if (!speakBtn || !speakText || !speakIcon) return;
 
+    speakBtn.classList.remove('is-speaking', 'is-paused');
+
     if (speechState === 'speaking') {
       speakBtn.classList.add('is-speaking');
       speakText.textContent = 'Pause';
       speakIcon.className = 'fas fa-pause speak-icon';
     } else if (speechState === 'paused') {
-      speakBtn.classList.remove('is-speaking');
+      speakBtn.classList.add('is-paused');
       speakText.textContent = 'Resume';
-      speakIcon.className = 'fas fa-volume-up speak-icon'; // volume up used as play indicator
+      speakIcon.className = 'fas fa-play speak-icon';
     } else {
-      speakBtn.classList.remove('is-speaking');
-      speakText.textContent = 'Speak';
+      speakText.textContent = 'Listen';
       speakIcon.className = 'fas fa-volume-up speak-icon';
     }
   };

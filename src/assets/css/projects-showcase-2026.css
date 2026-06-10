@@ -154,8 +154,10 @@ html.dark #projects #projects-stats .stat-label {
   padding: 0 1rem !important;
 }
 
-#projects .proj-input-group i {
-  color: #7d8aa2 !important;
+#projects .proj-input-group .fa-search,
+#projects .proj-input-group i.fas.fa-search {
+  color: #4a5568 !important;
+  opacity: 1 !important;
   margin-right: 0.65rem !important;
 }
 
@@ -176,7 +178,7 @@ html.dark #projects #projects-stats .stat-label {
 #projects .proj-controls-group {
   display: flex !important;
   flex-direction: row !important;
-  align-items: center !important;
+  align-items: stretch !important;
   gap: 0.65rem !important;
   min-width: 0 !important;
   width: auto !important;
@@ -187,35 +189,74 @@ html.dark #projects #projects-stats .stat-label {
 
 #projects .proj-filter-select,
 #projects .projects-view-all-btn {
-  min-height: 52px !important;
-  border-radius: 14px !important;
-  border: 1px solid var(--project-border-light) !important;
-  font-size: 0.9rem !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  border-radius: 980px !important;
+  font-size: 0.92rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
+  box-sizing: border-box !important;
 }
 
 #projects .proj-filter-select {
-  min-width: 192px !important;
-  min-height: 44px !important;
-  padding: 0 2.25rem 0 1rem !important;
+  min-width: 196px !important;
+  padding: 0 2.35rem 0 1rem !important;
   background-color: #fff !important;
   color: var(--project-text-light) !important;
-  box-shadow: 0 10px 20px rgb(15 23 42 / 7%) !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  box-shadow: 0 8px 20px rgb(15 23 42 / 6%) !important;
   line-height: 1.2 !important;
+  appearance: none !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #7d8aa2 50%),
+    linear-gradient(135deg, #7d8aa2 50%, transparent 50%) !important;
+  background-position:
+    calc(100% - 18px) calc(50% + 1px),
+    calc(100% - 12px) calc(50% + 1px) !important;
+  background-size:
+    6px 6px,
+    6px 6px !important;
+  background-repeat: no-repeat !important;
 }
 
 #projects .projects-view-all-btn {
-  padding: 0 1.5rem !important;
-  background: linear-gradient(135deg, var(--project-accent), #1683ff) !important;
-  border-color: rgb(7 91 199 / 42%) !important;
-  color: #fff !important;
-  box-shadow: 0 12px 24px rgb(10 111 239 / 26%) !important;
+  padding: 0 1.35rem !important;
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  color: #0071e3 !important;
+  box-shadow: 0 8px 20px rgb(15 23 42 / 6%) !important;
+  gap: 0.5rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+}
+
+#projects .projects-view-all-btn i {
+  color: currentcolor !important;
 }
 
 #projects .projects-view-all-btn:hover {
   transform: translateY(-1px) !important;
-  box-shadow: 0 16px 30px rgb(10 111 239 / 30%) !important;
+  border-color: #0071e3 !important;
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  box-shadow: 0 10px 24px rgb(0 113 227 / 12%) !important;
+}
+
+html.dark #projects .projects-view-all-btn {
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  color: #2997ff !important;
+  box-shadow: 0 14px 24px rgb(0 0 0 / 52%) !important;
+}
+
+html.dark #projects .projects-view-all-btn:hover {
+  border-color: #2997ff !important;
+  background: #000000 !important;
+  color: #2997ff !important;
+  box-shadow: 0 12px 28px rgb(41 151 255 / 16%) !important;
 }
 
 html.dark #projects .proj-input-group,
@@ -240,6 +281,17 @@ html.dark #projects .proj-search-input::placeholder {
 
 html.dark #projects .proj-filter-select {
   color: var(--project-text-dark) !important;
+  background-color: #000 !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9aa7bc 50%),
+    linear-gradient(135deg, #9aa7bc 50%, transparent 50%) !important;
+  background-position:
+    calc(100% - 18px) calc(50% + 1px),
+    calc(100% - 12px) calc(50% + 1px) !important;
+  background-size:
+    6px 6px,
+    6px 6px !important;
+  background-repeat: no-repeat !important;
 }
 
 /* Activity overview banner */
@@ -1101,18 +1153,19 @@ html.dark #projects #github-projects-container .btn-demo:hover:not(:disabled) {
 
 #projects #github-projects-container .project-action-btn.is-disabled,
 #projects #github-projects-container .project-action-btn:disabled {
-  background: #c0c6cf !important;
-  border: 1px solid #c0c6cf !important;
-  color: #f8fafc !important;
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
+  color: #86868b !important;
   box-shadow: none !important;
   pointer-events: none !important;
+  opacity: 0.72 !important;
 }
 
 html.dark #projects #github-projects-container .project-action-btn.is-disabled,
 html.dark #projects #github-projects-container .project-action-btn:disabled {
-  background: #2a3340 !important;
-  border-color: #2a3340 !important;
-  color: #8f9eb3 !important;
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  color: #86868b !important;
 }
 
 /* Spatial modal (theme locked) */

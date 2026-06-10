@@ -43,6 +43,7 @@ class ScrollAnimations {
     const selectors = [
       '.showcase-project-card',
       '.experience-content',
+      '.education-content',
       '.education-card',
       '.publication-card',
       '.award-card',

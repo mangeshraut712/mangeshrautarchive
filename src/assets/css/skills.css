@@ -123,8 +123,8 @@ html.dark .skill-category h3.text-xl {
 
   /* Force Solid White */
   backdrop-filter: none !important;
-  border-radius: 12px;
-  border: 1px solid rgb(0 0 0 / 6%);
+  border-radius: 22px;
+  border: 1px solid rgb(0 0 0 / 8%);
   transition:
     transform 0.42s var(--skill-motion-spring),
     box-shadow 0.42s var(--skill-motion-spring),
@@ -158,25 +158,24 @@ html.dark #skills-container .skill-badge,
 html.dark .skill-badge {
   background-color: #000 !important;
   background-image: none !important;
-
-  /* Force Solid Black */
   border-color: rgb(255 255 255 / 8%);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 40%);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 25%);
 }
 
 #skills-container .skill-badge:hover,
 .skill-badge:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 32px rgb(0 0 0 / 15%);
-  border-color: rgb(0 113 227 / 15%);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgb(0 113 227 / 16%);
+  border-color: #0071e3;
   z-index: 10;
   background-color: #fff !important;
 }
 
 html.dark #skills-container .skill-badge:hover,
 html.dark .skill-badge:hover {
-  box-shadow: 0 12px 32px rgb(0 0 0 / 60%);
+  box-shadow: 0 16px 36px rgb(41 151 255 / 30%);
   background-color: #000 !important;
+  border-color: #2997ff;
 }
 
 @keyframes gentleFloat {

@@ -88,12 +88,12 @@ class PortfolioSearch {
         icon: 'fa-laptop-code',
       },
       {
-        selector: '[id="experience"] .timeline-item',
+        selector: '[id="experience"] .experience-item',
         type: 'Experience',
         icon: 'fa-briefcase',
       },
       {
-        selector: '[id="education"] .education-card',
+        selector: '[id="education"] .education-item',
         type: 'Education',
         icon: 'fa-graduation-cap',
       },

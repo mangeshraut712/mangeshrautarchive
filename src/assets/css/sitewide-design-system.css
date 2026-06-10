@@ -9,7 +9,7 @@
 
 /* Target ALL buttons across the site to ensure they are BLUE */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn),
+button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -31,7 +31,7 @@ a.button,
 
 /* Hover State */
 .btn:hover,
-button:not(.about-tab-btn):not(.about-speak-btn):hover,
+button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,
@@ -406,9 +406,12 @@ html.dark section:nth-child(even) {
   box-shadow: none !important;
   padding: 0 !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
+  border-radius: 50% !important;
   color: inherit !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -437,13 +440,18 @@ html.dark .menu-toggle-button {
 }
 
 .theme-toggle-nav:hover,
-.search-toggle:hover {
+.search-toggle:hover,
+#search-toggle:hover,
+#theme-toggle:hover {
   background: rgb(0 0 0 / 5%) !important;
   transform: none !important;
+  box-shadow: none !important;
 }
 
 html.dark .theme-toggle-nav:hover,
-html.dark .search-toggle:hover {
+html.dark .search-toggle:hover,
+html.dark #search-toggle:hover,
+html.dark #theme-toggle:hover {
   background: rgb(255 255 255 / 10%) !important;
 }
 
@@ -502,7 +510,7 @@ html.dark .text-blue {
 
 /* Exclude buttons from text color override */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn),
+button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(.chatbot-close-btn):not(.chatbot-send-btn):not(.projects-view-all-btn):not(.project-action-btn),
 .project-tag,
 .badge {
   color: #fff !important;

@@ -328,8 +328,8 @@ function initLaunchIntro(documentRef = document) {
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = documentRef.documentElement;
-    const totalDuration = prefersReducedMotion ? 420 : 980;
-    const fadeDuration = 280;
+    const totalDuration = prefersReducedMotion ? 520 : 2100;
+    const fadeDuration = 320;
 
     const complete = () => {
       if (intro.dataset.launchIntroComplete === 'true') return;
@@ -359,7 +359,7 @@ function initLaunchIntro(documentRef = document) {
     window.setTimeout(complete, totalDuration);
   };
 
-  window.setTimeout(playIntro, 60);
+  window.setTimeout(playIntro, 0);
 }
 
 function initGlobalErrorHandlers() {

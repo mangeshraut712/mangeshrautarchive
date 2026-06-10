@@ -106,6 +106,7 @@
   <meta name="twitter:creator" content="@mrcommando712" />
 
   <link rel="manifest" href="manifest.json" />
+  <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
@@ -169,16 +170,18 @@
       right: 1.25rem;
       bottom: 1.25rem;
       z-index: 9997;
-      width: 3rem;
-      height: 3rem;
+      width: 3.75rem;
+      height: 3.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 999px;
-      border: 1px solid rgb(0 0 0 / 12%);
-      background: #ffffff;
-      color: #0071e3;
-      box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+      border: none;
+      background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+      color: #fff;
+      box-shadow:
+        0 4px 14px rgb(0 122 255 / 38%),
+        inset 0 1px 0 rgb(255 255 255 / 28%);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -186,10 +189,11 @@
     }
 
     html.dark #go-to-top {
-      background: #000000;
-      color: #2997ff;
-      border-color: rgb(255 255 255 / 14%);
-      box-shadow: 0 8px 24px rgb(0 0 0 / 36%);
+      background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+      color: #fff;
+      box-shadow:
+        0 4px 16px rgb(10 132 255 / 42%),
+        inset 0 1px 0 rgb(255 255 255 / 18%);
     }
 
     #go-to-top.visible {
@@ -307,13 +311,14 @@
       margin-inline: auto;
       border-radius: 999px;
       overflow: hidden;
-      border: 3px solid rgb(0 113 227 / 20%);
-      background: rgb(245 245 247 / 90%);
+      border: 1px solid rgb(0 0 0 / 8%);
+      background: transparent;
+      box-shadow: none;
     }
 
     html.dark .profile-image-wrapper {
-      border-color: rgb(41 151 255 / 25%);
-      background: rgb(28 28 30 / 90%);
+      border-color: rgb(255 255 255 / 12%);
+      background: transparent;
     }
 
     .profile-image {
@@ -653,7 +658,7 @@
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260423a" />
 
   <!-- Experience section owns its final timeline rules after global premium overrides. -->
-  <link rel="stylesheet" data-href="assets/css/experience.css?v=20260525b" data-lazy-style-key="experience" />
+  <link rel="stylesheet" data-href="assets/css/experience.css?v=20260610a" data-lazy-style-key="experience" />
 
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
@@ -684,25 +689,25 @@
         stroke="currentColor" stroke-width="14.888" stroke-linecap="round" role="img" aria-label="नमस्ते"
         focusable="false">
         <title>नमस्ते</title>
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.14s; --hello-delay: 0s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.16s; --hello-delay: 0s;"
           d="M42.3842 150.002C53.2928 153.473 60.4984 162.29 60.4984 175.561C60.4984 189.953 50.3247 201.119 36.677 201.119C24.022 201.119 14.8408 192.186 14.8408 179.035C14.8408 160.269 31.2182 148.265 56.5282 149.01C82.0863 149.754 103.723 163.663 120.367 185.069" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.1s; --hello-delay: 0.1s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.12s; --hello-delay: 0.11s;"
           d="M133.502 93.5842C124.459 153.875 117.303 209.683 111.71 264.988" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.14s; --hello-delay: 0.18s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.16s; --hello-delay: 0.21s;"
           d="M216.556 90.9181C217.117 117.977 216.81 137.689 214.869 160.067C212.007 193.058 200.119 213.115 180.936 213.115C169.295 213.115 160.844 205.334 160.844 193.399C160.844 177.222 175.901 164.28 203.653 165.376C229.863 166.411 256.651 174.863 275.138 192.025" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.1s; --hello-delay: 0.28s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.12s; --hello-delay: 0.31s;"
           d="M289.489 90.0085C280.255 150.162 272.672 207.783 267.379 263.003" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.14s; --hello-delay: 0.36s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.16s; --hello-delay: 0.41s;"
           d="M373.949 90.0198C394.816 102.051 408.098 128.602 408.098 154.079C408.098 185.141 387.465 205.586 358.47 205.586C330.249 205.586 311.145 186.038 317.527 170.35C322.864 157.231 341.378 156.812 356.237 168.861C374.674 183.811 382.044 216.764 385.021 261.169" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.1s; --hello-delay: 0.46s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.12s; --hello-delay: 0.51s;"
           d="M403.474 177.549C418.085 183.32 439.163 184.314 458.424 179.805" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.1s; --hello-delay: 0.54s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.12s; --hello-delay: 0.61s;"
           d="M556.981 88.1333C546.807 149.619 538.371 207.01 531.919 262.906" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.14s; --hello-delay: 0.62s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.16s; --hello-delay: 0.7s;"
           d="M536.891 222.462C541.984 183.336 528.689 152.484 496.435 152.484C472.365 152.484 453.755 175.064 453.755 203.104C453.755 223.451 461.199 245.784 475.095 261.417" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.14s; --hello-delay: 0.72s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.16s; --hello-delay: 0.8s;"
           d="M521.259 45.4307C485.619 43.0134 474.856 32.3917 474.856 21.5298C474.856 12.832 482.71 7.04349 493.506 7.46568C518.289 8.37031 542.96 35.3336 555.578 70.4412" />
-        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.18s; --hello-delay: 0.82s;"
+        <path class="launch-intro-path" pathLength="1" style="--hello-duration: 0.22s; --hello-delay: 0.9s;"
           d="M7.44434 88.6792C30.9102 88.8706 59.0093 89.2085 95.3706 89.2085C132.178 89.2085 208.165 89.2571 253.623 89.2047C295.091 89.1568 396.683 89.0223 452.784 89.0234C506.182 89.0244 552.847 88.4444 596.931 87.2836" />
       </svg>
       <div class="launch-intro-meta">
@@ -870,8 +875,8 @@
               <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)"
                 style="width: 130px !important; height: 130px !important; min-width: 130px !important; min-height: 130px !important; max-width: 130px !important; max-height: 130px !important;">
-                <img id="profile-image" data-deferred-src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
-                  width="160" height="160" loading="lazy" decoding="async" fetchpriority="low"
+                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
+                  width="160" height="160" loading="eager" decoding="async" fetchpriority="high"
                   onclick="window.__toggleHeroAvatar?.(event)"
                   data-photo-src="assets/images/profile.webp" data-avatar-src="assets/images/avtar.webp"
                   style="width: 100% !important; height: 100% !important; object-fit: cover !important;" />
@@ -1055,9 +1060,9 @@
                   <button class="about-tab-btn" role="tab" aria-selected="false" aria-controls="quick-summary-panel" id="tab-quick-summary">Quick Summary</button>
                   <div class="segmented-control-bg"></div>
                 </div>
-                <button class="about-speak-btn" aria-label="Speak" title="Speak">
-                  <i class="fas fa-volume-up speak-icon"></i>
-                  <span class="speak-text">Speak</span>
+                <button class="about-speak-btn" aria-label="Listen to about section" title="Listen to about section">
+                  <i class="fas fa-volume-up speak-icon" aria-hidden="true"></i>
+                  <span class="speak-text">Listen</span>
                 </button>
               </div>
 
@@ -1207,29 +1212,39 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="fade-in py-12">
+    <section id="experience" class="fade-in py-12" aria-labelledby="experience-heading">
       <div class="container">
-        <h2>Professional Experience</h2>
+        <h2 id="experience-heading">Professional Experience</h2>
+        <p class="section-subtitle">Five years across full-stack engineering, cloud DevOps, and enterprise systems — from energy analytics to network infrastructure.</p>
 
         <div class="experience-timeline">
 
           <!-- Full-Time Employment -->
-          <div class="timeline-section-header">
+          <div class="timeline-section-header" role="group" aria-label="Full-Time Employment">
             <h3>Full-Time Employment</h3>
           </div>
 
           <!-- Customized Energy Solutions -->
-          <div class="experience-item">
-            <div class="experience-icon">
+          <article class="experience-item">
+            <div class="experience-icon" aria-hidden="true">
               <i class="fas fa-laptop-code"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 class="text-xl">Software Engineer</h3>
-                  <span class="text-accent">Customized Energy Solutions - Philadelphia, PA</span>
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-role">Software Engineer</h3>
+                  <p class="experience-company">Customized Energy Solutions</p>
+                  <p class="experience-location">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    Philadelphia, PA
+                  </p>
                 </div>
-                <span class="experience-date-badge">Aug 2024 – Dec 2025</span>
+                <div class="experience-meta">
+                  <p class="experience-period">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    Aug 2024 – Dec 2025
+                  </p>
+                </div>
               </div>
               <ul class="space-y-3">
                 <li>
@@ -1266,20 +1281,29 @@
                 <span class="experience-tag">Terraform</span>
               </div>
             </div>
-          </div>
+          </article>
 
           <!-- IoasiZ -->
-          <div class="experience-item">
-            <div class="experience-icon">
+          <article class="experience-item">
+            <div class="experience-icon" aria-hidden="true">
               <i class="fas fa-code-branch"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 class="text-xl">Software Engineer</h3>
-                  <span class="text-accent">IoasiZ - Piscataway, NJ</span>
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-role">Software Engineer</h3>
+                  <p class="experience-company">IoasiZ</p>
+                  <p class="experience-location">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    Piscataway, NJ
+                  </p>
                 </div>
-                <span class="experience-date-badge">Jul 2023 – Jul 2024</span>
+                <div class="experience-meta">
+                  <p class="experience-period">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    Jul 2023 – Jul 2024
+                  </p>
+                </div>
               </div>
               <ul class="space-y-3">
                 <li>
@@ -1315,20 +1339,29 @@
                 <span class="experience-tag">JUnit</span>
               </div>
             </div>
-          </div>
+          </article>
 
           <!-- Harshwardhan Enterprises -->
-          <div class="experience-item">
-            <div class="experience-icon">
+          <article class="experience-item">
+            <div class="experience-icon" aria-hidden="true">
               <i class="fas fa-network-wired"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 class="text-xl">Network Engineer</h3>
-                  <span class="text-accent">Harshwardhan Enterprises - Pune, India</span>
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-role">Network Engineer</h3>
+                  <p class="experience-company">Harshwardhan Enterprises</p>
+                  <p class="experience-location">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    Pune, India
+                  </p>
                 </div>
-                <span class="experience-date-badge">Jun 2020 – Jun 2021</span>
+                <div class="experience-meta">
+                  <p class="experience-period">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    Jun 2020 – Jun 2021
+                  </p>
+                </div>
               </div>
               <ul class="space-y-3">
                 <li>
@@ -1364,25 +1397,34 @@
                 <span class="experience-tag">Network Security</span>
               </div>
             </div>
-          </div>
+          </article>
 
           <!-- Internship Section Header -->
-          <div class="timeline-section-header">
+          <div class="timeline-section-header" role="group" aria-label="Internship">
             <h3>Internship</h3>
           </div>
 
           <!-- Aramark -->
-          <div class="experience-item">
-            <div class="experience-icon">
+          <article class="experience-item">
+            <div class="experience-icon" aria-hidden="true">
               <i class="fas fa-database"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 class="text-xl">Database Administrator</h3>
-                  <span class="text-accent">Aramark - Philadelphia, PA</span>
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-role">Database Administrator</h3>
+                  <p class="experience-company">Aramark</p>
+                  <p class="experience-location">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    Philadelphia, PA
+                  </p>
                 </div>
-                <span class="experience-date-badge">Jun 2022 – Jun 2023</span>
+                <div class="experience-meta">
+                  <p class="experience-period">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    Jun 2022 – Jun 2023
+                  </p>
+                </div>
               </div>
               <ul class="space-y-3">
                 <li>
@@ -1409,25 +1451,34 @@
                 <span class="experience-tag">Database Administration</span>
               </div>
             </div>
-          </div>
+          </article>
 
           <!-- Part-Time Section Header -->
-          <div class="timeline-section-header">
+          <div class="timeline-section-header" role="group" aria-label="Part-Time Work">
             <h3>Part-Time Work</h3>
           </div>
 
           <!-- Drexel University -->
-          <div class="experience-item">
-            <div class="experience-icon">
+          <article class="experience-item">
+            <div class="experience-icon" aria-hidden="true">
               <i class="fas fa-university"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 class="text-xl">Database Administrator</h3>
-                  <span class="text-accent">Drexel University - Philadelphia, PA</span>
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-role">Database Administrator</h3>
+                  <p class="experience-company">Drexel University</p>
+                  <p class="experience-location">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    Philadelphia, PA
+                  </p>
                 </div>
-                <span class="experience-date-badge">Sep 2021 – May 2022</span>
+                <div class="experience-meta">
+                  <p class="experience-period">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    Sep 2021 – May 2022
+                  </p>
+                </div>
               </div>
               <ul class="space-y-3">
                 <li>
@@ -1455,27 +1506,36 @@
                 <span class="experience-tag">SQL</span>
               </div>
             </div>
-          </div>
+          </article>
 
           <!-- Volunteer Section Header -->
-          <div class="timeline-section-header">
+          <div class="timeline-section-header" role="group" aria-label="Volunteer Work">
             <h3>Volunteer Work</h3>
           </div>
 
           <!-- Drexel COVID -->
-          <div class="experience-item">
-            <div class="experience-icon">
+          <article class="experience-item">
+            <div class="experience-icon" aria-hidden="true">
               <i class="fas fa-hands-helping"></i>
             </div>
             <div class="experience-content">
-              <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                <div>
-                  <h3 class="text-xl">COVID-19 Testing Assistant</h3>
-                  <span class="text-accent">Drexel University - Philadelphia, PA</span>
+              <div class="experience-header">
+                <div class="experience-title-group">
+                  <h3 class="experience-role">COVID-19 Testing Assistant</h3>
+                  <p class="experience-company">Drexel University</p>
+                  <p class="experience-location">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    Philadelphia, PA
+                  </p>
                 </div>
-                <span class="experience-date-badge">Jan 2022</span>
+                <div class="experience-meta">
+                  <p class="experience-period">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
+                    Jan 2022
+                  </p>
+                </div>
               </div>
-              <p class="mb-4 leading-relaxed">
+              <p>
                 As a dedicated volunteer and essential team member at Drexel University, I played a crucial role in
                 supporting the university's COVID-19 vaccination efforts. My responsibilities included ensuring smooth,
                 organized processes for individuals seeking vaccination, maintaining safety protocols, and providing
@@ -1488,7 +1548,7 @@
                 <span class="experience-tag">COVID-19 Response</span>
               </div>
             </div>
-          </div>
+          </article>
 
         </div>
       </div>
@@ -1831,7 +1891,7 @@
           <!-- Project Search & Filter -->
           <div class="proj-search-container flex flex-col md:flex-row gap-4 justify-between items-center mb-10 w-full">
             <div class="proj-input-group flex items-center flex-1 rounded-full px-5 py-3 w-full max-w-2xl">
-              <i class="fas fa-search text-secondary mr-3 text-lg opacity-60"></i>
+              <i class="fas fa-search text-secondary mr-3 text-lg" aria-hidden="true"></i>
               <input type="text" id="project-search-input"
                 class="proj-search-input w-full bg-transparent border-none outline-none font-medium"
                 placeholder="Search projects by name, tag, or language (supports close matches)..."
@@ -1847,7 +1907,7 @@
                 <option value="language">Sort by Language</option>
               </select>
               <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
-                class="btn projects-view-all-btn flex items-center justify-center gap-2 font-medium"
+                class="projects-view-all-btn flex items-center justify-center gap-2 font-medium"
                 aria-label="Visit GitHub profile">
                 <i class="fab fa-github text-lg"></i> Visit GitHub Profile
               </a>

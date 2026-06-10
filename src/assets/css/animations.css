@@ -151,6 +151,7 @@
 /* Cards - Projects, Experience, Education, etc. */
 .showcase-project-card.animate-in,
 .experience-content.animate-in,
+.education-content.animate-in,
 .education-card.animate-in,
 .publication-card.animate-in,
 .award-card.animate-in,
@@ -254,10 +255,14 @@ a.btn,
 
 .btn:hover,
 .project-action-btn:hover,
-.projects-view-all-btn:hover,
 .cta-button:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 12px 24px rgb(0 113 227 / 25%);
+}
+
+.projects-view-all-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 24px rgb(0 113 227 / 12%) !important;
 }
 
 .btn:active,
@@ -271,8 +276,12 @@ a.btn,
 /* Dark mode button shadows */
 html.dark .btn:hover,
 html.dark .project-action-btn:hover,
-html.dark .projects-view-all-btn:hover {
+html.dark .cta-button:hover {
   box-shadow: 0 12px 24px rgb(10 132 255 / 30%);
+}
+
+html.dark .projects-view-all-btn:hover {
+  box-shadow: 0 10px 24px rgb(41 151 255 / 14%) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════

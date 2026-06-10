@@ -1,5 +1,6 @@
 /* ========================================
    EXPERIENCE PAGE - APPLE-INSPIRED SOLID TIMELINE
+   Matches Education section design & behaviors
    ======================================== */
 
 #experience {
@@ -13,8 +14,17 @@ html.dark #experience {
   background-image: none !important;
 }
 
+#experience .section-subtitle {
+  margin-top: -1.75rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* ========================================
+   TIMELINE LAYOUT
+   ======================================== */
+
 .experience-timeline {
-  max-width: 980px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-left: 0;
   position: relative;
@@ -25,34 +35,26 @@ html.dark #experience {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 31px;
+  left: 32px;
   z-index: 0;
   width: 2px;
   border-radius: 999px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgb(0 113 227 / 45%) 8%,
-    rgb(0 113 227 / 28%) 88%,
-    transparent
-  );
+  background: linear-gradient(to bottom, #0071e3, #2997ff);
 }
 
 html.dark .experience-timeline::before {
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgb(10 132 255 / 55%) 8%,
-    rgb(10 132 255 / 30%) 88%,
-    transparent
-  );
+  background: linear-gradient(to bottom, #2997ff, #0a84ff);
 }
+
+/* ========================================
+   TIMELINE SECTION HEADERS (Full-Time, Internship, etc.)
+   ======================================== */
 
 #experience .timeline-section-header {
   display: flex;
   align-items: center;
-  margin: 2rem 0 1rem;
-  padding-left: 76px;
+  margin: 2.5rem 0 1.25rem;
+  padding-left: 90px;
   position: relative;
 }
 
@@ -80,14 +82,10 @@ html.dark .experience-timeline::before {
   position: absolute;
   left: 44px;
   top: 50%;
-  width: 24px;
+  width: 28px;
   height: 1px;
   background: rgb(0 113 227 / 22%);
   transform: translateY(-50%);
-}
-
-html.dark #experience .timeline-section-header {
-  color: #f5f5f7;
 }
 
 html.dark #experience .timeline-section-header::before {
@@ -101,13 +99,13 @@ html.dark #experience .timeline-section-header::after {
 }
 
 #experience .timeline-section-header h3 {
-  border: 1px solid rgb(0 0 0 / 6%);
+  border: 1px solid rgb(0 0 0 / 8%);
   border-radius: 999px;
   background: #ffffff;
   box-shadow: 0 8px 24px rgb(0 0 0 / 5%);
   margin: 0;
   padding: 0.55rem 1rem;
-  color: #6e6e73;
+  color: #0071e3;
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -119,13 +117,17 @@ html.dark #experience .timeline-section-header h3 {
   border-color: rgb(255 255 255 / 8%);
   background: #000000;
   box-shadow: 0 10px 26px rgb(0 0 0 / 45%);
-  color: #a1a1a6;
+  color: #58a6ff;
 }
+
+/* ========================================
+   TIMELINE ITEMS
+   ======================================== */
 
 .experience-item {
   position: relative;
-  margin-bottom: 1.3rem;
-  padding-left: 76px;
+  margin-bottom: 2rem;
+  padding-left: 90px;
 }
 
 .experience-item:last-child {
@@ -134,7 +136,7 @@ html.dark #experience .timeline-section-header h3 {
 
 .experience-icon {
   position: absolute;
-  top: 1rem;
+  top: 0;
   left: 0;
   z-index: 2;
   display: flex;
@@ -143,16 +145,16 @@ html.dark #experience .timeline-section-header h3 {
   align-items: center;
   justify-content: center;
   border: 4px solid #ffffff;
-  border-radius: 18px;
+  border-radius: 50%;
   background: linear-gradient(135deg, #0071e3, #2997ff);
-  box-shadow: 0 16px 32px rgb(0 113 227 / 24%);
+  box-shadow: 0 8px 20px rgb(0 113 227 / 40%);
   color: #ffffff;
 }
 
 html.dark .experience-icon {
   border-color: #000000;
   background: linear-gradient(135deg, #0a84ff, #5e5ce6);
-  box-shadow: 0 18px 36px rgb(10 132 255 / 24%);
+  box-shadow: 0 8px 20px rgb(10 132 255 / 40%);
 }
 
 .experience-icon i {
@@ -160,46 +162,173 @@ html.dark .experience-icon {
   font-size: 1.45rem;
 }
 
+/* ========================================
+   EXPERIENCE CARD
+   ======================================== */
+
 #experience .experience-content {
   position: relative;
-  border: 1px solid rgb(0 0 0 / 6%) !important;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 22px !important;
   background: #ffffff !important;
-  box-shadow: 0 12px 36px rgb(0 0 0 / 7%) !important;
-  padding: 1.35rem !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04) !important;
+  padding: 2rem !important;
   transition:
-    transform 0.25s var(--apple-ease),
-    border-color 0.25s var(--apple-ease),
-    box-shadow 0.25s var(--apple-ease) !important;
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 
-/* ID-based hover overrides removed to let global card hover styles apply consistently */
-/*
 #experience .experience-content:hover {
-  border-color: rgb(0 113 227 / 15%) !important;
-  box-shadow: 0 18px 44px rgb(0 0 0 / 10%) !important;
-  transform: translateY(-3px) !important;
+  border-color: #0071e3 !important;
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 36px rgba(0, 113, 227, 0.16) !important;
 }
-*/
+
+#experience .experience-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgb(0 113 227 / 15%), transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#experience .experience-content:hover::after {
+  opacity: 1;
+}
 
 html.dark #experience .experience-content {
-  border-color: rgb(255 255 255 / 8%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
   background: #000000 !important;
-  box-shadow: 0 14px 38px rgb(0 0 0 / 42%) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
 }
 
-/*
 html.dark #experience .experience-content:hover {
-  border-color: rgb(41 151 255 / 20%) !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 16px 36px rgba(41, 151, 255, 0.16) !important;
 }
-*/
 
+html.dark #experience .experience-content::after {
+  background: linear-gradient(90deg, transparent, rgb(41 151 255 / 20%), transparent);
+}
+
+/* ========================================
+   CARD HEADER (matches education-header)
+   ======================================== */
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.experience-title-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.experience-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.experience-role {
+  margin: 0 0 0.25rem;
+  color: #1d1d1f;
+  font-size: clamp(1.18rem, 2vw, 1.45rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+html.dark .experience-role {
+  color: #f5f5f7;
+}
+
+.experience-company {
+  margin: 0 0 0.5rem;
+  color: #0051a8;
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+html.dark .experience-company {
+  color: #58a6ff;
+}
+
+.experience-location {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  color: #4a4a4f;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.experience-location i {
+  color: #0071e3;
+  font-size: 0.8rem;
+}
+
+html.dark .experience-location {
+  color: #a1a1a6;
+}
+
+html.dark .experience-location i {
+  color: #0a84ff;
+}
+
+.experience-period,
+#experience .experience-date-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 0.5rem 0.95rem;
+  color: #1d1d1f;
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.experience-period i {
+  color: #0071e3;
+  font-size: 0.78rem;
+}
+
+html.dark .experience-period,
+html.dark #experience .experience-date-badge {
+  border-color: rgb(255 255 255 / 10%);
+  background: #000000;
+  color: #f5f5f7;
+}
+
+html.dark .experience-period i {
+  color: #0a84ff;
+}
+
+/* Legacy class support */
 .experience-content h3.text-xl {
   margin-bottom: 0.25rem;
   color: #1d1d1f;
   font-size: clamp(1.18rem, 2vw, 1.45rem);
   font-weight: 750;
-  letter-spacing: 0;
   line-height: 1.18;
 }
 
@@ -209,9 +338,9 @@ html.dark .experience-content h3.text-xl {
 
 .experience-content .text-accent {
   display: block;
-  color: #0a5cad;
+  color: #0051a8;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 650;
   line-height: 1.45;
 }
 
@@ -219,30 +348,12 @@ html.dark .experience-content .text-accent {
   color: #58a6ff;
 }
 
-#experience .experience-date-badge {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  border: 1px solid rgb(0 0 0 / 12%);
-  border-radius: 999px;
-  background: #ffffff;
-  padding: 0.45rem 0.9rem;
-  color: #1d1d1f;
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-html.dark #experience .experience-date-badge {
-  border-color: rgb(255 255 255 / 8%);
-  background: #000000;
-  color: #f5f5f7;
-}
+/* ========================================
+   ACHIEVEMENTS LIST
+   ======================================== */
 
 .experience-content ul {
-  margin: 1rem 0 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
   list-style: none !important;
 }
@@ -251,7 +362,7 @@ html.dark #experience .experience-date-badge {
   display: flex !important;
   align-items: flex-start !important;
   gap: 0.82rem !important;
-  margin-bottom: 0.9rem !important;
+  margin-bottom: 0.85rem !important;
   color: #1d1d1f !important;
   font-size: 0.95rem !important;
   line-height: 1.65 !important;
@@ -296,39 +407,96 @@ html.dark .experience-content li strong {
 }
 
 .experience-content p {
+  margin: 0;
   color: #424245;
   font-size: 0.98rem;
+  line-height: 1.65;
 }
 
 html.dark .experience-content p {
   color: #d1d1d6;
 }
 
+/* ========================================
+   TECH TAGS
+   ======================================== */
+
 .experience-tags {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 0.55rem !important;
-  margin-top: 1.25rem !important;
+  margin-top: 1.35rem !important;
+  padding-top: 1.15rem !important;
+  border-top: 1px solid rgb(0 0 0 / 6%);
+}
+
+html.dark .experience-tags {
+  border-top-color: rgb(255 255 255 / 8%);
 }
 
 #experience .experience-tag {
   display: inline-flex !important;
   align-items: center;
-  border: 1px solid rgb(0 0 0 / 12%) !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
   border-radius: 999px !important;
   background: #ffffff !important;
-  padding: 0.45rem 0.78rem !important;
+  padding: 0.45rem 0.85rem !important;
   color: #1d1d1f !important;
   font-size: 0.8rem !important;
-  font-weight: 700 !important;
+  font-weight: 650 !important;
   line-height: 1 !important;
+  transition:
+    transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease !important;
 }
 
 html.dark #experience .experience-tag {
-  border-color: rgb(255 255 255 / 8%) !important;
+  border-color: rgb(255 255 255 / 10%) !important;
   background: #000000 !important;
   color: #f5f5f7 !important;
 }
+
+#experience .experience-tag:hover {
+  transform: translateY(-2px);
+  border-color: #0071e3 !important;
+  box-shadow: 0 4px 12px rgb(0 113 227 / 16%) !important;
+}
+
+html.dark #experience .experience-tag:hover {
+  border-color: #2997ff !important;
+  box-shadow: 0 4px 14px rgb(41 151 255 / 22%) !important;
+}
+
+/* Scroll stagger */
+.experience-timeline .experience-item:nth-of-type(1) .experience-content.animate-on-scroll {
+  animation-delay: 0.05s;
+}
+
+.experience-timeline .experience-item:nth-of-type(2) .experience-content.animate-on-scroll {
+  animation-delay: 0.12s;
+}
+
+.experience-timeline .experience-item:nth-of-type(3) .experience-content.animate-on-scroll {
+  animation-delay: 0.19s;
+}
+
+.experience-timeline .experience-item:nth-of-type(4) .experience-content.animate-on-scroll {
+  animation-delay: 0.26s;
+}
+
+.experience-timeline .experience-item:nth-of-type(5) .experience-content.animate-on-scroll {
+  animation-delay: 0.33s;
+}
+
+.experience-timeline .experience-item:nth-of-type(6) .experience-content.animate-on-scroll {
+  animation-delay: 0.4s;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
 
 @media (width <= 768px) {
   #experience {
@@ -336,11 +504,12 @@ html.dark #experience .experience-tag {
   }
 
   .experience-timeline::before {
-    left: 23px;
+    left: 24px;
   }
 
   #experience .timeline-section-header {
-    padding-left: 62px;
+    margin-left: 0 !important;
+    padding-left: 70px;
   }
 
   #experience .timeline-section-header::before {
@@ -353,22 +522,31 @@ html.dark #experience .experience-tag {
   }
 
   .experience-item {
-    padding-left: 62px !important;
+    padding-left: 70px !important;
   }
 
   .experience-icon {
     width: 48px !important;
     height: 48px !important;
-    border-radius: 14px;
   }
 
   .experience-icon i {
-    font-size: 1.12rem !important;
+    font-size: 1.15rem !important;
   }
 
   #experience .experience-content {
     border-radius: 20px !important;
-    padding: 1rem !important;
+    padding: 1.35rem !important;
+  }
+
+  .experience-header {
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .experience-meta {
+    align-items: flex-start;
+    width: 100%;
   }
 
   .experience-content li {
@@ -383,7 +561,7 @@ html.dark #experience .experience-tag {
   }
 
   #experience .timeline-section-header {
-    padding-left: 54px;
+    padding-left: 58px;
   }
 
   #experience .timeline-section-header::before {
@@ -398,7 +576,7 @@ html.dark #experience .experience-tag {
   .experience-item {
     display: grid;
     grid-template-columns: 40px minmax(0, 1fr);
-    gap: 0.55rem;
+    gap: 0.65rem;
     padding-left: 0 !important;
   }
 
@@ -410,12 +588,18 @@ html.dark #experience .experience-tag {
     height: 40px !important;
   }
 
-  #experience .experience-content {
-    min-width: 0;
-    padding: 0.95rem !important;
+  .experience-icon i {
+    font-size: 0.95rem !important;
   }
 
-  .experience-date-badge {
+  #experience .experience-content {
+    grid-column: 1 / -1;
+    min-width: 0;
+    padding: 1rem !important;
+  }
+
+  .experience-period,
+  #experience .experience-date-badge {
     max-width: 100%;
     white-space: normal;
   }

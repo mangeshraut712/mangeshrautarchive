@@ -366,7 +366,7 @@ html.dark .about-segmented-control {
 .about-tab-btn {
   flex: 1;
   border: none;
-  background: transparent;
+  background: transparent !important;
   font-size: 0.85rem;
   font-weight: 500;
   padding: 8px 16px;
@@ -374,16 +374,28 @@ html.dark .about-segmented-control {
   cursor: pointer;
   transition:
     color 0.25s ease,
-    font-weight 0.25s ease;
-  color: #55555a;
+    font-weight 0.25s ease,
+    background-color 0.25s ease;
+  color: #3a3a3c !important;
   position: relative;
   z-index: 2;
   font-family: inherit;
   text-align: center;
+  box-shadow: none !important;
+}
+
+html.dark .about-tab-btn:not(.active) {
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
 }
 
 html.dark .about-tab-btn {
-  color: #a1a1a6;
+  color: #f5f5f7 !important;
+}
+
+.about-tab-btn:not(.active) {
+  background-color: #ffffff !important;
+  color: #3a3a3c !important;
 }
 
 .about-tab-btn.active {
@@ -398,79 +410,94 @@ html.dark .about-tab-btn.active {
 }
 
 .segmented-control-bg {
-  position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  border-radius: 9px;
-  background: #000000 !important;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.04);
-  transition:
-    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
+  display: none !important;
 }
 
-html.dark .segmented-control-bg {
-  background: #ffffff !important;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.3),
-    0 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-/* Speak Button - Solid Theme Override */
+/* Speak Button - matches segmented control */
 .about-speak-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 38px;
   background: #ffffff !important;
-  color: #0071e3 !important;
-  border: 1px solid rgba(0, 0, 0, 0.15) !important;
-  border-radius: 100px;
-  padding: 8px 16px;
+  color: #1d1d1f !important;
+  border: 1px solid rgb(0 0 0 / 15%) !important;
+  border-radius: 12px;
+  padding: 8px 14px;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   font-family: inherit;
+  box-shadow: none !important;
+}
+
+.about-speak-btn .speak-icon {
+  color: #0071e3;
+}
+
+.about-speak-btn .speak-text {
+  color: inherit !important;
+  background: transparent !important;
 }
 
 .about-speak-btn:hover {
-  background: #0071e3 !important;
-  color: #ffffff !important;
+  background: #ffffff !important;
+  color: #1d1d1f !important;
   border-color: #0071e3 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgb(0 113 227 / 10%) !important;
 }
 
 .about-speak-btn:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
-.about-speak-btn.is-speaking {
-  background: #0071e3 !important;
-  color: #ffffff !important;
+.about-speak-btn.is-speaking,
+.about-speak-btn.is-paused {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
   border-color: #0071e3 !important;
-  box-shadow: 0 0 12px rgba(0, 113, 227, 0.3);
+  box-shadow: 0 0 0 3px rgb(0 113 227 / 12%) !important;
+}
+
+html.dark .about-speak-btn.is-speaking,
+html.dark .about-speak-btn.is-paused {
+  background: #000000 !important;
+  color: #f5f5f7 !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 0 0 3px rgb(41 151 255 / 16%) !important;
+}
+
+.about-speak-btn.is-speaking .speak-icon,
+.about-speak-btn.is-paused .speak-icon {
+  color: #0071e3;
+}
+
+html.dark .about-speak-btn.is-speaking .speak-icon,
+html.dark .about-speak-btn.is-paused .speak-icon {
+  color: #2997ff;
 }
 
 html.dark .about-speak-btn {
   background: #000000 !important;
-  color: #2997ff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #f5f5f7 !important;
+  border: 1px solid rgb(255 255 255 / 22%) !important;
+}
+
+html.dark .about-speak-btn .speak-icon {
+  color: #2997ff;
 }
 
 html.dark .about-speak-btn:hover {
-  background: #2997ff !important;
-  color: #000000 !important;
+  background: #000000 !important;
+  color: #f5f5f7 !important;
   border-color: #2997ff !important;
-}
-
-html.dark .about-speak-btn.is-speaking {
-  background: #2997ff !important;
-  color: #000000 !important;
-  border-color: #2997ff !important;
-  box-shadow: 0 0 12px rgba(41, 151, 255, 0.4);
+  box-shadow: 0 8px 18px rgb(41 151 255 / 14%) !important;
 }
 
 .speak-icon {
@@ -541,12 +568,17 @@ html.dark .about-paragraph strong {
 
 /* Highlight speech effects */
 .about-text-card.speech-active .highlight-target {
-  opacity: 0.3;
+  opacity: 1;
+  color: #6e6e73 !important;
 }
 
 .about-text-card.speech-active .highlight-target.is-speaking {
   opacity: 1;
   color: #0071e3 !important;
+}
+
+html.dark .about-text-card.speech-active .highlight-target {
+  color: #98989d !important;
 }
 
 html.dark .about-text-card.speech-active .highlight-target.is-speaking {

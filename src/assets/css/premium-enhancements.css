@@ -364,16 +364,14 @@ html.dark .blog-card:hover {
 }
 
 .experience-tag:hover {
-  transform: translateY(-2px) scale(1.05);
-  background: #0071e3;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+  transform: translateY(-2px);
+  border-color: #0071e3 !important;
+  box-shadow: 0 4px 12px rgb(0 113 227 / 16%);
 }
 
 html.dark .experience-tag:hover {
-  background: #2997ff;
-  color: #fff;
-  box-shadow: 0 4px 15px rgba(41, 151, 255, 0.4);
+  border-color: #2997ff !important;
+  box-shadow: 0 4px 14px rgb(41 151 255 / 22%);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
