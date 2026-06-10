@@ -24,10 +24,10 @@ jobs:
     name: 🔍 Quality Gates
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -53,7 +53,7 @@ jobs:
         run: npm test
 
       - name: 🐍 Python — setup and lint
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: '3.12'
           enable-cache: true
@@ -74,7 +74,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package.json') }}
@@ -101,7 +101,7 @@ jobs:
 
       - name: 📦 Upload QA artifacts
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: chrome-qa-artifacts
           path: |
@@ -117,15 +117,15 @@ jobs:
     needs: quality
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
       - name: Setup Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@v5
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
@@ -145,7 +145,7 @@ jobs:
           NEXT_PUBLIC_LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
@@ -161,7 +161,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
 
   post_deploy_validation:
     name: 🧪 Post-Deploy Chrome Validation
@@ -169,10 +169,10 @@ jobs:
     needs: deploy
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -181,7 +181,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package.json') }}
@@ -206,7 +206,7 @@ jobs:
 
       - name: Upload post-deploy QA artifacts
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: post-deploy-chrome-artifacts
           path: |

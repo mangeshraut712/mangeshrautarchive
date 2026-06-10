@@ -25,10 +25,10 @@ jobs:
             health_url: https://mangeshraut712.github.io/mangeshrautarchive/
             artifact: github-pages-monitoring
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -48,7 +48,7 @@ jobs:
 
       - name: Upload monitoring artifacts
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
           path: artifacts/lighthouse
