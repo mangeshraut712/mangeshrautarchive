@@ -21,10 +21,16 @@ config.local.js
 dist/
 /build/
 
-# IDE files
+# IDE and AI Agent files
 .vscode/
 .idea/
 .cursor/
+.agents/
+.claude/
+.factory/
+.trae/
+.windsurf/
+skills/
 *.swp
 *.swo
 
