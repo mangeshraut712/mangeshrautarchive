@@ -6,8 +6,7 @@ function shouldSkipPerfAutoInit() {
   return (
     window.__PERF_AUDIT__ === true ||
     new URLSearchParams(window.location.search).has('perf-audit') ||
-    navigator.webdriver === true ||
-    /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '')
+    /Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '')
   );
 }
 

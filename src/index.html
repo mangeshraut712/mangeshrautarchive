@@ -553,8 +553,7 @@
   <script>
     window.__PERF_AUDIT__ =
       new URLSearchParams(window.location.search).has('perf-audit') ||
-      navigator.webdriver === true ||
-      /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '');
+      /Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '');
   </script>
   <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
   <script src="js/utils/theme-head.js"></script>

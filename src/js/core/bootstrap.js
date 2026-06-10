@@ -138,12 +138,8 @@ function isPerformanceAudit() {
     return true;
   }
 
-  if (navigator.webdriver === true) {
-    return true;
-  }
-
   const userAgent = navigator.userAgent || '';
-  return /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(userAgent);
+  return /Chrome-Lighthouse|Lighthouse/i.test(userAgent);
 }
 
 function ensureDeferredStylesheetLoaded(link) {
