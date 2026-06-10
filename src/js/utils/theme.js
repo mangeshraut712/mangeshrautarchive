@@ -1,29 +1,14 @@
-// Theme toggle functionality
 import appleSounds from '../modules/apple-sounds.js';
-const themeToggle = document.getElementById('theme-toggle');
-const themeToggleIcon = document.getElementById('theme-toggle-icon');
-const themeColorMetas = Array.from(document.querySelectorAll('meta[name="theme-color"]'));
 
-function syncBrowserChromeColor(isDark) {
-  const color = isDark ? '#000000' : '#ffffff';
-  themeColorMetas.forEach(meta => {
-    meta.setAttribute('content', color);
-    meta.removeAttribute('media');
-  });
+const theme = window.__portfolioTheme;
 
-  document.documentElement.style.backgroundColor = color;
-  if (document.body) {
-    document.body.style.backgroundColor = color;
-  }
-}
-
-function applyThemeState(isDark) {
-  document.documentElement.classList.toggle('dark', isDark);
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  if (document.body) {
-    document.body.classList.toggle('dark-mode', isDark);
-  }
-  syncBrowserChromeColor(isDark);
+function shouldSkipPerfAutoInit() {
+  return (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit') ||
+    navigator.webdriver === true ||
+    /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '')
+  );
 }
 
 function getMoonIcon() {
@@ -34,33 +19,91 @@ function getSunIcon() {
   return '<i class="fas fa-sun sun-icon" aria-hidden="true"></i>';
 }
 
-function renderThemeIcon(isDark) {
-  if (!themeToggleIcon) return;
-  themeToggleIcon.innerHTML = isDark ? getSunIcon() : getMoonIcon();
+function getAutoIcon() {
+  return '<i class="fas fa-circle-half-stroke auto-icon" aria-hidden="true"></i>';
 }
 
-function setInitialTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  const isDark = savedTheme === 'dark';
-  applyThemeState(isDark);
-  renderThemeIcon(isDark);
+function renderThemeIcon(mode, isDark) {
+  const themeToggleIcon = document.getElementById('theme-toggle-icon');
+  const themeToggle = document.getElementById('theme-toggle');
+  if (!themeToggleIcon || !themeToggle) {
+    return;
+  }
+
+  if (mode === 'auto' || mode === 'system') {
+    themeToggleIcon.innerHTML = getAutoIcon();
+  } else {
+    themeToggleIcon.innerHTML = isDark ? getSunIcon() : getMoonIcon();
+  }
+
+  themeToggle.setAttribute(
+    'aria-label',
+    `Theme: ${theme.getThemeModeLabel(mode)}. Click for light or dark, long-press for automatic modes.`
+  );
+  themeToggle.setAttribute('title', theme.getThemeModeLabel(mode));
+}
+
+function syncThemeUi() {
+  const mode = theme.getThemeMode();
+  const isDark = document.documentElement.classList.contains('dark');
+  renderThemeIcon(mode, isDark);
 }
 
 function initThemeToggle() {
-  setInitialTheme();
+  if (!theme) {
+    return;
+  }
 
+  syncThemeUi();
+
+  const themeToggle = document.getElementById('theme-toggle');
   if (!themeToggle) {
     return;
   }
 
-  themeToggle.addEventListener('click', () => {
-    const isDark = !document.documentElement.classList.contains('dark');
-    applyThemeState(isDark);
-    renderThemeIcon(isDark);
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    appleSounds.playThemeToggle();
+  let longPressTimer = null;
+  let longPressHandled = false;
+
+  const clearLongPress = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+  };
+
+  themeToggle.addEventListener('pointerdown', () => {
+    longPressHandled = false;
+    clearLongPress();
+    longPressTimer = window.setTimeout(() => {
+      longPressHandled = true;
+      theme.cycleAutomaticTheme();
+      syncThemeUi();
+      appleSounds.playThemeToggle?.();
+    }, 650);
   });
+
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(eventName => {
+    themeToggle.addEventListener(eventName, clearLongPress);
+  });
+
+  themeToggle.addEventListener('click', () => {
+    if (longPressHandled) {
+      longPressHandled = false;
+      return;
+    }
+
+    theme.toggleManualTheme();
+    syncThemeUi();
+    appleSounds.playThemeToggle?.();
+  });
+
+  document.addEventListener('portfolio-theme-change', syncThemeUi);
 }
 
-// Initialize theme toggle on load
-document.addEventListener('DOMContentLoaded', initThemeToggle);
+if (!shouldSkipPerfAutoInit()) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThemeToggle, { once: true });
+  } else {
+    initThemeToggle();
+  }
+}

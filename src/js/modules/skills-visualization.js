@@ -183,7 +183,7 @@ class SkillsVisualization {
 
     return `
       <div class="skill-category mb-8">
-        <h3 class="text-xl font-bold mb-4 text-primary pb-2">
+        <h3 class="text-xl font-bold mb-4 pb-2">
           ${category}
         </h3>
         <div class="skill-scroll-container">

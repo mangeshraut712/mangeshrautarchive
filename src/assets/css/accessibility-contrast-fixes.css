@@ -609,3 +609,9 @@ html.dark .footer-tagline {
     outline: 2px dashed SelectedText !important;
   }
 }
+
+html.dark #skills-container h3,
+html.dark #skills-container h3.text-xl,
+html.dark #skills-container h3.text-primary {
+  color: #f5f5f7 !important;
+}

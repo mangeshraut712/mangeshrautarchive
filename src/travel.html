@@ -116,22 +116,13 @@
         }
       ]
     </script>
+    <script src="js/utils/theme-head.js"></script>
   </head>
 
   <body class="travel-body">
     <div class="skip-links" role="navigation" aria-label="Skip links">
       <a href="#main-content" class="skip-link">Skip to main content</a>
     </div>
-
-    <!-- Theme init -->
-    <script>
-      if (
-        localStorage.getItem('theme') === 'dark' ||
-        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      ) {
-        document.documentElement.classList.replace('light', 'dark');
-      }
-    </script>
 
     <main class="travel-layout" id="main-content" data-travel-app>
       <!-- ─── Map ─── -->

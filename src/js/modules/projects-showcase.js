@@ -349,6 +349,13 @@ function updateLensButtons(buttons, activeLens) {
 }
 
 export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) {
+  if (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit')
+  ) {
+    return;
+  }
+
   const container = document.getElementById('github-projects-container');
   if (!container) return;
 

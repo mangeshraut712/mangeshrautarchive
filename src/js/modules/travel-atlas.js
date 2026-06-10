@@ -1157,32 +1157,58 @@ function bindThemeSync() {
 
 function bindThemeToggle() {
   const toggle = document.getElementById('travel-theme-toggle');
-  if (!toggle) return;
+  const theme = window.__portfolioTheme;
+  if (!toggle || !theme) return;
 
   const syncIcon = () => {
     const icon = toggle.querySelector('i');
+    if (!icon) return;
+    const mode = theme.getThemeMode();
     const isDark = document.documentElement.classList.contains('dark');
-    icon.className = `fas ${isDark ? 'fa-sun' : 'fa-moon'}`;
+    if (mode === 'auto' || mode === 'system') {
+      icon.className = 'fas fa-circle-half-stroke';
+    } else {
+      icon.className = `fas ${isDark ? 'fa-sun' : 'fa-moon'}`;
+    }
+    toggle.setAttribute('aria-label', `Theme: ${theme.getThemeModeLabel(mode)}`);
   };
 
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    document.documentElement.classList.toggle('light', savedTheme === 'light');
-  } else {
-    // Default to system preference if no saved theme
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.classList.toggle('dark', prefersDark);
-    document.documentElement.classList.toggle('light', !prefersDark);
-  }
-
   syncIcon();
+
+  let longPressTimer = null;
+  let longPressHandled = false;
+
+  const clearLongPress = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+  };
+
+  toggle.addEventListener('pointerdown', () => {
+    longPressHandled = false;
+    clearLongPress();
+    longPressTimer = window.setTimeout(() => {
+      longPressHandled = true;
+      theme.cycleAutomaticTheme();
+      syncIcon();
+    }, 650);
+  });
+
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(eventName => {
+    toggle.addEventListener(eventName, clearLongPress);
+  });
+
   toggle.addEventListener('click', () => {
-    const isDark = document.documentElement.classList.toggle('dark');
-    document.documentElement.classList.toggle('light', !isDark);
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    if (longPressHandled) {
+      longPressHandled = false;
+      return;
+    }
+    theme.toggleManualTheme();
     syncIcon();
   });
+
+  document.addEventListener('portfolio-theme-change', syncIcon);
 }
 
 function init() {

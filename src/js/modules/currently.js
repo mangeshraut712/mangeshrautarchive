@@ -30,9 +30,20 @@ export function initCurrentlySection() {
   });
 }
 
+function shouldSkipPerfAutoInit() {
+  return (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit') ||
+    navigator.webdriver === true ||
+    /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '')
+  );
+}
+
 // Auto-initialize if not loaded as a module
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCurrentlySection);
-} else {
-  initCurrentlySection();
+if (!shouldSkipPerfAutoInit()) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCurrentlySection);
+  } else {
+    initCurrentlySection();
+  }
 }

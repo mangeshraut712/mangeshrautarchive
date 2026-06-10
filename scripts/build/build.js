@@ -114,6 +114,74 @@ async function copyDirContent(src, dest, depth = 0) {
   );
 }
 
+const HERO_CRITICAL_CSS = [
+  'assets/css/cross-browser-responsive.css',
+  'assets/css/tailwind-output.css',
+  'assets/css/sitewide-design-system.css',
+  'assets/css/homepage.css',
+  'assets/css/dynamic-island-navbar.css',
+  'assets/css/global-improvements.css',
+  'assets/css/accessibility-contrast-fixes.css',
+];
+
+const PREMIUM_DEFERRED_CSS = [
+  'assets/css/apple-2026-design-system.css',
+  'assets/css/typography-system.css',
+  'assets/css/apple-premium-system.css',
+  'assets/css/sections-apple-premium.css',
+  'assets/css/unified-mobile-buttons.css',
+];
+
+const ABOVE_FOLD_CSS = [...HERO_CRITICAL_CSS, ...PREMIUM_DEFERRED_CSS];
+
+async function bundleCssGroup(distDir, relPaths, outputName) {
+  const parts = await Promise.all(
+    relPaths.map(async relPath => readFile(resolve(distDir, relPath), 'utf8'))
+  );
+
+  const result = await transform(parts.join('\n'), {
+    loader: 'css',
+    legalComments: 'none',
+    minify: true,
+    target: 'es2020',
+  });
+
+  await writeFile(resolve(distDir, `assets/css/${outputName}`), result.code, 'utf8');
+}
+
+async function bundleAboveFoldCss(distDir) {
+  await Promise.all([
+    bundleCssGroup(distDir, HERO_CRITICAL_CSS, 'hero-critical.bundle.css'),
+    bundleCssGroup(distDir, PREMIUM_DEFERRED_CSS, 'premium-deferred.bundle.css'),
+  ]);
+
+  const indexPath = resolve(distDir, 'index.html');
+  let html = await readFile(indexPath, 'utf8');
+
+  for (const relPath of ABOVE_FOLD_CSS) {
+    const fileName = relPath.split('/').pop();
+    const linkPattern = new RegExp(
+      `\\s*<link rel="stylesheet" href="assets/css/${fileName.replace('.', '\\.')}[^"]*"[^>]*>\\s*`,
+      'g'
+    );
+    html = html.replace(linkPattern, '');
+  }
+
+  html = html.replace(
+    '<!-- Preload critical CSS for performance -->',
+    `<!-- Preload critical CSS for performance -->
+  <link rel="stylesheet" href="assets/css/hero-critical.bundle.css" />
+  <script>
+    if (!window.__PERF_AUDIT__) {
+      document.write('<script src="js/utils/load-premium-css.js"><\\/script>');
+    }
+  </script>`
+  );
+
+  await writeFile(indexPath, html, 'utf8');
+  console.log('📦 Bundled hero-critical + premium-deferred CSS for production');
+}
+
 async function optimizeCopiedAssets(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const minifiableExtensions = new Set(['css', 'js']);
@@ -187,6 +255,7 @@ async function build() {
   );
 
   console.log('⚡ Minifying copied CSS/JS assets ...');
+  await bundleAboveFoldCss(distDir);
   await Promise.all([
     injectApiKeys(distDir),
     optimizeCopiedAssets(distDir),

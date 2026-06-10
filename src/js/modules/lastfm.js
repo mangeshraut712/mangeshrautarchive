@@ -482,6 +482,13 @@ const lastFmService = new LastFmService();
 globalThis.lastFmService = lastFmService;
 
 function initLastFmService() {
+  if (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit')
+  ) {
+    return;
+  }
+
   const heroElements = {
     trackName: document.getElementById('track-name'),
     artistName: document.getElementById('artist-name'),

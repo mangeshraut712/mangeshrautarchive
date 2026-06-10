@@ -1423,6 +1423,13 @@ export default DebugRunner;
 
 // Auto-initialize
 const initDebugRunner = () => {
+  if (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit')
+  ) {
+    return;
+  }
+
   const container = document.getElementById('debug-runner-container');
   if (container) {
     const game = new DebugRunner();

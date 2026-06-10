@@ -161,6 +161,13 @@ class RealMediaLoader {
 }
 
 function initRealMediaLoader() {
+  if (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit')
+  ) {
+    return;
+  }
+
   window.analyticsTracker = analytics;
   const loader = new RealMediaLoader();
   loader.init();

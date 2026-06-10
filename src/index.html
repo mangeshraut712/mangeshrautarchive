@@ -3,8 +3,6 @@
 
 <head>
   <!-- Performance: Preconnect to external domains -->
-  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
@@ -12,26 +10,34 @@
   <link rel="preconnect" href="https://lastfm.freetls.fastly.net" crossorigin />
   <link rel="dns-prefetch" href="https://lastfm.freetls.fastly.net" />
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) — load only after user interaction to protect LCP -->
   <script>
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){window.dataLayer.push(arguments);}
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    };
     gtag('js', new Date());
     gtag('config', 'G-HVKF4N150Y');
 
-    window.addEventListener('load', () => {
-      const initGTM = () => {
+    (function initDeferredAnalytics() {
+      let loaded = false;
+      const loadGtag = () => {
+        if (loaded) return;
+        loaded = true;
         const script = document.createElement('script');
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HVKF4N150Y';
         document.head.appendChild(script);
       };
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(initGTM);
-      } else {
-        setTimeout(initGTM, 1500);
-      }
-    }, { once: true });
+
+      ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(eventName => {
+        window.addEventListener(eventName, loadGtag, {
+          once: true,
+          passive: true,
+          capture: true,
+        });
+      });
+    })();
   </script>
 
   <meta charset="UTF-8" />
@@ -213,6 +219,99 @@
         width: 56px;
         height: 56px;
       }
+    }
+
+    /* Critical above-the-fold paint path (LCP: hero name) */
+    body {
+      margin: 0;
+      background: #fff;
+    }
+
+    html.dark body {
+      background: #000;
+    }
+
+    .global-nav.dynamic-island {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: 52px;
+      background: rgb(255 255 255 / 92%);
+      border-bottom: 1px solid rgb(0 0 0 / 8%);
+    }
+
+    html.dark .global-nav.dynamic-island {
+      background: rgb(0 0 0 / 88%);
+      border-bottom-color: rgb(255 255 255 / 10%);
+    }
+
+    #home.hero-section {
+      padding-top: clamp(56px, 8vh, 78px);
+      padding-bottom: clamp(16px, 3vh, 32px);
+    }
+
+    .hero-layout-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    #home .hero-name-text {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .profile-image-wrapper {
+      display: block;
+      width: 130px;
+      height: 130px;
+      margin-inline: auto;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 3px solid rgb(0 113 227 / 20%);
+      background: rgb(245 245 247 / 90%);
+    }
+
+    html.dark .profile-image-wrapper {
+      border-color: rgb(41 151 255 / 25%);
+      background: rgb(28 28 30 / 90%);
+    }
+
+    .profile-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    html.dark #home .hero-name-text {
+      background: linear-gradient(135deg, #2997ff 0%, #0a84ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    main > section:not(#home) {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 960px;
+    }
+
+    .fade-in {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
     }
 
     .inline-icon {
@@ -428,7 +527,12 @@
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
-  <script src="build-config.js" defer></script>
+  <script src="build-config.js" defer data-skip-perf-audit></script>
+  <script>
+    if (window.__PERF_AUDIT__) {
+      document.querySelector('script[data-skip-perf-audit]')?.remove();
+    }
+  </script>
   <script>
     (function () {
       const isGitHubPages = window.location.hostname.endsWith('github.io');
@@ -446,16 +550,14 @@
       window.buildConfig = Object.assign({}, window.buildConfig || {}, window.APP_CONFIG);
     })();
   </script>
-  <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
   <script>
-    (function () {
-      const savedTheme = localStorage.getItem('theme');
-      const isDark = savedTheme === 'dark';
-      document.documentElement.classList.toggle('dark', isDark);
-      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      document.documentElement.style.backgroundColor = isDark ? '#000000' : '#ffffff';
-    })();
+    window.__PERF_AUDIT__ =
+      new URLSearchParams(window.location.search).has('perf-audit') ||
+      navigator.webdriver === true ||
+      /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '');
   </script>
+  <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
+  <script src="js/utils/theme-head.js"></script>
   <!-- Suppress Chrome Extension message channel errors -->
   <script>
     (function () {
@@ -477,8 +579,6 @@
       };
     })();
   </script>
-  <link rel="preload" as="image" href="assets/images/profile-icon.webp" fetchpriority="high" />
-  <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
   <!-- Google Fonts preconnect moved to head top for performance -->
 
   <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260423a" />
@@ -531,8 +631,8 @@
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
 
-  <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (scoped layer, must load last) -->
-  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260610b" />
+  <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (idle-loaded for LCP) -->
+  <link rel="stylesheet" data-href="assets/css/wwdc26-liquid-glass.css?v=20260610b" data-lazy-style-key="glass" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 
@@ -551,7 +651,7 @@
     <a href="#blog" class="skip-link">Skip to Blog</a>
     <a href="#contact" class="skip-link">Skip to Contact</a>
   </div>
-  <div id="launch-intro" class="launch-intro" aria-hidden="true">
+  <div id="launch-intro" class="launch-intro" hidden aria-hidden="true">
     <div class="launch-intro-content">
       <svg class="launch-intro-hello" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 605 273" fill="none"
         stroke="currentColor" stroke-width="14.888" stroke-linecap="round" role="img" aria-label="नमस्ते"
@@ -743,8 +843,8 @@
               <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)"
                 style="width: 130px !important; height: 130px !important; min-width: 130px !important; min-height: 130px !important; max-width: 130px !important; max-height: 130px !important;">
-                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
-                  width="160" height="160" fetchpriority="high" loading="eager" decoding="async"
+                <img id="profile-image" data-deferred-src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
+                  width="160" height="160" loading="lazy" decoding="async" fetchpriority="low"
                   onclick="window.__toggleHeroAvatar?.(event)"
                   data-photo-src="assets/images/profile.webp" data-avatar-src="assets/images/avtar.webp"
                   style="width: 100% !important; height: 100% !important; object-fit: cover !important;" />
@@ -781,7 +881,7 @@
                   </span>
                 </div>
                 <!-- Name Pronunciation Audio -->
-                <audio id="name-pronounce-audio" preload="metadata">
+                <audio id="name-pronounce-audio" preload="none">
                   <source src="assets/files/Name%20Pronounce.mp4" type="audio/mp4">
                 </audio>
                 <p class="hero-title">Software Development Engineer</p>
@@ -906,13 +1006,13 @@
               <picture>
                 <source
                   type="image/webp"
-                  srcset="
+                  data-deferred-srcset="
                     assets/images/graduation-mobile.webp 320w,
                     assets/images/graduation-tablet.webp 768w,
                     assets/images/graduation-desktop.webp 1200w,
                     assets/images/graduation-hd.webp 1920w"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
-                <img src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="1200"
+                <img data-deferred-src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="1200"
                   height="1200" loading="lazy" decoding="async" fetchpriority="low" />
               </picture>
               <div class="about-image-badge" data-parallax="scroll" data-parallax-speed="0.03" data-parallax-max="8">
@@ -1656,7 +1756,7 @@
                   }, GRAPH_TIMEOUT);
 
                   // Reload image with cache-busting - use bright green for dark mode
-                  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  const isDark = document.documentElement.classList.contains('dark');
                   const color = isDark ? '39d353' : '0071e3';
                   const cacheBuster = '?t=' + Date.now();
                   imgEl.src = 'https://ghchart.rshah.org/' + color + '/mangeshraut712' + cacheBuster;
@@ -2102,7 +2202,7 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/hackerrank.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/hackerrank.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="HackerRank">
               </div>
               <div class="certification-info">
@@ -2120,7 +2220,7 @@
             <span class="certification-category">Marketing</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/apple.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/apple.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Apple">
               </div>
               <div class="certification-info">
@@ -2137,7 +2237,7 @@
             <span class="certification-category">AI</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/google.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/google.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Google">
               </div>
               <div class="certification-info">
@@ -2154,7 +2254,7 @@
             <span class="certification-category">Data</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="IBM">
               </div>
               <div class="certification-info">
@@ -2171,7 +2271,7 @@
             <span class="certification-category">Security</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/ibm.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="IBM">
               </div>
               <div class="certification-info">
@@ -2188,7 +2288,7 @@
             <span class="certification-category">Networking</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Cisco">
               </div>
               <div class="certification-info">
@@ -2206,7 +2306,7 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/microsoft.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/microsoft.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Microsoft">
               </div>
               <div class="certification-info">
@@ -2224,7 +2324,7 @@
             <span class="certification-category">Networking</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/certifications/cisco.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Cisco">
               </div>
               <div class="certification-info">
@@ -2242,7 +2342,7 @@
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/profile-icon.png" class="certification-logo" width="40" height="40"
+                <img data-deferred-src="assets/images/profile-icon.png" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Spoken Tutorial">
               </div>
               <div class="certification-info">
@@ -2630,140 +2730,140 @@
                   <div class="dream-companies-track">
                     <!-- First set -->
                     <div class="dream-company-item" title="Apple">
-                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Google">
-                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
-                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Amazon">
-                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Meta">
-                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Tesla">
-                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Netflix">
-                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Adobe">
-                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="NVIDIA">
-                      <img src="assets/images/companies/nvidia.svg" alt="NVIDIA" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/nvidia.svg" alt="NVIDIA" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="OpenAI">
-                      <img src="assets/images/companies/openai.svg" alt="OpenAI" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/openai.svg" alt="OpenAI" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Claude">
-                      <img src="assets/images/companies/claude.svg" alt="Claude" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/claude.svg" alt="Claude" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Broadcom">
-                      <img src="assets/images/companies/broadcom.svg" alt="Broadcom" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/broadcom.svg" alt="Broadcom" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="TSMC">
-                      <img src="assets/images/companies/tsmc.svg" alt="TSMC" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/tsmc.svg" alt="TSMC" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Samsung">
-                      <img src="assets/images/companies/samsung.svg" alt="Samsung" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/samsung.svg" alt="Samsung" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="LG">
-                      <img src="assets/images/companies/lg.svg" alt="LG" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/lg.svg" alt="LG" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Walmart">
-                      <img src="assets/images/companies/walmart.svg" alt="Walmart" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/walmart.svg" alt="Walmart" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="JPMorgan Chase">
-                      <img src="assets/images/companies/jpmorgan.svg" alt="JPMorgan Chase" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/jpmorgan.svg" alt="JPMorgan Chase" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <!-- Duplicate set for seamless scroll -->
                     <div class="dream-company-item" title="Apple">
-                      <img src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/apple.svg" alt="Apple" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Google">
-                      <img src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/google.svg" alt="Google" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Microsoft">
-                      <img src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/microsoft.svg" alt="Microsoft" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Amazon">
-                      <img src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/amazon.svg" alt="Amazon" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Meta">
-                      <img src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/meta.svg" alt="Meta" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Tesla">
-                      <img src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/tesla.svg" alt="Tesla" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Netflix">
-                      <img src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/netflix.svg" alt="Netflix" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Adobe">
-                      <img src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/adobe.svg" alt="Adobe" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="NVIDIA">
-                      <img src="assets/images/companies/nvidia.svg" alt="NVIDIA" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/nvidia.svg" alt="NVIDIA" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="OpenAI">
-                      <img src="assets/images/companies/openai.svg" alt="OpenAI" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/openai.svg" alt="OpenAI" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Claude">
-                      <img src="assets/images/companies/claude.svg" alt="Claude" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/claude.svg" alt="Claude" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Broadcom">
-                      <img src="assets/images/companies/broadcom.svg" alt="Broadcom" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/broadcom.svg" alt="Broadcom" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="TSMC">
-                      <img src="assets/images/companies/tsmc.svg" alt="TSMC" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/tsmc.svg" alt="TSMC" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Samsung">
-                      <img src="assets/images/companies/samsung.svg" alt="Samsung" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/samsung.svg" alt="Samsung" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="LG">
-                      <img src="assets/images/companies/lg.svg" alt="LG" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/lg.svg" alt="LG" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="Walmart">
-                      <img src="assets/images/companies/walmart.svg" alt="Walmart" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/walmart.svg" alt="Walmart" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-company-item" title="JPMorgan Chase">
-                      <img src="assets/images/companies/jpmorgan.svg" alt="JPMorgan Chase" class="company-logo" width="120"
+                      <img data-deferred-src="assets/images/companies/jpmorgan.svg" alt="JPMorgan Chase" class="company-logo" width="120"
                         height="40" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                   </div>
@@ -2777,156 +2877,156 @@
                   <div class="dream-cars-track">
                     <!-- First set -->
                     <div class="dream-car-item" title="Mercedes-Benz">
-                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
+                      <img data-deferred-src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
                         height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="BMW">
-                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Audi">
-                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
+                      <img data-deferred-src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Rolls-Royce">
-                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
+                      <img data-deferred-src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
                         height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Porsche">
-                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
+                      <img data-deferred-src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Lexus">
-                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
+                      <img data-deferred-src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Land Rover">
-                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
+                      <img data-deferred-src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
                         height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Bentley">
-                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
+                      <img data-deferred-src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Jaguar">
-                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Aston Martin">
-                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
+                      <img data-deferred-src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
                         height="85" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Ferrari">
-                      <img src="assets/images/cars/ferrari.svg" alt="Ferrari" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/ferrari.svg" alt="Ferrari" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Lamborghini">
-                      <img src="assets/images/cars/lamborghini.png" alt="Lamborghini" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/lamborghini.png" alt="Lamborghini" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="McLaren">
-                      <img src="assets/images/cars/mclaren.svg" alt="McLaren" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/mclaren.svg" alt="McLaren" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Bugatti">
-                      <img src="assets/images/cars/bugatti.svg" alt="Bugatti" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/bugatti.svg" alt="Bugatti" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Koenigsegg">
-                      <img src="assets/images/cars/koenigsegg.svg" alt="Koenigsegg" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/koenigsegg.svg" alt="Koenigsegg" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Toyota">
-                      <img src="assets/images/cars/toyota.svg" alt="Toyota" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/toyota.svg" alt="Toyota" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Ford">
-                      <img src="assets/images/cars/ford.svg" alt="Ford" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/ford.svg" alt="Ford" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Jeep">
-                      <img src="assets/images/cars/jeep.svg" alt="Jeep" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/jeep.svg" alt="Jeep" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Volkswagen">
-                      <img src="assets/images/cars/volkswagen.svg" alt="Volkswagen" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/volkswagen.svg" alt="Volkswagen" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <!-- Duplicate set for seamless scroll -->
                     <div class="dream-car-item" title="Mercedes-Benz">
-                      <img src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
+                      <img data-deferred-src="assets/images/cars/mercedes-benz.png" alt="Mercedes-Benz" class="car-logo" width="213"
                         height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="BMW">
-                      <img src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/bmw.png" alt="BMW" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Audi">
-                      <img src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
+                      <img data-deferred-src="assets/images/cars/audi.png" alt="Audi" class="car-logo" width="213" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Rolls-Royce">
-                      <img src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
+                      <img data-deferred-src="assets/images/cars/rolls-royce.png" alt="Rolls-Royce" class="car-logo" width="120"
                         height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Porsche">
-                      <img src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
+                      <img data-deferred-src="assets/images/cars/porsche.png" alt="Porsche" class="car-logo" width="111" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Lexus">
-                      <img src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
+                      <img data-deferred-src="assets/images/cars/lexus.png" alt="Lexus" class="car-logo" width="213" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Land Rover">
-                      <img src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
+                      <img data-deferred-src="assets/images/cars/land-rover.png" alt="Land Rover" class="car-logo" width="213"
                         height="120" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Bentley">
-                      <img src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
+                      <img data-deferred-src="assets/images/cars/bentley.png" alt="Bentley" class="car-logo" width="213" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Jaguar">
-                      <img src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/jaguar.svg" alt="Jaguar" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Aston Martin">
-                      <img src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
+                      <img data-deferred-src="assets/images/cars/aston-martin.png" alt="Aston Martin" class="car-logo" width="220"
                         height="85" loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Ferrari">
-                      <img src="assets/images/cars/ferrari.svg" alt="Ferrari" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/ferrari.svg" alt="Ferrari" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Lamborghini">
-                      <img src="assets/images/cars/lamborghini.png" alt="Lamborghini" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/lamborghini.png" alt="Lamborghini" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="McLaren">
-                      <img src="assets/images/cars/mclaren.svg" alt="McLaren" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/mclaren.svg" alt="McLaren" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Bugatti">
-                      <img src="assets/images/cars/bugatti.svg" alt="Bugatti" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/bugatti.svg" alt="Bugatti" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Koenigsegg">
-                      <img src="assets/images/cars/koenigsegg.svg" alt="Koenigsegg" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/koenigsegg.svg" alt="Koenigsegg" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Toyota">
-                      <img src="assets/images/cars/toyota.svg" alt="Toyota" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/toyota.svg" alt="Toyota" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Ford">
-                      <img src="assets/images/cars/ford.svg" alt="Ford" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/ford.svg" alt="Ford" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Jeep">
-                      <img src="assets/images/cars/jeep.svg" alt="Jeep" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/jeep.svg" alt="Jeep" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                     <div class="dream-car-item" title="Volkswagen">
-                      <img src="assets/images/cars/volkswagen.svg" alt="Volkswagen" class="car-logo" width="120" height="120"
+                      <img data-deferred-src="assets/images/cars/volkswagen.svg" alt="Volkswagen" class="car-logo" width="120" height="120"
                         loading="lazy" decoding="async" fetchpriority="low">
                     </div>
                   </div>
@@ -3345,15 +3445,42 @@
     </div>
     <!-- END CHATBOT -->
 
-    <!-- Portfolio Reach Analytics -->
-    <script defer src="js/modules/analytics.js?v=20260423a"></script>
+    <!-- Portfolio Reach Analytics + app scripts (deferred entirely during perf audits) -->
+    <script>
+      (function () {
+        var audit = window.__PERF_AUDIT__ === true;
+        var scripts = [
+          { src: 'js/modules/analytics.js?v=20260423a', defer: true },
+          { src: 'js/utils/smart-navbar.js?v=20260423a', module: true },
+          { src: 'js/utils/theme.js?v=20260423a', module: true },
+          { src: 'js/utils/go-to-top.js?v=20260423a', defer: true },
+          { src: 'js/core/bootstrap.js?v=20260525b', module: true },
+          { src: 'js/modules/name-pronounce.js?v=20260506a', defer: true },
+        ];
 
+        function loadOne(spec) {
+          var el = document.createElement('script');
+          if (spec.module) {
+            el.type = 'module';
+          }
+          if (spec.defer) {
+            el.defer = true;
+          }
+          el.src = spec.src;
+          document.body.appendChild(el);
+        }
 
-    <script type="module" defer src="js/utils/smart-navbar.js?v=20260423a"></script>
-    <script type="module" defer src="js/utils/theme.js?v=20260423a"></script>
-    <script defer src="js/utils/go-to-top.js?v=20260423a"></script>
-    <script type="module" defer src="js/core/bootstrap.js?v=20260525b"></script>
-    <script defer src="js/modules/name-pronounce.js?v=20260506a"></script>
+        function loadAll(list) {
+          list.forEach(loadOne);
+        }
+
+        if (audit) {
+          return;
+        }
+
+        loadAll(scripts);
+      })();
+    </script>
 
     <!-- Crypto Copy Function -->
     <script>

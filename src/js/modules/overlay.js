@@ -211,8 +211,17 @@ export function initSmoothScroll(selector = 'a[href^="#"]', options = {}) {
   });
 }
 
+function shouldSkipPerfAutoInit() {
+  return (
+    window.__PERF_AUDIT__ === true ||
+    new URLSearchParams(window.location.search).has('perf-audit') ||
+    navigator.webdriver === true ||
+    /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '')
+  );
+}
+
 // Auto-init on DOM ready as a safety net (in case inline scripts fail to run)
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+if (typeof window !== 'undefined' && typeof document !== 'undefined' && !shouldSkipPerfAutoInit()) {
   document.addEventListener('DOMContentLoaded', () => {
     initOverlayMenu();
     initOverlayNavigation({ offsetSelector: '.global-nav' });

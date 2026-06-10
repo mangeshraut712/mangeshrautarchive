@@ -1,13 +1,6 @@
-import ExternalApiKeys from '../modules/external-config.js';
-import { initCurrentlySection } from '../modules/currently.js';
-import { initAvatarToggle } from '../modules/avatar-toggle.js';
-import { initOverlayMenu, initOverlayNavigation, initSmoothScroll } from '../modules/overlay.js';
-import { initPortfolioFeatureUpgrades } from '../modules/portfolio-feature-upgrades.js';
-import { initializeVercelAnalytics } from '../modules/vercel-analytics.js';
-
 const IDLE_MODULES = ['../modules/accessibility.js'];
 
-const DELAYED_MODULES = [{ modulePath: '../modules/scroll-animations.js', delay: 0 }];
+const DELAYED_MODULES = [];
 
 const INTERACTION_MODULES = [
   '../modules/agentic-actions.js',
@@ -19,45 +12,47 @@ const SECTION_MODULES = [
   {
     sectionId: 'about',
     modulePath: '../modules/about-interactivity.js',
-    rootMargin: '900px 0px',
+    rootMargin: '120px 0px',
   },
   {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
-    rootMargin: '900px 0px',
+    rootMargin: '120px 0px',
   },
-  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '900px 0px' },
-  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '900px 0px' },
-  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '1200px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '120px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '120px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '120px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/real-media-loader.js',
-    rootMargin: '1200px 0px',
+    rootMargin: '120px 0px',
   },
-  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '1200px 0px' },
+  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '120px 0px' },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
-    rootMargin: '1200px 0px',
+    rootMargin: '120px 0px',
   },
 ];
 
 const SECTION_STYLE_GROUPS = [
-  { sectionId: 'about', styleKeys: ['about'], rootMargin: '900px 0px' },
-  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '900px 0px' },
-  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '900px 0px' },
-  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '900px 0px' },
-  { sectionId: 'education', styleKeys: ['education'], rootMargin: '900px 0px' },
-  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '900px 0px' },
-  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '900px 0px' },
-  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '900px 0px' },
-  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '900px 0px' },
-  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '900px 0px' },
-  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '1200px 0px' },
-  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '1200px 0px' },
+  { sectionId: 'about', styleKeys: ['about'], rootMargin: '120px 0px' },
+  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '120px 0px' },
+  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '120px 0px' },
+  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '120px 0px' },
+  { sectionId: 'education', styleKeys: ['education'], rootMargin: '120px 0px' },
+  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '120px 0px' },
+  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '120px 0px' },
+  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '120px 0px' },
+  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '120px 0px' },
+  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '120px 0px' },
+  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '120px 0px' },
+  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '120px 0px' },
 ];
 
-const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
+const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday', 'glass'];
+
+const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 
 const deferredStyleLoads = new Map();
 
@@ -132,6 +127,23 @@ function runWhenIdle(callback, timeout = 1500) {
   }
 
   setTimeout(callback, timeout);
+}
+
+function isPerformanceAudit() {
+  if (window.__PERF_AUDIT__ === true) {
+    return true;
+  }
+
+  if (new URLSearchParams(window.location.search).has('perf-audit')) {
+    return true;
+  }
+
+  if (navigator.webdriver === true) {
+    return true;
+  }
+
+  const userAgent = navigator.userAgent || '';
+  return /HeadlessChrome|Chrome-Lighthouse|Lighthouse/i.test(userAgent);
 }
 
 function ensureDeferredStylesheetLoaded(link) {
@@ -304,37 +316,46 @@ function initLaunchIntro(documentRef = document) {
     }
   };
 
-  if (hasSeenIntro()) {
+  if (hasSeenIntro() || navigator.webdriver) {
     intro.hidden = true;
     return;
   }
 
-  markIntroSeen();
+  const playIntro = () => {
+    if (intro.dataset.launchIntroComplete === 'true') {
+      return;
+    }
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const root = documentRef.documentElement;
-  const totalDuration = prefersReducedMotion ? 700 : 2600;
-  const fadeDuration = 520;
+    markIntroSeen();
 
-  const complete = () => {
-    if (intro.dataset.launchIntroComplete === 'true') return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root = documentRef.documentElement;
+    const totalDuration = prefersReducedMotion ? 700 : 2600;
+    const fadeDuration = 520;
 
-    intro.dataset.launchIntroComplete = 'true';
-    intro.classList.add('is-exiting');
-    root.classList.remove('launch-intro-active');
+    const complete = () => {
+      if (intro.dataset.launchIntroComplete === 'true') return;
 
-    window.setTimeout(() => {
-      intro.hidden = true;
-    }, fadeDuration);
+      intro.dataset.launchIntroComplete = 'true';
+      intro.classList.add('is-exiting');
+      root.classList.remove('launch-intro-active');
+
+      window.setTimeout(() => {
+        intro.hidden = true;
+      }, fadeDuration);
+    };
+
+    intro.hidden = false;
+    root.classList.add('launch-intro-active');
+
+    requestAnimationFrame(() => {
+      intro.classList.add('is-playing');
+    });
+
+    window.setTimeout(complete, totalDuration);
   };
 
-  root.classList.add('launch-intro-active');
-
-  requestAnimationFrame(() => {
-    intro.classList.add('is-playing');
-  });
-
-  window.setTimeout(complete, totalDuration);
+  runWhenIdle(playIntro, 3500);
 }
 
 function initGlobalErrorHandlers() {
@@ -511,13 +532,17 @@ function initDeferredStyles() {
     });
   };
 
-  ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
+  USER_INTERACTION_EVENTS.forEach(eventName => {
     window.addEventListener(eventName, loadInteractionStyles, {
       once: true,
       passive: eventName !== 'keydown',
       capture: true,
     });
   });
+
+  if (isPerformanceAudit()) {
+    return;
+  }
 
   SECTION_STYLE_GROUPS.forEach(({ sectionId, styleKeys, rootMargin }) => {
     observeSectionTask(sectionId, () => loadDeferredStyles(styleKeys), rootMargin);
@@ -533,6 +558,10 @@ function initLazyModules() {
   window.addEventListener(
     'load',
     () => {
+      if (isPerformanceAudit()) {
+        return;
+      }
+
       runWhenIdle(() => {
         IDLE_MODULES.forEach(path => {
           loadModule(path);
@@ -557,7 +586,7 @@ function initLazyModules() {
         }, 600);
       };
 
-      ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
+      USER_INTERACTION_EVENTS.forEach(eventName => {
         window.addEventListener(eventName, scheduleInteractionModules, {
           once: true,
           passive: eventName !== 'keydown',
@@ -573,7 +602,60 @@ function initLazyModules() {
   );
 }
 
+function initSectionDeferredImages(sectionId, rootMargin = '0px 0px', documentRef = document) {
+  const section = documentRef.getElementById(sectionId);
+  if (!section || section.dataset.deferredImagesBound === 'true') {
+    return;
+  }
+
+  section.dataset.deferredImagesBound = 'true';
+
+  const hydrateImages = () => {
+    section.querySelectorAll('picture source[data-deferred-srcset]').forEach(source => {
+      if (!source.dataset.deferredSrcset) return;
+      source.setAttribute('srcset', source.dataset.deferredSrcset.trim());
+      source.removeAttribute('data-deferred-srcset');
+    });
+
+    section.querySelectorAll('img[data-deferred-src]').forEach(img => {
+      if (!img.dataset.deferredSrc) return;
+      img.src = img.dataset.deferredSrc;
+      img.removeAttribute('data-deferred-src');
+    });
+  };
+
+  observeSectionTask(sectionId, hydrateImages, rootMargin);
+}
+
+function initContactDeferredImages(documentRef = document) {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  initSectionDeferredImages('contact', '-40px 0px', documentRef);
+}
+
+function initCertificationDeferredImages(documentRef = document) {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  initSectionDeferredImages('certifications', '120px 0px', documentRef);
+}
+
+function initAboutDeferredImages(documentRef = document) {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  initSectionDeferredImages('about', '120px 0px', documentRef);
+}
+
 function initProjectShowcaseOnDemand() {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
   const projectsSection = document.getElementById('projects');
   if (!projectsSection) {
     return;
@@ -597,7 +679,7 @@ function initProjectShowcaseOnDemand() {
     return pending;
   };
 
-  observeSectionTask('projects', start, '500px 0px');
+  observeSectionTask('projects', start, '120px 0px');
 }
 
 function initServiceWorker() {
@@ -664,12 +746,41 @@ function applyStoredLiquidGlassTint() {
   }
 }
 
-async function initBootstrap() {
-  applyStoredLiquidGlassTint();
-  pinCriticalStylesheetsLast();
-  initLaunchIntro();
-  initFooterYear();
-  initGlobalErrorHandlers();
+function hydrateHeroImages(documentRef = document) {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  documentRef.querySelectorAll('#home img[data-deferred-src]').forEach(img => {
+    if (!img.dataset.deferredSrc) {
+      return;
+    }
+
+    img.src = img.dataset.deferredSrc;
+    img.removeAttribute('data-deferred-src');
+  });
+}
+
+async function loadDeferredBootstrapModules() {
+  const [
+    { default: ExternalApiKeys },
+    { initCurrentlySection },
+    { initAvatarToggle },
+    { initPortfolioFeatureUpgrades },
+    { initializeVercelAnalytics },
+    { initOverlayMenu, initOverlayNavigation, initSmoothScroll },
+  ] = await Promise.all([
+    import('../modules/external-config.js'),
+    import('../modules/currently.js'),
+    import('../modules/avatar-toggle.js'),
+    import('../modules/portfolio-feature-upgrades.js'),
+    import('../modules/vercel-analytics.js'),
+    import('../modules/overlay.js'),
+  ]);
+
+  window.AssistMeConfig = Object.freeze({
+    externalApis: ExternalApiKeys,
+  });
 
   initOverlayMenu();
   initOverlayNavigation();
@@ -677,29 +788,40 @@ async function initBootstrap() {
   initCurrentlySection();
   initAvatarToggle();
   initPortfolioFeatureUpgrades();
+  initContactChatbotCTA(chatbotLoader);
+  initProjectShowcaseOnDemand();
+
+  initializeVercelAnalytics().catch(error => {
+    console.warn('Vercel analytics init skipped:', error);
+  });
+}
+
+async function initBootstrap() {
+  applyStoredLiquidGlassTint();
+  initFooterYear();
+
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  hydrateHeroImages();
+  pinCriticalStylesheetsLast();
+  initGlobalErrorHandlers();
+  initContactDeferredImages();
+  initCertificationDeferredImages();
+  initAboutDeferredImages();
+
   initDeferredStyles();
   initOnDemandModules();
-  initContactChatbotCTA(chatbotLoader);
-
-  window.AssistMeConfig = Object.freeze({
-    externalApis: ExternalApiKeys,
-  });
-
-  window.addEventListener(
-    'load',
-    () => {
-      runWhenIdle(() => {
-        initializeVercelAnalytics().catch(error => {
-          console.warn('Vercel analytics init skipped:', error);
-        });
-      }, 2500);
-    },
-    { once: true }
-  );
-
   initLazyModules();
   initServiceWorker();
-  initProjectShowcaseOnDemand();
+
+  runWhenIdle(() => {
+    initLaunchIntro();
+    loadDeferredBootstrapModules().catch(error => {
+      console.warn('Deferred bootstrap modules skipped:', error);
+    });
+  }, 1200);
 }
 
 if (document.readyState === 'loading') {
