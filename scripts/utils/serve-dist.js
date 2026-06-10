@@ -124,10 +124,10 @@ async function resolveFile(requestPath) {
     // Fall through to SPA fallback.
   }
 
-  const fallbackPath = join(distDir, 'index.html');
+  const fallbackPath = join(distDir, '404.html');
   try {
     await stat(fallbackPath);
-    return fallbackPath;
+    return { filePath: fallbackPath, statusCode: 404 };
   } catch {
     return null;
   }
@@ -165,11 +165,14 @@ app.all('/api/*', (req, res) => {
 });
 
 app.get('*', async (req, res) => {
-  const filePath = await resolveFile(req.path);
-  if (!filePath) {
+  const resolved = await resolveFile(req.path);
+  if (!resolved) {
     res.status(404).send('Not Found');
     return;
   }
+
+  const filePath = typeof resolved === 'string' ? resolved : resolved.filePath;
+  const statusCode = typeof resolved === 'string' ? 200 : resolved.statusCode || 200;
 
   const [fileBuffer, fileStat] = await Promise.all([readFile(filePath), stat(filePath)]);
   const extension = extname(filePath).toLowerCase();
@@ -186,6 +189,7 @@ app.get('*', async (req, res) => {
     acceptsEncoding.includes('br')
   ) {
     const compressed = getCompressedPayload(filePath, fileBuffer, 'br', fileStat);
+    res.status(statusCode);
     res.setHeader('Content-Encoding', 'br');
     res.send(compressed);
     return;
@@ -197,12 +201,13 @@ app.get('*', async (req, res) => {
     acceptsEncoding.includes('gzip')
   ) {
     const compressed = getCompressedPayload(filePath, fileBuffer, 'gzip', fileStat);
+    res.status(statusCode);
     res.setHeader('Content-Encoding', 'gzip');
     res.send(compressed);
     return;
   }
 
-  res.send(fileBuffer);
+  res.status(statusCode).send(fileBuffer);
 });
 
 app.listen(port, () => {

@@ -351,7 +351,6 @@
       syncTheme();
       bindSystemListener();
       scheduleAutoUpdate();
-      requestLocation();
     },
   };
 

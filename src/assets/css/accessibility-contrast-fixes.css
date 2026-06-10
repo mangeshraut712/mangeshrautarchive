@@ -615,3 +615,17 @@ html.dark #skills-container h3.text-xl,
 html.dark #skills-container h3.text-primary {
   color: #f5f5f7 !important;
 }
+
+.about-speak-btn,
+.about-speak-btn .speak-text {
+  background: #ffffff !important;
+  color: #005bb5 !important;
+  border: 1px solid rgb(0 0 0 / 18%) !important;
+}
+
+html.dark .about-speak-btn,
+html.dark .about-speak-btn .speak-text {
+  background: #000000 !important;
+  color: #4db2ff !important;
+  border-color: rgb(255 255 255 / 28%) !important;
+}
