@@ -358,14 +358,21 @@ test.describe('Chrome smoke tests', () => {
   test('contact page removes portfolio reach and keeps currently media deduplicated', async ({
     page,
   }) => {
-    await gotoSite(page);
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
 
-    const currentSection = page.locator('#currently-section');
-    await currentSection.scrollIntoViewIfNeeded();
-    await page
-      .locator('#shows-grid .media-card')
-      .first()
-      .waitFor({ state: 'visible', timeout: 10000 });
+    // The currently-section module is lazy-loaded via IntersectionObserver.
+    // Lazy CSS loading can cause layout shifts that push the section out of view
+    // after scrollIntoViewIfNeeded, preventing the observer from firing.
+    // We re-scroll in a loop until the module loads and renders media cards.
+    await page.waitForFunction(
+      () => {
+        const section = document.getElementById('currently-section');
+        if (section) section.scrollIntoView({ block: 'center' });
+        const cards = document.querySelectorAll('#shows-grid .media-card');
+        return cards.length > 0;
+      },
+      { timeout: 20000, polling: 500 }
+    );
 
     await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
 
@@ -408,10 +415,17 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('music tab renders featured listening state with high-quality artwork', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSite(page, '/', { waitUntil: 'networkidle' });
 
-    const currentSection = page.locator('#currently-section');
-    await currentSection.scrollIntoViewIfNeeded();
+    // Same scroll-into-view approach as the contact test to handle lazy CSS layout shifts
+    await page.waitForFunction(
+      () => {
+        const section = document.getElementById('currently-section');
+        if (section) section.scrollIntoView({ block: 'center' });
+        return section && section.getBoundingClientRect().top >= 0 && section.getBoundingClientRect().top < window.innerHeight;
+      },
+      { timeout: 10000, polling: 500 }
+    );
     await page.locator('.currently-tab[data-tab="music"]').click();
     await expect(page.locator('#music-content')).toHaveClass(/active/);
 
