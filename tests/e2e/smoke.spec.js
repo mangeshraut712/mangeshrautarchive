@@ -115,7 +115,7 @@ test.describe('Chrome smoke tests', () => {
     await expect(skipLink).toBeFocused();
   });
 
-  test('accessibility toolbar is visible with three actions', async ({ page }) => {
+  test('accessibility toolbar is visible with four actions', async ({ page }) => {
     await gotoSite(page);
 
     await page.waitForSelector('.a11y-toolbar', { state: 'visible' });
@@ -123,12 +123,17 @@ test.describe('Chrome smoke tests', () => {
     await expect(toolbar).toBeVisible();
 
     const buttons = toolbar.locator('button');
-    await expect(buttons).toHaveCount(3);
+    await expect(buttons).toHaveCount(4);
 
     const labels = await buttons.evaluateAll(nodes =>
       nodes.map(node => node.getAttribute('aria-label'))
     );
-    expect(labels).toEqual(['Keyboard shortcuts', 'Increase text size', 'Decrease text size']);
+    expect(labels).toEqual([
+      'Keyboard shortcuts',
+      'Increase text size',
+      'Decrease text size',
+      'Liquid Glass transparency',
+    ]);
   });
 
   test('system monitor actions respond', async ({ page }) => {

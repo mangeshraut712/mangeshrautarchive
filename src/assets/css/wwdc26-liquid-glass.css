@@ -584,8 +584,7 @@ html.dark #chatbot-widget .context-aware-chip {
   min-height: 0;
   flex-shrink: 0;
   border-bottom: 1px solid rgb(0 0 0 / 7%);
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 78%) 0%, rgb(255 255 255 / 42%) 100%);
+  background: linear-gradient(180deg, rgb(255 255 255 / 78%) 0%, rgb(255 255 255 / 42%) 100%);
   backdrop-filter: blur(24px) saturate(1.35);
   -webkit-backdrop-filter: blur(24px) saturate(1.35);
 }
@@ -609,8 +608,7 @@ html.dark #chatbot-widget .context-aware-chip {
 
 html.dark #chatbot-widget .chatbot-header {
   border-bottom-color: rgb(255 255 255 / 9%);
-  background:
-    linear-gradient(180deg, rgb(28 28 30 / 94%) 0%, rgb(16 16 18 / 78%) 100%);
+  background: linear-gradient(180deg, rgb(28 28 30 / 94%) 0%, rgb(16 16 18 / 78%) 100%);
 }
 
 #chatbot-widget .chatbot-header-brand {
@@ -876,17 +874,14 @@ html.dark #chatbot-widget .chatbot-dictation-status {
 /* Apple Intelligence response typography */
 #chatbot-widget .siri-intelligence-text {
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    'SF Pro Text',
-    'SF Pro Display',
-    system-ui,
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.55;
   letter-spacing: -0.018em;
   font-weight: 400;
-  font-feature-settings: 'kern' 1, 'liga' 1;
+  font-feature-settings:
+    'kern' 1,
+    'liga' 1;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -912,12 +907,7 @@ html.dark #chatbot-widget .chatbot-dictation-status {
   margin-left: 2px;
   vertical-align: text-bottom;
   border-radius: 1px;
-  background: linear-gradient(
-    180deg,
-    var(--siri-c2) 0%,
-    var(--siri-c4) 50%,
-    var(--siri-c1) 100%
-  );
+  background: linear-gradient(180deg, var(--siri-c2) 0%, var(--siri-c4) 50%, var(--siri-c1) 100%);
   box-shadow: 0 0 6px rgb(94 92 230 / 45%);
   animation: siri-caret-pulse 0.95s ease-in-out infinite;
 }

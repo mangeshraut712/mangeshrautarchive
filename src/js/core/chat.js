@@ -392,7 +392,8 @@ class IntelligentAssistant {
 
         if (response.status === 429) {
           let retryAfter = Number(response.headers.get('Retry-After')) || 60;
-          let message = 'You have sent too many requests. Please wait a moment before trying again.';
+          let message =
+            'You have sent too many requests. Please wait a moment before trying again.';
           try {
             const payload = JSON.parse(errorText);
             const nested = payload?.error?.message?.error || payload?.error;

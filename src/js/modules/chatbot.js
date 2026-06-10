@@ -1257,7 +1257,9 @@ class AppleIntelligenceChatbot {
             v.name.toLowerCase().includes('natural') ||
             v.name.toLowerCase().includes('enhanced') ||
             v.name.toLowerCase().includes('premium'))
-      ) || voices.find(v => v.lang.startsWith('en-US')) || voices.find(v => v.lang.startsWith('en'));
+      ) ||
+      voices.find(v => v.lang.startsWith('en-US')) ||
+      voices.find(v => v.lang.startsWith('en'));
 
     if (preferred) utterance.voice = preferred;
 
