@@ -1160,8 +1160,8 @@ html.dark .support-donation-card cite {
 
 #music-grid.music-shelf-grid {
   align-items: flex-start;
-  overflow-y: visible;
-  padding-bottom: 1.1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
 }
 
 #music-content .currently-music-card {

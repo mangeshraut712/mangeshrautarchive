@@ -4075,7 +4075,9 @@ html.dark .wrapper .x {
 
 .wrapper .tooltip {
   position: absolute;
-  top: 48px;
+  bottom: 44px; /* Positioned above the icon */
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.9);
   z-index: 1001;
   font-size: 12px;
   background: #1d1d1f;
@@ -4085,7 +4087,7 @@ html.dark .wrapper .x {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
 }
 
@@ -4100,19 +4102,19 @@ html.dark .wrapper .tooltip {
   height: 8px;
   width: 8px;
   background: inherit;
-  top: -3px;
+  bottom: -4px; /* Arrow pointing down from the bottom of tooltip */
   left: 50%;
   transform: translate(-50%) rotate(45deg);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Icon Hover Animation - Premium Pop Effect */
 
 .wrapper .icon:hover .tooltip {
-  top: 56px;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transform: translate(-50%, -10px) scale(1); /* Smooth lift up and scale to 1 */
 }
 
 .wrapper .icon:hover {
