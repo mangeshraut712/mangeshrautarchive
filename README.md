@@ -211,7 +211,7 @@ All tools are functional via natural language in the chat **and** exposed via We
 
 ## 🎨 Premium User Experience
 
-- **Zero heavy framework** — pure ES modules + Tailwind CSS 4.0.9 + custom Apple 2026 design system (no React/Vue/Svelte)
+- **Zero heavy framework** — pure ES modules + Tailwind CSS 4.0.9 + custom Apple 2026 design system (not Next.js/React/Vue/Svelte in production)
 - **Procedural sound engine** — synthesized Web Audio API sounds (theme toggle, chat open, birthday)
 - **Glassmorphism & micro-interactions** — spatial cards, buttery transitions, real-time action toasts
 - **Streaming Markdown responses** with contextual follow-up chips
@@ -315,6 +315,8 @@ Local endpoints:
 | ----------------------- | ------------------------------------------------------- |
 | `npm run dev`           | Hot-reloading frontend + backend                        |
 | `npm run build`         | Production build to `dist/`                             |
+| `npm run check`         | ESLint + Stylelint + Vitest + Python API tests          |
+| `npm run test:api`      | FastAPI route and rate-limit tests (pytest)             |
 | `npm run qa:prod-ready` | Full security + lint + test + E2E + Lighthouse pipeline |
 | `npm run test:e2e:all`  | Complete multi-device Playwright matrix                 |
 
@@ -339,6 +341,7 @@ mangeshrautarchive/
 │       ├── services/       # Analytics, Markdown, Streaming, Voice
 │       └── utils/          # Theme, navbar, calendly, go-to-top
 ├── scripts/                # Custom build, optimisation, security, and QA tooling
+├── tests/api/              # FastAPI pytest suite (rate limits, chat validation)
 ├── tests/e2e/              # 12+ Playwright configurations + visual tests
 ├── tests/config/           # Vercel routing, deployment config tests
 └── .github/workflows/      # Production CI/CD with quality gates
@@ -363,9 +366,13 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026
 
+- **Chat Reliability & API Hardening** — Chat quota is consumed only after successful responses, rate-limit errors return proper HTTP 429 envelopes, and Python API tests run in CI via `npm run test:api`.
+- **Dual-Surface Monitoring** — Scheduled production monitoring now checks both Vercel (`mangeshraut.pro`) and GitHub Pages in parallel.
+- **Vercel Deployment Tuning** — Added `.vercelignore`, function `maxDuration: 60` for streaming chat, and verified GitHub ↔ Vercel Git integration.
+- **Dependency Hygiene** — Upgraded `cross-env` and `react-doctor`; deferred stylelint 17 / ESLint 10 until migration PRs are ready.
 - **Testimonials & Recommendations** — Updated LinkedIn verify links, company links, and names for Stephen Fernands, Lavella Kirkland, Hemant Panchmurthi, and Rakesh Kamble.
 - **Cross-Page View Transitions** — Implemented cross-page navigation animations using the View Transitions API across all 4 HTML pages.
-- **Chatbot Local Rate Limits** — Added a client-side query rate limiter (10 queries max) using `localStorage` with a dynamic remaining-queries badge in the chat window header.
+- **Chatbot Local Rate Limits** — Client-side daily estimate (12 messages) via `localStorage` with a dynamic remaining-queries badge aligned to `config.js`.
 - **SVG Contribution Calendar** — Implemented a client-side SVG-based contribution calendar fallback that renders if external graph APIs fail to load.
 - **GitHub Actions Fixes** — Corrected non-existent action versions in `.github/workflows/deploy.yml` (pinning configure-pages to `@v5`, upload-pages-artifact to `@v3`, and deploy-pages to `@v4`) to ensure CI pipelines run successfully without runner errors.
 - **Resolved Unhandled Exceptions** — Fixed JavaScript errors on chatbot initialization (missing config imports) and the system monitor page logs filter (`currentActiveFilterTab is not defined`).

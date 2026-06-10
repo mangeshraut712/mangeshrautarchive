@@ -2290,10 +2290,14 @@
           </div>
           <h3>Subscribe to the Dev Newsletter</h3>
           <p>Monthly notes on Spring Boot, AWS architecture, AI systems, and practical engineering decisions.</p>
-          <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Newsletter integration coming soon!');">
-            <input type="email" placeholder="Email address" required class="apple-input" aria-label="Email address" />
-            <button type="submit" class="btn-primary">Subscribe</button>
-          </form>
+          <div class="newsletter-form newsletter-form-links">
+            <a href="rss.xml" class="btn-primary" rel="alternate" type="application/rss+xml">
+              <i class="fas fa-rss" aria-hidden="true"></i> RSS Feed
+            </a>
+            <a href="feed.xml" class="btn button-secondary" rel="alternate" type="application/atom+xml">
+              Atom Feed
+            </a>
+          </div>
         </div>
       </div>
     </section>
