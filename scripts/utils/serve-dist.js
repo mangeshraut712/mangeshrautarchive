@@ -107,21 +107,41 @@ function getCompressedPayload(filePath, buffer, encoding, fileStat) {
   return compressed;
 }
 
-async function resolveFile(requestPath) {
-  const safePath = requestPath === '/' ? '/index.html' : requestPath;
-  const resolvedPath = resolve(distDir, `.${safePath}`);
-
-  if (!resolvedPath.startsWith(distDir)) {
+async function tryResolveExistingFile(filePath) {
+  if (!filePath.startsWith(distDir)) {
     return null;
   }
 
   try {
-    const fileStat = await stat(resolvedPath);
+    const fileStat = await stat(filePath);
     if (fileStat.isFile()) {
-      return resolvedPath;
+      return filePath;
     }
   } catch {
-    // Fall through to SPA fallback.
+    // Not found.
+  }
+
+  return null;
+}
+
+async function resolveFile(requestPath) {
+  const normalizedPath =
+    requestPath.length > 1 && requestPath.endsWith('/') ? requestPath.slice(0, -1) : requestPath;
+  const safePath = normalizedPath === '/' ? '/index.html' : normalizedPath;
+  const resolvedPath = resolve(distDir, `.${safePath}`);
+
+  const directMatch = await tryResolveExistingFile(resolvedPath);
+  if (directMatch) {
+    return directMatch;
+  }
+
+  // Match Vercel cleanUrls: /travel -> travel.html, /monitor -> monitor.html
+  const extension = extname(safePath);
+  if (!extension) {
+    const htmlMatch = await tryResolveExistingFile(`${resolvedPath}.html`);
+    if (htmlMatch) {
+      return htmlMatch;
+    }
   }
 
   const fallbackPath = join(distDir, '404.html');
@@ -404,6 +424,29 @@ function resolveMonitorMock(path, method) {
   }
   if (path.includes('/api/analytics/reach')) return { success: true, total_reach: 120 };
   if (path.includes('/api/music/recent')) return { recenttracks: { track: [] } };
+  if (path.includes('/api/personalization/export')) {
+    return {
+      success: true,
+      data: {
+        user_id: 'preview-user',
+        exported_at: Date.now() / 1000,
+        preferences: {},
+        interaction_count: 0,
+        recent_topics: [],
+        conversations: {},
+      },
+      timestamp: monitorMockTimestamp(),
+    };
+  }
+  if (path.includes('/api/personalization/delete')) {
+    return {
+      success: true,
+      message: 'User data deleted successfully',
+      user_id: 'preview-user',
+      removed: { removed_users: 1, removed_sessions: 0 },
+      timestamp: monitorMockTimestamp(),
+    };
+  }
   return { success: true, timestamp: monitorMockTimestamp() };
 }
 
@@ -411,7 +454,7 @@ function resolveMonitorMock(path, method) {
 app.all('/api/*', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-monitor-admin-token');
 
   if (req.method === 'OPTIONS') {

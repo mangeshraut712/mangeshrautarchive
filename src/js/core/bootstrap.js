@@ -1,6 +1,7 @@
 const IDLE_MODULES = ['../modules/accessibility.js'];
 
 import '../modules/apple-sounds.js';
+import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 
 const DELAYED_MODULES = [];
 
@@ -52,7 +53,7 @@ const SECTION_STYLE_GROUPS = [
   { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '120px 0px' },
 ];
 
-const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday', 'glass'];
+const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 
@@ -743,7 +744,7 @@ function applyStoredLiquidGlassTint() {
     if (raw === null) return;
     const stored = Number(raw);
     if (Number.isFinite(stored) && stored >= 0 && stored <= 100) {
-      document.documentElement.style.setProperty('--lg-tint', String(stored / 100));
+      syncLiquidGlassTokens(stored / 100);
     }
   } catch (_error) {
     // Storage unavailable — keep the CSS default tint.

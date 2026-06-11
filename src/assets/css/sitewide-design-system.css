@@ -173,15 +173,14 @@ html.dark [contenteditable] {
 .dropdown-menu,
 .sidebar,
 .panel {
-  background: #fff !important;
-
-  /* Force solid white */
+  background: #ffffff !important;
   color: #000 !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  box-shadow: 0 4px 24px rgb(0 0 0 / 5%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: none !important;
   border-radius: 20px !important;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Dark Mode - Solid Black */
@@ -223,18 +222,22 @@ html.dark .popup-content,
 html.dark .dropdown-menu,
 html.dark .sidebar,
 html.dark .panel {
-  background: #000 !important;
-
-  /* Force solid black */
+  background: #000000 !important;
   color: #fff !important;
-  border: 1px solid rgb(255 255 255 / 15%) !important;
-  box-shadow: 0 4px 24px rgb(0 0 0 / 40%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Hover Effects */
 .card:hover,
 .experience-card:hover,
+.experience-content:hover,
 .education-card:hover,
+.education-content:hover,
+.stat-card:hover,
+.about-highlight-card:hover,
 .publication-card:hover,
 .award-card:hover,
 .recommendation-card:hover,
@@ -242,18 +245,21 @@ html.dark .panel {
 .blog-card:hover,
 .contact-card:hover,
 .contact-form-card:hover,
-.stat-card:hover,
 .skill-card:hover,
 .about-card:hover,
 .timeline-content:hover {
   transform: translateY(-6px) !important;
-  box-shadow: 0 16px 48px rgb(0 0 0 / 10%) !important;
-  border-color: rgb(0 113 227 / 30%) !important;
+  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%) !important;
+  border-color: #0071e3 !important;
 }
 
 html.dark .card:hover,
 html.dark .experience-card:hover,
+html.dark .experience-content:hover,
 html.dark .education-card:hover,
+html.dark .education-content:hover,
+html.dark .stat-card:hover,
+html.dark .about-highlight-card:hover,
 html.dark .publication-card:hover,
 html.dark .award-card:hover,
 html.dark .recommendation-card:hover,
@@ -261,12 +267,11 @@ html.dark .certification-card:hover,
 html.dark .blog-card:hover,
 html.dark .contact-card:hover,
 html.dark .contact-form-card:hover,
-html.dark .stat-card:hover,
 html.dark .skill-card:hover,
 html.dark .about-card:hover,
 html.dark .timeline-content:hover {
-  box-shadow: 0 20px 60px rgb(0 0 0 / 60%) !important;
-  border-color: rgb(41 151 255 / 40%) !important;
+  box-shadow: 0 0 0 1px rgb(10 132 255 / 28%) !important;
+  border-color: #0a84ff !important;
 }
 
 /* ========================================
@@ -538,15 +543,17 @@ html.dark .meta {
    Final override to ensure no grey backgrounds persist
    ======================================== */
 
-/* Force Cards to be Solid */
+/* Force Cards to solid theme surfaces with blue borders */
 .card,
 .experience-content,
 .education-content,
 .skill-badge,
 .about-highlight-card,
 .stat-card {
-  background-color: #fff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 html.dark .card,
@@ -555,8 +562,10 @@ html.dark .education-content,
 html.dark .skill-badge,
 html.dark .about-highlight-card,
 html.dark .stat-card {
-  background-color: #000 !important;
+  background-color: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Remove any potential section borders/separators */

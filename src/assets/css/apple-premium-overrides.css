@@ -3,7 +3,7 @@
    "Wow" Factor, Glassmorphism, and Advanced Animations
    ========================================================================== */
 
-/* 1. Global Card Styles - SOLID */
+/* 1. Global Card Styles - Solid theme + blue borders (page chrome glass stays in wwdc26) */
 
 .experience-content,
 .education-card,
@@ -46,21 +46,12 @@ html body #contact div.media-card {
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 20px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   transition:
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     background 0.3s ease !important;
-}
-
-/* Make skill category transparent to blend with section */
-
-.skill-category {
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  padding: 20px 0 !important;
 }
 
 html.dark .experience-content,
@@ -100,8 +91,8 @@ html.dark body #contact div.contact-card,
 html.dark body #contact div.support-donation-card,
 html.dark body #contact div.media-card {
   background: #000000 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
 }
 
 /* Hover Effects - Uniform Lift & Blue Border Glow */
@@ -143,8 +134,8 @@ html body #contact div.contact-card:hover,
 html body #contact div.support-donation-card:hover,
 html body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
-  border-color: #0071e3 !important;
-  box-shadow: 0 16px 36px rgba(0, 113, 227, 0.16) !important;
+  border: 1px solid #0071e3 !important;
+  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%) !important;
   background: #ffffff !important;
 }
 
@@ -185,8 +176,8 @@ html.dark body #contact div.contact-card:hover,
 html.dark body #contact div.support-donation-card:hover,
 html.dark body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
-  border-color: #2997ff !important;
-  box-shadow: 0 16px 36px rgba(41, 151, 255, 0.3) !important;
+  border: 1px solid #0a84ff !important;
+  box-shadow: 0 0 0 1px rgb(10 132 255 / 28%) !important;
   background: #000000 !important;
 }
 
@@ -1774,26 +1765,15 @@ html.dark .experience-icon {
 
 /* Skills */
 
-/* Premium Skill Badge */
+/* Premium Skill Badge layout — glass tint in wwdc26-liquid-glass.css */
 #skills-container .skill-badge,
 .skill-badge {
-  background: #fff !important;
-  backdrop-filter: none !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 22px !important;
   padding: 12px 20px !important;
   gap: 12px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04) !important;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
   min-width: 140px;
   justify-content: center;
-}
-
-html.dark #skills-container .skill-badge,
-html.dark .skill-badge {
-  background: #000000 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* Badge Hover */
@@ -1801,14 +1781,12 @@ html.dark .skill-badge {
 .skill-badge:hover {
   transform: translateY(-5px) !important;
   box-shadow: 0 16px 36px rgba(0, 113, 227, 0.16) !important;
-  background: #ffffff !important;
   border-color: #0071e3 !important;
   z-index: 10;
 }
 
 html.dark #skills-container .skill-badge:hover,
 html.dark .skill-badge:hover {
-  background: #000000 !important;
   box-shadow: 0 16px 36px rgba(41, 151, 255, 0.3) !important;
   border-color: #2997ff !important;
 }

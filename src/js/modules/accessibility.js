@@ -13,6 +13,8 @@
  * - Focus management
  */
 
+import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
+
 export class AccessibilityEnhancer {
   constructor() {
     this.focusableElements =
@@ -1062,7 +1064,7 @@ export class AccessibilityEnhancer {
 
   applyGlassTint(value) {
     const clamped = Math.min(100, Math.max(0, value));
-    document.documentElement.style.setProperty('--lg-tint', String(clamped / 100));
+    syncLiquidGlassTokens(clamped / 100);
     this.updateGlassTintReadout(clamped);
     const slider = document.querySelector('.a11y-glass-popover input[type="range"]');
     if (slider && Number(slider.value) !== clamped) {

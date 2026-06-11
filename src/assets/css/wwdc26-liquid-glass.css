@@ -1,21 +1,24 @@
 /* ════════════════════════════════════════════════════════════════
    WWDC 2026 — Liquid Glass refinements + Siri AI glow
-   Scoped layer: navbar, chatbot, floating controls ONLY.
-   No global element/button selectors — safe on top of the
-   existing Apple premium design system.
-
-   --lg-tint: 0 = ultra-clear … 1 = fully tinted (WWDC26 slider).
-   Persisted by the accessibility toolbar's Liquid Glass control.
+   Site-wide: navbar, chatbot, floating controls, cards, and panels.
+   Tint-aware via the accessibility toolbar Liquid Glass slider.
    ════════════════════════════════════════════════════════════════ */
 
 :root {
   --lg-tint: 0.55;
   --lg-blur-nav: calc(14px + (1 - var(--lg-tint)) * 16px);
   --lg-blur-panel: calc(26px + (1 - var(--lg-tint)) * 28px);
+  --lg-blur-card: calc(20px + (1 - var(--lg-tint)) * 24px);
   --lg-blur-control: calc(10px + (1 - var(--lg-tint)) * 14px);
   --lg-saturate: calc(155% + (1 - var(--lg-tint)) * 45%);
   --lg-light-fill: calc(44% + var(--lg-tint) * 52%);
   --lg-dark-fill: calc(50% + var(--lg-tint) * 48%);
+  --lg-card-light-fill: calc(62% + var(--lg-tint) * 32%);
+  --lg-card-dark-fill: calc(68% + var(--lg-tint) * 28%);
+  --theme-page-bg: #ffffff;
+  --theme-card-surface: #ffffff;
+  --theme-card-border: rgba(0, 0, 0, 0.08);
+  --theme-card-border-hover: #0071e3;
   --siri-c1: #0a84ff;
   --siri-c2: #5e5ce6;
   --siri-c3: #bf5af2;
@@ -40,6 +43,14 @@
 
 html {
   transition: --lg-tint 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
+  background-color: var(--theme-page-bg) !important;
+}
+
+html.dark {
+  --theme-page-bg: #000000;
+  --theme-card-surface: #000000;
+  --theme-card-border: rgba(255, 255, 255, 0.12);
+  --theme-card-border-hover: #0a84ff;
 }
 
 @keyframes siri-rotate {
@@ -1229,6 +1240,36 @@ html.dark body #github-projects-container .text-secondary {
 }
 
 /* ────────────────────────────────────────────────────────────────
+   14. SITE CARDS — solid surfaces + blue borders (see section 15)
+   Liquid glass tint applies to navbar, chatbot, and floating controls only.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Skill badges inside transformed marquee — gradient fill (backdrop-filter blocked) */
+.skill-scroll-wrapper .skill-badge,
+#skills-container .skill-scroll-wrapper .skill-badge {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html.dark .skill-scroll-wrapper .skill-badge,
+html.dark #skills-container .skill-scroll-wrapper .skill-badge {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.skill-scroll-wrapper .skill-badge:hover,
+#skills-container .skill-scroll-wrapper .skill-badge:hover {
+  border-color: #0071e3 !important;
+}
+
+html.dark .skill-scroll-wrapper .skill-badge:hover,
+html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
+  border-color: #0a84ff !important;
+}
+
+/* ────────────────────────────────────────────────────────────────
    13. FALLBACK — solid surfaces when backdrop-filter is unavailable
    ──────────────────────────────────────────────────────────────── */
 
@@ -1237,7 +1278,19 @@ html.dark body #github-projects-container .text-secondary {
   #chatbot-widget,
   #go-to-top.visible,
   .a11y-toolbar,
-  .a11y-glass-popover {
+  .a11y-glass-popover,
+  :is(
+      .experience-content,
+      .education-card,
+      .stat-card,
+      .blog-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .contact-card,
+      .overview-card,
+      .health-item,
+      .travel-stop
+    ) {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -1267,6 +1320,228 @@ html.dark body #github-projects-container .text-secondary {
   html.dark .a11y-glass-popover {
     background: rgb(18 18 20 / 96%) !important;
   }
+
+  :is(
+      .experience-content,
+      .education-card,
+      .stat-card,
+      .blog-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .contact-card,
+      .overview-card,
+      .health-item,
+      .travel-stop
+    ) {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+
+  html.dark :is(
+      .experience-content,
+      .education-card,
+      .stat-card,
+      .blog-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .contact-card,
+      .overview-card,
+      .health-item,
+      .travel-stop
+    ) {
+    background: #000000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   15. SOLID THEME BACKGROUNDS + UNIFIED BLUE CARD BORDERS
+   Light = #fff page + #fff cards. Dark = #000 page + #000 cards.
+   ──────────────────────────────────────────────────────────────── */
+
+html,
+html body,
+html main,
+html #main-content,
+html section,
+html header,
+html footer,
+html .page-wrapper,
+html .container,
+.travel-body,
+body.monitor-page,
+body.monitor-page main {
+  background-color: var(--theme-page-bg) !important;
+}
+
+/* Map / media layers stay independent of page fill */
+.travel-map-layer,
+#map-container,
+.maplibregl-map,
+canvas.maplibregl-canvas,
+#launch-intro,
+.launch-intro,
+.global-nav.dynamic-island,
+#chatbot-widget,
+.a11y-toolbar,
+.a11y-glass-popover,
+ul.wrapper,
+footer .wrapper {
+  background-color: transparent !important;
+}
+
+/* Class-only selectors — :is() specificity = max of listed classes only */
+:is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .music-card-inner,
+    .reminder-card,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-sidebar .travel-stop,
+    .travel-sidebar .place-guide-card,
+    .travel-sidebar,
+    .travel-sidebar__stats,
+    .travel-filter-panel,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel
+  ) {
+  background: var(--theme-card-surface) !important;
+  background-color: var(--theme-card-surface) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
+}
+
+/* ID / section-scoped cards — separate rules (never mix into :is() with classes) */
+#travel-sidebar,
+#skills-container .skill-badge,
+#skills-container .skill-category,
+#skills .skill-category,
+#about .about-image-wrapper,
+.monitor-summary-card,
+.travel-sidebar,
+#experience .experience-content,
+html body #about div.about-text-card,
+html body #about div.about-highlight-card,
+html body #projects #github-projects-container article.showcase-project-card,
+html body #blog div.newsletter-card,
+html body #contact div.contact-card,
+html body #contact div.support-donation-card,
+html body #contact div.media-card {
+  background: var(--theme-card-surface) !important;
+  background-color: var(--theme-card-surface) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
+}
+
+/* Class-only hover — blue border */
+:is(
+    .card:hover,
+    .experience-content:hover,
+    .education-card:hover,
+    .education-content:hover,
+    .stat-card:hover,
+    .blog-card:hover,
+    .showcase-project-card:hover,
+    .about-highlight-card:hover,
+    .about-text-card:hover,
+    .contact-card:hover,
+    .contact-form-card:hover,
+    .newsletter-card:hover,
+    .support-donation-card:hover,
+    .media-card:hover,
+    .overview-card:hover,
+    .health-item:hover,
+    .travel-stop:hover,
+    .place-guide-card:hover,
+    .travel-stat:hover,
+    .travel-sidebar:hover,
+    .travel-sidebar .travel-stop:hover,
+    .travel-sidebar .place-guide-card:hover,
+    .skill-card:hover,
+    .skill-badge:hover,
+    .timeline-content:hover
+  ) {
+  border: 1px solid var(--theme-card-border-hover) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover) 24%, transparent) !important;
+}
+
+/* ID / section-scoped hover — blue border */
+#travel-sidebar:hover,
+#skills-container .skill-category:hover,
+#skills-container .skill-badge:hover,
+#skills .skill-category:hover,
+#about .about-image-wrapper:hover,
+html body #about div.about-text-card:hover,
+html.dark body #about div.about-text-card:hover,
+html body #about div.about-highlight-card:hover,
+html.dark body #about div.about-highlight-card:hover,
+html body #projects #github-projects-container article.showcase-project-card:hover,
+html.dark body #projects #github-projects-container article.showcase-project-card:hover,
+html body #blog div.newsletter-card:hover,
+html.dark body #blog div.newsletter-card:hover,
+html body #contact div.contact-card:hover,
+html.dark body #contact div.contact-card:hover,
+html body #contact div.support-donation-card:hover,
+html.dark body #contact div.support-donation-card:hover,
+html body #contact div.media-card:hover,
+html.dark body #contact div.media-card:hover,
+#experience .experience-content:hover,
+html.dark #experience .experience-content:hover,
+.monitor-summary-card:hover,
+html.dark .monitor-summary-card:hover,
+.travel-sidebar:hover,
+html.dark .travel-sidebar:hover {
+  border: 1px solid var(--theme-card-border-hover) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover) 24%, transparent) !important;
 }
 
 /* ────────────────────────────────────────────────────────────────

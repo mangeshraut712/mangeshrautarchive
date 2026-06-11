@@ -4051,10 +4051,10 @@ html.dark .education-card .date-badge {
   text-decoration: none;
 }
 
-/* Dark mode — keep white circular tiles like light mode for brand fill on hover */
+/* Dark mode — solid black tiles; brand fill on hover */
 html.dark .wrapper .icon {
-  background: #fff;
-  border: 1px solid rgb(0 0 0 / 6%);
+  background: #000;
+  border: 1px solid rgb(255 255 255 / 12%);
   box-shadow: 0 10px 10px rgb(0 0 0 / 28%);
 }
 

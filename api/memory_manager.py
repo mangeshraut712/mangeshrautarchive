@@ -109,6 +109,47 @@ class MemoryManager:
         else:
             return "👋 Welcome back! How can I assist you today?"
 
+    def export_user_data(self, user_id: str) -> Dict[str, Any]:
+        """Return a GDPR-style export payload for one user."""
+        context = self.get_context_for_user(user_id)
+        user_data = self.medium_term.get(user_id, {})
+        session_ids = user_data.get('sessions', [])
+        conversations = {}
+
+        for session_id in session_ids:
+            session = self.short_term.get(session_id)
+            if not session:
+                continue
+            conversations[session_id] = {
+                'created_at': session.get('created_at'),
+                'messages': session.get('messages', []),
+            }
+
+        return {
+            'user_id': user_id,
+            'exported_at': time.time(),
+            'preferences': context.get('preferences', {}),
+            'interaction_count': context.get('interaction_count', 0),
+            'recent_topics': context.get('recent_topics', []),
+            'conversations': conversations,
+        }
+
+    def delete_user_data(self, user_id: str) -> Dict[str, int]:
+        """Remove all stored personalization data for one user."""
+        user_data = self.medium_term.pop(user_id, {})
+        session_ids = user_data.get('sessions', [])
+        removed_sessions = 0
+
+        for session_id in session_ids:
+            if session_id in self.short_term:
+                del self.short_term[session_id]
+                removed_sessions += 1
+
+        return {
+            'removed_users': 1 if user_data else 0,
+            'removed_sessions': removed_sessions,
+        }
+
     def get_stats(self) -> Dict:
         """Get memory system statistics"""
         total_sessions = len(self.short_term)

@@ -7,7 +7,7 @@
    CSS VARIABLES
    ======================================== */
 :root {
-  --bg-primary: var(--apple-gray-6, #fbfbfd);
+  --bg-primary: var(--apple-gray-6, #ffffff);
   --bg-secondary: #ffffff;
   --surface-elevated: color-mix(in srgb, var(--bg-primary) 86%, transparent);
   --text-primary: #1d1d1f;
@@ -55,6 +55,10 @@ body {
   color: var(--text-primary);
   line-height: 1.4706;
   -webkit-font-smoothing: antialiased;
+}
+
+html {
+  background-color: var(--bg-primary);
 }
 
 body.monitor-page {
@@ -524,9 +528,7 @@ html.dark .env-pill {
   background: var(--surface-elevated);
   border-radius: var(--radius-md);
   padding: 24px;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow: none;
   border: 1px solid var(--border-color);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
@@ -551,10 +553,8 @@ html.dark .env-pill {
 
 .overview-card:hover {
   transform: translateY(-3px) scale(1.01);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.08),
-    0 4px 8px rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 113, 227, 0.2);
+  border: 1px solid #0071e3;
+  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%);
 }
 
 .overview-card-header {
@@ -859,9 +859,9 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 .health-item:hover {
-  border-color: var(--accent-blue);
+  border: 1px solid #0071e3;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.08);
+  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%);
 }
 
 .health-item.unhealthy {

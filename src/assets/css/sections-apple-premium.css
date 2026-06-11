@@ -39,8 +39,8 @@
 
   /* Semantic Color Variables - Theme Aware */
   --bg-primary: #ffffff;
-  --bg-secondary: var(--apple-gray-50);
-  --bg-tertiary: #fafafa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #ffffff;
   --text-primary: var(--apple-gray-600);
   --text-secondary: var(--apple-gray-400);
   --text-tertiary: var(--apple-gray-300);

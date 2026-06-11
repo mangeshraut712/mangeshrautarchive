@@ -41,6 +41,34 @@ async def update_user_preferences(request: Request, preferences: Dict[str, Any])
         raise HTTPException(status_code=500, detail="Error updating preferences")
 
 
+@router.get("/api/personalization/export")
+async def export_user_data(request: Request, user_id: Optional[str] = None):
+    """Export stored personalization and conversation data for the current user."""
+    resolved_user_id = str(user_id or get_client_ip(request))[:128]
+    payload = memory_manager.export_user_data(resolved_user_id)
+
+    return {
+        "success": True,
+        "data": payload,
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+
+
+@router.delete("/api/personalization/delete")
+async def delete_user_data(request: Request, user_id: Optional[str] = None):
+    """Delete stored personalization and conversation data for the current user."""
+    resolved_user_id = str(user_id or get_client_ip(request))[:128]
+    result = memory_manager.delete_user_data(resolved_user_id)
+
+    return {
+        "success": True,
+        "message": "User data deleted successfully",
+        "user_id": resolved_user_id,
+        "removed": result,
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+
+
 @router.get("/api/personalization/greeting")
 async def get_personalized_greeting(request: Request, user_id: Optional[str] = None):
     """

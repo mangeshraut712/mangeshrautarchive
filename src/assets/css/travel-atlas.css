@@ -4,6 +4,14 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ─── Body ─── */
+html {
+  background-color: #ffffff;
+}
+
+html.dark {
+  background-color: #000000;
+}
+
 .travel-body {
   margin: 0;
   padding: 0;
@@ -1252,28 +1260,10 @@ html.dark .travel-body {
   color: #f5f5f7;
 }
 
-/* Keep atlas glass cards over sitewide solid-card overrides */
-.travel-sidebar .travel-stop,
-.travel-sidebar .place-guide-card {
-  background: color-mix(in srgb, var(--fill-secondary) 58%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--separator) 76%, transparent) !important;
-  box-shadow: 0 1px 0 color-mix(in srgb, #fff 26%, transparent) inset !important;
-}
-
-html.dark .travel-sidebar .travel-stop,
-html.dark .travel-sidebar .place-guide-card {
-  background: rgba(255, 255, 255, 0.045) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: none !important;
-}
+/* Solid theme card surfaces are enforced in wwdc26-liquid-glass.css */
 
 html.dark .travel-stop__tagline {
   color: #64d2ff;
-}
-
-html.dark .travel-sidebar {
-  background: rgba(30, 30, 30, 0.75);
-  border-color: rgba(255, 255, 255, 0.1);
 }
 
 html.dark .travel-sidebar__header h1,
@@ -1292,24 +1282,10 @@ html.dark .place-guide-card p {
   color: #a1a1a6 !important;
 }
 
+.travel-stop.active,
 html.dark .travel-stop.active {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-html.dark .travel-stop {
-  background: rgba(255, 255, 255, 0.045);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: none;
-}
-
-html.dark .travel-stop:hover {
-  background: rgba(255, 255, 255, 0.075);
-  border-color: rgba(10, 132, 255, 0.36);
-}
-
-html.dark .travel-stat {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--apple-blue, #0071e3) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--apple-blue, #0071e3) 28%, transparent) !important;
 }
 
 html.dark .travel-search {
