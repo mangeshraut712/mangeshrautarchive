@@ -2206,22 +2206,18 @@ html.dark footer i.fa-solid.fa-code {
   color: #61dafb;
 }
 
-/* Light mode adjustments for GitHub and X visibility on light footer */
+/* Light mode — keep GitHub/X brand marks visible on white social tiles */
 
 html:not(.dark) footer i.fa-brands.fa-github,
 html:not(.dark) footer a[href*='github.com'] i.fa-brands {
-  color: #fff;
-
-  /* White for visibility on light footer */
+  color: #24292e;
 }
 
 html:not(.dark) footer i.fa-brands.fa-x-twitter,
 html:not(.dark) footer i.fa-brands.fa-twitter,
 html:not(.dark) footer a[href*='x.com'] i.fa-brands,
 html:not(.dark) footer a[href*='twitter.com'] i.fa-brands {
-  color: #fff;
-
-  /* White for visibility on light footer */
+  color: #0f1419;
 }
 
 /* Footer hover effect - scale only, keep brand colors */
@@ -4074,6 +4070,10 @@ html.dark .wrapper .icon {
   pointer-events: none;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
+}
+
+.wrapper .icon:not(:hover):not(:focus-within) .tooltip {
+  display: none;
 }
 
 html.dark .wrapper .tooltip {

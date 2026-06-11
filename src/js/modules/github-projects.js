@@ -934,6 +934,14 @@ class GitHubProjects {
       const parsed = new URL(url);
       if (parsed.origin !== 'https://api.github.com') return '';
       const pathWithQuery = `${parsed.pathname}${parsed.search || ''}`;
+      const isLocal =
+        typeof window !== 'undefined' &&
+        ['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(window.location.hostname);
+
+      if (isLocal) {
+        return `/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;
+      }
+
       const base =
         globalThis.APP_CONFIG?.apiBaseUrl ||
         (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||

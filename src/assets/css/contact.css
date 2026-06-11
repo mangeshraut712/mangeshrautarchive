@@ -94,34 +94,11 @@
 .contact-card {
   padding: 1.5rem !important;
   border-radius: 24px !important;
-  background: #ffffff !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: none !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
   transition:
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-}
-
-html.dark .contact-card {
-  background: #000000 !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: none !important;
-}
-
-.contact-card:hover {
-  border-color: #0071e3 !important;
-  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%) !important;
-}
-
-html.dark .contact-card:hover {
-  border-color: #0a84ff !important;
-  box-shadow: 0 0 0 1px rgb(10 132 255 / 28%) !important;
 }
 
 .contact-card * {
@@ -600,17 +577,13 @@ html.dark .support-donation-card {
 
 .support-donation-card:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 12px 32px rgb(0 0 0 / 12%),
-    0 0 0 1px rgb(255 183 77 / 20%);
-  border-color: transparent;
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #0071e3 24%, transparent) !important;
 }
 
 html.dark .support-donation-card:hover {
-  box-shadow:
-    0 12px 40px rgb(0 0 0 / 60%),
-    0 0 0 1px rgb(255 152 0 / 40%);
-  border-color: rgb(255 152 0 / 50%);
+  border-color: #0a84ff !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #0a84ff 28%, transparent) !important;
 }
 
 /* Compact Header - Horizontal Layout with 3 columns */
@@ -1563,18 +1536,6 @@ html.dark .stat-item {
 
   .support-subheadline {
     font-size: 0.75rem;
-  }
-}
-
-/* Social Links - Force Left Alignment on Desktop, Center on Mobile */
-
-.wrapper {
-  justify-content: flex-start !important;
-}
-
-@media (width <=768px) {
-  .wrapper {
-    justify-content: center !important;
   }
 }
 
@@ -2834,8 +2795,7 @@ html.dark #contact .contact-link-item {
 #contact .support-donation-card,
 #contact .currently-card,
 #contact .calendar-wrapper-clean,
-#contact .ios-widget-wrapper,
-#contact .wrapper .icon {
+#contact .ios-widget-wrapper {
   border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -2843,8 +2803,7 @@ html.dark #contact .contact-card,
 html.dark #contact .support-donation-card,
 html.dark #contact .currently-card,
 html.dark #contact .calendar-wrapper-clean,
-html.dark #contact .ios-widget-wrapper,
-html.dark #contact .wrapper .icon {
+html.dark #contact .ios-widget-wrapper {
   border-color: rgba(255, 255, 255, 0.12) !important;
 }
 

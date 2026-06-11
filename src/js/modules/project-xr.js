@@ -358,6 +358,20 @@ class ProjectXR {
       const parsed = new URL(url);
       if (parsed.origin === 'https://api.github.com') {
         const pathWithQuery = `${parsed.pathname}${parsed.search || ''}`;
+        const isLocal =
+          typeof window !== 'undefined' &&
+          ['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(window.location.hostname);
+
+        if (isLocal) {
+          const proxiedUrl = `/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;
+          const proxiedResponse = await fetch(proxiedUrl, {
+            headers: { Accept: 'application/json' },
+          });
+          if (proxiedResponse.ok) {
+            return await proxiedResponse.json();
+          }
+        }
+
         const base =
           globalThis.APP_CONFIG?.apiBaseUrl ||
           (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||

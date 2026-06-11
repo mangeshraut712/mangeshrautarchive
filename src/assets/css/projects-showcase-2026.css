@@ -748,10 +748,7 @@ html.dark #projects .projects-empty-state {
   min-height: 405px !important;
   height: 100% !important;
   border-radius: 20px !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  background: #ffffff !important;
   color: var(--project-text-light) !important;
-  box-shadow: none !important;
   overflow: hidden !important;
   transition:
     transform 0.24s ease,
@@ -783,10 +780,7 @@ html.dark #projects .projects-empty-state {
 }
 
 html.dark #projects #github-projects-container .showcase-project-card {
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  background: #000000 !important;
   color: var(--project-text-dark) !important;
-  box-shadow: none !important;
 }
 
 /* Dark mode hover style removed to avoid conflicts with global overrides */

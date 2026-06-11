@@ -3,7 +3,7 @@
    "Wow" Factor, Glassmorphism, and Advanced Animations
    ========================================================================== */
 
-/* 1. Global Card Styles - Solid theme + blue borders (page chrome glass stays in wwdc26) */
+/* 1. Global Card Styles — radius + lift; borders/bg/hover glow in wwdc26 §15 */
 
 .experience-content,
 .education-card,
@@ -41,61 +41,14 @@ html body #blog div.newsletter-card,
 html body #contact div.contact-card,
 html body #contact div.support-donation-card,
 html body #contact div.media-card {
-  background: #ffffff !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 20px !important;
-  box-shadow: none !important;
   transition:
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background 0.3s ease !important;
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 
-html.dark .experience-content,
-html.dark .education-card,
-html.dark .education-content,
-html.dark .stat-card,
-html.dark .blog-card,
-html.dark .publication-card,
-html.dark .award-card,
-html.dark .recommendation-card,
-html.dark .certification-card,
-html.dark .showcase-project-card,
-html.dark .about-highlight-card,
-html.dark .about-text-card,
-html.dark #about .about-image-wrapper,
-html.dark .contact-card,
-html.dark .newsletter-card,
-html.dark .support-donation-card,
-html.dark .media-card,
-html.dark .currently-card,
-html.dark .calendar-card,
-html.dark .ios-widget-wrapper,
-html.dark .legend-card,
-html.dark .music-card-inner,
-html.dark .reminder-card,
-html.dark .monitor-summary-card,
-html.dark .overview-card,
-html.dark .doc-card,
-html.dark .health-item,
-html.dark .travel-stop,
-html.dark .place-guide-card,
-html.dark body #about div.about-text-card,
-html.dark body #about div.about-highlight-card,
-html.dark body #projects #github-projects-container article.showcase-project-card,
-html.dark body #blog div.newsletter-card,
-html.dark body #contact div.contact-card,
-html.dark body #contact div.support-donation-card,
-html.dark body #contact div.media-card {
-  background: #000000 !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: none !important;
-}
-
-/* Hover Effects - Uniform Lift & Blue Border Glow */
+/* Hover Effects - Uniform Lift (blue border glow in wwdc26 §15) */
 
 .experience-content:hover,
 .education-card:hover,
@@ -134,9 +87,6 @@ html body #contact div.contact-card:hover,
 html body #contact div.support-donation-card:hover,
 html body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
-  border: 1px solid #0071e3 !important;
-  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%) !important;
-  background: #ffffff !important;
 }
 
 html.dark .experience-content:hover,
@@ -176,9 +126,6 @@ html.dark body #contact div.contact-card:hover,
 html.dark body #contact div.support-donation-card:hover,
 html.dark body #contact div.media-card:hover {
   transform: translateY(-5px) !important;
-  border: 1px solid #0a84ff !important;
-  box-shadow: 0 0 0 1px rgb(10 132 255 / 28%) !important;
-  background: #000000 !important;
 }
 
 /* Maintain specific status borders for health items */

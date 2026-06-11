@@ -153,8 +153,6 @@ html.dark .cta-button:hover {
 .recommendation-card:hover,
 .blog-card:hover {
   transform: translateY(-8px);
-  border-color: rgb(0 113 227 / 20%);
-  box-shadow: 0 16px 48px rgb(0 0 0 / 12%);
 }
 
 html.dark .card,
@@ -178,10 +176,7 @@ html.dark .award-card:hover,
 html.dark .publication-card:hover,
 html.dark .recommendation-card:hover,
 html.dark .blog-card:hover {
-  border-color: rgb(41 151 255 / 30%);
-  box-shadow:
-    0 20px 60px rgb(0 0 0 / 60%),
-    0 0 0 1px rgb(41 151 255 / 20%) inset;
+  transform: translateY(-8px);
 }
 
 /* ========================================

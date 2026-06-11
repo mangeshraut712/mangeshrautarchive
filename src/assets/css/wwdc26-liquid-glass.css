@@ -125,6 +125,23 @@ html.dark .global-nav.dynamic-island.scrolled {
       glass material with a specular top edge
    ──────────────────────────────────────────────────────────────── */
 
+/* Keep the window as the vertical scroller. Body-level x clipping makes
+   Chromium compute overflow-y:auto, which breaks mobile scroll restoration. */
+html:not(.launch-intro-active) {
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+body:not(.menu-open) {
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+body.menu-open {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
 /* !important needed: sitewide-design-system.css paints every button
    blue — restore the Apple circular gradient while keeping Siri glow */
 #chatbot-toggle {
@@ -193,7 +210,7 @@ html.dark #chatbot-toggle {
   position: fixed !important;
   right: 1.5rem !important;
   bottom: 1.75rem !important;
-  z-index: 9998 !important;
+  z-index: 100000 !important;
   width: 3.75rem !important;
   height: 3.75rem !important;
   padding: 0 !important;
@@ -251,14 +268,18 @@ html.dark #go-to-top.visible {
 
 @media (width <=768px) {
   #go-to-top {
-    right: 1.25rem !important;
-    bottom: 1.25rem !important;
-    width: 3.5rem !important;
-    height: 3.5rem !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
+    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+    width: 3rem !important;
+    height: 3rem !important;
   }
 
   #chatbot-toggle {
-    bottom: 6.5rem !important;
+    top: calc(4.25rem + env(safe-area-inset-top)) !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
+    bottom: auto !important;
+    width: 3rem !important;
+    height: 3rem !important;
   }
 }
 
@@ -1151,6 +1172,33 @@ html.dark .a11y-toolbar button.a11y-glass-active {
     0 0 0 1px rgb(191 90 242 / 28%) !important;
 }
 
+@media (width <=768px) {
+  .a11y-toolbar {
+    left: max(1rem, env(safe-area-inset-left)) !important;
+    right: auto !important;
+    top: calc(4.25rem + env(safe-area-inset-top)) !important;
+    bottom: auto !important;
+    transform: none !important;
+    gap: 0.375rem !important;
+    max-width: calc(100vw - 6.25rem - env(safe-area-inset-left) - env(safe-area-inset-right)) !important;
+    padding: 0.375rem !important;
+  }
+
+  .a11y-toolbar button {
+    width: 2.375rem !important;
+    height: 2.375rem !important;
+    min-width: 2.375rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .a11y-glass-popover {
+    top: calc(7.75rem + env(safe-area-inset-top)) !important;
+    bottom: auto !important;
+    left: max(1rem, env(safe-area-inset-left)) !important;
+    width: min(15rem, calc(100vw - 2rem)) !important;
+  }
+}
+
 .a11y-glass-popover {
   background: rgb(255 255 255 / calc(78% + var(--lg-tint) * 20%)) !important;
   border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 24%)) !important;
@@ -1379,8 +1427,6 @@ body.monitor-page main {
 #map-container,
 .maplibregl-map,
 canvas.maplibregl-canvas,
-#launch-intro,
-.launch-intro,
 .global-nav.dynamic-island,
 #chatbot-widget,
 .a11y-toolbar,
@@ -1548,6 +1594,54 @@ html.dark .monitor-summary-card:hover,
 html.dark .travel-sidebar:hover {
   border: 1px solid var(--theme-card-border-hover) !important;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover) 24%, transparent) !important;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   16. LIGHT-MODE HOVER REINFORCEMENT
+   Explicit html:not(.dark) rules beat lazy-loaded section CSS that
+   only scoped dark hovers or used weak rgba border-color values.
+   ──────────────────────────────────────────────────────────────── */
+
+html:not(.dark) #blog .blog-card:hover,
+html:not(.dark) #blog div.newsletter-card:hover,
+html:not(.dark) #contact div.contact-card:hover,
+html:not(.dark) #contact div.support-donation-card:hover,
+html:not(.dark) #contact div.media-card:hover,
+html:not(.dark) #about div.about-text-card:hover,
+html:not(.dark) #about div.about-highlight-card:hover,
+html:not(.dark) #projects #github-projects-container article.showcase-project-card:hover,
+html:not(.dark) #experience .experience-content:hover,
+html:not(.dark) #skills-container .skill-badge:hover,
+html:not(.dark) #skills-container .skill-category:hover,
+html:not(.dark) #travel-sidebar:hover,
+html:not(.dark) .travel-sidebar:hover,
+html:not(.dark) .travel-stop:hover,
+html:not(.dark) .place-guide-card:hover,
+html:not(.dark) .travel-stat:hover,
+html:not(.dark) .monitor-summary-card:hover {
+  border: 1px solid #0071e3 !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #0071e3 24%, transparent) !important;
+}
+
+/* Launch intro must never inherit page/card transparency resets */
+#launch-intro,
+.launch-intro {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark #launch-intro,
+html.dark .launch-intro {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+#launch-intro[hidden],
+.launch-intro[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* ────────────────────────────────────────────────────────────────

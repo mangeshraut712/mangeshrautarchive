@@ -229,7 +229,7 @@ test.describe('Chrome smoke tests', () => {
       const scrollHeight = document.documentElement.scrollHeight;
       window.scrollTo(0, Math.max(0, scrollHeight - window.innerHeight - 1000));
     });
-    await page.waitForFunction(() => window.scrollY > 100);
+    await page.waitForFunction(() => window.scrollY > 500);
 
     const beforeY = await page.evaluate(() => window.scrollY);
     await page.locator('#menu-btn').click();
