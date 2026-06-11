@@ -725,7 +725,7 @@ footer .wrapper {
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-html.dark .wrapper .icon {
+html.dark .wrapper .icon:not(:hover):not(:focus-within) {
   background: var(--social-surface-dark);
   border-color: var(--social-border-dark);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.28);
@@ -860,6 +860,7 @@ html.dark .wrapper .tooltip {
 .wrapper .icon:hover,
 .wrapper .icon:focus-within {
   transform: translateY(-8px) scale(1.1);
+  outline: none !important;
 }
 
 html:not(.dark) .wrapper .icon:hover,
