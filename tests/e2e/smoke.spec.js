@@ -71,7 +71,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('travel atlas search, empty state, and reset flow work', async ({ page }) => {
-    await gotoSite(page, '/travel.html');
+    await gotoSite(page, '/travel');
 
     await expect(page).toHaveTitle(/Travel Atlas/i);
     await expect(page.locator('#travel-sidebar')).toBeVisible();
@@ -137,7 +137,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('system monitor actions respond', async ({ page }) => {
-    await gotoSite(page, '/monitor.html');
+    await gotoSite(page, '/monitor');
 
     await expect(page.locator('h1')).toHaveText(/System Monitor/i);
     await expect(page.locator('#runtime-snapshot-card')).toBeVisible();

@@ -1455,6 +1455,9 @@ footer .wrapper {
   -webkit-backdrop-filter: none !important;
   border: 1px solid var(--theme-card-border) !important;
   box-shadow: none !important;
+  transition:
+    transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.32s ease !important;
 }
 
 /* ID / section-scoped cards — separate rules (never mix into :is() with classes) */
@@ -1480,6 +1483,9 @@ html body #contact div.media-card {
   -webkit-backdrop-filter: none !important;
   border: 1px solid var(--theme-card-border) !important;
   box-shadow: none !important;
+  transition:
+    transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.32s ease !important;
 }
 
 /* Class-only hover — blue border */
