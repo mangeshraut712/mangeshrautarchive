@@ -10,7 +10,7 @@
 /* Hero Section - Full Viewport Height */
 
 .home-hero {
-  min-height: 100dvh;
+  min-height: auto !important;
   /* dynamic viewport height for mobile */
   display: flex;
   align-items: center;
@@ -21,8 +21,8 @@
   background-image: none;
   background-attachment: scroll;
   /* account for fixed navbar */
-  padding-top: 80px;
-  padding-bottom: 40px;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
   /* performance */
   contain: layout;
 }
@@ -59,10 +59,10 @@ html:not(.dark) .home-hero {
 
 .profile-image-wrapper {
   position: relative;
-  width: clamp(72px, 8vw, 92px) !important;
-  height: clamp(72px, 8vw, 92px) !important;
-  min-width: clamp(72px, 8vw, 92px) !important;
-  min-height: clamp(72px, 8vw, 92px) !important;
+  width: clamp(200px, 18vw, 260px) !important;
+  height: clamp(200px, 18vw, 260px) !important;
+  min-width: clamp(200px, 18vw, 260px) !important;
+  min-height: clamp(200px, 18vw, 260px) !important;
   margin-bottom: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -108,9 +108,9 @@ html:not(.dark) .home-hero {
 /* Hero Name */
 
 .hero-name {
-  font-size: clamp(2.5rem, 6vw, 72px) !important;
+  font-size: clamp(2.15rem, 5.8vw, 2.9rem) !important;
   font-weight: 800 !important;
-  margin-bottom: 0.4rem !important;
+  margin-bottom: 0.22rem !important;
   display: inline-flex;
   text-align: center;
   letter-spacing: -0.04em !important;
@@ -128,14 +128,14 @@ html:not(.dark) .home-hero {
 /* Hero Title */
 
 .hero-title {
-  font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
+  font-size: clamp(1.06rem, 2.35vw, 1.66rem) !important;
   font-weight: 600 !important;
   margin-bottom: 0 !important;
   display: block;
   text-align: center;
-  line-height: 1.2 !important;
+  line-height: 1.22 !important;
   letter-spacing: -0.02em !important;
-  max-width: 700px;
+  max-width: 760px;
   margin-left: auto;
   margin-right: auto;
   /* default / light mode - clean black */
@@ -205,13 +205,13 @@ html.dark .availability-dot {
 }
 
 .hero-description {
-  font-size: clamp(1rem, 1.8vw, 1.25rem) !important;
-  max-width: 600px;
-  margin: 0 auto 2.5rem;
-  line-height: 1.5 !important;
+  margin: 0 auto !important;
+  max-width: 58ch !important;
+  font-size: clamp(0.99rem, 1.2vw, 1.14rem) !important;
+  line-height: 1.72 !important;
   font-weight: 400 !important;
-  color: #434346 !important;
-  letter-spacing: -0.01em !important;
+  color: #51545b !important;
+  letter-spacing: -0.008em !important;
   opacity: 0.9;
 }
 
@@ -234,18 +234,17 @@ html.dark .hero-description {
 
 /* Responsive Adjustments */
 
+@media (width <= 900px) {
+  .home-hero {
+    padding-top: 40px !important;
+    padding-bottom: 20px !important;
+  }
+}
+
 @media (width <=768px) {
-  .hero-title {
-    font-size: 1.5rem !important;
-  }
-
-  .hero-name {
-    font-size: 1rem !important;
-  }
-
   .profile-image-wrapper {
-    width: 116px !important;
-    height: 116px !important;
+    width: 180px !important;
+    height: 180px !important;
   }
 
   .vibe-coder-badge,
@@ -264,6 +263,38 @@ html.dark .hero-description {
   .profile-ring {
     filter: blur(10px);
     opacity: 0.45;
+  }
+}
+
+@media (width <= 640px) {
+  .home-hero {
+    padding-top: 40px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .hero-name {
+    font-size: clamp(1.6rem, 6.2vw, 2.05rem) !important;
+  }
+
+  .hero-title {
+    font-size: clamp(1rem, 4.3vw, 1.2rem) !important;
+  }
+
+  .hero-description {
+    max-width: 46ch !important;
+    font-size: 0.98rem !important;
+    padding-inline: 0.2rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (width <= 420px) {
+  .home-hero {
+    padding-top: 40px !important;
   }
 }
 

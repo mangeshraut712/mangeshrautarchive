@@ -130,11 +130,13 @@ async function copyDirContent(src, dest, depth = 0) {
 const HERO_CRITICAL_CSS = [
   'assets/css/cross-browser-responsive.css',
   'assets/css/tailwind-output.css',
+  'assets/css/style.css',
   'assets/css/sitewide-design-system.css',
   'assets/css/homepage.css',
   'assets/css/dynamic-island-navbar.css',
   'assets/css/global-improvements.css',
   'assets/css/accessibility-contrast-fixes.css',
+  'assets/css/apple-premium-overrides.css',
 ];
 
 const PREMIUM_DEFERRED_CSS = [
@@ -142,8 +144,9 @@ const PREMIUM_DEFERRED_CSS = [
   'assets/css/typography-system.css',
   'assets/css/apple-premium-system.css',
   'assets/css/sections-apple-premium.css',
-  'assets/css/apple-premium-overrides.css',
   'assets/css/unified-mobile-buttons.css',
+  'assets/css/contact.css',
+  'assets/css/wwdc26-liquid-glass.css',
 ];
 
 const ABOVE_FOLD_CSS = [...HERO_CRITICAL_CSS, ...PREMIUM_DEFERRED_CSS];
@@ -175,28 +178,24 @@ async function bundleAboveFoldCss(distDir) {
   for (const relPath of ABOVE_FOLD_CSS) {
     const fileName = relPath.split('/').pop();
     const linkPattern = new RegExp(
-      `\\s*<link rel="stylesheet" href="assets/css/${fileName.replace('.', '\\.')}[^"]*"[^>]*>\\s*`,
+      `\\s*<link\\s+[^>]*href="assets/css/${fileName.replace('.', '\\.')}[^"]*"[^>]*>\\s*`,
       'g'
     );
     html = html.replace(linkPattern, '');
   }
 
+  const heroCriticalContent = await readFile(resolve(distDir, 'assets/css/hero-critical.bundle.css'), 'utf8');
+
   html = html.replace(
     '<!-- Preload critical CSS for performance -->',
     `<!-- Preload critical CSS for performance -->
-  <link rel="stylesheet" href="assets/css/hero-critical.bundle.css" />
-  <script>
-    if (!window.__PERF_AUDIT__) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'assets/css/premium-deferred.bundle.css';
-      document.head.appendChild(link);
-    }
-  </script>`
+  <style>${heroCriticalContent}</style>
+  <link rel="stylesheet" href="assets/css/premium-deferred.bundle.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/premium-deferred.bundle.css" /></noscript>`
   );
 
   await writeFile(indexPath, html, 'utf8');
-  console.log('📦 Bundled hero-critical + premium-deferred CSS for production');
+  console.log('📦 Bundled and inlined hero-critical CSS + premium-deferred CSS for production');
 }
 
 async function optimizeCopiedAssets(dir) {
@@ -238,6 +237,32 @@ async function optimizeCopiedAssets(dir) {
   );
 }
 
+async function inlineThemeHead(distDir) {
+  const indexPath = resolve(distDir, 'index.html');
+  const travelPath = resolve(distDir, 'travel.html');
+  const monitorPath = resolve(distDir, 'monitor.html');
+  const errorPath = resolve(distDir, '404.html');
+  const themeHeadPath = resolve(distDir, 'js/utils/theme-head.js');
+
+  if (await pathExists(themeHeadPath)) {
+    const themeHeadContent = await readFile(themeHeadPath, 'utf8');
+
+    for (const pagePath of [indexPath, travelPath, monitorPath, errorPath]) {
+      if (await pathExists(pagePath)) {
+        let html = await readFile(pagePath, 'utf8');
+        html = html.replace(
+          /<script\s+src="js\/utils\/theme-head\.js[^"]*"[^>]*><\/script>/g,
+          `<script>${themeHeadContent}</script>`
+        );
+        await writeFile(pagePath, html, 'utf8');
+      }
+    }
+    // Delete the original file from dist to save request space
+    await rm(themeHeadPath, { force: true });
+    console.log('📥 Inlined minified theme-head.js into HTML pages and removed original file');
+  }
+}
+
 async function build() {
   const distDir = await resolveDistDir();
 
@@ -273,9 +298,11 @@ async function build() {
 
   console.log('⚡ Minifying copied CSS/JS assets ...');
   await bundleAboveFoldCss(distDir);
+  await injectApiKeys(distDir);
+  await optimizeCopiedAssets(distDir);
+  await inlineThemeHead(distDir);
+
   await Promise.all([
-    injectApiKeys(distDir),
-    optimizeCopiedAssets(distDir),
     addCacheBusting(distDir),
     minifyHtmlFiles(distDir),
     generateSitemap(distDir),
