@@ -1840,6 +1840,13 @@ html.dark .currently-card {
   min-height: 48px !important;
   padding: 0.82rem 0.9rem !important;
   line-height: 1.25 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark #contact .contact-link-item {
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 #contact .contact-link-item .link-text {
@@ -2856,16 +2863,6 @@ html.dark .watch-btn.book-btn {
 }
 
 /* Contact link rows stay solid; card-level liquid glass lives in wwdc26 section 17. */
-
-#contact .contact-link-item {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-}
-
-html.dark #contact .contact-link-item {
-  background: #000000 !important;
-  background-color: #000000 !important;
-}
 
 #contact .contact-card,
 #contact .support-donation-card,
