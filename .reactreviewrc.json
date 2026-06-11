@@ -42,6 +42,7 @@
       "src/js/services/VoiceService.js",
       "src/js/utils/calendly.js",
       "src/js/utils/go-to-top.js",
+      "src/js/utils/load-premium-css.js",
       "src/js/utils/smart-navbar.js",
       "src/js/utils/theme.js"
     ],

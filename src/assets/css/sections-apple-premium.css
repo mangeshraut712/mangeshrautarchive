@@ -23,7 +23,7 @@
   --apple-teal: #5ac8fa;
 
   /* Apple Gray Scale */
-  --apple-gray-50: #f5f5f7;
+  --apple-gray-50: #ffffff;
   --apple-gray-100: #e8e8ed;
   --apple-gray-200: #d2d2d7;
   --apple-gray-300: #86868b;
@@ -33,8 +33,8 @@
 
   /* Dark Mode Surface Colors */
   --apple-dark-bg: #000000;
-  --apple-dark-surface: #1c1c1e;
-  --apple-dark-elevated: #2c2c2e;
+  --apple-dark-surface: #000000;
+  --apple-dark-elevated: #000000;
   --apple-dark-border: rgb(255 255 255 / 12%);
 
   /* Semantic Color Variables - Theme Aware */
@@ -108,13 +108,7 @@ section .section-subtitle {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    180deg,
-    var(--apple-gray-50) 0%,
-    var(--bg-primary) 20%,
-    var(--bg-primary) 80%,
-    var(--apple-gray-50) 100%
-  );
+  background: #ffffff !important;
   position: relative;
   overflow: hidden;
 }
@@ -130,13 +124,7 @@ section .section-subtitle {
 }
 
 html.dark #home {
-  background: linear-gradient(
-    180deg,
-    var(--apple-dark-bg) 0%,
-    var(--apple-dark-surface) 20%,
-    var(--apple-dark-surface) 80%,
-    var(--apple-dark-bg) 100%
-  );
+  background: #000000 !important;
 }
 
 html.dark #home::before {
@@ -569,11 +557,11 @@ html.dark #home .hero-cta:last-child {
 
 /* ===== ABOUT SECTION - PREMIUM UPGRADE ===== */
 #about {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #about {
-  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+  background: #000000 !important;
 }
 
 #about .about-content {
@@ -788,106 +776,95 @@ html.dark #about .about-tab-panel::-webkit-scrollbar-thumb:hover {
 
 /* ===== SKILLS SECTION - PREMIUM UPGRADE ===== */
 #skills {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #skills {
-  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+  background: #000000 !important;
 }
 
 /* Experience section is owned by experience.css to avoid duplicate timeline rules. */
 
-/* ===== EDUCATION SECTION - PREMIUM UPGRADE ===== */
 #education {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #education {
-  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+  background: #000000 !important;
 }
 
 /* ===== PUBLICATIONS SECTION - PREMIUM UPGRADE ===== */
 #publications {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #publications {
-  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+  background: #000000 !important;
 }
 
 /* ===== AWARDS SECTION - PREMIUM UPGRADE ===== */
 #awards {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #awards {
-  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+  background: #000000 !important;
 }
 
 /* ===== RECOMMENDATIONS SECTION - PREMIUM UPGRADE ===== */
 #recommendations {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #recommendations {
-  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+  background: #000000 !important;
 }
 
 /* ===== CERTIFICATIONS SECTION - PREMIUM UPGRADE ===== */
 #certifications {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--bg-primary) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #certifications {
-  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, var(--apple-dark-surface) 100%);
+  background: #000000 !important;
 }
 
 /* ===== BLOG SECTION - PREMIUM UPGRADE ===== */
 #blog {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #blog {
-  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+  background: #000000 !important;
 }
 
 /* ===== CONTACT SECTION - PREMIUM UPGRADE ===== */
 #contact {
-  background: linear-gradient(
-    180deg,
-    var(--apple-gray-50) 0%,
-    var(--bg-primary) 50%,
-    var(--apple-gray-50) 100%
-  );
+  background: #ffffff !important;
 }
 
 html.dark #contact {
-  background: linear-gradient(
-    180deg,
-    var(--apple-dark-bg) 0%,
-    var(--apple-dark-surface) 50%,
-    var(--apple-dark-bg) 100%
-  );
+  background: #000000 !important;
 }
 
 /* ===== GAME SECTION - PREMIUM UPGRADE ===== */
 #debug-runner-section {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--apple-gray-50) 100%);
+  background: #ffffff !important;
 }
 
 html.dark #debug-runner-section {
-  background: linear-gradient(180deg, var(--apple-dark-surface) 0%, var(--apple-dark-bg) 100%);
+  background: #000000 !important;
 }
 
 /* ===== FOOTER - PREMIUM UPGRADE ===== */
 footer {
-  background: linear-gradient(180deg, var(--apple-gray-50) 0%, var(--apple-gray-100) 100%);
+  background: #ffffff !important;
   border-top: 1px solid var(--apple-gray-200);
   padding: 3rem 0 2rem;
 }
 
 html.dark footer {
-  background: linear-gradient(180deg, var(--apple-dark-bg) 0%, #000000 100%);
+  background: #000000 !important;
   border-color: var(--apple-dark-border);
 }
 
@@ -969,7 +946,7 @@ html.dark footer .footer-tagline {
 html.dark {
   --bg-primary: var(--apple-dark-bg);
   --bg-secondary: #000 !important;
-  --bg-tertiary: var(--apple-dark-elevated);
+  --bg-tertiary: #000000;
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
   --text-tertiary: #8e8e93;

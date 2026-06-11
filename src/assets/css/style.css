@@ -109,7 +109,7 @@
   --footer-text: #1d1d1f;
   --footer-link: #1d1d1f;
   --footer-link-hover: #0071e3;
-  --bg-footer-social: #f8f8ff;
+  --bg-footer-social: #ffffff;
   --x-color: #0f1419;
   --facebook-color: #1877f2;
   --github-color: #24292e;
@@ -1536,7 +1536,7 @@ section h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f2f2f7;
+  background: #ffffff;
   border-radius: 12px;
 }
 
@@ -1957,7 +1957,7 @@ footer {
   color: #86868b;
   font-size: 12px;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  background-color: #fbfbfd !important;
+  background-color: #ffffff !important;
   border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
   padding: 80px 0 40px !important;
 }

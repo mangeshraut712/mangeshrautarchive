@@ -7,7 +7,7 @@
    CSS VARIABLES
    ======================================== */
 :root {
-  --bg-primary: var(--apple-gray-6, #ffffff);
+  --bg-primary: #ffffff;
   --bg-secondary: #ffffff;
   --surface-elevated: color-mix(in srgb, var(--bg-primary) 86%, transparent);
   --text-primary: #1d1d1f;

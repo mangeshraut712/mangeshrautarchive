@@ -187,7 +187,10 @@ async function bundleAboveFoldCss(distDir) {
   <link rel="stylesheet" href="assets/css/hero-critical.bundle.css" />
   <script>
     if (!window.__PERF_AUDIT__) {
-      document.write('<script src="js/utils/load-premium-css.js"><\\/script>');
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'assets/css/premium-deferred.bundle.css';
+      document.head.appendChild(link);
     }
   </script>`
   );
