@@ -95,7 +95,7 @@
   padding: 1.75rem !important;
   border-radius: 24px !important;
   box-sizing: border-box !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   transition:
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
@@ -1203,9 +1203,22 @@ html.dark .support-donation-card cite {
   overflow: hidden;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
   box-shadow:
     0 12px 28px rgba(15, 23, 42, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+#music-content .currently-music-card:hover .media-poster,
+#music-content .recent-track-card:hover .media-poster {
+  border: 1px solid #0071e3 !important;
+  box-shadow:
+    0 14px 30px rgba(15, 23, 42, 0.14),
+    0 0 0 1px rgba(0, 113, 227, 0.35) !important;
 }
 
 html.dark #music-content .currently-music-card .media-poster {
@@ -1214,6 +1227,14 @@ html.dark #music-content .currently-music-card .media-poster {
   box-shadow:
     0 14px 32px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html.dark #music-content .currently-music-card:hover .media-poster,
+html.dark #music-content .recent-track-card:hover .media-poster {
+  border: 1px solid #0a84ff !important;
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(10, 132, 255, 0.4) !important;
 }
 
 #music-content .currently-music-card .media-poster img {
@@ -1720,6 +1741,9 @@ html.dark .contact-info-all .contact-section {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
+  overflow: visible;
+  position: relative;
+  z-index: 2;
 }
 
 html.dark .follow-section {
@@ -1728,20 +1752,37 @@ html.dark .follow-section {
 
 #contact .contact-social-wrapper.wrapper {
   margin-top: 1rem !important;
-  margin-bottom: 3.5rem !important;
+  margin-bottom: 1.25rem !important;
   padding: 0 !important;
   justify-content: flex-start !important;
   column-gap: 1rem !important;
-  row-gap: 2.5rem !important;
+  row-gap: 0.5rem !important;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+/* Each icon reserves a tooltip lane so row 1 labels never cover row 2 tiles */
+#contact .contact-social-wrapper .icon {
+  margin-bottom: 2.75rem;
+}
+
+#contact .contact-social-wrapper .icon:hover,
+#contact .contact-social-wrapper .icon:focus-within {
+  z-index: 30;
+  transform: translateY(-4px) scale(1.06);
 }
 
 @media (max-width: 768px) {
   #contact .contact-social-wrapper.wrapper {
     justify-content: center !important;
     column-gap: 0.85rem !important;
-    row-gap: 2.5rem !important;
+    row-gap: 0.5rem !important;
     padding: 0.5rem 0 !important;
-    margin-bottom: 3.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  #contact .contact-social-wrapper .icon {
+    margin-bottom: 2.5rem;
   }
 }
 
@@ -2814,37 +2855,13 @@ html.dark .watch-btn.book-btn {
   background: rgba(255, 159, 10, 0.15);
 }
 
-/* Solid Apple theme guardrails: no grey/glass contact page surfaces. */
+/* Contact link rows stay solid; card-level liquid glass lives in wwdc26 section 17. */
 
-#contact,
-#contact .contact-section,
-#contact .contact-card,
-#contact .support-donation-card,
-#contact .currently-card,
-#contact .calendar-wrapper-clean,
-#contact .ios-widget-wrapper,
-#contact .ios-calendar-section,
-#contact .ios-reminders-section,
-#contact .calendly-panel,
-#contact .reminder-card,
 #contact .contact-link-item {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
 }
 
-html.dark #contact,
-html.dark #contact .contact-section,
-html.dark #contact .contact-card,
-html.dark #contact .support-donation-card,
-html.dark #contact .currently-card,
-html.dark #contact .calendar-wrapper-clean,
-html.dark #contact .ios-widget-wrapper,
-html.dark #contact .ios-calendar-section,
-html.dark #contact .ios-reminders-section,
-html.dark #contact .calendly-panel,
-html.dark #contact .reminder-card,
 html.dark #contact .contact-link-item {
   background: #000000 !important;
   background-color: #000000 !important;

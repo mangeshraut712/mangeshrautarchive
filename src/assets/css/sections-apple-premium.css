@@ -377,6 +377,28 @@ html.dark #home .music-card {
   display: flex;
   align-items: center;
   gap: 0.875rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+#home .music-card:hover .music-card-inner {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 1px rgba(0, 113, 227, 0.28);
+}
+
+html.dark #home .music-card-inner {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark #home .music-card:hover .music-card-inner {
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 1px rgba(10, 132, 255, 0.32);
 }
 
 #home .album-art-container {

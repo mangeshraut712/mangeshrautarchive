@@ -49,11 +49,21 @@ const SECTION_STYLE_GROUPS = [
   { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '120px 0px' },
   { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '120px 0px' },
   { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '120px 0px' },
-  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '120px 0px' },
   { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '120px 0px' },
 ];
 
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
+
+/** Styles to prefetch right after first paint — avoids FOUC without blocking LCP */
+const EARLY_IDLE_STYLE_KEYS = [
+  'interactive',
+  'about',
+  'projects',
+  'skills',
+  'experience',
+  'education',
+  'blog',
+];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 
@@ -577,6 +587,20 @@ function initDeferredStyles() {
       capture: true,
     });
   });
+
+  if (!isPerformanceAudit()) {
+    window.addEventListener(
+      'load',
+      () => {
+        runWhenIdle(() => {
+          loadDeferredStyles(EARLY_IDLE_STYLE_KEYS).catch(error => {
+            console.warn('Early idle style prefetch skipped:', error);
+          });
+        }, 250);
+      },
+      { once: true }
+    );
+  }
 
   if (isPerformanceAudit()) {
     return;

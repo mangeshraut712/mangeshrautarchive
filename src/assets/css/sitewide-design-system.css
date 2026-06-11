@@ -693,8 +693,18 @@ footer .wrapper {
 
 #contact .contact-social-wrapper.wrapper {
   justify-content: flex-start !important;
-  row-gap: 2.5rem;
-  padding-bottom: 0.35rem;
+  row-gap: 0.5rem;
+  padding-bottom: 0.25rem;
+  overflow: visible;
+}
+
+#contact .contact-social-wrapper .icon {
+  margin-bottom: 2.75rem;
+}
+
+#contact .contact-social-wrapper .icon:hover,
+#contact .contact-social-wrapper .icon:focus-within {
+  z-index: 30;
 }
 
 @media (max-width: 768px) {
@@ -720,9 +730,17 @@ footer .wrapper {
   flex-direction: column;
   cursor: pointer;
   background: var(--social-surface-light);
-  border: 1px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+  overflow: visible;
+  isolation: isolate;
+  z-index: 1;
 }
 
 html.dark .wrapper .icon:not(:hover):not(:focus-within) {
@@ -739,22 +757,33 @@ html.dark .wrapper .icon:not(:hover):not(:focus-within) {
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  transform: none !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
 }
 
-.wrapper .icon svg {
+.wrapper .icon a:hover,
+.wrapper .icon a:focus,
+.wrapper .icon a:focus-visible {
+  color: inherit !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.wrapper .icon svg,
+.wrapper .icon i {
   width: 1.2em;
   height: 1.2em;
   color: inherit;
+  pointer-events: none;
 }
 
-.wrapper .icon svg path[fill]:not([fill='none']),
-.wrapper .icon svg:not([fill='none']) {
+.wrapper .icon svg path[fill]:not([fill='none']) {
   fill: currentColor;
-}
-
-.wrapper .icon svg[stroke],
-.wrapper .icon svg path[stroke] {
-  stroke: currentColor;
 }
 
 .wrapper .facebook {
@@ -789,10 +818,10 @@ html.dark .wrapper .icon:not(:hover):not(:focus-within) {
   color: var(--snapchat-color);
 }
 
-html:not(.dark) .wrapper .snapchat {
-  background: #fffc00;
-  border-color: rgba(0, 0, 0, 0.12);
-  color: #1a1a1a;
+/* Light: yellow ghost on white tile — subtle stroke only, no filled circle at rest */
+html:not(.dark) .wrapper .snapchat:not(:hover):not(:focus-within) .fab {
+  -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.28);
+  paint-order: stroke fill;
 }
 
 .wrapper .telegram {
@@ -813,19 +842,23 @@ html:not(.dark) .wrapper .snapchat {
 
 .wrapper .tooltip {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   left: 50%;
-  transform: translate(-50%, 0) scale(0.9);
-  z-index: 1001;
-  font-size: 12px;
+  transform: translate(-50%, 0) scale(0.92);
+  z-index: 1002;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   background: #1d1d1f;
   color: #fff;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 8px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
 }
 
@@ -853,14 +886,20 @@ html.dark .wrapper .tooltip {
 .wrapper .icon:focus-within .tooltip {
   display: block;
   opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, 6px) scale(1);
+  pointer-events: none;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.wrapper .icon:hover .tooltip::before,
+.wrapper .icon:focus-within .tooltip::before {
+  background: inherit;
 }
 
 .wrapper .icon:hover,
 .wrapper .icon:focus-within {
   transform: translateY(-8px) scale(1.1);
   outline: none !important;
+  z-index: 5;
 }
 
 html:not(.dark) .wrapper .icon:hover,
@@ -874,142 +913,226 @@ html.dark .wrapper .icon:focus-within {
 }
 
 .wrapper .facebook:hover,
-.wrapper .facebook:focus-within,
+.wrapper .facebook:focus-within {
+  background: var(--social-brand-facebook) !important;
+  border-color: var(--social-brand-facebook) !important;
+  color: #fff !important;
+}
+
 .wrapper .facebook:hover .tooltip,
-.wrapper .facebook:hover .tooltip::before,
 .wrapper .facebook:focus-within .tooltip,
+.wrapper .facebook:hover .tooltip::before,
 .wrapper .facebook:focus-within .tooltip::before {
-  background: var(--social-brand-facebook);
-  border-color: var(--social-brand-facebook);
-  color: #fff;
+  background: var(--social-brand-facebook) !important;
+  color: #fff !important;
 }
 
 .wrapper .instagram:hover,
-.wrapper .instagram:focus-within,
+.wrapper .instagram:focus-within {
+  background: var(--social-brand-instagram) !important;
+  border-color: var(--social-brand-instagram) !important;
+  color: #fff !important;
+}
+
 .wrapper .instagram:hover .tooltip,
-.wrapper .instagram:hover .tooltip::before,
 .wrapper .instagram:focus-within .tooltip,
+.wrapper .instagram:hover .tooltip::before,
 .wrapper .instagram:focus-within .tooltip::before {
-  background: var(--social-brand-instagram);
-  border-color: var(--social-brand-instagram);
-  color: #fff;
+  background: var(--social-brand-instagram) !important;
+  color: #fff !important;
 }
 
 .wrapper .linkedin:hover,
-.wrapper .linkedin:focus-within,
+.wrapper .linkedin:focus-within {
+  background: var(--social-brand-linkedin) !important;
+  border-color: var(--social-brand-linkedin) !important;
+  color: #fff !important;
+}
+
 .wrapper .linkedin:hover .tooltip,
-.wrapper .linkedin:hover .tooltip::before,
 .wrapper .linkedin:focus-within .tooltip,
+.wrapper .linkedin:hover .tooltip::before,
 .wrapper .linkedin:focus-within .tooltip::before {
-  background: var(--social-brand-linkedin);
-  border-color: var(--social-brand-linkedin);
-  color: #fff;
+  background: var(--social-brand-linkedin) !important;
+  color: #fff !important;
 }
 
 .wrapper .youtube:hover,
-.wrapper .youtube:focus-within,
+.wrapper .youtube:focus-within {
+  background: var(--social-brand-youtube) !important;
+  border-color: var(--social-brand-youtube) !important;
+  color: #fff !important;
+}
+
 .wrapper .youtube:hover .tooltip,
-.wrapper .youtube:hover .tooltip::before,
 .wrapper .youtube:focus-within .tooltip,
+.wrapper .youtube:hover .tooltip::before,
 .wrapper .youtube:focus-within .tooltip::before {
-  background: var(--social-brand-youtube);
-  border-color: var(--social-brand-youtube);
-  color: #fff;
+  background: var(--social-brand-youtube) !important;
+  color: #fff !important;
 }
 
 .wrapper .github:hover,
-.wrapper .github:focus-within,
+.wrapper .github:focus-within {
+  background: var(--social-brand-github) !important;
+  border-color: var(--social-brand-github) !important;
+  color: #fff !important;
+}
+
 .wrapper .github:hover .tooltip,
-.wrapper .github:hover .tooltip::before,
 .wrapper .github:focus-within .tooltip,
+.wrapper .github:hover .tooltip::before,
 .wrapper .github:focus-within .tooltip::before {
-  background: var(--social-brand-github);
-  border-color: var(--social-brand-github);
-  color: #fff;
+  background: var(--social-brand-github) !important;
+  color: #fff !important;
+}
+
+html.dark .wrapper .github:hover,
+html.dark .wrapper .github:focus-within {
+  background: #57606a !important;
+  border-color: #57606a !important;
+}
+
+html.dark .wrapper .github:hover .tooltip,
+html.dark .wrapper .github:focus-within .tooltip,
+html.dark .wrapper .github:hover .tooltip::before,
+html.dark .wrapper .github:focus-within .tooltip::before {
+  background: #57606a !important;
+  color: #fff !important;
 }
 
 .wrapper .x:hover,
-.wrapper .x:focus-within,
+.wrapper .x:focus-within {
+  background: var(--social-brand-x) !important;
+  border-color: var(--social-brand-x) !important;
+  color: #fff !important;
+}
+
 .wrapper .x:hover .tooltip,
-.wrapper .x:hover .tooltip::before,
 .wrapper .x:focus-within .tooltip,
+.wrapper .x:hover .tooltip::before,
 .wrapper .x:focus-within .tooltip::before {
-  background: var(--social-brand-x);
-  border-color: var(--social-brand-x);
-  color: #fff;
+  background: var(--social-brand-x) !important;
+  color: #fff !important;
+}
+
+html.dark .wrapper .x:hover,
+html.dark .wrapper .x:focus-within {
+  background: #3d4449 !important;
+  border-color: #3d4449 !important;
+}
+
+html.dark .wrapper .x:hover .tooltip,
+html.dark .wrapper .x:focus-within .tooltip,
+html.dark .wrapper .x:hover .tooltip::before,
+html.dark .wrapper .x:focus-within .tooltip::before {
+  background: #3d4449 !important;
+  color: #fff !important;
 }
 
 .wrapper .leetcode:hover,
-.wrapper .leetcode:focus-within,
+.wrapper .leetcode:focus-within {
+  background: var(--social-brand-leetcode) !important;
+  border-color: var(--social-brand-leetcode) !important;
+  color: #fff !important;
+}
+
 .wrapper .leetcode:hover .tooltip,
-.wrapper .leetcode:hover .tooltip::before,
 .wrapper .leetcode:focus-within .tooltip,
+.wrapper .leetcode:hover .tooltip::before,
 .wrapper .leetcode:focus-within .tooltip::before {
-  background: var(--social-brand-leetcode);
-  border-color: var(--social-brand-leetcode);
-  color: #fff;
+  background: var(--social-brand-leetcode) !important;
+  color: #fff !important;
 }
 
 .wrapper .snapchat:hover,
-.wrapper .snapchat:focus-within,
+.wrapper .snapchat:focus-within {
+  background: var(--social-brand-snapchat) !important;
+  border-color: var(--social-brand-snapchat) !important;
+  color: #000 !important;
+}
+
 .wrapper .snapchat:hover .tooltip,
-.wrapper .snapchat:hover .tooltip::before,
 .wrapper .snapchat:focus-within .tooltip,
+.wrapper .snapchat:hover .tooltip::before,
 .wrapper .snapchat:focus-within .tooltip::before {
-  background: var(--social-brand-snapchat);
-  border-color: var(--social-brand-snapchat);
-  color: #000;
+  background: var(--social-brand-snapchat) !important;
+  color: #000 !important;
 }
 
 .wrapper .telegram:hover,
-.wrapper .telegram:focus-within,
+.wrapper .telegram:focus-within {
+  background: var(--social-brand-telegram) !important;
+  border-color: var(--social-brand-telegram) !important;
+  color: #fff !important;
+}
+
 .wrapper .telegram:hover .tooltip,
-.wrapper .telegram:hover .tooltip::before,
 .wrapper .telegram:focus-within .tooltip,
+.wrapper .telegram:hover .tooltip::before,
 .wrapper .telegram:focus-within .tooltip::before {
-  background: var(--social-brand-telegram);
-  border-color: var(--social-brand-telegram);
-  color: #fff;
+  background: var(--social-brand-telegram) !important;
+  color: #fff !important;
 }
 
 .wrapper .spotify:hover,
-.wrapper .spotify:focus-within,
+.wrapper .spotify:focus-within {
+  background: var(--social-brand-spotify) !important;
+  border-color: var(--social-brand-spotify) !important;
+  color: #fff !important;
+}
+
 .wrapper .spotify:hover .tooltip,
-.wrapper .spotify:hover .tooltip::before,
 .wrapper .spotify:focus-within .tooltip,
+.wrapper .spotify:hover .tooltip::before,
 .wrapper .spotify:focus-within .tooltip::before {
-  background: var(--social-brand-spotify);
-  border-color: var(--social-brand-spotify);
-  color: #fff;
+  background: var(--social-brand-spotify) !important;
+  color: #fff !important;
 }
 
 .wrapper .strava:hover,
-.wrapper .strava:focus-within,
+.wrapper .strava:focus-within {
+  background: var(--social-brand-strava) !important;
+  border-color: var(--social-brand-strava) !important;
+  color: #fff !important;
+}
+
 .wrapper .strava:hover .tooltip,
-.wrapper .strava:hover .tooltip::before,
 .wrapper .strava:focus-within .tooltip,
+.wrapper .strava:hover .tooltip::before,
 .wrapper .strava:focus-within .tooltip::before {
-  background: var(--social-brand-strava);
-  border-color: var(--social-brand-strava);
-  color: #fff;
+  background: var(--social-brand-strava) !important;
+  color: #fff !important;
 }
 
 .wrapper .whoop:hover,
-.wrapper .whoop:focus-within,
+.wrapper .whoop:focus-within {
+  background: var(--social-brand-whoop) !important;
+  border-color: var(--social-brand-whoop) !important;
+  color: #fff !important;
+}
+
 .wrapper .whoop:hover .tooltip,
-.wrapper .whoop:hover .tooltip::before,
 .wrapper .whoop:focus-within .tooltip,
+.wrapper .whoop:hover .tooltip::before,
 .wrapper .whoop:focus-within .tooltip::before {
-  background: var(--social-brand-whoop);
-  border-color: var(--social-brand-whoop);
-  color: #fff;
+  background: var(--social-brand-whoop) !important;
+  color: #fff !important;
 }
 
 html.dark .wrapper .whoop:hover,
 html.dark .wrapper .whoop:focus-within {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #000;
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000 !important;
+}
+
+html.dark .wrapper .whoop:hover .tooltip,
+html.dark .wrapper .whoop:focus-within .tooltip,
+html.dark .wrapper .whoop:hover .tooltip::before,
+html.dark .wrapper .whoop:focus-within .tooltip::before {
+  background: #ffffff !important;
+  color: #000 !important;
 }
 
 .wrapper .icon a:focus {

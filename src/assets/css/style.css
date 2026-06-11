@@ -4145,6 +4145,11 @@ html.dark .wrapper .icon:hover {
   color: var(--snapchat-color);
 }
 
+html:not(.dark) .wrapper .snapchat:not(:hover):not(:focus-within) .fab {
+  -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.28);
+  paint-order: stroke fill;
+}
+
 .wrapper .telegram {
   color: var(--telegram-color);
 }

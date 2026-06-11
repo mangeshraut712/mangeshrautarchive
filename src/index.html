@@ -107,6 +107,9 @@
 
   <link rel="manifest" href="manifest.json" />
   <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
+  <link rel="preload" as="style" href="assets/css/contact.css?v=20260611d" />
+  <link rel="preload" as="style" href="assets/css/style.css?v=20260611d" />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" />
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
@@ -643,16 +646,17 @@
   <!-- Google Fonts preconnect moved to head top for performance -->
 
   <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260423a" />
-  <link rel="stylesheet" data-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    data-lazy-style-key="interactive" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" media="print" onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
       integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" />
   </noscript>
-  <link rel="stylesheet" data-href="assets/css/style.css?v=20260611b" data-lazy-style-key="interactive" />
-  <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260611b" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260611b" />
-  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260611c" data-lazy-style-key="contact" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260611d" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260611d" /></noscript>
+  <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260611d" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260611d" />
+  <link rel="stylesheet" href="assets/css/contact.css?v=20260611d" />
 
   <!-- Performance-Optimized Animations -->
   <link rel="stylesheet" data-href="assets/css/animations.css?v=20260423a" data-lazy-style-key="motion" />
@@ -2912,7 +2916,7 @@
                   <li class="icon snapchat"><a href="https://snapchat.com/t/nk1K673G" target="_blank"
                       rel="noopener noreferrer" aria-label="Snapchat">
                       <span class="tooltip">Snapchat</span>
-                      <i class="fab fa-snapchat" style="font-size: 1.2em;"></i>
+                      <i class="fab fa-snapchat" style="font-size: 1.2em;" aria-hidden="true"></i>
                     </a></li>
                   <li class="icon telegram"><a href="https://t.me/mangesh71298" target="_blank"
                       rel="noopener noreferrer" aria-label="Telegram">
@@ -3539,7 +3543,7 @@
             <li class="icon snapchat"><a href="https://snapchat.com/t/nk1K673G" target="_blank"
                 rel="noopener noreferrer" aria-label="Snapchat">
                 <span class="tooltip">Snapchat</span>
-                <i class="fab fa-snapchat" style="font-size: 1.2em;"></i>
+                <i class="fab fa-snapchat" style="font-size: 1.2em;" aria-hidden="true"></i>
               </a></li>
             <li class="icon telegram"><a href="https://t.me/mangesh71298" target="_blank" rel="noopener noreferrer"
                 aria-label="Telegram">
