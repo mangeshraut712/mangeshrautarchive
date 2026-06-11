@@ -335,6 +335,16 @@ textarea,
   border: 1px solid rgb(0 0 0 / 10%) !important;
 }
 
+.travel-search input,
+.travel-search input:focus,
+html.dark .travel-search input,
+html.dark .travel-search input:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
 html.dark input,
 html.dark textarea,
 html.dark .contact-input,
@@ -360,30 +370,53 @@ html.dark textarea:focus {
 
 /* ========================================
    5. SECTIONS & GLOBAL BACKGROUNDS - SOLID
+   Homepage shells only; travel/monitor keep local surfaces.
    ======================================== */
 
 html,
-body,
-main,
-section,
-header,
-footer,
-.container,
-.page-wrapper {
-  background: #fff !important;
-  background-color: #fff !important;
+body {
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
 }
 
 html.dark,
-html.dark body,
-html.dark main,
-html.dark section,
-html.dark header,
-html.dark footer,
-html.dark .container,
-html.dark .page-wrapper {
-  background: #000 !important;
-  background-color: #000 !important;
+html.dark body {
+  background: var(--theme-page-bg, #000000) !important;
+  background-color: var(--theme-page-bg, #000000) !important;
+}
+
+body:not(.travel-body):not(.monitor-page) main,
+body:not(.travel-body):not(.monitor-page) section,
+body:not(.travel-body):not(.monitor-page) header,
+body:not(.travel-body):not(.monitor-page) footer,
+body:not(.travel-body):not(.monitor-page) .container,
+body:not(.travel-body):not(.monitor-page) .page-wrapper {
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
+}
+
+html.dark body:not(.travel-body):not(.monitor-page) main,
+html.dark body:not(.travel-body):not(.monitor-page) section,
+html.dark body:not(.travel-body):not(.monitor-page) header,
+html.dark body:not(.travel-body):not(.monitor-page) footer,
+html.dark body:not(.travel-body):not(.monitor-page) .container,
+html.dark body:not(.travel-body):not(.monitor-page) .page-wrapper {
+  background: var(--theme-page-bg, #000000) !important;
+  background-color: var(--theme-page-bg, #000000) !important;
+}
+
+body.travel-body main,
+body.monitor-page main,
+body.monitor-page header {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+html.dark body.travel-body main,
+html.dark body.monitor-page main,
+html.dark body.monitor-page header {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* Social icons wrapper should be transparent */
@@ -392,12 +425,12 @@ html.dark footer .wrapper {
   background: transparent !important;
 }
 
-section:nth-child(even) {
-  background: #fff !important;
+body:not(.travel-body):not(.monitor-page) section:nth-child(even) {
+  background: var(--theme-page-bg, #ffffff) !important;
 }
 
-html.dark section:nth-child(even) {
-  background: #000 !important;
+html.dark body:not(.travel-body):not(.monitor-page) section:nth-child(even) {
+  background: var(--theme-page-bg, #000000) !important;
 }
 
 /* ========================================

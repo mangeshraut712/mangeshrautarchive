@@ -8,8 +8,9 @@ import { travelData as rawTravelData } from '../data/travel-locations.js';
 
 const travelData = createTravelNarrative(rawTravelData);
 const VISITED_PIN_COLOR = '#ff3b30';
-const MAPLIBRE_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css';
-const MAPLIBRE_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js';
+const MAPLIBRE_VERSION = '5.24.0';
+const MAPLIBRE_CSS = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION}/dist/maplibre-gl.css`;
+const MAPLIBRE_JS = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION}/dist/maplibre-gl.js`;
 const mapWarningMessages = new Set();
 const waypointSearchCache = new WeakMap();
 const waypointCategoryCache = new WeakMap();
@@ -33,6 +34,9 @@ const state = {
   themeObserver: null,
   activeCategories: new Set(),
   advancedSearchExpanded: false,
+  routeVisible: true,
+  projectionType: 'globe',
+  mapInteractionsBound: false,
 };
 
 function waypointColor() {
@@ -293,11 +297,29 @@ function updateResultsSummary(filtered) {
     : `${total} places across ${travelData.summary.countries} countries · city guides, landmarks, and local highlights`;
 }
 
+function getActiveWaypoint() {
+  return Number.isInteger(state.activeIndex) ? travelData.waypoints[state.activeIndex] : null;
+}
+
+function withTravelViewTransition(callback) {
+  if (
+    !document.startViewTransition ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    callback();
+    return;
+  }
+
+  document.startViewTransition(callback);
+}
+
 function applyFilterChange({ focusSearch = false } = {}) {
   stopTour();
-  syncFilterControls();
-  renderTimeline();
-  fitMapToVisiblePlaces();
+  withTravelViewTransition(() => {
+    syncFilterControls();
+    renderTimeline();
+    fitMapToVisiblePlaces();
+  });
 
   if (focusSearch) {
     document.getElementById('place-search')?.focus();
@@ -308,6 +330,7 @@ function syncFilterControls() {
   const search = document.getElementById('place-search');
   const clear = document.getElementById('clear-place-search');
   const featured = document.getElementById('featured-toggle');
+  const route = document.getElementById('route-layer-toggle');
   const advancedToggle = document.getElementById('toggle-advanced-search');
   const advancedContent = document.getElementById('advanced-search-content');
 
@@ -315,6 +338,8 @@ function syncFilterControls() {
   clear?.classList.toggle('visible', Boolean(state.searchTerm));
   featured?.classList.toggle('active', state.featuredOnly);
   featured?.setAttribute('aria-pressed', String(state.featuredOnly));
+  route?.classList.toggle('active', state.routeVisible);
+  route?.setAttribute('aria-pressed', String(state.routeVisible));
   advancedToggle?.setAttribute('aria-expanded', String(state.advancedSearchExpanded));
   advancedContent?.classList.toggle('expanded', state.advancedSearchExpanded);
 
@@ -329,6 +354,36 @@ function syncFilterControls() {
     chip.classList.toggle('active', isActive);
     chip.setAttribute('aria-pressed', String(isActive));
   });
+}
+
+function syncProjectionToggle() {
+  const toggle = document.getElementById('travel-projection-toggle');
+  const icon = toggle?.querySelector('i');
+  if (!toggle || !icon) return;
+
+  const isGlobe = state.projectionType === 'globe';
+  icon.className = `fas ${isGlobe ? 'fa-globe' : 'fa-map'}`;
+  toggle.setAttribute('aria-pressed', String(isGlobe));
+  toggle.setAttribute('aria-label', isGlobe ? 'Switch to flat map' : 'Switch to globe map');
+}
+
+function updateTravelStatus() {
+  const projection = document.getElementById('travel-status-projection');
+  const route = document.getElementById('travel-status-route');
+  const active = document.getElementById('travel-status-active');
+  const activeWaypoint = getActiveWaypoint();
+
+  if (projection) projection.textContent = state.projectionType === 'globe' ? 'Globe' : 'Flat';
+  if (route) {
+    route.textContent = state.routeVisible
+      ? `${state.visibleIndexes.length} stop route`
+      : 'Route hidden';
+  }
+  if (active) {
+    active.textContent = activeWaypoint
+      ? `${activeWaypoint.title}, ${activeWaypoint.locality.country}`
+      : 'Select a place';
+  }
 }
 
 function resetFilters({ focusSearch = false } = {}) {
@@ -382,6 +437,7 @@ function renderTimeline() {
         <button class="travel-empty-state__reset" type="button" data-reset-travel>Reset filters</button>
       </div>`;
     updateMapPointVisibility();
+    updateTravelStatus();
     return;
   }
 
@@ -424,6 +480,7 @@ function renderTimeline() {
 
   updateStopA11y();
   updateMapPointVisibility();
+  updateTravelStatus();
 }
 
 function renderStopCard(waypoint, index, countryGroupHeader) {
@@ -513,6 +570,7 @@ function bindFilters() {
   const clear = document.getElementById('clear-place-search');
   const featured = document.getElementById('featured-toggle');
   const tour = document.getElementById('spotlight-tour');
+  const route = document.getElementById('route-layer-toggle');
   const reset = document.getElementById('reset-travel-filters');
   const advancedToggle = document.getElementById('toggle-advanced-search');
   const advancedContent = document.getElementById('advanced-search-content');
@@ -540,6 +598,13 @@ function bindFilters() {
       return;
     }
     startTour();
+  });
+
+  route?.addEventListener('click', () => {
+    state.routeVisible = !state.routeVisible;
+    syncFilterControls();
+    updateRouteVisibility();
+    updateTravelStatus();
   });
 
   reset?.addEventListener('click', () => {
@@ -824,6 +889,7 @@ function setActive(index) {
   cancelAnimationFrame(state.spinFrame);
   state.activeIndex = index;
   const waypoint = waypoints[index];
+  updateTravelStatus();
 
   document.querySelectorAll('.travel-stop').forEach(el => {
     const isActive = Number(el.dataset.index) === index;
@@ -838,6 +904,7 @@ function setActive(index) {
 
   if (!state.ready) return;
   updateActiveMarker(waypoint);
+  updateRouteSources();
 
   const isMobile = window.innerWidth <= 768;
   state.map.flyTo({
@@ -968,6 +1035,8 @@ async function initMap() {
     bearing: 0,
     antialias: true,
     attributionControl: true,
+    cooperativeGestures: true,
+    maxPitch: 70,
   });
 
   state.map.addControl(
@@ -975,18 +1044,39 @@ async function initMap() {
     'bottom-right'
   );
   state.map.on('error', handleMapError);
+  state.map.on('style.load', () => {
+    setMapProjection();
+    if (state.ready) {
+      restoreMapDataLayers();
+    }
+  });
 
   state.map.on('load', () => {
     state.ready = true;
-    addMapSources();
-    addMapLayers();
+    setMapProjection();
+    restoreMapDataLayers();
     fitMapToVisiblePlaces();
     startSpin();
     bindThemeSync();
+    updateTravelStatus();
   });
 }
 
 function addMapSources() {
+  if (state.map.getSource('all-stops')) return;
+
+  state.map.addSource('route-path', {
+    type: 'geojson',
+    lineMetrics: true,
+    data: buildRouteFeatureCollection(),
+  });
+
+  state.map.addSource('route-progress', {
+    type: 'geojson',
+    lineMetrics: true,
+    data: buildRouteProgressFeatureCollection(),
+  });
+
   state.map.addSource('all-stops', {
     type: 'geojson',
     data: buildVisitedPlacesFeatureCollection(),
@@ -996,6 +1086,42 @@ function addMapSources() {
     type: 'geojson',
     data: { type: 'FeatureCollection', features: [] },
   });
+}
+
+function buildLineFeatureCollection(coordinates) {
+  return {
+    type: 'FeatureCollection',
+    features:
+      coordinates.length > 1
+        ? [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: { type: 'LineString', coordinates },
+            },
+          ]
+        : [],
+  };
+}
+
+function getVisibleRouteCoordinates() {
+  return state.visibleIndexes.map(index => travelData.waypoints[index].locality.coordinates);
+}
+
+function buildRouteFeatureCollection() {
+  return buildLineFeatureCollection(getVisibleRouteCoordinates());
+}
+
+function buildRouteProgressFeatureCollection() {
+  const activePosition = state.visibleIndexes.indexOf(state.activeIndex);
+  if (activePosition < 1) {
+    return buildLineFeatureCollection([]);
+  }
+
+  const coordinates = state.visibleIndexes
+    .slice(0, activePosition + 1)
+    .map(index => travelData.waypoints[index].locality.coordinates);
+  return buildLineFeatureCollection(coordinates);
 }
 
 function buildVisitedPlacesFeatureCollection() {
@@ -1015,6 +1141,40 @@ function buildVisitedPlacesFeatureCollection() {
 }
 
 function addMapLayers() {
+  if (state.map.getLayer('all-stops-circles')) return;
+
+  state.map.addLayer({
+    id: 'route-path-line',
+    type: 'line',
+    source: 'route-path',
+    layout: {
+      'line-cap': 'round',
+      'line-join': 'round',
+      visibility: state.routeVisible ? 'visible' : 'none',
+    },
+    paint: {
+      'line-color': '#0071e3',
+      'line-width': ['interpolate', ['linear'], ['zoom'], 2, 1.25, 6, 2.8, 11, 4.2],
+      'line-opacity': 0.38,
+    },
+  });
+
+  state.map.addLayer({
+    id: 'route-progress-line',
+    type: 'line',
+    source: 'route-progress',
+    layout: {
+      'line-cap': 'round',
+      'line-join': 'round',
+      visibility: state.routeVisible ? 'visible' : 'none',
+    },
+    paint: {
+      'line-color': VISITED_PIN_COLOR,
+      'line-width': ['interpolate', ['linear'], ['zoom'], 2, 2, 6, 3.6, 11, 5.4],
+      'line-opacity': 0.82,
+    },
+  });
+
   state.map.addLayer({
     id: 'all-stops-halo',
     type: 'circle',
@@ -1069,29 +1229,52 @@ function addMapLayers() {
     },
   });
 
-  state.map.on('click', 'all-stops-circles', event => {
-    const index = Number(event.features[0].properties.index);
-    if (state.visibleIndexes.includes(index)) {
-      stopTour();
-      setActive(index);
-    }
-  });
-  state.map.on('mouseenter', 'all-stops-circles', () => {
-    state.map.getCanvas().style.cursor = 'pointer';
-  });
-  state.map.on('mouseleave', 'all-stops-circles', () => {
-    state.map.getCanvas().style.cursor = '';
-  });
+  if (!state.mapInteractionsBound) {
+    state.mapInteractionsBound = true;
+    state.map.on('click', 'all-stops-circles', event => {
+      const index = Number(event.features[0].properties.index);
+      if (state.visibleIndexes.includes(index)) {
+        stopTour();
+        setActive(index);
+      }
+    });
+    state.map.on('mouseenter', 'all-stops-circles', () => {
+      state.map.getCanvas().style.cursor = 'pointer';
+    });
+    state.map.on('mouseleave', 'all-stops-circles', () => {
+      state.map.getCanvas().style.cursor = '';
+    });
+  }
 }
 
 function updateMapPointVisibility() {
   if (!state.ready) return;
   state.map.getSource('all-stops')?.setData(buildVisitedPlacesFeatureCollection());
+  updateRouteSources();
+  updateTravelStatus();
+}
+
+function updateRouteSources() {
+  if (!state.ready) return;
+  state.map.getSource('route-path')?.setData(buildRouteFeatureCollection());
+  state.map.getSource('route-progress')?.setData(buildRouteProgressFeatureCollection());
+  updateRouteVisibility();
+}
+
+function updateRouteVisibility() {
+  if (!state.ready) return;
+  const visibility = state.routeVisible ? 'visible' : 'none';
+  ['route-path-line', 'route-progress-line'].forEach(layerId => {
+    if (state.map.getLayer(layerId)) {
+      state.map.setLayoutProperty(layerId, 'visibility', visibility);
+    }
+  });
 }
 
 function clearActiveMarker() {
   if (!state.ready) return;
   state.map.getSource('active-marker')?.setData({ type: 'FeatureCollection', features: [] });
+  updateRouteSources();
 }
 
 function updateActiveMarker(waypoint) {
@@ -1125,6 +1308,27 @@ function fitMapToVisiblePlaces() {
   });
 }
 
+function restoreMapDataLayers() {
+  addMapSources();
+  addMapLayers();
+  updateMapPointVisibility();
+
+  const activeWaypoint = getActiveWaypoint();
+  if (activeWaypoint) {
+    updateActiveMarker(activeWaypoint);
+  }
+}
+
+function setMapProjection() {
+  if (!state.map || typeof state.map.setProjection !== 'function') return;
+
+  try {
+    state.map.setProjection({ type: state.projectionType });
+  } catch (error) {
+    console.warn(`Map projection unavailable: ${error.message}`);
+  }
+}
+
 function startSpin() {
   let bearing = 0;
   function tick() {
@@ -1141,17 +1345,25 @@ function bindThemeSync() {
   if (state.themeObserver) return;
   state.themeObserver = new MutationObserver(() => {
     state.map?.setStyle(getMapStyle());
-    state.map?.once('styledata', () => {
-      if (!state.map.getSource('all-stops')) {
-        addMapSources();
-        addMapLayers();
-        updateMapPointVisibility();
-      }
-    });
   });
   state.themeObserver.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['class'],
+  });
+}
+
+function bindProjectionToggle() {
+  const toggle = document.getElementById('travel-projection-toggle');
+  if (!toggle) return;
+
+  syncProjectionToggle();
+
+  toggle.addEventListener('click', () => {
+    state.projectionType = state.projectionType === 'globe' ? 'mercator' : 'globe';
+    syncProjectionToggle();
+    setMapProjection();
+    fitMapToVisiblePlaces();
+    updateTravelStatus();
   });
 }
 
@@ -1234,6 +1446,7 @@ function bindSidebarToggle() {
 
 function init() {
   bindThemeToggle();
+  bindProjectionToggle();
   bindSidebarToggle();
   populateStats();
   renderCountryPills();

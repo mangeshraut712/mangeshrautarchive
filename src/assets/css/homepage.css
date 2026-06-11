@@ -67,8 +67,6 @@ html:not(.dark) .home-hero {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  max-width: 92px;
-  max-height: 92px;
   border-radius: 50% !important;
   padding: 0 !important;
   border: none !important;
@@ -245,6 +243,8 @@ html.dark .hero-description {
   .profile-image-wrapper {
     width: 180px !important;
     height: 180px !important;
+    min-width: 180px !important;
+    min-height: 180px !important;
   }
 
   .vibe-coder-badge,

@@ -1411,8 +1411,8 @@ html,
 html body,
 html main,
 html #main-content,
-html section,
-html header,
+html body:not(.travel-body):not(.monitor-page) section,
+html body:not(.travel-body):not(.monitor-page) header,
 html footer,
 html .page-wrapper,
 html .container,
@@ -1464,19 +1464,9 @@ footer .wrapper {
     .legend-card,
     .music-card-inner,
     .reminder-card,
-    .monitor-summary-card,
-    .monitor-summary-panel,
     .overview-card,
     .doc-card,
     .health-item,
-    .travel-stop,
-    .place-guide-card,
-    .travel-stat,
-    .travel-sidebar .travel-stop,
-    .travel-sidebar .place-guide-card,
-    .travel-sidebar,
-    .travel-sidebar__stats,
-    .travel-filter-panel,
     .game-stat-card,
     .game-info-card,
     .skill-card,
@@ -1507,13 +1497,10 @@ footer .wrapper {
 }
 
 /* ID / section-scoped cards — separate rules (never mix into :is() with classes) */
-#travel-sidebar,
 #skills-container .skill-badge,
 #skills-container .skill-category,
 #skills .skill-category,
 #about .about-image-wrapper,
-.monitor-summary-card,
-.travel-sidebar,
 #experience .experience-content,
 html body #about div.about-text-card,
 html body #about div.about-highlight-card,
@@ -1730,6 +1717,88 @@ html.dark body #contact div.media-card {
   html body #contact div.calendar-wrapper-clean,
   html body #contact div.ios-widget-wrapper,
   html body #contact div.media-card {
+    background: var(--theme-card-surface) !important;
+    background-color: var(--theme-card-surface) !important;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   18. SUBPAGES — Travel + Monitor glass surfaces (both themes)
+   Restores elevation after homepage solid-card policy; loads last.
+   ──────────────────────────────────────────────────────────────── */
+
+body.travel-body {
+  background-color: var(--theme-page-bg) !important;
+}
+
+body.travel-body .travel-layout,
+body.travel-body .travel-ui-layer {
+  background: transparent !important;
+}
+
+body.monitor-page section.section,
+body.monitor-page .monitor-summary-card,
+body.monitor-page .monitor-summary-panel {
+  background: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
+  background-color: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
+  backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
+  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / calc(48% + var(--lg-tint) * 42%)),
+    0 22px 54px rgb(15 23 42 / calc(6% + (1 - var(--lg-tint)) * 7%)) !important;
+}
+
+body.monitor-page .monitor-summary-card {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-blue, #0071e3) 8%, transparent), transparent),
+    rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
+}
+
+html.dark body.monitor-page section.section,
+html.dark body.monitor-page .monitor-summary-card,
+html.dark body.monitor-page .monitor-summary-panel {
+  background: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
+  background-color: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
+  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
+    0 24px 60px rgb(0 0 0 / calc(42% + (1 - var(--lg-tint)) * 12%)) !important;
+}
+
+html.dark body.monitor-page .monitor-summary-card {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-blue, #0a84ff) 12%, transparent), transparent),
+    rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
+}
+
+body.travel-body .travel-stop,
+body.travel-body .place-guide-card,
+body.travel-body .travel-stat,
+body.travel-body .travel-filter-panel {
+  background: rgb(255 255 255 / calc(58% + var(--lg-tint) * 34%)) !important;
+  backdrop-filter: blur(calc(var(--lg-blur-card) - 4px)) saturate(var(--lg-saturate)) !important;
+  -webkit-backdrop-filter: blur(calc(var(--lg-blur-card) - 4px)) saturate(var(--lg-saturate)) !important;
+  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 42%) !important;
+}
+
+html.dark body.travel-body .travel-stop,
+html.dark body.travel-body .place-guide-card,
+html.dark body.travel-body .travel-stat,
+html.dark body.travel-body .travel-filter-panel {
+  background: rgb(0 0 0 / calc(66% + var(--lg-tint) * 26%)) !important;
+  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%) !important;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  body.monitor-page section.section,
+  body.monitor-page .monitor-summary-card,
+  body.monitor-page .monitor-summary-panel,
+  body.travel-body .travel-sidebar,
+  body.travel-body .travel-stop,
+  body.travel-body .place-guide-card {
     background: var(--theme-card-surface) !important;
     background-color: var(--theme-card-surface) !important;
   }

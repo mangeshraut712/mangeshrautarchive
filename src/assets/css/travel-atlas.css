@@ -5,11 +5,11 @@
 
 /* ─── Body ─── */
 html {
-  background-color: #ffffff;
+  background-color: var(--theme-page-bg, #ffffff);
 }
 
 html.dark {
-  background-color: #000000;
+  background-color: var(--theme-page-bg, #000000);
 }
 
 .travel-body {
@@ -173,6 +173,7 @@ html.dark {
 .travel-nav__back:focus-visible,
 .travel-nav__home:focus-visible,
 .travel-nav__panel:focus-visible,
+.travel-nav__projection:focus-visible,
 .travel-nav__theme:focus-visible,
 .country-pill:focus-visible,
 .travel-action:focus-visible,
@@ -212,6 +213,7 @@ html.dark {
   white-space: nowrap;
 }
 
+.travel-nav__projection,
 .travel-nav__theme {
   display: inline-flex;
   align-items: center;
@@ -227,9 +229,16 @@ html.dark {
     background var(--duration-fast) var(--ease-apple),
     transform var(--duration-fast) var(--ease-apple);
 }
+
+.travel-nav__projection:hover,
+.travel-nav__projection[aria-pressed='true'],
 .travel-nav__theme:hover {
   background: var(--fill);
   transform: translateY(-1px);
+}
+
+.travel-nav__projection[aria-pressed='true'] {
+  color: var(--apple-blue);
 }
 
 /* ─── Sidebar ─── */
@@ -244,11 +253,26 @@ html.dark {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: rgb(255 255 255 / calc(58% + var(--lg-tint, 0.55) * 34%));
+  backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px)) saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
+  -webkit-backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px)) saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
+  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint, 0.55) * 28%));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 48%),
+    0 22px 54px rgb(15 23 42 / 8%);
   transition:
     transform var(--duration-normal) var(--ease-apple),
     height var(--duration-normal) var(--ease-apple),
     border-color var(--duration-normal) var(--ease-apple),
     box-shadow var(--duration-normal) var(--ease-apple);
+}
+
+html.dark .travel-sidebar {
+  background: rgb(0 0 0 / calc(66% + var(--lg-tint, 0.55) * 26%));
+  border-color: rgb(255 255 255 / calc(10% + var(--lg-tint, 0.55) * 8%));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 8%),
+    0 24px 60px rgb(0 0 0 / 42%);
 }
 
 .travel-sidebar__handle {
@@ -412,7 +436,7 @@ html.dark {
 
 .travel-actions {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-2);
   margin-top: var(--space-3);
 }
@@ -541,6 +565,12 @@ html.dark {
   color: var(--apple-red);
 }
 
+#route-layer-toggle.active {
+  border-color: color-mix(in srgb, var(--apple-blue) 55%, transparent);
+  background: color-mix(in srgb, var(--apple-blue) 12%, transparent);
+  color: var(--apple-blue);
+}
+
 .travel-action--quiet {
   color: var(--text-tertiary);
 }
@@ -559,6 +589,7 @@ html.dark {
 
 /* ─── Timeline List ─── */
 .travel-timeline {
+  view-transition-name: travel-timeline;
   flex: 1;
   overflow-y: auto;
   padding: var(--space-3) 0;
@@ -573,6 +604,8 @@ html.dark {
   cursor: pointer;
   border-radius: var(--radius-md);
   margin: 6px var(--space-2);
+  content-visibility: auto;
+  contain-intrinsic-size: 180px;
   transition: transform var(--duration-normal) var(--ease-spring);
 }
 
@@ -598,6 +631,8 @@ html.dark {
 
 /* Active state — selected stop keeps blue accent */
 .travel-stop.active {
+  content-visibility: visible;
+  contain-intrinsic-size: auto;
   border-color: var(--theme-card-border-hover, #0071e3);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover, #0071e3) 28%, transparent);
   transform: translateY(-1px);
@@ -901,6 +936,51 @@ html.dark {
   }
 }
 
+/* ─── Compact map status ─── */
+.travel-map-status {
+  position: absolute;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 12;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(520px, calc(100vw - 520px));
+  padding: 8px 10px;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-full);
+  background: #ffffff;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  view-transition-name: travel-status;
+}
+
+.travel-map-status span {
+  min-width: 0;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--fill-secondary) 86%, transparent);
+  font: 800 12px/1 var(--font-text);
+  white-space: nowrap;
+}
+
+.travel-map-status span:last-child {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.dark .travel-map-status {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f5f5f7;
+}
+
+html.dark .travel-map-status span {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 768px) {
   .travel-nav {
@@ -914,9 +994,23 @@ html.dark {
   .travel-nav__panel {
     display: inline-flex;
   }
+  .travel-nav__projection,
   .travel-nav__theme {
     width: 34px;
     height: 34px;
+  }
+
+  .travel-map-status {
+    top: 72px;
+    right: 12px;
+    bottom: auto;
+    left: 12px;
+    justify-content: center;
+    max-width: none;
+  }
+
+  .travel-map-status span:last-child {
+    max-width: 42vw;
   }
 
   .travel-sidebar {
@@ -1002,7 +1096,7 @@ html.dark {
     left: 6px;
     right: 6px;
     bottom: 6px;
-    height: min(88dvh, 760px);
+    height: min(82dvh, 720px);
   }
 
   .travel-sidebar__header {
@@ -1014,7 +1108,7 @@ html.dark {
   }
 
   .travel-actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .travel-action {
@@ -1049,6 +1143,7 @@ html.dark {
 @media (prefers-reduced-motion: reduce) {
   .travel-stop,
   .travel-stop__dot,
+  .travel-nav__projection,
   .travel-nav__theme,
   .travel-action,
   .travel-advanced-content {
