@@ -259,6 +259,10 @@ html.dark #home .hero-verified-badge {
   margin-bottom: 0.5rem;
 }
 
+html.dark #home .hero-title {
+  color: #a1a1a6;
+}
+
 #home .hero-role-flip {
   font-size: 1.5rem;
   font-weight: 600;
@@ -267,6 +271,10 @@ html.dark #home .hero-verified-badge {
 
 #home .hero-role-flip span {
   color: var(--apple-gray-400);
+}
+
+html.dark #home .hero-role-flip span {
+  color: #a1a1a6;
 }
 
 #home .hero-role-flip strong {
