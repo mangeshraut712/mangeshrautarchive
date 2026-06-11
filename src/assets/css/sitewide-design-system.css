@@ -780,6 +780,12 @@ html.dark .wrapper .icon {
   color: var(--snapchat-color);
 }
 
+html:not(.dark) .wrapper .snapchat {
+  background: #fffc00;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #1a1a1a;
+}
+
 .wrapper .telegram {
   color: var(--telegram-color);
 }
