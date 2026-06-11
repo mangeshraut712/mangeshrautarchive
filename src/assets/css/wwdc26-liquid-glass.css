@@ -1676,20 +1676,16 @@ html.dark .launch-intro {
    Ambient depth behind cards so blur reads on light + dark themes.
    ──────────────────────────────────────────────────────────────── */
 
-#contact {
+#contact,
+#blog {
   position: relative;
   isolation: isolate;
-  background:
-    radial-gradient(ellipse 90% 55% at 12% 0%, rgb(0 113 227 / calc(5% + var(--lg-tint) * 4%)), transparent 58%),
-    radial-gradient(ellipse 70% 45% at 92% 100%, rgb(94 92 230 / calc(4% + var(--lg-tint) * 3%)), transparent 52%),
-    var(--theme-page-bg) !important;
+  background: #ffffff !important;
 }
 
-html.dark #contact {
-  background:
-    radial-gradient(ellipse 90% 55% at 12% 0%, rgb(10 132 255 / calc(8% + var(--lg-tint) * 6%)), transparent 58%),
-    radial-gradient(ellipse 70% 45% at 92% 100%, rgb(191 90 242 / calc(6% + var(--lg-tint) * 5%)), transparent 52%),
-    var(--theme-page-bg) !important;
+html.dark #contact,
+html.dark #blog {
+  background: #000000 !important;
 }
 
 html body #contact div.contact-card,
