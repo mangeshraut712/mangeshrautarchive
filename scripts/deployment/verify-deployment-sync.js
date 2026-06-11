@@ -18,6 +18,7 @@ const CONFIG = {
   vercelPreviewUrl: 'https://mangeshrautarchive.vercel.app/',
   distDir: './dist',
   buildConfigFile: './dist/build-config.json',
+  requestTimeoutMs: 10_000,
 };
 
 const colors = {
@@ -135,6 +136,7 @@ async function fetchBuildConfig(baseUrl) {
   const response = await fetch(configUrl, {
     headers: { Accept: 'application/json' },
     cache: 'no-store',
+    signal: AbortSignal.timeout(CONFIG.requestTimeoutMs),
   });
 
   if (!response.ok) {
@@ -146,7 +148,10 @@ async function fetchBuildConfig(baseUrl) {
 
 async function fetchPageTitle(baseUrl, pagePath = '') {
   const pageUrl = new URL(pagePath, baseUrl).toString();
-  const response = await fetch(pageUrl, { cache: 'no-store' });
+  const response = await fetch(pageUrl, {
+    cache: 'no-store',
+    signal: AbortSignal.timeout(CONFIG.requestTimeoutMs),
+  });
   if (!response.ok) {
     throw new Error(`${pageUrl} returned HTTP ${response.status}`);
   }

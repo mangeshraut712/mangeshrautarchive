@@ -4161,90 +4161,110 @@ html.dark .wrapper .icon:hover {
   color: var(--whoop-color);
 }
 
-/* Hover effects - keep background change but ensure text is white */
+/* Hover fills use stable brand tokens (sitewide-design-system.css) */
 
 .wrapper .facebook:hover,
 .wrapper .facebook:hover .tooltip,
 .wrapper .facebook:hover .tooltip::before {
-  background: var(--facebook-color);
+  background: var(--social-brand-facebook);
+  border-color: var(--social-brand-facebook);
   color: #fff;
 }
 
 .wrapper .x:hover,
 .wrapper .x:hover .tooltip,
 .wrapper .x:hover .tooltip::before {
-  background: var(--x-color);
+  background: var(--social-brand-x);
+  border-color: var(--social-brand-x);
   color: #fff;
 }
 
 .wrapper .github:hover,
 .wrapper .github:hover .tooltip,
 .wrapper .github:hover .tooltip::before {
-  background: var(--github-color);
+  background: var(--social-brand-github);
+  border-color: var(--social-brand-github);
   color: #fff;
 }
 
 .wrapper .instagram:hover,
 .wrapper .instagram:hover .tooltip,
 .wrapper .instagram:hover .tooltip::before {
-  background: var(--instagram-color);
+  background: var(--social-brand-instagram);
+  border-color: var(--social-brand-instagram);
   color: #fff;
 }
 
 .wrapper .linkedin:hover,
 .wrapper .linkedin:hover .tooltip,
 .wrapper .linkedin:hover .tooltip::before {
-  background: var(--linkedin-color);
+  background: var(--social-brand-linkedin);
+  border-color: var(--social-brand-linkedin);
   color: #fff;
 }
 
 .wrapper .youtube:hover,
 .wrapper .youtube:hover .tooltip,
 .wrapper .youtube:hover .tooltip::before {
-  background: var(--youtube-color);
+  background: var(--social-brand-youtube);
+  border-color: var(--social-brand-youtube);
   color: #fff;
 }
 
 .wrapper .leetcode:hover,
 .wrapper .leetcode:hover .tooltip,
 .wrapper .leetcode:hover .tooltip::before {
-  background: var(--leetcode-color);
+  background: var(--social-brand-leetcode);
+  border-color: var(--social-brand-leetcode);
   color: #fff;
 }
 
 .wrapper .snapchat:hover,
 .wrapper .snapchat:hover .tooltip,
 .wrapper .snapchat:hover .tooltip::before {
-  background: var(--snapchat-color);
+  background: var(--social-brand-snapchat);
+  border-color: var(--social-brand-snapchat);
   color: #000;
 }
 
 .wrapper .telegram:hover,
 .wrapper .telegram:hover .tooltip,
 .wrapper .telegram:hover .tooltip::before {
-  background: var(--telegram-color);
+  background: var(--social-brand-telegram);
+  border-color: var(--social-brand-telegram);
   color: #fff;
 }
 
 .wrapper .spotify:hover,
 .wrapper .spotify:hover .tooltip,
 .wrapper .spotify:hover .tooltip::before {
-  background: var(--spotify-color);
+  background: var(--social-brand-spotify);
+  border-color: var(--social-brand-spotify);
   color: #fff;
 }
 
 .wrapper .strava:hover,
 .wrapper .strava:hover .tooltip,
 .wrapper .strava:hover .tooltip::before {
-  background: var(--strava-color);
+  background: var(--social-brand-strava);
+  border-color: var(--social-brand-strava);
   color: #fff;
 }
 
 .wrapper .whoop:hover,
 .wrapper .whoop:hover .tooltip,
 .wrapper .whoop:hover .tooltip::before {
-  background: var(--whoop-color);
+  background: var(--social-brand-whoop);
+  border-color: var(--social-brand-whoop);
   color: #fff;
+}
+
+html.dark .wrapper .whoop:hover,
+html.dark .wrapper .whoop:hover .tooltip,
+html.dark .wrapper .whoop:hover .tooltip::before {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000;
 }
 
 /* Footer + contact social rows — circular icons, tooltips below labels */

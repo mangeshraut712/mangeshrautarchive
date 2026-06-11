@@ -640,26 +640,31 @@ html:not(.dark) .health-item:hover {
 :root {
   --social-surface-light: #ffffff;
   --social-surface-dark: #000000;
-  --social-border-light: rgba(0, 0, 0, 0.08);
   --social-border-dark: rgba(255, 255, 255, 0.12);
-  --social-hover-border-light: #0071e3;
-  --social-hover-border-dark: #0a84ff;
-  --social-hover-glow-light: 0 0 0 1px color-mix(in srgb, #0071e3 24%, transparent),
-    0 8px 20px rgba(0, 113, 227, 0.18);
-  --social-hover-glow-dark: 0 0 0 1px color-mix(in srgb, #0a84ff 28%, transparent),
-    0 8px 24px rgba(10, 132, 255, 0.22);
-  --facebook-color: #1877f2;
-  --instagram-color: #e4405f;
-  --linkedin-color: #0177b5;
-  --youtube-color: #ff0000;
-  --github-color: #24292e;
-  --x-color: #0f1419;
-  --leetcode-color: #ffa116;
-  --snapchat-color: #fffc00;
-  --telegram-color: #229ed9;
-  --spotify-color: #1db954;
-  --strava-color: #fc4c02;
-  --whoop-color: #000000;
+  --social-brand-facebook: #1877f2;
+  --social-brand-instagram: #e4405f;
+  --social-brand-linkedin: #0177b5;
+  --social-brand-youtube: #ff0000;
+  --social-brand-github: #24292e;
+  --social-brand-x: #0f1419;
+  --social-brand-leetcode: #ffa116;
+  --social-brand-snapchat: #fffc00;
+  --social-brand-telegram: #229ed9;
+  --social-brand-spotify: #1db954;
+  --social-brand-strava: #fc4c02;
+  --social-brand-whoop: #000000;
+  --facebook-color: var(--social-brand-facebook);
+  --instagram-color: var(--social-brand-instagram);
+  --linkedin-color: var(--social-brand-linkedin);
+  --youtube-color: var(--social-brand-youtube);
+  --github-color: var(--social-brand-github);
+  --x-color: var(--social-brand-x);
+  --leetcode-color: var(--social-brand-leetcode);
+  --snapchat-color: var(--social-brand-snapchat);
+  --telegram-color: var(--social-brand-telegram);
+  --spotify-color: var(--social-brand-spotify);
+  --strava-color: var(--social-brand-strava);
+  --whoop-color: var(--social-brand-whoop);
 }
 
 html.dark {
@@ -715,8 +720,8 @@ footer .wrapper {
   flex-direction: column;
   cursor: pointer;
   background: var(--social-surface-light);
-  border: 1px solid var(--social-border-light);
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid transparent;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -740,12 +745,16 @@ html.dark .wrapper .icon {
   width: 1.2em;
   height: 1.2em;
   color: inherit;
-  fill: currentColor;
-  stroke: currentColor;
 }
 
-.wrapper .icon svg [fill='none'] {
-  fill: none;
+.wrapper .icon svg path[fill]:not([fill='none']),
+.wrapper .icon svg:not([fill='none']) {
+  fill: currentColor;
+}
+
+.wrapper .icon svg[stroke],
+.wrapper .icon svg path[stroke] {
+  stroke: currentColor;
 }
 
 .wrapper .facebook {
@@ -850,140 +859,148 @@ html.dark .wrapper .tooltip {
 
 .wrapper .icon:hover,
 .wrapper .icon:focus-within {
-  transform: translateY(-6px) scale(1.08);
+  transform: translateY(-8px) scale(1.1);
 }
 
 html:not(.dark) .wrapper .icon:hover,
 html:not(.dark) .wrapper .icon:focus-within {
-  border-color: var(--social-hover-border-light);
-  box-shadow: var(--social-hover-glow-light);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 html.dark .wrapper .icon:hover,
 html.dark .wrapper .icon:focus-within {
-  border-color: var(--social-hover-border-dark);
-  box-shadow: var(--social-hover-glow-dark);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .wrapper .facebook:hover,
 .wrapper .facebook:focus-within,
 .wrapper .facebook:hover .tooltip,
-.wrapper .facebook:hover .tooltip::before {
-  background: var(--facebook-color);
-  border-color: var(--facebook-color);
+.wrapper .facebook:hover .tooltip::before,
+.wrapper .facebook:focus-within .tooltip,
+.wrapper .facebook:focus-within .tooltip::before {
+  background: var(--social-brand-facebook);
+  border-color: var(--social-brand-facebook);
   color: #fff;
 }
 
 .wrapper .instagram:hover,
 .wrapper .instagram:focus-within,
 .wrapper .instagram:hover .tooltip,
-.wrapper .instagram:hover .tooltip::before {
-  background: var(--instagram-color);
-  border-color: var(--instagram-color);
+.wrapper .instagram:hover .tooltip::before,
+.wrapper .instagram:focus-within .tooltip,
+.wrapper .instagram:focus-within .tooltip::before {
+  background: var(--social-brand-instagram);
+  border-color: var(--social-brand-instagram);
   color: #fff;
 }
 
 .wrapper .linkedin:hover,
 .wrapper .linkedin:focus-within,
 .wrapper .linkedin:hover .tooltip,
-.wrapper .linkedin:hover .tooltip::before {
-  background: var(--linkedin-color);
-  border-color: var(--linkedin-color);
+.wrapper .linkedin:hover .tooltip::before,
+.wrapper .linkedin:focus-within .tooltip,
+.wrapper .linkedin:focus-within .tooltip::before {
+  background: var(--social-brand-linkedin);
+  border-color: var(--social-brand-linkedin);
   color: #fff;
 }
 
 .wrapper .youtube:hover,
 .wrapper .youtube:focus-within,
 .wrapper .youtube:hover .tooltip,
-.wrapper .youtube:hover .tooltip::before {
-  background: var(--youtube-color);
-  border-color: var(--youtube-color);
+.wrapper .youtube:hover .tooltip::before,
+.wrapper .youtube:focus-within .tooltip,
+.wrapper .youtube:focus-within .tooltip::before {
+  background: var(--social-brand-youtube);
+  border-color: var(--social-brand-youtube);
   color: #fff;
 }
 
 .wrapper .github:hover,
 .wrapper .github:focus-within,
 .wrapper .github:hover .tooltip,
-.wrapper .github:hover .tooltip::before {
-  background: var(--github-color);
-  border-color: var(--github-color);
-  color: #fff;
-}
-
-html.dark .wrapper .github:hover,
-html.dark .wrapper .github:focus-within {
-  background: #24292e;
-  border-color: #24292e;
+.wrapper .github:hover .tooltip::before,
+.wrapper .github:focus-within .tooltip,
+.wrapper .github:focus-within .tooltip::before {
+  background: var(--social-brand-github);
+  border-color: var(--social-brand-github);
   color: #fff;
 }
 
 .wrapper .x:hover,
 .wrapper .x:focus-within,
 .wrapper .x:hover .tooltip,
-.wrapper .x:hover .tooltip::before {
-  background: var(--x-color);
-  border-color: var(--x-color);
-  color: #fff;
-}
-
-html:not(.dark) .wrapper .x:hover,
-html:not(.dark) .wrapper .x:focus-within {
-  background: #0f1419;
-  border-color: #0f1419;
+.wrapper .x:hover .tooltip::before,
+.wrapper .x:focus-within .tooltip,
+.wrapper .x:focus-within .tooltip::before {
+  background: var(--social-brand-x);
+  border-color: var(--social-brand-x);
   color: #fff;
 }
 
 .wrapper .leetcode:hover,
 .wrapper .leetcode:focus-within,
 .wrapper .leetcode:hover .tooltip,
-.wrapper .leetcode:hover .tooltip::before {
-  background: var(--leetcode-color);
-  border-color: var(--leetcode-color);
+.wrapper .leetcode:hover .tooltip::before,
+.wrapper .leetcode:focus-within .tooltip,
+.wrapper .leetcode:focus-within .tooltip::before {
+  background: var(--social-brand-leetcode);
+  border-color: var(--social-brand-leetcode);
   color: #fff;
 }
 
 .wrapper .snapchat:hover,
 .wrapper .snapchat:focus-within,
 .wrapper .snapchat:hover .tooltip,
-.wrapper .snapchat:hover .tooltip::before {
-  background: var(--snapchat-color);
-  border-color: var(--snapchat-color);
+.wrapper .snapchat:hover .tooltip::before,
+.wrapper .snapchat:focus-within .tooltip,
+.wrapper .snapchat:focus-within .tooltip::before {
+  background: var(--social-brand-snapchat);
+  border-color: var(--social-brand-snapchat);
   color: #000;
 }
 
 .wrapper .telegram:hover,
 .wrapper .telegram:focus-within,
 .wrapper .telegram:hover .tooltip,
-.wrapper .telegram:hover .tooltip::before {
-  background: var(--telegram-color);
-  border-color: var(--telegram-color);
+.wrapper .telegram:hover .tooltip::before,
+.wrapper .telegram:focus-within .tooltip,
+.wrapper .telegram:focus-within .tooltip::before {
+  background: var(--social-brand-telegram);
+  border-color: var(--social-brand-telegram);
   color: #fff;
 }
 
 .wrapper .spotify:hover,
 .wrapper .spotify:focus-within,
 .wrapper .spotify:hover .tooltip,
-.wrapper .spotify:hover .tooltip::before {
-  background: var(--spotify-color);
-  border-color: var(--spotify-color);
+.wrapper .spotify:hover .tooltip::before,
+.wrapper .spotify:focus-within .tooltip,
+.wrapper .spotify:focus-within .tooltip::before {
+  background: var(--social-brand-spotify);
+  border-color: var(--social-brand-spotify);
   color: #fff;
 }
 
 .wrapper .strava:hover,
 .wrapper .strava:focus-within,
 .wrapper .strava:hover .tooltip,
-.wrapper .strava:hover .tooltip::before {
-  background: var(--strava-color);
-  border-color: var(--strava-color);
+.wrapper .strava:hover .tooltip::before,
+.wrapper .strava:focus-within .tooltip,
+.wrapper .strava:focus-within .tooltip::before {
+  background: var(--social-brand-strava);
+  border-color: var(--social-brand-strava);
   color: #fff;
 }
 
 .wrapper .whoop:hover,
 .wrapper .whoop:focus-within,
 .wrapper .whoop:hover .tooltip,
-.wrapper .whoop:hover .tooltip::before {
-  background: var(--whoop-color);
-  border-color: var(--whoop-color);
+.wrapper .whoop:hover .tooltip::before,
+.wrapper .whoop:focus-within .tooltip,
+.wrapper .whoop:focus-within .tooltip::before {
+  background: var(--social-brand-whoop);
+  border-color: var(--social-brand-whoop);
   color: #fff;
 }
 
@@ -992,4 +1009,12 @@ html.dark .wrapper .whoop:focus-within {
   background: #ffffff;
   border-color: #ffffff;
   color: #000;
+}
+
+.wrapper .icon a:focus {
+  outline: none;
+}
+
+.wrapper .icon a:focus-visible {
+  outline: none;
 }
