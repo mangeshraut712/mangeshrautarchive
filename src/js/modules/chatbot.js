@@ -111,7 +111,7 @@ const SECTION_CONTEXT_PROMPTS = {
   education: ['Education', "Tell me about Mangesh's education"],
   publications: ['Publications', 'What research has Mangesh published?'],
   certifications: ['Certifications', 'Which certifications does Mangesh hold?'],
-  blog: ['Insights', 'What does Mangesh write about?'],
+  blog: ['Blog', 'What does Mangesh write about?'],
   contact: ['Contact', 'How do I get in touch with Mangesh?'],
 };
 

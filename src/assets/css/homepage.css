@@ -59,10 +59,10 @@ html:not(.dark) .home-hero {
 
 .profile-image-wrapper {
   position: relative;
-  width: clamp(200px, 18vw, 260px) !important;
-  height: clamp(200px, 18vw, 260px) !important;
-  min-width: clamp(200px, 18vw, 260px) !important;
-  min-height: clamp(200px, 18vw, 260px) !important;
+  width: 120px !important;
+  height: 120px !important;
+  min-width: 120px !important;
+  min-height: 120px !important;
   margin-bottom: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -241,10 +241,10 @@ html.dark .hero-description {
 
 @media (width <=768px) {
   .profile-image-wrapper {
-    width: 180px !important;
-    height: 180px !important;
-    min-width: 180px !important;
-    min-height: 180px !important;
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
   }
 
   .vibe-coder-badge,

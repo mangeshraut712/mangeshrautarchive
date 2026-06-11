@@ -293,7 +293,7 @@
      ------------------------------------------------------------------------ */
 
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme='light']) {
       --bg-primary: var(--bg-primary-dark);
       --bg-secondary: var(--bg-secondary-dark);
       --bg-tertiary: var(--bg-tertiary-dark);

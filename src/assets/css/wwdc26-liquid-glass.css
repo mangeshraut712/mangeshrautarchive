@@ -46,7 +46,20 @@ html {
   background-color: var(--theme-page-bg) !important;
 }
 
-html.dark {
+html[data-theme='light'] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #ffffff;
+  --bg-elevated: #ffffff;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --theme-page-bg: #ffffff;
+  --theme-card-surface: #ffffff;
+}
+
+html.dark,
+html[data-theme='dark'] {
   --theme-page-bg: #000000;
   --theme-card-surface: #000000;
   --theme-card-border: rgba(255, 255, 255, 0.12);

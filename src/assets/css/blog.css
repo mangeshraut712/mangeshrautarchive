@@ -173,7 +173,7 @@ html.dark .newsletter-status.is-error {
 
 /* Blog Card */
 .blog-card {
-  background: var(--bg-elevated, #fff) !important;
+  background: var(--theme-card-surface, #fff) !important;
   border-radius: 20px;
   border: 1px solid rgb(0 0 0 / 6%);
   overflow: hidden;
@@ -193,6 +193,17 @@ html.dark .newsletter-status.is-error {
   box-shadow: 0 14px 35px rgb(0 0 0 / 12%);
 }
 */
+
+html:not(.dark) .blog-card {
+  background: #ffffff !important;
+  color: #1d1d1f;
+}
+
+html:not(.dark) .blog-title,
+html:not(.dark) .blog-summary,
+html:not(.dark) .blog-meta {
+  color: inherit;
+}
 
 html.dark .blog-card {
   background: #000000 !important;

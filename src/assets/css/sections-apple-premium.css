@@ -136,10 +136,10 @@ html.dark #home::before {
 /* Hero Profile Image - clean photo, no blue frame */
 #home .profile-image-wrapper {
   position: relative;
-  width: clamp(200px, 18vw, 260px) !important;
-  height: clamp(200px, 18vw, 260px) !important;
-  min-width: clamp(200px, 18vw, 260px) !important;
-  min-height: clamp(200px, 18vw, 260px) !important;
+  width: 120px !important;
+  height: 120px !important;
+  min-width: 120px !important;
+  min-height: 120px !important;
   border-radius: 50%;
   padding: 0;
   background: transparent !important;
@@ -917,10 +917,10 @@ html.dark footer .footer-tagline {
   }
 
   #home .profile-image-wrapper {
-    width: 180px !important;
-    height: 180px !important;
-    min-width: 180px !important;
-    min-height: 180px !important;
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
   }
 
   #experience .experience-item {
