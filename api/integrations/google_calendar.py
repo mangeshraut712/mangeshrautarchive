@@ -75,8 +75,10 @@ def _day_bounds(day_offset: int) -> Dict[str, str]:
     base = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
     start = base + timedelta(days=day_offset)
     end = start + timedelta(days=1)
+
     def fmt(dt):
         return dt.isoformat().replace("+00:00", "Z")
+
     return {"start": fmt(start), "end": fmt(end)}
 
 

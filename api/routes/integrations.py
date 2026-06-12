@@ -30,6 +30,7 @@ from api.integrations.supabase_store import (
 
 router = APIRouter()
 
+
 class HealthVitalsUpsert(BaseModel):
     date: str = Field(..., description="Summary date in YYYY-MM-DD format")
     sleep_score: Optional[int] = None
