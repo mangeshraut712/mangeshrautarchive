@@ -142,8 +142,8 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
             amount = float(value) * (10 ** int(unit))
             meas_type = measure.get("type")
             if meas_type == 1:
-                latest_weight = amount / 1000.0
-            if meas_type in (6, 174):
+                latest_weight = amount
+            if meas_type == 11:
                 latest_fat = amount
 
     if latest_weight is not None:

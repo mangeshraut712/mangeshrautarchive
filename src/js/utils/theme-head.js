@@ -86,15 +86,9 @@
   function getSolarEventUtcMinutes(dayOfYear, lat, lng, isSunrise) {
     var zenith = 90.833;
     var lngHour = lng / 15;
-    var t = isSunrise
-      ? dayOfYear + (6 - lngHour) / 24
-      : dayOfYear + (18 - lngHour) / 24;
+    var t = isSunrise ? dayOfYear + (6 - lngHour) / 24 : dayOfYear + (18 - lngHour) / 24;
     var m = 0.9856 * t - 3.289;
-    var l =
-      m +
-      1.916 * Math.sin(toRadians(m)) +
-      0.02 * Math.sin(toRadians(2 * m)) +
-      282.634;
+    var l = m + 1.916 * Math.sin(toRadians(m)) + 0.02 * Math.sin(toRadians(2 * m)) + 282.634;
     l = ((l % 360) + 360) % 360;
 
     var ra = toDegrees(Math.atan(0.91764 * Math.tan(toRadians(l))));

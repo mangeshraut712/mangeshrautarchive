@@ -196,7 +196,8 @@ code *,
 kbd,
 samp,
 .font-mono {
-  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace !important;
+  font-family:
+    'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace !important;
 }
 
 /* 2.1 Global Section Headings - Unified Style */

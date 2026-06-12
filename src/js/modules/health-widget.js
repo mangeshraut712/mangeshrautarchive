@@ -1,17 +1,17 @@
 /**
  * Health Widget Module
- * Manages Whoop and Withings metrics, localStorage persistence, 
+ * Manages Whoop and Withings metrics, localStorage persistence,
  * UI updates, count-up/highlight animations, and synchronization triggers.
  */
 
 const DEFAULT_METRICS = {
-  sleep: 81,      // %
-  recovery: 47,   // %
-  strain: 5.2,    // 0-21 scale
-  weight: 103.4,  // kg
-  muscle: 68.4,   // %
-  fat: 28.1,      // %
-  lastSynced: null
+  sleep: 81, // %
+  recovery: 47, // %
+  strain: 5.2, // 0-21 scale
+  weight: 103.4, // kg
+  muscle: 68.4, // %
+  fat: 28.1, // %
+  lastSynced: null,
 };
 
 function resolveApiBase() {
@@ -20,7 +20,10 @@ function resolveApiBase() {
     (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
     '';
   if (base) return base.replace(/\/$/, '');
-  if (globalThis.location?.hostname === 'localhost' || globalThis.location?.hostname === '127.0.0.1') {
+  if (
+    globalThis.location?.hostname === 'localhost' ||
+    globalThis.location?.hostname === '127.0.0.1'
+  ) {
     return '';
   }
   return 'https://mangeshraut.pro';
@@ -28,7 +31,7 @@ function resolveApiBase() {
 
 class HealthWidget {
   constructor() {
-    this.storageKey = 'mangesh_health_metrics';
+    this.storageKey = 'mangesh_health_metrics_v2';
     this.metrics = this.loadMetrics();
     this.init();
   }
@@ -44,7 +47,7 @@ class HealthWidget {
     } catch (e) {
       console.warn('Failed to read health metrics from localStorage:', e);
     }
-    
+
     // Default fallback
     const metrics = { ...DEFAULT_METRICS };
     metrics.lastSynced = Date.now() - 3.5 * 60 * 60 * 1000; // ~3.5 hours ago
@@ -84,9 +87,8 @@ class HealthWidget {
       if (typeof data.recoveryScore === 'number') this.metrics.recovery = data.recoveryScore;
       if (typeof data.strain === 'number') this.metrics.strain = data.strain;
 
-      const weightMatch = typeof data.weightTrend === 'string'
-        ? data.weightTrend.match(/([\d.]+)/)
-        : null;
+      const weightMatch =
+        typeof data.weightTrend === 'string' ? data.weightTrend.match(/([\d.]+)/) : null;
       if (weightMatch) this.metrics.weight = parseFloat(weightMatch[1]);
 
       if (data.lastSyncedAt) {
@@ -209,7 +211,7 @@ class HealthWidget {
       success: true,
       metric: cleanName,
       value: value,
-      message: `Updated ${name} to ${value} successfully.`
+      message: `Updated ${name} to ${value} successfully.`,
     };
   }
 }

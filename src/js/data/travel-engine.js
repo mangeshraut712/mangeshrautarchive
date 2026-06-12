@@ -444,6 +444,136 @@ function buildFallbackCityIntelligence(stop) {
   };
 }
 
+function getPlaceText(stop, intelligence) {
+  return [
+    stop.name,
+    stop.placeName,
+    stop.placeKind,
+    stop.region,
+    stop.country,
+    stop.tagline,
+    stop.highlight,
+    intelligence.culturalSignificance,
+    intelligence.localAtmosphere,
+    ...intelligence.mustSee,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function getPlaceArchetype(stop, intelligence) {
+  const text = getPlaceText(stop, intelligence);
+
+  if (/(fort|palace|haveli|heritage|historic|monument|temple|gumbaz|ganpati)/.test(text)) {
+    return 'Heritage layer';
+  }
+  if (/(beach|bay|coast|ocean|island|falls|lake|creek|harbor|keys)/.test(text)) {
+    return 'Waterfront geography';
+  }
+  if (/(mountain|valley|park|forest|ghats|hill|cave|plateau|trail|pocono|acadia)/.test(text)) {
+    return 'Landscape system';
+  }
+  if (/(capital|museum|civic|university|campus|station|downtown|metro|city)/.test(text)) {
+    return 'Urban knowledge node';
+  }
+  if (/(desert|dune|thar|frontier)/.test(text)) {
+    return 'Desert culture';
+  }
+
+  return 'Local field note';
+}
+
+function getDensitySignal(photoCount = 0) {
+  if (!Number.isFinite(photoCount) || photoCount <= 0) return 'curated context';
+  if (photoCount >= 250) return 'deep visual record';
+  if (photoCount >= 75) return 'strong photo trail';
+  if (photoCount >= 20) return 'focused stop';
+  return 'brief field capture';
+}
+
+function getMovementSignal(stop) {
+  if (stop.travelMode === 'flight') return 'long-jump route link';
+  if (stop.travelMode === 'road') return 'road-trip segment';
+  if (stop.travelMode === 'start') return 'route origin';
+  return 'visited waypoint';
+}
+
+function createDefaultBestFor(stop, intelligence) {
+  return [
+    getPlaceArchetype(stop, intelligence),
+    stop.placeKind || stop.tagline || 'City context',
+    stop.region,
+    getDensitySignal(stop.photoCount),
+    getMovementSignal(stop),
+  ].filter(Boolean);
+}
+
+function createDefaultNeighborhoods(stop, intelligence) {
+  return [
+    stop.placeName || stop.name,
+    stop.region,
+    COUNTRY_INTELLIGENCE[stop.country]?.signature || intelligence.mustSee[0],
+  ].filter(Boolean);
+}
+
+function createDefaultThingsToDo(stop, intelligence) {
+  const primaryPlace = stop.placeName || stop.name;
+  const archetype = getPlaceArchetype(stop, intelligence);
+
+  return [
+    {
+      title: primaryPlace,
+      category: archetype,
+      summary: `${primaryPlace} anchors the card: read it through ${intelligence.culturalSignificance.toLowerCase()}`,
+    },
+    {
+      title: stop.region,
+      category: 'Regional context',
+      summary: `${stop.region} supplies the wider geography, food, routes, and local texture around this stop.`,
+    },
+    {
+      title: intelligence.mustSee[0] || stop.highlight || primaryPlace,
+      category: 'What to notice',
+      summary: `Look for ${intelligence.sensoryDescriptors.slice(0, 3).join(', ')} and the movement pattern that made this place memorable.`,
+    },
+  ];
+}
+
+function createAtlasSummary(stop, intelligence) {
+  const title = stop.placeName || stop.name;
+  const archetype = getPlaceArchetype(stop, intelligence).toLowerCase();
+  const movement = getMovementSignal(stop);
+  const density = getDensitySignal(stop.photoCount);
+
+  return `${title} is indexed here as a ${archetype}: ${intelligence.culturalSignificance} The visit signal is ${density}, connected by ${movement}, with the strongest cues in ${intelligence.mustSee.slice(0, 3).join(', ')}.`;
+}
+
+function createQuickFacts(stop, intelligence) {
+  const photoCount = Number.isFinite(stop.photoCount) ? stop.photoCount : 0;
+  const visualRecord =
+    photoCount > 0
+      ? `${photoCount.toLocaleString()} photos · ${getDensitySignal(photoCount)}`
+      : getDensitySignal(photoCount);
+
+  return [
+    { label: 'Region', value: `${stop.region}, ${stop.country}` },
+    { label: 'Place Type', value: getPlaceArchetype(stop, intelligence) },
+    { label: 'Visual Record', value: visualRecord },
+    { label: 'Route Signal', value: getMovementSignal(stop) },
+  ];
+}
+
+function createSignalTags(stop, intelligence) {
+  return [
+    stop.tagline,
+    stop.placeKind,
+    getPlaceArchetype(stop, intelligence),
+    getDensitySignal(stop.photoCount),
+    ...intelligence.sensoryDescriptors.slice(0, 3),
+  ].filter(Boolean);
+}
+
 function dedupeStops(stops) {
   const byPlace = new Map();
   for (const stop of stops) {
@@ -470,6 +600,15 @@ function withCuratedHomeCities(stops) {
 
 function createWaypoint(stop, index) {
   const intelligence = CITY_INTELLIGENCE[stop.name] || buildFallbackCityIntelligence(stop);
+  const bestFor = intelligence.bestFor?.length
+    ? intelligence.bestFor
+    : createDefaultBestFor(stop, intelligence);
+  const neighborhoods = intelligence.neighborhoods?.length
+    ? intelligence.neighborhoods
+    : createDefaultNeighborhoods(stop, intelligence);
+  const thingsToDo = intelligence.thingsToDo?.length
+    ? intelligence.thingsToDo
+    : createDefaultThingsToDo(stop, intelligence);
   const whyVisitText = stop.highlight
     ? `Discover ${stop.highlight}`
     : `Visit for ${intelligence.mustSee.slice(0, 2).join(' and ').toLowerCase()}, then stay for ${intelligence.localAtmosphere}.`;
@@ -504,13 +643,18 @@ function createWaypoint(stop, index) {
       culturalSignificance: intelligence.culturalSignificance,
       mustSee: intelligence.mustSee,
       sensoryDescriptors: intelligence.sensoryDescriptors,
+      atlasSummary: createAtlasSummary(stop, intelligence),
+      quickFacts: createQuickFacts(stop, intelligence),
+      signalTags: createSignalTags(stop, intelligence),
       whyVisit: stop.placeName
         ? `${stop.placeName} gives ${stop.name} a more specific travel texture: ${stop.highlight || intelligence.culturalSignificance}`
         : whyVisitText,
-      guideSummary: intelligence.guideSummary || '',
-      bestFor: intelligence.bestFor || [],
-      neighborhoods: intelligence.neighborhoods || [],
-      thingsToDo: intelligence.thingsToDo || [],
+      guideSummary:
+        intelligence.guideSummary ||
+        `${title} combines ${bestFor.slice(0, 3).join(', ').toLowerCase()} with ${neighborhoods.slice(0, 2).join(' and ')} context.`,
+      bestFor,
+      neighborhoods,
+      thingsToDo,
     },
   };
 }

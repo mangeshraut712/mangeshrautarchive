@@ -67,7 +67,6 @@ export function initOverlayMenu(options = {}) {
   const body = documentRef.body;
 
   if (!menuToggle || !menuClose || !overlayMenu || !body) {
-    console.error('❌ Mobile menu initialization failed - missing elements');
     return;
   }
 

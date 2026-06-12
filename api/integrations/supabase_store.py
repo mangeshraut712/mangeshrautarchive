@@ -376,14 +376,14 @@ async def upsert_health_summary_row(row: Dict[str, Any]) -> bool:
         return False
 
     payload = {
-        "date": row.get("date"),
-        "sleep_score": row.get("sleep_score"),
-        "recovery_score": row.get("recovery_score"),
-        "strain": row.get("strain"),
-        "resting_heart_rate": row.get("resting_heart_rate"),
-        "hrv_trend": row.get("hrv_trend"),
-        "weight_trend": row.get("weight_trend"),
-        "source_status": row.get("source_status") or "synced",
+        "date": _safe_text(row.get("date"), max_chars=16),
+        "sleep_score": _safe_int(row.get("sleep_score")),
+        "recovery_score": _safe_int(row.get("recovery_score")),
+        "strain": _safe_number(row.get("strain")),
+        "resting_heart_rate": _safe_int(row.get("resting_heart_rate")),
+        "hrv_trend": _safe_text(row.get("hrv_trend")),
+        "weight_trend": _safe_text(row.get("weight_trend")),
+        "source_status": _safe_text(row.get("source_status")) or "synced",
         "last_synced_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }

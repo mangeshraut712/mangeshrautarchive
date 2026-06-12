@@ -36,9 +36,11 @@ async function scrapeWhoop(page) {
     text.match(/client_secret[:\s]+([^\s\n]+)/i)?.[1] ||
     null;
 
-  const inputs = await page.locator('input').evaluateAll(nodes =>
-    nodes.map(n => ({ name: n.getAttribute('name') || n.id, value: n.value, type: n.type }))
-  );
+  const inputs = await page
+    .locator('input')
+    .evaluateAll(nodes =>
+      nodes.map(n => ({ name: n.getAttribute('name') || n.id, value: n.value, type: n.type }))
+    );
 
   return {
     provider: 'whoop',

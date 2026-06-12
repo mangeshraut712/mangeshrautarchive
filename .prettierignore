@@ -8,3 +8,6 @@ artifacts/
 test-results/
 playwright-report/
 src/assets/css/tailwind-output.css
+gh.html
+vercel.html
+

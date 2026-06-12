@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Safely write Google Calendar OAuth credentials into .env.local and sync to Vercel.
+ * Safely write Google Calendar OAuth credentials into .env and sync to Vercel.
  * Reads from stdin lines: CLIENT_ID then CLIENT_SECRET (no echo).
  */
 import { createInterface } from 'node:readline';
@@ -9,7 +9,7 @@ import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const ENV_FILE = resolve(ROOT, '.env.local');
+const ENV_FILE = resolve(ROOT, '.env');
 
 function upsertEnvLine(content, key, value) {
   const line = `${key}=${value}`;
@@ -33,12 +33,15 @@ async function promptHidden(label) {
 }
 
 if (!existsSync(ENV_FILE)) {
-  console.error('Missing .env.local');
+  console.error('Missing .env');
   process.exit(1);
 }
 
-const clientId = process.env.GOOGLE_CALENDAR_CLIENT_ID?.trim() || (await promptHidden('Google OAuth Client ID'));
-const clientSecret = process.env.GOOGLE_CALENDAR_CLIENT_SECRET?.trim() || (await promptHidden('Google OAuth Client Secret'));
+const clientId =
+  process.env.GOOGLE_CALENDAR_CLIENT_ID?.trim() || (await promptHidden('Google OAuth Client ID'));
+const clientSecret =
+  process.env.GOOGLE_CALENDAR_CLIENT_SECRET?.trim() ||
+  (await promptHidden('Google OAuth Client Secret'));
 
 if (!clientId || !clientSecret) {
   console.error('Both Client ID and Client Secret are required.');
@@ -49,7 +52,7 @@ let content = readFileSync(ENV_FILE, 'utf8');
 content = upsertEnvLine(content, 'GOOGLE_CALENDAR_CLIENT_ID', clientId);
 content = upsertEnvLine(content, 'GOOGLE_CALENDAR_CLIENT_SECRET', clientSecret);
 writeFileSync(ENV_FILE, content, 'utf8');
-console.log('[ok] Updated .env.local (secrets not printed)');
+console.log('[ok] Updated .env (secrets not printed)');
 
 const sync = spawnSync('node', ['scripts/integrations/sync-vercel-integration-env.mjs'], {
   cwd: ROOT,

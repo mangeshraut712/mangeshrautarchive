@@ -741,7 +741,10 @@ export class AgenticActionHandler {
       try {
         await import('./health-widget.js');
       } catch (err) {
-        console.warn('Failed to dynamically import health-widget.js, trying direct verification:', err);
+        console.warn(
+          'Failed to dynamically import health-widget.js, trying direct verification:',
+          err
+        );
       }
     }
 
@@ -761,7 +764,7 @@ export class AgenticActionHandler {
     // Perform metric update
     try {
       const updateResult = window.healthWidget.updateMetric(metric, value);
-      
+
       let unitLabel = '';
       if (['sleep', 'recovery', 'muscle', 'fat'].includes(metric)) {
         unitLabel = '%';

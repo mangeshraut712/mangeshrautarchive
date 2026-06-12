@@ -5,7 +5,7 @@ Use **real Chrome** signed into the accounts you want to connect. OAuth consent 
 ## Before you start
 
 1. Confirm production env vars are set in Vercel (via `scripts/integrations/sync-vercel-integration-env.mjs`).
-2. Keep these secrets **only** in `.env.local` and Vercel — never paste them in chat:
+2. Keep these secrets **only** in `.env` and Vercel — never paste them in chat:
    - `INTEGRATION_SYNC_ADMIN_TOKEN`
    - `INTEGRATION_ENCRYPTION_KEY`
    - Provider client secrets
@@ -44,7 +44,7 @@ Expect `"status": "live"` and a `days` array.
 
 ```bash
 curl -X POST https://mangeshraut.pro/api/calendar/watch/google \
-  -H "x-integration-admin-token: <from .env.local>"
+  -H "x-integration-admin-token: <from .env>"
 ```
 
 ---
@@ -62,7 +62,7 @@ curl -X POST https://mangeshraut.pro/api/calendar/watch/google \
    - **Scopes:** enable `offline`, `read:recovery`, `read:cycles`, `read:sleep`, `read:body_measurement`
 5. Click **Create** → copy **Client ID** and **Client Secret** from the app details page.
 
-**You set in `.env.local` + Vercel:**
+**You set in `.env` + Vercel:**
 
 ```text
 WHOOP_CLIENT_ID=...
@@ -99,7 +99,7 @@ https://mangeshraut.pro/api/integrations/whoop/connect
    - **Registered URLs (redirect URI):** `https://mangeshraut.pro/api/integrations/withings/callback`
 5. Save → **Client ID** and **Client Secret** appear on the application page.
 
-**You set in `.env.local` + Vercel:**
+**You set in `.env` + Vercel:**
 
 ```text
 WITHINGS_CLIENT_ID=...
@@ -125,14 +125,14 @@ After at least one health provider is connected, trigger a server-side pull with
 
 ```bash
 curl -X POST https://mangeshraut.pro/api/health-vitals/sync \
-  -H "x-integration-admin-token: <from .env.local>"
+  -H "x-integration-admin-token: <from .env>"
 ```
 
 **Sync all connected providers (health + calendar):**
 
 ```bash
 curl -X POST https://mangeshraut.pro/api/integrations/sync-all \
-  -H "x-integration-admin-token: <from .env.local>"
+  -H "x-integration-admin-token: <from .env>"
 ```
 
 **Manual seed (until OAuth is connected):**
@@ -140,7 +140,7 @@ curl -X POST https://mangeshraut.pro/api/integrations/sync-all \
 ```bash
 curl -X POST https://mangeshraut.pro/api/health-vitals/sync \
   -H "Content-Type: application/json" \
-  -H "x-integration-admin-token: <from .env.local>" \
+  -H "x-integration-admin-token: <from .env>" \
   -d '{"date":"2026-06-12","sleep_score":81,"recovery_score":47,"strain":5.2,"weight_trend":"103.4 kg"}'
 ```
 
@@ -158,7 +158,7 @@ The home/monitor health widget reads this when `"status": "live"`.
 
 ```bash
 curl -X POST https://mangeshraut.pro/api/integrations/whoop/disconnect \
-  -H "x-integration-admin-token: <from .env.local>"
+  -H "x-integration-admin-token: <from .env>"
 ```
 
 Replace `whoop` with `withings` or `google_calendar`.
@@ -167,12 +167,12 @@ Replace `whoop` with `withings` or `google_calendar`.
 
 ## What I need from you
 
-| Task | Why |
-|------|-----|
-| Complete Google Calendar connect in Chrome | Unblocks live availability on contact/monitor |
-| Create WHOOP + Withings OAuth apps and send **client IDs only** (not secrets) | I can verify redirect URIs and env key names |
-| Run admin sync curl locally after connect | Pulls first real row into Supabase |
-| Tell me if OAuth redirect fails (exact URL + error text) | Fastest way to fix redirect URI mismatches |
+| Task                                                                          | Why                                           |
+| ----------------------------------------------------------------------------- | --------------------------------------------- |
+| Complete Google Calendar connect in Chrome                                    | Unblocks live availability on contact/monitor |
+| Create WHOOP + Withings OAuth apps and send **client IDs only** (not secrets) | I can verify redirect URIs and env key names  |
+| Run admin sync curl locally after connect                                     | Pulls first real row into Supabase            |
+| Tell me if OAuth redirect fails (exact URL + error text)                      | Fastest way to fix redirect URI mismatches    |
 
 ---
 

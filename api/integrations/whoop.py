@@ -8,7 +8,7 @@ import httpx
 PROVIDER = "whoop"
 AUTH_URL = "https://api.prod.whoop.com/oauth/oauth2/auth"
 TOKEN_URL = "https://api.prod.whoop.com/oauth/oauth2/token"
-API_BASE = "https://api.prod.whoop.com/v2"
+API_BASE = "https://api.prod.whoop.com/developer/v2"
 SCOPES = (
     "offline",
     "read:recovery",

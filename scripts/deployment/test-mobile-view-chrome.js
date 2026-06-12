@@ -6,7 +6,7 @@ function startServer() {
   return new Promise((resolve, reject) => {
     const serverProcess = exec('PORT=4195 node scripts/utils/serve-dist.js');
     let output = '';
-    
+
     serverProcess.stdout.on('data', data => {
       output += data;
       if (output.includes('Production static server running')) {
@@ -33,10 +33,12 @@ async function run() {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     ...pixel7,
-    userAgent: 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36'
+    userAgent:
+      'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
   });
   const page = await context.newPage();
-  const artifactsDir = '/Users/mangeshraut/.gemini/antigravity/brain/331c76eb-8f70-425a-84cc-f9badb8d7d88/';
+  const artifactsDir =
+    '/Users/mangeshraut/.gemini/antigravity/brain/331c76eb-8f70-425a-84cc-f9badb8d7d88/';
 
   try {
     console.log('Navigating to http://127.0.0.1:4195/...');
@@ -49,18 +51,22 @@ async function run() {
     const chatbot = page.locator('#chatbot-toggle');
     const a11y = page.locator('.a11y-toolbar');
 
-    if (await chatbot.count() > 0) {
+    if ((await chatbot.count()) > 0) {
       console.log('✓ Chatbot toggle found.');
       const box = await chatbot.boundingBox();
-      console.log(`Chatbot Toggle Box: x=${box.x}, y=${box.y}, width=${box.width}, height=${box.height}`);
+      console.log(
+        `Chatbot Toggle Box: x=${box.x}, y=${box.y}, width=${box.width}, height=${box.height}`
+      );
     } else {
       console.log('✗ Error: Chatbot toggle not found.');
     }
 
-    if (await a11y.count() > 0) {
+    if ((await a11y.count()) > 0) {
       console.log('✓ Accessibility toolbar found.');
       const box = await a11y.boundingBox();
-      console.log(`Accessibility Toolbar Box: x=${box.x}, y=${box.y}, width=${box.width}, height=${box.height}`);
+      console.log(
+        `Accessibility Toolbar Box: x=${box.x}, y=${box.y}, width=${box.width}, height=${box.height}`
+      );
     } else {
       console.log('✗ Error: Accessibility toolbar not found.');
     }
@@ -76,7 +82,6 @@ async function run() {
     const scrollScreenshot = 'chrome_mobile_scrolled.png';
     await page.screenshot({ path: join(artifactsDir, scrollScreenshot) });
     console.log(`Saved screenshot: ${scrollScreenshot}`);
-
   } catch (err) {
     console.error('Mobile viewport test failed:', err);
   } finally {

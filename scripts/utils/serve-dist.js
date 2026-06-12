@@ -417,7 +417,11 @@ function resolveMonitorMock(path, method) {
   if (path.includes('/api/monitor/security')) return monitorMockPayloads.security;
   if (path.includes('/api/monitor/ai-metrics')) return monitorMockPayloads.aiMetrics;
   if (path.includes('/api/monitor/deployments')) {
-    return { current_deployment: monitorMockTimestamp(), deployment_history: [], recent_changes: [] };
+    return {
+      current_deployment: monitorMockTimestamp(),
+      deployment_history: [],
+      recent_changes: [],
+    };
   }
   if (path.includes('/api/health') || path.includes('/api/status')) {
     return { status: 'healthy', success: true };
@@ -455,14 +459,21 @@ app.all('/api/*', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-monitor-admin-token');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, x-monitor-admin-token'
+  );
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
-  if (req.method === 'POST' && req.path.includes('/api/monitor/events/') && req.path.endsWith('/resolve')) {
+  if (
+    req.method === 'POST' &&
+    req.path.includes('/api/monitor/events/') &&
+    req.path.endsWith('/resolve')
+  ) {
     res.json({ success: true, timestamp: monitorMockTimestamp() });
     return;
   }

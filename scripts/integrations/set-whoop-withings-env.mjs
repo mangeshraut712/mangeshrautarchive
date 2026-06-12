@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Write WHOOP + Withings OAuth credentials into .env.local and sync to Vercel production.
+ * Write WHOOP + Withings OAuth credentials into .env and sync to Vercel production.
  * Pass via env or stdin prompts (secrets are never printed).
  *
  * Usage:
@@ -14,7 +14,7 @@ import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const ENV_FILE = resolve(ROOT, '.env.local');
+const ENV_FILE = resolve(ROOT, '.env');
 
 const PRODUCTION_REDIRECTS = {
   WHOOP_REDIRECT_URI: 'https://mangeshraut.pro/api/integrations/whoop/callback',
@@ -55,14 +55,20 @@ async function promptSecret(label, fallback = '') {
 }
 
 if (!existsSync(ENV_FILE)) {
-  console.error('Missing .env.local');
+  console.error('Missing .env');
   process.exit(1);
 }
 
 const whoopId = await prompt('WHOOP Client ID', process.env.WHOOP_CLIENT_ID?.trim() || '');
-const whoopSecret = await promptSecret('WHOOP Client Secret', process.env.WHOOP_CLIENT_SECRET?.trim() || '');
+const whoopSecret = await promptSecret(
+  'WHOOP Client Secret',
+  process.env.WHOOP_CLIENT_SECRET?.trim() || ''
+);
 const withingsId = await prompt('Withings Client ID', process.env.WITHINGS_CLIENT_ID?.trim() || '');
-const withingsSecret = await promptSecret('Withings Client Secret', process.env.WITHINGS_CLIENT_SECRET?.trim() || '');
+const withingsSecret = await promptSecret(
+  'Withings Client Secret',
+  process.env.WITHINGS_CLIENT_SECRET?.trim() || ''
+);
 
 if (!whoopId || !whoopSecret || !withingsId || !withingsSecret) {
   console.error('All four values are required (WHOOP + Withings client ID and secret).');
@@ -78,7 +84,7 @@ for (const [key, value] of Object.entries(PRODUCTION_REDIRECTS)) {
   content = upsertEnvLine(content, key, value);
 }
 writeFileSync(ENV_FILE, content, 'utf8');
-console.log('[ok] Updated .env.local (secrets not printed)');
+console.log('[ok] Updated .env (secrets not printed)');
 
 const sync = spawnSync('node', ['scripts/integrations/sync-vercel-integration-env.mjs'], {
   cwd: ROOT,

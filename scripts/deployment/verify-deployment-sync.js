@@ -105,9 +105,12 @@ function checkGitStatus() {
     }
 
     const branch = execSync('git branch --show-current', { encoding: 'utf8' }).trim();
-    const [behindRaw, aheadRaw] = execSync(`git rev-list --left-right --count origin/${branch}...${branch}`, {
-      encoding: 'utf8',
-    })
+    const [behindRaw, aheadRaw] = execSync(
+      `git rev-list --left-right --count origin/${branch}...${branch}`,
+      {
+        encoding: 'utf8',
+      }
+    )
       .trim()
       .split('\t');
     const behind = Number(behindRaw || 0);

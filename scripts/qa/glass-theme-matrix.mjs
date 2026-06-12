@@ -36,7 +36,9 @@ function sample(page) {
       cardFillDark: root.getPropertyValue('--lg-card-dark-fill').trim(),
       skillCategory: pick('#skills-container .skill-category'),
       experience: pick('.experience-content'),
-      project: pick('#github-projects-container article.showcase-project-card, .showcase-project-card'),
+      project: pick(
+        '#github-projects-container article.showcase-project-card, .showcase-project-card'
+      ),
       contact: pick('#contact .contact-card, .contact-card'),
       nav: pick('.global-nav.dynamic-island'),
     };
@@ -87,9 +89,14 @@ async function main() {
               timeout: 20_000,
             });
           } else if (hash === '#experience') {
-            await page.locator('.experience-content').first().waitFor({ state: 'visible', timeout: 15_000 });
+            await page
+              .locator('.experience-content')
+              .first()
+              .waitFor({ state: 'visible', timeout: 15_000 });
           } else if (hash === '#projects') {
-            await page.locator('#github-projects-container').waitFor({ state: 'visible', timeout: 15_000 });
+            await page
+              .locator('#github-projects-container')
+              .waitFor({ state: 'visible', timeout: 15_000 });
           } else {
             await page.locator('#contact .contact-card, .contact-card').first().waitFor({
               state: 'visible',
@@ -111,8 +118,7 @@ async function main() {
                   : 'contact';
           const card = data[cardKey];
           const hasBlur = Boolean(card?.backdrop?.includes('blur'));
-          const expectedBlur =
-            tint.value === 0 ? '44px' : tint.value === 100 ? '20px' : null;
+          const expectedBlur = tint.value === 0 ? '44px' : tint.value === 100 ? '20px' : null;
 
           const pass =
             hasBlur &&

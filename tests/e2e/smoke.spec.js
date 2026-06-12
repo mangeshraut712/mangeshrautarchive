@@ -422,7 +422,11 @@ test.describe('Chrome smoke tests', () => {
       () => {
         const section = document.getElementById('currently-section');
         if (section) section.scrollIntoView({ block: 'center' });
-        return section && section.getBoundingClientRect().top >= 0 && section.getBoundingClientRect().top < window.innerHeight;
+        return (
+          section &&
+          section.getBoundingClientRect().top >= 0 &&
+          section.getBoundingClientRect().top < window.innerHeight
+        );
       },
       { timeout: 10000, polling: 500 }
     );

@@ -26,7 +26,7 @@ from api.routes import (
     integrations,
 )
 
-# Load environment variables
+# Load environment variables from the single ignored local env file.
 load_dotenv()
 
 OPENAPI_TAGS = [
@@ -113,6 +113,7 @@ app.add_middleware(
         "Accept",
         "Origin",
         "X-Requested-With",
+        "x-integration-admin-token",
     ],
     expose_headers=["X-Session-ID"],
 )

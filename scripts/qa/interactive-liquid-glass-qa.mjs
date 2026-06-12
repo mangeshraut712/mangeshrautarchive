@@ -61,8 +61,12 @@ async function applyTintViaHelper(page, ratio) {
     }
     return {
       tint: getComputedStyle(document.documentElement).getPropertyValue('--lg-tint').trim(),
-      blurCard: getComputedStyle(document.documentElement).getPropertyValue('--lg-blur-card').trim(),
-      cardFill: getComputedStyle(document.documentElement).getPropertyValue('--lg-card-light-fill').trim(),
+      blurCard: getComputedStyle(document.documentElement)
+        .getPropertyValue('--lg-blur-card')
+        .trim(),
+      cardFill: getComputedStyle(document.documentElement)
+        .getPropertyValue('--lg-card-light-fill')
+        .trim(),
     };
   }, ratio);
 }
@@ -95,7 +99,10 @@ async function main() {
 
     await page.goto(`${BASE}/#skills?v=qa-glass`, { waitUntil: 'networkidle' });
     await page.locator('#skills').scrollIntoViewIfNeeded();
-    await page.locator('#skills-container .skill-category').first().waitFor({ state: 'visible', timeout: 45_000 });
+    await page
+      .locator('#skills-container .skill-category')
+      .first()
+      .waitFor({ state: 'visible', timeout: 45_000 });
 
     await setTheme(page, 'dark');
     const darkSample = await sampleGlass(page);
@@ -122,7 +129,10 @@ async function main() {
 
     await page.goto(`${BASE}/#experience?v=qa-glass`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(600);
-    await page.locator('.experience-content').first().waitFor({ state: 'visible', timeout: 15_000 });
+    await page
+      .locator('.experience-content')
+      .first()
+      .waitFor({ state: 'visible', timeout: 15_000 });
     await shot(page, '03-experience-light');
 
     await waitForA11y(page);
@@ -165,12 +175,16 @@ async function main() {
       JSON.stringify(viewportFit)
     );
 
-    const travel = await page.goto(`${BASE}/travel.html?v=qa-glass`, { waitUntil: 'domcontentloaded' });
+    const travel = await page.goto(`${BASE}/travel.html?v=qa-glass`, {
+      waitUntil: 'domcontentloaded',
+    });
     record('Travel page loads', travel?.ok() === true, `status ${travel?.status()}`);
     await page.locator('#travel-sidebar').waitFor({ state: 'visible', timeout: 15_000 });
     await shot(page, '07-travel');
 
-    const monitor = await page.goto(`${BASE}/monitor.html?v=qa-glass`, { waitUntil: 'domcontentloaded' });
+    const monitor = await page.goto(`${BASE}/monitor.html?v=qa-glass`, {
+      waitUntil: 'domcontentloaded',
+    });
     record('Monitor page loads', monitor?.ok() === true, `status ${monitor?.status()}`);
     await page.locator('.overview-card, .monitor-summary-card, #monitor-app').first().waitFor({
       state: 'visible',
@@ -178,7 +192,10 @@ async function main() {
     });
     await shot(page, '08-monitor');
 
-    const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
+    const mobile = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+    });
     const mobilePage = await mobile.newPage();
     await mobilePage.goto(`${BASE}/#skills?v=qa-glass`, { waitUntil: 'networkidle' });
     await mobilePage.locator('#skills').scrollIntoViewIfNeeded();

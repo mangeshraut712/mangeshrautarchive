@@ -254,8 +254,10 @@ html.dark {
   flex-direction: column;
   overflow: hidden;
   background: rgb(255 255 255 / calc(58% + var(--lg-tint, 0.55) * 34%));
-  backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px)) saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
-  -webkit-backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px)) saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
+  backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px))
+    saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
+  -webkit-backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px))
+    saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
   border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint, 0.55) * 28%));
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 48%),
@@ -743,19 +745,125 @@ html.dark .travel-sidebar {
   }
 }
 
+.travel-stop__media {
+  width: 100%;
+  height: 180px;
+  border-radius: var(--radius-md, 8px);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: var(--fill-secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .travel-stop__image {
   transition: opacity 0.3s ease;
   opacity: 0;
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-md, 8px);
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 .travel-stop__image.loaded {
   opacity: 1;
+}
+
+.travel-stop__media-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: 100%;
+  padding: var(--space-4);
+  color: var(--text-secondary);
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      color-mix(in srgb, var(--apple-blue) 16%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--fill-secondary) 88%, #fff),
+      var(--fill-secondary)
+    );
+}
+
+html.dark .travel-stop__media-placeholder {
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      color-mix(in srgb, var(--apple-blue) 28%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--fill-secondary) 88%, #000),
+      var(--fill-secondary)
+    );
+}
+
+.travel-stop__media-placeholder i {
+  color: var(--apple-blue);
+  font-size: 1.25rem;
+}
+
+.travel-stop__media-placeholder span {
+  max-width: 24rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.travel-stop__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.travel-stop__fact {
+  min-width: 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md, 8px);
+  background: color-mix(in srgb, var(--fill-secondary) 82%, transparent);
+}
+
+.travel-stop__fact span {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--text-tertiary);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.travel-stop__fact strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  line-height: 1.28;
+}
+
+.travel-stop__signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.travel-stop__signals span {
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--apple-blue) 20%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--apple-blue) 8%, transparent);
+  color: var(--apple-blue);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .travel-stop__editorial-grid {

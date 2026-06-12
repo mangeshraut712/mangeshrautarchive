@@ -495,11 +495,10 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
   const placeContext = stopContext
     ? `<div class="travel-stop__place-name">${escapeHtml(stopContext)}</div>`
     : '';
-  const wikiImage = waypoint.editorial.wikiImage
-    ? `<img class="travel-stop__image loaded" src="${safeExternalUrl(waypoint.editorial.wikiImage)}" alt="${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />`
-    : '';
   const wikiSummary =
-    waypoint.editorial.wikiSummary || 'Select this place to load concise local context.';
+    waypoint.editorial.wikiSummary ||
+    waypoint.editorial.atlasSummary ||
+    'Select this place to load concise local context.';
   const detailsId = `travel-stop-details-${index}`;
   const summaryId = `travel-stop-summary-${index}`;
   const ariaLabel = `Open details for ${waypoint.title} in ${waypoint.locality.city}, ${waypoint.locality.country}`;
@@ -513,8 +512,10 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
       ${placeContext}
       <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(waypoint.editorial.experience)}</div>
       <div class="travel-stop__details" id="${detailsId}">
-        ${wikiImage}
+        ${renderStopMedia(waypoint)}
         <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
+        ${renderQuickFacts(waypoint)}
+        ${renderSignalTags(waypoint)}
         <div class="travel-stop__detail-section">
           <div class="travel-stop__detail-label">Why Visit</div>
           <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.whyVisit)}</div>
@@ -526,6 +527,55 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
         ${renderPlaceGuide(waypoint)}
       </div>
     </article>`;
+}
+
+function renderStopMedia(waypoint) {
+  const image = safeExternalUrl(waypoint.editorial.wikiImage);
+  if (image) {
+    return `
+      <figure class="travel-stop__media">
+        <img class="travel-stop__image loaded" src="${image}" alt="${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />
+      </figure>`;
+  }
+
+  return `
+    <figure class="travel-stop__media travel-stop__media--pending" aria-label="${escapeHtml(waypoint.title)} visual brief">
+      <div class="travel-stop__media-placeholder">
+        <i class="fas fa-image" aria-hidden="true"></i>
+        <span>Image intelligence loads when an authoritative travel image is available.</span>
+      </div>
+    </figure>`;
+}
+
+function renderQuickFacts(waypoint) {
+  const facts = waypoint.editorial.quickFacts || [];
+  if (!facts.length) return '';
+
+  return `
+    <div class="travel-stop__facts" aria-label="${escapeHtml(waypoint.title)} quick facts">
+      ${facts
+        .map(
+          fact => `
+            <div class="travel-stop__fact">
+              <span>${escapeHtml(fact.label)}</span>
+              <strong>${escapeHtml(fact.value)}</strong>
+            </div>`
+        )
+        .join('')}
+    </div>`;
+}
+
+function renderSignalTags(waypoint) {
+  const tags = waypoint.editorial.signalTags || [];
+  if (!tags.length) return '';
+
+  return `
+    <div class="travel-stop__signals" aria-label="${escapeHtml(waypoint.title)} intelligence signals">
+      ${tags
+        .slice(0, 8)
+        .map(tag => `<span>${escapeHtml(tag)}</span>`)
+        .join('')}
+    </div>`;
 }
 
 function renderPlaceGuide(waypoint) {
@@ -716,12 +766,23 @@ function applyWikiData(wikiData, stopElement, waypoint) {
   if (page) {
     if (page.thumbnail && page.thumbnail.source) {
       waypoint.editorial.wikiImage = page.thumbnail.source;
-      const img = stopElement.querySelector('.travel-stop__image');
+      const media = stopElement.querySelector('.travel-stop__media');
+      let img = stopElement.querySelector('.travel-stop__image');
+
+      if (!img && media) {
+        img = document.createElement('img');
+        img.className = 'travel-stop__image loaded';
+        img.alt = waypoint.title;
+        img.loading = 'lazy';
+        img.referrerPolicy = 'no-referrer';
+        media.replaceChildren(img);
+        media.classList.remove('travel-stop__media--pending');
+      }
+
       if (img) {
         img.src = page.thumbnail.source;
         img.style.cssText += '; display: block; cursor: pointer;';
         img.classList.add('loaded');
-        // Check if listener already exists or re-bind
         img.onclick = () => openPhotoGallery(stopElement, 0);
       }
     }
@@ -740,12 +801,7 @@ function applyWikiData(wikiData, stopElement, waypoint) {
     }
     waypoint.editorial.wikiLoaded = true;
   } else {
-    waypoint.editorial.wikiSummary = 'Local insights not available';
     waypoint.editorial.wikiLoaded = true;
-    const story = stopElement.querySelector('.travel-stop__story');
-    if (story) {
-      story.textContent = 'Local insights not available';
-    }
   }
 }
 

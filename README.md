@@ -58,7 +58,7 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (&lt;50ms) + OpenRouter streaming LLM
 - **WWDC26 Liquid Glass Design System** — translucent surfaces, specular highlights, theme-aware tokens, and reduced-motion fallbacks
-- **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel *and* static GitHub Pages
+- **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel _and_ static GitHub Pages
 - **Extreme Testing** — 12+ real browser/device configs (Chrome, Safari, Firefox, Edge, Pixel 7, iPhone 14, iPad Pro)
 - **Zero-Downtime Deploys** — dual-surface (Vercel + GitHub Pages) with automated post-deploy verification
 - **Modern Build Pipeline** — esbuild v0.28.0 + Sharp v0.34.5 + Tailwind CSS v4.0.9 CLI for rapid CSS compilation and image optimization
@@ -91,13 +91,13 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 ## 🚀 Live Demos
 
-| Experience | Link | Highlights |
-|---|---|---|
-| Main Portfolio | [mangeshraut.pro](https://mangeshraut.pro) | AssistMe chat, liquid glass UI, spatial projects |
-| GitHub Pages | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks |
-| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor) | Real-time latency, service health, deploy status |
-| Travel Atlas | [mangeshraut.pro/travel](https://mangeshraut.pro/travel) | MapLibre-powered visited places with narrative AI |
-| AI Assistant | Open chat on any page | Try: *"download resume"*, *"go to projects"*, *"schedule a meeting"* |
+| Experience     | Link                                                                                                | Highlights                                                           |
+| -------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Main Portfolio | [mangeshraut.pro](https://mangeshraut.pro)                                                          | AssistMe chat, liquid glass UI, spatial projects                     |
+| GitHub Pages   | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks             |
+| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Real-time latency, service health, deploy status                     |
+| Travel Atlas   | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre-powered visited places with narrative AI                    |
+| AI Assistant   | Open chat on any page                                                                               | Try: _"download resume"_, _"go to projects"_, _"schedule a meeting"_ |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
 
@@ -227,17 +227,17 @@ How the key systems actually work — implementation details, not buzzwords.
 
 9 deterministic tools registered and executable today:
 
-| Tool | What It Does |
-|---|---|
+| Tool                  | What It Does                                   |
+| --------------------- | ---------------------------------------------- |
 | `navigate_to_section` | Instant smooth scroll to any portfolio section |
-| `download_resume` | Direct PDF download |
-| `schedule_meeting` | Open Calendly popup |
-| `open_contact_form` | Focus and open contact overlay |
-| `copy_contact_info` | Copy email / LinkedIn |
-| `search_portfolio` | Trigger global search |
-| `filter_projects` | Filter the live GitHub showcase |
-| `open_social_media` | Open GitHub / LinkedIn / X |
-| `toggle_theme` | Switch light / dark / system |
+| `download_resume`     | Direct PDF download                            |
+| `schedule_meeting`    | Open Calendly popup                            |
+| `open_contact_form`   | Focus and open contact overlay                 |
+| `copy_contact_info`   | Copy email / LinkedIn                          |
+| `search_portfolio`    | Trigger global search                          |
+| `filter_projects`     | Filter the live GitHub showcase                |
+| `open_social_media`   | Open GitHub / LinkedIn / X                     |
+| `toggle_theme`        | Switch light / dark / system                   |
 
 All tools are functional via natural language in AssistMe **and** exposed via WebMCP for future agent ecosystems.
 
@@ -260,19 +260,19 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 
 ## 🛠 Tech Stack
 
-| Layer | Technologies |
-|---|---|
-| **Frontend** | Vanilla ES2024, Tailwind CSS v4.0.9, WWDC26 Liquid Glass Design System |
-| **Agentic Runtime** | AssistMe + WebMCP + Custom Action Handler with priority execution |
-| **AI** | OpenRouter (Grok 4.1 Fast / Gemini) + local deterministic actions |
-| **Backend** | FastAPI v0.136.1 + Pydantic v2 (v2.13.4) (Vercel Serverless) |
-| **Data** | Cloud Firestore, GitHub REST, Last.fm, Upstash Redis (optional) |
-| **Build** | esbuild v0.28.0 + Sharp v0.34.5 + custom Node pipeline |
-| **Analytics** | @vercel/analytics v2.0.1 |
-| **Testing** | Playwright v1.58.2 (12+ configs), Vitest v4.1.6, @axe-core/playwright v4.11.1, Lighthouse CI |
-| **Quality** | ESLint v9.21.0, Stylelint v16.26.1 (config-standard v36.0.1), Prettier v3.8.1, React Doctor v0.5.1, Security Scanner |
-| **Hosting** | Vercel (primary) + GitHub Pages (resilient static fallback) |
-| **Runtime** | Node.js v22.x, Python v3.12 (uvicorn v0.47.0, httpx v0.28.1, aiofiles v25.1.0) |
+| Layer               | Technologies                                                                                                         |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Frontend**        | Vanilla ES2024, Tailwind CSS v4.0.9, WWDC26 Liquid Glass Design System                                               |
+| **Agentic Runtime** | AssistMe + WebMCP + Custom Action Handler with priority execution                                                    |
+| **AI**              | OpenRouter (Grok 4.1 Fast / Gemini) + local deterministic actions                                                    |
+| **Backend**         | FastAPI v0.136.1 + Pydantic v2 (v2.13.4) (Vercel Serverless)                                                         |
+| **Data**            | Cloud Firestore, GitHub REST, Last.fm, Upstash Redis (optional)                                                      |
+| **Build**           | esbuild v0.28.0 + Sharp v0.34.5 + custom Node pipeline                                                               |
+| **Analytics**       | @vercel/analytics v2.0.1                                                                                             |
+| **Testing**         | Playwright v1.58.2 (12+ configs), Vitest v4.1.6, @axe-core/playwright v4.11.1, Lighthouse CI                         |
+| **Quality**         | ESLint v9.21.0, Stylelint v16.26.1 (config-standard v36.0.1), Prettier v3.8.1, React Doctor v0.5.1, Security Scanner |
+| **Hosting**         | Vercel (primary) + GitHub Pages (resilient static fallback)                                                          |
+| **Runtime**         | Node.js v22.x, Python v3.12 (uvicorn v0.47.0, httpx v0.28.1, aiofiles v25.1.0)                                       |
 
 ---
 
@@ -315,26 +315,26 @@ flowchart TD
 
 ## 🧪 Quality & Testing
 
-| Gate | Threshold / Coverage |
-|---|---|
-| **Playwright** | 12+ real projects (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro) |
-| **Accessibility** | @axe-core/playwright + manual WCAG AA contrast validation |
-| **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90 |
-| **Lighthouse Mobile** | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90 |
-| **Post-deploy** | Smoke + a11y on Vercel **and** GitHub Pages |
-| **Pre-commit** | Security scan + ESLint |
+| Gate                   | Threshold / Coverage                                                                    |
+| ---------------------- | --------------------------------------------------------------------------------------- |
+| **Playwright**         | 12+ real projects (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro) |
+| **Accessibility**      | @axe-core/playwright + manual WCAG AA contrast validation                               |
+| **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90                         |
+| **Lighthouse Mobile**  | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90                         |
+| **Post-deploy**        | Smoke + a11y on Vercel **and** GitHub Pages                                             |
+| **Pre-commit**         | Security scan + ESLint                                                                  |
 
 **Key commands**
 
-| Command | Purpose |
-|---|---|
-| `npm run check` | ESLint + Stylelint + Vitest + Python API tests |
-| `npm run qa:prod-ready` | Full security + lint + test + E2E + Lighthouse pipeline |
-| `npm run qa:smoke` | Chrome smoke tests against dev server |
-| `npm run qa:a11y` | axe-core accessibility baseline |
-| `npm run qa:lighthouse:desktop` | Desktop Lighthouse gate |
-| `npm run qa:lighthouse:mobile` | Mobile Lighthouse gate |
-| `npm run test:e2e:all` | Complete multi-device Playwright matrix |
+| Command                         | Purpose                                                 |
+| ------------------------------- | ------------------------------------------------------- |
+| `npm run check`                 | ESLint + Stylelint + Vitest + Python API tests          |
+| `npm run qa:prod-ready`         | Full security + lint + test + E2E + Lighthouse pipeline |
+| `npm run qa:smoke`              | Chrome smoke tests against dev server                   |
+| `npm run qa:a11y`               | axe-core accessibility baseline                         |
+| `npm run qa:lighthouse:desktop` | Desktop Lighthouse gate                                 |
+| `npm run qa:lighthouse:mobile`  | Mobile Lighthouse gate                                  |
+| `npm run test:e2e:all`          | Complete multi-device Playwright matrix                 |
 
 ---
 
@@ -355,10 +355,10 @@ cp .env.example .env   # Add OPENROUTER_API_KEY
 npm run dev
 ```
 
-| Service | Local URL |
-|---|---|
-| Frontend | http://127.0.0.1:4000 |
-| FastAPI | http://127.0.0.1:8001 |
+| Service  | Local URL                  |
+| -------- | -------------------------- |
+| Frontend | http://127.0.0.1:4000      |
+| FastAPI  | http://127.0.0.1:8001      |
 | API docs | http://127.0.0.1:8001/docs |
 
 Production preview after build:
@@ -420,6 +420,8 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026
 
+- **System Monitor Upgrades & Env Parity** — Synchronized Vercel production environment credentials, resolved padding/empty space layout bugs, and added unified Apple premium hover transitions with blue glows across all monitor cards and sections in both light and dark modes.
+- **Perfect QA Scores** — Achieved a **100/100** score on React Doctor, and perfect **100/100** Lighthouse scores (Performance, Accessibility, Best Practices, SEO) on both Desktop and Mobile test configurations.
 - **New Blog Publications** — Published two new technical deep-dives on WWDC 2026 (Apple Intelligence, Siri AI, AFM 3) and NotebookLM 2026 (Audio Overviews, Workspace Chat, Google Search Grounding), bringing the total count to 12.
 - **WWDC26 Liquid Glass Theme** — sitewide translucent surfaces, centralized design tokens, and reduced-motion/transparency fallbacks
 - **AssistMe Polish** — Apple Intelligence-style chat with Siri dictation, writing tools, and liquid glass QA matrix

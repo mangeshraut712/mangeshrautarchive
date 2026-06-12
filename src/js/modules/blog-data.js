@@ -1670,7 +1670,7 @@ The question isn't whether AI will be conscious. It's whether *we* can become co
     id: 'wwdc-2026-apple-intelligence-siri-ai',
     title: 'WWDC 2026: Apple Intelligence, Siri AI, and the New Era of On-Device Reasoning',
     summary:
-      'A deep-dive into WWDC 2026\'s biggest announcements: the ground-up Siri AI rebuild, third-generation Apple Foundation Models co-developed with Google, the new Core AI framework for on-device inference, and Private Cloud Compute on Google Cloud with confidential computing.',
+      "A deep-dive into WWDC 2026's biggest announcements: the ground-up Siri AI rebuild, third-generation Apple Foundation Models co-developed with Google, the new Core AI framework for on-device inference, and Private Cloud Compute on Google Cloud with confidential computing.",
     date: '2026-06-12',
     tags: ['WWDC 2026', 'Apple Intelligence', 'Siri AI', 'Core AI', 'Private Cloud Compute'],
     readTime: '8 min read',
@@ -1830,7 +1830,7 @@ Developer beta is available now. Public beta expected July 2026. Full release fa
     id: 'notebooklm-2026-ai-research-agent',
     title: 'NotebookLM 2026: From Document Q&A to Full-Scale AI Research Agent',
     summary:
-      'Google\'s NotebookLM evolved from a document chat tool into an agentic research platform: Gemini 3.5 integration, sandboxed code execution via Antigravity, chat-driven source discovery, cinematic video overviews with Veo 3, and 12+ export formats.',
+      "Google's NotebookLM evolved from a document chat tool into an agentic research platform: Gemini 3.5 integration, sandboxed code execution via Antigravity, chat-driven source discovery, cinematic video overviews with Veo 3, and 12+ export formats.",
     date: '2026-06-10',
     tags: ['NotebookLM', 'Gemini 3.5', 'AI Research', 'Antigravity', 'Google AI'],
     readTime: '7 min read',

@@ -31,7 +31,11 @@ const SECTION_MODULES = [
     rootMargin: '120px 0px',
   },
   { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '120px 0px' },
-  { sectionId: 'currently-section', modulePath: '../modules/health-widget.js', rootMargin: '120px 0px' },
+  {
+    sectionId: 'currently-section',
+    modulePath: '../modules/health-widget.js',
+    rootMargin: '120px 0px',
+  },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',

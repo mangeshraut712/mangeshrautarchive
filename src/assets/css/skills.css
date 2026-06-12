@@ -146,7 +146,6 @@ html.dark .skill-category h3.text-xl {
   }
 }
 
-
 #skills-container .skill-badge:hover,
 .skill-badge:hover {
   transform: translateY(-5px);

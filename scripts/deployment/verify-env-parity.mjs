@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Cross-check integration env keys (.env.local vs Vercel) and API health
+ * Cross-check integration env keys (.env vs Vercel) and API health
  * on production vs local backend. Never prints secret values.
  */
 import { readFileSync, existsSync } from 'node:fs';
@@ -8,8 +8,11 @@ import { resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const ENV_FILE = resolve(ROOT, '.env.local');
-const PRODUCTION_API = (process.env.PRODUCTION_API_BASE || 'https://mangeshraut.pro').replace(/\/$/, '');
+const ENV_FILE = resolve(ROOT, '.env');
+const PRODUCTION_API = (process.env.PRODUCTION_API_BASE || 'https://mangeshraut.pro').replace(
+  /\/$/,
+  ''
+);
 const LOCAL_API = (process.env.LOCAL_API_BASE || 'http://127.0.0.1:8001').replace(/\/$/, '');
 
 const INTEGRATION_KEYS = [
@@ -48,7 +51,9 @@ function listVercelEnvNames(target = 'production') {
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   if (result.status !== 0) {
-    throw new Error((result.stderr || result.stdout || '').trim() || `vercel env ls ${target} failed`);
+    throw new Error(
+      (result.stderr || result.stdout || '').trim() || `vercel env ls ${target} failed`
+    );
   }
   const names = new Set();
   for (const line of (result.stdout || '').split('\n')) {
@@ -94,13 +99,19 @@ async function main() {
     console.warn(`[warn] Could not list Vercel env: ${error.message}`);
   }
 
-  console.log('Key parity (.env.local present vs Vercel production):');
+  console.log('Key parity (.env present vs Vercel production):');
   let envIssues = 0;
   for (const key of INTEGRATION_KEYS) {
     const localPresent = Boolean((localEnv[key] || '').trim());
     const vercelPresent = vercelNames.has(key);
     const status =
-      localPresent && vercelPresent ? 'ok' : localPresent && !vercelPresent ? 'missing-on-vercel' : !localPresent && vercelPresent ? 'local-empty' : 'missing-both';
+      localPresent && vercelPresent
+        ? 'ok'
+        : localPresent && !vercelPresent
+          ? 'missing-on-vercel'
+          : !localPresent && vercelPresent
+            ? 'local-empty'
+            : 'missing-both';
     if (status !== 'ok') envIssues += 1;
     console.log(`  ${status.padEnd(18)} ${key}`);
   }
@@ -128,9 +139,7 @@ async function main() {
   if (prodIntegrations.ok && prodIntegrations.body?.providers) {
     console.log('\nProduction integration connections:');
     for (const [key, provider] of Object.entries(prodIntegrations.body.providers)) {
-      console.log(
-        `  ${key}: configured=${provider.configured} connected=${provider.connected}`
-      );
+      console.log(`  ${key}: configured=${provider.configured} connected=${provider.connected}`);
     }
   }
 

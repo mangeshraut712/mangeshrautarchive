@@ -54,13 +54,7 @@ async function runBackend() {
   const fs = await import('fs');
   const useVenv = fs.existsSync('./venv/bin/python');
 
-  const uvicornArgs = [
-    'api.index:app',
-    '--host',
-    host,
-    '--port',
-    String(port),
-  ];
+  const uvicornArgs = ['api.index:app', '--host', host, '--port', String(port)];
   if (shouldReload) {
     uvicornArgs.push('--reload');
   }

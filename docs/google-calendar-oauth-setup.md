@@ -26,7 +26,7 @@ Use GCP project **My First Project** (`proud-shoreline-484417-r4`). The URL slug
   - `http://127.0.0.1:8001/api/calendar/callback/google`
   - `https://mangeshraut.pro/api/calendar/callback/google`
 
-Copy Client ID and Client Secret into `.env.local` (never commit):
+Copy Client ID and Client Secret into `.env` (never commit):
 
 ```env
 GOOGLE_CALENDAR_CLIENT_ID=...

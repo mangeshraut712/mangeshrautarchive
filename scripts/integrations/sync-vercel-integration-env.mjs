@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Push integration env vars from .env.local to Vercel (production + preview).
+ * Push integration env vars from .env to Vercel (production + preview).
  * Never prints secret values.
  */
 import { spawnSync } from 'node:child_process';
@@ -8,8 +8,11 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const ENV_FILE = resolve(ROOT, '.env.local');
-const TARGETS = (process.env.VERCEL_ENV_TARGETS || 'production').split(',').map(s => s.trim()).filter(Boolean);
+const ENV_FILE = resolve(ROOT, '.env');
+const TARGETS = (process.env.VERCEL_ENV_TARGETS || 'production')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
 const PRODUCTION_URI_OVERRIDES = {
   GOOGLE_CALENDAR_REDIRECT_URI: 'https://mangeshraut.pro/api/calendar/callback/google',
   WHOOP_REDIRECT_URI: 'https://mangeshraut.pro/api/integrations/whoop/callback',
@@ -72,7 +75,7 @@ function upsertEnv(name, value, target) {
 }
 
 if (!existsSync(ENV_FILE)) {
-  console.error('Missing .env.local');
+  console.error('Missing .env');
   process.exit(1);
 }
 

@@ -1193,7 +1193,9 @@ html.dark .a11y-toolbar button.a11y-glass-active {
     top: auto !important;
     transform: none !important;
     gap: 0.375rem !important;
-    max-width: calc(100vw - 6.25rem - env(safe-area-inset-left) - env(safe-area-inset-right)) !important;
+    max-width: calc(
+      100vw - 6.25rem - env(safe-area-inset-left) - env(safe-area-inset-right)
+    ) !important;
     padding: 0.375rem !important;
   }
 
@@ -1341,17 +1343,17 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
   .a11y-toolbar,
   .a11y-glass-popover,
   :is(
-      .experience-content,
-      .education-card,
-      .stat-card,
-      .blog-card,
-      .showcase-project-card,
-      .about-highlight-card,
-      .contact-card,
-      .overview-card,
-      .health-item,
-      .travel-stop
-    ) {
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .contact-card,
+    .overview-card,
+    .health-item,
+    .travel-stop
+  ) {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -1383,22 +1385,23 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
   }
 
   :is(
-      .experience-content,
-      .education-card,
-      .stat-card,
-      .blog-card,
-      .showcase-project-card,
-      .about-highlight-card,
-      .contact-card,
-      .overview-card,
-      .health-item,
-      .travel-stop
-    ) {
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .contact-card,
+    .overview-card,
+    .health-item,
+    .travel-stop
+  ) {
     background: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
   }
 
-  html.dark :is(
+  html.dark
+    :is(
       .experience-content,
       .education-card,
       .stat-card,
@@ -1451,52 +1454,52 @@ footer .wrapper {
 
 /* Class-only selectors — :is() specificity = max of listed classes only */
 :is(
-    .card,
-    .experience-card,
-    .experience-content,
-    .education-card,
-    .education-content,
-    .stat-card,
-    .blog-card,
-    .publication-card,
-    .award-card,
-    .recommendation-card,
-    .certification-card,
-    .showcase-project-card,
-    .about-highlight-card,
-    .about-text-card,
-    .about-card,
-    .contact-card,
-    .contact-form-card,
-    .newsletter-card,
-    .support-donation-card,
-    .media-card,
-    .currently-card,
-    .calendar-card,
-    .ios-widget-wrapper,
-    .legend-card,
-    .music-card-inner,
-    .reminder-card,
-    .overview-card,
-    .doc-card,
-    .health-item,
-    .game-stat-card,
-    .game-info-card,
-    .skill-card,
-    .skill-badge,
-    .timeline-content,
-    .service-card,
-    .feature-card,
-    .testimonial-card,
-    .pricing-card,
-    .team-card,
-    .info-card,
-    .detail-card,
-    .summary-card,
-    .glass-card,
-    .overlay-card,
-    .panel
-  ) {
+  .card,
+  .experience-card,
+  .experience-content,
+  .education-card,
+  .education-content,
+  .stat-card,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .showcase-project-card,
+  .about-highlight-card,
+  .about-text-card,
+  .about-card,
+  .contact-card,
+  .contact-form-card,
+  .newsletter-card,
+  .support-donation-card,
+  .media-card,
+  .currently-card,
+  .calendar-card,
+  .ios-widget-wrapper,
+  .legend-card,
+  .music-card-inner,
+  .reminder-card,
+  .overview-card,
+  .doc-card,
+  .health-item,
+  .game-stat-card,
+  .game-info-card,
+  .skill-card,
+  .skill-badge,
+  .timeline-content,
+  .service-card,
+  .feature-card,
+  .testimonial-card,
+  .pricing-card,
+  .team-card,
+  .info-card,
+  .detail-card,
+  .summary-card,
+  .glass-card,
+  .overlay-card,
+  .panel
+) {
   background: var(--theme-card-surface) !important;
   background-color: var(--theme-card-surface) !important;
   background-image: none !important;
@@ -1507,6 +1510,25 @@ footer .wrapper {
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
     box-shadow 0.32s ease !important;
+}
+
+/* Final card hover borders for section-specific cards loaded before this file. */
+#publications .publication-card:hover,
+#debug-runner-section .game-control-item:hover,
+#debug-runner-section .game-canvas-wrapper:hover,
+#debug-runner-section .game-stat-box:hover,
+#debug-runner-section .legend-card:hover {
+  border-color: var(--theme-card-border-hover, #0071e3) !important;
+  box-shadow: 0 0 0 1px rgb(0 113 227 / 26%) !important;
+}
+
+html.dark #publications .publication-card:hover,
+html.dark #debug-runner-section .game-control-item:hover,
+html.dark #debug-runner-section .game-canvas-wrapper:hover,
+html.dark #debug-runner-section .game-stat-box:hover,
+html.dark #debug-runner-section .legend-card:hover {
+  border-color: var(--theme-card-border-hover, #0a84ff) !important;
+  box-shadow: 0 0 0 1px rgb(10 132 255 / 32%) !important;
 }
 
 /* ID / section-scoped cards — separate rules (never mix into :is() with classes) */
@@ -1536,34 +1558,34 @@ html body #contact div.media-card {
 
 /* Class-only hover — blue border */
 :is(
-    .card:hover,
-    .experience-content:hover,
-    .education-card:hover,
-    .education-content:hover,
-    .stat-card:hover,
-    .blog-card:hover,
-    .showcase-project-card:hover,
-    .about-highlight-card:hover,
-    .about-text-card:hover,
-    .contact-card:hover,
-    .currently-card:hover,
-    .calendar-wrapper-clean:hover,
-    .contact-form-card:hover,
-    .newsletter-card:hover,
-    .support-donation-card:hover,
-    .media-card:hover,
-    .overview-card:hover,
-    .health-item:hover,
-    .travel-stop:hover,
-    .place-guide-card:hover,
-    .travel-stat:hover,
-    .travel-sidebar:hover,
-    .travel-sidebar .travel-stop:hover,
-    .travel-sidebar .place-guide-card:hover,
-    .skill-card:hover,
-    .skill-badge:hover,
-    .timeline-content:hover
-  ) {
+  .card:hover,
+  .experience-content:hover,
+  .education-card:hover,
+  .education-content:hover,
+  .stat-card:hover,
+  .blog-card:hover,
+  .showcase-project-card:hover,
+  .about-highlight-card:hover,
+  .about-text-card:hover,
+  .contact-card:hover,
+  .currently-card:hover,
+  .calendar-wrapper-clean:hover,
+  .contact-form-card:hover,
+  .newsletter-card:hover,
+  .support-donation-card:hover,
+  .media-card:hover,
+  .overview-card:hover,
+  .health-item:hover,
+  .travel-stop:hover,
+  .place-guide-card:hover,
+  .travel-stat:hover,
+  .travel-sidebar:hover,
+  .travel-sidebar .travel-stop:hover,
+  .travel-sidebar .place-guide-card:hover,
+  .skill-card:hover,
+  .skill-badge:hover,
+  .timeline-content:hover
+) {
   border: 1px solid var(--theme-card-border-hover) !important;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover) 24%, transparent) !important;
 }
@@ -1778,7 +1800,11 @@ body.monitor-page .monitor-summary-panel {
 
 body.monitor-page .monitor-summary-card {
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-blue, #0071e3) 8%, transparent), transparent),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-blue, #0071e3) 8%, transparent),
+      transparent
+    ),
     rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
 }
 
@@ -1795,7 +1821,11 @@ html.dark body.monitor-page .monitor-summary-panel {
 
 html.dark body.monitor-page .monitor-summary-card {
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-blue, #0a84ff) 12%, transparent), transparent),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-blue, #0a84ff) 12%, transparent),
+      transparent
+    ),
     rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
 }
 

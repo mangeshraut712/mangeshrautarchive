@@ -8,8 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../../');
 
-// Load environment variables (.env.local overrides .env)
-dotenv.config({ path: join(projectRoot, '.env.local') });
+// Load environment variables from the single ignored local env file.
 dotenv.config({ path: join(projectRoot, '.env') });
 
 const app = express();
@@ -45,8 +44,7 @@ function getPublicBuildConfig(activePort = port) {
     siteUrl: process.env.OPENROUTER_SITE_URL || origin,
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
-    lastfmApiKey:
-      process.env.NEXT_PUBLIC_LASTFM_API_KEY || process.env.LASTFM_API_KEY || '',
+    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || process.env.LASTFM_API_KEY || '',
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `dev-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
