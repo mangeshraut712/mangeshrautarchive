@@ -20,7 +20,6 @@ function upsertEnvLine(content, key, value) {
 }
 
 async function fillVisible(page, matcher, value) {
-  const input = page.locator('input:visible').filter({ has: page.locator(`xpath=..`) });
   const count = await page.locator('input:visible').count();
   for (let i = 0; i < count; i += 1) {
     const el = page.locator('input:visible').nth(i);
@@ -143,7 +142,6 @@ async function setupWhoop(page) {
   await fillVisible(page, /name|app/, 'mangeshrautarchive');
   await fillVisible(page, /redirect|callback|uri/, WHOOP_REDIRECT);
 
-  const redirect = page.locator('input:visible').filter({ hasText: '' });
   const inputs = page.locator('input:visible, textarea:visible');
   const count = await inputs.count();
   for (let i = 0; i < count; i += 1) {

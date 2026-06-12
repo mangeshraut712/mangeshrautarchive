@@ -4,18 +4,19 @@ import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env file into process.env
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const projectRoot = resolve(__dirname, '../../');
+
+// Load environment variables (.env.local overrides .env)
+dotenv.config({ path: join(projectRoot, '.env.local') });
+dotenv.config({ path: join(projectRoot, '.env') });
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || '4000', 10);
+const host = process.env.HOST || '127.0.0.1';
 const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8001';
 
-// Get the project root directory
-const projectRoot = resolve(__dirname, '../../');
 const hopByHopHeaders = new Set([
   'accept-encoding',
   'connection',
@@ -31,16 +32,25 @@ const hopByHopHeaders = new Set([
   'upgrade',
 ]);
 
-function getPublicBuildConfig() {
+function getPublicBuildConfig(activePort = port) {
+  const origin = `http://${host}:${activePort}`;
+  const useProductionApi = ['1', 'true', 'yes'].includes(
+    String(process.env.LOCAL_USE_PRODUCTION_API || '').toLowerCase()
+  );
+
   return {
-    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || `http://localhost:${port}`,
-    siteUrl: process.env.OPENROUTER_SITE_URL || `http://localhost:${port}`,
+    apiBaseUrl: useProductionApi
+      ? (process.env.NEXT_PUBLIC_API_BASE || origin).replace(/\/$/, '')
+      : origin,
+    siteUrl: process.env.OPENROUTER_SITE_URL || origin,
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.1-fast',
-    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || '',
+    lastfmApiKey:
+      process.env.NEXT_PUBLIC_LASTFM_API_KEY || process.env.LASTFM_API_KEY || '',
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `dev-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
+    localDev: true,
   };
 }
 
@@ -97,9 +107,7 @@ async function proxyApiRequest(req, res) {
 
 app.use('/api', proxyApiRequest);
 
-// Cache-busting middleware for development
 app.use((req, res, next) => {
-  // Disable caching for all requests in development
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -107,13 +115,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/build-config.json', (_req, res) => {
+app.get('/build-config.json', (req, res) => {
   res.type('application/json');
-  res.send(JSON.stringify(getPublicBuildConfig(), null, 2));
+  res.send(JSON.stringify(getPublicBuildConfig(Number(req.socket.localPort || port)), null, 2));
 });
 
-app.get('/build-config.js', (_req, res) => {
-  const config = JSON.stringify(getPublicBuildConfig(), null, 2);
+app.get('/build-config.js', (req, res) => {
+  const activePort = Number(req.socket.localPort || port);
+  const config = JSON.stringify(getPublicBuildConfig(activePort), null, 2);
   res.type('application/javascript');
   res.send(`(function () {
   const buildConfig = ${config};
@@ -122,7 +131,6 @@ app.get('/build-config.js', (_req, res) => {
 })();`);
 });
 
-// Redirect trailing slashes to match Vercel trailingSlash: false configuration
 app.use((req, res, next) => {
   if (req.path.length > 1 && req.path.endsWith('/')) {
     const query = req.url.slice(req.path.length);
@@ -132,29 +140,30 @@ app.use((req, res, next) => {
   }
 });
 
-// Serve static files from the 'src' directory
 const staticPath = join(projectRoot, 'src');
 app.use(express.static(staticPath, { extensions: ['html'] }));
 
-// Serve chatbot assets so linked styles/scripts resolve correctly
 const chatbotPath = join(projectRoot, 'chatbot');
 app.use('/chatbot', express.static(chatbotPath));
 
-const host = process.env.HOST || '127.0.0.1';
-
-function startServer(port) {
-  const server = app.listen(port, host);
+function startServer(listenPort) {
+  const server = app.listen(listenPort, host);
 
   server.on('listening', () => {
-    console.log(`\n🚀 Local development server running!`);
-    console.log(`   - Frontend: http://${host}:${port}`);
-    console.log(`   - API proxy target: ${apiTarget}`);
+    const origin = `http://${host}:${listenPort}`;
+    console.log('\n🚀 Local development server running!');
+    console.log(`   - Frontend: ${origin}`);
+    console.log(`   - API proxy: ${origin}/api/* → ${apiTarget}`);
+    console.log(`   - apiBaseUrl: ${getPublicBuildConfig(listenPort).apiBaseUrl}`);
+    if (listenPort !== port) {
+      console.warn(`   ⚠️  Port ${port} was busy; using ${listenPort} instead.`);
+    }
   });
 
   server.on('error', err => {
     if (err.code === 'EADDRINUSE') {
-      console.warn(`⚠️  Port ${port} is in use, trying port ${port + 1}...`);
-      startServer(port + 1);
+      console.warn(`⚠️  Port ${listenPort} is in use, trying port ${listenPort + 1}...`);
+      startServer(listenPort + 1);
     } else {
       console.error('Failed to start server:', err.message);
       process.exit(1);

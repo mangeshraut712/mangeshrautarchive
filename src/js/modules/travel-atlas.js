@@ -302,15 +302,18 @@ function getActiveWaypoint() {
 }
 
 function withTravelViewTransition(callback) {
-  if (
-    !document.startViewTransition ||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  ) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     callback();
     return;
   }
 
-  document.startViewTransition(callback);
+  const startTransition = document.startViewTransition;
+  if (typeof startTransition === 'function') {
+    startTransition.call(document, callback);
+    return;
+  }
+
+  callback();
 }
 
 function applyFilterChange({ focusSearch = false } = {}) {

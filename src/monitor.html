@@ -1545,7 +1545,7 @@
       function buildIntegrationConnectHref(connectUrl) {
         if (!connectUrl) return null;
         if (/^https?:\/\//i.test(connectUrl)) return connectUrl;
-        const base = monitorApiOrigin || globalThis.location.origin;
+        const base = apiOrigin || globalThis.location.origin;
         return `${base.replace(/\/$/, '')}${connectUrl.startsWith('/') ? connectUrl : `/${connectUrl}`}`;
       }
 
