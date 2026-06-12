@@ -3266,29 +3266,135 @@
 
           <!-- Column 2: Send a Message + Calendar (Two Separate Cards) -->
           <div class="contact-column">
-            <!-- Contact via AssistMe Card -->
-            <div class="contact-card contact-assistme-card">
-              <div class="icon-box blue contact-assistme-icon">
-                <i class="fas fa-robot"></i>
+            <!-- Merged Health Vitals & Currently Card -->
+            <div class="currently-card merged-health-currently-card" id="currently-section">
+              <!-- Health Section (Top) -->
+              <div id="health-section" style="scroll-margin-top: 100px;">
+                <div class="currently-header health-widget-header" style="border-bottom: none; margin-bottom: 0.5rem; padding-bottom: 0;">
+                  <h3><i class="fas fa-heartbeat"></i> Health Vitals</h3>
+                </div>
+                <div class="health-widget-container" style="margin-bottom: 1.5rem;">
+                  <div class="health-widget-body">
+                    <!-- Whoop Section (Left) -->
+                    <div class="health-widget-section whoop-section">
+                      <div class="health-brand">
+                        <svg viewBox="0 0 200 32" width="88" height="14" fill="currentColor" aria-label="WHOOP" style="opacity: 0.85;">
+                          <path d="M197.149 0.745055C196.851 0.752052 196.557 0.818716 196.285 0.941113C196.013 1.06351 195.768 1.23916 195.565 1.45769C195.14 1.87614 194.895 2.44468 194.884 3.04132C194.864 3.35224 194.907 3.66402 195.01 3.95793C195.114 4.25184 195.276 4.52182 195.486 4.75164C195.903 5.17852 196.473 5.42326 197.07 5.43261C197.367 5.42854 197.66 5.36476 197.932 5.24506C198.204 5.12536 198.449 4.95217 198.653 4.73581C198.894 4.54546 199.094 4.3085 199.241 4.0391C199.388 3.76971 199.479 3.47343 199.508 3.16801C199.491 2.56948 199.241 2.00122 198.812 1.58438C198.611 1.33303 198.359 1.12791 198.072 0.983056C197.785 0.838199 197.47 0.757015 197.149 0.745055ZM199.999 3.16801C200.008 3.55181 199.936 3.93319 199.789 4.28771C199.642 4.64224 199.422 4.96208 199.144 5.22673C198.609 5.74352 197.892 6.02812 197.149 6.01855C196.772 6.02697 196.399 5.95824 196.05 5.81662C195.701 5.67499 195.385 5.46346 195.122 5.19506C194.854 4.93076 194.643 4.61473 194.501 4.26624C194.36 3.91775 194.291 3.54409 194.298 3.16801C194.291 2.77922 194.367 2.39336 194.52 2.03581C194.672 1.67825 194.899 1.3571 195.185 1.09345C195.719 0.600113 196.421 0.328379 197.149 0.333311C197.525 0.326745 197.898 0.396316 198.246 0.537838C198.595 0.679359 198.911 0.889904 199.176 1.1568C199.442 1.4187 199.653 1.73205 199.794 2.07779C199.936 2.42354 200.005 2.79446 199.999 3.16801ZM197.671 2.58207C197.67 2.50299 197.646 2.42604 197.6 2.36112C197.555 2.2962 197.492 2.2463 197.418 2.21783C197.255 2.19606 197.09 2.19606 196.927 2.21783H196.737V3.00965H197.054C197.21 3.02238 197.365 2.98343 197.497 2.89879C197.555 2.85465 197.601 2.79687 197.632 2.73058C197.662 2.66428 197.676 2.59151 197.671 2.51872V2.58207ZM195.898 4.75164V1.58438H197.481C197.697 1.58755 197.908 1.64183 198.099 1.74274C198.235 1.81098 198.349 1.91799 198.425 2.05039C198.501 2.18279 198.536 2.33468 198.526 2.48705C198.534 2.59496 198.519 2.70329 198.48 2.80448C198.442 2.90568 198.382 2.99731 198.305 3.07299C198.145 3.19518 197.952 3.26686 197.75 3.27887C197.915 3.31086 198.071 3.37548 198.21 3.4689C198.304 3.55711 198.378 3.66565 198.424 3.78635C198.471 3.90705 198.49 4.03676 198.479 4.1657V4.45075C198.472 4.48199 198.472 4.51453 198.479 4.54577C198.472 4.57701 198.472 4.60955 198.479 4.64079V4.73581H197.687C197.666 4.58873 197.666 4.43947 197.687 4.29239C197.695 4.16583 197.695 4.03888 197.687 3.91232C197.66 3.84498 197.617 3.78523 197.562 3.7383C197.507 3.69136 197.441 3.65868 197.37 3.6431C197.277 3.6225 197.179 3.6225 197.085 3.6431H196.737V4.75164H195.898Z" fill="currentColor"/>
+                        </svg>
+                      </div>
+                      <div class="whoop-grid">
+                        <div class="whoop-metric" id="whoop-sleep-card">
+                          <div class="metric-icon" title="Sleep Performance">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                          </div>
+                          <div class="metric-value" id="whoop-sleep-val">--%</div>
+                          <div class="metric-label">Sleep</div>
+                        </div>
+                        <div class="whoop-metric" id="whoop-recovery-card">
+                          <div class="metric-icon" title="Recovery Level">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <circle cx="12" cy="5" r="2.5" />
+                              <path d="M12 7.5v6.5" />
+                              <path d="M5 12c1.5-3 3-5 7-5s5.5 2 7 5" />
+                              <path d="M5 12c1 1 2 2 4 2h6c2 0 3-1 4-2" />
+                              <path d="M4 18.5c2-2.5 4-3.5 8-3.5s6 1 8 3.5" />
+                              <path d="M6 20c3-1 9-1 12 0" />
+                            </svg>
+                          </div>
+                          <div class="metric-value" id="whoop-recovery-val">--%</div>
+                          <div class="metric-label">Recovery</div>
+                        </div>
+                        <div class="whoop-metric" id="whoop-strain-card">
+                          <div class="metric-icon" title="Strain Level">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M3 7h18" />
+                              <rect x="1" y="4" width="2" height="6" rx="0.5" />
+                              <rect x="21" y="4" width="2" height="6" rx="0.5" />
+                              <circle cx="12" cy="12" r="2" />
+                              <path d="M6 7l4 4h4l4-4" />
+                              <path d="M12 14v4" />
+                              <path d="M9 21l3-3 3 3" />
+                            </svg>
+                          </div>
+                          <div class="metric-value" id="whoop-strain-val">--</div>
+                          <div class="metric-label">Strain</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Vertical Divider -->
+                    <div class="health-widget-divider"></div>
+                    
+                    <!-- Withings Section (Right) -->
+                    <div class="health-widget-section withings-section">
+                      <div class="health-brand">
+                        <svg viewBox="0 69.3 493.6 62.4" width="95" height="12" fill="currentColor" aria-label="WITHINGS" style="opacity: 0.85;">
+                          <g>
+                            <path d="M0,69.3h11.7l14.6,45.5l15.1-45.7h9.1l15.1,45.7l14.6-45.5h11.3l-21.4,61.8h-9.3L45.8,87l-15.1,44.1h-9.3L0,69.3z" />
+                            <path d="M107.6,69.3h10.7v61.4h-10.7V69.3z" />
+                            <path d="M154.2,79.3h-19.5v-10h49.8v10h-19.4v51.4h-10.9V79.3z" />
+                            <path d="M200.3,69.3H211v25.5h29.5V69.3h10.7v61.4h-10.7v-25.9H211v25.9h-10.7V69.3z" />
+                            <path d="M272,69.3h10.7v61.4H272V69.3z" />
+                            <path d="M303.5,69.3h10l32.8,42.4V69.3H357v61.4h-9L314.2,87v43.7h-10.7V69.3z" />
+                            <path d="M406.3,131.7c-4.8,0-9.2-0.8-13.1-2.4c-3.9-1.6-7.3-3.8-10-6.7c-2.8-2.8-4.9-6.2-6.4-10s-2.3-8-2.3-12.5V100c0-4.3,0.8-8.3,2.3-12.2c1.6-3.9,3.7-7.2,6.6-10.1c2.8-2.9,6.2-5.2,10.1-6.9c3.9-1.7,8.1-2.5,12.8-2.5c2.7,0,5.1,0.2,7.3,0.6c2.2,0.4,4.2,0.9,6.1,1.6s3.6,1.6,5.3,2.6c1.7,1,3.3,2.2,4.9,3.6l-6.8,8.2c-1.2-1-2.4-1.9-3.6-2.7c-1.2-0.8-2.5-1.5-3.9-2.1c-1.3-0.6-2.8-1-4.4-1.3s-3.4-0.5-5.3-0.5c-2.8,0-5.4,0.6-7.8,1.8c-2.4,1.2-4.5,2.7-6.3,4.7s-3.2,4.3-4.2,6.9s-1.5,5.4-1.5,8.3v0.2c0,3.2,0.5,6.1,1.5,8.8c1,2.7,2.4,5,4.2,6.9c1.8,1.9,4,3.5,6.6,4.6c2.5,1.1,5.4,1.7,8.5,1.7c2.9,0,5.6-0.4,8.2-1.3c2.5-0.9,4.7-2,6.6-3.4V106H406v-9.4h26.1v25.8c-1.5,1.3-3.2,2.5-5,3.7s-3.8,2.2-6,3.1c-2.1,0.9-4.4,1.6-6.9,2.1C411.6,131.5,409,131.7,406.3,131.7z" />
+                            <path d="M471.9,131.6c-4.7,0-9.3-0.8-13.6-2.4c-4.3-1.6-8.3-4.1-12-7.4l6.5-7.7c3,2.6,6,4.5,9,5.9s6.5,2.1,10.3,2.1c3.3,0,6-0.7,7.9-2.1s2.9-3.3,2.9-5.6v-0.2c0-1.1-0.2-2.1-0.6-2.9c-0.4-0.8-1.1-1.7-2.1-2.4c-1-0.8-2.4-1.5-4.2-2.1s-4.1-1.3-7-1.9c-3.3-0.8-6.2-1.6-8.7-2.6s-4.7-2.1-6.4-3.5c-1.7-1.4-3-3.1-4-5c-0.9-2-1.4-4.4-1.4-7.2v-0.2c0-2.6,0.5-5,1.6-7.2c1-2.2,2.5-4.1,4.3-5.6s4-2.8,6.6-3.6c2.6-0.9,5.4-1.3,8.4-1.3c4.5,0,8.5,0.7,12.1,2s7,3.2,10.1,5.7l-5.8,8.2c-2.8-2-5.6-3.6-8.3-4.7s-5.5-1.6-8.3-1.6c-3.2,0-5.6,0.7-7.4,2.1s-2.6,3.1-2.6,5.2v0.2c0,1.2,0.2,2.2,0.6,3.1s1.2,1.7,2.2,2.5c1.1,0.7,2.6,1.4,4.5,2.1c1.9,0.6,4.3,1.3,7.3,2c3.2,0.8,6.1,1.7,8.6,2.7s4.6,2.2,6.2,3.6c1.6,1.4,2.9,3.1,3.7,5c0.9,1.9,1.3,4.1,1.3,6.6v0.2c0,2.9-0.5,5.4-1.6,7.7c-1.1,2.3-2.6,4.2-4.5,5.8s-4.2,2.8-6.9,3.6C478,131.1,475.1,131.6,471.9,131.6z" />
+                          </g>
+                        </svg>
+                      </div>
+                      <div class="withings-list">
+                        <div class="withings-row" id="withings-weight-row">
+                          <div class="withings-metric-label">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow down">
+                              <line x1="7" y1="7" x2="17" y2="17"></line>
+                              <polyline points="17 7 17 17 7 17"></polyline>
+                            </svg>
+                            <span>Weight</span>
+                          </div>
+                          <div class="withings-metric-value">
+                            <span id="withings-weight-val">--</span><span class="unit">kg</span>
+                          </div>
+                        </div>
+                        <div class="withings-row" id="withings-muscle-row">
+                          <div class="withings-metric-label">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow up">
+                              <line x1="7" y1="17" x2="17" y2="7"></line>
+                              <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                            <span>Muscle</span>
+                          </div>
+                          <div class="withings-metric-value">
+                            <span id="withings-muscle-val">--</span><span class="unit">%</span>
+                          </div>
+                        </div>
+                        <div class="withings-row" id="withings-fat-row">
+                          <div class="withings-metric-label">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow down">
+                              <line x1="7" y1="7" x2="17" y2="17"></line>
+                              <polyline points="17 7 17 17 7 17"></polyline>
+                            </svg>
+                            <span>Fat</span>
+                          </div>
+                          <div class="withings-metric-value">
+                            <span id="withings-fat-val">--</span><span class="unit">%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="health-widget-footer">
+                    <span class="last-sync-time"><i class="fas fa-sync-alt"></i> <span id="health-sync-text">Checking stats…</span></span>
+                    <span style="font-size: 0.6rem; color: rgba(255,255,255,0.3);">Live Vitals</span>
+                  </div>
+                </div>
               </div>
-              <h3>Let's Talk!</h3>
-              <p class="contact-description">
-                Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
-              </p>
-              <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
-                <i class="fas fa-message"></i>
-                Chat with my AI assistant
-              </button>
-              <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
-            </div>
 
-            <!-- Calendar, reminders, and booking widget -->
-            <div class="calendar-wrapper-clean apple-card">
-              <div id="calendar-widget"></div>
-            </div>
+              <!-- Divider -->
+              <div class="currently-divider" style="height: 1px; background: var(--health-row-border); margin: 1.5rem 0;"></div>
 
-            <!-- Currently Watching/Reading Card -->
-            <div class="currently-card" id="currently-section">
+              <!-- Currently Section (Bottom) -->
               <div class="currently-header">
                 <h3><i class="fas fa-bookmark"></i> Currently</h3>
                 <div class="currently-tabs">
@@ -3383,128 +3489,30 @@
 
             </div>
 
-            <!-- Health Vitals Widget Card -->
-            <div class="currently-card health-widget-card" id="health-section">
-              <div class="currently-header health-widget-header">
-                <h3><i class="fas fa-heartbeat"></i> Health Vitals</h3>
-              </div>
-              <div class="health-widget-container">
-                <div class="health-widget-body">
-                  <!-- Whoop Section (Left) -->
-                  <div class="health-widget-section whoop-section">
-                    <div class="health-brand">
-                      <svg viewBox="0 0 200 32" width="88" height="14" fill="currentColor" aria-label="WHOOP" style="opacity: 0.85;">
-                        <path d="M197.149 0.745055C196.851 0.752052 196.557 0.818716 196.285 0.941113C196.013 1.06351 195.768 1.23916 195.565 1.45769C195.14 1.87614 194.895 2.44468 194.884 3.04132C194.864 3.35224 194.907 3.66402 195.01 3.95793C195.114 4.25184 195.276 4.52182 195.486 4.75164C195.903 5.17852 196.473 5.42326 197.07 5.43261C197.367 5.42854 197.66 5.36476 197.932 5.24506C198.204 5.12536 198.449 4.95217 198.653 4.73581C198.894 4.54546 199.094 4.3085 199.241 4.0391C199.388 3.76971 199.479 3.47343 199.508 3.16801C199.491 2.56948 199.241 2.00122 198.812 1.58438C198.611 1.33303 198.359 1.12791 198.072 0.983056C197.785 0.838199 197.47 0.757015 197.149 0.745055ZM199.999 3.16801C200.008 3.55181 199.936 3.93319 199.789 4.28771C199.642 4.64224 199.422 4.96208 199.144 5.22673C198.609 5.74352 197.892 6.02812 197.149 6.01855C196.772 6.02697 196.399 5.95824 196.05 5.81662C195.701 5.67499 195.385 5.46346 195.122 5.19506C194.854 4.93076 194.643 4.61473 194.501 4.26624C194.36 3.91775 194.291 3.54409 194.298 3.16801C194.291 2.77922 194.367 2.39336 194.52 2.03581C194.672 1.67825 194.899 1.3571 195.185 1.09345C195.719 0.600113 196.421 0.328379 197.149 0.333311C197.525 0.326745 197.898 0.396316 198.246 0.537838C198.595 0.679359 198.911 0.889904 199.176 1.1568C199.442 1.4187 199.653 1.73205 199.794 2.07779C199.936 2.42354 200.005 2.79446 199.999 3.16801ZM197.671 2.58207C197.67 2.50299 197.646 2.42604 197.6 2.36112C197.555 2.2962 197.492 2.2463 197.418 2.21783C197.255 2.19606 197.09 2.19606 196.927 2.21783H196.737V3.00965H197.054C197.21 3.02238 197.365 2.98343 197.497 2.89879C197.555 2.85465 197.601 2.79687 197.632 2.73058C197.662 2.66428 197.676 2.59151 197.671 2.51872V2.58207ZM195.898 4.75164V1.58438H197.481C197.697 1.58755 197.908 1.64183 198.099 1.74274C198.235 1.81098 198.349 1.91799 198.425 2.05039C198.501 2.18279 198.536 2.33468 198.526 2.48705C198.534 2.59496 198.519 2.70329 198.48 2.80448C198.442 2.90568 198.382 2.99731 198.305 3.07299C198.145 3.19518 197.952 3.26686 197.75 3.27887C197.915 3.31086 198.071 3.37548 198.21 3.4689C198.304 3.55711 198.378 3.66565 198.424 3.78635C198.471 3.90705 198.49 4.03676 198.479 4.1657V4.45075C198.472 4.48199 198.472 4.51453 198.479 4.54577C198.472 4.57701 198.472 4.60955 198.479 4.64079V4.73581H197.687C197.666 4.58873 197.666 4.43947 197.687 4.29239C197.695 4.16583 197.695 4.03888 197.687 3.91232C197.66 3.84498 197.617 3.78523 197.562 3.7383C197.507 3.69136 197.441 3.65868 197.37 3.6431C197.277 3.6225 197.179 3.6225 197.085 3.6431H196.737V4.75164H195.898Z" fill="currentColor"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M102.891 0.0020579C98.6709 -0.0657342 94.5964 1.54378 91.562 4.47727C88.5275 7.41075 86.7811 11.4285 86.7062 15.6483C86.8906 19.8169 88.6764 23.7536 91.6914 26.6382C94.7064 29.5227 98.7182 31.1328 102.891 31.1328C107.064 31.1328 111.075 29.5227 114.09 26.6382C117.105 23.7536 118.891 19.8169 119.076 15.6483C118.996 11.4298 117.249 7.41456 114.215 4.48196C111.182 1.54937 107.11 -0.0615334 102.891 0.0020579ZM102.891 27.6048C99.6663 27.6556 96.5533 26.4254 94.2346 24.1839C91.9159 21.9424 90.581 18.8728 90.5227 15.6483C90.5227 12.3681 91.8258 9.22221 94.1453 6.90273C96.4648 4.58325 99.6106 3.28018 102.891 3.28018C106.171 3.28018 109.317 4.58325 111.636 6.90273C113.956 9.22221 115.259 12.3681 115.259 15.6483C115.201 18.8728 113.866 21.9424 111.547 24.1839C109.229 26.4254 106.115 27.6556 102.891 27.6048ZM51.6762 0.0020579H55.6195V31.2946H51.6762V0.0020579ZM59.5944 13.748H70.949V17.5645H59.5944V13.748ZM78.8672 0.0020579H74.9239V31.2946H78.8672V0.0020579ZM166.727 0.0020579H170.686V31.2946H166.727V0.0020579ZM174.645 0.0020579H179.95C181.379 -0.0252348 182.799 0.229226 184.13 0.750904C185.46 1.27258 186.675 2.05126 187.704 3.04245C188.734 4.03364 189.558 5.21793 190.129 6.52767C190.701 7.83741 191.009 9.24694 191.036 10.6757C191.009 12.1045 190.701 13.5141 190.129 14.8238C189.558 16.1335 188.734 17.3178 187.704 18.309C186.675 19.3002 185.46 20.0789 184.13 20.6006C182.799 21.1222 181.379 21.3767 179.95 21.3494H174.661V17.6437H179.95C181.829 17.6734 183.643 16.9563 184.994 15.65C186.345 14.3436 187.123 12.5547 187.156 10.6757C187.118 8.79958 186.339 7.01467 184.989 5.71172C183.638 4.40876 181.827 3.6939 179.95 3.72359H174.661L174.645 0.0020579ZM126.012 15.6483C126.196 11.4798 127.982 7.54308 130.997 4.65851C134.012 1.77394 138.024 0.163932 142.197 0.163932C146.369 0.163932 150.381 1.77394 153.396 4.65851C156.411 7.54308 158.197 11.4798 158.381 15.6483C158.197 19.8169 156.411 23.7536 153.396 26.6382C150.381 29.5227 146.369 31.1328 142.197 31.1328C138.024 31.1328 134.012 29.5227 130.997 26.6382C127.982 23.7536 126.196 19.8169 126.012 15.6483ZM129.828 15.6483C129.828 18.9349 131.134 22.0868 133.458 24.4108C135.782 26.7347 138.934 28.0403 142.22 28.0403C145.507 28.0403 148.659 26.7347 150.983 24.4108C153.307 22.0868 154.612 18.9349 154.612 15.6483C154.612 12.3681 153.309 9.22221 150.99 6.90273C148.67 4.58325 145.524 3.28018 142.244 3.28018C138.964 3.28018 135.818 4.58325 133.499 6.90273C131.179 9.22221 129.876 12.3681 129.876 15.6483H129.828ZM24.4219 11.8318L30.5506 31.2946H34.383L44.2332 0.0020579H40.4008L32.4826 25.1976L28.2543 11.8318H24.4219ZM1 0.0020579L7.12866 19.4649H10.961L4.83239 0.0020579H1ZM10.8502 31.2946L20.7004 0.0020579H24.5328L14.6826 31.2946H10.8502Z" />
-                      </svg>
-                    </div>
-                    <div class="whoop-grid">
-                      <div class="whoop-metric" id="whoop-sleep-card">
-                        <div class="metric-icon" title="Sleep Performance">
-                          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                          </svg>
-                        </div>
-                        <div class="metric-value" id="whoop-sleep-val">--%</div>
-                        <div class="metric-label">Sleep</div>
-                      </div>
-                      <div class="whoop-metric" id="whoop-recovery-card">
-                        <div class="metric-icon" title="Recovery Level">
-                          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="5" r="2.5" />
-                            <path d="M12 7.5v6.5" />
-                            <path d="M5 12c1.5-3 3-5 7-5s5.5 2 7 5" />
-                            <path d="M5 12c1 1 2 2 4 2h6c2 0 3-1 4-2" />
-                            <path d="M4 18.5c2-2.5 4-3.5 8-3.5s6 1 8 3.5" />
-                            <path d="M6 20c3-1 9-1 12 0" />
-                          </svg>
-                        </div>
-                        <div class="metric-value" id="whoop-recovery-val">--%</div>
-                        <div class="metric-label">Recovery</div>
-                      </div>
-                      <div class="whoop-metric" id="whoop-strain-card">
-                        <div class="metric-icon" title="Strain Level">
-                          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 7h18" />
-                            <rect x="1" y="4" width="2" height="6" rx="0.5" />
-                            <rect x="21" y="4" width="2" height="6" rx="0.5" />
-                            <circle cx="12" cy="12" r="2" />
-                            <path d="M6 7l4 4h4l4-4" />
-                            <path d="M12 14v4" />
-                            <path d="M9 21l3-3 3 3" />
-                          </svg>
-                        </div>
-                        <div class="metric-value" id="whoop-strain-val">--</div>
-                        <div class="metric-label">Strain</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Vertical Divider -->
-                  <div class="health-widget-divider"></div>
-                  
-                  <!-- Withings Section (Right) -->
-                  <div class="health-widget-section withings-section">
-                    <div class="health-brand">
-                      <svg viewBox="0 69.3 493.6 62.4" width="95" height="12" fill="currentColor" aria-label="WITHINGS" style="opacity: 0.85;">
-                        <g>
-                          <path d="M0,69.3h11.7l14.6,45.5l15.1-45.7h9.1l15.1,45.7l14.6-45.5h11.3l-21.4,61.8h-9.3L45.8,87l-15.1,44.1h-9.3L0,69.3z" />
-                          <path d="M107.6,69.3h10.7v61.4h-10.7V69.3z" />
-                          <path d="M154.2,79.3h-19.5v-10h49.8v10h-19.4v51.4h-10.9V79.3z" />
-                          <path d="M200.3,69.3H211v25.5h29.5V69.3h10.7v61.4h-10.7v-25.9H211v25.9h-10.7V69.3z" />
-                          <path d="M272,69.3h10.7v61.4H272V69.3z" />
-                          <path d="M303.5,69.3h10l32.8,42.4V69.3H357v61.4h-9L314.2,87v43.7h-10.7V69.3z" />
-                          <path d="M406.3,131.7c-4.8,0-9.2-0.8-13.1-2.4c-3.9-1.6-7.3-3.8-10-6.7c-2.8-2.8-4.9-6.2-6.4-10s-2.3-8-2.3-12.5V100c0-4.3,0.8-8.3,2.3-12.2c1.6-3.9,3.7-7.2,6.6-10.1c2.8-2.9,6.2-5.2,10.1-6.9c3.9-1.7,8.1-2.5,12.8-2.5c2.7,0,5.1,0.2,7.3,0.6c2.2,0.4,4.2,0.9,6.1,1.6s3.6,1.6,5.3,2.6c1.7,1,3.3,2.2,4.9,3.6l-6.8,8.2c-1.2-1-2.4-1.9-3.6-2.7c-1.2-0.8-2.5-1.5-3.9-2.1c-1.3-0.6-2.8-1-4.4-1.3s-3.4-0.5-5.3-0.5c-2.8,0-5.4,0.6-7.8,1.8c-2.4,1.2-4.5,2.7-6.3,4.7s-3.2,4.3-4.2,6.9s-1.5,5.4-1.5,8.3v0.2c0,3.2,0.5,6.1,1.5,8.8c1,2.7,2.4,5,4.2,6.9c1.8,1.9,4,3.5,6.6,4.6c2.5,1.1,5.4,1.7,8.5,1.7c2.9,0,5.6-0.4,8.2-1.3c2.5-0.9,4.7-2,6.6-3.4V106H406v-9.4h26.1v25.8c-1.5,1.3-3.2,2.5-5,3.7s-3.8,2.2-6,3.1c-2.1,0.9-4.4,1.6-6.9,2.1C411.6,131.5,409,131.7,406.3,131.7z" />
-                          <path d="M471.9,131.6c-4.7,0-9.3-0.8-13.6-2.4c-4.3-1.6-8.3-4.1-12-7.4l6.5-7.7c3,2.6,6,4.5,9,5.9s6.5,2.1,10.3,2.1c3.3,0,6-0.7,7.9-2.1s2.9-3.3,2.9-5.6v-0.2c0-1.1-0.2-2.1-0.6-2.9c-0.4-0.8-1.1-1.7-2.1-2.4c-1-0.8-2.4-1.5-4.2-2.1s-4.1-1.3-7-1.9c-3.3-0.8-6.2-1.6-8.7-2.6s-4.7-2.1-6.4-3.5c-1.7-1.4-3-3.1-4-5c-0.9-2-1.4-4.4-1.4-7.2v-0.2c0-2.6,0.5-5,1.6-7.2c1-2.2,2.5-4.1,4.3-5.6s4-2.8,6.6-3.6c2.6-0.9,5.4-1.3,8.4-1.3c4.5,0,8.5,0.7,12.1,2s7,3.2,10.1,5.7l-5.8,8.2c-2.8-2-5.6-3.6-8.3-4.7s-5.5-1.6-8.3-1.6c-3.2,0-5.6,0.7-7.4,2.1s-2.6,3.1-2.6,5.2v0.2c0,1.2,0.2,2.2,0.6,3.1s1.2,1.7,2.2,2.5c1.1,0.7,2.6,1.4,4.5,2.1c1.9,0.6,4.3,1.3,7.3,2c3.2,0.8,6.1,1.7,8.6,2.7s4.6,2.2,6.2,3.6c1.6,1.4,2.9,3.1,3.7,5c0.9,1.9,1.3,4.1,1.3,6.6v0.2c0,2.9-0.5,5.4-1.6,7.7c-1.1,2.3-2.6,4.2-4.5,5.8s-4.2,2.8-6.9,3.6C478,131.1,475.1,131.6,471.9,131.6z" />
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="withings-list">
-                      <div class="withings-row" id="withings-weight-row">
-                        <div class="withings-metric-label">
-                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow down">
-                            <line x1="7" y1="7" x2="17" y2="17"></line>
-                            <polyline points="17 7 17 17 7 17"></polyline>
-                          </svg>
-                          <span>Weight</span>
-                        </div>
-                        <div class="withings-metric-value">
-                          <span id="withings-weight-val">--</span><span class="unit">kg</span>
-                        </div>
-                      </div>
-                      <div class="withings-row" id="withings-muscle-row">
-                        <div class="withings-metric-label">
-                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow up">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                          </svg>
-                          <span>Muscle</span>
-                        </div>
-                        <div class="withings-metric-value">
-                          <span id="withings-muscle-val">--</span><span class="unit">%</span>
-                        </div>
-                      </div>
-                      <div class="withings-row" id="withings-fat-row">
-                        <div class="withings-metric-label">
-                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow down">
-                            <line x1="7" y1="7" x2="17" y2="17"></line>
-                            <polyline points="17 7 17 17 7 17"></polyline>
-                          </svg>
-                          <span>Fat</span>
-                        </div>
-                        <div class="withings-metric-value">
-                          <span id="withings-fat-val">--</span><span class="unit">%</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <!-- Merged Calendar, Reminder & Let's Talk Card -->
+            <div class="calendar-wrapper-clean apple-card">
+              <!-- Calendar/reminders/booking widget -->
+              <div id="calendar-widget"></div>
+
+              <!-- Divider -->
+              <div class="currently-divider" style="height: 1px; background: var(--health-row-border); margin: 0.5rem 0 1.5rem;"></div>
+
+              <!-- Let's Talk AI Assistant Section -->
+              <div class="contact-assistme-card" style="background: transparent !important; border: none !important; box-shadow: none !important; min-height: auto; padding: 0 1.75rem 1.75rem !important;">
+                <div class="icon-box blue contact-assistme-icon">
+                  <i class="fas fa-robot"></i>
                 </div>
-                
-                <div class="health-widget-footer">
-                  <span class="last-sync-time"><i class="fas fa-sync-alt"></i> <span id="health-sync-text">Checking stats…</span></span>
-                  <span style="font-size: 0.6rem; color: rgba(255,255,255,0.3);">Live Vitals</span>
-                </div>
+                <h3>Let's Talk!</h3>
+                <p class="contact-description">
+                  Share your hiring goals or project scope directly with AssistMe for a fast, conversational first touch.
+                </p>
+                <button id="contact-chatbot-cta" type="button" class="contact-assistme-btn">
+                  <i class="fas fa-message"></i>
+                  Chat with my AI assistant
+                </button>
+                <p class="contact-assistme-note">Email and phone options are still available in the left column.</p>
               </div>
+            </div>
           </div>
         </div>
     </section>

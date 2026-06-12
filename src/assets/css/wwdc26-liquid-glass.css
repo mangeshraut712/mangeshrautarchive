@@ -1546,6 +1546,8 @@ html body #contact div.media-card {
     .about-highlight-card:hover,
     .about-text-card:hover,
     .contact-card:hover,
+    .currently-card:hover,
+    .calendar-wrapper-clean:hover,
     .contact-form-card:hover,
     .newsletter-card:hover,
     .support-donation-card:hover,
@@ -1582,6 +1584,10 @@ html body #blog div.newsletter-card:hover,
 html.dark body #blog div.newsletter-card:hover,
 html body #contact div.contact-card:hover,
 html.dark body #contact div.contact-card:hover,
+html body #contact div.currently-card:hover,
+html.dark body #contact div.currently-card:hover,
+html body #contact div.calendar-wrapper-clean:hover,
+html.dark body #contact div.calendar-wrapper-clean:hover,
 html body #contact div.support-donation-card:hover,
 html.dark body #contact div.support-donation-card:hover,
 html body #contact div.media-card:hover,
@@ -1720,6 +1726,14 @@ html.dark body #contact div.media-card {
     inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
     inset 0 -1px 0 rgb(0 0 0 / 35%),
     0 24px 60px rgb(0 0 0 / calc(42% + (1 - var(--lg-tint)) * 12%)) !important;
+}
+
+html body #contact div.currently-card,
+html body #contact div.calendar-wrapper-clean {
+  transition:
+    transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.32s ease,
+    box-shadow 0.32s ease !important;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
