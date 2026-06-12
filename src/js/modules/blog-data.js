@@ -1666,6 +1666,331 @@ The question isn't whether AI will be conscious. It's whether *we* can become co
 *Want to explore these ideas further? Check out my technical analysis of [AI Code Editors](ai-code-editors-revolution-2026) and how they're changing the way we think about human-AI collaboration.*
         `,
   },
+  {
+    id: 'wwdc-2026-apple-intelligence-siri-ai',
+    title: 'WWDC 2026: Apple Intelligence, Siri AI, and the New Era of On-Device Reasoning',
+    summary:
+      'A deep-dive into WWDC 2026\'s biggest announcements: the ground-up Siri AI rebuild, third-generation Apple Foundation Models co-developed with Google, the new Core AI framework for on-device inference, and Private Cloud Compute on Google Cloud with confidential computing.',
+    date: '2026-06-12',
+    tags: ['WWDC 2026', 'Apple Intelligence', 'Siri AI', 'Core AI', 'Private Cloud Compute'],
+    readTime: '8 min read',
+    content: `
+# WWDC 2026: Apple Intelligence, Siri AI, and the New Era of On-Device Reasoning
+
+WWDC 2026 (June 8–12) was not a typical feature-bump cycle. Apple rewrote the rules of its AI strategy with a ground-up rebuild of Siri, third-generation foundation models co-developed with Google, and a new developer framework that makes on-device AI a first-class citizen of the Apple platform.
+
+Here is a technical breakdown of the announcements that matter most for developers and power users.
+
+---
+
+## 1. Siri AI: A Complete Rebuild, Not an Update
+
+This is the most significant Siri overhaul since its 2011 debut. Apple dropped the "assistant" framing entirely — the product is now called **Siri AI**, and it behaves like a contextual reasoning agent rather than a keyword-matching command router.
+
+**What changed:**
+
+- **Free-flowing conversation**: Siri AI maintains long context windows across multi-turn dialogues. You can ask follow-up questions without restating context.
+- **Deep personal context**: Securely synthesizes data across Mail, Messages, Photos, Calendar, and Notes to answer complex requests. Example: *"Find the confirmation email for that Airbnb I booked in March"* — Siri AI resolves "that Airbnb" by cross-referencing your recent travel calendar events and email threads.
+- **Onscreen awareness**: Siri can "see" and understand what is currently displayed on screen, enabling actions like *"Summarize this article"* or *"Add this event to my calendar"* based on visible content.
+- **System-wide automation**: Performs multi-step tasks across apps — drafting emails, editing photos, creating calendar events — with improved natural-language Shortcuts integration.
+- **Dedicated Siri App**: A standalone app to revisit conversation history, synced across all Apple devices via iCloud.
+
+**The interface** has been redesigned for Dynamic Island on supported iPhones, with a new swipe-down gesture from the middle of the screen. Voice tone and speaking speed are now customizable in Settings.
+
+---
+
+## 2. Third-Generation Apple Foundation Models (AFM 3)
+
+The headline partnership: Apple and Google **co-developed** the third generation of Apple Foundation Models using technology behind the Gemini model family. This is not a "wrapper around Gemini" — Apple was explicit that these are custom models built for Apple's privacy-first architecture.
+
+**Key details:**
+
+- Models power both on-device and server-side (Private Cloud Compute) experiences across all 27-series operating systems.
+- The collaboration leverages Google's training infrastructure and model architecture expertise while Apple controls the deployment, privacy guarantees, and hardware optimization.
+- The models handle Apple Intelligence features system-wide: Writing Tools (proofreading, rewriting, summarizing), Visual Intelligence (photo editing with Clean Up, Extend, and Reframe), and Safari's intelligent browsing features.
+
+---
+
+## 3. Core AI Framework: On-Device Inference as a Platform Primitive
+
+Apple introduced the **Core AI** framework — a dedicated, production-grade framework for deploying custom AI models directly on Apple Silicon.
+
+\`\`\`swift
+import CoreAI
+
+// Load an ahead-of-time compiled model
+let model = try CoreAIModel(contentsOf: modelURL)
+
+// Run inference on the Neural Engine
+let prediction = try await model.prediction(from: inputFeatures)
+\`\`\`
+
+**What it provides:**
+
+- **Swift-native APIs** for model inference with full Xcode integration
+- **Ahead-of-time (AOT) model compilation** directly in Xcode — no runtime JIT compilation overhead
+- **Model specialization and caching** for repeated inference patterns
+- **Runtime performance profiling** integrated into Instruments
+- **Python tooling** for converting, authoring, and optimizing models — with ready-to-run examples for popular architectures (Qwen, Mistral, SAM3)
+
+This positions on-device AI as a first-class platform capability, not an afterthought bolted onto Core ML.
+
+---
+
+## 4. Foundation Models Framework: One API, Local + Cloud
+
+The updated **Foundation Models** framework now supports a unified API for both on-device and cloud-based inference:
+
+\`\`\`swift
+import FoundationModels
+
+// Same protocol works for local and cloud models
+let session = LanguageModelSession()
+let response = try await session.respond(to: "Summarize this document")
+\`\`\`
+
+**New capabilities:**
+
+- **Third-party cloud model support**: Gemini, Claude, and OpenAI models accessible through the same \`LanguageModel\` protocol
+- **Dynamic Profiles**: Swap models, tools, and instructions at runtime without rebuilding
+- **Image input** support for multimodal reasoning
+- **Agentic tool calling**: Models can invoke HealthKit, Calendar, and other system frameworks as tools during inference
+- **Evaluations Framework** (new): A testing framework for verifying AI feature behavior under dynamic, real-world conditions
+
+---
+
+## 5. Private Cloud Compute: Google Cloud + Confidential Computing
+
+For queries that exceed on-device capability, Apple expanded **Private Cloud Compute (PCC)** to run on Google Cloud infrastructure — but with an extraordinary security architecture:
+
+- **Confidential Computing** via Google Cloud's **Titanium** security architecture
+- **Custom Titan chips** and NVIDIA Blackwell GPUs with hardware-based Trusted Execution Environments (TEEs)
+- Data is encrypted **in transit, at rest, AND in use** — neither Apple nor Google can access data being processed
+- The hybrid model: light queries stay on-device for zero latency; complex reasoning routes through PCC
+
+**For developers**: Apps in the App Store Small Business Program (under 2M first-time downloads) can access Apple Foundation Models on Private Cloud Compute at **zero cloud API cost**. This is a massive incentive for indie developers building AI-native apps.
+
+---
+
+## 6. Xcode 27: The Agentic Coding IDE
+
+Xcode received its most significant AI upgrade:
+
+- **Multi-model agent architecture**: A local on-device model handles inline code completion, while cloud-tier models (Claude, Gemini, OpenAI) handle complex reasoning tasks
+- **Official Agent Skills** bundled into the toolchain: \`swiftui-specialist\`, \`test-modernizer\`, \`c-bounds-safety\`
+- **Device Hub**: AI agents can interact with iOS Simulator and physical devices — running tests, inspecting visual changes, and validating accessibility
+- **\`/plan\` command**: Scope work with an agent before it executes changes — similar to plan-then-execute patterns in modern coding assistants
+
+---
+
+## 7. Liquid Glass Refinements
+
+The Liquid Glass design language received practical refinements that directly support AI feature surfaces:
+
+- **Customization slider**: New Settings control adjusts transparency system-wide (ultra-clear to fully tinted)
+- **Improved readability**: Better diffusion of complex backgrounds for text legibility
+- **Enhanced visual depth**: Darkened edges and brighter specular highlights
+- Siri AI's redesigned interface and Dynamic Island animations integrate with the Liquid Glass material, which dynamically shifts to keep content as the primary focus
+
+---
+
+## 8. What This Means for Developers
+
+WWDC 2026 establishes a clear architectural pattern for Apple-platform AI:
+
+1. **On-device first**: Use Core AI and the Neural Engine for latency-sensitive, privacy-critical inference. AOT compilation means production-grade performance without runtime overhead.
+2. **Cloud for depth**: Route complex reasoning through Private Cloud Compute when on-device models hit their limits. The unified Foundation Models API makes this transparent.
+3. **Agentic patterns**: Both Siri AI and Xcode 27 demonstrate Apple's commitment to agents that can plan, use tools, and execute multi-step workflows. The Foundation Models framework's tool-calling API is the developer-facing primitive.
+4. **Privacy as architecture**: Confidential Computing on PCC is not a marketing claim — it is a hardware-enforced guarantee. This is the foundation Apple is building on for the next decade.
+
+---
+
+## Device Support
+
+Apple Intelligence and Siri AI require:
+- iPhone 16 or later (iPhone 15 Pro/Pro Max also supported)
+- iPad with A17 Pro or M1+ chip
+- Mac with M1 or later
+- Apple Vision Pro
+- Apple Watch Series 10, Ultra 2, or SE 3 (paired with compatible iPhone)
+
+Developer beta is available now. Public beta expected July 2026. Full release fall 2026.
+
+---
+
+**Join the Conversation**: What features are you most excited to build with Core AI and the new Foundation Models framework? Connect with me on [LinkedIn](https://linkedin.com/in/mangeshraut71298).
+
+**Related Reading**:
+- [Google I/O 2026](google-io-2026-developer-insights): The agentic web and Gemini 2.5
+- [AI Code Editors Revolution](ai-code-editors-revolution-2026): How AI is transforming developer workflows
+- [Google AI Ecosystem](google-ai-ecosystem-2026): The multimodal intelligence stack
+`,
+  },
+  {
+    id: 'notebooklm-2026-ai-research-agent',
+    title: 'NotebookLM 2026: From Document Q&A to Full-Scale AI Research Agent',
+    summary:
+      'Google\'s NotebookLM evolved from a document chat tool into an agentic research platform: Gemini 3.5 integration, sandboxed code execution via Antigravity, chat-driven source discovery, cinematic video overviews with Veo 3, and 12+ export formats.',
+    date: '2026-06-10',
+    tags: ['NotebookLM', 'Gemini 3.5', 'AI Research', 'Antigravity', 'Google AI'],
+    readTime: '7 min read',
+    content: `
+# NotebookLM 2026: From Document Q&A to Full-Scale AI Research Agent
+
+On June 8, 2026, Google shipped the largest update NotebookLM has ever received. The tool that started as a "talk to your documents" experiment has become something fundamentally different: an **AI research agent** with code execution, source discovery, and a full multimedia production pipeline.
+
+Here is a technical breakdown of every major upgrade and what it means for researchers, students, and developers.
+
+---
+
+## 1. Gemini 3.5 + Antigravity: The New Engine
+
+NotebookLM is now powered by the **Gemini 3.5** model family, replacing the previous Gemini 1.5 Pro backbone. The upgrade delivers faster inference, more accurate citations, and significantly better reasoning on long documents.
+
+But the real story is **Antigravity** — a sandboxed cloud computer embedded directly into every notebook workspace. When NotebookLM needs to go beyond text generation, it can write and execute code in real-time:
+
+- **Data analysis**: Upload a messy CSV and ask NotebookLM to clean it, run statistical tests, or find correlations. It writes Python, executes it, and returns the results.
+- **Visualization**: Request charts, graphs, and data plots. The AI generates the code, runs it, and renders the output as downloadable PNG/SVG images.
+- **Complex math**: From differential equations to Monte Carlo simulations, the Antigravity sandbox handles computations that would be impossible for a text-only model.
+- **100+ built-in software skills**: Pre-loaded utilities for common data science, analysis, and formatting tasks.
+
+\`\`\`python
+# Example: NotebookLM's Antigravity sandbox analyzing uploaded research data
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('research_data.csv')
+correlation_matrix = df.corr()
+
+plt.figure(figsize=(10, 8))
+plt.imshow(correlation_matrix, cmap='coolwarm', interpolation='nearest')
+plt.colorbar()
+plt.title('Variable Correlation Matrix')
+plt.savefig('correlation_output.png', dpi=150)
+\`\`\`
+
+The transparent reasoning feature now displays the AI's step-by-step thinking process — showing how it arrived at conclusions, which sources it cited, and why it chose a particular analytical approach. This is a significant trust-building feature for academic and research use cases.
+
+---
+
+## 2. Chat-Driven Source Discovery: No More Blank Notebooks
+
+Previously, NotebookLM required you to upload documents before it could do anything. The "blank notebook problem" was its biggest friction point — you needed sources before you could ask questions.
+
+That constraint is gone. You can now start with a **completely empty notebook**, describe your research project in chat, and NotebookLM will:
+
+1. Use **Google Search** to find relevant, high-quality sources
+2. Suggest papers, articles, and documents for your review
+3. Curate and organize materials — including **foreign-language sources** with automatic translation
+4. Add approved sources to your notebook automatically
+
+This transforms NotebookLM from a document Q&A tool into an **agentic research assistant** that can bootstrap an entire literature review from a single prompt. Google reported a **78% win rate** over the previous baseline in source discovery quality benchmarks.
+
+---
+
+## 3. Massively Expanded Export Formats
+
+NotebookLM can now generate and export content in **12+ formats**, turning it into a full content production pipeline:
+
+**Documents & Data:**
+- PPTX (PowerPoint presentations)
+- XLSX (Excel spreadsheets)
+- DOCX (Word documents)
+- PDF, CSV, JSON, Markdown, and plain text
+
+**Visualizations:**
+- Charts and images in PNG, SVG, JPG, and GIF formats
+- Generated via the Antigravity code execution sandbox
+
+**Iterative editing** is supported — you can request a specific file type, review the output, and provide follow-up instructions to refine the generated content. This makes NotebookLM viable as a production tool for creating deliverables, not just a research scratchpad.
+
+---
+
+## 4. Audio Overviews: 80 Languages, Deep Customization
+
+Audio Overviews — the podcast-style AI-generated summaries that made NotebookLM famous — received a major upgrade:
+
+- **80+ language support**: Generate audio summaries in virtually any major language, dramatically expanding global accessibility
+- **Advanced customization**: Provide detailed briefs specifying audience level (introductory vs. expert), focus area (highlight specific topics or skip others), and conversational tone
+- **Deeper Gemini integration**: Audio overviews are now part of the broader "AI Second Brain" workflow — they pull from your full notebook context, not just individual documents
+
+---
+
+## 5. Cinematic Video Overviews with Veo 3
+
+The Studio panel now includes **Cinematic Video Overviews** — premium AI-generated explainer videos created using Google's **Veo 3** video generation model:
+
+- Fluid animations and rich visuals designed for complex narratives
+- Suitable for academic presentations, research summaries, and educational content
+- Integrates with the notebook's source material to maintain factual accuracy
+
+Additional Studio features include:
+- **Mind Maps**: Interactive branching diagrams where you can zoom, scroll, expand/collapse branches, and click nodes to ask AI questions about sub-topics
+- **Flashcards & Quizzes**: Enhanced interactive study tools for active recall
+- **Infographics**: Multiple styles including Sketch Note and Bento Grid layouts
+- **Slide Decks**: Exportable presentation generation from your sources
+
+---
+
+## 6. Collaboration: Shared Notebooks with Access Controls
+
+NotebookLM now supports real-time collaboration:
+
+- **Full notebook access**: Collaborators can add sources, create notes, and interact with the AI
+- **Chat-only access**: Limits collaborators to AI interaction based on existing sources — they can ask questions but cannot modify the notebook's source material
+
+This distinction is crucial for academic teams where a principal investigator wants to share research insights without giving everyone the ability to alter the source corpus.
+
+---
+
+## 7. Performance Benchmarks
+
+Google published internal evaluation data for the June 2026 update:
+
+| Dimension | Win Rate vs. Previous |
+|---|---|
+| Overall Reasoning | 65%+ |
+| Large Document Analysis | ~70% |
+| Web Research & Source Discovery | 78%+ |
+
+These are significant gains, particularly in source discovery — the new agentic search capability is measurably better at finding relevant, high-quality materials.
+
+---
+
+## 8. Pricing & Availability
+
+NotebookLM is now part of Google's tiered AI subscription structure:
+
+| Tier | Price | NotebookLM Access |
+|---|---|---|
+| Free | $0 | Basic access with personal Google account |
+| Google AI Plus | ~$7.99/mo | Enhanced access |
+| Google AI Pro | ~$19.99/mo | Full access |
+| Google AI Ultra | $100–200/mo | 500 notebooks, Deep Research Mode, priority Antigravity |
+
+Key changes:
+- Rolling out in **150+ countries**
+- Usage limits now based on "compute used" rather than prompt counts, resetting on a rolling basis
+- Some features (Gemini Spark, AI Inbox) remain US-only for now
+
+---
+
+## Why This Matters
+
+The June 2026 update repositions NotebookLM in a fundamentally different category. It is no longer competing with note-taking apps or document search tools. It is competing with **research workflows** — the messy, multi-step process of finding sources, analyzing data, synthesizing insights, and producing deliverables.
+
+The combination of agentic source discovery, code execution, multimedia generation, and collaboration makes NotebookLM the closest thing we have to an AI-native research platform. For students, researchers, and developers who work with large volumes of information, this is worth paying attention to.
+
+---
+
+**Join the Conversation**: How are you using NotebookLM in your workflow? Have you tried the Antigravity code execution or cinematic video features? Connect with me on [LinkedIn](https://linkedin.com/in/mangeshraut71298).
+
+**Related Reading**:
+- [Google I/O 2026](google-io-2026-developer-insights): Gemini 2.5, WebNN, and the agentic web
+- [Google AI Ecosystem](google-ai-ecosystem-2026): The multimodal intelligence stack
+- [AI Code Editors Revolution](ai-code-editors-revolution-2026): How AI is transforming developer workflows
+`,
+  },
 ];
 
 export default blogPosts;

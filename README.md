@@ -54,13 +54,14 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 **Built as a reference implementation** — every subsystem engineered to production standards:
 
 - **AssistMe AI Chat** — streaming Markdown, Siri-style voice dictation, writing tools, and contextual follow-up chips
+- **12 Technical Writings** — deep-dive blogs covering AI Code Editors, WWDC 2026/Apple Intelligence, NotebookLM 2026, WebMCP tool design, and agentic workflows
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (&lt;50ms) + OpenRouter streaming LLM
 - **WWDC26 Liquid Glass Design System** — translucent surfaces, specular highlights, theme-aware tokens, and reduced-motion fallbacks
 - **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel *and* static GitHub Pages
 - **Extreme Testing** — 12+ real browser/device configs (Chrome, Safari, Firefox, Edge, Pixel 7, iPhone 14, iPad Pro)
 - **Zero-Downtime Deploys** — dual-surface (Vercel + GitHub Pages) with automated post-deploy verification
-- **Modern Build Pipeline** — esbuild 0.28 + Sharp 0.34 for fast JS transformation and image optimization
+- **Modern Build Pipeline** — esbuild v0.28.0 + Sharp v0.34.5 + Tailwind CSS v4.0.9 CLI for rapid CSS compilation and image optimization
 
 **Study it. Fork it. Build on it.**
 
@@ -261,17 +262,17 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 
 | Layer | Technologies |
 |---|---|
-| **Frontend** | Vanilla ES2024, Tailwind CSS 4, WWDC26 Liquid Glass Design System |
+| **Frontend** | Vanilla ES2024, Tailwind CSS v4.0.9, WWDC26 Liquid Glass Design System |
 | **Agentic Runtime** | AssistMe + WebMCP + Custom Action Handler with priority execution |
 | **AI** | OpenRouter (Grok 4.1 Fast / Gemini) + local deterministic actions |
-| **Backend** | FastAPI 0.136 + Pydantic v2 (Vercel Serverless) |
+| **Backend** | FastAPI v0.136.1 + Pydantic v2 (v2.13.4) (Vercel Serverless) |
 | **Data** | Cloud Firestore, GitHub REST, Last.fm, Upstash Redis (optional) |
-| **Build** | esbuild 0.28 + Sharp 0.34 + custom Node pipeline |
-| **Analytics** | @vercel/analytics 2.0 |
-| **Testing** | Playwright 1.58 (12+ configs), Vitest 4.1, @axe-core/playwright 4.11, Lighthouse CI |
-| **Quality** | ESLint 9, Stylelint 16, Prettier 3.8, React Doctor, Security Scanner |
+| **Build** | esbuild v0.28.0 + Sharp v0.34.5 + custom Node pipeline |
+| **Analytics** | @vercel/analytics v2.0.1 |
+| **Testing** | Playwright v1.58.2 (12+ configs), Vitest v4.1.6, @axe-core/playwright v4.11.1, Lighthouse CI |
+| **Quality** | ESLint v9.21.0, Stylelint v16.26.1 (config-standard v36.0.1), Prettier v3.8.1, React Doctor v0.5.1, Security Scanner |
 | **Hosting** | Vercel (primary) + GitHub Pages (resilient static fallback) |
-| **Runtime** | Node.js 22.x, Python 3.12 |
+| **Runtime** | Node.js v22.x, Python v3.12 (uvicorn v0.47.0, httpx v0.28.1, aiofiles v25.1.0) |
 
 ---
 
@@ -419,11 +420,12 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026
 
+- **New Blog Publications** — Published two new technical deep-dives on WWDC 2026 (Apple Intelligence, Siri AI, AFM 3) and NotebookLM 2026 (Audio Overviews, Workspace Chat, Google Search Grounding), bringing the total count to 12.
 - **WWDC26 Liquid Glass Theme** — sitewide translucent surfaces, centralized design tokens, and reduced-motion/transparency fallbacks
 - **AssistMe Polish** — Apple Intelligence-style chat with Siri dictation, writing tools, and liquid glass QA matrix
 - **Accessibility Hardening** — toolbar improvements, contrast validation, and axe-core baseline in CI
 - **Liquid Glass QA Scripts** — `scripts/qa/glass-theme-matrix.mjs` and interactive QA tooling for theme regression
-- **Tech Stack Refresh** — esbuild 0.28, @vercel/analytics 2.0, FastAPI 0.136, Playwright 1.58
+- **Tech Stack Refresh** — esbuild v0.28.0, @tailwindcss/cli v4.0.9, @vercel/analytics v2.0.1, FastAPI v0.136.1, Playwright v1.58.2, Vitest v4.1.6
 
 ### May 2026
 
