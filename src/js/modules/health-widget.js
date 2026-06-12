@@ -49,7 +49,7 @@ class HealthWidget {
 
   init() {
     // Only bind if the container exists
-    const container = document.getElementById('health-content');
+    const container = document.getElementById('health-section');
     if (!container) return;
 
     this.updateUI();

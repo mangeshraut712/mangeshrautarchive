@@ -752,16 +752,10 @@ export class AgenticActionHandler {
       };
     }
 
-    // Scroll currently card into view
-    const currentlySection = document.getElementById('currently-section');
-    if (currentlySection) {
-      currentlySection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Make health tab active
-    const healthTab = document.querySelector('.currently-tab[data-tab="health"]');
-    if (healthTab) {
-      healthTab.click();
+    // Scroll health card into view
+    const healthSection = document.getElementById('health-section');
+    if (healthSection) {
+      healthSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     // Perform metric update
