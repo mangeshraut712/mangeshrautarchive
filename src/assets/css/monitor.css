@@ -69,6 +69,25 @@ html {
   background-color: var(--bg-primary);
 }
 
+html:has(body.monitor-page),
+body.monitor-page,
+body.monitor-page main {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark:has(body.monitor-page),
+html.dark body.monitor-page,
+html.dark body.monitor-page main,
+[data-theme='dark']:has(body.monitor-page),
+[data-theme='dark'] body.monitor-page,
+[data-theme='dark'] body.monitor-page main {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
 body.monitor-page {
   padding-top: calc(84px + env(safe-area-inset-top, 0px));
   min-height: 100vh;
@@ -485,15 +504,25 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
   color: var(--text-secondary);
 }
 
+.monitor-top-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1.0fr;
+  gap: 22px;
+  align-items: stretch;
+  margin-bottom: 22px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .monitor-top-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .monitor-summary-panel {
-  flex: 0 0 min(420px, 36%);
-  width: min(420px, 100%);
-  max-height: 390px;
-  padding: 16px 18px;
-  border-radius: 18px;
-  overflow: auto;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
+  padding: 24px;
+  border-radius: 22px;
 }
 
 .monitor-summary-chips {
@@ -2083,7 +2112,8 @@ body.monitor-page main > section.section:not(#home) {
 
 /* Nuclear override of main section padding, margins, and border styles on the monitor page */
 body.monitor-page main > section.section,
-body.monitor-page main > section#monitor-summary-section {
+body.monitor-page main > section#monitor-summary-section,
+body.monitor-page main .monitor-summary-panel {
   margin-top: 0 !important;
   margin-bottom: 22px !important;
   padding: 24px !important;
@@ -2154,6 +2184,7 @@ body.monitor-page .health-item {
 /* Unified transitions for monitor cards hover state */
 body.monitor-page main > section.section,
 body.monitor-page .monitor-summary-card,
+body.monitor-page .monitor-summary-panel,
 body.monitor-page .overview-card,
 body.monitor-page .doc-card,
 body.monitor-page .health-item {
@@ -2166,6 +2197,7 @@ body.monitor-page .health-item {
 /* Light mode hover state */
 body.monitor-page main > section.section:hover,
 body.monitor-page .monitor-summary-card:hover,
+body.monitor-page .monitor-summary-panel:hover,
 body.monitor-page .overview-card:hover,
 body.monitor-page .doc-card:hover,
 body.monitor-page .health-item:hover {
@@ -2180,6 +2212,7 @@ body.monitor-page .health-item:hover {
 /* Dark mode hover state */
 html.dark body.monitor-page main > section.section:hover,
 html.dark body.monitor-page .monitor-summary-card:hover,
+html.dark body.monitor-page .monitor-summary-panel:hover,
 html.dark body.monitor-page .overview-card:hover,
 html.dark body.monitor-page .doc-card:hover,
 html.dark body.monitor-page .health-item:hover {
