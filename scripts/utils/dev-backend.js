@@ -50,20 +50,49 @@ async function isAssistMeBackendRunning() {
 }
 
 async function runBackend() {
-  const pythonCmd = './venv/bin/python';
-  const altPythonCmd = 'python3';
   const shouldReload = !['1', 'true'].includes(String(process.env.CI || '').toLowerCase());
-  const args = ['-m', 'uvicorn', 'api.index:app', '--port', String(port)];
-
-  if (shouldReload) {
-    args.push('--reload');
-  }
-
-  // Check if venv python exists, otherwise use system python3
   const fs = await import('fs');
   const useVenv = fs.existsSync('./venv/bin/python');
 
-  const child = spawn(useVenv ? pythonCmd : altPythonCmd, args, {
+  const uvicornArgs = [
+    'api.index:app',
+    '--host',
+    host,
+    '--port',
+    String(port),
+  ];
+  if (shouldReload) {
+    uvicornArgs.push('--reload');
+  }
+
+  let command = 'python3';
+  let args = ['-m', 'uvicorn', ...uvicornArgs];
+
+  if (useVenv) {
+    command = './venv/bin/python';
+    args = ['-m', 'uvicorn', ...uvicornArgs];
+  } else {
+    command = 'uv';
+    args = [
+      'run',
+      '--with',
+      'cryptography',
+      '--with',
+      'fastapi',
+      '--with',
+      'uvicorn',
+      '--with',
+      'httpx',
+      '--with',
+      'python-dotenv',
+      'python',
+      '-m',
+      'uvicorn',
+      ...uvicornArgs,
+    ];
+  }
+
+  const child = spawn(command, args, {
     stdio: 'inherit',
     env: process.env,
   });

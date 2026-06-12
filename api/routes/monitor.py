@@ -274,7 +274,17 @@ async def get_monitor_docs():
                     {
                         "method": "POST",
                         "path": "/api/health-vitals/sync",
-                        "summary": "Protected health summary upsert or future provider polling sync.",
+                        "summary": "Protected health summary upsert or provider polling sync for connected WHOOP/Withings accounts.",
+                    },
+                    {
+                        "method": "POST",
+                        "path": "/api/integrations/sync-all",
+                        "summary": "Protected sync for all connected health and calendar providers.",
+                    },
+                    {
+                        "method": "POST",
+                        "path": "/api/integrations/{provider}/disconnect",
+                        "summary": "Protected disconnect for whoop, withings, or google_calendar.",
                     },
                     {
                         "method": "GET",
@@ -285,6 +295,26 @@ async def get_monitor_docs():
                         "method": "GET",
                         "path": "/api/integrations/google-calendar/connect",
                         "summary": "Start Google Calendar OAuth for free/busy availability.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/integrations/whoop/connect",
+                        "summary": "Start WHOOP OAuth for sanitized recovery, sleep, and strain summaries.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/integrations/withings/connect",
+                        "summary": "Start Withings OAuth for weight and body metric summaries.",
+                    },
+                    {
+                        "method": "POST",
+                        "path": "/api/calendar/watch/google",
+                        "summary": "Register Google Calendar push notifications (admin).",
+                    },
+                    {
+                        "method": "POST",
+                        "path": "/api/calendar/webhook/google",
+                        "summary": "Google Calendar push notification webhook.",
                     },
                 ],
             },

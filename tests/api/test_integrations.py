@@ -106,3 +106,32 @@ def test_disconnect_unknown_provider(client, monkeypatch):
         headers={"x-integration-admin-token": "test-admin-token"},
     )
     assert response.status_code == 404
+
+
+def test_sync_all_with_admin_token_when_unconnected(client, monkeypatch):
+    monkeypatch.setenv("INTEGRATION_SYNC_ADMIN_TOKEN", "test-admin-token")
+    response = client.post(
+        "/api/integrations/sync-all",
+        headers={"x-integration-admin-token": "test-admin-token"},
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["success"] is True
+    assert payload["results"] == []
+
+
+def test_whoop_callback_rejects_invalid_state(client):
+    response = client.get("/api/integrations/whoop/callback?code=fake&state=bad")
+    assert response.status_code == 400
+
+
+def test_calendar_webhook_acknowledges_sync_ping(client):
+    response = client.post(
+        "/api/calendar/webhook/google",
+        headers={
+            "X-Goog-Channel-ID": "test-channel",
+            "X-Goog-Resource-State": "sync",
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["status"] == "acknowledged"

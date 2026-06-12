@@ -121,10 +121,17 @@ OAuth token encryption should happen in the application before writing to Supaba
 GET  /api/integrations/status
 GET  /api/health-vitals/summary
 POST /api/health-vitals/sync
+POST /api/integrations/sync-all
+POST /api/integrations/{provider}/disconnect
 GET  /api/calendar/availability
+GET  /api/integrations/google-calendar/connect
+GET  /api/integrations/whoop/connect
+GET  /api/integrations/withings/connect
+POST /api/calendar/watch/google
+POST /api/calendar/webhook/google
 ```
 
-The sync endpoint is intentionally protected and returns `501` until OAuth token storage and provider clients are implemented.
+Protected sync endpoints require `x-integration-admin-token` and pull sanitized summaries from connected WHOOP, Withings, and Google Calendar accounts stored in Supabase.
 
 ## Privacy Rules
 

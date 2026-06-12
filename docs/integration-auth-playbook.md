@@ -51,16 +51,18 @@ curl -X POST https://mangeshraut.pro/api/calendar/watch/google \
 
 ## Step 2 — WHOOP (sleep / recovery / strain)
 
-**You do (developer portal):**
+### Where to find Client ID + Secret
 
-1. Create an app at [developer.whoop.com](https://developer.whoop.com).
-2. Redirect URI:
+1. Open **https://developer-dashboard.whoop.com** (not the docs site).
+2. Sign in with your WHOOP account → create a **Team** if prompted.
+3. Click **Create App** (or go to **https://developer-dashboard.whoop.com/apps/create**).
+4. Fill in:
+   - **App name:** anything (e.g. `mangeshrautarchive`)
+   - **Redirect URI:** `https://mangeshraut.pro/api/integrations/whoop/callback` (must match exactly)
+   - **Scopes:** enable `offline`, `read:recovery`, `read:cycles`, `read:sleep`, `read:body_measurement`
+5. Click **Create** → copy **Client ID** and **Client Secret** from the app details page.
 
-```text
-https://mangeshraut.pro/api/integrations/whoop/callback
-```
-
-3. Add to `.env.local`:
+**You set in `.env.local` + Vercel:**
 
 ```text
 WHOOP_CLIENT_ID=...
@@ -68,28 +70,36 @@ WHOOP_CLIENT_SECRET=...
 WHOOP_REDIRECT_URI=https://mangeshraut.pro/api/integrations/whoop/callback
 ```
 
-4. Sync to Vercel production, redeploy, then in Chrome visit:
+4. Save locally + sync to Vercel:
+
+```bash
+npm run integrations:set-whoop-withings
+```
+
+(or paste the four values in chat and ask the agent to run the script)
+
+5. After deploy, in Chrome visit:
 
 ```text
 https://mangeshraut.pro/api/integrations/whoop/connect
 ```
 
-5. Sign in with your WHOOP account and approve scopes.
-
 ---
 
 ## Step 3 — Withings (weight / body metrics)
 
-**You do (developer portal):**
+### Where to find Client ID + Secret
 
-1. Create an app at [developer.withings.com](https://developer.withings.com).
-2. Redirect URI:
+1. Open **https://developer.withings.com** → **Log In to Withings Partner Hub**.
+2. Go to your **Dashboard** → **Create an application**.
+3. Choose **Public API integration** (not Medical Cloud).
+4. Fill in:
+   - **Target environment:** Development
+   - **Application name / description:** anything
+   - **Registered URLs (redirect URI):** `https://mangeshraut.pro/api/integrations/withings/callback`
+5. Save → **Client ID** and **Client Secret** appear on the application page.
 
-```text
-https://mangeshraut.pro/api/integrations/withings/callback
-```
-
-3. Add to `.env.local`:
+**You set in `.env.local` + Vercel:**
 
 ```text
 WITHINGS_CLIENT_ID=...
@@ -97,7 +107,9 @@ WITHINGS_CLIENT_SECRET=...
 WITHINGS_REDIRECT_URI=https://mangeshraut.pro/api/integrations/withings/callback
 ```
 
-4. Sync to Vercel production, redeploy, then in Chrome visit:
+4. Run `npm run integrations:set-whoop-withings` (same script saves both providers).
+
+5. After deploy, in Chrome visit:
 
 ```text
 https://mangeshraut.pro/api/integrations/withings/connect
