@@ -222,6 +222,11 @@ async def get_monitor_docs():
                     },
                     {
                         "method": "GET",
+                        "path": "/api/integrations/status",
+                        "summary": "Safe readiness status for Supabase, WHOOP, Withings, and Google Calendar integrations.",
+                    },
+                    {
+                        "method": "GET",
                         "path": "/api/monitor/hosting-surfaces",
                         "summary": "Status for custom-domain, Vercel deployment, GitHub Pages, and safe runtime env presence.",
                     },
@@ -260,6 +265,16 @@ async def get_monitor_docs():
                         "method": "GET",
                         "path": "/api/analytics/reach",
                         "summary": "Authoritative reach and total views count from Firestore.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/health-vitals/summary",
+                        "summary": "Public sanitized health vitals summary backed by Supabase when configured.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/calendar/availability",
+                        "summary": "Calendar availability contract for future Google Calendar free/busy sync.",
                     },
                 ],
             },

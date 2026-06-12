@@ -23,6 +23,7 @@ from api.routes import (
     monitor,
     general,
     personalization,
+    integrations,
 )
 
 # Load environment variables
@@ -137,6 +138,7 @@ app.include_router(analytics.router)
 app.include_router(monitor.router)
 app.include_router(general.router)
 app.include_router(personalization.router)
+app.include_router(integrations.router)
 
 
 # Global exception handlers
