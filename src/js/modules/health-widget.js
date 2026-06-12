@@ -14,6 +14,18 @@ const DEFAULT_METRICS = {
   lastSynced: null
 };
 
+function resolveApiBase() {
+  const base =
+    globalThis.APP_CONFIG?.apiBaseUrl ||
+    (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+    '';
+  if (base) return base.replace(/\/$/, '');
+  if (globalThis.location?.hostname === 'localhost' || globalThis.location?.hostname === '127.0.0.1') {
+    return '';
+  }
+  return 'https://mangeshraut.pro';
+}
+
 class HealthWidget {
   constructor() {
     this.storageKey = 'mangesh_health_metrics';
@@ -54,6 +66,41 @@ class HealthWidget {
 
     this.updateUI();
     this.startRelativeTimeUpdater();
+    this.fetchFromApi();
+  }
+
+  async fetchFromApi() {
+    const apiBase = resolveApiBase();
+    const url = apiBase ? `${apiBase}/api/health-vitals/summary` : '/api/health-vitals/summary';
+
+    try {
+      const response = await fetch(url, { credentials: 'same-origin' });
+      if (!response.ok) return;
+      const payload = await response.json();
+      if (payload.status !== 'live' || !payload.data) return;
+
+      const data = payload.data;
+      if (typeof data.sleepScore === 'number') this.metrics.sleep = data.sleepScore;
+      if (typeof data.recoveryScore === 'number') this.metrics.recovery = data.recoveryScore;
+      if (typeof data.strain === 'number') this.metrics.strain = data.strain;
+
+      const weightMatch = typeof data.weightTrend === 'string'
+        ? data.weightTrend.match(/([\d.]+)/)
+        : null;
+      if (weightMatch) this.metrics.weight = parseFloat(weightMatch[1]);
+
+      if (data.lastSyncedAt) {
+        const parsed = Date.parse(data.lastSyncedAt);
+        if (!Number.isNaN(parsed)) this.metrics.lastSynced = parsed;
+      } else {
+        this.metrics.lastSynced = Date.now();
+      }
+
+      this.saveMetrics();
+      this.updateUI();
+    } catch (error) {
+      console.warn('Health summary API unavailable, using cached metrics.', error);
+    }
   }
 
   updateUI() {

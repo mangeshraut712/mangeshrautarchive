@@ -489,6 +489,32 @@
         </div>
       </section>
 
+      <section class="section" id="integrations-section">
+        <div class="section-header">
+          <h2 class="section-title">OAuth Integrations</h2>
+          <div class="section-actions">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-integrations"
+              onclick="refreshIntegrationsPanel()"
+            >
+              <i class="fas fa-link"></i>
+              <span>Refresh OAuth Status</span>
+            </button>
+          </div>
+        </div>
+        <p class="section-lead">
+          Connect providers in <strong>Chrome</strong> (signed into the account you want to link).
+          Use the buttons below or open the connect URLs directly if a bookmark works better.
+        </p>
+        <div class="health-grid" id="oauth-integrations">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading OAuth integration status...</h3>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="deployment-surfaces-section">
         <div class="section-header">
           <h2 class="section-title">Deployment Surfaces</h2>
@@ -858,6 +884,10 @@
 
       async function fetchExternalServices() {
         return fetchMonitorJson('/api/monitor/external-services', 'External services');
+      }
+
+      async function fetchIntegrationsStatus() {
+        return fetchMonitorJson('/api/integrations/status', 'Integration status');
       }
 
       async function fetchStatus() {
@@ -1364,6 +1394,105 @@
           .join('');
       }
 
+      function integrationStatusClass(provider) {
+        if (provider.connected) return 'healthy';
+        if (provider.configured) return 'degraded';
+        return 'unknown';
+      }
+
+      function integrationStatusLabel(provider) {
+        if (provider.connected) return 'Connected';
+        if (provider.configured) return 'Ready to connect';
+        return 'Not configured';
+      }
+
+      function buildIntegrationConnectHref(connectUrl) {
+        if (!connectUrl) return null;
+        if (/^https?:\/\//i.test(connectUrl)) return connectUrl;
+        const base = monitorApiOrigin || globalThis.location.origin;
+        return `${base.replace(/\/$/, '')}${connectUrl.startsWith('/') ? connectUrl : `/${connectUrl}`}`;
+      }
+
+      function renderIntegrationsPanel(data) {
+        const container = document.getElementById('oauth-integrations');
+        if (!container) return;
+
+        if (!data || !data.providers) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-link-slash"></i>
+              <h3>Unable to load OAuth integration status</h3>
+              <p>Try refreshing or open <code>/api/integrations/status</code> directly.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const cards = [
+          ['googleCalendar', 'Google Calendar', 'calendar', '/api/calendar/availability'],
+          ['whoop', 'WHOOP', 'heart-pulse', '/api/health-vitals/summary'],
+          ['withings', 'Withings', 'weight-scale', '/api/health-vitals/summary'],
+          ['supabase', 'Supabase Vault', 'database', '/api/integrations/status'],
+        ];
+
+        container.innerHTML = cards
+          .map(([key, label, icon, verifyPath]) => {
+            const provider = data.providers[key] || {};
+            const statusClass = integrationStatusClass(provider);
+            const statusLabel = integrationStatusLabel(provider);
+            const connectHref = buildIntegrationConnectHref(provider.connectUrl);
+            const verifyHref = buildIntegrationConnectHref(verifyPath);
+            const actionMarkup = connectHref
+              ? `<a class="btn btn-secondary" href="${escapeHtml(connectHref)}" target="_blank" rel="noopener noreferrer">
+                   <i class="fas fa-arrow-up-right-from-square"></i>
+                   <span>Connect in Chrome</span>
+                 </a>`
+              : `<span class="integration-hint">${escapeHtml(provider.nextStep || 'Set provider env vars in Vercel, redeploy, then refresh.')}</span>`;
+
+            return `
+              <div class="health-item ${statusClass}">
+                <div class="health-item-left">
+                  <div class="health-status-icon ${statusClass}">
+                    <i class="fas fa-${icon}"></i>
+                  </div>
+                  <div class="health-info">
+                    <h4>${escapeHtml(label)}</h4>
+                    <p>${escapeHtml(provider.purpose || '')}</p>
+                    <p class="integration-meta">
+                      <span>${escapeHtml(statusLabel)}</span>
+                      ${connectHref ? `<code>${escapeHtml(connectHref)}</code>` : ''}
+                    </p>
+                  </div>
+                </div>
+                <div class="health-metrics integration-actions">
+                  ${actionMarkup}
+                  <a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-vial"></i>
+                    <span>Verify API</span>
+                  </a>
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+      }
+
+      async function refreshIntegrationsPanel() {
+        setButtonLoading('#btn-refresh-integrations', true, 'Refreshing...');
+        const data = await fetchIntegrationsStatus();
+        renderIntegrationsPanel(data);
+        showToast(data ? 'OAuth status updated' : 'OAuth status failed', data ? 'success' : 'error');
+        setButtonLoading('#btn-refresh-integrations', false);
+      }
+
+      function scrollToIntegrationsIfRequested() {
+        if (globalThis.location.hash !== '#integrations') return;
+        const section = document.getElementById('integrations-section');
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
       function renderEvents(events) {
         const container = document.getElementById('event-list');
         if (!events || events.length === 0) {
@@ -1556,11 +1685,12 @@
         }
         await ensureApiOrigin({ force: true });
 
-        const [health, metrics, integrations, status, docs, hosting, realTime, secData, aiData] =
+        const [health, metrics, integrations, oauthStatus, status, docs, hosting, realTime, secData, aiData] =
           await Promise.all([
             fetchHealth(),
             fetchMetrics(),
             fetchExternalServices(),
+            fetchIntegrationsStatus(),
             fetchStatus(),
             fetchMonitorDocs(),
             fetchHostingSurfaces(),
@@ -1576,6 +1706,8 @@
         renderMetrics(metrics);
         renderOverview(metrics);
         renderExternalServices(integrations);
+        renderIntegrationsPanel(oauthStatus);
+        scrollToIntegrationsIfRequested();
         renderRuntimeSnapshot(status || hosting);
         renderDeploymentSurfaces(hosting);
         renderOverallStatus(health, integrations, hosting);

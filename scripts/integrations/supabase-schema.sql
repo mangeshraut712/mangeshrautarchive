@@ -21,7 +21,7 @@ create table if not exists health_vitals_daily (
 
 create table if not exists integration_accounts (
   id uuid primary key default gen_random_uuid(),
-  provider text not null,
+  provider text not null unique,
   provider_subject text,
   status text not null default 'connected',
   scopes text[] not null default '{}',

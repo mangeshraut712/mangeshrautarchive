@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 os.environ.setdefault("VERCEL_ENV", "production")
 
 from api.index import app
+from api.integrations.oauth_state import create_oauth_state, verify_oauth_state
 
 
 @pytest.fixture
@@ -23,6 +24,7 @@ def client(monkeypatch):
         "GOOGLE_CALENDAR_CLIENT_ID",
         "GOOGLE_CALENDAR_CLIENT_SECRET",
         "INTEGRATION_SYNC_ADMIN_TOKEN",
+        "INTEGRATION_ENCRYPTION_KEY",
         "MONITOR_ADMIN_TOKEN",
     ):
         monkeypatch.delenv(name, raising=False)
@@ -36,7 +38,7 @@ def test_integrations_status_is_safe_when_unconfigured(client):
     payload = response.json()
     assert payload["success"] is True
     assert payload["providers"]["supabase"]["configured"] is False
-    assert payload["providers"]["whoop"]["configured"] is False
+    assert payload["providers"]["whoop"]["connected"] is False
     assert "CLIENT_SECRET" not in str(payload)
 
 
@@ -67,3 +69,40 @@ def test_calendar_availability_is_freebusy_only_when_unconfigured(client):
     assert payload["status"] == "not_configured"
     assert payload["days"] == []
     assert "free/busy" in payload["privacy"]
+
+
+def test_oauth_state_roundtrip(monkeypatch):
+    monkeypatch.setenv("INTEGRATION_SYNC_ADMIN_TOKEN", "test-admin-token")
+    state = create_oauth_state("google_calendar")
+    assert verify_oauth_state(state, "google_calendar") is True
+    assert verify_oauth_state(state, "whoop") is False
+
+
+def test_google_calendar_connect_requires_configuration(client):
+    response = client.get("/api/integrations/google-calendar/connect", follow_redirects=False)
+    assert response.status_code == 503
+
+
+def test_whoop_connect_requires_configuration(client):
+    response = client.get("/api/integrations/whoop/connect", follow_redirects=False)
+    assert response.status_code == 503
+
+
+def test_withings_connect_requires_configuration(client):
+    response = client.get("/api/integrations/withings/connect", follow_redirects=False)
+    assert response.status_code == 503
+
+
+def test_sync_all_requires_admin_token(client, monkeypatch):
+    monkeypatch.setenv("INTEGRATION_SYNC_ADMIN_TOKEN", "test-admin-token")
+    response = client.post("/api/integrations/sync-all")
+    assert response.status_code == 403
+
+
+def test_disconnect_unknown_provider(client, monkeypatch):
+    monkeypatch.setenv("INTEGRATION_SYNC_ADMIN_TOKEN", "test-admin-token")
+    response = client.post(
+        "/api/integrations/unknown/disconnect",
+        headers={"x-integration-admin-token": "test-admin-token"},
+    )
+    assert response.status_code == 404

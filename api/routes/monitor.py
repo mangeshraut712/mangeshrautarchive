@@ -272,9 +272,19 @@ async def get_monitor_docs():
                         "summary": "Public sanitized health vitals summary backed by Supabase when configured.",
                     },
                     {
+                        "method": "POST",
+                        "path": "/api/health-vitals/sync",
+                        "summary": "Protected health summary upsert or future provider polling sync.",
+                    },
+                    {
                         "method": "GET",
                         "path": "/api/calendar/availability",
-                        "summary": "Calendar availability contract for future Google Calendar free/busy sync.",
+                        "summary": "Google Calendar free/busy availability when OAuth is connected.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/integrations/google-calendar/connect",
+                        "summary": "Start Google Calendar OAuth for free/busy availability.",
                     },
                 ],
             },
