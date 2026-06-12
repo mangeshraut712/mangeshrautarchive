@@ -1,0 +1,296 @@
+/* Whoop & Withings Health Vitals Widgets Styling */
+
+.health-widget-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.health-widget-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center 30%;
+  filter: grayscale(85%) brightness(0.22) contrast(1.1);
+  z-index: 1;
+  transition: filter 0.3s ease;
+}
+
+.health-widget-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(15, 15, 17, 0.55) 0%, rgba(30, 30, 35, 0.65) 100%);
+  z-index: 2;
+}
+
+.health-widget-body {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  padding: 1.25rem 1.5rem;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.health-widget-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.health-brand {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.health-brand i {
+  font-size: 0.7rem;
+}
+
+.whoop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  text-align: center;
+}
+
+.whoop-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transition: transform 0.2s ease;
+}
+
+.whoop-metric.highlight {
+  animation: pulseHighlight 0.8s ease;
+}
+
+.whoop-metric .metric-icon {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.15));
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.whoop-metric:hover .metric-icon {
+  transform: scale(1.15) translateY(-2px);
+}
+
+.whoop-metric .metric-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.whoop-metric .metric-label {
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.health-widget-divider {
+  width: 1px;
+  height: 80%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
+  z-index: 3;
+}
+
+.withings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.withings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.15rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.3s ease;
+}
+
+.withings-row.highlight {
+  animation: rowHighlight 0.8s ease;
+}
+
+.withings-row:last-child {
+  border-bottom: none;
+}
+
+.withings-metric-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.withings-metric-label .stat-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.withings-metric-label .stat-arrow.up {
+  color: #30d158; /* iOS system green */
+}
+
+.withings-metric-label .stat-arrow.down {
+  color: #ff453a; /* iOS system red */
+}
+
+.withings-metric-value {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  display: flex;
+  align-items: baseline;
+  gap: 0.05rem;
+}
+
+.withings-metric-value .unit {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 1px;
+}
+
+.health-widget-footer {
+  position: relative;
+  z-index: 3;
+  padding: 0.5rem 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.last-sync-time {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.last-sync-time i {
+  font-size: 0.6rem;
+  transition: transform 0.3s ease;
+}
+
+.last-sync-time.syncing i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseHighlight {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.8);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes rowHighlight {
+  0% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0);
+  }
+}
+
+/* Responsive Stacking */
+@media (max-width: 600px) {
+  .health-widget-container {
+    height: auto;
+  }
+  
+  .health-widget-body {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1rem;
+    align-items: stretch;
+  }
+  
+  .health-widget-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
+  }
+  
+  .whoop-grid {
+    gap: 1rem;
+  }
+  
+  .whoop-metric .metric-value {
+    font-size: 1.45rem;
+  }
+  
+  .withings-list {
+    gap: 0.5rem;
+  }
+  
+  .withings-row {
+    font-size: 0.875rem;
+  }
+  
+  .withings-metric-value {
+    font-size: 1.05rem;
+  }
+}

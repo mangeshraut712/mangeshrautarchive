@@ -699,6 +699,7 @@
 
   <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (site-wide cards + chrome) -->
   <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260611e" />
+  <link rel="stylesheet" href="assets/css/health-widget.css?v=20260612a" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 
@@ -3303,6 +3304,10 @@
                     <i class="fas fa-book"></i>
                     <span>Books</span>
                   </button>
+                  <button class="currently-tab" data-tab="health" aria-label="Health Vitals">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Health</span>
+                  </button>
                 </div>
               </div>
 
@@ -3376,6 +3381,116 @@
                   <div class="text-center py-8">
                     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent mx-auto"></div>
                     <p class="text-sm text-gray-500 mt-2">Loading verified book covers...</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Health Section (Whoop & Withings) -->
+              <div class="currently-content" id="health-content">
+                <div class="health-widget-container">
+                  <div class="health-widget-bg" style="background-image: url('assets/images/home-hd.webp');"></div>
+                  <div class="health-widget-overlay"></div>
+                  
+                  <div class="health-widget-body">
+                    <!-- Whoop Section (Left) -->
+                    <div class="health-widget-section whoop-section">
+                      <div class="health-brand">
+                        <i class="fas fa-bolt"></i> WHOOP
+                      </div>
+                      <div class="whoop-grid">
+                        <div class="whoop-metric" id="whoop-sleep-card">
+                          <div class="metric-icon" title="Sleep Performance">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                          </div>
+                          <div class="metric-value" id="whoop-sleep-val">--%</div>
+                          <div class="metric-label">Sleep</div>
+                        </div>
+                        <div class="whoop-metric" id="whoop-recovery-card">
+                          <div class="metric-icon" title="Recovery Level">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <circle cx="12" cy="5" r="2.5" />
+                              <path d="M12 7.5v6.5" />
+                              <path d="M5 12c1.5-3 3-5 7-5s5.5 2 7 5" />
+                              <path d="M5 12c1 1 2 2 4 2h6c2 0 3-1 4-2" />
+                              <path d="M4 18.5c2-2.5 4-3.5 8-3.5s6 1 8 3.5" />
+                              <path d="M6 20c3-1 9-1 12 0" />
+                            </svg>
+                          </div>
+                          <div class="metric-value" id="whoop-recovery-val">--%</div>
+                          <div class="metric-label">Recovery</div>
+                        </div>
+                        <div class="whoop-metric" id="whoop-strain-card">
+                          <div class="metric-icon" title="Strain Level">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M3 7h18" />
+                              <rect x="1" y="4" width="2" height="6" rx="0.5" />
+                              <rect x="21" y="4" width="2" height="6" rx="0.5" />
+                              <circle cx="12" cy="12" r="2" />
+                              <path d="M6 7l4 4h4l4-4" />
+                              <path d="M12 14v4" />
+                              <path d="M9 21l3-3 3 3" />
+                            </svg>
+                          </div>
+                          <div class="metric-value" id="whoop-strain-val">--</div>
+                          <div class="metric-label">Strain</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Vertical Divider -->
+                    <div class="health-widget-divider"></div>
+                    
+                    <!-- Withings Section (Right) -->
+                    <div class="health-widget-section withings-section">
+                      <div class="health-brand">
+                        <i class="fas fa-heart"></i> WITHINGS
+                      </div>
+                      <div class="withings-list">
+                        <div class="withings-row" id="withings-weight-row">
+                          <div class="withings-metric-label">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow down">
+                              <line x1="7" y1="7" x2="17" y2="17"></line>
+                              <polyline points="17 7 17 17 7 17"></polyline>
+                            </svg>
+                            <span>Weight</span>
+                          </div>
+                          <div class="withings-metric-value">
+                            <span id="withings-weight-val">--</span><span class="unit">kg</span>
+                          </div>
+                        </div>
+                        <div class="withings-row" id="withings-muscle-row">
+                          <div class="withings-metric-label">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow up">
+                              <line x1="7" y1="17" x2="17" y2="7"></line>
+                              <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                            <span>Muscle</span>
+                          </div>
+                          <div class="withings-metric-value">
+                            <span id="withings-muscle-val">--</span><span class="unit">%</span>
+                          </div>
+                        </div>
+                        <div class="withings-row" id="withings-fat-row">
+                          <div class="withings-metric-label">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="stat-arrow down">
+                              <line x1="7" y1="7" x2="17" y2="17"></line>
+                              <polyline points="17 7 17 17 7 17"></polyline>
+                            </svg>
+                            <span>Fat</span>
+                          </div>
+                          <div class="withings-metric-value">
+                            <span id="withings-fat-val">--</span><span class="unit">%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="health-widget-footer">
+                    <span class="last-sync-time"><i class="fas fa-sync-alt"></i> <span id="health-sync-text">Checking stats…</span></span>
+                    <span style="font-size: 0.6rem; color: rgba(255,255,255,0.3);">Live Vitals</span>
                   </div>
                 </div>
               </div>

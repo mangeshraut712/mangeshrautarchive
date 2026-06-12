@@ -196,6 +196,33 @@ export class AgenticActionHandler {
         { signal }
       );
 
+      // 10. Update health metric
+      navigator.modelContext.registerTool(
+        {
+          name: 'update_health_metric',
+          description: 'Update a specific Whoop or Withings health metric in the widget.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              metric: {
+                type: 'string',
+                enum: ['weight', 'muscle', 'fat', 'sleep', 'recovery', 'strain'],
+                description: 'The name of the metric to update.',
+              },
+              value: {
+                type: 'number',
+                description: 'The new value for the metric.',
+              },
+            },
+            required: ['metric', 'value'],
+          },
+          execute: async input => {
+            return this.updateHealthMetric([null, input.metric, input.value]);
+          },
+        },
+        { signal }
+      );
+
       // Clean up on page unload to avoid WebMCP registry conflicts
       window.addEventListener(
         'beforeunload',
@@ -313,6 +340,16 @@ export class AgenticActionHandler {
       ],
       handler: this.toggleTheme.bind(this),
       description: 'Toggle between dark and light theme',
+    });
+
+    // Update health metrics
+    this.registerAction('update_health_metric', {
+      patterns: [
+        /(?:update|change|set)\s+(weight|muscle|fat|sleep|recovery|strain)\s+(?:to\s+)?([0-9.]+)(kg|%)?/i,
+        /my\s+(weight|muscle|fat|sleep|recovery|strain)\s+(?:is|has changed to)\s+([0-9.]+)(kg|%)?/i,
+      ],
+      handler: this.updateHealthMetric.bind(this),
+      description: 'Update Whoop or Withings health metrics on the portfolio',
     });
   }
 
@@ -689,6 +726,68 @@ export class AgenticActionHandler {
       message: '❌ Theme toggle not available',
       action: 'toggle_theme',
     };
+  }
+
+  async updateHealthMetric(match) {
+    const metric = match[1].toLowerCase().trim();
+    const value = parseFloat(match[2]);
+
+    if (isNaN(value)) {
+      throw new Error(`Invalid numeric value: ${match[2]}`);
+    }
+
+    // Dynamic import safety check (ensuring module initialization)
+    if (!window.healthWidget) {
+      try {
+        await import('./health-widget.js');
+      } catch (err) {
+        console.warn('Failed to dynamically import health-widget.js, trying direct verification:', err);
+      }
+    }
+
+    if (!window.healthWidget) {
+      return {
+        success: false,
+        message: '❌ Health module is not loaded on this page.',
+      };
+    }
+
+    // Scroll currently card into view
+    const currentlySection = document.getElementById('currently-section');
+    if (currentlySection) {
+      currentlySection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Make health tab active
+    const healthTab = document.querySelector('.currently-tab[data-tab="health"]');
+    if (healthTab) {
+      healthTab.click();
+    }
+
+    // Perform metric update
+    try {
+      const updateResult = window.healthWidget.updateMetric(metric, value);
+      
+      let unitLabel = '';
+      if (['sleep', 'recovery', 'muscle', 'fat'].includes(metric)) {
+        unitLabel = '%';
+      } else if (metric === 'weight') {
+        unitLabel = 'kg';
+      }
+
+      return {
+        success: true,
+        message: `🏋️ Updated your **${metric}** to **${value}${unitLabel}**. The Whoop & Withings stats have been synchronized.`,
+        action: 'update_health_metric',
+        result: updateResult,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        message: `❌ Failed to update metric: ${err.message}`,
+        action: 'update_health_metric',
+      };
+    }
   }
 
   /**

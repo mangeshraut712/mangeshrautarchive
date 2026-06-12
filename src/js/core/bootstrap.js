@@ -31,6 +31,7 @@ const SECTION_MODULES = [
     rootMargin: '120px 0px',
   },
   { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '120px 0px' },
+  { sectionId: 'currently-section', modulePath: '../modules/health-widget.js', rootMargin: '120px 0px' },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
@@ -80,6 +81,7 @@ const MODULE_IMPORTERS = {
   '../modules/calendar.js': () => import('../modules/calendar.js'),
   '../modules/real-media-loader.js': () => import('../modules/real-media-loader.js'),
   '../modules/lastfm.js': () => import('../modules/lastfm.js'),
+  '../modules/health-widget.js': () => import('../modules/health-widget.js'),
   '../modules/debug-runner.js': () => import('../modules/debug-runner.js'),
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
   '../modules/search.js': () => import('../modules/search.js'),
