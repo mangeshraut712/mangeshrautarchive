@@ -60,14 +60,15 @@ async def exchange_code(code: str) -> Dict[str, Any]:
 
 
 async def fetch_user_email(access_token: str) -> str:
+    """Resolve a stable account identifier without requiring userinfo OAuth scopes."""
     async with httpx.AsyncClient(timeout=8.0) as client:
         response = await client.get(
-            "https://www.googleapis.com/oauth2/v2/userinfo",
-            headers={"Authorization": f"Bearer {access_token}"},
+            "https://oauth2.googleapis.com/tokeninfo",
+            params={"access_token": access_token},
         )
     response.raise_for_status()
     data = response.json()
-    return str(data.get("email") or data.get("id") or "google-calendar-user")
+    return str(data.get("email") or data.get("sub") or "google-calendar-user")
 
 
 def _day_bounds(day_offset: int) -> Dict[str, str]:

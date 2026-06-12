@@ -51,7 +51,7 @@ create table if not exists integration_sync_state (
 );
 
 grant usage on schema public to service_role;
-grant select on public.health_vitals_daily to service_role;
+grant select, insert, update on public.health_vitals_daily to service_role;
 grant all privileges on public.integration_accounts to service_role;
 grant all privileges on public.integration_tokens to service_role;
 grant all privileges on public.integration_sync_state to service_role;

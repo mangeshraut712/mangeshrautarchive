@@ -135,3 +135,15 @@ def test_calendar_webhook_acknowledges_sync_ping(client):
     )
     assert response.status_code == 200
     assert response.json()["status"] == "acknowledged"
+
+
+def test_platform_health_matrix_is_safe(client):
+    response = client.get("/api/monitor/platform-health")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["success"] is True
+    assert isinstance(payload.get("checks"), list)
+    assert payload["summary"]["total"] >= 1
+    assert "integration_env" in payload
+    assert "CLIENT_SECRET" not in str(payload)

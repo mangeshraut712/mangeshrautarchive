@@ -5,6 +5,7 @@ from typing import Optional, Dict
 from fastapi import APIRouter, HTTPException, Request
 
 from api.monitoring import system_monitor, EventType
+from api.platform_health import collect_platform_health
 
 router = APIRouter()
 
@@ -219,6 +220,11 @@ async def get_monitor_docs():
                         "method": "GET",
                         "path": "/api/monitor/external-services",
                         "summary": "Live health for external services such as OpenRouter, GitHub, Vercel platform status, Last.fm, and analytics.",
+                    },
+                    {
+                        "method": "GET",
+                        "path": "/api/monitor/platform-health",
+                        "summary": "Cross-check core APIs, integration readiness, and safe integration env presence.",
                     },
                     {
                         "method": "GET",
@@ -468,8 +474,19 @@ async def get_monitor_status():
             "redoc": "/api/redoc",
             "monitor_reference": "/api/monitor/docs",
             "hosting_surfaces": "/api/monitor/hosting-surfaces",
+            "platform_health": "/api/monitor/platform-health",
         },
     }
+
+
+@router.get(
+    "/api/monitor/platform-health",
+    tags=["system-monitor"],
+    summary="Platform API and integration health matrix",
+)
+async def get_monitor_platform_health():
+    """Safe cross-check of core APIs, OAuth readiness, and integration env presence."""
+    return await collect_platform_health()
 
 
 @router.get("/api/monitor/real-time")

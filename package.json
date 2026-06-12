@@ -59,6 +59,7 @@
     "clean": "node scripts/build/clean.js",
     "verify:deploy-sync": "node scripts/deployment/verify-deployment-sync.js",
     "verify:deploy-sync:remote": "node scripts/deployment/verify-deployment-sync.js --remote",
+    "verify:env-parity": "node scripts/deployment/verify-env-parity.mjs",
     "open": "open src/index.html",
     "pre-commit": "npm run security-check && npm run lint",
     "format": "prettier --write .",

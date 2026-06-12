@@ -46,7 +46,13 @@ class SecurityChecker {
       'venv',
     ]);
 
-    this.skipFiles = new Set(['.env', 'API_KEYS.txt', 'src/js/config.local.js', 'config.local.js']);
+    this.skipFiles = new Set([
+      '.env',
+      '.env.local',
+      'API_KEYS.txt',
+      'src/js/config.local.js',
+      'config.local.js',
+    ]);
 
     this.maxFileSizeBytes = 2 * 1024 * 1024;
     this.allowedExtensions = new Set([

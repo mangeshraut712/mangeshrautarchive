@@ -472,6 +472,26 @@ class SystemMonitor:
                     os.getenv("NEXT_PUBLIC_API_BASE", "").strip()
                 ),
                 "github_pages_url": bool(os.getenv("GITHUB_PAGES_URL", "").strip()),
+                "supabase_url": bool(os.getenv("SUPABASE_URL", "").strip()),
+                "supabase_service_role_key": bool(
+                    os.getenv("SUPABASE_SERVICE_ROLE_KEY", "").strip()
+                ),
+                "integration_sync_admin_token": bool(
+                    os.getenv("INTEGRATION_SYNC_ADMIN_TOKEN", "").strip()
+                ),
+                "integration_encryption_key": bool(
+                    os.getenv("INTEGRATION_ENCRYPTION_KEY", "").strip()
+                ),
+                "google_calendar_client_id": bool(
+                    os.getenv("GOOGLE_CALENDAR_CLIENT_ID", "").strip()
+                ),
+                "google_calendar_client_secret": bool(
+                    os.getenv("GOOGLE_CALENDAR_CLIENT_SECRET", "").strip()
+                ),
+                "whoop_client_id": bool(os.getenv("WHOOP_CLIENT_ID", "").strip()),
+                "whoop_client_secret": bool(os.getenv("WHOOP_CLIENT_SECRET", "").strip()),
+                "withings_client_id": bool(os.getenv("WITHINGS_CLIENT_ID", "").strip()),
+                "withings_client_secret": bool(os.getenv("WITHINGS_CLIENT_SECRET", "").strip()),
             },
         }
 

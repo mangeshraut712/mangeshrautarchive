@@ -582,6 +582,40 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
   color: var(--text-secondary);
 }
 
+.env-group {
+  margin-top: 14px;
+}
+
+.env-group-title {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.platform-health-summary {
+  margin-bottom: 14px;
+}
+
+.platform-health-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.platform-health-env {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.platform-health-grid {
+  display: grid;
+  gap: 12px;
+}
+
 [data-theme='dark'] .summary-chip,
 html.dark .summary-chip {
   background: #000000;

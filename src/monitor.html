@@ -489,6 +489,34 @@
         </div>
       </section>
 
+      <section class="section" id="platform-health-section">
+        <div class="section-header">
+          <h2 class="section-title">Platform Health Matrix</h2>
+          <div class="section-actions">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-platform-health"
+              onclick="refreshPlatformHealth()"
+            >
+              <i class="fas fa-heart-pulse"></i>
+              <span>Refresh Matrix</span>
+            </button>
+          </div>
+        </div>
+        <p class="section-lead">
+          Cross-checks core APIs, OAuth readiness, health vitals, and calendar availability for the
+          active backend. Run <code>npm run verify:env-parity</code> locally to compare
+          <code>.env.local</code> with Vercel production keys (no secrets printed).
+        </p>
+        <div class="platform-health-summary" id="platform-health-summary"></div>
+        <div class="platform-health-grid" id="platform-health-grid">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading platform health matrix...</h3>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="integrations-section">
         <div class="section-header">
           <h2 class="section-title">OAuth Integrations</h2>
@@ -890,6 +918,10 @@
         return fetchMonitorJson('/api/integrations/status', 'Integration status');
       }
 
+      async function fetchPlatformHealth() {
+        return fetchMonitorJson('/api/monitor/platform-health', 'Platform health');
+      }
+
       async function fetchStatus() {
         return fetchMonitorJson('/api/monitor/status', 'Status');
       }
@@ -1058,15 +1090,55 @@
           return;
         }
 
-        const envPresence = Object.entries(runtime.env_presence || {})
-          .map(
-            ([key, value]) => `
+        const envPresence = runtime.env_presence || {};
+        const coreKeys = [
+          'github_token',
+          'openrouter_api_key',
+          'lastfm_api_key',
+          'vercel_url',
+          'next_public_api_base',
+          'github_pages_url',
+        ];
+        const integrationKeys = [
+          'supabase_url',
+          'supabase_service_role_key',
+          'integration_sync_admin_token',
+          'integration_encryption_key',
+          'google_calendar_client_id',
+          'google_calendar_client_secret',
+          'whoop_client_id',
+          'whoop_client_secret',
+          'withings_client_id',
+          'withings_client_secret',
+        ];
+
+        const renderEnvGroup = (title, keys) => {
+          const pills = keys
+            .filter(key => Object.prototype.hasOwnProperty.call(envPresence, key))
+            .map(key => {
+              const value = envPresence[key];
+              return `
                 <span class="env-pill ${value ? 'healthy' : 'missing'}">
                     <span class="env-pill-label">${escapeHtml(formatConfigLabel(key))}</span>
                     <strong>${value ? 'Present' : 'Missing'}</strong>
                 </span>
-            `
-          )
+            `;
+            })
+            .join('');
+          if (!pills) return '';
+          return `
+            <div class="env-group">
+              <p class="env-group-title">${escapeHtml(title)}</p>
+              <div class="env-pill-list">${pills}</div>
+            </div>
+          `;
+        };
+
+        const envGroups = [
+          renderEnvGroup('Core Services', coreKeys),
+          renderEnvGroup('Integrations & Vault', integrationKeys),
+        ]
+          .filter(Boolean)
           .join('');
 
         const publicOrigins = runtime.public_origins || {};
@@ -1086,8 +1158,72 @@
                 <h3 class="runtime-card-title">${escapeHtml(runtime.platform || 'local')} · ${escapeHtml(runtime.environment || 'unknown')}</h3>
                 <p class="doc-card-description">Version ${escapeHtml(runtime.version || 'unknown')} · Region ${escapeHtml(runtime.region || 'unknown')} · Deployment ${escapeHtml(runtime.deployment_url || 'localhost')}</p>
                 <div class="runtime-meta-list">${originRows}</div>
-                <div class="env-pill-list">${envPresence}</div>
+                ${envGroups}
             `;
+      }
+
+      function renderPlatformHealthMatrix(data) {
+        const summaryEl = document.getElementById('platform-health-summary');
+        const gridEl = document.getElementById('platform-health-grid');
+        if (!gridEl) return;
+
+        if (!data || !Array.isArray(data.checks)) {
+          gridEl.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-triangle-exclamation"></i>
+              <h3>Platform health unavailable</h3>
+              <p>Open <code>/api/monitor/platform-health</code> when the backend is reachable.</p>
+            </div>
+          `;
+          if (summaryEl) summaryEl.innerHTML = '';
+          return;
+        }
+
+        const summary = data.summary || {};
+        if (summaryEl) {
+          summaryEl.innerHTML = `
+            <div class="platform-health-stats">
+              <span class="legend-pill healthy"><strong>${summary.healthy || 0}</strong> healthy</span>
+              <span class="legend-pill degraded"><strong>${summary.degraded || 0}</strong> degraded</span>
+              <span class="legend-pill unhealthy"><strong>${summary.unhealthy || 0}</strong> unhealthy</span>
+              <span class="platform-health-env">Runtime: ${escapeHtml(data.environment || 'local')}</span>
+            </div>
+          `;
+        }
+
+        gridEl.innerHTML = data.checks
+          .map(check => {
+            const verifyHref = buildIntegrationConnectHref(check.path);
+            return `
+              <div class="health-item ${check.status}">
+                <div class="health-item-left">
+                  <div class="health-status-icon ${check.status}">
+                    <i class="fas fa-${check.status === 'healthy' ? 'check' : check.status === 'degraded' ? 'minus' : 'xmark'}"></i>
+                  </div>
+                  <div class="health-info">
+                    <h4>${escapeHtml(check.label || check.id)}</h4>
+                    <p>${escapeHtml(check.detail || '')}</p>
+                    <p class="integration-meta"><code>${escapeHtml(check.path || '')}</code></p>
+                  </div>
+                </div>
+                <div class="health-metrics integration-actions">
+                  <a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-vial"></i>
+                    <span>Verify</span>
+                  </a>
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+      }
+
+      async function refreshPlatformHealth() {
+        setButtonLoading('#btn-refresh-platform-health', true, 'Refreshing...');
+        const data = await fetchPlatformHealth();
+        renderPlatformHealthMatrix(data);
+        showToast(data ? 'Platform health updated' : 'Platform health failed', data ? 'success' : 'error');
+        setButtonLoading('#btn-refresh-platform-health', false);
       }
 
       function renderMonitorDocs(data) {
@@ -1685,12 +1821,13 @@
         }
         await ensureApiOrigin({ force: true });
 
-        const [health, metrics, integrations, oauthStatus, status, docs, hosting, realTime, secData, aiData] =
+        const [health, metrics, integrations, oauthStatus, platformHealth, status, docs, hosting, realTime, secData, aiData] =
           await Promise.all([
             fetchHealth(),
             fetchMetrics(),
             fetchExternalServices(),
             fetchIntegrationsStatus(),
+            fetchPlatformHealth(),
             fetchStatus(),
             fetchMonitorDocs(),
             fetchHostingSurfaces(),
@@ -1707,6 +1844,7 @@
         renderOverview(metrics);
         renderExternalServices(integrations);
         renderIntegrationsPanel(oauthStatus);
+        renderPlatformHealthMatrix(platformHealth);
         scrollToIntegrationsIfRequested();
         renderRuntimeSnapshot(status || hosting);
         renderDeploymentSurfaces(hosting);

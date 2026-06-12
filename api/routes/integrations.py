@@ -2,6 +2,7 @@ import os
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
+import httpx
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
@@ -346,6 +347,11 @@ async def google_calendar_callback(code: Optional[str] = None, state: Optional[s
         return RedirectResponse("https://mangeshraut.pro/monitor#integrations", status_code=302)
     except HTTPException:
         raise
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Google Calendar OAuth token exchange failed.",
+        ) from exc
     except Exception as exc:
         raise HTTPException(status_code=502, detail="Google Calendar OAuth callback failed.") from exc
 
