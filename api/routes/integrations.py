@@ -450,7 +450,6 @@ async def sync_all_integrations(request: Request):
 )
 async def disconnect_integration(provider: str, request: Request):
     _require_integration_admin(request)
-    allowed = {"whoop", "withings", "google_calendar", "google-calendar"}
     normalized = provider.replace("-", "_")
     if normalized not in {"whoop", "withings", "google_calendar"}:
         raise HTTPException(status_code=404, detail="Unknown integration provider.")

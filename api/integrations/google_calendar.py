@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from urllib.parse import urlencode
 
 import httpx
@@ -75,7 +75,8 @@ def _day_bounds(day_offset: int) -> Dict[str, str]:
     base = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
     start = base + timedelta(days=day_offset)
     end = start + timedelta(days=1)
-    fmt = lambda dt: dt.isoformat().replace("+00:00", "Z")
+    def fmt(dt):
+        return dt.isoformat().replace("+00:00", "Z")
     return {"start": fmt(start), "end": fmt(end)}
 
 

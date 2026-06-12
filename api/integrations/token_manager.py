@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Tuple
 
 import httpx
 
-from api.integrations import google_calendar, whoop, withings
+from api.integrations import whoop, withings
 from api.integrations.supabase_store import get_provider_token_bundle, save_provider_tokens
 
 

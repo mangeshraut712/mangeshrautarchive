@@ -11,7 +11,7 @@ def _fernet() -> Fernet:
         raise ValueError("INTEGRATION_ENCRYPTION_KEY is not configured")
     try:
         return Fernet(raw.encode("utf-8"))
-    except Exception as exc:
+    except Exception:
         digest = hashlib.sha256(raw.encode("utf-8")).digest()
         key = base64.urlsafe_b64encode(digest)
         return Fernet(key)
