@@ -888,31 +888,7 @@ export class AccessibilityEnhancer {
         id: 'website-share-toggle',
         icon: '<i class="fa-solid fa-share-nodes" style="font-size: 14px;"></i>',
         label: 'Share website',
-        action: () => {
-          const dialog = document.getElementById('website-share-dialog');
-          const trigger = document.getElementById('website-share-toggle');
-          if (dialog && trigger) {
-            const isOpen = dialog.classList.contains('active');
-            if (isOpen) {
-              dialog.classList.add('hidden');
-              dialog.classList.remove('active');
-              dialog.setAttribute('aria-hidden', 'true');
-              trigger.setAttribute('aria-expanded', 'false');
-              document.body.classList.remove('share-dialog-open');
-              trigger.focus({ preventScroll: true });
-            } else {
-              const status = document.getElementById('website-share-status');
-              if (status) status.textContent = '';
-              dialog.classList.remove('hidden');
-              dialog.classList.add('active');
-              dialog.setAttribute('aria-hidden', 'false');
-              trigger.setAttribute('aria-expanded', 'true');
-              document.body.classList.add('share-dialog-open');
-              const copyButton = document.getElementById('website-share-copy');
-              if (copyButton) copyButton.focus({ preventScroll: true });
-            }
-          }
-        },
+        action: null,
       },
       {
         icon: '⌨',
@@ -952,7 +928,9 @@ export class AccessibilityEnhancer {
       const isHtmlIcon = btn.icon.startsWith('<');
       const iconClass = (!isHtmlIcon && btn.icon.startsWith('A')) ? 'a11y-toolbar-button__icon--text' : '';
       button.innerHTML = `<span class="a11y-toolbar-button__icon ${iconClass}" aria-hidden="true">${btn.icon}</span>`;
-      button.addEventListener('click', btn.action);
+      if (btn.action) {
+        button.addEventListener('click', btn.action);
+      }
       toolbar.appendChild(button);
     });
 

@@ -3,7 +3,13 @@
  * Provides a QR card, copy link, native share, and social share options.
  */
 
-const SHARE_URL = 'https://mangeshraut.pro/';
+const SHARE_MIRRORS = [
+  { name: 'Primary (Pro)', url: 'https://mangeshraut.pro' },
+  { name: 'Vercel (App)', url: 'https://mraut.vercel.app' },
+  { name: 'GitHub (Pages)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' }
+];
+
+let activeMirrorUrl = SHARE_MIRRORS[0].url;
 const SHARE_TITLE = 'Mangesh Raut Archive';
 const SHARE_TEXT =
   "Explore Mangesh Raut's software engineering portfolio, projects, writing, and systems work.";
@@ -12,20 +18,20 @@ const SHARE_OPTIONS = [
   {
     label: 'X',
     icon: 'fa-brands fa-x-twitter',
-    href: () =>
-      `https://x.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(SHARE_URL)}`,
+    href: (url) =>
+      `https://x.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(url)}`,
   },
   {
     label: 'LinkedIn',
     icon: 'fa-brands fa-linkedin-in',
-    href: () =>
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SHARE_URL)}`,
+    href: (url) =>
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   },
   {
     label: 'Email',
     icon: 'fa-solid fa-envelope',
-    href: () =>
-      `mailto:?subject=${encodeURIComponent(SHARE_TITLE)}&body=${encodeURIComponent(`${SHARE_TEXT}\n\n${SHARE_URL}`)}`,
+    href: (url) =>
+      `mailto:?subject=${encodeURIComponent(SHARE_TITLE)}&body=${encodeURIComponent(`${SHARE_TEXT}\n\n${url}`)}`,
   },
 ];
 
@@ -38,24 +44,33 @@ const createShareMarkup = () => `
       </button>
 
       <header class="website-share-header">
-        <img class="website-share-logo" src="assets/icons/icon.svg" alt="" width="56" height="56" loading="lazy" decoding="async">
-        <div>
-          <p class="website-share-kicker">Share portfolio</p>
-          <h2 id="website-share-title">Scan or share my website</h2>
-          <p id="website-share-description">Send the portfolio link quickly with QR, copy, native share, X, LinkedIn, or email.</p>
+        <img class="website-share-logo" src="assets/images/profile-icon.webp" alt="Mangesh Raut" width="44" height="44" loading="lazy" decoding="async">
+        <div class="website-share-header-text">
+          <h2 id="website-share-title">Mangesh Raut Archive</h2>
+          <p id="website-share-description">${activeMirrorUrl}</p>
         </div>
       </header>
 
-      <div class="website-share-qr-shell" aria-label="QR code for ${SHARE_URL}">
-        <img class="website-share-qr" src="assets/images/share-website-qr.svg" alt="QR code linking to mangeshraut.pro" width="264" height="264" loading="lazy" decoding="async">
-        <span class="website-share-qr-logo" aria-hidden="true">
-          <img src="assets/icons/icon.svg" alt="" width="72" height="72" loading="lazy" decoding="async">
-        </span>
+      <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
+        ${SHARE_MIRRORS.map((mirror, idx) => `
+          <button class="share-mirror-tab ${idx === 0 ? 'active' : ''}" type="button" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" data-mirror-idx="${idx}">
+            ${mirror.name.split(' ')[0]}
+          </button>
+        `).join('')}
+      </div>
+
+      <div class="website-share-qr-section">
+        <div class="website-share-qr-shell" aria-label="QR code for webpage">
+          <img class="website-share-qr" src="assets/images/share-website-qr.svg" alt="QR code" width="160" height="160" loading="lazy" decoding="async">
+          <span class="website-share-qr-logo" aria-hidden="true">
+            <img src="assets/images/profile-icon.webp" alt="" width="36" height="36" loading="lazy" decoding="async">
+          </span>
+        </div>
       </div>
 
       <div class="website-share-link-row">
         <label class="sr-only" for="website-share-url">Portfolio link</label>
-        <input id="website-share-url" class="website-share-url" type="text" value="${SHARE_URL}" readonly>
+        <input id="website-share-url" class="website-share-url" type="text" value="${activeMirrorUrl}" readonly>
         <button id="website-share-copy" class="website-share-copy" type="button">
           <i class="fa-regular fa-copy" aria-hidden="true"></i>
           <span>Copy</span>
@@ -63,18 +78,33 @@ const createShareMarkup = () => `
       </div>
 
       <div class="website-share-actions" aria-label="Share options">
-        <button id="website-native-share" class="website-share-action" type="button">
-          <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
-          <span>Share</span>
+        <button id="website-native-share" class="website-share-action-item" type="button">
+          <span class="website-share-icon-circle">
+            <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
+          </span>
+          <span class="website-share-action-label">Share</span>
         </button>
-        ${SHARE_OPTIONS.map(
-          option => `
-            <a class="website-share-action" href="${option.href()}" target="_blank" rel="noopener noreferrer">
-              <i class="${option.icon}" aria-hidden="true"></i>
-              <span>${option.label}</span>
-            </a>
-          `
-        ).join('')}
+        
+        <a class="website-share-action-item" data-social="X" href="${SHARE_OPTIONS[0].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+          <span class="website-share-icon-circle">
+            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+          </span>
+          <span class="website-share-action-label">X</span>
+        </a>
+        
+        <a class="website-share-action-item" data-social="LinkedIn" href="${SHARE_OPTIONS[1].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+          <span class="website-share-icon-circle">
+            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+          </span>
+          <span class="website-share-action-label">LinkedIn</span>
+        </a>
+        
+        <a class="website-share-action-item" data-social="Email" href="${SHARE_OPTIONS[2].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+          <span class="website-share-icon-circle">
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          </span>
+          <span class="website-share-action-label">Email</span>
+        </a>
       </div>
 
       <p id="website-share-status" class="website-share-status" role="status" aria-live="polite"></p>
@@ -94,7 +124,7 @@ function setDialogState(dialog, trigger, isOpen) {
 
 async function copyShareUrl(status, urlInput) {
   try {
-    await navigator.clipboard.writeText(SHARE_URL);
+    await navigator.clipboard.writeText(activeMirrorUrl);
     status.textContent = 'Portfolio link copied.';
     return true;
   } catch (_error) {
@@ -167,6 +197,51 @@ function initShareWidget() {
     }
   });
 
+  // Mirror tabs switcher implementation
+  const tabs = dialog.querySelectorAll('.share-mirror-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const idx = parseInt(tab.dataset.mirrorIdx, 10);
+      const mirror = SHARE_MIRRORS[idx];
+      activeMirrorUrl = mirror.url;
+      urlInput.value = mirror.url;
+
+      // Update URL display under title
+      const descEl = dialog.querySelector('#website-share-description');
+      if (descEl) {
+        descEl.textContent = mirror.url;
+      }
+
+      // Update QR Code image source dynamically
+      const qrImg = dialog.querySelector('.website-share-qr');
+      if (qrImg) {
+        if (idx === 0) {
+          qrImg.src = 'assets/images/share-website-qr.svg';
+        } else {
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=264x264&data=${encodeURIComponent(mirror.url)}`;
+        }
+      }
+
+      // Update social links href values dynamically
+      const updateSocialLink = (socialName, hrefGen) => {
+        const link = dialog.querySelector(`.website-share-action-item[data-social="${socialName}"]`);
+        if (link) {
+          link.href = hrefGen(mirror.url);
+        }
+      };
+
+      updateSocialLink('X', SHARE_OPTIONS[0].href);
+      updateSocialLink('LinkedIn', SHARE_OPTIONS[1].href);
+      updateSocialLink('Email', SHARE_OPTIONS[2].href);
+    });
+  });
+
   copyButton.addEventListener('click', async () => {
     const copied = await copyShareUrl(status, urlInput);
     if (copied) {
@@ -183,7 +258,7 @@ function initShareWidget() {
         await navigator.share({
           title: SHARE_TITLE,
           text: SHARE_TEXT,
-          url: SHARE_URL,
+          url: activeMirrorUrl,
         });
         status.textContent = 'Share sheet opened.';
       } catch (error) {
