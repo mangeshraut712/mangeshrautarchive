@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { chromium } from '@playwright/test';
 
 const args = process.argv.slice(2);
 
@@ -54,11 +55,13 @@ const thresholds = {
 
 const outputFile = join(tmpdir(), `lh-${formFactor}-${Date.now()}.json`);
 const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+const chromePath = process.env.CHROME_PATH || chromium.executablePath();
 
 const lighthouseArgs = [
   '-y',
   'lighthouse',
   url,
+  `--chrome-path=${chromePath}`,
   '--chrome-flags=--headless=new --no-sandbox --disable-dev-shm-usage --ignore-certificate-errors --allow-insecure-localhost',
   '--quiet',
   '--only-categories=performance,accessibility,best-practices,seo',
