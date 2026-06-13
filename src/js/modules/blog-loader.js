@@ -16,6 +16,7 @@ class BlogLoader {
     if (!this.container) return;
 
     this.renderPosts();
+    this.bindCardEvents();
     this.createModal();
   }
 
@@ -28,25 +29,30 @@ class BlogLoader {
         post => `
             <article class="blog-card apple-3d-project" data-id="${post.id}">
                 <div class="blog-card-content">
+                    <div class="blog-kicker-row">
+                        <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
+                        <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>
+                    </div>
                     <div class="blog-meta">
                         <span class="blog-date">${this.formatDate(post.date)}</span>
-                        <span class="blog-read-time">${post.readTime}</span>
                     </div>
-                    <h3 class="blog-title">${post.title}</h3>
-                    
-                    <!-- Apple Intelligence TL;DR -->
-                    <div class="apple-tldr">
-                        <div class="tldr-header">
-                            <i class="fas fa-sparkles text-accent" style="margin-right: 6px;"></i> 
-                            <span style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-accent);">AI Summary</span>
-                        </div>
-                        <p class="tldr-text" style="font-size: 0.9rem; font-style: italic; color: var(--text-secondary); margin-bottom: 0;">${post.summary}</p>
+                    <h3 class="blog-title">${this.escapeHTML(post.title)}</h3>
+
+                    <div class="blog-promise">
+                        <span class="blog-promise-label">Reader promise</span>
+                        <p class="blog-summary">${this.escapeHTML(post.readerPromise || post.summary)}</p>
                     </div>
 
-                    <div class="blog-tags" style="margin-top: 1rem;">
-                        ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+                    <blockquote class="blog-card-quote">${this.escapeHTML(post.pullQuote || post.summary)}</blockquote>
+
+                    <ul class="blog-highlight-list" aria-label="Article highlights">
+                        ${this.renderHighlights(post.highlights)}
+                    </ul>
+
+                    <div class="blog-tags">
+                        ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHTML(tag)}</span>`).join('')}
                     </div>
-                    <button class="blog-read-btn" onclick="window.blogLoader.openPost('${post.id}')" style="margin-top: auto;">
+                    <button class="blog-read-btn" type="button" data-blog-open="${post.id}">
                         Read Article <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -56,9 +62,34 @@ class BlogLoader {
       .join('');
   }
 
+  bindCardEvents() {
+    this.container.addEventListener('click', event => {
+      const button = event.target.closest('[data-blog-open]');
+      if (!button) return;
+
+      this.openPost(button.dataset.blogOpen);
+    });
+  }
+
   formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
+  }
+
+  renderHighlights(highlights = []) {
+    return highlights
+      .slice(0, 3)
+      .map(item => `<li>${this.escapeHTML(item)}</li>`)
+      .join('');
+  }
+
+  escapeHTML(value = '') {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   createModal() {
@@ -67,7 +98,7 @@ class BlogLoader {
             <div id="blog-modal" class="blog-modal hidden" aria-hidden="true">
                 <div class="blog-modal-overlay"></div>
                 <div class="blog-modal-container">
-                    <button class="blog-modal-close" aria-label="Close article">×</button>
+                    <button class="blog-modal-close" type="button" aria-label="Close article">×</button>
                     <div class="blog-modal-content" id="blog-modal-body">
                         <!-- Content injected here -->
                     </div>
@@ -103,12 +134,14 @@ class BlogLoader {
 
     modalBody.innerHTML = `
             <header class="article-header">
+                <span class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
                 <div class="article-meta">
-                    <span>${this.formatDate(post.date)}</span> • <span>${post.readTime}</span>
+                    <span>${this.formatDate(post.date)}</span> • <span>${this.escapeHTML(post.readTime)}</span>
                 </div>
-                <h1 class="article-title">${post.title}</h1>
+                <h1 class="article-title">${this.escapeHTML(post.title)}</h1>
+                <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
                 <div class="article-tags">
-                    ${post.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+                    ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHTML(tag)}</span>`).join('')}
                 </div>
             </header>
             <div class="article-body">

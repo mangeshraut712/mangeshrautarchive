@@ -244,7 +244,7 @@ section h2.animate-in {
 .btn,
 .project-action-btn,
 .projects-view-all-btn,
-button:not(.chatbot-close-btn, #go-to-top, #chatbot-toggle),
+button:not(.chatbot-close-btn, #go-to-top, #chatbot-toggle, #website-share-toggle),
 a.btn,
 .cta-button {
   transition:

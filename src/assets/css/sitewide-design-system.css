@@ -10,6 +10,8 @@
 /* Target ALL buttons across the site to ensure they are BLUE */
 .btn,
 button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(
+    #website-share-toggle
+  ):not(.website-share-close):not(.website-share-copy):not(.website-share-action):not(
     .chatbot-close-btn
   ):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(
     #menu-btn
@@ -44,6 +46,8 @@ a.button,
 /* Hover State */
 .btn:hover,
 button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(
+    #website-share-toggle
+  ):not(.website-share-close):not(.website-share-copy):not(.website-share-action):not(
     .chatbot-close-btn
   ):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(
     #menu-btn
@@ -573,6 +577,8 @@ html.dark .text-blue {
 /* Exclude buttons from text color override */
 .btn,
 button:not(.about-tab-btn):not(.about-speak-btn):not(#go-to-top):not(#chatbot-toggle):not(
+    #website-share-toggle
+  ):not(.website-share-close):not(.website-share-copy):not(.website-share-action):not(
     .chatbot-close-btn
   ):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(
     #menu-btn

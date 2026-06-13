@@ -1238,9 +1238,7 @@ html.dark .a11y-toolbar button.a11y-glass-active {
     bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) !important;
   }
 
-  body.has-a11y-toolbar #chatbot-toggle {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 7.5rem) !important;
-  }
+
 }
 
 @media (width <=768px) {
