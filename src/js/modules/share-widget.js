@@ -35,17 +35,20 @@ const SHARE_OPTIONS = [
   },
 ];
 
+const getQrCodeUrl = (url) => 
+  `https://api.qrserver.com/v1/create-qr-code/?size=256x256&ecc=H&margin=0&color=000000&bgcolor=FFFFFF&data=${encodeURIComponent(url)}`;
+
 const createShareMarkup = () => `
   <div id="website-share-dialog" class="website-share-dialog hidden" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true">
     <div class="website-share-backdrop" data-share-close></div>
-    <section class="website-share-card" aria-describedby="website-share-description">
+    <div class="website-share-card" aria-describedby="website-share-description">
       <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
 
       <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
         ${SHARE_MIRRORS.map((mirror, idx) => `
-          <button class="share-mirror-tab ${idx === 0 ? 'active' : ''}" type="button" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" data-mirror-idx="${idx}">
+          <div class="share-mirror-tab ${idx === 0 ? 'active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" tabindex="0" data-mirror-idx="${idx}">
             ${mirror.name.split(' ')[0]}
           </button>
         `).join('')}
@@ -53,23 +56,23 @@ const createShareMarkup = () => `
 
       <div class="website-share-qr-section">
         <div class="website-share-qr-shell" aria-label="QR code for webpage">
-          <img class="website-share-qr" src="assets/images/share-website-qr.svg" alt="QR code" width="160" height="160" loading="lazy" decoding="async">
+          <img class="website-share-qr" src="${getQrCodeUrl(activeMirrorUrl)}" alt="QR code" width="160" height="160" loading="lazy" decoding="async">
           <span class="website-share-qr-logo" aria-hidden="true">
-            <img src="assets/images/profile-icon.webp" alt="" width="36" height="36" loading="lazy" decoding="async">
+            <img src="assets/images/profile-icon.webp" alt="" width="28" height="28" loading="lazy" decoding="async">
           </span>
         </div>
       </div>
 
       <div class="website-share-actions-list">
-        <button id="website-share-copy" class="share-action-row" type="button">
+        <div id="website-share-copy" class="share-action-row" role="button" tabindex="0">
           <span>Copy Link</span>
           <i class="fa-regular fa-copy" aria-hidden="true"></i>
-        </button>
+        </div>
         
-        <button id="website-native-share" class="share-action-row" type="button">
+        <div id="website-native-share" class="share-action-row" role="button" tabindex="0">
           <span>System Share...</span>
           <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
-        </button>
+        </div>
 
         <a class="share-action-row" data-social="X" href="${SHARE_OPTIONS[0].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
           <span>Share on X (Twitter)</span>
@@ -88,7 +91,7 @@ const createShareMarkup = () => `
       </div>
 
       <p id="website-share-status" class="website-share-status" role="status" aria-live="polite"></p>
-    </section>
+    </div>
   </div>
 `;
 
@@ -180,10 +183,20 @@ function initShareWidget() {
     }
   });
 
+  // Keyboard accessibility handler for role="button" divs
+  const handleKeyboardActivation = (el, action) => {
+    el.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        action();
+      }
+    });
+  };
+
   // Mirror tabs switcher implementation
   const tabs = dialog.querySelectorAll('.share-mirror-tab');
   tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
+    const activateTab = () => {
       tabs.forEach(t => {
         t.classList.remove('active');
         t.setAttribute('aria-selected', 'false');
@@ -197,11 +210,7 @@ function initShareWidget() {
       // Update QR Code image source dynamically
       const qrImg = dialog.querySelector('.website-share-qr');
       if (qrImg) {
-        if (idx === 0) {
-          qrImg.src = 'assets/images/share-website-qr.svg';
-        } else {
-          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=264x264&data=${encodeURIComponent(mirror.url)}`;
-        }
+        qrImg.src = getQrCodeUrl(mirror.url);
       }
 
       // Update social links href values dynamically
@@ -215,17 +224,22 @@ function initShareWidget() {
       updateSocialLink('X', SHARE_OPTIONS[0].href);
       updateSocialLink('LinkedIn', SHARE_OPTIONS[1].href);
       updateSocialLink('Email', SHARE_OPTIONS[2].href);
-    });
+    };
+
+    tab.addEventListener('click', activateTab);
+    handleKeyboardActivation(tab, activateTab);
   });
 
-  copyButton.addEventListener('click', async () => {
+  const triggerCopy = async () => {
     await copyShareUrl(status);
-  });
+  };
+  copyButton.addEventListener('click', triggerCopy);
+  handleKeyboardActivation(copyButton, triggerCopy);
 
   if (!navigator.share) {
     nativeShareButton.hidden = true;
   } else {
-    nativeShareButton.addEventListener('click', async () => {
+    const triggerNativeShare = async () => {
       try {
         await navigator.share({
           title: SHARE_TITLE,
@@ -238,7 +252,9 @@ function initShareWidget() {
           status.textContent = 'Share sheet is unavailable. Copy the link instead.';
         }
       }
-    });
+    };
+    nativeShareButton.addEventListener('click', triggerNativeShare);
+    handleKeyboardActivation(nativeShareButton, triggerNativeShare);
   }
 }
 
