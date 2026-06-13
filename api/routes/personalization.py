@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from fastapi import APIRouter, HTTPException, Request
 
 from api.config import get_client_ip
