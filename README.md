@@ -1,10 +1,6 @@
 # Mangesh Raut — Agentic Full-Stack Portfolio
 
 <p align="center">
-  <img src="src/assets/images/home-hd.webp" alt="Mangesh Raut — Agentic Portfolio" width="700">
-</p>
-
-<p align="center">
   <a href="https://mangeshraut.pro">
     <img src="https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Site">
   </a>
@@ -70,7 +66,6 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 ## 📑 Table of Contents
 
 - [🚀 Live Demos](#-live-demos)
-- [📸 Screenshots](#-screenshots)
 - [🔧 Engineering Deep Dives](#-engineering-deep-dives)
 - [🧠 Agentic AI Capabilities](#-agentic-ai-capabilities)
 - [🎨 Premium User Experience](#-premium-user-experience)
@@ -100,23 +95,6 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 | AI Assistant   | Open chat on any page                                                                               | Try: _"download resume"_, _"go to projects"_, _"schedule a meeting"_ |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
-
----
-
-## 📸 Screenshots
-
-<table>
-  <tr>
-    <td align="center"><strong>Home Hero</strong><br><img src="src/assets/images/home-hd.webp" alt="Portfolio home hero" width="420"></td>
-    <td align="center"><strong>Responsive</strong><br><img src="src/assets/images/home-mobile.webp" alt="Mobile layout" width="180"></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Graduation</strong><br><img src="src/assets/images/graduation-hd.webp" alt="Graduation section" width="420"></td>
-    <td align="center"><strong>Avatar</strong><br><img src="src/assets/images/avtar-hd.webp" alt="Profile avatar" width="180"></td>
-  </tr>
-</table>
-
-> Live pages include the full liquid glass theme, AssistMe overlay, travel atlas, and system monitor — visit [mangeshraut.pro](https://mangeshraut.pro) for the complete experience.
 
 ---
 
