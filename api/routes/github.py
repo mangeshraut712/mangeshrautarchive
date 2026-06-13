@@ -1,8 +1,5 @@
 import time
-import json
 import re
-import shutil
-import subprocess
 from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import unquote
@@ -52,24 +49,15 @@ async def fetch_github_repos_cached(username: str) -> list:
                 params={"per_page": 100, "sort": "updated"},
                 headers=headers,
             )
-            if resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
-                try:
-                    gh_run = subprocess.run(
-                        ["gh", "api", f"users/{username}/repos?per_page=100&sort=updated"],
-                        capture_output=True,
-                        text=True,
-                        check=True,
-                        timeout=12,
-                    )
-                    repos = json.loads(gh_run.stdout) if gh_run.stdout else []
-                except (subprocess.SubprocessError, json.JSONDecodeError) as inner_exc:
-                    print(f"⚠️ Fallback to httpx due to gh CLI failure: {type(inner_exc).__name__}")
-                    resp.raise_for_status()
-                    repos = resp.json()
-            else:
-                resp.raise_for_status()
-                repos = resp.json()
-    except (httpx.HTTPStatusError, httpx.RequestError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+            if resp.status_code in (403, 429) and not GITHUB_PAT:
+                raise api_error(
+                    "GITHUB_RATE_LIMITED",
+                    "GitHub API rate limit hit. Configure GITHUB_PAT for higher limits.",
+                    503,
+                )
+            resp.raise_for_status()
+            repos = resp.json()
+    except (httpx.HTTPStatusError, httpx.RequestError) as exc:
         print(f"⚠️ Error fetching GitHub repos: {type(exc).__name__} - {str(exc)}")
         if entry and entry.get("data"):
             return entry["data"]
@@ -139,28 +127,6 @@ async def github_api_proxy(path: str):
         raise HTTPException(
             status_code=503, detail="GitHub request failed"
         )
-
-    if github_resp.status_code in (403, 429) and not GITHUB_PAT and shutil.which("gh"):
-        try:
-            gh_path = normalized_path.lstrip("/")
-            gh_run = subprocess.run(
-                ["gh", "api", gh_path],
-                capture_output=True,
-                text=True,
-                check=True,
-                timeout=12,
-            )
-            gh_payload = json.loads(gh_run.stdout) if gh_run.stdout else {}
-            proxy_response = JSONResponse(status_code=200, content=gh_payload)
-            _github_api_proxy_cache[cache_key] = {
-                "ts": time.time(),
-                "status": 200,
-                "data": gh_payload,
-                "headers": {},
-            }
-            return proxy_response
-        except Exception:
-            pass
 
     if github_resp.status_code in (403, 429) and cached and cached.get("data") is not None:
         response = JSONResponse(status_code=200, content=cached["data"])
