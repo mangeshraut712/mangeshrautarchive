@@ -50,7 +50,7 @@ const createShareMarkup = () => `
         ${SHARE_MIRRORS.map((mirror, idx) => `
           <div class="share-mirror-tab ${idx === 0 ? 'active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" tabindex="0" data-mirror-idx="${idx}">
             ${mirror.name.split(' ')[0]}
-          </button>
+          </div>
         `).join('')}
       </div>
 
