@@ -2,6 +2,12 @@
 
 <p align="center">
   <a href="https://mangeshraut.pro">
+    <img src="src/assets/images/home-hd.webp" alt="Mangesh Raut — Agentic Portfolio home hero" width="720">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://mangeshraut.pro">
     <img src="https://img.shields.io/badge/🌐_Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Site">
   </a>
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/">
@@ -36,6 +42,8 @@
   &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://mangeshraut.pro/monitor"><strong>📊 Live Operations Dashboard</strong></a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#-preview"><strong>📸 Preview</strong></a>
+  &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="#-engineering-deep-dives"><strong>🔧 See How It Was Built</strong></a>
 </p>
 
@@ -53,7 +61,9 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 - **12 Technical Writings** — deep-dive blogs covering AI Code Editors, WWDC 2026/Apple Intelligence, NotebookLM 2026, WebMCP tool design, and agentic workflows
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (&lt;50ms) + OpenRouter streaming LLM
-- **WWDC26 Liquid Glass Design System** — translucent surfaces, specular highlights, theme-aware tokens, and reduced-motion fallbacks
+- **WWDC26 Liquid Glass Design System** — clear/tinted glass slider, solid theme card surfaces, specular highlights, and reduced-motion fallbacks
+- **Health Vitals Widget** — live WHOOP recovery/strain and Withings body composition synced via Supabase
+- **Apple Share Sheet** — QR codes, social mirrors, and profile sharing from the accessibility toolbar
 - **Multi-Tier Resilience** — 4-layer fallback chain works on Vercel _and_ static GitHub Pages
 - **Extreme Testing** — 12+ real browser/device configs (Chrome, Safari, Firefox, Edge, Pixel 7, iPhone 14, iPad Pro)
 - **Zero-Downtime Deploys** — dual-surface (Vercel + GitHub Pages) with automated post-deploy verification
@@ -66,6 +76,7 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 ## 📑 Table of Contents
 
 - [🚀 Live Demos](#-live-demos)
+- [📸 Preview](#-preview)
 - [🔧 Engineering Deep Dives](#-engineering-deep-dives)
 - [🧠 Agentic AI Capabilities](#-agentic-ai-capabilities)
 - [🎨 Premium User Experience](#-premium-user-experience)
@@ -98,6 +109,28 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 ---
 
+## 📸 Preview
+
+<p align="center">
+  <a href="https://mangeshraut.pro">
+    <img src="src/assets/images/home-hd.webp" alt="Portfolio home — desktop hero with liquid glass UI" width="640">
+  </a>
+</p>
+
+<p align="center">
+  <img src="src/assets/images/home-mobile.webp" alt="Portfolio home — mobile layout" width="220">
+  &nbsp;&nbsp;
+  <img src="src/assets/images/graduation-hd.webp" alt="Graduation section" width="320">
+  &nbsp;&nbsp;
+  <img src="src/assets/images/avtar-hd.webp" alt="Profile avatar" width="140">
+</p>
+
+<p align="center">
+  <sub>Static previews — visit <a href="https://mangeshraut.pro">mangeshraut.pro</a> for AssistMe, travel atlas, health vitals, and the live monitor.</sub>
+</p>
+
+---
+
 ## 🔧 Engineering Deep Dives
 
 How the key systems actually work — implementation details, not buzzwords.
@@ -122,8 +155,8 @@ How the key systems actually work — implementation details, not buzzwords.
 
 **How it works**:
 
-- `wwdc26-liquid-glass.css` and `liquid-glass-tokens.js` centralize blur, tint, specular, and elevation tokens.
-- Theme-aware CSS custom properties sync with light/dark/system modes via `bootstrap.js`.
+- `wwdc26-liquid-glass.css` and `liquid-glass-tokens.js` centralize blur, tint, specular, and elevation tokens with **clear / tinted / balanced** modes.
+- Theme-aware CSS custom properties sync with light/dark/system modes via `bootstrap.js`; card surfaces fall back to solid `#fff` / `#000` where readability matters.
 - `prefers-reduced-transparency` and `prefers-reduced-motion` degrade to solid surfaces automatically.
 - QA matrix scripts (`scripts/qa/glass-theme-matrix.mjs`) validate contrast and interactivity across pages.
 
@@ -160,12 +193,23 @@ How the key systems actually work — implementation details, not buzzwords.
 
 **How it works**:
 
-- `api/monitoring.py` implements async health probes using `httpx` + optional `psutil`.
-- Measures latency to OpenRouter, GitHub, Firestore, and Last.fm on every request.
+- `api/monitoring.py` and `api/routes/monitor.py` implement async health probes using `httpx` + optional `psutil`.
+- Measures latency to OpenRouter, GitHub, Firestore, Last.fm, and connected integrations on every request.
 - Structured event logging with severity levels and a recent event ring buffer.
+- OAuth connect flows for WHOOP, Withings, and Google Calendar with signed state and admin-gated sync.
 - Used both for personal observability and as a public transparency feature.
 
-### 6. Apple Sound System (Procedural Web Audio)
+### 6. Health Vitals Sync (WHOOP + Withings)
+
+**What was built**: A privacy-aware health widget on the homepage backed by Supabase daily snapshots.
+
+**How it works**:
+
+- `api/integrations/whoop.py` and `withings.py` normalize recovery, strain, weight, muscle, and body-fat metrics.
+- `sync_engine.py` merges provider data with correct measure-type mapping (e.g. Withings type 6 for fat ratio).
+- The homepage widget renders live cards with graceful offline fallbacks when integrations are disconnected.
+
+### 7. Apple Sound System (Procedural Web Audio)
 
 **What was built**: A fully synthesized, file-free Apple-inspired sound engine.
 
@@ -175,7 +219,7 @@ How the key systems actually work — implementation details, not buzzwords.
 - Sounds modeled on macOS/iOS audio design: a "plink" for theme toggle, iOS tri-tone for chatbot open, C-major arpeggio for success, and a Happy Birthday melody for the birthday overlay.
 - Singleton design with `localStorage` persistence for user preference and autoplay-policy-safe interaction guard.
 
-### 7. Custom esbuild Build Pipeline
+### 8. Custom esbuild Build Pipeline
 
 **What was built**: A purpose-built, zero-config-heavy build system.
 
@@ -187,7 +231,7 @@ How the key systems actually work — implementation details, not buzzwords.
 - Integrated Sharp image optimization pass.
 - Static extras (CNAME, manifest, service worker) preserved with correct cache headers.
 
-### 8. Extreme Testing Matrix + Post-Deploy Verification
+### 9. Extreme Testing Matrix + Post-Deploy Verification
 
 **What was built**: One of the most thorough personal project test setups on GitHub.
 
@@ -196,8 +240,8 @@ How the key systems actually work — implementation details, not buzzwords.
 - `playwright.config.js` defines 12+ named projects including specific browser channels (Chrome, msedge) and real mobile devices.
 - Separate suites for smoke, accessibility (axe-core), visual regression, and post-deploy.
 - Post-deploy tests run against **both** Vercel and GitHub Pages surfaces after every production release.
-- Lighthouse CI gates are enforced in the deploy workflow with hard failure thresholds.
-- One-command `npm run qa:prod-ready` runs the entire security + lint + unit + E2E + Lighthouse pipeline.
+- Lighthouse CI gates in `deploy.yml` plus nightly production monitoring with Playwright Chromium.
+- One-command `npm run qa:prod-ready` runs the full security + lint + unit + E2E + Lighthouse pipeline.
 
 ---
 
@@ -227,7 +271,8 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 - **AssistMe overlay** — streaming Markdown, voice dictation, writing tools, and on-screen context chips
 - **Procedural sound engine** — synthesized Web Audio API sounds (theme toggle, chat open, birthday)
 - **Glassmorphism & micro-interactions** — spatial cards, buttery transitions, real-time action toasts
-- **Accessibility toolbar** — font scaling, contrast modes, reduced motion, keyboard navigation
+- **Accessibility toolbar** — font scaling, contrast modes, reduced motion, keyboard navigation, and Apple-style share sheet
+- **Health vitals cards** — WHOOP recovery/strain and Withings body composition on the homepage
 - **Birthday celebration system** — Canvas physics (confetti + balloons), aurora gradient overlay, and Apple Happy Birthday melody
 - **Last.fm Now Playing** — real-time track updates with spinning album art and animated equalizer bars
 - **Progressive Web App** with service worker and offline-first caching
@@ -244,7 +289,7 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 | **Agentic Runtime** | AssistMe + WebMCP + Custom Action Handler with priority execution                                                    |
 | **AI**              | OpenRouter (Grok 4.1 Fast / Gemini) + local deterministic actions                                                    |
 | **Backend**         | FastAPI v0.136.1 + Pydantic v2 (v2.13.4) (Vercel Serverless)                                                         |
-| **Data**            | Cloud Firestore, GitHub REST, Last.fm, Upstash Redis (optional)                                                      |
+| **Data**            | Cloud Firestore, Supabase (health vitals), GitHub REST, Last.fm, Upstash Redis (optional)                            |
 | **Build**           | esbuild v0.28.0 + Sharp v0.34.5 + custom Node pipeline                                                               |
 | **Analytics**       | @vercel/analytics v2.0.1                                                                                             |
 | **Testing**         | Playwright v1.58.2 (12+ configs), Vitest v4.1.6, @axe-core/playwright v4.11.1, Lighthouse CI                         |
@@ -300,6 +345,7 @@ flowchart TD
 | **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90                         |
 | **Lighthouse Mobile**  | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90                         |
 | **Post-deploy**        | Smoke + a11y on Vercel **and** GitHub Pages                                             |
+| **Nightly monitoring** | Lighthouse on live URLs (desktop ≥70, mobile ≥55; no perf-audit on remote) |
 | **Pre-commit**         | Security scan + ESLint                                                                  |
 
 **Key commands**
@@ -313,12 +359,14 @@ flowchart TD
 | `npm run qa:lighthouse:desktop` | Desktop Lighthouse gate                                 |
 | `npm run qa:lighthouse:mobile`  | Mobile Lighthouse gate                                  |
 | `npm run test:e2e:all`          | Complete multi-device Playwright matrix                 |
+| `npm run verify:env-parity`     | Compare local `.env` keys against Vercel production       |
+| `npm run verify:deploy-sync:remote` | Confirm GitHub Pages and Vercel share the same build commit |
 
 ---
 
 ## ⚡ Quick Start
 
-**Requirements:** Node.js 22.x, Python 3.11+ (for the API), optional `uv` for test runs.
+**Requirements:** Node.js 22.x, Python 3.11+ (for the API), optional `uv` for faster pytest runs.
 
 ```bash
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
@@ -329,8 +377,10 @@ npm install --no-audit --no-fund
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
-cp .env.example .env   # Add OPENROUTER_API_KEY
-npm run dev
+cp .env.example .env          # Required: OPENROUTER_API_KEY
+# Optional: cp .env.example .env.local  # WHOOP, Withings, Supabase, monitor tokens
+
+npm run dev                   # Frontend :4000 + FastAPI :8001
 ```
 
 | Service  | Local URL                  |
@@ -352,31 +402,33 @@ PORT=4174 npm run serve:dist
 
 ```
 mangeshrautarchive/
-├── api/                    # FastAPI routes + advanced monitoring
-│   ├── routes/             # chat, github, media (Last.fm), analytics, monitoring
+├── api/
+│   ├── routes/             # chat, github, media, analytics, monitor, integrations
+│   ├── integrations/       # WHOOP, Withings, Supabase sync, OAuth token manager
 │   └── config.py           # Centralised config + cache TTLs
 ├── src/
 │   ├── index.html          # Main portfolio experience
 │   ├── monitor.html        # Public operations dashboard
 │   ├── travel.html         # MapLibre travel atlas
-│   ├── assets/css/         # 30+ modular CSS files (liquid glass design system)
-│   ├── assets/images/      # Optimized responsive images (WebP + fallbacks)
+│   ├── assets/css/         # Modular CSS (liquid glass + solid theme surfaces)
+│   ├── assets/images/      # Responsive WebP assets (home, avatar, graduation, …)
 │   └── js/
 │       ├── core/           # Bootstrap, chat, config
-│       ├── modules/        # Agentic engine, chatbot, sound system, birthday, Last.fm, …
+│       ├── modules/        # Agentic engine, health widget, share sheet, Last.fm, …
 │       ├── services/       # Analytics, Markdown, Streaming, Voice
 │       └── utils/          # Theme, liquid-glass tokens, navbar, calendly
 ├── scripts/
 │   ├── build/              # esbuild pipeline, image optimization, clean
-│   ├── deployment/         # Lighthouse gates, security scan, deploy sync
-│   ├── qa/                 # Liquid glass theme matrix + interactive QA
+│   ├── deployment/         # Lighthouse gates, env parity, deploy sync
+│   ├── integrations/       # OAuth helpers + Vercel env sync
+│   ├── qa/                 # Liquid glass theme matrix + cross-viewport Chrome QA
 │   └── utils/              # Dev servers, Playwright runner
 ├── tests/
-│   ├── api/                # pytest suite
+│   ├── api/                # pytest suite (health vitals, monitor, integrations)
 │   └── e2e/                # Playwright smoke, a11y, post-deploy, visual
 ├── config/                 # Python/Stylelint/Vulture config
 ├── deployment/             # Firebase rules and hosting config
-└── .github/workflows/      # CI/CD with quality gates + post-deploy monitoring
+└── .github/workflows/      # CI deploy + nightly production monitoring
 ```
 
 ---
@@ -385,9 +437,11 @@ mangeshrautarchive/
 
 ```bash
 curl https://mangeshraut.pro/api/health
+curl https://mangeshraut.pro/api/monitor/status
 curl https://mangeshraut.pro/api/analytics/reach
 curl https://mangeshraut.pro/api/github/repos/public
 curl https://mangeshraut.pro/api/media/music          # Last.fm Now Playing
+curl https://mangeshraut.pro/api/health-vitals/summary  # Sanitized WHOOP/Withings summary
 ```
 
 Full OpenAPI spec available at `/docs` when running the backend locally.
@@ -398,22 +452,14 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026
 
-- **System Monitor Upgrades & Env Parity** — Synchronized Vercel production environment credentials, resolved padding/empty space layout bugs, and added unified Apple premium hover transitions with blue glows across all monitor cards and sections in both light and dark modes.
-- **Perfect QA Scores** — Achieved a **100/100** score on React Doctor, and perfect **100/100** Lighthouse scores (Performance, Accessibility, Best Practices, SEO) on both Desktop and Mobile test configurations.
-- **New Blog Publications** — Published two new technical deep-dives on WWDC 2026 (Apple Intelligence, Siri AI, AFM 3) and NotebookLM 2026 (Audio Overviews, Workspace Chat, Google Search Grounding), bringing the total count to 12.
-- **WWDC26 Liquid Glass Theme** — sitewide translucent surfaces, centralized design tokens, and reduced-motion/transparency fallbacks
-- **AssistMe Polish** — Apple Intelligence-style chat with Siri dictation, writing tools, and liquid glass QA matrix
-- **Accessibility Hardening** — toolbar improvements, contrast validation, and axe-core baseline in CI
-- **Liquid Glass QA Scripts** — `scripts/qa/glass-theme-matrix.mjs` and interactive QA tooling for theme regression
-- **Tech Stack Refresh** — esbuild v0.28.0, @tailwindcss/cli v4.0.9, @vercel/analytics v2.0.1, FastAPI v0.136.1, Playwright v1.58.2, Vitest v4.1.6
-
-### May 2026
-
-- **GitHub Pages Deployment** — static hosting at [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) with full API fallback support
-- **Lighthouse Optimization** — 90+ scores across Performance, Accessibility, Best Practices, and SEO
-- **Apple Sound System** — procedural Web Audio API engine with theme toggle, chatbot, and birthday sounds
-- **Tailwind CSS 4 Migration** — modern CSS-first configuration with `@tailwindcss/cli`
-- **Playwright 1.58 Matrix** — expanded to 12+ real device/browser configurations in CI pipeline
+- **Share Sheet & Accessibility** — Apple-inspired share widget in the accessibility toolbar with High-ECC QR codes, social mirror tabs, and solid theme card surfaces.
+- **Health Vitals Sync** — Fixed Withings body-fat measure mapping, WHOOP record selection, and homepage widget parsing for muscle/fat trends.
+- **Liquid Glass Controls** — Clear vs tinted glass slider with nav token overrides; solid white/black card surfaces in light/dark themes.
+- **Security Hardening** — OAuth connect gating, signed state, monitor API access controls, and session/personalization IDOR fixes.
+- **CI & Monitoring** — Stylelint/dead-code fixes, Playwright Chromium for nightly Lighthouse on production URLs, all deploy workflows green.
+- **System Monitor** — Runtime snapshot card, integration env parity scripts, and unified Apple premium hover transitions.
+- **New Blog Publications** — WWDC 2026 (Apple Intelligence, Siri AI, AFM 3) and NotebookLM 2026 deep-dives; 12 technical writings total.
+- **Quality Gates** — React Doctor 100/100; Lighthouse CI thresholds enforced at Performance ≥80 desktop / ≥60 mobile with a11y ≥90 across the board.
 
 ---
 
@@ -421,8 +467,8 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 If you find this project useful or use it as a reference for your own agentic applications, you can support my work via:
 
-- **Stripe**: [Sponsor via Stripe](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401)
-- **PayPal**: [Sponsor via PayPal](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82)
+- **Stripe**: [![Sponsor via Stripe](https://img.shields.io/badge/Sponsor_via_Stripe-0071e3?style=for-the-badge&logo=stripe&logoColor=white)](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401)
+- **PayPal**: [![Sponsor via PayPal](https://img.shields.io/badge/Sponsor_via_PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82)
 
 ---
 

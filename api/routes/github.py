@@ -1,5 +1,6 @@
 import time
 import json
+import re
 import shutil
 import subprocess
 from datetime import datetime, timezone
@@ -22,9 +23,19 @@ from api.integrations.github_connector import github_connector
 
 router = APIRouter()
 
+_GITHUB_USERNAME_RE = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")
+
+
+def _validate_github_username(username: str) -> str:
+    normalized = unquote(username or "").strip()
+    if not _GITHUB_USERNAME_RE.fullmatch(normalized):
+        raise HTTPException(status_code=400, detail="Invalid GitHub username.")
+    return normalized
+
 
 async def fetch_github_repos_cached(username: str) -> list:
     """Fetch GitHub repos with 10-min server-side cache and optional PAT auth."""
+    username = _validate_github_username(username)
     cache_key = f"gh_repos:{username}"
     entry = _github_proxy_cache.get(cache_key)
     if entry and time.time() - entry["ts"] < GITHUB_PROXY_TTL:

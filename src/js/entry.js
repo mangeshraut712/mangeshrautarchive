@@ -34,6 +34,7 @@ import './modules/projects-showcase.js';
 import './modules/real-media-loader.js';
 import './modules/scroll-animations.js';
 import './modules/search.js';
+import './modules/share-widget.js';
 import './modules/skills-visualization.js';
 import './modules/travel-atlas.js';
 import './modules/vercel-analytics.js';

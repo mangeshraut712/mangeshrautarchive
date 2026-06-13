@@ -35,14 +35,25 @@ function parseThreshold(value, fallback) {
   return number > 1 ? number : number * 100;
 }
 
-const url = (() => {
-  const rawUrl = getArg('url', 'http://127.0.0.1:4000');
-  const parsed = new URL(rawUrl);
-  if (!parsed.searchParams.has('perf-audit')) {
+const rawUrl = getArg('url', 'http://127.0.0.1:4000');
+
+function isLoopbackUrl(targetUrl) {
+  const parsed = new URL(targetUrl);
+  return ['localhost', '127.0.0.1', '[::1]'].includes(parsed.hostname);
+}
+
+function withPerfAuditFlag(targetUrl, enabled) {
+  const parsed = new URL(targetUrl);
+  if (enabled) {
     parsed.searchParams.set('perf-audit', '1');
+  } else {
+    parsed.searchParams.delete('perf-audit');
   }
   return parsed.toString();
-})();
+}
+
+// perf-audit skips heavy modules for local gates; on live URLs it can null out Performance.
+const url = withPerfAuditFlag(rawUrl, isLoopbackUrl(rawUrl));
 const formFactor = getArg('form-factor', 'mobile');
 const outputDir = resolve(process.cwd(), getArg('output-dir', 'artifacts/lighthouse'));
 
@@ -111,11 +122,16 @@ writeFileSync(
   'utf8'
 );
 
+function categoryScore(report, key) {
+  const raw = report.categories?.[key]?.score;
+  return raw == null ? null : Math.round(raw * 100);
+}
+
 const scores = {
-  performance: Math.round((report.categories.performance.score ?? 0) * 100),
-  accessibility: Math.round((report.categories.accessibility.score ?? 0) * 100),
-  bestPractices: Math.round((report.categories['best-practices'].score ?? 0) * 100),
-  seo: Math.round((report.categories.seo.score ?? 0) * 100),
+  performance: categoryScore(report, 'performance'),
+  accessibility: categoryScore(report, 'accessibility'),
+  bestPractices: categoryScore(report, 'best-practices'),
+  seo: categoryScore(report, 'seo'),
 };
 
 console.log(
@@ -128,16 +144,24 @@ console.log(
 
 const failures = [];
 
-if (scores.performance < thresholds.performance) {
+if (scores.performance == null) {
+  failures.push('Performance score unavailable (audit trace failed)');
+} else if (scores.performance < thresholds.performance) {
   failures.push(`Performance ${scores.performance} < ${thresholds.performance}`);
 }
-if (scores.accessibility < thresholds.accessibility) {
+if (scores.accessibility == null) {
+  failures.push('Accessibility score unavailable (audit trace failed)');
+} else if (scores.accessibility < thresholds.accessibility) {
   failures.push(`Accessibility ${scores.accessibility} < ${thresholds.accessibility}`);
 }
-if (scores.bestPractices < thresholds.bestPractices) {
+if (scores.bestPractices == null) {
+  failures.push('Best Practices score unavailable (audit trace failed)');
+} else if (scores.bestPractices < thresholds.bestPractices) {
   failures.push(`Best Practices ${scores.bestPractices} < ${thresholds.bestPractices}`);
 }
-if (scores.seo < thresholds.seo) {
+if (scores.seo == null) {
+  failures.push('SEO score unavailable (audit trace failed)');
+} else if (scores.seo < thresholds.seo) {
   failures.push(`SEO ${scores.seo} < ${thresholds.seo}`);
 }
 
