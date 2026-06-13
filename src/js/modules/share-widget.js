@@ -16,7 +16,7 @@ const SHARE_TEXT =
 
 const SHARE_OPTIONS = [
   {
-    label: 'X',
+    label: 'X (Twitter)',
     icon: 'fa-brands fa-x-twitter',
     href: (url) =>
       `https://x.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(url)}`,
@@ -43,14 +43,6 @@ const createShareMarkup = () => `
         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
 
-      <header class="website-share-header">
-        <img class="website-share-logo" src="assets/images/profile-icon.webp" alt="Mangesh Raut" width="44" height="44" loading="lazy" decoding="async">
-        <div class="website-share-header-text">
-          <h2 id="website-share-title">Mangesh Raut Archive</h2>
-          <p id="website-share-description">${activeMirrorUrl}</p>
-        </div>
-      </header>
-
       <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
         ${SHARE_MIRRORS.map((mirror, idx) => `
           <button class="share-mirror-tab ${idx === 0 ? 'active' : ''}" type="button" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" data-mirror-idx="${idx}">
@@ -68,42 +60,30 @@ const createShareMarkup = () => `
         </div>
       </div>
 
-      <div class="website-share-link-row">
-        <label class="sr-only" for="website-share-url">Portfolio link</label>
-        <input id="website-share-url" class="website-share-url" type="text" value="${activeMirrorUrl}" readonly>
-        <button id="website-share-copy" class="website-share-copy" type="button">
+      <div class="website-share-actions-list">
+        <button id="website-share-copy" class="share-action-row" type="button">
+          <span>Copy Link</span>
           <i class="fa-regular fa-copy" aria-hidden="true"></i>
-          <span>Copy</span>
         </button>
-      </div>
+        
+        <button id="website-native-share" class="share-action-row" type="button">
+          <span>System Share...</span>
+          <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
+        </button>
 
-      <div class="website-share-actions" aria-label="Share options">
-        <button id="website-native-share" class="website-share-action-item" type="button">
-          <span class="website-share-icon-circle">
-            <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
-          </span>
-          <span class="website-share-action-label">Share</span>
-        </button>
-        
-        <a class="website-share-action-item" data-social="X" href="${SHARE_OPTIONS[0].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
-          <span class="website-share-icon-circle">
-            <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
-          </span>
-          <span class="website-share-action-label">X</span>
+        <a class="share-action-row" data-social="X" href="${SHARE_OPTIONS[0].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+          <span>Share on X (Twitter)</span>
+          <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
         </a>
-        
-        <a class="website-share-action-item" data-social="LinkedIn" href="${SHARE_OPTIONS[1].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
-          <span class="website-share-icon-circle">
-            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
-          </span>
-          <span class="website-share-action-label">LinkedIn</span>
+
+        <a class="share-action-row" data-social="LinkedIn" href="${SHARE_OPTIONS[1].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+          <span>Share on LinkedIn</span>
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
         </a>
-        
-        <a class="website-share-action-item" data-social="Email" href="${SHARE_OPTIONS[2].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
-          <span class="website-share-icon-circle">
-            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-          </span>
-          <span class="website-share-action-label">Email</span>
+
+        <a class="share-action-row" data-social="Email" href="${SHARE_OPTIONS[2].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+          <span>Send via Email</span>
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -122,17 +102,21 @@ function setDialogState(dialog, trigger, isOpen) {
   document.body.classList.toggle('share-dialog-open', isOpen);
 }
 
-async function copyShareUrl(status, urlInput) {
+async function copyShareUrl(status) {
   try {
     await navigator.clipboard.writeText(activeMirrorUrl);
     status.textContent = 'Portfolio link copied.';
     return true;
   } catch (_error) {
-    urlInput.select();
+    const tempInput = document.createElement('input');
+    tempInput.value = activeMirrorUrl;
+    document.body.appendChild(tempInput);
+    tempInput.select();
     const copied = document.execCommand?.('copy') || false;
+    document.body.removeChild(tempInput);
     status.textContent = copied
       ? 'Portfolio link copied.'
-      : 'Link selected. Press Command+C if your browser asks.';
+      : 'Failed to copy link automatically.';
     return copied;
   }
 }
@@ -147,7 +131,6 @@ function initShareWidget() {
   const copyButton = document.getElementById('website-share-copy');
   const nativeShareButton = document.getElementById('website-native-share');
   const status = document.getElementById('website-share-status');
-  const urlInput = document.getElementById('website-share-url');
 
   const closeDialog = () => {
     const trigger = document.getElementById('website-share-toggle');
@@ -210,13 +193,6 @@ function initShareWidget() {
       const idx = parseInt(tab.dataset.mirrorIdx, 10);
       const mirror = SHARE_MIRRORS[idx];
       activeMirrorUrl = mirror.url;
-      urlInput.value = mirror.url;
-
-      // Update URL display under title
-      const descEl = dialog.querySelector('#website-share-description');
-      if (descEl) {
-        descEl.textContent = mirror.url;
-      }
 
       // Update QR Code image source dynamically
       const qrImg = dialog.querySelector('.website-share-qr');
@@ -230,7 +206,7 @@ function initShareWidget() {
 
       // Update social links href values dynamically
       const updateSocialLink = (socialName, hrefGen) => {
-        const link = dialog.querySelector(`.website-share-action-item[data-social="${socialName}"]`);
+        const link = dialog.querySelector(`.share-action-row[data-social="${socialName}"]`);
         if (link) {
           link.href = hrefGen(mirror.url);
         }
@@ -243,11 +219,7 @@ function initShareWidget() {
   });
 
   copyButton.addEventListener('click', async () => {
-    const copied = await copyShareUrl(status, urlInput);
-    if (copied) {
-      urlInput.setSelectionRange(0, 0);
-      copyButton.focus({ preventScroll: true });
-    }
+    await copyShareUrl(status);
   });
 
   if (!navigator.share) {
