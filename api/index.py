@@ -26,7 +26,8 @@ from api.routes import (
     integrations,
 )
 
-# Load environment variables from the single ignored local env file.
+# Load environment variables (.env.local overrides .env).
+load_dotenv(".env.local")
 load_dotenv()
 
 OPENAPI_TAGS = [

@@ -96,6 +96,8 @@ class EndpointMetrics:
     total_requests: int = 0
     successful_requests: int = 0
     failed_requests: int = 0
+    client_error_requests: int = 0
+    server_error_requests: int = 0
     avg_response_time_ms: float = 0.0
     last_status_code: int = 200
     last_checked: Optional[str] = None
@@ -108,6 +110,8 @@ class EndpointMetrics:
             "total_requests": self.total_requests,
             "successful_requests": self.successful_requests,
             "failed_requests": self.failed_requests,
+            "client_error_requests": self.client_error_requests,
+            "server_error_requests": self.server_error_requests,
             "avg_response_time_ms": round(self.avg_response_time_ms, 2),
             "last_status_code": self.last_status_code,
             "last_checked": self.last_checked,
@@ -286,6 +290,10 @@ class SystemMonitor:
             metrics.successful_requests += 1
         else:
             metrics.failed_requests += 1
+            if status_code >= 500:
+                metrics.server_error_requests += 1
+            elif status_code >= 400:
+                metrics.client_error_requests += 1
             self.error_count += 1
             self.error_counts[endpoint] = self.error_counts.get(endpoint, 0) + 1
 

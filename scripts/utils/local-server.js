@@ -8,7 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../../');
 
-// Load environment variables from the single ignored local env file.
+// Load environment variables (.env.local overrides .env).
+dotenv.config({ path: join(projectRoot, '.env.local') });
 dotenv.config({ path: join(projectRoot, '.env') });
 
 const app = express();

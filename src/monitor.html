@@ -202,37 +202,6 @@
       </div>
     </nav>
 
-    <header class="monitor-header" id="overview">
-      <div class="header-content">
-        <div class="header-title">
-          <div class="monitor-hero-icon">
-            <i class="fas fa-heart-pulse" aria-hidden="true"></i>
-          </div>
-          <div>
-            <p class="monitor-eyebrow">Operations</p>
-            <h1>System Monitor</h1>
-            <p class="monitor-subtitle">
-              Real-time diagnostics for backend health, provider APIs, and deployed portfolio
-              surfaces.
-            </p>
-            <span id="overall-status" class="status-badge healthy">
-              <span class="status-dot"></span>
-              All Systems Operational
-            </span>
-          </div>
-        </div>
-        <div class="header-actions">
-          <p class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
-            Auto-refresh every 30s
-          </p>
-          <button class="btn btn-secondary" onclick="refreshData()">
-            <i class="fas fa-rotate"></i>
-            Refresh
-          </button>
-        </div>
-      </div>
-    </header>
-
     <main class="monitor-container" id="main-content">
       <div class="monitor-top-row">
         <section
@@ -240,26 +209,108 @@
           id="monitor-summary-section"
           aria-label="Monitor summary"
         >
-          <div class="monitor-summary-copy">
-            <p class="monitor-summary-eyebrow">Control Center</p>
-            <h2>Backend status, runtime config, and deployment coverage in one place.</h2>
-            <p id="monitor-summary-text">Loading operational summary…</p>
-            <div class="monitor-summary-chips">
-              <div class="summary-chip">
-                <span class="summary-chip-label">Uptime</span>
-                <strong id="summary-uptime">--</strong>
+          <div class="control-center-header">
+            <div class="control-center-title-lockup">
+              <div class="monitor-hero-icon control-center-icon">
+                <i class="fas fa-heart-pulse" aria-hidden="true"></i>
               </div>
-              <div class="summary-chip">
-                <span class="summary-chip-label">Last Refresh</span>
-                <strong id="summary-last-refresh">--</strong>
+              <div>
+                <p class="monitor-summary-eyebrow control-center-eyebrow">Operations Control Center</p>
+                <h1 class="control-center-heading">System Monitor</h1>
               </div>
-              <div class="summary-chip">
-                <span class="summary-chip-label">Open Issues</span>
-                <strong id="summary-open-issues">--</strong>
+            </div>
+
+            <div class="control-center-statusbar">
+              <span id="overall-status" class="status-badge healthy">
+                <span class="status-dot"></span>
+                All Systems Operational
+              </span>
+              <div class="control-center-actions">
+                <span class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
+                  Auto-refresh: 30s
+                </span>
+                <button class="btn btn-secondary control-center-refresh" type="button" onclick="refreshData()">
+                  <i class="fas fa-rotate" aria-hidden="true"></i>
+                  <span>Refresh</span>
+                </button>
               </div>
-              <div class="summary-chip">
-                <span class="summary-chip-label">Services</span>
-                <strong id="summary-service-count">--</strong>
+            </div>
+          </div>
+
+          <div class="control-center-grid">
+            <div class="control-center-info">
+              <div>
+                <h2 class="control-center-title">
+                  Real-time diagnostics for backend health, database connections, provider APIs, and deployed surfaces.
+                </h2>
+                <p id="monitor-summary-text">Loading operational summary…</p>
+              </div>
+
+              <div class="meta-stats-stack">
+                <div class="meta-stat-row">
+                  <span class="meta-stat-label">System Uptime</span>
+                  <strong id="summary-uptime">--</strong>
+                </div>
+                <div class="meta-stat-row">
+                  <span class="meta-stat-label">Open Issues</span>
+                  <strong id="summary-open-issues">--</strong>
+                </div>
+                <div class="meta-stat-row">
+                  <span class="meta-stat-label">Total Services</span>
+                  <strong id="summary-service-count">--</strong>
+                </div>
+                <div class="meta-stat-row">
+                  <span class="meta-stat-label">Last Updated</span>
+                  <strong id="summary-last-refresh">--</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-center-visuals">
+              <div>
+                <p class="visual-section-label">Response Codes</p>
+                <div id="status-distribution-chart"></div>
+              </div>
+
+              <div class="visual-uptime-history">
+                <p class="visual-section-label">Service Availability</p>
+                <div id="uptime-history-grid"></div>
+              </div>
+            </div>
+
+            <div class="control-center-telemetry">
+              <p class="visual-section-label">Live Telemetry</p>
+
+              <div class="overview-item">
+                <div class="overview-item-label">
+                  <i class="fas fa-server metric-icon-backend"></i>
+                  <span>Backend status</span>
+                </div>
+                <strong id="backend-status">Checking...</strong>
+              </div>
+
+              <div class="overview-item">
+                <div class="overview-item-label">
+                  <i class="fas fa-check-circle metric-icon-success"></i>
+                  <span>Success rate</span>
+                </div>
+                <strong id="success-rate">--%</strong>
+              </div>
+
+              <div class="overview-item">
+                <div class="overview-item-label">
+                  <i class="fas fa-bolt metric-icon-latency"></i>
+                  <span>Avg latency</span>
+                </div>
+                <strong id="avg-response">--ms</strong>
+              </div>
+
+              <div class="overview-item">
+                <div class="overview-item-label">
+                  <i class="fas fa-exclamation-triangle metric-icon-errors"></i>
+                  <span>Total errors</span>
+                </div>
+                <strong id="error-count">--</strong>
               </div>
             </div>
           </div>
@@ -277,52 +328,23 @@
         </section>
       </div>
 
-      <!-- Overview Cards -->
-      <div class="overview-grid">
-        <div class="overview-card">
-          <div class="overview-card-header">
-            <div class="overview-icon blue" id="backend-icon">
-              <i class="fas fa-server"></i>
-            </div>
-            <span class="overview-label">Backend Status</span>
+      <section class="section monitor-dashboard-section" id="backend-system-section">
+        <div class="section-header">
+          <h2 class="section-title">Backend System Map</h2>
+          <div class="section-actions">
+            <span class="status-badge unknown">
+              <span class="status-dot"></span>
+              API + Integrations
+            </span>
           </div>
-          <div class="overview-value" id="backend-status">Checking...</div>
-          <div class="overview-subtext" id="backend-detail">API endpoints</div>
         </div>
-
-        <div class="overview-card">
-          <div class="overview-card-header">
-            <div class="overview-icon green">
-              <i class="fas fa-check-circle"></i>
-            </div>
-            <span class="overview-label">Success Rate</span>
+        <div class="backend-system-grid" id="backend-system-dashboard">
+          <div class="empty-state compact">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Loading backend system map...</h3>
           </div>
-          <div class="overview-value" id="success-rate">--%</div>
-          <div class="overview-subtext">API requests successful</div>
         </div>
-
-        <div class="overview-card">
-          <div class="overview-card-header">
-            <div class="overview-icon yellow">
-              <i class="fas fa-bolt"></i>
-            </div>
-            <span class="overview-label">Avg Response</span>
-          </div>
-          <div class="overview-value" id="avg-response">--ms</div>
-          <div class="overview-subtext">Last 24 hours</div>
-        </div>
-
-        <div class="overview-card">
-          <div class="overview-card-header">
-            <div class="overview-icon red" id="errors-icon">
-              <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <span class="overview-label">Errors</span>
-          </div>
-          <div class="overview-value" id="error-count">--</div>
-          <div class="overview-subtext">Total failed requests</div>
-        </div>
-      </div>
+      </section>
 
       <!-- Real-Time Performance Section -->
       <section class="section" id="realtime-metrics-section">
@@ -336,7 +358,7 @@
         </div>
         <div class="resource-trends-grid">
           <!-- Latency Graph -->
-          <div class="doc-card" style="grid-column: span 2; position: relative">
+          <div class="doc-card latency-card">
             <p class="doc-card-kicker">API Latency History (Last 30 probes)</p>
             <div class="chart-container">
               <svg
@@ -407,6 +429,19 @@
                 ></div>
               </div>
             </div>
+
+          </div>
+        </div>
+
+        <div class="resource-trends-grid resource-trends-grid--compact">
+          <div class="doc-card endpoint-volume-card">
+            <div>
+              <p class="doc-card-kicker">Endpoint Request Volume</p>
+              <p class="doc-card-description compact-copy">
+                Top monitored API routes by recorded request count.
+              </p>
+            </div>
+            <div id="hourly-traffic-chart"></div>
           </div>
         </div>
       </section>
@@ -747,6 +782,10 @@
     <div class="toast-container" id="toast-container"></div>
 
     <script type="module" src="js/utils/theme.js?v=20260423a"></script>
+    <script type="module">
+      import * as MonitorMetrics from './js/utils/monitor-metrics.js?v=20260612a';
+      globalThis.MonitorMetrics = MonitorMetrics;
+    </script>
     <script>
       const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshrautarchive.vercel.app';
       const REMOTE_API_SECONDARY_ORIGIN = 'https://mangeshraut.pro';
@@ -761,6 +800,8 @@
       let lastRefreshIso = null;
       let currentActiveFilterTab = '';
       let cachedEventsList = [];
+      let lastMonitorSnapshot = null;
+      let monitorMetricsModule = globalThis.MonitorMetrics || null;
 
       function normalizeOrigin(rawValue, fallback = '') {
         if (!rawValue) return fallback;
@@ -1007,6 +1048,29 @@
           .replace(/'/g, '&#39;');
       }
 
+      async function ensureMonitorMetricsModule() {
+        if (monitorMetricsModule) return monitorMetricsModule;
+        monitorMetricsModule = await import('./js/utils/monitor-metrics.js?v=20260612a');
+        globalThis.MonitorMetrics = monitorMetricsModule;
+        return monitorMetricsModule;
+      }
+
+      function bindMonitorDocsInteractions() {
+        const container = document.getElementById('monitor-docs-grid');
+        if (!container || container.dataset.copyBound === 'true') return;
+        container.dataset.copyBound = 'true';
+        container.addEventListener('click', event => {
+          const button = event.target.closest('.doc-copy-btn');
+          if (!button) return;
+          const path = button.dataset.path || '';
+          if (!path) return;
+          navigator.clipboard
+            .writeText(path)
+            .then(() => showToast('Copied endpoint path!', 'success'))
+            .catch(() => showToast('Unable to copy path', 'error'));
+        });
+      }
+
       function formatLocalTime(isoString) {
         if (!isoString) return '--';
         const date = new Date(isoString);
@@ -1023,6 +1087,141 @@
 
       function formatNumber(value) {
         return Number.isFinite(Number(value)) ? Number(value).toLocaleString() : '0';
+      }
+
+      function normalizeHealthStatus(status) {
+        const value = String(status || 'unknown').toLowerCase();
+        if (['healthy', 'ok', 'online', 'connected', 'configured', 'operational'].includes(value)) {
+          return 'healthy';
+        }
+        if (['degraded', 'warning', 'partial', 'pending'].includes(value)) {
+          return 'degraded';
+        }
+        if (['unhealthy', 'critical', 'down', 'offline', 'failed', 'error'].includes(value)) {
+          return 'unhealthy';
+        }
+        return 'unknown';
+      }
+
+      function summarizeStatuses(items = []) {
+        return items.reduce(
+          (acc, item) => {
+            const status = normalizeHealthStatus(item?.status);
+            acc[status] += 1;
+            acc.total += 1;
+            return acc;
+          },
+          { healthy: 0, degraded: 0, unhealthy: 0, unknown: 0, total: 0 }
+        );
+      }
+
+      function percentOf(value, total) {
+        if (!total) return 0;
+        return Math.max(0, Math.min(100, (Number(value || 0) / total) * 100));
+      }
+
+      function getLatestTrendValue(trend = []) {
+        const latest = Array.isArray(trend) ? trend.slice(-1)[0] : null;
+        const value = Number(latest?.value);
+        return Number.isFinite(value) ? value : null;
+      }
+
+      function getAverageEndpointLatency(metricsData) {
+        const endpoints = metricsData?.endpoints || [];
+        if (!endpoints.length) return null;
+        const total = endpoints.reduce((sum, endpoint) => {
+          const value = Number(endpoint.avg_response_time_ms || 0);
+          return sum + (Number.isFinite(value) ? value : 0);
+        }, 0);
+        return total / endpoints.length;
+      }
+
+      function getOAuthProviderItems(oauthStatus) {
+        const providers = oauthStatus?.providers || {};
+        return Object.entries(providers).map(([key, provider]) => ({
+          key,
+          name: formatConfigLabel(key),
+          status: provider.connected
+            ? 'healthy'
+            : provider.configured
+              ? 'degraded'
+              : 'unhealthy',
+          meta: provider.connected ? 'Connected' : provider.configured ? 'Configured' : 'Missing setup',
+          purpose: provider.purpose || provider.nextStep || '',
+        }));
+      }
+
+      function renderStatusBar(summary) {
+        const total = summary.total || 1;
+        const parts = [
+          ['healthy', summary.healthy, 'Healthy'],
+          ['degraded', summary.degraded, 'Attention'],
+          ['unhealthy', summary.unhealthy, 'Down'],
+          ['unknown', summary.unknown, 'Unknown'],
+        ].filter(([, count]) => count > 0);
+
+        if (!parts.length) {
+          return '<div class="ops-meter-empty">No status data yet</div>';
+        }
+
+        return `
+          <div class="ops-status-meter" aria-label="Status distribution">
+            ${parts
+              .map(
+                ([status, count, label]) => `
+                  <span
+                    class="ops-status-meter__segment ${status}"
+                    style="width: ${percentOf(count, total)}%"
+                    title="${label}: ${count}"
+                  ></span>
+                `
+              )
+              .join('')}
+          </div>
+          <div class="ops-meter-legend">
+            ${parts
+              .map(
+                ([status, count, label]) => `
+                  <span><i class="${status}"></i>${label} ${count}</span>
+                `
+              )
+              .join('')}
+          </div>
+        `;
+      }
+
+      function renderMicroBarList(items, valueKey, labelKey, options = {}) {
+        const list = Array.isArray(items) ? items.filter(Boolean).slice(0, options.limit || 6) : [];
+        if (!list.length) return '<div class="ops-empty-line">No tracked values yet.</div>';
+
+        const maxValue = Math.max(
+          ...list.map(item => Number(item[valueKey] || 0)).filter(value => Number.isFinite(value)),
+          1
+        );
+
+        return `
+          <div class="ops-bar-list">
+            ${list
+              .map(item => {
+                const value = Number(item[valueKey] || 0);
+                const label = item[labelKey] || item.name || item.path || 'Unknown';
+                const width = percentOf(value, maxValue);
+                const meta = options.meta ? options.meta(item) : formatNumber(value);
+                return `
+                  <div class="ops-bar-row">
+                    <div class="ops-bar-row__header">
+                      <span title="${escapeHtml(label)}">${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(meta)}</strong>
+                    </div>
+                    <div class="ops-mini-track">
+                      <span class="ops-mini-fill ${options.tone || 'blue'}" style="width: ${width}%"></span>
+                    </div>
+                  </div>
+                `;
+              })
+              .join('')}
+          </div>
+        `;
       }
 
       function renderSummary(statusData, metricsData, healthData, servicesData, hostingData) {
@@ -1225,6 +1424,10 @@
         setButtonLoading('#btn-refresh-platform-health', true, 'Refreshing...');
         const data = await fetchPlatformHealth();
         renderPlatformHealthMatrix(data);
+        if (data) {
+          mergeMonitorSnapshot({ platformHealth: data });
+          refreshControlCenterFromSnapshot();
+        }
         showToast(
           data ? 'Platform health updated' : 'Platform health failed',
           data ? 'success' : 'error'
@@ -1248,10 +1451,10 @@
         const statusLegend = (data.status_legend || [])
           .map(
             item => `
-                <span class="legend-pill ${item.status}">
-                    <strong>${item.label}</strong>
-                    <span>${item.description}</span>
-                </span>
+                <div class="legend-row">
+                    <span class="legend-status-badge status-${item.status}">${item.label}</span>
+                    <span class="legend-status-desc">${item.description}</span>
+                </div>
             `
           )
           .join('');
@@ -1259,10 +1462,10 @@
         const eventLegend = (data.event_types || [])
           .map(
             item => `
-                <span class="legend-pill neutral">
-                    <strong>${item.type}</strong>
-                    <span>${item.description}</span>
-                </span>
+                <div class="legend-row">
+                    <span class="legend-status-badge status-neutral">${item.type}</span>
+                    <span class="legend-status-desc">${item.description}</span>
+                </div>
             `
           )
           .join('');
@@ -1283,6 +1486,9 @@
                                     <code>${escapeHtml(endpoint.path)}</code>
                                     <p>${escapeHtml(endpoint.summary || '')}</p>
                                 </div>
+                                <button type="button" class="doc-copy-btn" data-path="${escapeHtml(endpoint.path)}" title="Copy path">
+                                    <i class="far fa-copy"></i>
+                                </button>
                             </div>
                         `
                           )
@@ -1294,15 +1500,45 @@
           .join('');
 
         container.innerHTML = `
-                <article class="doc-card doc-card-links">
+                <article class="doc-card doc-card-links" style="grid-column: span 2;">
                     <p class="doc-card-kicker">Documentation Links</p>
-                    <p class="doc-card-description">${escapeHtml(data.description || '')}</p>
-                    <div class="doc-link-list">
-                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.openapi || '/api/docs'))}" target="_blank" rel="noopener">OpenAPI Explorer</a>
-                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.redoc || '/api/redoc'))}" target="_blank" rel="noopener">ReDoc Reference</a>
-                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.health_json || '/api/monitor/health'))}" target="_blank" rel="noopener">Health JSON</a>
-                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.status_json || '/api/monitor/status'))}" target="_blank" rel="noopener">Status JSON</a>
-                        <a class="doc-link" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.hosting_surfaces || '/api/monitor/hosting-surfaces'))}" target="_blank" rel="noopener">Deployment JSON</a>
+                    <p class="doc-card-description" style="margin-bottom: 20px;">${escapeHtml(data.description || '')}</p>
+                    <div class="doc-link-tile-grid">
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.openapi || '/api/docs'))}" target="_blank" rel="noopener">
+                            <div class="tile-icon"><i class="fas fa-file-code"></i></div>
+                            <div class="tile-content">
+                                <span class="tile-title">OpenAPI Explorer</span>
+                                <span class="tile-desc">Interactive Swagger UI explorer</span>
+                            </div>
+                        </a>
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.redoc || '/api/redoc'))}" target="_blank" rel="noopener">
+                            <div class="tile-icon"><i class="fas fa-project-diagram"></i></div>
+                            <div class="tile-content">
+                                <span class="tile-title">ReDoc Reference</span>
+                                <span class="tile-desc">Detailed clean API reference manual</span>
+                            </div>
+                        </a>
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.health_json || '/api/monitor/health'))}" target="_blank" rel="noopener">
+                            <div class="tile-icon"><i class="fas fa-heartbeat"></i></div>
+                            <div class="tile-content">
+                                <span class="tile-title">Health JSON</span>
+                                <span class="tile-desc">Raw system-wide service statuses</span>
+                            </div>
+                        </a>
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.status_json || '/api/monitor/status'))}" target="_blank" rel="noopener">
+                            <div class="tile-icon"><i class="fas fa-info-circle"></i></div>
+                            <div class="tile-content">
+                                <span class="tile-title">Status JSON</span>
+                                <span class="tile-desc">Detailed latency and code metrics</span>
+                            </div>
+                        </a>
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.hosting_surfaces || '/api/monitor/hosting-surfaces'))}" target="_blank" rel="noopener">
+                            <div class="tile-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <div class="tile-content">
+                                <span class="tile-title">Deployment JSON</span>
+                                <span class="tile-desc">Raw surface metadata config</span>
+                            </div>
+                        </a>
                     </div>
                 </article>
                 ${groups}
@@ -1311,11 +1547,11 @@
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 12px;">
                         <div>
                             <p style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">System Statuses</p>
-                            <div class="legend-grid">${statusLegend}</div>
+                            <div class="glossary-list">${statusLegend}</div>
                         </div>
                         <div>
                             <p style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Audit Log Event Levels</p>
-                            <div class="legend-grid">${eventLegend}</div>
+                            <div class="glossary-list">${eventLegend}</div>
                         </div>
                     </div>
                 </article>
@@ -1383,8 +1619,8 @@
                             <i class="fas fa-${check.status === 'healthy' ? 'check' : check.status === 'degraded' ? 'exclamation' : 'times'}"></i>
                         </div>
                         <div class="health-info">
-                            <h4>${check.name}</h4>
-                            <p>${check.message}</p>
+                            <h4>${escapeHtml(check.name)}</h4>
+                            <p>${escapeHtml(check.message)}</p>
                         </div>
                     </div>
                     <div class="health-metrics">
@@ -1506,13 +1742,6 @@
             const history = window.endpointHistory[histKey];
             history.push(avgResponseMs);
             if (history.length > 12) history.shift();
-            
-            if (history.length === 1) {
-              for (let i = 0; i < 9; i++) {
-                const variance = (Math.random() - 0.5) * 0.3 * avgResponseMs;
-                history.unshift(Math.max(1, avgResponseMs + variance));
-              }
-            }
 
             const sparklineSvg = renderMicroSparkline(history);
 
@@ -1678,6 +1907,10 @@
         setButtonLoading('#btn-refresh-integrations', true, 'Refreshing...');
         const data = await fetchIntegrationsStatus();
         renderIntegrationsPanel(data);
+        if (data) {
+          mergeMonitorSnapshot({ oauthStatus: data });
+          refreshControlCenterFromSnapshot();
+        }
         showToast(
           data ? 'OAuth status updated' : 'OAuth status failed',
           data ? 'success' : 'error'
@@ -1757,58 +1990,44 @@
       }
 
       function renderOverview(data) {
-        // Backend status
-        const backendIcon = document.getElementById('backend-icon');
         const backendStatus = document.getElementById('backend-status');
-        const backendDetail = document.getElementById('backend-detail');
         const successRateEl = document.getElementById('success-rate');
         const errorCountEl = document.getElementById('error-count');
         const avgResponseEl = document.getElementById('avg-response');
-        const errorIcon = document.getElementById('errors-icon');
 
         if (!data || !data.endpoints || data.endpoints.length === 0) {
-          backendIcon.className = 'overview-icon gray';
-          backendStatus.textContent = monitorApiAvailable ? 'NO DATA' : 'OFFLINE';
-          backendStatus.style.color = 'var(--text-secondary)';
-          backendDetail.textContent = monitorApiAvailable
-            ? 'Endpoints not yet tracked'
-            : 'Monitor API unreachable';
-          successRateEl.textContent = '--%';
-          avgResponseEl.textContent = '--ms';
-          errorCountEl.textContent = '--';
-          errorIcon.className = 'overview-icon gray';
-          errorIcon.innerHTML = '<i class="fas fa-minus-circle"></i>';
+          if (backendStatus) {
+            backendStatus.textContent = monitorApiAvailable ? 'NO DATA' : 'OFFLINE';
+            backendStatus.style.color = 'var(--text-secondary)';
+          }
+          if (successRateEl) successRateEl.textContent = '--%';
+          if (avgResponseEl) avgResponseEl.textContent = '--ms';
+          if (errorCountEl) errorCountEl.textContent = '--';
+          renderDonutChart(0, 0, 0);
+          renderTrafficBarChart([]);
           return;
         }
 
-        if (data.endpoints && data.endpoints.length > 0) {
-          const errorRate = data.error_rate || 0;
+        const totalRequests = data.total_requests || 0;
+        const errorCount = data.error_count || 0;
+        const errorRate = data.error_rate || 0;
+
+        if (backendStatus) {
           if (errorRate === 0) {
-            backendIcon.className = 'overview-icon green';
             backendStatus.textContent = 'ONLINE';
             backendStatus.style.color = 'var(--accent-green)';
-            backendDetail.textContent = `${data.endpoints.length} endpoints active`;
           } else if (errorRate < 5) {
-            backendIcon.className = 'overview-icon yellow';
             backendStatus.textContent = 'DEGRADED';
             backendStatus.style.color = 'var(--accent-yellow)';
-            backendDetail.textContent = `${errorRate.toFixed(1)}% error rate`;
           } else {
-            backendIcon.className = 'overview-icon red';
             backendStatus.textContent = 'ISSUES';
             backendStatus.style.color = 'var(--accent-red)';
-            backendDetail.textContent = `${errorRate.toFixed(1)}% error rate`;
           }
-        } else {
-          backendIcon.className = 'overview-icon yellow';
-          backendStatus.textContent = 'NO DATA';
-          backendDetail.textContent = 'Endpoints not yet tracked';
         }
 
-        successRateEl.textContent = (100 - (data.error_rate || 0)).toFixed(1) + '%';
-        errorCountEl.textContent = (data.error_count || 0).toLocaleString();
+        if (successRateEl) successRateEl.textContent = (100 - errorRate).toFixed(1) + '%';
+        if (errorCountEl) errorCountEl.textContent = errorCount.toLocaleString();
 
-        // Calculate avg response from endpoints
         const avgResponse =
           data.endpoints && data.endpoints.length > 0
             ? data.endpoints.reduce((sum, endpoint) => {
@@ -1816,24 +2035,434 @@
                   endpoint.avg_response_time_ms ?? endpoint.avg_response_ms ?? 0
                 );
                 return sum + responseMs;
-              }, 0) / data.endpoints.length
+          }, 0) / data.endpoints.length
             : 0;
-        avgResponseEl.textContent = avgResponse.toFixed(0) + 'ms';
+        if (avgResponseEl) avgResponseEl.textContent = avgResponse.toFixed(0) + 'ms';
 
-        // Update error icon color
-        if (data.error_count === 0) {
-          errorIcon.className = 'overview-icon green';
-          errorIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-        } else if (data.error_rate < 5) {
-          errorIcon.className = 'overview-icon yellow';
-          errorIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-        } else {
-          errorIcon.className = 'overview-icon red';
-          errorIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-        }
+        const successCount = Math.max(0, totalRequests - errorCount);
+        const metricsHelpers = monitorMetricsModule || globalThis.MonitorMetrics;
+        const { clientErrCount, serverErrCount } = metricsHelpers
+          ? metricsHelpers.buildDonutSegments(data)
+          : { clientErrCount: 0, serverErrCount: errorCount };
+
+        renderDonutChart(successCount, clientErrCount, serverErrCount);
+        renderTrafficBarChart(data.endpoints || []);
       }
 
-      // Action Handlers
+      function renderDonutChart(success, clientErr, serverErr) {
+        const container = document.getElementById('status-distribution-chart');
+        if (!container) return;
+
+        const total = success + clientErr + serverErr || 1;
+        const pctSuccess = (success / total) * 100;
+        const pctClient = (clientErr / total) * 100;
+        const pctServer = (serverErr / total) * 100;
+
+        const r = 35;
+        const circ = 2 * Math.PI * r; // ~219.9
+
+        const successDash = (pctSuccess / 100) * circ;
+        const clientDash = (pctClient / 100) * circ;
+        const serverDash = (pctServer / 100) * circ;
+
+        container.innerHTML = `
+          <div class="donut-chart">
+            <div class="donut-chart__visual">
+              <svg viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(120,120,120,0.08)" stroke-width="12"></circle>
+
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--accent-green)" stroke-width="12"
+                        stroke-dasharray="${successDash} ${circ - successDash}" stroke-dashoffset="0"></circle>
+
+                ${
+                  clientDash > 0
+                    ? `
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--accent-yellow)" stroke-width="12"
+                        stroke-dasharray="${clientDash} ${circ - clientDash}" stroke-dashoffset="-${successDash}"></circle>
+                `
+                    : ''
+                }
+
+                ${
+                  serverDash > 0
+                    ? `
+                <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--accent-red)" stroke-width="12"
+                        stroke-dasharray="${serverDash} ${circ - serverDash}" stroke-dashoffset="-${successDash + clientDash}"></circle>
+                `
+                    : ''
+                }
+              </svg>
+              <div class="donut-chart__center">
+                <span>${Math.round(pctSuccess)}%</span>
+                <small>OK</small>
+              </div>
+            </div>
+            <div class="donut-chart__legend">
+              <div>
+                <span><i class="legend-dot healthy"></i>Success (2xx)</span>
+                <strong>${formatNumber(success)} (${pctSuccess.toFixed(0)}%)</strong>
+              </div>
+              <div>
+                <span><i class="legend-dot degraded"></i>Client Err (4xx)</span>
+                <strong>${formatNumber(clientErr)} (${pctClient.toFixed(0)}%)</strong>
+              </div>
+              <div>
+                <span><i class="legend-dot unhealthy"></i>Server Err (5xx)</span>
+                <strong>${formatNumber(serverErr)} (${pctServer.toFixed(0)}%)</strong>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderTrafficBarChart(endpoints) {
+        const container = document.getElementById('hourly-traffic-chart');
+        if (!container) return;
+
+        const rows = Array.isArray(endpoints)
+          ? endpoints
+              .map(endpoint => ({
+                label: endpoint.path || endpoint.name || 'Unknown route',
+                total: Number(endpoint.total_requests || 0),
+                failed: Number(endpoint.failed_requests || 0),
+                latency: Number(endpoint.avg_response_time_ms || endpoint.avg_response_ms || 0),
+              }))
+              .sort((a, b) => b.total - a.total)
+              .slice(0, 8)
+          : [];
+
+        if (!rows.length) {
+          container.innerHTML = '<div class="ops-empty-line">No endpoint volume recorded yet.</div>';
+          return;
+        }
+
+        const maxCount = Math.max(...rows.map(row => row.total), 1);
+
+        container.innerHTML = `
+          <div class="endpoint-volume-chart">
+            ${rows
+              .map(row => {
+                const heightPct = Math.max(8, percentOf(row.total, maxCount));
+                return `
+                  <div class="endpoint-volume-bar" title="${escapeHtml(row.label)} · ${formatNumber(row.total)} requests">
+                    <strong>${formatNumber(row.total)}</strong>
+                    <span class="endpoint-volume-bar__track">
+                      <i style="height: ${heightPct}%"></i>
+                    </span>
+                    <small>${escapeHtml(row.label.replace('/api/', '').slice(0, 16))}</small>
+                  </div>
+                `;
+              })
+              .join('')}
+          </div>
+        `;
+      }
+
+      function renderAvailabilityMatrix(healthData, servicesData, hostingData, oauthStatus) {
+        const container = document.getElementById('uptime-history-grid');
+        if (!container) return;
+
+        if (!monitorApiAvailable && !healthData && !servicesData && !hostingData) {
+          container.innerHTML =
+            '<div class="ops-empty-line">Monitor API unavailable · service availability unknown</div>';
+          return;
+        }
+
+        const blocks = [
+          ...(healthData?.checks || []).map(item => ({
+            label: item.name || 'Health check',
+            status: item.status,
+          })),
+          ...(servicesData?.services || []).map(item => ({
+            label: item.name || 'Provider API',
+            status: item.status,
+          })),
+          ...(hostingData?.surfaces || []).map(item => ({
+            label: item.name || 'Deployment surface',
+            status: item.status,
+          })),
+          ...getOAuthProviderItems(oauthStatus).map(item => ({
+            label: item.name,
+            status: item.status,
+          })),
+        ];
+
+        if (!blocks.length) {
+          container.innerHTML = '<div class="ops-empty-line">Waiting for health checks.</div>';
+          return;
+        }
+
+        const summary = summarizeStatuses(blocks);
+        const healthyPercent = percentOf(summary.healthy, summary.total);
+
+        container.innerHTML = `
+          <div class="availability-matrix">
+            <div class="availability-blocks">
+              ${blocks
+                .map(block => {
+                  const status = normalizeHealthStatus(block.status);
+                  return `<span class="${status}" title="${escapeHtml(block.label)} · ${status}"></span>`;
+                })
+                .join('')}
+            </div>
+            <div class="availability-summary">
+              <span>${summary.total} monitored surfaces</span>
+              <strong>${healthyPercent.toFixed(0)}% healthy now</strong>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderBackendSystemDashboard({
+        health,
+        metrics,
+        integrations,
+        oauthStatus,
+        platformHealth,
+        status,
+        hosting,
+        realTime,
+        secData,
+        aiData,
+      }) {
+        const container = document.getElementById('backend-system-dashboard');
+        if (!container) return;
+
+        if (!monitorApiAvailable && !status && !metrics) {
+          renderAvailabilityMatrix(null, null, null, null);
+          container.innerHTML = `
+            <div class="empty-state compact">
+              <i class="fas fa-triangle-exclamation"></i>
+              <h3>Monitor API unavailable</h3>
+              <p>${escapeHtml(monitorApiIssue || 'The backend monitor routes are not responding.')}</p>
+            </div>
+          `;
+          return;
+        }
+
+        const endpoints = metrics?.endpoints || [];
+        const healthItems = health?.checks || [];
+        const providerItems = integrations?.services || [];
+        const hostingItems = hosting?.surfaces || [];
+        const oauthItems = getOAuthProviderItems(oauthStatus);
+        const runtime = status?.runtime || hosting?.runtime || {};
+        const envPresence = runtime.env_presence || {};
+        const envKeys = Object.keys(envPresence);
+        const configuredEnvCount = envKeys.filter(key => envPresence[key]).length;
+        const endpointSummary = summarizeStatuses(
+          endpoints.map(endpoint => ({
+            status:
+              Number(endpoint.error_rate || 0) > 5
+                ? 'unhealthy'
+                : Number(endpoint.error_rate || 0) > 0
+                  ? 'degraded'
+                  : 'healthy',
+          }))
+        );
+        const providerSummary = summarizeStatuses(providerItems);
+        const deploymentSummary = summarizeStatuses(hostingItems);
+        const oauthSummary = summarizeStatuses(oauthItems);
+        const avgLatency = getAverageEndpointLatency(metrics);
+        const latestCpu = getLatestTrendValue(realTime?.cpu_trend);
+        const latestMemory = getLatestTrendValue(realTime?.memory_trend);
+        const securityEvents = secData?.security_events?.length || 0;
+        const suspiciousClients =
+          (secData?.suspicious_clients?.length || 0) + (secData?.suspicious_ips?.length || 0);
+        const modelCount = aiData?.model_usage ? Object.keys(aiData.model_usage).length : 0;
+        const aiRequests = Number(aiData?.openrouter_requests || 0);
+        const tokenUsage = aiData?.token_usage || {};
+        const tokenTotal = Number(tokenUsage.input || 0) + Number(tokenUsage.output || 0);
+        const platformItems = platformHealth?.checks || platformHealth?.services || [];
+
+        renderAvailabilityMatrix(health, integrations, hosting, oauthStatus);
+
+        container.innerHTML = `
+          <article class="ops-card ops-card--hero">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Backend API</p>
+                <h3>${formatNumber(endpoints.length)} monitored routes</h3>
+              </div>
+              <span class="ops-pill ${metrics?.error_rate > 5 ? 'unhealthy' : metrics?.error_rate > 0 ? 'degraded' : 'healthy'}">
+                ${(100 - Number(metrics?.error_rate || 0)).toFixed(1)}% success
+              </span>
+            </div>
+            ${renderStatusBar(endpointSummary)}
+            ${renderMicroBarList(
+              [...endpoints].sort((a, b) => Number(b.avg_response_time_ms || 0) - Number(a.avg_response_time_ms || 0)),
+              'avg_response_time_ms',
+              'path',
+              {
+                limit: 5,
+                tone: 'blue',
+                meta: item => `${Number(item.avg_response_time_ms || 0).toFixed(0)}ms`,
+              }
+            )}
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Provider APIs</p>
+                <h3>${formatNumber(providerSummary.total)} live dependencies</h3>
+              </div>
+              <span class="ops-pill ${providerSummary.unhealthy ? 'unhealthy' : providerSummary.degraded ? 'degraded' : 'healthy'}">
+                ${providerSummary.healthy}/${providerSummary.total || 0} healthy
+              </span>
+            </div>
+            ${renderStatusBar(providerSummary)}
+            <div class="ops-chip-grid">
+              ${providerItems
+                .slice(0, 8)
+                .map(item => `<span class="ops-chip ${normalizeHealthStatus(item.status)}">${escapeHtml(item.name || 'Provider')}</span>`)
+                .join('')}
+            </div>
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Private Integrations</p>
+                <h3>OAuth readiness</h3>
+              </div>
+              <span class="ops-pill ${oauthSummary.unhealthy ? 'unhealthy' : oauthSummary.degraded ? 'degraded' : 'healthy'}">
+                ${oauthSummary.healthy}/${oauthSummary.total || 0} connected
+              </span>
+            </div>
+            <div class="ops-list">
+              ${oauthItems
+                .map(
+                  item => `
+                    <div class="ops-list-row">
+                      <span><i class="${normalizeHealthStatus(item.status)}"></i>${escapeHtml(item.name)}</span>
+                      <strong>${escapeHtml(item.meta)}</strong>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Deployment Surfaces</p>
+                <h3>Vercel + GitHub Pages</h3>
+              </div>
+              <span class="ops-pill ${deploymentSummary.unhealthy ? 'unhealthy' : deploymentSummary.degraded ? 'degraded' : 'healthy'}">
+                ${deploymentSummary.healthy}/${deploymentSummary.total || 0} online
+              </span>
+            </div>
+            ${renderStatusBar(deploymentSummary)}
+            <div class="ops-list compact">
+              ${hostingItems
+                .map(
+                  item => `
+                    <div class="ops-list-row">
+                      <span><i class="${normalizeHealthStatus(item.status)}"></i>${escapeHtml(item.name || 'Surface')}</span>
+                      <strong>${escapeHtml(item.metric_value || item.metric_label || item.status || '--')}</strong>
+                    </div>
+                  `
+                )
+                .join('')}
+            </div>
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Runtime Config</p>
+                <h3>${escapeHtml(runtime.environment || status?.environment || 'local')}</h3>
+              </div>
+              <span class="ops-pill ${configuredEnvCount === envKeys.length ? 'healthy' : 'degraded'}">
+                ${configuredEnvCount}/${envKeys.length || 0} env
+              </span>
+            </div>
+            <div class="ops-stat-grid">
+              <div><span>Platform</span><strong>${escapeHtml(runtime.platform || 'local')}</strong></div>
+              <div><span>Region</span><strong>${escapeHtml(runtime.region || 'unknown')}</strong></div>
+              <div><span>Version</span><strong>${escapeHtml(runtime.version || status?.version || 'unknown')}</strong></div>
+              <div><span>Origins</span><strong>${formatNumber(Object.keys(runtime.public_origins || {}).length)}</strong></div>
+            </div>
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Resource Load</p>
+                <h3>Container telemetry</h3>
+              </div>
+              <span class="ops-pill ${latestMemory && latestMemory > 85 ? 'degraded' : 'healthy'}">
+                ${realTime ? 'Live' : 'Waiting'}
+              </span>
+            </div>
+            <div class="ops-stat-grid">
+              <div><span>CPU</span><strong>${latestCpu == null ? '--' : `${latestCpu.toFixed(1)}%`}</strong></div>
+              <div><span>Memory</span><strong>${latestMemory == null ? '--' : `${latestMemory.toFixed(1)}%`}</strong></div>
+              <div><span>RPS</span><strong>${Number(realTime?.requests_per_second || 0).toFixed(2)}</strong></div>
+              <div><span>Avg API</span><strong>${avgLatency == null ? '--' : `${avgLatency.toFixed(0)}ms`}</strong></div>
+            </div>
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">Security Gate</p>
+                <h3>Access controls</h3>
+              </div>
+              <span class="ops-pill ${securityEvents || suspiciousClients ? 'degraded' : 'healthy'}">
+                ${securityEvents || suspiciousClients ? 'Review' : 'Clear'}
+              </span>
+            </div>
+            <div class="ops-stat-grid">
+              <div><span>Events</span><strong>${formatNumber(securityEvents)}</strong></div>
+              <div><span>Suspicious</span><strong>${formatNumber(suspiciousClients)}</strong></div>
+              <div><span>Rate limits</span><strong>${formatNumber(Object.keys(secData?.rate_limits || {}).length)}</strong></div>
+              <div><span>Platform checks</span><strong>${formatNumber(platformItems.length)}</strong></div>
+            </div>
+          </article>
+
+          <article class="ops-card">
+            <div class="ops-card__header">
+              <div>
+                <p class="ops-card__kicker">AI + Usage</p>
+                <h3>OpenRouter telemetry</h3>
+              </div>
+              <span class="ops-pill ${modelCount ? 'healthy' : 'unknown'}">${modelCount || 0} models</span>
+            </div>
+            <div class="ops-stat-grid">
+              <div><span>Requests</span><strong>${formatNumber(aiRequests)}</strong></div>
+              <div><span>Tokens</span><strong>${formatNumber(tokenTotal)}</strong></div>
+              <div><span>Errors</span><strong>${formatNumber(aiData?.openrouter_errors || 0)}</strong></div>
+              <div><span>Queue</span><strong>${formatNumber(aiData?.queue_depth || 0)}</strong></div>
+            </div>
+          </article>
+        `;
+      }
+
+      function mergeMonitorSnapshot(patch) {
+        if (!patch || typeof patch !== 'object') return;
+        lastMonitorSnapshot = {
+          ...(lastMonitorSnapshot || {}),
+          ...patch,
+        };
+      }
+
+      function refreshControlCenterFromSnapshot() {
+        const snapshot = lastMonitorSnapshot;
+        if (!snapshot) return;
+
+        renderOverallStatus(snapshot.health, snapshot.integrations, snapshot.hosting);
+        renderSummary(
+          snapshot.status,
+          snapshot.metrics,
+          snapshot.health,
+          snapshot.integrations,
+          snapshot.hosting
+        );
+        renderBackendSystemDashboard(snapshot);
+      }
+
       function setButtonLoading(btnSelector, isLoading, loadingText = '') {
         const btn = document.querySelector(btnSelector);
         if (!btn) return;
@@ -1859,6 +2488,10 @@
         showToast('Checking provider APIs...', 'info');
         const integrations = await fetchExternalServices();
         renderExternalServices(integrations);
+        if (integrations) {
+          mergeMonitorSnapshot({ integrations });
+          refreshControlCenterFromSnapshot();
+        }
         showToast('Provider APIs updated', integrations ? 'success' : 'error');
         setButtonLoading('#btn-refresh-providers', false);
       }
@@ -1869,6 +2502,10 @@
         const hosting = await fetchHostingSurfaces();
         renderRuntimeSnapshot(hosting);
         renderDeploymentSurfaces(hosting);
+        if (hosting) {
+          mergeMonitorSnapshot({ hosting });
+          refreshControlCenterFromSnapshot();
+        }
         showToast('Deployment surfaces updated', hosting ? 'success' : 'error');
         setButtonLoading('#btn-refresh-surfaces', false);
       }
@@ -1881,7 +2518,7 @@
         const silent = options.silent === true;
         if (!silent) {
           showToast('Refreshing data...', 'info');
-          setButtonLoading('.header-actions button:first-child', true, 'Refreshing...');
+          setButtonLoading('.control-center-actions button:first-child', true, 'Refreshing...');
         }
         await ensureApiOrigin({ force: true });
 
@@ -1913,6 +2550,18 @@
 
         await fetchEvents();
         lastRefreshIso = new Date().toISOString();
+        lastMonitorSnapshot = {
+          health,
+          metrics,
+          integrations,
+          oauthStatus,
+          platformHealth,
+          status,
+          hosting,
+          realTime,
+          secData,
+          aiData,
+        };
 
         renderHealthChecks(health);
         renderMetrics(metrics);
@@ -1925,6 +2574,18 @@
         renderDeploymentSurfaces(hosting);
         renderOverallStatus(health, integrations, hosting);
         renderSummary(status, metrics, health, integrations, hosting);
+        renderBackendSystemDashboard({
+          health,
+          metrics,
+          integrations,
+          oauthStatus,
+          platformHealth,
+          status,
+          hosting,
+          realTime,
+          secData,
+          aiData,
+        });
         renderMonitorDocs(docs);
         renderAIMetrics(aiData);
         applyClientSideLogFiltering();
@@ -1950,7 +2611,7 @@
             monitorApiAvailable ? 'Data refreshed' : 'Monitor API unavailable',
             monitorApiAvailable ? 'success' : 'error'
           );
-          setButtonLoading('.header-actions button:first-child', false);
+          setButtonLoading('.control-center-actions button:first-child', false);
         }
       }
 
@@ -1960,6 +2621,8 @@
         const health = await fetchHealth();
         if (health) {
           renderHealthChecks(health);
+          mergeMonitorSnapshot({ health });
+          refreshControlCenterFromSnapshot();
           showToast('Health checks complete', 'success');
         } else {
           showToast('Health checks failed', 'error');
@@ -2289,6 +2952,10 @@
         showToast('Running security audit...', 'info');
         const data = await fetchSecurity();
         renderSecurityAudit(data);
+        if (data) {
+          mergeMonitorSnapshot({ secData: data });
+          refreshControlCenterFromSnapshot();
+        }
         showToast(
           data ? 'Security audit complete' : 'Security audit failed',
           data ? 'success' : 'error'
@@ -2625,6 +3292,10 @@
         showToast('Fetching AI metrics...', 'info');
         const data = await fetchAIMetrics();
         renderAIMetrics(data);
+        if (data) {
+          mergeMonitorSnapshot({ aiData: data });
+          refreshControlCenterFromSnapshot();
+        }
         showToast(data ? 'AI metrics updated' : 'AI metrics failed', data ? 'success' : 'error');
         setButtonLoading('#btn-refresh-ai', false);
       }
@@ -2646,6 +3317,8 @@
       // Initialize
       document.addEventListener('DOMContentLoaded', async () => {
         monitorConfig = await loadPublicConfig();
+        await ensureMonitorMetricsModule();
+        bindMonitorDocsInteractions();
         refreshData({ silent: true });
 
         // Auto-refresh every 30 seconds

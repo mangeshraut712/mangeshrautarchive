@@ -142,30 +142,47 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('h1')).toHaveText(/System Monitor/i);
     await expect(page.locator('#runtime-snapshot-card')).toBeVisible();
 
-    // Wait for monitor to load - simplified check
     const statusEl = page.locator('#backend-status');
-    await statusEl.waitFor({ state: 'visible', timeout: 5000 });
-    await expect(statusEl).toBeVisible();
+    await statusEl.waitFor({ state: 'visible', timeout: 10000 });
+    await expect(statusEl).not.toHaveText(/Checking/i, { timeout: 15000 });
+
+    await expect(page.locator('#health-checks .health-item').first()).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.locator('#status-distribution-chart .donut-chart')).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.locator('#platform-health-grid .health-item').first()).toBeVisible({
+      timeout: 15000,
+    });
 
     const beforeTheme = await page.evaluate(() =>
       document.documentElement.getAttribute('data-theme')
     );
 
-    await page.locator('.monitor-header .header-actions .btn').first().click();
+    await page.locator('.control-center-actions button').first().click();
     await page.locator('#event-filter').selectOption('warning');
 
-    // Check that monitor buttons are functional
     const refreshButton = page.locator('button', { hasText: 'Refresh Surfaces' });
     await expect(refreshButton).toBeVisible();
 
-    // Wait for response from API during refresh
     const responsePromise = page
       .waitForResponse(response => response.url().includes('/api/'), { timeout: 10000 })
       .catch(() => null);
     await refreshButton.click();
     await responsePromise;
 
-    // Verify theme toggle works
+    const healthChecksPromise = page
+      .waitForResponse(response => response.url().includes('/api/monitor/health'), {
+        timeout: 10000,
+      })
+      .catch(() => null);
+    await page.locator('#btn-run-health-checks').click();
+    await healthChecksPromise;
+    await expect(page.locator('#uptime-history-grid .availability-matrix')).toBeVisible({
+      timeout: 10000,
+    });
+
     await page.locator('#theme-toggle').click();
     await expect(page.locator('html')).not.toHaveAttribute('data-theme', beforeTheme || '');
 

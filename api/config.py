@@ -9,7 +9,8 @@ from fastapi import HTTPException, Request
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables (.env.local overrides .env).
+load_dotenv(".env.local")
 load_dotenv()
 
 # API Keys and Settings
