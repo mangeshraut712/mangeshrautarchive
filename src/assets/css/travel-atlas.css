@@ -83,10 +83,8 @@ html.dark {
   min-height: 52px;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
-  border: 1px solid var(--separator);
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-backdrop);
-  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--theme-card-border, var(--separator));
+  background: #ffffff;
   box-shadow: var(--shadow-md);
 }
 
@@ -253,15 +251,9 @@ html.dark {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: rgb(255 255 255 / calc(58% + var(--lg-tint, 0.55) * 34%));
-  backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px))
-    saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
-  -webkit-backdrop-filter: blur(calc(20px + (1 - var(--lg-tint, 0.55)) * 24px))
-    saturate(calc(155% + (1 - var(--lg-tint, 0.55)) * 45%));
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint, 0.55) * 28%));
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 48%),
-    0 22px 54px rgb(15 23 42 / 8%);
+  background: #ffffff;
+  border: 1px solid var(--theme-card-border, var(--separator));
+  box-shadow: var(--shadow-md);
   transition:
     transform var(--duration-normal) var(--ease-apple),
     height var(--duration-normal) var(--ease-apple),
@@ -270,11 +262,9 @@ html.dark {
 }
 
 html.dark .travel-sidebar {
-  background: rgb(0 0 0 / calc(66% + var(--lg-tint, 0.55) * 26%));
-  border-color: rgb(255 255 255 / calc(10% + var(--lg-tint, 0.55) * 8%));
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 8%),
-    0 24px 60px rgb(0 0 0 / 42%);
+  background: #000000;
+  border-color: var(--theme-card-border, rgba(255, 255, 255, 0.12));
+  box-shadow: var(--shadow-md);
 }
 
 .travel-sidebar__handle {
@@ -1047,7 +1037,7 @@ html.dark .travel-stop__media-placeholder {
 /* ─── Compact map status ─── */
 .travel-map-status {
   position: absolute;
-  right: max(20px, env(safe-area-inset-right));
+  left: max(20px, env(safe-area-inset-left));
   bottom: max(20px, env(safe-area-inset-bottom));
   z-index: 12;
   display: inline-flex;
@@ -1264,22 +1254,73 @@ html.dark .travel-map-status span {
 }
 
 /* ─── MapLibre overrides for theme consistency ─── */
+.travel-map-layer .maplibregl-ctrl-bottom-right {
+  z-index: 20;
+  margin-right: max(12px, env(safe-area-inset-right)) !important;
+  margin-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+}
+
+@media (max-width: 768px) {
+  .travel-map-layer .maplibregl-ctrl-bottom-right {
+    margin-bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
 .maplibregl-ctrl-attrib {
   font-size: 10px !important;
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(8px) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
+
+html.dark .maplibregl-ctrl-attrib {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f5f5f7 !important;
+}
+
 .maplibregl-ctrl-group {
-  background: var(--glass-bg) !important;
-  border: 1px solid var(--separator) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-md) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14) !important;
+  overflow: hidden;
 }
+
+html.dark .maplibregl-ctrl-group {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
 .maplibregl-ctrl-group button {
   background: transparent !important;
-  color: var(--text-primary) !important;
+  background-image: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  width: 29px !important;
+  height: 29px !important;
+  color: inherit !important;
+  -webkit-text-fill-color: unset !important;
+  transform: none !important;
+  filter: none !important;
 }
-html.dark .maplibregl-ctrl-group button {
+
+.maplibregl-ctrl-group button:hover,
+.maplibregl-ctrl-group button:focus-visible {
+  background: rgb(0 0 0 / 6%) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+html.dark .maplibregl-ctrl-group button:hover,
+html.dark .maplibregl-ctrl-group button:focus-visible {
+  background: rgb(255 255 255 / 10%) !important;
+}
+
+html.dark .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
   filter: invert(1);
 }
 
@@ -1288,9 +1329,13 @@ html.dark .maplibregl-ctrl-group button {
   padding: 0.55rem var(--space-3);
   border-bottom: 1px solid var(--separator);
   border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--glass-bg) 88%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: #ffffff;
+  border: 1px solid var(--theme-card-border, var(--separator));
+}
+
+html.dark .travel-timeline__country-header {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .travel-timeline__country-header h3 {
@@ -1442,6 +1487,61 @@ html.dark .maplibregl-ctrl-group button {
 html.dark .travel-body {
   background: #000;
   color: #f5f5f7;
+}
+
+html.dark .travel-nav {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-md);
+}
+
+html.dark .travel-nav__label,
+html.dark .travel-nav__back,
+html.dark .travel-nav__panel {
+  color: #f5f5f7;
+}
+
+html.dark .travel-nav__kicker {
+  color: #64d2ff;
+}
+
+html.dark .travel-advanced-search,
+html.dark .travel-results-summary,
+html.dark .travel-stop__fact {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark .travel-advanced-toggle,
+html.dark .travel-filter-label,
+html.dark .travel-results-summary {
+  color: #a1a1a6;
+}
+
+html.dark .travel-filter-chip,
+html.dark .travel-action,
+html.dark .country-pill {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f5f5f7;
+}
+
+html.dark .travel-filter-chip:hover,
+html.dark .travel-action:hover {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+html.dark .place-guide__chips span {
+  background: color-mix(in srgb, var(--fill-secondary) 78%, #000);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d1d1d6;
+}
+
+html.dark .travel-timeline__country-header {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* Solid theme card surfaces are enforced in wwdc26-liquid-glass.css */

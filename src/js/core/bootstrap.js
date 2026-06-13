@@ -807,7 +807,7 @@ function applyStoredLiquidGlassTint() {
     if (raw === null) return;
     const stored = Number(raw);
     if (Number.isFinite(stored) && stored >= 0 && stored <= 100) {
-      syncLiquidGlassTokens(stored / 100);
+      syncLiquidGlassTokens(stored / 100, { instant: true });
     }
   } catch (_error) {
     // Storage unavailable — keep the CSS default tint.

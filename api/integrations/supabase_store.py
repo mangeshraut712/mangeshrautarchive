@@ -105,7 +105,7 @@ def sanitize_health_summary(row: Dict[str, Any]) -> Dict[str, Any]:
         "strain": _safe_number(row.get("strain")),
         "restingHeartRate": _safe_int(row.get("resting_heart_rate")),
         "hrvTrend": _safe_text(row.get("hrv_trend")),
-        "weightTrend": _safe_text(row.get("weight_trend")),
+        "weightTrend": _safe_text(row.get("weight_trend"), max_chars=80),
         "lastSyncedAt": _safe_text(row.get("last_synced_at"), max_chars=40),
         "sourceStatus": _safe_text(row.get("source_status")) or "synced",
     }
@@ -371,6 +371,52 @@ async def save_provider_tokens(
         return False
 
 
+async def fetch_health_row_for_date(date_value: str) -> Dict[str, Any]:
+    if not supabase_is_configured():
+        return {}
+
+    table = _table_name()
+    if not table or not date_value:
+        return {}
+
+    try:
+        response = await _rest_request(
+            "GET",
+            table,
+            params={
+                "select": ",".join(PUBLIC_HEALTH_FIELDS),
+                "date": f"eq.{date_value}",
+                "limit": "1",
+            },
+        )
+        response.raise_for_status()
+        rows = response.json()
+        if isinstance(rows, list) and rows and isinstance(rows[0], dict):
+            return rows[0]
+    except (httpx.HTTPError, ValueError):
+        pass
+
+    return {}
+
+
+def _merge_health_row(existing: Dict[str, Any], incoming: Dict[str, Any]) -> Dict[str, Any]:
+    merged = dict(incoming)
+    merge_fields = (
+        "sleep_score",
+        "recovery_score",
+        "strain",
+        "resting_heart_rate",
+        "hrv_trend",
+        "weight_trend",
+    )
+    for field in merge_fields:
+        if merged.get(field) is None and existing.get(field) is not None:
+            merged[field] = existing.get(field)
+    if incoming.get("source_status") == "partial" or existing.get("source_status") == "partial":
+        merged["source_status"] = "partial"
+    return merged
+
+
 async def upsert_health_summary_row(row: Dict[str, Any]) -> bool:
     if not supabase_is_configured():
         return False
@@ -378,18 +424,23 @@ async def upsert_health_summary_row(row: Dict[str, Any]) -> bool:
     if not table:
         return False
 
-    payload = {
-        "date": _safe_text(row.get("date"), max_chars=16),
-        "sleep_score": _safe_int(row.get("sleep_score")),
-        "recovery_score": _safe_int(row.get("recovery_score")),
-        "strain": _safe_number(row.get("strain")),
-        "resting_heart_rate": _safe_int(row.get("resting_heart_rate")),
-        "hrv_trend": _safe_text(row.get("hrv_trend")),
-        "weight_trend": _safe_text(row.get("weight_trend")),
-        "source_status": _safe_text(row.get("source_status")) or "synced",
-        "last_synced_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-    }
+    date_value = _safe_text(row.get("date"), max_chars=16)
+    existing = await fetch_health_row_for_date(date_value or "")
+    payload = _merge_health_row(
+        existing,
+        {
+            "date": date_value,
+            "sleep_score": _safe_int(row.get("sleep_score")),
+            "recovery_score": _safe_int(row.get("recovery_score")),
+            "strain": _safe_number(row.get("strain")),
+            "resting_heart_rate": _safe_int(row.get("resting_heart_rate")),
+            "hrv_trend": _safe_text(row.get("hrv_trend")),
+            "weight_trend": _safe_text(row.get("weight_trend"), max_chars=80),
+            "source_status": _safe_text(row.get("source_status")) or "synced",
+            "last_synced_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        },
+    )
 
     try:
         response = await _rest_request(

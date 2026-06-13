@@ -9,7 +9,7 @@
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #ffffff;
-  --surface-elevated: color-mix(in srgb, var(--bg-primary) 86%, transparent);
+  --surface-elevated: #ffffff;
   --text-primary: #1d1d1f;
   --text-secondary: #6e6e73;
   --border-color: var(--separator, rgba(0, 0, 0, 0.1));
@@ -28,7 +28,7 @@
 html.dark {
   --bg-primary: #000000;
   --bg-secondary: #000000;
-  --surface-elevated: color-mix(in srgb, #ffffff 7%, #000000);
+  --surface-elevated: #000000;
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
   --border-color: rgba(255, 255, 255, 0.14);
@@ -463,13 +463,13 @@ body.monitor-page #main-content.monitor-container {
   padding: 22px 26px;
   margin-bottom: 20px;
   border-radius: 24px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-blue) 6%, transparent), transparent),
-    var(--surface-elevated);
+  background: #ffffff;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+html.dark .monitor-summary-card {
+  background: #000000;
 }
 
 body.monitor-page main > section.monitor-summary-card {
@@ -2039,6 +2039,12 @@ body.monitor-page main > section.section:not(#home) {
   box-shadow: var(--shadow-sm);
 }
 
+[data-theme='dark'] .log-tab-btn.active,
+html.dark .log-tab-btn.active {
+  background: color-mix(in srgb, var(--bg-secondary) 82%, #ffffff 18%);
+  color: var(--text-primary);
+}
+
 /* Spinner rotation alignment */
 .btn-loader {
   animation: spinner-spin 1s linear infinite;
@@ -2110,9 +2116,10 @@ body.monitor-page main > section.section:not(#home) {
 .integration-owner-auth {
   margin: 0 0 18px;
   padding: 16px 18px;
-  border: 1px solid rgba(120, 120, 128, 0.18);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-sm);
 }
 
 .integration-owner-auth label {
@@ -2136,14 +2143,47 @@ body.monitor-page main > section.section:not(#home) {
   min-width: 0;
   padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid rgba(120, 120, 128, 0.22);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font: inherit;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.integration-owner-auth__row input::placeholder {
+  color: var(--text-secondary);
+}
+
+.integration-owner-auth__row input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-blue) 18%, transparent);
 }
 
 .integration-owner-auth__hint {
   margin: 10px 0 0;
   font-size: 12px;
   color: var(--text-secondary);
+}
+
+html.dark .integration-owner-auth,
+[data-theme='dark'] .integration-owner-auth {
+  background: #000000;
+  border-color: var(--border-color);
+}
+
+html.dark .integration-owner-auth__row input,
+[data-theme='dark'] .integration-owner-auth__row input {
+  background: #000000 !important;
+  color: var(--text-primary) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html.dark .integration-owner-auth__row input:focus,
+[data-theme='dark'] .integration-owner-auth__row input:focus {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-blue) 24%, transparent);
 }
 
 @media (max-width: 768px) {
@@ -2173,56 +2213,27 @@ body.monitor-page main .monitor-summary-panel {
 }
 
 body.monitor-page main > section.section,
-body.monitor-page main > section.monitor-summary-panel {
-  background: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  background-color: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(48% + var(--lg-tint) * 42%)),
-    0 22px 54px rgb(15 23 42 / calc(6% + (1 - var(--lg-tint)) * 7%)) !important;
-}
-
+body.monitor-page main > section.monitor-summary-panel,
 body.monitor-page main > section#monitor-summary-section {
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent-blue, #0071e3) 8%, transparent),
-      transparent
-    ),
-    rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(48% + var(--lg-tint) * 42%)),
-    0 22px 54px rgb(15 23 42 / calc(6% + (1 - var(--lg-tint)) * 7%)) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
-/* Dark mode specific overrides */
 html.dark body.monitor-page main > section.section,
-html.dark body.monitor-page main > section.monitor-summary-panel {
-  background: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  background-color: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
-    0 24px 60px rgb(0 0 0 / calc(42% + (1 - var(--lg-tint)) * 12%)) !important;
-}
-
+html.dark body.monitor-page main > section.monitor-summary-panel,
 html.dark body.monitor-page main > section#monitor-summary-section {
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent-blue, #0a84ff) 12%, transparent),
-      transparent
-    ),
-    rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
-    0 24px 60px rgb(0 0 0 / calc(42% + (1 - var(--lg-tint)) * 12%)) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 /* Ensure inner cards (.overview-card, .doc-card, .health-item) have correct borders and look cohesive */
@@ -2292,6 +2303,17 @@ html.dark body.monitor-page .section,
 html.dark body.monitor-page article {
   background: #000000 !important;
   border: 1px solid var(--border-color) !important;
+}
+
+body.monitor-page .integration-owner-auth {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.dark body.monitor-page .integration-owner-auth,
+[data-theme='dark'] body.monitor-page .integration-owner-auth {
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
 }
 
 /* Keep the Control Center steady while still exposing the project hover border */

@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 
 from api.integrations import google_calendar, whoop, withings
 from api.integrations.integration_auth import (
+    integration_admin_token,
     normalize_provider,
     provider_connect_path,
     require_integration_admin,
@@ -18,9 +19,8 @@ from api.integrations.oauth_state import create_connect_auth_token, create_oauth
 from api.integrations.sync_engine import (
     register_google_calendar_watch,
     sync_all_providers,
+    sync_connected_health_providers,
     sync_google_calendar_availability,
-    sync_whoop_health,
-    sync_withings_health,
 )
 from api.integrations.supabase_store import (
     disconnect_provider,
@@ -228,18 +228,14 @@ async def sync_health_vitals(request: Request, payload: Optional[HealthVitalsUps
         }
 
     if await integration_is_connected("whoop") or await integration_is_connected("withings"):
-        results = []
-        if await integration_is_connected("whoop"):
-            results.append(await sync_whoop_health())
-        if await integration_is_connected("withings"):
-            results.append(await sync_withings_health())
+        health_payload = await sync_connected_health_providers()
         summary = await fetch_latest_health_summary()
         return {
             "success": True,
             "timestamp": _utc_now(),
             "status": summary.get("status", "live"),
             "message": "Provider health sync completed.",
-            "results": results,
+            "results": health_payload.get("results") or [],
             "data": summary.get("data") or empty_health_summary(),
         }
 
@@ -464,6 +460,36 @@ async def withings_callback(code: Optional[str] = None, state: Optional[str] = N
         raise
     except Exception as exc:
         raise HTTPException(status_code=502, detail="Withings OAuth callback failed.") from exc
+
+
+@router.get(
+    "/api/cron/health-vitals-sync",
+    tags=["core"],
+    summary="Scheduled health vitals sync (Vercel Cron)",
+)
+async def cron_health_vitals_sync(request: Request):
+    cron_secret = os.getenv("CRON_SECRET", "").strip() or integration_admin_token()
+    auth = request.headers.get("authorization", "").strip()
+    if not cron_secret or auth != f"Bearer {cron_secret}":
+        raise HTTPException(status_code=401, detail="Unauthorized cron request.")
+
+    if not await integration_is_connected("whoop") and not await integration_is_connected("withings"):
+        return {
+            "success": True,
+            "timestamp": _utc_now(),
+            "message": "No health providers connected.",
+            "results": [],
+        }
+
+    health_payload = await sync_connected_health_providers()
+    summary = await fetch_latest_health_summary()
+    return {
+        "success": True,
+        "timestamp": _utc_now(),
+        "status": summary.get("status", "live"),
+        "results": health_payload.get("results") or [],
+        "data": summary.get("data") or empty_health_summary(),
+    }
 
 
 @router.post(

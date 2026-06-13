@@ -6,15 +6,29 @@
 
 :root {
   --lg-tint: 0.55;
-  --lg-blur-nav: calc(14px + (1 - var(--lg-tint)) * 16px);
-  --lg-blur-panel: calc(26px + (1 - var(--lg-tint)) * 28px);
-  --lg-blur-card: calc(20px + (1 - var(--lg-tint)) * 24px);
-  --lg-blur-control: calc(10px + (1 - var(--lg-tint)) * 14px);
-  --lg-saturate: calc(155% + (1 - var(--lg-tint)) * 45%);
-  --lg-light-fill: calc(44% + var(--lg-tint) * 52%);
-  --lg-dark-fill: calc(50% + var(--lg-tint) * 48%);
-  --lg-card-light-fill: calc(62% + var(--lg-tint) * 32%);
-  --lg-card-dark-fill: calc(68% + var(--lg-tint) * 28%);
+  --lg-blur-nav: calc(10px + (1 - var(--lg-tint)) * 38px);
+  --lg-blur-panel: calc(14px + (1 - var(--lg-tint)) * 42px);
+  --lg-blur-card: calc(12px + (1 - var(--lg-tint)) * 36px);
+  --lg-blur-control: calc(6px + (1 - var(--lg-tint)) * 22px);
+  --lg-saturate: calc(132% + (1 - var(--lg-tint)) * 88%);
+  --lg-light-fill: calc(6% + var(--lg-tint) * 76%);
+  --lg-dark-fill: calc(10% + var(--lg-tint) * 74%);
+  --lg-nav-light-fill: calc(4% + var(--lg-tint) * 78%);
+  --lg-nav-dark-fill: calc(8% + var(--lg-tint) * 76%);
+  --lg-card-light-fill: calc(18% + var(--lg-tint) * 76%);
+  --lg-card-dark-fill: calc(24% + var(--lg-tint) * 68%);
+  --lg-card-light-alpha: calc(18% + var(--lg-tint) * 76%);
+  --lg-card-dark-alpha: calc(24% + var(--lg-tint) * 68%);
+  --lg-card-border-light-alpha: calc(28% + var(--lg-tint) * 38%);
+  --lg-card-border-dark-alpha: calc(8% + var(--lg-tint) * 10%);
+  --lg-card-highlight-light: calc(42% + var(--lg-tint) * 48%);
+  --lg-card-highlight-dark: calc(8% + var(--lg-tint) * 10%);
+  --lg-card-shadow-light: calc(8% + (1 - var(--lg-tint)) * 10%);
+  --lg-card-shadow-dark: calc(42% + (1 - var(--lg-tint)) * 12%);
+  --lg-specular-light: calc(58% + (1 - var(--lg-tint)) * 38%);
+  --lg-specular-dark: calc(6% + (1 - var(--lg-tint)) * 14%);
+  --lg-border-light: calc(18% + (1 - var(--lg-tint)) * 28% + var(--lg-tint) * 12%);
+  --lg-border-dark: calc(6% + (1 - var(--lg-tint)) * 10% + var(--lg-tint) * 8%);
   --theme-page-bg: #ffffff;
   --theme-card-surface: #ffffff;
   --theme-card-border: rgba(0, 0, 0, 0.08);
@@ -44,6 +58,10 @@
 html {
   transition: --lg-tint 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
   background-color: var(--theme-page-bg) !important;
+}
+
+html.lg-tint-instant {
+  transition: none !important;
 }
 
 html[data-theme='light'] {
@@ -91,37 +109,43 @@ html[data-theme='dark'] {
    ──────────────────────────────────────────────────────────────── */
 
 .global-nav.dynamic-island {
-  background: rgb(255 255 255 / var(--lg-light-fill));
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav));
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav));
+  background: rgb(255 255 255 / var(--lg-nav-light-fill)) !important;
+  background-color: rgb(255 255 255 / var(--lg-nav-light-fill)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav)) !important;
+  border-bottom: 1px solid rgb(255 255 255 / var(--lg-border-light)) !important;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(42% + var(--lg-tint) * 38%)),
-    0 0.5px 0 rgb(0 0 0 / calc(3% + (1 - var(--lg-tint)) * 4%));
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
+    0 0.5px 0 rgb(0 0 0 / calc(2% + (1 - var(--lg-tint)) * 5%)) !important;
 }
 
 html.dark .global-nav.dynamic-island {
-  background: rgb(0 0 0 / var(--lg-dark-fill));
+  background: rgb(0 0 0 / var(--lg-nav-dark-fill)) !important;
+  background-color: rgb(0 0 0 / var(--lg-nav-dark-fill)) !important;
+  border-bottom-color: rgb(255 255 255 / var(--lg-border-dark)) !important;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(4% + var(--lg-tint) * 8%)),
-    0 0.5px 0 rgb(255 255 255 / calc(2% + (1 - var(--lg-tint)) * 3%));
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
+    0 0.5px 0 rgb(255 255 255 / calc(2% + (1 - var(--lg-tint)) * 4%)) !important;
 }
 
 .global-nav.dynamic-island.scrolled {
-  background: rgb(255 255 255 / calc(var(--lg-light-fill) + 8%));
-  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 4px));
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 4px));
+  background: rgb(255 255 255 / calc(var(--lg-nav-light-fill) + 6%)) !important;
+  background-color: rgb(255 255 255 / calc(var(--lg-nav-light-fill) + 6%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 4px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 4px)) !important;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(48% + var(--lg-tint) * 40%)),
+    inset 0 1px 0 rgb(255 255 255 / calc(var(--lg-specular-light) + 6%)),
     0 1px 0 rgb(0 0 0 / 4%),
-    0 4px 20px rgb(0 0 0 / calc(4% + (1 - var(--lg-tint)) * 6%));
+    0 4px 20px rgb(0 0 0 / calc(3% + (1 - var(--lg-tint)) * 8%)) !important;
 }
 
 html.dark .global-nav.dynamic-island.scrolled {
-  background: rgb(0 0 0 / calc(var(--lg-dark-fill) + 10%));
+  background: rgb(0 0 0 / calc(var(--lg-nav-dark-fill) + 8%)) !important;
+  background-color: rgb(0 0 0 / calc(var(--lg-nav-dark-fill) + 8%)) !important;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(6% + var(--lg-tint) * 10%)),
+    inset 0 1px 0 rgb(255 255 255 / calc(var(--lg-specular-dark) + 4%)),
     0 1px 0 rgb(255 255 255 / 4%),
-    0 4px 20px rgb(0 0 0 / calc(18% + var(--lg-tint) * 12%));
+    0 4px 20px rgb(0 0 0 / calc(14% + var(--lg-tint) * 16%)) !important;
 }
 
 /* Fade hint on the scrollable nav rail where the last links can
@@ -301,19 +325,21 @@ html.dark #go-to-top.visible {
    ──────────────────────────────────────────────────────────────── */
 
 #chatbot-widget {
-  background: rgb(255 255 255 / calc(52% + var(--lg-tint) * 44%));
-  backdrop-filter: blur(var(--lg-blur-panel)) saturate(var(--lg-saturate));
-  -webkit-backdrop-filter: blur(var(--lg-blur-panel)) saturate(var(--lg-saturate));
+  background: rgb(255 255 255 / calc(10% + var(--lg-tint) * 72%)) !important;
+  background-color: rgb(255 255 255 / calc(10% + var(--lg-tint) * 72%)) !important;
+  backdrop-filter: blur(var(--lg-blur-panel)) saturate(var(--lg-saturate)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-blur-panel)) saturate(var(--lg-saturate)) !important;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(38% + var(--lg-tint) * 42%)),
-    0 24px 64px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%));
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
+    0 24px 64px rgb(0 0 0 / calc(8% + (1 - var(--lg-tint)) * 12%)) !important;
 }
 
 html.dark #chatbot-widget {
-  background: rgb(0 0 0 / calc(78% + var(--lg-tint) * 20%));
+  background: rgb(0 0 0 / calc(14% + var(--lg-tint) * 68%)) !important;
+  background-color: rgb(0 0 0 / calc(14% + var(--lg-tint) * 68%)) !important;
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(6% + var(--lg-tint) * 10%)),
-    0 24px 64px rgb(0 0 0 / 48%);
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
+    0 24px 64px rgb(0 0 0 / 48%) !important;
 }
 
 /* Siri edge glow around the open widget (stronger while thinking) */
@@ -1140,8 +1166,9 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
    ──────────────────────────────────────────────────────────────── */
 
 .a11y-toolbar {
-  background: rgb(255 255 255 / calc(var(--lg-light-fill) + 6%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(36% + var(--lg-tint) * 28%)) !important;
+  background: rgb(255 255 255 / calc(var(--lg-light-fill) + 4%)) !important;
+  background-color: rgb(255 255 255 / calc(var(--lg-light-fill) + 4%)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-border-light)) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   box-shadow:
@@ -1150,23 +1177,40 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
 }
 
 html.dark .a11y-toolbar {
-  background: rgb(0 0 0 / calc(var(--lg-dark-fill) + 8%)) !important;
-  border-color: rgb(255 255 255 / calc(8% + var(--lg-tint) * 12%)) !important;
+  background: rgb(0 0 0 / calc(var(--lg-dark-fill) + 6%)) !important;
+  background-color: rgb(0 0 0 / calc(var(--lg-dark-fill) + 6%)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark)) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / calc(5% + var(--lg-tint) * 8%)),
     0 10px 36px rgb(0 0 0 / 42%) !important;
 }
 
 .a11y-toolbar button {
+  padding: 0 !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(255 255 255 / calc(28% + var(--lg-tint) * 22%)) !important;
+  color: #0071e3 !important;
   background: rgb(255 255 255 / calc(58% + var(--lg-tint) * 30%)) !important;
-  border-color: rgb(255 255 255 / calc(28% + var(--lg-tint) * 22%)) !important;
+  background-color: rgb(255 255 255 / calc(58% + var(--lg-tint) * 30%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / calc(50% + var(--lg-tint) * 30%)),
+    0 2px 8px rgb(0 0 0 / calc(6% + (1 - var(--lg-tint)) * 6%)) !important;
   backdrop-filter: blur(calc(6px + (1 - var(--lg-tint)) * 6px)) !important;
   -webkit-backdrop-filter: blur(calc(6px + (1 - var(--lg-tint)) * 6px)) !important;
 }
 
 html.dark .a11y-toolbar button {
+  color: #4ea1ff !important;
   background: rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)) !important;
+  background-color: rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)) !important;
   border-color: rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
+    0 2px 10px rgb(0 0 0 / 28%) !important;
 }
 
 .a11y-toolbar button.a11y-glass-active {
@@ -1185,37 +1229,80 @@ html.dark .a11y-toolbar button.a11y-glass-active {
     0 0 0 1px rgb(191 90 242 / 28%) !important;
 }
 
+@media (width <=1024px) {
+  body.has-a11y-toolbar {
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  body.has-a11y-toolbar #go-to-top {
+    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) !important;
+  }
+
+  body.has-a11y-toolbar #chatbot-toggle {
+    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 7.5rem) !important;
+  }
+}
+
 @media (width <=768px) {
   .a11y-toolbar {
-    left: max(1rem, env(safe-area-inset-left)) !important;
+    left: max(0.75rem, env(safe-area-inset-left)) !important;
     right: auto !important;
-    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+    bottom: max(0.75rem, env(safe-area-inset-bottom)) !important;
     top: auto !important;
     transform: none !important;
-    gap: 0.375rem !important;
+    gap: 0.35rem !important;
     max-width: calc(
-      100vw - 6.25rem - env(safe-area-inset-left) - env(safe-area-inset-right)
+      100vw - 5.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)
     ) !important;
-    padding: 0.375rem !important;
+    padding: 0.35rem !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .a11y-toolbar::-webkit-scrollbar {
+    display: none;
   }
 
   .a11y-toolbar button {
-    width: 2.375rem !important;
-    height: 2.375rem !important;
-    min-width: 2.375rem !important;
-    font-size: 0.8rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    flex: 0 0 auto;
+    font-size: 0.82rem !important;
+  }
+
+  .a11y-toolbar button::after {
+    display: none !important;
   }
 
   .a11y-glass-popover {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.5rem) !important;
+    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 3.75rem) !important;
     top: auto !important;
+    left: max(0.75rem, env(safe-area-inset-left)) !important;
+    right: auto !important;
+    transform: none !important;
+    width: min(15rem, calc(100vw - 1.5rem - env(safe-area-inset-left))) !important;
+  }
+}
+
+@media (width >=769px) and (width <=1024px) {
+  .a11y-toolbar {
     left: max(1rem, env(safe-area-inset-left)) !important;
-    width: min(15rem, calc(100vw - 2rem)) !important;
+    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+    max-width: min(22rem, calc(100vw - 8rem)) !important;
+  }
+
+  .a11y-glass-popover {
+    left: max(1rem, env(safe-area-inset-left)) !important;
+    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4rem) !important;
   }
 }
 
 .a11y-glass-popover {
   background: rgb(255 255 255 / calc(78% + var(--lg-tint) * 20%)) !important;
+  background-color: rgb(255 255 255 / calc(78% + var(--lg-tint) * 20%)) !important;
   border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 24%)) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
@@ -1226,6 +1313,7 @@ html.dark .a11y-toolbar button.a11y-glass-active {
 
 html.dark .a11y-glass-popover {
   background: rgb(18 18 20 / calc(82% + var(--lg-tint) * 16%)) !important;
+  background-color: rgb(18 18 20 / calc(82% + var(--lg-tint) * 16%)) !important;
   border-color: rgb(255 255 255 / calc(10% + var(--lg-tint) * 10%)) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 8%),
@@ -1419,8 +1507,9 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   15. SOLID THEME BACKGROUNDS + UNIFIED BLUE CARD BORDERS
+   15. SOLID THEME BACKGROUNDS + UNIFIED CARD SURFACES
    Light = #fff page + #fff cards. Dark = #000 page + #000 cards.
+   Liquid Glass tint applies to nav, chatbot, and a11y controls only.
    ──────────────────────────────────────────────────────────────── */
 
 html,
@@ -1443,10 +1532,7 @@ body.monitor-page main {
 #map-container,
 .maplibregl-map,
 canvas.maplibregl-canvas,
-.global-nav.dynamic-island,
 #chatbot-widget,
-.a11y-toolbar,
-.a11y-glass-popover,
 ul.wrapper,
 footer .wrapper {
   background-color: transparent !important;
@@ -1498,7 +1584,23 @@ footer .wrapper {
   .summary-card,
   .glass-card,
   .overlay-card,
-  .panel
+  .panel,
+  .health-widget-container,
+  .monitor-summary-card,
+  .monitor-summary-panel,
+  .integration-owner-auth,
+  .ops-card,
+  .endpoint-card,
+  .travel-sidebar,
+  .travel-stop,
+  .place-guide-card,
+  .travel-stat,
+  .travel-filter-panel,
+  .travel-advanced-search,
+  .travel-results-summary,
+  .travel-timeline__country-header,
+  .sub-card,
+  .nested-card
 ) {
   background: var(--theme-card-surface) !important;
   background-color: var(--theme-card-surface) !important;
@@ -1509,7 +1611,151 @@ footer .wrapper {
   box-shadow: none !important;
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
-    box-shadow 0.32s ease !important;
+    box-shadow 0.32s ease,
+    border-color 0.32s ease !important;
+}
+
+html.dark :is(
+  .card,
+  .experience-card,
+  .experience-content,
+  .education-card,
+  .education-content,
+  .stat-card,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .showcase-project-card,
+  .about-highlight-card,
+  .about-text-card,
+  .about-card,
+  .contact-card,
+  .contact-form-card,
+  .newsletter-card,
+  .support-donation-card,
+  .media-card,
+  .currently-card,
+  .calendar-card,
+  .ios-widget-wrapper,
+  .legend-card,
+  .music-card-inner,
+  .reminder-card,
+  .overview-card,
+  .doc-card,
+  .health-item,
+  .game-stat-card,
+  .game-info-card,
+  .skill-card,
+  .skill-badge,
+  .timeline-content,
+  .service-card,
+  .feature-card,
+  .testimonial-card,
+  .pricing-card,
+  .team-card,
+  .info-card,
+  .detail-card,
+  .summary-card,
+  .glass-card,
+  .overlay-card,
+  .panel,
+  .health-widget-container,
+  .monitor-summary-card,
+  .monitor-summary-panel,
+  .integration-owner-auth,
+  .ops-card,
+  .endpoint-card,
+  .travel-sidebar,
+  .travel-stop,
+  .place-guide-card,
+  .travel-stat,
+  .travel-filter-panel,
+  .travel-advanced-search,
+  .travel-results-summary,
+  .travel-timeline__country-header,
+  .sub-card,
+  .nested-card
+) {
+  background: var(--theme-card-surface) !important;
+  background-color: var(--theme-card-surface) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .music-card-inner,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header
+  ) {
+    background: var(--theme-card-surface) !important;
+    background-color: var(--theme-card-surface) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--theme-card-border) !important;
+    box-shadow: none !important;
+  }
 }
 
 /* Final card hover borders for section-specific cards loaded before this file. */
@@ -1554,6 +1800,27 @@ html body #contact div.media-card {
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
     box-shadow 0.32s ease !important;
+}
+
+html.dark #skills-container .skill-badge,
+html.dark #skills-container .skill-category,
+html.dark #skills .skill-category,
+html.dark #about .about-image-wrapper,
+html.dark #experience .experience-content,
+html.dark body #about div.about-text-card,
+html.dark body #about div.about-highlight-card,
+html.dark body #projects #github-projects-container article.showcase-project-card,
+html.dark body #blog div.newsletter-card,
+html.dark body #contact div.contact-card,
+html.dark body #contact div.support-donation-card,
+html.dark body #contact div.media-card {
+  background: var(--theme-card-surface) !important;
+  background-color: var(--theme-card-surface) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
 }
 
 /* Class-only hover — blue border */
@@ -1700,8 +1967,7 @@ html.dark .launch-intro {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   17. CONTACT — Liquid Glass panels (tint-aware, after solid §15)
-   Ambient depth behind cards so blur reads on light + dark themes.
+   17. CONTACT + BLOG — solid section backgrounds (cards in §15)
    ──────────────────────────────────────────────────────────────── */
 
 #contact,
@@ -1716,40 +1982,6 @@ html.dark #blog {
   background: #000000 !important;
 }
 
-html body #contact div.contact-card,
-html body #contact div.support-donation-card,
-html body #contact div.currently-card,
-html body #contact div.contact-assistme-card,
-html body #contact div.calendar-wrapper-clean,
-html body #contact div.ios-widget-wrapper,
-html body #contact div.media-card {
-  background: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  background-color: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(48% + var(--lg-tint) * 42%)),
-    inset 0 -1px 0 rgb(0 0 0 / calc(2% + (1 - var(--lg-tint)) * 2%)),
-    0 22px 54px rgb(15 23 42 / calc(6% + (1 - var(--lg-tint)) * 7%)) !important;
-}
-
-html.dark body #contact div.contact-card,
-html.dark body #contact div.support-donation-card,
-html.dark body #contact div.currently-card,
-html.dark body #contact div.contact-assistme-card,
-html.dark body #contact div.calendar-wrapper-clean,
-html.dark body #contact div.ios-widget-wrapper,
-html.dark body #contact div.media-card {
-  background: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  background-color: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
-    inset 0 -1px 0 rgb(0 0 0 / 35%),
-    0 24px 60px rgb(0 0 0 / calc(42% + (1 - var(--lg-tint)) * 12%)) !important;
-}
-
 html body #contact div.currently-card,
 html body #contact div.calendar-wrapper-clean {
   transition:
@@ -1758,22 +1990,8 @@ html body #contact div.calendar-wrapper-clean {
     box-shadow 0.32s ease !important;
 }
 
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  html body #contact div.contact-card,
-  html body #contact div.support-donation-card,
-  html body #contact div.currently-card,
-  html body #contact div.contact-assistme-card,
-  html body #contact div.calendar-wrapper-clean,
-  html body #contact div.ios-widget-wrapper,
-  html body #contact div.media-card {
-    background: var(--theme-card-surface) !important;
-    background-color: var(--theme-card-surface) !important;
-  }
-}
-
 /* ────────────────────────────────────────────────────────────────
-   18. SUBPAGES — Travel + Monitor glass surfaces (both themes)
-   Restores elevation after homepage solid-card policy; loads last.
+   18. SUBPAGES — Travel + Monitor solid surfaces (loads last)
    ──────────────────────────────────────────────────────────────── */
 
 body.travel-body {
@@ -1787,66 +2005,76 @@ body.travel-body .travel-ui-layer {
 
 body.monitor-page section.section,
 body.monitor-page .monitor-summary-card,
-body.monitor-page .monitor-summary-panel {
-  background: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  background-color: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
-  backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  -webkit-backdrop-filter: blur(var(--lg-blur-card)) saturate(var(--lg-saturate)) !important;
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(48% + var(--lg-tint) * 42%)),
-    0 22px 54px rgb(15 23 42 / calc(6% + (1 - var(--lg-tint)) * 7%)) !important;
-}
-
-body.monitor-page .monitor-summary-card {
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent-blue, #0071e3) 8%, transparent),
-      transparent
-    ),
-    rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
+body.monitor-page .monitor-summary-panel,
+body.monitor-page .integration-owner-auth,
+body.monitor-page .doc-card,
+body.monitor-page .overview-card,
+body.monitor-page .health-item,
+body.monitor-page .endpoint-card,
+body.monitor-page .ops-card,
+body.monitor-page article {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.monitor-page section.section,
 html.dark body.monitor-page .monitor-summary-card,
-html.dark body.monitor-page .monitor-summary-panel {
-  background: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  background-color: rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(8% + var(--lg-tint) * 10%)),
-    0 24px 60px rgb(0 0 0 / calc(42% + (1 - var(--lg-tint)) * 12%)) !important;
+html.dark body.monitor-page .monitor-summary-panel,
+html.dark body.monitor-page .integration-owner-auth,
+html.dark body.monitor-page .doc-card,
+html.dark body.monitor-page .overview-card,
+html.dark body.monitor-page .health-item,
+html.dark body.monitor-page .endpoint-card,
+html.dark body.monitor-page .ops-card,
+html.dark body.monitor-page article {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
 }
 
-html.dark body.monitor-page .monitor-summary-card {
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent-blue, #0a84ff) 12%, transparent),
-      transparent
-    ),
-    rgb(0 0 0 / calc(62% + var(--lg-tint) * 28%)) !important;
-}
-
+body.travel-body .travel-nav,
+body.travel-body .travel-sidebar,
 body.travel-body .travel-stop,
 body.travel-body .place-guide-card,
 body.travel-body .travel-stat,
-body.travel-body .travel-filter-panel {
-  background: rgb(255 255 255 / calc(58% + var(--lg-tint) * 34%)) !important;
-  backdrop-filter: blur(calc(var(--lg-blur-card) - 4px)) saturate(var(--lg-saturate)) !important;
-  -webkit-backdrop-filter: blur(calc(var(--lg-blur-card) - 4px)) saturate(var(--lg-saturate)) !important;
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 28%)) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 42%) !important;
+body.travel-body .travel-filter-panel,
+body.travel-body .travel-advanced-search,
+body.travel-body .travel-results-summary,
+body.travel-body .travel-timeline__country-header {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
 }
 
+html.dark body.travel-body .travel-nav,
+html.dark body.travel-body .travel-sidebar,
 html.dark body.travel-body .travel-stop,
 html.dark body.travel-body .place-guide-card,
 html.dark body.travel-body .travel-stat,
-html.dark body.travel-body .travel-filter-panel {
-  background: rgb(0 0 0 / calc(66% + var(--lg-tint) * 26%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(10% + var(--lg-tint) * 8%)) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%) !important;
+html.dark body.travel-body .travel-filter-panel,
+html.dark body.travel-body .travel-advanced-search,
+html.dark body.travel-body .travel-results-summary,
+html.dark body.travel-body .travel-timeline__country-header {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border) !important;
+  box-shadow: none !important;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -1859,4 +2087,34 @@ html.dark body.travel-body .travel-filter-panel {
     background: var(--theme-card-surface) !important;
     background-color: var(--theme-card-surface) !important;
   }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   20. LIQUID GLASS MODES — clear vs tinted (slider endpoints)
+   ──────────────────────────────────────────────────────────────── */
+
+html[data-lg-mode='clear'] .global-nav.dynamic-island,
+html[data-lg-mode='clear'] .a11y-toolbar,
+html[data-lg-mode='clear'] .a11y-glass-popover,
+html[data-lg-mode='clear'] #chatbot-widget {
+  border-color: rgb(255 255 255 / calc(var(--lg-border-light) + 8%)) !important;
+}
+
+html.dark[data-lg-mode='clear'] .global-nav.dynamic-island,
+html.dark[data-lg-mode='clear'] .a11y-toolbar,
+html.dark[data-lg-mode='clear'] .a11y-glass-popover,
+html.dark[data-lg-mode='clear'] #chatbot-widget {
+  border-color: rgb(255 255 255 / calc(var(--lg-border-dark) + 6%)) !important;
+}
+
+html[data-lg-mode='tinted'] .global-nav.dynamic-island,
+html[data-lg-mode='tinted'] .a11y-toolbar,
+html[data-lg-mode='tinted'] #chatbot-widget {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) - 2px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) - 2px)) !important;
+}
+
+html[data-lg-mode='clear'] .global-nav.dynamic-island {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
 }

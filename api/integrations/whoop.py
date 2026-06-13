@@ -1,6 +1,6 @@
 import os
-from datetime import datetime, timezone
-from typing import Any, Dict
+from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlencode
 
 import httpx
@@ -76,6 +76,37 @@ async def refresh_access_token(refresh_token: str) -> Dict[str, Any]:
     return response.json()
 
 
+def _recent_query(limit: int = 10, days: int = 4) -> str:
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(days=days)
+    params = {
+        "limit": str(limit),
+        "start": start.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+        "end": end.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+    }
+    return f"?{urlencode(params)}"
+
+
+def _record_sort_key(record: Dict[str, Any]) -> str:
+    for key in ("updated_at", "created_at", "start", "end"):
+        value = record.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return ""
+
+
+def _pick_scored_record(records: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    ordered = sorted(records or [], key=_record_sort_key, reverse=True)
+    for record in ordered:
+        score = record.get("score") or {}
+        if record.get("score_state") == "SCORED" and score:
+            return record
+    for record in ordered:
+        if record.get("score"):
+            return record
+    return None
+
+
 async def _get_json(access_token: str, path: str) -> Dict[str, Any]:
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.get(
@@ -88,6 +119,7 @@ async def _get_json(access_token: str, path: str) -> Dict[str, Any]:
 
 async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
     today = datetime.now(timezone.utc).date().isoformat()
+    query = _recent_query()
     summary: Dict[str, Any] = {
         "date": today,
         "sleep_score": None,
@@ -98,38 +130,51 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         "weight_trend": None,
         "source_status": "synced",
     }
+    partial = False
 
     try:
-        recovery = await _get_json(access_token, "/recovery?limit=1")
-        records = recovery.get("records") or []
-        if records:
-            score = records[0].get("score") or {}
+        recovery = await _get_json(access_token, f"/recovery{query}")
+        record = _pick_scored_record(recovery.get("records") or [])
+        if record:
+            score = record.get("score") or {}
             summary["recovery_score"] = score.get("recovery_score")
             summary["resting_heart_rate"] = score.get("resting_heart_rate")
             hrv = score.get("hrv_rmssd_milli")
             if isinstance(hrv, (int, float)):
                 summary["hrv_trend"] = "stable" if hrv >= 50 else "low"
+        elif recovery.get("records"):
+            partial = True
     except httpx.HTTPError:
-        summary["source_status"] = "partial"
+        partial = True
 
     try:
-        cycles = await _get_json(access_token, "/cycle?limit=1")
-        records = cycles.get("records") or []
-        if records:
-            strain = records[0].get("score", {}).get("strain")
+        cycles = await _get_json(access_token, f"/cycle{query}")
+        record = _pick_scored_record(cycles.get("records") or [])
+        if record:
+            strain = (record.get("score") or {}).get("strain")
             if strain is not None:
                 summary["strain"] = round(float(strain), 1)
+        elif cycles.get("records"):
+            partial = True
     except httpx.HTTPError:
-        summary["source_status"] = "partial"
+        partial = True
 
     try:
-        sleep = await _get_json(access_token, "/activity/sleep?limit=1")
-        records = sleep.get("records") or []
-        if records:
-            performance = records[0].get("score", {}).get("sleep_performance_percentage")
+        sleep = await _get_json(access_token, f"/activity/sleep{query}")
+        record = _pick_scored_record(sleep.get("records") or [])
+        if record:
+            performance = (record.get("score") or {}).get("sleep_performance_percentage")
             if performance is not None:
                 summary["sleep_score"] = int(round(float(performance)))
+        elif sleep.get("records"):
+            partial = True
     except httpx.HTTPError:
+        partial = True
+
+    if partial and not any(
+        summary.get(key) is not None
+        for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate", "hrv_trend")
+    ):
         summary["source_status"] = "partial"
 
     return summary

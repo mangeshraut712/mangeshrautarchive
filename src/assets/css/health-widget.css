@@ -1,18 +1,14 @@
 /* Whoop & Withings Health Vitals Widgets Styling */
 
 .health-widget-container {
-  /* Default Light Mode variables */
+  /* Tint-aware glass is applied in wwdc26-liquid-glass.css; keep health tokens for text/dividers */
   --health-text: #1d1d1f;
   --health-text-dim: rgba(29, 29, 31, 0.6);
   --health-text-label: rgba(29, 29, 31, 0.5);
   --health-border: rgba(0, 0, 0, 0.08);
   --health-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 32px rgba(0, 0, 0, 0.08);
   --health-bg-filter: grayscale(85%) brightness(0.96) contrast(0.9) opacity(0.12);
-  --health-overlay-bg: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.75) 0%,
-    rgba(245, 245, 247, 0.8) 100%
-  );
+  --health-overlay-bg: #ffffff;
   --health-divider: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.03),
@@ -44,8 +40,8 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   box-sizing: border-box;
   background: var(--health-overlay-bg);
-  backdrop-filter: blur(20px) saturate(190%);
-  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow: var(--health-shadow);
   border: 1px solid var(--health-border);
   transition:
@@ -61,11 +57,7 @@ html.dark .health-widget-container {
   --health-border: rgba(255, 255, 255, 0.1);
   --health-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3);
   --health-bg-filter: grayscale(85%) brightness(0.22) contrast(1.1) opacity(1);
-  --health-overlay-bg: linear-gradient(
-    135deg,
-    rgba(15, 15, 17, 0.55) 0%,
-    rgba(30, 30, 35, 0.65) 100%
-  );
+  --health-overlay-bg: #000000;
   --health-divider: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.03),

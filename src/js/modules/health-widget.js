@@ -5,12 +5,12 @@
  */
 
 const DEFAULT_METRICS = {
-  sleep: 81, // %
-  recovery: 47, // %
-  strain: 5.2, // 0-21 scale
-  weight: 103.4, // kg
-  muscle: 68.4, // %
-  fat: 28.1, // %
+  sleep: null,
+  recovery: null,
+  strain: null,
+  weight: null,
+  muscle: null,
+  fat: null,
   lastSynced: null,
 };
 
@@ -29,6 +29,21 @@ function resolveApiBase() {
   return 'https://mangeshraut.pro';
 }
 
+function parseWeightTrend(weightTrend) {
+  if (typeof weightTrend !== 'string' || !weightTrend.trim()) {
+    return { weight: null, muscle: null, fat: null };
+  }
+
+  const weightMatch = weightTrend.match(/([\d.]+)\s*kg/i);
+  const muscleMatch = weightTrend.match(/([\d.]+)\s*%\s*muscle/i);
+  const fatMatch = weightTrend.match(/([\d.]+)\s*%\s*fat/i);
+  return {
+    weight: weightMatch ? parseFloat(weightMatch[1]) : null,
+    muscle: muscleMatch ? parseFloat(muscleMatch[1]) : null,
+    fat: fatMatch ? parseFloat(fatMatch[1]) : null,
+  };
+}
+
 class HealthWidget {
   constructor() {
     this.storageKey = 'mangesh_health_metrics_v2';
@@ -41,17 +56,13 @@ class HealthWidget {
       const stored = localStorage.getItem(this.storageKey);
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Ensure all required fields exist
         return { ...DEFAULT_METRICS, ...parsed };
       }
     } catch (e) {
       console.warn('Failed to read health metrics from localStorage:', e);
     }
 
-    // Default fallback
-    const metrics = { ...DEFAULT_METRICS };
-    metrics.lastSynced = Date.now() - 3.5 * 60 * 60 * 1000; // ~3.5 hours ago
-    return metrics;
+    return { ...DEFAULT_METRICS };
   }
 
   saveMetrics() {
@@ -63,7 +74,6 @@ class HealthWidget {
   }
 
   init() {
-    // Only bind if the container exists
     const container = document.getElementById('health-section');
     if (!container) return;
 
@@ -80,21 +90,34 @@ class HealthWidget {
       const response = await fetch(url, { credentials: 'same-origin' });
       if (!response.ok) return;
       const payload = await response.json();
-      if (payload.status !== 'live' || !payload.data) return;
+      if (!payload.data) return;
 
       const data = payload.data;
-      if (typeof data.sleepScore === 'number') this.metrics.sleep = data.sleepScore;
-      if (typeof data.recoveryScore === 'number') this.metrics.recovery = data.recoveryScore;
-      if (typeof data.strain === 'number') this.metrics.strain = data.strain;
+      const isLive = payload.status === 'live';
 
-      const weightMatch =
-        typeof data.weightTrend === 'string' ? data.weightTrend.match(/([\d.]+)/) : null;
-      if (weightMatch) this.metrics.weight = parseFloat(weightMatch[1]);
+      if (typeof data.sleepScore === 'number') this.metrics.sleep = data.sleepScore;
+      else if (isLive) this.metrics.sleep = null;
+
+      if (typeof data.recoveryScore === 'number') this.metrics.recovery = data.recoveryScore;
+      else if (isLive) this.metrics.recovery = null;
+
+      if (typeof data.strain === 'number') this.metrics.strain = data.strain;
+      else if (isLive) this.metrics.strain = null;
+
+      const parsedWeight = parseWeightTrend(data.weightTrend);
+      if (parsedWeight.weight !== null) this.metrics.weight = parsedWeight.weight;
+      else if (isLive) this.metrics.weight = null;
+
+      if (parsedWeight.muscle !== null) this.metrics.muscle = parsedWeight.muscle;
+      else if (isLive) this.metrics.muscle = null;
+
+      if (parsedWeight.fat !== null) this.metrics.fat = parsedWeight.fat;
+      else if (isLive) this.metrics.fat = null;
 
       if (data.lastSyncedAt) {
         const parsed = Date.parse(data.lastSyncedAt);
         if (!Number.isNaN(parsed)) this.metrics.lastSynced = parsed;
-      } else {
+      } else if (isLive) {
         this.metrics.lastSynced = Date.now();
       }
 
@@ -105,18 +128,40 @@ class HealthWidget {
     }
   }
 
+  formatMetric(value, suffix = '') {
+    if (value === null || value === undefined || Number.isNaN(value)) {
+      return `--${suffix}`;
+    }
+    return `${value}${suffix}`;
+  }
+
   updateUI() {
-    // Whoop elements
-    this.setTextContent('whoop-sleep-val', `${Math.round(this.metrics.sleep)}%`);
-    this.setTextContent('whoop-recovery-val', `${Math.round(this.metrics.recovery)}%`);
-    this.setTextContent('whoop-strain-val', this.metrics.strain.toFixed(1));
+    this.setTextContent(
+      'whoop-sleep-val',
+      this.metrics.sleep === null ? '--%' : `${Math.round(this.metrics.sleep)}%`
+    );
+    this.setTextContent(
+      'whoop-recovery-val',
+      this.metrics.recovery === null ? '--%' : `${Math.round(this.metrics.recovery)}%`
+    );
+    this.setTextContent(
+      'whoop-strain-val',
+      this.metrics.strain === null ? '--' : this.metrics.strain.toFixed(1)
+    );
 
-    // Withings elements
-    this.setTextContent('withings-weight-val', this.metrics.weight.toFixed(1));
-    this.setTextContent('withings-muscle-val', this.metrics.muscle.toFixed(1));
-    this.setTextContent('withings-fat-val', this.metrics.fat.toFixed(1));
+    this.setTextContent(
+      'withings-weight-val',
+      this.metrics.weight === null ? '--' : this.metrics.weight.toFixed(1)
+    );
+    this.setTextContent(
+      'withings-muscle-val',
+      this.metrics.muscle === null ? '--' : this.metrics.muscle.toFixed(1)
+    );
+    this.setTextContent(
+      'withings-fat-val',
+      this.metrics.fat === null ? '--' : this.metrics.fat.toFixed(1)
+    );
 
-    // Last Synced
     this.updateSyncedTimeText();
   }
 
@@ -130,13 +175,12 @@ class HealthWidget {
     if (!el) return;
 
     if (!this.metrics.lastSynced) {
-      el.textContent = 'Last synced: Just now';
+      el.textContent = 'Last synced: Pending';
       return;
     }
 
     const diffMs = Date.now() - this.metrics.lastSynced;
-    const diffSec = Math.floor(diffMs / 1000);
-    const diffMin = Math.floor(diffSec / 60);
+    const diffMin = Math.floor(diffMs / 60000);
     const diffHour = Math.floor(diffMin / 60);
 
     if (diffMin < 1) {
@@ -154,12 +198,9 @@ class HealthWidget {
 
   startRelativeTimeUpdater() {
     if (this.timeUpdater) clearInterval(this.timeUpdater);
-    this.timeUpdater = setInterval(() => this.updateSyncedTimeText(), 30000); // every 30s
+    this.timeUpdater = setInterval(() => this.updateSyncedTimeText(), 30000);
   }
 
-  /**
-   * Update a specific metric with visual feedback
-   */
   updateMetric(name, rawValue) {
     const cleanName = name.toLowerCase().trim();
     const value = parseFloat(rawValue);
@@ -172,18 +213,15 @@ class HealthWidget {
       throw new Error(`Unknown health metric: ${name}`);
     }
 
-    // Trigger sync animation
     const syncContainer = document.querySelector('.last-sync-time');
     if (syncContainer) {
       syncContainer.classList.add('syncing');
     }
 
-    // Update value
     this.metrics[cleanName] = value;
     this.metrics.lastSynced = Date.now();
     this.saveMetrics();
 
-    // Trigger visual highlight based on metric type
     setTimeout(() => {
       this.updateUI();
 
@@ -196,7 +234,7 @@ class HealthWidget {
 
       if (targetEl) {
         targetEl.classList.remove('highlight');
-        void targetEl.offsetWidth; // Force reflow
+        void targetEl.offsetWidth;
         targetEl.classList.add('highlight');
       }
 
@@ -216,7 +254,6 @@ class HealthWidget {
   }
 }
 
-// Global initialization
 const initHealthWidget = () => {
   window.healthWidget = new HealthWidget();
 };

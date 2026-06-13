@@ -98,6 +98,85 @@ async def refresh_access_token(refresh_token: str) -> Dict[str, Any]:
     }
 
 
+# Withings measure types (https://developer.withings.com/developer-guide/v3/data-api/all-metrics)
+_MEASURE_WEIGHT_KG = 1
+_MEASURE_FAT_RATIO_PCT = 6
+_MEASURE_FAT_MASS_KG = 8
+_MEASURE_MUSCLE_MASS_KG = 76
+
+
+def _decode_measure_amount(measure: Dict[str, Any]) -> float | None:
+    value = measure.get("value")
+    if value is None:
+        return None
+    unit = measure.get("unit") or 0
+    return float(value) * (10 ** int(unit))
+
+
+def _extract_group_measures(group: Dict[str, Any]) -> Dict[int, float]:
+    extracted: Dict[int, float] = {}
+    for measure in group.get("measures") or []:
+        meas_type = measure.get("type")
+        if meas_type is None:
+            continue
+        amount = _decode_measure_amount(measure)
+        if amount is not None:
+            extracted[int(meas_type)] = amount
+    return extracted
+
+
+def _latest_body_comp_measures(groups: list) -> Dict[int, float]:
+    """Return measures from the most recent weigh-in group (must include weight)."""
+    sorted_groups = sorted(groups or [], key=lambda group: group.get("date") or 0, reverse=True)
+    for group in sorted_groups:
+        measures = _extract_group_measures(group)
+        if _MEASURE_WEIGHT_KG in measures:
+            return measures
+    return {}
+
+
+def _resolve_fat_ratio_pct(measures: Dict[int, float]) -> float | None:
+    fat_ratio = measures.get(_MEASURE_FAT_RATIO_PCT)
+    if fat_ratio is not None and 3 <= fat_ratio <= 75:
+        return round(fat_ratio, 1)
+
+    weight = measures.get(_MEASURE_WEIGHT_KG)
+    fat_mass = measures.get(_MEASURE_FAT_MASS_KG)
+    if weight and fat_mass and weight > 0:
+        derived = (fat_mass / weight) * 100
+        if 3 <= derived <= 75:
+            return round(derived, 1)
+    return None
+
+
+def _resolve_muscle_ratio_pct(measures: Dict[int, float]) -> float | None:
+    weight = measures.get(_MEASURE_WEIGHT_KG)
+    muscle_mass = measures.get(_MEASURE_MUSCLE_MASS_KG)
+    if not weight or not muscle_mass or weight <= 0:
+        return None
+    derived = (muscle_mass / weight) * 100
+    if 20 <= derived <= 95:
+        return round(derived, 1)
+    return None
+
+
+def format_weight_trend(measures: Dict[int, float]) -> str | None:
+    weight = measures.get(_MEASURE_WEIGHT_KG)
+    if weight is None:
+        return None
+
+    parts = [f"{weight:.1f} kg"]
+    muscle_pct = _resolve_muscle_ratio_pct(measures)
+    fat_pct = _resolve_fat_ratio_pct(measures)
+
+    if muscle_pct is not None:
+        parts.append(f"{muscle_pct:.1f}% muscle")
+    if fat_pct is not None:
+        parts.append(f"{fat_pct:.1f}% fat")
+
+    return " · ".join(parts)
+
+
 async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
     today = datetime.now(timezone.utc).date().isoformat()
     enddate = int(time.time())
@@ -131,32 +210,11 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         return summary
 
     groups = (payload.get("body") or {}).get("measuregrps") or []
-    latest_weight = None
-    latest_fat = None
-    for group in groups:
-        for measure in group.get("measures") or []:
-            value = measure.get("value")
-            unit = measure.get("unit") or 0
-            if value is None:
-                continue
-            amount = float(value) * (10 ** int(unit))
-            meas_type = measure.get("type")
-            if meas_type == 1:
-                latest_weight = amount
-            if meas_type == 11:
-                latest_fat = amount
-
-    if latest_weight is not None:
-        summary["weight_trend"] = f"{latest_weight:.1f} kg"
-    if latest_fat is not None:
-        summary["weight_trend"] = (
-            f"{latest_weight:.1f} kg" if latest_weight else summary["weight_trend"] or ""
-        )
-        if latest_fat <= 100:
-            summary["weight_trend"] = (
-                (summary["weight_trend"] + f" · {latest_fat:.1f}% fat").strip(" ·")
-                if summary["weight_trend"]
-                else f"{latest_fat:.1f}% fat"
-            )
+    measures = _latest_body_comp_measures(groups)
+    weight_trend = format_weight_trend(measures)
+    if weight_trend:
+        summary["weight_trend"] = weight_trend
+    elif groups:
+        summary["source_status"] = "partial"
 
     return summary

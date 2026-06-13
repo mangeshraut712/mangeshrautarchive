@@ -63,6 +63,7 @@ export class AccessibilityEnhancer {
       this.createAccessibilityToolbar();
     }
 
+    this.applyGlassTint(this.getStoredGlassTint(), { instant: true });
     this.isInitialized = true;
     this.announce('Accessibility features enabled', 'polite');
   }
@@ -757,8 +758,10 @@ export class AccessibilityEnhancer {
           position: relative;
           width: 42px;
           height: 42px;
+          min-width: 42px;
+          min-height: 42px;
+          padding: 0;
           border-radius: 999px;
-          color: #0071e3;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
@@ -767,22 +770,16 @@ export class AccessibilityEnhancer {
           font-weight: 800;
           line-height: 1;
           letter-spacing: -0.01em;
-          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .a11y-toolbar button:hover {
           transform: translateY(-2px) scale(1.04);
-          box-shadow:
-            0 10px 24px rgb(0 113 227 / 14%),
-            0 4px 12px rgb(0 0 0 / 8%);
-          background: rgb(255 255 255 / 92%);
         }
 
         .a11y-toolbar button:focus-visible {
           outline: none;
-          box-shadow:
-            0 0 0 4px rgb(0 113 227 / 25%),
-            0 12px 28px rgb(0 113 227 / 18%);
+          box-shadow: 0 0 0 4px rgb(0 113 227 / 25%);
         }
 
         .a11y-toolbar button::after {
@@ -825,49 +822,10 @@ export class AccessibilityEnhancer {
           letter-spacing: -0.02em;
         }
 
-        html.dark .a11y-toolbar button {
-          color: #4ea1ff;
-        }
-
-        html.dark .a11y-toolbar button:hover {
-          box-shadow:
-            0 10px 24px rgb(10 132 255 / 12%),
-            0 4px 12px rgb(0 0 0 / 30%);
-        }
-
-        html.dark .a11y-toolbar button:focus-visible {
-          box-shadow:
-            0 0 0 4px rgb(78 161 255 / 28%),
-            0 12px 28px rgb(10 132 255 / 18%);
-        }
-
         html.dark .a11y-toolbar button::after {
           background: rgb(18 18 20 / 96%);
           border-color: rgb(255 255 255 / 10%);
           color: #f5f5f7;
-        }
-
-        @media (max-width: 768px) {
-          .a11y-toolbar {
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: max(16px, env(safe-area-inset-bottom));
-            gap: 8px;
-            padding: 8px;
-            width: auto;
-            max-width: calc(100% - 32px);
-            justify-content: center;
-          }
-
-          .a11y-toolbar button {
-            width: 40px;
-            height: 40px;
-            font-size: 0.84rem;
-          }
-
-          .a11y-toolbar button::after {
-            display: none;
-          }
         }
 
         .a11y-glass-popover {
@@ -915,14 +873,6 @@ export class AccessibilityEnhancer {
 
         html.dark .a11y-glass-popover input[type='range'] {
           accent-color: #4ea1ff;
-        }
-
-        @media (max-width: 768px) {
-          .a11y-glass-popover {
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: calc(max(16px, env(safe-area-inset-bottom)) + 66px);
-          }
         }
       `;
       document.head.appendChild(style);
@@ -973,6 +923,7 @@ export class AccessibilityEnhancer {
     });
 
     document.body.appendChild(toolbar);
+    document.body.classList.add('has-a11y-toolbar');
   }
 
   formatGlassTintLabel(value) {
@@ -1062,9 +1013,9 @@ export class AccessibilityEnhancer {
     return 55;
   }
 
-  applyGlassTint(value) {
+  applyGlassTint(value, { instant = false } = {}) {
     const clamped = Math.min(100, Math.max(0, value));
-    syncLiquidGlassTokens(clamped / 100);
+    syncLiquidGlassTokens(clamped / 100, { instant });
     this.updateGlassTintReadout(clamped);
     const slider = document.querySelector('.a11y-glass-popover input[type="range"]');
     if (slider && Number(slider.value) !== clamped) {
