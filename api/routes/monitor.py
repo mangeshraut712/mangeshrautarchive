@@ -23,6 +23,26 @@ def _mask_monitor_identifier(value: str) -> str:
     return f"client:{digest}"
 
 
+def _redact_monitor_event(event: Dict) -> Dict:
+    if not isinstance(event, dict):
+        return event
+    redacted = dict(event)
+    details = dict(redacted.get("details") or {})
+    for key in ("ip", "client_ip"):
+        if details.get(key):
+            details[key] = _mask_monitor_identifier(str(details[key]))
+    redacted["details"] = details
+    return redacted
+
+
+def _monitor_admin_token_ok(request: Request) -> bool:
+    admin_token = os.getenv("MONITOR_ADMIN_TOKEN", "").strip()
+    if not admin_token:
+        return False
+    provided = request.headers.get("x-monitor-admin-token", "").strip()
+    return provided == admin_token
+
+
 def _require_monitor_admin(request: Request) -> None:
     admin_token = os.getenv("MONITOR_ADMIN_TOKEN", "").strip()
     if admin_token:
@@ -377,6 +397,7 @@ async def get_monitor_hosting_surfaces():
 @router.get("/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
 @router.get("/api/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
 async def get_monitor_events(
+    request: Request,
     limit: int = 100,
     event_type: Optional[str] = None,
     resolved_only: Optional[bool] = None,
@@ -404,6 +425,8 @@ async def get_monitor_events(
     events = system_monitor.get_events(
         limit=safe_limit, event_type=event_type_enum, resolved_only=resolved_only
     )
+    if not _monitor_admin_token_ok(request):
+        events = [_redact_monitor_event(event) for event in events]
     return {
         "events": events,
         "count": len(events),
@@ -535,7 +558,7 @@ async def track_web_vitals(vitals: Dict[str, float]):
 
 
 @router.get("/api/monitor/security")
-async def get_security_status():
+async def get_security_status(request: Request):
     """Get security monitoring data"""
     if system_monitor is None:
         return {
@@ -565,8 +588,12 @@ async def get_security_status():
         _mask_monitor_identifier(str(value))
         for value in list(system_monitor.suspicious_ips)
     ]
+    security_events = [
+        _redact_monitor_event(event) if not _monitor_admin_token_ok(request) else event
+        for event in list(system_monitor.security_events)[-20:]
+    ]
     return {
-        "security_events": list(system_monitor.security_events)[-20:],  # Last 20 events
+        "security_events": security_events,
         "suspicious_clients": suspicious_clients,
         "suspicious_ips": suspicious_clients,
         "rate_limits": active_rate_limits,

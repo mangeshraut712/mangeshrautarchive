@@ -7,6 +7,9 @@ import httpx
 from api.integrations.token_crypto import decrypt_secret, encrypt_secret
 
 
+_local_sync_state: Dict[str, Dict[str, Any]] = {}
+
+
 PUBLIC_HEALTH_FIELDS = (
     "date",
     "sleep_score",
@@ -406,6 +409,12 @@ async def upsert_health_summary_row(row: Dict[str, Any]) -> bool:
 
 
 async def update_sync_state(provider: str, **fields: Any) -> None:
+    _local_sync_state[provider] = {
+        **(_local_sync_state.get(provider) or {}),
+        **fields,
+        "provider": provider,
+        "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
     if not supabase_is_configured():
         return
     payload = {
@@ -426,3 +435,27 @@ async def update_sync_state(provider: str, **fields: Any) -> None:
         )
     except (httpx.HTTPError, ValueError):
         return
+
+
+async def fetch_sync_state(provider: str) -> Dict[str, Any]:
+    if not supabase_is_configured():
+        return dict(_local_sync_state.get(provider) or {})
+
+    try:
+        response = await _rest_request(
+            "GET",
+            "integration_sync_state",
+            params={
+                "select": "provider,channel_id,channel_token,resource_id,channel_expires_at,last_success_at,last_error,updated_at",
+                "provider": f"eq.{provider}",
+                "limit": "1",
+            },
+        )
+        response.raise_for_status()
+        rows = response.json()
+        if isinstance(rows, list) and rows:
+            return rows[0]
+    except (httpx.HTTPError, ValueError):
+        pass
+
+    return dict(_local_sync_state.get(provider) or {})

@@ -139,11 +139,17 @@ async def refresh_access_token(refresh_token: str) -> Dict[str, Any]:
     return response.json()
 
 
-async def register_watch(access_token: str, webhook_url: str, channel_id: str) -> Dict[str, Any]:
+async def register_watch(
+    access_token: str,
+    webhook_url: str,
+    channel_id: str,
+    channel_token: str,
+) -> Dict[str, Any]:
     payload = {
         "id": channel_id,
         "type": "web_hook",
         "address": webhook_url,
+        "token": channel_token,
     }
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.post(

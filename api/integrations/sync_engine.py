@@ -84,11 +84,13 @@ async def register_google_calendar_watch() -> Dict[str, Any]:
         return {"provider": "google_calendar", "status": "degraded"}
     webhook_base = os.getenv("GOOGLE_CALENDAR_WEBHOOK_URL", "").strip() or "https://mangeshraut.pro/api/calendar/webhook/google"
     channel_id = secrets.token_urlsafe(16)
+    channel_token = secrets.token_urlsafe(32)
     try:
-        watch = await google_calendar.register_watch(token, webhook_base, channel_id)
+        watch = await google_calendar.register_watch(token, webhook_base, channel_id, channel_token)
         await update_sync_state(
             "google_calendar",
             channel_id=watch.get("id") or channel_id,
+            channel_token=channel_token,
             resource_id=watch.get("resourceId"),
             channel_expires_at=watch.get("expiration"),
             last_success_at=_utc_now(),

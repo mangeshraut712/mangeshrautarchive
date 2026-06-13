@@ -19,6 +19,8 @@ from api.config import (
     is_prompt_injection,
     sanitize_chat_text,
     sanitize_session_id,
+    create_session_token,
+    verify_session_token,
     sanitize_client_history,
     get_session_memory,
     SYSTEM_PROMPT,
@@ -676,6 +678,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                     "Cache-Control": "no-cache",
                     "X-Accel-Buffering": "no",
                     "X-Session-ID": session_id,
+                    "X-Session-Token": create_session_token(session_id) if session_id else "",
                 },
             )
 
@@ -688,6 +691,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "source": "OpenRouter",
             "model": response["model"],
             "session_id": session_id,
+            "session_token": create_session_token(session_id) if session_id else None,
             "category": "General",
             "confidence": 0.95,
             "runtime": f"{runtime}ms",
@@ -753,15 +757,21 @@ async def typing_indicator(indicator: TypingIndicator):
 
 
 @router.get("/api/conversation/{session_id}")
-async def get_conversation(session_id: str):
+async def get_conversation(session_id: str, request: Request):
     """Get conversation history for a session"""
+    token = request.headers.get("x-session-token", "").strip()
+    if not verify_session_token(session_id, token):
+        raise HTTPException(status_code=403, detail="Session token required")
     history = get_session_memory(session_id)
     return {"session_id": session_id, "messages": history, "count": len(history)}
 
 
 @router.delete("/api/conversation/{session_id}")
-async def clear_conversation(session_id: str):
+async def clear_conversation(session_id: str, request: Request):
     """Clear conversation history"""
+    token = request.headers.get("x-session-token", "").strip()
+    if not verify_session_token(session_id, token):
+        raise HTTPException(status_code=403, detail="Session token required")
     from api.config import conversation_memory
     if session_id in conversation_memory:
         del conversation_memory[session_id]

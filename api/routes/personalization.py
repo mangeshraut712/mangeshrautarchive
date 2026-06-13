@@ -25,7 +25,7 @@ async def update_user_preferences(request: Request, preferences: Dict[str, Any])
     Update user preferences (GDPR compliant)
     """
     try:
-        user_id = str(preferences.get("user_id") or get_client_ip(request))[:128]
+        user_id = str(get_client_ip(request))[:128]
         prefs = preferences.get("preferences", {})
 
         memory_manager.update_preferences(user_id, prefs)
@@ -42,9 +42,9 @@ async def update_user_preferences(request: Request, preferences: Dict[str, Any])
 
 
 @router.get("/api/personalization/export")
-async def export_user_data(request: Request, user_id: Optional[str] = None):
-    """Export stored personalization and conversation data for the current user."""
-    resolved_user_id = str(user_id or get_client_ip(request))[:128]
+async def export_user_data(request: Request):
+    """Export stored personalization and conversation data for the current client."""
+    resolved_user_id = str(get_client_ip(request))[:128]
     payload = memory_manager.export_user_data(resolved_user_id)
 
     return {
@@ -55,9 +55,9 @@ async def export_user_data(request: Request, user_id: Optional[str] = None):
 
 
 @router.delete("/api/personalization/delete")
-async def delete_user_data(request: Request, user_id: Optional[str] = None):
-    """Delete stored personalization and conversation data for the current user."""
-    resolved_user_id = str(user_id or get_client_ip(request))[:128]
+async def delete_user_data(request: Request):
+    """Delete stored personalization and conversation data for the current client."""
+    resolved_user_id = str(get_client_ip(request))[:128]
     result = memory_manager.delete_user_data(resolved_user_id)
 
     return {
@@ -70,12 +70,11 @@ async def delete_user_data(request: Request, user_id: Optional[str] = None):
 
 
 @router.get("/api/personalization/greeting")
-async def get_personalized_greeting(request: Request, user_id: Optional[str] = None):
+async def get_personalized_greeting(request: Request):
     """
     Get personalized greeting based on user history
     """
-    if not user_id:
-        user_id = get_client_ip(request)
+    user_id = get_client_ip(request)
 
     greeting = memory_manager.get_personalized_greeting(user_id)
     context = memory_manager.get_context_for_user(user_id)

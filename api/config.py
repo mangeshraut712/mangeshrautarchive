@@ -3,6 +3,8 @@ import json
 import time
 import secrets
 import re
+import hashlib
+import hmac
 from typing import List, Optional, Dict, Any
 from collections import defaultdict
 from fastapi import HTTPException, Request
@@ -576,3 +578,37 @@ def adaptive_llm_params(message: str) -> dict:
     if _CREATIVE_KEYWORDS.search(message):
         return {"temperature": 0.85, "max_tokens": 1800, "top_p": 0.95}
     return {"temperature": 0.7, "max_tokens": 1500, "top_p": 0.9}
+
+
+def _session_auth_secret() -> bytes:
+    material = (
+        os.getenv("SESSION_AUTH_SECRET", "").strip()
+        or os.getenv("INTEGRATION_ENCRYPTION_KEY", "").strip()
+        or os.getenv("INTEGRATION_SYNC_ADMIN_TOKEN", "").strip()
+    )
+    if not material:
+        material = (
+            "production-session-auth-unconfigured"
+            if os.getenv("VERCEL_ENV") == "production"
+            else "local-dev-session-auth"
+        )
+    return hashlib.sha256(material.encode("utf-8")).digest()
+
+
+def create_session_token(session_id: str) -> str:
+    return hmac.new(_session_auth_secret(), session_id.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def verify_session_token(session_id: str, token: str) -> bool:
+    if not session_id or not token:
+        return False
+    return hmac.compare_digest(create_session_token(session_id), token.strip())
+
+
+def enforce_rate_limit(request: Request) -> None:
+    client_id = get_client_ip(request)
+    if not check_rate_limit(client_id):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests. Please wait before trying again.",
+        )

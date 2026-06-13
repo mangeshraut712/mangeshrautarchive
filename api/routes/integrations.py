@@ -8,7 +8,13 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
 from api.integrations import google_calendar, whoop, withings
-from api.integrations.oauth_state import create_oauth_state, verify_oauth_state
+from api.integrations.integration_auth import (
+    normalize_provider,
+    provider_connect_path,
+    require_integration_admin,
+    verify_oauth_connect_access,
+)
+from api.integrations.oauth_state import create_connect_auth_token, create_oauth_state, verify_oauth_state
 from api.integrations.sync_engine import (
     register_google_calendar_watch,
     sync_all_providers,
@@ -20,6 +26,7 @@ from api.integrations.supabase_store import (
     disconnect_provider,
     empty_health_summary,
     fetch_latest_health_summary,
+    fetch_sync_state,
     get_provider_access_token,
     integration_is_connected,
     save_provider_tokens,
@@ -28,7 +35,13 @@ from api.integrations.supabase_store import (
     upsert_health_summary_row,
 )
 
+from api.config import enforce_rate_limit
+
 router = APIRouter()
+
+
+def _enforce_rate_limit(request: Request) -> None:
+    enforce_rate_limit(request)
 
 
 class HealthVitalsUpsert(BaseModel):
@@ -78,7 +91,8 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
                 "read:body_measurement",
                 "offline",
             ],
-            "connectUrl": "/api/integrations/whoop/connect" if whoop_configured else None,
+            "connectUrl": None,
+            "requiresOwnerAuth": whoop_configured,
             "nextStep": "Create a WHOOP OAuth app and configure callback URL.",
         },
         "withings": {
@@ -86,7 +100,8 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
             "connected": await integration_is_connected("withings"),
             "purpose": "Weight and body composition trends from Withings devices.",
             "scopes": ["user.metrics", "user.activity"],
-            "connectUrl": "/api/integrations/withings/connect" if withings_configured else None,
+            "connectUrl": None,
+            "requiresOwnerAuth": withings_configured,
             "nextStep": "Create a Withings OAuth app and configure callback URL.",
         },
         "googleCalendar": {
@@ -94,26 +109,34 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
             "connected": google_connected,
             "purpose": "Free/busy availability, reminders, and safe calendar summaries.",
             "scopes": ["calendar.freebusy", "calendar.readonly"],
-            "connectUrl": "/api/integrations/google-calendar/connect" if google_configured else None,
+            "connectUrl": None,
+            "requiresOwnerAuth": google_configured,
             "nextStep": "Create a Google OAuth client and connect calendar access.",
         },
     }
 
 
 def _require_integration_admin(request: Request) -> None:
-    expected = (
-        os.getenv("INTEGRATION_SYNC_ADMIN_TOKEN", "").strip()
-        or os.getenv("MONITOR_ADMIN_TOKEN", "").strip()
-    )
-    if not expected:
-        raise HTTPException(
-            status_code=503,
-            detail="Integration sync admin token is not configured.",
-        )
+    require_integration_admin(request)
 
-    provided = request.headers.get("x-integration-admin-token", "").strip()
-    if provided != expected:
-        raise HTTPException(status_code=403, detail="Integration admin token required")
+
+@router.get(
+    "/api/integrations/admin/connect-url/{provider}",
+    tags=["core"],
+    summary="Signed owner connect URL for an integration provider",
+)
+async def get_admin_connect_url(provider: str, request: Request):
+    _enforce_rate_limit(request)
+    _require_integration_admin(request)
+    normalized = normalize_provider(provider)
+    auth = create_connect_auth_token(normalized)
+    return {
+        "success": True,
+        "provider": normalized,
+        "url": f"{provider_connect_path(normalized)}?auth={auth}",
+        "expiresIn": 600,
+        "timestamp": _utc_now(),
+    }
 
 
 @router.get(
@@ -255,7 +278,8 @@ async def get_calendar_availability():
             "status": "needs_auth",
             "source": "google-calendar",
             "days": [],
-            "connectUrl": provider.get("connectUrl"),
+            "connectUrl": None,
+            "requiresOwnerAuth": True,
             "message": "Google Calendar is configured but not connected yet.",
             "privacy": "Availability should expose free/busy windows only, not private event details.",
         }
@@ -268,7 +292,8 @@ async def get_calendar_availability():
             "status": "degraded",
             "source": "google-calendar",
             "days": [],
-            "connectUrl": provider.get("connectUrl"),
+            "connectUrl": None,
+            "requiresOwnerAuth": True,
             "message": "Calendar token storage is unavailable.",
             "privacy": "Availability should expose free/busy windows only, not private event details.",
         }
@@ -282,7 +307,8 @@ async def get_calendar_availability():
             "status": "live",
             "source": "google-calendar",
             "days": days,
-            "connectUrl": provider.get("connectUrl"),
+            "connectUrl": None,
+            "requiresOwnerAuth": False,
             "message": None,
             "privacy": "Availability should expose free/busy windows only, not private event details.",
         }
@@ -294,7 +320,8 @@ async def get_calendar_availability():
             "status": "degraded",
             "source": "google-calendar",
             "days": [],
-            "connectUrl": provider.get("connectUrl"),
+            "connectUrl": None,
+            "requiresOwnerAuth": True,
             "message": "Calendar free/busy lookup failed.",
             "privacy": "Availability should expose free/busy windows only, not private event details.",
         }
@@ -305,9 +332,11 @@ async def get_calendar_availability():
     tags=["core"],
     summary="Start Google Calendar OAuth",
 )
-async def connect_google_calendar():
+async def connect_google_calendar(request: Request, auth: Optional[str] = None):
+    _enforce_rate_limit(request)
     if not google_calendar.is_configured():
         raise HTTPException(status_code=503, detail="Google Calendar OAuth is not configured.")
+    verify_oauth_connect_access(request, "google_calendar", auth)
     state = create_oauth_state("google_calendar")
     return RedirectResponse(google_calendar.build_authorize_url(state), status_code=302)
 
@@ -362,9 +391,11 @@ async def google_calendar_callback(code: Optional[str] = None, state: Optional[s
     tags=["core"],
     summary="Start WHOOP OAuth",
 )
-async def connect_whoop():
+async def connect_whoop(request: Request, auth: Optional[str] = None):
+    _enforce_rate_limit(request)
     if not whoop.is_configured():
         raise HTTPException(status_code=503, detail="WHOOP OAuth is not configured.")
+    verify_oauth_connect_access(request, "whoop", auth)
     state = create_oauth_state("whoop")
     return RedirectResponse(whoop.build_authorize_url(state), status_code=302)
 
@@ -400,9 +431,11 @@ async def whoop_callback(code: Optional[str] = None, state: Optional[str] = None
     tags=["core"],
     summary="Start Withings OAuth",
 )
-async def connect_withings():
+async def connect_withings(request: Request, auth: Optional[str] = None):
+    _enforce_rate_limit(request)
     if not withings.is_configured():
         raise HTTPException(status_code=503, detail="Withings OAuth is not configured.")
+    verify_oauth_connect_access(request, "withings", auth)
     state = create_oauth_state("withings")
     return RedirectResponse(withings.build_authorize_url(state), status_code=302)
 
@@ -480,9 +513,21 @@ async def register_calendar_watch(request: Request):
 )
 async def google_calendar_webhook(request: Request):
     channel_id = request.headers.get("X-Goog-Channel-ID")
+    channel_token = request.headers.get("X-Goog-Channel-Token")
     resource_state = request.headers.get("X-Goog-Resource-State")
     if resource_state == "sync":
         return {"success": True, "status": "acknowledged"}
-    if channel_id and await integration_is_connected("google_calendar"):
-        await sync_google_calendar_availability()
+
+    if not channel_id or not await integration_is_connected("google_calendar"):
+        raise HTTPException(status_code=403, detail="Calendar webhook rejected.")
+
+    sync_state = await fetch_sync_state("google_calendar")
+    expected_channel = str(sync_state.get("channel_id") or "").strip()
+    expected_token = str(sync_state.get("channel_token") or "").strip()
+    if expected_channel and channel_id != expected_channel:
+        raise HTTPException(status_code=403, detail="Unknown calendar webhook channel.")
+    if expected_token and channel_token != expected_token:
+        raise HTTPException(status_code=403, detail="Invalid calendar webhook token.")
+
+    await sync_google_calendar_availability()
     return {"success": True, "status": "processed"}

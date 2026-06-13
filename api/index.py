@@ -42,6 +42,10 @@ OPENAPI_TAGS = [
 ]
 
 # Initialize FastAPI with optimizations
+_enable_public_docs = os.getenv("ENABLE_PUBLIC_API_DOCS", "").lower() in {"1", "true", "yes"}
+_is_production_runtime = os.getenv("VERCEL_ENV") == "production"
+_public_docs_enabled = _enable_public_docs or not _is_production_runtime
+
 app = FastAPI(
     title="AssistMe - AI Portfolio Assistant API",
     description=(
@@ -49,9 +53,9 @@ app = FastAPI(
         "Includes chatbot APIs, GitHub activity, monitor endpoints, and operational diagnostics."
     ),
     version="3.0.0",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
+    docs_url="/api/docs" if _public_docs_enabled else None,
+    redoc_url="/api/redoc" if _public_docs_enabled else None,
+    openapi_url="/api/openapi.json" if _public_docs_enabled else None,
     openapi_tags=OPENAPI_TAGS,
 )
 

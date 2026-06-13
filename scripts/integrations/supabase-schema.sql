@@ -43,6 +43,7 @@ create table if not exists integration_sync_state (
   provider text primary key,
   cursor text,
   channel_id text,
+  channel_token text,
   resource_id text,
   channel_expires_at timestamptz,
   last_success_at timestamptz,

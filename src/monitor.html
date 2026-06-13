@@ -570,9 +570,26 @@
           </div>
         </div>
         <p class="section-lead">
-          Connect providers in <strong>Chrome</strong> (signed into the account you want to link).
-          Use the buttons below or open the connect URLs directly if a bookmark works better.
+          Owner-only OAuth linking is protected. Enter your admin token below, then use
+          <strong>Connect in Chrome</strong> to start a signed OAuth flow for the account you want to link.
         </p>
+        <div class="integration-owner-auth">
+          <label for="owner-admin-token">Owner admin token</label>
+          <div class="integration-owner-auth__row">
+            <input
+              id="owner-admin-token"
+              type="password"
+              autocomplete="off"
+              placeholder="Paste INTEGRATION_SYNC_ADMIN_TOKEN or MONITOR_ADMIN_TOKEN"
+            />
+            <button type="button" class="btn btn-secondary" id="btn-save-owner-token">
+              Save for session
+            </button>
+          </div>
+          <p class="integration-owner-auth__hint">
+            Stored only in this browser session. Required for OAuth connect and monitor event resolve actions.
+          </p>
+        </div>
         <div class="health-grid" id="oauth-integrations">
           <div class="empty-state">
             <i class="fas fa-spinner fa-spin"></i>
@@ -1005,6 +1022,7 @@
           if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
           const response = await fetch(buildApiUrl(`/api/monitor/events/${eventId}/resolve`), {
             method: 'POST',
+            headers: ownerAdminHeaders(),
           });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           showToast('Event resolved successfully', 'success');
@@ -1839,6 +1857,52 @@
         return `${base.replace(/\/$/, '')}${connectUrl.startsWith('/') ? connectUrl : `/${connectUrl}`}`;
       }
 
+      const INTEGRATION_PROVIDER_SLUGS = {
+        googleCalendar: 'google-calendar',
+        whoop: 'whoop',
+        withings: 'withings',
+      };
+
+      function getOwnerAdminToken() {
+        return sessionStorage.getItem('ownerAdminToken') || '';
+      }
+
+      function saveOwnerAdminToken(value) {
+        const trimmed = String(value || '').trim();
+        if (trimmed) {
+          sessionStorage.setItem('ownerAdminToken', trimmed);
+        } else {
+          sessionStorage.removeItem('ownerAdminToken');
+        }
+      }
+
+      function ownerAdminHeaders() {
+        const token = getOwnerAdminToken();
+        return token ? { 'x-integration-admin-token': token, 'x-monitor-admin-token': token } : {};
+      }
+
+      async function startIntegrationConnect(providerKey) {
+        const slug = INTEGRATION_PROVIDER_SLUGS[providerKey];
+        if (!slug) return;
+        if (!getOwnerAdminToken()) {
+          showToast('Enter and save the owner admin token first.', 'warning');
+          return;
+        }
+        try {
+          const response = await fetch(buildApiUrl(`/api/integrations/admin/connect-url/${slug}`), {
+            headers: ownerAdminHeaders(),
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await response.json();
+          const target = buildIntegrationConnectHref(payload.url);
+          if (!target) throw new Error('Missing connect URL');
+          globalThis.open(target, '_blank', 'noopener,noreferrer');
+        } catch (error) {
+          console.error('Secure connect failed:', error);
+          showToast('Unable to start secure OAuth connect.', 'error');
+        }
+      }
+
       function renderIntegrationsPanel(data) {
         const container = document.getElementById('oauth-integrations');
         if (!container) return;
@@ -1866,13 +1930,13 @@
             const provider = data.providers[key] || {};
             const statusClass = integrationStatusClass(provider);
             const statusLabel = integrationStatusLabel(provider);
-            const connectHref = buildIntegrationConnectHref(provider.connectUrl);
+            const showConnect = provider.requiresOwnerAuth && provider.configured && !provider.connected;
             const verifyHref = buildIntegrationConnectHref(verifyPath);
-            const actionMarkup = connectHref
-              ? `<a class="btn btn-secondary" href="${escapeHtml(connectHref)}" target="_blank" rel="noopener noreferrer">
+            const actionMarkup = showConnect
+              ? `<button type="button" class="btn btn-secondary" onclick="startIntegrationConnect('${key}')">
                    <i class="fas fa-arrow-up-right-from-square"></i>
                    <span>Connect in Chrome</span>
-                 </a>`
+                 </button>`
               : `<span class="integration-hint">${escapeHtml(provider.nextStep || 'Set provider env vars in Vercel, redeploy, then refresh.')}</span>`;
 
             return `
@@ -1886,7 +1950,7 @@
                     <p>${escapeHtml(provider.purpose || '')}</p>
                     <p class="integration-meta">
                       <span>${escapeHtml(statusLabel)}</span>
-                      ${connectHref ? `<code>${escapeHtml(connectHref)}</code>` : ''}
+                      ${showConnect ? '<span>Signed owner connect required</span>' : ''}
                     </p>
                   </div>
                 </div>
@@ -3319,6 +3383,18 @@
         monitorConfig = await loadPublicConfig();
         await ensureMonitorMetricsModule();
         bindMonitorDocsInteractions();
+        const ownerTokenInput = document.getElementById('owner-admin-token');
+        const ownerTokenButton = document.getElementById('btn-save-owner-token');
+        if (ownerTokenInput) {
+          ownerTokenInput.value = getOwnerAdminToken();
+        }
+        ownerTokenButton?.addEventListener('click', () => {
+          saveOwnerAdminToken(ownerTokenInput?.value || '');
+          showToast(
+            getOwnerAdminToken() ? 'Owner admin token saved for this session' : 'Owner admin token cleared',
+            getOwnerAdminToken() ? 'success' : 'info'
+          );
+        });
         refreshData({ silent: true });
 
         // Auto-refresh every 30 seconds
