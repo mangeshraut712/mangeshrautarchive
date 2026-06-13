@@ -42,8 +42,6 @@
   &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://mangeshraut.pro/monitor"><strong>📊 Live Operations Dashboard</strong></a>
   &nbsp;&nbsp;•&nbsp;&nbsp;
-  <a href="#-preview"><strong>📸 Preview</strong></a>
-  &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="#-engineering-deep-dives"><strong>🔧 See How It Was Built</strong></a>
 </p>
 
@@ -76,7 +74,6 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 ## 📑 Table of Contents
 
 - [🚀 Live Demos](#-live-demos)
-- [📸 Preview](#-preview)
 - [🔧 Engineering Deep Dives](#-engineering-deep-dives)
 - [🧠 Agentic AI Capabilities](#-agentic-ai-capabilities)
 - [🎨 Premium User Experience](#-premium-user-experience)
@@ -106,28 +103,6 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 | AI Assistant   | Open chat on any page                                                                               | Try: _"download resume"_, _"go to projects"_, _"schedule a meeting"_ |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
-
----
-
-## 📸 Preview
-
-<p align="center">
-  <a href="https://mangeshraut.pro">
-    <img src="src/assets/images/home-hd.webp" alt="Portfolio home — desktop hero with liquid glass UI" width="640">
-  </a>
-</p>
-
-<p align="center">
-  <img src="src/assets/images/home-mobile.webp" alt="Portfolio home — mobile layout" width="220">
-  &nbsp;&nbsp;
-  <img src="src/assets/images/graduation-hd.webp" alt="Graduation section" width="320">
-  &nbsp;&nbsp;
-  <img src="src/assets/images/avtar-hd.webp" alt="Profile avatar" width="140">
-</p>
-
-<p align="center">
-  <sub>Static previews — visit <a href="https://mangeshraut.pro">mangeshraut.pro</a> for AssistMe, travel atlas, health vitals, and the live monitor.</sub>
-</p>
 
 ---
 
