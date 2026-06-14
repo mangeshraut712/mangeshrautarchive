@@ -4,7 +4,7 @@
  *
  * Data flow:
  * 1) backend proxy (/api/github/repos/public) for repo catalog + server cache
- * 2) production proxy fallback
+ * 2) configured production proxy fallback
  * 3) direct GitHub API fallback
  */
 
@@ -42,16 +42,12 @@ class GitHubProjects {
         ? [
             `${apiBaseNormalized}/api/github/repos/public`,
             `${apiBaseNormalized}/api/github/repos`,
-            'https://mangeshrautarchive.vercel.app/api/github/repos/public',
-            'https://mangeshrautarchive.vercel.app/api/github/repos',
           ]
         : [
             '/api/github/repos/public',
             '/api/github/repos',
             'https://mangeshraut.pro/api/github/repos/public',
             'https://mangeshraut.pro/api/github/repos',
-            'https://mangeshrautarchive.vercel.app/api/github/repos/public',
-            'https://mangeshrautarchive.vercel.app/api/github/repos',
           ];
     this.directApiUrl = `https://api.github.com/users/${username}/repos`;
 
@@ -402,6 +398,12 @@ class GitHubProjects {
     };
   }
 
+  extractRepoList(payload) {
+    if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.data)) return payload.data;
+    return null;
+  }
+
   async fetchRepositories(forceRefresh = false) {
     // Force refresh bypasses all caches
     if (forceRefresh) {
@@ -420,7 +422,7 @@ class GitHubProjects {
         const { repos, timestamp, version } = JSON.parse(cached);
         if (
           version === this.repoSchemaVersion &&
-          repos &&
+          Array.isArray(repos) &&
           timestamp &&
           Date.now() - timestamp < this.cacheDuration
         ) {
@@ -435,31 +437,27 @@ class GitHubProjects {
 
     let rawRepos = null;
 
-    const proxyResults = await Promise.all(
-      this.proxyCandidates.map(async proxyBase => {
-        try {
-          const proxyResp = await fetch(
-            `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
-            { headers: { Accept: 'application/json' } }
-          );
+    for (const proxyBase of this.proxyCandidates) {
+      try {
+        const proxyResp = await fetch(
+          `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
+          { headers: { Accept: 'application/json' } }
+        );
 
-          if (!proxyResp.ok) {
-            console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
-            return null;
-          }
-
-          const data = await proxyResp.json();
-          if (data.success && Array.isArray(data.data)) {
-            return data.data;
-          }
-        } catch (err) {
-          console.warn(`Proxy ${proxyBase} failed:`, err.message);
+        if (!proxyResp.ok) {
+          console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
+          continue;
         }
-        return null;
-      })
-    );
 
-    rawRepos = proxyResults.find(Boolean) || null;
+        const repoList = this.extractRepoList(await proxyResp.json());
+        if (repoList) {
+          rawRepos = repoList;
+          break;
+        }
+      } catch (err) {
+        console.warn(`Proxy ${proxyBase} failed:`, err.message);
+      }
+    }
 
     if (!rawRepos) {
       try {

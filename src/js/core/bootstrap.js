@@ -873,17 +873,59 @@ async function loadDeferredBootstrapModules() {
   });
 }
 
+function normalizeBuildId(value) {
+  return String(value || '')
+    .trim()
+    .replace(/[^a-zA-Z0-9._-]/g, '-')
+    .slice(0, 96);
+}
+
+async function clearBrowserDeploymentCaches() {
+  if ('serviceWorker' in navigator) {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(registrations.map(registration => registration.unregister()));
+  }
+  if ('caches' in window) {
+    const cacheNames = await caches.keys();
+    await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+  }
+  try {
+    localStorage.removeItem('portfolio-version');
+    sessionStorage.clear();
+  } catch (_e) {
+    // Storage can be unavailable in private contexts; a reload still succeeds.
+  }
+}
+
+function reloadWithServerBuild(serverBuild, syncRetry = '0') {
+  const buildId = normalizeBuildId(serverBuild) || Date.now().toString();
+  const current = new URL(window.location.href);
+  current.searchParams.set('site_build', buildId);
+  current.searchParams.set('sync_retry', syncRetry);
+  current.searchParams.set('sync_ts', Date.now().toString());
+  window.location.replace(current.toString());
+}
+
 async function checkDeploymentVersion() {
   try {
     const localBuild = globalThis.buildConfig?.buildTime || globalThis.buildConfig?.gitCommit || globalThis.buildConfig?.version;
     if (!localBuild) return;
 
-    // Fetch the live configuration from the server, adding a cache-busting timestamp
-    const res = await fetch(`/build-config.json?t=${Date.now()}`);
+    const res = await fetch(`/build-config.json?sync_ts=${Date.now()}`, {
+      cache: 'no-store',
+      headers: {
+        Accept: 'application/json',
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+      },
+    });
     if (!res.ok) return;
 
     const serverConfig = await res.json();
     const serverBuild = serverConfig?.buildTime || serverConfig?.gitCommit || serverConfig?.version;
+    const current = new URL(window.location.href);
+    const currentBuildParam = current.searchParams.get('site_build');
+    const syncRetry = Number(current.searchParams.get('sync_retry') || '0');
 
     if (serverBuild && localBuild !== serverBuild) {
       console.warn('🔄 New website version detected on server. Clearing cache and reloading...', {
@@ -891,22 +933,15 @@ async function checkDeploymentVersion() {
         server: serverBuild,
       });
 
-      // Clear all service workers and caches
-      if ('serviceWorker' in navigator) {
-        const registrations = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(registrations.map(registration => registration.unregister()));
+      await clearBrowserDeploymentCaches();
+      if (currentBuildParam === normalizeBuildId(serverBuild)) {
+        if (syncRetry < 1) {
+          reloadWithServerBuild(serverBuild, String(syncRetry + 1));
+        }
+        return;
       }
-      if ('caches' in window) {
-        const cacheNames = await caches.keys();
-        await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
-      }
-      try {
-        localStorage.removeItem('portfolio-version');
-        sessionStorage.clear();
-      } catch (_e) {}
 
-      // Force-reload the page from the server
-      window.location.reload();
+      reloadWithServerBuild(serverBuild);
     }
   } catch (error) {
     console.info('Version check skipped or failed:', error);
@@ -936,6 +971,11 @@ async function initBootstrap() {
 
   // Low priority version check to sync new deployments instantly across all browsers
   checkDeploymentVersion();
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) {
+      checkDeploymentVersion();
+    }
+  });
 
   runWhenIdle(() => {
     loadDeferredBootstrapModules().catch(error => {
