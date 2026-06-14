@@ -10,6 +10,8 @@ const SHARE_MIRRORS = [
 ];
 
 let activeMirrorUrl = SHARE_MIRRORS[0].url;
+const SHARE_TOGGLE_ID = 'website-share-toggle';
+const SHARE_TOGGLE_LABEL = 'Share website';
 const SHARE_TITLE = 'Mangesh Raut Archive';
 const SHARE_TEXT =
   "Explore Mangesh Raut's software engineering portfolio, projects, writing, and systems work.";
@@ -37,6 +39,53 @@ const SHARE_OPTIONS = [
 
 const getQrCodeUrl = (url) => 
   `https://api.qrserver.com/v1/create-qr-code/?size=256x256&ecc=H&margin=0&color=000000&bgcolor=FFFFFF&data=${encodeURIComponent(url)}`;
+
+const waitForFrame = () =>
+  new Promise(resolve => {
+    requestAnimationFrame(() => resolve());
+  });
+
+function createShareToggleButton() {
+  const button = document.createElement('button');
+  button.id = SHARE_TOGGLE_ID;
+  button.type = 'button';
+  button.setAttribute('aria-label', SHARE_TOGGLE_LABEL);
+  button.setAttribute('data-label', SHARE_TOGGLE_LABEL);
+  button.innerHTML = `
+    <span class="a11y-toolbar-button__icon" aria-hidden="true">
+      <i class="fa-solid fa-share-nodes" style="font-size: 14px;"></i>
+    </span>
+  `;
+  return button;
+}
+
+function getAccessibilityToolbar() {
+  return document.querySelector('.a11y-toolbar');
+}
+
+function repairShareToggle() {
+  const existingToggle = document.getElementById(SHARE_TOGGLE_ID);
+  if (existingToggle) return existingToggle;
+
+  let toolbar = getAccessibilityToolbar();
+  if (!toolbar && typeof window.a11y?.createAccessibilityToolbar === 'function') {
+    window.a11y.createAccessibilityToolbar();
+    toolbar = getAccessibilityToolbar();
+  }
+
+  if (!toolbar) {
+    toolbar = document.createElement('div');
+    toolbar.className = 'a11y-toolbar';
+    toolbar.setAttribute('role', 'toolbar');
+    toolbar.setAttribute('aria-label', 'Accessibility tools');
+    document.body.appendChild(toolbar);
+    document.body.classList.add('has-a11y-toolbar');
+  }
+
+  const repairedToggle = createShareToggleButton();
+  toolbar.prepend(repairedToggle);
+  return repairedToggle;
+}
 
 const createShareMarkup = () => `
   <div id="website-share-dialog" class="website-share-dialog" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true" tabindex="-1">
@@ -104,9 +153,10 @@ function setDialogState(dialog, trigger, isOpen) {
   document.body.classList.toggle('share-dialog-open', isOpen);
 }
 
-async function ensureShareToggleReady() {
-  if (document.getElementById('website-share-toggle')) {
-    return true;
+export async function ensureShareToggleReady() {
+  const existingToggle = document.getElementById(SHARE_TOGGLE_ID);
+  if (existingToggle) {
+    return existingToggle;
   }
 
   try {
@@ -115,7 +165,20 @@ async function ensureShareToggleReady() {
     console.warn('Share toggle bootstrap skipped:', error);
   }
 
-  return !!document.getElementById('website-share-toggle');
+  for (let attempts = 0; attempts < 3; attempts += 1) {
+    const toggle = document.getElementById(SHARE_TOGGLE_ID) || repairShareToggle();
+    if (toggle) return toggle;
+    await waitForFrame();
+  }
+
+  return repairShareToggle();
+}
+
+if (typeof window !== 'undefined') {
+  window.websiteShareWidget = {
+    ...(window.websiteShareWidget || {}),
+    ensureShareToggleReady,
+  };
 }
 
 async function copyShareUrl(status) {
@@ -150,7 +213,7 @@ async function initShareWidget() {
   const status = document.getElementById('website-share-status');
 
   const closeDialog = () => {
-    const trigger = document.getElementById('website-share-toggle');
+    const trigger = document.getElementById(SHARE_TOGGLE_ID);
     setDialogState(dialog, trigger, false);
     if (trigger) {
       trigger.focus({ preventScroll: true });
@@ -158,14 +221,14 @@ async function initShareWidget() {
   };
 
   const openDialog = () => {
-    const trigger = document.getElementById('website-share-toggle');
+    const trigger = document.getElementById(SHARE_TOGGLE_ID);
     status.textContent = '';
     setDialogState(dialog, trigger, true);
     dialog.focus({ preventScroll: true });
   };
 
   const handleShareToggle = async event => {
-    const trigger = event.target.closest('#website-share-toggle');
+    const trigger = event.target.closest(`#${SHARE_TOGGLE_ID}`);
     if (!trigger) return;
 
     event.preventDefault();

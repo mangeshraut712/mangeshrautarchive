@@ -15,6 +15,23 @@ async function openShareDialog(page) {
 }
 
 test.describe('Share widget cross-browser', () => {
+  test('repairs the share button when the accessibility toolbar is restored from an older state', async ({ page }) => {
+    await gotoSite(page);
+
+    await expect(page.locator('.a11y-toolbar')).toBeVisible();
+    await expect(page.locator('#website-share-toggle')).toBeVisible();
+
+    await page.locator('#website-share-toggle').evaluate(button => button.remove());
+    await expect(page.locator('#website-share-toggle')).toHaveCount(0);
+
+    await page.evaluate(async () => {
+      await window.websiteShareWidget.ensureShareToggleReady();
+    });
+
+    await expect(page.locator('#website-share-toggle')).toBeVisible();
+    await openShareDialog(page);
+  });
+
   test('share card opens with QR, copy row, and mirror tabs', async ({ page }) => {
     await gotoSite(page);
 
