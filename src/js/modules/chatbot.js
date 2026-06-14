@@ -841,9 +841,10 @@ class AppleIntelligenceChatbot {
   paintStreamingContent(contentDiv, fullText) {
     if (!contentDiv) return;
 
-    const useMarkdown = fullText.length >= 48 || /[*`#\n-]/.test(fullText);
+    const useMarkdown =
+      markdownService.containsMarkdown(fullText) || fullText.length >= 48;
     if (useMarkdown) {
-      contentDiv.innerHTML = `${this.renderMarkdown(fullText)}<span class="siri-stream-caret" aria-hidden="true"></span>`;
+      contentDiv.innerHTML = `${markdownService.render(fullText)}<span class="siri-stream-caret" aria-hidden="true"></span>`;
       return;
     }
 
@@ -858,9 +859,10 @@ class AppleIntelligenceChatbot {
   finalizeStreamingContent(contentDiv, fullText, response) {
     if (!contentDiv) return;
 
-    const renderedHTML = this.renderMarkdown(fullText);
-    contentDiv.innerHTML = renderedHTML;
+    const rendered = markdownService.renderForChat(fullText);
+    contentDiv.innerHTML = rendered.html;
     contentDiv.classList.add('siri-intelligence-text');
+    markdownService.bindRichInteractions(contentDiv);
 
     if (response && (response.type === 'action' || response.source === 'agentic-action')) {
       contentDiv.closest('.message')?.classList.add('action-message');
@@ -895,13 +897,14 @@ class AppleIntelligenceChatbot {
 
     const ensureStreamBubble = () => {
       if (messageDiv) return;
-      this.hideTypingIndicator();
+      this.updateThinkingStage('streaming');
       messageDiv = document.createElement('div');
       messageDiv.className = 'message assistant-message streaming';
       contentDiv = document.createElement('div');
       contentDiv.className = 'message-content siri-intelligence-text';
       messageDiv.appendChild(contentDiv);
       this.elements.messages?.appendChild(messageDiv);
+      this.hideTypingIndicator();
       this.scrollToBottom();
     };
 
@@ -913,6 +916,7 @@ class AppleIntelligenceChatbot {
           if (!chunk) return;
           fullText += chunk;
           ensureStreamBubble();
+          this.updateThinkingStage('streaming');
           const now = Date.now();
           if (now - lastRender >= 72 || /[\n.!?]$/.test(chunk)) {
             lastRender = now;
@@ -1384,7 +1388,7 @@ class AppleIntelligenceChatbot {
   showThinkingIndicator() {
     this.hideTypingIndicator();
     const indicator = document.createElement('div');
-    indicator.className = 'thinking-indicator';
+    indicator.className = 'thinking-indicator rich-block-thinking';
     indicator.id = 'chatbot-typing-indicator';
     indicator.innerHTML = `
             <div class="thinking-content">
@@ -1395,6 +1399,11 @@ class AppleIntelligenceChatbot {
                     <span class="thinking-stage">Thinking</span>
                     <span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span>
                 </div>
+                <div class="thinking-shimmer" aria-hidden="true">
+                    <span class="thinking-shimmer-bar"></span>
+                    <span class="thinking-shimmer-bar"></span>
+                    <span class="thinking-shimmer-bar"></span>
+                </div>
             </div>
         `;
     this.elements.messages?.appendChild(indicator);
@@ -1402,12 +1411,10 @@ class AppleIntelligenceChatbot {
   }
 
   updateThinkingStage(stage) {
-    const stageEl = document
-      .getElementById('chatbot-typing-indicator')
-      ?.querySelector('.thinking-stage');
-    const iconEl = document
-      .getElementById('chatbot-typing-indicator')
-      ?.querySelector('.thinking-brain i');
+    const indicator = document.getElementById('chatbot-typing-indicator');
+    const stageEl = indicator?.querySelector('.thinking-stage');
+    const iconEl = indicator?.querySelector('.thinking-brain i');
+    const shimmer = indicator?.querySelector('.thinking-shimmer');
     if (stageEl) {
       const stages = {
         thinking: { text: 'Thinking', icon: 'fas fa-brain' },
@@ -1417,6 +1424,8 @@ class AppleIntelligenceChatbot {
       const s = stages[stage] || stages.thinking;
       stageEl.textContent = s.text;
       if (iconEl) iconEl.className = s.icon;
+      indicator?.classList.toggle('rich-block-thinking--streaming', stage === 'streaming');
+      shimmer?.setAttribute('data-stage', stage);
     }
   }
 

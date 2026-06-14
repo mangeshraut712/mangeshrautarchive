@@ -6,7 +6,7 @@ const baseURLs = {
   local: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4000',
   vercel: 'https://mangeshraut.pro',
   github: 'https://mangeshraut712.github.io/mangeshrautarchive/',
-  dev: 'http://127.0.0.1:4173', // npm run dev port
+  dev: 'http://127.0.0.1:4000', // npm run dev port (local-server default)
 };
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || baseURLs[target] || baseURLs.local;

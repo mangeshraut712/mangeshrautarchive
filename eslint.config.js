@@ -9,6 +9,7 @@ export default [
       'build/**',
       'node_modules/**',
       'src/assets/**',
+      'src/js/vendor/**',
       'artifacts/**',
       'test-results/**',
       'playwright-report/**',

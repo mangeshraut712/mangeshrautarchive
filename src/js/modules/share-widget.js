@@ -39,7 +39,7 @@ const getQrCodeUrl = (url) =>
   `https://api.qrserver.com/v1/create-qr-code/?size=256x256&ecc=H&margin=0&color=000000&bgcolor=FFFFFF&data=${encodeURIComponent(url)}`;
 
 const createShareMarkup = () => `
-  <div id="website-share-dialog" class="website-share-dialog hidden" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true">
+  <div id="website-share-dialog" class="website-share-dialog" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true" tabindex="-1">
     <div class="website-share-backdrop" data-share-close></div>
     <div class="website-share-card" aria-describedby="website-share-description">
       <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
@@ -96,13 +96,26 @@ const createShareMarkup = () => `
 `;
 
 function setDialogState(dialog, trigger, isOpen) {
-  dialog.classList.toggle('hidden', !isOpen);
   dialog.classList.toggle('active', isOpen);
   dialog.setAttribute('aria-hidden', String(!isOpen));
   if (trigger) {
     trigger.setAttribute('aria-expanded', String(isOpen));
   }
   document.body.classList.toggle('share-dialog-open', isOpen);
+}
+
+async function ensureShareToggleReady() {
+  if (document.getElementById('website-share-toggle')) {
+    return true;
+  }
+
+  try {
+    await import('./accessibility.js');
+  } catch (error) {
+    console.warn('Share toggle bootstrap skipped:', error);
+  }
+
+  return !!document.getElementById('website-share-toggle');
 }
 
 async function copyShareUrl(status) {
@@ -124,9 +137,10 @@ async function copyShareUrl(status) {
   }
 }
 
-function initShareWidget() {
+async function initShareWidget() {
   if (document.getElementById('website-share-dialog')) return;
 
+  await ensureShareToggleReady();
   document.body.insertAdjacentHTML('beforeend', createShareMarkup());
 
   const dialog = document.getElementById('website-share-dialog');
@@ -147,21 +161,26 @@ function initShareWidget() {
     const trigger = document.getElementById('website-share-toggle');
     status.textContent = '';
     setDialogState(dialog, trigger, true);
-    copyButton.focus({ preventScroll: true });
+    dialog.focus({ preventScroll: true });
   };
 
-  // Delegated click handler for the share toggle button (to prevent race conditions)
-  document.addEventListener('click', event => {
+  const handleShareToggle = async event => {
     const trigger = event.target.closest('#website-share-toggle');
-    if (trigger) {
-      const isOpen = dialog.classList.contains('active');
-      if (isOpen) {
-        closeDialog();
-      } else {
-        openDialog();
-      }
+    if (!trigger) return;
+
+    event.preventDefault();
+    await ensureShareToggleReady();
+
+    const isOpen = dialog.classList.contains('active');
+    if (isOpen) {
+      closeDialog();
+    } else {
+      openDialog();
     }
-  });
+  };
+
+  // Delegated activation for share toggle
+  document.addEventListener('click', handleShareToggle);
 
   dialog.addEventListener('click', event => {
     if (event.target.closest('[data-share-close]')) {

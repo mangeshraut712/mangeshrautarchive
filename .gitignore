@@ -160,3 +160,7 @@ secrets.*
 .eslintcache
 .stylelintcache
 .prettierignore
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

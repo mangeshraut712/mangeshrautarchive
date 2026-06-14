@@ -1,4 +1,5 @@
-const IDLE_MODULES = ['../modules/accessibility.js'];
+const IDLE_MODULES = [];
+const EAGER_MODULES = ['../modules/accessibility.js'];
 
 import '../modules/apple-sounds.js';
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
@@ -629,6 +630,10 @@ function initLazyModules() {
       if (isPerformanceAudit()) {
         return;
       }
+
+      EAGER_MODULES.forEach(path => {
+        loadModule(path);
+      });
 
       runWhenIdle(() => {
         IDLE_MODULES.forEach(path => {
