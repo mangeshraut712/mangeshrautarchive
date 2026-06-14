@@ -15,7 +15,7 @@ import path from 'path';
 const CONFIG = {
   githubPagesUrl: 'https://mangeshraut712.github.io/mangeshrautarchive/',
   vercelProductionUrl: 'https://mangeshraut.pro/',
-  vercelPreviewUrl: 'https://mangeshrautarchive.vercel.app/',
+  vercelPreviewUrl: 'https://mraut.vercel.app/',
   distDir: './dist',
   buildConfigFile: './dist/build-config.json',
   requestTimeoutMs: 10_000,
