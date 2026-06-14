@@ -1,10 +1,11 @@
 import os
-from datetime import datetime, timezone
+import asyncio
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
 from api.integrations import google_calendar, whoop, withings
@@ -39,6 +40,17 @@ from api.config import enforce_rate_limit
 
 router = APIRouter()
 
+HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES = int(
+    os.getenv("HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES", "60")
+)
+HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES = int(
+    os.getenv("HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES", "15")
+)
+HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS = float(
+    os.getenv("HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS", "25")
+)
+HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
+
 
 def _enforce_rate_limit(request: Request) -> None:
     enforce_rate_limit(request)
@@ -65,6 +77,139 @@ def _env_present(name: str) -> bool:
 
 def _oauth_ready(*names: str) -> bool:
     return all(_env_present(name) for name in names)
+
+
+def _parse_utc_datetime(value: Any) -> Optional[datetime]:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    normalized = value.strip()
+    if normalized.endswith("Z"):
+        normalized = normalized[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _health_summary_age_minutes(summary: Dict[str, Any]) -> Optional[int]:
+    synced_at = _parse_utc_datetime((summary.get("data") or {}).get("lastSyncedAt"))
+    if synced_at is None:
+        return None
+    age_seconds = max(0, (datetime.now(timezone.utc) - synced_at).total_seconds())
+    return int(age_seconds // 60)
+
+
+def _health_summary_is_stale(summary: Dict[str, Any]) -> bool:
+    if summary.get("status") == "not_configured":
+        return False
+    age_minutes = _health_summary_age_minutes(summary)
+    if age_minutes is None:
+        return True
+    return age_minutes >= HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES
+
+
+def _sync_state_is_recent(sync_state: Dict[str, Any]) -> bool:
+    timestamp = _parse_utc_datetime(
+        sync_state.get("last_success_at") or sync_state.get("updated_at")
+    )
+    if timestamp is None:
+        return False
+    return datetime.now(timezone.utc) - timestamp < timedelta(
+        minutes=HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES
+    )
+
+
+async def _connected_health_provider_available() -> bool:
+    return await integration_is_connected("whoop") or await integration_is_connected("withings")
+
+
+async def _maybe_refresh_health_summary(summary: Dict[str, Any]) -> tuple[Dict[str, Any], Dict[str, Any]]:
+    age_minutes = _health_summary_age_minutes(summary)
+    refresh = {
+        "stale": _health_summary_is_stale(summary),
+        "attempted": False,
+        "refreshed": False,
+        "reason": "fresh",
+        "ageMinutes": age_minutes,
+        "maxAgeMinutes": HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES,
+        "cooldownMinutes": HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES,
+        "automaticCronUtc": "13:00",
+    }
+    if not refresh["stale"]:
+        return summary, refresh
+
+    sync_state = await fetch_sync_state(HEALTH_SUMMARY_SYNC_STATE_PROVIDER)
+    if _sync_state_is_recent(sync_state):
+        refresh["reason"] = "cooldown"
+        return summary, refresh
+
+    if not await _connected_health_provider_available():
+        refresh["reason"] = "no_connected_health_provider"
+        await update_sync_state(
+            HEALTH_SUMMARY_SYNC_STATE_PROVIDER,
+            last_error="no_connected_health_provider",
+        )
+        return summary, refresh
+
+    refresh["attempted"] = True
+    try:
+        health_payload = await asyncio.wait_for(
+            sync_connected_health_providers(),
+            timeout=HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS,
+        )
+    except asyncio.TimeoutError:
+        refresh["reason"] = "provider_refresh_timeout"
+        await update_sync_state(
+            HEALTH_SUMMARY_SYNC_STATE_PROVIDER,
+            last_error="provider_refresh_timeout",
+        )
+        return summary, refresh
+    except Exception:
+        refresh["reason"] = "provider_refresh_failed"
+        await update_sync_state(
+            HEALTH_SUMMARY_SYNC_STATE_PROVIDER,
+            last_error="provider_refresh_failed",
+        )
+        return summary, refresh
+
+    if health_payload.get("saved"):
+        await update_sync_state(
+            HEALTH_SUMMARY_SYNC_STATE_PROVIDER,
+            last_success_at=_utc_now(),
+            last_error=None,
+        )
+        refreshed_summary = await fetch_latest_health_summary()
+        refresh.update(
+            {
+                "refreshed": True,
+                "reason": "provider_refresh_completed",
+                "ageMinutes": _health_summary_age_minutes(refreshed_summary),
+            }
+        )
+        return refreshed_summary, refresh
+
+    refresh["reason"] = "provider_refresh_no_saved_summary"
+    await update_sync_state(
+        HEALTH_SUMMARY_SYNC_STATE_PROVIDER,
+        last_error="provider_refresh_no_saved_summary",
+    )
+    return summary, refresh
+
+
+def _health_summary_response(payload: Dict[str, Any]) -> JSONResponse:
+    return JSONResponse(
+        payload,
+        headers={
+            "Cache-Control": "no-store, max-age=0, must-revalidate",
+            "CDN-Cache-Control": "no-store",
+            "Vercel-CDN-Cache-Control": "no-store",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
+    )
 
 
 async def _provider_status() -> Dict[str, Dict[str, Any]]:
@@ -164,15 +309,20 @@ async def get_integrations_status():
 )
 async def get_health_vitals_summary():
     summary = await fetch_latest_health_summary()
-    return {
+    summary, refresh = await _maybe_refresh_health_summary(summary)
+    data = summary.get("data") or empty_health_summary()
+    return _health_summary_response({
         "success": True,
         "timestamp": _utc_now(),
         "status": summary.get("status", "unknown"),
         "source": summary.get("source", "fallback"),
-        "data": summary.get("data") or empty_health_summary(),
+        "sourceStatus": data.get("sourceStatus"),
+        "lastSyncedAt": data.get("lastSyncedAt"),
+        "data": data,
+        "refresh": refresh,
         "message": summary.get("message"),
         "privacy": "Public health payload is deliberately limited to daily summary metrics and trends.",
-    }
+    })
 
 
 def _expires_at_from_token_payload(token_payload: Dict[str, Any]) -> Optional[str]:

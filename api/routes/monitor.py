@@ -82,7 +82,7 @@ async def receive_csp_report(request: Request):
     if system_monitor is not None:
         system_monitor.log_event(
             "CSP violation report received",
-            EventType.WARNING,
+            EventType.INFO,
             details,
             "security_monitor",
         )

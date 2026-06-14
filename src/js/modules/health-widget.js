@@ -12,7 +12,13 @@ const DEFAULT_METRICS = {
   muscle: null,
   fat: null,
   lastSynced: null,
+  cachedAt: null,
+  source: 'fallback',
+  sourceStatus: 'pending',
+  refresh: null,
 };
+
+const HEALTH_FETCH_TIMEOUT_MS = 18000;
 
 function resolveApiBase() {
   const base =
@@ -46,8 +52,9 @@ function parseWeightTrend(weightTrend) {
 
 class HealthWidget {
   constructor() {
-    this.storageKey = 'mangesh_health_metrics_v2';
+    this.storageKey = 'mangesh_health_metrics_v3';
     this.metrics = this.loadMetrics();
+    this.isRefreshing = false;
     this.init();
   }
 
@@ -85,15 +92,33 @@ class HealthWidget {
   async fetchFromApi() {
     const apiBase = resolveApiBase();
     const url = apiBase ? `${apiBase}/api/health-vitals/summary` : '/api/health-vitals/summary';
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), HEALTH_FETCH_TIMEOUT_MS);
 
+    this.isRefreshing = true;
+    this.updateSyncedTimeText();
     try {
-      const response = await fetch(url, { credentials: 'same-origin' });
+      const requestUrl = new URL(url, globalThis.location?.href || 'https://mangeshraut.pro/');
+      requestUrl.searchParams.set('_', Date.now().toString());
+      const response = await fetch(requestUrl.toString(), {
+        cache: 'no-store',
+        credentials: apiBase ? 'omit' : 'same-origin',
+        headers: {
+          Accept: 'application/json',
+          Pragma: 'no-cache',
+        },
+        signal: controller.signal,
+      });
       if (!response.ok) return;
       const payload = await response.json();
       if (!payload.data) return;
 
       const data = payload.data;
       const isLive = payload.status === 'live';
+      this.metrics.source = payload.source || 'fallback';
+      this.metrics.sourceStatus = payload.sourceStatus || data.sourceStatus || 'unknown';
+      this.metrics.refresh = payload.refresh || null;
+      this.metrics.cachedAt = Date.now();
 
       if (typeof data.sleepScore === 'number') this.metrics.sleep = data.sleepScore;
       else if (isLive) this.metrics.sleep = null;
@@ -124,7 +149,13 @@ class HealthWidget {
       this.saveMetrics();
       this.updateUI();
     } catch (error) {
-      console.warn('Health summary API unavailable, using cached metrics.', error);
+      if (error?.name !== 'AbortError') {
+        console.info('Health summary API unavailable, using cached metrics.', error);
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      this.isRefreshing = false;
+      this.updateSyncedTimeText();
     }
   }
 
@@ -175,25 +206,45 @@ class HealthWidget {
     if (!el) return;
 
     if (!this.metrics.lastSynced) {
-      el.textContent = 'Last synced: Pending';
+      el.textContent = this.isRefreshing ? 'Checking latest stats…' : 'Last synced: Pending';
       return;
     }
 
+    const refresh = this.metrics.refresh || {};
+    const prefix = this.isRefreshing ? 'Refreshing latest stats · ' : 'Last synced: ';
     const diffMs = Date.now() - this.metrics.lastSynced;
     const diffMin = Math.floor(diffMs / 60000);
     const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+    let relativeText;
 
     if (diffMin < 1) {
-      el.textContent = 'Last synced: Just now';
+      relativeText = 'Just now';
     } else if (diffMin === 1) {
-      el.textContent = 'Last synced: 1 minute ago';
+      relativeText = '1 minute ago';
     } else if (diffMin < 60) {
-      el.textContent = `Last synced: ${diffMin} minutes ago`;
+      relativeText = `${diffMin} minutes ago`;
     } else if (diffHour === 1) {
-      el.textContent = 'Last synced: 1 hour ago';
+      relativeText = '1 hour ago';
+    } else if (diffHour < 24) {
+      relativeText = `${diffHour} hours ago`;
+    } else if (diffDay === 1) {
+      relativeText = '1 day ago';
     } else {
-      el.textContent = `Last synced: ${diffHour} hours ago`;
+      relativeText = `${diffDay} days ago`;
     }
+
+    if (!this.isRefreshing && refresh.refreshed) {
+      el.textContent = 'Last synced: Just now';
+      return;
+    }
+
+    if (!this.isRefreshing && refresh.stale && refresh.reason === 'cooldown') {
+      el.textContent = `Last synced: ${relativeText} · refresh queued`;
+      return;
+    }
+
+    el.textContent = `${prefix}${relativeText}`;
   }
 
   startRelativeTimeUpdater() {

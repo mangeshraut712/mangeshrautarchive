@@ -1,6 +1,7 @@
 """Tests for public integration contracts."""
 
 import os
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from fastapi.testclient import TestClient
@@ -46,11 +47,98 @@ def test_health_vitals_summary_uses_sanitized_fallback(client):
     response = client.get("/api/health-vitals/summary")
 
     assert response.status_code == 200
+    assert response.headers["cache-control"] == "no-store, max-age=0, must-revalidate"
+    assert response.headers["vercel-cdn-cache-control"] == "no-store"
     payload = response.json()
     assert payload["success"] is True
     assert payload["status"] == "not_configured"
     assert payload["data"]["sleepScore"] is None
     assert payload["data"]["sourceStatus"] == "not_configured"
+    assert payload["refresh"]["stale"] is False
+
+
+def test_health_vitals_summary_refreshes_stale_provider_data(client, monkeypatch):
+    from api.routes import integrations as integrations_route
+
+    calls = {"sync": 0, "state_updates": []}
+    old_sync = (datetime.now(timezone.utc) - timedelta(hours=4)).isoformat().replace("+00:00", "Z")
+    fresh_sync = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+    async def fake_fetch_latest_health_summary():
+        if calls["sync"]:
+            return {
+                "status": "live",
+                "source": "supabase",
+                "data": {
+                    "date": "2026-06-14",
+                    "sleepScore": 88,
+                    "recoveryScore": 70,
+                    "strain": 6.1,
+                    "restingHeartRate": 54,
+                    "hrvTrend": "steady",
+                    "weightTrend": "103.8 kg",
+                    "lastSyncedAt": fresh_sync,
+                    "sourceStatus": "synced",
+                },
+            }
+        return {
+            "status": "live",
+            "source": "supabase",
+            "data": {
+                "date": "2026-06-14",
+                "sleepScore": 81,
+                "recoveryScore": 64,
+                "strain": 4.8,
+                "restingHeartRate": 57,
+                "hrvTrend": "steady",
+                "weightTrend": "104.0 kg",
+                "lastSyncedAt": old_sync,
+                "sourceStatus": "synced",
+            },
+        }
+
+    async def fake_fetch_sync_state(provider):
+        return {}
+
+    async def fake_integration_is_connected(provider):
+        return provider == "whoop"
+
+    async def fake_sync_connected_health_providers():
+        calls["sync"] += 1
+        return {"saved": True, "results": [{"provider": "whoop", "status": "live"}]}
+
+    async def fake_update_sync_state(provider, **fields):
+        calls["state_updates"].append({"provider": provider, **fields})
+
+    monkeypatch.setattr(
+        integrations_route,
+        "fetch_latest_health_summary",
+        fake_fetch_latest_health_summary,
+    )
+    monkeypatch.setattr(integrations_route, "fetch_sync_state", fake_fetch_sync_state)
+    monkeypatch.setattr(
+        integrations_route,
+        "integration_is_connected",
+        fake_integration_is_connected,
+    )
+    monkeypatch.setattr(
+        integrations_route,
+        "sync_connected_health_providers",
+        fake_sync_connected_health_providers,
+    )
+    monkeypatch.setattr(integrations_route, "update_sync_state", fake_update_sync_state)
+
+    response = client.get("/api/health-vitals/summary")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "live"
+    assert payload["data"]["sleepScore"] == 88
+    assert payload["refresh"]["attempted"] is True
+    assert payload["refresh"]["refreshed"] is True
+    assert payload["refresh"]["reason"] == "provider_refresh_completed"
+    assert calls["sync"] == 1
+    assert calls["state_updates"][0]["provider"] == "health_vitals"
 
 
 def test_health_vitals_sync_requires_admin_token(client):

@@ -302,8 +302,11 @@ async function build() {
   await optimizeCopiedAssets(distDir);
   await inlineThemeHead(distDir);
 
+  const version = `v${Date.now()}`;
+  await cacheBustJsModules(distDir, version);
+
   await Promise.all([
-    addCacheBusting(distDir),
+    addCacheBusting(distDir, version),
     minifyHtmlFiles(distDir),
     generateSitemap(distDir),
     generateFeeds(distDir),
@@ -468,12 +471,10 @@ async function minifyHtmlFiles(dir) {
 }
 
 // Add cache busting query parameters to CSS and JS assets in HTML
-async function addCacheBusting(distDir) {
+async function addCacheBusting(distDir, version) {
   const htmlPath = resolve(distDir, 'index.html');
   const monitorPath = resolve(distDir, 'monitor.html');
   const travelPath = resolve(distDir, 'travel.html');
-
-  const version = `v${Date.now()}`;
 
   const appendVersion = rawPath => {
     if (!rawPath) return rawPath;
@@ -497,9 +498,9 @@ async function addCacheBusting(distDir) {
       if (await pathExists(htmlFile)) {
         let content = await readFile(htmlFile, 'utf8');
 
-        // Add cache busting to CSS and JS files
+        // Add cache busting to CSS, JS, and data-href lazy styles
         content = content.replace(
-          /(href|src)="([^"]+)"/g,
+          /(href|src|data-href)="([^"]+)"/g,
           (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
         );
 
@@ -514,6 +515,50 @@ async function addCacheBusting(distDir) {
       }
     })
   );
+}
+
+// Add cache busting query parameters to dynamic and static imports inside JS files
+async function cacheBustJsModules(distDir, version) {
+  const jsDir = resolve(distDir, 'js');
+  if (!(await pathExists(jsDir))) return;
+
+  async function processDir(dir) {
+    const entries = await readdir(dir, { withFileTypes: true });
+    await Promise.all(
+      entries.map(async entry => {
+        const entryPath = join(dir, entry.name);
+        if (entry.isDirectory()) {
+          await processDir(entryPath);
+        } else if (entry.isFile() && entry.name.endsWith('.js')) {
+          let content = await readFile(entryPath, 'utf8');
+          let changed = false;
+
+          // 1. Dynamic imports: import('path.js') -> import('path.js?v=version')
+          const dynamicImportRegex = /import\(\s*['"](\.[^'"]+\.js)['"]\s*\)/g;
+          content = content.replace(dynamicImportRegex, (match, path) => {
+            changed = true;
+            const separator = path.includes('?') ? '&' : '?';
+            return `import('${path}${separator}v=${version}')`;
+          });
+
+          // 2. Static relative imports: from"./path.js" or import"./path.js"
+          const staticImportRegex = /(import|from)\s*['"](\.[^'"]+\.js)['"]/g;
+          content = content.replace(staticImportRegex, (match, prefix, path) => {
+            changed = true;
+            const separator = path.includes('?') ? '&' : '?';
+            return `${prefix}'${path}${separator}v=${version}'`;
+          });
+
+          if (changed) {
+            await writeFile(entryPath, content, 'utf8');
+          }
+        }
+      })
+    );
+  }
+
+  await processDir(jsDir);
+  console.log(`🔄 Added cache busting to JS module imports (version: ${version})`);
 }
 
 build().catch(error => {

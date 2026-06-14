@@ -692,6 +692,10 @@ function initSectionDeferredImages(sectionId, rootMargin = '0px 0px', documentRe
 
     section.querySelectorAll('img[data-deferred-src]').forEach(img => {
       if (!img.dataset.deferredSrc) return;
+      if (img.closest('.dream-companies-track, .dream-cars-track')) {
+        img.loading = 'eager';
+        img.fetchPriority = 'auto';
+      }
       img.src = img.dataset.deferredSrc;
       img.removeAttribute('data-deferred-src');
     });
@@ -869,6 +873,46 @@ async function loadDeferredBootstrapModules() {
   });
 }
 
+async function checkDeploymentVersion() {
+  try {
+    const localBuild = globalThis.buildConfig?.buildTime || globalThis.buildConfig?.gitCommit || globalThis.buildConfig?.version;
+    if (!localBuild) return;
+
+    // Fetch the live configuration from the server, adding a cache-busting timestamp
+    const res = await fetch(`/build-config.json?t=${Date.now()}`);
+    if (!res.ok) return;
+
+    const serverConfig = await res.json();
+    const serverBuild = serverConfig?.buildTime || serverConfig?.gitCommit || serverConfig?.version;
+
+    if (serverBuild && localBuild !== serverBuild) {
+      console.warn('🔄 New website version detected on server. Clearing cache and reloading...', {
+        local: localBuild,
+        server: serverBuild,
+      });
+
+      // Clear all service workers and caches
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(registration => registration.unregister()));
+      }
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+      }
+      try {
+        localStorage.removeItem('portfolio-version');
+        sessionStorage.clear();
+      } catch (_e) {}
+
+      // Force-reload the page from the server
+      window.location.reload();
+    }
+  } catch (error) {
+    console.info('Version check skipped or failed:', error);
+  }
+}
+
 async function initBootstrap() {
   applyStoredLiquidGlassTint();
   initFooterYear();
@@ -889,6 +933,9 @@ async function initBootstrap() {
   initLazyModules();
   initServiceWorker();
   initLaunchIntro();
+
+  // Low priority version check to sync new deployments instantly across all browsers
+  checkDeploymentVersion();
 
   runWhenIdle(() => {
     loadDeferredBootstrapModules().catch(error => {
