@@ -906,8 +906,19 @@ function reloadWithServerBuild(serverBuild, syncRetry = '0') {
   window.location.replace(current.toString());
 }
 
+function shouldSkipDeploymentVersionCheck() {
+  const hostname = window.location.hostname;
+  return (
+    globalThis.buildConfig?.localDev === true ||
+    globalThis.APP_CONFIG?.localDev === true ||
+    ['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(hostname)
+  );
+}
+
 async function checkDeploymentVersion() {
   try {
+    if (shouldSkipDeploymentVersionCheck()) return;
+
     const localBuild = globalThis.buildConfig?.buildTime || globalThis.buildConfig?.gitCommit || globalThis.buildConfig?.version;
     if (!localBuild) return;
 
