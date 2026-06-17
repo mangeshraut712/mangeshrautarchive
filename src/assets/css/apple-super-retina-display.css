@@ -1,0 +1,125 @@
+/**
+ * Apple Super Retina XDR / ProMotion / Dynamic Island compatibility.
+ * Tuned for iPhone 17 Pro Max class devices:
+ * - 6.9" OLED, 2868×1320 physical (portrait), ~460 ppi, 3× DPR
+ * - 440×956 CSS viewport, Dynamic Island, 120Hz ProMotion, high peak brightness
+ */
+
+:root {
+  --apple-display-logical-w: 440;
+  --apple-display-logical-h: 956;
+  --apple-display-physical-w: 1320;
+  --apple-display-physical-h: 2868;
+  --apple-display-ppi: 460;
+  --apple-display-dpr: 3;
+  --apple-chrome-top: calc(env(safe-area-inset-top, 0px) + var(--island-height, 52px));
+  --apple-chrome-bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+}
+
+html {
+  color-scheme: light dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* XDR / high dynamic range — improve outdoor legibility on OLED */
+@media (dynamic-range: high) {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html:not(.dark) body {
+    color: #1d1d1f;
+  }
+
+  html.dark body {
+    color: #f5f5f7;
+  }
+
+  .global-nav.dynamic-island {
+    border-bottom-color: rgb(0 0 0 / 12%);
+  }
+
+  html.dark .global-nav.dynamic-island {
+    border-bottom-color: rgb(255 255 255 / 14%);
+  }
+}
+
+/* ProMotion + accessibility — honor Reduce Motion system setting */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (width <=768px) {
+  /* Dynamic Island + status bar safe area */
+  .global-nav.dynamic-island {
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px));
+  }
+
+  #main-content {
+    padding-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 16px) !important;
+  }
+
+  section,
+  header.hero-section,
+  .game-section,
+  #books-content,
+  #shows-content {
+    scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 28px) !important;
+  }
+
+  /* Retina / 460 ppi asset scaling */
+  img,
+  picture,
+  video,
+  svg {
+    max-width: 100%;
+  }
+
+  /* ProMotion-friendly compositing for fixed chrome (reduced when motion limited) */
+  #chatbot-toggle,
+  #go-to-top,
+  .a11y-toolbar,
+  .global-nav.dynamic-island,
+  #chatbot-backdrop {
+    transform: translateZ(0);
+  }
+}
+
+@media (width <=768px) and (prefers-reduced-motion: reduce) {
+  #chatbot-toggle,
+  #go-to-top,
+  .a11y-toolbar,
+  .global-nav.dynamic-island {
+    transform: none;
+  }
+}
+
+/* P3 / wide-gamut accent boost on capable displays */
+@media (color-gamut: p3) {
+  :root {
+    --apple-accent: color(display-p3 0.0 0.478 0.894);
+    --apple-accent-dark: color(display-p3 0.4 0.62 1);
+  }
+
+  html:not(.dark) a:focus-visible,
+  html:not(.dark) .hero-actions .btn-primary {
+    outline-color: var(--apple-accent);
+  }
+
+  html.dark a:focus-visible {
+    outline-color: var(--apple-accent-dark);
+  }
+}
