@@ -6,7 +6,8 @@
   /* Widget - Full Viewport */
   #chatbot-widget {
     position: fixed !important;
-    inset: 12px !important;
+    inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)) !important;
     /* Padding from screen edges */
     width: auto !important;
     height: auto !important;

@@ -1,0 +1,98 @@
+/**
+ * Mobile viewport sync — safe areas, floating chrome stack, overflow guards.
+ * Loaded after cross-browser-responsive.css on all public pages.
+ */
+
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@supports (height: 100dvh) {
+  html,
+  body {
+    min-height: 100dvh;
+  }
+}
+
+body {
+  overflow-x: clip;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+#main-content,
+.global-nav.dynamic-island {
+  max-width: 100%;
+}
+
+.dream-companies-marquee,
+.dream-cars-marquee {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+@media (width <=768px) {
+  /* Hero CTAs stay above the bottom floating chrome when scrolled into view */
+  body.has-a11y-toolbar .hero-actions {
+    margin-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+    padding-right: 0.5rem;
+    max-width: calc(100% - 4.25rem - env(safe-area-inset-right));
+    margin-inline: auto;
+    scroll-margin-bottom: calc(7rem + env(safe-area-inset-bottom));
+  }
+
+  /* Right-side FABs stack above the accessibility toolbar */
+  body.has-a11y-toolbar #chatbot-toggle {
+    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 3.6rem) !important;
+    right: max(0.75rem, env(safe-area-inset-right)) !important;
+    z-index: 9999 !important;
+  }
+
+  body.has-a11y-toolbar #go-to-top.visible {
+    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 7.35rem) !important;
+    right: max(0.75rem, env(safe-area-inset-right)) !important;
+  }
+
+  body.has-a11y-toolbar {
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  .website-share-dialog {
+    padding: max(0.75rem, env(safe-area-inset-top))
+      max(0.75rem, env(safe-area-inset-right))
+      max(0.75rem, env(safe-area-inset-bottom))
+      max(0.75rem, env(safe-area-inset-left));
+    align-items: center;
+  }
+
+  .website-share-card {
+    max-height: calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.25rem !important;
+  }
+
+  .share-mirror-tab {
+    font-size: 0.68rem !important;
+    padding: 8px 2px !important;
+  }
+
+  #endpoint-metrics-section > div[style*='overflow-x'] {
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .log-tabs {
+    max-width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .log-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
