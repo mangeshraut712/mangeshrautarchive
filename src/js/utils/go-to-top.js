@@ -25,8 +25,7 @@
     goToTopBtn.setAttribute('aria-label', 'Scroll to top of page');
     goToTopBtn.setAttribute('role', 'button');
     goToTopBtn.setAttribute('tabindex', '-1'); // Start hidden from tab order
-    goToTopBtn.style.cssText =
-      'display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;';
+    goToTopBtn.style.display = 'none';
 
     // Add a visible label for better clarity (can be styled to appear on hover/focus)
     if (!goToTopBtn.querySelector('.go-to-top-label')) {
@@ -47,10 +46,12 @@
 
           if (scrollPosition > showThreshold) {
             goToTopBtn.classList.add('visible');
+            goToTopBtn.style.display = 'flex';
             goToTopBtn.setAttribute('aria-hidden', 'false');
             goToTopBtn.tabIndex = 0;
           } else {
             goToTopBtn.classList.remove('visible');
+            goToTopBtn.style.display = 'none';
             goToTopBtn.setAttribute('aria-hidden', 'true');
             goToTopBtn.tabIndex = -1;
           }

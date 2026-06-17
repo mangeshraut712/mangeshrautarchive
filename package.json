@@ -37,6 +37,7 @@
     "test:e2e:rich-markdown:chrome": "node scripts/utils/run-playwright.js test tests/e2e/chatbot-rich-markdown.spec.js --project=\"Desktop Chrome\"",
     "test:e2e:mobile-viewport": "node scripts/utils/run-playwright.js test tests/e2e/mobile-viewport.spec.js --project=\"Pixel 7 Chrome\"",
     "test:e2e:apple-display": "node scripts/utils/run-playwright.js test tests/e2e/apple-display-compat.spec.js --project=\"iPhone 17 Pro Max Chrome\"",
+    "test:e2e:apple-display:safari": "node scripts/utils/run-playwright.js test tests/e2e/apple-display-compat.spec.js --project=\"iPhone 17 Pro Max Safari\"",
     "qa:iphone-17-pro-max": "node scripts/qa/iphone-17-pro-max-display-compat.mjs",
     "qa:promotion-fps": "node scripts/qa/promotion-fps-audit.mjs",
     "qa:smoke": "start-server-and-test \"PORT=4000 npm run dev\" http://127.0.0.1:4000 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 npm run test:e2e:chrome\"",

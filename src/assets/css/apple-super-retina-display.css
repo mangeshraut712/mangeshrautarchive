@@ -50,7 +50,57 @@ html.is-scrolling .a11y-toolbar {
   -webkit-backdrop-filter: blur(8px);
 }
 
-/* XDR / high dynamic range — improve outdoor legibility on OLED */
+/* Liquid Glass Safari 26 — hidden fixed chrome must not tint toolbars */
+#go-to-top:not(.visible),
+#chatbot-backdrop:not(.active),
+.website-share-dialog:not(.active) {
+  display: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#go-to-top.visible {
+  display: flex !important;
+}
+
+/* Always-On Display dim — OLED true black + lowered decorative luminance when idle/hidden */
+html.dark.aod-dim {
+  background-color: #000000;
+}
+
+html.dark.aod-dim body {
+  background-color: #000000;
+  color: #8e8e93;
+}
+
+html.dark.aod-dim .hero-section,
+html.dark.aod-dim [class*='orb'],
+html.dark.aod-dim [class*='glow'],
+html.dark.aod-dim [class*='marquee'],
+html.dark.aod-dim .siri-orb,
+html.dark.aod-dim #chatbot-toggle::after {
+  opacity: 0.28;
+  filter: saturate(0.65);
+  transition:
+    opacity 0.8s ease,
+    filter 0.8s ease;
+}
+
+html.dark.aod-dim .global-nav.dynamic-island,
+html.dark.aod-dim #chatbot-toggle,
+html.dark.aod-dim #go-to-top.visible,
+html.dark.aod-dim .a11y-toolbar {
+  opacity: 0.72;
+}
+
+/* ProMotion — isolate scroll surface on capable mobile */
+@media (width <=768px) and (prefers-reduced-motion: no-preference) {
+  #main-content {
+    contain: layout style;
+  }
+}
+
+/* XDR / high dynamic range — 3000-nit-class peak highlights on Super Retina XDR */
 @media (dynamic-range: high) {
   html {
     -webkit-font-smoothing: antialiased;
@@ -71,6 +121,36 @@ html.is-scrolling .a11y-toolbar {
 
   html.dark .global-nav.dynamic-island {
     border-bottom-color: rgb(255 255 255 / 14%);
+  }
+
+  /* HDR-capable headline and accent luminance (display-p3 > 1.0) */
+  .hero-section h1,
+  .hero-section .hero-name,
+  .hero-section .xdr-highlight,
+  .section-title.xdr-highlight {
+    color: color(display-p3 0.05 0.05 0.06);
+  }
+
+  html.dark .hero-section h1,
+  html.dark .hero-section .hero-name,
+  html.dark .hero-section .xdr-highlight,
+  html.dark .section-title.xdr-highlight {
+    color: color(display-p3 1.15 1.15 1.18);
+    text-shadow: 0 0 1px color(display-p3 1.25 1.25 1.3 / 35%);
+  }
+
+  html.dark .hero-actions .btn-primary,
+  html.dark #chatbot-toggle,
+  html.dark #go-to-top.visible {
+    box-shadow:
+      0 4px 18px color(display-p3 0.15 0.55 1 / 48%),
+      inset 0 1px 0 color(display-p3 1.2 1.2 1.25 / 22%);
+  }
+
+  .hero-section picture img,
+  .hero-section .profile-image,
+  .xdr-media {
+    filter: contrast(1.04) saturate(1.1);
   }
 }
 
@@ -150,5 +230,34 @@ html.is-scrolling .a11y-toolbar {
 
   html.dark a:focus-visible {
     outline-color: var(--apple-accent-dark);
+  }
+}
+
+/* Scroll-driven section reveals — homepage sections with .fade-in (Safari 26+) */
+@supports (animation-timeline: view()) {
+  body:not(.travel-body):not(.monitor-page) main > section.fade-in {
+    animation: appleSectionScrollReveal 0.85s ease both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 28%;
+  }
+
+  @keyframes appleSectionScrollReveal {
+    from {
+      opacity: 0.72;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body:not(.travel-body):not(.monitor-page) main > section.fade-in {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 }

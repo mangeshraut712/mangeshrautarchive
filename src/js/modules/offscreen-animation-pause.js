@@ -5,6 +5,8 @@
 
 const PAUSE_CLASS = 'is-offscreen-paused';
 const STYLE_ID = 'offscreen-animation-pause-style';
+const ANIMATED_SELECTOR =
+  '[class*="marquee"], [class*="orb"], [class*="glow"], [class*="siri"], [class*="pulse"], .siri-orb, #chatbot-toggle';
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -36,6 +38,11 @@ function hasInfiniteAnimation(element) {
 }
 
 export function initOffscreenAnimationPause() {
+  if (window.__portfolioOffscreenPauseBound) {
+    return;
+  }
+  window.__portfolioOffscreenPauseBound = true;
+
   if (!('IntersectionObserver' in window) || prefersReducedMotion()) {
     return;
   }
@@ -67,8 +74,12 @@ export function initOffscreenAnimationPause() {
 
   const scan = root => {
     if (!root || root.nodeType !== 1) return;
-    trackElement(root);
-    root.querySelectorAll('*').forEach(trackElement);
+
+    if (root.matches?.(ANIMATED_SELECTOR)) {
+      trackElement(root);
+    }
+
+    root.querySelectorAll(ANIMATED_SELECTOR).forEach(trackElement);
   };
 
   const scheduleScan = () => {
@@ -86,14 +97,29 @@ export function initOffscreenAnimationPause() {
     document.addEventListener('DOMContentLoaded', scheduleScan, { once: true });
   }
 
+  let scanQueued = false;
+  const queueScan = root => {
+    if (scanQueued) return;
+    scanQueued = true;
+    const run = () => {
+      scanQueued = false;
+      scan(root);
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(run, { timeout: 1200 });
+    } else {
+      window.setTimeout(run, 120);
+    }
+  };
+
   const mutationObserver = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(node => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
         if (node.nodeType === 1) {
-          scan(node);
+          queueScan(node);
         }
-      });
-    });
+      }
+    }
   });
 
   mutationObserver.observe(document.documentElement, { childList: true, subtree: true });
@@ -106,8 +132,4 @@ export function initOffscreenAnimationPause() {
       element.classList.remove(PAUSE_CLASS);
     });
   });
-}
-
-if (typeof window !== 'undefined') {
-  initOffscreenAnimationPause();
 }

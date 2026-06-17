@@ -185,7 +185,7 @@
       z-index: 100000;
       width: 3.75rem;
       height: 3.75rem;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       border-radius: 999px;
@@ -196,9 +196,8 @@
         0 4px 14px rgb(0 122 255 / 38%),
         inset 0 1px 0 rgb(255 255 255 / 28%);
       opacity: 0;
-      visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     html.dark #go-to-top {
@@ -210,8 +209,8 @@
     }
 
     #go-to-top.visible {
+      display: flex !important;
       opacity: 1 !important;
-      visibility: visible !important;
       pointer-events: auto !important;
       transform: translateY(0) scale(1) !important;
     }
@@ -695,7 +694,8 @@
   <link rel="stylesheet" href="assets/css/apple-premium-system.css?v=20260525b" />
 
   <!-- Sections Apple Premium Upgrade - All Sections Enhanced -->
-  <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260611c" />
+  <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260611c" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260611c" /></noscript>
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260611b" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260611b" /></noscript>
 
@@ -706,11 +706,12 @@
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
 
   <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (site-wide cards + chrome) -->
-  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260613d" />
-  <link rel="stylesheet" href="assets/css/share-widget.css?v=20260617c" />
+  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260613d" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260613d" /></noscript>
+  <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260617c" data-lazy-style-key="share" />
   <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260617d" />
   <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
-  <link rel="stylesheet" href="assets/css/health-widget.css?v=20260614a" />
+  <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260614a" data-lazy-style-key="currently" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 
@@ -1032,7 +1033,7 @@
             <div class="hero-image-block mb-8">
               <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)">
-                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
+                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image xdr-media"
                   width="160" height="160" loading="eager" decoding="async" fetchpriority="high"
                   onclick="window.__toggleHeroAvatar?.(event)"
                   data-photo-src="assets/images/profile.webp" data-avatar-src="assets/images/avtar.webp"
@@ -1042,7 +1043,7 @@
 
             <div class="hero-text-block home-hero-text">
               <div class="hero-header mb-4">
-                <h1 class="hero-name">
+                <h1 class="hero-name xdr-highlight">
                   <span class="hero-name-text">Mangesh Raut</span>
                   <span class="hero-verified-badge" role="img" aria-label="Verified profile">
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">

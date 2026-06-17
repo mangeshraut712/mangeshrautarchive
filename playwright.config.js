@@ -43,7 +43,7 @@ export default defineConfig({
   ],
   use: {
     baseURL,
-    trace: 'retain-on-failure',
+    trace: process.env.PLAYWRIGHT_TRACE === '1' ? 'retain-on-failure' : 'off',
     screenshot: isVisualTesting ? 'on' : 'only-on-failure',
     video: videoMode,
     ...(browserChannel ? { channel: browserChannel } : {}),

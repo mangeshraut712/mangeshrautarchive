@@ -15,6 +15,7 @@ const SHARE_TOGGLE_LABEL = 'Share website';
 const SHARE_TITLE = 'Mangesh Raut Archive';
 const SHARE_TEXT =
   "Explore Mangesh Raut's software engineering portfolio, projects, writing, and systems work.";
+const RESUME_PDF_PATH = 'assets/files/Mangesh_Raut_Resume.pdf';
 
 const SHARE_OPTIONS = [
   {
@@ -189,6 +190,37 @@ if (typeof window !== 'undefined') {
   };
 }
 
+async function shareWithSystemSheet(status) {
+  const payload = {
+    title: SHARE_TITLE,
+    text: SHARE_TEXT,
+    url: activeMirrorUrl,
+  };
+
+  if (typeof navigator.canShare === 'function') {
+    try {
+      const response = await fetch(RESUME_PDF_PATH, { credentials: 'same-origin' });
+      if (response.ok) {
+        const blob = await response.blob();
+        const file = new File([blob], 'Mangesh_Raut_Resume.pdf', {
+          type: blob.type || 'application/pdf',
+        });
+        const withFiles = { ...payload, files: [file] };
+        if (navigator.canShare(withFiles)) {
+          await navigator.share(withFiles);
+          status.textContent = 'Share sheet opened with resume.';
+          return;
+        }
+      }
+    } catch {
+      // Fall through to URL-only share.
+    }
+  }
+
+  await navigator.share(payload);
+  status.textContent = 'Share sheet opened.';
+}
+
 async function copyShareUrl(status) {
   try {
     await navigator.clipboard.writeText(activeMirrorUrl);
@@ -331,12 +363,7 @@ async function initShareWidget() {
   } else {
     const triggerNativeShare = async () => {
       try {
-        await navigator.share({
-          title: SHARE_TITLE,
-          text: SHARE_TEXT,
-          url: activeMirrorUrl,
-        });
-        status.textContent = 'Share sheet opened.';
+        await shareWithSystemSheet(status);
       } catch (error) {
         if (error?.name !== 'AbortError') {
           status.textContent = 'Share sheet is unavailable. Copy the link instead.';

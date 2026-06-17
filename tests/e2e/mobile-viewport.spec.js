@@ -8,7 +8,7 @@ test.describe('Mobile viewport fit', () => {
 
   test('homepage has no horizontal document overflow', async ({ page }) => {
     await gotoSite(page);
-    await page.waitForSelector('.a11y-toolbar', { state: 'visible', timeout: 20_000 });
+    await page.waitForSelector('#main-content', { state: 'attached', timeout: 20_000 });
 
     const metrics = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth - window.innerWidth,
