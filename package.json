@@ -105,7 +105,7 @@
     "express": "^4.21.2",
     "isomorphic-dompurify": "^2.22.0",
     "katex": "^0.16.11",
-    "marked": "^15.0.7",
+    "marked": "^18.0.5",
     "marked-footnote": "^1.2.2"
   },
   "peerDependencies": {
