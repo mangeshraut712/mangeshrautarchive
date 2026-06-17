@@ -922,7 +922,8 @@ async function checkDeploymentVersion() {
     const localBuild = globalThis.buildConfig?.buildTime || globalThis.buildConfig?.gitCommit || globalThis.buildConfig?.version;
     if (!localBuild) return;
 
-    const res = await fetch(`/build-config.json?sync_ts=${Date.now()}`, {
+    const configUrl = new URL('build-config.json', window.location.href);
+    const res = await fetch(`${configUrl.href}?sync_ts=${Date.now()}`, {
       cache: 'no-store',
       headers: {
         Accept: 'application/json',

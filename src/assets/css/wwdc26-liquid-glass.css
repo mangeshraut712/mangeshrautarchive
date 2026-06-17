@@ -304,20 +304,7 @@ html.dark #go-to-top.visible {
 }
 
 @media (width <=768px) {
-  #go-to-top {
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-    width: 3rem !important;
-    height: 3rem !important;
-  }
-
-  #chatbot-toggle {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.5rem) !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    top: auto !important;
-    width: 3rem !important;
-    height: 3rem !important;
-  }
+  /* FAB positions and a11y toolbar placement: mobile-viewport.css */
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -1230,15 +1217,7 @@ html.dark .a11y-toolbar button.a11y-glass-active {
 }
 
 @media (width <=1024px) {
-  body.has-a11y-toolbar {
-    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom)) !important;
-  }
-
-  body.has-a11y-toolbar #go-to-top {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) !important;
-  }
-
-
+  /* Mobile chrome padding and FAB stack: mobile-viewport.css */
 }
 
 @media (width <=768px) {

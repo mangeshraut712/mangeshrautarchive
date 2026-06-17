@@ -61,6 +61,38 @@ test.describe('Mobile viewport fit', () => {
     expect(parseFloat(overlap.actionsMargin)).toBeGreaterThan(60);
   });
 
+  test('floating action buttons do not overlap after scroll', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
+    await page.evaluate(() => window.scrollTo({ top: 900, behavior: 'instant' }));
+    await page.waitForTimeout(400);
+
+    const fabLayout = await page.evaluate(() => {
+      const rect = sel => {
+        const el = document.querySelector(sel);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return { t: r.top, b: r.bottom, l: r.left, r: r.right, h: r.height };
+      };
+      const topBtn = rect('#go-to-top');
+      const chatBtn = rect('#chatbot-toggle');
+      const hits = (a, b) =>
+        a && b && !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
+      const gap = topBtn && chatBtn ? topBtn.t - chatBtn.b : null;
+      return {
+        overlap: hits(topBtn, chatBtn),
+        gap,
+        chatAboveTop: chatBtn && topBtn ? chatBtn.b <= topBtn.t : null,
+      };
+    });
+
+    expect(fabLayout.overlap).toBe(false);
+    if (fabLayout.gap !== null) {
+      expect(fabLayout.gap).toBeGreaterThanOrEqual(8);
+    }
+    expect(fabLayout.chatAboveTop).toBe(true);
+  });
+
   test('travel atlas fits mobile width', async ({ page }) => {
     await gotoSite(page, '/travel.html');
     await page.waitForTimeout(1000);

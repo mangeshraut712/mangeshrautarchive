@@ -1,6 +1,6 @@
 /**
  * Mobile viewport sync — safe areas, floating chrome stack, overflow guards.
- * Loaded after cross-browser-responsive.css on all public pages.
+ * Loaded after share-widget.css so mobile chrome overrides win.
  */
 
 html {
@@ -34,29 +34,96 @@ body {
 }
 
 @media (width <=768px) {
-  /* Hero CTAs stay above the bottom floating chrome when scrolled into view */
-  body.has-a11y-toolbar .hero-actions {
-    margin-bottom: calc(6.5rem + env(safe-area-inset-bottom));
-    padding-right: 0.5rem;
-    max-width: calc(100% - 4.25rem - env(safe-area-inset-right));
-    margin-inline: auto;
-    scroll-margin-bottom: calc(7rem + env(safe-area-inset-bottom));
+  :root {
+    --mobile-fab-size: 3.5rem;
+    --mobile-fab-gap: 0.875rem;
+    --mobile-edge-inset: max(1rem, env(safe-area-inset-right));
+    --mobile-bottom-inset: calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+    --mobile-a11y-toolbar-lift: 3.75rem;
+    --mobile-content-chrome-pad: 7.5rem;
   }
 
-  /* Right-side FABs stack above the accessibility toolbar */
-  body.has-a11y-toolbar #chatbot-toggle {
-    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 3.6rem) !important;
-    right: max(0.75rem, env(safe-area-inset-right)) !important;
+  /* Accessibility toolbar — above Safari home indicator, clear of page edge */
+  .a11y-toolbar {
+    left: max(1rem, env(safe-area-inset-left)) !important;
+    right: auto !important;
+    bottom: var(--mobile-bottom-inset) !important;
+    top: auto !important;
+    transform: none !important;
+    z-index: 9998 !important;
+  }
+
+  .a11y-glass-popover {
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-a11y-toolbar-lift)) !important;
+    left: max(1rem, env(safe-area-inset-left)) !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  /* Right FAB stack — go-to-top lowest, chatbot above with explicit gap */
+  #go-to-top,
+  #go-to-top.visible {
+    right: var(--mobile-edge-inset) !important;
+    bottom: var(--mobile-bottom-inset) !important;
+    width: var(--mobile-fab-size) !important;
+    height: var(--mobile-fab-size) !important;
+    min-width: var(--mobile-fab-size) !important;
+    min-height: var(--mobile-fab-size) !important;
     z-index: 9999 !important;
   }
 
+  #chatbot-toggle {
+    right: var(--mobile-edge-inset) !important;
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)) !important;
+    top: auto !important;
+    width: var(--mobile-fab-size) !important;
+    height: var(--mobile-fab-size) !important;
+    min-width: var(--mobile-fab-size) !important;
+    min-height: var(--mobile-fab-size) !important;
+    z-index: 9999 !important;
+  }
+
+  body.has-a11y-toolbar #go-to-top,
   body.has-a11y-toolbar #go-to-top.visible {
-    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 7.35rem) !important;
-    right: max(0.75rem, env(safe-area-inset-right)) !important;
+    right: var(--mobile-edge-inset) !important;
+    bottom: var(--mobile-bottom-inset) !important;
+  }
+
+  body.has-a11y-toolbar #chatbot-toggle {
+    right: var(--mobile-edge-inset) !important;
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)) !important;
+  }
+
+  html {
+    scroll-padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
   }
 
   body.has-a11y-toolbar {
-    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Keep readable clearance above bottom floating chrome in key sections */
+  body.has-a11y-toolbar #about,
+  body.has-a11y-toolbar #currently-section,
+  body.has-a11y-toolbar #contact {
+    scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+  }
+
+  body.has-a11y-toolbar .about-content,
+  body.has-a11y-toolbar .currently-showcase,
+  body.has-a11y-toolbar .health-widget-container {
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  }
+
+  /* Hero CTAs stay above the bottom floating chrome when scrolled into view */
+  body.has-a11y-toolbar .hero-actions {
+    margin-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
+    padding-right: 0.5rem;
+    max-width: calc(100% - 4.25rem - env(safe-area-inset-right));
+    margin-inline: auto;
+    scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom));
   }
 
   .website-share-dialog {
@@ -71,7 +138,20 @@ body {
     max-height: calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 1.25rem !important;
+    padding: 2.75rem 1.25rem 1.25rem !important;
+  }
+
+  .website-share-mirrors {
+    margin-top: 0 !important;
+    padding-right: 3.5rem;
+  }
+
+  .website-share-close {
+    top: 0.875rem !important;
+    right: 0.875rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    z-index: 3 !important;
   }
 
   .share-mirror-tab {

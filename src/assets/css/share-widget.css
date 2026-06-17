@@ -121,6 +121,7 @@ html.dark .website-share-close:hover {
   padding: 2px;
   border-radius: 10px;
   margin-top: 1.25rem;
+  padding-inline-end: 3.5rem;
 }
 
 html.dark .website-share-mirrors {
