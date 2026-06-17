@@ -91,16 +91,17 @@ const createShareMarkup = () => `
   <div id="website-share-dialog" class="website-share-dialog" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true" tabindex="-1">
     <div class="website-share-backdrop" data-share-close></div>
     <div class="website-share-card" aria-describedby="website-share-description">
-      <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
-
-      <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
-        ${SHARE_MIRRORS.map((mirror, idx) => `
+      <div class="website-share-card-top">
+        <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
+          ${SHARE_MIRRORS.map((mirror, idx) => `
           <div class="share-mirror-tab ${idx === 0 ? 'active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" tabindex="0" data-mirror-idx="${idx}">
             ${mirror.name.split(' ')[0]}
           </div>
         `).join('')}
+        </div>
+        <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
       </div>
 
       <div class="website-share-qr-section">

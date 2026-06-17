@@ -106,4 +106,28 @@ test.describe('Mobile viewport fit', () => {
     expect(metrics.overflow).toBeLessThanOrEqual(2);
     expect(metrics.layoutWidth).toBeLessThanOrEqual(metrics.innerW + 1);
   });
+
+  test('chatbot shows blurred backdrop and opaque panel on mobile', async ({ page }) => {
+    await gotoSite(page);
+    await page.locator('#chatbot-toggle').click();
+    await page.waitForSelector('#chatbot-widget.visible', { state: 'visible' });
+
+    const state = await page.evaluate(() => {
+      const backdrop = document.getElementById('chatbot-backdrop');
+      const widget = document.getElementById('chatbot-widget');
+      const backdropStyle = backdrop ? getComputedStyle(backdrop) : null;
+      const widgetStyle = widget ? getComputedStyle(widget) : null;
+      return {
+        backdropActive: backdrop?.classList.contains('active'),
+        bodyLocked: document.body.classList.contains('chatbot-open'),
+        backdropBlur: backdropStyle?.webkitBackdropFilter || backdropStyle?.backdropFilter,
+        widgetBg: widgetStyle?.backgroundColor,
+      };
+    });
+
+    expect(state.backdropActive).toBe(true);
+    expect(state.bodyLocked).toBe(true);
+    expect(state.backdropBlur).toContain('blur');
+    expect(state.widgetBg).toMatch(/rgb/);
+  });
 });

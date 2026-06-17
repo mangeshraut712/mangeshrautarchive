@@ -108,12 +108,14 @@ test.describe('Share widget mobile layout', () => {
         closeLeft: close?.left,
         lastTabRight: lastTab?.right,
         clearance: close && lastTab ? close.left - lastTab.right : null,
+        hasHeaderRow: !!document.querySelector('.website-share-card-top'),
       };
     });
 
     expect(layout.overlapsLastTab).toBe(false);
+    expect(layout.hasHeaderRow).toBe(true);
     if (layout.clearance !== null) {
-      expect(layout.clearance).toBeGreaterThanOrEqual(-2);
+      expect(layout.clearance).toBeGreaterThanOrEqual(4);
     }
   });
 });

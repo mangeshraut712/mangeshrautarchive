@@ -80,16 +80,24 @@ html.dark .website-share-card {
     0 1px 0 rgba(255, 255, 255, 0.05) inset !important;
 }
 
-/* Close button - Apple iOS style top-right circle */
+/* Close button - Apple iOS style circle, inline in card header row */
+.website-share-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
 .website-share-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  position: relative;
+  top: auto;
+  right: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
   color: #86868b;
   background: rgba(0, 0, 0, 0.05);
   border: none;
@@ -117,11 +125,12 @@ html.dark .website-share-close:hover {
 /* Segmented Control Mirror Selector */
 .website-share-mirrors {
   display: flex;
+  flex: 1;
+  min-width: 0;
   background: rgba(0, 0, 0, 0.05);
   padding: 2px;
   border-radius: 10px;
-  margin-top: 1.25rem;
-  padding-inline-end: 3.5rem;
+  margin-top: 0;
 }
 
 html.dark .website-share-mirrors {

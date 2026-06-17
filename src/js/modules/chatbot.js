@@ -469,6 +469,7 @@ class AppleIntelligenceChatbot {
   initializeElements() {
     const elements = {
       widget: document.getElementById('chatbot-widget'),
+      backdrop: document.getElementById('chatbot-backdrop'),
       toggle: document.getElementById('chatbot-toggle'),
       closeBtn: document.querySelector('.chatbot-close-btn'),
       clearBtn: document.getElementById('chatbot-clear-btn'),
@@ -534,6 +535,7 @@ class AppleIntelligenceChatbot {
   bindEvents() {
     this.elements.toggle?.addEventListener('click', () => this.toggleWidget());
     this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
+    this.elements.backdrop?.addEventListener('click', () => this.closeWidget());
     this.elements.clearBtn?.addEventListener('click', () => this.clearChat());
     this.elements.privacyBtn?.addEventListener('click', () => {
       privacyDashboard.open();
@@ -568,7 +570,8 @@ class AppleIntelligenceChatbot {
         this.isOpen &&
         e.isTrusted &&
         !this.elements.widget.contains(e.target) &&
-        !this.elements.toggle.contains(e.target)
+        !this.elements.toggle.contains(e.target) &&
+        !this.elements.backdrop?.contains(e.target)
       ) {
         this.closeWidget();
       }
@@ -605,6 +608,9 @@ class AppleIntelligenceChatbot {
   openWidget() {
     this.lastFocusedElement = document.activeElement;
     document.body.classList.add('chatbot-open');
+    this.elements.backdrop?.classList.remove('hidden');
+    this.elements.backdrop?.classList.add('active');
+    this.elements.backdrop?.setAttribute('aria-hidden', 'false');
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
     this.isOpen = true;
@@ -621,6 +627,9 @@ class AppleIntelligenceChatbot {
     this.closeWritingTools();
     this.stopDictation(false);
     document.body.classList.remove('chatbot-open');
+    this.elements.backdrop?.classList.remove('active');
+    this.elements.backdrop?.classList.add('hidden');
+    this.elements.backdrop?.setAttribute('aria-hidden', 'true');
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
     this.isOpen = false;

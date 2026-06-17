@@ -138,25 +138,29 @@ body {
     max-height: calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 2.75rem 1.25rem 1.25rem !important;
+    padding: 1.25rem !important;
   }
 
-  .website-share-mirrors {
-    margin-top: 0 !important;
-    padding-right: 3.5rem;
-  }
-
-  .website-share-close {
-    top: 0.875rem !important;
-    right: 0.875rem !important;
-    width: 2rem !important;
-    height: 2rem !important;
-    z-index: 3 !important;
+  .website-share-card-top {
+    gap: 0.625rem;
+    margin-top: 0;
   }
 
   .share-mirror-tab {
     font-size: 0.68rem !important;
     padding: 8px 2px !important;
+  }
+
+  #chatbot-widget.visible {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html.dark #chatbot-widget.visible {
+    background: #000000 !important;
+    background-color: #000000 !important;
   }
 
   #endpoint-metrics-section > div[style*='overflow-x'] {
