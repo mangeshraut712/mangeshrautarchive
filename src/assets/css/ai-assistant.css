@@ -113,23 +113,21 @@ html.dark #chatbot-widget {
   position: fixed;
   inset: 0;
   z-index: 99999;
+  display: none;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition:
-    opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0.24s step-end;
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #chatbot-backdrop.active {
+  display: block;
   opacity: 1;
-  visibility: visible;
   pointer-events: auto;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 html.dark #chatbot-backdrop {

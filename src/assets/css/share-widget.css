@@ -4,28 +4,22 @@
   position: fixed;
   inset: 0;
   z-index: 100200;
-  display: grid;
+  display: none;
   place-items: center;
   padding: 1.5rem;
-  visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0.24s step-end;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 
 .website-share-dialog.active {
-  visibility: visible;
+  display: grid;
   opacity: 1;
   pointer-events: auto;
-  transition:
-    opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0s step-start;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 body.share-dialog-open {

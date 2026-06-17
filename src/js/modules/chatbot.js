@@ -608,9 +608,12 @@ class AppleIntelligenceChatbot {
   openWidget() {
     this.lastFocusedElement = document.activeElement;
     document.body.classList.add('chatbot-open');
-    this.elements.backdrop?.classList.remove('hidden');
-    this.elements.backdrop?.classList.add('active');
-    this.elements.backdrop?.setAttribute('aria-hidden', 'false');
+    if (this.elements.backdrop) {
+      this.elements.backdrop.classList.remove('hidden');
+      this.elements.backdrop.classList.add('active');
+      this.elements.backdrop.style.removeProperty('display');
+      this.elements.backdrop.setAttribute('aria-hidden', 'false');
+    }
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
     this.isOpen = true;
@@ -627,9 +630,12 @@ class AppleIntelligenceChatbot {
     this.closeWritingTools();
     this.stopDictation(false);
     document.body.classList.remove('chatbot-open');
-    this.elements.backdrop?.classList.remove('active');
-    this.elements.backdrop?.classList.add('hidden');
-    this.elements.backdrop?.setAttribute('aria-hidden', 'true');
+    if (this.elements.backdrop) {
+      this.elements.backdrop.classList.remove('active');
+      this.elements.backdrop.classList.add('hidden');
+      this.elements.backdrop.style.display = 'none';
+      this.elements.backdrop.setAttribute('aria-hidden', 'true');
+    }
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
     this.isOpen = false;

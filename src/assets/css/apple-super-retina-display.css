@@ -19,6 +19,35 @@
 html {
   color-scheme: light dark;
   -webkit-tap-highlight-color: transparent;
+  background-color: #ffffff;
+}
+
+html.dark {
+  background-color: #000000;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+html.dark body {
+  background-color: #000000;
+}
+
+/* Below-fold homepage sections — skip layout/paint until near viewport */
+@supports (content-visibility: auto) {
+  body:not(.travel-body):not(.monitor-page) main > section:not(#home) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 960px;
+  }
+}
+
+/* Reduce backdrop blur while scrolling for ProMotion frame budget */
+html.is-scrolling .global-nav.dynamic-island,
+html.is-scrolling #chatbot-toggle,
+html.is-scrolling .a11y-toolbar {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* XDR / high dynamic range — improve outdoor legibility on OLED */

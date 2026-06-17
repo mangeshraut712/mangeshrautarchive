@@ -2,6 +2,7 @@ const IDLE_MODULES = [];
 const EAGER_MODULES = ['../modules/accessibility.js'];
 
 import '../modules/apple-sounds.js';
+import '../modules/offscreen-animation-pause.js';
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 
 const DELAYED_MODULES = [];
@@ -960,9 +961,34 @@ async function checkDeploymentVersion() {
   }
 }
 
+function initScrollBlurThrottle() {
+  if (window.__portfolioScrollBlurBound || prefersReducedMotion()) {
+    return;
+  }
+  window.__portfolioScrollBlurBound = true;
+
+  let scrollTimer = null;
+  const root = document.documentElement;
+
+  const onScroll = () => {
+    root.classList.add('is-scrolling');
+    clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(() => {
+      root.classList.remove('is-scrolling');
+    }, 180);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 async function initBootstrap() {
   applyStoredLiquidGlassTint();
   initFooterYear();
+  initScrollBlurThrottle();
 
   if (isPerformanceAudit()) {
     return;
