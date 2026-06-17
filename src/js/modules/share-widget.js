@@ -147,6 +147,8 @@ const createShareMarkup = () => `
 
 function setDialogState(dialog, trigger, isOpen) {
   dialog.classList.toggle('active', isOpen);
+  dialog.classList.remove('hidden');
+  dialog.style.removeProperty('display');
   dialog.setAttribute('aria-hidden', String(!isOpen));
   if (trigger) {
     trigger.setAttribute('aria-expanded', String(isOpen));
