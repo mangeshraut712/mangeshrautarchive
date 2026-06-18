@@ -15,6 +15,7 @@ const SHARE_TOGGLE_LABEL = 'Share website';
 const SHARE_TITLE = 'Mangesh Raut Archive';
 const SHARE_TEXT =
   "Explore Mangesh Raut's software engineering portfolio, projects, writing, and systems work.";
+const RESUME_PDF_PATH = 'assets/files/Mangesh_Raut_Resume.pdf';
 
 const SHARE_OPTIONS = [
   {
@@ -91,16 +92,17 @@ const createShareMarkup = () => `
   <div id="website-share-dialog" class="website-share-dialog" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true" tabindex="-1">
     <div class="website-share-backdrop" data-share-close></div>
     <div class="website-share-card" aria-describedby="website-share-description">
-      <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-      </button>
-
-      <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
-        ${SHARE_MIRRORS.map((mirror, idx) => `
+      <div class="website-share-card-top">
+        <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
+          ${SHARE_MIRRORS.map((mirror, idx) => `
           <div class="share-mirror-tab ${idx === 0 ? 'active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" tabindex="0" data-mirror-idx="${idx}">
             ${mirror.name.split(' ')[0]}
           </div>
         `).join('')}
+        </div>
+        <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
       </div>
 
       <div class="website-share-qr-section">
@@ -146,6 +148,13 @@ const createShareMarkup = () => `
 
 function setDialogState(dialog, trigger, isOpen) {
   dialog.classList.toggle('active', isOpen);
+  if (isOpen) {
+    dialog.classList.remove('hidden');
+    dialog.style.removeProperty('display');
+  } else {
+    dialog.classList.add('hidden');
+    dialog.style.display = 'none';
+  }
   dialog.setAttribute('aria-hidden', String(!isOpen));
   if (trigger) {
     trigger.setAttribute('aria-expanded', String(isOpen));
@@ -179,6 +188,37 @@ if (typeof window !== 'undefined') {
     ...(window.websiteShareWidget || {}),
     ensureShareToggleReady,
   };
+}
+
+async function shareWithSystemSheet(status) {
+  const payload = {
+    title: SHARE_TITLE,
+    text: SHARE_TEXT,
+    url: activeMirrorUrl,
+  };
+
+  if (typeof navigator.canShare === 'function') {
+    try {
+      const response = await fetch(RESUME_PDF_PATH, { credentials: 'same-origin' });
+      if (response.ok) {
+        const blob = await response.blob();
+        const file = new File([blob], 'Mangesh_Raut_Resume.pdf', {
+          type: blob.type || 'application/pdf',
+        });
+        const withFiles = { ...payload, files: [file] };
+        if (navigator.canShare(withFiles)) {
+          await navigator.share(withFiles);
+          status.textContent = 'Share sheet opened with resume.';
+          return;
+        }
+      }
+    } catch {
+      // Fall through to URL-only share.
+    }
+  }
+
+  await navigator.share(payload);
+  status.textContent = 'Share sheet opened.';
 }
 
 async function copyShareUrl(status) {
@@ -323,12 +363,7 @@ async function initShareWidget() {
   } else {
     const triggerNativeShare = async () => {
       try {
-        await navigator.share({
-          title: SHARE_TITLE,
-          text: SHARE_TEXT,
-          url: activeMirrorUrl,
-        });
-        status.textContent = 'Share sheet opened.';
+        await shareWithSystemSheet(status);
       } catch (error) {
         if (error?.name !== 'AbortError') {
           status.textContent = 'Share sheet is unavailable. Copy the link instead.';

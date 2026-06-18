@@ -45,10 +45,10 @@ const homeChecks = [
     run: async page => page.locator('#main-content').isVisible(),
   },
   {
-    name: 'a11y-toolbar-4-buttons',
+    name: 'a11y-toolbar-5-buttons',
     run: async page => {
       await page.waitForSelector('.a11y-toolbar', { state: 'visible', timeout: 15_000 });
-      return (await page.locator('.a11y-toolbar button').count()) === 4;
+      return (await page.locator('.a11y-toolbar button').count()) === 5;
     },
   },
   {

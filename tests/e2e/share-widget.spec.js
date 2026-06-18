@@ -87,3 +87,35 @@ test.describe('Share widget cross-browser', () => {
     expect(vercelSrc).not.toBe(initialSrc);
   });
 });
+
+test.describe('Share widget mobile layout', () => {
+  test.use({ viewport: { width: 440, height: 956 }, isMobile: true, hasTouch: true });
+
+  test('close button does not overlap mirror tabs', async ({ page }) => {
+    await gotoSite(page);
+    await openShareDialog(page);
+
+    const layout = await page.evaluate(() => {
+      const close = document.querySelector('.website-share-close')?.getBoundingClientRect();
+      const tabs = [...document.querySelectorAll('.share-mirror-tab')].map(tab =>
+        tab.getBoundingClientRect()
+      );
+      const lastTab = tabs[tabs.length - 1];
+      const hits = (a, b) =>
+        a && b && !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+      return {
+        overlapsLastTab: hits(close, lastTab),
+        closeLeft: close?.left,
+        lastTabRight: lastTab?.right,
+        clearance: close && lastTab ? close.left - lastTab.right : null,
+        hasHeaderRow: !!document.querySelector('.website-share-card-top'),
+      };
+    });
+
+    expect(layout.overlapsLastTab).toBe(false);
+    expect(layout.hasHeaderRow).toBe(true);
+    if (layout.clearance !== null) {
+      expect(layout.clearance).toBeGreaterThanOrEqual(4);
+    }
+  });
+});

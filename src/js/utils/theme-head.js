@@ -1,4 +1,12 @@
 (function () {
+  var root = document.documentElement;
+  var ua = navigator.userAgent || '';
+  if (/Chrome\//.test(ua) && !/Edg\//.test(ua) && !/OPR\//.test(ua)) {
+    root.classList.add('browser-chromium');
+  } else if (/Safari\//.test(ua) && !/Chrome\//.test(ua) && !/Chromium\//.test(ua)) {
+    root.classList.add('browser-safari');
+  }
+
   var MODE_KEY = 'themeMode';
   var LEGACY_KEY = 'theme';
   var GEO_KEY = 'themeGeo';

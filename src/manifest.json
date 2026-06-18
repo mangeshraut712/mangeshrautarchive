@@ -4,8 +4,9 @@
   "short_name": "Mangesh Raut",
   "start_url": "./index.html",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#ffffff",
-  "theme_color": "#007aff",
+  "theme_color": "#007AFF",
   "description": "Portfolio of Mangesh Raut - Software Engineer specializing in Java, Python, and Full-Stack Development.",
   "orientation": "any",
   "categories": ["portfolio", "technology", "education"],
@@ -17,10 +18,38 @@
       "purpose": "any"
     },
     {
+      "src": "assets/icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/profile-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "assets/images/profile-icon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/images/home.png",
+      "sizes": "3024x1722",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Portfolio homepage"
+    },
+    {
+      "src": "assets/images/pwa-splash-iphone-17-pro-max.png",
+      "sizes": "1320x2868",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Portfolio on iPhone 17 Pro Max"
     }
   ],
   "shortcuts": [
