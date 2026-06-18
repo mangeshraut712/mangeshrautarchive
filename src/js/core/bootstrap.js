@@ -1,8 +1,10 @@
 const IDLE_MODULES = [];
 const EAGER_MODULES = ['../modules/accessibility.js'];
 
-import '../modules/apple-sounds.js';
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
+import '../modules/apple-haptics.js';
+import '../utils/view-transitions-nav.js';
+import '../modules/aod-dim-mode.js';
 
 const DELAYED_MODULES = [];
 
@@ -55,21 +57,14 @@ const SECTION_STYLE_GROUPS = [
   { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '120px 0px' },
   { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '120px 0px' },
   { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '120px 0px' },
+  { sectionId: 'currently-section', styleKeys: ['currently'], rootMargin: '120px 0px' },
   { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '120px 0px' },
 ];
 
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
-/** Styles to prefetch right after first paint — avoids FOUC without blocking LCP */
-const EARLY_IDLE_STYLE_KEYS = [
-  'interactive',
-  'about',
-  'projects',
-  'skills',
-  'experience',
-  'education',
-  'blog',
-];
+/** Styles to prefetch after first paint — keep small to protect LCP on Chrome/Safari */
+const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about', 'currently'];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 
@@ -210,6 +205,10 @@ const CRITICAL_STYLE_PATTERN = /accessibility-contrast-fixes|wwdc26-liquid-glass
 
 /** Keep WCAG + liquid-glass layers last so lazy section CSS cannot override them. */
 function pinCriticalStylesheetsLast(documentRef = document) {
+  if (window.__portfolioCriticalStylesPinned) {
+    return;
+  }
+
   const head = documentRef.head;
   if (!head) return;
 
@@ -218,11 +217,17 @@ function pinCriticalStylesheetsLast(documentRef = document) {
     return CRITICAL_STYLE_PATTERN.test(href);
   });
 
+  if (links.length === 0) {
+    return;
+  }
+
   links.forEach(link => {
     if (link.parentNode) {
       head.appendChild(link);
     }
   });
+
+  window.__portfolioCriticalStylesPinned = true;
 }
 
 async function loadDeferredStyles(styleKeys = [], documentRef = document) {
@@ -324,7 +329,7 @@ function shouldShowLaunchIntro(storageKey) {
   try {
     const nav = performance.getEntriesByType('navigation')[0];
     if (nav?.type === 'reload') {
-      return true;
+      return sessionStorage.getItem(storageKey) !== '1';
     }
     return sessionStorage.getItem(storageKey) !== '1';
   } catch (_error) {
@@ -572,6 +577,7 @@ function initOnDemandModules() {
   bindInteractionModuleLoader('chatbot-toggle', chatbotLoader, true, document, ['assistant']);
   bindInteractionModuleLoader('search-toggle', searchLoader, true, document, ['interactive']);
   bindInteractionStyleLoader('menu-btn', ['interactive']);
+  bindInteractionStyleLoader('website-share-toggle', ['share']);
   bindSearchShortcutLoader(searchLoader, document, ['interactive']);
 }
 
@@ -603,6 +609,11 @@ function initDeferredStyles() {
           loadDeferredStyles(EARLY_IDLE_STYLE_KEYS).catch(error => {
             console.warn('Early idle style prefetch skipped:', error);
           });
+          runWhenIdle(() => {
+            loadDeferredStyles(['share']).catch(error => {
+              console.warn('Share style prefetch skipped:', error);
+            });
+          }, 900);
         }, 250);
       },
       { once: true }
@@ -775,36 +786,38 @@ function initServiceWorker() {
 
   window.addEventListener(
     'load',
-    async () => {
-      try {
-        const registrations = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(registrations.map(registration => registration.unregister()));
-
-        if ('caches' in window) {
-          const cacheNames = await caches.keys();
-          await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
-        }
-
-        localStorage.removeItem('portfolio-version');
+    () => {
+      runWhenIdle(async () => {
         try {
-          sessionStorage.setItem(cleanupKey, '1');
-        } catch (_error) {
-          // Stale-cache cleanup already ran; storage support is optional.
-        }
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(registrations.map(registration => registration.unregister()));
 
-        window.clearAllCaches = async () => {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(registration => registration.unregister()));
           if ('caches' in window) {
             const cacheNames = await caches.keys();
             await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
           }
+
           localStorage.removeItem('portfolio-version');
-          sessionStorage.removeItem(cleanupKey);
-        };
-      } catch (_error) {
-        // Service worker cleanup is best-effort; failures are non-critical
-      }
+          try {
+            sessionStorage.setItem(cleanupKey, '1');
+          } catch (_error) {
+            // Stale-cache cleanup already ran; storage support is optional.
+          }
+
+          window.clearAllCaches = async () => {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(registration => registration.unregister()));
+            if ('caches' in window) {
+              const cacheNames = await caches.keys();
+              await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+            }
+            localStorage.removeItem('portfolio-version');
+            sessionStorage.removeItem(cleanupKey);
+          };
+        } catch (_error) {
+          // Service worker cleanup is best-effort; failures are non-critical
+        }
+      }, 2500);
     },
     { once: true }
   );
@@ -922,7 +935,8 @@ async function checkDeploymentVersion() {
     const localBuild = globalThis.buildConfig?.buildTime || globalThis.buildConfig?.gitCommit || globalThis.buildConfig?.version;
     if (!localBuild) return;
 
-    const res = await fetch(`/build-config.json?sync_ts=${Date.now()}`, {
+    const configUrl = new URL('build-config.json', window.location.href);
+    const res = await fetch(`${configUrl.href}?sync_ts=${Date.now()}`, {
       cache: 'no-store',
       headers: {
         Accept: 'application/json',
@@ -959,16 +973,55 @@ async function checkDeploymentVersion() {
   }
 }
 
+function initScrollBlurThrottle() {
+  if (window.__portfolioScrollBlurBound || prefersReducedMotion()) {
+    return;
+  }
+  window.__portfolioScrollBlurBound = true;
+
+  let scrollTimer = null;
+  const root = document.documentElement;
+
+  const onScroll = () => {
+    root.classList.add('is-scrolling');
+    clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(() => {
+      root.classList.remove('is-scrolling');
+    }, 180);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function initAppleDisplayEnhancements() {
+  const loadExtras = () => {
+    import('../modules/apple-sounds.js');
+    import('../modules/offscreen-animation-pause.js').then(module => {
+      module.initOffscreenAnimationPause?.();
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadExtras, { once: true });
+  } else {
+    loadExtras();
+  }
+}
+
 async function initBootstrap() {
   applyStoredLiquidGlassTint();
   initFooterYear();
+  initScrollBlurThrottle();
 
   if (isPerformanceAudit()) {
     return;
   }
 
   hydrateHeroImages();
-  pinCriticalStylesheetsLast();
   initGlobalErrorHandlers();
   initContactDeferredImages();
   initCertificationDeferredImages();
@@ -979,12 +1032,20 @@ async function initBootstrap() {
   initLazyModules();
   initServiceWorker();
   initLaunchIntro();
+  initAppleDisplayEnhancements();
 
-  // Low priority version check to sync new deployments instantly across all browsers
-  checkDeploymentVersion();
+  runWhenIdle(() => {
+    loadModule('../modules/real-media-loader.js');
+  }, 300);
+
+  runWhenIdle(() => {
+    checkDeploymentVersion();
+  }, 5000);
   window.addEventListener('pageshow', event => {
     if (event.persisted) {
-      checkDeploymentVersion();
+      runWhenIdle(() => {
+        checkDeploymentVersion();
+      }, 1500);
     }
   });
 
@@ -992,7 +1053,8 @@ async function initBootstrap() {
     loadDeferredBootstrapModules().catch(error => {
       console.warn('Deferred bootstrap modules skipped:', error);
     });
-  }, 1200);
+    pinCriticalStylesheetsLast();
+  }, 3500);
 }
 
 if (document.readyState === 'loading') {

@@ -286,16 +286,19 @@ export class AccessibilityEnhancer {
       return;
     }
 
-    // Close chatbot
-    const chatbot = document.querySelector('#chatbot-widget');
-    if (chatbot && !chatbot.classList.contains('hidden')) {
-      chatbot.classList.add('hidden');
-      this.announce('Chatbot closed');
+    // Share + chatbot manage their own Escape handling and state classes.
+    const shareDialog = document.getElementById('website-share-dialog');
+    if (shareDialog?.classList.contains('active')) {
       return;
     }
 
-    // Close any modals
-    const modals = document.querySelectorAll('[role="dialog"], .modal, .modal-overlay');
+    if (document.body.classList.contains('chatbot-open')) {
+      window.appleIntelligenceChatbot?.closeWidget?.();
+      return;
+    }
+
+    // Legacy modal cleanup for non-managed overlays only.
+    const modals = document.querySelectorAll('.modal, .modal-overlay');
     modals.forEach(modal => {
       if (modal.style.display !== 'none' && !modal.classList.contains('hidden')) {
         modal.style.display = 'none';
