@@ -101,7 +101,7 @@ jobs:
 
       - name: 📦 Upload QA artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chrome-qa-artifacts
           path: |
@@ -209,7 +209,7 @@ jobs:
 
       - name: Upload post-deploy QA artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: post-deploy-${{ strategy.job-index }}-chrome-artifacts
           path: |
