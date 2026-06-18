@@ -141,7 +141,7 @@
   }
 
   /* Hide Toggle Button when Open */
-  #chatbot-widget.visible ~ #chatbot-toggle {
+  body.chatbot-open #chatbot-toggle {
     display: none !important;
   }
 

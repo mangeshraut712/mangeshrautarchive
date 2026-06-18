@@ -93,9 +93,9 @@ html.dark.aod-dim .a11y-toolbar {
   opacity: 0.72;
 }
 
-/* ProMotion — isolate scroll surface on capable mobile */
+/* ProMotion — isolate section paint without trapping fixed floating chrome */
 @media (width <=768px) and (prefers-reduced-motion: no-preference) {
-  #main-content {
+  body:not(.travel-body):not(.monitor-page) main > section:not(#home) {
     contain: layout style;
   }
 }
