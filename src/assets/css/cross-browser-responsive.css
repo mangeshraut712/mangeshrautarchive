@@ -279,6 +279,17 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* iOS Safari — fill available viewport height (address bar) */
+@supports (-webkit-touch-callout: none) {
+  html {
+    min-height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
 /* Improve tap targets on mobile */
 @media (hover: none) and (pointer: coarse) {
   a,

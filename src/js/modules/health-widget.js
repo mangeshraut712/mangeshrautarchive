@@ -26,11 +26,12 @@ function resolveApiBase() {
     (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
     '';
   if (base) return base.replace(/\/$/, '');
-  if (
-    globalThis.location?.hostname === 'localhost' ||
-    globalThis.location?.hostname === '127.0.0.1'
-  ) {
+  const hostname = globalThis.location?.hostname || '';
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return '';
+  }
+  if (hostname.endsWith('github.io')) {
+    return 'https://mangeshraut.pro';
   }
   return 'https://mangeshraut.pro';
 }
@@ -105,7 +106,6 @@ class HealthWidget {
         credentials: apiBase ? 'omit' : 'same-origin',
         headers: {
           Accept: 'application/json',
-          Pragma: 'no-cache',
         },
         signal: controller.signal,
       });
