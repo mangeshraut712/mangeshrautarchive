@@ -73,7 +73,7 @@ html.dark .health-widget-container {
   --health-row-border: rgba(255, 255, 255, 0.05);
   --health-footer-bg: rgba(0, 0, 0, 0.2);
   --health-footer-border: rgba(255, 255, 255, 0.05);
-  --health-footer-text: rgba(255, 255, 255, 0.4);
+  --health-footer-text: rgba(255, 255, 255, 0.72);
   --health-row-highlight: rgba(255, 255, 255, 0.15);
   --health-pulse-brightness: 1.8;
   --health-icon-shadow: rgba(255, 255, 255, 0.15);
@@ -258,6 +258,12 @@ html.dark .health-widget-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.health-widget-live-label {
+  color: var(--health-footer-text);
+  font-size: 0.6rem;
+  white-space: nowrap;
 }
 
 .last-sync-time {
