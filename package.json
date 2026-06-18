@@ -89,7 +89,7 @@
     "dotenv": "^16.4.7",
     "eslint": "^9.21.0",
     "globals": "^17.6.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^29.1.1",
     "prettier": "^3.8.1",
     "react-doctor": "0.5.1",
     "sharp": "^0.34.5",
