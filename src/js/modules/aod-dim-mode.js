@@ -17,10 +17,14 @@ export function initAodDimMode() {
 
   const setDim = dim => {
     if (!shouldDim()) {
-      root.classList.remove('aod-dim');
+      if (root.classList.contains('aod-dim')) {
+        root.classList.remove('aod-dim');
+      }
       return;
     }
-    root.classList.toggle('aod-dim', dim);
+    if (root.classList.contains('aod-dim') !== !!dim) {
+      root.classList.toggle('aod-dim', dim);
+    }
   };
 
   const clearIdle = () => {
@@ -46,7 +50,9 @@ export function initAodDimMode() {
 
   const themeObserver = new MutationObserver(() => {
     if (!shouldDim()) {
-      setDim(false);
+      if (root.classList.contains('aod-dim')) {
+        setDim(false);
+      }
       clearTimeout(idleTimer);
       return;
     }
