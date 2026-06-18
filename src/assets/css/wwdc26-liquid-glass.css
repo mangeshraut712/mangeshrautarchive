@@ -41,6 +41,19 @@
   /* Chatbot vertical stretch: navbar clearance + toggle stack */
   --chatbot-widget-top: calc(var(--island-height, 52px) + 12px);
   --chatbot-widget-bottom: calc(96px + 60px + 14px);
+  /* Theme-tuned Liquid Glass surfaces */
+  --lg-nav-surface-light: rgb(255 255 255 / 68%);
+  --lg-nav-surface-dark: rgb(14 14 16 / 74%);
+  --lg-panel-surface-light: rgb(255 255 255 / 74%);
+  --lg-panel-surface-dark: rgb(10 10 12 / 78%);
+  --lg-control-surface-light: rgb(255 255 255 / 70%);
+  --lg-control-surface-dark: rgb(16 16 18 / 74%);
+  --lg-popover-surface-light: rgb(255 255 255 / 84%);
+  --lg-popover-surface-dark: rgb(18 18 20 / 88%);
+  --lg-edge-light: rgb(255 255 255 / 44%);
+  --lg-edge-dark: rgb(255 255 255 / 12%);
+  --lg-shadow-light: rgb(0 0 0 / 12%);
+  --lg-shadow-dark: rgb(0 0 0 / 44%);
 }
 
 @property --siri-angle {
@@ -109,22 +122,40 @@ html[data-theme='dark'] {
    ──────────────────────────────────────────────────────────────── */
 
 .global-nav.dynamic-island {
-  background: rgb(255 255 255 / var(--lg-nav-light-fill)) !important;
-  background-color: rgb(255 255 255 / var(--lg-nav-light-fill)) !important;
+  background: color-mix(
+    in srgb,
+    var(--lg-nav-surface-light) 72%,
+    rgb(255 255 255 / var(--lg-nav-light-fill)) 28%
+  ) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--lg-nav-surface-light) 72%,
+    rgb(255 255 255 / var(--lg-nav-light-fill)) 28%
+  ) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav)) !important;
-  border-bottom: 1px solid rgb(255 255 255 / var(--lg-border-light)) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--lg-edge-light) 65%, rgb(0 0 0 / 10%) 35%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
+    0 8px 24px color-mix(in srgb, var(--lg-shadow-light) 60%, rgb(0 0 0 / 6%) 40%),
     0 0.5px 0 rgb(0 0 0 / calc(2% + (1 - var(--lg-tint)) * 5%)) !important;
 }
 
 html.dark .global-nav.dynamic-island {
-  background: rgb(0 0 0 / var(--lg-nav-dark-fill)) !important;
-  background-color: rgb(0 0 0 / var(--lg-nav-dark-fill)) !important;
-  border-bottom-color: rgb(255 255 255 / var(--lg-border-dark)) !important;
+  background: color-mix(
+    in srgb,
+    var(--lg-nav-surface-dark) 72%,
+    rgb(0 0 0 / var(--lg-nav-dark-fill)) 28%
+  ) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--lg-nav-surface-dark) 72%,
+    rgb(0 0 0 / var(--lg-nav-dark-fill)) 28%
+  ) !important;
+  border-bottom-color: color-mix(in srgb, var(--lg-edge-dark) 72%, rgb(0 0 0 / 24%) 28%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
+    0 10px 26px color-mix(in srgb, var(--lg-shadow-dark) 74%, rgb(0 0 0 / 55%) 26%),
     0 0.5px 0 rgb(255 255 255 / calc(2% + (1 - var(--lg-tint)) * 4%)) !important;
 }
 
@@ -162,14 +193,15 @@ html.dark .global-nav.dynamic-island.scrolled {
       glass material with a specular top edge
    ──────────────────────────────────────────────────────────────── */
 
-/* Keep the window as the vertical scroller. Body-level x clipping makes
-   Chromium compute overflow-y:auto, which breaks mobile scroll restoration. */
-html:not(.launch-intro-active) {
+/* Keep the window as the vertical scroller. Chromium-only: body-level x clipping
+   can compute overflow-y:auto and break mobile scroll restoration. Safari keeps
+   cross-browser-responsive overflow-x:hidden. */
+html.browser-chromium:not(.launch-intro-active) {
   overflow-x: visible !important;
   overflow-y: visible !important;
 }
 
-body:not(.menu-open) {
+html.browser-chromium:not(.launch-intro-active) body:not(.menu-open) {
   overflow-x: visible !important;
   overflow-y: visible !important;
 }
@@ -252,7 +284,7 @@ html.dark #chatbot-toggle {
   height: 3.75rem !important;
   padding: 0 !important;
   border-radius: 50% !important;
-  display: flex !important;
+  display: none !important;
   align-items: center !important;
   justify-content: center !important;
   flex-direction: column !important;
@@ -267,12 +299,10 @@ html.dark #chatbot-toggle {
     0 4px 14px rgb(0 122 255 / 38%),
     inset 0 1px 0 rgb(255 255 255 / 28%) !important;
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
   transform: translateY(16px) scale(0.92);
   transition:
     opacity 0.32s ease,
-    visibility 0.32s ease,
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.32s ease;
 }
@@ -282,8 +312,8 @@ html.dark #chatbot-toggle {
 }
 
 #go-to-top.visible {
+  display: flex !important;
   opacity: 1 !important;
-  visibility: visible !important;
   pointer-events: auto !important;
   transform: translateY(0) scale(1) !important;
 }
@@ -304,20 +334,7 @@ html.dark #go-to-top.visible {
 }
 
 @media (width <=768px) {
-  #go-to-top {
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-    width: 3rem !important;
-    height: 3rem !important;
-  }
-
-  #chatbot-toggle {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.5rem) !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    top: auto !important;
-    width: 3rem !important;
-    height: 3rem !important;
-  }
+  /* FAB positions and a11y toolbar placement: mobile-viewport.css */
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -325,18 +342,24 @@ html.dark #go-to-top.visible {
    ──────────────────────────────────────────────────────────────── */
 
 #chatbot-widget {
-  background: rgb(255 255 255 / calc(10% + var(--lg-tint) * 72%)) !important;
-  background-color: rgb(255 255 255 / calc(10% + var(--lg-tint) * 72%)) !important;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 84%) 0%, rgb(255 255 255 / 66%) 100%),
+    var(--lg-panel-surface-light) !important;
+  background-color: var(--lg-panel-surface-light) !important;
   backdrop-filter: blur(var(--lg-blur-panel)) saturate(var(--lg-saturate)) !important;
   -webkit-backdrop-filter: blur(var(--lg-blur-panel)) saturate(var(--lg-saturate)) !important;
+  border: 1px solid color-mix(in srgb, var(--lg-edge-light) 62%, rgb(0 0 0 / 8%) 38%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
     0 24px 64px rgb(0 0 0 / calc(8% + (1 - var(--lg-tint)) * 12%)) !important;
 }
 
 html.dark #chatbot-widget {
-  background: rgb(0 0 0 / calc(14% + var(--lg-tint) * 68%)) !important;
-  background-color: rgb(0 0 0 / calc(14% + var(--lg-tint) * 68%)) !important;
+  background:
+    linear-gradient(180deg, rgb(24 24 28 / 88%) 0%, rgb(10 10 12 / 74%) 100%),
+    var(--lg-panel-surface-dark) !important;
+  background-color: var(--lg-panel-surface-dark) !important;
+  border-color: color-mix(in srgb, var(--lg-edge-dark) 78%, rgb(0 0 0 / 24%) 22%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
     0 24px 64px rgb(0 0 0 / 48%) !important;
@@ -1166,9 +1189,9 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
    ──────────────────────────────────────────────────────────────── */
 
 .a11y-toolbar {
-  background: rgb(255 255 255 / calc(var(--lg-light-fill) + 4%)) !important;
-  background-color: rgb(255 255 255 / calc(var(--lg-light-fill) + 4%)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-light)) !important;
+  background: var(--lg-control-surface-light) !important;
+  background-color: var(--lg-control-surface-light) !important;
+  border: 1px solid color-mix(in srgb, var(--lg-edge-light) 62%, rgb(0 0 0 / 8%) 38%) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   box-shadow:
@@ -1177,9 +1200,9 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
 }
 
 html.dark .a11y-toolbar {
-  background: rgb(0 0 0 / calc(var(--lg-dark-fill) + 6%)) !important;
-  background-color: rgb(0 0 0 / calc(var(--lg-dark-fill) + 6%)) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-dark)) !important;
+  background: var(--lg-control-surface-dark) !important;
+  background-color: var(--lg-control-surface-dark) !important;
+  border-color: color-mix(in srgb, var(--lg-edge-dark) 76%, rgb(0 0 0 / 24%) 24%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / calc(5% + var(--lg-tint) * 8%)),
     0 10px 36px rgb(0 0 0 / 42%) !important;
@@ -1230,15 +1253,7 @@ html.dark .a11y-toolbar button.a11y-glass-active {
 }
 
 @media (width <=1024px) {
-  body.has-a11y-toolbar {
-    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom)) !important;
-  }
-
-  body.has-a11y-toolbar #go-to-top {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.75rem) !important;
-  }
-
-
+  /* Mobile chrome padding and FAB stack: mobile-viewport.css */
 }
 
 @media (width <=768px) {
@@ -1299,9 +1314,9 @@ html.dark .a11y-toolbar button.a11y-glass-active {
 }
 
 .a11y-glass-popover {
-  background: rgb(255 255 255 / calc(78% + var(--lg-tint) * 20%)) !important;
-  background-color: rgb(255 255 255 / calc(78% + var(--lg-tint) * 20%)) !important;
-  border: 1px solid rgb(255 255 255 / calc(34% + var(--lg-tint) * 24%)) !important;
+  background: var(--lg-popover-surface-light) !important;
+  background-color: var(--lg-popover-surface-light) !important;
+  border: 1px solid color-mix(in srgb, var(--lg-edge-light) 70%, rgb(0 0 0 / 9%) 30%) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
   box-shadow:
@@ -1310,12 +1325,28 @@ html.dark .a11y-toolbar button.a11y-glass-active {
 }
 
 html.dark .a11y-glass-popover {
-  background: rgb(18 18 20 / calc(82% + var(--lg-tint) * 16%)) !important;
-  background-color: rgb(18 18 20 / calc(82% + var(--lg-tint) * 16%)) !important;
-  border-color: rgb(255 255 255 / calc(10% + var(--lg-tint) * 10%)) !important;
+  background: var(--lg-popover-surface-dark) !important;
+  background-color: var(--lg-popover-surface-dark) !important;
+  border-color: color-mix(in srgb, var(--lg-edge-dark) 74%, rgb(0 0 0 / 26%) 26%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 8%),
     0 18px 48px rgb(0 0 0 / 52%) !important;
+}
+
+@media (prefers-contrast: more) {
+  .global-nav.dynamic-island,
+  #chatbot-widget,
+  .a11y-toolbar,
+  .a11y-glass-popover {
+    border-width: 1.5px !important;
+  }
+
+  html.dark .global-nav.dynamic-island,
+  html.dark #chatbot-widget,
+  html.dark .a11y-toolbar,
+  html.dark .a11y-glass-popover {
+    border-color: rgb(255 255 255 / 28%) !important;
+  }
 }
 
 .a11y-glass-popover input[type='range'] {
@@ -2115,4 +2146,41 @@ html[data-lg-mode='tinted'] #chatbot-widget {
 html[data-lg-mode='clear'] .global-nav.dynamic-island {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   21. REDUCE TRANSPARENCY — solid chrome when iOS setting enabled
+   ──────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-transparency: reduce) {
+  .global-nav.dynamic-island,
+  #chatbot-widget,
+  .a11y-toolbar,
+  .a11y-glass-popover,
+  .website-share-dialog.active,
+  #chatbot-backdrop.active,
+  #go-to-top.visible {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html:not(.dark) .global-nav.dynamic-island,
+  html:not(.dark) #chatbot-widget,
+  html:not(.dark) .a11y-toolbar,
+  html:not(.dark) .a11y-glass-popover,
+  html:not(.dark) .website-share-dialog.active,
+  html:not(.dark) #go-to-top.visible {
+    background: rgb(255 255 255 / 96%) !important;
+    background-color: rgb(255 255 255 / 96%) !important;
+  }
+
+  html.dark .global-nav.dynamic-island,
+  html.dark #chatbot-widget,
+  html.dark .a11y-toolbar,
+  html.dark .a11y-glass-popover,
+  html.dark .website-share-dialog.active,
+  html.dark #go-to-top.visible {
+    background: rgb(0 0 0 / 96%) !important;
+    background-color: rgb(0 0 0 / 96%) !important;
+  }
 }

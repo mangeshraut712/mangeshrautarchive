@@ -43,7 +43,7 @@ export default defineConfig({
   ],
   use: {
     baseURL,
-    trace: 'retain-on-failure',
+    trace: process.env.PLAYWRIGHT_TRACE === '1' ? 'retain-on-failure' : 'off',
     screenshot: isVisualTesting ? 'on' : 'only-on-failure',
     video: videoMode,
     ...(browserChannel ? { channel: browserChannel } : {}),
@@ -127,9 +127,32 @@ export default defineConfig({
       },
     },
     {
-      name: 'iPhone 14 Pro Max Safari',
+      "name": 'iPhone 14 Pro Max Safari',
       use: {
         ...devices['iPhone 14 Pro Max'],
+      },
+    },
+    {
+      name: 'iPhone 17 Pro Max Chrome',
+      use: {
+        viewport: { width: 440, height: 956 },
+        deviceScaleFactor: 3,
+        isMobile: true,
+        hasTouch: true,
+        channel: 'chrome',
+        userAgent:
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/131.0.6778.73 Mobile/15E148 Safari/604.1',
+      },
+    },
+    {
+      name: 'iPhone 17 Pro Max Safari',
+      use: {
+        viewport: { width: 440, height: 956 },
+        deviceScaleFactor: 3,
+        isMobile: true,
+        hasTouch: true,
+        userAgent:
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Mobile/15E148 Safari/604.1',
       },
     },
     {

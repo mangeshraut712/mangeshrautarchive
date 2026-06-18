@@ -511,27 +511,7 @@ html.dark .certification-card:hover {
    18. IMPROVED MOBILE FLOATING BUTTONS
    ═══════════════════════════════════════════════════════════════════ */
 
-@media (max-width: 768px) {
-  /* Match sizes for both floating buttons on mobile */
-  #go-to-top,
-  #chatbot-toggle {
-    width: 56px !important;
-    height: 56px !important;
-    font-size: 1.25rem !important;
-  }
-
-  /* Go-to-top at BOTTOM (lower position) */
-  #go-to-top {
-    bottom: 24px !important;
-    right: 20px !important;
-  }
-
-  /* Chatbot toggle at TOP (higher position, above go-to-top) */
-  #chatbot-toggle {
-    bottom: 96px !important;
-    right: 20px !important;
-  }
-}
+/* Mobile FAB positions live in mobile-viewport.css (loaded after wwdc26). */
 
 /* ═══════════════════════════════════════════════════════════════════
    19. LOADING SKELETON ANIMATION

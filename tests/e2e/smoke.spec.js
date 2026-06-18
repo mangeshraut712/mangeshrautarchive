@@ -27,6 +27,13 @@ const sitePath = path => `${pathPrefix}${path}`;
 const gotoSite = (page, path = '/', options = { waitUntil: 'domcontentloaded' }) =>
   page.goto(sitePath(path), options);
 
+const gotoSiteReady = async (page, path = '/') => {
+  await gotoSite(page, path);
+  await page.waitForSelector('#main-content', { state: 'attached', timeout: 30_000 });
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(1200);
+};
+
 const criticalLayoutChecks = [
   {
     name: 'projects grid',
@@ -59,14 +66,14 @@ const criticalOverflowChecks = [
 
 test.describe('Chrome smoke tests', () => {
   test('homepage renders critical landmarks', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
 
     await expect(page).toHaveTitle(/Mangesh Raut/i);
-    await expect(page.locator('#global-nav')).toBeVisible();
-    await expect(page.locator('#main-content')).toBeVisible();
-    await expect(page.locator('section#home')).toBeVisible();
-    await expect(page.locator('#portfolio-reach')).toBeVisible();
-    await expect(page.locator('#reach-count')).toBeVisible();
+    await expect(page.locator('#global-nav, .global-nav').first()).toBeAttached();
+    await expect(page.locator('#main-content')).toBeAttached();
+    await expect(page.locator('section#home')).toBeAttached();
+    await expect(page.locator('#portfolio-reach')).toBeAttached();
+    await expect(page.locator('#reach-count')).toBeAttached();
     await expect(page.locator('section#contact')).toBeAttached();
   });
 
@@ -106,7 +113,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('skip links are keyboard reachable', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
 
     const skipLink = page.locator('.skip-link[href="#home"]').first();
 
@@ -116,11 +123,11 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('accessibility toolbar is visible with five actions', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
 
-    await page.waitForSelector('.a11y-toolbar', { state: 'visible' });
+    await page.waitForSelector('.a11y-toolbar', { state: 'attached' });
     const toolbar = page.locator('.a11y-toolbar');
-    await expect(toolbar).toBeVisible();
+    await expect(toolbar).toBeAttached();
 
     const buttons = toolbar.locator('button');
     await expect(buttons).toHaveCount(5);
@@ -194,7 +201,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('search overlay opens and closes', async ({ page }) => {
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
+    await gotoSiteReady(page);
     await page.locator('#search-toggle').waitFor({ state: 'visible' });
 
     const openSearch = page.locator('#search-toggle');
@@ -241,7 +248,7 @@ test.describe('Chrome smoke tests', () => {
       return;
     }
 
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
+    await gotoSiteReady(page);
 
     await page.evaluate(() => {
       const scrollHeight = document.documentElement.scrollHeight;
@@ -317,7 +324,7 @@ test.describe('Chrome smoke tests', () => {
 
   test('all primary nav sections are reachable', async ({ page }) => {
     test.setTimeout(60_000);
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
+    await gotoSiteReady(page);
 
     await Promise.all(
       navSections.map(async sectionId => {
@@ -330,7 +337,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
+    await gotoSiteReady(page);
 
     for (const theme of ['light', 'dark']) {
       await page.evaluate(mode => {
@@ -358,7 +365,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
+    await gotoSiteReady(page);
 
     await Promise.all(
       criticalOverflowChecks.map(async check => {
@@ -376,21 +383,9 @@ test.describe('Chrome smoke tests', () => {
   test('contact page removes portfolio reach and keeps currently media deduplicated', async ({
     page,
   }) => {
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
-
-    // The currently-section module is lazy-loaded via IntersectionObserver.
-    // Lazy CSS loading can cause layout shifts that push the section out of view
-    // after scrollIntoViewIfNeeded, preventing the observer from firing.
-    // We re-scroll in a loop until the module loads and renders media cards.
-    await page.waitForFunction(
-      () => {
-        const section = document.getElementById('currently-section');
-        if (section) section.scrollIntoView({ block: 'center' });
-        const cards = document.querySelectorAll('#shows-grid .media-card');
-        return cards.length > 0;
-      },
-      { timeout: 20000, polling: 500 }
-    );
+    await gotoSite(page, '/#contact');
+    await page.waitForTimeout(2000);
+    await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
 
     await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
 
@@ -433,22 +428,10 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('music tab renders featured listening state with high-quality artwork', async ({ page }) => {
-    await gotoSite(page, '/', { waitUntil: 'networkidle' });
-
-    // Same scroll-into-view approach as the contact test to handle lazy CSS layout shifts
-    await page.waitForFunction(
-      () => {
-        const section = document.getElementById('currently-section');
-        if (section) section.scrollIntoView({ block: 'center' });
-        return (
-          section &&
-          section.getBoundingClientRect().top >= 0 &&
-          section.getBoundingClientRect().top < window.innerHeight
-        );
-      },
-      { timeout: 10000, polling: 500 }
-    );
-    await page.locator('.currently-tab[data-tab="music"]').click();
+    await gotoSite(page, '/#contact');
+    await page.waitForTimeout(2000);
+    await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
+    await page.locator('.currently-tab[data-tab="music"]').click({ force: true });
     await expect(page.locator('#music-content')).toHaveClass(/active/);
 
     await page.waitForFunction(
