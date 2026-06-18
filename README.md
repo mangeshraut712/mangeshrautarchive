@@ -250,7 +250,7 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 - **Health vitals cards** — WHOOP recovery/strain and Withings body composition on the homepage
 - **Birthday celebration system** — Canvas physics (confetti + balloons), aurora gradient overlay, and Apple Happy Birthday melody
 - **Last.fm Now Playing** — real-time track updates with spinning album art and animated equalizer bars
-- **Progressive Web App** with service worker and offline-first caching
+- **Progressive Web App** — installable (manifest, splash, mask icon); network-first with stale SW/cache cleanup on load
 - **Real-time visitor counter** via Firestore + Vercel Analytics (no fake numbers)
 - **Consistent Apple-inspired design** — unified border styling, theme awareness, fluid typography across all sections
 

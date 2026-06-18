@@ -52,9 +52,11 @@
   <meta name="format-detection" content="telephone=yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mangesh Raut" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
   <meta name="description"
     content="Mangesh Raut — Software Engineer with 5+ years of experience in Java, Python, Spring Boot, AWS, and full-stack development. MS Computer Science from Drexel University. View portfolio, projects, and resume." />
   <meta name="keywords"
@@ -109,6 +111,11 @@
   <meta name="twitter:creator" content="@mrcommando712" />
 
   <link rel="manifest" href="manifest.json" />
+  <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
+  <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
+  <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="192x192" />
+  <link rel="apple-touch-startup-image" href="assets/images/pwa-splash-iphone-17-pro-max.png"
+    media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
   <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
   <link rel="preload" as="style" href="assets/css/style.css?v=20260611d" />
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -178,7 +185,7 @@
       z-index: 100000;
       width: 3.75rem;
       height: 3.75rem;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       border-radius: 999px;
@@ -189,9 +196,8 @@
         0 4px 14px rgb(0 122 255 / 38%),
         inset 0 1px 0 rgb(255 255 255 / 28%);
       opacity: 0;
-      visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     html.dark #go-to-top {
@@ -203,8 +209,8 @@
     }
 
     #go-to-top.visible {
+      display: flex !important;
       opacity: 1 !important;
-      visibility: visible !important;
       pointer-events: auto !important;
       transform: translateY(0) scale(1) !important;
     }
@@ -667,8 +673,8 @@
   <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260423a" data-lazy-style-key="certifications" />
   <link rel="stylesheet" href="assets/css/homepage.css?v=20260611c" />
   <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260423a" data-lazy-style-key="assistant" />
-  <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260423a" data-lazy-style-key="assistant" />
-  <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260423a" data-lazy-style-key="assistant" />
+  <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260617c" data-lazy-style-key="assistant" />
+  <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260617c" data-lazy-style-key="assistant" />
 
   <link rel="stylesheet" data-href="assets/css/about.css?v=20260611b" data-lazy-style-key="about" />
   <link rel="stylesheet" data-href="assets/css/blog.css?v=20260611b" data-lazy-style-key="blog" />
@@ -688,7 +694,8 @@
   <link rel="stylesheet" href="assets/css/apple-premium-system.css?v=20260525b" />
 
   <!-- Sections Apple Premium Upgrade - All Sections Enhanced -->
-  <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260611c" />
+  <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260611c" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260611c" /></noscript>
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260611b" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260611b" /></noscript>
 
@@ -699,9 +706,12 @@
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
 
   <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (site-wide cards + chrome) -->
-  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260613d" />
-  <link rel="stylesheet" href="assets/css/share-widget.css?v=20260614a" />
-  <link rel="stylesheet" href="assets/css/health-widget.css?v=20260614a" />
+  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260613d" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260613d" /></noscript>
+  <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260617c" data-lazy-style-key="share" />
+  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260617d" />
+  <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
+  <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260614a" data-lazy-style-key="currently" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 
@@ -1023,7 +1033,7 @@
             <div class="hero-image-block mb-8">
               <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)">
-                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image"
+                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image xdr-media"
                   width="160" height="160" loading="eager" decoding="async" fetchpriority="high"
                   onclick="window.__toggleHeroAvatar?.(event)"
                   data-photo-src="assets/images/profile.webp" data-avatar-src="assets/images/avtar.webp"
@@ -1033,7 +1043,7 @@
 
             <div class="hero-text-block home-hero-text">
               <div class="hero-header mb-4">
-                <h1 class="hero-name">
+                <h1 class="hero-name xdr-highlight">
                   <span class="hero-name-text">Mangesh Raut</span>
                   <span class="hero-verified-badge" role="img" aria-label="Verified profile">
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -3390,7 +3400,7 @@
                   
                   <div class="health-widget-footer">
                     <span class="last-sync-time"><i class="fas fa-sync-alt"></i> <span id="health-sync-text">Checking stats…</span></span>
-                    <span style="font-size: 0.6rem; color: rgba(255,255,255,0.3);">Live Vitals</span>
+                    <span class="health-widget-live-label">Live Vitals</span>
                   </div>
                 </div>
               </div>
@@ -3744,6 +3754,9 @@
         </svg>
       </span>
     </button>
+
+    <!-- Chatbot backdrop (share-sheet style dim + blur) -->
+    <div id="chatbot-backdrop" class="chatbot-backdrop hidden" aria-hidden="true"></div>
 
     <!-- Chatbot Widget -->
     <div id="chatbot-widget" class="hidden" role="dialog" aria-modal="true"
