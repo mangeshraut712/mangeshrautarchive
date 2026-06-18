@@ -102,7 +102,7 @@
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "esbuild": "^0.28.0",
-    "express": "^4.21.2",
+    "express": "^5.2.1",
     "isomorphic-dompurify": "^3.17.0",
     "katex": "^0.16.11",
     "marked": "^18.0.5",

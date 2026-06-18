@@ -455,7 +455,7 @@ function resolveMonitorMock(path, method) {
 }
 
 // Mock API endpoints for local dist previews and Lighthouse audits
-app.all('/api/*', (req, res) => {
+app.all(/^\/api\/.*$/, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
@@ -481,7 +481,7 @@ app.all('/api/*', (req, res) => {
   res.json(resolveMonitorMock(req.path, req.method));
 });
 
-app.get('*', async (req, res) => {
+app.get(/.*/, async (req, res) => {
   const resolved = await resolveFile(req.path);
   if (!resolved) {
     res.status(404).send('Not Found');
