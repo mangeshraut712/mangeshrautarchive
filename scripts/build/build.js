@@ -479,6 +479,10 @@ async function addCacheBusting(distDir, version) {
   const appendVersion = rawPath => {
     if (!rawPath) return rawPath;
 
+    if (/^(?:https?:)?\/\//i.test(rawPath) || /^(?:data|mailto|tel):/i.test(rawPath) || rawPath.startsWith('#')) {
+      return rawPath;
+    }
+
     const [pathWithQuery, hash = ''] = String(rawPath).split('#');
     const [base, queryString = ''] = pathWithQuery.split('?');
 

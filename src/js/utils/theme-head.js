@@ -49,7 +49,7 @@
       return legacy;
     }
 
-    return 'auto';
+    return 'system';
   }
 
   function setThemeMode(mode) {
@@ -298,6 +298,18 @@
     } else if (typeof media.addListener === 'function') {
       media.addListener(handler);
     }
+
+    // Re-sync when tab becomes visible again, so missed OS theme changes
+    // (e.g. macOS switching at sunrise/sunset while tab was hidden) apply immediately.
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') {
+        var mode = getThemeMode();
+        if (mode === 'system' || mode === 'auto') {
+          syncTheme();
+          scheduleAutoUpdate();
+        }
+      }
+    });
   }
 
   function toggleManualTheme() {
@@ -328,8 +340,8 @@
   }
 
   function getThemeModeLabel(mode) {
-    if (mode === 'auto') return 'Automatic (sunrise and sunset)';
-    if (mode === 'system') return 'System';
+    if (mode === 'auto') return 'Automatic (sunrise / sunset)';
+    if (mode === 'system') return 'System (follows your OS)';
     if (mode === 'light') return 'Light';
     return 'Dark';
   }
@@ -352,7 +364,11 @@
     init: function () {
       syncTheme();
       bindSystemListener();
-      scheduleAutoUpdate();
+      // Only schedule solar-based auto-updates if explicitly in 'auto' mode.
+      // Default 'system' mode relies on prefers-color-scheme listener instead.
+      if (getThemeMode() === 'auto') {
+        scheduleAutoUpdate();
+      }
     },
   };
 

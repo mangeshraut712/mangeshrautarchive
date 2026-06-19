@@ -126,6 +126,41 @@ body {
     scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom));
   }
 
+  /*
+   * Final mobile chrome contract. Some deferred liquid-glass rules load after
+   * the base page CSS, so these selectors intentionally carry body specificity.
+   */
+  html body.has-a11y-toolbar .a11y-toolbar {
+    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  html body.has-a11y-toolbar #chatbot-toggle {
+    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4.25rem) !important;
+  }
+
+  #home .hero-description {
+    max-width: min(32rem, calc(100vw - 2.75rem)) !important;
+    font-size: clamp(0.92rem, 3.65vw, 0.98rem) !important;
+    line-height: 1.48 !important;
+    margin-bottom: 0.9rem !important;
+    text-wrap: balance;
+  }
+
+  #home .hero-description span {
+    display: inline !important;
+  }
+
+  #home .hero-description span + span::before {
+    content: ' ';
+  }
+
+  body.has-a11y-toolbar #home .hero-actions {
+    width: min(100%, 17.5rem) !important;
+    max-width: min(17.5rem, calc(100vw - 7rem - env(safe-area-inset-right))) !important;
+    padding-right: 0 !important;
+    gap: 0.65rem !important;
+  }
+
   .website-share-dialog {
     padding: max(0.75rem, env(safe-area-inset-top))
       max(0.75rem, env(safe-area-inset-right))
@@ -178,5 +213,63 @@ body {
 
   .log-tabs::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-height: 760px) {
+  body #home.hero-section {
+    padding-top: clamp(40px, 6vh, 56px) !important;
+    padding-bottom: clamp(18px, 3vh, 28px) !important;
+  }
+
+  body #home.hero-section .profile-image-wrapper {
+    width: 108px !important;
+    height: 108px !important;
+    min-width: 108px !important;
+    min-height: 108px !important;
+  }
+
+  body #home.hero-section .hero-header {
+    margin-bottom: 0.5rem !important;
+  }
+
+  body #home.hero-section .music-card {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  body #home.hero-section .music-card-inner {
+    min-height: 68px !important;
+    padding: 0.65rem 0.9rem !important;
+  }
+
+  body #home.hero-section .album-art-container {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  body #home.hero-section .track-name {
+    font-size: 0.86rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body #home.hero-section .artist-name,
+  body #home.hero-section .status-row {
+    font-size: 0.72rem !important;
+    line-height: 1.2 !important;
+  }
+
+  body #home.hero-section .hero-description {
+    max-width: min(86ch, calc(100vw - 6rem)) !important;
+    font-size: 0.96rem !important;
+    line-height: 1.46 !important;
+  }
+
+  body #home.hero-section .hero-description span {
+    display: inline !important;
+  }
+
+  body #home.hero-section .hero-description span + span::before {
+    content: ' ';
   }
 }

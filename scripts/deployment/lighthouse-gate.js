@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { chromium } from '@playwright/test';
@@ -66,7 +66,22 @@ const thresholds = {
 
 const outputFile = join(tmpdir(), `lh-${formFactor}-${Date.now()}.json`);
 const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-const chromePath = process.env.CHROME_PATH || chromium.executablePath();
+
+function resolveChromePath() {
+  if (process.env.CHROME_PATH) {
+    return process.env.CHROME_PATH;
+  }
+
+  const candidates = [
+    '/usr/bin/google-chrome',
+    '/usr/bin/google-chrome-stable',
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  ];
+
+  return candidates.find(candidate => existsSync(candidate)) || chromium.executablePath();
+}
+
+const chromePath = resolveChromePath();
 
 const lighthouseArgs = [
   '-y',

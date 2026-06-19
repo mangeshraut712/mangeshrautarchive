@@ -204,7 +204,7 @@ How the key systems actually work — implementation details, not buzzwords.
 - Intelligent `dist` directory selection — falls back to `/tmp/mangeshrautarchive-dist` when running inside macOS-protected folders to avoid `EPERM` errors.
 - Safe public configuration injection only (`build-config.json` + `build-config.js`) — **zero secrets** ever reach the browser.
 - Integrated Sharp image optimization pass.
-- Static extras (CNAME, manifest, service worker) preserved with correct cache headers.
+- Static extras (CNAME, manifest, PWA icons/splash) preserved with correct cache headers; stale service workers are purged on load for fresh deploys.
 
 ### 9. Extreme Testing Matrix + Post-Deploy Verification
 
@@ -215,7 +215,8 @@ How the key systems actually work — implementation details, not buzzwords.
 - `playwright.config.js` defines 12+ named projects including specific browser channels (Chrome, msedge) and real mobile devices.
 - Separate suites for smoke, accessibility (axe-core), visual regression, and post-deploy.
 - Post-deploy tests run against **both** Vercel and GitHub Pages surfaces after every production release.
-- Lighthouse CI gates in `deploy.yml` plus nightly production monitoring with Playwright Chromium.
+- Lighthouse CI gates in `deploy.yml` plus nightly production monitoring against live Vercel and GitHub Pages URLs.
+- CI uses `npm ci` with Node cache and system Google Chrome (no bundled Playwright browser download in workflows).
 - One-command `npm run qa:prod-ready` runs the full security + lint + unit + E2E + Lighthouse pipeline.
 
 ---
@@ -336,6 +337,9 @@ flowchart TD
 | `npm run test:e2e:all`          | Complete multi-device Playwright matrix                 |
 | `npm run verify:env-parity`     | Compare local `.env` keys against Vercel production       |
 | `npm run verify:deploy-sync:remote` | Confirm GitHub Pages and Vercel share the same build commit |
+| `node scripts/qa/cross-viewport-chrome.mjs` | Desktop / tablet / mobile Chrome audit with screenshots |
+
+**Local Playwright note:** E2E and Lighthouse scripts prefer system Chrome when available (`CHROME_PATH` override supported). Set `PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000` when reusing an already-running dev server.
 
 ---
 
@@ -427,6 +431,10 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026
 
+- **Mobile & Short-Viewport Polish** — Hero description wrapping, FAB/a11y-toolbar spacing contract, and compact monitor summary layout for phones and short desktop windows.
+- **Theme System Default** — Default theme mode is now `system` (OS `prefers-color-scheme`); solar auto mode remains opt-in via `auto`. Tab visibility re-syncs theme when returning from background.
+- **CI Speed & Reliability** — Deploy workflows use `npm ci` with lockfile cache and system Chrome for smoke/Lighthouse instead of downloading Playwright browsers on every run.
+- **Build Safety** — Cache busting skips external URLs; Lighthouse gate resolves system Chrome on macOS/Linux before falling back to Playwright Chromium.
 - **Share Sheet & Accessibility** — Apple-inspired share widget in the accessibility toolbar with High-ECC QR codes, social mirror tabs, and solid theme card surfaces.
 - **Health Vitals Sync** — Fixed Withings body-fat measure mapping, WHOOP record selection, and homepage widget parsing for muscle/fat trends.
 - **Liquid Glass Controls** — Clear vs tinted glass slider with nav token overrides; solid white/black card surfaces in light/dark themes.
