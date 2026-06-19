@@ -9,6 +9,13 @@ os.environ.setdefault("VERCEL_ENV", "production")
 
 from api.config import rate_limit_store
 from api.index import app
+from api.routes.chat import openrouter_request_body
+from api.site_knowledge import (
+    format_blog_release_summary,
+    format_usa_state_summary,
+    retrieve_site_context,
+    should_use_web_tools,
+)
 
 
 @pytest.fixture
@@ -32,3 +39,85 @@ def test_chat_rate_limited_returns_429(client, monkeypatch):
     payload = response.json()
     assert payload["success"] is False
     assert payload["error"]["type"] == "http_error"
+
+
+def test_site_knowledge_retrieves_travel_and_monitor_pages():
+    travel = retrieve_site_context("What is on the travel atlas page?", {})
+    monitor = retrieve_site_context("Explain the system monitor APIs", {})
+
+    assert "Travel Atlas" in travel
+    assert "cities" in travel.lower()
+    assert "System Monitor" in monitor
+    assert "api" in monitor.lower()
+
+
+def test_web_tools_are_gated_to_fresh_external_questions():
+    site_context = retrieve_site_context("What is on the travel atlas page?", {})
+
+    assert should_use_web_tools("What is on the travel atlas page?", site_context) is False
+    assert should_use_web_tools("latest OpenRouter Parallel web search updates", site_context) is True
+
+
+def test_openrouter_body_adds_parallel_web_tools_only_when_enabled():
+    messages = [{"role": "user", "content": "latest OpenRouter updates"}]
+
+    plain = openrouter_request_body("google/gemini-2.5-flash", messages)
+    with_tools = openrouter_request_body(
+        "google/gemini-2.5-flash",
+        messages,
+        web_tools_enabled=True,
+    )
+
+    assert "tools" not in plain
+    assert with_tools["tools"][0]["type"] == "openrouter:web_search"
+    assert with_tools["tools"][0]["parameters"]["engine"] == "parallel"
+    assert with_tools["tools"][1]["type"] == "openrouter:web_fetch"
+
+
+def test_chat_local_mode_uses_public_site_knowledge(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "")
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "What is on the travel atlas page?", "stream": False},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["source"] == "Local Intelligence"
+    assert payload["knowledge_context"] is True
+    assert "Travel Atlas" in payload["answer"]
+
+
+def test_travel_summary_counts_usa_states_from_site_data():
+    summary = format_usa_state_summary()
+
+    assert "54 USA stops" in summary
+    assert "18 states/districts" in summary
+    assert "Pennsylvania" in summary
+    assert "District of Columbia" in summary
+
+
+def test_blog_release_summary_finds_june_2026_titles():
+    summary = format_blog_release_summary("June 2026 blog releases")
+
+    assert "WWDC 2026 Field Notes: Apple Intelligence, Siri, and Private AI" in summary
+    assert "NotebookLM 2026 Field Notes: From Document Q&A to Research Workflow" in summary
+
+
+def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "")
+
+    states = client.post(
+        "/api/chat",
+        json={"message": "How many states have I visited in USA?", "stream": False},
+    ).json()
+    blogs = client.post(
+        "/api/chat",
+        json={"message": "What two new blogs released in June 2026?", "stream": False},
+    ).json()
+
+    assert "18 states/districts" in states["answer"]
+    assert "54 USA stops" in states["answer"]
+    assert "WWDC 2026 Field Notes" in blogs["answer"]
+    assert "NotebookLM 2026 Field Notes" in blogs["answer"]

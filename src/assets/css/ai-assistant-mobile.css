@@ -6,10 +6,15 @@
   /* Widget — card over full-screen backdrop */
   #chatbot-widget {
     position: fixed !important;
-    inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
-      max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)) !important;
+    top: calc(var(--island-height, 58px) + max(12px, env(safe-area-inset-top))) !important;
+    right: max(12px, env(safe-area-inset-right)) !important;
+    bottom: calc(
+      var(--mobile-bottom-inset, max(12px, env(safe-area-inset-bottom))) + 0.5rem
+    ) !important;
+    left: max(12px, env(safe-area-inset-left)) !important;
     width: auto !important;
     height: auto !important;
+    min-height: 0 !important;
     max-height: none !important;
     border-radius: 24px !important;
     margin: 0 !important;
@@ -38,7 +43,8 @@
 
   /* Header */
   .chatbot-header {
-    padding: 16px 20px !important;
+    min-height: 54px !important;
+    padding: 10px 14px !important;
     flex-shrink: 0 !important;
     background: rgba(255, 255, 255, 0.8) !important;
     backdrop-filter: blur(20px) !important;
@@ -56,22 +62,22 @@
     flex: 1 1 auto !important;
     height: 0 !important;
     /* Forces flex scrolling */
-    padding: 20px !important;
+    padding: 12px 14px !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
 
   /* Message Bubbles - Optimized for Mobile */
   .message {
-    max-width: 85% !important;
+    max-width: 90% !important;
   }
 
   /* Input Container - Fixed at Bottom */
   .chatbot-input-container {
     flex-shrink: 0 !important;
     background: #ffffff !important;
-    padding: 12px 16px !important;
-    padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    padding: 8px 12px !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
     border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
     position: relative !important;
     z-index: 10 !important;
@@ -88,12 +94,12 @@
     flex-direction: row !important;
     align-items: flex-end !important;
     /* Align to bottom for multiline */
-    gap: 12px !important;
-    padding: 8px 12px !important;
+    gap: 8px !important;
+    padding: 6px 10px !important;
     background: #ffffff !important;
     border-radius: 28px !important;
     border: 1px solid transparent !important;
-    min-height: 56px !important;
+    min-height: 48px !important;
   }
 
   html.dark .input-wrapper {
@@ -106,11 +112,11 @@
     min-width: 0 !important;
     background: transparent !important;
     border: none !important;
-    padding: 14px 0 !important;
+    padding: 10px 0 !important;
     /* Center text vertically */
-    font-size: 17px !important;
+    font-size: 16px !important;
     line-height: 1.4 !important;
-    max-height: 120px !important;
+    max-height: 88px !important;
     color: #000000 !important;
     margin: 0 !important;
   }
@@ -123,11 +129,11 @@
   .chatbot-voice-btn,
   .chatbot-writing-btn,
   .chatbot-send-btn {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    max-width: 40px !important;
-    flex: 0 0 40px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    flex: 0 0 36px !important;
     flex-shrink: 0 !important;
     border-radius: 50% !important;
     display: flex !important;

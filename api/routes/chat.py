@@ -38,11 +38,63 @@ from api.config import (
     adaptive_llm_params,
     RATE_LIMIT_WINDOW,
 )
+from api.site_knowledge import (
+    build_site_knowledge_prompt,
+    format_blog_release_summary,
+    format_usa_state_summary,
+    retrieve_site_context,
+    should_use_web_tools,
+)
 
 router = APIRouter()
 
 
-def generate_local_response(query: str) -> Dict:
+def openrouter_request_body(
+    model: str,
+    messages: List[Dict],
+    *,
+    stream: bool = False,
+    web_tools_enabled: bool = False,
+) -> Dict:
+    """Build a bounded OpenRouter request body with optional 2026 web tools."""
+    user_message = next(
+        (m["content"] for m in reversed(messages) if m.get("role") == "user"),
+        "",
+    )
+    body = {
+        "model": model,
+        "messages": messages,
+        "stream": stream,
+        **adaptive_llm_params(user_message),
+    }
+    if not stream:
+        body.pop("stream", None)
+
+    if web_tools_enabled:
+        body["tools"] = [
+            {
+                "type": "openrouter:web_search",
+                "parameters": {
+                    "engine": "parallel",
+                    "max_results": 5,
+                    "max_total_results": 10,
+                    "search_context_size": "medium",
+                },
+            },
+            {
+                "type": "openrouter:web_fetch",
+                "parameters": {
+                    "engine": "openrouter",
+                    "max_content_tokens": 12000,
+                    "blocked_domains": ["localhost", "127.0.0.1", "0.0.0.0"],
+                },
+            },
+        ]
+
+    return body
+
+
+def generate_local_response(query: str, site_context: str = "") -> Dict:
     """Generate a meaningful response based on portfolio data without using an LLM."""
     query = query.lower().strip()
 
@@ -78,6 +130,14 @@ def generate_local_response(query: str) -> Dict:
         return {
             "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}, FastAPI\n• **Cloud**: AWS, Docker, Kubernetes\n• **AI/ML**: WebNN, Gemma 3, TensorFlow, scikit-learn\n• **Databases**: Cloud Firestore, PostgreSQL, MongoDB, Redis",
             "category": "Skills",
+        }
+
+    if "blog" in query and any(
+        k in query for k in ["this month", "released", "release", "new", "latest", "june 2026"]
+    ):
+        return {
+            "answer": f"📝 **Blog Releases**\n\n{format_blog_release_summary(query)}",
+            "category": "Blogs",
         }
 
     # Blogs
@@ -223,6 +283,40 @@ def generate_local_response(query: str) -> Dict:
             "category": "Identity",
         }
 
+    if any(k in query for k in ["usa", "united states"]) and any(
+        k in query for k in ["state", "states", "visited", "travel", "country"]
+    ):
+        return {
+            "answer": f"🇺🇸 **USA Travel Coverage**\n\n{format_usa_state_summary()}",
+            "category": "Travel",
+        }
+
+    if site_context and any(
+        k in query
+        for k in [
+            "travel",
+            "atlas",
+            "city",
+            "cities",
+            "monitor",
+            "system",
+            "api",
+            "backend",
+            "blog",
+            "website",
+            "page",
+        ]
+    ):
+        excerpt = site_context[:1800].rsplit(" ", 1)[0]
+        return {
+            "answer": (
+                "I found this in the public portfolio knowledge base:\n\n"
+                f"{excerpt}\n\n"
+                "Cloud AI is not configured in this environment, so this is a direct site-knowledge answer rather than a synthesized model response."
+            ),
+            "category": "Site Knowledge",
+        }
+
     # Default fallback
     return {
         "answer": "👋 I'm running in **Local Mode** (no cloud API key configured).\n\n**Available topics:**\n• Who is Mangesh?\n• Skills & Tech Stack\n• Recent Blogs (Google I/O 2026)\n• Projects\n• Experience\n• Education\n• Contact Info\n• Resume\n\nWhat would you like to know?",
@@ -277,10 +371,17 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
 
 
 async def stream_openrouter_response(
-    model: str, messages: List[Dict], session_id: Optional[str] = None
+    model: str,
+    messages: List[Dict],
+    session_id: Optional[str] = None,
+    web_tools_enabled: bool = False,
+    knowledge_context_enabled: bool = False,
 ) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
-    print(f"🔄 Streaming from OpenRouter: {model}")
+    print(
+        f"🔄 Streaming from OpenRouter: {model} "
+        f"(site_context={knowledge_context_enabled}, web_tools={web_tools_enabled})"
+    )
 
     if not OPENROUTER_API_KEY:
         print("⚠️ No API Key found - activating Local Intelligence Fallback")
@@ -369,21 +470,12 @@ async def stream_openrouter_response(
                         "HTTP-Referer": SITE_URL,
                         "X-Title": SITE_TITLE,
                     },
-                    json={
-                        "model": model,
-                        "messages": messages,
-                        "stream": True,
-                        **adaptive_llm_params(
-                            next(
-                                (
-                                    m["content"]
-                                    for m in reversed(messages)
-                                    if m.get("role") == "user"
-                                ),
-                                "",
-                            )
-                        ),
-                    },
+                    json=openrouter_request_body(
+                        model,
+                        messages,
+                        stream=True,
+                        web_tools_enabled=web_tools_enabled,
+                    ),
                 ) as response:
                     if response.status_code != 200:
                         await response.aread()
@@ -422,8 +514,15 @@ async def stream_openrouter_response(
                                         "metadata": {
                                             "model": model,
                                             "source": "OpenRouter",
-                                            "sourceLabel": f"OpenRouter ({model.split('/')[-1]})",
+                                            "sourceLabel": (
+                                                f"OpenRouter + Web ({model.split('/')[-1]})"
+                                                if web_tools_enabled
+                                                else f"OpenRouter ({model.split('/')[-1]})"
+                                            ),
                                             "category": "AI Response",
+                                            "knowledge_context": knowledge_context_enabled,
+                                            "web_tools": web_tools_enabled,
+                                            "web_engine": "parallel" if web_tools_enabled else None,
                                             "char_count": len(full_content),
                                             "tokens_estimate": tokens_estimate,
                                             "elapsed_ms": int(elapsed * 1000),
@@ -528,7 +627,9 @@ async def stream_openrouter_response(
             return
 
 
-async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
+async def call_openrouter(
+    model: str, messages: List[Dict], web_tools_enabled: bool = False
+) -> Dict:
     """Non-streaming API call"""
     if not OPENROUTER_API_KEY:
         raise Exception("API key not configured")
@@ -542,20 +643,11 @@ async def call_openrouter(model: str, messages: List[Dict]) -> Dict:
                 "HTTP-Referer": SITE_URL,
                 "X-Title": SITE_TITLE,
             },
-            json={
-                "model": model,
-                "messages": messages,
-                **adaptive_llm_params(
-                    next(
-                        (
-                            m["content"]
-                            for m in reversed(messages)
-                            if m.get("role") == "user"
-                        ),
-                        "",
-                    )
-                ),
-            },
+            json=openrouter_request_body(
+                model,
+                messages,
+                web_tools_enabled=web_tools_enabled,
+            ),
         )
         response.raise_for_status()
         data = response.json()
@@ -591,9 +683,25 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     if not message:
         raise HTTPException(status_code=400, detail="Message cannot be empty")
 
+    # Prompt injection guard
+    if is_prompt_injection(message):
+        print(f"🛡️  Prompt injection detected from {client_ip}: chars={len(message)}")
+        return {
+            "answer": "I noticed your message contains instructions that try to change my behaviour. I'm here to help you learn about Mangesh's portfolio — feel free to ask me anything about that!",
+            "source": "Security",
+            "model": "Guard",
+            "type": "blocked",
+            "confidence": 1.0,
+            "runtime": "0ms",
+        }
+
+    safe_context = sanitize_context(request.context)
+    site_context = retrieve_site_context(message, safe_context)
+    web_tools_enabled = should_use_web_tools(message, site_context)
+
     if not OPENROUTER_API_KEY:
         print("⚠️ No API key - using Local Intelligence fallback")
-        fallback = generate_local_response(message)
+        fallback = generate_local_response(message, site_context)
         elapsed = time.time() - start_time
         return {
             "answer": fallback["answer"],
@@ -603,21 +711,11 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "confidence": 1.0,
             "runtime": f"{int(elapsed * 1000)}ms",
             "type": "local",
+            "knowledge_context": bool(site_context),
+            "web_tools": False,
         }
 
     try:
-        # Prompt injection guard
-        if is_prompt_injection(message):
-            print(f"🛡️  Prompt injection detected from {client_ip}: {message[:80]}")
-            return {
-                "answer": "I noticed your message contains instructions that try to change my behaviour. I'm here to help you learn about Mangesh's portfolio — feel free to ask me anything about that!",
-                "source": "Security",
-                "model": "Guard",
-                "type": "blocked",
-                "confidence": 1.0,
-                "runtime": "0ms",
-            }
-
         session_id = sanitize_session_id(request.session_id)
 
         # Check for direct commands
@@ -631,14 +729,15 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         else:
             history = get_session_memory(session_id) if request.session_id else []
 
-        # Build conversation with context
         system_message = {
             "role": "system",
-            "content": f"{SYSTEM_PROMPT}\n\n{SECURITY_SYSTEM_PROMPT}",
+            "content": (
+                f"{SYSTEM_PROMPT}\n\n{SECURITY_SYSTEM_PROMPT}\n\n"
+                f"{build_site_knowledge_prompt(site_context, web_tools_enabled)}"
+            ),
         }
 
         # Add context awareness
-        safe_context = sanitize_context(request.context)
         if safe_context:
             context_prompt = build_context_prompt(message, safe_context)
             user_message = {"role": "user", "content": context_prompt}
@@ -658,7 +757,11 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             async def generate_stream():
                 full_response = ""
                 async for chunk in stream_openrouter_response(
-                    selected_model, conversation, session_id
+                    selected_model,
+                    conversation,
+                    session_id,
+                    web_tools_enabled,
+                    bool(site_context),
                 ):
                     yield chunk
                     try:
@@ -683,7 +786,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             )
 
         # Non-streaming response
-        response = await call_openrouter(selected_model, conversation)
+        response = await call_openrouter(
+            selected_model, conversation, web_tools_enabled
+        )
         runtime = int((time.time() - start_time) * 1000)
 
         result = {
@@ -697,6 +802,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "runtime": f"{runtime}ms",
             "usage": response.get("usage"),
             "timestamp": int(time.time() * 1000),
+            "knowledge_context": bool(site_context),
+            "web_tools": web_tools_enabled,
+            "web_engine": "parallel" if web_tools_enabled else None,
         }
 
         if session_id:

@@ -976,7 +976,12 @@ class AppleIntelligenceChatbot {
 
       // Extract metadata
       const runtime = Date.now() - startTime;
-      const tokenEstimate = response?.metadata?.tokens || Math.ceil(fullText.length / 4);
+      const tokenEstimate =
+        response?.metadata?.tokens ||
+        response?.metadata?.tokens_estimate ||
+        response?.tokens ||
+        response?.tokens_estimate ||
+        Math.ceil(fullText.length / 4);
       const runtimeSeconds = Math.max(runtime / 1000, 0.001);
       metadata = {
         source: response?.metadata?.source || response?.source || 'Neural API',
@@ -984,9 +989,18 @@ class AppleIntelligenceChatbot {
         category: response?.metadata?.category || 'General',
         runtime: runtime,
         tokens: tokenEstimate,
-        tokensPerSecond: response?.metadata?.tokensPerSecond || tokenEstimate / runtimeSeconds,
+        tokensPerSecond:
+          response?.metadata?.tokensPerSecond ||
+          response?.metadata?.tokens_per_sec ||
+          response?.tokensPerSecond ||
+          response?.tokens_per_sec ||
+          tokenEstimate / runtimeSeconds,
         cost: response?.metadata?.cost,
         confidence: response?.metadata?.confidence,
+        knowledgeContext:
+          response?.metadata?.knowledge_context ?? response?.knowledge_context ?? false,
+        webTools: response?.metadata?.web_tools ?? response?.web_tools ?? false,
+        webEngine: response?.metadata?.web_engine || response?.web_engine || '',
         retried: this.retryCount > 0,
         timestamp: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
@@ -1122,6 +1136,11 @@ class AppleIntelligenceChatbot {
 
     const detailChips = [];
     if (metadata.source) detailChips.push(`🔌 ${metadata.source}`);
+    if (metadata.knowledgeContext) detailChips.push('📚 Site knowledge');
+    if (metadata.webTools) {
+      const engine = metadata.webEngine ? ` via ${metadata.webEngine}` : '';
+      detailChips.push(`🌐 Web tools${engine}`);
+    }
     if (metadata.tokens) detailChips.push(`🎯 ${metadata.tokens} tokens`);
     if (metadata.tokensPerSecond)
       detailChips.push(`⚡ ${Math.round(metadata.tokensPerSecond)} tok/s`);

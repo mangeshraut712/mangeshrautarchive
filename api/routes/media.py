@@ -233,29 +233,48 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     user = user.strip() or LASTFM_DEFAULT_USERNAME
     limit = max(1, min(limit, 20))
     cache_key = f"{user}:{limit}"
+    started_at = time.perf_counter()
     cached = lastfm_recent_cache.get(cache_key)
     if cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL:
-        return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+        return JSONResponse(
+            content=cached["data"],
+            headers={
+                **LASTFM_CACHE_HEADERS,
+                "X-Lastfm-Cache": "HIT",
+                "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
+            },
+        )
 
     if not LASTFM_API_KEY:
         data = build_lastfm_unconfigured_response(user)
         lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
-        return JSONResponse(content=data, headers=LASTFM_CACHE_HEADERS)
+        return JSONResponse(
+            content=data,
+            headers={
+                **LASTFM_CACHE_HEADERS,
+                "X-Lastfm-Cache": "UNCONFIGURED",
+                "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
+            },
+        )
 
-    url = (
-        "https://ws.audioscrobbler.com/2.0/"
-        f"?method=user.getrecenttracks&user={user}&api_key={LASTFM_API_KEY}&format=json&limit={limit}"
-    )
+    url = "https://ws.audioscrobbler.com/2.0/"
+    lastfm_params = {
+        "method": "user.getrecenttracks",
+        "user": user,
+        "api_key": LASTFM_API_KEY,
+        "format": "json",
+        "limit": str(limit),
+    }
 
     print(f"Fetching Last.fm data for user: {user}, limit: {limit}")
 
     try:
-        async with httpx.AsyncClient(timeout=5.0, follow_redirects=True) as client:
+        async with httpx.AsyncClient(timeout=3.2, follow_redirects=True) as client:
             headers = {
                 "User-Agent": "AssistMe-Portfolio/3.0.0",
                 "Accept": "application/json",
             }
-            response = await client.get(url, headers=headers)
+            response = await client.post(url, data=lastfm_params, headers=headers)
 
             print(f"Last.fm response status: {response.status_code}")
 
@@ -319,7 +338,14 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
                 )
 
             lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
-            return JSONResponse(content=data, headers=LASTFM_CACHE_HEADERS)
+            return JSONResponse(
+                content=data,
+                headers={
+                    **LASTFM_CACHE_HEADERS,
+                    "X-Lastfm-Cache": "MISS",
+                    "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
+                },
+            )
 
     except httpx.TimeoutException:
         print("⏰ Last.fm request timed out")

@@ -144,6 +144,28 @@ body.chatbot-open .a11y-toolbar {
   pointer-events: none;
 }
 
+@media (min-width: 769px) {
+  #chatbot-backdrop,
+  #chatbot-backdrop.active {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.chatbot-open {
+    overflow: auto;
+    touch-action: auto;
+  }
+
+  body.chatbot-open .a11y-toolbar {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════
    HEADER - GEMINI INTELLIGENCE GLOW (ENHANCED)
    ═══════════════════════════════════════════════════════════ */
