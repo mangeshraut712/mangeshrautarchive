@@ -216,7 +216,7 @@ How the key systems actually work — implementation details, not buzzwords.
 - Separate suites for smoke, accessibility (axe-core), visual regression, and post-deploy.
 - Post-deploy tests run against **both** Vercel and GitHub Pages surfaces after every production release.
 - Lighthouse CI gates in `deploy.yml` plus nightly production monitoring against live Vercel and GitHub Pages URLs.
-- CI uses `npm ci` with Node cache and system Google Chrome (no bundled Playwright browser download in workflows).
+- CI uses `npm install` with lockfile cache and system Google Chrome (no bundled Playwright browser download in workflows).
 - One-command `npm run qa:prod-ready` runs the full security + lint + unit + E2E + Lighthouse pipeline.
 
 ---
