@@ -608,6 +608,18 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   }
 }
 
+@media (min-width: 769px) and (max-width: 1520px) {
+  .global-nav.dynamic-island .nav-link[data-nav-priority='aux'] {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  .global-nav.dynamic-island .nav-link[data-nav-priority='deep'] {
+    display: none !important;
+  }
+}
+
 /* Push main content down to account for fixed navbar */
 #main-content {
   padding-top: 110px !important;

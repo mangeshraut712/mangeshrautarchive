@@ -2048,6 +2048,125 @@ html.dark .log-tab-btn.active {
   color: var(--text-primary);
 }
 
+@media (max-width: 640px) {
+  #endpoint-metrics-section > div[style*='overflow-x'] {
+    overflow-x: visible !important;
+  }
+
+  .metrics-table {
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .metrics-table thead {
+    display: none;
+  }
+
+  .metrics-table tbody,
+  .metrics-table tr,
+  .metrics-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .metrics-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .metrics-table tr {
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  [data-theme='dark'] .metrics-table tr,
+  html.dark .metrics-table tr {
+    background: #000000;
+  }
+
+  .metrics-table td {
+    display: grid;
+    grid-template-columns: minmax(92px, 0.42fr) minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .metrics-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .metrics-table td::before {
+    color: var(--text-secondary);
+    content: '';
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .metrics-table td:nth-child(1)::before {
+    content: 'Endpoint';
+  }
+
+  .metrics-table td:nth-child(2)::before {
+    content: 'Method';
+  }
+
+  .metrics-table td:nth-child(3)::before {
+    content: 'Requests';
+  }
+
+  .metrics-table td:nth-child(4)::before {
+    content: 'Success';
+  }
+
+  .metrics-table td:nth-child(5)::before {
+    content: 'Response';
+  }
+
+  .metrics-table td:nth-child(6)::before {
+    content: 'Status';
+  }
+
+  .metrics-table .endpoint-path {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .metrics-table .empty-state {
+    display: block;
+    text-align: center;
+  }
+
+  .metrics-table .empty-state::before {
+    display: none;
+  }
+
+  .log-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .log-tab-btn {
+    min-width: 0;
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+    text-align: center;
+  }
+}
+
 /* Spinner rotation alignment */
 .btn-loader {
   animation: spinner-spin 1s linear infinite;
