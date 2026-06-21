@@ -255,7 +255,11 @@ html.dark .card-translate-option__label {
 }
 
 .blog-card > .card-read-toolbar--inline {
-  margin-bottom: 0.65rem;
+  margin-bottom: 0;
+}
+
+.blog-card-actions > .card-read-toolbar--inline {
+  margin-bottom: 0;
 }
 
 .blog-article > .card-read-toolbar--inline {

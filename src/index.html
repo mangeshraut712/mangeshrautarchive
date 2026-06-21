@@ -1878,15 +1878,10 @@
                     <i class="fas fa-redo"></i> Try Again
                   </button>
                 </div>
-                <picture id="github-graph-picture" style="display: none;">
-                  <source media="(prefers-color-scheme: dark)" srcset="https://ghchart.rshah.org/39d353/mangeshraut712">
-                  <source media="(prefers-color-scheme: light)"
-                    srcset="https://ghchart.rshah.org/0071e3/mangeshraut712">
-                  <img id="github-chart-img" src="https://ghchart.rshah.org/0071e3/mangeshraut712"
-                    alt="Mangesh Raut's Github contribution chart" class="github-graph-svg" width="660" height="110" loading="lazy"
-                    decoding="async" fetchpriority="low"
-                    onload="window.handleGraphLoadSuccess?.()" onerror="window.handleGraphLoadError?.()">
-                </picture>
+                <img id="github-chart-img" src="" alt="Mangesh Raut's Github contribution chart"
+                  class="github-graph-svg" width="660" height="110" loading="lazy" decoding="async"
+                  fetchpriority="low" hidden
+                  onload="window.handleGraphLoadSuccess?.()" onerror="window.handleGraphLoadError?.()">
               </div>
               <div class="github-graph-legend" aria-hidden="true">
                 Less
@@ -1907,9 +1902,16 @@
                 const MAX_RETRIES = 3;
 
                 function isDarkGraphTheme() {
-                  return document.documentElement.classList.contains('dark') ||
-                    document.documentElement.getAttribute('data-theme') === 'dark' ||
-                    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (document.documentElement.classList.contains('dark')) return true;
+                  if (document.documentElement.getAttribute('data-theme') === 'dark') return true;
+                  if (document.documentElement.classList.contains('light')) return false;
+                  if (document.documentElement.getAttribute('data-theme') === 'light') return false;
+                  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                }
+
+                function getGraphChartUrl() {
+                  const color = isDarkGraphTheme() ? '39d353' : '0071e3';
+                  return 'https://ghchart.rshah.org/' + color + '/mangeshraut712';
                 }
 
                 function syncGraphLegendTheme() {
@@ -1928,7 +1930,11 @@
                   clearTimeout(graphLoadTimeout);
                   document.getElementById('graph-loading').style.display = 'none';
                   document.getElementById('graph-error').style.display = 'none';
-                  document.getElementById('github-graph-picture').style.display = 'block';
+                  const imgEl = document.getElementById('github-chart-img');
+                  if (imgEl) {
+                    imgEl.hidden = false;
+                    imgEl.style.display = 'block';
+                  }
 
                   // Clean up fallback graph if it was previously rendered
                   const fallbackSvg = document.getElementById('github-fallback-svg');
@@ -1954,7 +1960,11 @@
                   // Hide loading, error, and picture
                   document.getElementById('graph-loading').style.display = 'none';
                   document.getElementById('graph-error').style.display = 'none';
-                  document.getElementById('github-graph-picture').style.display = 'none';
+                  const imgEl = document.getElementById('github-chart-img');
+                  if (imgEl) {
+                    imgEl.hidden = true;
+                    imgEl.style.display = 'none';
+                  }
 
                   // Check if fallback SVG is already rendered
                   if (document.getElementById('github-fallback-svg')) return;
@@ -2096,32 +2106,34 @@
 
                   retryCount++;
                   const loadingEl = document.getElementById('graph-loading');
-                  const pictureEl = document.getElementById('github-graph-picture');
-                  const errorEl = document.getElementById('graph-error');
                   const imgEl = document.getElementById('github-chart-img');
+                  const errorEl = document.getElementById('graph-error');
 
                   loadingEl.style.display = 'flex';
-                  pictureEl.style.display = 'none';
+                  if (imgEl) {
+                    imgEl.hidden = true;
+                    imgEl.style.display = 'none';
+                  }
                   errorEl.style.display = 'none';
                   document.getElementById('graph-retry-btn').style.display = 'none';
                   document.getElementById('graph-loading-text').textContent = retryCount > 1 ? `Retrying... (Attempt ${retryCount}/${MAX_RETRIES})` : 'Loading contribution graph...';
 
                   // Clear previous image to force reload
-                  imgEl.src = '';
+                  if (imgEl) imgEl.removeAttribute('src');
 
                   // Set timeout for loading
                   clearTimeout(graphLoadTimeout);
                   graphLoadTimeout = setTimeout(function () {
-                    if (document.getElementById('github-graph-picture').style.display !== 'block') {
+                    const chartImg = document.getElementById('github-chart-img');
+                    if (!chartImg || chartImg.hidden) {
                       showGraphError();
                     }
                   }, GRAPH_TIMEOUT);
 
-                  // Reload image with cache-busting - use bright green for dark mode
-                  const isDark = isDarkGraphTheme();
-                  const color = isDark ? '39d353' : '0071e3';
-                  const cacheBuster = '?t=' + Date.now();
-                  imgEl.src = 'https://ghchart.rshah.org/' + color + '/mangeshraut712' + cacheBuster;
+                  // Reload image with cache-busting using site theme (not OS preference alone)
+                  if (imgEl) {
+                    imgEl.src = getGraphChartUrl() + '?t=' + Date.now();
+                  }
                 };
 
                 // Initial load
@@ -2136,10 +2148,11 @@
                   scheduleGraph(window.loadGitHubGraph);
                   syncGraphLegendTheme();
 
-                  if (window.matchMedia) {
-                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncGraphLegendTheme);
-                  }
-                  document.addEventListener('themechange', syncGraphLegendTheme);
+                  document.addEventListener('portfolio-theme-change', function () {
+                    syncGraphLegendTheme();
+                    retryCount = 0;
+                    window.loadGitHubGraph();
+                  });
 
                   // Refresh button handler
                   const refreshBtn = document.getElementById('refresh-graph-btn');
@@ -2179,17 +2192,28 @@
                 aria-label="Search projects">
             </div>
             <div class="proj-controls-group flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-              <div class="proj-sort-field">
+              <div class="proj-sort-field" data-proj-sort-root>
                 <label class="sr-only" for="project-sort-select">Sort projects</label>
-                <select id="project-sort-select"
-                  class="proj-filter-select rounded-full px-5 py-3 outline-none cursor-pointer font-medium appearance-none"
-                  aria-label="Sort projects">
+                <select id="project-sort-select" class="proj-sort-native sr-only" tabindex="-1"
+                  aria-hidden="true">
                   <option value="popularity">Featured</option>
                   <option value="stars">Most stars</option>
                   <option value="date">Recently pushed</option>
                   <option value="name">Name (A–Z)</option>
                   <option value="language">Primary language</option>
                 </select>
+                <button type="button" class="proj-sort-trigger" id="project-sort-trigger"
+                  aria-haspopup="listbox" aria-expanded="false" aria-controls="project-sort-menu">
+                  <span class="proj-sort-trigger-label">Featured</span>
+                  <span class="proj-sort-trigger-icon" aria-hidden="true"></span>
+                </button>
+                <ul class="proj-sort-menu" id="project-sort-menu" role="listbox" hidden>
+                  <li><button type="button" role="option" data-sort-value="popularity" aria-selected="true">Featured</button></li>
+                  <li><button type="button" role="option" data-sort-value="stars">Most stars</button></li>
+                  <li><button type="button" role="option" data-sort-value="date">Recently pushed</button></li>
+                  <li><button type="button" role="option" data-sort-value="name">Name (A–Z)</button></li>
+                  <li><button type="button" role="option" data-sort-value="language">Primary language</button></li>
+                </ul>
               </div>
               <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
                 class="projects-view-all-btn flex items-center justify-center gap-2 font-medium"

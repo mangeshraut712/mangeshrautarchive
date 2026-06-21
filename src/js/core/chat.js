@@ -451,11 +451,10 @@ class IntelligentAssistant {
               // Handle errors
               else if (data.error || data.type === 'error') {
                 console.error('Stream error:', data.error);
-                const errorMsg = `\n\n**Neural Interrupt**: ${data.error || 'Connection lost.'}`;
-                fullText += errorMsg;
-                if (typeof options.onChunk === 'function') {
-                  options.onChunk(errorMsg);
-                }
+                metadata.streamError =
+                  typeof data.error === 'string'
+                    ? data.error
+                    : 'AI service is temporarily unavailable.';
               }
               // Handle completion
               else if (data.type === 'done') {
@@ -492,6 +491,16 @@ class IntelligentAssistant {
           } finally {
             reader.releaseLock();
           }
+        }
+
+        if (metadata.streamError && !fullText.trim()) {
+          this.markServerUnavailable();
+          return null;
+        }
+
+        if (this.isUpstreamFailureText(fullText)) {
+          this.markServerUnavailable();
+          return null;
         }
 
         this.isReadyState = true;
@@ -617,9 +626,21 @@ class IntelligentAssistant {
 
   isMeaningfulResponse(response) {
     if (!response || !response.answer) return false;
+    if (this.isUpstreamFailureText(response.answer)) return false;
     if (this.isGenericFallback(response.answer)) return false;
     if (response.type && response.type !== 'general') return true;
     return (response.confidence ?? 0) >= 0.55;
+  }
+
+  isUpstreamFailureText(answer) {
+    if (!answer) return false;
+    const lower = String(answer).toLowerCase();
+    return (
+      lower.includes('neural interrupt') ||
+      lower.includes('ai service is temporarily unavailable') ||
+      lower.includes('upstream_http_error') ||
+      lower.includes('the ai service returned an error')
+    );
   }
 
   isGenericFallback(answer) {
@@ -840,7 +861,10 @@ class IntelligentAssistant {
     }
 
     result.answer =
-      "I'm here to help! Ask me about Mangesh's skills, experience, or general questions.";
+      "I'm answering in offline mode right now because the live AI service is unavailable. Ask about Mangesh's projects, skills, experience, education, or contact details and I'll respond from the portfolio knowledge base.";
+    result.source = 'assistme-portfolio';
+    result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+    result.confidence = 0.45;
     return result;
   }
 

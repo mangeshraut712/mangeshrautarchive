@@ -54,7 +54,7 @@ function parseWeightTrend(weightTrend) {
 
 class HealthWidget {
   constructor() {
-    this.storageKey = 'mangesh_health_metrics_v3';
+    this.storageKey = 'mangesh_health_metrics_v4';
     this.metrics = this.loadMetrics();
     this.isRefreshing = false;
     this.init();
@@ -108,10 +108,20 @@ class HealthWidget {
   }
 
   normalizeStrainValue(data = {}) {
-    const candidates = [data.strain, data.strainScore, data.dayStrain, data.cycleStrain];
+    const nested = data.whoop && typeof data.whoop === 'object' ? data.whoop : {};
+    const candidates = [
+      data.strain,
+      data.strainScore,
+      data.dayStrain,
+      data.cycleStrain,
+      nested.strain,
+      nested.strainScore,
+      nested.dayStrain,
+      nested.cycleStrain,
+    ];
     for (const candidate of candidates) {
       const parsed = Number(candidate);
-      if (Number.isFinite(parsed)) return parsed;
+      if (Number.isFinite(parsed) && parsed >= 0 && parsed <= 21) return parsed;
     }
     return null;
   }

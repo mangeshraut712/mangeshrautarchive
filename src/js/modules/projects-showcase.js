@@ -33,6 +33,76 @@ function getProjectGridColumns(container) {
   return Math.max(1, columns || 3);
 }
 
+const SORT_LABELS = {
+  popularity: 'Featured',
+  stars: 'Most stars',
+  date: 'Recently pushed',
+  name: 'Name (A–Z)',
+  language: 'Primary language',
+};
+
+function initProjectSortMenu(onChange) {
+  const root = document.querySelector('[data-proj-sort-root]');
+  const select = document.getElementById('project-sort-select');
+  const trigger = document.getElementById('project-sort-trigger');
+  const menu = document.getElementById('project-sort-menu');
+  const labelEl = trigger?.querySelector('.proj-sort-trigger-label');
+  if (!root || !select || !trigger || !menu || !labelEl) return;
+
+  const options = Array.from(menu.querySelectorAll('[data-sort-value]'));
+
+  const closeMenu = () => {
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+  };
+
+  const syncUi = value => {
+    const normalized = SORT_LABELS[value] ? value : 'popularity';
+    select.value = normalized;
+    labelEl.textContent = SORT_LABELS[normalized] || SORT_LABELS.popularity;
+    options.forEach(option => {
+      const active = option.dataset.sortValue === normalized;
+      option.setAttribute('aria-selected', active ? 'true' : 'false');
+      option.classList.toggle('is-active', active);
+    });
+  };
+
+  trigger.addEventListener('click', event => {
+    event.stopPropagation();
+    const willOpen = menu.hidden;
+    closeMenu();
+    if (willOpen) {
+      menu.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      options.find(option => option.dataset.sortValue === select.value)?.focus();
+    }
+  });
+
+  options.forEach(option => {
+    option.addEventListener('click', event => {
+      event.stopPropagation();
+      const value = String(option.dataset.sortValue || 'popularity');
+      syncUi(value);
+      closeMenu();
+      onChange();
+    });
+  });
+
+  document.addEventListener('click', event => {
+    if (!root.contains(event.target)) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeMenu();
+    }
+  });
+
+  syncUi(select.value || 'popularity');
+}
+
 function getTwoRowLimit(container) {
   return getProjectGridColumns(container) * PROJECT_ROWS_LIMIT;
 }
@@ -543,6 +613,12 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const sortSelect = document.getElementById('project-sort-select');
     const lensButtons = Array.from(document.querySelectorAll('[data-project-lens]'));
     let activeLens = DEFAULT_PROJECT_LENS;
+
+    initProjectSortMenu(() => {
+      renderProjects().catch(error => {
+        console.error('Project showcase sort render failed:', error);
+      });
+    });
 
     const getCurrentQuery = () => String(searchInput?.value || '').trim();
     const getCurrentSort = () =>

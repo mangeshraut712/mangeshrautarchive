@@ -81,7 +81,7 @@ const CARD_PROFILES = [
   },
   {
     selector: '.blog-card',
-    toolbarAnchor: '.blog-kicker-row',
+    toolbarAnchor: '.blog-card-actions',
     toolbarMode: 'inline',
     blocks: '.blog-title, .blog-summary, .blog-card-quote, .blog-highlight-list li',
     dynamic: true,

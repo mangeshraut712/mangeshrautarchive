@@ -107,6 +107,32 @@ def _pick_scored_record(records: List[Dict[str, Any]]) -> Optional[Dict[str, Any
     return None
 
 
+def _pick_active_cycle_record(records: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    ordered = sorted(records or [], key=_record_sort_key, reverse=True)
+    today = datetime.now(timezone.utc).date().isoformat()
+
+    for record in ordered:
+        if record.get("end"):
+            continue
+        score = record.get("score") or {}
+        if score.get("strain") is not None:
+            return record
+
+    for record in ordered:
+        start = str(record.get("start") or "")
+        if start.startswith(today):
+            score = record.get("score") or {}
+            if score.get("strain") is not None:
+                return record
+
+    for record in ordered:
+        score = record.get("score") or {}
+        if score.get("strain") is not None:
+            return record
+
+    return _pick_scored_record(records)
+
+
 async def _get_json(access_token: str, path: str) -> Dict[str, Any]:
     async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.get(
@@ -149,7 +175,7 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
 
     try:
         cycles = await _get_json(access_token, f"/cycle{query}")
-        record = _pick_scored_record(cycles.get("records") or [])
+        record = _pick_active_cycle_record(cycles.get("records") or [])
         if record:
             strain = (record.get("score") or {}).get("strain")
             if strain is not None:

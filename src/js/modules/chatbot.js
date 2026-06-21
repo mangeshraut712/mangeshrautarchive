@@ -573,7 +573,7 @@ class AppleIntelligenceChatbot {
     this.elements.messages?.addEventListener(
       'scroll',
       () => {
-        if (Date.now() - this.lastProgrammaticScrollAt < 160) return;
+        if (Date.now() - this.lastProgrammaticScrollAt < 420) return;
         this.autoScrollLocked = this.isNearMessageBottom();
       },
       { passive: true }
@@ -640,7 +640,8 @@ class AppleIntelligenceChatbot {
     this.showContextAwareness();
     appleSounds.playNotification();
     setTimeout(() => {
-      (this.elements.input || this.elements.widget)?.focus();
+      (this.elements.input || this.elements.widget)?.focus({ preventScroll: true });
+      this.scrollToBottom({ force: true });
     }, 300);
   }
 
@@ -969,6 +970,13 @@ class AppleIntelligenceChatbot {
         ensureStreamBubble();
       }
 
+      if (fullText && this.chatAPI?.isUpstreamFailureText?.(fullText)) {
+        messageDiv?.remove();
+        messageDiv = null;
+        contentDiv = null;
+        fullText = '';
+      }
+
       // Auto-retry on empty response (1 silent retry)
       if (!fullText && !isRetry) {
         messageDiv?.remove();
@@ -1048,6 +1056,8 @@ class AppleIntelligenceChatbot {
       if (!metadata.error) {
         this.decrementRemainingQueries();
       }
+
+      this.scrollToBottom({ force: true });
     } catch (error) {
       if (error?.code === 'RATE_LIMITED') {
         throw error;
@@ -1527,10 +1537,23 @@ class AppleIntelligenceChatbot {
 
     this.lastProgrammaticScrollAt = Date.now();
     this.autoScrollLocked = true;
-    messages.scrollTo({
-      top: messages.scrollHeight,
-      behavior,
+
+    const snap = () => {
+      messages.scrollTop = messages.scrollHeight;
+    };
+
+    snap();
+    requestAnimationFrame(() => {
+      snap();
+      requestAnimationFrame(snap);
     });
+
+    if (behavior === 'smooth' && typeof messages.scrollTo === 'function') {
+      messages.scrollTo({
+        top: messages.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }
 
   handleVoiceInput() {

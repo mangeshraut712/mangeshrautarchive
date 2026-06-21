@@ -223,21 +223,38 @@ html.dark .blog-card:hover {
   flex: 1;
 }
 
+.blog-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 36px;
+}
+
+.blog-card-actions .card-read-toolbar--inline {
+  margin: 0;
+  width: auto;
+  justify-content: flex-end;
+}
+
 .blog-kicker-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.85rem;
   min-height: 28px;
+  flex-wrap: wrap;
 }
 
 .blog-kicker {
   color: #0071e3;
   font-size: 0.76rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.35;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 html.dark .blog-kicker {
