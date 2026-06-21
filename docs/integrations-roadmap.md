@@ -1,5 +1,7 @@
 # Portfolio Integrations Roadmap
 
+_Last updated: June 2026_
+
 This repo should use Supabase as the server-side integration store before adding WHOOP, Withings, and Google Calendar OAuth. Health and calendar data are private by default; public portfolio endpoints must expose only sanitized summaries.
 
 ## Current Baseline

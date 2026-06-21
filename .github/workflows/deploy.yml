@@ -48,6 +48,10 @@ jobs:
       - name: 🧪 Tests — Vitest unit tests
         run: npm test
 
+      - name: 🩺 React Doctor — static React graph audit
+        continue-on-error: true
+        run: npm run doctor:full
+
       - name: 🐍 Python — setup and lint
         uses: astral-sh/setup-uv@v7
         with:

@@ -42,9 +42,10 @@ function log(message, type = 'info') {
 }
 
 function parseArgs(argv) {
-  const args = { remote: false, commit: '', retries: 20, waitSeconds: 15 };
+  const args = { remote: false, commit: '', parity: false, retries: 20, waitSeconds: 15 };
   for (const arg of argv) {
     if (arg === '--remote') args.remote = true;
+    else if (arg === '--parity') args.parity = true;
     else if (arg.startsWith('--commit=')) args.commit = arg.slice('--commit='.length);
     else if (arg.startsWith('--retries=')) args.retries = Number(arg.slice('--retries='.length));
     else if (arg.startsWith('--wait=')) args.waitSeconds = Number(arg.slice('--wait='.length));
@@ -170,13 +171,18 @@ async function verifyRemoteSync(options) {
     { name: 'Vercel Preview', url: CONFIG.vercelPreviewUrl, required: false },
   ];
 
-  const expectedCommit =
-    options.commit ||
-    process.env.GITHUB_SHA ||
-    process.env.VERCEL_GIT_COMMIT_SHA ||
-    execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
+  const expectedCommit = options.parity
+    ? ''
+    : options.commit ||
+      process.env.GITHUB_SHA ||
+      process.env.VERCEL_GIT_COMMIT_SHA ||
+      execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
 
-  log(`Expected deployment commit: ${expectedCommit}`, 'info');
+  if (options.parity) {
+    log('Parity mode: requiring GitHub Pages and Vercel production to share the same commit', 'info');
+  } else {
+    log(`Expected deployment commit: ${expectedCommit}`, 'info');
+  }
 
   for (let attempt = 1; attempt <= options.retries; attempt += 1) {
     const results = [];
@@ -191,7 +197,9 @@ async function verifyRemoteSync(options) {
           fetchPageTitle(surface.url, 'monitor.html'),
         ]);
 
-        const synced = config.gitCommit === expectedCommit;
+        const synced = options.parity
+          ? Boolean(config.gitCommit)
+          : config.gitCommit === expectedCommit;
         results.push({
           ...surface,
           synced,
@@ -210,6 +218,21 @@ async function verifyRemoteSync(options) {
         if (surface.required) {
           allRequiredSynced = false;
         }
+      }
+    }
+
+    if (options.parity) {
+      const githubPages = results.find(result => result.name === 'GitHub Pages' && result.config?.gitCommit);
+      const vercelProd = results.find(
+        result => result.name === 'Vercel Production' && result.config?.gitCommit
+      );
+      if (githubPages && vercelProd) {
+        const parityOk = githubPages.config.gitCommit === vercelProd.config.gitCommit;
+        allRequiredSynced = parityOk;
+        log(
+          `Cross-surface parity: GitHub Pages ${githubPages.config.gitCommit} · Vercel ${vercelProd.config.gitCommit}`,
+          parityOk ? 'success' : 'warning'
+        );
       }
     }
 

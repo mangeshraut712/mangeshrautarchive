@@ -3550,23 +3550,23 @@
               <div class="currently-header">
                 <h3><i class="fas fa-bookmark"></i> Currently</h3>
                 <div class="currently-tabs" role="tablist" aria-label="Currently categories">
-                  <button class="currently-tab active" data-tab="shows" aria-label="Shows and Movies" aria-selected="true">
-                    <i class="fas fa-tv"></i>
+                  <button type="button" class="currently-tab active" role="tab" data-tab="shows" aria-selected="true" id="currently-tab-shows" aria-controls="shows-content">
+                    <i class="fas fa-tv" aria-hidden="true"></i>
                     <span>Shows & Movies</span>
                   </button>
-                  <button class="currently-tab" data-tab="music" aria-label="Music" aria-selected="false">
-                    <i class="fas fa-music"></i>
+                  <button type="button" class="currently-tab" role="tab" data-tab="music" aria-selected="false" id="currently-tab-music" aria-controls="music-content">
+                    <i class="fas fa-music" aria-hidden="true"></i>
                     <span>Music</span>
                   </button>
-                  <button class="currently-tab" data-tab="books" aria-label="Books" aria-selected="false">
-                    <i class="fas fa-book"></i>
+                  <button type="button" class="currently-tab" role="tab" data-tab="books" aria-selected="false" id="currently-tab-books" aria-controls="books-content">
+                    <i class="fas fa-book" aria-hidden="true"></i>
                     <span>Books</span>
                   </button>
                 </div>
               </div>
 
               <!-- Shows & Movies Section -->
-              <div class="currently-content active" id="shows-content">
+              <div class="currently-content active" id="shows-content" role="tabpanel" aria-labelledby="currently-tab-shows">
                 <div class="media-grid" id="shows-grid">
                   <!-- Will be populated by real-media-loader.js with verified TMDB posters -->
                   <div class="text-center py-8">
@@ -3577,7 +3577,7 @@
               </div>
 
               <!-- Music Section - Last.fm Now Playing -->
-              <div class="currently-content" id="music-content" hidden>
+              <div class="currently-content" id="music-content" role="tabpanel" aria-labelledby="currently-tab-music" hidden>
                 <div class="media-grid music-shelf-grid" id="music-grid">
                   <!-- Featured / now playing card -->
                   <div class="media-card currently-music-card currently-music-state now-playing" id="now-playing-card" hidden>
@@ -3629,7 +3629,7 @@
               </div>
 
               <!-- Books Section -->
-              <div class="currently-content" id="books-content" hidden>
+              <div class="currently-content" id="books-content" role="tabpanel" aria-labelledby="currently-tab-books" hidden>
                 <div class="media-grid" id="books-grid">
                   <!-- Will be populated by real-media-loader.js with verified Open Library covers -->
                   <div class="text-center py-8">

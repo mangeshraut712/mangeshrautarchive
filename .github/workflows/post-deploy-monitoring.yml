@@ -43,7 +43,7 @@ jobs:
           node scripts/deployment/lighthouse-gate.js --url=https://mangeshraut.pro/ --form-factor=mobile --min-performance=55 --min-accessibility=90 --min-best-practices=90 --min-seo=90
 
       - name: Compare GitHub Pages and Vercel deployment sync
-        run: node scripts/deployment/verify-deployment-sync.js --remote --commit=${{ github.sha }} --retries=10 --wait=20
+        run: node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=10 --wait=20
 
       - name: Upload monitoring artifacts
         if: always()

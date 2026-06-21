@@ -57,9 +57,11 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 - **AssistMe AI Chat** — streaming Markdown, Siri-style voice dictation, writing tools, and contextual follow-up chips
 - **12 Technical Writings** — deep-dive blogs covering AI Code Editors, WWDC 2026/Apple Intelligence, NotebookLM 2026, WebMCP tool design, and agentic workflows
-- **First-Visit Guide** — “Start here” hero panel + June field-note spotlight with welcome-back messaging for return visitors
+- **First-Visit Toasts** — lightweight 2–3s hero toasts for new and returning visitors (no large hero panels)
 - **Card Listen + Translate** — 16-language read-aloud and translation toolbars on narrative cards (About, Experience, Awards, Blog, Travel)
-- **Release-Aware Project Lenses** — live GitHub filters: All · Need attention · Hot · Busy · Fresh · Released with per-chip counts
+- **Project Showcase Lenses** — All · Hot · Busy · Released with live counts; empty lenses auto-hide; GitHub Operating View caption omits zero buckets
+- **Currently Shelf** — Apple-style segmented tabs plus compact media cards for Shows, Music, and Books
+- **Publication Preview** — two-column paper card with inline PDF preview panel and Apple-style Read paper CTA
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (&lt;50ms) + OpenRouter streaming LLM
 - **WWDC26 Liquid Glass Design System** — clear/tinted glass slider, solid theme card surfaces, specular highlights, and reduced-motion fallbacks
@@ -320,11 +322,13 @@ flowchart TD
 | Gate                   | Threshold / Coverage                                                                    |
 | ---------------------- | --------------------------------------------------------------------------------------- |
 | **Playwright**         | 12+ real projects (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro) |
-| **Accessibility**      | @axe-core/playwright + manual WCAG AA contrast validation                               |
-| **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90                         |
-| **Lighthouse Mobile**  | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90                         |
+| **Accessibility**      | @axe-core/playwright — zero critical/serious violations on homepage                     |
+| **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90 (dist gate)           |
+| **Lighthouse Mobile**  | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90 (dist gate)             |
+| **Lighthouse latest**  | Local dist gate: **100/100** mobile + desktop (Performance, A11y, Best Practices, SEO)  |
+| **React Doctor**       | Informational static graph audit via `npm run doctor:full` (tracked in CI, non-blocking) |
 | **Post-deploy**        | Smoke + a11y on Vercel **and** GitHub Pages                                             |
-| **Nightly monitoring** | Lighthouse on live URLs (desktop ≥70, mobile ≥55; no perf-audit on remote) |
+| **Nightly monitoring** | Production reachability + Lighthouse on Vercel + cross-surface commit parity              |
 | **Pre-commit**         | Security scan + ESLint                                                                  |
 
 **Key commands**
@@ -416,6 +420,8 @@ mangeshrautarchive/
 └── .github/workflows/      # deploy.yml (CI + GitHub Pages) + post-deploy-monitoring.yml (nightly)
 ```
 
+See also [`docs/ci-quality-gates-june-2026.md`](docs/ci-quality-gates-june-2026.md) for Lighthouse thresholds, React Doctor tracking, and workflow order.
+
 ### CI / CD (single pipeline, no duplicate workflows)
 
 | Workflow | Trigger | Purpose |
@@ -423,7 +429,7 @@ mangeshrautarchive/
 | [`deploy.yml`](.github/workflows/deploy.yml) | Push/PR to `main`, manual | Quality gates → build → GitHub Pages deploy → live surface verify |
 | [`post-deploy-monitoring.yml`](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC, manual | Production reachability, Lighthouse on Vercel, cross-surface sync audit |
 
-**Quality gate order in `deploy.yml`:** security audit → ESLint → Stylelint → Vitest → Python lint/tests → Playwright smoke + axe → Lighthouse desktop/mobile → build → deploy → verify GitHub Pages commit.
+**Quality gate order in `deploy.yml`:** security audit → ESLint → Stylelint → Vitest → React Doctor (informational) → Python lint/tests → Playwright smoke + axe → Lighthouse desktop/mobile → build → deploy → verify GitHub Pages commit.
 
 **Dual hosting:** every `main` push rebuilds GitHub Pages in CI and triggers Vercel production via the repo integration. `verify-deployment-sync.js` compares `build-config.json` commit hashes across both surfaces.
 
@@ -448,28 +454,22 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026 (latest)
 
-- **First-Visit & Return UX** — Hero “Start here” panel highlights two June field notes (WWDC 2026, NotebookLM 2026), About, and Projects; welcome-back banner for return sessions; blog `#blog-month-picks` spotlight with deep links (`#blog-read-<id>`).
-- **Card Listen + Translate** — Site-wide narrative card toolbars with 16 languages, scrollable popover, TTS in translated locale, MyMemory + `/api/chat` AI fallback; inline Experience layout fix; Education/Publications excluded by design.
-- **Release-Aware Project Lenses** — All · Need attention · Hot · Busy · Fresh · Released filters show live repo counts from GitHub release/activity signals; unified “Need attention” labels; activity caption summarizes hot/fresh/busy/attention/released totals.
-- **Performance** — Card accessibility deferred until About is near viewport; visitor guide on idle; GitHub contribution graph + Last.fm art lazy-loaded via `requestIdleCallback`; reduced first-load JS/CSS blocking.
-- **Design & Assets** — WWDC26 liquid glass on vibe stack + portfolio reach panels; company logos (Anthropic, SpaceX, xAI, OpenAI, TSMC, Toyota emblem); navbar aux links (Debug Runner, Travel Atlas, System Monitor) with tooltips.
-- **Cross-Surface QA** — Mobile/tablet/desktop viewport audit (390 / 834 / 1440 px); `qa:vercel:*` and `qa:github:*` smoke targets for Chrome, Safari, and iPhone; deploy pipeline verifies GitHub Pages live commit after every release.
-- **Analytics & Reach** — Portfolio Reach panel aligned with GA4 metrics; Vercel API env sync for analytics keys across environments.
+- **Currently Shelf Redesign** — iOS segmented tabs, compact media cards, unified Apple-blue actions, full titles with line-clamp, and accessible `tablist`/`tabpanel` wiring.
+- **Project Showcase Polish** — simplified lenses (All · Hot · Busy · Released), hide empty filters, non-zero GitHub Operating View caption, dynamic card reveal fix, Apple-style Visit GitHub Profile button.
+- **Publication Preview** — two-column layout with mini paper preview card on the right and gradient Read paper CTA.
+- **First-Visit Toasts** — ephemeral hero toasts (~2.8s) replace large Start here / welcome-back panels; blog June spotlight removed (cards-only grid).
+- **Performance** — parallel hero analytics fetch, deferred card-a11y/Last.fm, hero badges stay visible outside scroll-hide targets.
+- **CI / QA** — axe tablist fix for Currently section; Lighthouse dist gate at 100/100 mobile + desktop locally; nightly monitoring uses cross-surface commit parity; React Doctor tracked in deploy workflow.
 
 ### June 2026 (earlier)
 
-- **Mobile & Short-Viewport Polish** — Hero description wrapping, FAB/a11y-toolbar spacing contract, and compact monitor summary layout for phones and short desktop windows.
-- **Theme System Default** — Default theme mode is now `system` (OS `prefers-color-scheme`); solar auto mode remains opt-in via `auto`. Tab visibility re-syncs theme when returning from background.
-- **CI Speed & Reliability** — Deploy workflows use `npm ci` with lockfile cache and system Chrome for smoke/Lighthouse instead of downloading Playwright browsers on every run.
-- **Build Safety** — Cache busting skips external URLs; Lighthouse gate resolves system Chrome on macOS/Linux before falling back to Playwright Chromium.
-- **Share Sheet & Accessibility** — Apple-inspired share widget in the accessibility toolbar with High-ECC QR codes, social mirror tabs, and solid theme card surfaces.
-- **Health Vitals Sync** — Fixed Withings body-fat measure mapping, WHOOP record selection, and homepage widget parsing for muscle/fat trends.
-- **Liquid Glass Controls** — Clear vs tinted glass slider with nav token overrides; solid white/black card surfaces in light/dark themes.
-- **Security Hardening** — OAuth connect gating, signed state, monitor API access controls, and session/personalization IDOR fixes.
-- **CI & Monitoring** — Stylelint/dead-code fixes, Playwright Chromium for nightly Lighthouse on production URLs, all deploy workflows green.
-- **System Monitor** — Runtime snapshot card, integration env parity scripts, and unified Apple premium hover transitions.
-- **New Blog Publications** — WWDC 2026 (Apple Intelligence, Siri AI, AFM 3) and NotebookLM 2026 deep-dives; 12 technical writings total.
-- **Quality Gates** — React Doctor 100/100; Lighthouse CI thresholds enforced at Performance ≥80 desktop / ≥60 mobile with a11y ≥90 across the board.
+- **First-Visit & Return UX** — Hero guidance panels and blog month picks (later replaced by compact toasts + cards-only blog grid).
+- **Card Listen + Translate** — Site-wide narrative card toolbars with 16 languages, scrollable popover, TTS in translated locale, MyMemory + `/api/chat` AI fallback.
+- **Release-Aware Project Lenses** — GitHub release/activity signals with live chip counts (later simplified to Hot · Busy · Released).
+- **Performance** — Card accessibility deferred until About is near viewport; GitHub contribution graph + Last.fm art lazy-loaded via `requestIdleCallback`.
+- **Design & Assets** — WWDC26 liquid glass on vibe stack + portfolio reach panels; company/car logos; navbar aux links with tooltips.
+- **Cross-Surface QA** — Mobile/tablet/desktop viewport audit; `qa:vercel:*` and `qa:github:*` smoke targets; deploy pipeline verifies GitHub Pages live commit after every release.
+- **Analytics & Reach** — Portfolio Reach panel aligned with GA4 metrics; Vercel API env sync for analytics keys across environments.
 
 ---
 
