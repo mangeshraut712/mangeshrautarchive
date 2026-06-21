@@ -4,6 +4,23 @@ import './project-xr.js';
 const DEFAULT_USERNAME = 'mangeshraut712';
 const PROJECT_ROWS_LIMIT = 2;
 const DEFAULT_PROJECT_LENS = 'all';
+const LENS_KEYS = ['all', 'attention', 'hot', 'busy', 'fresh', 'released'];
+const LENS_LABELS = {
+  all: 'All',
+  attention: 'Need attention',
+  hot: 'Hot',
+  busy: 'Busy',
+  fresh: 'Fresh',
+  released: 'Released',
+};
+const LENS_HINTS = {
+  all: 'Every showcase repository',
+  attention: 'Stale releases or heavy commit drift since last tag',
+  hot: 'Active in the last 14 days',
+  busy: '10+ commits since the latest release',
+  fresh: 'Released within the last 45 days',
+  released: 'Has at least one GitHub release',
+};
 
 function getProjectGridColumns(container) {
   if (
@@ -158,6 +175,9 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
         acc.releaseCheckedRepos += 1;
         if (releaseSignal.hasRelease) acc.releasedRepos += 1;
         if (releaseSignal.filters?.has('attention')) acc.attentionRepos += 1;
+        if (releaseSignal.filters?.has('hot')) acc.hotRepos += 1;
+        if (releaseSignal.filters?.has('busy')) acc.busyRepos += 1;
+        if (releaseSignal.filters?.has('fresh')) acc.freshRepos += 1;
         if (releaseSignal.commitsSinceRelease !== null) {
           acc.totalCommitsSinceRelease += releaseSignal.commitsSinceRelease;
         }
@@ -180,6 +200,9 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       releaseCheckedRepos: 0,
       releasedRepos: 0,
       attentionRepos: 0,
+      hotRepos: 0,
+      busyRepos: 0,
+      freshRepos: 0,
       languages: new Set(),
       latestUpdate: 0,
     }
@@ -210,7 +233,7 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
   if (!captionEl) return;
 
   if (totals.releaseCheckedRepos > 0) {
-    captionEl.textContent = `${totals.releaseCheckedRepos} repositories checked for latest releases; ${totals.attentionRepos} need a release pass.`;
+    captionEl.textContent = `${totals.hotRepos} hot · ${totals.freshRepos} fresh · ${totals.busyRepos} busy · ${totals.attentionRepos} need attention · ${totals.releasedRepos} released.`;
     return;
   }
 
@@ -340,6 +363,47 @@ function createLensMatcher(lens, githubProjects) {
   };
 }
 
+function countLensDistribution(repos, githubProjects) {
+  const counts = {
+    all: repos.length,
+    attention: 0,
+    hot: 0,
+    busy: 0,
+    fresh: 0,
+    released: 0,
+  };
+
+  repos.forEach(repo => {
+    if (!githubProjects || typeof githubProjects.getReleaseSignal !== 'function') return;
+    const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
+    ['attention', 'hot', 'busy', 'fresh', 'released'].forEach(key => {
+      if (signal.filters?.has(key)) counts[key] += 1;
+    });
+  });
+
+  return counts;
+}
+
+function updateLensChipCounts(repos, githubProjects) {
+  const counts = countLensDistribution(repos, githubProjects);
+
+  LENS_KEYS.forEach(key => {
+    const chip = document.querySelector(`[data-project-lens="${key}"]`);
+    if (!chip) return;
+
+    const countEl = chip.querySelector('[data-lens-count]');
+    const value = counts[key] ?? 0;
+    if (countEl) {
+      countEl.textContent = String(value);
+    }
+
+    const label = LENS_LABELS[key] || key;
+    const hint = LENS_HINTS[key] || '';
+    chip.title = hint ? `${label}: ${value} repos — ${hint}` : `${label}: ${value} repos`;
+    chip.setAttribute('aria-label', `${label}, ${value} repositories`);
+  });
+}
+
 function updateLensButtons(buttons, activeLens) {
   buttons.forEach(button => {
     const isActive = normalizeLens(button.dataset.projectLens) === activeLens;
@@ -436,6 +500,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
       applyTiltEffects(container);
       updateActivityStats(allRepos, displayRepos, githubProjects);
+      updateLensChipCounts(allShowcaseRepos, githubProjects);
 
       const reposToHydrate = displayRepos.filter(repo => !repo.__activityLoaded);
       if (reposToHydrate.length === 0) return;
@@ -454,6 +519,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
         applyTiltEffects(container);
         updateActivityStats(allRepos, rerenderRepos, githubProjects);
+        updateLensChipCounts(allShowcaseRepos, githubProjects);
       }
     };
 
@@ -486,6 +552,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       });
     });
     updateLensButtons(lensButtons, activeLens);
+    updateLensChipCounts(allShowcaseRepos, githubProjects);
 
     document.addEventListener('input', event => {
       const target = event.target;
@@ -523,6 +590,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       .then(() => {
         if (renderToken === 0) return;
         updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
+        updateLensChipCounts(allShowcaseRepos, githubProjects);
       })
       .catch(() => {
         // Non-blocking enhancement; UI already rendered with fallback stats.

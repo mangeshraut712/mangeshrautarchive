@@ -134,3 +134,29 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  verify-surfaces:
+    name: ✅ Verify GitHub Pages live
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Wait for GitHub Pages CDN
+        run: sleep 30
+
+      - name: Verify core pages respond
+        run: |
+          BASE="https://mangeshraut712.github.io/mangeshrautarchive"
+          for path in "" "travel.html" "monitor.html" "build-config.json"; do
+            curl --fail --silent --show-error "${BASE}/${path}" >/dev/null
+            echo "✅ ${BASE}/${path}"
+          done
+
+      - name: Verify deployed commit matches push
+        run: |
+          REMOTE_COMMIT=$(curl --fail --silent --show-error \
+            "https://mangeshraut712.github.io/mangeshrautarchive/build-config.json" \
+            | node -pe "JSON.parse(require('fs').readFileSync(0,'utf8')).gitCommit")
+          echo "Remote commit: ${REMOTE_COMMIT}"
+          echo "Expected commit: ${{ github.sha }}"
+          test "${REMOTE_COMMIT}" = "${{ github.sha }}"

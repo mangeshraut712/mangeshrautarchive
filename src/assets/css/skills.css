@@ -9,7 +9,8 @@
   --skill-marquee-duration: 40s;
   --skill-motion-spring: cubic-bezier(0.16, 1, 0.3, 1);
 
-  background-color: #fff !important;
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
   overflow: hidden;
   /* CRITICAL: Prevent marquee from expanding section */
 }
@@ -22,7 +23,8 @@
 }
 
 html.dark #skills {
-  background-color: #000 !important;
+  background: var(--theme-page-bg, #000000) !important;
+  background-color: var(--theme-page-bg, #000000) !important;
 }
 
 /* Skills Container - Inside the section */
@@ -89,10 +91,12 @@ html.dark .skill-category h3.text-xl {
   width: max-content;
   min-width: max-content;
   animation: skillMarquee var(--skill-marquee-duration, 40s) linear infinite;
-  will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-  transform-style: preserve-3d;
+}
+
+.skill-scroll-wrapper:not(.is-offscreen-paused) {
+  will-change: transform;
 }
 
 .skill-scroll-container:hover .skill-scroll-wrapper {
@@ -126,12 +130,17 @@ html.dark .skill-category h3.text-xl {
   position: relative;
   overflow: hidden;
   height: 100%;
-  will-change: transform;
   backface-visibility: hidden;
-  perspective: 1000px;
 
-  /* Animation hooks */
-  animation: slideInBadge 0.72s var(--skill-motion-spring) forwards;
+  /* Marquee badges stay static; category cards reveal on scroll */
+  animation: none;
+  opacity: 1;
+}
+
+.skill-scroll-wrapper .skill-badge {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 @keyframes slideInBadge {
@@ -188,7 +197,6 @@ html.dark .skill-badge:hover {
   font-size: 1rem;
   position: relative;
   overflow: hidden;
-  will-change: transform;
   backface-visibility: hidden;
 }
 

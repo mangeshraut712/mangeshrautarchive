@@ -1,13 +1,22 @@
 import { blogPosts } from './blog-data.js';
+import { JUNE_BLOG_IDS } from './visitor-guide.js';
 
 /**
  * Blog Loader Module
  * Renders blog posts and handles article modal interactions
  */
 
+function getPostsForMonth(year, monthIndex) {
+  return blogPosts.filter(post => {
+    const date = new Date(post.date);
+    return date.getFullYear() === year && date.getMonth() === monthIndex;
+  });
+}
+
 class BlogLoader {
   constructor() {
     this.container = document.getElementById('blog-posts-container');
+    this.monthPicksEl = document.getElementById('blog-month-picks');
     this.modal = null;
     this.init();
   }
@@ -15,22 +24,104 @@ class BlogLoader {
   init() {
     if (!this.container) return;
 
+    this.renderMonthPicks();
     this.renderPosts();
     this.bindCardEvents();
     this.createModal();
+    this.bindDeepLinks();
+  }
+
+  renderMonthPicks() {
+    if (!this.monthPicksEl) return;
+
+    const now = new Date();
+    const monthPosts = getPostsForMonth(now.getFullYear(), now.getMonth())
+      .toSorted((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 2);
+
+    if (monthPosts.length === 0) {
+      this.monthPicksEl.hidden = true;
+      return;
+    }
+
+    const monthLabel = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+    this.monthPicksEl.hidden = false;
+    this.monthPicksEl.innerHTML = `
+      <div class="blog-month-picks-head">
+        <p class="blog-month-picks-eyebrow">Start here</p>
+        <h3 class="blog-month-picks-title">${this.escapeHTML(monthLabel)} field notes</h3>
+        <p class="blog-month-picks-copy">Two fresh essays to read first — then browse the full archive below.</p>
+      </div>
+      <div class="blog-month-picks-grid">
+        ${monthPosts
+          .map(
+            post => `
+          <article class="blog-month-pick lg-glass-card">
+            <span class="blog-month-pick-badge">New this month</span>
+            <p class="blog-month-pick-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</p>
+            <h4 class="blog-month-pick-title">${this.escapeHTML(post.title)}</h4>
+            <p class="blog-month-pick-summary">${this.escapeHTML(post.readerPromise || post.summary)}</p>
+            <button type="button" class="blog-read-btn blog-month-pick-btn" data-blog-open="${post.id}">
+              Read now <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </article>
+        `
+          )
+          .join('')}
+      </div>
+    `;
+
+    this.monthPicksEl.addEventListener('click', event => {
+      const button = event.target.closest('[data-blog-open]');
+      if (!button || !this.monthPicksEl.contains(button)) return;
+      this.openPost(button.dataset.blogOpen);
+    });
+  }
+
+  bindDeepLinks() {
+    const tryOpenFromHash = () => {
+      const pending = window.__pendingBlogOpen;
+      if (pending) {
+        this.openPost(pending);
+        delete window.__pendingBlogOpen;
+        return;
+      }
+
+      const match = window.location.hash.match(/^#blog-read-([^&]+)/);
+      if (!match) return;
+      this.openPost(decodeURIComponent(match[1]));
+    };
+
+    window.addEventListener('portfolio:open-blog', event => {
+      const postId = event.detail?.id;
+      if (postId) {
+        window.__pendingBlogOpen = postId;
+        tryOpenFromHash();
+      }
+    });
+
+    tryOpenFromHash();
+    window.addEventListener('hashchange', tryOpenFromHash);
   }
 
   renderPosts() {
     // Sort posts by date (most recent first)
     const sortedPosts = blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
+    const featuredIds = new Set(JUNE_BLOG_IDS);
 
     this.container.innerHTML = sortedPosts
       .map(
         post => `
-            <article class="blog-card apple-3d-project" data-id="${post.id}">
+            <article class="blog-card apple-3d-project${featuredIds.has(post.id) ? ' blog-card--featured-month' : ''}" data-id="${post.id}">
                 <div class="blog-card-content">
                     <div class="blog-kicker-row">
                         <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
+                        ${
+                          featuredIds.has(post.id)
+                            ? '<span class="blog-featured-badge">June pick</span>'
+                            : ''
+                        }
                         <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>
                     </div>
                     <div class="blog-meta">

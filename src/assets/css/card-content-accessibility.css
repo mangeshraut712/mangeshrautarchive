@@ -1,0 +1,307 @@
+/* ═══════════════════════════════════════════════════════════
+   Card Read Aloud + Translate — Apple-style content toolbar
+   ═══════════════════════════════════════════════════════════ */
+
+.card-readable {
+  position: relative;
+  overflow: visible !important;
+}
+
+.experience-content.card-readable,
+.blog-card.card-readable,
+.award-card.card-readable,
+.recommendation-card.card-readable,
+.travel-stop.card-readable {
+  overflow: visible !important;
+}
+
+.card-read-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.card-read-toolbar--inline {
+  position: static !important;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 0 0 0.75rem;
+}
+
+.card-read-toolbar .card-speak-btn,
+.card-read-toolbar .card-translate-btn,
+.card-read-toolbar .card-restore-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgb(0 0 0 / 10%);
+  background: rgb(255 255 255 / 88%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
+  cursor: pointer;
+  transition:
+    transform 0.22s cubic-bezier(0.25, 0.1, 0.25, 1),
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+html.dark .card-read-toolbar .card-speak-btn,
+html.dark .card-read-toolbar .card-translate-btn,
+html.dark .card-read-toolbar .card-restore-btn {
+  border-color: rgb(255 255 255 / 14%);
+  background: rgb(0 0 0 / 72%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 28%) !important;
+}
+
+.card-read-toolbar .card-speak-btn:hover,
+.card-read-toolbar .card-translate-btn:hover,
+.card-read-toolbar .card-restore-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgb(0 113 227 / 28%);
+}
+
+.card-read-toolbar .card-speak-btn.is-speaking,
+.card-read-toolbar .card-speak-btn[aria-pressed='true'] {
+  background: #0071e3 !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  border-color: #0071e3 !important;
+}
+
+html.dark .card-read-toolbar .card-speak-btn.is-speaking,
+html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
+  background: #0a84ff !important;
+  border-color: #0a84ff !important;
+}
+
+.card-read-toolbar .card-translate-btn[aria-expanded='true'] {
+  border-color: rgb(0 113 227 / 40%);
+  box-shadow: 0 0 0 3px rgb(0 113 227 / 12%) !important;
+}
+
+.card-read-toolbar svg,
+.card-read-toolbar i {
+  width: 16px;
+  height: 16px;
+  font-size: 15px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.card-translate-wrap {
+  position: relative;
+}
+
+.card-translate-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: min(260px, calc(100vw - 32px));
+  padding: 0.65rem;
+  border-radius: 16px;
+  border: 1px solid rgb(0 0 0 / 10%);
+  background: rgb(255 255 255 / 96%);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 14%);
+}
+
+html.dark .card-translate-popover {
+  border-color: rgb(255 255 255 / 12%);
+  background: rgb(18 18 20 / 96%);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 48%);
+}
+
+.card-translate-popover[hidden] {
+  display: none !important;
+}
+
+.card-translate-popover__title {
+  margin: 0 0 0.45rem;
+  padding: 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6e6e73;
+}
+
+html.dark .card-translate-popover__title {
+  color: #98989d;
+}
+
+.card-translate-popover__scroll {
+  max-height: min(280px, 46vh);
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.1rem;
+  scrollbar-width: thin;
+}
+
+.card-translate-popover__scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card-translate-popover__scroll::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 18%);
+  border-radius: 999px;
+}
+
+html.dark .card-translate-popover__scroll::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 22%);
+}
+
+.card-translate-popover__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.card-translate-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0.65rem;
+  border: none;
+  border-radius: 11px;
+  background: transparent !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.18s ease;
+}
+
+html.dark .card-translate-option {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+.card-translate-option:hover,
+.card-translate-option:focus-visible {
+  background: rgb(0 113 227 / 10%) !important;
+}
+
+.card-translate-option.is-active {
+  background: rgb(0 113 227 / 14%) !important;
+  box-shadow: inset 0 0 0 1px rgb(0 113 227 / 24%) !important;
+}
+
+.card-translate-option__native {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.card-translate-option__label {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  color: #6e6e73;
+  white-space: nowrap;
+}
+
+html.dark .card-translate-option__label {
+  color: #98989d;
+}
+
+.card-translate-option.is-loading {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.card-readable.is-translated {
+  outline: 1px solid rgb(0 113 227 / 18%);
+  outline-offset: 4px;
+}
+
+.about-card-header .card-read-toolbar {
+  margin-left: auto;
+}
+
+.experience-content,
+.award-content,
+.recommendation-card,
+.blog-card,
+.travel-stop {
+  position: relative;
+}
+
+.experience-content > .card-read-toolbar--inline,
+.award-content > .card-read-toolbar--inline,
+.recommendation-card > .card-read-toolbar--inline,
+.blog-card > .card-read-toolbar--inline,
+.travel-stop > .card-read-toolbar--inline {
+  position: static;
+}
+
+.experience-content > .card-read-toolbar--inline {
+  margin-bottom: 0.5rem;
+}
+
+/* Speech highlight — shared with About */
+.card-readable.speech-active .highlight-target,
+.about-text-card.speech-active .highlight-target {
+  opacity: 1;
+  color: #6e6e73 !important;
+}
+
+.card-readable.speech-active .highlight-target.is-speaking,
+.about-text-card.speech-active .highlight-target.is-speaking {
+  opacity: 1;
+  color: #0071e3 !important;
+}
+
+html.dark .card-readable.speech-active .highlight-target,
+html.dark .about-text-card.speech-active .highlight-target {
+  color: #98989d !important;
+}
+
+html.dark .card-readable.speech-active .highlight-target.is-speaking,
+html.dark .about-text-card.speech-active .highlight-target.is-speaking {
+  color: #2997ff !important;
+}
+
+@media (max-width: 768px) {
+  .about-card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .about-card-header .card-read-toolbar {
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+
+  .card-translate-popover {
+    right: 0;
+    left: auto;
+    width: min(240px, calc(100vw - 24px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-read-toolbar .card-speak-btn,
+  .card-read-toolbar .card-translate-btn,
+  .card-read-toolbar .card-restore-btn {
+    transition: none !important;
+  }
+}

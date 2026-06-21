@@ -858,6 +858,100 @@ html.dark .article-link:hover {
   }
 }
 
+/* June / current-month spotlight */
+.blog-month-picks {
+  width: min(1100px, 100%);
+  margin: 0 auto 2rem;
+}
+
+.blog-month-picks-head {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.blog-month-picks-eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #6e6e73);
+  font-weight: 700;
+}
+
+.blog-month-picks-title {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+}
+
+.blog-month-picks-copy {
+  margin: 0 auto;
+  max-width: 42rem;
+  color: var(--text-secondary, #6e6e73);
+  line-height: 1.55;
+}
+
+.blog-month-picks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.blog-month-pick {
+  padding: 1.1rem 1.15rem;
+  border-radius: 20px;
+  text-align: left;
+}
+
+.blog-month-pick-badge,
+.blog-featured-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgb(0 113 227 / 12%);
+  color: #0a58be;
+}
+
+html.dark .blog-month-pick-badge,
+html.dark .blog-featured-badge {
+  background: rgb(88 166 255 / 16%);
+  color: #9dccff;
+}
+
+.blog-month-pick-kicker {
+  margin: 0.65rem 0 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary, #6e6e73);
+}
+
+.blog-month-pick-title {
+  margin: 0 0 0.55rem;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.blog-month-pick-summary {
+  margin: 0 0 0.85rem;
+  color: var(--text-secondary, #6e6e73);
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+.blog-month-pick-btn {
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .blog-month-picks-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ========================================
    ROW LIMITING - View More Logic (1 Row)
    ======================================== */

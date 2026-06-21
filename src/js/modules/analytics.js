@@ -30,9 +30,7 @@
   };
   const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
 
-  if (reachPanel && reachPanel.parentElement !== document.body) {
-    document.body.appendChild(reachPanel);
-  }
+  const reachFlyout = document.getElementById('reach-flyout');
 
   function normalizeOrigin(rawValue) {
     if (!rawValue) return '';
@@ -189,25 +187,13 @@
   }
 
   function positionReachPanel() {
-    if (!reachBadge || !reachPanel) return;
+    if (!reachBadge || !reachFlyout) return;
 
-    const badgeRect = reachBadge.getBoundingClientRect();
-    const panelWidth = reachPanel.offsetWidth || 544;
-    const panelHeight = reachPanel.offsetHeight || 320;
-    const gap = 12;
-    const margin = 16;
-
-    let top = badgeRect.bottom + gap;
-    let left = badgeRect.left + badgeRect.width / 2 - panelWidth / 2;
-
-    left = Math.max(margin, Math.min(left, window.innerWidth - panelWidth - margin));
-
-    if (top + panelHeight > window.innerHeight - margin) {
-      top = Math.max(margin, badgeRect.top - panelHeight - gap);
-    }
-
-    reachPanel.style.top = `${Math.round(top)}px`;
-    reachPanel.style.left = `${Math.round(left)}px`;
+    globalThis.positionHeroFlyout?.({
+      flyout: reachFlyout,
+      anchor: document.querySelector('.hero-badge-cluster') || reachBadge,
+      side: 'right',
+    });
   }
 
   function updateAnalyticsAction(payload) {
@@ -287,12 +273,21 @@
   }
 
   function setReachPanelOpen(isOpen) {
-    if (!reachBadge || !reachPanel) return;
+    if (!reachBadge || !reachPanel || !reachFlyout) return;
     reachBadge.setAttribute('aria-expanded', String(isOpen));
+    reachBadge.classList.toggle('is-active', isOpen);
+    reachFlyout.hidden = !isOpen;
+    reachFlyout.classList.toggle('is-open', isOpen);
     reachPanel.hidden = !isOpen;
     reachPanel.classList.toggle('is-open', isOpen);
     if (isOpen) {
-      positionReachPanel();
+      requestAnimationFrame(() => positionReachPanel());
+      window.dispatchEvent(new CustomEvent('hero-flyout-open', { detail: { id: 'reach' } }));
+      window.dispatchEvent(new CustomEvent('vibe-stack-close'));
+    } else {
+      reachFlyout.style.width = '';
+      reachFlyout.style.maxWidth = '';
+      globalThis.clearHeroFlyoutLayout?.(reachFlyout);
     }
   }
 
@@ -449,26 +444,32 @@
     });
 
     document.addEventListener('click', event => {
-      if (!reachPanel?.classList.contains('is-open')) return;
-      if (reachPanel.contains(event.target) || reachBadge?.contains(event.target)) return;
+      if (!reachFlyout?.classList.contains('is-open')) return;
+      if (reachFlyout.contains(event.target) || reachBadge?.contains(event.target)) return;
       setReachPanelOpen(false);
     });
 
-    window.addEventListener('resize', () => {
-      if (reachPanel?.classList.contains('is-open')) {
-        positionReachPanel();
+    window.addEventListener('hero-flyout-open', event => {
+      if (event.detail?.id !== 'reach') {
+        setReachPanelOpen(false);
       }
     });
 
     window.addEventListener(
       'scroll',
       () => {
-        if (reachPanel?.classList.contains('is-open')) {
+        if (reachFlyout?.classList.contains('is-open')) {
           positionReachPanel();
         }
       },
       { passive: true }
     );
+
+    window.addEventListener('resize', () => {
+      if (reachFlyout?.classList.contains('is-open')) {
+        positionReachPanel();
+      }
+    });
 
     setTimeout(() => {
       refreshReach({ track: true });

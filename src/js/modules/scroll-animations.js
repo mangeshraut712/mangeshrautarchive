@@ -1,14 +1,20 @@
 /**
  * Performance-Optimized Scroll Animations
- * Uses Intersection Observer for 60fps smooth animations
+ * Apple-style reveal: opacity + translateY, Intersection Observer, GPU-only props
  */
+
+const APPLE_REVEAL_EASING = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 
 class ScrollAnimations {
   constructor() {
     this.options = {
       root: null,
-      rootMargin: '0px 0px -100px 0px',
-      threshold: 0.1,
+      rootMargin: '0px 0px -80px 0px',
+      threshold: 0.12,
     };
 
     this.observer = null;
@@ -16,9 +22,14 @@ class ScrollAnimations {
   }
 
   init() {
+    if (prefersReducedMotion()) {
+      this.showAllImmediately();
+      return;
+    }
+
     if (!('IntersectionObserver' in window)) {
       console.warn('Intersection Observer not supported, showing all elements');
-      this.fallbackAnimation();
+      this.showAllImmediately();
       return;
     }
 
@@ -32,15 +43,24 @@ class ScrollAnimations {
 
   handleIntersection(entries) {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-        this.observer.unobserve(entry.target);
-      }
+      if (!entry.isIntersecting) return;
+
+      const target = entry.target;
+      target.classList.add('animate-in');
+      target.addEventListener(
+        'animationend',
+        () => {
+          target.classList.remove('animate-on-scroll');
+          target.style.willChange = 'auto';
+        },
+        { once: true }
+      );
+      this.observer.unobserve(target);
     });
   }
 
-  observeElements() {
-    const selectors = [
+  observeElements(selectors = null) {
+    const targetSelectors = selectors || [
       '.showcase-project-card',
       '.experience-content',
       '.education-content',
@@ -51,24 +71,51 @@ class ScrollAnimations {
       '.recommendation-card',
       '.certification-card',
       'section h2',
-      '.skill-badge',
+      '.skill-category',
       '.stat-card',
       '.portfolio-reach-badge',
       '.vibe-coder-badge',
+      '.contact-card',
+      '.travel-stop',
+      '.overview-card',
     ];
 
-    selectors.forEach(selector => {
+    targetSelectors.forEach(selector => {
       document.querySelectorAll(selector).forEach(el => {
+        if (el.classList.contains('animate-in') || el.classList.contains('animate-on-scroll')) {
+          return;
+        }
         el.classList.add('animate-on-scroll');
-        this.observer.observe(el);
+        this.observer?.observe(el);
       });
     });
   }
 
-  fallbackAnimation() {
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-      el.classList.add('animate-in');
-      el.style.opacity = '1';
+  showAllImmediately() {
+    const selectors = [
+      '.animate-on-scroll',
+      '.showcase-project-card',
+      '.experience-content',
+      '.education-content',
+      '.education-card',
+      '.publication-card',
+      '.award-card',
+      '.blog-card',
+      '.recommendation-card',
+      '.certification-card',
+      'section h2',
+      '.skill-category',
+      '.stat-card',
+    ];
+
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        el.classList.add('animate-in');
+        el.classList.remove('animate-on-scroll');
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.willChange = 'auto';
+      });
     });
   }
 
@@ -96,3 +143,19 @@ export function initScrollAnimations() {
 
   return window.scrollAnimations;
 }
+
+export function observeScrollAnimations(selectors) {
+  const instance = window.scrollAnimations;
+  if (!instance) {
+    initScrollAnimations();
+  }
+
+  if (prefersReducedMotion()) {
+    window.scrollAnimations?.showAllImmediately?.();
+    return;
+  }
+
+  window.scrollAnimations?.observeElements(selectors);
+}
+
+export { APPLE_REVEAL_EASING };

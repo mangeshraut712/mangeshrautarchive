@@ -10,12 +10,16 @@ import './data/travel-locations.js';
 
 import './modules/about-interactivity.js';
 import './modules/accessibility.js';
+import './modules/card-content-accessibility.js';
 import './modules/agentic-actions.js';
+import './modules/hero-flyout-position.js';
 import './modules/analytics.js';
+import './modules/vibe-stack.js';
 import './modules/apple-sounds.js';
 import './modules/avatar-toggle.js';
 import './modules/birthday-celebration.js';
 import './modules/blog-data.js';
+import './modules/visitor-guide.js';
 import './modules/blog-loader.js';
 import './modules/calendar.js';
 import './modules/chatbot.js';

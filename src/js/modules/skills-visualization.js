@@ -214,6 +214,12 @@ class SkillsVisualization {
     // Add CSS styles
     this.injectStyles();
     this.syncMarqueeMotion(container);
+
+    import('./scroll-animations.js')
+      .then(module => {
+        module.observeScrollAnimations?.(['.skill-category']);
+      })
+      .catch(() => {});
   }
 
   /**

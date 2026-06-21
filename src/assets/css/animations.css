@@ -145,7 +145,7 @@
 }
 
 .animate-on-scroll.animate-in {
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: fadeInUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* Cards - Projects, Experience, Education, etc. */
@@ -157,13 +157,17 @@
 .award-card.animate-in,
 .blog-card.animate-in,
 .recommendation-card.animate-in,
-.certification-card.animate-in {
-  animation: fadeInUp 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+.certification-card.animate-in,
+.skill-category.animate-in,
+.contact-card.animate-in,
+.travel-stop.animate-in,
+.overview-card.animate-in {
+  animation: fadeInUp 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* Section Headings */
 section h2.animate-in {
-  animation: headingReveal 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation: headingReveal 0.75s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* Stagger delays for cards */
@@ -387,19 +391,12 @@ img.loaded {
    HARDWARE ACCELERATION HINTS
    ═══════════════════════════════════════════════════════════ */
 
-.animate-on-scroll,
-.showcase-project-card,
-.experience-content,
-.education-card,
-.blog-card,
-.btn,
-.hero-content {
+.animate-on-scroll:not(.animate-in) {
   will-change: transform, opacity;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 
-/* Remove will-change after animation completes */
 .animate-in {
   will-change: auto;
 }
@@ -426,6 +423,7 @@ img.loaded {
   section h2,
   .hero-content,
   .skill-badge,
+  .skill-category,
   .blog-card,
   .award-card,
   .recommendation-card,

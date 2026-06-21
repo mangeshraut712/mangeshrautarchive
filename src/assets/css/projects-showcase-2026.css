@@ -654,9 +654,18 @@ html.dark #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
   width: min(1200px, 100%);
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.48rem;
   align-items: center;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.2rem;
+}
+
+#projects .project-lens-bar::-webkit-scrollbar {
+  display: none;
 }
 
 #projects .project-lens-chip {
@@ -669,11 +678,48 @@ html.dark #projects .activity-stat-item.skeleton.loaded .activity-stat-value {
   font-size: 0.8rem;
   font-weight: 650;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
     background 0.2s ease,
     color 0.2s ease;
+}
+
+#projects .project-lens-count {
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+  background: rgb(10 111 239 / 12%);
+  color: #0a58be;
+}
+
+#projects .project-lens-chip.active .project-lens-count {
+  background: rgb(255 255 255 / 88%);
+  color: #0a58be;
+}
+
+html.dark #projects .project-lens-count {
+  background: rgb(88 166 255 / 18%);
+  color: #cfe6ff;
+}
+
+@media (min-width: 980px) {
+  #projects .project-lens-bar {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
 }
 
 #projects .project-lens-chip:hover,

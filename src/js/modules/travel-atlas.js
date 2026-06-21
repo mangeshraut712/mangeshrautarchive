@@ -5,6 +5,7 @@
 
 import { createTravelNarrative } from '../data/travel-engine.js';
 import { travelData as rawTravelData } from '../data/travel-locations.js';
+import { initCardContentAccessibility, rescanCardContentAccessibility } from './card-content-accessibility.js';
 
 const travelData = createTravelNarrative(rawTravelData);
 const VISITED_PIN_COLOR = '#ff3b30';
@@ -459,6 +460,10 @@ function renderTimeline() {
   if (el.dataset.bound !== 'true') {
     el.dataset.bound = 'true';
     el.addEventListener('click', event => {
+      if (event.target.closest('.card-read-toolbar, .card-translate-popover')) {
+        return;
+      }
+
       const reset = event.target.closest('[data-reset-travel]');
       if (reset) {
         resetFilters({ focusSearch: true });
@@ -484,6 +489,7 @@ function renderTimeline() {
   updateStopA11y();
   updateMapPointVisibility();
   updateTravelStatus();
+  rescanCardContentAccessibility(el);
 }
 
 function renderStopCard(waypoint, index, countryGroupHeader) {
@@ -1504,6 +1510,7 @@ function bindSidebarToggle() {
 }
 
 function init() {
+  initCardContentAccessibility();
   bindThemeToggle();
   bindProjectionToggle();
   bindSidebarToggle();

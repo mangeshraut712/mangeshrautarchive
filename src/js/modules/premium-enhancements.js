@@ -499,7 +499,7 @@
     }
 
     // Optional enhancements
-    if (!lowPowerDevice) {
+    if (!lowPowerDevice && window.innerWidth > 768) {
       initSmoothSections();
     }
     initTypingEffect();

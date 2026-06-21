@@ -74,6 +74,8 @@
     "clean": "node scripts/build/clean.js",
     "verify:deploy-sync": "node scripts/deployment/verify-deployment-sync.js",
     "sync:analytics-env": "node scripts/deployment/sync-analytics-env.mjs",
+    "env:cleanup": "node scripts/deployment/cleanup-vercel-env.mjs",
+    "env:cleanup:apply": "node scripts/deployment/cleanup-vercel-env.mjs --apply",
     "verify:deploy-sync:remote": "node scripts/deployment/verify-deployment-sync.js --remote",
     "verify:env-parity": "node scripts/deployment/verify-env-parity.mjs",
     "open": "open src/index.html",

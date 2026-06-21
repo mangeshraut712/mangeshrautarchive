@@ -57,6 +57,9 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 - **AssistMe AI Chat** — streaming Markdown, Siri-style voice dictation, writing tools, and contextual follow-up chips
 - **12 Technical Writings** — deep-dive blogs covering AI Code Editors, WWDC 2026/Apple Intelligence, NotebookLM 2026, WebMCP tool design, and agentic workflows
+- **First-Visit Guide** — “Start here” hero panel + June field-note spotlight with welcome-back messaging for return visitors
+- **Card Listen + Translate** — 16-language read-aloud and translation toolbars on narrative cards (About, Experience, Awards, Blog, Travel)
+- **Release-Aware Project Lenses** — live GitHub filters: All · Need attention · Hot · Busy · Fresh · Released with per-chip counts
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
 - **Hybrid Execution** — local actions (&lt;50ms) + OpenRouter streaming LLM
 - **WWDC26 Liquid Glass Design System** — clear/tinted glass slider, solid theme card surfaces, specular highlights, and reduced-motion fallbacks
@@ -337,6 +340,9 @@ flowchart TD
 | `npm run test:e2e:all`          | Complete multi-device Playwright matrix                 |
 | `npm run verify:env-parity`     | Compare local `.env` keys against Vercel production       |
 | `npm run verify:deploy-sync:remote` | Confirm GitHub Pages and Vercel share the same build commit |
+| `npm run qa:cross-browser` | Chrome + Safari + Firefox + Pixel 7 + iPhone 14 matrix (local server) |
+| `npm run qa:vercel:chrome` / `qa:vercel:safari` / `qa:vercel:mobile` | Smoke against live Vercel production |
+| `npm run qa:github:chrome` / `qa:github:safari` | Smoke against live GitHub Pages mirror |
 | `node scripts/qa/cross-viewport-chrome.mjs` | Desktop / tablet / mobile Chrome audit with screenshots |
 
 **Local Playwright note:** E2E and Lighthouse scripts prefer system Chrome when available (`CHROME_PATH` override supported). Set `PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000` when reusing an already-running dev server.
@@ -407,8 +413,19 @@ mangeshrautarchive/
 │   └── e2e/                # Playwright smoke, a11y, post-deploy, visual
 ├── config/                 # Python/Stylelint/Vulture config
 ├── deployment/             # Firebase rules and hosting config
-└── .github/workflows/      # CI deploy + nightly production monitoring
+└── .github/workflows/      # deploy.yml (CI + GitHub Pages) + post-deploy-monitoring.yml (nightly)
 ```
+
+### CI / CD (single pipeline, no duplicate workflows)
+
+| Workflow | Trigger | Purpose |
+| -------- | ------- | ------- |
+| [`deploy.yml`](.github/workflows/deploy.yml) | Push/PR to `main`, manual | Quality gates → build → GitHub Pages deploy → live surface verify |
+| [`post-deploy-monitoring.yml`](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC, manual | Production reachability, Lighthouse on Vercel, cross-surface sync audit |
+
+**Quality gate order in `deploy.yml`:** security audit → ESLint → Stylelint → Vitest → Python lint/tests → Playwright smoke + axe → Lighthouse desktop/mobile → build → deploy → verify GitHub Pages commit.
+
+**Dual hosting:** every `main` push rebuilds GitHub Pages in CI and triggers Vercel production via the repo integration. `verify-deployment-sync.js` compares `build-config.json` commit hashes across both surfaces.
 
 ---
 
@@ -429,7 +446,17 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ## 📅 Recent Updates
 
-### June 2026
+### June 2026 (latest)
+
+- **First-Visit & Return UX** — Hero “Start here” panel highlights two June field notes (WWDC 2026, NotebookLM 2026), About, and Projects; welcome-back banner for return sessions; blog `#blog-month-picks` spotlight with deep links (`#blog-read-<id>`).
+- **Card Listen + Translate** — Site-wide narrative card toolbars with 16 languages, scrollable popover, TTS in translated locale, MyMemory + `/api/chat` AI fallback; inline Experience layout fix; Education/Publications excluded by design.
+- **Release-Aware Project Lenses** — All · Need attention · Hot · Busy · Fresh · Released filters show live repo counts from GitHub release/activity signals; unified “Need attention” labels; activity caption summarizes hot/fresh/busy/attention/released totals.
+- **Performance** — Card accessibility deferred until About is near viewport; visitor guide on idle; GitHub contribution graph + Last.fm art lazy-loaded via `requestIdleCallback`; reduced first-load JS/CSS blocking.
+- **Design & Assets** — WWDC26 liquid glass on vibe stack + portfolio reach panels; company logos (Anthropic, SpaceX, xAI, OpenAI, TSMC, Toyota emblem); navbar aux links (Debug Runner, Travel Atlas, System Monitor) with tooltips.
+- **Cross-Surface QA** — Mobile/tablet/desktop viewport audit (390 / 834 / 1440 px); `qa:vercel:*` and `qa:github:*` smoke targets for Chrome, Safari, and iPhone; deploy pipeline verifies GitHub Pages live commit after every release.
+- **Analytics & Reach** — Portfolio Reach panel aligned with GA4 metrics; Vercel API env sync for analytics keys across environments.
+
+### June 2026 (earlier)
 
 - **Mobile & Short-Viewport Polish** — Hero description wrapping, FAB/a11y-toolbar spacing contract, and compact monitor summary layout for phones and short desktop windows.
 - **Theme System Default** — Default theme mode is now `system` (OS `prefers-color-scheme`); solar auto mode remains opt-in via `auto`. Tab visibility re-syncs theme when returning from background.

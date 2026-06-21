@@ -289,7 +289,7 @@ class PortfolioSearch {
         tags: 'travel map atlas journey timeline route flight road gallery mapbox',
       },
       {
-        title: 'Game',
+        title: 'Debug Runner',
         description: 'Interactive debug runner game section',
         icon: 'fa-gamepad',
         sectionId: 'debug-runner-section',

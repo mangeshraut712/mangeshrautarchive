@@ -6,7 +6,7 @@
 const PAUSE_CLASS = 'is-offscreen-paused';
 const STYLE_ID = 'offscreen-animation-pause-style';
 const ANIMATED_SELECTOR =
-  '[class*="marquee"], [class*="orb"], [class*="glow"], [class*="siri"], [class*="pulse"], .siri-orb, #chatbot-toggle';
+  '[class*="marquee"], [class*="orb"], [class*="glow"], [class*="siri"], [class*="pulse"], .siri-orb, #chatbot-toggle, .skill-scroll-wrapper, .dream-companies-track, .dream-cars-track, [class*="-track"]';
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;

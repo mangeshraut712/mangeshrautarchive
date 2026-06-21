@@ -1420,8 +1420,8 @@ html.dark body #github-projects-container .text-secondary {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   14. SITE CARDS — solid surfaces + blue borders (see section 15)
-   Liquid glass tint applies to navbar, chatbot, and floating controls only.
+   14. SITE CARDS — liquid glass surfaces (see section 15)
+   Skill marquee badges stay solid (transform breaks backdrop-filter).
    ──────────────────────────────────────────────────────────────── */
 
 /* Skill badges inside transformed marquee — gradient fill (backdrop-filter blocked) */
@@ -1429,14 +1429,22 @@ html.dark body #github-projects-container .text-secondary {
 #skills-container .skill-scroll-wrapper .skill-badge {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgb(255 255 255 / var(--lg-card-light-alpha, 88%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 88%)) !important;
+  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha, 8%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light, 40%)),
+    0 4px 12px rgb(0 0 0 / var(--lg-card-shadow-light, 6%)) !important;
 }
 
 html.dark .skill-scroll-wrapper .skill-badge,
 html.dark #skills-container .skill-scroll-wrapper .skill-badge {
-  background: #000000 !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 88%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 88%)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha, 12%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-dark, 8%)),
+    0 6px 16px rgb(0 0 0 / var(--lg-card-shadow-dark, 24%)) !important;
 }
 
 .skill-scroll-wrapper .skill-badge:hover,
@@ -1536,9 +1544,9 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   15. SOLID THEME BACKGROUNDS + UNIFIED CARD SURFACES
-   Light = #fff page + #fff cards. Dark = #000 page + #000 cards.
-   Liquid Glass tint applies to nav, chatbot, and a11y controls only.
+   15. THEME BACKGROUNDS + LIQUID GLASS CARDS
+   Light page = #fff, dark page = #000. Cards use tint-aware glass:
+   clear slider → translucent blur; tinted slider → solid white/black.
    ──────────────────────────────────────────────────────────────── */
 
 html,
@@ -1629,19 +1637,25 @@ footer .wrapper {
   .travel-results-summary,
   .travel-timeline__country-header,
   .sub-card,
-  .nested-card
+  .nested-card,
+  .vibe-stack-card,
+  .portfolio-reach-panel
 ) {
-  background: var(--theme-card-surface) !important;
-  background-color: var(--theme-card-surface) !important;
+  background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light)),
+    0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
     box-shadow 0.32s ease,
-    border-color 0.32s ease !important;
+    border-color 0.32s ease,
+    background 0.32s ease,
+    backdrop-filter 0.32s ease !important;
 }
 
 html.dark :is(
@@ -1705,15 +1719,19 @@ html.dark :is(
   .travel-results-summary,
   .travel-timeline__country-header,
   .sub-card,
-  .nested-card
+  .nested-card,
+  .vibe-stack-card,
+  .portfolio-reach-panel
 ) {
-  background: var(--theme-card-surface) !important;
-  background-color: var(--theme-card-surface) !important;
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-dark)),
+    0 12px 28px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -1818,14 +1836,18 @@ html body #projects #github-projects-container article.showcase-project-card,
 html body #blog div.newsletter-card,
 html body #contact div.contact-card,
 html body #contact div.support-donation-card,
-html body #contact div.media-card {
-  background: var(--theme-card-surface) !important;
-  background-color: var(--theme-card-surface) !important;
+html body #contact div.media-card,
+.vibe-stack-card,
+.portfolio-reach-panel {
+  background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light)),
+    0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
     box-shadow 0.32s ease !important;
@@ -1842,14 +1864,18 @@ html.dark body #projects #github-projects-container article.showcase-project-car
 html.dark body #blog div.newsletter-card,
 html.dark body #contact div.contact-card,
 html.dark body #contact div.support-donation-card,
-html.dark body #contact div.media-card {
-  background: var(--theme-card-surface) !important;
-  background-color: var(--theme-card-surface) !important;
+html.dark body #contact div.media-card,
+html.dark .vibe-stack-card,
+html.dark .portfolio-reach-panel {
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-dark)),
+    0 12px 28px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
 }
 
 /* Class-only hover — blue border */
@@ -1880,7 +1906,9 @@ html.dark body #contact div.media-card {
   .travel-sidebar .place-guide-card:hover,
   .skill-card:hover,
   .skill-badge:hover,
-  .timeline-content:hover
+  .timeline-content:hover,
+  .vibe-stack-card:hover,
+  .portfolio-reach-panel:hover
 ) {
   border: 1px solid var(--theme-card-border-hover) !important;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover) 24%, transparent) !important;
@@ -2042,13 +2070,15 @@ body.monitor-page .health-item,
 body.monitor-page .endpoint-card,
 body.monitor-page .ops-card,
 body.monitor-page article {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
+  background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light)),
+    0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
 }
 
 html.dark body.monitor-page section.section,
@@ -2061,13 +2091,15 @@ html.dark body.monitor-page .health-item,
 html.dark body.monitor-page .endpoint-card,
 html.dark body.monitor-page .ops-card,
 html.dark body.monitor-page article {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-dark)),
+    0 12px 28px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
 }
 
 body.travel-body .travel-nav,
@@ -2079,13 +2111,15 @@ body.travel-body .travel-filter-panel,
 body.travel-body .travel-advanced-search,
 body.travel-body .travel-results-summary,
 body.travel-body .travel-timeline__country-header {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
+  background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light)),
+    0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
 }
 
 html.dark body.travel-body .travel-nav,
@@ -2097,13 +2131,15 @@ html.dark body.travel-body .travel-filter-panel,
 html.dark body.travel-body .travel-advanced-search,
 html.dark body.travel-body .travel-results-summary,
 html.dark body.travel-body .travel-timeline__country-header {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border) !important;
-  box-shadow: none !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-dark)),
+    0 12px 28px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -2148,6 +2184,71 @@ html[data-lg-mode='clear'] .global-nav.dynamic-island {
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
 }
 
+/* Cards — clear = more blur + transparency; tinted = near-solid white/black */
+html[data-lg-mode='clear'] :is(
+  .card,
+  .experience-content,
+  .education-card,
+  .stat-card,
+  .blog-card,
+  .contact-card,
+  .calendar-card,
+  .currently-card,
+  .vibe-stack-card,
+  .portfolio-reach-panel
+) {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
+}
+
+html[data-lg-mode='tinted'] :is(
+  .card,
+  .experience-content,
+  .education-card,
+  .stat-card,
+  .blog-card,
+  .contact-card,
+  .calendar-card,
+  .currently-card,
+  .vibe-stack-card,
+  .portfolio-reach-panel
+) {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) :is(
+  .card,
+  .experience-content,
+  .education-card,
+  .stat-card,
+  .blog-card,
+  .contact-card,
+  .calendar-card,
+  .currently-card,
+  .vibe-stack-card,
+  .portfolio-reach-panel
+) {
+  background: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
+  background-color: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
+}
+
+html.dark[data-lg-mode='tinted'] :is(
+  .card,
+  .experience-content,
+  .education-card,
+  .stat-card,
+  .blog-card,
+  .contact-card,
+  .calendar-card,
+  .currently-card,
+  .vibe-stack-card,
+  .portfolio-reach-panel
+) {
+  background: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
+  background-color: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
+}
+
 /* ────────────────────────────────────────────────────────────────
    21. REDUCE TRANSPARENCY — solid chrome when iOS setting enabled
    ──────────────────────────────────────────────────────────────── */
@@ -2182,5 +2283,44 @@ html[data-lg-mode='clear'] .global-nav.dynamic-island {
   html.dark #go-to-top.visible {
     background: rgb(0 0 0 / 96%) !important;
     background-color: rgb(0 0 0 / 96%) !important;
+  }
+
+  :is(
+    .card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel,
+    .lg-glass-card
+  ) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html:not(.dark) :is(
+    .card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel,
+    .lg-glass-card
+  ) {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  html.dark :is(
+    .card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel,
+    .lg-glass-card
+  ) {
+    background: #000000 !important;
+    background-color: #000000 !important;
   }
 }

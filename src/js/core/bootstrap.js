@@ -1,4 +1,4 @@
-const IDLE_MODULES = [];
+const IDLE_MODULES = ['../modules/visitor-guide.js'];
 const EAGER_MODULES = ['../modules/accessibility.js'];
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
@@ -15,6 +15,11 @@ const INTERACTION_MODULES = [
 ];
 
 const SECTION_MODULES = [
+  {
+    sectionId: 'about',
+    modulePath: '../modules/card-content-accessibility.js',
+    rootMargin: '160px 0px',
+  },
   {
     sectionId: 'about',
     modulePath: '../modules/about-interactivity.js',
@@ -72,6 +77,10 @@ const deferredStyleLoads = new Map();
 
 const MODULE_IMPORTERS = {
   '../modules/accessibility.js': () => import('../modules/accessibility.js'),
+  '../modules/card-content-accessibility.js': () =>
+    import('../modules/card-content-accessibility.js').then(module => {
+      module.initCardContentAccessibility?.();
+    }),
   '../modules/agentic-actions.js': () => import('../modules/agentic-actions.js'),
   '../modules/premium-enhancements.js': () => import('../modules/premium-enhancements.js'),
   '../modules/birthday-celebration.js': () => import('../modules/birthday-celebration.js'),
@@ -86,6 +95,7 @@ const MODULE_IMPORTERS = {
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
   '../modules/search.js': () => import('../modules/search.js'),
   '../modules/about-interactivity.js': () => import('../modules/about-interactivity.js'),
+  '../modules/visitor-guide.js': () => import('../modules/visitor-guide.js'),
   '../modules/scroll-animations.js': () =>
     import('../modules/scroll-animations.js').then(module => {
       module.initScrollAnimations?.();

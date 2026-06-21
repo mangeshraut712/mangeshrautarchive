@@ -608,7 +608,7 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
   }
 }
 
-@media (min-width: 769px) and (max-width: 1520px) {
+@media (min-width: 769px) and (max-width: 1180px) {
   .global-nav.dynamic-island .nav-link[data-nav-priority='aux'] {
     display: none !important;
   }

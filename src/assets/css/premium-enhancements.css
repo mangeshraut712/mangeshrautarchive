@@ -140,9 +140,9 @@ html.dark .skill-progress-value.counting {
    ═══════════════════════════════════════════════════════════════════ */
 
 .showcase-project-card,
-.experience-content,
+.experience-content:not(.card-readable),
 .education-card,
-.blog-card,
+.blog-card:not(.card-readable),
 .publication-card,
 .certification-card {
   position: relative;
