@@ -1,4 +1,5 @@
 import { blogPosts } from './blog-data.js';
+import { rescanCardContentAccessibility } from './card-content-accessibility.js';
 
 /**
  * Blog Loader Module
@@ -87,6 +88,8 @@ class BlogLoader {
         `
       )
       .join('');
+
+    rescanCardContentAccessibility(this.container);
   }
 
   bindCardEvents() {

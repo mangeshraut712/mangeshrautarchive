@@ -185,7 +185,10 @@ async function bundleAboveFoldCss(distDir) {
     html = html.replace(linkPattern, '');
   }
 
-  const heroCriticalContent = await readFile(resolve(distDir, 'assets/css/hero-critical.bundle.css'), 'utf8');
+  const heroCriticalContent = await readFile(
+    resolve(distDir, 'assets/css/hero-critical.bundle.css'),
+    'utf8'
+  );
 
   html = html.replace(
     '<!-- Preload critical CSS for performance -->',
@@ -443,7 +446,9 @@ ${urlEntries}
 `;
 
   await writeFile(resolve(distDir, 'sitemap.xml'), sitemap, 'utf8');
-  console.log(`📅 Sitemap generated with ${staticPages.length} URLs (latest blog: ${latestPostDate})`);
+  console.log(
+    `📅 Sitemap generated with ${staticPages.length} URLs (latest blog: ${latestPostDate})`
+  );
 }
 
 // Minify HTML files for better PageSpeed scores
@@ -488,7 +493,11 @@ async function addCacheBusting(distDir, version) {
   const appendVersion = rawPath => {
     if (!rawPath) return rawPath;
 
-    if (/^(?:https?:)?\/\//i.test(rawPath) || /^(?:data|mailto|tel):/i.test(rawPath) || rawPath.startsWith('#')) {
+    if (
+      /^(?:https?:)?\/\//i.test(rawPath) ||
+      /^(?:data|mailto|tel):/i.test(rawPath) ||
+      rawPath.startsWith('#')
+    ) {
       return rawPath;
     }
 

@@ -55,7 +55,9 @@ const homeChecks = [
     name: 'search-overlay',
     run: async page => {
       await page.locator('#search-toggle').click();
-      const active = await page.locator('#search-overlay').evaluate(el => el.classList.contains('active'));
+      const active = await page
+        .locator('#search-overlay')
+        .evaluate(el => el.classList.contains('active'));
       await page.keyboard.press('Escape');
       return active;
     },
@@ -77,7 +79,7 @@ const homeChecks = [
             mode: document.documentElement.dataset.lgMode,
             fill: parseFloat(root.getPropertyValue('--lg-nav-light-fill')),
             blur: parseFloat(root.getPropertyValue('--lg-blur-nav')),
-            alpha: cs ? parseFloat((cs.backgroundColor.match(/[\d.]+(?=\s*\))/ ) || ['0'])[0]) : 0,
+            alpha: cs ? parseFloat((cs.backgroundColor.match(/[\d.]+(?=\s*\))/) || ['0'])[0]) : 0,
           };
         });
       };

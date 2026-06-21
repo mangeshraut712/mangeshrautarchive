@@ -22,7 +22,7 @@ async function probe(browserType, name) {
   const before = await page.evaluate(() => ({
     dialogExists: !!document.getElementById('website-share-dialog'),
     toggleExists: !!document.getElementById('website-share-toggle'),
-      dialogClasses: document.getElementById('website-share-dialog')?.className || null,
+    dialogClasses: document.getElementById('website-share-dialog')?.className || null,
   }));
 
   await page.locator('#website-share-toggle').click();
@@ -45,9 +45,7 @@ async function probe(browserType, name) {
       cardOpacity: cardStyle?.opacity,
       cardTransform: cardStyle?.transform,
       cardVisible: rect ? rect.width > 0 && rect.height > 0 : false,
-      cardRect: rect
-        ? { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
-        : null,
+      cardRect: rect ? { x: rect.x, y: rect.y, width: rect.width, height: rect.height } : null,
       copyRow: !!document.getElementById('website-share-copy'),
       qrImg: !!document.querySelector('.website-share-qr'),
     };
@@ -57,9 +55,6 @@ async function probe(browserType, name) {
   return { name, before, after, consoleLogs, pageErrors };
 }
 
-const results = await Promise.all([
-  probe(chromium, 'Chrome'),
-  probe(webkit, 'WebKit/Safari'),
-]);
+const results = await Promise.all([probe(chromium, 'Chrome'), probe(webkit, 'WebKit/Safari')]);
 
 console.log(JSON.stringify(results, null, 2));

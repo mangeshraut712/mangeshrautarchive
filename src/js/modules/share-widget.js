@@ -6,7 +6,7 @@
 const SHARE_MIRRORS = [
   { name: 'Primary (Pro)', url: 'https://mangeshraut.pro' },
   { name: 'Vercel (App)', url: 'https://mraut.vercel.app' },
-  { name: 'GitHub (Pages)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' }
+  { name: 'GitHub (Pages)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' },
 ];
 
 let activeMirrorUrl = SHARE_MIRRORS[0].url;
@@ -21,24 +21,23 @@ const SHARE_OPTIONS = [
   {
     label: 'X (Twitter)',
     icon: 'fa-brands fa-x-twitter',
-    href: (url) =>
+    href: url =>
       `https://x.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(url)}`,
   },
   {
     label: 'LinkedIn',
     icon: 'fa-brands fa-linkedin-in',
-    href: (url) =>
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    href: url => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   },
   {
     label: 'Email',
     icon: 'fa-solid fa-envelope',
-    href: (url) =>
+    href: url =>
       `mailto:?subject=${encodeURIComponent(SHARE_TITLE)}&body=${encodeURIComponent(`${SHARE_TEXT}\n\n${url}`)}`,
   },
 ];
 
-const getQrCodeUrl = (url) => 
+const getQrCodeUrl = url =>
   `https://api.qrserver.com/v1/create-qr-code/?size=256x256&ecc=H&margin=0&color=000000&bgcolor=FFFFFF&data=${encodeURIComponent(url)}`;
 
 const waitForFrame = () =>
@@ -94,11 +93,13 @@ const createShareMarkup = () => `
     <div class="website-share-card" aria-describedby="website-share-description">
       <div class="website-share-card-top">
         <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
-          ${SHARE_MIRRORS.map((mirror, idx) => `
+          ${SHARE_MIRRORS.map(
+            (mirror, idx) => `
           <div class="share-mirror-tab ${idx === 0 ? 'active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" tabindex="0" data-mirror-idx="${idx}">
             ${mirror.name.split(' ')[0]}
           </div>
-        `).join('')}
+        `
+          ).join('')}
         </div>
         <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -233,9 +234,7 @@ async function copyShareUrl(status) {
     tempInput.select();
     const copied = document.execCommand?.('copy') || false;
     document.body.removeChild(tempInput);
-    status.textContent = copied
-      ? 'Portfolio link copied.'
-      : 'Failed to copy link automatically.';
+    status.textContent = copied ? 'Portfolio link copied.' : 'Failed to copy link automatically.';
     return copied;
   }
 }

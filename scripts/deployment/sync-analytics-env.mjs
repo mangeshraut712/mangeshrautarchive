@@ -13,11 +13,7 @@ const TARGETS = (process.env.VERCEL_ENV_TARGETS || 'production')
   .map(value => value.trim())
   .filter(Boolean);
 
-const KEYS = [
-  'GA4_ACCOUNT_ID',
-  'GA4_PROPERTY_ID',
-  'GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON',
-];
+const KEYS = ['GA4_ACCOUNT_ID', 'GA4_PROPERTY_ID', 'GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON'];
 
 function parseEnv(content) {
   const out = {};
@@ -58,7 +54,7 @@ function loadVercelAuth() {
 async function listEnvVars({ projectId, teamId, token }) {
   const response = await fetch(
     `https://api.vercel.com/v10/projects/${projectId}/env?teamId=${teamId}`,
-    { headers: { Authorization: `Bearer ${token}` } },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
   const body = await response.json();
   if (!response.ok) {
@@ -68,9 +64,7 @@ async function listEnvVars({ projectId, teamId, token }) {
 }
 
 async function upsertEnv(name, value, target, auth, existing) {
-  const match = existing.find(
-    item => item.key === name && item.target?.includes(target),
-  );
+  const match = existing.find(item => item.key === name && item.target?.includes(target));
   const headers = {
     Authorization: `Bearer ${auth.token}`,
     'Content-Type': 'application/json',
@@ -83,7 +77,7 @@ async function upsertEnv(name, value, target, auth, existing) {
         method: 'PATCH',
         headers,
         body: JSON.stringify({ value }),
-      },
+      }
     );
     if (!response.ok) {
       throw new Error(`patch ${name}@${target}: ${await response.text()}`);
@@ -103,7 +97,7 @@ async function upsertEnv(name, value, target, auth, existing) {
         type: 'sensitive',
         target: [target],
       }),
-    },
+    }
   );
   if (!response.ok) {
     throw new Error(`add ${name}@${target}: ${await response.text()}`);

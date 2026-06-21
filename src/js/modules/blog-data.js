@@ -90,8 +90,7 @@ export const blogPosts = [
         'Google I/O matters when it reveals architecture, not when it adds one more model name to the slide deck. The signal this year is a web stack that can mix cloud reasoning, open local models, browser acceleration, and tool-calling workflows.',
       readerPromise:
         'You will leave with a clear map for splitting AI work between browser, device, and cloud instead of adding another generic chatbot.',
-      tldr:
-        'The big shift is hybrid intelligence. Use cloud models for hard reasoning, local models for private low-latency tasks, and browser APIs for small repeated actions that should feel instant. The winning product is not a chat panel. It is a workflow where context, tools, permissions, and fallback behavior are designed together.',
+      tldr: 'The big shift is hybrid intelligence. Use cloud models for hard reasoning, local models for private low-latency tasks, and browser APIs for small repeated actions that should feel instant. The winning product is not a chat panel. It is a workflow where context, tools, permissions, and fallback behavior are designed together.',
       shines: [
         'Long-context Gemini workflows make document-heavy and code-heavy products more believable because the model can carry more of the working set.',
         'Gemma-style open models give teams a path to private, low-latency experiences when a task does not need frontier-scale reasoning.',
@@ -135,8 +134,7 @@ export const blogPosts = [
         'Modern feeds look magical from the outside because the final surface hides the plumbing. Underneath, a feed is a chain of retrieval, enrichment, ranking, policy, deduplication, and serving decisions.',
       readerPromise:
         'You will understand why the feed is a pipeline problem before it is a ranking-model problem.',
-      tldr:
-        'Real-time recommendations work when many small systems cooperate. In-network retrieval, out-of-network discovery, context hydration, learned ranking, filters, and blending all matter. The model is important, but the pipeline decides what the model is allowed to see.',
+      tldr: 'Real-time recommendations work when many small systems cooperate. In-network retrieval, out-of-network discovery, context hydration, learned ranking, filters, and blending all matter. The model is important, but the pipeline decides what the model is allowed to see.',
       shines: [
         'Retrieval can pull from multiple candidate sources, which creates diversity before the ranker ever scores a post.',
         'Hydration turns raw objects into useful inputs by adding user history, graph signals, metadata, safety context, freshness, and language.',
@@ -180,8 +178,7 @@ export const blogPosts = [
         'Google’s advantage is not one model in isolation. It is distribution across Android, Chrome, Search, Photos, Gmail, Docs, Maps, and YouTube. That distribution becomes powerful when AI can help inside the place where the user already has context.',
       readerPromise:
         'You will see how AI becomes useful when it appears inside existing surfaces instead of demanding a separate destination.',
-      tldr:
-        'The ecosystem strategy is straightforward: put intelligence where user context already lives. The hard part is making that context useful without making users feel watched, overloaded, or trapped.',
+      tldr: 'The ecosystem strategy is straightforward: put intelligence where user context already lives. The hard part is making that context useful without making users feel watched, overloaded, or trapped.',
       shines: [
         'Multimodal input lets camera, voice, files, screen state, and text combine into a more natural workflow.',
         'Workspace integration can turn AI from a novelty into a collaboration layer when it edits, summarizes, and prepares drafts in place.',
@@ -213,8 +210,7 @@ export const blogPosts = [
       'A sharper look at open-source agent frameworks: why transparency, tools, evaluation, and governance matter more than raw autonomy.',
     readerPromise:
       'You will get a practical checklist for evaluating open-source agents without getting distracted by autonomy hype.',
-    pullQuote:
-      'Autonomy is useful only when the team can inspect, constrain, and verify it.',
+    pullQuote: 'Autonomy is useful only when the team can inspect, constrain, and verify it.',
     highlights: ['Tool permissions', 'Agent observability', 'Evaluation loops'],
     date: '2026-01-25',
     tags: ['OpenClaw', 'Open Source', 'AI Agents', 'Decentralization'],
@@ -225,8 +221,7 @@ export const blogPosts = [
         'Open-source agent frameworks are exciting because they make the loop inspectable. Prompts, tools, state, retries, logs, and failures can become part of the engineering surface instead of a hidden product behavior.',
       readerPromise:
         'You will get a practical checklist for evaluating open-source agents without getting distracted by autonomy hype.',
-      tldr:
-        'The next phase of open-source agents is not just more tools or longer loops. It is better control surfaces: task boundaries, evals, permissioning, observability, and clean human review points.',
+      tldr: 'The next phase of open-source agents is not just more tools or longer loops. It is better control surfaces: task boundaries, evals, permissioning, observability, and clean human review points.',
       shines: [
         'Open implementations make it easier to audit tool calls and understand failure modes.',
         'Community-built connectors can move faster than closed product roadmaps when permissions are clear.',
@@ -270,8 +265,7 @@ export const blogPosts = [
         'Voice input is usually framed as accessibility or convenience. The more interesting version is voice as a power tool: fast capture, low friction, and high-quality cleanup across the places where work already happens.',
       readerPromise:
         'You will learn how voice input becomes a serious workflow tool when it captures intent, not just words.',
-      tldr:
-        'The keyboard is still precise, but voice is better for getting rough intent out quickly. The product challenge is not transcription alone. It is correction, formatting, privacy, and making spoken ideas useful in the destination app.',
+      tldr: 'The keyboard is still precise, but voice is better for getting rough intent out quickly. The product challenge is not transcription alone. It is correction, formatting, privacy, and making spoken ideas useful in the destination app.',
       shines: [
         'Voice removes blank-page delay when the user already knows what they want to say.',
         'AI cleanup can turn rough speech into structured messages, docs, tickets, notes, and outlines.',
@@ -301,8 +295,7 @@ export const blogPosts = [
     kicker: 'AI infrastructure',
     summary:
       'A practical breakdown of NVIDIA’s AI advantage across GPUs, CUDA, networking, software, and developer lock-in.',
-    readerPromise:
-      'You will see why NVIDIA’s moat is the full execution path, not only the chip.',
+    readerPromise: 'You will see why NVIDIA’s moat is the full execution path, not only the chip.',
     pullQuote:
       'In AI, the product is increasingly the infrastructure path from idea to deployed workload.',
     highlights: ['CUDA ecosystem', 'Cluster-scale training', 'Developer gravity'],
@@ -315,8 +308,7 @@ export const blogPosts = [
         'NVIDIA is often described as a GPU company, but that is too small a frame. The real advantage is an infrastructure stack: chips, networking, CUDA, libraries, deployment tooling, developer habits, and a supply chain built around AI workloads.',
       readerPromise:
         'You will see why NVIDIA’s moat is the full execution path, not only the chip.',
-      tldr:
-        'NVIDIA’s moat is not only faster silicon. It is the fact that the fastest path from research idea to production training job usually runs through NVIDIA’s software and hardware ecosystem.',
+      tldr: 'NVIDIA’s moat is not only faster silicon. It is the fact that the fastest path from research idea to production training job usually runs through NVIDIA’s software and hardware ecosystem.',
       shines: [
         'CUDA created a long-running developer advantage that compounds with every library, tutorial, and production workflow.',
         'Networking and systems design matter because frontier AI training is a cluster problem, not a single-chip problem.',
@@ -360,8 +352,7 @@ export const blogPosts = [
         'The global AI race is usually told as a leaderboard story. That misses the bigger picture. Model quality matters, but durable advantage also depends on compute access, energy, chip supply, data policy, research talent, deployment channels, and trust.',
       readerPromise:
         'You will get a sharper lens for comparing AI ecosystems without reducing everything to model leaderboards.',
-      tldr:
-        'The strongest AI ecosystems combine frontier research, infrastructure, distribution, and governance. A country or company can have one of those and still fall behind if the others are weak.',
+      tldr: 'The strongest AI ecosystems combine frontier research, infrastructure, distribution, and governance. A country or company can have one of those and still fall behind if the others are weak.',
       shines: [
         'Open models make advanced AI more available to smaller teams, local markets, and public-sector builders.',
         'Competition pushes faster progress in reasoning, multimodal interfaces, coding, and agent tooling.',
@@ -405,8 +396,7 @@ export const blogPosts = [
         'AI code editors are no longer just autocomplete surfaces. They are becoming engineering workbenches: context gathering, implementation, verification, review, and iteration inside one loop.',
       readerPromise:
         'You will get a daily-driver workflow for using AI coding tools without losing engineering discipline.',
-      tldr:
-        'The best AI coding tool is not the one that writes the most code. It is the one that keeps context clean, runs the right checks, exposes the diff clearly, and helps the engineer stay in control.',
+      tldr: 'The best AI coding tool is not the one that writes the most code. It is the one that keeps context clean, runs the right checks, exposes the diff clearly, and helps the engineer stay in control.',
       shines: [
         'Agentic workflows can handle multi-file changes when the tool understands the repo and canonical test commands.',
         'Background verification is a major unlock because implementation and feedback can happen in the same workspace.',
@@ -428,8 +418,7 @@ export const blogPosts = [
         'For this project, the strongest workflow is already visible: keep changes scoped, run lint and rendered checks, verify browser behavior, clean generated artifacts, and only then commit. AI is useful when it reinforces that discipline.',
       bottomLine:
         'AI code editors are becoming serious engineering tools, but the winning workflow is still disciplined software engineering: scope, context, tests, review, and clean commits.',
-      note:
-        'This post adapts a field-note structure because AI coding tools change quickly. The durable lesson is the workflow, not a fixed product ranking.',
+      note: 'This post adapts a field-note structure because AI coding tools change quickly. The durable lesson is the workflow, not a fixed product ranking.',
     }),
   },
   {
@@ -452,8 +441,7 @@ export const blogPosts = [
         'Apple’s story is often told through products: Mac, iPod, iPhone, iPad, Watch, Vision, and services. The deeper lesson is product discipline. Apple repeatedly wins when hardware, software, interaction design, retail, and ecosystem strategy are treated as one system.',
       readerPromise:
         'You will understand Apple as an operating discipline: integration, restraint, defaults, and ecosystem leverage.',
-      tldr:
-        'Apple’s advantage is not only taste. It is integration under constraint. The company says no to many options so the user sees fewer seams, fewer decisions, and a more coherent experience.',
+      tldr: 'Apple’s advantage is not only taste. It is integration under constraint. The company says no to many options so the user sees fewer seams, fewer decisions, and a more coherent experience.',
       shines: [
         'Vertical integration lets Apple tune performance, battery life, security, and interaction details together.',
         'Design restraint creates products that feel calm even when the underlying technology is complex.',
@@ -485,8 +473,7 @@ export const blogPosts = [
       'A clearer version of a philosophical AI essay: what anthropic reasoning is useful for, where it becomes speculative, and why safety engineering still needs practical controls.',
     readerPromise:
       'You will get a grounded way to read anthropic arguments without confusing speculation for safety work.',
-    pullQuote:
-      'A good philosophical frame should change how we build, test, or govern systems.',
+    pullQuote: 'A good philosophical frame should change how we build, test, or govern systems.',
     highlights: ['Observer bias', 'Safety humility', 'Operational controls'],
     date: '2026-04-20',
     tags: ['Philosophy', 'Anthropics', 'AI Ethics', 'Consciousness'],
@@ -497,8 +484,7 @@ export const blogPosts = [
         'Anthropic reasoning asks a strange but useful question: what should we infer from the fact that we are observers inside this world? It touches cosmology, simulation arguments, consciousness, and AI safety. The topic gets abstract quickly, so the practical move is to separate useful frames from speculative claims.',
       readerPromise:
         'You will get a grounded way to read anthropic arguments without confusing speculation for safety work.',
-      tldr:
-        'Anthropic philosophy is valuable when it improves humility about assumptions. It becomes dangerous when speculation replaces engineering controls, evidence, and measurable safety work.',
+      tldr: 'Anthropic philosophy is valuable when it improves humility about assumptions. It becomes dangerous when speculation replaces engineering controls, evidence, and measurable safety work.',
       shines: [
         'Anthropic reasoning forces us to notice observer bias and hidden assumptions.',
         'Simulation arguments can be useful thought experiments for evidence, agency, and model uncertainty.',
@@ -542,8 +528,7 @@ export const blogPosts = [
         'Apple’s AI direction is easiest to understand through product constraints. The company is not trying to make every interaction look like chat. It is trying to make intelligence feel native to the device, private by default, and useful inside existing app workflows.',
       readerPromise:
         'You will see what developers should expose to Apple Intelligence: structured actions, clear permissions, and calm automation.',
-      tldr:
-        'The Apple Intelligence opportunity for developers is not another assistant panel. It is app intent design, privacy-aware context, system-level actions, and small automations that feel like part of the operating system.',
+      tldr: 'The Apple Intelligence opportunity for developers is not another assistant panel. It is app intent design, privacy-aware context, system-level actions, and small automations that feel like part of the operating system.',
       shines: [
         'On-device execution is strong for private, low-latency tasks.',
         'Private cloud patterns can extend capability without exposing every interaction as a generic server request.',
@@ -575,8 +560,7 @@ export const blogPosts = [
       'A practical look at NotebookLM as a research agent: source grounding, synthesis, study tools, collaboration, and what still needs careful verification.',
     readerPromise:
       'You will get a practical model for turning source-grounded AI into a research workflow, not just a Q&A toy.',
-    pullQuote:
-      'The winning research tool keeps the evidence close to the answer.',
+    pullQuote: 'The winning research tool keeps the evidence close to the answer.',
     highlights: ['Source grounding', 'Research synthesis', 'Citation discipline'],
     date: '2026-06-10',
     tags: ['NotebookLM', 'Gemini', 'AI Research', 'Antigravity', 'Google AI'],
@@ -587,8 +571,7 @@ export const blogPosts = [
         'NotebookLM is most interesting when you stop treating it as document chat. The larger opportunity is a research workflow: gather sources, ask questions, compare evidence, create study artifacts, and turn messy material into something usable.',
       readerPromise:
         'You will get a practical model for turning source-grounded AI into a research workflow, not just a Q&A toy.',
-      tldr:
-        'The product works best when source grounding remains visible. The moment it becomes generic answer generation, it loses the main advantage: helping users reason over a known corpus.',
+      tldr: 'The product works best when source grounding remains visible. The moment it becomes generic answer generation, it loses the main advantage: helping users reason over a known corpus.',
       shines: [
         'Source-grounded answers are valuable for students, researchers, analysts, and builders working with dense material.',
         'Audio, study, and summary formats make the same source material useful in different modes.',

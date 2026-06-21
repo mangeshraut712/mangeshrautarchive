@@ -1,4 +1,3 @@
-const IDLE_MODULES = ['../modules/visitor-guide.js'];
 const EAGER_MODULES = ['../modules/accessibility.js'];
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
@@ -98,7 +97,6 @@ const MODULE_IMPORTERS = {
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
   '../modules/search.js': () => import('../modules/search.js'),
   '../modules/about-interactivity.js': () => import('../modules/about-interactivity.js'),
-  '../modules/visitor-guide.js': () => import('../modules/visitor-guide.js'),
   '../modules/scroll-animations.js': () =>
     import('../modules/scroll-animations.js').then(module => {
       module.initScrollAnimations?.();
@@ -659,12 +657,6 @@ function initLazyModules() {
         loadModule(path);
       });
 
-      runWhenIdle(() => {
-        IDLE_MODULES.forEach(path => {
-          loadModule(path);
-        });
-      }, 800);
-
       DELAYED_MODULES.forEach(({ modulePath, delay }) => {
         window.setTimeout(() => {
           loadModule(modulePath);
@@ -953,7 +945,10 @@ async function checkDeploymentVersion() {
   try {
     if (shouldSkipDeploymentVersionCheck()) return;
 
-    const localBuild = globalThis.buildConfig?.buildTime || globalThis.buildConfig?.gitCommit || globalThis.buildConfig?.version;
+    const localBuild =
+      globalThis.buildConfig?.buildTime ||
+      globalThis.buildConfig?.gitCommit ||
+      globalThis.buildConfig?.version;
     if (!localBuild) return;
 
     const configUrl = new URL('build-config.json', window.location.href);

@@ -57,7 +57,6 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 - **AssistMe AI Chat** — streaming Markdown, Siri-style voice dictation, writing tools, and contextual follow-up chips
 - **12 Technical Writings** — deep-dive blogs covering AI Code Editors, WWDC 2026/Apple Intelligence, NotebookLM 2026, WebMCP tool design, and agentic workflows
-- **First-Visit Toasts** — lightweight 2–3s hero toasts for new and returning visitors (no large hero panels)
 - **Card Listen + Translate** — 16-language read-aloud and translation toolbars on narrative cards (About, Experience, Awards, Blog, Travel)
 - **Project Showcase Lenses** — All · Hot · Busy · Released with live counts; empty lenses auto-hide; GitHub Operating View caption omits zero buckets
 - **Currently Shelf** — Apple-style segmented tabs plus compact media cards for Shows, Music, and Books
@@ -319,35 +318,35 @@ flowchart TD
 
 ## 🧪 Quality & Testing
 
-| Gate                   | Threshold / Coverage                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- |
-| **Playwright**         | 12+ real projects (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro) |
-| **Accessibility**      | @axe-core/playwright — zero critical/serious violations on homepage                     |
-| **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90 (dist gate)           |
-| **Lighthouse Mobile**  | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90 (dist gate)             |
-| **Lighthouse latest**  | Local dist gate: **100/100** mobile + desktop (Performance, A11y, Best Practices, SEO)  |
+| Gate                   | Threshold / Coverage                                                                     |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| **Playwright**         | 12+ real projects (Desktop Chrome/Safari/Firefox/Edge + Pixel 7 + iPhone 14 + iPad Pro)  |
+| **Accessibility**      | @axe-core/playwright — zero critical/serious violations on homepage                      |
+| **Lighthouse Desktop** | Performance ≥80, Accessibility ≥90, Best Practices ≥90, SEO ≥90 (dist gate)              |
+| **Lighthouse Mobile**  | Performance ≥60, Accessibility ≥90, Best Practices ≥90, SEO ≥90 (dist gate)              |
+| **Lighthouse latest**  | Local dist gate: **100/100** mobile + desktop (Performance, A11y, Best Practices, SEO)   |
 | **React Doctor**       | Informational static graph audit via `npm run doctor:full` (tracked in CI, non-blocking) |
-| **Post-deploy**        | Smoke + a11y on Vercel **and** GitHub Pages                                             |
-| **Nightly monitoring** | Production reachability + Lighthouse on Vercel + cross-surface commit parity              |
-| **Pre-commit**         | Security scan + ESLint                                                                  |
+| **Post-deploy**        | Smoke + a11y on Vercel **and** GitHub Pages                                              |
+| **Nightly monitoring** | Production reachability + Lighthouse on Vercel + cross-surface commit parity             |
+| **Pre-commit**         | Security scan + ESLint                                                                   |
 
 **Key commands**
 
-| Command                         | Purpose                                                 |
-| ------------------------------- | ------------------------------------------------------- |
-| `npm run check`                 | ESLint + Stylelint + Vitest + Python API tests          |
-| `npm run qa:prod-ready`         | Full security + lint + test + E2E + Lighthouse pipeline |
-| `npm run qa:smoke`              | Chrome smoke tests against dev server                   |
-| `npm run qa:a11y`               | axe-core accessibility baseline                         |
-| `npm run qa:lighthouse:desktop` | Desktop Lighthouse gate                                 |
-| `npm run qa:lighthouse:mobile`  | Mobile Lighthouse gate                                  |
-| `npm run test:e2e:all`          | Complete multi-device Playwright matrix                 |
-| `npm run verify:env-parity`     | Compare local `.env` keys against Vercel production       |
-| `npm run verify:deploy-sync:remote` | Confirm GitHub Pages and Vercel share the same build commit |
-| `npm run qa:cross-browser` | Chrome + Safari + Firefox + Pixel 7 + iPhone 14 matrix (local server) |
-| `npm run qa:vercel:chrome` / `qa:vercel:safari` / `qa:vercel:mobile` | Smoke against live Vercel production |
-| `npm run qa:github:chrome` / `qa:github:safari` | Smoke against live GitHub Pages mirror |
-| `node scripts/qa/cross-viewport-chrome.mjs` | Desktop / tablet / mobile Chrome audit with screenshots |
+| Command                                                              | Purpose                                                               |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `npm run check`                                                      | ESLint + Stylelint + Vitest + Python API tests                        |
+| `npm run qa:prod-ready`                                              | Full security + lint + test + E2E + Lighthouse pipeline               |
+| `npm run qa:smoke`                                                   | Chrome smoke tests against dev server                                 |
+| `npm run qa:a11y`                                                    | axe-core accessibility baseline                                       |
+| `npm run qa:lighthouse:desktop`                                      | Desktop Lighthouse gate                                               |
+| `npm run qa:lighthouse:mobile`                                       | Mobile Lighthouse gate                                                |
+| `npm run test:e2e:all`                                               | Complete multi-device Playwright matrix                               |
+| `npm run verify:env-parity`                                          | Compare local `.env` keys against Vercel production                   |
+| `npm run verify:deploy-sync:remote`                                  | Confirm GitHub Pages and Vercel share the same build commit           |
+| `npm run qa:cross-browser`                                           | Chrome + Safari + Firefox + Pixel 7 + iPhone 14 matrix (local server) |
+| `npm run qa:vercel:chrome` / `qa:vercel:safari` / `qa:vercel:mobile` | Smoke against live Vercel production                                  |
+| `npm run qa:github:chrome` / `qa:github:safari`                      | Smoke against live GitHub Pages mirror                                |
+| `node scripts/qa/cross-viewport-chrome.mjs`                          | Desktop / tablet / mobile Chrome audit with screenshots               |
 
 **Local Playwright note:** E2E and Lighthouse scripts prefer system Chrome when available (`CHROME_PATH` override supported). Set `PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000` when reusing an already-running dev server.
 
@@ -424,10 +423,10 @@ See also [`docs/ci-quality-gates-june-2026.md`](docs/ci-quality-gates-june-2026.
 
 ### CI / CD (single pipeline, no duplicate workflows)
 
-| Workflow | Trigger | Purpose |
-| -------- | ------- | ------- |
-| [`deploy.yml`](.github/workflows/deploy.yml) | Push/PR to `main`, manual | Quality gates → build → GitHub Pages deploy → live surface verify |
-| [`post-deploy-monitoring.yml`](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC, manual | Production reachability, Lighthouse on Vercel, cross-surface sync audit |
+| Workflow                                                                     | Trigger                   | Purpose                                                                 |
+| ---------------------------------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------- |
+| [`deploy.yml`](.github/workflows/deploy.yml)                                 | Push/PR to `main`, manual | Quality gates → build → GitHub Pages deploy → live surface verify       |
+| [`post-deploy-monitoring.yml`](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC, manual   | Production reachability, Lighthouse on Vercel, cross-surface sync audit |
 
 **Quality gate order in `deploy.yml`:** security audit → ESLint → Stylelint → Vitest → React Doctor (informational) → Python lint/tests → Playwright smoke + axe → Lighthouse desktop/mobile → build → deploy → verify GitHub Pages commit.
 
@@ -457,13 +456,12 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 - **Currently Shelf Redesign** — iOS segmented tabs, compact media cards, unified Apple-blue actions, full titles with line-clamp, and accessible `tablist`/`tabpanel` wiring.
 - **Project Showcase Polish** — simplified lenses (All · Hot · Busy · Released), hide empty filters, non-zero GitHub Operating View caption, dynamic card reveal fix, Apple-style Visit GitHub Profile button.
 - **Publication Preview** — two-column layout with mini paper preview card on the right and gradient Read paper CTA.
-- **First-Visit Toasts** — ephemeral hero toasts (~2.8s) replace large Start here / welcome-back panels; blog June spotlight removed (cards-only grid).
 - **Performance** — parallel hero analytics fetch, deferred card-a11y/Last.fm, hero badges stay visible outside scroll-hide targets.
 - **CI / QA** — axe tablist fix for Currently section; Lighthouse dist gate at 100/100 mobile + desktop locally; nightly monitoring uses cross-surface commit parity; React Doctor tracked in deploy workflow.
 
 ### June 2026 (earlier)
 
-- **First-Visit & Return UX** — Hero guidance panels and blog month picks (later replaced by compact toasts + cards-only blog grid).
+- **First-Visit & Return UX** — removed ephemeral toast experiment; blog remains cards-only grid with deep-link support via `#blog-read-<id>`.
 - **Card Listen + Translate** — Site-wide narrative card toolbars with 16 languages, scrollable popover, TTS in translated locale, MyMemory + `/api/chat` AI fallback.
 - **Release-Aware Project Lenses** — GitHub release/activity signals with live chip counts (later simplified to Hot · Busy · Released).
 - **Performance** — Card accessibility deferred until About is near viewport; GitHub contribution graph + Last.fm art lazy-loaded via `requestIdleCallback`.

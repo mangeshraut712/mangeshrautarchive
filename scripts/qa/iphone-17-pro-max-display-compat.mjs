@@ -18,10 +18,14 @@ async function audit(browserType, label) {
   const page = await context.newPage();
   await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 60_000 });
   await page.waitForTimeout(1500);
-  await page.waitForFunction(() => window.__portfolioViewNavReady === true, { timeout: 25_000 }).catch(() => {});
-  await page.waitForFunction(() => typeof globalThis.appleHaptics?.trigger === 'function', {
-    timeout: 25_000,
-  }).catch(() => {});
+  await page
+    .waitForFunction(() => window.__portfolioViewNavReady === true, { timeout: 25_000 })
+    .catch(() => {});
+  await page
+    .waitForFunction(() => typeof globalThis.appleHaptics?.trigger === 'function', {
+      timeout: 25_000,
+    })
+    .catch(() => {});
 
   const data = await page.evaluate(async () => {
     if (window.websiteShareWidget) {
@@ -39,7 +43,9 @@ async function audit(browserType, label) {
       innerH: window.innerHeight,
       dpr: window.devicePixelRatio,
       overflowX: document.documentElement.scrollWidth - window.innerWidth,
-      viewportFit: document.querySelector('meta[name="viewport"]')?.content.includes('viewport-fit=cover'),
+      viewportFit: document
+        .querySelector('meta[name="viewport"]')
+        ?.content.includes('viewport-fit=cover'),
       appleCss: [...document.styleSheets].some(s => {
         try {
           return s.href?.includes('apple-super-retina-display.css');
@@ -92,7 +98,8 @@ const results = await Promise.all([audit(chromium, 'Chrome'), audit(webkit, 'Saf
 const failures = [];
 
 for (const r of results) {
-  if (r.innerW !== 440 || r.innerH !== 956) failures.push(`${r.engine}: viewport ${r.innerW}x${r.innerH}`);
+  if (r.innerW !== 440 || r.innerH !== 956)
+    failures.push(`${r.engine}: viewport ${r.innerW}x${r.innerH}`);
   if (r.dpr !== 3) failures.push(`${r.engine}: DPR ${r.dpr}`);
   if (r.overflowX > 2) failures.push(`${r.engine}: overflow ${r.overflowX}px`);
   if (!r.viewportFit) failures.push(`${r.engine}: missing viewport-fit=cover`);
@@ -103,12 +110,14 @@ for (const r of results) {
     failures.push(`${r.engine}: physical dims ${r.physicalW}x${r.physicalH}`);
   }
   if (r.shareClosedDisplay !== 'none') failures.push(`${r.engine}: share dialog not display:none`);
-  if (r.chatClosedDisplay !== 'none') failures.push(`${r.engine}: chatbot backdrop not display:none`);
+  if (r.chatClosedDisplay !== 'none')
+    failures.push(`${r.engine}: chatbot backdrop not display:none`);
   if (r.goTopClosedDisplay !== 'none') failures.push(`${r.engine}: go-to-top not display:none`);
   if (!r.xdrHighlight) failures.push(`${r.engine}: missing xdr-highlight`);
   if (!r.xdrMedia) failures.push(`${r.engine}: missing xdr-media`);
   if (!r.viewNavReady) failures.push(`${r.engine}: view transition nav not ready`);
-  if (!r.reducedTransparencyCss) failures.push(`${r.engine}: prefers-reduced-transparency CSS missing`);
+  if (!r.reducedTransparencyCss)
+    failures.push(`${r.engine}: prefers-reduced-transparency CSS missing`);
 }
 
 console.log(

@@ -60,7 +60,7 @@ function loadVercelAuth() {
 async function listEnvVars(auth) {
   const response = await fetch(
     `https://api.vercel.com/v10/projects/${auth.projectId}/env?teamId=${auth.teamId}`,
-    { headers: { Authorization: `Bearer ${auth.token}` } },
+    { headers: { Authorization: `Bearer ${auth.token}` } }
   );
   const body = await response.json();
   if (!response.ok) throw new Error(`list env failed: ${JSON.stringify(body)}`);
@@ -70,7 +70,7 @@ async function listEnvVars(auth) {
 async function deleteEnv(auth, id) {
   const response = await fetch(
     `https://api.vercel.com/v9/projects/${auth.projectId}/env/${id}?teamId=${auth.teamId}`,
-    { method: 'DELETE', headers: { Authorization: `Bearer ${auth.token}` } },
+    { method: 'DELETE', headers: { Authorization: `Bearer ${auth.token}` } }
   );
   if (!response.ok && response.status !== 404) {
     throw new Error(`delete ${id} failed: ${await response.text()}`);
@@ -89,7 +89,7 @@ async function upsertConfig(auth, existing, key, value, targets) {
       if (APPLY) {
         const response = await fetch(
           `https://api.vercel.com/v9/projects/${auth.projectId}/env/${match.id}?teamId=${auth.teamId}`,
-          { method: 'PATCH', headers, body: JSON.stringify({ value }) },
+          { method: 'PATCH', headers, body: JSON.stringify({ value }) }
         );
         if (!response.ok) throw new Error(`patch ${key}@${target}: ${await response.text()}`);
       }
@@ -111,7 +111,7 @@ async function upsertConfig(auth, existing, key, value, targets) {
           type: 'plain',
           target: [target],
         }),
-      },
+      }
     );
     if (!response.ok) throw new Error(`add ${key}@${target}: ${await response.text()}`);
   }

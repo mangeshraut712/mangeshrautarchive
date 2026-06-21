@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
-const gotoSite = (page, path = '/') => page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
+const gotoSite = (page, path = '/') =>
+  page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
 
 test.describe('Mobile viewport fit', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
@@ -31,7 +32,9 @@ test.describe('Mobile viewport fit', () => {
     await gotoSite(page);
     await page.waitForSelector('.hero-actions', { state: 'visible' });
     await page.evaluate(() => {
-      document.querySelector('.hero-actions')?.scrollIntoView({ block: 'center', behavior: 'instant' });
+      document
+        .querySelector('.hero-actions')
+        ?.scrollIntoView({ block: 'center', behavior: 'instant' });
     });
     await page.waitForTimeout(300);
 
@@ -45,10 +48,7 @@ test.describe('Mobile viewport fit', () => {
       const actions = rect('.hero-actions');
       const toolbar = rect('.a11y-toolbar');
       const chat = rect('#chatbot-toggle');
-      const hits = (a, b) =>
-        a &&
-        b &&
-        !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
+      const hits = (a, b) => a && b && !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
       return {
         actionsToolbar: hits(actions, toolbar),
         actionsChat: hits(actions, chat),
@@ -76,8 +76,7 @@ test.describe('Mobile viewport fit', () => {
       };
       const topBtn = rect('#go-to-top');
       const chatBtn = rect('#chatbot-toggle');
-      const hits = (a, b) =>
-        a && b && !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
+      const hits = (a, b) => a && b && !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
       const gap = topBtn && chatBtn ? topBtn.t - chatBtn.b : null;
       return {
         overlap: hits(topBtn, chatBtn),

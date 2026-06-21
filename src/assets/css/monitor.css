@@ -506,7 +506,7 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
 
 .monitor-top-row {
   display: grid;
-  grid-template-columns: 1.4fr 1.0fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 22px;
   align-items: start;
   margin-bottom: 22px;
@@ -2623,10 +2623,18 @@ html.dark body.monitor-page .integration-owner-auth,
   font-family: monospace;
 }
 
-.metric-icon-backend { color: var(--accent-blue); }
-.metric-icon-success { color: var(--accent-green); }
-.metric-icon-latency { color: var(--accent-yellow); }
-.metric-icon-errors { color: var(--accent-red); }
+.metric-icon-backend {
+  color: var(--accent-blue);
+}
+.metric-icon-success {
+  color: var(--accent-green);
+}
+.metric-icon-latency {
+  color: var(--accent-yellow);
+}
+.metric-icon-errors {
+  color: var(--accent-red);
+}
 
 /* API References: Link Tiles Dashboard */
 .doc-link-tile-grid {
@@ -2703,7 +2711,10 @@ html.dark body.monitor-page .integration-owner-auth,
   cursor: pointer;
   border-radius: 6px;
   opacity: 0;
-  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
   margin-left: auto;
 }
 

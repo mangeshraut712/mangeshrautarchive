@@ -9,23 +9,23 @@
 
 /* Target ALL buttons across the site to ensure they are BLUE */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(.card-restore-btn):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(
-    #website-share-toggle
-  ):not(.website-share-close):not(.website-share-copy):not(.website-share-action):not(
-    .chatbot-close-btn
-  ):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(
-    #menu-btn
-  ):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(
-    #avatar-toggle
-  ):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(
-    .project-action-btn
-  ):not(.travel-action):not(.travel-nav__projection):not(.travel-nav__theme):not(
-    .travel-nav__panel
-  ):not(.travel-filter-chip):not(.country-pill):not(.travel-advanced-toggle):not(
-    .travel-sidebar__handle
-  ):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ),
+button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
+    .card-restore-btn
+  ):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(
+    .website-share-close
+  ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
+    .chatbot-send-btn
+  ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
+    .menu-toggle-button
+  ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
+    .profile-image-toggle
+  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.travel-action):not(
+    .travel-nav__projection
+  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
+    .travel-advanced-toggle
+  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -47,23 +47,23 @@ a.button,
 
 /* Hover State */
 .btn:hover,
-button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(.card-restore-btn):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(
-    #website-share-toggle
-  ):not(.website-share-close):not(.website-share-copy):not(.website-share-action):not(
-    .chatbot-close-btn
-  ):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(
-    #menu-btn
-  ):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(
-    #avatar-toggle
-  ):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(
-    .project-action-btn
-  ):not(.travel-action):not(.travel-nav__projection):not(.travel-nav__theme):not(
-    .travel-nav__panel
-  ):not(.travel-filter-chip):not(.country-pill):not(.travel-advanced-toggle):not(
-    .travel-sidebar__handle
-  ):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ):hover,
+button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
+    .card-restore-btn
+  ):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(
+    .website-share-close
+  ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
+    .chatbot-send-btn
+  ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
+    .menu-toggle-button
+  ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
+    .profile-image-toggle
+  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.travel-action):not(
+    .travel-nav__projection
+  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
+    .travel-advanced-toggle
+  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,
@@ -585,19 +585,19 @@ html.dark .text-blue {
 
 /* Exclude buttons from text color override */
 .btn,
-button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(.card-restore-btn):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(
-    #website-share-toggle
-  ):not(.website-share-close):not(.website-share-copy):not(.website-share-action):not(
-    .chatbot-close-btn
-  ):not(.chatbot-send-btn):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(
-    #menu-btn
-  ):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(
-    #avatar-toggle
-  ):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(
-    .projects-view-all-btn
-  ):not(.project-action-btn):not(.a11y-toolbar button):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ),
+button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
+    .card-restore-btn
+  ):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(
+    .website-share-close
+  ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
+    .chatbot-send-btn
+  ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
+    .menu-toggle-button
+  ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
+    .profile-image-toggle
+  ):not(.proj-filter-btn):not(.project-lens-chip):not(.projects-view-all-btn):not(
+    .project-action-btn
+  ):not(.a11y-toolbar button):not(.portfolio-reach-badge):not(.hero-pill-badge),
 .project-tag,
 .badge {
   color: #fff !important;

@@ -48,7 +48,18 @@ const KATEX_TAGS = [
   'g',
 ];
 
-const KATEX_ATTR = ['class', 'style', 'aria-hidden', 'encoding', 'xmlns', 'width', 'height', 'viewBox', 'd', 'fill'];
+const KATEX_ATTR = [
+  'class',
+  'style',
+  'aria-hidden',
+  'encoding',
+  'xmlns',
+  'width',
+  'height',
+  'viewBox',
+  'd',
+  'fill',
+];
 
 function escapeHtml(text) {
   return text
@@ -102,7 +113,9 @@ function renderMathSegment(tex, displayMode) {
       trust: false,
     });
   } catch {
-    return displayMode ? `<pre class="math-error">${escapeHtml(tex)}</pre>` : `<code>${escapeHtml(tex)}</code>`;
+    return displayMode
+      ? `<pre class="math-error">${escapeHtml(tex)}</pre>`
+      : `<code>${escapeHtml(tex)}</code>`;
   }
 }
 
@@ -295,7 +308,9 @@ class MarkdownService {
     try {
       const withMath = preprocessMath(markdown);
       let html = this._marked.parse(withMath);
-      html = html.replace(/<table/g, '<div class="rich-table-wrap"><table').replace(/<\/table>/g, '</table></div>');
+      html = html
+        .replace(/<table/g, '<div class="rich-table-wrap"><table')
+        .replace(/<\/table>/g, '</table></div>');
       return this._sanitize(html);
     } catch (err) {
       console.warn('Markdown parse error:', err);

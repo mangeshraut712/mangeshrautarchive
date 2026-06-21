@@ -3,7 +3,8 @@ import { expect, test } from '@playwright/test';
 test.use({ trace: 'off' });
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
-const gotoSite = (page, path = '/') => page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
+const gotoSite = (page, path = '/') =>
+  page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
 
 test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
   test.use({
@@ -20,11 +21,17 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
 
     const head = await page.evaluate(() => ({
       viewport: document.querySelector('meta[name="viewport"]')?.getAttribute('content') || '',
-      viewportFit: document.querySelector('meta[name="viewport"]')?.content.includes('viewport-fit=cover'),
+      viewportFit: document
+        .querySelector('meta[name="viewport"]')
+        ?.content.includes('viewport-fit=cover'),
       themeLight: !!document.querySelector('meta[name="theme-color"][media*="light"]'),
       themeDark: !!document.querySelector('meta[name="theme-color"][media*="dark"]'),
-      appleTitle: document.querySelector('meta[name="apple-mobile-web-app-title"]')?.getAttribute('content'),
-      appleCapable: document.querySelector('meta[name="apple-mobile-web-app-capable"]')?.getAttribute('content'),
+      appleTitle: document
+        .querySelector('meta[name="apple-mobile-web-app-title"]')
+        ?.getAttribute('content'),
+      appleCapable: document
+        .querySelector('meta[name="apple-mobile-web-app-capable"]')
+        ?.getAttribute('content'),
       hasAppleCss: [...document.styleSheets].some(s => {
         try {
           return s.href?.includes('apple-super-retina-display.css');
@@ -36,9 +43,15 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
       innerW: window.innerWidth,
       innerH: window.innerHeight,
       dpr: window.devicePixelRatio,
-      ppiToken: getComputedStyle(document.documentElement).getPropertyValue('--apple-display-ppi').trim(),
-      physicalW: getComputedStyle(document.documentElement).getPropertyValue('--apple-display-physical-w').trim(),
-      physicalH: getComputedStyle(document.documentElement).getPropertyValue('--apple-display-physical-h').trim(),
+      ppiToken: getComputedStyle(document.documentElement)
+        .getPropertyValue('--apple-display-ppi')
+        .trim(),
+      physicalW: getComputedStyle(document.documentElement)
+        .getPropertyValue('--apple-display-physical-w')
+        .trim(),
+      physicalH: getComputedStyle(document.documentElement)
+        .getPropertyValue('--apple-display-physical-h')
+        .trim(),
     }));
 
     expect(head.viewportFit).toBe(true);
@@ -68,7 +81,9 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
         navHeight: nav?.height ?? null,
         mainTop: main?.top ?? null,
         mainPad,
-        chromeTop: getComputedStyle(document.documentElement).getPropertyValue('--apple-chrome-top').trim(),
+        chromeTop: getComputedStyle(document.documentElement)
+          .getPropertyValue('--apple-chrome-top')
+          .trim(),
       };
     });
 
@@ -86,7 +101,9 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
     expect(overflow).toBeLessThanOrEqual(2);
   });
 
-  test('iPhone 17 Pro Max compatibility matrix — Liquid Glass overlays hidden', async ({ page }) => {
+  test('iPhone 17 Pro Max compatibility matrix — Liquid Glass overlays hidden', async ({
+    page,
+  }) => {
     await gotoSite(page);
     await page.waitForTimeout(1500);
 
@@ -153,7 +170,8 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
         hasP3Rules,
         hasHapticsApi: typeof globalThis.appleHaptics?.trigger === 'function',
         mainContain: getComputedStyle(document.querySelector('#main-content')).contain,
-        ppi: root.style.getPropertyValue('--apple-display-ppi') ||
+        ppi:
+          root.style.getPropertyValue('--apple-display-ppi') ||
           getComputedStyle(root).getPropertyValue('--apple-display-ppi').trim(),
       };
     });
@@ -189,7 +207,9 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
         fetch('assets/css/apple-super-retina-display.css').then(r => r.text()),
       ]);
       return {
-        viewTransitionMeta: document.querySelector('meta[name="view-transition"]')?.getAttribute('content'),
+        viewTransitionMeta: document
+          .querySelector('meta[name="view-transition"]')
+          ?.getAttribute('content'),
         viewNavReady: Boolean(window.__portfolioViewNavReady),
         viewNavBound: Boolean(window.__portfolioViewNavBound),
         viewNavSupported: Boolean(window.__portfolioViewNavSupported),

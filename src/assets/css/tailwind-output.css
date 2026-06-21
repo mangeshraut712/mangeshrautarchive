@@ -227,7 +227,7 @@
     background-color: #18181b;
   }
   .dark\:bg-\[\#18181b\]\/90 {
-    background-color: oklab(21.0331% 0.00160407 -0.0056366/.9);
+    background-color: oklab(21.0331% 0.00160407 -0.0056366/0.9);
   }
 }
 @property --tw-rotate-x {

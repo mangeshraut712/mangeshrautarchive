@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"
+    />
     <meta name="view-transition" content="same-origin" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
@@ -42,8 +44,11 @@
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
-    <link rel="apple-touch-startup-image" href="assets/images/pwa-splash-iphone-17-pro-max.png"
-      media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
+    <link
+      rel="apple-touch-startup-image"
+      href="assets/images/pwa-splash-iphone-17-pro-max.png"
+      media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
     <link rel="manifest" href="manifest.json" />
     <script src="build-config.js"></script>
     <script>
@@ -70,8 +75,15 @@
     <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260613c" />
     <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260613b" />
     <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260621b" />
-    <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260621e" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260621e" /></noscript>
+    <link
+      rel="stylesheet"
+      href="assets/css/wwdc26-liquid-glass.css?v=20260621e"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260621e"
+    /></noscript>
     <link rel="stylesheet" href="assets/css/monitor.css?v=20260619a" />
     <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" />
     <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
@@ -228,7 +240,9 @@
                 <i class="fas fa-heart-pulse" aria-hidden="true"></i>
               </div>
               <div>
-                <p class="monitor-summary-eyebrow control-center-eyebrow">Operations Control Center</p>
+                <p class="monitor-summary-eyebrow control-center-eyebrow">
+                  Operations Control Center
+                </p>
                 <h1 class="control-center-heading">System Monitor</h1>
               </div>
             </div>
@@ -242,7 +256,11 @@
                 <span class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
                   Auto-refresh: 30s
                 </span>
-                <button class="btn btn-secondary control-center-refresh" type="button" onclick="refreshData()">
+                <button
+                  class="btn btn-secondary control-center-refresh"
+                  type="button"
+                  onclick="refreshData()"
+                >
                   <i class="fas fa-rotate" aria-hidden="true"></i>
                   <span>Refresh</span>
                 </button>
@@ -254,7 +272,8 @@
             <div class="control-center-info">
               <div>
                 <h2 class="control-center-title">
-                  Real-time diagnostics for backend health, database connections, provider APIs, and deployed surfaces.
+                  Real-time diagnostics for backend health, database connections, provider APIs, and
+                  deployed surfaces.
                 </h2>
                 <p id="monitor-summary-text">Loading operational summary…</p>
               </div>
@@ -442,7 +461,6 @@
                 ></div>
               </div>
             </div>
-
           </div>
         </div>
 
@@ -584,7 +602,8 @@
         </div>
         <p class="section-lead">
           Owner-only OAuth linking is protected. Enter your admin token below, then use
-          <strong>Connect in Chrome</strong> to start a signed OAuth flow for the account you want to link.
+          <strong>Connect in Chrome</strong> to start a signed OAuth flow for the account you want
+          to link.
         </p>
         <div class="integration-owner-auth">
           <label for="owner-admin-token">Owner admin token</label>
@@ -600,7 +619,8 @@
             </button>
           </div>
           <p class="integration-owner-auth__hint">
-            Stored only in this browser session. Required for OAuth connect and monitor event resolve actions.
+            Stored only in this browser session. Required for OAuth connect and monitor event
+            resolve actions.
           </p>
         </div>
         <div class="health-grid" id="oauth-integrations">
@@ -1216,12 +1236,12 @@
         return Object.entries(providers).map(([key, provider]) => ({
           key,
           name: formatConfigLabel(key),
-          status: provider.connected
-            ? 'healthy'
+          status: provider.connected ? 'healthy' : provider.configured ? 'degraded' : 'unhealthy',
+          meta: provider.connected
+            ? 'Connected'
             : provider.configured
-              ? 'degraded'
-              : 'unhealthy',
-          meta: provider.connected ? 'Connected' : provider.configured ? 'Configured' : 'Missing setup',
+              ? 'Configured'
+              : 'Missing setup',
           purpose: provider.purpose || provider.nextStep || '',
         }));
       }
@@ -1759,7 +1779,7 @@
 
         const coords = points.map((p, idx) => {
           const x = (idx / (points.length - 1 || 1)) * width;
-          const y = height - ((p - minVal) / (range || 1)) * height * 0.65 - (height * 0.15);
+          const y = height - ((p - minVal) / (range || 1)) * height * 0.65 - height * 0.15;
           return `${x.toFixed(1)},${y.toFixed(1)}`;
         });
 
@@ -1813,7 +1833,7 @@
             if (!window.endpointHistory[histKey]) {
               window.endpointHistory[histKey] = [];
             }
-            
+
             const history = window.endpointHistory[histKey];
             history.push(avgResponseMs);
             if (history.length > 12) history.shift();
@@ -1987,7 +2007,8 @@
             const provider = data.providers[key] || {};
             const statusClass = integrationStatusClass(provider);
             const statusLabel = integrationStatusLabel(provider);
-            const showConnect = provider.requiresOwnerAuth && provider.configured && !provider.connected;
+            const showConnect =
+              provider.requiresOwnerAuth && provider.configured && !provider.connected;
             const verifyHref = buildIntegrationConnectHref(verifyPath);
             const actionMarkup = showConnect
               ? `<button type="button" class="btn btn-secondary" onclick="startIntegrationConnect('${key}')">
@@ -2156,7 +2177,7 @@
                   endpoint.avg_response_time_ms ?? endpoint.avg_response_ms ?? 0
                 );
                 return sum + responseMs;
-          }, 0) / data.endpoints.length
+              }, 0) / data.endpoints.length
             : 0;
         if (avgResponseEl) avgResponseEl.textContent = avgResponse.toFixed(0) + 'ms';
 
@@ -2253,7 +2274,8 @@
           : [];
 
         if (!rows.length) {
-          container.innerHTML = '<div class="ops-empty-line">No endpoint volume recorded yet.</div>';
+          container.innerHTML =
+            '<div class="ops-empty-line">No endpoint volume recorded yet.</div>';
           return;
         }
 
@@ -2410,7 +2432,9 @@
             </div>
             ${renderStatusBar(endpointSummary)}
             ${renderMicroBarList(
-              [...endpoints].sort((a, b) => Number(b.avg_response_time_ms || 0) - Number(a.avg_response_time_ms || 0)),
+              [...endpoints].sort(
+                (a, b) => Number(b.avg_response_time_ms || 0) - Number(a.avg_response_time_ms || 0)
+              ),
               'avg_response_time_ms',
               'path',
               {
@@ -2435,7 +2459,10 @@
             <div class="ops-chip-grid">
               ${providerItems
                 .slice(0, 8)
-                .map(item => `<span class="ops-chip ${normalizeHealthStatus(item.status)}">${escapeHtml(item.name || 'Provider')}</span>`)
+                .map(
+                  item =>
+                    `<span class="ops-chip ${normalizeHealthStatus(item.status)}">${escapeHtml(item.name || 'Provider')}</span>`
+                )
                 .join('')}
             </div>
           </article>
@@ -3272,7 +3299,7 @@
 
         const coords = points.map((p, idx) => {
           const x = (idx / (points.length - 1 || 1)) * width;
-          const y = height - ((p - minVal) / (range || 1)) * height * 0.75 - (height * 0.125);
+          const y = height - ((p - minVal) / (range || 1)) * height * 0.75 - height * 0.125;
           return `${x.toFixed(1)},${y.toFixed(1)}`;
         });
 
@@ -3289,16 +3316,18 @@
             </defs>
             <path d="${areaData}" fill="url(#ai-spark-gradient)"></path>
             <path d="${pathData}" fill="none" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            ${points.map((p, idx) => {
-              if (idx === points.length - 1) {
-                const [x, y] = coords[idx].split(',');
-                return `
+            ${points
+              .map((p, idx) => {
+                if (idx === points.length - 1) {
+                  const [x, y] = coords[idx].split(',');
+                  return `
                   <circle cx="${x}" cy="${y}" r="4.5" fill="var(--accent-blue)"></circle>
                   <circle cx="${x}" cy="${y}" r="8.5" fill="var(--accent-blue)" opacity="0.3" class="ping-circle"></circle>
                 `;
-              }
-              return '';
-            }).join('')}
+                }
+                return '';
+              })
+              .join('')}
           </svg>
         `;
       }
@@ -3390,14 +3419,20 @@
               </div>
               
               <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; margin-top: 8px; margin-bottom: 8px;">
-                ${modelCount === 0 
-                  ? `<div style="text-align: center; color: var(--text-secondary); font-size: 13px;">Waiting for conversation traffic...</div>`
-                  : Object.entries(modelUsage).map(([model, count]) => `
+                ${
+                  modelCount === 0
+                    ? `<div style="text-align: center; color: var(--text-secondary); font-size: 13px;">Waiting for conversation traffic...</div>`
+                    : Object.entries(modelUsage)
+                        .map(
+                          ([model, count]) => `
                       <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 6px 10px; background: rgba(0,0,0,0.02); border-radius: 8px; border: 1px solid rgba(0,0,0,0.04);">
                         <span style="font-family: monospace; font-size: 11px; color: var(--text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; max-width: 190px;">${escapeHtml(model)}</span>
                         <span style="font-weight: 700; color: var(--accent-blue);">${count} requests</span>
                       </div>
-                    `).join('')}
+                    `
+                        )
+                        .join('')
+                }
               </div>
               <div style="font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; margin-top: 8px;">
                 <span>Total Provider Requests</span>
@@ -3448,7 +3483,9 @@
         ownerTokenButton?.addEventListener('click', () => {
           saveOwnerAdminToken(ownerTokenInput?.value || '');
           showToast(
-            getOwnerAdminToken() ? 'Owner admin token saved for this session' : 'Owner admin token cleared',
+            getOwnerAdminToken()
+              ? 'Owner admin token saved for this session'
+              : 'Owner admin token cleared',
             getOwnerAdminToken() ? 'success' : 'info'
           );
         });

@@ -268,7 +268,14 @@ class AppleIntelligenceChatbot {
       }
     }
 
-    this.updateStatusIndicator('online');
+    const online = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
+    const canUseServer =
+      online &&
+      (this.chatAPI.canUseServerAI === true ||
+        Boolean(window.APP_CONFIG?.apiBaseUrl) ||
+        /vercel\.app$|mangeshraut\.pro$|localhost|127\.0\.0\.1/.test(window.location.hostname));
+
+    this.updateStatusIndicator(canUseServer ? 'online' : online ? 'local' : 'offline');
   }
 
   updateStatusIndicator(status) {
@@ -868,8 +875,7 @@ class AppleIntelligenceChatbot {
   paintStreamingContent(contentDiv, fullText) {
     if (!contentDiv) return;
 
-    const useMarkdown =
-      markdownService.containsMarkdown(fullText) || fullText.length >= 48;
+    const useMarkdown = markdownService.containsMarkdown(fullText) || fullText.length >= 48;
     if (useMarkdown) {
       contentDiv.innerHTML = `${markdownService.render(fullText)}<span class="siri-stream-caret" aria-hidden="true"></span>`;
       return;
@@ -976,12 +982,24 @@ class AppleIntelligenceChatbot {
 
       // Final fallback for completely empty responses (after retry)
       if (!fullText) {
-        ensureStreamBubble();
-        fullText =
-          'I received an empty response. Let me try a different approach — please rephrase your question or try one of the suggestions below.';
-        contentDiv.textContent = fullText;
-        metadata.error = true;
-      } else {
+        const offline = this.chatAPI?.basicQueryProcessing?.(userMessage);
+        if (offline?.answer) {
+          fullText = offline.answer;
+          metadata.source = offline.source || 'assistme-portfolio';
+          metadata.model = 'Offline AssistMe';
+          metadata.category = offline.type || 'portfolio';
+          this.updateStatusIndicator(
+            typeof navigator !== 'undefined' && navigator.onLine === false ? 'offline' : 'local'
+          );
+        } else {
+          ensureStreamBubble();
+          fullText =
+            'I could not reach the live AI service, but I can still answer portfolio questions offline. Try asking about skills, projects, experience, or contact details.';
+          metadata.error = true;
+        }
+      }
+
+      if (fullText) {
         ensureStreamBubble();
         this.finalizeStreamingContent(contentDiv, fullText, response);
       }
@@ -1036,6 +1054,19 @@ class AppleIntelligenceChatbot {
       }
       console.error('Streaming error:', error);
       messageDiv?.classList.remove('streaming');
+      if (!fullText && this.chatAPI?.basicQueryProcessing) {
+        messageDiv?.remove();
+        this.hideTypingIndicator();
+        const offline = this.chatAPI.basicQueryProcessing(userMessage);
+        const offlineText = offline?.answer || offline?.text || '';
+        if (offlineText) {
+          this.updateStatusIndicator(typeof navigator !== 'undefined' && navigator.onLine === false ? 'offline' : 'local');
+          this.addMessage(offlineText, 'assistant', { forceScroll: true });
+          this.showFollowupChips(offlineText);
+          return;
+        }
+      }
+
       if (!fullText) {
         messageDiv?.remove();
         this.addErrorMessage('The response was interrupted. Please try again.');

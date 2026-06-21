@@ -37,7 +37,6 @@
       "src/js/modules/skills-visualization.js",
       "src/js/modules/travel-atlas.js",
       "src/js/modules/vercel-analytics.js",
-      "src/js/modules/visitor-guide.js",
       "src/js/modules/aod-dim-mode.js",
       "src/js/modules/apple-haptics.js",
       "src/js/utils/view-transitions-nav.js",

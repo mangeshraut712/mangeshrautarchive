@@ -18,7 +18,8 @@ const DEFAULT_METRICS = {
   refresh: null,
 };
 
-const HEALTH_FETCH_TIMEOUT_MS = 18000;
+const HEALTH_FETCH_TIMEOUT_MS = 9000;
+const HEALTH_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
 function resolveApiBase() {
   const base =
@@ -88,16 +89,43 @@ class HealthWidget {
     this.updateUI();
     this.startRelativeTimeUpdater();
     this.fetchFromApi();
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            this.fetchFromApi({ background: true });
+          }
+        },
+        { rootMargin: '120px 0px', threshold: 0.15 }
+      );
+      observer.observe(container);
+    }
+
+    this.refreshTimer = window.setInterval(() => {
+      this.fetchFromApi({ background: true });
+    }, HEALTH_REFRESH_INTERVAL_MS);
   }
 
-  async fetchFromApi() {
+  normalizeStrainValue(data = {}) {
+    const candidates = [data.strain, data.strainScore, data.dayStrain, data.cycleStrain];
+    for (const candidate of candidates) {
+      const parsed = Number(candidate);
+      if (Number.isFinite(parsed)) return parsed;
+    }
+    return null;
+  }
+
+  async fetchFromApi({ background = false, retry = true } = {}) {
     const apiBase = resolveApiBase();
     const url = apiBase ? `${apiBase}/api/health-vitals/summary` : '/api/health-vitals/summary';
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), HEALTH_FETCH_TIMEOUT_MS);
 
     this.isRefreshing = true;
-    this.updateSyncedTimeText();
+    if (!background) {
+      this.updateSyncedTimeText();
+    }
     try {
       const requestUrl = new URL(url, globalThis.location?.href || 'https://mangeshraut.pro/');
       requestUrl.searchParams.set('_', Date.now().toString());
@@ -126,7 +154,8 @@ class HealthWidget {
       if (typeof data.recoveryScore === 'number') this.metrics.recovery = data.recoveryScore;
       else if (isLive) this.metrics.recovery = null;
 
-      if (typeof data.strain === 'number') this.metrics.strain = data.strain;
+      const strainValue = this.normalizeStrainValue(data);
+      if (strainValue !== null) this.metrics.strain = strainValue;
       else if (isLive) this.metrics.strain = null;
 
       const parsedWeight = parseWeightTrend(data.weightTrend);
@@ -151,6 +180,9 @@ class HealthWidget {
     } catch (error) {
       if (error?.name !== 'AbortError') {
         console.info('Health summary API unavailable, using cached metrics.', error);
+      }
+      if (retry && error?.name === 'AbortError') {
+        window.setTimeout(() => this.fetchFromApi({ background, retry: false }), 1200);
       }
     } finally {
       clearTimeout(timeoutId);

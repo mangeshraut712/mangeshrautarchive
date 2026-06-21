@@ -75,7 +75,9 @@ body {
 
   #chatbot-toggle {
     right: var(--mobile-edge-inset) !important;
-    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)) !important;
+    bottom: calc(
+      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
+    ) !important;
     top: auto !important;
     width: var(--mobile-fab-size) !important;
     height: var(--mobile-fab-size) !important;
@@ -92,7 +94,9 @@ body {
 
   body.has-a11y-toolbar #chatbot-toggle {
     right: var(--mobile-edge-inset) !important;
-    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)) !important;
+    bottom: calc(
+      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
+    ) !important;
   }
 
   html {
@@ -123,7 +127,9 @@ body {
     padding-right: 0.5rem;
     max-width: calc(100% - 4.25rem - env(safe-area-inset-right));
     margin-inline: auto;
-    scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom));
+    scroll-margin-bottom: calc(
+      var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom)
+    );
   }
 
   /*
@@ -162,10 +168,8 @@ body {
   }
 
   .website-share-dialog {
-    padding: max(0.75rem, env(safe-area-inset-top))
-      max(0.75rem, env(safe-area-inset-right))
-      max(0.75rem, env(safe-area-inset-bottom))
-      max(0.75rem, env(safe-area-inset-left));
+    padding: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right))
+      max(0.75rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
     align-items: center;
   }
 

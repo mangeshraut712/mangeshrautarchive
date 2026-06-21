@@ -5,7 +5,10 @@
 
 import { createTravelNarrative } from '../data/travel-engine.js';
 import { travelData as rawTravelData } from '../data/travel-locations.js';
-import { initCardContentAccessibility, rescanCardContentAccessibility } from './card-content-accessibility.js';
+import {
+  initCardContentAccessibility,
+  rescanCardContentAccessibility,
+} from './card-content-accessibility.js';
 
 const travelData = createTravelNarrative(rawTravelData);
 const VISITED_PIN_COLOR = '#ff3b30';

@@ -1658,71 +1658,72 @@ footer .wrapper {
     backdrop-filter 0.32s ease !important;
 }
 
-html.dark :is(
-  .card,
-  .experience-card,
-  .experience-content,
-  .education-card,
-  .education-content,
-  .stat-card,
-  .blog-card,
-  .publication-card,
-  .award-card,
-  .recommendation-card,
-  .certification-card,
-  .showcase-project-card,
-  .about-highlight-card,
-  .about-text-card,
-  .about-card,
-  .contact-card,
-  .contact-form-card,
-  .newsletter-card,
-  .support-donation-card,
-  .media-card,
-  .currently-card,
-  .calendar-card,
-  .ios-widget-wrapper,
-  .legend-card,
-  .music-card-inner,
-  .reminder-card,
-  .overview-card,
-  .doc-card,
-  .health-item,
-  .game-stat-card,
-  .game-info-card,
-  .skill-card,
-  .skill-badge,
-  .timeline-content,
-  .service-card,
-  .feature-card,
-  .testimonial-card,
-  .pricing-card,
-  .team-card,
-  .info-card,
-  .detail-card,
-  .summary-card,
-  .glass-card,
-  .overlay-card,
-  .panel,
-  .health-widget-container,
-  .monitor-summary-card,
-  .monitor-summary-panel,
-  .integration-owner-auth,
-  .ops-card,
-  .endpoint-card,
-  .travel-sidebar,
-  .travel-stop,
-  .place-guide-card,
-  .travel-stat,
-  .travel-filter-panel,
-  .travel-advanced-search,
-  .travel-results-summary,
-  .travel-timeline__country-header,
-  .sub-card,
-  .nested-card,
-  .vibe-stack-card,
-  .portfolio-reach-panel
-) {
+html.dark
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .music-card-inner,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header,
+    .sub-card,
+    .nested-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel
+  ) {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-image: none !important;
@@ -2185,66 +2186,70 @@ html[data-lg-mode='clear'] .global-nav.dynamic-island {
 }
 
 /* Cards — clear = more blur + transparency; tinted = near-solid white/black */
-html[data-lg-mode='clear'] :is(
-  .card,
-  .experience-content,
-  .education-card,
-  .stat-card,
-  .blog-card,
-  .contact-card,
-  .calendar-card,
-  .currently-card,
-  .vibe-stack-card,
-  .portfolio-reach-panel
-) {
+html[data-lg-mode='clear']
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel
+  ) {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
 }
 
-html[data-lg-mode='tinted'] :is(
-  .card,
-  .experience-content,
-  .education-card,
-  .stat-card,
-  .blog-card,
-  .contact-card,
-  .calendar-card,
-  .currently-card,
-  .vibe-stack-card,
-  .portfolio-reach-panel
-) {
+html[data-lg-mode='tinted']
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel
+  ) {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark) :is(
-  .card,
-  .experience-content,
-  .education-card,
-  .stat-card,
-  .blog-card,
-  .contact-card,
-  .calendar-card,
-  .currently-card,
-  .vibe-stack-card,
-  .portfolio-reach-panel
-) {
+html[data-lg-mode='tinted']:not(.dark)
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel
+  ) {
   background: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
   background-color: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
 }
 
-html.dark[data-lg-mode='tinted'] :is(
-  .card,
-  .experience-content,
-  .education-card,
-  .stat-card,
-  .blog-card,
-  .contact-card,
-  .calendar-card,
-  .currently-card,
-  .vibe-stack-card,
-  .portfolio-reach-panel
-) {
+html.dark[data-lg-mode='tinted']
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .contact-card,
+    .calendar-card,
+    .currently-card,
+    .vibe-stack-card,
+    .portfolio-reach-panel
+  ) {
   background: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
   background-color: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
 }
@@ -2298,28 +2303,30 @@ html.dark[data-lg-mode='tinted'] :is(
     -webkit-backdrop-filter: none !important;
   }
 
-  html:not(.dark) :is(
-    .card,
-    .contact-card,
-    .calendar-card,
-    .currently-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel,
-    .lg-glass-card
-  ) {
+  html:not(.dark)
+    :is(
+      .card,
+      .contact-card,
+      .calendar-card,
+      .currently-card,
+      .vibe-stack-card,
+      .portfolio-reach-panel,
+      .lg-glass-card
+    ) {
     background: #ffffff !important;
     background-color: #ffffff !important;
   }
 
-  html.dark :is(
-    .card,
-    .contact-card,
-    .calendar-card,
-    .currently-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel,
-    .lg-glass-card
-  ) {
+  html.dark
+    :is(
+      .card,
+      .contact-card,
+      .calendar-card,
+      .currently-card,
+      .vibe-stack-card,
+      .portfolio-reach-panel,
+      .lg-glass-card
+    ) {
     background: #000000 !important;
     background-color: #000000 !important;
   }

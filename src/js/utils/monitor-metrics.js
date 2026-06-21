@@ -3,9 +3,7 @@
  */
 
 function hasTrackedErrorBuckets(endpoint) {
-  return (
-    endpoint.client_error_requests != null || endpoint.server_error_requests != null
-  );
+  return endpoint.client_error_requests != null || endpoint.server_error_requests != null;
 }
 
 export function bucketEndpointErrors(endpoints = []) {

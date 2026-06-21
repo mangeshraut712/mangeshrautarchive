@@ -81,8 +81,17 @@ const CARD_PROFILES = [
   },
   {
     selector: '.blog-card',
+    toolbarAnchor: '.blog-kicker-row',
     toolbarMode: 'inline',
-    blocks: '.blog-title, .blog-summary, .blog-card-quote',
+    blocks: '.blog-title, .blog-summary, .blog-card-quote, .blog-highlight-list li',
+    dynamic: true,
+  },
+  {
+    selector: '.blog-article',
+    toolbarAnchor: '.article-header',
+    toolbarMode: 'inline',
+    blocks:
+      '.article-title, .article-promise, .article-body p, .article-body li, .article-body h2, .article-body h3, .article-body blockquote',
     dynamic: true,
   },
   {
@@ -130,7 +139,9 @@ function canUseAiTranslation() {
 }
 
 function chunkText(text, size = 420) {
-  const normalized = String(text || '').replace(/\s+/g, ' ').trim();
+  const normalized = String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
   if (!normalized) return [];
   if (normalized.length <= size) return [normalized];
 
@@ -387,7 +398,10 @@ function refreshBlocks(state) {
 function markActiveLanguage(state, langCode) {
   state.popover.querySelectorAll('.card-translate-option').forEach(option => {
     option.classList.toggle('is-active', option.getAttribute('data-lang') === langCode);
-    option.setAttribute('aria-selected', option.getAttribute('data-lang') === langCode ? 'true' : 'false');
+    option.setAttribute(
+      'aria-selected',
+      option.getAttribute('data-lang') === langCode ? 'true' : 'false'
+    );
   });
 }
 

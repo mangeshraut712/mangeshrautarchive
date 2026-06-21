@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
-const gotoSite = (page, path = '/') => page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
+const gotoSite = (page, path = '/') =>
+  page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
 
 const RICH_MARKDOWN_REPLY =
   'Here is **bold**, ||spoiler||, a task:\n- [ ] Todo item\n\n| Col | Val |\n| --- | --- |\n| A | 1 |';
@@ -58,7 +59,9 @@ test.describe('Chatbot rich markdown cross-browser', () => {
     await page.locator('#chatbot-input').fill(RICH_MARKDOWN_REPLY);
     await page.locator('.chatbot-send-btn').click();
 
-    const spoiler = page.locator('#chatbot-messages .message.assistant-message .rich-spoiler').last();
+    const spoiler = page
+      .locator('#chatbot-messages .message.assistant-message .rich-spoiler')
+      .last();
     await expect(spoiler).toBeVisible({ timeout: 15_000 });
     await spoiler.click();
     await expect(spoiler).toHaveClass(/revealed/);
@@ -71,7 +74,11 @@ test.describe('Chatbot rich markdown cross-browser', () => {
     await page.locator('#chatbot-input').fill('stream test');
     await page.locator('.chatbot-send-btn').click();
 
-    const thinking = page.locator('#chatbot-widget .rich-block-thinking, #chatbot-widget .thinking-indicator');
-    await expect(thinking.first()).toBeVisible({ timeout: 10_000 }).catch(() => {});
+    const thinking = page.locator(
+      '#chatbot-widget .rich-block-thinking, #chatbot-widget .thinking-indicator'
+    );
+    await expect(thinking.first())
+      .toBeVisible({ timeout: 10_000 })
+      .catch(() => {});
   });
 });

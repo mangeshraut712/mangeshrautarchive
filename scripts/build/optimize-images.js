@@ -94,7 +94,7 @@ function getImageFiles(dir, relativePath = '') {
         fullPath,
         relativePath: relPath,
         dir: relativePath,
-        name: item.name
+        name: item.name,
       });
     }
   }
@@ -160,7 +160,9 @@ async function processImages() {
 
   console.log('\n✨ Image optimization complete!');
   console.log(`📁 Optimized images saved to: ${OUTPUT_DIR}`);
-  console.log(`📊 Total: ${processedCount} images, ${(totalSavings / 1024 / 1024).toFixed(2)} MB saved`);
+  console.log(
+    `📊 Total: ${processedCount} images, ${(totalSavings / 1024 / 1024).toFixed(2)} MB saved`
+  );
 
   // Generate usage examples
   if (imageFiles.length > 0) {
@@ -178,9 +180,13 @@ function generateUsageExamples(sampleFile) {
   console.log('<!-- WebP with fallback -->');
   console.log('<picture>');
   console.log(`  <source type="image/webp" srcset="assets/images/optimized/${baseName}.webp" />`);
-  console.log(`  <img src="assets/images/optimized/${sampleFile}" alt="Description" loading="lazy" />`);
+  console.log(
+    `  <img src="assets/images/optimized/${sampleFile}" alt="Description" loading="lazy" />`
+  );
   console.log('</picture>\n');
-  console.log('💡 Tip: Use <picture> element to serve WebP to modern browsers with fallback to original format\n');
+  console.log(
+    '💡 Tip: Use <picture> element to serve WebP to modern browsers with fallback to original format\n'
+  );
 }
 
 // Run the script

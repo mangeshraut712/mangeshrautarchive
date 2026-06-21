@@ -25,7 +25,12 @@ async function auditPage(page, path) {
       const el = document.querySelector(sel);
       if (!el) return null;
       const r = el.getBoundingClientRect();
-      return { t: Math.round(r.top), b: Math.round(r.bottom), l: Math.round(r.left), r: Math.round(r.right) };
+      return {
+        t: Math.round(r.top),
+        b: Math.round(r.bottom),
+        l: Math.round(r.left),
+        r: Math.round(r.right),
+      };
     };
     const hits = (a, b) => a && b && !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
     const actions = rect('.hero-actions');
@@ -114,7 +119,13 @@ async function main() {
     });
   }
 
-  console.log(JSON.stringify({ device: 'iPhone 17 Pro Max Safari (WebKit)', base: BASE, results, checks }, null, 2));
+  console.log(
+    JSON.stringify(
+      { device: 'iPhone 17 Pro Max Safari (WebKit)', base: BASE, results, checks },
+      null,
+      2
+    )
+  );
 
   const failed = checks.filter(c => !c.overflowOk || (c.page === '/' && c.toolbar !== 5));
   process.exit(failed.length ? 1 : 0);

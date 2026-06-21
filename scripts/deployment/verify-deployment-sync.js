@@ -179,7 +179,10 @@ async function verifyRemoteSync(options) {
       execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
 
   if (options.parity) {
-    log('Parity mode: requiring GitHub Pages and Vercel production to share the same commit', 'info');
+    log(
+      'Parity mode: requiring GitHub Pages and Vercel production to share the same commit',
+      'info'
+    );
   } else {
     log(`Expected deployment commit: ${expectedCommit}`, 'info');
   }
@@ -222,7 +225,9 @@ async function verifyRemoteSync(options) {
     }
 
     if (options.parity) {
-      const githubPages = results.find(result => result.name === 'GitHub Pages' && result.config?.gitCommit);
+      const githubPages = results.find(
+        result => result.name === 'GitHub Pages' && result.config?.gitCommit
+      );
       const vercelProd = results.find(
         result => result.name === 'Vercel Production' && result.config?.gitCommit
       );

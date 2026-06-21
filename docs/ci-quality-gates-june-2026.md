@@ -4,10 +4,10 @@ This document tracks the active quality pipeline for `mangeshrautarchive` as of 
 
 ## Workflows
 
-| Workflow | Trigger | Blocking? |
-| -------- | ------- | --------- |
-| [`deploy.yml`](../.github/workflows/deploy.yml) | Push/PR to `main`, manual | Yes (quality + deploy) |
-| [`post-deploy-monitoring.yml`](../.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC, manual | Yes (production checks) |
+| Workflow                                                                        | Trigger                   | Blocking?               |
+| ------------------------------------------------------------------------------- | ------------------------- | ----------------------- |
+| [`deploy.yml`](../.github/workflows/deploy.yml)                                 | Push/PR to `main`, manual | Yes (quality + deploy)  |
+| [`post-deploy-monitoring.yml`](../.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC, manual   | Yes (production checks) |
 
 ## `deploy.yml` gate order
 
@@ -23,12 +23,12 @@ This document tracks the active quality pipeline for `mangeshrautarchive` as of 
 
 ## Lighthouse thresholds
 
-| Surface | Performance | Accessibility | Best Practices | SEO |
-| ------- | ----------- | ------------- | -------------- | --- |
-| CI dist gate (desktop) | ≥ 80 | ≥ 90 | ≥ 90 | ≥ 90 |
-| CI dist gate (mobile) | ≥ 60 | ≥ 90 | ≥ 90 | ≥ 90 |
-| Nightly production (Vercel) | ≥ 70 | ≥ 90 | ≥ 90 | ≥ 90 |
-| Nightly production (mobile) | ≥ 55 | ≥ 90 | ≥ 90 | ≥ 90 |
+| Surface                     | Performance | Accessibility | Best Practices | SEO  |
+| --------------------------- | ----------- | ------------- | -------------- | ---- |
+| CI dist gate (desktop)      | ≥ 80        | ≥ 90          | ≥ 90           | ≥ 90 |
+| CI dist gate (mobile)       | ≥ 60        | ≥ 90          | ≥ 90           | ≥ 90 |
+| Nightly production (Vercel) | ≥ 70        | ≥ 90          | ≥ 90           | ≥ 90 |
+| Nightly production (mobile) | ≥ 55        | ≥ 90          | ≥ 90           | ≥ 90 |
 
 Local verification (June 2026): `npm run qa:lighthouse:ci` reached **100/100** on all four categories for both desktop and mobile against `dist/`.
 

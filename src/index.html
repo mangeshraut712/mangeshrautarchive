@@ -1819,7 +1819,7 @@
                 <h3 class="activity-title">Release-aware engineering momentum</h3>
               </div>
               <p id="projects-activity-caption" class="projects-activity-caption">
-                Syncing repository stars, forks, commits, releases, and contributor activity...
+                Syncing repository stars, forks, commits, and contributor activity...
               </p>
             </div>
 
@@ -1829,8 +1829,8 @@
                 <span class="activity-stat-label">Public Repos</span>
               </div>
               <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-released">--</span>
-                <span class="activity-stat-label">Released</span>
+                <span class="activity-stat-value" id="stat-contributors">--</span>
+                <span class="activity-stat-label">Contributors</span>
               </div>
               <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-stars">--</span>
@@ -1845,8 +1845,8 @@
                 <span class="activity-stat-label">Commits (30d)</span>
               </div>
               <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-release-commits">--</span>
-                <span class="activity-stat-label">Since Release</span>
+                <span class="activity-stat-value" id="stat-active-repos">--</span>
+                <span class="activity-stat-label">Active (14d)</span>
               </div>
               <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-languages">--</span>
@@ -1888,6 +1888,15 @@
                     onload="window.handleGraphLoadSuccess?.()" onerror="window.handleGraphLoadError?.()">
                 </picture>
               </div>
+              <div class="github-graph-legend" aria-hidden="true">
+                Less
+                <span style="background:#ebedf0"></span>
+                <span style="background:#9be9a8"></span>
+                <span style="background:#40c463"></span>
+                <span style="background:#30a14e"></span>
+                <span style="background:#216e39"></span>
+                More
+              </div>
             </div>
 
             <script>
@@ -1896,6 +1905,24 @@
                 const GRAPH_TIMEOUT = 15000; // 15 seconds timeout
                 let retryCount = 0;
                 const MAX_RETRIES = 3;
+
+                function isDarkGraphTheme() {
+                  return document.documentElement.classList.contains('dark') ||
+                    document.documentElement.getAttribute('data-theme') === 'dark' ||
+                    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                }
+
+                function syncGraphLegendTheme() {
+                  const legend = document.querySelector('#github-graph-container .github-graph-legend');
+                  if (!legend) return;
+                  const dark = isDarkGraphTheme();
+                  const colors = dark
+                    ? ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
+                    : ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+                  legend.querySelectorAll('span').forEach((chip, index) => {
+                    chip.style.background = colors[index] || colors[colors.length - 1];
+                  });
+                }
 
                 window.handleGraphLoadSuccess = function () {
                   clearTimeout(graphLoadTimeout);
@@ -1908,6 +1935,7 @@
                   if (fallbackSvg) fallbackSvg.remove();
 
                   retryCount = 0;
+                  syncGraphLegendTheme();
                 };
 
                 window.handleGraphLoadError = function () {
@@ -1940,8 +1968,7 @@
                   svg.style.animation = 'fadeIn 0.5s ease-out';
 
                   // Add styling variables
-                  const isDark = document.documentElement.classList.contains('dark') ||
-                                 (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  const isDark = isDarkGraphTheme();
 
                   // Apple-themed colors for light vs dark mode
                   const colors = isDark
@@ -2051,11 +2078,12 @@
                   svg.appendChild(gridGroup);
 
                   scrollEl.appendChild(svg);
+                  syncGraphLegendTheme();
 
                   // Update text in label if possible
                   const countLabel = document.getElementById('projects-activity-caption');
-                  if (countLabel) {
-                    countLabel.textContent = `Offline view: ${totalContributions} contributions compiled in the last year (local simulation).`;
+                  if (countLabel && countLabel.textContent.includes('Syncing repository')) {
+                    countLabel.textContent = `Offline preview: ${totalContributions} contributions estimated for the last year.`;
                   }
                 }
 
@@ -2090,7 +2118,7 @@
                   }, GRAPH_TIMEOUT);
 
                   // Reload image with cache-busting - use bright green for dark mode
-                  const isDark = document.documentElement.classList.contains('dark');
+                  const isDark = isDarkGraphTheme();
                   const color = isDark ? '39d353' : '0071e3';
                   const cacheBuster = '?t=' + Date.now();
                   imgEl.src = 'https://ghchart.rshah.org/' + color + '/mangeshraut712' + cacheBuster;
@@ -2106,6 +2134,12 @@
                     }
                   };
                   scheduleGraph(window.loadGitHubGraph);
+                  syncGraphLegendTheme();
+
+                  if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncGraphLegendTheme);
+                  }
+                  document.addEventListener('themechange', syncGraphLegendTheme);
 
                   // Refresh button handler
                   const refreshBtn = document.getElementById('refresh-graph-btn');
@@ -2125,17 +2159,13 @@
               title="All showcase repositories">
               All <span class="project-lens-count" data-lens-count="all">—</span>
             </button>
-            <button type="button" class="project-lens-chip" data-project-lens="hot" aria-pressed="false"
-              title="Primary signal: active in the last 14 days">
-              Hot <span class="project-lens-count" data-lens-count="hot">—</span>
+            <button type="button" class="project-lens-chip" data-project-lens="active" aria-pressed="false"
+              title="Pushed or updated within the last 14 days">
+              Active <span class="project-lens-count" data-lens-count="active">—</span>
             </button>
             <button type="button" class="project-lens-chip" data-project-lens="busy" aria-pressed="false"
-              title="Primary signal: 10 or more commits since the latest release">
+              title="10 or more commits in the last 30 days">
               Busy <span class="project-lens-count" data-lens-count="busy">—</span>
-            </button>
-            <button type="button" class="project-lens-chip" data-project-lens="released" aria-pressed="false"
-              title="Has at least one GitHub release">
-              Released <span class="project-lens-count" data-lens-count="released">—</span>
             </button>
           </div>
 
@@ -2149,15 +2179,18 @@
                 aria-label="Search projects">
             </div>
             <div class="proj-controls-group flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-              <select id="project-sort-select"
-                class="proj-filter-select rounded-full px-5 py-3 outline-none cursor-pointer font-medium appearance-none min-w-[180px]"
-                aria-label="Sort projects">
-                <option value="popularity">Featured</option>
-                <option value="stars">Most stars</option>
-                <option value="date">Recently pushed</option>
-                <option value="name">Name (A–Z)</option>
-                <option value="language">Primary language</option>
-              </select>
+              <div class="proj-sort-field">
+                <label class="sr-only" for="project-sort-select">Sort projects</label>
+                <select id="project-sort-select"
+                  class="proj-filter-select rounded-full px-5 py-3 outline-none cursor-pointer font-medium appearance-none"
+                  aria-label="Sort projects">
+                  <option value="popularity">Featured</option>
+                  <option value="stars">Most stars</option>
+                  <option value="date">Recently pushed</option>
+                  <option value="name">Name (A–Z)</option>
+                  <option value="language">Primary language</option>
+                </select>
+              </div>
               <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
                 class="projects-view-all-btn flex items-center justify-center gap-2 font-medium"
                 aria-label="Visit GitHub profile">
@@ -3596,8 +3629,7 @@
 
                   <!-- Loading State -->
                   <div class="media-card currently-music-card currently-music-state loading" id="music-loading">
-                    <div class="media-poster music-poster-loading"
-                      style="display: flex; align-items: center; justify-content: center;">
+                    <div class="media-poster music-poster-loading" style="display: flex; align-items: center; justify-content: center;">
                       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
                     </div>
                     <div class="media-info">
@@ -3608,8 +3640,7 @@
 
                   <!-- Error/Empty State -->
                   <div class="media-card currently-music-card currently-music-state empty" id="music-empty" hidden>
-                    <div class="media-poster music-poster-empty"
-                      style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
+                    <div class="media-poster music-poster-empty" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
                       <i class="fab fa-spotify" style="font-size: 2rem; color: #1db954;"></i>
                     </div>
                     <div class="media-info">

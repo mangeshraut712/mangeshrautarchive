@@ -5,18 +5,16 @@ import './project-xr.js';
 const DEFAULT_USERNAME = 'mangeshraut712';
 const PROJECT_ROWS_LIMIT = 2;
 const DEFAULT_PROJECT_LENS = 'all';
-const LENS_KEYS = ['all', 'hot', 'busy', 'released'];
+const LENS_KEYS = ['all', 'active', 'busy'];
 const LENS_LABELS = {
   all: 'All',
-  hot: 'Hot',
+  active: 'Active',
   busy: 'Busy',
-  released: 'Released',
 };
 const LENS_HINTS = {
   all: 'Every showcase repository',
-  hot: 'Primary signal: active in the last 14 days',
-  busy: 'Primary signal: 10+ commits since the latest release',
-  released: 'Has at least one GitHub release',
+  active: 'Pushed or updated within the last 14 days',
+  busy: '10+ commits in the last 30 days',
 };
 
 function getProjectGridColumns(container) {
@@ -144,19 +142,36 @@ function revealRenderedProjectCards(container) {
 
 function formatActivityCaption(totals) {
   const parts = [];
-  if (totals.hotRepos > 0) parts.push(`${totals.hotRepos} hot`);
+  if (totals.activeRepos > 0) parts.push(`${totals.activeRepos} active`);
   if (totals.busyRepos > 0) parts.push(`${totals.busyRepos} busy`);
-  if (totals.releasedRepos > 0) parts.push(`${totals.releasedRepos} released`);
+  if (totals.totalContributors > 0) {
+    parts.push(`${formatCompactNumber(totals.totalContributors)} contributors`);
+  }
 
   if (parts.length > 0) {
     return `${parts.join(' · ')} across showcase repositories.`;
   }
 
-  if (totals.releaseCheckedRepos > 0) {
-    return `${totals.releaseCheckedRepos} showcase repositories synced with GitHub release signals.`;
+  if (totals.activityRepos > 0) {
+    return `${totals.activityRepos} repositories with live commit activity in the last sync.`;
   }
 
-  return 'Syncing repository stars, forks, commits, releases, and contributor activity...';
+  return 'Syncing repository stars, forks, commits, and contributor activity...';
+}
+
+function setStatItem(id, value, { hideWhenEmpty = true } = {}) {
+  const item = document.getElementById(id)?.closest('.activity-stat-item');
+  const displayValue =
+    value === null || value === undefined || value === '' || value === '--' ? '--' : value;
+
+  setTextById(id, displayValue);
+
+  if (!item) return;
+
+  const numeric = Number(String(displayValue).replace(/[^\d.]/g, ''));
+  const shouldHide = hideWhenEmpty && (displayValue === '--' || numeric === 0);
+  item.hidden = shouldHide;
+  item.classList.toggle('activity-stat-empty', shouldHide);
 }
 
 function renderNoResults(container, query = '', lensLabel = '') {
@@ -213,12 +228,17 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
           : null;
       if (releaseSignal?.releaseChecked) {
         acc.releaseCheckedRepos += 1;
-        if (releaseSignal.hasRelease) acc.releasedRepos += 1;
-        if (releaseSignal.key === 'hot') acc.hotRepos += 1;
-        if (releaseSignal.key === 'busy') acc.busyRepos += 1;
-        if (releaseSignal.commitsSinceRelease !== null) {
-          acc.totalCommitsSinceRelease += releaseSignal.commitsSinceRelease;
-        }
+      }
+
+      const pushedAgeDays = githubProjects?.getRepoAgeDays?.(repo?.pushed_at || repo?.updated_at);
+      if (Number.isFinite(pushedAgeDays) && pushedAgeDays <= 14) {
+        acc.activeRepos += 1;
+      }
+
+      if (commits30d !== null && commits30d >= 10) {
+        acc.busyRepos += 1;
+      } else if (releaseSignal?.filters?.has('busy') || releaseSignal?.key === 'busy') {
+        acc.busyRepos += 1;
       }
 
       const updatedTime = new Date(repo.updated_at || 0).getTime();
@@ -233,38 +253,36 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       totalForks: 0,
       totalCommits30d: 0,
       totalContributors: 0,
-      totalCommitsSinceRelease: 0,
       activityRepos: 0,
       releaseCheckedRepos: 0,
-      releasedRepos: 0,
-      hotRepos: 0,
+      activeRepos: 0,
       busyRepos: 0,
       languages: new Set(),
       latestUpdate: 0,
     }
   );
 
-  setTextById('stat-repos', source.length);
-  setTextById(
-    'stat-released',
-    totals.releaseCheckedRepos ? formatCompactNumber(totals.releasedRepos) : '--'
-  );
-  setTextById('stat-stars', formatCompactNumber(totals.totalStars));
-  setTextById('stat-forks', formatCompactNumber(totals.totalForks));
-  setTextById(
+  setStatItem('stat-repos', source.length, { hideWhenEmpty: false });
+  setStatItem('stat-stars', formatCompactNumber(totals.totalStars), { hideWhenEmpty: false });
+  setStatItem('stat-forks', formatCompactNumber(totals.totalForks), { hideWhenEmpty: false });
+  setStatItem(
     'stat-commits',
     totals.activityRepos ? formatCompactNumber(totals.totalCommits30d) : '--'
   );
-  setTextById(
-    'stat-release-commits',
-    totals.releaseCheckedRepos ? formatCompactNumber(totals.totalCommitsSinceRelease) : '--'
+  setStatItem(
+    'stat-contributors',
+    totals.activityRepos ? formatCompactNumber(totals.totalContributors) : '--'
   );
-  setTextById('stat-languages', totals.languages.size);
+  setStatItem(
+    'stat-active-repos',
+    totals.activeRepos > 0 ? formatCompactNumber(totals.activeRepos) : '--'
+  );
+  setStatItem('stat-languages', totals.languages.size, { hideWhenEmpty: false });
 
   const captionEl = document.getElementById('projects-activity-caption');
   if (!captionEl) return;
 
-  if (totals.releaseCheckedRepos > 0) {
+  if (totals.activityRepos > 0 || totals.activeRepos > 0 || totals.releaseCheckedRepos > 0) {
     captionEl.textContent = formatActivityCaption(totals);
     return;
   }
@@ -386,9 +404,8 @@ function normalizeLens(value) {
 
 function getLensLabel(lens) {
   const labels = {
-    hot: 'hot projects',
+    active: 'active projects',
     busy: 'busy projects',
-    released: 'released projects',
   };
   return labels[lens] || '';
 }
@@ -403,8 +420,14 @@ function createLensMatcher(lens, githubProjects) {
     }
 
     const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
-    if (normalizedLens === 'released') {
-      return Boolean(signal.hasRelease);
+    if (normalizedLens === 'active') {
+      const age = githubProjects.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
+      return Number.isFinite(age) && age <= 14;
+    }
+    if (normalizedLens === 'busy') {
+      const commits30d = toFiniteMetric(repo.__activity?.commits30d);
+      if (commits30d !== null && commits30d >= 10) return true;
+      return signal.filters?.has('busy') === true || signal.key === 'busy';
     }
     return signal.key === normalizedLens;
   };
@@ -413,17 +436,19 @@ function createLensMatcher(lens, githubProjects) {
 function countLensDistribution(repos, githubProjects) {
   const counts = {
     all: repos.length,
-    hot: 0,
+    active: 0,
     busy: 0,
-    released: 0,
   };
 
   repos.forEach(repo => {
     if (!githubProjects || typeof githubProjects.getReleaseSignal !== 'function') return;
     const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
-    if (signal.key === 'hot') counts.hot += 1;
-    if (signal.key === 'busy') counts.busy += 1;
-    if (signal.hasRelease) counts.released += 1;
+    const age = githubProjects.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
+    if (Number.isFinite(age) && age <= 14) counts.active += 1;
+    const commits30d = toFiniteMetric(repo.__activity?.commits30d);
+    if ((commits30d !== null && commits30d >= 10) || signal.filters?.has('busy') || signal.key === 'busy') {
+      counts.busy += 1;
+    }
   });
 
   return counts;

@@ -929,7 +929,8 @@ export class AccessibilityEnhancer {
         button.setAttribute('aria-controls', 'a11y-glass-popover');
       }
       const isHtmlIcon = btn.icon.startsWith('<');
-      const iconClass = (!isHtmlIcon && btn.icon.startsWith('A')) ? 'a11y-toolbar-button__icon--text' : '';
+      const iconClass =
+        !isHtmlIcon && btn.icon.startsWith('A') ? 'a11y-toolbar-button__icon--text' : '';
       button.innerHTML = `<span class="a11y-toolbar-button__icon ${iconClass}" aria-hidden="true">${btn.icon}</span>`;
       if (btn.action) {
         button.addEventListener('click', btn.action);

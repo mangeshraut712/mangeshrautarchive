@@ -249,8 +249,17 @@ html.dark .card-translate-option__label {
 .award-content > .card-read-toolbar--inline,
 .recommendation-card > .card-read-toolbar--inline,
 .blog-card > .card-read-toolbar--inline,
+.blog-article > .card-read-toolbar--inline,
 .travel-stop > .card-read-toolbar--inline {
   position: static;
+}
+
+.blog-card > .card-read-toolbar--inline {
+  margin-bottom: 0.65rem;
+}
+
+.blog-article > .card-read-toolbar--inline {
+  margin-top: 0.75rem;
 }
 
 .experience-content > .card-read-toolbar--inline {

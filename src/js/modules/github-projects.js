@@ -39,10 +39,7 @@ class GitHubProjects {
     this.proxyCandidates = isLocal
       ? ['/api/github/repos/public', '/api/github/repos']
       : apiBaseNormalized
-        ? [
-            `${apiBaseNormalized}/api/github/repos/public`,
-            `${apiBaseNormalized}/api/github/repos`,
-          ]
+        ? [`${apiBaseNormalized}/api/github/repos/public`, `${apiBaseNormalized}/api/github/repos`]
         : [
             '/api/github/repos/public',
             '/api/github/repos',
@@ -715,15 +712,15 @@ class GitHubProjects {
     let meta = 'No GitHub release yet';
 
     if (!releaseChecked) {
-      if (activeAgeDays <= 14) key = 'hot';
+      if (activeAgeDays <= 14) key = 'active';
       else if (activeAgeDays <= 45) key = 'fresh';
       else if (activeAgeDays > 120) key = 'attention';
       label = 'Checking release';
       meta = 'Syncing latest GitHub release';
     } else if (!hasRelease) {
       if (activeAgeDays <= 14) {
-        key = 'hot';
-        label = 'Hot';
+        key = 'active';
+        label = 'Active';
       } else if (activeAgeDays > 120) {
         key = 'attention';
         label = 'Stale';
@@ -752,8 +749,8 @@ class GitHubProjects {
 
     const filters = new Set(['all', key]);
     if (hasRelease) filters.add('released');
-    if (commits30d !== null && commits30d >= 8) filters.add('busy');
-    if (activeAgeDays <= 14) filters.add('hot');
+    if (commits30d !== null && commits30d >= 10) filters.add('busy');
+    if (activeAgeDays <= 14) filters.add('active');
     if (activeAgeDays <= 45 || (hasRelease && releaseAgeDays <= 45)) filters.add('fresh');
     if (
       key === 'attention' ||
@@ -1189,7 +1186,7 @@ class GitHubProjects {
     const contributors = this.toFiniteMetric(activity.contributors);
     const latestCommitAt = activity.latestCommitAt || repo.pushed_at || repo.updated_at || '';
     const releaseSignal = this.getReleaseSignal(repo, activity);
-    const releaseKey = ['attention', 'hot', 'busy', 'fresh', 'released', 'open'].includes(
+    const releaseKey = ['attention', 'active', 'busy', 'fresh', 'released', 'open'].includes(
       releaseSignal.key
     )
       ? releaseSignal.key

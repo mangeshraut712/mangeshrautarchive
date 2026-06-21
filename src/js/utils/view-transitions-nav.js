@@ -20,7 +20,12 @@ function isSameOriginHtmlNavigation(anchor) {
   }
 
   const rawHref = anchor.getAttribute('href');
-  if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:')) {
+  if (
+    !rawHref ||
+    rawHref.startsWith('#') ||
+    rawHref.startsWith('mailto:') ||
+    rawHref.startsWith('tel:')
+  ) {
     return false;
   }
 

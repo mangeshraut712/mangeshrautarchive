@@ -66,7 +66,9 @@ describe('MarkdownService.render', () => {
   });
 
   it('allows trusted images', () => {
-    const html = markdownService.render('![profile](https://mangeshraut.pro/assets/images/profile.webp)');
+    const html = markdownService.render(
+      '![profile](https://mangeshraut.pro/assets/images/profile.webp)'
+    );
     expect(html).toContain('rich-inline-media');
     expect(html).toContain('mangeshraut.pro');
   });

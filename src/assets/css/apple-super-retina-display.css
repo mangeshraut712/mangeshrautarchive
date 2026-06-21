@@ -186,7 +186,9 @@ html.dark.aod-dim .a11y-toolbar {
   .game-section,
   #books-content,
   #shows-content {
-    scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 28px) !important;
+    scroll-margin-top: calc(
+      var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 28px
+    ) !important;
   }
 
   /* Retina / 460 ppi asset scaling */
@@ -219,7 +221,7 @@ html.dark.aod-dim .a11y-toolbar {
 /* P3 / wide-gamut accent boost on capable displays */
 @media (color-gamut: p3) {
   :root {
-    --apple-accent: color(display-p3 0.0 0.478 0.894);
+    --apple-accent: color(display-p3 0 0.478 0.894);
     --apple-accent-dark: color(display-p3 0.4 0.62 1);
   }
 

@@ -19,7 +19,6 @@ import './modules/apple-sounds.js';
 import './modules/avatar-toggle.js';
 import './modules/birthday-celebration.js';
 import './modules/blog-data.js';
-import './modules/visitor-guide.js';
 import './modules/blog-loader.js';
 import './modules/calendar.js';
 import './modules/chatbot.js';

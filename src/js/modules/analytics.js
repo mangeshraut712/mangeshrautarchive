@@ -206,14 +206,12 @@
   }
 
   function normalizeTrend(trend = []) {
-    return trend
-      .slice(-7)
-      .map(point => ({
-        date: point.date || '',
-        views: Number(point.views || 0),
-        visitors: Number(point.visitors || 0),
-        sessions: Number(point.sessions || 0),
-      }));
+    return trend.slice(-7).map(point => ({
+      date: point.date || '',
+      views: Number(point.views || 0),
+      visitors: Number(point.visitors || 0),
+      sessions: Number(point.sessions || 0),
+    }));
   }
 
   function renderSparkline(trend = [], metricKey = 'views') {
@@ -324,8 +322,7 @@
         gaEnabled && insights.total_views_all_time
           ? ` · ${formatNumber(insights.total_views_all_time)} page views`
           : '';
-      const gaHint =
-        !payload?.ga_configured && !gaEnabled ? ' · GA4 pending server setup' : '';
+      const gaHint = !payload?.ga_configured && !gaEnabled ? ' · GA4 pending server setup' : '';
       reachPanelEls.note.textContent = `${formatDateLabel(payload?.timestamp)}${countryText}${viewsText}${gaHint}`;
     }
 
@@ -463,9 +460,7 @@
 
   async function refreshReach({ track = false } = {}) {
     try {
-      const trackPromise = track
-        ? trackSharedVisit().catch(() => null)
-        : Promise.resolve(null);
+      const trackPromise = track ? trackSharedVisit().catch(() => null) : Promise.resolve(null);
       const fetchPromise = fetchReach();
       const [, result] = await Promise.all([trackPromise, fetchPromise]);
 

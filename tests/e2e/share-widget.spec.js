@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
-const gotoSite = (page, path = '/') => page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
+const gotoSite = (page, path = '/') =>
+  page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
 
 async function openShareDialog(page) {
   await page.waitForSelector('#website-share-toggle', { state: 'visible', timeout: 20_000 });
@@ -15,7 +16,9 @@ async function openShareDialog(page) {
 }
 
 test.describe('Share widget cross-browser', () => {
-  test('repairs the share button when the accessibility toolbar is restored from an older state', async ({ page }) => {
+  test('repairs the share button when the accessibility toolbar is restored from an older state', async ({
+    page,
+  }) => {
     await gotoSite(page);
 
     await expect(page.locator('.a11y-toolbar')).toBeVisible();
@@ -102,7 +105,9 @@ test.describe('Share widget mobile layout', () => {
       );
       const lastTab = tabs[tabs.length - 1];
       const hits = (a, b) =>
-        a && b && !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+        a &&
+        b &&
+        !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
       return {
         overlapsLastTab: hits(close, lastTab),
         closeLeft: close?.left,

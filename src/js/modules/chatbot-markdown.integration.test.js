@@ -9,14 +9,10 @@ describe('chatbot markdown integration patterns', () => {
     const rich = 'Here is **bold** and a list:\n- item';
 
     expect(markdownService.containsMarkdown(plain)).toBe(false);
-    expect(
-      markdownService.containsMarkdown(plain) || plain.length >= 48
-    ).toBe(false);
+    expect(markdownService.containsMarkdown(plain) || plain.length >= 48).toBe(false);
 
     expect(markdownService.containsMarkdown(rich)).toBe(true);
-    expect(
-      markdownService.containsMarkdown(rich) || rich.length >= 48
-    ).toBe(true);
+    expect(markdownService.containsMarkdown(rich) || rich.length >= 48).toBe(true);
   });
 
   it('finalizes assistant output with renderForChat and interaction hooks', () => {

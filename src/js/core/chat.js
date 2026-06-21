@@ -344,7 +344,7 @@ class IntelligentAssistant {
     }
 
     const best = this.chooseBestResponse(responses);
-    if (best) {
+    if (best && this.isMeaningfulResponse(best)) {
       return best;
     }
 
@@ -362,6 +362,10 @@ class IntelligentAssistant {
       (hostname.includes('github.io') && API_BASE && API_BASE.includes('vercel.app'));
 
     if (!canCallServerAPI) {
+      return null;
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
       return null;
     }
 
@@ -840,15 +844,14 @@ class IntelligentAssistant {
     return result;
   }
 
-  handleError(_query, _error) {
-    const fallbackResponses = [
-      "I'm experiencing some technical difficulties. Please try again in a moment.",
-      "Sorry, I couldn't process that right now. Feel free to try a different question!",
-      "I'm having trouble connecting right now. Please check your internet and try again.",
-    ];
+  handleError(query, _error) {
+    if (query && typeof query === 'string') {
+      return this.basicQueryProcessing(query.trim());
+    }
 
     return {
-      answer: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
+      answer:
+        "I'm having trouble reaching the live AI service right now, but I can still help with portfolio questions offline.",
       type: 'fallback',
       confidence: 0.2,
       source: 'assistme-general',

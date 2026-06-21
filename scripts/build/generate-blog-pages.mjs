@@ -19,7 +19,15 @@ function sortedPosts() {
   return blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-function pageShell({ title, description, canonical, ogType = 'website', jsonLd, body, extraHead = '' }) {
+function pageShell({
+  title,
+  description,
+  canonical,
+  ogType = 'website',
+  jsonLd,
+  body,
+  extraHead = '',
+}) {
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -54,6 +62,7 @@ function pageShell({ title, description, canonical, ogType = 'website', jsonLd, 
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/accessibility-contrast-fixes.css" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog.css" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/card-content-accessibility.css?v=20260621b" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css" />
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>

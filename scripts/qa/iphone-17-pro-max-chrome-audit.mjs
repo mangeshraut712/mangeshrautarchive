@@ -29,10 +29,21 @@ async function layoutCheck(page) {
       const el = document.querySelector(sel);
       if (!el) return null;
       const r = el.getBoundingClientRect();
-      return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, w: r.width, h: r.height };
+      return {
+        top: r.top,
+        bottom: r.bottom,
+        left: r.left,
+        right: r.right,
+        w: r.width,
+        h: r.height,
+      };
     };
     const inViewport = r =>
-      r && r.top >= -2 && r.left >= -2 && r.bottom <= window.innerHeight + 2 && r.right <= window.innerWidth + 2;
+      r &&
+      r.top >= -2 &&
+      r.left >= -2 &&
+      r.bottom <= window.innerHeight + 2 &&
+      r.right <= window.innerWidth + 2;
     const top = box('#go-to-top');
     const chat = box('#chatbot-toggle');
     const toolbar = box('.a11y-toolbar');
@@ -51,11 +62,16 @@ async function layoutCheck(page) {
       shareCloseOverlapsTab: overlap(close, lastTab),
       shareCloseClearance: close && lastTab ? close.left - lastTab.right : null,
       hasShareHeaderRow: !!document.querySelector('.website-share-card-top'),
-      shareDialogHidden: document.getElementById('website-share-dialog')?.classList.contains('hidden'),
+      shareDialogHidden: document
+        .getElementById('website-share-dialog')
+        ?.classList.contains('hidden'),
       chatbotBackdropActive: backdrop?.classList.contains('active'),
       chatbotBodyLocked: document.body.classList.contains('chatbot-open'),
-      chatbotBackdropVisible: backdropStyle ? backdropStyle.visibility === 'visible' && parseFloat(backdropStyle.opacity) > 0.5 : false,
-      chatbotBackdropBlur: backdropStyle?.webkitBackdropFilter || backdropStyle?.backdropFilter || '',
+      chatbotBackdropVisible: backdropStyle
+        ? backdropStyle.visibility === 'visible' && parseFloat(backdropStyle.opacity) > 0.5
+        : false,
+      chatbotBackdropBlur:
+        backdropStyle?.webkitBackdropFilter || backdropStyle?.backdropFilter || '',
       chatbotWidgetBg: widgetStyle?.backgroundColor || '',
       healthSleep: document.getElementById('whoop-sleep-val')?.textContent,
       healthSync: document.getElementById('health-sync-text')?.textContent,
@@ -74,7 +90,13 @@ async function main() {
     userAgent: UA,
   });
   const page = await context.newPage();
-  const report = { device: 'iPhone 17 Pro Max Chrome', base: BASE, viewport: VIEWPORT, shots: {}, checks: [] };
+  const report = {
+    device: 'iPhone 17 Pro Max Chrome',
+    base: BASE,
+    viewport: VIEWPORT,
+    shots: {},
+    checks: [],
+  };
 
   // Homepage — scrolled top
   await page.goto(BASE, { waitUntil: 'domcontentloaded', timeout: 60_000 });
@@ -101,12 +123,15 @@ async function main() {
   // Share dialog
   await page.keyboard.press('Escape');
   await page.locator('#website-share-toggle').click();
-  await page.waitForFunction(() => {
-    const dialog = document.getElementById('website-share-dialog');
-    if (!dialog?.classList.contains('active')) return false;
-    const style = getComputedStyle(dialog);
-    return style.visibility === 'visible' && parseFloat(style.opacity || '0') >= 0.85;
-  }, { timeout: 15_000 });
+  await page.waitForFunction(
+    () => {
+      const dialog = document.getElementById('website-share-dialog');
+      if (!dialog?.classList.contains('active')) return false;
+      const style = getComputedStyle(dialog);
+      return style.visibility === 'visible' && parseFloat(style.opacity || '0') >= 0.85;
+    },
+    { timeout: 15_000 }
+  );
   await page.waitForTimeout(400);
   report.shots.shareOpen = await shot(page, '04-share-dialog');
   layout = await layoutCheck(page);
@@ -148,10 +173,13 @@ async function main() {
     if (c.id === 'chatbot-open') {
       if (!c.chatbotBackdropActive) failures.push('chatbot-open: backdrop not active');
       if (!c.chatbotBodyLocked) failures.push('chatbot-open: body not locked');
-      if (!c.chatbotBackdropBlur.includes('blur')) failures.push('chatbot-open: backdrop missing blur');
+      if (!c.chatbotBackdropBlur.includes('blur'))
+        failures.push('chatbot-open: backdrop missing blur');
     }
-    if (c.id === 'share-open' && !c.hasShareHeaderRow) failures.push('share-open: missing card header row');
-    if (c.id === 'share-open' && c.shareDialogHidden) failures.push('share-open: dialog has stale hidden class');
+    if (c.id === 'share-open' && !c.hasShareHeaderRow)
+      failures.push('share-open: missing card header row');
+    if (c.id === 'share-open' && c.shareDialogHidden)
+      failures.push('share-open: dialog has stale hidden class');
     if (c.id === 'share-open' && c.shareCloseClearance !== null && c.shareCloseClearance < 4) {
       failures.push(`share-open: close clearance only ${c.shareCloseClearance}px`);
     }

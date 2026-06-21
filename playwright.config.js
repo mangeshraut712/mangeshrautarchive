@@ -127,7 +127,7 @@ export default defineConfig({
       },
     },
     {
-      "name": 'iPhone 14 Pro Max Safari',
+      name: 'iPhone 14 Pro Max Safari',
       use: {
         ...devices['iPhone 14 Pro Max'],
       },
