@@ -123,6 +123,7 @@ async def get_portfolio_reach():
         print(f"Google Analytics reach error: {type(e).__name__}")
 
     source = ga_snapshot.get("source") or "portfolio_store"
+    ga_enabled = source == "google_analytics"
     page_views_total = _pick_int(ga_snapshot.get("total_views"), views_data.get("total"))
     unique_visitors = _pick_int(
         ga_snapshot.get("unique_visitors"),
@@ -132,14 +133,16 @@ async def get_portfolio_reach():
     total_week_views = _sum_trend_metric(trend, "views")
     visitors_this_week = _pick_int(
         ga_snapshot.get("unique_visitors_this_week"),
-        None if source == "google_analytics" else _sum_trend_metric(trend, "visitors"),
+        _pick_int(views_data.get("this_week"), _sum_trend_metric(trend, "views")),
     )
     sessions_this_week = _pick_int(
         ga_snapshot.get("sessions_this_week"),
-        None if source == "google_analytics" else _sum_trend_metric(trend, "sessions"),
+        _pick_int(views_data.get("this_week"), _sum_trend_metric(trend, "views")),
     )
     countries_this_week = _safe_int(ga_snapshot.get("countries_this_week"))
     top_countries = ga_snapshot.get("top_countries") or []
+    total_reach = unique_visitors if ga_enabled else page_views_total
+    analytics_url = ga_snapshot.get("analytics_url") or ""
     timestamp = (
         ga_snapshot.get("timestamp")
         or analytics.get("timestamp")
@@ -148,19 +151,26 @@ async def get_portfolio_reach():
 
     return {
         "success": True,
-        "total_reach": page_views_total,
+        "total_reach": total_reach,
         "source": source,
+        "ga_enabled": ga_enabled,
+        "ga_configured": google_analytics_client.enabled,
+        "analytics_url": analytics_url,
         "insights": {
             "unique_visitors": unique_visitors,
             "unique_visitors_this_week": visitors_this_week,
             "countries_this_week": countries_this_week,
             "sessions_this_week": sessions_this_week,
             "total_views_all_time": page_views_total,
+            "active_users_all_time": unique_visitors if ga_enabled else 0,
+            "metric_primary_label": "Active Users" if ga_enabled else "Page Views",
+            "metric_weekly_label": "Active users" if ga_enabled else "Page views",
             "avg_views_per_day": analytics.get("avg_views_per_day", 0),
             "portfolio_age_days": analytics.get("portfolio_age_days", 1),
             "last_updated": timestamp,
             "top_countries": top_countries,
             "trend": trend,
+            "trend_metric": "visitors" if ga_enabled else "views",
         },
         "breakdown": {
             "page_views": {

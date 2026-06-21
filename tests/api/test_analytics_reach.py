@@ -44,6 +44,7 @@ def test_portfolio_reach_prefers_google_analytics_snapshot(monkeypatch):
                     {"date": "2026-06-15", "views": 120, "visitors": 90, "sessions": 95},
                     {"date": "2026-06-16", "views": 180, "visitors": 115, "sessions": 128},
                 ],
+                "analytics_url": "https://analytics.google.com/analytics/web/#/a394742220p537627192/reports/intelligenthome",
                 "timestamp": "2026-06-21T12:00:00Z",
             }
 
@@ -55,7 +56,9 @@ def test_portfolio_reach_prefers_google_analytics_snapshot(monkeypatch):
     assert response.status_code == 200
     payload = response.json()
     assert payload["source"] == "google_analytics"
-    assert payload["total_reach"] == 17881
+    assert payload["ga_enabled"] is True
+    assert payload["total_reach"] == 945
+    assert payload["analytics_url"]
     assert payload["insights"]["unique_visitors_this_week"] == 945
     assert payload["insights"]["countries_this_week"] == 52
     assert payload["insights"]["top_countries"][0]["country"] == "United States"

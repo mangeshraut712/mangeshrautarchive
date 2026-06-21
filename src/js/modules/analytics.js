@@ -18,6 +18,10 @@
     range: document.getElementById('reach-panel-range'),
     line: document.getElementById('reach-chart-line'),
     area: document.getElementById('reach-chart-area'),
+    weeklyLabel: document.getElementById('reach-panel-weekly-label'),
+    totalLabel: document.getElementById('reach-panel-total-label'),
+    totalCaption: document.getElementById('reach-panel-total-caption'),
+    action: document.getElementById('reach-panel-action'),
   };
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
   const STORAGE_KEYS = {
@@ -153,7 +157,7 @@
       }));
   }
 
-  function renderSparkline(trend = []) {
+  function renderSparkline(trend = [], metricKey = 'views') {
     if (!reachPanelEls.line || !reachPanelEls.area) return;
 
     const normalized = normalizeTrend(trend);
@@ -166,12 +170,12 @@
     const width = 280;
     const height = 96;
     const padding = 12;
-    const values = normalized.map(point => point.views);
+    const values = normalized.map(point => point[metricKey] || 0);
     const max = Math.max(...values, 1);
     const step = normalized.length > 1 ? (width - padding * 2) / (normalized.length - 1) : 0;
     const points = normalized.map((point, index) => {
       const x = padding + index * step;
-      const y = height - padding - (point.views / max) * (height - padding * 2);
+      const y = height - padding - ((point[metricKey] || 0) / max) * (height - padding * 2);
       return [Number(x.toFixed(1)), Number(y.toFixed(1))];
     });
 
@@ -184,14 +188,67 @@
     );
   }
 
+  function positionReachPanel() {
+    if (!reachBadge || !reachPanel) return;
+
+    const badgeRect = reachBadge.getBoundingClientRect();
+    const panelWidth = reachPanel.offsetWidth || 544;
+    const panelHeight = reachPanel.offsetHeight || 320;
+    const gap = 12;
+    const margin = 16;
+
+    let top = badgeRect.bottom + gap;
+    let left = badgeRect.left + badgeRect.width / 2 - panelWidth / 2;
+
+    left = Math.max(margin, Math.min(left, window.innerWidth - panelWidth - margin));
+
+    if (top + panelHeight > window.innerHeight - margin) {
+      top = Math.max(margin, badgeRect.top - panelHeight - gap);
+    }
+
+    reachPanel.style.top = `${Math.round(top)}px`;
+    reachPanel.style.left = `${Math.round(left)}px`;
+  }
+
+  function updateAnalyticsAction(payload) {
+    const action = reachPanelEls.action;
+    if (!action) return;
+
+    const analyticsUrl = payload?.analytics_url || '';
+    if (payload?.ga_enabled && analyticsUrl) {
+      action.href = analyticsUrl;
+      action.hidden = false;
+      return;
+    }
+
+    action.hidden = true;
+    action.removeAttribute('href');
+  }
+
   function updateReachPanel(payload) {
     if (!reachPanel) return;
 
     const insights = payload?.insights || {};
     const trend = normalizeTrend(insights.trend || []);
-    const peak = trend.reduce((max, point) => Math.max(max, point.views), 0);
+    const trendMetric = insights.trend_metric === 'visitors' ? 'visitors' : 'views';
+    const peak = trend.reduce((max, point) => Math.max(max, point[trendMetric] || 0), 0);
     const topCountries = Array.isArray(insights.top_countries) ? insights.top_countries : [];
+    const gaEnabled = Boolean(payload?.ga_enabled);
+    const weeklyLabel = insights.metric_weekly_label || (gaEnabled ? 'Active users' : 'Page views');
+    const totalLabel = insights.metric_primary_label || (gaEnabled ? 'Active Users' : 'Page Views');
+    const totalValue = gaEnabled
+      ? insights.active_users_all_time || insights.unique_visitors || 0
+      : insights.total_views_all_time || 0;
 
+    if (reachPanelEls.weeklyLabel) {
+      reachPanelEls.weeklyLabel.textContent = weeklyLabel;
+    }
+    if (reachPanelEls.totalLabel) {
+      reachPanelEls.totalLabel.textContent = totalLabel;
+    }
+    if (reachPanelEls.totalCaption) {
+      reachPanelEls.totalCaption.textContent = gaEnabled ? 'all time' : 'all time views';
+    }
     if (reachPanelEls.visitors) {
       reachPanelEls.visitors.textContent = formatNumber(insights.unique_visitors_this_week || 0);
     }
@@ -199,10 +256,11 @@
       reachPanelEls.countries.textContent = formatNumber(insights.countries_this_week || 0);
     }
     if (reachPanelEls.total) {
-      reachPanelEls.total.textContent = formatNumber(insights.total_views_all_time || 0);
+      reachPanelEls.total.textContent = formatNumber(totalValue);
     }
     if (reachPanelEls.peak) {
-      reachPanelEls.peak.textContent = `Peak ${formatNumber(peak)} views`;
+      const peakLabel = trendMetric === 'visitors' ? 'users' : 'views';
+      reachPanelEls.peak.textContent = `Peak ${formatNumber(peak)} ${peakLabel}`;
     }
     if (reachPanelEls.source) {
       reachPanelEls.source.textContent = sourceLabel(payload?.source);
@@ -215,10 +273,15 @@
         topCountries.length > 0
           ? ` · Top country ${topCountries[0].country} (${formatNumber(topCountries[0].users)})`
           : '';
-      reachPanelEls.note.textContent = `${formatDateLabel(payload?.timestamp)}${countryText}`;
+      const viewsText =
+        gaEnabled && insights.total_views_all_time
+          ? ` · ${formatNumber(insights.total_views_all_time)} page views`
+          : '';
+      reachPanelEls.note.textContent = `${formatDateLabel(payload?.timestamp)}${countryText}${viewsText}`;
     }
 
-    renderSparkline(trend);
+    updateAnalyticsAction(payload);
+    renderSparkline(trend, trendMetric);
   }
 
   function setReachPanelOpen(isOpen) {
@@ -226,6 +289,9 @@
     reachBadge.setAttribute('aria-expanded', String(isOpen));
     reachPanel.hidden = !isOpen;
     reachPanel.classList.toggle('is-open', isOpen);
+    if (isOpen) {
+      positionReachPanel();
+    }
   }
 
   /**
@@ -266,11 +332,16 @@
     updateReachPanel({
       total_reach: displayValue,
       source: payload?.storage?.backend || 'portfolio_store',
+      ga_enabled: false,
       timestamp: payload?.timestamp,
       insights: {
         unique_visitors_this_week: views.this_week || 0,
         countries_this_week: 0,
         total_views_all_time: displayValue,
+        active_users_all_time: 0,
+        metric_primary_label: 'Page Views',
+        metric_weekly_label: 'Page views',
+        trend_metric: 'views',
         trend: payload?.daily_trend || [],
       },
     });
@@ -380,6 +451,22 @@
       if (reachPanel.contains(event.target) || reachBadge?.contains(event.target)) return;
       setReachPanelOpen(false);
     });
+
+    window.addEventListener('resize', () => {
+      if (reachPanel?.classList.contains('is-open')) {
+        positionReachPanel();
+      }
+    });
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (reachPanel?.classList.contains('is-open')) {
+          positionReachPanel();
+        }
+      },
+      { passive: true }
+    );
 
     setTimeout(() => {
       refreshReach({ track: true });

@@ -1107,42 +1107,52 @@
                   </button>
                   <div class="portfolio-reach-panel" id="portfolio-reach-panel" role="dialog"
                     aria-label="Portfolio Reach insights" hidden>
-                    <div class="reach-panel-header">
-                      <div>
-                        <p class="reach-panel-eyebrow">Insights</p>
-                        <h2>Portfolio Reach</h2>
+                    <div class="reach-panel-layout">
+                      <div class="reach-panel-main">
+                        <div class="reach-panel-header">
+                          <div>
+                            <p class="reach-panel-eyebrow">Insights</p>
+                            <h2>Portfolio Reach</h2>
+                          </div>
+                          <span class="reach-panel-range" id="reach-panel-range">Last 7 days</span>
+                        </div>
+                        <div class="reach-panel-metrics">
+                          <div class="reach-panel-metric">
+                            <span id="reach-panel-weekly-label">Active users</span>
+                            <strong id="reach-panel-visitors">—</strong>
+                            <small>this week</small>
+                          </div>
+                          <div class="reach-panel-metric">
+                            <span>Countries</span>
+                            <strong id="reach-panel-countries">—</strong>
+                            <small>this week</small>
+                          </div>
+                          <div class="reach-panel-metric">
+                            <span id="reach-panel-total-label">Active Users</span>
+                            <strong id="reach-panel-total">—</strong>
+                            <small id="reach-panel-total-caption">all time</small>
+                          </div>
+                        </div>
+                        <div class="reach-panel-chart" aria-label="7 day portfolio reach trend">
+                          <svg id="reach-panel-sparkline" viewBox="0 0 280 96" role="img"
+                            aria-label="Portfolio reach sparkline">
+                            <path class="reach-chart-grid" d="M0 72H280M0 48H280M0 24H280"></path>
+                            <path class="reach-chart-area" id="reach-chart-area" d=""></path>
+                            <polyline class="reach-chart-line" id="reach-chart-line" points=""></polyline>
+                          </svg>
+                          <div class="reach-panel-chart-meta">
+                            <span id="reach-panel-peak">Peak —</span>
+                            <span id="reach-panel-source">Syncing</span>
+                          </div>
+                        </div>
+                        <p class="reach-panel-note" id="reach-panel-note">Live analytics sync is warming up.</p>
                       </div>
-                      <span class="reach-panel-range" id="reach-panel-range">Last 7 days</span>
+                      <a class="reach-panel-action" id="reach-panel-action" href="#" hidden
+                        target="_blank" rel="noopener noreferrer" aria-label="Open Google Analytics report">
+                        <span class="reach-panel-action-label">View report</span>
+                        <span class="reach-panel-action-arrow" aria-hidden="true">→</span>
+                      </a>
                     </div>
-                    <div class="reach-panel-metrics">
-                      <div class="reach-panel-metric">
-                        <span>Unique Visitors</span>
-                        <strong id="reach-panel-visitors">—</strong>
-                        <small>this week</small>
-                      </div>
-                      <div class="reach-panel-metric">
-                        <span>Countries</span>
-                        <strong id="reach-panel-countries">—</strong>
-                        <small>this week</small>
-                      </div>
-                      <div class="reach-panel-metric">
-                        <span>Total Views</span>
-                        <strong id="reach-panel-total">—</strong>
-                        <small>all time</small>
-                      </div>
-                    </div>
-                    <div class="reach-panel-chart" aria-label="7 day portfolio reach trend">
-                      <svg id="reach-panel-sparkline" viewBox="0 0 280 96" role="img" aria-label="Portfolio reach sparkline">
-                        <path class="reach-chart-grid" d="M0 72H280M0 48H280M0 24H280"></path>
-                        <path class="reach-chart-area" id="reach-chart-area" d=""></path>
-                        <polyline class="reach-chart-line" id="reach-chart-line" points=""></polyline>
-                      </svg>
-                      <div class="reach-panel-chart-meta">
-                        <span id="reach-panel-peak">Peak —</span>
-                        <span id="reach-panel-source">Syncing</span>
-                      </div>
-                    </div>
-                    <p class="reach-panel-note" id="reach-panel-note">Live analytics sync is warming up.</p>
                   </div>
                 </div>
 

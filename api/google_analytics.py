@@ -35,6 +35,20 @@ class GoogleAnalyticsDataClient:
     def enabled(self) -> bool:
         return bool(self.property_id and self._credentials)
 
+    @property
+    def report_url(self) -> str:
+        account_id = (
+            os.getenv("GA4_ACCOUNT_ID")
+            or os.getenv("GOOGLE_ANALYTICS_ACCOUNT_ID")
+            or "394742220"
+        ).strip()
+        if not self.property_id:
+            return ""
+        return (
+            "https://analytics.google.com/analytics/web/#/"
+            f"a{account_id}p{self.property_id}/reports/intelligenthome"
+        )
+
     def _load_credentials(self) -> Optional[Dict[str, str]]:
         raw_json = os.getenv("GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON", "").strip()
         if raw_json:
@@ -224,6 +238,7 @@ class GoogleAnalyticsDataClient:
             "countries_this_week": len(top_countries),
             "top_countries": top_countries[:5],
             "trend": trend,
+            "analytics_url": self.report_url,
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
         self._snapshot_expires_at = now + 60

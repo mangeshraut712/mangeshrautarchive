@@ -573,18 +573,17 @@ html.dark .portfolio-reach-badge i {
 .portfolio-reach-panel {
   position: fixed;
   z-index: 3000;
-  top: 50%;
-  bottom: auto;
-  left: 50%;
-  width: min(26rem, calc(100vw - 2rem));
+  top: 0;
+  left: 0;
+  width: min(34rem, calc(100vw - 2rem));
   padding: 0.9rem;
   border: 1px solid rgb(0 0 0 / 12%);
   border-radius: 22px;
   background: #ffffff;
   color: #1d1d1f;
   box-shadow: 0 18px 48px rgb(0 0 0 / 14%);
-  transform: translate(-50%, -48%) scale(0.98);
-  transform-origin: center;
+  transform: translateY(6px) scale(0.98);
+  transform-origin: top center;
   opacity: 0;
   pointer-events: none;
   transition:
@@ -595,7 +594,59 @@ html.dark .portfolio-reach-badge i {
 .portfolio-reach-panel.is-open {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translateY(0) scale(1);
+}
+
+.reach-panel-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.reach-panel-main {
+  min-width: 0;
+}
+
+.reach-panel-action {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 3.4rem;
+  padding: 0.35rem 0.55rem;
+  border-left: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 0 14px 14px 0;
+  color: #0071e3;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.reach-panel-action:hover,
+.reach-panel-action:focus-visible {
+  background: rgb(0 113 227 / 8%);
+  color: #005bb5;
+  transform: translateX(1px);
+}
+
+.reach-panel-action-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 0.01em;
+}
+
+.reach-panel-action-arrow {
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 500;
 }
 
 .reach-panel-header,
@@ -774,6 +825,17 @@ html.dark .portfolio-reach-panel {
   box-shadow: 0 18px 48px rgb(0 0 0 / 46%);
 }
 
+html.dark .reach-panel-action {
+  border-left-color: rgb(255 255 255 / 14%);
+  color: #2997ff;
+}
+
+html.dark .reach-panel-action:hover,
+html.dark .reach-panel-action:focus-visible {
+  background: rgb(41 151 255 / 12%);
+  color: #7dc4ff;
+}
+
 html.dark .reach-panel-metrics,
 html.dark .reach-panel-metric {
   border-color: rgb(255 255 255 / 14%);
@@ -810,10 +872,32 @@ html.dark .portfolio-reach-badge .reach-count.is-updating {
 
 @media (width <= 640px) {
   .portfolio-reach-panel {
-    left: 50%;
     width: min(23rem, calc(100vw - 1.5rem));
     padding: 0.85rem;
     border-radius: 18px;
+  }
+
+  .reach-panel-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .reach-panel-action {
+    flex-direction: row;
+    justify-content: flex-end;
+    min-width: 0;
+    padding: 0.55rem 0.15rem 0;
+    border-left: 0;
+    border-top: 1px solid rgb(0 0 0 / 8%);
+    border-radius: 0;
+  }
+
+  .reach-panel-action-label {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  html.dark .reach-panel-action {
+    border-top-color: rgb(255 255 255 / 14%);
   }
 
   .reach-panel-metrics {
