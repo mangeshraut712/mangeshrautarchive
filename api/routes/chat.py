@@ -49,6 +49,25 @@ from api.site_knowledge import (
 router = APIRouter()
 
 
+def is_usa_state_travel_query(query: str) -> bool:
+    """Detect direct USA travel-count questions that should use site data."""
+    usa_terms = ["usa", "u.s.", "u.s.a", "united states", "america"]
+    travel_terms = ["visited", "visit", "travel", "travelled", "traveled", "been", "covered"]
+    return (
+        any(term in query for term in usa_terms)
+        and "state" in query
+        and any(term in query for term in travel_terms)
+    )
+
+
+def is_blog_release_query(query: str) -> bool:
+    """Detect direct blog release questions that should use the local index."""
+    return "blog" in query and any(
+        term in query
+        for term in ["this month", "released", "release", "new", "latest", "june 2026"]
+    )
+
+
 def openrouter_request_body(
     model: str,
     messages: List[Dict],
@@ -86,7 +105,14 @@ def openrouter_request_body(
                 "parameters": {
                     "engine": "openrouter",
                     "max_content_tokens": 12000,
-                    "blocked_domains": ["localhost", "127.0.0.1", "0.0.0.0"],
+                    "blocked_domains": [
+                        "localhost",
+                        "127.0.0.1",
+                        "0.0.0.0",
+                        "[::1]",
+                        "169.254.169.254",
+                        "metadata.google.internal",
+                    ],
                 },
             },
         ]
@@ -132,9 +158,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Skills",
         }
 
-    if "blog" in query and any(
-        k in query for k in ["this month", "released", "release", "new", "latest", "june 2026"]
-    ):
+    if is_blog_release_query(query):
         return {
             "answer": f"📝 **Blog Releases**\n\n{format_blog_release_summary(query)}",
             "category": "Blogs",
@@ -283,9 +307,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Identity",
         }
 
-    if any(k in query for k in ["usa", "united states"]) and any(
-        k in query for k in ["state", "states", "visited", "travel", "country"]
-    ):
+    if is_usa_state_travel_query(query):
         return {
             "answer": f"🇺🇸 **USA Travel Coverage**\n\n{format_usa_state_summary()}",
             "category": "Travel",
@@ -329,6 +351,32 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
     lower = message.lower()
     now = datetime.now()
 
+    if is_usa_state_travel_query(lower):
+        return {
+            "answer": f"🇺🇸 **USA Travel Coverage**\n\n{format_usa_state_summary()}",
+            "source": "Site Knowledge",
+            "model": "Travel Atlas Index",
+            "category": "Travel",
+            "confidence": 1.0,
+            "runtime": "0ms",
+            "type": "direct",
+            "knowledge_context": True,
+            "web_tools": False,
+        }
+
+    if is_blog_release_query(lower):
+        return {
+            "answer": f"📝 **Blog Releases**\n\n{format_blog_release_summary(lower)}",
+            "source": "Site Knowledge",
+            "model": "Blog Index",
+            "category": "Blogs",
+            "confidence": 1.0,
+            "runtime": "0ms",
+            "type": "direct",
+            "knowledge_context": True,
+            "web_tools": False,
+        }
+
     # Resume download
     if is_resume_query(message):
         return {
@@ -368,6 +416,53 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
         }
 
     return None
+
+
+async def stream_static_chat_response(payload: Dict, start_time: float) -> AsyncGenerator[str, None]:
+    """Stream deterministic/local answers through the same NDJSON contract as AI responses."""
+    answer = payload.get("answer", "")
+    chunk_size = 72
+    chunk_count = 0
+
+    yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
+
+    for current_pos in range(0, len(answer), chunk_size):
+        chunk_count += 1
+        yield (
+            json.dumps(
+                {
+                    "type": "chunk",
+                    "content": answer[current_pos : current_pos + chunk_size],
+                    "chunk_id": chunk_count,
+                }
+            )
+            + "\n"
+        )
+        await asyncio.sleep(0)
+
+    elapsed_ms = int((time.time() - start_time) * 1000)
+    yield (
+        json.dumps(
+            {
+                "type": "done",
+                "full_content": answer,
+                "metadata": {
+                    "model": payload.get("model", "Local-FastAPI"),
+                    "source": payload.get("source", "Local Intelligence"),
+                    "sourceLabel": payload.get("source", "Local Intelligence"),
+                    "category": payload.get("category", "General"),
+                    "confidence": payload.get("confidence", 1.0),
+                    "knowledge_context": payload.get("knowledge_context", False),
+                    "web_tools": payload.get("web_tools", False),
+                    "char_count": len(answer),
+                    "tokens_estimate": max(1, len(answer) // 4),
+                    "elapsed_ms": elapsed_ms,
+                    "chunks": chunk_count,
+                },
+            }
+        )
+        + "\n"
+    )
 
 
 async def stream_openrouter_response(
@@ -698,12 +793,29 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     safe_context = sanitize_context(request.context)
     site_context = retrieve_site_context(message, safe_context)
     web_tools_enabled = should_use_web_tools(message, site_context)
+    session_id = sanitize_session_id(request.session_id)
+
+    direct_response = await handle_direct_command(message)
+    if direct_response:
+        direct_response["runtime"] = f"{int((time.time() - start_time) * 1000)}ms"
+        if request.stream:
+            return StreamingResponse(
+                stream_static_chat_response(direct_response, start_time),
+                media_type="application/x-ndjson",
+                headers={
+                    "Cache-Control": "no-cache",
+                    "X-Accel-Buffering": "no",
+                    "X-Session-ID": session_id,
+                    "X-Session-Token": create_session_token(session_id) if session_id else "",
+                },
+            )
+        return direct_response
 
     if not OPENROUTER_API_KEY:
         print("⚠️ No API key - using Local Intelligence fallback")
         fallback = generate_local_response(message, site_context)
         elapsed = time.time() - start_time
-        return {
+        payload = {
             "answer": fallback["answer"],
             "source": "Local Intelligence",
             "model": "Local-FastAPI",
@@ -714,15 +826,20 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "knowledge_context": bool(site_context),
             "web_tools": False,
         }
+        if request.stream:
+            return StreamingResponse(
+                stream_static_chat_response(payload, start_time),
+                media_type="application/x-ndjson",
+                headers={
+                    "Cache-Control": "no-cache",
+                    "X-Accel-Buffering": "no",
+                    "X-Session-ID": session_id,
+                    "X-Session-Token": create_session_token(session_id) if session_id else "",
+                },
+            )
+        return payload
 
     try:
-        session_id = sanitize_session_id(request.session_id)
-
-        # Check for direct commands
-        direct_response = await handle_direct_command(message)
-        if direct_response:
-            return direct_response
-
         # Get conversation history
         if request.messages:
             history = sanitize_client_history(request.messages)

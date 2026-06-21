@@ -177,6 +177,8 @@ class AppleIntelligenceChatbot {
     this.messageCount = 0;
     this.retryCount = 0;
     this.textareaWidth = 0;
+    this.autoScrollLocked = true;
+    this.lastProgrammaticScrollAt = 0;
 
     // Local rate-limit visibility mirrors the backend throttle before requests are sent.
     this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
@@ -561,6 +563,15 @@ class AppleIntelligenceChatbot {
       }
     });
 
+    this.elements.messages?.addEventListener(
+      'scroll',
+      () => {
+        if (Date.now() - this.lastProgrammaticScrollAt < 160) return;
+        this.autoScrollLocked = this.isNearMessageBottom();
+      },
+      { passive: true }
+    );
+
     this.elements.voiceBtn?.addEventListener('click', () => {
       this.handleVoiceInput();
     });
@@ -651,6 +662,7 @@ class AppleIntelligenceChatbot {
     if (this.elements.messages) {
       this.elements.messages.innerHTML = '';
     }
+    this.autoScrollLocked = true;
     if (this.chatAPI?.conversation) {
       this.chatAPI.conversation = [];
     }
@@ -731,7 +743,7 @@ class AppleIntelligenceChatbot {
             <span class="agentic-pulse"></span>
         `;
     this.elements.messages?.appendChild(chipEl);
-    this.scrollToBottom();
+    this.scrollToBottom({ force: true });
 
     // Remove after a few seconds
     setTimeout(() => chipEl.classList.add('fade-out'), 3000);
@@ -771,7 +783,7 @@ class AppleIntelligenceChatbot {
     appleSounds.playClick();
 
     // Add user message
-    this.addMessage(text, 'user');
+    this.addMessage(text, 'user', { forceScroll: true });
 
     // Clear input
     if (this.elements.input) {
@@ -1340,7 +1352,7 @@ class AppleIntelligenceChatbot {
     return "I can help you learn about Mangesh's AI/ML expertise, projects, skills, experience, and education. Try asking something specific, or use the suggestion chips below!";
   }
 
-  addMessage(text, role, _options = {}) {
+  addMessage(text, role, options = {}) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}-message`;
 
@@ -1351,7 +1363,7 @@ class AppleIntelligenceChatbot {
     messageDiv.appendChild(contentDiv);
     this.elements.messages?.appendChild(messageDiv);
 
-    this.scrollToBottom();
+    this.scrollToBottom({ force: options.forceScroll || role === 'user' });
   }
 
   addErrorMessage(text) {
@@ -1380,7 +1392,7 @@ class AppleIntelligenceChatbot {
     messageDiv.appendChild(retryBtn);
 
     this.elements.messages?.appendChild(messageDiv);
-    this.scrollToBottom();
+    this.scrollToBottom({ force: true });
   }
 
   // ── Follow-Up Suggestion Chips ─────────────────────────
@@ -1441,7 +1453,7 @@ class AppleIntelligenceChatbot {
             </div>
         `;
     this.elements.messages?.appendChild(indicator);
-    this.scrollToBottom();
+    this.scrollToBottom({ force: true });
   }
 
   updateThinkingStage(stage) {
@@ -1468,10 +1480,26 @@ class AppleIntelligenceChatbot {
     indicator?.remove();
   }
 
-  scrollToBottom() {
-    if (this.elements.messages) {
-      this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
+  isNearMessageBottom(threshold = 72) {
+    const messages = this.elements.messages;
+    if (!messages) return true;
+    return messages.scrollHeight - messages.scrollTop - messages.clientHeight <= threshold;
+  }
+
+  scrollToBottom({ force = false, behavior = 'auto' } = {}) {
+    const messages = this.elements.messages;
+    if (!messages) return;
+
+    if (!force && !this.autoScrollLocked && !this.isNearMessageBottom()) {
+      return;
     }
+
+    this.lastProgrammaticScrollAt = Date.now();
+    this.autoScrollLocked = true;
+    messages.scrollTo({
+      top: messages.scrollHeight,
+      behavior,
+    });
   }
 
   handleVoiceInput() {

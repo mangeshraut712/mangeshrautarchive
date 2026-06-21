@@ -1087,11 +1087,14 @@
                     </span>
                     Vibe Coder
                   </span>
-                  <span
+                  <button
+                    type="button"
                     class="portfolio-reach-badge"
                     id="portfolio-reach"
                     title="Portfolio Reach"
                     aria-label="Portfolio Reach"
+                    aria-expanded="false"
+                    aria-controls="portfolio-reach-panel"
                   >
                     <span class="inline-icon" aria-hidden="true">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -1101,7 +1104,46 @@
                       </svg>
                     </span>
                     <span class="reach-count" id="reach-count" aria-live="polite">Syncing</span>
-                  </span>
+                  </button>
+                  <div class="portfolio-reach-panel" id="portfolio-reach-panel" role="dialog"
+                    aria-label="Portfolio Reach insights" hidden>
+                    <div class="reach-panel-header">
+                      <div>
+                        <p class="reach-panel-eyebrow">Insights</p>
+                        <h2>Portfolio Reach</h2>
+                      </div>
+                      <span class="reach-panel-range" id="reach-panel-range">Last 7 days</span>
+                    </div>
+                    <div class="reach-panel-metrics">
+                      <div class="reach-panel-metric">
+                        <span>Unique Visitors</span>
+                        <strong id="reach-panel-visitors">—</strong>
+                        <small>this week</small>
+                      </div>
+                      <div class="reach-panel-metric">
+                        <span>Countries</span>
+                        <strong id="reach-panel-countries">—</strong>
+                        <small>this week</small>
+                      </div>
+                      <div class="reach-panel-metric">
+                        <span>Total Views</span>
+                        <strong id="reach-panel-total">—</strong>
+                        <small>all time</small>
+                      </div>
+                    </div>
+                    <div class="reach-panel-chart" aria-label="7 day portfolio reach trend">
+                      <svg id="reach-panel-sparkline" viewBox="0 0 280 96" role="img" aria-label="Portfolio reach sparkline">
+                        <path class="reach-chart-grid" d="M0 72H280M0 48H280M0 24H280"></path>
+                        <path class="reach-chart-area" id="reach-chart-area" d=""></path>
+                        <polyline class="reach-chart-line" id="reach-chart-line" points=""></polyline>
+                      </svg>
+                      <div class="reach-panel-chart-meta">
+                        <span id="reach-panel-peak">Peak —</span>
+                        <span id="reach-panel-source">Syncing</span>
+                      </div>
+                    </div>
+                    <p class="reach-panel-note" id="reach-panel-note">Live analytics sync is warming up.</p>
+                  </div>
                 </div>
 
                 <!-- Apple Music Style - Last.fm Now Playing Card -->

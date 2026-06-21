@@ -14,6 +14,7 @@ export default [
       'test-results/**',
       'playwright-report/**',
       'scratch/**',
+      '.gitnexus/**',
     ],
   },
   // Browser Code (src)

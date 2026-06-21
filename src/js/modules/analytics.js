@@ -1,20 +1,34 @@
 /**
  * Shared portfolio reach analytics.
- * Calls the centralized /api/analytics/reach endpoint which aggregates:
- *   - Portfolio page views (unique visitors, homepage, total)
- *   - GitHub stars, forks, watchers across all public repos
- * Falls back to /api/analytics/views if reach endpoint is unavailable.
- * The backend caches the aggregated result for 5 minutes so every
- * surface (GitHub Pages, Vercel, localhost) sees the same number.
+ * Calls the centralized /api/analytics/reach endpoint for page views and GA4 insights.
+ * Falls back to /api/analytics/views if the reach endpoint is unavailable.
+ * GA4 snapshots are cached server-side for 60 seconds when configured.
  */
 (function () {
   const reachCountEls = document.querySelectorAll('.reach-count');
+  const reachBadge = document.getElementById('portfolio-reach');
+  const reachPanel = document.getElementById('portfolio-reach-panel');
+  const reachPanelEls = {
+    visitors: document.getElementById('reach-panel-visitors'),
+    countries: document.getElementById('reach-panel-countries'),
+    total: document.getElementById('reach-panel-total'),
+    peak: document.getElementById('reach-panel-peak'),
+    source: document.getElementById('reach-panel-source'),
+    note: document.getElementById('reach-panel-note'),
+    range: document.getElementById('reach-panel-range'),
+    line: document.getElementById('reach-chart-line'),
+    area: document.getElementById('reach-chart-area'),
+  };
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
   const STORAGE_KEYS = {
     SESSION_ID: 'portfolio_shared_session_id_v1',
     LAST_VISIT: 'portfolio_shared_last_visit_v1',
   };
   const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
+
+  if (reachPanel && reachPanel.parentElement !== document.body) {
+    document.body.appendChild(reachPanel);
+  }
 
   function normalizeOrigin(rawValue) {
     if (!rawValue) return '';
@@ -84,6 +98,11 @@
       element.closest('.portfolio-reach-badge')?.classList.remove('is-syncing');
       element.parentElement?.setAttribute('title', 'Portfolio Reach unavailable');
     });
+    updateReachPanel({
+      insights: {},
+      source: 'unavailable',
+      timestamp: new Date().toISOString(),
+    });
   }
 
   function animateReachValue(element, formattedValue, titleText) {
@@ -110,6 +129,105 @@
     }, 360);
   }
 
+  function sourceLabel(source) {
+    if (source === 'google_analytics') return 'Google Analytics';
+    if (source === 'portfolio_store') return 'Portfolio Store';
+    return 'Syncing';
+  }
+
+  function formatDateLabel(value) {
+    if (!value) return 'Updated just now';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Updated just now';
+    return `Updated ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  function normalizeTrend(trend = []) {
+    return trend
+      .slice(-7)
+      .map(point => ({
+        date: point.date || '',
+        views: Number(point.views || 0),
+        visitors: Number(point.visitors || 0),
+        sessions: Number(point.sessions || 0),
+      }));
+  }
+
+  function renderSparkline(trend = []) {
+    if (!reachPanelEls.line || !reachPanelEls.area) return;
+
+    const normalized = normalizeTrend(trend);
+    if (normalized.length === 0) {
+      reachPanelEls.line.setAttribute('points', '');
+      reachPanelEls.area.setAttribute('d', '');
+      return;
+    }
+
+    const width = 280;
+    const height = 96;
+    const padding = 12;
+    const values = normalized.map(point => point.views);
+    const max = Math.max(...values, 1);
+    const step = normalized.length > 1 ? (width - padding * 2) / (normalized.length - 1) : 0;
+    const points = normalized.map((point, index) => {
+      const x = padding + index * step;
+      const y = height - padding - (point.views / max) * (height - padding * 2);
+      return [Number(x.toFixed(1)), Number(y.toFixed(1))];
+    });
+
+    reachPanelEls.line.setAttribute('points', points.map(([x, y]) => `${x},${y}`).join(' '));
+    reachPanelEls.area.setAttribute(
+      'd',
+      `M${points[0][0]},${height - padding} ` +
+        points.map(([x, y]) => `L${x},${y}`).join(' ') +
+        ` L${points[points.length - 1][0]},${height - padding} Z`
+    );
+  }
+
+  function updateReachPanel(payload) {
+    if (!reachPanel) return;
+
+    const insights = payload?.insights || {};
+    const trend = normalizeTrend(insights.trend || []);
+    const peak = trend.reduce((max, point) => Math.max(max, point.views), 0);
+    const topCountries = Array.isArray(insights.top_countries) ? insights.top_countries : [];
+
+    if (reachPanelEls.visitors) {
+      reachPanelEls.visitors.textContent = formatNumber(insights.unique_visitors_this_week || 0);
+    }
+    if (reachPanelEls.countries) {
+      reachPanelEls.countries.textContent = formatNumber(insights.countries_this_week || 0);
+    }
+    if (reachPanelEls.total) {
+      reachPanelEls.total.textContent = formatNumber(insights.total_views_all_time || 0);
+    }
+    if (reachPanelEls.peak) {
+      reachPanelEls.peak.textContent = `Peak ${formatNumber(peak)} views`;
+    }
+    if (reachPanelEls.source) {
+      reachPanelEls.source.textContent = sourceLabel(payload?.source);
+    }
+    if (reachPanelEls.range) {
+      reachPanelEls.range.textContent = 'Last 7 days';
+    }
+    if (reachPanelEls.note) {
+      const countryText =
+        topCountries.length > 0
+          ? ` · Top country ${topCountries[0].country} (${formatNumber(topCountries[0].users)})`
+          : '';
+      reachPanelEls.note.textContent = `${formatDateLabel(payload?.timestamp)}${countryText}`;
+    }
+
+    renderSparkline(trend);
+  }
+
+  function setReachPanelOpen(isOpen) {
+    if (!reachBadge || !reachPanel) return;
+    reachBadge.setAttribute('aria-expanded', String(isOpen));
+    reachPanel.hidden = !isOpen;
+    reachPanel.classList.toggle('is-open', isOpen);
+  }
+
   /**
    * Display the aggregated reach from the /api/analytics/reach endpoint.
    * Shows total_reach (page views).
@@ -126,6 +244,7 @@
     reachCountEls.forEach(element => {
       animateReachValue(element, formattedValue, `Portfolio Reach: ${formattedValue}`);
     });
+    updateReachPanel(payload);
   }
 
   /**
@@ -143,6 +262,17 @@
 
     reachCountEls.forEach(element => {
       animateReachValue(element, formattedValue, `Portfolio Reach: ${formattedValue}`);
+    });
+    updateReachPanel({
+      total_reach: displayValue,
+      source: payload?.storage?.backend || 'portfolio_store',
+      timestamp: payload?.timestamp,
+      insights: {
+        unique_visitors_this_week: views.this_week || 0,
+        countries_this_week: 0,
+        total_views_all_time: displayValue,
+        trend: payload?.daily_trend || [],
+      },
     });
   }
 
@@ -233,6 +363,24 @@
   }
 
   if (reachCountEls.length > 0) {
+    reachBadge?.addEventListener('click', event => {
+      event.stopPropagation();
+      setReachPanelOpen(!reachPanel?.classList.contains('is-open'));
+    });
+
+    reachBadge?.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        setReachPanelOpen(false);
+        reachBadge.focus();
+      }
+    });
+
+    document.addEventListener('click', event => {
+      if (!reachPanel?.classList.contains('is-open')) return;
+      if (reachPanel.contains(event.target) || reachBadge?.contains(event.target)) return;
+      setReachPanelOpen(false);
+    });
+
     setTimeout(() => {
       refreshReach({ track: true });
     }, 50);

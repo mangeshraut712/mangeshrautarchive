@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -71,6 +71,47 @@ class PortfolioAnalyticsStore:
     def _month_key(self) -> str:
         return datetime.now(timezone.utc).strftime("%Y-%m")
 
+    def _daily_trend(self, daily_views: Dict[str, Any], days: int = 7) -> List[Dict[str, Any]]:
+        today = datetime.now(timezone.utc).date()
+        trend = []
+        for offset in range(days - 1, -1, -1):
+            date_key = (today - timedelta(days=offset)).isoformat()
+            trend.append(
+                {
+                    "date": date_key,
+                    "views": int(daily_views.get(date_key, 0) or 0),
+                    "visitors": 0,
+                    "sessions": 0,
+                }
+            )
+        return trend
+
+    def _metrics_from_data(self, data: Dict[str, Any], *, persistent: bool) -> Dict[str, Any]:
+        today_key = self._today_key()
+        week_key = self._week_key()
+        month_key = self._month_key()
+        first_seen = int(data.get("first_seen") or int(time.time()))
+        total_views = int(data.get("total_views", 0))
+        daily_views = data.get("daily_views", {})
+        age_days = max(1, int((time.time() - first_seen) // 86400) + 1)
+        return {
+            "success": True,
+            "views": {
+                "total": total_views,
+                "homepage_total": int(data.get("homepage_views", 0)),
+                "unique_visitors": int(data.get("unique_visitors", 0)),
+                "today": int(daily_views.get(today_key, 0)),
+                "this_week": int(data.get("weekly_views", {}).get(week_key, 0)),
+                "this_month": int(data.get("monthly_views", {}).get(month_key, 0)),
+            },
+            "daily_trend": self._daily_trend(daily_views),
+            "portfolio_age_days": age_days,
+            "avg_views_per_day": round(total_views / max(age_days, 1), 1),
+            "storage": {"backend": self.backend_name, "persistent": persistent},
+            "timestamp": data.get("last_updated")
+            or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+
     async def _redis_pipeline(self, commands: List[List[str]]) -> List[Any]:
         async with httpx.AsyncClient(timeout=5.0) as client:
             response = await client.post(
@@ -127,6 +168,23 @@ class PortfolioAnalyticsStore:
             for session_id, last_seen in sessions.items()
             if last_seen >= cutoff
         }
+
+    def _prune_map(self, values: Dict[str, Any], max_entries: int) -> Dict[str, Any]:
+        if len(values) <= max_entries:
+            return values
+        keep_keys = sorted(values.keys(), reverse=True)[:max_entries]
+        return {key: values[key] for key in keep_keys}
+
+    def _prune_period_maps(self, data: Dict[str, Any]) -> None:
+        today = datetime.now(timezone.utc).date()
+        daily_cutoff = (today - timedelta(days=120)).isoformat()
+        daily_views = data.get("daily_views", {})
+        data["daily_views"] = {
+            key: value for key, value in daily_views.items() if key >= daily_cutoff
+        }
+        data["daily_views"] = self._prune_map(data["daily_views"], 120)
+        data["weekly_views"] = self._prune_map(data.get("weekly_views", {}), 104)
+        data["monthly_views"] = self._prune_map(data.get("monthly_views", {}), 36)
 
     async def track_visit(
         self,
@@ -218,6 +276,7 @@ class PortfolioAnalyticsStore:
             data["last_path"] = path or "/"
             data["last_referrer"] = referrer or ""
             data["last_user_agent"] = user_agent[:200]
+            self._prune_period_maps(data)
 
             await self._save_file_data(data)
 
@@ -234,6 +293,8 @@ class PortfolioAnalyticsStore:
         today_key = self._today_key()
         week_key = self._week_key()
         month_key = self._month_key()
+        today = datetime.now(timezone.utc).date()
+        trend_keys = [(today - timedelta(days=offset)).isoformat() for offset in range(6, -1, -1)]
         results = await self._redis_pipeline(
             [
                 [
@@ -247,6 +308,7 @@ class PortfolioAnalyticsStore:
                 ["GET", f"portfolio:reach:views:daily:{today_key}"],
                 ["GET", f"portfolio:reach:views:weekly:{week_key}"],
                 ["GET", f"portfolio:reach:views:monthly:{month_key}"],
+                ["MGET", *[f"portfolio:reach:views:daily:{key}" for key in trend_keys]],
             ]
         )
 
@@ -254,6 +316,7 @@ class PortfolioAnalyticsStore:
         total_views = int(totals[0] or 0)
         first_seen = int(totals[4] or int(time.time()))
         age_days = max(1, int((time.time() - first_seen) // 86400) + 1)
+        trend_values = results[4] or []
         return {
             "success": True,
             "views": {
@@ -264,6 +327,15 @@ class PortfolioAnalyticsStore:
                 "this_week": int(results[2] or 0),
                 "this_month": int(results[3] or 0),
             },
+            "daily_trend": [
+                {
+                    "date": key,
+                    "views": int((trend_values[index] if index < len(trend_values) else 0) or 0),
+                    "visitors": 0,
+                    "sessions": 0,
+                }
+                for index, key in enumerate(trend_keys)
+            ],
             "portfolio_age_days": age_days,
             "avg_views_per_day": round(total_views / max(age_days, 1), 1),
             "storage": {"backend": self.backend_name, "persistent": True},
@@ -273,28 +345,7 @@ class PortfolioAnalyticsStore:
 
     async def _get_metrics_file(self) -> Dict[str, Any]:
         data = await self._load_file_data()
-        today_key = self._today_key()
-        week_key = self._week_key()
-        month_key = self._month_key()
-        first_seen = int(data.get("first_seen") or int(time.time()))
-        total_views = int(data.get("total_views", 0))
-        age_days = max(1, int((time.time() - first_seen) // 86400) + 1)
-        return {
-            "success": True,
-            "views": {
-                "total": total_views,
-                "homepage_total": int(data.get("homepage_views", 0)),
-                "unique_visitors": int(data.get("unique_visitors", 0)),
-                "today": int(data.get("daily_views", {}).get(today_key, 0)),
-                "this_week": int(data.get("weekly_views", {}).get(week_key, 0)),
-                "this_month": int(data.get("monthly_views", {}).get(month_key, 0)),
-            },
-            "portfolio_age_days": age_days,
-            "avg_views_per_day": round(total_views / max(age_days, 1), 1),
-            "storage": {"backend": self.backend_name, "persistent": False},
-            "timestamp": data.get("last_updated")
-            or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        }
+        return self._metrics_from_data(data, persistent=False)
 
     async def _track_visit_firestore(
         self,
@@ -306,71 +357,138 @@ class PortfolioAnalyticsStore:
     ) -> Dict[str, Any]:
         url = f"https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics?key={self._firebase_api_key}"
         async with httpx.AsyncClient(timeout=5.0) as client:
-            try:
-                res = await client.get(url)
-                if res.status_code == 200:
-                    data = res.json()
-                    total_views = int(data.get("fields", {}).get("total_views", {}).get("integerValue", 0))
-                else:
-                    total_views = 0
-            except Exception:
-                total_views = 0
+            data = await self._load_firestore_data(client, url)
+            data["recent_sessions"] = self._prune_sessions(data.get("recent_sessions", {}))
+            is_new_session = session_id not in data["recent_sessions"]
+            data["recent_sessions"][session_id] = time.time()
+            data["total_views"] = int(data.get("total_views", 0)) + 1
 
-            total_views += 1
+            if is_homepage:
+                data["homepage_views"] = int(data.get("homepage_views", 0)) + 1
 
-            doc = {
-                "fields": {
-                    "total_views": {"integerValue": str(total_views)}
-                }
-            }
+            if is_new_session:
+                data["unique_visitors"] = int(data.get("unique_visitors", 0)) + 1
+
+            if not data.get("first_seen"):
+                data["first_seen"] = int(time.time())
+
+            today_key = self._today_key()
+            week_key = self._week_key()
+            month_key = self._month_key()
+            data.setdefault("daily_views", {})
+            data.setdefault("weekly_views", {})
+            data.setdefault("monthly_views", {})
+            data["daily_views"][today_key] = int(data["daily_views"].get(today_key, 0)) + 1
+            data["weekly_views"][week_key] = int(data["weekly_views"].get(week_key, 0)) + 1
+            data["monthly_views"][month_key] = int(data["monthly_views"].get(month_key, 0)) + 1
+            data["last_updated"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+            data["last_path"] = path or "/"
+            data["last_referrer"] = referrer or ""
+            data["last_user_agent"] = user_agent[:200]
+            self._prune_period_maps(data)
+
             try:
-                await client.patch(url, json=doc)
+                await client.patch(url, json={"fields": self._to_firestore_fields(data)})
             except Exception as e:
                 logger.error(f"Failed to save analytics to Firestore: {e}")
 
-        return {
-            "success": True,
-            "views": {
-                "total": total_views,
-                "homepage_total": total_views,
-                "unique_visitors": total_views,
-                "today": total_views,
-                "this_week": total_views,
-                "this_month": total_views,
-            },
-            "portfolio_age_days": 1,
-            "avg_views_per_day": 0.0,
-            "storage": {"backend": self.backend_name, "persistent": True},
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        }
+        return self._metrics_from_data(data, persistent=True)
 
     async def _get_metrics_firestore(self) -> Dict[str, Any]:
         url = f"https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics?key={self._firebase_api_key}"
         async with httpx.AsyncClient(timeout=5.0) as client:
-            try:
-                res = await client.get(url)
-                if res.status_code == 200:
-                    data = res.json()
-                    total_views = int(data.get("fields", {}).get("total_views", {}).get("integerValue", 0))
-                else:
-                    total_views = 0
-            except Exception:
-                total_views = 0
+            data = await self._load_firestore_data(client, url)
 
+        return self._metrics_from_data(data, persistent=True)
+
+    async def _load_firestore_data(self, client: httpx.AsyncClient, url: str) -> Dict[str, Any]:
+        try:
+            res = await client.get(url)
+            if res.status_code != 200:
+                return self._initial_data()
+            return self._from_firestore_fields(res.json().get("fields", {}))
+        except Exception:
+            return self._initial_data()
+
+    def _from_firestore_fields(self, fields: Dict[str, Any]) -> Dict[str, Any]:
+        data = self._initial_data()
+        data["total_views"] = self._field_int(fields, "total_views")
+        data["homepage_views"] = self._field_int(fields, "homepage_views", 0)
+        data["unique_visitors"] = self._field_int(fields, "unique_visitors", 0)
+        data["first_seen"] = self._field_int(fields, "first_seen") or None
+        data["last_updated"] = self._field_str(fields, "last_updated")
+        data["last_path"] = self._field_str(fields, "last_path")
+        data["last_referrer"] = self._field_str(fields, "last_referrer")
+        data["last_user_agent"] = self._field_str(fields, "last_user_agent")
+        data["daily_views"] = self._field_int_map(fields, "daily_views")
+        data["weekly_views"] = self._field_int_map(fields, "weekly_views")
+        data["monthly_views"] = self._field_int_map(fields, "monthly_views")
+        data["recent_sessions"] = self._field_float_map(fields, "recent_sessions")
+        return data
+
+    def _to_firestore_fields(self, data: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "success": True,
-            "views": {
-                "total": total_views,
-                "homepage_total": total_views,
-                "unique_visitors": total_views,
-                "today": total_views,
-                "this_week": total_views,
-                "this_month": total_views,
-            },
-            "portfolio_age_days": 1,
-            "avg_views_per_day": 0.0,
-            "storage": {"backend": self.backend_name, "persistent": True},
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "total_views": self._firestore_int(data.get("total_views", 0)),
+            "homepage_views": self._firestore_int(data.get("homepage_views", 0)),
+            "unique_visitors": self._firestore_int(data.get("unique_visitors", 0)),
+            "first_seen": self._firestore_int(data.get("first_seen") or int(time.time())),
+            "last_updated": self._firestore_str(data.get("last_updated", "")),
+            "last_path": self._firestore_str(data.get("last_path", "")),
+            "last_referrer": self._firestore_str(data.get("last_referrer", "")),
+            "last_user_agent": self._firestore_str(data.get("last_user_agent", "")),
+            "daily_views": self._firestore_int_map(data.get("daily_views", {})),
+            "weekly_views": self._firestore_int_map(data.get("weekly_views", {})),
+            "monthly_views": self._firestore_int_map(data.get("monthly_views", {})),
+            "recent_sessions": self._firestore_float_map(data.get("recent_sessions", {})),
+        }
+
+    def _field_int(self, fields: Dict[str, Any], key: str, default: int = 0) -> int:
+        try:
+            return int(fields.get(key, {}).get("integerValue", default))
+        except (TypeError, ValueError):
+            return default
+
+    def _field_str(self, fields: Dict[str, Any], key: str) -> str:
+        return str(fields.get(key, {}).get("stringValue", "") or "")
+
+    def _field_int_map(self, fields: Dict[str, Any], key: str) -> Dict[str, int]:
+        map_fields = fields.get(key, {}).get("mapValue", {}).get("fields", {})
+        return {name: self._field_int(map_fields, name) for name in map_fields}
+
+    def _field_float_map(self, fields: Dict[str, Any], key: str) -> Dict[str, float]:
+        map_fields = fields.get(key, {}).get("mapValue", {}).get("fields", {})
+        result = {}
+        for name, value in map_fields.items():
+            try:
+                result[name] = float(value.get("doubleValue", value.get("integerValue", 0)))
+            except (TypeError, ValueError):
+                result[name] = 0.0
+        return result
+
+    def _firestore_int(self, value: Any) -> Dict[str, str]:
+        return {"integerValue": str(int(value or 0))}
+
+    def _firestore_str(self, value: Any) -> Dict[str, str]:
+        return {"stringValue": str(value or "")}
+
+    def _firestore_int_map(self, values: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "mapValue": {
+                "fields": {
+                    str(key): self._firestore_int(value)
+                    for key, value in values.items()
+                }
+            }
+        }
+
+    def _firestore_float_map(self, values: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "mapValue": {
+                "fields": {
+                    str(key): {"doubleValue": float(value or 0)}
+                    for key, value in values.items()
+                }
+            }
         }
 
 

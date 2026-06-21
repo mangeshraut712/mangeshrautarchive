@@ -4,6 +4,7 @@ import { mkdir, rm, readdir, stat, readFile, writeFile } from 'fs/promises';
 import { execSync } from 'child_process';
 import { transform } from 'esbuild';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
+import { generateBlogPages } from './generate-blog-pages.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -308,6 +309,7 @@ async function build() {
   await Promise.all([
     addCacheBusting(distDir, version),
     minifyHtmlFiles(distDir),
+    generateBlogPages(distDir),
     generateSitemap(distDir),
     generateFeeds(distDir),
   ]);
@@ -409,7 +411,14 @@ async function generateSitemap(distDir) {
     { loc: `${siteUrl}/`, lastmod: today, changefreq: 'weekly', priority: '1.0' },
     { loc: `${siteUrl}/travel`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
     { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'monthly', priority: '0.6' },
+    { loc: `${siteUrl}/blog/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
     { loc: `${siteUrl}/#blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
+    ...posts.map(post => ({
+      loc: `${siteUrl}/blog/${post.id}`,
+      lastmod: post.date || today,
+      changefreq: 'monthly',
+      priority: '0.6',
+    })),
   ];
 
   const urlEntries = [...staticPages]

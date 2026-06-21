@@ -480,6 +480,7 @@ html.dark .profile-image-wrapper {
   perspective: 1000px;
   margin-top: 0.75rem;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .vibe-coder-badge,
@@ -559,12 +560,157 @@ html.dark .portfolio-reach-badge i {
 }
 
 .portfolio-reach-badge {
+  appearance: none;
+  -webkit-appearance: none;
   background: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgb(0 0 0 / 10%);
   color: #1d1d1f;
   box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+}
+
+.portfolio-reach-panel {
+  position: fixed;
+  z-index: 3000;
+  top: 50%;
+  bottom: auto;
+  left: 50%;
+  width: min(26rem, calc(100vw - 2rem));
+  padding: 0.9rem;
+  border: 1px solid rgb(0 0 0 / 12%);
+  border-radius: 22px;
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 14%);
+  transform: translate(-50%, -48%) scale(0.98);
+  transform-origin: center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-reach-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.reach-panel-header,
+.reach-panel-chart-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.reach-panel-eyebrow,
+.reach-panel-range,
+.reach-panel-note,
+.reach-panel-metric small,
+.reach-panel-chart-meta {
+  color: #6e6e73;
+}
+
+.portfolio-reach-panel .reach-panel-eyebrow {
+  margin: 0 0 0.15rem !important;
+  font-size: 0.78rem !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+.portfolio-reach-panel .reach-panel-header h2 {
+  margin: 0 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+}
+
+.reach-panel-range {
+  flex: 0 0 auto;
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+
+.reach-panel-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0.75rem;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.reach-panel-metric {
+  min-width: 0;
+  padding: 0.7rem 0.75rem;
+  border-right: 1px solid rgb(0 0 0 / 8%);
+  text-align: left;
+}
+
+.reach-panel-metric:last-child {
+  border-right: 0;
+}
+
+.reach-panel-metric span,
+.reach-panel-metric small {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.reach-panel-metric strong {
+  display: block;
+  margin: 0.28rem 0 0.12rem;
+  font-size: clamp(1.2rem, 3.5vw, 1.65rem);
+  line-height: 1;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.reach-panel-chart {
+  margin-top: 0.75rem;
+}
+
+.reach-panel-chart svg {
+  display: block;
+  width: 100%;
+  height: 88px;
+}
+
+.reach-chart-grid {
+  fill: none;
+  stroke: rgb(0 0 0 / 7%);
+  stroke-width: 1;
+}
+
+.reach-chart-area {
+  fill: rgb(0 113 227 / 9%);
+}
+
+.reach-chart-line {
+  fill: none;
+  stroke: #0071e3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.reach-panel-chart-meta {
+  margin-top: 0.2rem;
+  font-size: 0.74rem;
+  font-weight: 650;
+}
+
+.portfolio-reach-panel .reach-panel-note {
+  margin: 0.45rem 0 0 !important;
+  font-size: 0.76rem !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  text-align: left;
 }
 
 .portfolio-reach-badge .reach-count {
@@ -621,6 +767,38 @@ html.dark .portfolio-reach-badge {
   box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
 }
 
+html.dark .portfolio-reach-panel {
+  background: #000000;
+  border-color: rgb(255 255 255 / 18%);
+  color: #f5f5f7;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 46%);
+}
+
+html.dark .reach-panel-metrics,
+html.dark .reach-panel-metric {
+  border-color: rgb(255 255 255 / 14%);
+}
+
+html.dark .reach-panel-eyebrow,
+html.dark .reach-panel-range,
+html.dark .reach-panel-note,
+html.dark .reach-panel-metric small,
+html.dark .reach-panel-chart-meta {
+  color: #a1a1a6;
+}
+
+html.dark .reach-chart-grid {
+  stroke: rgb(255 255 255 / 10%);
+}
+
+html.dark .reach-chart-area {
+  fill: rgb(41 151 255 / 15%);
+}
+
+html.dark .reach-chart-line {
+  stroke: #2997ff;
+}
+
 html.dark .portfolio-reach-badge .reach-count.is-updating {
   color: #2997ff;
 }
@@ -628,6 +806,32 @@ html.dark .portfolio-reach-badge .reach-count.is-updating {
 .portfolio-reach-badge .reach-label {
   font-weight: 600;
   white-space: nowrap;
+}
+
+@media (width <= 640px) {
+  .portfolio-reach-panel {
+    left: 50%;
+    width: min(23rem, calc(100vw - 1.5rem));
+    padding: 0.85rem;
+    border-radius: 18px;
+  }
+
+  .reach-panel-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .reach-panel-metric {
+    border-right: 0;
+    border-bottom: 1px solid rgb(0 0 0 / 8%);
+  }
+
+  .reach-panel-metric:last-child {
+    border-bottom: 0;
+  }
+
+  html.dark .reach-panel-metric {
+    border-bottom-color: rgb(255 255 255 / 14%);
+  }
 }
 
 .hero-role-flip {

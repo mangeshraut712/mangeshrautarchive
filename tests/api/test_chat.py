@@ -121,3 +121,40 @@ def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client,
     assert "54 USA stops" in states["answer"]
     assert "WWDC 2026 Field Notes" in blogs["answer"]
     assert "NotebookLM 2026 Field Notes" in blogs["answer"]
+
+
+def test_chat_direct_travel_answer_bypasses_model_when_key_exists(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "configured")
+
+    async def fail_model_call(*_args, **_kwargs):
+        raise AssertionError("Direct site-data answers should not call OpenRouter")
+
+    monkeypatch.setattr("api.routes.chat.call_openrouter", fail_model_call)
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "How many states of USA have I visited?", "stream": False},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["source"] == "Site Knowledge"
+    assert payload["model"] == "Travel Atlas Index"
+    assert "18 states/districts" in payload["answer"]
+    assert "54 USA stops" in payload["answer"]
+
+
+def test_chat_local_stream_returns_ndjson_site_answer(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "")
+
+    with client.stream(
+        "POST",
+        "/api/chat",
+        json={"message": "How many states of USA have I visited?", "stream": True},
+    ) as response:
+        body = "".join(response.iter_text())
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("application/x-ndjson")
+    assert '"type": "chunk"' in body
+    assert "18 states/districts" in body

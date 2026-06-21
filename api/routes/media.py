@@ -1,7 +1,7 @@
 import time
 import json
 from typing import Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 
 import httpx
@@ -20,6 +20,8 @@ from api.config import (
 from api.monitoring import system_monitor
 
 router = APIRouter()
+LASTFM_STALE_TTL = 5 * 60
+_lastfm_refreshing = set()
 
 
 def build_lastfm_unconfigured_response(user: str):
@@ -37,6 +39,67 @@ def build_lastfm_unconfigured_response(user: str):
         "source": "lastfm-unconfigured",
         "message": "Last.fm API key is not configured for this environment.",
     }
+
+
+def build_lastfm_headers(cache_state: str, started_at: float, extra: Optional[dict] = None):
+    headers = {
+        **LASTFM_CACHE_HEADERS,
+        "X-Lastfm-Cache": cache_state,
+        "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
+    }
+    if extra:
+        headers.update(extra)
+    return headers
+
+
+def is_fresh_lastfm_cache(cached: Optional[dict]) -> bool:
+    return bool(cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL)
+
+
+def is_servable_lastfm_cache(cached: Optional[dict]) -> bool:
+    return bool(cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL + LASTFM_STALE_TTL)
+
+
+async def fetch_lastfm_recent_payload(user: str, limit: int) -> dict:
+    url = "https://ws.audioscrobbler.com/2.0/"
+    lastfm_params = {
+        "method": "user.getrecenttracks",
+        "user": user,
+        "api_key": LASTFM_API_KEY,
+        "format": "json",
+        "limit": str(limit),
+    }
+    headers = {
+        "User-Agent": "AssistMe-Portfolio/3.0.0",
+        "Accept": "application/json",
+    }
+
+    async with httpx.AsyncClient(timeout=3.2, follow_redirects=True) as client:
+        response = await client.post(url, data=lastfm_params, headers=headers)
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=503 if response.status_code >= 500 or response.status_code == 403 else response.status_code,
+            detail=f"Last.fm API error ({response.status_code})",
+        )
+
+    data = response.json()
+    if not data.get("recenttracks"):
+        raise HTTPException(status_code=502, detail="Last.fm returned unexpected data format")
+    return data
+
+
+async def refresh_lastfm_recent_cache(cache_key: str, user: str, limit: int):
+    if cache_key in _lastfm_refreshing:
+        return
+    _lastfm_refreshing.add(cache_key)
+    try:
+        data = await fetch_lastfm_recent_payload(user, limit)
+        lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
+    except Exception as e:
+        print(f"Last.fm background refresh failed: {type(e).__name__} - {str(e)}")
+    finally:
+        _lastfm_refreshing.discard(cache_key)
 
 
 async def get_cached_poster(cache_key: str) -> Optional[str]:
@@ -225,7 +288,11 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
 
 
 @router.get("/api/music/recent")
-async def get_recent_music(user: str = "mbr63", limit: int = 10):
+async def get_recent_music(
+    background_tasks: BackgroundTasks,
+    user: str = "mbr63",
+    limit: int = 10,
+):
     """
     Proxy endpoint for Last.fm listening data.
     Forces UTF-8 and returns structured JSON to avoid frontend fetch issues.
@@ -235,14 +302,10 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     cache_key = f"{user}:{limit}"
     started_at = time.perf_counter()
     cached = lastfm_recent_cache.get(cache_key)
-    if cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL:
+    if is_fresh_lastfm_cache(cached):
         return JSONResponse(
             content=cached["data"],
-            headers={
-                **LASTFM_CACHE_HEADERS,
-                "X-Lastfm-Cache": "HIT",
-                "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
-            },
+            headers=build_lastfm_headers("HIT", started_at),
         )
 
     if not LASTFM_API_KEY:
@@ -250,107 +313,38 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
         lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
         return JSONResponse(
             content=data,
-            headers={
-                **LASTFM_CACHE_HEADERS,
-                "X-Lastfm-Cache": "UNCONFIGURED",
-                "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
-            },
+            headers=build_lastfm_headers("UNCONFIGURED", started_at),
         )
 
-    url = "https://ws.audioscrobbler.com/2.0/"
-    lastfm_params = {
-        "method": "user.getrecenttracks",
-        "user": user,
-        "api_key": LASTFM_API_KEY,
-        "format": "json",
-        "limit": str(limit),
-    }
-
-    print(f"Fetching Last.fm data for user: {user}, limit: {limit}")
+    if is_servable_lastfm_cache(cached):
+        background_tasks.add_task(refresh_lastfm_recent_cache, cache_key, user, limit)
+        return JSONResponse(
+            content=cached["data"],
+            headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
+        )
 
     try:
-        async with httpx.AsyncClient(timeout=3.2, follow_redirects=True) as client:
-            headers = {
-                "User-Agent": "AssistMe-Portfolio/3.0.0",
-                "Accept": "application/json",
-            }
-            response = await client.post(url, data=lastfm_params, headers=headers)
+        data = await fetch_lastfm_recent_payload(user, limit)
+        lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
+        return JSONResponse(
+            content=data,
+            headers=build_lastfm_headers("MISS", started_at),
+        )
 
-            print(f"Last.fm response status: {response.status_code}")
-
-            if response.status_code != 200:
-                print(f"❌ Last.fm Error: {response.status_code} - {response.text}")
-
-                if response.status_code == 403:
-                    return JSONResponse(
-                        status_code=503,
-                        content={
-                            "error": "Last.fm service temporarily unavailable",
-                            "details": "API access restricted",
-                        },
-                    )
-                elif response.status_code == 404:
-                    return JSONResponse(
-                        status_code=404,
-                        content={
-                            "error": "User not found",
-                            "details": f"Last.fm user '{user}' not found",
-                        },
-                    )
-                elif response.status_code == 500:
-                    return JSONResponse(
-                        status_code=503,
-                        content={
-                            "error": "Last.fm service error",
-                            "details": "Last.fm servers are experiencing issues",
-                        },
-                    )
-                elif response.status_code >= 500:
-                    return JSONResponse(
-                        status_code=503,
-                        content={
-                            "error": "Last.fm service unavailable",
-                            "details": "Last.fm API is temporarily down",
-                        },
-                    )
-                else:
-                    return JSONResponse(
-                        status_code=response.status_code,
-                        content={
-                            "error": f"Last.fm API error ({response.status_code})",
-                            "details": response.text[:200],
-                        },
-                    )
-
-            data = response.json()
-            print(
-                f"✅ Successfully fetched {len(data.get('recenttracks', {}).get('track', []))} tracks for user {user}"
-            )
-
-            if not data.get("recenttracks"):
-                print("⚠️  Invalid response structure from Last.fm")
-                return JSONResponse(
-                    status_code=502,
-                    content={
-                        "error": "Invalid API response",
-                        "details": "Last.fm returned unexpected data format",
-                    },
-                )
-
-            lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
+    except HTTPException:
+        if cached:
             return JSONResponse(
-                content=data,
-                headers={
-                    **LASTFM_CACHE_HEADERS,
-                    "X-Lastfm-Cache": "MISS",
-                    "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
-                },
+                content=cached["data"],
+                headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
-
+        raise
     except httpx.TimeoutException:
         print("⏰ Last.fm request timed out")
         if cached:
-            return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+            return JSONResponse(
+                content=cached["data"],
+                headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
+            )
         return JSONResponse(
             status_code=504,
             content={
@@ -361,7 +355,10 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     except httpx.ConnectError:
         print("🌐 Connection error to Last.fm")
         if cached:
-            return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+            return JSONResponse(
+                content=cached["data"],
+                headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
+            )
         return JSONResponse(
             status_code=503,
             content={
@@ -372,7 +369,10 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     except json.JSONDecodeError as e:
         print(f"💥 Music Proxy JSON Parse Exception: {str(e)}")
         if cached:
-            return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+            return JSONResponse(
+                content=cached["data"],
+                headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
+            )
         return JSONResponse(
             status_code=502,
             content={
@@ -383,7 +383,10 @@ async def get_recent_music(user: str = "mbr63", limit: int = 10):
     except Exception as e:
         print(f"💥 Music Proxy Exception: {type(e).__name__} - {str(e)}")
         if cached:
-            return JSONResponse(content=cached["data"], headers=LASTFM_CACHE_HEADERS)
+            return JSONResponse(
+                content=cached["data"],
+                headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
+            )
         return JSONResponse(
             status_code=500,
             content={
