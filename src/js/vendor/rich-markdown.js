@@ -20,8 +20,8 @@ function E(l3) {
 }
 function d(l3, e = "") {
   let t = typeof l3 == "string" ? l3 : l3.source, n = { replace: (s, r) => {
-    let i = typeof r == "string" ? r : r.source;
-    return i = i.replace(m.caret, "$1"), t = t.replace(s, i), n;
+    let i2 = typeof r == "string" ? r : r.source;
+    return i2 = i2.replace(m.caret, "$1"), t = t.replace(s, i2), n;
   }, getRegex: () => new RegExp(t, e) };
   return n;
 }
@@ -112,8 +112,8 @@ function V(l3) {
   return l3;
 }
 function Y(l3, e) {
-  let t = l3.replace(m.findPipe, (r, i, o) => {
-    let u = false, a = i;
+  let t = l3.replace(m.findPipe, (r, i2, o) => {
+    let u = false, a = i2;
     for (; --a >= 0 && o[a] === "\\"; ) u = !u;
     return u ? "|" : " |";
   }), n = t.split(m.splitPipe), s = 0;
@@ -158,9 +158,9 @@ function me(l3, e = 0) {
   return n;
 }
 function xe(l3, e, t, n, s) {
-  let r = e.href, i = e.title || null, o = l3[1].replace(s.other.outputLinkReplace, "$1");
+  let r = e.href, i2 = e.title || null, o = l3[1].replace(s.other.outputLinkReplace, "$1");
   n.state.inLink = true;
-  let u = { type: l3[0].charAt(0) === "!" ? "image" : "link", raw: t, href: r, title: i, text: o, tokens: n.inlineTokens(o) };
+  let u = { type: l3[0].charAt(0) === "!" ? "image" : "link", raw: t, href: r, title: i2, text: o, tokens: n.inlineTokens(o) };
   return n.state.inLink = false, u;
 }
 function st(l3, e, t) {
@@ -169,9 +169,9 @@ function st(l3, e, t) {
   let s = n[1];
   return e.split(`
 `).map((r) => {
-    let i = r.match(t.other.beginningSpace);
-    if (i === null) return r;
-    let [o] = i;
+    let i2 = r.match(t.other.beginningSpace);
+    if (i2 === null) return r;
+    let [o] = i2;
     return o.length >= s.length ? r.slice(s.length) : r;
   }).join(`
 `);
@@ -223,7 +223,7 @@ var w = class {
     if (t) {
       let n = $(t[0], `
 `).split(`
-`), s = "", r = "", i = [];
+`), s = "", r = "", i2 = [];
       for (; n.length > 0; ) {
         let o = false, u = [], a;
         for (a = 0; a < n.length; a++) if (this.rules.other.blockquoteStart.test(n[a])) u.push(n[a]), o = true;
@@ -237,25 +237,25 @@ var w = class {
 ${c}` : c, r = r ? `${r}
 ${p2}` : p2;
         let k = this.lexer.state.top;
-        if (this.lexer.state.top = true, this.lexer.blockTokens(p2, i, true), this.lexer.state.top = k, n.length === 0) break;
-        let h = i.at(-1);
+        if (this.lexer.state.top = true, this.lexer.blockTokens(p2, i2, true), this.lexer.state.top = k, n.length === 0) break;
+        let h = i2.at(-1);
         if (h?.type === "code") break;
         if (h?.type === "blockquote") {
           let R = h, f = R.raw + `
 ` + n.join(`
 `), S2 = this.blockquote(f);
-          i[i.length - 1] = S2, s = s.substring(0, s.length - R.raw.length) + S2.raw, r = r.substring(0, r.length - R.text.length) + S2.text;
+          i2[i2.length - 1] = S2, s = s.substring(0, s.length - R.raw.length) + S2.raw, r = r.substring(0, r.length - R.text.length) + S2.text;
           break;
         } else if (h?.type === "list") {
           let R = h, f = R.raw + `
 ` + n.join(`
 `), S2 = this.list(f);
-          i[i.length - 1] = S2, s = s.substring(0, s.length - h.raw.length) + S2.raw, r = r.substring(0, r.length - R.raw.length) + S2.raw, n = f.substring(i.at(-1).raw.length).split(`
+          i2[i2.length - 1] = S2, s = s.substring(0, s.length - h.raw.length) + S2.raw, r = r.substring(0, r.length - R.raw.length) + S2.raw, n = f.substring(i2.at(-1).raw.length).split(`
 `);
           continue;
         }
       }
-      return { type: "blockquote", raw: s, tokens: i, text: r };
+      return { type: "blockquote", raw: s, tokens: i2, text: r };
     }
   }
   list(e) {
@@ -263,10 +263,10 @@ ${p2}` : p2;
     if (t) {
       let n = t[1].trim(), s = n.length > 1, r = { type: "list", raw: "", ordered: s, start: s ? +n.slice(0, -1) : "", loose: false, items: [] };
       n = s ? `\\d{1,9}\\${n.slice(-1)}` : `\\${n}`, this.options.pedantic && (n = s ? n : "[*+-]");
-      let i = this.rules.other.listItemRegex(n), o = false;
+      let i2 = this.rules.other.listItemRegex(n), o = false;
       for (; e; ) {
         let a = false, c = "", p2 = "";
-        if (!(t = i.exec(e)) || this.rules.block.hr.test(e)) break;
+        if (!(t = i2.exec(e)) || this.rules.block.hr.test(e)) break;
         c = t[0], e = e.substring(c.length);
         let k = me(t[2].split(`
 `, 1)[0], t[1].length), h = e.split(`
@@ -341,13 +341,13 @@ ${p2}` : p2;
     let t = this.rules.block.table.exec(e);
     if (!t || !this.rules.other.tableDelimiter.test(t[2])) return;
     let n = Y(t[1]), s = t[2].replace(this.rules.other.tableAlignChars, "").split("|"), r = t[3]?.trim() ? t[3].replace(this.rules.other.tableRowBlankLine, "").split(`
-`) : [], i = { type: "table", raw: $(t[0], `
+`) : [], i2 = { type: "table", raw: $(t[0], `
 `), header: [], align: [], rows: [] };
     if (n.length === s.length) {
-      for (let o of s) this.rules.other.tableAlignRight.test(o) ? i.align.push("right") : this.rules.other.tableAlignCenter.test(o) ? i.align.push("center") : this.rules.other.tableAlignLeft.test(o) ? i.align.push("left") : i.align.push(null);
-      for (let o = 0; o < n.length; o++) i.header.push({ text: n[o], tokens: this.lexer.inline(n[o]), header: true, align: i.align[o] });
-      for (let o of r) i.rows.push(Y(o, i.header.length).map((u, a) => ({ text: u, tokens: this.lexer.inline(u), header: false, align: i.align[a] })));
-      return i;
+      for (let o of s) this.rules.other.tableAlignRight.test(o) ? i2.align.push("right") : this.rules.other.tableAlignCenter.test(o) ? i2.align.push("center") : this.rules.other.tableAlignLeft.test(o) ? i2.align.push("left") : i2.align.push(null);
+      for (let o = 0; o < n.length; o++) i2.header.push({ text: n[o], tokens: this.lexer.inline(n[o]), header: true, align: i2.align[o] });
+      for (let o of r) i2.rows.push(Y(o, i2.header.length).map((u, a) => ({ text: u, tokens: this.lexer.inline(u), header: false, align: i2.align[a] })));
+      return i2;
     }
   }
   lheading(e) {
@@ -384,20 +384,20 @@ ${p2}` : p2;
       let n = t[2].trim();
       if (!this.options.pedantic && this.rules.other.startAngleBracket.test(n)) {
         if (!this.rules.other.endAngleBracket.test(n)) return;
-        let i = $(n.slice(0, -1), "\\");
-        if ((n.length - i.length) % 2 === 0) return;
+        let i2 = $(n.slice(0, -1), "\\");
+        if ((n.length - i2.length) % 2 === 0) return;
       } else {
-        let i = fe(t[2], "()");
-        if (i === -2) return;
-        if (i > -1) {
-          let u = (t[0].indexOf("!") === 0 ? 5 : 4) + t[1].length + i;
-          t[2] = t[2].substring(0, i), t[0] = t[0].substring(0, u).trim(), t[3] = "";
+        let i2 = fe(t[2], "()");
+        if (i2 === -2) return;
+        if (i2 > -1) {
+          let u = (t[0].indexOf("!") === 0 ? 5 : 4) + t[1].length + i2;
+          t[2] = t[2].substring(0, i2), t[0] = t[0].substring(0, u).trim(), t[3] = "";
         }
       }
       let s = t[2], r = "";
       if (this.options.pedantic) {
-        let i = this.rules.other.pedanticHrefTitle.exec(s);
-        i && (s = i[1], r = i[3]);
+        let i2 = this.rules.other.pedanticHrefTitle.exec(s);
+        i2 && (s = i2[1], r = i2[3]);
       } else r = t[3] ? t[3].slice(1, -1) : "";
       return s = s.trim(), this.rules.other.startAngleBracket.test(s) && (this.options.pedantic && !this.rules.other.endAngleBracket.test(n) ? s = s.slice(1) : s = s.slice(1, -1)), xe(t, { href: s && s.replace(this.rules.inline.anyPunctuation, "$1"), title: r && r.replace(this.rules.inline.anyPunctuation, "$1") }, t[0], this.lexer, this.rules);
     }
@@ -407,8 +407,8 @@ ${p2}` : p2;
     if ((n = this.rules.inline.reflink.exec(e)) || (n = this.rules.inline.nolink.exec(e))) {
       let s = (n[2] || n[1]).replace(this.rules.other.multipleSpaceGlobal, " "), r = t[s.toLowerCase()];
       if (!r) {
-        let i = n[0].charAt(0);
-        return { type: "text", raw: i, text: i };
+        let i2 = n[0].charAt(0);
+        return { type: "text", raw: i2, text: i2 };
       }
       return xe(n, r, n[0], this.lexer, this.rules);
     }
@@ -417,20 +417,20 @@ ${p2}` : p2;
     let s = this.rules.inline.emStrongLDelim.exec(e);
     if (!s || !s[1] && !s[2] && !s[3] && !s[4] || s[4] && n.match(this.rules.other.unicodeAlphaNumeric)) return;
     if (!(s[1] || s[3] || "") || !n || this.rules.inline.punctuation.exec(n)) {
-      let i = [...s[0]].length - 1, o, u, a = i, c = 0, p2 = s[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
-      for (p2.lastIndex = 0, t = t.slice(-1 * e.length + i); (s = p2.exec(t)) !== null; ) {
+      let i2 = [...s[0]].length - 1, o, u, a = i2, c = 0, p2 = s[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
+      for (p2.lastIndex = 0, t = t.slice(-1 * e.length + i2); (s = p2.exec(t)) !== null; ) {
         if (o = s[1] || s[2] || s[3] || s[4] || s[5] || s[6], !o) continue;
         if (u = [...o].length, s[3] || s[4]) {
           a += u;
           continue;
-        } else if ((s[5] || s[6]) && i % 3 && !((i + u) % 3)) {
+        } else if ((s[5] || s[6]) && i2 % 3 && !((i2 + u) % 3)) {
           c += u;
           continue;
         }
         if (a -= u, a > 0) continue;
         u = Math.min(u, u + a + c);
-        let k = [...s[0]][0].length, h = e.slice(0, i + s.index + k + u);
-        if (Math.min(i, u) % 2) {
+        let k = [...s[0]][0].length, h = e.slice(0, i2 + s.index + k + u);
+        if (Math.min(i2, u) % 2) {
           let f = h.slice(1, -1);
           return { type: "em", raw: h, text: f, tokens: this.lexer.inlineTokens(f) };
         }
@@ -454,16 +454,16 @@ ${p2}` : p2;
     let s = this.rules.inline.delLDelim.exec(e);
     if (!s) return;
     if (!(s[1] || "") || !n || this.rules.inline.punctuation.exec(n)) {
-      let i = [...s[0]].length - 1, o, u, a = i, c = this.rules.inline.delRDelim;
-      for (c.lastIndex = 0, t = t.slice(-1 * e.length + i); (s = c.exec(t)) !== null; ) {
-        if (o = s[1] || s[2] || s[3] || s[4] || s[5] || s[6], !o || (u = [...o].length, u !== i)) continue;
+      let i2 = [...s[0]].length - 1, o, u, a = i2, c = this.rules.inline.delRDelim;
+      for (c.lastIndex = 0, t = t.slice(-1 * e.length + i2); (s = c.exec(t)) !== null; ) {
+        if (o = s[1] || s[2] || s[3] || s[4] || s[5] || s[6], !o || (u = [...o].length, u !== i2)) continue;
         if (s[3] || s[4]) {
           a += u;
           continue;
         }
         if (a -= u, a > 0) continue;
         u = Math.min(u, u + a);
-        let p2 = [...s[0]][0].length, k = e.slice(0, i + s.index + p2 + u), h = k.slice(i, -i);
+        let p2 = [...s[0]][0].length, k = e.slice(0, i2 + s.index + p2 + u), h = k.slice(i2, -i2);
         return { type: "del", raw: k, text: h, tokens: this.lexer.inlineTokens(h) };
       }
     }
@@ -595,19 +595,19 @@ var x = class l {
         e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      let i = e;
+      let i2 = e;
       if (this.options.extensions?.startBlock) {
         let o = 1 / 0, u = e.slice(1), a;
         this.options.extensions.startBlock.forEach((c) => {
           a = c.call({ lexer: this }, u), typeof a == "number" && a >= 0 && (o = Math.min(o, a));
-        }), o < 1 / 0 && o >= 0 && (i = e.substring(0, o + 1));
+        }), o < 1 / 0 && o >= 0 && (i2 = e.substring(0, o + 1));
       }
-      if (this.state.top && (r = this.tokenizer.paragraph(i))) {
+      if (this.state.top && (r = this.tokenizer.paragraph(i2))) {
         let o = t.at(-1);
         n && o?.type === "paragraph" ? (o.raw += (o.raw.endsWith(`
 `) ? "" : `
 `) + r.raw, o.text += `
-` + r.text, this.inlineQueue.pop(), this.inlineQueue.at(-1).src = o.text) : t.push(r), n = i.length !== e.length, e = e.substring(r.raw.length);
+` + r.text, this.inlineQueue.pop(), this.inlineQueue.at(-1).src = o.text) : t.push(r), n = i2.length !== e.length, e = e.substring(r.raw.length);
         continue;
       }
       if (r = this.tokenizer.text(e)) {
@@ -640,14 +640,14 @@ var x = class l {
     let r;
     for (; (s = this.tokenizer.rules.inline.blockSkip.exec(n)) !== null; ) r = s[2] ? s[2].length : 0, n = n.slice(0, s.index + r) + "[" + "a".repeat(s[0].length - r - 2) + "]" + n.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
     n = this.options.hooks?.emStrongMask?.call({ lexer: this }, n) ?? n;
-    let i = false, o = "", u = 1 / 0;
+    let i2 = false, o = "", u = 1 / 0;
     for (; e; ) {
       if (e.length < u) u = e.length;
       else {
         this.infiniteLoopError(e.charCodeAt(0));
         break;
       }
-      i || (o = ""), i = false;
+      i2 || (o = ""), i2 = false;
       let a;
       if (this.options.extensions?.inline?.some((p2) => (a = p2.call({ lexer: this }, e, t)) ? (e = e.substring(a.raw.length), t.push(a), true) : false)) continue;
       if (a = this.tokenizer.escape(e)) {
@@ -700,7 +700,7 @@ var x = class l {
         }), p2 < 1 / 0 && p2 >= 0 && (c = e.substring(0, p2 + 1));
       }
       if (a = this.tokenizer.inlineText(c)) {
-        e = e.substring(a.raw.length), a.raw.slice(-1) !== "_" && (o = a.raw.slice(-1)), i = true;
+        e = e.substring(a.raw.length), a.raw.slice(-1) !== "_" && (o = a.raw.slice(-1)), i2 = true;
         let p2 = t.at(-1);
         p2?.type === "text" ? (p2.raw += a.raw, p2.text += a.text) : t.push(a);
         continue;
@@ -759,8 +759,8 @@ ${this.parser.parse(e)}</blockquote>
       let u = e.items[o];
       s += this.listitem(u);
     }
-    let r = t ? "ol" : "ul", i = t && n !== 1 ? ' start="' + n + '"' : "";
-    return "<" + r + i + `>
+    let r = t ? "ol" : "ul", i2 = t && n !== 1 ? ' start="' + n + '"' : "";
+    return "<" + r + i2 + `>
 ` + s + "</" + r + `>
 `;
   }
@@ -781,9 +781,9 @@ ${this.parser.parse(e)}</blockquote>
     t += this.tablerow({ text: n });
     let s = "";
     for (let r = 0; r < e.rows.length; r++) {
-      let i = e.rows[r];
+      let i2 = e.rows[r];
       n = "";
-      for (let o = 0; o < i.length; o++) n += this.tablecell(i[o]);
+      for (let o = 0; o < i2.length; o++) n += this.tablecell(i2[o]);
       s += this.tablerow({ text: n });
     }
     return s && (s = `<tbody>${s}</tbody>`), `<table>
@@ -821,16 +821,16 @@ ${e}</tr>
     let s = this.parser.parseInline(n), r = V(e);
     if (r === null) return s;
     e = r;
-    let i = '<a href="' + e + '"';
-    return t && (i += ' title="' + O(t) + '"'), i += ">" + s + "</a>", i;
+    let i2 = '<a href="' + e + '"';
+    return t && (i2 += ' title="' + O(t) + '"'), i2 += ">" + s + "</a>", i2;
   }
   image({ href: e, title: t, text: n, tokens: s }) {
     s && (n = this.parser.parseInline(s, this.parser.textRenderer));
     let r = V(e);
     if (r === null) return O(n);
     e = r;
-    let i = `<img src="${e}" alt="${O(n)}"`;
-    return t && (i += ` title="${O(t)}"`), i += ">", i;
+    let i2 = `<img src="${e}" alt="${O(n)}"`;
+    return t && (i2 += ` title="${O(t)}"`), i2 += ">", i2;
   }
   text(e) {
     return "tokens" in e && e.tokens ? this.parser.parseInline(e.tokens) : "escaped" in e && e.escaped ? e.text : O(e.text);
@@ -887,8 +887,8 @@ var b = class l2 {
     for (let n = 0; n < e.length; n++) {
       let s = e[n];
       if (this.options.extensions?.renderers?.[s.type]) {
-        let i = s, o = this.options.extensions.renderers[i.type].call({ parser: this }, i);
-        if (o !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "def", "paragraph", "text"].includes(i.type)) {
+        let i2 = s, o = this.options.extensions.renderers[i2.type].call({ parser: this }, i2);
+        if (o !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "def", "paragraph", "text"].includes(i2.type)) {
           t += o || "";
           continue;
         }
@@ -944,9 +944,9 @@ var b = class l2 {
           break;
         }
         default: {
-          let i = 'Token with "' + r.type + '" type was not found.';
-          if (this.options.silent) return console.error(i), "";
-          throw new Error(i);
+          let i2 = 'Token with "' + r.type + '" type was not found.';
+          if (this.options.silent) return console.error(i2), "";
+          throw new Error(i2);
         }
       }
     }
@@ -964,54 +964,54 @@ var b = class l2 {
           continue;
         }
       }
-      let i = r;
-      switch (i.type) {
+      let i2 = r;
+      switch (i2.type) {
         case "escape": {
-          n += t.text(i);
+          n += t.text(i2);
           break;
         }
         case "html": {
-          n += t.html(i);
+          n += t.html(i2);
           break;
         }
         case "link": {
-          n += t.link(i);
+          n += t.link(i2);
           break;
         }
         case "image": {
-          n += t.image(i);
+          n += t.image(i2);
           break;
         }
         case "checkbox": {
-          n += t.checkbox(i);
+          n += t.checkbox(i2);
           break;
         }
         case "strong": {
-          n += t.strong(i);
+          n += t.strong(i2);
           break;
         }
         case "em": {
-          n += t.em(i);
+          n += t.em(i2);
           break;
         }
         case "codespan": {
-          n += t.codespan(i);
+          n += t.codespan(i2);
           break;
         }
         case "br": {
-          n += t.br(i);
+          n += t.br(i2);
           break;
         }
         case "del": {
-          n += t.del(i);
+          n += t.del(i2);
           break;
         }
         case "text": {
-          n += t.text(i);
+          n += t.text(i2);
           break;
         }
         default: {
-          let o = 'Token with "' + i.type + '" type was not found.';
+          let o = 'Token with "' + i2.type + '" type was not found.';
           if (this.options.silent) return console.error(o), "";
           throw new Error(o);
         }
@@ -1065,8 +1065,8 @@ var q = class {
     for (let s of e) switch (n = n.concat(t.call(this, s)), s.type) {
       case "table": {
         let r = s;
-        for (let i of r.header) n = n.concat(this.walkTokens(i.tokens, t));
-        for (let i of r.rows) for (let o of i) n = n.concat(this.walkTokens(o.tokens, t));
+        for (let i2 of r.header) n = n.concat(this.walkTokens(i2.tokens, t));
+        for (let i2 of r.rows) for (let o of i2) n = n.concat(this.walkTokens(o.tokens, t));
         break;
       }
       case "list": {
@@ -1076,8 +1076,8 @@ var q = class {
       }
       default: {
         let r = s;
-        this.defaults.extensions?.childTokens?.[r.type] ? this.defaults.extensions.childTokens[r.type].forEach((i) => {
-          let o = r[i].flat(1 / 0);
+        this.defaults.extensions?.childTokens?.[r.type] ? this.defaults.extensions.childTokens[r.type].forEach((i2) => {
+          let o = r[i2].flat(1 / 0);
           n = n.concat(this.walkTokens(o, t));
         }) : r.tokens && (n = n.concat(this.walkTokens(r.tokens, t)));
       }
@@ -1091,24 +1091,24 @@ var q = class {
       if (s.async = this.defaults.async || s.async || false, n.extensions && (n.extensions.forEach((r) => {
         if (!r.name) throw new Error("extension name required");
         if ("renderer" in r) {
-          let i = t.renderers[r.name];
-          i ? t.renderers[r.name] = function(...o) {
+          let i2 = t.renderers[r.name];
+          i2 ? t.renderers[r.name] = function(...o) {
             let u = r.renderer.apply(this, o);
-            return u === false && (u = i.apply(this, o)), u;
+            return u === false && (u = i2.apply(this, o)), u;
           } : t.renderers[r.name] = r.renderer;
         }
         if ("tokenizer" in r) {
           if (!r.level || r.level !== "block" && r.level !== "inline") throw new Error("extension level must be 'block' or 'inline'");
-          let i = t[r.level];
-          i ? i.unshift(r.tokenizer) : t[r.level] = [r.tokenizer], r.start && (r.level === "block" ? t.startBlock ? t.startBlock.push(r.start) : t.startBlock = [r.start] : r.level === "inline" && (t.startInline ? t.startInline.push(r.start) : t.startInline = [r.start]));
+          let i2 = t[r.level];
+          i2 ? i2.unshift(r.tokenizer) : t[r.level] = [r.tokenizer], r.start && (r.level === "block" ? t.startBlock ? t.startBlock.push(r.start) : t.startBlock = [r.start] : r.level === "inline" && (t.startInline ? t.startInline.push(r.start) : t.startInline = [r.start]));
         }
         "childTokens" in r && r.childTokens && (t.childTokens[r.name] = r.childTokens);
       }), s.extensions = t), n.renderer) {
         let r = this.defaults.renderer || new y(this.defaults);
-        for (let i in n.renderer) {
-          if (!(i in r)) throw new Error(`renderer '${i}' does not exist`);
-          if (["options", "parser"].includes(i)) continue;
-          let o = i, u = n.renderer[o], a = r[o];
+        for (let i2 in n.renderer) {
+          if (!(i2 in r)) throw new Error(`renderer '${i2}' does not exist`);
+          if (["options", "parser"].includes(i2)) continue;
+          let o = i2, u = n.renderer[o], a = r[o];
           r[o] = (...c) => {
             let p2 = u.apply(r, c);
             return p2 === false && (p2 = a.apply(r, c)), p2 || "";
@@ -1118,10 +1118,10 @@ var q = class {
       }
       if (n.tokenizer) {
         let r = this.defaults.tokenizer || new w(this.defaults);
-        for (let i in n.tokenizer) {
-          if (!(i in r)) throw new Error(`tokenizer '${i}' does not exist`);
-          if (["options", "rules", "lexer"].includes(i)) continue;
-          let o = i, u = n.tokenizer[o], a = r[o];
+        for (let i2 in n.tokenizer) {
+          if (!(i2 in r)) throw new Error(`tokenizer '${i2}' does not exist`);
+          if (["options", "rules", "lexer"].includes(i2)) continue;
+          let o = i2, u = n.tokenizer[o], a = r[o];
           r[o] = (...c) => {
             let p2 = u.apply(r, c);
             return p2 === false && (p2 = a.apply(r, c)), p2;
@@ -1131,12 +1131,12 @@ var q = class {
       }
       if (n.hooks) {
         let r = this.defaults.hooks || new P();
-        for (let i in n.hooks) {
-          if (!(i in r)) throw new Error(`hook '${i}' does not exist`);
-          if (["options", "block"].includes(i)) continue;
-          let o = i, u = n.hooks[o], a = r[o];
-          P.passThroughHooks.has(i) ? r[o] = (c) => {
-            if (this.defaults.async && P.passThroughHooksRespectAsync.has(i)) return (async () => {
+        for (let i2 in n.hooks) {
+          if (!(i2 in r)) throw new Error(`hook '${i2}' does not exist`);
+          if (["options", "block"].includes(i2)) continue;
+          let o = i2, u = n.hooks[o], a = r[o];
+          P.passThroughHooks.has(i2) ? r[o] = (c) => {
+            if (this.defaults.async && P.passThroughHooksRespectAsync.has(i2)) return (async () => {
               let k = await u.call(r, c);
               return a.call(r, k);
             })();
@@ -1154,10 +1154,10 @@ var q = class {
         s.hooks = r;
       }
       if (n.walkTokens) {
-        let r = this.defaults.walkTokens, i = n.walkTokens;
+        let r = this.defaults.walkTokens, i2 = n.walkTokens;
         s.walkTokens = function(o) {
           let u = [];
-          return u.push(i.call(this, o)), r && (u = u.concat(r.call(this, o))), u;
+          return u.push(i2.call(this, o)), r && (u = u.concat(r.call(this, o))), u;
         };
       }
       this.defaults = { ...this.defaults, ...s };
@@ -1174,22 +1174,22 @@ var q = class {
   }
   parseMarkdown(e) {
     return (n, s) => {
-      let r = { ...s }, i = { ...this.defaults, ...r }, o = this.onError(!!i.silent, !!i.async);
+      let r = { ...s }, i2 = { ...this.defaults, ...r }, o = this.onError(!!i2.silent, !!i2.async);
       if (this.defaults.async === true && r.async === false) return o(new Error("marked(): The async option was set to true by an extension. Remove async: false from the parse options object to return a Promise."));
       if (typeof n > "u" || n === null) return o(new Error("marked(): input parameter is undefined or null"));
       if (typeof n != "string") return o(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(n) + ", string expected"));
-      if (i.hooks && (i.hooks.options = i, i.hooks.block = e), i.async) return (async () => {
-        let u = i.hooks ? await i.hooks.preprocess(n) : n, c = await (i.hooks ? await i.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(u, i), p2 = i.hooks ? await i.hooks.processAllTokens(c) : c;
-        i.walkTokens && await Promise.all(this.walkTokens(p2, i.walkTokens));
-        let h = await (i.hooks ? await i.hooks.provideParser(e) : e ? b.parse : b.parseInline)(p2, i);
-        return i.hooks ? await i.hooks.postprocess(h) : h;
+      if (i2.hooks && (i2.hooks.options = i2, i2.hooks.block = e), i2.async) return (async () => {
+        let u = i2.hooks ? await i2.hooks.preprocess(n) : n, c = await (i2.hooks ? await i2.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(u, i2), p2 = i2.hooks ? await i2.hooks.processAllTokens(c) : c;
+        i2.walkTokens && await Promise.all(this.walkTokens(p2, i2.walkTokens));
+        let h = await (i2.hooks ? await i2.hooks.provideParser(e) : e ? b.parse : b.parseInline)(p2, i2);
+        return i2.hooks ? await i2.hooks.postprocess(h) : h;
       })().catch(o);
       try {
-        i.hooks && (n = i.hooks.preprocess(n));
-        let a = (i.hooks ? i.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(n, i);
-        i.hooks && (a = i.hooks.processAllTokens(a)), i.walkTokens && this.walkTokens(a, i.walkTokens);
-        let p2 = (i.hooks ? i.hooks.provideParser(e) : e ? b.parse : b.parseInline)(a, i);
-        return i.hooks && (p2 = i.hooks.postprocess(p2)), p2;
+        i2.hooks && (n = i2.hooks.preprocess(n));
+        let a = (i2.hooks ? i2.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(n, i2);
+        i2.hooks && (a = i2.hooks.processAllTokens(a)), i2.walkTokens && this.walkTokens(a, i2.walkTokens);
+        let p2 = (i2.hooks ? i2.hooks.provideParser(e) : e ? b.parse : b.parseInline)(a, i2);
+        return i2.hooks && (p2 = i2.hooks.postprocess(p2)), p2;
       } catch (u) {
         return o(u);
       }
@@ -1252,10 +1252,10 @@ function _arrayWithHoles(r) {
 function _iterableToArrayLimit(r, l3) {
   var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
   if (null != t) {
-    var e, n, i, u, a = [], f = true, o = false;
+    var e, n, i2, u, a = [], f = true, o = false;
     try {
-      if (i = (t = t.call(r)).next, 0 === l3) ;
-      else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l3); f = true) ;
+      if (i2 = (t = t.call(r)).next, 0 === l3) ;
+      else for (; !(f = (e = i2.call(t)).done) && (a.push(e.value), a.length !== l3); f = true) ;
     } catch (r2) {
       o = true, n = r2;
     } finally {
@@ -1567,7 +1567,7 @@ var _resolveSetOption = function _resolveSetOption2(cfg, key, fallback, options)
 function createDOMPurify() {
   let window2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getGlobal();
   const DOMPurify = (root) => createDOMPurify(root);
-  DOMPurify.version = "3.4.10";
+  DOMPurify.version = "3.4.11";
   DOMPurify.removed = [];
   if (!window2 || !window2.document || window2.document.nodeType !== NODE_TYPE.document || !window2.Element) {
     DOMPurify.isSupported = false;
@@ -1686,6 +1686,8 @@ function createDOMPurify() {
   let SAFE_FOR_XML = true;
   let WHOLE_DOCUMENT = false;
   let SET_CONFIG = false;
+  let SET_CONFIG_ALLOWED_TAGS = null;
+  let SET_CONFIG_ALLOWED_ATTR = null;
   let FORCE_BODY = false;
   let RETURN_DOM = false;
   let RETURN_DOM_FRAGMENT = false;
@@ -1931,12 +1933,6 @@ function createDOMPurify() {
         emptyHTML = _createTrustedHTML("");
       }
     }
-    if ((hooks.uponSanitizeElement.length > 0 || hooks.uponSanitizeAttribute.length > 0) && ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
-      ALLOWED_TAGS = clone(ALLOWED_TAGS);
-    }
-    if (hooks.uponSanitizeAttribute.length > 0 && ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
-      ALLOWED_ATTR = clone(ALLOWED_ATTR);
-    }
     if (freeze) {
       freeze(cfg);
     }
@@ -2027,8 +2023,8 @@ function createDOMPurify() {
     }
     const attributes = getAttributes(root);
     if (attributes) {
-      for (let i = attributes.length - 1; i >= 0; --i) {
-        const attribute = attributes[i];
+      for (let i2 = attributes.length - 1; i2 >= 0; --i2) {
+        const attribute = attributes[i2];
         const name = attribute && attribute.name;
         if (typeof name === "string") {
           try {
@@ -2071,8 +2067,8 @@ function createDOMPurify() {
     if (!attributes) {
       return;
     }
-    for (let i = attributes.length - 1; i >= 0; --i) {
-      const attribute = attributes[i];
+    for (let i2 = attributes.length - 1; i2 >= 0; --i2) {
+      const attribute = attributes[i2];
       const name = attribute && attribute.name;
       if (typeof name !== "string" || ALLOWED_ATTR[transformCaseFunc(name)]) {
         continue;
@@ -2093,8 +2089,8 @@ function createDOMPurify() {
       }
       const childNodes = getChildNodes(node);
       if (childNodes) {
-        for (let i = childNodes.length - 1; i >= 0; --i) {
-          stack.push(childNodes[i]);
+        for (let i2 = childNodes.length - 1; i2 >= 0; --i2) {
+          stack.push(childNodes[i2]);
         }
       }
     }
@@ -2263,8 +2259,8 @@ function createDOMPurify() {
       const childNodes = getChildNodes(currentNode);
       if (childNodes && parentNode) {
         const childCount = childNodes.length;
-        for (let i = childCount - 1; i >= 0; --i) {
-          const hoisted = IN_PLACE ? childNodes[i] : cloneNode(childNodes[i], true);
+        for (let i2 = childCount - 1; i2 >= 0; --i2) {
+          const hoisted = IN_PLACE ? childNodes[i2] : cloneNode(childNodes[i2], true);
           parentNode.insertBefore(hoisted, getNextSibling(currentNode));
         }
       }
@@ -2477,9 +2473,9 @@ function createDOMPurify() {
       const isElement = nodeType === NODE_TYPE.element;
       const childNodes = getChildNodes(node);
       if (childNodes) {
-        for (let i = childNodes.length - 1; i >= 0; --i) {
+        for (let i2 = childNodes.length - 1; i2 >= 0; --i2) {
           stack.push({
-            node: childNodes[i],
+            node: childNodes[i2],
             shadow: null
           });
         }
@@ -2529,8 +2525,17 @@ function createDOMPurify() {
     if (!DOMPurify.isSupported) {
       return dirty;
     }
-    if (!SET_CONFIG) {
+    if (SET_CONFIG) {
+      ALLOWED_TAGS = SET_CONFIG_ALLOWED_TAGS;
+      ALLOWED_ATTR = SET_CONFIG_ALLOWED_ATTR;
+    } else {
       _parseConfig(cfg);
+    }
+    if (hooks.uponSanitizeElement.length > 0 || hooks.uponSanitizeAttribute.length > 0) {
+      ALLOWED_TAGS = clone(ALLOWED_TAGS);
+    }
+    if (hooks.uponSanitizeAttribute.length > 0) {
+      ALLOWED_ATTR = clone(ALLOWED_ATTR);
     }
     DOMPurify.removed = [];
     const inPlace = IN_PLACE && typeof dirty !== "string" && _isNode(dirty);
@@ -2631,10 +2636,14 @@ function createDOMPurify() {
     let cfg = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
     _parseConfig(cfg);
     SET_CONFIG = true;
+    SET_CONFIG_ALLOWED_TAGS = ALLOWED_TAGS;
+    SET_CONFIG_ALLOWED_ATTR = ALLOWED_ATTR;
   };
   DOMPurify.clearConfig = function() {
     CONFIG = null;
     SET_CONFIG = false;
+    SET_CONFIG_ALLOWED_TAGS = null;
+    SET_CONFIG_ALLOWED_ATTR = null;
     trustedTypesPolicy = defaultTrustedTypesPolicy;
     emptyHTML = "";
   };
@@ -2650,9 +2659,15 @@ function createDOMPurify() {
     if (typeof hookFunction !== "function") {
       return;
     }
+    if (!objectHasOwnProperty(hooks, entryPoint)) {
+      return;
+    }
     arrayPush(hooks[entryPoint], hookFunction);
   };
   DOMPurify.removeHook = function(entryPoint, hookFunction) {
+    if (!objectHasOwnProperty(hooks, entryPoint)) {
+      return void 0;
+    }
     if (hookFunction !== void 0) {
       const index = arrayLastIndexOf(hooks[entryPoint], hookFunction);
       return index === -1 ? void 0 : arraySplice(hooks[entryPoint], index, 1)[0];
@@ -2660,6 +2675,9 @@ function createDOMPurify() {
     return arrayPop(hooks[entryPoint]);
   };
   DOMPurify.removeHooks = function(entryPoint) {
+    if (!objectHasOwnProperty(hooks, entryPoint)) {
+      return;
+    }
     hooks[entryPoint] = [];
   };
   DOMPurify.removeAllHooks = function() {
@@ -2684,65 +2702,9 @@ var version = purify.version;
 var removed = purify.removed;
 
 // node_modules/katex/dist/katex.mjs
-var SourceLocation = class _SourceLocation {
-  // The + prefix indicates that these fields aren't writeable
-  // Lexer holding the input string.
-  // Start offset, zero-based inclusive.
-  // End offset, zero-based exclusive.
-  constructor(lexer, start, end) {
-    this.lexer = void 0;
-    this.start = void 0;
-    this.end = void 0;
-    this.lexer = lexer;
-    this.start = start;
-    this.end = end;
-  }
-  /**
-   * Merges two `SourceLocation`s from location providers, given they are
-   * provided in order of appearance.
-   * - Returns the first one's location if only the first is provided.
-   * - Returns a merged range of the first and the last if both are provided
-   *   and their lexers match.
-   * - Otherwise, returns null.
-   */
-  static range(first, second) {
-    if (!second) {
-      return first && first.loc;
-    } else if (!first || !first.loc || !second.loc || first.loc.lexer !== second.loc.lexer) {
-      return null;
-    } else {
-      return new _SourceLocation(first.loc.lexer, first.loc.start, second.loc.end);
-    }
-  }
-};
-var Token = class _Token {
-  // don't expand the token
-  // used in \noexpand
-  constructor(text3, loc) {
-    this.text = void 0;
-    this.loc = void 0;
-    this.noexpand = void 0;
-    this.treatAsRelax = void 0;
-    this.text = text3;
-    this.loc = loc;
-  }
-  /**
-   * Given a pair of tokens (this and endToken), compute a `Token` encompassing
-   * the whole input range enclosed by these two.
-   */
-  range(endToken, text3) {
-    return new _Token(text3, SourceLocation.range(this, endToken));
-  }
-};
-var ParseError = class _ParseError {
-  // Error start position based on passed-in Token or ParseNode.
-  // Length of affected text based on passed-in Token or ParseNode.
+var ParseError = class _ParseError extends Error {
   // The underlying error message without any context added.
   constructor(message, token) {
-    this.name = void 0;
-    this.position = void 0;
-    this.length = void 0;
-    this.rawMessage = void 0;
     var error = "KaTeX parse error: " + message;
     var start;
     var end;
@@ -2771,28 +2733,21 @@ var ParseError = class _ParseError {
       }
       error += left + underlined + right;
     }
-    var self = new Error(error);
-    self.name = "ParseError";
-    self.__proto__ = _ParseError.prototype;
-    self.position = start;
+    super(error);
+    this.name = "ParseError";
+    this.position = void 0;
+    this.length = void 0;
+    this.rawMessage = void 0;
+    Object.setPrototypeOf(this, _ParseError.prototype);
+    this.position = start;
     if (start != null && end != null) {
-      self.length = end - start;
+      this.length = end - start;
     }
-    self.rawMessage = message;
-    return self;
+    this.rawMessage = message;
   }
 };
-ParseError.prototype.__proto__ = Error.prototype;
-var contains = function contains2(list, elem) {
-  return list.indexOf(elem) !== -1;
-};
-var deflt = function deflt2(setting, defaultIfUndefined) {
-  return setting === void 0 ? defaultIfUndefined : setting;
-};
 var uppercase = /([A-Z])/g;
-var hyphenate = function hyphenate2(str) {
-  return str.replace(uppercase, "-$1").toLowerCase();
-};
+var hyphenate = (str) => str.replace(uppercase, "-$1").toLowerCase();
 var ESCAPE_LOOKUP = {
   "&": "&amp;",
   ">": "&gt;",
@@ -2801,39 +2756,29 @@ var ESCAPE_LOOKUP = {
   "'": "&#x27;"
 };
 var ESCAPE_REGEX = /[&><"']/g;
-function escape(text3) {
-  return String(text3).replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
-}
-var getBaseElem = function getBaseElem2(group) {
+var escape = (text3) => String(text3).replace(ESCAPE_REGEX, (match) => ESCAPE_LOOKUP[match]);
+var getBaseElem = (group) => {
   if (group.type === "ordgroup") {
     if (group.body.length === 1) {
-      return getBaseElem2(group.body[0]);
+      return getBaseElem(group.body[0]);
     } else {
       return group;
     }
   } else if (group.type === "color") {
     if (group.body.length === 1) {
-      return getBaseElem2(group.body[0]);
+      return getBaseElem(group.body[0]);
     } else {
       return group;
     }
   } else if (group.type === "font") {
-    return getBaseElem2(group.body);
+    return getBaseElem(group.body);
   } else {
     return group;
   }
 };
-var isCharacterBox = function isCharacterBox2(group) {
-  var baseElem = getBaseElem(group);
-  return baseElem.type === "mathord" || baseElem.type === "textord" || baseElem.type === "atom";
-};
-var assert = function assert2(value) {
-  if (!value) {
-    throw new Error("Expected non-null, but got " + String(value));
-  }
-  return value;
-};
-var protocolFromUrl = function protocolFromUrl2(url) {
+var characterNodesTypes = /* @__PURE__ */ new Set(["mathord", "textord", "atom"]);
+var isCharacterBox = (group) => characterNodesTypes.has(getBaseElem(group).type);
+var protocolFromUrl = (url) => {
   var protocol = /^[\x00-\x20]*([^\\/#?]*?)(:|&#0*58|&#x0*3a|&colon)/i.exec(url);
   if (!protocol) {
     return "_relative";
@@ -2845,15 +2790,6 @@ var protocolFromUrl = function protocolFromUrl2(url) {
     return null;
   }
   return protocol[1].toLowerCase();
-};
-var utils = {
-  contains,
-  deflt,
-  escape,
-  hyphenate,
-  getBaseElem,
-  isCharacterBox,
-  protocolFromUrl
 };
 var SETTINGS_SCHEMA = {
   displayMode: {
@@ -2945,16 +2881,11 @@ var SETTINGS_SCHEMA = {
     cli: false
   }
 };
-function getDefaultValue(schema) {
-  if (schema.default) {
-    return schema.default;
+function getImplicitDefault(type) {
+  if (typeof type !== "string") {
+    return type.enum[0];
   }
-  var type = schema.type;
-  var defaultType = Array.isArray(type) ? type[0] : type;
-  if (typeof defaultType !== "string") {
-    return defaultType.enum[0];
-  }
-  switch (defaultType) {
+  switch (type) {
     case "boolean":
       return false;
     case "string":
@@ -2963,10 +2894,26 @@ function getDefaultValue(schema) {
       return 0;
     case "object":
       return {};
+    default:
+      throw new Error("Unexpected schema type; settings must declare an explicit default.");
   }
+}
+function getDefaultValue(schema) {
+  if (schema.default !== void 0) {
+    return schema.default;
+  }
+  var type = Array.isArray(schema.type) ? schema.type[0] : schema.type;
+  return getImplicitDefault(type);
+}
+function applySetting(target, prop, options, schema) {
+  var optionValue = options[prop];
+  target[prop] = optionValue !== void 0 ? schema.processor ? schema.processor(optionValue) : optionValue : getDefaultValue(schema);
 }
 var Settings = class {
   constructor(options) {
+    if (options === void 0) {
+      options = {};
+    }
     this.displayMode = void 0;
     this.output = void 0;
     this.leqno = void 0;
@@ -2982,10 +2929,10 @@ var Settings = class {
     this.maxExpand = void 0;
     this.globalGroup = void 0;
     options = options || {};
-    for (var prop in SETTINGS_SCHEMA) {
-      if (SETTINGS_SCHEMA.hasOwnProperty(prop)) {
-        var schema = SETTINGS_SCHEMA[prop];
-        this[prop] = options[prop] !== void 0 ? schema.processor ? schema.processor(options[prop]) : options[prop] : getDefaultValue(schema);
+    for (var prop of Object.keys(SETTINGS_SCHEMA)) {
+      var schema = SETTINGS_SCHEMA[prop];
+      if (schema) {
+        applySetting(this, prop, options, schema);
       }
     }
   }
@@ -3046,8 +2993,8 @@ var Settings = class {
    * get added by this function (changing the specified object).
    */
   isTrusted(context) {
-    if (context.url && !context.protocol) {
-      var protocol = utils.protocolFromUrl(context.url);
+    if ("url" in context && context.url && !context.protocol) {
+      var protocol = protocolFromUrl(context.url);
       if (protocol == null) {
         return false;
       }
@@ -3193,12 +3140,12 @@ var scriptData = [{
   blocks: [[44032, 55215]]
 }];
 function scriptFromCodepoint(codepoint) {
-  for (var i = 0; i < scriptData.length; i++) {
-    var script = scriptData[i];
-    for (var _i = 0; _i < script.blocks.length; _i++) {
-      var block = script.blocks[_i];
+  for (var i2 = 0; i2 < scriptData.length; i2++) {
+    var script2 = scriptData[i2];
+    for (var _i6 = 0; _i6 < script2.blocks.length; _i6++) {
+      var block = script2.blocks[_i6];
       if (codepoint >= block[0] && codepoint <= block[1]) {
-        return script.name;
+        return script2.name;
       }
     }
   }
@@ -3207,13 +3154,14 @@ function scriptFromCodepoint(codepoint) {
 var allBlocks = [];
 scriptData.forEach((s) => s.blocks.forEach((b3) => allBlocks.push(...b3)));
 function supportedCodepoint(codepoint) {
-  for (var i = 0; i < allBlocks.length; i += 2) {
-    if (codepoint >= allBlocks[i] && codepoint <= allBlocks[i + 1]) {
+  for (var i2 = 0; i2 < allBlocks.length; i2 += 2) {
+    if (codepoint >= allBlocks[i2] && codepoint <= allBlocks[i2 + 1]) {
       return true;
     }
   }
   return false;
 }
+var doubleBrushStroke = (svgPath) => svgPath + " " + svgPath;
 var hLinePad = 80;
 var sqrtMain = function sqrtMain2(extraVinculum, hLinePad2) {
   return "M95," + (622 + extraVinculum + hLinePad2) + "\nc-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14\nc0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54\nc44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10\ns173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429\nc69,-144,104.5,-217.7,106.5,-221\nl" + extraVinculum / 2.075 + " -" + extraVinculum + "\nc5.3,-9.3,12,-14,20,-14\nH400000v" + (40 + extraVinculum) + "H845.2724\ns-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7\nc-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z\nM" + (834 + extraVinculum) + " " + hLinePad2 + "h400000v" + (40 + extraVinculum) + "h-400000z";
@@ -3265,23 +3213,23 @@ var sqrtPath = function sqrtPath2(size, extraVinculum, viewBoxHeight) {
 var innerPath = function innerPath2(name, height) {
   switch (name) {
     case "\u239C":
-      return "M291 0 H417 V" + height + " H291z M291 0 H417 V" + height + " H291z";
+      return doubleBrushStroke("M291 0 H417 V" + height + " H291z");
     case "\u2223":
-      return "M145 0 H188 V" + height + " H145z M145 0 H188 V" + height + " H145z";
+      return doubleBrushStroke("M145 0 H188 V" + height + " H145z");
     case "\u2225":
-      return "M145 0 H188 V" + height + " H145z M145 0 H188 V" + height + " H145z" + ("M367 0 H410 V" + height + " H367z M367 0 H410 V" + height + " H367z");
+      return doubleBrushStroke("M145 0 H188 V" + height + " H145z") + doubleBrushStroke("M367 0 H410 V" + height + " H367z");
     case "\u239F":
-      return "M457 0 H583 V" + height + " H457z M457 0 H583 V" + height + " H457z";
+      return doubleBrushStroke("M457 0 H583 V" + height + " H457z");
     case "\u23A2":
-      return "M319 0 H403 V" + height + " H319z M319 0 H403 V" + height + " H319z";
+      return doubleBrushStroke("M319 0 H403 V" + height + " H319z");
     case "\u23A5":
-      return "M263 0 H347 V" + height + " H263z M263 0 H347 V" + height + " H263z";
+      return doubleBrushStroke("M263 0 H347 V" + height + " H263z");
     case "\u23AA":
-      return "M384 0 H504 V" + height + " H384z M384 0 H504 V" + height + " H384z";
+      return doubleBrushStroke("M384 0 H504 V" + height + " H384z");
     case "\u23D0":
-      return "M312 0 H355 V" + height + " H312z M312 0 H355 V" + height + " H312z";
+      return doubleBrushStroke("M312 0 H355 V" + height + " H312z");
     case "\u2016":
-      return "M257 0 H300 V" + height + " H257z M257 0 H300 V" + height + " H257z" + ("M478 0 H521 V" + height + " H478z M478 0 H521 V" + height + " H478z");
+      return doubleBrushStroke("M257 0 H300 V" + height + " H257z") + doubleBrushStroke("M478 0 H521 V" + height + " H478z");
     default:
       return "";
   }
@@ -3306,11 +3254,13 @@ var path = {
   leftharpoondownplus: "M7 435c-4 4-6.3 8.7-7 14 0 5.3.7 9 2 11s5.3 5.3 12\n 10c90.7 54 156 130 196 228 3.3 10.7 6.3 16.3 9 17 2 .7 5 1 9 1h5c10.7 0 16.7\n-2 18-6 2-2.7 1-9.7-3-21-32-87.3-82.7-157.7-152-211l-3-3h399907v-40H7zm93 0\nv40h399900v-40zM0 241v40h399900v-40zm0 0v40h399900v-40z",
   // hook is from glyph U+21A9 in font KaTeX Main
   lefthook: "M400000 281 H103s-33-11.2-61-33.5S0 197.3 0 164s14.2-61.2 42.5\n-83.5C70.8 58.2 104 47 142 47 c16.7 0 25 6.7 25 20 0 12-8.7 18.7-26 20-40 3.3\n-68.7 15.7-86 37-10 12-15 25.3-15 40 0 22.7 9.8 40.7 29.5 54 19.7 13.3 43.5 21\n 71.5 23h399859zM103 281v-40h399897v40z",
-  leftlinesegment: "M40 281 V428 H0 V94 H40 V241 H400000 v40z\nM40 281 V428 H0 V94 H40 V241 H400000 v40z",
-  leftmapsto: "M40 281 V448H0V74H40V241H400000v40z\nM40 281 V448H0V74H40V241H400000v40z",
+  leftlinesegment: doubleBrushStroke("M40 281 V428 H0 V94 H40 V241 H400000 v40z"),
+  leftbracketunder: doubleBrushStroke("M0 0 h120 V290 H399995 v120 H0z"),
+  leftbracketover: doubleBrushStroke("M0 440 h120 V150 H399995 v-120 H0z"),
+  leftmapsto: doubleBrushStroke("M40 281 V448H0V74H40V241H400000v40z"),
   // tofrom is from glyph U+21C4 in font KaTeX AMS Regular
   leftToFrom: "M0 147h400000v40H0zm0 214c68 40 115.7 95.7 143 167h22c15.3 0 23\n-.3 23-1 0-1.3-5.3-13.7-16-37-18-35.3-41.3-69-70-101l-7-8h399905v-40H95l7-8\nc28.7-32 52-65.7 70-101 10.7-23.3 16-35.7 16-37 0-.7-7.7-1-23-1h-22C115.7 265.3\n 68 321 0 361zm0-174v-40h399900v40zm100 154v40h399900v-40z",
-  longequal: "M0 50 h400000 v40H0z m0 194h40000v40H0z\nM0 50 h400000 v40H0z m0 194h40000v40H0z",
+  longequal: doubleBrushStroke("M0 50 h400000 v40H0z m0 194h40000v40H0z"),
   midbrace: "M200428 334\nc-100.7-8.3-195.3-44-280-108-55.3-42-101.7-93-139-153l-9-14c-2.7 4-5.7 8.7-9 14\n-53.3 86.7-123.7 153-211 199-66.7 36-137.3 56.3-212 62H0V214h199568c178.3-11.7\n 311.7-78.3 403-201 6-8 9.7-12 11-12 .7-.7 6.7-1 18-1s17.3.3 18 1c1.3 0 5 4 11\n 12 44.7 59.3 101.3 106.3 170 141s145.3 54.3 229 60h199572v120z",
   midbraceunder: "M199572 214\nc100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14\n 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3\n 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0\n-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z",
   oiintSize1: "M512.6 71.6c272.6 0 320.3 106.8 320.3 178.2 0 70.8-47.7 177.6\n-320.3 177.6S193.1 320.6 193.1 249.8c0-71.4 46.9-178.2 319.5-178.2z\nm368.1 178.2c0-86.4-60.9-215.4-368.1-215.4-306.4 0-367.3 129-367.3 215.4 0 85.8\n60.9 214.8 367.3 214.8 307.2 0 368.1-129 368.1-214.8z",
@@ -3327,7 +3277,9 @@ var path = {
   rightharpoondown: "M399747 511c0 7.3 6.7 11 20 11 8 0 13-.8 15-2.5s4.7-6.8\n 8-15.5c40-94 99.3-166.3 178-217 13.3-8 20.3-12.3 21-13 5.3-3.3 8.5-5.8 9.5\n-7.5 1-1.7 1.5-5.2 1.5-10.5s-2.3-10.3-7-15H0v40h399908c-34 25.3-64.7 57-92 95\n-27.3 38-48.7 77.7-64 119-3.3 8.7-5 14-5 16zM0 241v40h399900v-40z",
   rightharpoondownplus: "M399747 705c0 7.3 6.7 11 20 11 8 0 13-.8\n 15-2.5s4.7-6.8 8-15.5c40-94 99.3-166.3 178-217 13.3-8 20.3-12.3 21-13 5.3-3.3\n 8.5-5.8 9.5-7.5 1-1.7 1.5-5.2 1.5-10.5s-2.3-10.3-7-15H0v40h399908c-34 25.3\n-64.7 57-92 95-27.3 38-48.7 77.7-64 119-3.3 8.7-5 14-5 16zM0 435v40h399900v-40z\nm0-194v40h400000v-40zm0 0v40h400000v-40z",
   righthook: "M399859 241c-764 0 0 0 0 0 40-3.3 68.7-15.7 86-37 10-12 15-25.3\n 15-40 0-22.7-9.8-40.7-29.5-54-19.7-13.3-43.5-21-71.5-23-17.3-1.3-26-8-26-20 0\n-13.3 8.7-20 26-20 38 0 71 11.2 99 33.5 0 0 7 5.6 21 16.7 14 11.2 21 33.5 21\n 66.8s-14 61.2-42 83.5c-28 22.3-61 33.5-99 33.5L0 241z M0 281v-40h399859v40z",
-  rightlinesegment: "M399960 241 V94 h40 V428 h-40 V281 H0 v-40z\nM399960 241 V94 h40 V428 h-40 V281 H0 v-40z",
+  rightlinesegment: doubleBrushStroke("M399960 241 V94 h40 V428 h-40 V281 H0 v-40z"),
+  rightbracketunder: doubleBrushStroke("M399995 0 h-120 V290 H0 v120 H400000z"),
+  rightbracketover: doubleBrushStroke("M399995 440 h-120 V150 H0 v-120 H399995z"),
   rightToFrom: "M400000 167c-70.7-42-118-97.7-142-167h-23c-15.3 0-23 .3-23\n 1 0 1.3 5.3 13.7 16 37 18 35.3 41.3 69 70 101l7 8H0v40h399905l-7 8c-28.7 32\n-52 65.7-70 101-10.7 23.3-16 35.7-16 37 0 .7 7.7 1 23 1h23c24-69.3 71.3-125 142\n-167z M100 147v40h399900v-40zM0 341v40h399900v-40z",
   // twoheadleftarrow is from glyph U+219E in font KaTeX AMS Regular
   twoheadleftarrow: "M0 167c68 40\n 115.7 95.7 143 167h22c15.3 0 23-.3 23-1 0-1.3-5.3-13.7-16-37-18-35.3-41.3-69\n-70-101l-7-8h125l9 7c50.7 39.3 85 86 103 140h46c0-4.7-6.3-18.7-19-42-18-35.3\n-40-67.3-66-96l-9-9h399716v-40H284l9-9c26-28.7 48-60.7 66-96 12.7-23.333 19\n-37.333 19-42h-46c-18 54-52.3 100.7-103 140l-9 7H95l7-8c28.7-32 52-65.7 70-101\n 10.7-23.333 16-35.7 16-37 0-.7-7.7-1-23-1h-22C115.7 71.3 68 127 0 167z",
@@ -3367,7 +3319,7 @@ var path = {
 var tallDelim = function tallDelim2(label, midHeight) {
   switch (label) {
     case "lbrack":
-      return "M403 1759 V84 H666 V0 H319 V1759 v" + midHeight + " v1759 h347 v-84\nH403z M403 1759 V0 H319 V1759 v" + midHeight + " v1759 h84z";
+      return "M403 1759 V84 H666 V0 H319 V1759 v" + midHeight + " v1759 v84 h347 v-84\nH403z M403 1759 V0 H319 V1759 v" + midHeight + " v1759 v84 h84z";
     case "rbrack":
       return "M347 1759 V0 H0 V84 H263 V1759 v" + midHeight + " v1759 H0 v84 H347z\nM347 1759 V0 H263 V1759 v" + midHeight + " v1759 h84z";
     case "vert":
@@ -3390,8 +3342,10 @@ var tallDelim = function tallDelim2(label, midHeight) {
       throw new Error("Unknown stretchy delimiter.");
   }
 };
+function isMathDomNode(node) {
+  return "toText" in node;
+}
 var DocumentFragment = class {
-  // HtmlDomNode
   // Never used; needed for satisfying interface.
   constructor(children) {
     this.children = void 0;
@@ -3408,21 +3362,21 @@ var DocumentFragment = class {
     this.style = {};
   }
   hasClass(className) {
-    return utils.contains(this.classes, className);
+    return this.classes.includes(className);
   }
   /** Convert the fragment into a node. */
   toNode() {
     var frag = document.createDocumentFragment();
-    for (var i = 0; i < this.children.length; i++) {
-      frag.appendChild(this.children[i].toNode());
+    for (var i2 = 0; i2 < this.children.length; i2++) {
+      frag.appendChild(this.children[i2].toNode());
     }
     return frag;
   }
   /** Convert the fragment into HTML markup. */
   toMarkup() {
     var markup = "";
-    for (var i = 0; i < this.children.length; i++) {
-      markup += this.children[i].toMarkup();
+    for (var i2 = 0; i2 < this.children.length; i2++) {
+      markup += this.children[i2].toMarkup();
     }
     return markup;
   }
@@ -3431,10 +3385,433 @@ var DocumentFragment = class {
    * MathDomNode's only.
    */
   toText() {
-    var toText = (child) => child.toText();
-    return this.children.map(toText).join("");
+    return this.children.map((child) => {
+      if (isMathDomNode(child)) {
+        return child.toText();
+      }
+      throw new Error("Expected MathDomNode with toText, got " + child.constructor.name);
+    }).join("");
   }
 };
+var ptPerUnit = {
+  // https://en.wikibooks.org/wiki/LaTeX/Lengths and
+  // https://tex.stackexchange.com/a/8263
+  "pt": 1,
+  // TeX point
+  "mm": 7227 / 2540,
+  // millimeter
+  "cm": 7227 / 254,
+  // centimeter
+  "in": 72.27,
+  // inch
+  "bp": 803 / 800,
+  // big (PostScript) points
+  "pc": 12,
+  // pica
+  "dd": 1238 / 1157,
+  // didot
+  "cc": 14856 / 1157,
+  // cicero (12 didot)
+  "nd": 685 / 642,
+  // new didot
+  "nc": 1370 / 107,
+  // new cicero (12 new didot)
+  "sp": 1 / 65536,
+  // scaled point (TeX's internal smallest unit)
+  // https://tex.stackexchange.com/a/41371
+  "px": 803 / 800
+  // \pdfpxdimen defaults to 1 bp in pdfTeX and LuaTeX
+};
+var relativeUnit = {
+  "ex": true,
+  "em": true,
+  "mu": true
+};
+var validUnit = function validUnit2(unit) {
+  if (typeof unit !== "string") {
+    unit = unit.unit;
+  }
+  return unit in ptPerUnit || unit in relativeUnit || unit === "ex";
+};
+var calculateSize = function calculateSize2(sizeValue, options) {
+  var scale;
+  if (sizeValue.unit in ptPerUnit) {
+    scale = ptPerUnit[sizeValue.unit] / options.fontMetrics().ptPerEm / options.sizeMultiplier;
+  } else if (sizeValue.unit === "mu") {
+    scale = options.fontMetrics().cssEmPerMu;
+  } else {
+    var unitOptions;
+    if (options.style.isTight()) {
+      unitOptions = options.havingStyle(options.style.text());
+    } else {
+      unitOptions = options;
+    }
+    if (sizeValue.unit === "ex") {
+      scale = unitOptions.fontMetrics().xHeight;
+    } else if (sizeValue.unit === "em") {
+      scale = unitOptions.fontMetrics().quad;
+    } else {
+      throw new ParseError("Invalid unit: '" + sizeValue.unit + "'");
+    }
+    if (unitOptions !== options) {
+      scale *= unitOptions.sizeMultiplier / options.sizeMultiplier;
+    }
+  }
+  return Math.min(sizeValue.number * scale, options.maxSize);
+};
+var makeEm = function makeEm2(n) {
+  return +n.toFixed(4) + "em";
+};
+var createClass = function createClass2(classes) {
+  return classes.filter((cls) => cls).join(" ");
+};
+var cssStyleToString = function cssStyleToString2(style) {
+  var styles2 = "";
+  for (var key of Object.keys(style)) {
+    var value = style[key];
+    if (value !== void 0) {
+      styles2 += hyphenate(key) + ":" + value + ";";
+    }
+  }
+  return styles2;
+};
+var initNode = function initNode2(classes, options, style) {
+  this.classes = classes || [];
+  this.attributes = {};
+  this.height = 0;
+  this.depth = 0;
+  this.maxFontSize = 0;
+  this.style = style || {};
+  if (options) {
+    if (options.style.isTight()) {
+      this.classes.push("mtight");
+    }
+    var color = options.getColor();
+    if (color) {
+      this.style.color = color;
+    }
+  }
+};
+var toNode = function toNode2(tagName) {
+  var node = document.createElement(tagName);
+  node.className = createClass(this.classes);
+  Object.assign(node.style, this.style);
+  for (var attr of Object.keys(this.attributes)) {
+    node.setAttribute(attr, this.attributes[attr]);
+  }
+  for (var i2 = 0; i2 < this.children.length; i2++) {
+    node.appendChild(this.children[i2].toNode());
+  }
+  return node;
+};
+var invalidAttributeNameRegex = /[\s"'>/=\x00-\x1f]/;
+var toMarkup = function toMarkup2(tagName) {
+  var markup = "<" + tagName;
+  if (this.classes.length) {
+    markup += ' class="' + escape(createClass(this.classes)) + '"';
+  }
+  var styles2 = cssStyleToString(this.style);
+  if (styles2) {
+    markup += ' style="' + escape(styles2) + '"';
+  }
+  for (var attr of Object.keys(this.attributes)) {
+    if (invalidAttributeNameRegex.test(attr)) {
+      throw new ParseError("Invalid attribute name '" + attr + "'");
+    }
+    markup += " " + attr + '="' + escape(this.attributes[attr]) + '"';
+  }
+  markup += ">";
+  for (var i2 = 0; i2 < this.children.length; i2++) {
+    markup += this.children[i2].toMarkup();
+  }
+  markup += "</" + tagName + ">";
+  return markup;
+};
+var Span = class {
+  constructor(classes, children, options, style) {
+    this.children = void 0;
+    this.attributes = void 0;
+    this.classes = void 0;
+    this.height = void 0;
+    this.depth = void 0;
+    this.width = void 0;
+    this.maxFontSize = void 0;
+    this.style = void 0;
+    this.italic = void 0;
+    initNode.call(this, classes, options, style);
+    this.children = children || [];
+  }
+  /**
+   * Sets an arbitrary attribute on the span. Warning: use this wisely. Not
+   * all browsers support attributes the same, and having too many custom
+   * attributes is probably bad.
+   */
+  setAttribute(attribute, value) {
+    this.attributes[attribute] = value;
+  }
+  hasClass(className) {
+    return this.classes.includes(className);
+  }
+  toNode() {
+    return toNode.call(this, "span");
+  }
+  toMarkup() {
+    return toMarkup.call(this, "span");
+  }
+};
+var Anchor = class {
+  constructor(href, classes, children, options) {
+    this.children = void 0;
+    this.attributes = void 0;
+    this.classes = void 0;
+    this.height = void 0;
+    this.depth = void 0;
+    this.maxFontSize = void 0;
+    this.style = void 0;
+    initNode.call(this, classes, options);
+    this.children = children || [];
+    this.setAttribute("href", href);
+  }
+  setAttribute(attribute, value) {
+    this.attributes[attribute] = value;
+  }
+  hasClass(className) {
+    return this.classes.includes(className);
+  }
+  toNode() {
+    return toNode.call(this, "a");
+  }
+  toMarkup() {
+    return toMarkup.call(this, "a");
+  }
+};
+var Img = class {
+  constructor(src, alt, style) {
+    this.src = void 0;
+    this.alt = void 0;
+    this.classes = void 0;
+    this.height = void 0;
+    this.depth = void 0;
+    this.maxFontSize = void 0;
+    this.style = void 0;
+    this.alt = alt;
+    this.src = src;
+    this.classes = ["mord"];
+    this.height = 0;
+    this.depth = 0;
+    this.maxFontSize = 0;
+    this.style = style;
+  }
+  hasClass(className) {
+    return this.classes.includes(className);
+  }
+  toNode() {
+    var node = document.createElement("img");
+    node.src = this.src;
+    node.alt = this.alt;
+    node.className = "mord";
+    Object.assign(node.style, this.style);
+    return node;
+  }
+  toMarkup() {
+    var markup = '<img src="' + escape(this.src) + '"' + (' alt="' + escape(this.alt) + '"');
+    var styles2 = cssStyleToString(this.style);
+    if (styles2) {
+      markup += ' style="' + escape(styles2) + '"';
+    }
+    markup += "'/>";
+    return markup;
+  }
+};
+var iCombinations = {
+  "\xEE": "\u0131\u0302",
+  "\xEF": "\u0131\u0308",
+  "\xED": "\u0131\u0301",
+  // 'ī': '\u0131\u0304', // enable when we add Extended Latin
+  "\xEC": "\u0131\u0300"
+};
+var SymbolNode = class {
+  constructor(text3, height, depth, italic2, skew, width, classes, style) {
+    this.text = void 0;
+    this.height = void 0;
+    this.depth = void 0;
+    this.italic = void 0;
+    this.skew = void 0;
+    this.width = void 0;
+    this.maxFontSize = void 0;
+    this.classes = void 0;
+    this.style = void 0;
+    this.text = text3;
+    this.height = height || 0;
+    this.depth = depth || 0;
+    this.italic = italic2 || 0;
+    this.skew = skew || 0;
+    this.width = width || 0;
+    this.classes = classes || [];
+    this.style = style || {};
+    this.maxFontSize = 0;
+    var script2 = scriptFromCodepoint(this.text.charCodeAt(0));
+    if (script2) {
+      this.classes.push(script2 + "_fallback");
+    }
+    if (/[îïíì]/.test(this.text)) {
+      this.text = iCombinations[this.text];
+    }
+  }
+  hasClass(className) {
+    return this.classes.includes(className);
+  }
+  /**
+   * Creates a text node or span from a symbol node. Note that a span is only
+   * created if it is needed.
+   */
+  toNode() {
+    var node = document.createTextNode(this.text);
+    var span = null;
+    if (this.italic > 0) {
+      span = document.createElement("span");
+      span.style.marginRight = makeEm(this.italic);
+    }
+    if (this.classes.length > 0) {
+      span = span || document.createElement("span");
+      span.className = createClass(this.classes);
+    }
+    if (Object.keys(this.style).length > 0) {
+      span = span || document.createElement("span");
+      Object.assign(span.style, this.style);
+    }
+    if (span) {
+      span.appendChild(node);
+      return span;
+    } else {
+      return node;
+    }
+  }
+  /**
+   * Creates markup for a symbol node.
+   */
+  toMarkup() {
+    var needsSpan = false;
+    var markup = "<span";
+    if (this.classes.length) {
+      needsSpan = true;
+      markup += ' class="';
+      markup += escape(createClass(this.classes));
+      markup += '"';
+    }
+    var styles2 = "";
+    if (this.italic > 0) {
+      styles2 += "margin-right:" + makeEm(this.italic) + ";";
+    }
+    styles2 += cssStyleToString(this.style);
+    if (styles2) {
+      needsSpan = true;
+      markup += ' style="' + escape(styles2) + '"';
+    }
+    var escaped = escape(this.text);
+    if (needsSpan) {
+      markup += ">";
+      markup += escaped;
+      markup += "</span>";
+      return markup;
+    } else {
+      return escaped;
+    }
+  }
+};
+var SvgNode = class {
+  constructor(children, attributes) {
+    this.children = void 0;
+    this.attributes = void 0;
+    this.children = children || [];
+    this.attributes = attributes || {};
+  }
+  toNode() {
+    var svgNS = "http://www.w3.org/2000/svg";
+    var node = document.createElementNS(svgNS, "svg");
+    for (var attr of Object.keys(this.attributes)) {
+      node.setAttribute(attr, this.attributes[attr]);
+    }
+    for (var i2 = 0; i2 < this.children.length; i2++) {
+      node.appendChild(this.children[i2].toNode());
+    }
+    return node;
+  }
+  toMarkup() {
+    var markup = '<svg xmlns="http://www.w3.org/2000/svg"';
+    for (var attr of Object.keys(this.attributes)) {
+      markup += " " + attr + '="' + escape(this.attributes[attr]) + '"';
+    }
+    markup += ">";
+    for (var i2 = 0; i2 < this.children.length; i2++) {
+      markup += this.children[i2].toMarkup();
+    }
+    markup += "</svg>";
+    return markup;
+  }
+};
+var PathNode = class {
+  constructor(pathName, alternate) {
+    this.pathName = void 0;
+    this.alternate = void 0;
+    this.pathName = pathName;
+    this.alternate = alternate;
+  }
+  toNode() {
+    var svgNS = "http://www.w3.org/2000/svg";
+    var node = document.createElementNS(svgNS, "path");
+    if (this.alternate) {
+      node.setAttribute("d", this.alternate);
+    } else {
+      node.setAttribute("d", path[this.pathName]);
+    }
+    return node;
+  }
+  toMarkup() {
+    if (this.alternate) {
+      return '<path d="' + escape(this.alternate) + '"/>';
+    } else {
+      return '<path d="' + escape(path[this.pathName]) + '"/>';
+    }
+  }
+};
+var LineNode = class {
+  constructor(attributes) {
+    this.attributes = void 0;
+    this.attributes = attributes || {};
+  }
+  toNode() {
+    var svgNS = "http://www.w3.org/2000/svg";
+    var node = document.createElementNS(svgNS, "line");
+    for (var attr of Object.keys(this.attributes)) {
+      node.setAttribute(attr, this.attributes[attr]);
+    }
+    return node;
+  }
+  toMarkup() {
+    var markup = "<line";
+    for (var attr of Object.keys(this.attributes)) {
+      markup += " " + attr + '="' + escape(this.attributes[attr]) + '"';
+    }
+    markup += "/>";
+    return markup;
+  }
+};
+function assertSymbolDomNode(group) {
+  if (group instanceof SymbolNode) {
+    return group;
+  } else {
+    throw new Error("Expected symbolNode but got " + String(group) + ".");
+  }
+}
+function assertSpan(group) {
+  if (group instanceof Span) {
+    return group;
+  } else {
+    throw new Error("Expected span<HtmlDomNode> but got " + String(group) + ".");
+  }
+}
+var hasHtmlDomChildren = (node) => node instanceof Span || node instanceof Anchor || node instanceof DocumentFragment;
 var fontMetricsData = {
   "AMS-Regular": {
     "32": [0, 0, 0, 0, 0.25],
@@ -5674,14 +6051,14 @@ function getCharacterMetrics(character, font, mode) {
   if (!fontMetricsData[font]) {
     throw new Error("Font metrics not found for font: " + font + ".");
   }
-  var ch = character.charCodeAt(0);
-  var metrics = fontMetricsData[font][ch];
+  var ch2 = character.charCodeAt(0);
+  var metrics = fontMetricsData[font][ch2];
   if (!metrics && character[0] in extraCharacterMap) {
-    ch = extraCharacterMap[character[0]].charCodeAt(0);
-    metrics = fontMetricsData[font][ch];
+    ch2 = extraCharacterMap[character[0]].charCodeAt(0);
+    metrics = fontMetricsData[font][ch2];
   }
   if (!metrics && mode === "text") {
-    if (supportedCodepoint(ch)) {
+    if (supportedCodepoint(ch2)) {
       metrics = fontMetricsData[font][77];
     }
   }
@@ -5717,732 +6094,6 @@ function getGlobalMetrics(size) {
   }
   return fontMetricsBySizeIndex[sizeIndex];
 }
-var sizeStyleMap = [
-  // Each element contains [textsize, scriptsize, scriptscriptsize].
-  // The size mappings are taken from TeX with \normalsize=10pt.
-  [1, 1, 1],
-  // size1: [5, 5, 5]              \tiny
-  [2, 1, 1],
-  // size2: [6, 5, 5]
-  [3, 1, 1],
-  // size3: [7, 5, 5]              \scriptsize
-  [4, 2, 1],
-  // size4: [8, 6, 5]              \footnotesize
-  [5, 2, 1],
-  // size5: [9, 6, 5]              \small
-  [6, 3, 1],
-  // size6: [10, 7, 5]             \normalsize
-  [7, 4, 2],
-  // size7: [12, 8, 6]             \large
-  [8, 6, 3],
-  // size8: [14.4, 10, 7]          \Large
-  [9, 7, 6],
-  // size9: [17.28, 12, 10]        \LARGE
-  [10, 8, 7],
-  // size10: [20.74, 14.4, 12]     \huge
-  [11, 10, 9]
-  // size11: [24.88, 20.74, 17.28] \HUGE
-];
-var sizeMultipliers = [
-  // fontMetrics.js:getGlobalMetrics also uses size indexes, so if
-  // you change size indexes, change that function.
-  0.5,
-  0.6,
-  0.7,
-  0.8,
-  0.9,
-  1,
-  1.2,
-  1.44,
-  1.728,
-  2.074,
-  2.488
-];
-var sizeAtStyle = function sizeAtStyle2(size, style) {
-  return style.size < 2 ? size : sizeStyleMap[size - 1][style.size - 1];
-};
-var Options = class _Options {
-  // A font family applies to a group of fonts (i.e. SansSerif), while a font
-  // represents a specific font (i.e. SansSerif Bold).
-  // See: https://tex.stackexchange.com/questions/22350/difference-between-textrm-and-mathrm
-  /**
-   * The base size index.
-   */
-  constructor(data) {
-    this.style = void 0;
-    this.color = void 0;
-    this.size = void 0;
-    this.textSize = void 0;
-    this.phantom = void 0;
-    this.font = void 0;
-    this.fontFamily = void 0;
-    this.fontWeight = void 0;
-    this.fontShape = void 0;
-    this.sizeMultiplier = void 0;
-    this.maxSize = void 0;
-    this.minRuleThickness = void 0;
-    this._fontMetrics = void 0;
-    this.style = data.style;
-    this.color = data.color;
-    this.size = data.size || _Options.BASESIZE;
-    this.textSize = data.textSize || this.size;
-    this.phantom = !!data.phantom;
-    this.font = data.font || "";
-    this.fontFamily = data.fontFamily || "";
-    this.fontWeight = data.fontWeight || "";
-    this.fontShape = data.fontShape || "";
-    this.sizeMultiplier = sizeMultipliers[this.size - 1];
-    this.maxSize = data.maxSize;
-    this.minRuleThickness = data.minRuleThickness;
-    this._fontMetrics = void 0;
-  }
-  /**
-   * Returns a new options object with the same properties as "this".  Properties
-   * from "extension" will be copied to the new options object.
-   */
-  extend(extension) {
-    var data = {
-      style: this.style,
-      size: this.size,
-      textSize: this.textSize,
-      color: this.color,
-      phantom: this.phantom,
-      font: this.font,
-      fontFamily: this.fontFamily,
-      fontWeight: this.fontWeight,
-      fontShape: this.fontShape,
-      maxSize: this.maxSize,
-      minRuleThickness: this.minRuleThickness
-    };
-    for (var key in extension) {
-      if (extension.hasOwnProperty(key)) {
-        data[key] = extension[key];
-      }
-    }
-    return new _Options(data);
-  }
-  /**
-   * Return an options object with the given style. If `this.style === style`,
-   * returns `this`.
-   */
-  havingStyle(style) {
-    if (this.style === style) {
-      return this;
-    } else {
-      return this.extend({
-        style,
-        size: sizeAtStyle(this.textSize, style)
-      });
-    }
-  }
-  /**
-   * Return an options object with a cramped version of the current style. If
-   * the current style is cramped, returns `this`.
-   */
-  havingCrampedStyle() {
-    return this.havingStyle(this.style.cramp());
-  }
-  /**
-   * Return an options object with the given size and in at least `\textstyle`.
-   * Returns `this` if appropriate.
-   */
-  havingSize(size) {
-    if (this.size === size && this.textSize === size) {
-      return this;
-    } else {
-      return this.extend({
-        style: this.style.text(),
-        size,
-        textSize: size,
-        sizeMultiplier: sizeMultipliers[size - 1]
-      });
-    }
-  }
-  /**
-   * Like `this.havingSize(BASESIZE).havingStyle(style)`. If `style` is omitted,
-   * changes to at least `\textstyle`.
-   */
-  havingBaseStyle(style) {
-    style = style || this.style.text();
-    var wantSize = sizeAtStyle(_Options.BASESIZE, style);
-    if (this.size === wantSize && this.textSize === _Options.BASESIZE && this.style === style) {
-      return this;
-    } else {
-      return this.extend({
-        style,
-        size: wantSize
-      });
-    }
-  }
-  /**
-   * Remove the effect of sizing changes such as \Huge.
-   * Keep the effect of the current style, such as \scriptstyle.
-   */
-  havingBaseSizing() {
-    var size;
-    switch (this.style.id) {
-      case 4:
-      case 5:
-        size = 3;
-        break;
-      case 6:
-      case 7:
-        size = 1;
-        break;
-      default:
-        size = 6;
-    }
-    return this.extend({
-      style: this.style.text(),
-      size
-    });
-  }
-  /**
-   * Create a new options object with the given color.
-   */
-  withColor(color) {
-    return this.extend({
-      color
-    });
-  }
-  /**
-   * Create a new options object with "phantom" set to true.
-   */
-  withPhantom() {
-    return this.extend({
-      phantom: true
-    });
-  }
-  /**
-   * Creates a new options object with the given math font or old text font.
-   * @type {[type]}
-   */
-  withFont(font) {
-    return this.extend({
-      font
-    });
-  }
-  /**
-   * Create a new options objects with the given fontFamily.
-   */
-  withTextFontFamily(fontFamily) {
-    return this.extend({
-      fontFamily,
-      font: ""
-    });
-  }
-  /**
-   * Creates a new options object with the given font weight
-   */
-  withTextFontWeight(fontWeight) {
-    return this.extend({
-      fontWeight,
-      font: ""
-    });
-  }
-  /**
-   * Creates a new options object with the given font weight
-   */
-  withTextFontShape(fontShape) {
-    return this.extend({
-      fontShape,
-      font: ""
-    });
-  }
-  /**
-   * Return the CSS sizing classes required to switch from enclosing options
-   * `oldOptions` to `this`. Returns an array of classes.
-   */
-  sizingClasses(oldOptions) {
-    if (oldOptions.size !== this.size) {
-      return ["sizing", "reset-size" + oldOptions.size, "size" + this.size];
-    } else {
-      return [];
-    }
-  }
-  /**
-   * Return the CSS sizing classes required to switch to the base size. Like
-   * `this.havingSize(BASESIZE).sizingClasses(this)`.
-   */
-  baseSizingClasses() {
-    if (this.size !== _Options.BASESIZE) {
-      return ["sizing", "reset-size" + this.size, "size" + _Options.BASESIZE];
-    } else {
-      return [];
-    }
-  }
-  /**
-   * Return the font metrics for this size.
-   */
-  fontMetrics() {
-    if (!this._fontMetrics) {
-      this._fontMetrics = getGlobalMetrics(this.size);
-    }
-    return this._fontMetrics;
-  }
-  /**
-   * Gets the CSS color of the current options object
-   */
-  getColor() {
-    if (this.phantom) {
-      return "transparent";
-    } else {
-      return this.color;
-    }
-  }
-};
-Options.BASESIZE = 6;
-var ptPerUnit = {
-  // https://en.wikibooks.org/wiki/LaTeX/Lengths and
-  // https://tex.stackexchange.com/a/8263
-  "pt": 1,
-  // TeX point
-  "mm": 7227 / 2540,
-  // millimeter
-  "cm": 7227 / 254,
-  // centimeter
-  "in": 72.27,
-  // inch
-  "bp": 803 / 800,
-  // big (PostScript) points
-  "pc": 12,
-  // pica
-  "dd": 1238 / 1157,
-  // didot
-  "cc": 14856 / 1157,
-  // cicero (12 didot)
-  "nd": 685 / 642,
-  // new didot
-  "nc": 1370 / 107,
-  // new cicero (12 new didot)
-  "sp": 1 / 65536,
-  // scaled point (TeX's internal smallest unit)
-  // https://tex.stackexchange.com/a/41371
-  "px": 803 / 800
-  // \pdfpxdimen defaults to 1 bp in pdfTeX and LuaTeX
-};
-var relativeUnit = {
-  "ex": true,
-  "em": true,
-  "mu": true
-};
-var validUnit = function validUnit2(unit) {
-  if (typeof unit !== "string") {
-    unit = unit.unit;
-  }
-  return unit in ptPerUnit || unit in relativeUnit || unit === "ex";
-};
-var calculateSize = function calculateSize2(sizeValue, options) {
-  var scale;
-  if (sizeValue.unit in ptPerUnit) {
-    scale = ptPerUnit[sizeValue.unit] / options.fontMetrics().ptPerEm / options.sizeMultiplier;
-  } else if (sizeValue.unit === "mu") {
-    scale = options.fontMetrics().cssEmPerMu;
-  } else {
-    var unitOptions;
-    if (options.style.isTight()) {
-      unitOptions = options.havingStyle(options.style.text());
-    } else {
-      unitOptions = options;
-    }
-    if (sizeValue.unit === "ex") {
-      scale = unitOptions.fontMetrics().xHeight;
-    } else if (sizeValue.unit === "em") {
-      scale = unitOptions.fontMetrics().quad;
-    } else {
-      throw new ParseError("Invalid unit: '" + sizeValue.unit + "'");
-    }
-    if (unitOptions !== options) {
-      scale *= unitOptions.sizeMultiplier / options.sizeMultiplier;
-    }
-  }
-  return Math.min(sizeValue.number * scale, options.maxSize);
-};
-var makeEm = function makeEm2(n) {
-  return +n.toFixed(4) + "em";
-};
-var createClass = function createClass2(classes) {
-  return classes.filter((cls) => cls).join(" ");
-};
-var initNode = function initNode2(classes, options, style) {
-  this.classes = classes || [];
-  this.attributes = {};
-  this.height = 0;
-  this.depth = 0;
-  this.maxFontSize = 0;
-  this.style = style || {};
-  if (options) {
-    if (options.style.isTight()) {
-      this.classes.push("mtight");
-    }
-    var color = options.getColor();
-    if (color) {
-      this.style.color = color;
-    }
-  }
-};
-var toNode = function toNode2(tagName) {
-  var node = document.createElement(tagName);
-  node.className = createClass(this.classes);
-  for (var style in this.style) {
-    if (this.style.hasOwnProperty(style)) {
-      node.style[style] = this.style[style];
-    }
-  }
-  for (var attr in this.attributes) {
-    if (this.attributes.hasOwnProperty(attr)) {
-      node.setAttribute(attr, this.attributes[attr]);
-    }
-  }
-  for (var i = 0; i < this.children.length; i++) {
-    node.appendChild(this.children[i].toNode());
-  }
-  return node;
-};
-var toMarkup = function toMarkup2(tagName) {
-  var markup = "<" + tagName;
-  if (this.classes.length) {
-    markup += ' class="' + utils.escape(createClass(this.classes)) + '"';
-  }
-  var styles2 = "";
-  for (var style in this.style) {
-    if (this.style.hasOwnProperty(style)) {
-      styles2 += utils.hyphenate(style) + ":" + this.style[style] + ";";
-    }
-  }
-  if (styles2) {
-    markup += ' style="' + utils.escape(styles2) + '"';
-  }
-  for (var attr in this.attributes) {
-    if (this.attributes.hasOwnProperty(attr)) {
-      markup += " " + attr + '="' + utils.escape(this.attributes[attr]) + '"';
-    }
-  }
-  markup += ">";
-  for (var i = 0; i < this.children.length; i++) {
-    markup += this.children[i].toMarkup();
-  }
-  markup += "</" + tagName + ">";
-  return markup;
-};
-var Span = class {
-  constructor(classes, children, options, style) {
-    this.children = void 0;
-    this.attributes = void 0;
-    this.classes = void 0;
-    this.height = void 0;
-    this.depth = void 0;
-    this.width = void 0;
-    this.maxFontSize = void 0;
-    this.style = void 0;
-    initNode.call(this, classes, options, style);
-    this.children = children || [];
-  }
-  /**
-   * Sets an arbitrary attribute on the span. Warning: use this wisely. Not
-   * all browsers support attributes the same, and having too many custom
-   * attributes is probably bad.
-   */
-  setAttribute(attribute, value) {
-    this.attributes[attribute] = value;
-  }
-  hasClass(className) {
-    return utils.contains(this.classes, className);
-  }
-  toNode() {
-    return toNode.call(this, "span");
-  }
-  toMarkup() {
-    return toMarkup.call(this, "span");
-  }
-};
-var Anchor = class {
-  constructor(href, classes, children, options) {
-    this.children = void 0;
-    this.attributes = void 0;
-    this.classes = void 0;
-    this.height = void 0;
-    this.depth = void 0;
-    this.maxFontSize = void 0;
-    this.style = void 0;
-    initNode.call(this, classes, options);
-    this.children = children || [];
-    this.setAttribute("href", href);
-  }
-  setAttribute(attribute, value) {
-    this.attributes[attribute] = value;
-  }
-  hasClass(className) {
-    return utils.contains(this.classes, className);
-  }
-  toNode() {
-    return toNode.call(this, "a");
-  }
-  toMarkup() {
-    return toMarkup.call(this, "a");
-  }
-};
-var Img = class {
-  constructor(src, alt, style) {
-    this.src = void 0;
-    this.alt = void 0;
-    this.classes = void 0;
-    this.height = void 0;
-    this.depth = void 0;
-    this.maxFontSize = void 0;
-    this.style = void 0;
-    this.alt = alt;
-    this.src = src;
-    this.classes = ["mord"];
-    this.style = style;
-  }
-  hasClass(className) {
-    return utils.contains(this.classes, className);
-  }
-  toNode() {
-    var node = document.createElement("img");
-    node.src = this.src;
-    node.alt = this.alt;
-    node.className = "mord";
-    for (var style in this.style) {
-      if (this.style.hasOwnProperty(style)) {
-        node.style[style] = this.style[style];
-      }
-    }
-    return node;
-  }
-  toMarkup() {
-    var markup = '<img src="' + utils.escape(this.src) + '"' + (' alt="' + utils.escape(this.alt) + '"');
-    var styles2 = "";
-    for (var style in this.style) {
-      if (this.style.hasOwnProperty(style)) {
-        styles2 += utils.hyphenate(style) + ":" + this.style[style] + ";";
-      }
-    }
-    if (styles2) {
-      markup += ' style="' + utils.escape(styles2) + '"';
-    }
-    markup += "'/>";
-    return markup;
-  }
-};
-var iCombinations = {
-  "\xEE": "\u0131\u0302",
-  "\xEF": "\u0131\u0308",
-  "\xED": "\u0131\u0301",
-  // 'ī': '\u0131\u0304', // enable when we add Extended Latin
-  "\xEC": "\u0131\u0300"
-};
-var SymbolNode = class {
-  constructor(text3, height, depth, italic, skew, width, classes, style) {
-    this.text = void 0;
-    this.height = void 0;
-    this.depth = void 0;
-    this.italic = void 0;
-    this.skew = void 0;
-    this.width = void 0;
-    this.maxFontSize = void 0;
-    this.classes = void 0;
-    this.style = void 0;
-    this.text = text3;
-    this.height = height || 0;
-    this.depth = depth || 0;
-    this.italic = italic || 0;
-    this.skew = skew || 0;
-    this.width = width || 0;
-    this.classes = classes || [];
-    this.style = style || {};
-    this.maxFontSize = 0;
-    var script = scriptFromCodepoint(this.text.charCodeAt(0));
-    if (script) {
-      this.classes.push(script + "_fallback");
-    }
-    if (/[îïíì]/.test(this.text)) {
-      this.text = iCombinations[this.text];
-    }
-  }
-  hasClass(className) {
-    return utils.contains(this.classes, className);
-  }
-  /**
-   * Creates a text node or span from a symbol node. Note that a span is only
-   * created if it is needed.
-   */
-  toNode() {
-    var node = document.createTextNode(this.text);
-    var span = null;
-    if (this.italic > 0) {
-      span = document.createElement("span");
-      span.style.marginRight = makeEm(this.italic);
-    }
-    if (this.classes.length > 0) {
-      span = span || document.createElement("span");
-      span.className = createClass(this.classes);
-    }
-    for (var style in this.style) {
-      if (this.style.hasOwnProperty(style)) {
-        span = span || document.createElement("span");
-        span.style[style] = this.style[style];
-      }
-    }
-    if (span) {
-      span.appendChild(node);
-      return span;
-    } else {
-      return node;
-    }
-  }
-  /**
-   * Creates markup for a symbol node.
-   */
-  toMarkup() {
-    var needsSpan = false;
-    var markup = "<span";
-    if (this.classes.length) {
-      needsSpan = true;
-      markup += ' class="';
-      markup += utils.escape(createClass(this.classes));
-      markup += '"';
-    }
-    var styles2 = "";
-    if (this.italic > 0) {
-      styles2 += "margin-right:" + this.italic + "em;";
-    }
-    for (var style in this.style) {
-      if (this.style.hasOwnProperty(style)) {
-        styles2 += utils.hyphenate(style) + ":" + this.style[style] + ";";
-      }
-    }
-    if (styles2) {
-      needsSpan = true;
-      markup += ' style="' + utils.escape(styles2) + '"';
-    }
-    var escaped = utils.escape(this.text);
-    if (needsSpan) {
-      markup += ">";
-      markup += escaped;
-      markup += "</span>";
-      return markup;
-    } else {
-      return escaped;
-    }
-  }
-};
-var SvgNode = class {
-  constructor(children, attributes) {
-    this.children = void 0;
-    this.attributes = void 0;
-    this.children = children || [];
-    this.attributes = attributes || {};
-  }
-  toNode() {
-    var svgNS = "http://www.w3.org/2000/svg";
-    var node = document.createElementNS(svgNS, "svg");
-    for (var attr in this.attributes) {
-      if (Object.prototype.hasOwnProperty.call(this.attributes, attr)) {
-        node.setAttribute(attr, this.attributes[attr]);
-      }
-    }
-    for (var i = 0; i < this.children.length; i++) {
-      node.appendChild(this.children[i].toNode());
-    }
-    return node;
-  }
-  toMarkup() {
-    var markup = '<svg xmlns="http://www.w3.org/2000/svg"';
-    for (var attr in this.attributes) {
-      if (Object.prototype.hasOwnProperty.call(this.attributes, attr)) {
-        markup += " " + attr + '="' + utils.escape(this.attributes[attr]) + '"';
-      }
-    }
-    markup += ">";
-    for (var i = 0; i < this.children.length; i++) {
-      markup += this.children[i].toMarkup();
-    }
-    markup += "</svg>";
-    return markup;
-  }
-};
-var PathNode = class {
-  constructor(pathName, alternate) {
-    this.pathName = void 0;
-    this.alternate = void 0;
-    this.pathName = pathName;
-    this.alternate = alternate;
-  }
-  toNode() {
-    var svgNS = "http://www.w3.org/2000/svg";
-    var node = document.createElementNS(svgNS, "path");
-    if (this.alternate) {
-      node.setAttribute("d", this.alternate);
-    } else {
-      node.setAttribute("d", path[this.pathName]);
-    }
-    return node;
-  }
-  toMarkup() {
-    if (this.alternate) {
-      return '<path d="' + utils.escape(this.alternate) + '"/>';
-    } else {
-      return '<path d="' + utils.escape(path[this.pathName]) + '"/>';
-    }
-  }
-};
-var LineNode = class {
-  constructor(attributes) {
-    this.attributes = void 0;
-    this.attributes = attributes || {};
-  }
-  toNode() {
-    var svgNS = "http://www.w3.org/2000/svg";
-    var node = document.createElementNS(svgNS, "line");
-    for (var attr in this.attributes) {
-      if (Object.prototype.hasOwnProperty.call(this.attributes, attr)) {
-        node.setAttribute(attr, this.attributes[attr]);
-      }
-    }
-    return node;
-  }
-  toMarkup() {
-    var markup = "<line";
-    for (var attr in this.attributes) {
-      if (Object.prototype.hasOwnProperty.call(this.attributes, attr)) {
-        markup += " " + attr + '="' + utils.escape(this.attributes[attr]) + '"';
-      }
-    }
-    markup += "/>";
-    return markup;
-  }
-};
-function assertSymbolDomNode(group) {
-  if (group instanceof SymbolNode) {
-    return group;
-  } else {
-    throw new Error("Expected symbolNode but got " + String(group) + ".");
-  }
-}
-function assertSpan(group) {
-  if (group instanceof Span) {
-    return group;
-  } else {
-    throw new Error("Expected span<HtmlDomNode> but got " + String(group) + ".");
-  }
-}
-var ATOMS = {
-  "bin": 1,
-  "close": 1,
-  "inner": 1,
-  "open": 1,
-  "punct": 1,
-  "rel": 1
-};
-var NON_ATOMS = {
-  "accent-token": 1,
-  "mathord": 1,
-  "op-token": 1,
-  "spacing": 1,
-  "textord": 1
-};
 var symbols = {
   "math": {},
   "text": {}
@@ -6498,6 +6149,8 @@ defineSymbol(math, main, rel, "\u22A3", "\\dashv", true);
 defineSymbol(math, main, rel, "\u220B", "\\owns");
 defineSymbol(math, main, punct, ".", "\\ldotp");
 defineSymbol(math, main, punct, "\u22C5", "\\cdotp");
+defineSymbol(math, main, punct, "\u22C5", "\xB7");
+defineSymbol(text2, main, textord, "\u22C5", "\xB7");
 defineSymbol(math, main, textord, "#", "\\#");
 defineSymbol(text2, main, textord, "#", "\\#");
 defineSymbol(math, main, textord, "&", "\\&");
@@ -6922,8 +6575,8 @@ defineSymbol(text2, main, spacing, "\xA0", "\\ ");
 defineSymbol(text2, main, spacing, "\xA0", " ");
 defineSymbol(text2, main, spacing, "\xA0", "\\space");
 defineSymbol(text2, main, spacing, "\xA0", "\\nobreakspace");
-defineSymbol(math, main, spacing, null, "\\nobreak");
-defineSymbol(math, main, spacing, null, "\\allowbreak");
+defineSymbol(math, main, spacing, "", "\\nobreak");
+defineSymbol(math, main, spacing, "", "\\allowbreak");
 defineSymbol(math, main, punct, ",", ",");
 defineSymbol(math, main, punct, ";", ";");
 defineSymbol(math, ams, bin, "\u22BC", "\\barwedge", true);
@@ -7005,6 +6658,7 @@ defineSymbol(math, main, inner, "\u2026", "\\ldots", true);
 defineSymbol(math, main, inner, "\u22EF", "\\@cdots", true);
 defineSymbol(math, main, inner, "\u22F1", "\\ddots", true);
 defineSymbol(math, main, textord, "\u22EE", "\\varvdots");
+defineSymbol(text2, main, textord, "\u22EE", "\\varvdots");
 defineSymbol(math, main, accent, "\u02CA", "\\acute");
 defineSymbol(math, main, accent, "\u02CB", "\\grave");
 defineSymbol(math, main, accent, "\xA8", "\\ddot");
@@ -7107,7 +6761,7 @@ defineSymbol(math, ams, textord, "Z", "\u2124");
 defineSymbol(text2, ams, textord, "Z", "\u2124");
 defineSymbol(math, main, mathord, "h", "\u210E");
 defineSymbol(text2, main, mathord, "h", "\u210E");
-var wideChar = "";
+var wideChar;
 for (_i3 = 0; _i3 < letters.length; _i3++) {
   _ch3 = letters.charAt(_i3);
   wideChar = String.fromCharCode(55349, 56320 + _i3);
@@ -7176,97 +6830,146 @@ for (_i5 = 0; _i5 < extraLatin.length; _i5++) {
 }
 var _ch5;
 var _i5;
+var boldUpright = {
+  mathClass: "mathbf",
+  textClass: "textbf",
+  font: "Main-Bold"
+};
+var italic = {
+  mathClass: "mathnormal",
+  textClass: "textit",
+  font: "Math-Italic"
+};
+var boldItalic = {
+  mathClass: "boldsymbol",
+  textClass: "boldsymbol",
+  font: "Main-BoldItalic"
+};
+var script = {
+  mathClass: "mathscr",
+  textClass: "textscr",
+  font: "Script-Regular"
+};
+var noFont = {
+  mathClass: "",
+  textClass: "",
+  font: ""
+};
+var fraktur = {
+  mathClass: "mathfrak",
+  textClass: "textfrak",
+  font: "Fraktur-Regular"
+};
+var doubleStruck = {
+  mathClass: "mathbb",
+  textClass: "textbb",
+  font: "AMS-Regular"
+};
+var boldFraktur = {
+  mathClass: "mathboldfrak",
+  textClass: "textboldfrak",
+  font: "Fraktur-Regular"
+};
+var sansSerif = {
+  mathClass: "mathsf",
+  textClass: "textsf",
+  font: "SansSerif-Regular"
+};
+var boldSansSerif = {
+  mathClass: "mathboldsf",
+  textClass: "textboldsf",
+  font: "SansSerif-Bold"
+};
+var italicSansSerif = {
+  mathClass: "mathitsf",
+  textClass: "textitsf",
+  font: "SansSerif-Italic"
+};
+var monospace = {
+  mathClass: "mathtt",
+  textClass: "texttt",
+  font: "Typewriter-Regular"
+};
 var wideLatinLetterData = [
-  ["mathbf", "textbf", "Main-Bold"],
-  // A-Z bold upright
-  ["mathbf", "textbf", "Main-Bold"],
-  // a-z bold upright
-  ["mathnormal", "textit", "Math-Italic"],
-  // A-Z italic
-  ["mathnormal", "textit", "Math-Italic"],
-  // a-z italic
-  ["boldsymbol", "boldsymbol", "Main-BoldItalic"],
-  // A-Z bold italic
-  ["boldsymbol", "boldsymbol", "Main-BoldItalic"],
-  // a-z bold italic
+  boldUpright,
+  boldUpright,
+  // A-Z, a-z
+  italic,
+  italic,
+  // A-Z, a-z
+  boldItalic,
+  boldItalic,
+  // A-Z, a-z
   // Map fancy A-Z letters to script, not calligraphic.
   // This aligns with unicode-math and math fonts (except Cambria Math).
-  ["mathscr", "textscr", "Script-Regular"],
-  // A-Z script
-  ["", "", ""],
-  // a-z script.  No font
-  ["", "", ""],
-  // A-Z bold script. No font
-  ["", "", ""],
-  // a-z bold script. No font
-  ["mathfrak", "textfrak", "Fraktur-Regular"],
-  // A-Z Fraktur
-  ["mathfrak", "textfrak", "Fraktur-Regular"],
-  // a-z Fraktur
-  ["mathbb", "textbb", "AMS-Regular"],
-  // A-Z double-struck
-  ["mathbb", "textbb", "AMS-Regular"],
-  // k double-struck
+  script,
+  noFont,
+  // A-Z script, a-z — no font
+  noFont,
+  noFont,
+  // A-Z bold script, a-z bold script — no font
+  fraktur,
+  fraktur,
+  // A-Z, a-z
+  doubleStruck,
+  doubleStruck,
+  // A-Z double-struck, k double-struck
   // Note that we are using a bold font, but font metrics for regular Fraktur.
-  ["mathboldfrak", "textboldfrak", "Fraktur-Regular"],
-  // A-Z bold Fraktur
-  ["mathboldfrak", "textboldfrak", "Fraktur-Regular"],
-  // a-z bold Fraktur
-  ["mathsf", "textsf", "SansSerif-Regular"],
-  // A-Z sans-serif
-  ["mathsf", "textsf", "SansSerif-Regular"],
-  // a-z sans-serif
-  ["mathboldsf", "textboldsf", "SansSerif-Bold"],
-  // A-Z bold sans-serif
-  ["mathboldsf", "textboldsf", "SansSerif-Bold"],
-  // a-z bold sans-serif
-  ["mathitsf", "textitsf", "SansSerif-Italic"],
-  // A-Z italic sans-serif
-  ["mathitsf", "textitsf", "SansSerif-Italic"],
-  // a-z italic sans-serif
-  ["", "", ""],
-  // A-Z bold italic sans. No font
-  ["", "", ""],
-  // a-z bold italic sans. No font
-  ["mathtt", "texttt", "Typewriter-Regular"],
-  // A-Z monospace
-  ["mathtt", "texttt", "Typewriter-Regular"]
-  // a-z monospace
+  boldFraktur,
+  boldFraktur,
+  // A-Z, a-z
+  sansSerif,
+  sansSerif,
+  // A-Z, a-z
+  boldSansSerif,
+  boldSansSerif,
+  // A-Z, a-z
+  italicSansSerif,
+  italicSansSerif,
+  // A-Z, a-z
+  noFont,
+  noFont,
+  // A-Z bold italic sans, a-z bold italic sans - no font
+  monospace,
+  monospace
+  // A-Z, a-z
 ];
 var wideNumeralData = [
-  ["mathbf", "textbf", "Main-Bold"],
-  // 0-9 bold
-  ["", "", ""],
+  boldUpright,
+  // 0-9
+  noFont,
   // 0-9 double-struck. No KaTeX font.
-  ["mathsf", "textsf", "SansSerif-Regular"],
-  // 0-9 sans-serif
-  ["mathboldsf", "textboldsf", "SansSerif-Bold"],
-  // 0-9 bold sans-serif
-  ["mathtt", "texttt", "Typewriter-Regular"]
-  // 0-9 monospace
+  sansSerif,
+  // 0-9
+  boldSansSerif,
+  // 0-9
+  monospace
+  // 0-9
 ];
-var wideCharacterFont = function wideCharacterFont2(wideChar2, mode) {
+var wideCharacterFont = (wideChar2) => {
   var H2 = wideChar2.charCodeAt(0);
   var L2 = wideChar2.charCodeAt(1);
   var codePoint = (H2 - 55296) * 1024 + (L2 - 56320) + 65536;
-  var j2 = mode === "math" ? 0 : 1;
   if (119808 <= codePoint && codePoint < 120484) {
-    var i = Math.floor((codePoint - 119808) / 26);
-    return [wideLatinLetterData[i][2], wideLatinLetterData[i][j2]];
+    var i2 = Math.floor((codePoint - 119808) / 26);
+    return wideLatinLetterData[i2];
   } else if (120782 <= codePoint && codePoint <= 120831) {
-    var _i = Math.floor((codePoint - 120782) / 10);
-    return [wideNumeralData[_i][2], wideNumeralData[_i][j2]];
+    var _i6 = Math.floor((codePoint - 120782) / 10);
+    return wideNumeralData[_i6];
   } else if (codePoint === 120485 || codePoint === 120486) {
-    return [wideLatinLetterData[0][2], wideLatinLetterData[0][j2]];
+    return wideLatinLetterData[0];
   } else if (120486 < codePoint && codePoint < 120782) {
-    return ["", ""];
+    return noFont;
   } else {
     throw new ParseError("Unsupported character: " + wideChar2);
   }
 };
 var lookupSymbol = function lookupSymbol2(value, fontName, mode) {
-  if (symbols[mode][value] && symbols[mode][value].replace) {
-    value = symbols[mode][value].replace;
+  if (symbols[mode][value]) {
+    var replacement = symbols[mode][value].replace;
+    if (replacement) {
+      value = replacement;
+    }
   }
   return {
     value,
@@ -7279,11 +6982,11 @@ var makeSymbol = function makeSymbol2(value, fontName, mode, options, classes) {
   value = lookup.value;
   var symbolNode;
   if (metrics) {
-    var italic = metrics.italic;
+    var italic2 = metrics.italic;
     if (mode === "text" || options && options.font === "mathit") {
-      italic = 0;
+      italic2 = 0;
     }
-    symbolNode = new SymbolNode(value, metrics.height, metrics.depth, italic, metrics.skew, metrics.width, classes);
+    symbolNode = new SymbolNode(value, metrics.height, metrics.depth, italic2, metrics.skew, metrics.width, classes);
   } else {
     typeof console !== "undefined" && console.warn("No character metrics " + ("for '" + value + "' in style '" + fontName + "' and mode '" + mode + "'"));
     symbolNode = new SymbolNode(value, 0, 0, 0, 0, 0, classes);
@@ -7312,7 +7015,7 @@ var mathsym = function mathsym2(value, mode, options, classes) {
     return makeSymbol(value, "AMS-Regular", mode, options, classes.concat(["amsrm"]));
   }
 };
-var boldsymbol = function boldsymbol2(value, mode, options, classes, type) {
+var boldSymbol = function boldSymbol2(value, mode, type) {
   if (type !== "textord" && lookupSymbol(value, "Math-BoldItalic", mode).metrics) {
     return {
       fontName: "Math-BoldItalic",
@@ -7329,35 +7032,43 @@ var makeOrd = function makeOrd2(group, options, type) {
   var mode = group.mode;
   var text3 = group.text;
   var classes = ["mord"];
-  var isFont = mode === "math" || mode === "text" && options.font;
-  var fontOrFamily = isFont ? options.font : options.fontFamily;
+  var {
+    font,
+    fontFamily,
+    fontWeight,
+    fontShape
+  } = options;
+  var useFont = mode === "math" || mode === "text" && !!font;
+  var fontOrFamily = useFont ? font : fontFamily;
   var wideFontName = "";
   var wideFontClass = "";
   if (text3.charCodeAt(0) === 55349) {
-    [wideFontName, wideFontClass] = wideCharacterFont(text3, mode);
+    var wideCharData = wideCharacterFont(text3);
+    wideFontName = wideCharData.font;
+    wideFontClass = wideCharData[mode + "Class"];
   }
-  if (wideFontName.length > 0) {
+  if (wideFontName) {
     return makeSymbol(text3, wideFontName, mode, options, classes.concat(wideFontClass));
   } else if (fontOrFamily) {
     var fontName;
     var fontClasses;
     if (fontOrFamily === "boldsymbol") {
-      var fontData = boldsymbol(text3, mode, options, classes, type);
+      var fontData = boldSymbol(text3, mode, type);
       fontName = fontData.fontName;
       fontClasses = [fontData.fontClass];
-    } else if (isFont) {
-      fontName = fontMap[fontOrFamily].fontName;
-      fontClasses = [fontOrFamily];
+    } else if (useFont) {
+      fontName = fontMap[font].fontName;
+      fontClasses = [font];
     } else {
-      fontName = retrieveTextFontName(fontOrFamily, options.fontWeight, options.fontShape);
-      fontClasses = [fontOrFamily, options.fontWeight, options.fontShape];
+      fontName = retrieveTextFontName(fontFamily, fontWeight, fontShape);
+      fontClasses = [fontFamily, fontWeight, fontShape];
     }
     if (lookupSymbol(text3, fontName, mode).metrics) {
       return makeSymbol(text3, fontName, mode, options, classes.concat(fontClasses));
     } else if (ligatures.hasOwnProperty(text3) && fontName.slice(0, 10) === "Typewriter") {
       var parts = [];
-      for (var i = 0; i < text3.length; i++) {
-        parts.push(makeSymbol(text3[i], fontName, mode, options, classes.concat(fontClasses)));
+      for (var i2 = 0; i2 < text3.length; i2++) {
+        parts.push(makeSymbol(text3[i2], fontName, mode, options, classes.concat(fontClasses)));
       }
       return makeFragment(parts);
     }
@@ -7365,23 +7076,23 @@ var makeOrd = function makeOrd2(group, options, type) {
   if (type === "mathord") {
     return makeSymbol(text3, "Math-Italic", mode, options, classes.concat(["mathnormal"]));
   } else if (type === "textord") {
-    var font = symbols[mode][text3] && symbols[mode][text3].font;
-    if (font === "ams") {
-      var _fontName = retrieveTextFontName("amsrm", options.fontWeight, options.fontShape);
-      return makeSymbol(text3, _fontName, mode, options, classes.concat("amsrm", options.fontWeight, options.fontShape));
-    } else if (font === "main" || !font) {
-      var _fontName2 = retrieveTextFontName("textrm", options.fontWeight, options.fontShape);
-      return makeSymbol(text3, _fontName2, mode, options, classes.concat(options.fontWeight, options.fontShape));
+    var _font = symbols[mode][text3] && symbols[mode][text3].font;
+    if (_font === "ams") {
+      var _fontName = retrieveTextFontName("amsrm", fontWeight, fontShape);
+      return makeSymbol(text3, _fontName, mode, options, classes.concat("amsrm", fontWeight, fontShape));
+    } else if (_font === "main" || !_font) {
+      var _fontName2 = retrieveTextFontName("textrm", fontWeight, fontShape);
+      return makeSymbol(text3, _fontName2, mode, options, classes.concat(fontWeight, fontShape));
     } else {
-      var _fontName3 = retrieveTextFontName(font, options.fontWeight, options.fontShape);
-      return makeSymbol(text3, _fontName3, mode, options, classes.concat(_fontName3, options.fontWeight, options.fontShape));
+      var _fontName3 = retrieveTextFontName(_font, fontWeight, fontShape);
+      return makeSymbol(text3, _fontName3, mode, options, classes.concat(_fontName3, fontWeight, fontShape));
     }
   } else {
     throw new Error("unexpected type: " + type + " in makeOrd");
   }
 };
 var canCombine = (prev, next) => {
-  if (createClass(prev.classes) !== createClass(next.classes) || prev.skew !== next.skew || prev.maxFontSize !== next.maxFontSize) {
+  if (createClass(prev.classes) !== createClass(next.classes) || prev.skew !== next.skew || prev.maxFontSize !== next.maxFontSize || prev.italic !== 0 && prev.hasClass("mathnormal")) {
     return false;
   }
   if (prev.classes.length === 1) {
@@ -7390,29 +7101,29 @@ var canCombine = (prev, next) => {
       return false;
     }
   }
-  for (var style in prev.style) {
-    if (prev.style.hasOwnProperty(style) && prev.style[style] !== next.style[style]) {
+  for (var key of Object.keys(prev.style)) {
+    if (prev.style[key] !== next.style[key]) {
       return false;
     }
   }
-  for (var _style in next.style) {
-    if (next.style.hasOwnProperty(_style) && prev.style[_style] !== next.style[_style]) {
+  for (var _key of Object.keys(next.style)) {
+    if (prev.style[_key] !== next.style[_key]) {
       return false;
     }
   }
   return true;
 };
 var tryCombineChars = (chars) => {
-  for (var i = 0; i < chars.length - 1; i++) {
-    var prev = chars[i];
-    var next = chars[i + 1];
+  for (var i2 = 0; i2 < chars.length - 1; i2++) {
+    var prev = chars[i2];
+    var next = chars[i2 + 1];
     if (prev instanceof SymbolNode && next instanceof SymbolNode && canCombine(prev, next)) {
       prev.text += next.text;
       prev.height = Math.max(prev.height, next.height);
       prev.depth = Math.max(prev.depth, next.depth);
       prev.italic = next.italic;
-      chars.splice(i + 1, 1);
-      i--;
+      chars.splice(i2 + 1, 1);
+      i2--;
     }
   }
   return chars;
@@ -7421,8 +7132,8 @@ var sizeElementFromChildren = function sizeElementFromChildren2(elem) {
   var height = 0;
   var depth = 0;
   var maxFontSize = 0;
-  for (var i = 0; i < elem.children.length; i++) {
-    var child = elem.children[i];
+  for (var i2 = 0; i2 < elem.children.length; i2++) {
+    var child = elem.children[i2];
     if (child.height > height) {
       height = child.height;
     }
@@ -7437,14 +7148,14 @@ var sizeElementFromChildren = function sizeElementFromChildren2(elem) {
   elem.depth = depth;
   elem.maxFontSize = maxFontSize;
 };
-var makeSpan$2 = function makeSpan(classes, children, options, style) {
+var makeSpan = function makeSpan2(classes, children, options, style) {
   var span = new Span(classes, children, options, style);
   sizeElementFromChildren(span);
   return span;
 };
 var makeSvgSpan = (classes, children, options, style) => new Span(classes, children, options, style);
 var makeLineSpan = function makeLineSpan2(className, options, thickness) {
-  var line = makeSpan$2([className], [], options);
+  var line = makeSpan([className], [], options);
   line.height = Math.max(thickness || options.fontMetrics().defaultRuleThickness, options.minRuleThickness);
   line.style.borderBottomWidth = makeEm(line.height);
   line.maxFontSize = 1;
@@ -7462,7 +7173,7 @@ var makeFragment = function makeFragment2(children) {
 };
 var wrapFragment = function wrapFragment2(group, options) {
   if (group instanceof DocumentFragment) {
-    return makeSpan$2([], [group], options);
+    return makeSpan([], [group], options);
   }
   return group;
 };
@@ -7472,15 +7183,15 @@ var getVListChildrenAndDepth = function getVListChildrenAndDepth2(params) {
     var children = [oldChildren[0]];
     var _depth = -oldChildren[0].shift - oldChildren[0].elem.depth;
     var currPos = _depth;
-    for (var i = 1; i < oldChildren.length; i++) {
-      var diff = -oldChildren[i].shift - currPos - oldChildren[i].elem.depth;
-      var size = diff - (oldChildren[i - 1].elem.height + oldChildren[i - 1].elem.depth);
+    for (var i2 = 1; i2 < oldChildren.length; i2++) {
+      var diff = -oldChildren[i2].shift - currPos - oldChildren[i2].elem.depth;
+      var size = diff - (oldChildren[i2 - 1].elem.height + oldChildren[i2 - 1].elem.depth);
       currPos = currPos + diff;
       children.push({
         type: "kern",
         size
       });
-      children.push(oldChildren[i]);
+      children.push(oldChildren[i2]);
     }
     return {
       children,
@@ -7490,8 +7201,8 @@ var getVListChildrenAndDepth = function getVListChildrenAndDepth2(params) {
   var depth;
   if (params.positionType === "top") {
     var bottom = params.positionData;
-    for (var _i = 0; _i < params.children.length; _i++) {
-      var child = params.children[_i];
+    for (var _i6 = 0; _i6 < params.children.length; _i6++) {
+      var child = params.children[_i6];
       bottom -= child.type === "kern" ? child.size : child.elem.height + child.elem.depth;
     }
     depth = bottom;
@@ -7521,29 +7232,29 @@ var makeVList = function makeVList2(params, options) {
     depth
   } = getVListChildrenAndDepth(params);
   var pstrutSize = 0;
-  for (var i = 0; i < children.length; i++) {
-    var child = children[i];
+  for (var i2 = 0; i2 < children.length; i2++) {
+    var child = children[i2];
     if (child.type === "elem") {
       var elem = child.elem;
       pstrutSize = Math.max(pstrutSize, elem.maxFontSize, elem.height);
     }
   }
   pstrutSize += 2;
-  var pstrut = makeSpan$2(["pstrut"], []);
+  var pstrut = makeSpan(["pstrut"], []);
   pstrut.style.height = makeEm(pstrutSize);
   var realChildren = [];
   var minPos = depth;
   var maxPos = depth;
   var currPos = depth;
-  for (var _i2 = 0; _i2 < children.length; _i2++) {
-    var _child = children[_i2];
+  for (var _i22 = 0; _i22 < children.length; _i22++) {
+    var _child = children[_i22];
     if (_child.type === "kern") {
       currPos += _child.size;
     } else {
       var _elem = _child.elem;
       var classes = _child.wrapperClasses || [];
       var style = _child.wrapperStyle || {};
-      var childWrap = makeSpan$2(classes, [pstrut, _elem], void 0, style);
+      var childWrap = makeSpan(classes, [pstrut, _elem], void 0, style);
       childWrap.style.top = makeEm(-pstrutSize - currPos - _elem.depth);
       if (_child.marginLeft) {
         childWrap.style.marginLeft = _child.marginLeft;
@@ -7557,19 +7268,19 @@ var makeVList = function makeVList2(params, options) {
     minPos = Math.min(minPos, currPos);
     maxPos = Math.max(maxPos, currPos);
   }
-  var vlist = makeSpan$2(["vlist"], realChildren);
+  var vlist = makeSpan(["vlist"], realChildren);
   vlist.style.height = makeEm(maxPos);
   var rows;
   if (minPos < 0) {
-    var emptySpan = makeSpan$2([], []);
-    var depthStrut = makeSpan$2(["vlist"], [emptySpan]);
+    var emptySpan = makeSpan([], []);
+    var depthStrut = makeSpan(["vlist"], [emptySpan]);
     depthStrut.style.height = makeEm(-minPos);
-    var topStrut = makeSpan$2(["vlist-s"], [new SymbolNode("\u200B")]);
-    rows = [makeSpan$2(["vlist-r"], [vlist, topStrut]), makeSpan$2(["vlist-r"], [depthStrut])];
+    var topStrut = makeSpan(["vlist-s"], [new SymbolNode("\u200B")]);
+    rows = [makeSpan(["vlist-r"], [vlist, topStrut]), makeSpan(["vlist-r"], [depthStrut])];
   } else {
-    rows = [makeSpan$2(["vlist-r"], [vlist])];
+    rows = [makeSpan(["vlist-r"], [vlist])];
   }
-  var vtable = makeSpan$2(["vlist-t"], rows);
+  var vtable = makeSpan(["vlist-t"], rows);
   if (rows.length === 2) {
     vtable.classes.push("vlist-t2");
   }
@@ -7578,13 +7289,14 @@ var makeVList = function makeVList2(params, options) {
   return vtable;
 };
 var makeGlue = (measurement, options) => {
-  var rule = makeSpan$2(["mspace"], [], options);
+  var rule = makeSpan(["mspace"], [], options);
   var size = calculateSize(measurement, options);
   rule.style.marginRight = makeEm(size);
   return rule;
 };
-var retrieveTextFontName = function retrieveTextFontName2(fontFamily, fontWeight, fontShape) {
-  var baseFontName = "";
+var retrieveTextFontName = (fontFamily, fontWeight, fontShape) => {
+  var baseFontName;
+  var fontStylesName;
   switch (fontFamily) {
     case "amsrm":
       baseFontName = "AMS";
@@ -7601,12 +7313,11 @@ var retrieveTextFontName = function retrieveTextFontName2(fontFamily, fontWeight
     default:
       baseFontName = fontFamily;
   }
-  var fontStylesName;
   if (fontWeight === "textbf" && fontShape === "textit") {
     fontStylesName = "BoldItalic";
   } else if (fontWeight === "textbf") {
     fontStylesName = "Bold";
-  } else if (fontWeight === "textit") {
+  } else if (fontShape === "textit") {
     fontStylesName = "Italic";
   } else {
     fontStylesName = "Regular";
@@ -7634,6 +7345,10 @@ var fontMap = {
   "mathnormal": {
     variant: "italic",
     fontName: "Math-Italic"
+  },
+  "mathsfit": {
+    variant: "sans-serif-italic",
+    fontName: "SansSerif-Italic"
   },
   // "boldsymbol" is missing because they require the use of multiple fonts:
   // Math-BoldItalic and Main-Bold.  This is handled by a special case in
@@ -7690,23 +7405,6 @@ var staticSvg = function staticSvg2(value, options) {
   span.style.height = makeEm(height);
   span.style.width = makeEm(width);
   return span;
-};
-var buildCommon = {
-  fontMap,
-  makeSymbol,
-  mathsym,
-  makeSpan: makeSpan$2,
-  makeSvgSpan,
-  makeLineSpan,
-  makeAnchor,
-  makeFragment,
-  wrapFragment,
-  makeVList,
-  makeOrd,
-  makeGlue,
-  staticSvg,
-  svgData,
-  tryCombineChars
 };
 var thinspace = {
   number: 3,
@@ -7814,8 +7512,8 @@ function defineFunction(_ref2) {
     primitive: !!props.primitive,
     handler
   };
-  for (var i = 0; i < names.length; ++i) {
-    _functions[names[i]] = data;
+  for (var i2 = 0; i2 < names.length; ++i2) {
+    _functions[names[i2]] = data;
   }
   if (type) {
     if (htmlBuilder3) {
@@ -7851,9 +7549,8 @@ var normalizeArgument = function normalizeArgument2(arg) {
 var ordargument = function ordargument2(arg) {
   return arg.type === "ordgroup" ? arg.body : [arg];
 };
-var makeSpan$1 = buildCommon.makeSpan;
-var binLeftCanceller = ["leftmost", "mbin", "mopen", "mrel", "mop", "mpunct"];
-var binRightCanceller = ["rightmost", "mrel", "mclose", "mpunct"];
+var binLeftCanceller = /* @__PURE__ */ new Set(["leftmost", "mbin", "mopen", "mrel", "mop", "mpunct"]);
+var binRightCanceller = /* @__PURE__ */ new Set(["rightmost", "mrel", "mclose", "mpunct"]);
 var styleMap$1 = {
   "display": Style$1.DISPLAY,
   "text": Style$1.TEXT,
@@ -7875,8 +7572,8 @@ var buildExpression$1 = function buildExpression(expression, options, isRealGrou
     surrounding = [null, null];
   }
   var groups = [];
-  for (var i = 0; i < expression.length; i++) {
-    var output = buildGroup$1(expression[i], options);
+  for (var i2 = 0; i2 < expression.length; i2++) {
+    var output = buildGroup$1(expression[i2], options);
     if (output instanceof DocumentFragment) {
       var children = output.children;
       groups.push(...children);
@@ -7884,7 +7581,7 @@ var buildExpression$1 = function buildExpression(expression, options, isRealGrou
       groups.push(output);
     }
   }
-  buildCommon.tryCombineChars(groups);
+  tryCombineChars(groups);
   if (!isRealGroup) {
     return groups;
   }
@@ -7897,42 +7594,43 @@ var buildExpression$1 = function buildExpression(expression, options, isRealGrou
       glueOptions = options.havingStyle(styleMap$1[node.style]);
     }
   }
-  var dummyPrev = makeSpan$1([surrounding[0] || "leftmost"], [], options);
-  var dummyNext = makeSpan$1([surrounding[1] || "rightmost"], [], options);
+  var dummyPrev = makeSpan([surrounding[0] || "leftmost"], [], options);
+  var dummyNext = makeSpan([surrounding[1] || "rightmost"], [], options);
   var isRoot = isRealGroup === "root";
-  traverseNonSpaceNodes(groups, (node2, prev) => {
+  _traverseNonSpaceNodes(groups, (node2, prev) => {
     var prevType = prev.classes[0];
     var type = node2.classes[0];
-    if (prevType === "mbin" && utils.contains(binRightCanceller, type)) {
+    if (prevType === "mbin" && binRightCanceller.has(type)) {
       prev.classes[0] = "mord";
-    } else if (type === "mbin" && utils.contains(binLeftCanceller, prevType)) {
+    } else if (type === "mbin" && binLeftCanceller.has(prevType)) {
       node2.classes[0] = "mord";
     }
   }, {
     node: dummyPrev
   }, dummyNext, isRoot);
-  traverseNonSpaceNodes(groups, (node2, prev) => {
+  _traverseNonSpaceNodes(groups, (node2, prev) => {
+    var _tightSpacings$prevTy, _spacings$prevType;
     var prevType = getTypeOfDomTree(prev);
     var type = getTypeOfDomTree(node2);
-    var space = prevType && type ? node2.hasClass("mtight") ? tightSpacings[prevType][type] : spacings[prevType][type] : null;
+    var space = prevType && type ? node2.hasClass("mtight") ? (_tightSpacings$prevTy = tightSpacings[prevType]) == null ? void 0 : _tightSpacings$prevTy[type] : (_spacings$prevType = spacings[prevType]) == null ? void 0 : _spacings$prevType[type] : null;
     if (space) {
-      return buildCommon.makeGlue(space, glueOptions);
+      return makeGlue(space, glueOptions);
     }
   }, {
     node: dummyPrev
   }, dummyNext, isRoot);
   return groups;
 };
-var traverseNonSpaceNodes = function traverseNonSpaceNodes2(nodes, callback, prev, next, isRoot) {
+var _traverseNonSpaceNodes = function traverseNonSpaceNodes(nodes, callback, prev, next, isRoot) {
   if (next) {
     nodes.push(next);
   }
-  var i = 0;
-  for (; i < nodes.length; i++) {
-    var node = nodes[i];
+  var i2 = 0;
+  for (; i2 < nodes.length; i2++) {
+    var node = nodes[i2];
     var partialGroup = checkPartialGroup(node);
     if (partialGroup) {
-      traverseNonSpaceNodes2(partialGroup.children, callback, prev, null, isRoot);
+      _traverseNonSpaceNodes(partialGroup.children, callback, prev, null, isRoot);
       continue;
     }
     var nonspace = !node.hasClass("mspace");
@@ -7943,19 +7641,19 @@ var traverseNonSpaceNodes = function traverseNonSpaceNodes2(nodes, callback, pre
           prev.insertAfter(result);
         } else {
           nodes.unshift(result);
-          i++;
+          i2++;
         }
       }
     }
     if (nonspace) {
       prev.node = node;
     } else if (isRoot && node.hasClass("newline")) {
-      prev.node = makeSpan$1(["leftmost"]);
+      prev.node = makeSpan(["leftmost"]);
     }
     prev.insertAfter = /* @__PURE__ */ ((index) => (n) => {
       nodes.splice(index + 1, 0, n);
-      i++;
-    })(i);
+      i2++;
+    })(i2);
   }
   if (next) {
     nodes.pop();
@@ -7967,15 +7665,15 @@ var checkPartialGroup = function checkPartialGroup2(node) {
   }
   return null;
 };
-var getOutermostNode = function getOutermostNode2(node, side) {
+var _getOutermostNode = function getOutermostNode(node, side) {
   var partialGroup = checkPartialGroup(node);
   if (partialGroup) {
     var children = partialGroup.children;
     if (children.length) {
       if (side === "right") {
-        return getOutermostNode2(children[children.length - 1], "right");
+        return _getOutermostNode(children[children.length - 1], "right");
       } else if (side === "left") {
-        return getOutermostNode2(children[0], "left");
+        return _getOutermostNode(children[0], "left");
       }
     }
   }
@@ -7986,22 +7684,23 @@ var getTypeOfDomTree = function getTypeOfDomTree2(node, side) {
     return null;
   }
   if (side) {
-    node = getOutermostNode(node, side);
+    node = _getOutermostNode(node, side);
   }
-  return DomEnum[node.classes[0]] || null;
+  var className = node.classes[0];
+  return DomEnum[className] || null;
 };
 var makeNullDelimiter = function makeNullDelimiter2(options, classes) {
   var moreClasses = ["nulldelimiter"].concat(options.baseSizingClasses());
-  return makeSpan$1(classes.concat(moreClasses));
+  return makeSpan(classes.concat(moreClasses));
 };
 var buildGroup$1 = function buildGroup(group, options, baseOptions) {
   if (!group) {
-    return makeSpan$1();
+    return makeSpan();
   }
   if (_htmlGroupBuilders[group.type]) {
     var groupNode = _htmlGroupBuilders[group.type](group, options);
     if (baseOptions && options.size !== baseOptions.size) {
-      groupNode = makeSpan$1(options.sizingClasses(baseOptions), [groupNode], options);
+      groupNode = makeSpan(options.sizingClasses(baseOptions), [groupNode], options);
       var multiplier = options.sizeMultiplier / baseOptions.sizeMultiplier;
       groupNode.height *= multiplier;
       groupNode.depth *= multiplier;
@@ -8012,8 +7711,8 @@ var buildGroup$1 = function buildGroup(group, options, baseOptions) {
   }
 };
 function buildHTMLUnbreakable(children, options) {
-  var body = makeSpan$1(["base"], children, options);
-  var strut = makeSpan$1(["strut"]);
+  var body = makeSpan(["base"], children, options);
+  var strut = makeSpan(["strut"]);
   strut.style.height = makeEm(body.height + body.depth);
   if (body.depth) {
     strut.style.verticalAlign = makeEm(-body.depth);
@@ -8034,14 +7733,14 @@ function buildHTML(tree, options) {
   }
   var children = [];
   var parts = [];
-  for (var i = 0; i < expression.length; i++) {
-    parts.push(expression[i]);
-    if (expression[i].hasClass("mbin") || expression[i].hasClass("mrel") || expression[i].hasClass("allowbreak")) {
+  for (var i2 = 0; i2 < expression.length; i2++) {
+    parts.push(expression[i2]);
+    if (expression[i2].hasClass("mbin") || expression[i2].hasClass("mrel") || expression[i2].hasClass("allowbreak")) {
       var nobreak = false;
-      while (i < expression.length - 1 && expression[i + 1].hasClass("mspace") && !expression[i + 1].hasClass("newline")) {
-        i++;
-        parts.push(expression[i]);
-        if (expression[i].hasClass("nobreak")) {
+      while (i2 < expression.length - 1 && expression[i2 + 1].hasClass("mspace") && !expression[i2 + 1].hasClass("newline")) {
+        i2++;
+        parts.push(expression[i2]);
+        if (expression[i2].hasClass("nobreak")) {
           nobreak = true;
         }
       }
@@ -8049,13 +7748,13 @@ function buildHTML(tree, options) {
         children.push(buildHTMLUnbreakable(parts, options));
         parts = [];
       }
-    } else if (expression[i].hasClass("newline")) {
+    } else if (expression[i2].hasClass("newline")) {
       parts.pop();
       if (parts.length > 0) {
         children.push(buildHTMLUnbreakable(parts, options));
         parts = [];
       }
-      children.push(expression[i]);
+      children.push(expression[i2]);
     }
   }
   if (parts.length > 0) {
@@ -8063,13 +7762,13 @@ function buildHTML(tree, options) {
   }
   var tagChild;
   if (tag) {
-    tagChild = buildHTMLUnbreakable(buildExpression$1(tag, options, true));
+    tagChild = buildHTMLUnbreakable(buildExpression$1(tag, options, true), options);
     tagChild.classes = ["tag"];
     children.push(tagChild);
   } else if (eqnNum) {
     children.push(eqnNum);
   }
-  var htmlNode = makeSpan$1(["katex-html"], children);
+  var htmlNode = makeSpan(["katex-html"], children);
   htmlNode.setAttribute("aria-hidden", "true");
   if (tagChild) {
     var strut = tagChild.children[0];
@@ -8120,8 +7819,16 @@ var MathNode = class {
     if (this.classes.length > 0) {
       node.className = createClass(this.classes);
     }
-    for (var i = 0; i < this.children.length; i++) {
-      node.appendChild(this.children[i].toNode());
+    for (var i2 = 0; i2 < this.children.length; i2++) {
+      if (this.children[i2] instanceof TextNode && this.children[i2 + 1] instanceof TextNode) {
+        var text3 = this.children[i2].toText() + this.children[++i2].toText();
+        while (this.children[i2 + 1] instanceof TextNode) {
+          text3 += this.children[++i2].toText();
+        }
+        node.appendChild(new TextNode(text3).toNode());
+      } else {
+        node.appendChild(this.children[i2].toNode());
+      }
     }
     return node;
   }
@@ -8133,16 +7840,16 @@ var MathNode = class {
     for (var attr in this.attributes) {
       if (Object.prototype.hasOwnProperty.call(this.attributes, attr)) {
         markup += " " + attr + '="';
-        markup += utils.escape(this.attributes[attr]);
+        markup += escape(this.attributes[attr]);
         markup += '"';
       }
     }
     if (this.classes.length > 0) {
-      markup += ' class ="' + utils.escape(createClass(this.classes)) + '"';
+      markup += ' class ="' + escape(createClass(this.classes)) + '"';
     }
     markup += ">";
-    for (var i = 0; i < this.children.length; i++) {
-      markup += this.children[i].toMarkup();
+    for (var i2 = 0; i2 < this.children.length; i2++) {
+      markup += this.children[i2].toMarkup();
     }
     markup += "</" + this.type + ">";
     return markup;
@@ -8170,7 +7877,7 @@ var TextNode = class {
    * (representing the text itself).
    */
   toMarkup() {
-    return utils.escape(this.toText());
+    return escape(this.toText());
   }
   /**
    * Converts the text node into a string
@@ -8241,80 +7948,94 @@ var SpaceNode = class {
     }
   }
 };
-var mathMLTree = {
-  MathNode,
-  TextNode,
-  SpaceNode,
-  newDocumentFragment
-};
+var noVariantSymbols = /* @__PURE__ */ new Set(["\\imath", "\\jmath"]);
+var rowLikeTypes = /* @__PURE__ */ new Set(["mrow", "mtable"]);
 var makeText = function makeText2(text3, mode, options) {
   if (symbols[mode][text3] && symbols[mode][text3].replace && text3.charCodeAt(0) !== 55349 && !(ligatures.hasOwnProperty(text3) && options && (options.fontFamily && options.fontFamily.slice(4, 6) === "tt" || options.font && options.font.slice(4, 6) === "tt"))) {
     text3 = symbols[mode][text3].replace;
   }
-  return new mathMLTree.TextNode(text3);
+  return new TextNode(text3);
 };
 var makeRow = function makeRow2(body) {
   if (body.length === 1) {
     return body[0];
   } else {
-    return new mathMLTree.MathNode("mrow", body);
+    return new MathNode("mrow", body);
   }
 };
-var getVariant = function getVariant2(group, options) {
-  if (options.fontFamily === "texttt") {
-    return "monospace";
-  } else if (options.fontFamily === "textsf") {
-    if (options.fontShape === "textit" && options.fontWeight === "textbf") {
-      return "sans-serif-bold-italic";
+var mathFontVariants = {
+  mathit: "italic",
+  boldsymbol: (group) => group.type === "textord" ? "bold" : "bold-italic",
+  mathbf: "bold",
+  mathbb: "double-struck",
+  mathsfit: "sans-serif-italic",
+  mathfrak: "fraktur",
+  mathscr: "script",
+  mathcal: "script",
+  mathsf: "sans-serif",
+  mathtt: "monospace"
+};
+var getVariant = (group, options) => {
+  if (group.mode === "text") {
+    if (options.fontFamily === "texttt") {
+      return "monospace";
+    } else if (options.fontFamily === "textsf") {
+      if (options.fontShape === "textit" && options.fontWeight === "textbf") {
+        return "sans-serif-bold-italic";
+      } else if (options.fontShape === "textit") {
+        return "sans-serif-italic";
+      } else if (options.fontWeight === "textbf") {
+        return "bold-sans-serif";
+      } else {
+        return "sans-serif";
+      }
+    } else if (options.fontShape === "textit" && options.fontWeight === "textbf") {
+      return "bold-italic";
     } else if (options.fontShape === "textit") {
-      return "sans-serif-italic";
+      return "italic";
     } else if (options.fontWeight === "textbf") {
-      return "bold-sans-serif";
-    } else {
-      return "sans-serif";
+      return "bold";
     }
-  } else if (options.fontShape === "textit" && options.fontWeight === "textbf") {
-    return "bold-italic";
-  } else if (options.fontShape === "textit") {
-    return "italic";
-  } else if (options.fontWeight === "textbf") {
-    return "bold";
   }
   var font = options.font;
   if (!font || font === "mathnormal") {
     return null;
   }
   var mode = group.mode;
-  if (font === "mathit") {
-    return "italic";
-  } else if (font === "boldsymbol") {
-    return group.type === "textord" ? "bold" : "bold-italic";
-  } else if (font === "mathbf") {
-    return "bold";
-  } else if (font === "mathbb") {
-    return "double-struck";
-  } else if (font === "mathfrak") {
-    return "fraktur";
-  } else if (font === "mathscr" || font === "mathcal") {
-    return "script";
-  } else if (font === "mathsf") {
-    return "sans-serif";
-  } else if (font === "mathtt") {
-    return "monospace";
+  var mathVariant = mathFontVariants[font];
+  if (mathVariant) {
+    return typeof mathVariant === "function" ? mathVariant(group) : mathVariant;
   }
   var text3 = group.text;
-  if (utils.contains(["\\imath", "\\jmath"], text3)) {
+  if (noVariantSymbols.has(text3)) {
     return null;
   }
-  if (symbols[mode][text3] && symbols[mode][text3].replace) {
-    text3 = symbols[mode][text3].replace;
+  if (symbols[mode][text3]) {
+    var replacement = symbols[mode][text3].replace;
+    if (replacement) {
+      text3 = replacement;
+    }
   }
-  var fontName = buildCommon.fontMap[font].fontName;
+  var fontName = fontMap[font].fontName;
   if (getCharacterMetrics(text3, fontName, mode)) {
-    return buildCommon.fontMap[font].variant;
+    return fontMap[font].variant;
   }
   return null;
 };
+function isNumberPunctuation(group) {
+  if (!group) {
+    return false;
+  }
+  if (group.type === "mi" && group.children.length === 1) {
+    var child = group.children[0];
+    return child instanceof TextNode && child.text === ".";
+  } else if (group.type === "mo" && group.children.length === 1 && group.getAttribute("separator") === "true" && group.getAttribute("lspace") === "0em" && group.getAttribute("rspace") === "0em") {
+    var _child = group.children[0];
+    return _child instanceof TextNode && _child.text === ",";
+  } else {
+    return false;
+  }
+}
 var buildExpression2 = function buildExpression3(expression, options, isOrdgroup) {
   if (expression.length === 1) {
     var group = buildGroup2(expression[0], options);
@@ -8326,8 +8047,8 @@ var buildExpression2 = function buildExpression3(expression, options, isOrdgroup
   }
   var groups = [];
   var lastGroup;
-  for (var i = 0; i < expression.length; i++) {
-    var _group = buildGroup2(expression[i], options);
+  for (var i2 = 0; i2 < expression.length; i2++) {
+    var _group = buildGroup2(expression[i2], options);
     if (_group instanceof MathNode && lastGroup instanceof MathNode) {
       if (_group.type === "mtext" && lastGroup.type === "mtext" && _group.getAttribute("mathvariant") === lastGroup.getAttribute("mathvariant")) {
         lastGroup.children.push(..._group.children);
@@ -8335,18 +8056,24 @@ var buildExpression2 = function buildExpression3(expression, options, isOrdgroup
       } else if (_group.type === "mn" && lastGroup.type === "mn") {
         lastGroup.children.push(..._group.children);
         continue;
-      } else if (_group.type === "mi" && _group.children.length === 1 && lastGroup.type === "mn") {
-        var child = _group.children[0];
-        if (child instanceof TextNode && child.text === ".") {
-          lastGroup.children.push(..._group.children);
-          continue;
+      } else if (isNumberPunctuation(_group) && lastGroup.type === "mn") {
+        lastGroup.children.push(..._group.children);
+        continue;
+      } else if (_group.type === "mn" && isNumberPunctuation(lastGroup)) {
+        _group.children = [...lastGroup.children, ..._group.children];
+        groups.pop();
+      } else if ((_group.type === "msup" || _group.type === "msub") && _group.children.length >= 1 && (lastGroup.type === "mn" || isNumberPunctuation(lastGroup))) {
+        var base = _group.children[0];
+        if (base instanceof MathNode && base.type === "mn") {
+          base.children = [...lastGroup.children, ...base.children];
+          groups.pop();
         }
       } else if (lastGroup.type === "mi" && lastGroup.children.length === 1) {
         var lastChild = lastGroup.children[0];
         if (lastChild instanceof TextNode && lastChild.text === "\u0338" && (_group.type === "mo" || _group.type === "mi" || _group.type === "mn")) {
-          var _child = _group.children[0];
-          if (_child instanceof TextNode && _child.text.length > 0) {
-            _child.text = _child.text.slice(0, 1) + "\u0338" + _child.text.slice(1);
+          var child = _group.children[0];
+          if (child instanceof TextNode && child.text.length > 0) {
+            child.text = child.text.slice(0, 1) + "\u0338" + child.text.slice(1);
             groups.pop();
           }
         }
@@ -8362,11 +8089,10 @@ var buildExpressionRow = function buildExpressionRow2(expression, options, isOrd
 };
 var buildGroup2 = function buildGroup3(group, options) {
   if (!group) {
-    return new mathMLTree.MathNode("mrow");
+    return new MathNode("mrow");
   }
   if (_mathmlGroupBuilders[group.type]) {
-    var result = _mathmlGroupBuilders[group.type](group, options);
-    return result;
+    return _mathmlGroupBuilders[group.type](group, options);
   } else {
     throw new ParseError("Got group of unknown type: '" + group.type + "'");
   }
@@ -8374,22 +8100,287 @@ var buildGroup2 = function buildGroup3(group, options) {
 function buildMathML(tree, texExpression, options, isDisplayMode, forMathmlOnly) {
   var expression = buildExpression2(tree, options);
   var wrapper;
-  if (expression.length === 1 && expression[0] instanceof MathNode && utils.contains(["mrow", "mtable"], expression[0].type)) {
+  if (expression.length === 1 && expression[0] instanceof MathNode && rowLikeTypes.has(expression[0].type)) {
     wrapper = expression[0];
   } else {
-    wrapper = new mathMLTree.MathNode("mrow", expression);
+    wrapper = new MathNode("mrow", expression);
   }
-  var annotation = new mathMLTree.MathNode("annotation", [new mathMLTree.TextNode(texExpression)]);
+  var annotation = new MathNode("annotation", [new TextNode(texExpression)]);
   annotation.setAttribute("encoding", "application/x-tex");
-  var semantics = new mathMLTree.MathNode("semantics", [wrapper, annotation]);
-  var math2 = new mathMLTree.MathNode("math", [semantics]);
+  var semantics = new MathNode("semantics", [wrapper, annotation]);
+  var math2 = new MathNode("math", [semantics]);
   math2.setAttribute("xmlns", "http://www.w3.org/1998/Math/MathML");
   if (isDisplayMode) {
     math2.setAttribute("display", "block");
   }
   var wrapperClass = forMathmlOnly ? "katex" : "katex-mathml";
-  return buildCommon.makeSpan([wrapperClass], [math2]);
+  return makeSpan([wrapperClass], [math2]);
 }
+var sizeStyleMap = [
+  // Each element contains [textsize, scriptsize, scriptscriptsize].
+  // The size mappings are taken from TeX with \normalsize=10pt.
+  [1, 1, 1],
+  // size1: [5, 5, 5]              \tiny
+  [2, 1, 1],
+  // size2: [6, 5, 5]
+  [3, 1, 1],
+  // size3: [7, 5, 5]              \scriptsize
+  [4, 2, 1],
+  // size4: [8, 6, 5]              \footnotesize
+  [5, 2, 1],
+  // size5: [9, 6, 5]              \small
+  [6, 3, 1],
+  // size6: [10, 7, 5]             \normalsize
+  [7, 4, 2],
+  // size7: [12, 8, 6]             \large
+  [8, 6, 3],
+  // size8: [14.4, 10, 7]          \Large
+  [9, 7, 6],
+  // size9: [17.28, 12, 10]        \LARGE
+  [10, 8, 7],
+  // size10: [20.74, 14.4, 12]     \huge
+  [11, 10, 9]
+  // size11: [24.88, 20.74, 17.28] \HUGE
+];
+var sizeMultipliers = [
+  // fontMetrics.js:getGlobalMetrics also uses size indexes, so if
+  // you change size indexes, change that function.
+  0.5,
+  0.6,
+  0.7,
+  0.8,
+  0.9,
+  1,
+  1.2,
+  1.44,
+  1.728,
+  2.074,
+  2.488
+];
+var sizeAtStyle = function sizeAtStyle2(size, style) {
+  return style.size < 2 ? size : sizeStyleMap[size - 1][style.size - 1];
+};
+var Options = class _Options {
+  constructor(data) {
+    this.style = void 0;
+    this.color = void 0;
+    this.size = void 0;
+    this.textSize = void 0;
+    this.phantom = void 0;
+    this.font = void 0;
+    this.fontFamily = void 0;
+    this.fontWeight = void 0;
+    this.fontShape = void 0;
+    this.sizeMultiplier = void 0;
+    this.maxSize = void 0;
+    this.minRuleThickness = void 0;
+    this._fontMetrics = void 0;
+    this.style = data.style;
+    this.color = data.color;
+    this.size = data.size || _Options.BASESIZE;
+    this.textSize = data.textSize || this.size;
+    this.phantom = !!data.phantom;
+    this.font = data.font || "";
+    this.fontFamily = data.fontFamily || "";
+    this.fontWeight = data.fontWeight || "";
+    this.fontShape = data.fontShape || "";
+    this.sizeMultiplier = sizeMultipliers[this.size - 1];
+    this.maxSize = data.maxSize;
+    this.minRuleThickness = data.minRuleThickness;
+    this._fontMetrics = void 0;
+  }
+  /**
+   * Returns a new options object with the same properties as "this".  Properties
+   * from "extension" will be copied to the new options object.
+   */
+  extend(extension) {
+    var data = {
+      style: this.style,
+      size: this.size,
+      textSize: this.textSize,
+      color: this.color,
+      phantom: this.phantom,
+      font: this.font,
+      fontFamily: this.fontFamily,
+      fontWeight: this.fontWeight,
+      fontShape: this.fontShape,
+      maxSize: this.maxSize,
+      minRuleThickness: this.minRuleThickness
+    };
+    Object.assign(data, extension);
+    return new _Options(data);
+  }
+  /**
+   * Return an options object with the given style. If `this.style === style`,
+   * returns `this`.
+   */
+  havingStyle(style) {
+    if (this.style === style) {
+      return this;
+    } else {
+      return this.extend({
+        style,
+        size: sizeAtStyle(this.textSize, style)
+      });
+    }
+  }
+  /**
+   * Return an options object with a cramped version of the current style. If
+   * the current style is cramped, returns `this`.
+   */
+  havingCrampedStyle() {
+    return this.havingStyle(this.style.cramp());
+  }
+  /**
+   * Return an options object with the given size and in at least `\textstyle`.
+   * Returns `this` if appropriate.
+   */
+  havingSize(size) {
+    if (this.size === size && this.textSize === size) {
+      return this;
+    } else {
+      return this.extend({
+        style: this.style.text(),
+        size,
+        textSize: size,
+        sizeMultiplier: sizeMultipliers[size - 1]
+      });
+    }
+  }
+  /**
+   * Like `this.havingSize(BASESIZE).havingStyle(style)`. If `style` is omitted,
+   * changes to at least `\textstyle`.
+   */
+  havingBaseStyle(style) {
+    style = style || this.style.text();
+    var wantSize = sizeAtStyle(_Options.BASESIZE, style);
+    if (this.size === wantSize && this.textSize === _Options.BASESIZE && this.style === style) {
+      return this;
+    } else {
+      return this.extend({
+        style,
+        size: wantSize
+      });
+    }
+  }
+  /**
+   * Remove the effect of sizing changes such as \Huge.
+   * Keep the effect of the current style, such as \scriptstyle.
+   */
+  havingBaseSizing() {
+    var size;
+    switch (this.style.id) {
+      case 4:
+      case 5:
+        size = 3;
+        break;
+      case 6:
+      case 7:
+        size = 1;
+        break;
+      default:
+        size = 6;
+    }
+    return this.extend({
+      style: this.style.text(),
+      size
+    });
+  }
+  /**
+   * Create a new options object with the given color.
+   */
+  withColor(color) {
+    return this.extend({
+      color
+    });
+  }
+  /**
+   * Create a new options object with "phantom" set to true.
+   */
+  withPhantom() {
+    return this.extend({
+      phantom: true
+    });
+  }
+  /**
+   * Creates a new options object with the given math font or old text font.
+   * @type {[type]}
+   */
+  withFont(font) {
+    return this.extend({
+      font
+    });
+  }
+  /**
+   * Create a new options objects with the given fontFamily.
+   */
+  withTextFontFamily(fontFamily) {
+    return this.extend({
+      fontFamily,
+      font: ""
+    });
+  }
+  /**
+   * Creates a new options object with the given font weight
+   */
+  withTextFontWeight(fontWeight) {
+    return this.extend({
+      fontWeight,
+      font: ""
+    });
+  }
+  /**
+   * Creates a new options object with the given font weight
+   */
+  withTextFontShape(fontShape) {
+    return this.extend({
+      fontShape,
+      font: ""
+    });
+  }
+  /**
+   * Return the CSS sizing classes required to switch from enclosing options
+   * `oldOptions` to `this`. Returns an array of classes.
+   */
+  sizingClasses(oldOptions) {
+    if (oldOptions.size !== this.size) {
+      return ["sizing", "reset-size" + oldOptions.size, "size" + this.size];
+    } else {
+      return [];
+    }
+  }
+  /**
+   * Return the CSS sizing classes required to switch to the base size. Like
+   * `this.havingSize(BASESIZE).sizingClasses(this)`.
+   */
+  baseSizingClasses() {
+    if (this.size !== _Options.BASESIZE) {
+      return ["sizing", "reset-size" + this.size, "size" + _Options.BASESIZE];
+    } else {
+      return [];
+    }
+  }
+  /**
+   * Return the font metrics for this size.
+   */
+  fontMetrics() {
+    if (!this._fontMetrics) {
+      this._fontMetrics = getGlobalMetrics(this.size);
+    }
+    return this._fontMetrics;
+  }
+  /**
+   * Gets the CSS color of the current options object
+   */
+  getColor() {
+    if (this.phantom) {
+      return "transparent";
+    } else {
+      return this.color;
+    }
+  }
+};
+Options.BASESIZE = 6;
 var optionsFromSettings = function optionsFromSettings2(settings) {
   return new Options({
     style: settings.displayMode ? Style$1.DISPLAY : Style$1.TEXT,
@@ -8406,7 +8397,7 @@ var displayWrap = function displayWrap2(node, settings) {
     if (settings.fleqn) {
       classes.push("fleqn");
     }
-    node = buildCommon.makeSpan(classes, [node]);
+    node = makeSpan(classes, [node]);
   }
   return node;
 };
@@ -8417,18 +8408,18 @@ var buildTree = function buildTree2(tree, expression, settings) {
     return buildMathML(tree, expression, options, settings.displayMode, true);
   } else if (settings.output === "html") {
     var htmlNode = buildHTML(tree, options);
-    katexNode = buildCommon.makeSpan(["katex"], [htmlNode]);
+    katexNode = makeSpan(["katex"], [htmlNode]);
   } else {
     var mathMLNode = buildMathML(tree, expression, options, settings.displayMode, false);
     var _htmlNode = buildHTML(tree, options);
-    katexNode = buildCommon.makeSpan(["katex"], [mathMLNode, _htmlNode]);
+    katexNode = makeSpan(["katex"], [mathMLNode, _htmlNode]);
   }
   return displayWrap(katexNode, settings);
 };
 var buildHTMLTree = function buildHTMLTree2(tree, expression, settings) {
   var options = optionsFromSettings(settings);
   var htmlNode = buildHTML(tree, options);
-  var katexNode = buildCommon.makeSpan(["katex"], [htmlNode]);
+  var katexNode = makeSpan(["katex"], [htmlNode]);
   return displayWrap(katexNode, settings);
 };
 var stretchyCodePoint = {
@@ -8444,6 +8435,8 @@ var stretchyCodePoint = {
   xrightarrow: "\u2192",
   underbrace: "\u23DF",
   overbrace: "\u23DE",
+  underbracket: "\u23B5",
+  overbracket: "\u23B4",
   overgroup: "\u23E0",
   undergroup: "\u23E1",
   overleftrightarrow: "\u2194",
@@ -8477,8 +8470,8 @@ var stretchyCodePoint = {
   "\\cdleftarrow": "\u2190",
   "\\cdlongequal": "="
 };
-var mathMLnode = function mathMLnode2(label) {
-  var node = new mathMLTree.MathNode("mo", [new mathMLTree.TextNode(stretchyCodePoint[label.replace(/^\\/, "")])]);
+var stretchyMathML = function stretchyMathML2(label) {
+  var node = new MathNode("mo", [new TextNode(stretchyCodePoint[label.replace(/^\\/, "")])]);
   node.setAttribute("stretchy", "true");
   return node;
 };
@@ -8518,6 +8511,8 @@ var katexImagesData = {
   xhookrightarrow: [["lefthook", "rightarrow"], 1.08, 522],
   overlinesegment: [["leftlinesegment", "rightlinesegment"], 0.888, 522],
   underlinesegment: [["leftlinesegment", "rightlinesegment"], 0.888, 522],
+  overbracket: [["leftbracketover", "rightbracketover"], 1.6, 440],
+  underbracket: [["leftbracketunder", "rightbracketunder"], 1.6, 410],
   overgroup: [["leftgroup", "rightgroup"], 0.888, 342],
   undergroup: [["leftgroupunder", "rightgroupunder"], 0.888, 342],
   xmapsto: [["leftmapsto", "rightarrow"], 1.5, 522],
@@ -8530,20 +8525,13 @@ var katexImagesData = {
   xrightequilibrium: [["baraboveshortleftharpoon", "rightharpoonaboveshortbar"], 1.75, 716],
   xleftequilibrium: [["shortbaraboveleftharpoon", "shortrightharpoonabovebar"], 1.75, 716]
 };
-var groupLength = function groupLength2(arg) {
-  if (arg.type === "ordgroup") {
-    return arg.body.length;
-  } else {
-    return 1;
-  }
-};
-var svgSpan = function svgSpan2(group, options) {
+var wideAccentLabels = /* @__PURE__ */ new Set(["widehat", "widecheck", "widetilde", "utilde"]);
+var stretchySvg = function stretchySvg2(group, options) {
   function buildSvgSpan_() {
     var viewBoxWidth = 4e5;
     var label = group.label.slice(1);
-    if (utils.contains(["widehat", "widecheck", "widetilde", "utilde"], label)) {
-      var grp = group;
-      var numChars = groupLength(grp.base);
+    if (wideAccentLabels.has(label) && "base" in group) {
+      var numChars = group.base.type === "ordgroup" ? group.base.body.length : 1;
       var viewBoxHeight;
       var pathName;
       var _height;
@@ -8581,22 +8569,27 @@ var svgSpan = function svgSpan2(group, options) {
         "preserveAspectRatio": "none"
       });
       return {
-        span: buildCommon.makeSvgSpan([], [svgNode], options),
+        span: makeSvgSpan([], [svgNode], options),
         minWidth: 0,
         height: _height
       };
     } else {
       var spans = [];
       var data = katexImagesData[label];
+      if (!data) {
+        throw new Error('No SVG data for "' + label + '".');
+      }
       var [paths, _minWidth, _viewBoxHeight] = data;
       var _height2 = _viewBoxHeight / 1e3;
       var numSvgChildren = paths.length;
       var widthClasses;
       var aligns;
       if (numSvgChildren === 1) {
-        var align1 = data[3];
+        if (data.length !== 4) {
+          throw new Error('Expected 4-tuple for single-path SVG data "' + label + '".');
+        }
         widthClasses = ["hide-tail"];
-        aligns = [align1];
+        aligns = [data[3]];
       } else if (numSvgChildren === 2) {
         widthClasses = ["halfarrow-left", "halfarrow-right"];
         aligns = ["xMinYMin", "xMaxYMin"];
@@ -8606,15 +8599,15 @@ var svgSpan = function svgSpan2(group, options) {
       } else {
         throw new Error("Correct katexImagesData or update code here to support\n                    " + numSvgChildren + " children.");
       }
-      for (var i = 0; i < numSvgChildren; i++) {
-        var _path = new PathNode(paths[i]);
+      for (var i2 = 0; i2 < numSvgChildren; i2++) {
+        var _path = new PathNode(paths[i2]);
         var _svgNode = new SvgNode([_path], {
           "width": "400em",
           "height": makeEm(_height2),
           "viewBox": "0 0 " + viewBoxWidth + " " + _viewBoxHeight,
-          "preserveAspectRatio": aligns[i] + " slice"
+          "preserveAspectRatio": aligns[i2] + " slice"
         });
-        var _span = buildCommon.makeSvgSpan([widthClasses[i]], [_svgNode], options);
+        var _span = makeSvgSpan([widthClasses[i2]], [_svgNode], options);
         if (numSvgChildren === 1) {
           return {
             span: _span,
@@ -8627,7 +8620,7 @@ var svgSpan = function svgSpan2(group, options) {
         }
       }
       return {
-        span: buildCommon.makeSpan(["stretchy"], spans, options),
+        span: makeSpan(["stretchy"], spans, options),
         minWidth: _minWidth,
         height: _height2
       };
@@ -8645,11 +8638,11 @@ var svgSpan = function svgSpan2(group, options) {
   }
   return span;
 };
-var encloseSpan = function encloseSpan2(inner2, label, topPad, bottomPad, options) {
+var stretchyEnclose = function stretchyEnclose2(inner2, label, topPad, bottomPad, options) {
   var img;
   var totalHeight = inner2.height + inner2.depth + topPad + bottomPad;
   if (/fbox|color|angl/.test(label)) {
-    img = buildCommon.makeSpan(["stretchy", label], [], options);
+    img = makeSpan(["stretchy", label], [], options);
     if (label === "fbox") {
       var color = options.color && options.getColor();
       if (color) {
@@ -8680,17 +8673,30 @@ var encloseSpan = function encloseSpan2(inner2, label, topPad, bottomPad, option
       "width": "100%",
       "height": makeEm(totalHeight)
     });
-    img = buildCommon.makeSvgSpan([], [svgNode], options);
+    img = makeSvgSpan([], [svgNode], options);
   }
   img.height = totalHeight;
   img.style.height = makeEm(totalHeight);
   return img;
 };
-var stretchy = {
-  encloseSpan,
-  mathMLnode,
-  svgSpan
+var ATOMS = {
+  "bin": 1,
+  "close": 1,
+  "inner": 1,
+  "open": 1,
+  "punct": 1,
+  "rel": 1
 };
+var NON_ATOMS = {
+  "accent-token": 1,
+  "mathord": 1,
+  "op-token": 1,
+  "spacing": 1,
+  "textord": 1
+};
+function isAtom(value) {
+  return value in ATOMS;
+}
 function assertNodeType(node, type) {
   if (!node || node.type !== type) {
     throw new Error("Expected node of type " + type + ", but got " + (node ? "node of type " + node.type : String(node)));
@@ -8710,6 +8716,14 @@ function checkSymbolNodeType(node) {
   }
   return null;
 }
+var getBaseSymbol = (group) => {
+  if (group instanceof SymbolNode) {
+    return group;
+  }
+  if (hasHtmlDomChildren(group) && group.children.length === 1) {
+    return getBaseSymbol(group.children[0]);
+  }
+};
 var htmlBuilder$a = (grp, options) => {
   var base;
   var group;
@@ -8725,12 +8739,11 @@ var htmlBuilder$a = (grp, options) => {
     base = group.base;
   }
   var body = buildGroup$1(base, options.havingCrampedStyle());
-  var mustShift = group.isShifty && utils.isCharacterBox(base);
+  var mustShift = group.isShifty && isCharacterBox(base);
   var skew = 0;
   if (mustShift) {
-    var baseChar = utils.getBaseElem(base);
-    var baseGroup = buildGroup$1(baseChar, options.havingCrampedStyle());
-    skew = assertSymbolDomNode(baseGroup).skew;
+    var _getBaseSymbol$skew, _getBaseSymbol;
+    skew = (_getBaseSymbol$skew = (_getBaseSymbol = getBaseSymbol(body)) == null ? void 0 : _getBaseSymbol.skew) != null ? _getBaseSymbol$skew : 0;
   }
   var accentBelow = group.label === "\\c";
   var clearance = accentBelow ? body.height + body.depth : Math.min(body.height, options.fontMetrics().xHeight);
@@ -8739,10 +8752,11 @@ var htmlBuilder$a = (grp, options) => {
     var accent2;
     var width;
     if (group.label === "\\vec") {
-      accent2 = buildCommon.staticSvg("vec", options);
-      width = buildCommon.svgData.vec[1];
+      accent2 = staticSvg("vec", options);
+      width = svgData.vec[1];
     } else {
-      accent2 = buildCommon.makeOrd({
+      accent2 = makeOrd({
+        type: "textord",
         mode: group.mode,
         text: group.label
       }, options, "textord");
@@ -8753,7 +8767,7 @@ var htmlBuilder$a = (grp, options) => {
         clearance += accent2.depth;
       }
     }
-    accentBody = buildCommon.makeSpan(["accent-body"], [accent2]);
+    accentBody = makeSpan(["accent-body"], [accent2]);
     var accentFull = group.label === "\\textcircled";
     if (accentFull) {
       accentBody.classes.push("accent-full");
@@ -8767,7 +8781,7 @@ var htmlBuilder$a = (grp, options) => {
     if (group.label === "\\textcircled") {
       accentBody.style.top = ".2em";
     }
-    accentBody = buildCommon.makeVList({
+    accentBody = makeVList({
       positionType: "firstBaseline",
       children: [{
         type: "elem",
@@ -8779,10 +8793,10 @@ var htmlBuilder$a = (grp, options) => {
         type: "elem",
         elem: accentBody
       }]
-    }, options);
+    });
   } else {
-    accentBody = stretchy.svgSpan(group, options);
-    accentBody = buildCommon.makeVList({
+    accentBody = stretchySvg(group, options);
+    accentBody = makeVList({
       positionType: "firstBaseline",
       children: [{
         type: "elem",
@@ -8796,9 +8810,9 @@ var htmlBuilder$a = (grp, options) => {
           marginLeft: makeEm(2 * skew)
         } : void 0
       }]
-    }, options);
+    });
   }
-  var accentWrap = buildCommon.makeSpan(["mord", "accent"], [accentBody], options);
+  var accentWrap = makeSpan(["mord", "accent"], [accentBody], options);
   if (supSubGroup) {
     supSubGroup.children[0] = accentWrap;
     supSubGroup.height = Math.max(accentWrap.height, supSubGroup.height);
@@ -8809,8 +8823,8 @@ var htmlBuilder$a = (grp, options) => {
   }
 };
 var mathmlBuilder$9 = (group, options) => {
-  var accentNode = group.isStretchy ? stretchy.mathMLnode(group.label) : new mathMLTree.MathNode("mo", [makeText(group.label, group.mode)]);
-  var node = new mathMLTree.MathNode("mover", [buildGroup2(group.base, options), accentNode]);
+  var accentNode = group.isStretchy ? stretchyMathML(group.label) : new MathNode("mo", [makeText(group.label, group.mode)]);
+  var node = new MathNode("mover", [buildGroup2(group.base, options), accentNode]);
   node.setAttribute("accent", "true");
   return node;
 };
@@ -8887,9 +8901,9 @@ defineFunction({
   },
   htmlBuilder: (group, options) => {
     var innerGroup = buildGroup$1(group.base, options);
-    var accentBody = stretchy.svgSpan(group, options);
+    var accentBody = stretchySvg(group, options);
     var kern = group.label === "\\utilde" ? 0.12 : 0;
-    var vlist = buildCommon.makeVList({
+    var vlist = makeVList({
       positionType: "top",
       positionData: innerGroup.height,
       children: [{
@@ -8903,18 +8917,18 @@ defineFunction({
         type: "elem",
         elem: innerGroup
       }]
-    }, options);
-    return buildCommon.makeSpan(["mord", "accentunder"], [vlist], options);
+    });
+    return makeSpan(["mord", "accentunder"], [vlist], options);
   },
   mathmlBuilder: (group, options) => {
-    var accentNode = stretchy.mathMLnode(group.label);
-    var node = new mathMLTree.MathNode("munder", [buildGroup2(group.base, options), accentNode]);
+    var accentNode = stretchyMathML(group.label);
+    var node = new MathNode("munder", [buildGroup2(group.base, options), accentNode]);
     node.setAttribute("accentunder", "true");
     return node;
   }
 });
 var paddedNode = (group) => {
-  var node = new mathMLTree.MathNode("mpadded", group ? [group] : []);
+  var node = new MathNode("mpadded", group ? [group] : []);
   node.setAttribute("width", "+0.6em");
   node.setAttribute("lspace", "0.3em");
   return node;
@@ -8968,21 +8982,19 @@ defineFunction({
       below: optArgs[0]
     };
   },
-  // Flow is unable to correctly infer the type of `group`, even though it's
-  // unambiguously determined from the passed-in `type` above.
   htmlBuilder(group, options) {
     var style = options.style;
     var newOptions = options.havingStyle(style.sup());
-    var upperGroup = buildCommon.wrapFragment(buildGroup$1(group.body, newOptions, options), options);
+    var upperGroup = wrapFragment(buildGroup$1(group.body, newOptions, options), options);
     var arrowPrefix = group.label.slice(0, 2) === "\\x" ? "x" : "cd";
     upperGroup.classes.push(arrowPrefix + "-arrow-pad");
     var lowerGroup;
     if (group.below) {
       newOptions = options.havingStyle(style.sub());
-      lowerGroup = buildCommon.wrapFragment(buildGroup$1(group.below, newOptions, options), options);
+      lowerGroup = wrapFragment(buildGroup$1(group.below, newOptions, options), options);
       lowerGroup.classes.push(arrowPrefix + "-arrow-pad");
     }
-    var arrowBody = stretchy.svgSpan(group, options);
+    var arrowBody = stretchySvg(group, options);
     var arrowShift = -options.fontMetrics().axisHeight + 0.5 * arrowBody.height;
     var upperShift = -options.fontMetrics().axisHeight - 0.5 * arrowBody.height - 0.111;
     if (upperGroup.depth > 0.25 || group.label === "\\xleftequilibrium") {
@@ -8991,7 +9003,7 @@ defineFunction({
     var vlist;
     if (lowerGroup) {
       var lowerShift = -options.fontMetrics().axisHeight + lowerGroup.height + 0.5 * arrowBody.height + 0.111;
-      vlist = buildCommon.makeVList({
+      vlist = makeVList({
         positionType: "individualShift",
         children: [{
           type: "elem",
@@ -9000,15 +9012,16 @@ defineFunction({
         }, {
           type: "elem",
           elem: arrowBody,
-          shift: arrowShift
+          shift: arrowShift,
+          wrapperClasses: ["svg-align"]
         }, {
           type: "elem",
           elem: lowerGroup,
           shift: lowerShift
         }]
-      }, options);
+      });
     } else {
-      vlist = buildCommon.makeVList({
+      vlist = makeVList({
         positionType: "individualShift",
         children: [{
           type: "elem",
@@ -9017,58 +9030,57 @@ defineFunction({
         }, {
           type: "elem",
           elem: arrowBody,
-          shift: arrowShift
+          shift: arrowShift,
+          wrapperClasses: ["svg-align"]
         }]
-      }, options);
+      });
     }
-    vlist.children[0].children[0].children[1].classes.push("svg-align");
-    return buildCommon.makeSpan(["mrel", "x-arrow"], [vlist], options);
+    return makeSpan(["mrel", "x-arrow"], [vlist], options);
   },
   mathmlBuilder(group, options) {
-    var arrowNode = stretchy.mathMLnode(group.label);
+    var arrowNode = stretchyMathML(group.label);
     arrowNode.setAttribute("minsize", group.label.charAt(0) === "x" ? "1.75em" : "3.0em");
     var node;
     if (group.body) {
       var upperNode = paddedNode(buildGroup2(group.body, options));
       if (group.below) {
         var lowerNode = paddedNode(buildGroup2(group.below, options));
-        node = new mathMLTree.MathNode("munderover", [arrowNode, lowerNode, upperNode]);
+        node = new MathNode("munderover", [arrowNode, lowerNode, upperNode]);
       } else {
-        node = new mathMLTree.MathNode("mover", [arrowNode, upperNode]);
+        node = new MathNode("mover", [arrowNode, upperNode]);
       }
     } else if (group.below) {
       var _lowerNode = paddedNode(buildGroup2(group.below, options));
-      node = new mathMLTree.MathNode("munder", [arrowNode, _lowerNode]);
+      node = new MathNode("munder", [arrowNode, _lowerNode]);
     } else {
       node = paddedNode();
-      node = new mathMLTree.MathNode("mover", [arrowNode, node]);
+      node = new MathNode("mover", [arrowNode, node]);
     }
     return node;
   }
 });
-var makeSpan2 = buildCommon.makeSpan;
 function htmlBuilder$9(group, options) {
   var elements = buildExpression$1(group.body, options, true);
-  return makeSpan2([group.mclass], elements, options);
+  return makeSpan([group.mclass], elements, options);
 }
 function mathmlBuilder$8(group, options) {
   var node;
   var inner2 = buildExpression2(group.body, options);
   if (group.mclass === "minner") {
-    node = new mathMLTree.MathNode("mpadded", inner2);
+    node = new MathNode("mpadded", inner2);
   } else if (group.mclass === "mord") {
     if (group.isCharacterBox) {
       node = inner2[0];
       node.type = "mi";
     } else {
-      node = new mathMLTree.MathNode("mi", inner2);
+      node = new MathNode("mi", inner2);
     }
   } else {
     if (group.isCharacterBox) {
       node = inner2[0];
       node.type = "mo";
     } else {
-      node = new mathMLTree.MathNode("mo", inner2);
+      node = new MathNode("mo", inner2);
     }
     if (group.mclass === "mbin") {
       node.attributes.lspace = "0.22em";
@@ -9105,7 +9117,7 @@ defineFunction({
       mclass: "m" + funcName.slice(5),
       // TODO(kevinb): don't prefix with 'm'
       body: ordargument(body),
-      isCharacterBox: utils.isCharacterBox(body)
+      isCharacterBox: isCharacterBox(body)
     };
   },
   htmlBuilder: htmlBuilder$9,
@@ -9134,7 +9146,7 @@ defineFunction({
       mode: parser.mode,
       mclass: binrelClass(args[0]),
       body: ordargument(args[1]),
-      isCharacterBox: utils.isCharacterBox(args[1])
+      isCharacterBox: isCharacterBox(args[1])
     };
   }
 });
@@ -9179,7 +9191,7 @@ defineFunction({
       mode: parser.mode,
       mclass,
       body: [supsub],
-      isCharacterBox: utils.isCharacterBox(supsub)
+      isCharacterBox: isCharacterBox(supsub)
     };
   },
   htmlBuilder: htmlBuilder$9,
@@ -9205,13 +9217,13 @@ defineFunction({
   },
   htmlBuilder(group, options) {
     var elements = buildExpression$1(group.body, options, true);
-    var node = buildCommon.makeSpan([group.mclass], elements, options);
+    var node = makeSpan([group.mclass], elements, options);
     node.style.textShadow = "0.02em 0.01em 0.04px";
     return node;
   },
   mathmlBuilder(group, style) {
     var inner2 = buildExpression2(group.body, style);
-    var node = new mathMLTree.MathNode("mstyle", inner2);
+    var node = new MathNode("mstyle", inner2);
     node.setAttribute("style", "text-shadow: 0.02em 0.01em 0.04px");
     return node;
   }
@@ -9230,7 +9242,8 @@ var newCell = () => {
     type: "styling",
     body: [],
     mode: "math",
-    style: "display"
+    style: "display",
+    resetFont: true
   };
 };
 var isStartOfArrow = (node) => {
@@ -9304,8 +9317,8 @@ function parseCD(parser) {
   }
   var row = [];
   var body = [row];
-  for (var i = 0; i < parsedRows.length; i++) {
-    var rowNodes = parsedRows[i];
+  for (var i2 = 0; i2 < parsedRows.length; i2++) {
+    var rowNodes = parsedRows[i2];
     var cell = newCell();
     for (var j2 = 0; j2 < rowNodes.length; j2++) {
       if (!isStartOfArrow(rowNodes[j2])) {
@@ -9325,8 +9338,8 @@ function parseCD(parser) {
           mode: "math",
           body: []
         };
-        if ("=|.".indexOf(arrowChar) > -1) ;
-        else if ("<>AV".indexOf(arrowChar) > -1) {
+        if ("=|.".includes(arrowChar)) ;
+        else if ("<>AV".includes(arrowChar)) {
           for (var labelNum = 0; labelNum < 2; labelNum++) {
             var inLabel = true;
             for (var k = j2 + 1; k < rowNodes.length; k++) {
@@ -9352,14 +9365,15 @@ function parseCD(parser) {
           type: "styling",
           body: [arrow],
           mode: "math",
-          style: "display"
+          style: "display",
           // CD is always displaystyle.
+          resetFont: true
         };
         row.push(wrappedArrow);
         cell = newCell();
       }
     }
-    if (i % 2 === 0) {
+    if (i2 % 2 === 0) {
       row.push(cell);
     } else {
       row.shift();
@@ -9409,7 +9423,7 @@ defineFunction({
   },
   htmlBuilder(group, options) {
     var newOptions = options.havingStyle(options.style.sup());
-    var label = buildCommon.wrapFragment(buildGroup$1(group.label, newOptions, options), options);
+    var label = wrapFragment(buildGroup$1(group.label, newOptions, options), options);
     label.classes.push("cd-label-" + group.side);
     label.style.bottom = makeEm(0.8 - label.depth);
     label.height = 0;
@@ -9417,14 +9431,14 @@ defineFunction({
     return label;
   },
   mathmlBuilder(group, options) {
-    var label = new mathMLTree.MathNode("mrow", [buildGroup2(group.label, options)]);
-    label = new mathMLTree.MathNode("mpadded", [label]);
+    var label = new MathNode("mrow", [buildGroup2(group.label, options)]);
+    label = new MathNode("mpadded", [label]);
     label.setAttribute("width", "0");
     if (group.side === "left") {
       label.setAttribute("lspace", "-1width");
     }
     label.setAttribute("voffset", "0.7em");
-    label = new mathMLTree.MathNode("mstyle", [label]);
+    label = new MathNode("mstyle", [label]);
     label.setAttribute("displaystyle", "false");
     label.setAttribute("scriptlevel", "1");
     return label;
@@ -9447,12 +9461,12 @@ defineFunction({
     };
   },
   htmlBuilder(group, options) {
-    var parent = buildCommon.wrapFragment(buildGroup$1(group.fragment, options), options);
+    var parent = wrapFragment(buildGroup$1(group.fragment, options), options);
     parent.classes.push("cd-vert-arrow");
     return parent;
   },
   mathmlBuilder(group, options) {
-    return new mathMLTree.MathNode("mrow", [buildGroup2(group.fragment, options)]);
+    return new MathNode("mrow", [buildGroup2(group.fragment, options)]);
   }
 });
 defineFunction({
@@ -9469,8 +9483,8 @@ defineFunction({
     var arg = assertNodeType(args[0], "ordgroup");
     var group = arg.body;
     var number = "";
-    for (var i = 0; i < group.length; i++) {
-      var node = assertNodeType(group[i], "textord");
+    for (var i2 = 0; i2 < group.length; i2++) {
+      var node = assertNodeType(group[i2], "textord");
       number += node.text;
     }
     var code = parseInt(number);
@@ -9494,11 +9508,11 @@ defineFunction({
 });
 var htmlBuilder$8 = (group, options) => {
   var elements = buildExpression$1(group.body, options.withColor(group.color), false);
-  return buildCommon.makeFragment(elements);
+  return makeFragment(elements);
 };
 var mathmlBuilder$7 = (group, options) => {
   var inner2 = buildExpression2(group.body, options.withColor(group.color));
-  var node = new mathMLTree.MathNode("mstyle", inner2);
+  var node = new MathNode("mstyle", inner2);
   node.setAttribute("mathcolor", group.color);
   return node;
 };
@@ -9576,7 +9590,7 @@ defineFunction({
   // The following builders are called only at the top level,
   // not within tabular/array environments.
   htmlBuilder(group, options) {
-    var span = buildCommon.makeSpan(["mspace"], [], options);
+    var span = makeSpan(["mspace"], [], options);
     if (group.newLine) {
       span.classes.push("newline");
       if (group.size) {
@@ -9586,7 +9600,7 @@ defineFunction({
     return span;
   },
   mathmlBuilder(group, options) {
-    var node = new mathMLTree.MathNode("mspace");
+    var node = new MathNode("mspace");
     if (group.newLine) {
       node.setAttribute("linebreak", "newline");
       if (group.size) {
@@ -9796,7 +9810,7 @@ var getMetrics = function getMetrics2(symbol, font, mode) {
 };
 var styleWrap = function styleWrap2(delim, toStyle, options, classes) {
   var newOptions = options.havingBaseStyle(toStyle);
-  var span = buildCommon.makeSpan(classes.concat(newOptions.sizingClasses(options)), [delim], options);
+  var span = makeSpan(classes.concat(newOptions.sizingClasses(options)), [delim], options);
   var delimSizeMultiplier = newOptions.sizeMultiplier / options.sizeMultiplier;
   span.height *= delimSizeMultiplier;
   span.depth *= delimSizeMultiplier;
@@ -9812,7 +9826,7 @@ var centerSpan = function centerSpan2(span, options, style) {
   span.depth += shift;
 };
 var makeSmallDelim = function makeSmallDelim2(delim, style, center, options, mode, classes) {
-  var text3 = buildCommon.makeSymbol(delim, "Main-Regular", mode, options);
+  var text3 = makeSymbol(delim, "Main-Regular", mode, options);
   var span = styleWrap(text3, style, options, classes);
   if (center) {
     centerSpan(span, options, style);
@@ -9820,11 +9834,11 @@ var makeSmallDelim = function makeSmallDelim2(delim, style, center, options, mod
   return span;
 };
 var mathrmSize = function mathrmSize2(value, size, mode, options) {
-  return buildCommon.makeSymbol(value, "Size" + size + "-Regular", mode, options);
+  return makeSymbol(value, "Size" + size + "-Regular", mode, options);
 };
 var makeLargeDelim = function makeLargeDelim2(delim, size, center, options, mode, classes) {
   var inner2 = mathrmSize(delim, size, mode, options);
-  var span = styleWrap(buildCommon.makeSpan(["delimsizing", "size" + size], [inner2], options), Style$1.TEXT, options, classes);
+  var span = styleWrap(makeSpan(["delimsizing", "size" + size], [inner2], options), Style$1.TEXT, options, classes);
   if (center) {
     centerSpan(span, options, Style$1.TEXT);
   }
@@ -9837,15 +9851,15 @@ var makeGlyphSpan = function makeGlyphSpan2(symbol, font, mode) {
   } else {
     sizeClass = "delim-size4";
   }
-  var corner = buildCommon.makeSpan(["delimsizinginner", sizeClass], [buildCommon.makeSpan([], [buildCommon.makeSymbol(symbol, font, mode)])]);
+  var corner = makeSpan(["delimsizinginner", sizeClass], [makeSpan([], [makeSymbol(symbol, font, mode)])]);
   return {
     type: "elem",
     elem: corner
   };
 };
-var makeInner = function makeInner2(ch, height, options) {
-  var width = fontMetricsData["Size4-Regular"][ch.charCodeAt(0)] ? fontMetricsData["Size4-Regular"][ch.charCodeAt(0)][4] : fontMetricsData["Size1-Regular"][ch.charCodeAt(0)][4];
-  var path2 = new PathNode("inner", innerPath(ch, Math.round(1e3 * height)));
+var makeInner = function makeInner2(ch2, height, options) {
+  var width = fontMetricsData["Size4-Regular"][ch2.charCodeAt(0)] ? fontMetricsData["Size4-Regular"][ch2.charCodeAt(0)][4] : fontMetricsData["Size1-Regular"][ch2.charCodeAt(0)][4];
+  var path2 = new PathNode("inner", innerPath(ch2, Math.round(1e3 * height)));
   var svgNode = new SvgNode([path2], {
     "width": makeEm(width),
     "height": makeEm(height),
@@ -9854,7 +9868,7 @@ var makeInner = function makeInner2(ch, height, options) {
     "viewBox": "0 0 " + 1e3 * width + " " + Math.round(1e3 * height),
     "preserveAspectRatio": "xMinYMin"
   });
-  var span = buildCommon.makeSvgSpan([], [svgNode], options);
+  var span = makeSvgSpan([], [svgNode], options);
   span.height = height;
   span.style.height = makeEm(height);
   span.style.width = makeEm(width);
@@ -9868,8 +9882,8 @@ var lap = {
   type: "kern",
   size: -1 * lapInEms
 };
-var verts = ["|", "\\lvert", "\\rvert", "\\vert"];
-var doubleVerts = ["\\|", "\\lVert", "\\rVert", "\\Vert"];
+var verts = /* @__PURE__ */ new Set(["|", "\\lvert", "\\rvert", "\\vert"]);
+var doubleVerts = /* @__PURE__ */ new Set(["\\|", "\\lVert", "\\rVert", "\\Vert"]);
 var makeStackedDelim = function makeStackedDelim2(delim, heightTotal, center, options, mode, classes) {
   var top;
   var middle;
@@ -9896,11 +9910,11 @@ var makeStackedDelim = function makeStackedDelim2(delim, heightTotal, center, op
     top = "\\Uparrow";
     repeat = "\u2016";
     bottom = "\\Downarrow";
-  } else if (utils.contains(verts, delim)) {
+  } else if (verts.has(delim)) {
     repeat = "\u2223";
     svgLabel = "vert";
     viewBoxWidth = 333;
-  } else if (utils.contains(doubleVerts, delim)) {
+  } else if (doubleVerts.has(delim)) {
     repeat = "\u2225";
     svgLabel = "doublevert";
     viewBoxWidth = 556;
@@ -10016,14 +10030,14 @@ var makeStackedDelim = function makeStackedDelim2(delim, heightTotal, center, op
     var viewBoxHeight = Math.round(realHeightTotal * 1e3);
     var pathStr = tallDelim(svgLabel, Math.round(midHeight * 1e3));
     var path2 = new PathNode(svgLabel, pathStr);
-    var width = (viewBoxWidth / 1e3).toFixed(3) + "em";
-    var height = (viewBoxHeight / 1e3).toFixed(3) + "em";
+    var width = makeEm(viewBoxWidth / 1e3);
+    var height = makeEm(viewBoxHeight / 1e3);
     var svg2 = new SvgNode([path2], {
       "width": width,
       "height": height,
       "viewBox": "0 0 " + viewBoxWidth + " " + viewBoxHeight
     });
-    var wrapper = buildCommon.makeSvgSpan([], [svg2], options);
+    var wrapper = makeSvgSpan([], [svg2], options);
     wrapper.height = viewBoxHeight / 1e3;
     wrapper.style.width = width;
     wrapper.style.height = height;
@@ -10049,12 +10063,12 @@ var makeStackedDelim = function makeStackedDelim2(delim, heightTotal, center, op
     stack.push(makeGlyphSpan(top, font, mode));
   }
   var newOptions = options.havingBaseStyle(Style$1.TEXT);
-  var inner2 = buildCommon.makeVList({
+  var inner2 = makeVList({
     positionType: "bottom",
     positionData: depth,
     children: stack
-  }, newOptions);
-  return styleWrap(buildCommon.makeSpan(["delimsizing", "mult"], [inner2], newOptions), Style$1.TEXT, options, classes);
+  });
+  return styleWrap(makeSpan(["delimsizing", "mult"], [inner2], newOptions), Style$1.TEXT, options, classes);
 };
 var vbPad = 80;
 var emPad = 0.08;
@@ -10068,7 +10082,7 @@ var sqrtSvg = function sqrtSvg2(sqrtName, height, viewBoxHeight, extraVinculum, 
     "viewBox": "0 0 400000 " + viewBoxHeight,
     "preserveAspectRatio": "xMinYMin slice"
   });
-  return buildCommon.makeSvgSpan(["hide-tail"], [svg2], options);
+  return makeSvgSpan(["hide-tail"], [svg2], options);
 };
 var makeSqrtImage = function makeSqrtImage2(height, options) {
   var newOptions = options.havingBaseSizing();
@@ -10076,9 +10090,9 @@ var makeSqrtImage = function makeSqrtImage2(height, options) {
   var sizeMultiplier = newOptions.sizeMultiplier;
   var extraVinculum = Math.max(0, options.minRuleThickness - options.fontMetrics().sqrtRuleThickness);
   var span;
-  var spanHeight = 0;
-  var texHeight = 0;
-  var viewBoxHeight = 0;
+  var spanHeight;
+  var texHeight;
+  var viewBoxHeight;
   var advanceWidth;
   if (delim.type === "small") {
     viewBoxHeight = 1e3 + 1e3 * extraVinculum + vbPad;
@@ -10119,9 +10133,9 @@ var makeSqrtImage = function makeSqrtImage2(height, options) {
     ruleWidth: (options.fontMetrics().sqrtRuleThickness + extraVinculum) * sizeMultiplier
   };
 };
-var stackLargeDelimiters = ["(", "\\lparen", ")", "\\rparen", "[", "\\lbrack", "]", "\\rbrack", "\\{", "\\lbrace", "\\}", "\\rbrace", "\\lfloor", "\\rfloor", "\u230A", "\u230B", "\\lceil", "\\rceil", "\u2308", "\u2309", "\\surd"];
-var stackAlwaysDelimiters = ["\\uparrow", "\\downarrow", "\\updownarrow", "\\Uparrow", "\\Downarrow", "\\Updownarrow", "|", "\\|", "\\vert", "\\Vert", "\\lvert", "\\rvert", "\\lVert", "\\rVert", "\\lgroup", "\\rgroup", "\u27EE", "\u27EF", "\\lmoustache", "\\rmoustache", "\u23B0", "\u23B1"];
-var stackNeverDelimiters = ["<", ">", "\\langle", "\\rangle", "/", "\\backslash", "\\lt", "\\gt"];
+var stackLargeDelimiters = /* @__PURE__ */ new Set(["(", "\\lparen", ")", "\\rparen", "[", "\\lbrack", "]", "\\rbrack", "\\{", "\\lbrace", "\\}", "\\rbrace", "\\lfloor", "\\rfloor", "\u230A", "\u230B", "\\lceil", "\\rceil", "\u2308", "\u2309", "\\surd"]);
+var stackAlwaysDelimiters = /* @__PURE__ */ new Set(["\\uparrow", "\\downarrow", "\\updownarrow", "\\Uparrow", "\\Downarrow", "\\Updownarrow", "|", "\\|", "\\vert", "\\Vert", "\\lvert", "\\rvert", "\\lVert", "\\rVert", "\\lgroup", "\\rgroup", "\u27EE", "\u27EF", "\\lmoustache", "\\rmoustache", "\u23B0", "\u23B1"]);
+var stackNeverDelimiters = /* @__PURE__ */ new Set(["<", ">", "\\langle", "\\rangle", "/", "\\backslash", "\\lt", "\\gt"]);
 var sizeToMaxHeight = [0, 1.2, 1.8, 2.4, 3];
 var makeSizedDelim = function makeSizedDelim2(delim, size, options, mode, classes) {
   if (delim === "<" || delim === "\\lt" || delim === "\u27E8") {
@@ -10129,9 +10143,9 @@ var makeSizedDelim = function makeSizedDelim2(delim, size, options, mode, classe
   } else if (delim === ">" || delim === "\\gt" || delim === "\u27E9") {
     delim = "\\rangle";
   }
-  if (utils.contains(stackLargeDelimiters, delim) || utils.contains(stackNeverDelimiters, delim)) {
+  if (stackLargeDelimiters.has(delim) || stackNeverDelimiters.has(delim)) {
     return makeLargeDelim(delim, size, false, options, mode, classes);
-  } else if (utils.contains(stackAlwaysDelimiters, delim)) {
+  } else if (stackAlwaysDelimiters.has(delim)) {
     return makeStackedDelim(delim, sizeToMaxHeight[size], false, options, mode, classes);
   } else {
     throw new ParseError("Illegal delimiter: '" + delim + "'");
@@ -10203,23 +10217,25 @@ var delimTypeToFont = function delimTypeToFont2(type) {
   } else if (type.type === "stack") {
     return "Size4-Regular";
   } else {
-    throw new Error("Add support for delim type '" + type.type + "' here.");
+    var delimKind = type.type;
+    throw new Error("Add support for delim type '" + delimKind + "' here.");
   }
 };
 var traverseSequence = function traverseSequence2(delim, height, sequence, options) {
   var start = Math.min(2, 3 - options.style.size);
-  for (var i = start; i < sequence.length; i++) {
-    if (sequence[i].type === "stack") {
+  for (var i2 = start; i2 < sequence.length; i2++) {
+    var delimType = sequence[i2];
+    if (delimType.type === "stack") {
       break;
     }
-    var metrics = getMetrics(delim, delimTypeToFont(sequence[i]), "math");
+    var metrics = getMetrics(delim, delimTypeToFont(delimType), "math");
     var heightDepth = metrics.height + metrics.depth;
-    if (sequence[i].type === "small") {
-      var newOptions = options.havingBaseStyle(sequence[i].style);
+    if (delimType.type === "small") {
+      var newOptions = options.havingBaseStyle(delimType.style);
       heightDepth *= newOptions.sizeMultiplier;
     }
     if (heightDepth > height) {
-      return sequence[i];
+      return delimType;
     }
   }
   return sequence[sequence.length - 1];
@@ -10231,9 +10247,9 @@ var makeCustomSizedDelim = function makeCustomSizedDelim2(delim, height, center,
     delim = "\\rangle";
   }
   var sequence;
-  if (utils.contains(stackNeverDelimiters, delim)) {
+  if (stackNeverDelimiters.has(delim)) {
     sequence = stackNeverDelimiterSequence;
-  } else if (utils.contains(stackLargeDelimiters, delim)) {
+  } else if (stackLargeDelimiters.has(delim)) {
     sequence = stackLargeDelimiterSequence;
   } else {
     sequence = stackAlwaysDelimiterSequence;
@@ -10266,13 +10282,6 @@ var makeLeftRightDelim = function makeLeftRightDelim2(delim, height, depth, opti
     2 * maxDistFromAxis - delimiterExtend
   );
   return makeCustomSizedDelim(delim, totalHeight, true, options, mode, classes);
-};
-var delimiter = {
-  sqrtImage: makeSqrtImage,
-  sizedDelim: makeSizedDelim,
-  sizeToMaxHeight,
-  customSizedDelim: makeCustomSizedDelim,
-  leftRightDelim: makeLeftRightDelim
 };
 var delimiterSizes = {
   "\\bigl": {
@@ -10340,10 +10349,13 @@ var delimiterSizes = {
     size: 4
   }
 };
-var delimiters = ["(", "\\lparen", ")", "\\rparen", "[", "\\lbrack", "]", "\\rbrack", "\\{", "\\lbrace", "\\}", "\\rbrace", "\\lfloor", "\\rfloor", "\u230A", "\u230B", "\\lceil", "\\rceil", "\u2308", "\u2309", "<", ">", "\\langle", "\u27E8", "\\rangle", "\u27E9", "\\lt", "\\gt", "\\lvert", "\\rvert", "\\lVert", "\\rVert", "\\lgroup", "\\rgroup", "\u27EE", "\u27EF", "\\lmoustache", "\\rmoustache", "\u23B0", "\u23B1", "/", "\\backslash", "|", "\\vert", "\\|", "\\Vert", "\\uparrow", "\\Uparrow", "\\downarrow", "\\Downarrow", "\\updownarrow", "\\Updownarrow", "."];
+var delimiters = /* @__PURE__ */ new Set(["(", "\\lparen", ")", "\\rparen", "[", "\\lbrack", "]", "\\rbrack", "\\{", "\\lbrace", "\\}", "\\rbrace", "\\lfloor", "\\rfloor", "\u230A", "\u230B", "\\lceil", "\\rceil", "\u2308", "\u2309", "<", ">", "\\langle", "\u27E8", "\\rangle", "\u27E9", "\\lt", "\\gt", "\\lvert", "\\rvert", "\\lVert", "\\rVert", "\\lgroup", "\\rgroup", "\u27EE", "\u27EF", "\\lmoustache", "\\rmoustache", "\u23B0", "\u23B1", "/", "\\backslash", "|", "\\vert", "\\|", "\\Vert", "\\uparrow", "\\Uparrow", "\\downarrow", "\\Downarrow", "\\updownarrow", "\\Updownarrow", "."]);
+function isMiddleDelimNode(node) {
+  return "isMiddle" in node;
+}
 function checkDelimiter(delim, context) {
   var symDelim = checkSymbolNodeType(delim);
-  if (symDelim && utils.contains(delimiters, symDelim.text)) {
+  if (symDelim && delimiters.has(symDelim.text)) {
     return symDelim;
   } else if (symDelim) {
     throw new ParseError("Invalid delimiter '" + symDelim.text + "' after '" + context.funcName + "'", delim);
@@ -10370,23 +10382,23 @@ defineFunction({
   },
   htmlBuilder: (group, options) => {
     if (group.delim === ".") {
-      return buildCommon.makeSpan([group.mclass]);
+      return makeSpan([group.mclass]);
     }
-    return delimiter.sizedDelim(group.delim, group.size, options, group.mode, [group.mclass]);
+    return makeSizedDelim(group.delim, group.size, options, group.mode, [group.mclass]);
   },
   mathmlBuilder: (group) => {
     var children = [];
     if (group.delim !== ".") {
       children.push(makeText(group.delim, group.mode));
     }
-    var node = new mathMLTree.MathNode("mo", children);
+    var node = new MathNode("mo", children);
     if (group.mclass === "mopen" || group.mclass === "mclose") {
       node.setAttribute("fence", "true");
     } else {
       node.setAttribute("fence", "false");
     }
     node.setAttribute("stretchy", "true");
-    var size = makeEm(delimiter.sizeToMaxHeight[group.size]);
+    var size = makeEm(sizeToMaxHeight[group.size]);
     node.setAttribute("minsize", size);
     node.setAttribute("maxsize", size);
     return node;
@@ -10448,12 +10460,13 @@ defineFunction({
     var innerHeight = 0;
     var innerDepth = 0;
     var hadMiddle = false;
-    for (var i = 0; i < inner2.length; i++) {
-      if (inner2[i].isMiddle) {
+    for (var i2 = 0; i2 < inner2.length; i2++) {
+      var node = inner2[i2];
+      if (isMiddleDelimNode(node)) {
         hadMiddle = true;
       } else {
-        innerHeight = Math.max(inner2[i].height, innerHeight);
-        innerDepth = Math.max(inner2[i].depth, innerDepth);
+        innerHeight = Math.max(inner2[i2].height, innerHeight);
+        innerDepth = Math.max(inner2[i2].depth, innerDepth);
       }
     }
     innerHeight *= options.sizeMultiplier;
@@ -10462,15 +10475,15 @@ defineFunction({
     if (group.left === ".") {
       leftDelim = makeNullDelimiter(options, ["mopen"]);
     } else {
-      leftDelim = delimiter.leftRightDelim(group.left, innerHeight, innerDepth, options, group.mode, ["mopen"]);
+      leftDelim = makeLeftRightDelim(group.left, innerHeight, innerDepth, options, group.mode, ["mopen"]);
     }
     inner2.unshift(leftDelim);
     if (hadMiddle) {
-      for (var _i = 1; _i < inner2.length; _i++) {
-        var middleDelim = inner2[_i];
-        var isMiddle = middleDelim.isMiddle;
-        if (isMiddle) {
-          inner2[_i] = delimiter.leftRightDelim(isMiddle.delim, innerHeight, innerDepth, isMiddle.options, group.mode, []);
+      for (var _i6 = 1; _i6 < inner2.length; _i6++) {
+        var middleDelim = inner2[_i6];
+        if (isMiddleDelimNode(middleDelim)) {
+          var isMiddle = middleDelim.isMiddle;
+          inner2[_i6] = makeLeftRightDelim(isMiddle.delim, innerHeight, innerDepth, isMiddle.options, group.mode, []);
         }
       }
     }
@@ -10479,21 +10492,21 @@ defineFunction({
       rightDelim = makeNullDelimiter(options, ["mclose"]);
     } else {
       var colorOptions = group.rightColor ? options.withColor(group.rightColor) : options;
-      rightDelim = delimiter.leftRightDelim(group.right, innerHeight, innerDepth, colorOptions, group.mode, ["mclose"]);
+      rightDelim = makeLeftRightDelim(group.right, innerHeight, innerDepth, colorOptions, group.mode, ["mclose"]);
     }
     inner2.push(rightDelim);
-    return buildCommon.makeSpan(["minner"], inner2, options);
+    return makeSpan(["minner"], inner2, options);
   },
   mathmlBuilder: (group, options) => {
     assertParsed(group);
     var inner2 = buildExpression2(group.body, options);
     if (group.left !== ".") {
-      var leftNode = new mathMLTree.MathNode("mo", [makeText(group.left, group.mode)]);
+      var leftNode = new MathNode("mo", [makeText(group.left, group.mode)]);
       leftNode.setAttribute("fence", "true");
       inner2.unshift(leftNode);
     }
     if (group.right !== ".") {
-      var rightNode = new mathMLTree.MathNode("mo", [makeText(group.right, group.mode)]);
+      var rightNode = new MathNode("mo", [makeText(group.right, group.mode)]);
       rightNode.setAttribute("fence", "true");
       if (group.rightColor) {
         rightNode.setAttribute("mathcolor", group.rightColor);
@@ -10526,18 +10539,17 @@ defineFunction({
     if (group.delim === ".") {
       middleDelim = makeNullDelimiter(options, []);
     } else {
-      middleDelim = delimiter.sizedDelim(group.delim, 1, options, group.mode, []);
-      var isMiddle = {
+      middleDelim = makeSizedDelim(group.delim, 1, options, group.mode, []);
+      middleDelim.isMiddle = {
         delim: group.delim,
         options
       };
-      middleDelim.isMiddle = isMiddle;
     }
     return middleDelim;
   },
   mathmlBuilder: (group, options) => {
     var textNode = group.delim === "\\vert" || group.delim === "|" ? makeText("|", "text") : makeText(group.delim, group.mode);
-    var middleNode = new mathMLTree.MathNode("mo", [textNode]);
+    var middleNode = new MathNode("mo", [textNode]);
     middleNode.setAttribute("fence", "true");
     middleNode.setAttribute("lspace", "0.05em");
     middleNode.setAttribute("rspace", "0.05em");
@@ -10545,14 +10557,14 @@ defineFunction({
   }
 });
 var htmlBuilder$7 = (group, options) => {
-  var inner2 = buildCommon.wrapFragment(buildGroup$1(group.body, options), options);
+  var inner2 = wrapFragment(buildGroup$1(group.body, options), options);
   var label = group.label.slice(1);
   var scale = options.sizeMultiplier;
   var img;
-  var imgShift = 0;
-  var isSingleChar = utils.isCharacterBox(group.body);
+  var imgShift;
+  var isSingleChar = isCharacterBox(group.body);
   if (label === "sout") {
-    img = buildCommon.makeSpan(["stretchy", "sout"]);
+    img = makeSpan(["stretchy", "sout"]);
     img.height = options.fontMetrics().defaultRuleThickness / scale;
     imgShift = -0.5 * options.fontMetrics().xHeight;
   } else if (label === "phase") {
@@ -10576,7 +10588,7 @@ var htmlBuilder$7 = (group, options) => {
       "viewBox": "0 0 400000 " + viewBoxHeight,
       "preserveAspectRatio": "xMinYMin slice"
     });
-    img = buildCommon.makeSvgSpan(["hide-tail"], [svgNode], options);
+    img = makeSvgSpan(["hide-tail"], [svgNode], options);
     img.style.height = makeEm(angleHeight);
     imgShift = inner2.depth + lineWeight + clearance;
   } else {
@@ -10589,15 +10601,14 @@ var htmlBuilder$7 = (group, options) => {
     } else {
       inner2.classes.push("boxpad");
     }
-    var topPad = 0;
-    var bottomPad = 0;
+    var topPad;
+    var bottomPad;
     var ruleThickness = 0;
     if (/box/.test(label)) {
       ruleThickness = Math.max(
         options.fontMetrics().fboxrule,
         // default
         options.minRuleThickness
-        // User override.
       );
       topPad = options.fontMetrics().fboxsep + (label === "colorbox" ? 0 : ruleThickness);
       bottomPad = topPad;
@@ -10609,7 +10620,7 @@ var htmlBuilder$7 = (group, options) => {
       topPad = isSingleChar ? 0.2 : 0;
       bottomPad = topPad;
     }
-    img = stretchy.encloseSpan(inner2, label, topPad, bottomPad, options);
+    img = stretchyEnclose(inner2, label, topPad, bottomPad, options);
     if (/fbox|boxed|fcolorbox/.test(label)) {
       img.style.borderStyle = "solid";
       img.style.borderWidth = makeEm(ruleThickness);
@@ -10627,7 +10638,7 @@ var htmlBuilder$7 = (group, options) => {
   }
   var vlist;
   if (group.backgroundColor) {
-    vlist = buildCommon.makeVList({
+    vlist = makeVList({
       positionType: "individualShift",
       children: [
         // Put the color background behind inner;
@@ -10642,10 +10653,10 @@ var htmlBuilder$7 = (group, options) => {
           shift: 0
         }
       ]
-    }, options);
+    });
   } else {
     var classes = /cancel|phase/.test(label) ? ["svg-align"] : [];
-    vlist = buildCommon.makeVList({
+    vlist = makeVList({
       positionType: "individualShift",
       children: [
         // Write the \cancel stroke on top of inner.
@@ -10661,21 +10672,21 @@ var htmlBuilder$7 = (group, options) => {
           wrapperClasses: classes
         }
       ]
-    }, options);
+    });
   }
   if (/cancel/.test(label)) {
     vlist.height = inner2.height;
     vlist.depth = inner2.depth;
   }
   if (/cancel/.test(label) && !isSingleChar) {
-    return buildCommon.makeSpan(["mord", "cancel-lap"], [vlist], options);
+    return makeSpan(["mord", "cancel-lap"], [vlist], options);
   } else {
-    return buildCommon.makeSpan(["mord"], [vlist], options);
+    return makeSpan(["mord"], [vlist], options);
   }
 };
 var mathmlBuilder$6 = (group, options) => {
-  var fboxsep = 0;
-  var node = new mathMLTree.MathNode(group.label.indexOf("colorbox") > -1 ? "mpadded" : "menclose", [buildGroup2(group.body, options)]);
+  var fboxsep;
+  var node = new MathNode(group.label.includes("colorbox") ? "mpadded" : "menclose", [buildGroup2(group.body, options)]);
   switch (group.label) {
     case "\\cancel":
       node.setAttribute("notation", "updiagonalstrike");
@@ -10707,9 +10718,8 @@ var mathmlBuilder$6 = (group, options) => {
           options.fontMetrics().fboxrule,
           // default
           options.minRuleThickness
-          // user override
         );
-        node.setAttribute("style", "border: " + thk + "em solid " + String(group.borderColor));
+        node.setAttribute("style", "border: " + makeEm(thk) + " solid " + group.borderColor);
       }
       break;
     case "\\xcancel":
@@ -10727,7 +10737,7 @@ defineFunction({
   props: {
     numArgs: 2,
     allowedInText: true,
-    argTypes: ["color", "text"]
+    argTypes: ["color", "hbox"]
   },
   handler(_ref2, args, optArgs) {
     var {
@@ -10753,7 +10763,7 @@ defineFunction({
   props: {
     numArgs: 3,
     allowedInText: true,
-    argTypes: ["color", "color", "text"]
+    argTypes: ["color", "color", "hbox"]
   },
   handler(_ref2, args, optArgs) {
     var {
@@ -10797,7 +10807,7 @@ defineFunction({
 });
 defineFunction({
   type: "enclose",
-  names: ["\\cancel", "\\bcancel", "\\xcancel", "\\sout", "\\phase"],
+  names: ["\\cancel", "\\bcancel", "\\xcancel", "\\phase"],
   props: {
     numArgs: 1
   },
@@ -10819,16 +10829,42 @@ defineFunction({
 });
 defineFunction({
   type: "enclose",
+  names: ["\\sout"],
+  props: {
+    numArgs: 1,
+    allowedInText: true
+  },
+  handler(_ref5, args) {
+    var {
+      parser,
+      funcName
+    } = _ref5;
+    if (parser.mode === "math") {
+      parser.settings.reportNonstrict("mathVsSout", "LaTeX's \\sout works only in text mode");
+    }
+    var body = args[0];
+    return {
+      type: "enclose",
+      mode: parser.mode,
+      label: funcName,
+      body
+    };
+  },
+  htmlBuilder: htmlBuilder$7,
+  mathmlBuilder: mathmlBuilder$6
+});
+defineFunction({
+  type: "enclose",
   names: ["\\angl"],
   props: {
     numArgs: 1,
     argTypes: ["hbox"],
     allowedInText: false
   },
-  handler(_ref5, args) {
+  handler(_ref6, args) {
     var {
       parser
-    } = _ref5;
+    } = _ref6;
     return {
       type: "enclose",
       mode: parser.mode,
@@ -10854,8 +10890,8 @@ function defineEnvironment(_ref2) {
     numOptionalArgs: 0,
     handler
   };
-  for (var i = 0; i < names.length; ++i) {
-    _environments[names[i]] = data;
+  for (var i2 = 0; i2 < names.length; ++i2) {
+    _environments[names[i2]] = data;
   }
   if (htmlBuilder3) {
     _htmlGroupBuilders[type] = htmlBuilder3;
@@ -10868,6 +10904,52 @@ var _macros = {};
 function defineMacro(name, body) {
   _macros[name] = body;
 }
+var SourceLocation = class _SourceLocation {
+  // End offset, zero-based exclusive.
+  constructor(lexer, start, end) {
+    this.lexer = void 0;
+    this.start = void 0;
+    this.end = void 0;
+    this.lexer = lexer;
+    this.start = start;
+    this.end = end;
+  }
+  /**
+   * Merges two `SourceLocation`s from location providers, given they are
+   * provided in order of appearance.
+   * - Returns the first one's location if only the first is provided.
+   * - Returns a merged range of the first and the last if both are provided
+   *   and their lexers match.
+   * - Otherwise, returns null.
+   */
+  static range(first, second) {
+    if (!second) {
+      return first && first.loc;
+    } else if (!first || !first.loc || !second.loc || first.loc.lexer !== second.loc.lexer) {
+      return null;
+    } else {
+      return new _SourceLocation(first.loc.lexer, first.loc.start, second.loc.end);
+    }
+  }
+};
+var Token = class _Token {
+  // used in \noexpand
+  constructor(text3, loc) {
+    this.text = void 0;
+    this.loc = void 0;
+    this.noexpand = void 0;
+    this.treatAsRelax = void 0;
+    this.text = text3;
+    this.loc = loc;
+  }
+  /**
+   * Given a pair of tokens (this and endToken), compute a `Token` encompassing
+   * the whole input range enclosed by these two.
+   */
+  range(endToken, text3) {
+    return new _Token(text3, SourceLocation.range(this, endToken));
+  }
+};
 function getHLines(parser) {
   var hlineInfo = [];
   parser.consumeSpaces();
@@ -10891,9 +10973,10 @@ var validateAmsEnvironmentContext = (context) => {
     throw new ParseError("{" + context.envName + "} can be used only in display mode.");
   }
 };
+var gatherEnvironments = /* @__PURE__ */ new Set(["gather", "gather*"]);
 function getAutoTag(name) {
-  if (name.indexOf("ed") === -1) {
-    return name.indexOf("*") === -1;
+  if (!name.includes("ed")) {
+    return !name.includes("*");
   }
 }
 function parseArray(parser, _ref2, style) {
@@ -10948,19 +11031,20 @@ function parseArray(parser, _ref2, style) {
   beginRow();
   hLinesBeforeRow.push(getHLines(parser));
   while (true) {
-    var cell = parser.parseExpression(false, singleRow ? "\\end" : "\\\\");
+    var cellBody = parser.parseExpression(false, singleRow ? "\\end" : "\\\\");
     parser.gullet.endGroup();
     parser.gullet.beginGroup();
-    cell = {
+    var cell = {
       type: "ordgroup",
       mode: parser.mode,
-      body: cell
+      body: cellBody
     };
     if (style) {
       cell = {
         type: "styling",
         mode: parser.mode,
         style,
+        resetFont: true,
         body: [cell]
       };
     }
@@ -10977,7 +11061,7 @@ function parseArray(parser, _ref2, style) {
       parser.consume();
     } else if (next === "\\end") {
       endRow();
-      if (row.length === 1 && cell.type === "styling" && cell.body[0].body.length === 0 && (body.length > 1 || !emptySingleRow)) {
+      if (row.length === 1 && cell.type === "styling" && cell.body.length === 1 && cell.body[0].type === "ordgroup" && cell.body[0].body.length === 0 && (body.length > 1 || !emptySingleRow)) {
         body.pop();
       }
       if (hLinesBeforeRow.length < body.length + 1) {
@@ -11036,7 +11120,6 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
     // From LaTeX \showthe\arrayrulewidth. Equals 0.04 em.
     options.fontMetrics().arrayRuleWidth,
     options.minRuleThickness
-    // User override.
   );
   var pt = 1 / options.fontMetrics().ptPerEm;
   var arraycolsep = 5 * pt;
@@ -11054,13 +11137,13 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
   var arstrutDepth = 0.3 * arrayskip;
   var totalHeight = 0;
   function setHLinePos(hlinesInGap) {
-    for (var i = 0; i < hlinesInGap.length; ++i) {
-      if (i > 0) {
+    for (var i2 = 0; i2 < hlinesInGap.length; ++i2) {
+      if (i2 > 0) {
         totalHeight += 0.25;
       }
       hlines.push({
         pos: totalHeight,
-        isDashed: hlinesInGap[i]
+        isDashed: hlinesInGap[i2]
       });
     }
   }
@@ -11072,7 +11155,12 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
     if (nc < inrow.length) {
       nc = inrow.length;
     }
-    var outrow = new Array(inrow.length);
+    var outrow = {
+      cells: new Array(inrow.length),
+      height: 0,
+      depth: 0,
+      pos: 0
+    };
     for (c = 0; c < inrow.length; ++c) {
       var elt = buildGroup$1(inrow[c], options);
       if (depth < elt.depth) {
@@ -11081,7 +11169,7 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
       if (height < elt.height) {
         height = elt.height;
       }
-      outrow[c] = elt;
+      outrow.cells[c] = elt;
     }
     var rowGap = group.rowGaps[r];
     var gap = 0;
@@ -11095,7 +11183,7 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
         gap = 0;
       }
     }
-    if (group.addJot) {
+    if (group.addJot && r < group.body.length - 1) {
       depth += jot;
     }
     outrow.height = height;
@@ -11119,11 +11207,11 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
       var tag = group.tags[r];
       var tagSpan = void 0;
       if (tag === true) {
-        tagSpan = buildCommon.makeSpan(["eqn-num"], [], options);
+        tagSpan = makeSpan(["eqn-num"], [], options);
       } else if (tag === false) {
-        tagSpan = buildCommon.makeSpan([], [], options);
+        tagSpan = makeSpan([], [], options);
       } else {
-        tagSpan = buildCommon.makeSpan([], buildExpression$1(tag, options, true), options);
+        tagSpan = makeSpan([], buildExpression$1(tag, options, true), options);
       }
       tagSpan.depth = rw.depth;
       tagSpan.height = rw.height;
@@ -11141,17 +11229,19 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
     c < nc || colDescrNum < colDescriptions.length;
     ++c, ++colDescrNum
   ) {
-    var colDescr = colDescriptions[colDescrNum] || {};
+    var _colDescr3;
+    var colDescr = colDescriptions[colDescrNum];
     var firstSeparator = true;
-    while (colDescr.type === "separator") {
+    while (((_colDescr = colDescr) == null ? void 0 : _colDescr.type) === "separator") {
+      var _colDescr;
       if (!firstSeparator) {
-        colSep = buildCommon.makeSpan(["arraycolsep"], []);
+        colSep = makeSpan(["arraycolsep"], []);
         colSep.style.width = makeEm(options.fontMetrics().doubleRuleSep);
         cols.push(colSep);
       }
       if (colDescr.separator === "|" || colDescr.separator === ":") {
         var lineType = colDescr.separator === "|" ? "solid" : "dashed";
-        var separator = buildCommon.makeSpan(["vertical-separator"], [], options);
+        var separator = makeSpan(["vertical-separator"], [], options);
         separator.style.height = makeEm(totalHeight);
         separator.style.borderRightWidth = makeEm(ruleThickness);
         separator.style.borderRightStyle = lineType;
@@ -11165,7 +11255,7 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
         throw new ParseError("Invalid separator type: " + colDescr.separator);
       }
       colDescrNum++;
-      colDescr = colDescriptions[colDescrNum] || {};
+      colDescr = colDescriptions[colDescrNum];
       firstSeparator = false;
     }
     if (c >= nc) {
@@ -11173,51 +11263,53 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
     }
     var sepwidth = void 0;
     if (c > 0 || group.hskipBeforeAndAfter) {
-      sepwidth = utils.deflt(colDescr.pregap, arraycolsep);
+      var _colDescr$pregap, _colDescr2;
+      sepwidth = (_colDescr$pregap = (_colDescr2 = colDescr) == null ? void 0 : _colDescr2.pregap) != null ? _colDescr$pregap : arraycolsep;
       if (sepwidth !== 0) {
-        colSep = buildCommon.makeSpan(["arraycolsep"], []);
+        colSep = makeSpan(["arraycolsep"], []);
         colSep.style.width = makeEm(sepwidth);
         cols.push(colSep);
       }
     }
-    var col = [];
+    var colElems = [];
     for (r = 0; r < nr; ++r) {
       var row = body[r];
-      var elem = row[c];
+      var elem = row.cells[c];
       if (!elem) {
         continue;
       }
       var _shift2 = row.pos - offset;
       elem.depth = row.depth;
       elem.height = row.height;
-      col.push({
+      colElems.push({
         type: "elem",
         elem,
         shift: _shift2
       });
     }
-    col = buildCommon.makeVList({
+    var colVList = makeVList({
       positionType: "individualShift",
-      children: col
-    }, options);
-    col = buildCommon.makeSpan(["col-align-" + (colDescr.align || "c")], [col]);
-    cols.push(col);
+      children: colElems
+    });
+    var colSpan = makeSpan(["col-align-" + (((_colDescr3 = colDescr) == null ? void 0 : _colDescr3.align) || "c")], [colVList]);
+    cols.push(colSpan);
     if (c < nc - 1 || group.hskipBeforeAndAfter) {
-      sepwidth = utils.deflt(colDescr.postgap, arraycolsep);
+      var _colDescr$postgap, _colDescr4;
+      sepwidth = (_colDescr$postgap = (_colDescr4 = colDescr) == null ? void 0 : _colDescr4.postgap) != null ? _colDescr$postgap : arraycolsep;
       if (sepwidth !== 0) {
-        colSep = buildCommon.makeSpan(["arraycolsep"], []);
+        colSep = makeSpan(["arraycolsep"], []);
         colSep.style.width = makeEm(sepwidth);
         cols.push(colSep);
       }
     }
   }
-  body = buildCommon.makeSpan(["mtable"], cols);
+  var tableBody = makeSpan(["mtable"], cols);
   if (hlines.length > 0) {
-    var line = buildCommon.makeLineSpan("hline", options, ruleThickness);
-    var dashes = buildCommon.makeLineSpan("hdashline", options, ruleThickness);
+    var line = makeLineSpan("hline", options, ruleThickness);
+    var dashes = makeLineSpan("hdashline", options, ruleThickness);
     var vListElems = [{
       type: "elem",
-      elem: body,
+      elem: tableBody,
       shift: 0
     }];
     while (hlines.length > 0) {
@@ -11237,20 +11329,20 @@ var htmlBuilder$6 = function htmlBuilder(group, options) {
         });
       }
     }
-    body = buildCommon.makeVList({
+    tableBody = makeVList({
       positionType: "individualShift",
       children: vListElems
-    }, options);
+    });
   }
   if (tagSpans.length === 0) {
-    return buildCommon.makeSpan(["mord"], [body], options);
+    return makeSpan(["mord"], [tableBody], options);
   } else {
-    var eqnNumCol = buildCommon.makeVList({
+    var eqnNumCol = makeVList({
       positionType: "individualShift",
       children: tagSpans
-    }, options);
-    eqnNumCol = buildCommon.makeSpan(["tag"], [eqnNumCol], options);
-    return buildCommon.makeFragment([body, eqnNumCol]);
+    });
+    var tagCol = makeSpan(["tag"], [eqnNumCol], options);
+    return makeFragment([tableBody, tagCol]);
   }
 };
 var alignMap = {
@@ -11260,15 +11352,15 @@ var alignMap = {
 };
 var mathmlBuilder$5 = function mathmlBuilder(group, options) {
   var tbl = [];
-  var glue = new mathMLTree.MathNode("mtd", [], ["mtr-glue"]);
-  var tag = new mathMLTree.MathNode("mtd", [], ["mml-eqn-num"]);
-  for (var i = 0; i < group.body.length; i++) {
-    var rw = group.body[i];
+  var glue = new MathNode("mtd", [], ["mtr-glue"]);
+  var tag = new MathNode("mtd", [], ["mml-eqn-num"]);
+  for (var i2 = 0; i2 < group.body.length; i2++) {
+    var rw = group.body[i2];
     var row = [];
     for (var j2 = 0; j2 < rw.length; j2++) {
-      row.push(new mathMLTree.MathNode("mtd", [buildGroup2(rw[j2], options)]));
+      row.push(new MathNode("mtd", [buildGroup2(rw[j2], options)]));
     }
-    if (group.tags && group.tags[i]) {
+    if (group.tags && group.tags[i2]) {
       row.unshift(glue);
       row.push(glue);
       if (group.leqno) {
@@ -11277,9 +11369,9 @@ var mathmlBuilder$5 = function mathmlBuilder(group, options) {
         row.push(tag);
       }
     }
-    tbl.push(new mathMLTree.MathNode("mtr", row));
+    tbl.push(new MathNode("mtr", row));
   }
-  var table = new mathMLTree.MathNode("mtable", tbl);
+  var table = new MathNode("mtable", tbl);
   var gap = group.arraystretch === 0.5 ? 0.1 : 0.16 + group.arraystretch - 1 + (group.addJot ? 0.09 : 0);
   table.setAttribute("rowspacing", makeEm(gap));
   var menclose = "";
@@ -11298,16 +11390,17 @@ var mathmlBuilder$5 = function mathmlBuilder(group, options) {
       menclose += "bottom ";
       iEnd -= 1;
     }
-    for (var _i = iStart; _i < iEnd; _i++) {
-      if (cols[_i].type === "align") {
-        align += alignMap[cols[_i].align];
+    for (var _i6 = iStart; _i6 < iEnd; _i6++) {
+      var col = cols[_i6];
+      if (col.type === "align") {
+        align += alignMap[col.align];
         if (prevTypeWasAlign) {
           columnLines += "none ";
         }
         prevTypeWasAlign = true;
-      } else if (cols[_i].type === "separator") {
+      } else if (col.type === "separator") {
         if (prevTypeWasAlign) {
-          columnLines += cols[_i].separator === "|" ? "solid " : "dashed ";
+          columnLines += col.separator === "|" ? "solid " : "dashed ";
           prevTypeWasAlign = false;
         }
       }
@@ -11320,8 +11413,8 @@ var mathmlBuilder$5 = function mathmlBuilder(group, options) {
   if (group.colSeparationType === "align") {
     var _cols = group.cols || [];
     var spacing2 = "";
-    for (var _i2 = 1; _i2 < _cols.length; _i2++) {
-      spacing2 += _i2 % 2 ? "0em " : "1em ";
+    for (var _i22 = 1; _i22 < _cols.length; _i22++) {
+      spacing2 += _i22 % 2 ? "0em " : "1em ";
     }
     table.setAttribute("columnspacing", spacing2.trim());
   } else if (group.colSeparationType === "alignat" || group.colSeparationType === "gather") {
@@ -11337,28 +11430,28 @@ var mathmlBuilder$5 = function mathmlBuilder(group, options) {
   var hlines = group.hLinesBeforeRow;
   menclose += hlines[0].length > 0 ? "left " : "";
   menclose += hlines[hlines.length - 1].length > 0 ? "right " : "";
-  for (var _i3 = 1; _i3 < hlines.length - 1; _i3++) {
-    rowLines += hlines[_i3].length === 0 ? "none " : hlines[_i3][0] ? "dashed " : "solid ";
+  for (var _i32 = 1; _i32 < hlines.length - 1; _i32++) {
+    rowLines += hlines[_i32].length === 0 ? "none " : hlines[_i32][0] ? "dashed " : "solid ";
   }
   if (/[sd]/.test(rowLines)) {
     table.setAttribute("rowlines", rowLines.trim());
   }
   if (menclose !== "") {
-    table = new mathMLTree.MathNode("menclose", [table]);
+    table = new MathNode("menclose", [table]);
     table.setAttribute("notation", menclose.trim());
   }
   if (group.arraystretch && group.arraystretch < 1) {
-    table = new mathMLTree.MathNode("mstyle", [table]);
+    table = new MathNode("mstyle", [table]);
     table.setAttribute("scriptlevel", "1");
   }
   return table;
 };
 var alignedHandler = function alignedHandler2(context, args) {
-  if (context.envName.indexOf("ed") === -1) {
+  if (!context.envName.includes("ed")) {
     validateAmsEnvironmentContext(context);
   }
   var cols = [];
-  var separationType = context.envName.indexOf("at") > -1 ? "alignat" : "align";
+  var separationType = context.envName.includes("at") ? "alignat" : "align";
   var isSplit = context.envName === "split";
   var res = parseArray(context.parser, {
     cols,
@@ -11369,7 +11462,7 @@ var alignedHandler = function alignedHandler2(context, args) {
     maxNumCols: isSplit ? 2 : void 0,
     leqno: context.parser.settings.leqno
   }, "display");
-  var numMaths;
+  var numMaths = 0;
   var numCols = 0;
   var emptyGroup = {
     type: "ordgroup",
@@ -11378,8 +11471,8 @@ var alignedHandler = function alignedHandler2(context, args) {
   };
   if (args[0] && args[0].type === "ordgroup") {
     var arg0 = "";
-    for (var i = 0; i < args[0].body.length; i++) {
-      var textord2 = assertNodeType(args[0].body[i], "textord");
+    for (var i2 = 0; i2 < args[0].body.length; i2++) {
+      var textord2 = assertNodeType(args[0].body[i2], "textord");
       arg0 += textord2.text;
     }
     numMaths = Number(arg0);
@@ -11387,8 +11480,8 @@ var alignedHandler = function alignedHandler2(context, args) {
   }
   var isAligned = !numCols;
   res.body.forEach(function(row) {
-    for (var _i4 = 1; _i4 < row.length; _i4 += 2) {
-      var styling = assertNodeType(row[_i4], "styling");
+    for (var _i42 = 1; _i42 < row.length; _i42 += 2) {
+      var styling = assertNodeType(row[_i42], "styling");
       var ordgroup = assertNodeType(styling.body[0], "ordgroup");
       ordgroup.body.unshift(emptyGroup);
     }
@@ -11401,15 +11494,15 @@ var alignedHandler = function alignedHandler2(context, args) {
       numCols = row.length;
     }
   });
-  for (var _i5 = 0; _i5 < numCols; ++_i5) {
+  for (var _i52 = 0; _i52 < numCols; ++_i52) {
     var align = "r";
     var pregap = 0;
-    if (_i5 % 2 === 1) {
+    if (_i52 % 2 === 1) {
       align = "l";
-    } else if (_i5 > 0 && isAligned) {
+    } else if (_i52 > 0 && isAligned) {
       pregap = 1;
     }
-    cols[_i5] = {
+    cols[_i52] = {
       type: "align",
       align,
       pregap,
@@ -11431,7 +11524,7 @@ defineEnvironment({
     var cols = colalign.map(function(nde) {
       var node = assertSymbolNodeType(nde);
       var ca = node.text;
-      if ("lcr".indexOf(ca) !== -1) {
+      if ("lcr".includes(ca)) {
         return {
           type: "align",
           align: ca
@@ -11490,7 +11583,7 @@ defineEnvironment({
         parser.consume();
         parser.consumeSpaces();
         colAlign = parser.fetch().text;
-        if ("lcr".indexOf(colAlign) === -1) {
+        if (!"lcr".includes(colAlign)) {
           throw new ParseError("Expected l or c or r", parser.nextToken);
         }
         parser.consume();
@@ -11551,7 +11644,7 @@ defineEnvironment({
     var cols = colalign.map(function(nde) {
       var node = assertSymbolNodeType(nde);
       var ca = node.text;
-      if ("lc".indexOf(ca) !== -1) {
+      if ("lc".includes(ca)) {
         return {
           type: "align",
           align: ca
@@ -11562,12 +11655,12 @@ defineEnvironment({
     if (cols.length > 1) {
       throw new ParseError("{subarray} can contain only one column");
     }
-    var res = {
+    var payload = {
       cols,
       hskipBeforeAndAfter: false,
       arraystretch: 0.5
     };
-    res = parseArray(context.parser, res, "script");
+    var res = parseArray(context.parser, payload, "script");
     if (res.body.length > 0 && res.body[0].length > 1) {
       throw new ParseError("{subarray} can contain only one column");
     }
@@ -11607,8 +11700,8 @@ defineEnvironment({
       type: "leftright",
       mode: context.mode,
       body: [res],
-      left: context.envName.indexOf("r") > -1 ? "." : "\\{",
-      right: context.envName.indexOf("r") > -1 ? "\\}" : ".",
+      left: context.envName.includes("r") ? "." : "\\{",
+      right: context.envName.includes("r") ? "\\}" : ".",
       rightColor: void 0
     };
   },
@@ -11632,7 +11725,7 @@ defineEnvironment({
     numArgs: 0
   },
   handler(context) {
-    if (utils.contains(["gather", "gather*"], context.envName)) {
+    if (gatherEnvironments.has(context.envName)) {
       validateAmsEnvironmentContext(context);
     }
     var res = {
@@ -11727,8 +11820,8 @@ defineFunction({
       throw new ParseError("Invalid environment name", nameGroup);
     }
     var envName = "";
-    for (var i = 0; i < nameGroup.body.length; ++i) {
-      envName += assertNodeType(nameGroup.body[i], "textord").text;
+    for (var i2 = 0; i2 < nameGroup.body.length; ++i2) {
+      envName += assertNodeType(nameGroup.body[i2], "textord").text;
     }
     if (funcName === "\\begin") {
       if (!environments.hasOwnProperty(envName)) {
@@ -11774,8 +11867,7 @@ var mathmlBuilder$4 = (group, options) => {
 var fontAliases = {
   "\\Bbb": "\\mathbb",
   "\\bold": "\\mathbf",
-  "\\frak": "\\mathfrak",
-  "\\bm": "\\boldsymbol"
+  "\\frak": "\\mathfrak"
 };
 defineFunction({
   type: "font",
@@ -11785,6 +11877,7 @@ defineFunction({
     "\\mathit",
     "\\mathbf",
     "\\mathnormal",
+    "\\mathsfit",
     // families
     "\\mathbb",
     "\\mathcal",
@@ -11832,7 +11925,6 @@ defineFunction({
       parser
     } = _ref2;
     var body = args[0];
-    var isCharacterBox3 = utils.isCharacterBox(body);
     return {
       type: "mclass",
       mode: parser.mode,
@@ -11843,7 +11935,7 @@ defineFunction({
         font: "boldsymbol",
         body
       }],
-      isCharacterBox: isCharacterBox3
+      isCharacterBox: isCharacterBox(body)
     };
   }
 });
@@ -11864,11 +11956,10 @@ defineFunction({
       mode
     } = parser;
     var body = parser.parseExpression(true, breakOnTokenText);
-    var style = "math" + funcName.slice(1);
     return {
       type: "font",
       mode,
-      font: style,
+      font: "math" + funcName.slice(1),
       body: {
         type: "ordgroup",
         mode: parser.mode,
@@ -11879,21 +11970,8 @@ defineFunction({
   htmlBuilder: htmlBuilder$5,
   mathmlBuilder: mathmlBuilder$4
 });
-var adjustStyle = (size, originalStyle) => {
-  var style = originalStyle;
-  if (size === "display") {
-    style = style.id >= Style$1.SCRIPT.id ? style.text() : Style$1.DISPLAY;
-  } else if (size === "text" && style.size === Style$1.DISPLAY.size) {
-    style = Style$1.TEXT;
-  } else if (size === "script") {
-    style = Style$1.SCRIPT;
-  } else if (size === "scriptscript") {
-    style = Style$1.SCRIPTSCRIPT;
-  }
-  return style;
-};
 var htmlBuilder$4 = (group, options) => {
-  var style = adjustStyle(group.size, options.style);
+  var style = options.style;
   var nstyle = style.fracNum();
   var dstyle = style.fracDen();
   var newOptions;
@@ -11913,9 +11991,9 @@ var htmlBuilder$4 = (group, options) => {
   if (group.hasBarLine) {
     if (group.barSize) {
       ruleWidth = calculateSize(group.barSize, options);
-      rule = buildCommon.makeLineSpan("frac-line", options, ruleWidth);
+      rule = makeLineSpan("frac-line", options, ruleWidth);
     } else {
-      rule = buildCommon.makeLineSpan("frac-line", options);
+      rule = makeLineSpan("frac-line", options);
     }
     ruleWidth = rule.height;
     ruleSpacing = rule.height;
@@ -11927,7 +12005,7 @@ var htmlBuilder$4 = (group, options) => {
   var numShift;
   var clearance;
   var denomShift;
-  if (style.size === Style$1.DISPLAY.size || group.size === "display") {
+  if (style.size === Style$1.DISPLAY.size) {
     numShift = options.fontMetrics().num1;
     if (ruleWidth > 0) {
       clearance = 3 * ruleSpacing;
@@ -11952,7 +12030,7 @@ var htmlBuilder$4 = (group, options) => {
       numShift += 0.5 * (clearance - candidateClearance);
       denomShift += 0.5 * (clearance - candidateClearance);
     }
-    frac = buildCommon.makeVList({
+    frac = makeVList({
       positionType: "individualShift",
       children: [{
         type: "elem",
@@ -11963,7 +12041,7 @@ var htmlBuilder$4 = (group, options) => {
         elem: numerm,
         shift: -numShift
       }]
-    }, options);
+    });
   } else {
     var axisHeight = options.fontMetrics().axisHeight;
     if (numShift - numerm.depth - (axisHeight + 0.5 * ruleWidth) < clearance) {
@@ -11973,7 +12051,7 @@ var htmlBuilder$4 = (group, options) => {
       denomShift += clearance - (axisHeight - 0.5 * ruleWidth - (denomm.height - denomShift));
     }
     var midShift = -(axisHeight - 0.5 * ruleWidth);
-    frac = buildCommon.makeVList({
+    frac = makeVList({
       positionType: "individualShift",
       children: [{
         type: "elem",
@@ -11988,7 +12066,7 @@ var htmlBuilder$4 = (group, options) => {
         elem: numerm,
         shift: -numShift
       }]
-    }, options);
+    });
   }
   newOptions = options.havingStyle(style);
   frac.height *= newOptions.sizeMultiplier / options.sizeMultiplier;
@@ -12006,42 +12084,35 @@ var htmlBuilder$4 = (group, options) => {
   if (group.leftDelim == null) {
     leftDelim = makeNullDelimiter(options, ["mopen"]);
   } else {
-    leftDelim = delimiter.customSizedDelim(group.leftDelim, delimSize, true, options.havingStyle(style), group.mode, ["mopen"]);
+    leftDelim = makeCustomSizedDelim(group.leftDelim, delimSize, true, options.havingStyle(style), group.mode, ["mopen"]);
   }
   if (group.continued) {
-    rightDelim = buildCommon.makeSpan([]);
+    rightDelim = makeSpan([]);
   } else if (group.rightDelim == null) {
     rightDelim = makeNullDelimiter(options, ["mclose"]);
   } else {
-    rightDelim = delimiter.customSizedDelim(group.rightDelim, delimSize, true, options.havingStyle(style), group.mode, ["mclose"]);
+    rightDelim = makeCustomSizedDelim(group.rightDelim, delimSize, true, options.havingStyle(style), group.mode, ["mclose"]);
   }
-  return buildCommon.makeSpan(["mord"].concat(newOptions.sizingClasses(options)), [leftDelim, buildCommon.makeSpan(["mfrac"], [frac]), rightDelim], options);
+  return makeSpan(["mord"].concat(newOptions.sizingClasses(options)), [leftDelim, makeSpan(["mfrac"], [frac]), rightDelim], options);
 };
 var mathmlBuilder$3 = (group, options) => {
-  var node = new mathMLTree.MathNode("mfrac", [buildGroup2(group.numer, options), buildGroup2(group.denom, options)]);
+  var node = new MathNode("mfrac", [buildGroup2(group.numer, options), buildGroup2(group.denom, options)]);
   if (!group.hasBarLine) {
     node.setAttribute("linethickness", "0px");
   } else if (group.barSize) {
     var ruleWidth = calculateSize(group.barSize, options);
     node.setAttribute("linethickness", makeEm(ruleWidth));
   }
-  var style = adjustStyle(group.size, options.style);
-  if (style.size !== options.style.size) {
-    node = new mathMLTree.MathNode("mstyle", [node]);
-    var isDisplay = style.size === Style$1.DISPLAY.size ? "true" : "false";
-    node.setAttribute("displaystyle", isDisplay);
-    node.setAttribute("scriptlevel", "0");
-  }
   if (group.leftDelim != null || group.rightDelim != null) {
     var withDelims = [];
     if (group.leftDelim != null) {
-      var leftOp = new mathMLTree.MathNode("mo", [new mathMLTree.TextNode(group.leftDelim.replace("\\", ""))]);
+      var leftOp = new MathNode("mo", [new TextNode(group.leftDelim.replace("\\", ""))]);
       leftOp.setAttribute("fence", "true");
       withDelims.push(leftOp);
     }
     withDelims.push(node);
     if (group.rightDelim != null) {
-      var rightOp = new mathMLTree.MathNode("mo", [new mathMLTree.TextNode(group.rightDelim.replace("\\", ""))]);
+      var rightOp = new MathNode("mo", [new TextNode(group.rightDelim.replace("\\", ""))]);
       rightOp.setAttribute("fence", "true");
       withDelims.push(rightOp);
     }
@@ -12049,9 +12120,22 @@ var mathmlBuilder$3 = (group, options) => {
   }
   return node;
 };
+var wrapWithStyle = (frac, style) => {
+  if (!style) {
+    return frac;
+  }
+  var wrapper = {
+    type: "styling",
+    mode: frac.mode,
+    style,
+    body: [frac]
+  };
+  return wrapper;
+};
 defineFunction({
   type: "genfrac",
   names: [
+    "\\cfrac",
     "\\dfrac",
     "\\frac",
     "\\tfrac",
@@ -12078,8 +12162,8 @@ defineFunction({
     var hasBarLine;
     var leftDelim = null;
     var rightDelim = null;
-    var size = "auto";
     switch (funcName) {
+      case "\\cfrac":
       case "\\dfrac":
       case "\\frac":
       case "\\tfrac":
@@ -12108,58 +12192,27 @@ defineFunction({
       default:
         throw new Error("Unrecognized genfrac command");
     }
-    switch (funcName) {
-      case "\\dfrac":
-      case "\\dbinom":
-        size = "display";
-        break;
-      case "\\tfrac":
-      case "\\tbinom":
-        size = "text";
-        break;
+    var continued = funcName === "\\cfrac";
+    var style = null;
+    if (continued || funcName.startsWith("\\d")) {
+      style = "display";
+    } else if (funcName.startsWith("\\t")) {
+      style = "text";
     }
-    return {
+    return wrapWithStyle({
       type: "genfrac",
       mode: parser.mode,
-      continued: false,
       numer,
       denom,
+      continued,
       hasBarLine,
       leftDelim,
       rightDelim,
-      size,
       barSize: null
-    };
+    }, style);
   },
   htmlBuilder: htmlBuilder$4,
   mathmlBuilder: mathmlBuilder$3
-});
-defineFunction({
-  type: "genfrac",
-  names: ["\\cfrac"],
-  props: {
-    numArgs: 2
-  },
-  handler: (_ref2, args) => {
-    var {
-      parser,
-      funcName
-    } = _ref2;
-    var numer = args[0];
-    var denom = args[1];
-    return {
-      type: "genfrac",
-      mode: parser.mode,
-      continued: true,
-      numer,
-      denom,
-      hasBarLine: true,
-      leftDelim: null,
-      rightDelim: null,
-      size: "display",
-      barSize: null
-    };
-  }
 });
 defineFunction({
   type: "infix",
@@ -12168,12 +12221,12 @@ defineFunction({
     numArgs: 0,
     infix: true
   },
-  handler(_ref3) {
+  handler(_ref2) {
     var {
       parser,
       funcName,
       token
-    } = _ref3;
+    } = _ref2;
     var replaceWith;
     switch (funcName) {
       case "\\over":
@@ -12219,10 +12272,10 @@ defineFunction({
     allowedInArgument: true,
     argTypes: ["math", "math", "size", "text", "math", "math"]
   },
-  handler(_ref4, args) {
+  handler(_ref3, args) {
     var {
       parser
-    } = _ref4;
+    } = _ref3;
     var numer = args[4];
     var denom = args[5];
     var leftNode = normalizeArgument(args[0]);
@@ -12238,7 +12291,7 @@ defineFunction({
       barSize = barNode.value;
       hasBarLine = barSize.number > 0;
     }
-    var size = "auto";
+    var size = null;
     var styl = args[3];
     if (styl.type === "ordgroup") {
       if (styl.body.length > 0) {
@@ -12249,7 +12302,7 @@ defineFunction({
       styl = assertNodeType(styl, "textord");
       size = stylArray[Number(styl.text)];
     }
-    return {
+    return wrapWithStyle({
       type: "genfrac",
       mode: parser.mode,
       numer,
@@ -12258,12 +12311,9 @@ defineFunction({
       hasBarLine,
       barSize,
       leftDelim,
-      rightDelim,
-      size
-    };
-  },
-  htmlBuilder: htmlBuilder$4,
-  mathmlBuilder: mathmlBuilder$3
+      rightDelim
+    }, size);
+  }
 });
 defineFunction({
   type: "infix",
@@ -12273,12 +12323,12 @@ defineFunction({
     argTypes: ["size"],
     infix: true
   },
-  handler(_ref5, args) {
+  handler(_ref4, args) {
     var {
       parser,
       funcName,
       token
-    } = _ref5;
+    } = _ref4;
     return {
       type: "infix",
       mode: parser.mode,
@@ -12295,13 +12345,16 @@ defineFunction({
     numArgs: 3,
     argTypes: ["math", "size", "math"]
   },
-  handler: (_ref6, args) => {
+  handler: (_ref5, args) => {
     var {
       parser,
       funcName
-    } = _ref6;
+    } = _ref5;
     var numer = args[0];
-    var barSize = assert(assertNodeType(args[1], "infix").size);
+    var barSize = assertNodeType(args[1], "infix").size;
+    if (!barSize) {
+      throw new Error("\\\\abovefrac expected size, but got " + String(barSize));
+    }
     var denom = args[2];
     var hasBarLine = barSize.number > 0;
     return {
@@ -12313,12 +12366,9 @@ defineFunction({
       hasBarLine,
       barSize,
       leftDelim: null,
-      rightDelim: null,
-      size: "auto"
+      rightDelim: null
     };
-  },
-  htmlBuilder: htmlBuilder$4,
-  mathmlBuilder: mathmlBuilder$3
+  }
 });
 var htmlBuilder$3 = (grp, options) => {
   var style = options.style;
@@ -12331,10 +12381,10 @@ var htmlBuilder$3 = (grp, options) => {
     group = assertNodeType(grp, "horizBrace");
   }
   var body = buildGroup$1(group.base, options.havingBaseStyle(Style$1.DISPLAY));
-  var braceBody = stretchy.svgSpan(group, options);
+  var braceBody = stretchySvg(group, options);
   var vlist;
   if (group.isOver) {
-    vlist = buildCommon.makeVList({
+    vlist = makeVList({
       positionType: "firstBaseline",
       children: [{
         type: "elem",
@@ -12344,17 +12394,18 @@ var htmlBuilder$3 = (grp, options) => {
         size: 0.1
       }, {
         type: "elem",
-        elem: braceBody
+        elem: braceBody,
+        wrapperClasses: ["svg-align"]
       }]
-    }, options);
-    vlist.children[0].children[0].children[1].classes.push("svg-align");
+    });
   } else {
-    vlist = buildCommon.makeVList({
+    vlist = makeVList({
       positionType: "bottom",
       positionData: body.depth + 0.1 + braceBody.height,
       children: [{
         type: "elem",
-        elem: braceBody
+        elem: braceBody,
+        wrapperClasses: ["svg-align"]
       }, {
         type: "kern",
         size: 0.1
@@ -12362,13 +12413,12 @@ var htmlBuilder$3 = (grp, options) => {
         type: "elem",
         elem: body
       }]
-    }, options);
-    vlist.children[0].children[0].children[0].classes.push("svg-align");
+    });
   }
   if (supSubGroup) {
-    var vSpan = buildCommon.makeSpan(["mord", group.isOver ? "mover" : "munder"], [vlist], options);
+    var vSpan = makeSpan(["minner", group.isOver ? "mover" : "munder"], [vlist], options);
     if (group.isOver) {
-      vlist = buildCommon.makeVList({
+      vlist = makeVList({
         positionType: "firstBaseline",
         children: [{
           type: "elem",
@@ -12380,9 +12430,9 @@ var htmlBuilder$3 = (grp, options) => {
           type: "elem",
           elem: supSubGroup
         }]
-      }, options);
+      });
     } else {
-      vlist = buildCommon.makeVList({
+      vlist = makeVList({
         positionType: "bottom",
         positionData: vSpan.depth + 0.2 + supSubGroup.height + supSubGroup.depth,
         children: [{
@@ -12395,18 +12445,18 @@ var htmlBuilder$3 = (grp, options) => {
           type: "elem",
           elem: vSpan
         }]
-      }, options);
+      });
     }
   }
-  return buildCommon.makeSpan(["mord", group.isOver ? "mover" : "munder"], [vlist], options);
+  return makeSpan(["minner", group.isOver ? "mover" : "munder"], [vlist], options);
 };
 var mathmlBuilder$2 = (group, options) => {
-  var accentNode = stretchy.mathMLnode(group.label);
-  return new mathMLTree.MathNode(group.isOver ? "mover" : "munder", [buildGroup2(group.base, options), accentNode]);
+  var accentNode = stretchyMathML(group.label);
+  return new MathNode(group.isOver ? "mover" : "munder", [buildGroup2(group.base, options), accentNode]);
 };
 defineFunction({
   type: "horizBrace",
-  names: ["\\overbrace", "\\underbrace"],
+  names: ["\\overbrace", "\\underbrace", "\\overbracket", "\\underbracket"],
   props: {
     numArgs: 1
   },
@@ -12419,7 +12469,7 @@ defineFunction({
       type: "horizBrace",
       mode: parser.mode,
       label: funcName,
-      isOver: /^\\over/.test(funcName),
+      isOver: funcName.includes("\\over"),
       base: args[0]
     };
   },
@@ -12455,7 +12505,7 @@ defineFunction({
   },
   htmlBuilder: (group, options) => {
     var elements = buildExpression$1(group.body, options, false);
-    return buildCommon.makeAnchor(group.href, [], elements, options);
+    return makeAnchor(group.href, [], elements, options);
   },
   mathmlBuilder: (group, options) => {
     var math2 = buildExpressionRow(group.body, options);
@@ -12486,8 +12536,8 @@ defineFunction({
       return parser.formatUnsupportedCmd("\\url");
     }
     var chars = [];
-    for (var i = 0; i < href.length; i++) {
-      var c = href[i];
+    for (var i2 = 0; i2 < href.length; i2++) {
+      var c = href[i2];
       if (c === "~") {
         c = "\\textasciitilde";
       }
@@ -12531,11 +12581,11 @@ defineFunction({
     };
   },
   htmlBuilder(group, options) {
-    var elements = buildExpression$1(group.body, options, false);
-    return buildCommon.makeFragment(elements);
+    var elements = buildExpression$1(group.body, options.withFont(""), false);
+    return makeFragment(elements);
   },
   mathmlBuilder(group, options) {
-    return new mathMLTree.MathNode("mrow", buildExpression2(group.body, options));
+    return new MathNode("mrow", buildExpression2(group.body, options.withFont("")));
   }
 });
 defineFunction({
@@ -12583,12 +12633,15 @@ defineFunction({
         break;
       case "\\htmlData": {
         var data = value.split(",");
-        for (var i = 0; i < data.length; i++) {
-          var keyVal = data[i].split("=");
-          if (keyVal.length !== 2) {
-            throw new ParseError("Error parsing key-value for \\htmlData");
+        for (var i2 = 0; i2 < data.length; i2++) {
+          var item = data[i2];
+          var firstEquals = item.indexOf("=");
+          if (firstEquals < 0) {
+            throw new ParseError("\\htmlData key/value '" + item + "' missing equals sign");
           }
-          attributes["data-" + keyVal[0].trim()] = keyVal[1].trim();
+          var key = item.slice(0, firstEquals);
+          var _value = item.slice(firstEquals + 1);
+          attributes["data-" + key.trim()] = _value;
         }
         trustContext = {
           command: "\\htmlData",
@@ -12615,7 +12668,7 @@ defineFunction({
     if (group.attributes.class) {
       classes.push(...group.attributes.class.trim().split(/\s+/));
     }
-    var span = buildCommon.makeSpan(classes, elements, options);
+    var span = makeSpan(classes, elements, options);
     for (var attr in group.attributes) {
       if (attr !== "class" && group.attributes.hasOwnProperty(attr)) {
         span.setAttribute(attr, group.attributes[attr]);
@@ -12632,6 +12685,7 @@ defineFunction({
   names: ["\\html@mathml"],
   props: {
     numArgs: 2,
+    allowedInArgument: true,
     allowedInText: true
   },
   handler: (_ref2, args) => {
@@ -12647,7 +12701,7 @@ defineFunction({
   },
   htmlBuilder: (group, options) => {
     var elements = buildExpression$1(group.html, options, false);
-    return buildCommon.makeFragment(elements);
+    return makeFragment(elements);
   },
   mathmlBuilder: (group, options) => {
     return buildExpressionRow(group.mathml, options);
@@ -12704,8 +12758,8 @@ defineFunction({
     if (optArgs[0]) {
       var attributeStr = assertNodeType(optArgs[0], "raw").string;
       var attributes = attributeStr.split(",");
-      for (var i = 0; i < attributes.length; i++) {
-        var keyVal = attributes[i].split("=");
+      for (var i2 = 0; i2 < attributes.length; i2++) {
+        var keyVal = attributes[i2].split("=");
         if (keyVal.length === 2) {
           var str = keyVal[1].trim();
           switch (keyVal[0].trim()) {
@@ -12774,7 +12828,7 @@ defineFunction({
     return node;
   },
   mathmlBuilder: (group, options) => {
-    var node = new mathMLTree.MathNode("mglyph", []);
+    var node = new MathNode("mglyph", []);
     node.setAttribute("alt", group.alt);
     var height = calculateSize(group.height, options);
     var depth = 0;
@@ -12829,11 +12883,11 @@ defineFunction({
     };
   },
   htmlBuilder(group, options) {
-    return buildCommon.makeGlue(group.dimension, options);
+    return makeGlue(group.dimension, options);
   },
   mathmlBuilder(group, options) {
     var dimension = calculateSize(group.dimension, options);
-    return new mathMLTree.SpaceNode(dimension);
+    return new SpaceNode(dimension);
   }
 });
 defineFunction({
@@ -12859,24 +12913,24 @@ defineFunction({
   htmlBuilder: (group, options) => {
     var inner2;
     if (group.alignment === "clap") {
-      inner2 = buildCommon.makeSpan([], [buildGroup$1(group.body, options)]);
-      inner2 = buildCommon.makeSpan(["inner"], [inner2], options);
+      inner2 = makeSpan([], [buildGroup$1(group.body, options)]);
+      inner2 = makeSpan(["inner"], [inner2], options);
     } else {
-      inner2 = buildCommon.makeSpan(["inner"], [buildGroup$1(group.body, options)]);
+      inner2 = makeSpan(["inner"], [buildGroup$1(group.body, options)]);
     }
-    var fix = buildCommon.makeSpan(["fix"], []);
-    var node = buildCommon.makeSpan([group.alignment], [inner2, fix], options);
-    var strut = buildCommon.makeSpan(["strut"]);
+    var fix = makeSpan(["fix"], []);
+    var node = makeSpan([group.alignment], [inner2, fix], options);
+    var strut = makeSpan(["strut"]);
     strut.style.height = makeEm(node.height + node.depth);
     if (node.depth) {
       strut.style.verticalAlign = makeEm(-node.depth);
     }
     node.children.unshift(strut);
-    node = buildCommon.makeSpan(["thinbox"], [node], options);
-    return buildCommon.makeSpan(["mord", "vbox"], [node], options);
+    node = makeSpan(["thinbox"], [node], options);
+    return makeSpan(["mord", "vbox"], [node], options);
   },
   mathmlBuilder: (group, options) => {
-    var node = new mathMLTree.MathNode("mpadded", [buildGroup2(group.body, options)]);
+    var node = new MathNode("mpadded", [buildGroup2(group.body, options)]);
     if (group.alignment !== "rlap") {
       var offset = group.alignment === "llap" ? "-1" : "-0.5";
       node.setAttribute("lspace", offset + "width");
@@ -12908,6 +12962,7 @@ defineFunction({
       type: "styling",
       mode: parser.mode,
       style: "text",
+      resetFont: true,
       body
     };
   }
@@ -12962,7 +13017,7 @@ defineFunction({
   htmlBuilder: (group, options) => {
     var body = chooseMathStyle(group, options);
     var elements = buildExpression$1(body, options, false);
-    return buildCommon.makeFragment(elements);
+    return makeFragment(elements);
   },
   mathmlBuilder: (group, options) => {
     var body = chooseMathStyle(group, options);
@@ -12970,8 +13025,8 @@ defineFunction({
   }
 });
 var assembleSupSub = (base, supGroup, subGroup, options, style, slant, baseShift) => {
-  base = buildCommon.makeSpan([], [base]);
-  var subIsSingleCharacter = subGroup && utils.isCharacterBox(subGroup);
+  base = makeSpan([], [base]);
+  var subIsSingleCharacter = subGroup && isCharacterBox(subGroup);
   var sub2;
   var sup2;
   if (supGroup) {
@@ -12991,7 +13046,7 @@ var assembleSupSub = (base, supGroup, subGroup, options, style, slant, baseShift
   var finalGroup;
   if (sup2 && sub2) {
     var bottom = options.fontMetrics().bigOpSpacing5 + sub2.elem.height + sub2.elem.depth + sub2.kern + base.depth + baseShift;
-    finalGroup = buildCommon.makeVList({
+    finalGroup = makeVList({
       positionType: "bottom",
       positionData: bottom,
       children: [{
@@ -13018,10 +13073,10 @@ var assembleSupSub = (base, supGroup, subGroup, options, style, slant, baseShift
         type: "kern",
         size: options.fontMetrics().bigOpSpacing5
       }]
-    }, options);
+    });
   } else if (sub2) {
     var top = base.height - baseShift;
-    finalGroup = buildCommon.makeVList({
+    finalGroup = makeVList({
       positionType: "top",
       positionData: top,
       children: [{
@@ -13038,10 +13093,10 @@ var assembleSupSub = (base, supGroup, subGroup, options, style, slant, baseShift
         type: "elem",
         elem: base
       }]
-    }, options);
+    });
   } else if (sup2) {
     var _bottom = base.depth + baseShift;
-    finalGroup = buildCommon.makeVList({
+    finalGroup = makeVList({
       positionType: "bottom",
       positionData: _bottom,
       children: [{
@@ -13058,19 +13113,19 @@ var assembleSupSub = (base, supGroup, subGroup, options, style, slant, baseShift
         type: "kern",
         size: options.fontMetrics().bigOpSpacing5
       }]
-    }, options);
+    });
   } else {
     return base;
   }
   var parts = [finalGroup];
   if (sub2 && slant !== 0 && !subIsSingleCharacter) {
-    var spacer = buildCommon.makeSpan(["mspace"], [], options);
+    var spacer = makeSpan(["mspace"], [], options);
     spacer.style.marginRight = makeEm(slant);
     parts.unshift(spacer);
   }
-  return buildCommon.makeSpan(["mop", "op-limits"], parts, options);
+  return makeSpan(["mop", "op-limits"], parts, options);
 };
-var noSuccessor = ["\\smallint"];
+var noSuccessor = /* @__PURE__ */ new Set(["\\smallint"]);
 var htmlBuilder$2 = (grp, options) => {
   var supGroup;
   var subGroup;
@@ -13086,10 +13141,11 @@ var htmlBuilder$2 = (grp, options) => {
   }
   var style = options.style;
   var large = false;
-  if (style.size === Style$1.DISPLAY.size && group.symbol && !utils.contains(noSuccessor, group.name)) {
+  if (style.size === Style$1.DISPLAY.size && group.symbol && !noSuccessor.has(group.name)) {
     large = true;
   }
   var base;
+  var symbolItalic;
   if (group.symbol) {
     var fontName = large ? "Size2-Regular" : "Size1-Regular";
     var stash = "";
@@ -13097,11 +13153,11 @@ var htmlBuilder$2 = (grp, options) => {
       stash = group.name.slice(1);
       group.name = stash === "oiint" ? "\\iint" : "\\iiint";
     }
-    base = buildCommon.makeSymbol(group.name, fontName, "math", options, ["mop", "op-symbol", large ? "large-op" : "small-op"]);
+    base = makeSymbol(group.name, fontName, "math", options, ["mop", "op-symbol", large ? "large-op" : "small-op"]);
+    symbolItalic = base.italic;
     if (stash.length > 0) {
-      var italic = base.italic;
-      var oval = buildCommon.staticSvg(stash + "Size" + (large ? "2" : "1"), options);
-      base = buildCommon.makeVList({
+      var oval = staticSvg(stash + "Size" + (large ? "2" : "1"), options);
+      base = makeVList({
         positionType: "individualShift",
         children: [{
           type: "elem",
@@ -13112,10 +13168,10 @@ var htmlBuilder$2 = (grp, options) => {
           elem: oval,
           shift: large ? 0.08 : 0
         }]
-      }, options);
+      });
       group.name = "\\" + stash;
       base.classes.unshift("mop");
-      base.italic = italic;
+      base.italic = symbolItalic;
     }
   } else if (group.body) {
     var inner2 = buildExpression$1(group.body, options, true);
@@ -13123,20 +13179,21 @@ var htmlBuilder$2 = (grp, options) => {
       base = inner2[0];
       base.classes[0] = "mop";
     } else {
-      base = buildCommon.makeSpan(["mop"], inner2, options);
+      base = makeSpan(["mop"], inner2, options);
     }
   } else {
     var output = [];
-    for (var i = 1; i < group.name.length; i++) {
-      output.push(buildCommon.mathsym(group.name[i], group.mode, options));
+    for (var i2 = 1; i2 < group.name.length; i2++) {
+      output.push(mathsym(group.name[i2], group.mode, options));
     }
-    base = buildCommon.makeSpan(["mop"], output, options);
+    base = makeSpan(["mop"], output, options);
   }
   var baseShift = 0;
   var slant = 0;
   if ((base instanceof SymbolNode || group.name === "\\oiint" || group.name === "\\oiiint") && !group.suppressBaseShift) {
+    var _base$italic;
     baseShift = (base.height - base.depth) / 2 - options.fontMetrics().axisHeight;
-    slant = base.italic;
+    slant = (_base$italic = base.italic) != null ? _base$italic : 0;
   }
   if (hasLimits) {
     return assembleSupSub(base, supGroup, subGroup, options, style, slant, baseShift);
@@ -13152,7 +13209,7 @@ var mathmlBuilder$1 = (group, options) => {
   var node;
   if (group.symbol) {
     node = new MathNode("mo", [makeText(group.name, group.mode)]);
-    if (utils.contains(noSuccessor, group.name)) {
+    if (noSuccessor.has(group.name)) {
       node.setAttribute("largeop", "false");
     }
   } else if (group.body) {
@@ -13291,7 +13348,8 @@ defineFunction({
   type: "op",
   names: ["\\int", "\\iint", "\\iiint", "\\oint", "\\oiint", "\\oiiint", "\u222B", "\u222C", "\u222D", "\u222E", "\u222F", "\u2230"],
   props: {
-    numArgs: 0
+    numArgs: 0,
+    allowedInArgument: true
   },
   handler(_ref5) {
     var {
@@ -13330,7 +13388,7 @@ var htmlBuilder$1 = (grp, options) => {
   var base;
   if (group.body.length > 0) {
     var body = group.body.map((child2) => {
-      var childText = child2.text;
+      var childText = "text" in child2 ? child2.text : void 0;
       if (typeof childText === "string") {
         return {
           type: "textord",
@@ -13342,15 +13400,15 @@ var htmlBuilder$1 = (grp, options) => {
       }
     });
     var expression = buildExpression$1(body, options.withFont("mathrm"), true);
-    for (var i = 0; i < expression.length; i++) {
-      var child = expression[i];
+    for (var i2 = 0; i2 < expression.length; i2++) {
+      var child = expression[i2];
       if (child instanceof SymbolNode) {
         child.text = child.text.replace(/\u2212/, "-").replace(/\u2217/, "*");
       }
     }
-    base = buildCommon.makeSpan(["mop"], expression, options);
+    base = makeSpan(["mop"], expression, options);
   } else {
-    base = buildCommon.makeSpan(["mop"], [], options);
+    base = makeSpan(["mop"], [], options);
   }
   if (hasLimits) {
     return assembleSupSub(base, supGroup, subGroup, options, options.style, 0, 0);
@@ -13361,21 +13419,20 @@ var htmlBuilder$1 = (grp, options) => {
 var mathmlBuilder2 = (group, options) => {
   var expression = buildExpression2(group.body, options.withFont("mathrm"));
   var isAllString = true;
-  for (var i = 0; i < expression.length; i++) {
-    var node = expression[i];
-    if (node instanceof mathMLTree.SpaceNode) ;
-    else if (node instanceof mathMLTree.MathNode) {
+  for (var i2 = 0; i2 < expression.length; i2++) {
+    var node = expression[i2];
+    if (node instanceof SpaceNode) ;
+    else if (node instanceof MathNode) {
       switch (node.type) {
         case "mi":
         case "mn":
-        case "ms":
         case "mspace":
         case "mtext":
           break;
         // Do nothing yet.
         case "mo": {
           var child = node.children[0];
-          if (node.children.length === 1 && child instanceof mathMLTree.TextNode) {
+          if (node.children.length === 1 && child instanceof TextNode) {
             child.text = child.text.replace(/\u2212/, "-").replace(/\u2217/, "*");
           } else {
             isAllString = false;
@@ -13391,15 +13448,15 @@ var mathmlBuilder2 = (group, options) => {
   }
   if (isAllString) {
     var word = expression.map((node2) => node2.toText()).join("");
-    expression = [new mathMLTree.TextNode(word)];
+    expression = [new TextNode(word)];
   }
-  var identifier = new mathMLTree.MathNode("mi", expression);
+  var identifier = new MathNode("mi", expression);
   identifier.setAttribute("mathvariant", "normal");
-  var operator = new mathMLTree.MathNode("mo", [makeText("\u2061", "text")]);
+  var operator = new MathNode("mo", [makeText("\u2061", "text")]);
   if (group.parentIsSupSub) {
-    return new mathMLTree.MathNode("mrow", [identifier, operator]);
+    return new MathNode("mrow", [identifier, operator]);
   } else {
-    return mathMLTree.newDocumentFragment([identifier, operator]);
+    return newDocumentFragment([identifier, operator]);
   }
 };
 defineFunction({
@@ -13431,9 +13488,9 @@ defineFunctionBuilders({
   type: "ordgroup",
   htmlBuilder(group, options) {
     if (group.semisimple) {
-      return buildCommon.makeFragment(buildExpression$1(group.body, options, false));
+      return makeFragment(buildExpression$1(group.body, options, false));
     }
-    return buildCommon.makeSpan(["mord"], buildExpression$1(group.body, options, true), options);
+    return makeSpan(["mord"], buildExpression$1(group.body, options, true), options);
   },
   mathmlBuilder(group, options) {
     return buildExpressionRow(group.body, options, true);
@@ -13458,9 +13515,9 @@ defineFunction({
   },
   htmlBuilder(group, options) {
     var innerGroup = buildGroup$1(group.body, options.havingCrampedStyle());
-    var line = buildCommon.makeLineSpan("overline-line", options);
+    var line = makeLineSpan("overline-line", options);
     var defaultRuleThickness = options.fontMetrics().defaultRuleThickness;
-    var vlist = buildCommon.makeVList({
+    var vlist = makeVList({
       positionType: "firstBaseline",
       children: [{
         type: "elem",
@@ -13475,13 +13532,13 @@ defineFunction({
         type: "kern",
         size: defaultRuleThickness
       }]
-    }, options);
-    return buildCommon.makeSpan(["mord", "overline"], [vlist], options);
+    });
+    return makeSpan(["mord", "overline"], [vlist], options);
   },
   mathmlBuilder(group, options) {
-    var operator = new mathMLTree.MathNode("mo", [new mathMLTree.TextNode("\u203E")]);
+    var operator = new MathNode("mo", [new TextNode("\u203E")]);
     operator.setAttribute("stretchy", "true");
-    var node = new mathMLTree.MathNode("mover", [buildGroup2(group.body, options), operator]);
+    var node = new MathNode("mover", [buildGroup2(group.body, options), operator]);
     node.setAttribute("accent", "true");
     return node;
   }
@@ -13506,16 +13563,17 @@ defineFunction({
   },
   htmlBuilder: (group, options) => {
     var elements = buildExpression$1(group.body, options.withPhantom(), false);
-    return buildCommon.makeFragment(elements);
+    return makeFragment(elements);
   },
   mathmlBuilder: (group, options) => {
     var inner2 = buildExpression2(group.body, options);
-    return new mathMLTree.MathNode("mphantom", inner2);
+    return new MathNode("mphantom", inner2);
   }
 });
+defineMacro("\\hphantom", "\\smash{\\phantom{#1}}");
 defineFunction({
-  type: "hphantom",
-  names: ["\\hphantom"],
+  type: "vphantom",
+  names: ["\\vphantom"],
   props: {
     numArgs: 1,
     allowedInText: true
@@ -13526,66 +13584,20 @@ defineFunction({
     } = _ref2;
     var body = args[0];
     return {
-      type: "hphantom",
-      mode: parser.mode,
-      body
-    };
-  },
-  htmlBuilder: (group, options) => {
-    var node = buildCommon.makeSpan([], [buildGroup$1(group.body, options.withPhantom())]);
-    node.height = 0;
-    node.depth = 0;
-    if (node.children) {
-      for (var i = 0; i < node.children.length; i++) {
-        node.children[i].height = 0;
-        node.children[i].depth = 0;
-      }
-    }
-    node = buildCommon.makeVList({
-      positionType: "firstBaseline",
-      children: [{
-        type: "elem",
-        elem: node
-      }]
-    }, options);
-    return buildCommon.makeSpan(["mord"], [node], options);
-  },
-  mathmlBuilder: (group, options) => {
-    var inner2 = buildExpression2(ordargument(group.body), options);
-    var phantom = new mathMLTree.MathNode("mphantom", inner2);
-    var node = new mathMLTree.MathNode("mpadded", [phantom]);
-    node.setAttribute("height", "0px");
-    node.setAttribute("depth", "0px");
-    return node;
-  }
-});
-defineFunction({
-  type: "vphantom",
-  names: ["\\vphantom"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
-  handler: (_ref3, args) => {
-    var {
-      parser
-    } = _ref3;
-    var body = args[0];
-    return {
       type: "vphantom",
       mode: parser.mode,
       body
     };
   },
   htmlBuilder: (group, options) => {
-    var inner2 = buildCommon.makeSpan(["inner"], [buildGroup$1(group.body, options.withPhantom())]);
-    var fix = buildCommon.makeSpan(["fix"], []);
-    return buildCommon.makeSpan(["mord", "rlap"], [inner2, fix], options);
+    var inner2 = makeSpan(["inner"], [buildGroup$1(group.body, options.withPhantom())]);
+    var fix = makeSpan(["fix"], []);
+    return makeSpan(["mord", "rlap"], [inner2, fix], options);
   },
   mathmlBuilder: (group, options) => {
     var inner2 = buildExpression2(ordargument(group.body), options);
-    var phantom = new mathMLTree.MathNode("mphantom", inner2);
-    var node = new mathMLTree.MathNode("mpadded", [phantom]);
+    var phantom = new MathNode("mphantom", inner2);
+    var node = new MathNode("mpadded", [phantom]);
     node.setAttribute("width", "0px");
     return node;
   }
@@ -13614,17 +13626,17 @@ defineFunction({
   htmlBuilder(group, options) {
     var body = buildGroup$1(group.body, options);
     var dy = calculateSize(group.dy, options);
-    return buildCommon.makeVList({
+    return makeVList({
       positionType: "shift",
       positionData: -dy,
       children: [{
         type: "elem",
         elem: body
       }]
-    }, options);
+    });
   },
   mathmlBuilder(group, options) {
-    var node = new mathMLTree.MathNode("mpadded", [buildGroup2(group.body, options)]);
+    var node = new MathNode("mpadded", [buildGroup2(group.body, options)]);
     var dy = group.dy.number + group.dy.unit;
     node.setAttribute("voffset", dy);
     return node;
@@ -13635,7 +13647,8 @@ defineFunction({
   names: ["\\relax"],
   props: {
     numArgs: 0,
-    allowedInText: true
+    allowedInText: true,
+    allowedInArgument: true
   },
   handler(_ref2) {
     var {
@@ -13653,6 +13666,8 @@ defineFunction({
   props: {
     numArgs: 2,
     numOptionalArgs: 1,
+    allowedInText: true,
+    allowedInMath: true,
     argTypes: ["size", "size", "size"]
   },
   handler(_ref2, args, optArgs) {
@@ -13671,7 +13686,7 @@ defineFunction({
     };
   },
   htmlBuilder(group, options) {
-    var rule = buildCommon.makeSpan(["mord", "rule"], [], options);
+    var rule = makeSpan(["mord", "rule"], [], options);
     var width = calculateSize(group.width, options);
     var height = calculateSize(group.height, options);
     var shift = group.shift ? calculateSize(group.shift, options) : 0;
@@ -13689,11 +13704,11 @@ defineFunction({
     var height = calculateSize(group.height, options);
     var shift = group.shift ? calculateSize(group.shift, options) : 0;
     var color = options.color && options.getColor() || "black";
-    var rule = new mathMLTree.MathNode("mspace");
+    var rule = new MathNode("mspace");
     rule.setAttribute("mathbackground", color);
     rule.setAttribute("width", makeEm(width));
     rule.setAttribute("height", makeEm(height));
-    var wrapper = new mathMLTree.MathNode("mpadded", [rule]);
+    var wrapper = new MathNode("mpadded", [rule]);
     if (shift >= 0) {
       wrapper.setAttribute("height", makeEm(shift));
     } else {
@@ -13707,17 +13722,17 @@ defineFunction({
 function sizingGroup(value, options, baseOptions) {
   var inner2 = buildExpression$1(value, options, false);
   var multiplier = options.sizeMultiplier / baseOptions.sizeMultiplier;
-  for (var i = 0; i < inner2.length; i++) {
-    var pos = inner2[i].classes.indexOf("sizing");
+  for (var i2 = 0; i2 < inner2.length; i2++) {
+    var pos = inner2[i2].classes.indexOf("sizing");
     if (pos < 0) {
-      Array.prototype.push.apply(inner2[i].classes, options.sizingClasses(baseOptions));
-    } else if (inner2[i].classes[pos + 1] === "reset-size" + options.size) {
-      inner2[i].classes[pos + 1] = "reset-size" + baseOptions.size;
+      Array.prototype.push.apply(inner2[i2].classes, options.sizingClasses(baseOptions));
+    } else if (inner2[i2].classes[pos + 1] === "reset-size" + options.size) {
+      inner2[i2].classes[pos + 1] = "reset-size" + baseOptions.size;
     }
-    inner2[i].height *= multiplier;
-    inner2[i].depth *= multiplier;
+    inner2[i2].height *= multiplier;
+    inner2[i2].depth *= multiplier;
   }
-  return buildCommon.makeFragment(inner2);
+  return makeFragment(inner2);
 }
 var sizeFuncs = ["\\tiny", "\\sixptsize", "\\scriptsize", "\\footnotesize", "\\small", "\\normalsize", "\\large", "\\Large", "\\LARGE", "\\huge", "\\Huge"];
 var htmlBuilder2 = (group, options) => {
@@ -13750,7 +13765,7 @@ defineFunction({
   mathmlBuilder: (group, options) => {
     var newOptions = options.havingSize(group.size);
     var inner2 = buildExpression2(group.body, newOptions);
-    var node = new mathMLTree.MathNode("mstyle", inner2);
+    var node = new MathNode("mstyle", inner2);
     node.setAttribute("mathsize", makeEm(newOptions.sizeMultiplier));
     return node;
   }
@@ -13771,10 +13786,10 @@ defineFunction({
     var smashDepth = false;
     var tbArg = optArgs[0] && assertNodeType(optArgs[0], "ordgroup");
     if (tbArg) {
-      var letter = "";
-      for (var i = 0; i < tbArg.body.length; ++i) {
-        var node = tbArg.body[i];
-        letter = node.text;
+      var letter;
+      for (var i2 = 0; i2 < tbArg.body.length; ++i2) {
+        var node = tbArg.body[i2];
+        letter = assertSymbolNodeType(node).text;
         if (letter === "t") {
           smashHeight = true;
         } else if (letter === "b") {
@@ -13799,37 +13814,40 @@ defineFunction({
     };
   },
   htmlBuilder: (group, options) => {
-    var node = buildCommon.makeSpan([], [buildGroup$1(group.body, options)]);
+    var node = makeSpan([], [buildGroup$1(group.body, options)]);
     if (!group.smashHeight && !group.smashDepth) {
       return node;
     }
     if (group.smashHeight) {
       node.height = 0;
-      if (node.children) {
-        for (var i = 0; i < node.children.length; i++) {
-          node.children[i].height = 0;
-        }
-      }
     }
     if (group.smashDepth) {
       node.depth = 0;
-      if (node.children) {
-        for (var _i = 0; _i < node.children.length; _i++) {
-          node.children[_i].depth = 0;
+    }
+    if (group.smashHeight && group.smashDepth) {
+      return makeSpan(["mord", "smash"], [node], options);
+    }
+    if (node.children) {
+      for (var i2 = 0; i2 < node.children.length; i2++) {
+        if (group.smashHeight) {
+          node.children[i2].height = 0;
+        }
+        if (group.smashDepth) {
+          node.children[i2].depth = 0;
         }
       }
     }
-    var smashedNode = buildCommon.makeVList({
+    var smashedNode = makeVList({
       positionType: "firstBaseline",
       children: [{
         type: "elem",
         elem: node
       }]
-    }, options);
-    return buildCommon.makeSpan(["mord"], [smashedNode], options);
+    });
+    return makeSpan(["mord"], [smashedNode], options);
   },
   mathmlBuilder: (group, options) => {
-    var node = new mathMLTree.MathNode("mpadded", [buildGroup2(group.body, options)]);
+    var node = new MathNode("mpadded", [buildGroup2(group.body, options)]);
     if (group.smashHeight) {
       node.setAttribute("height", "0px");
     }
@@ -13864,7 +13882,7 @@ defineFunction({
     if (inner2.height === 0) {
       inner2.height = options.fontMetrics().xHeight;
     }
-    inner2 = buildCommon.wrapFragment(inner2, options);
+    inner2 = wrapFragment(inner2, options);
     var metrics = options.fontMetrics();
     var theta = metrics.defaultRuleThickness;
     var phi = theta;
@@ -13877,14 +13895,14 @@ defineFunction({
       span: img,
       ruleWidth,
       advanceWidth
-    } = delimiter.sqrtImage(minDelimiterHeight, options);
+    } = makeSqrtImage(minDelimiterHeight, options);
     var delimDepth = img.height - ruleWidth;
     if (delimDepth > inner2.height + inner2.depth + lineClearance) {
       lineClearance = (lineClearance + delimDepth - inner2.height - inner2.depth) / 2;
     }
     var imgShift = img.height - inner2.height - lineClearance - ruleWidth;
     inner2.style.paddingLeft = makeEm(advanceWidth);
-    var body = buildCommon.makeVList({
+    var body = makeVList({
       positionType: "firstBaseline",
       children: [{
         type: "elem",
@@ -13900,23 +13918,23 @@ defineFunction({
         type: "kern",
         size: ruleWidth
       }]
-    }, options);
+    });
     if (!group.index) {
-      return buildCommon.makeSpan(["mord", "sqrt"], [body], options);
+      return makeSpan(["mord", "sqrt"], [body], options);
     } else {
       var newOptions = options.havingStyle(Style$1.SCRIPTSCRIPT);
       var rootm = buildGroup$1(group.index, newOptions, options);
       var toShift = 0.6 * (body.height - body.depth);
-      var rootVList = buildCommon.makeVList({
+      var rootVList = makeVList({
         positionType: "shift",
         positionData: -toShift,
         children: [{
           type: "elem",
           elem: rootm
         }]
-      }, options);
-      var rootVListWrap = buildCommon.makeSpan(["root"], [rootVList]);
-      return buildCommon.makeSpan(["mord", "sqrt"], [rootVListWrap, body], options);
+      });
+      var rootVListWrap = makeSpan(["root"], [rootVList]);
+      return makeSpan(["mord", "sqrt"], [rootVListWrap, body], options);
     }
   },
   mathmlBuilder(group, options) {
@@ -13924,7 +13942,7 @@ defineFunction({
       body,
       index
     } = group;
-    return index ? new mathMLTree.MathNode("mroot", [buildGroup2(body, options), buildGroup2(index, options)]) : new mathMLTree.MathNode("msqrt", [buildGroup2(body, options)]);
+    return index ? new MathNode("mroot", [buildGroup2(body, options), buildGroup2(index, options)]) : new MathNode("msqrt", [buildGroup2(body, options)]);
   }
 });
 var styleMap = {
@@ -13933,6 +13951,9 @@ var styleMap = {
   "script": Style$1.SCRIPT,
   "scriptscript": Style$1.SCRIPTSCRIPT
 };
+function isStyleStr(s) {
+  return s in styleMap;
+}
 defineFunction({
   type: "styling",
   names: ["\\displaystyle", "\\textstyle", "\\scriptstyle", "\\scriptscriptstyle"],
@@ -13949,6 +13970,9 @@ defineFunction({
     } = _ref2;
     var body = parser.parseExpression(true, breakOnTokenText);
     var style = funcName.slice(1, funcName.length - 5);
+    if (!isStyleStr(style)) {
+      throw new Error("Unknown style: " + style);
+    }
     return {
       type: "styling",
       mode: parser.mode,
@@ -13960,14 +13984,20 @@ defineFunction({
   },
   htmlBuilder(group, options) {
     var newStyle = styleMap[group.style];
-    var newOptions = options.havingStyle(newStyle).withFont("");
+    var newOptions = options.havingStyle(newStyle);
+    if (group.resetFont) {
+      newOptions = newOptions.withFont("");
+    }
     return sizingGroup(group.body, newOptions, options);
   },
   mathmlBuilder(group, options) {
     var newStyle = styleMap[group.style];
     var newOptions = options.havingStyle(newStyle);
+    if (group.resetFont) {
+      newOptions = newOptions.withFont("");
+    }
     var inner2 = buildExpression2(group.body, newOptions);
-    var node = new mathMLTree.MathNode("mstyle", inner2);
+    var node = new MathNode("mstyle", inner2);
     var styleAttributes = {
       "display": ["0", "true"],
       "text": ["0", "false"],
@@ -13991,7 +14021,7 @@ var htmlBuilderDelegate = function htmlBuilderDelegate2(group, options) {
     var _delegate = base.alwaysHandleSupSub && (options.style.size === Style$1.DISPLAY.size || base.limits);
     return _delegate ? htmlBuilder$1 : null;
   } else if (base.type === "accent") {
-    return utils.isCharacterBox(base.base) ? htmlBuilder$a : null;
+    return isCharacterBox(base.base) ? htmlBuilder$a : null;
   } else if (base.type === "horizBrace") {
     var isSup = !group.sub;
     return isSup === base.isOver ? htmlBuilder$3 : null;
@@ -14017,18 +14047,18 @@ defineFunctionBuilders({
     var metrics = options.fontMetrics();
     var supShift = 0;
     var subShift = 0;
-    var isCharacterBox3 = valueBase && utils.isCharacterBox(valueBase);
+    var isCharBox = valueBase && isCharacterBox(valueBase);
     if (valueSup) {
       var newOptions = options.havingStyle(options.style.sup());
       supm = buildGroup$1(valueSup, newOptions, options);
-      if (!isCharacterBox3) {
+      if (!isCharBox) {
         supShift = base.height - newOptions.fontMetrics().supDrop * newOptions.sizeMultiplier / options.sizeMultiplier;
       }
     }
     if (valueSub) {
       var _newOptions = options.havingStyle(options.style.sub());
       subm = buildGroup$1(valueSub, _newOptions, options);
-      if (!isCharacterBox3) {
+      if (!isCharBox) {
         subShift = base.depth + _newOptions.fontMetrics().subDrop * _newOptions.sizeMultiplier / options.sizeMultiplier;
       }
     }
@@ -14046,7 +14076,8 @@ defineFunctionBuilders({
     if (subm) {
       var isOiint = group.base && group.base.type === "op" && group.base.name && (group.base.name === "\\oiint" || group.base.name === "\\oiiint");
       if (base instanceof SymbolNode || isOiint) {
-        marginLeft = makeEm(-base.italic);
+        var _base$italic;
+        marginLeft = makeEm(-((_base$italic = base.italic) != null ? _base$italic : 0));
       }
     }
     var supsub;
@@ -14075,10 +14106,10 @@ defineFunctionBuilders({
         shift: -supShift,
         marginRight
       }];
-      supsub = buildCommon.makeVList({
+      supsub = makeVList({
         positionType: "individualShift",
         children: vlistElem
-      }, options);
+      });
     } else if (subm) {
       subShift = Math.max(subShift, metrics.sub1, subm.height - 0.8 * metrics.xHeight);
       var _vlistElem = [{
@@ -14087,14 +14118,14 @@ defineFunctionBuilders({
         marginLeft,
         marginRight
       }];
-      supsub = buildCommon.makeVList({
+      supsub = makeVList({
         positionType: "shift",
         positionData: subShift,
         children: _vlistElem
-      }, options);
+      });
     } else if (supm) {
       supShift = Math.max(supShift, minSupShift, supm.depth + 0.25 * metrics.xHeight);
-      supsub = buildCommon.makeVList({
+      supsub = makeVList({
         positionType: "shift",
         positionData: -supShift,
         children: [{
@@ -14102,12 +14133,12 @@ defineFunctionBuilders({
           elem: supm,
           marginRight
         }]
-      }, options);
+      });
     } else {
       throw new Error("supsub must have either sup or sub.");
     }
     var mclass = getTypeOfDomTree(base, "right") || "mord";
-    return buildCommon.makeSpan([mclass], [base, buildCommon.makeSpan(["msupsub"], [supsub])], options);
+    return makeSpan([mclass], [base, makeSpan(["msupsub"], [supsub])], options);
   },
   mathmlBuilder(group, options) {
     var isBrace = false;
@@ -14161,16 +14192,16 @@ defineFunctionBuilders({
         nodeType = "msubsup";
       }
     }
-    return new mathMLTree.MathNode(nodeType, children);
+    return new MathNode(nodeType, children);
   }
 });
 defineFunctionBuilders({
   type: "atom",
   htmlBuilder(group, options) {
-    return buildCommon.mathsym(group.text, group.mode, options, ["m" + group.family]);
+    return mathsym(group.text, group.mode, options, ["m" + group.family]);
   },
   mathmlBuilder(group, options) {
-    var node = new mathMLTree.MathNode("mo", [makeText(group.text, group.mode)]);
+    var node = new MathNode("mo", [makeText(group.text, group.mode)]);
     if (group.family === "bin") {
       var variant = getVariant(group, options);
       if (variant === "bold-italic") {
@@ -14192,10 +14223,10 @@ var defaultVariant = {
 defineFunctionBuilders({
   type: "mathord",
   htmlBuilder(group, options) {
-    return buildCommon.makeOrd(group, options, "mathord");
+    return makeOrd(group, options, "mathord");
   },
   mathmlBuilder(group, options) {
-    var node = new mathMLTree.MathNode("mi", [makeText(group.text, group.mode, options)]);
+    var node = new MathNode("mi", [makeText(group.text, group.mode, options)]);
     var variant = getVariant(group, options) || "italic";
     if (variant !== defaultVariant[node.type]) {
       node.setAttribute("mathvariant", variant);
@@ -14206,20 +14237,20 @@ defineFunctionBuilders({
 defineFunctionBuilders({
   type: "textord",
   htmlBuilder(group, options) {
-    return buildCommon.makeOrd(group, options, "textord");
+    return makeOrd(group, options, "textord");
   },
   mathmlBuilder(group, options) {
     var text3 = makeText(group.text, group.mode, options);
     var variant = getVariant(group, options) || "normal";
     var node;
     if (group.mode === "text") {
-      node = new mathMLTree.MathNode("mtext", [text3]);
+      node = new MathNode("mtext", [text3]);
     } else if (/[0-9]/.test(group.text)) {
-      node = new mathMLTree.MathNode("mn", [text3]);
+      node = new MathNode("mn", [text3]);
     } else if (group.text === "\\prime") {
-      node = new mathMLTree.MathNode("mo", [text3]);
+      node = new MathNode("mo", [text3]);
     } else {
-      node = new mathMLTree.MathNode("mi", [text3]);
+      node = new MathNode("mi", [text3]);
     }
     if (variant !== defaultVariant[node.type]) {
       node.setAttribute("mathvariant", variant);
@@ -14248,14 +14279,14 @@ defineFunctionBuilders({
     if (regularSpace.hasOwnProperty(group.text)) {
       var className = regularSpace[group.text].className || "";
       if (group.mode === "text") {
-        var ord = buildCommon.makeOrd(group, options, "textord");
+        var ord = makeOrd(group, options, "textord");
         ord.classes.push(className);
         return ord;
       } else {
-        return buildCommon.makeSpan(["mspace", className], [buildCommon.mathsym(group.text, group.mode, options)], options);
+        return makeSpan(["mspace", className], [mathsym(group.text, group.mode, options)], options);
       }
     } else if (cssSpace.hasOwnProperty(group.text)) {
-      return buildCommon.makeSpan(["mspace", cssSpace[group.text]], [], options);
+      return makeSpan(["mspace", cssSpace[group.text]], [], options);
     } else {
       throw new ParseError('Unknown type of space "' + group.text + '"');
     }
@@ -14263,9 +14294,9 @@ defineFunctionBuilders({
   mathmlBuilder(group, options) {
     var node;
     if (regularSpace.hasOwnProperty(group.text)) {
-      node = new mathMLTree.MathNode("mtext", [new mathMLTree.TextNode("\xA0")]);
+      node = new MathNode("mtext", [new TextNode("\xA0")]);
     } else if (cssSpace.hasOwnProperty(group.text)) {
-      return new mathMLTree.MathNode("mspace");
+      return new MathNode("mspace");
     } else {
       throw new ParseError('Unknown type of space "' + group.text + '"');
     }
@@ -14273,14 +14304,14 @@ defineFunctionBuilders({
   }
 });
 var pad = () => {
-  var padNode = new mathMLTree.MathNode("mtd", []);
+  var padNode = new MathNode("mtd", []);
   padNode.setAttribute("width", "50%");
   return padNode;
 };
 defineFunctionBuilders({
   type: "tag",
   mathmlBuilder(group, options) {
-    var table = new mathMLTree.MathNode("mtable", [new mathMLTree.MathNode("mtr", [pad(), new mathMLTree.MathNode("mtd", [buildExpressionRow(group.body, options)]), pad(), new mathMLTree.MathNode("mtd", [buildExpressionRow(group.tag, options)])])]);
+    var table = new MathNode("mtable", [new MathNode("mtr", [pad(), new MathNode("mtd", [buildExpressionRow(group.body, options)]), pad(), new MathNode("mtd", [buildExpressionRow(group.tag, options)])])]);
     table.setAttribute("width", "100%");
     return table;
   }
@@ -14352,7 +14383,7 @@ defineFunction({
   htmlBuilder(group, options) {
     var newOptions = optionsWithFont(group, options);
     var inner2 = buildExpression$1(group.body, newOptions, true);
-    return buildCommon.makeSpan(["mord", "text"], inner2, newOptions);
+    return makeSpan(["mord", "text"], inner2, newOptions);
   },
   mathmlBuilder(group, options) {
     var newOptions = optionsWithFont(group, options);
@@ -14378,9 +14409,9 @@ defineFunction({
   },
   htmlBuilder(group, options) {
     var innerGroup = buildGroup$1(group.body, options);
-    var line = buildCommon.makeLineSpan("underline-line", options);
+    var line = makeLineSpan("underline-line", options);
     var defaultRuleThickness = options.fontMetrics().defaultRuleThickness;
-    var vlist = buildCommon.makeVList({
+    var vlist = makeVList({
       positionType: "top",
       positionData: innerGroup.height,
       children: [{
@@ -14396,13 +14427,13 @@ defineFunction({
         type: "elem",
         elem: innerGroup
       }]
-    }, options);
-    return buildCommon.makeSpan(["mord", "underline"], [vlist], options);
+    });
+    return makeSpan(["mord", "underline"], [vlist], options);
   },
   mathmlBuilder(group, options) {
-    var operator = new mathMLTree.MathNode("mo", [new mathMLTree.TextNode("\u203E")]);
+    var operator = new MathNode("mo", [new TextNode("\u203E")]);
     operator.setAttribute("stretchy", "true");
-    var node = new mathMLTree.MathNode("munder", [buildGroup2(group.body, options), operator]);
+    var node = new MathNode("munder", [buildGroup2(group.body, options), operator]);
     node.setAttribute("accentunder", "true");
     return node;
   }
@@ -14430,17 +14461,18 @@ defineFunction({
     var body = buildGroup$1(group.body, options);
     var axisHeight = options.fontMetrics().axisHeight;
     var dy = 0.5 * (body.height - axisHeight - (body.depth + axisHeight));
-    return buildCommon.makeVList({
+    return makeVList({
       positionType: "shift",
       positionData: dy,
       children: [{
         type: "elem",
         elem: body
       }]
-    }, options);
+    });
   },
   mathmlBuilder(group, options) {
-    return new mathMLTree.MathNode("mpadded", [buildGroup2(group.body, options)], ["vcenter"]);
+    var mpadded = new MathNode("mpadded", [buildGroup2(group.body, options)], ["vcenter"]);
+    return new MathNode("mrow", [mpadded]);
   }
 });
 defineFunction({
@@ -14457,18 +14489,18 @@ defineFunction({
     var text3 = makeVerb(group);
     var body = [];
     var newOptions = options.havingStyle(options.style.text());
-    for (var i = 0; i < text3.length; i++) {
-      var c = text3[i];
+    for (var i2 = 0; i2 < text3.length; i2++) {
+      var c = text3[i2];
       if (c === "~") {
         c = "\\textasciitilde";
       }
-      body.push(buildCommon.makeSymbol(c, "Typewriter-Regular", group.mode, newOptions, ["mord", "texttt"]));
+      body.push(makeSymbol(c, "Typewriter-Regular", group.mode, newOptions, ["mord", "texttt"]));
     }
-    return buildCommon.makeSpan(["mord", "text"].concat(newOptions.sizingClasses(options)), buildCommon.tryCombineChars(body), newOptions);
+    return makeSpan(["mord", "text"].concat(newOptions.sizingClasses(options)), tryCombineChars(body), newOptions);
   },
   mathmlBuilder(group, options) {
-    var text3 = new mathMLTree.TextNode(makeVerb(group));
-    var node = new mathMLTree.MathNode("mtext", [text3]);
+    var text3 = new TextNode(makeVerb(group));
+    var node = new MathNode("mtext", [text3]);
     node.setAttribute("mathvariant", "monospace");
     return node;
   }
@@ -14492,8 +14524,6 @@ var tokenRegexString = "(" + spaceRegexString + "+)|" + // whitespace
 ("|" + controlWordWhitespaceRegexString) + // \macroName + spaces
 ("|" + controlSymbolRegexString + ")");
 var Lexer = class {
-  // Category codes. The lexer only supports comment characters (14) for now.
-  // MacroExpander additionally distinguishes active (13).
   constructor(input, settings) {
     this.input = void 0;
     this.settings = void 0;
@@ -14627,8 +14657,8 @@ var Namespace = class {
       global = false;
     }
     if (global) {
-      for (var i = 0; i < this.undefStack.length; i++) {
-        delete this.undefStack[i][name];
+      for (var i2 = 0; i2 < this.undefStack.length; i2++) {
+        delete this.undefStack[i2][name];
       }
       if (this.undefStack.length > 0) {
         this.undefStack[this.undefStack.length - 1][name] = value;
@@ -14738,7 +14768,7 @@ var digitToNumber = {
 defineMacro("\\char", function(context) {
   var token = context.popToken();
   var base;
-  var number = "";
+  var number = 0;
   if (token.text === "'") {
     base = 8;
     token = context.popToken();
@@ -14771,7 +14801,7 @@ defineMacro("\\char", function(context) {
   }
   return "\\@char{" + number + "}";
 });
-var newcommand = (context, existsOK, nonexistsOK) => {
+var newcommand = (context, existsOK, nonexistsOK, skipIfExists) => {
   var arg = context.consumeArg().tokens;
   if (arg.length !== 1) {
     throw new ParseError("\\newcommand's first argument must be a macro name");
@@ -14799,15 +14829,17 @@ var newcommand = (context, existsOK, nonexistsOK) => {
     numArgs = parseInt(argText);
     arg = context.consumeArg().tokens;
   }
-  context.macros.set(name, {
-    tokens: arg,
-    numArgs
-  });
+  if (!(exists && skipIfExists)) {
+    context.macros.set(name, {
+      tokens: arg,
+      numArgs
+    });
+  }
   return "";
 };
-defineMacro("\\newcommand", (context) => newcommand(context, false, true));
-defineMacro("\\renewcommand", (context) => newcommand(context, true, false));
-defineMacro("\\providecommand", (context) => newcommand(context, true, true));
+defineMacro("\\newcommand", (context) => newcommand(context, false, true, false));
+defineMacro("\\renewcommand", (context) => newcommand(context, true, false, false));
+defineMacro("\\providecommand", (context) => newcommand(context, true, true, true));
 defineMacro("\\message", (context) => {
   var arg = context.consumeArgs(1)[0];
   console.log(arg.reverse().map((token) => token.text).join(""));
@@ -14846,13 +14878,12 @@ defineMacro("\u212D", "\\mathfrak{C}");
 defineMacro("\u210C", "\\mathfrak{H}");
 defineMacro("\u2128", "\\mathfrak{Z}");
 defineMacro("\\Bbbk", "\\Bbb{k}");
-defineMacro("\xB7", "\\cdotp");
 defineMacro("\\llap", "\\mathllap{\\textrm{#1}}");
 defineMacro("\\rlap", "\\mathrlap{\\textrm{#1}}");
 defineMacro("\\clap", "\\mathclap{\\textrm{#1}}");
 defineMacro("\\mathstrut", "\\vphantom{(}");
 defineMacro("\\underbar", "\\underline{\\text{#1}}");
-defineMacro("\\not", '\\html@mathml{\\mathrel{\\mathrlap\\@not}}{\\char"338}');
+defineMacro("\\not", '\\html@mathml{\\mathrel{\\mathrlap\\@not}\\nobreak}{\\char"338}');
 defineMacro("\\neq", "\\html@mathml{\\mathrel{\\not=}}{\\mathrel{\\char`\u2260}}");
 defineMacro("\\ne", "\\neq");
 defineMacro("\u2260", "\\neq");
@@ -14874,12 +14905,11 @@ defineMacro("\u231E", "\\llcorner");
 defineMacro("\u231F", "\\lrcorner");
 defineMacro("\xA9", "\\copyright");
 defineMacro("\xAE", "\\textregistered");
-defineMacro("\uFE0F", "\\textregistered");
 defineMacro("\\ulcorner", '\\html@mathml{\\@ulcorner}{\\mathop{\\char"231c}}');
 defineMacro("\\urcorner", '\\html@mathml{\\@urcorner}{\\mathop{\\char"231d}}');
 defineMacro("\\llcorner", '\\html@mathml{\\@llcorner}{\\mathop{\\char"231e}}');
 defineMacro("\\lrcorner", '\\html@mathml{\\@lrcorner}{\\mathop{\\char"231f}}');
-defineMacro("\\vdots", "\\mathord{\\varvdots\\rule{0pt}{15pt}}");
+defineMacro("\\vdots", "{\\varvdots\\rule{0pt}{15pt}}");
 defineMacro("\u22EE", "\\vdots");
 defineMacro("\\varGamma", "\\mathit{\\Gamma}");
 defineMacro("\\varDelta", "\\mathit{\\Delta}");
@@ -14898,6 +14928,8 @@ defineMacro("\\boxed", "\\fbox{$\\displaystyle{#1}$}");
 defineMacro("\\iff", "\\DOTSB\\;\\Longleftrightarrow\\;");
 defineMacro("\\implies", "\\DOTSB\\;\\Longrightarrow\\;");
 defineMacro("\\impliedby", "\\DOTSB\\;\\Longleftarrow\\;");
+defineMacro("\\dddot", "{\\overset{\\raisebox{-0.1ex}{\\normalsize ...}}{#1}}");
+defineMacro("\\ddddot", "{\\overset{\\raisebox{-0.1ex}{\\normalsize ....}}{#1}}");
 var dotsByToken = {
   ",": "\\dotsc",
   "\\not": "\\dotsb",
@@ -14953,6 +14985,7 @@ var dotsByToken = {
   // Symbols whose definition starts with \DOTSX:
   "\\DOTSX": "\\dotsx"
 };
+var dotsbGroups = /* @__PURE__ */ new Set(["bin", "rel"]);
 defineMacro("\\dots", function(context) {
   var thedots = "\\dotso";
   var next = context.expandAfterFuture().text;
@@ -14961,7 +14994,7 @@ defineMacro("\\dots", function(context) {
   } else if (next.slice(0, 4) === "\\not") {
     thedots = "\\dotsb";
   } else if (next in symbols.math) {
-    if (utils.contains(["bin", "rel"], symbols.math[next].group)) {
+    if (dotsbGroups.has(symbols.math[next].group)) {
       thedots = "\\dotsb";
     }
   }
@@ -15421,7 +15454,7 @@ var MacroExpander = class {
     }
     this.pushToken(new Token("EOF", end.loc));
     this.pushTokens(tokens);
-    return start.range(end, "");
+    return new Token("", SourceLocation.range(start, end));
   }
   /**
    * Consume all following space tokens, without expansion.
@@ -15496,16 +15529,16 @@ var MacroExpander = class {
         throw new ParseError("The length of delimiters doesn't match the number of args!");
       }
       var delims = delimiters2[0];
-      for (var i = 0; i < delims.length; i++) {
+      for (var i2 = 0; i2 < delims.length; i2++) {
         var tok = this.popToken();
-        if (delims[i] !== tok.text) {
+        if (delims[i2] !== tok.text) {
           throw new ParseError("Use of the macro doesn't match its definition", tok);
         }
       }
     }
     var args = [];
-    for (var _i = 0; _i < numArgs; _i++) {
-      args.push(this.consumeArg(delimiters2 && delimiters2[_i + 1]).tokens);
+    for (var _i6 = 0; _i6 < numArgs; _i6++) {
+      args.push(this.consumeArg(delimiters2 && delimiters2[_i6 + 1]).tokens);
     }
     return args;
   }
@@ -15554,17 +15587,17 @@ var MacroExpander = class {
     var args = this.consumeArgs(expansion.numArgs, expansion.delimiters);
     if (expansion.numArgs) {
       tokens = tokens.slice();
-      for (var i = tokens.length - 1; i >= 0; --i) {
-        var tok = tokens[i];
+      for (var i2 = tokens.length - 1; i2 >= 0; --i2) {
+        var tok = tokens[i2];
         if (tok.text === "#") {
-          if (i === 0) {
+          if (i2 === 0) {
             throw new ParseError("Incomplete placeholder at end of macro body", tok);
           }
-          tok = tokens[--i];
+          tok = tokens[--i2];
           if (tok.text === "#") {
-            tokens.splice(i + 1, 1);
+            tokens.splice(i2 + 1, 1);
           } else if (/^[1-9]$/.test(tok.text)) {
-            tokens.splice(i, 2, ...args[+tok.text - 1]);
+            tokens.splice(i2, 2, ...args[+tok.text - 1]);
           } else {
             throw new ParseError("Not a valid argument number", tok);
           }
@@ -15597,7 +15630,6 @@ var MacroExpander = class {
         return token;
       }
     }
-    throw new Error();
   }
   /**
    * Fully expand the given macro name and return the resulting list of
@@ -15658,9 +15690,9 @@ var MacroExpander = class {
     var expansion = typeof definition === "function" ? definition(this) : definition;
     if (typeof expansion === "string") {
       var numArgs = 0;
-      if (expansion.indexOf("#") !== -1) {
+      if (expansion.includes("#")) {
         var stripped = expansion.replace(/##/g, "");
-        while (stripped.indexOf("#" + (numArgs + 1)) !== -1) {
+        while (stripped.includes("#" + (numArgs + 1))) {
           ++numArgs;
         }
       }
@@ -16207,6 +16239,7 @@ var Parser = class _Parser {
     this.gullet = new MacroExpander(input, settings, this.mode);
     this.settings = settings;
     this.leftrightDepth = 0;
+    this.nextToken = null;
   }
   /**
    * Checks a result to make sure it has the right type, and throws an
@@ -16286,7 +16319,7 @@ var Parser = class _Parser {
    * Parses an "expression", which is a list of atoms.
    *
    * `breakOnInfix`: Should the parsing stop when we hit infix nodes? This
-   *                 happens when functions have higher precedence han infix
+   *                 happens when functions have higher precedence than infix
    *                 nodes in implicit parses.
    *
    * `breakOnTokenText`: The text of the token that the expression should end
@@ -16300,7 +16333,7 @@ var Parser = class _Parser {
         this.consumeSpaces();
       }
       var lex = this.fetch();
-      if (_Parser.endOfExpression.indexOf(lex.text) !== -1) {
+      if (_Parser.endOfExpression.has(lex.text)) {
         break;
       }
       if (breakOnTokenText && lex.text === breakOnTokenText) {
@@ -16332,13 +16365,14 @@ var Parser = class _Parser {
   handleInfixNodes(body) {
     var overIndex = -1;
     var funcName;
-    for (var i = 0; i < body.length; i++) {
-      if (body[i].type === "infix") {
+    for (var i2 = 0; i2 < body.length; i2++) {
+      var node = body[i2];
+      if (node.type === "infix") {
         if (overIndex !== -1) {
-          throw new ParseError("only one infix operator per group", body[i].token);
+          throw new ParseError("only one infix operator per group", node.token);
         }
-        overIndex = i;
-        funcName = body[i].replaceWith;
+        overIndex = i2;
+        funcName = node.replaceWith;
       }
     }
     if (overIndex !== -1 && funcName) {
@@ -16364,13 +16398,13 @@ var Parser = class _Parser {
           body: denomBody
         };
       }
-      var node;
+      var _node;
       if (funcName === "\\\\abovefrac") {
-        node = this.callFunction(funcName, [numerNode, body[overIndex], denomNode], []);
+        _node = this.callFunction(funcName, [numerNode, body[overIndex], denomNode], []);
       } else {
-        node = this.callFunction(funcName, [numerNode, denomNode], []);
+        _node = this.callFunction(funcName, [numerNode, denomNode], []);
       }
-      return [node];
+      return [_node];
     } else {
       return body;
     }
@@ -16383,7 +16417,11 @@ var Parser = class _Parser {
     var symbol = symbolToken.text;
     this.consume();
     this.consumeSpaces();
-    var group = this.parseGroup(name);
+    var group;
+    do {
+      var _group;
+      group = this.parseGroup(name);
+    } while (((_group = group) == null ? void 0 : _group.type) === "internal");
     if (!group) {
       throw new ParseError("Expected group after '" + symbol + "'", symbolToken);
     }
@@ -16395,11 +16433,11 @@ var Parser = class _Parser {
    */
   formatUnsupportedCmd(text3) {
     var textordArray = [];
-    for (var i = 0; i < text3.length; i++) {
+    for (var i2 = 0; i2 < text3.length; i2++) {
       textordArray.push({
         type: "textord",
         mode: "text",
-        text: text3[i]
+        text: text3[i2]
       });
     }
     var textNode = {
@@ -16420,6 +16458,9 @@ var Parser = class _Parser {
    */
   parseAtom(breakOnTokenText) {
     var base = this.parseGroup("atom", breakOnTokenText);
+    if ((base == null ? void 0 : base.type) === "internal") {
+      return base;
+    }
     if (this.mode === "text") {
       return base;
     }
@@ -16574,11 +16615,11 @@ var Parser = class _Parser {
     }
     var args = [];
     var optArgs = [];
-    for (var i = 0; i < totalArgs; i++) {
-      var argType = funcData.argTypes && funcData.argTypes[i];
-      var isOptional = i < funcData.numOptionalArgs;
-      if (funcData.primitive && argType == null || // \sqrt expands into primitive if optional argument doesn't exist
-      funcData.type === "sqrt" && i === 1 && optArgs[0] == null) {
+    for (var i2 = 0; i2 < totalArgs; i2++) {
+      var argType = funcData.argTypes && funcData.argTypes[i2];
+      var isOptional = i2 < funcData.numOptionalArgs;
+      if ("primitive" in funcData && funcData.primitive && argType == null || // \sqrt expands into primitive if optional argument doesn't exist
+      funcData.type === "sqrt" && i2 === 1 && optArgs[0] == null) {
         argType = "primitive";
       }
       var arg = this.parseGroupOfType("argument to '" + func + "'", argType, isOptional);
@@ -16615,8 +16656,9 @@ var Parser = class _Parser {
           type: "styling",
           mode: group.mode,
           body: [group],
-          style: "text"
+          style: "text",
           // simulate \textstyle
+          resetFont: true
         } : null;
       }
       case "raw": {
@@ -16631,11 +16673,11 @@ var Parser = class _Parser {
         if (optional) {
           throw new ParseError("A primitive argument cannot be optional");
         }
-        var _group = this.parseGroup(name);
-        if (_group == null) {
+        var _group2 = this.parseGroup(name);
+        if (_group2 == null) {
           throw new ParseError("Expected group as " + name, this.fetch());
         }
-        return _group;
+        return _group2;
       }
       case "original":
       case null:
@@ -16700,7 +16742,7 @@ var Parser = class _Parser {
     if (res == null) {
       return null;
     }
-    var match = /^(#[a-f0-9]{3}|#?[a-f0-9]{6}|[a-z]+)$/i.exec(res.text);
+    var match = /^(#[a-f0-9]{3,4}|#[a-f0-9]{6}|#[a-f0-9]{8}|[a-f0-9]{6}|[a-z]+)$/i.exec(res.text);
     if (!match) {
       throw new ParseError("Invalid color: '" + res.text + "'", res);
     }
@@ -16850,33 +16892,41 @@ var Parser = class _Parser {
    */
   formLigatures(group) {
     var n = group.length - 1;
-    for (var i = 0; i < n; ++i) {
-      var a = group[i];
+    for (var i2 = 0; i2 < n; ++i2) {
+      var a = group[i2];
+      if (a.type !== "textord") {
+        continue;
+      }
       var v2 = a.text;
-      if (v2 === "-" && group[i + 1].text === "-") {
-        if (i + 1 < n && group[i + 2].text === "-") {
-          group.splice(i, 3, {
+      var next = group[i2 + 1];
+      if (!next || next.type !== "textord") {
+        continue;
+      }
+      if (v2 === "-" && next.text === "-") {
+        var afterNext = group[i2 + 2];
+        if (i2 + 1 < n && afterNext && afterNext.type === "textord" && afterNext.text === "-") {
+          group.splice(i2, 3, {
             type: "textord",
             mode: "text",
-            loc: SourceLocation.range(a, group[i + 2]),
+            loc: SourceLocation.range(a, afterNext),
             text: "---"
           });
           n -= 2;
         } else {
-          group.splice(i, 2, {
+          group.splice(i2, 2, {
             type: "textord",
             mode: "text",
-            loc: SourceLocation.range(a, group[i + 1]),
+            loc: SourceLocation.range(a, next),
             text: "--"
           });
           n -= 1;
         }
       }
-      if ((v2 === "'" || v2 === "`") && group[i + 1].text === v2) {
-        group.splice(i, 2, {
+      if ((v2 === "'" || v2 === "`") && next.text === v2) {
+        group.splice(i2, 2, {
           type: "textord",
           mode: "text",
-          loc: SourceLocation.range(a, group[i + 1]),
+          loc: SourceLocation.range(a, next),
           text: v2 + v2
         });
         n -= 1;
@@ -16925,18 +16975,17 @@ var Parser = class _Parser {
     }
     var symbol;
     if (symbols[this.mode][text3]) {
-      if (this.settings.strict && this.mode === "math" && extraLatin.indexOf(text3) >= 0) {
+      if (this.settings.strict && this.mode === "math" && extraLatin.includes(text3)) {
         this.settings.reportNonstrict("unicodeTextInMathMode", 'Latin-1/Unicode text character "' + text3[0] + '" used in math mode', nucleus);
       }
       var group = symbols[this.mode][text3].group;
       var loc = SourceLocation.range(nucleus);
       var s;
-      if (ATOMS.hasOwnProperty(group)) {
-        var family = group;
+      if (isAtom(group)) {
         s = {
           type: "atom",
           mode: this.mode,
-          family,
+          family: group,
           loc,
           text: text3
         };
@@ -16968,8 +17017,8 @@ var Parser = class _Parser {
     }
     this.consume();
     if (match) {
-      for (var i = 0; i < match[0].length; i++) {
-        var accent2 = match[0][i];
+      for (var i2 = 0; i2 < match[0].length; i2++) {
+        var accent2 = match[0][i2];
         if (!unicodeAccents[accent2]) {
           throw new ParseError("Unknown accent ' " + accent2 + "'", nucleus);
         }
@@ -16984,7 +17033,6 @@ var Parser = class _Parser {
           label: command,
           isStretchy: false,
           isShifty: true,
-          // $FlowFixMe
           base: symbol
         };
       }
@@ -16992,7 +17040,7 @@ var Parser = class _Parser {
     return symbol;
   }
 };
-Parser.endOfExpression = ["}", "\\endgroup", "\\end", "\\right", "&"];
+Parser.endOfExpression = /* @__PURE__ */ new Set(["}", "\\endgroup", "\\end", "\\right", "&"]);
 var parseTree = function parseTree2(toParse, settings) {
   if (!(typeof toParse === "string" || toParse instanceof String)) {
     throw new TypeError("KaTeX can only parse string typed expression");
@@ -17040,7 +17088,7 @@ var renderError = function renderError2(error, expression, options) {
   if (options.throwOnError || !(error instanceof ParseError)) {
     throw error;
   }
-  var node = buildCommon.makeSpan(["katex-error"], [new SymbolNode(expression)]);
+  var node = makeSpan(["katex-error"], [new SymbolNode(expression)]);
   node.setAttribute("title", error.toString());
   node.setAttribute("style", "color:" + options.errorColor);
   return node;
@@ -17063,11 +17111,20 @@ var renderToHTMLTree = function renderToHTMLTree2(expression, options) {
     return renderError(error, expression, settings);
   }
 };
+var version2 = "0.16.47";
+var __domTree = {
+  Span,
+  Anchor,
+  SymbolNode,
+  SvgNode,
+  PathNode,
+  LineNode
+};
 var katex = {
   /**
    * Current KaTeX version
    */
-  version: "0.16.11",
+  version: version2,
   /**
    * Renders the given LaTeX into an HTML+MathML combination, and adds
    * it as a child to the specified DOM node.
@@ -17083,7 +17140,7 @@ var katex = {
    */
   ParseError,
   /**
-   * The shema of Settings
+   * The schema of Settings
    */
   SETTINGS_SCHEMA,
   /**
@@ -17135,18 +17192,11 @@ var katex = {
   /**
    * Expose the dom tree node types, which can be useful for type checking nodes.
    *
-   * NOTE: This method is not currently recommended for public use.
+   * NOTE: These methods are not currently recommended for public use.
    * The internal tree representation is unstable and is very likely
    * to change. Use at your own risk.
    */
-  __domTree: {
-    Span,
-    Anchor,
-    SymbolNode,
-    SvgNode,
-    PathNode,
-    LineNode
-  }
+  __domTree
 };
 
 // node_modules/marked-footnote/dist/index.js
@@ -17167,7 +17217,7 @@ function p(t, l3) {
         r
       );
       if (e) {
-        const [n, i, h = ""] = e;
+        const [n, i2, h = ""] = e;
         let f = h.split(`
 `).reduce((c, s) => c + `
 ` + s.replace(/^(?:[ ]{4}|[\t])/, ""), "");
@@ -17182,7 +17232,7 @@ function p(t, l3) {
         const a = {
           type: "footnote",
           raw: n,
-          label: i,
+          label: i2,
           refs: [],
           content: this.lexer.blockTokens(f)
         };
@@ -17202,16 +17252,16 @@ function $2(t, l3 = false) {
     tokenizer(r) {
       const e = /^\[\^([^\]\n]+)\]/.exec(r);
       if (e) {
-        const [n, i] = e, h = this.lexer.tokens[0], f = h.rawItems.filter(
-          (s) => s.label === i
+        const [n, i2] = e, h = this.lexer.tokens[0], f = h.rawItems.filter(
+          (s) => s.label === i2
         );
         if (!f.length)
           return;
-        const u = f[0], a = h.items.filter((s) => s.label === i)[0], c = {
+        const u = f[0], a = h.items.filter((s) => s.label === i2)[0], c = {
           type: "footnoteRef",
           raw: n,
           id: "",
-          label: i
+          label: i2
         };
         return a ? (c.id = `${o}:${a.refs.length + 1}`, a.refs.push(c)) : (o++, c.id = String(o), u.refs.push(c), h.items.push(u)), c;
       }
@@ -17230,12 +17280,12 @@ function m2(t) {
       if (o.length === 0)
         return "";
       const r = o.reduce(
-        (n, { label: i, content: h, refs: f }) => {
-          const u = encodeURIComponent(i), a = this.parser.parse(h).trimEnd(), c = a.endsWith("</p>");
+        (n, { label: i2, content: h, refs: f }) => {
+          const u = encodeURIComponent(i2), a = this.parser.parse(h).trimEnd(), c = a.endsWith("</p>");
           let s = `<li id="${t + u}">
 `;
           return s += c ? a.replace(/<\/p>$/, "") : a, f.forEach((k, d2) => {
-            s += ` <a href="#${t}ref-${u}" data-${t}backref aria-label="Back to reference ${i}">${d2 > 0 ? `\u21A9<sup>${d2 + 1}</sup>` : "\u21A9"}</a>`;
+            s += ` <a href="#${t}ref-${u}" data-${t}backref aria-label="Back to reference ${i2}">${d2 > 0 ? `\u21A9<sup>${d2 + 1}</sup>` : "\u21A9"}</a>`;
           }), s += c ? `</p>
 ` : `
 `, s += `</li>

@@ -993,7 +993,51 @@
       }
 
       async function fetchPlatformHealth() {
-        return fetchMonitorJson('/api/monitor/platform-health', 'Platform health');
+        const data = await fetchMonitorJson('/api/monitor/platform-health', 'Platform health');
+        if (data && Array.isArray(data.checks)) return data;
+
+        return {
+          environment: 'static fallback',
+          summary: {
+            healthy: 3,
+            degraded: monitorApiAvailable ? 1 : 0,
+            unhealthy: monitorApiAvailable ? 0 : 1,
+          },
+          checks: [
+            {
+              id: 'health',
+              label: 'Health API',
+              path: '/api/health',
+              status: monitorApiAvailable ? 'healthy' : 'unhealthy',
+              detail: monitorApiAvailable
+                ? 'Backend health endpoint is reachable.'
+                : 'Backend API is not reachable from this static origin.',
+            },
+            {
+              id: 'analytics',
+              label: 'Portfolio Reach',
+              path: '/api/analytics/reach',
+              status: monitorApiAvailable ? 'healthy' : 'degraded',
+              detail: monitorApiAvailable
+                ? 'Reach metrics are available from the API.'
+                : 'Production analytics remain available on mangeshraut.pro.',
+            },
+            {
+              id: 'travel',
+              label: 'Travel Atlas',
+              path: '/travel',
+              status: 'healthy',
+              detail: 'Static travel experience is bundled and available.',
+            },
+            {
+              id: 'monitor',
+              label: 'System Monitor',
+              path: '/monitor',
+              status: 'healthy',
+              detail: 'Monitor UI loaded and rendered its static fallback matrix.',
+            },
+          ],
+        };
       }
 
       async function fetchStatus() {

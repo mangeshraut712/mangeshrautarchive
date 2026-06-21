@@ -73,6 +73,8 @@ const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about', 'currently'];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
+const DEFERRED_IMAGE_PLACEHOLDER =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 const deferredStyleLoads = new Map();
 
@@ -704,6 +706,11 @@ function initSectionDeferredImages(sectionId, rootMargin = '0px 0px', documentRe
   }
 
   section.dataset.deferredImagesBound = 'true';
+  section.querySelectorAll('img[data-deferred-src]').forEach(img => {
+    if (!img.getAttribute('src')) {
+      img.src = DEFERRED_IMAGE_PLACEHOLDER;
+    }
+  });
 
   const hydrateImages = () => {
     section.querySelectorAll('picture source[data-deferred-srcset]').forEach(source => {
@@ -857,6 +864,9 @@ function hydrateHeroImages(documentRef = document) {
       return;
     }
 
+    if (!img.getAttribute('src')) {
+      img.src = DEFERRED_IMAGE_PLACEHOLDER;
+    }
     img.src = img.dataset.deferredSrc;
     img.removeAttribute('data-deferred-src');
   });

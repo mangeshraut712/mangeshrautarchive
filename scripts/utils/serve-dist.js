@@ -55,7 +55,9 @@ function setAssetHeaders(res, filePath) {
   const extension = extname(filePath).toLowerCase();
 
   if (extension === '.html') {
-    res.setHeader('Cache-Control', 'no-cache, max-age=0, must-revalidate');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     return;
   }
 
@@ -74,7 +76,9 @@ function setAssetHeaders(res, filePath) {
   }
 
   if (filePath.endsWith('service-worker.js') || filePath.endsWith('manifest.json')) {
-    res.setHeader('Cache-Control', 'no-cache, max-age=0, must-revalidate');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
   }
 }
 

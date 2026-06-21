@@ -1294,7 +1294,7 @@ html.dark #music-content .currently-music-card .media-info p {
   border-radius: 8px;
   background: rgba(0, 113, 227, 0.08);
   border: none;
-  color: #0071e3 !important;
+  color: #005bb5 !important;
   box-shadow: none;
   font-weight: 600;
   font-size: 0.68rem;
@@ -2906,7 +2906,7 @@ html.dark .recent-track-img {
   gap: 0.3rem;
   padding: 0.42rem 0.5rem;
   background: rgba(0, 113, 227, 0.08);
-  color: #0071e3 !important;
+  color: #005bb5 !important;
   font-size: 0.68rem;
   font-weight: 600;
   border-radius: 8px;
@@ -2930,7 +2930,7 @@ html.dark .recent-track-img {
 
 .watch-btn:hover {
   background: rgba(0, 113, 227, 0.14);
-  color: #0071e3 !important;
+  color: #005bb5 !important;
   transform: none;
 }
 
@@ -2940,7 +2940,7 @@ html.dark .recent-track-img {
 }
 
 .watch-btn.book-btn {
-  color: #0071e3 !important;
+  color: #005bb5 !important;
   background: rgba(0, 113, 227, 0.08);
 }
 
