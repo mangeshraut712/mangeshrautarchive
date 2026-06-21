@@ -431,7 +431,10 @@ test.describe('Chrome smoke tests', () => {
     await gotoSite(page, '/#contact');
     await page.waitForTimeout(2000);
     await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
-    await page.locator('.currently-tab[data-tab="music"]').click({ force: true });
+    await page.waitForFunction(() => document.body.dataset.currentlyInit === 'true');
+    const musicTab = page.locator('.currently-tab[data-tab="music"]');
+    await musicTab.scrollIntoViewIfNeeded();
+    await musicTab.click();
     await expect(page.locator('#music-content')).toHaveClass(/active/);
 
     await page.waitForFunction(
