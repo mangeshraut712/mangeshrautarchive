@@ -16,6 +16,9 @@ const app = express();
 const port = Number.parseInt(process.env.PORT || '4000', 10);
 const host = process.env.HOST || '127.0.0.1';
 const apiTarget = process.env.API_TARGET || 'http://127.0.0.1:8001';
+const strictPort = ['1', 'true', 'yes'].includes(
+  String(process.env.STRICT_PORT || '').toLowerCase()
+);
 
 const hopByHopHeaders = new Set([
   'accept-encoding',
@@ -161,6 +164,10 @@ function startServer(listenPort) {
 
   server.on('error', err => {
     if (err.code === 'EADDRINUSE') {
+      if (strictPort) {
+        console.error(`❌ Port ${listenPort} is already in use and STRICT_PORT is enabled.`);
+        process.exit(1);
+      }
       console.warn(`⚠️  Port ${listenPort} is in use, trying port ${listenPort + 1}...`);
       startServer(listenPort + 1);
     } else {
