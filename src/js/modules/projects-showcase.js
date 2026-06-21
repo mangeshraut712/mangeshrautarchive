@@ -1,24 +1,21 @@
 import GitHubProjects from './github-projects.js';
+import { observeScrollAnimations } from './scroll-animations.js';
 import './project-xr.js';
 
 const DEFAULT_USERNAME = 'mangeshraut712';
 const PROJECT_ROWS_LIMIT = 2;
 const DEFAULT_PROJECT_LENS = 'all';
-const LENS_KEYS = ['all', 'attention', 'hot', 'busy', 'fresh', 'released'];
+const LENS_KEYS = ['all', 'hot', 'busy', 'released'];
 const LENS_LABELS = {
   all: 'All',
-  attention: 'Need attention',
   hot: 'Hot',
   busy: 'Busy',
-  fresh: 'Fresh',
   released: 'Released',
 };
 const LENS_HINTS = {
   all: 'Every showcase repository',
-  attention: 'Stale releases or heavy commit drift since last tag',
-  hot: 'Active in the last 14 days',
-  busy: '10+ commits since the latest release',
-  fresh: 'Released within the last 45 days',
+  hot: 'Primary signal: active in the last 14 days',
+  busy: 'Primary signal: 10+ commits since the latest release',
   released: 'Has at least one GitHub release',
 };
 
@@ -119,6 +116,49 @@ function applyTiltEffects(container) {
   });
 }
 
+function revealRenderedProjectCards(container) {
+  if (!container) return;
+
+  observeScrollAnimations(['.showcase-project-card']);
+
+  const cards = container.querySelectorAll('.showcase-project-card');
+  if (!cards.length) return;
+
+  const projectsSection = document.getElementById('projects');
+  const inView = projectsSection
+    ? (() => {
+        const rect = projectsSection.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      })()
+    : true;
+
+  if (!inView) return;
+
+  cards.forEach(card => {
+    card.classList.add('animate-in');
+    card.classList.remove('animate-on-scroll');
+    card.style.opacity = '1';
+    card.style.transform = 'none';
+  });
+}
+
+function formatActivityCaption(totals) {
+  const parts = [];
+  if (totals.hotRepos > 0) parts.push(`${totals.hotRepos} hot`);
+  if (totals.busyRepos > 0) parts.push(`${totals.busyRepos} busy`);
+  if (totals.releasedRepos > 0) parts.push(`${totals.releasedRepos} released`);
+
+  if (parts.length > 0) {
+    return `${parts.join(' · ')} across showcase repositories.`;
+  }
+
+  if (totals.releaseCheckedRepos > 0) {
+    return `${totals.releaseCheckedRepos} showcase repositories synced with GitHub release signals.`;
+  }
+
+  return 'Syncing repository stars, forks, commits, releases, and contributor activity...';
+}
+
 function renderNoResults(container, query = '', lensLabel = '') {
   const parts = [];
   if (query) parts.push(`"${query}"`);
@@ -174,10 +214,8 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       if (releaseSignal?.releaseChecked) {
         acc.releaseCheckedRepos += 1;
         if (releaseSignal.hasRelease) acc.releasedRepos += 1;
-        if (releaseSignal.filters?.has('attention')) acc.attentionRepos += 1;
-        if (releaseSignal.filters?.has('hot')) acc.hotRepos += 1;
-        if (releaseSignal.filters?.has('busy')) acc.busyRepos += 1;
-        if (releaseSignal.filters?.has('fresh')) acc.freshRepos += 1;
+        if (releaseSignal.key === 'hot') acc.hotRepos += 1;
+        if (releaseSignal.key === 'busy') acc.busyRepos += 1;
         if (releaseSignal.commitsSinceRelease !== null) {
           acc.totalCommitsSinceRelease += releaseSignal.commitsSinceRelease;
         }
@@ -199,10 +237,8 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       activityRepos: 0,
       releaseCheckedRepos: 0,
       releasedRepos: 0,
-      attentionRepos: 0,
       hotRepos: 0,
       busyRepos: 0,
-      freshRepos: 0,
       languages: new Set(),
       latestUpdate: 0,
     }
@@ -223,17 +259,13 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
     'stat-release-commits',
     totals.releaseCheckedRepos ? formatCompactNumber(totals.totalCommitsSinceRelease) : '--'
   );
-  setTextById(
-    'stat-attention',
-    totals.releaseCheckedRepos ? formatCompactNumber(totals.attentionRepos) : '--'
-  );
   setTextById('stat-languages', totals.languages.size);
 
   const captionEl = document.getElementById('projects-activity-caption');
   if (!captionEl) return;
 
   if (totals.releaseCheckedRepos > 0) {
-    captionEl.textContent = `${totals.hotRepos} hot · ${totals.freshRepos} fresh · ${totals.busyRepos} busy · ${totals.attentionRepos} need attention · ${totals.releasedRepos} released.`;
+    captionEl.textContent = formatActivityCaption(totals);
     return;
   }
 
@@ -254,23 +286,35 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
 function createSortComparator(sortBy, githubProjects) {
   return (a, b) => {
     if (sortBy === 'date') {
-      return (
-        new Date(b.updated_at || 0) - new Date(a.updated_at || 0) ||
-        a.originalIndex - b.originalIndex
-      );
+      const pushedDiff =
+        new Date(b.pushed_at || b.updated_at || 0) - new Date(a.pushed_at || a.updated_at || 0);
+      if (pushedDiff !== 0) return pushedDiff;
+      return a.originalIndex - b.originalIndex;
+    }
+
+    if (sortBy === 'stars') {
+      const starDiff = Number(b.stargazers_count || 0) - Number(a.stargazers_count || 0);
+      if (starDiff !== 0) return starDiff;
+      const forkDiff = Number(b.forks_count || 0) - Number(a.forks_count || 0);
+      if (forkDiff !== 0) return forkDiff;
+      return a.originalIndex - b.originalIndex;
     }
 
     if (sortBy === 'name') {
-      const nameSort = String(a.name || '').localeCompare(String(b.name || ''));
+      const nameSort = String(a.name || '').localeCompare(String(b.name || ''), undefined, {
+        sensitivity: 'base',
+      });
       return nameSort || a.originalIndex - b.originalIndex;
     }
 
     if (sortBy === 'language') {
-      const langA = String(a.language || '');
-      const langB = String(b.language || '');
-      const languageSort = langA.localeCompare(langB);
+      const langA = String(a.language || 'zz');
+      const langB = String(b.language || 'zz');
+      const languageSort = langA.localeCompare(langB, undefined, { sensitivity: 'base' });
       if (languageSort !== 0) return languageSort;
-      const nameSort = String(a.name || '').localeCompare(String(b.name || ''));
+      const nameSort = String(a.name || '').localeCompare(String(b.name || ''), undefined, {
+        sensitivity: 'base',
+      });
       return nameSort || a.originalIndex - b.originalIndex;
     }
 
@@ -278,8 +322,12 @@ function createSortComparator(sortBy, githubProjects) {
     const scoreB = githubProjects.getPopularityScore(b);
     if (scoreB !== scoreA) return scoreB - scoreA;
 
+    const starDiff = Number(b.stargazers_count || 0) - Number(a.stargazers_count || 0);
+    if (starDiff !== 0) return starDiff;
+
     return (
-      new Date(b.updated_at || 0) - new Date(a.updated_at || 0) || a.originalIndex - b.originalIndex
+      new Date(b.pushed_at || b.updated_at || 0) - new Date(a.pushed_at || a.updated_at || 0) ||
+      a.originalIndex - b.originalIndex
     );
   };
 }
@@ -333,17 +381,13 @@ function normalizeLens(value) {
   const lens = String(value || DEFAULT_PROJECT_LENS)
     .trim()
     .toLowerCase();
-  return ['all', 'attention', 'hot', 'busy', 'fresh', 'released'].includes(lens)
-    ? lens
-    : DEFAULT_PROJECT_LENS;
+  return LENS_KEYS.includes(lens) ? lens : DEFAULT_PROJECT_LENS;
 }
 
 function getLensLabel(lens) {
   const labels = {
-    attention: 'need attention',
     hot: 'hot projects',
     busy: 'busy projects',
-    fresh: 'fresh projects',
     released: 'released projects',
   };
   return labels[lens] || '';
@@ -359,33 +403,35 @@ function createLensMatcher(lens, githubProjects) {
     }
 
     const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
-    return signal.filters.has(normalizedLens);
+    if (normalizedLens === 'released') {
+      return Boolean(signal.hasRelease);
+    }
+    return signal.key === normalizedLens;
   };
 }
 
 function countLensDistribution(repos, githubProjects) {
   const counts = {
     all: repos.length,
-    attention: 0,
     hot: 0,
     busy: 0,
-    fresh: 0,
     released: 0,
   };
 
   repos.forEach(repo => {
     if (!githubProjects || typeof githubProjects.getReleaseSignal !== 'function') return;
     const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
-    ['attention', 'hot', 'busy', 'fresh', 'released'].forEach(key => {
-      if (signal.filters?.has(key)) counts[key] += 1;
-    });
+    if (signal.key === 'hot') counts.hot += 1;
+    if (signal.key === 'busy') counts.busy += 1;
+    if (signal.hasRelease) counts.released += 1;
   });
 
   return counts;
 }
 
-function updateLensChipCounts(repos, githubProjects) {
+function updateLensChipCounts(repos, githubProjects, activeLens = DEFAULT_PROJECT_LENS) {
   const counts = countLensDistribution(repos, githubProjects);
+  let nextActiveLens = activeLens;
 
   LENS_KEYS.forEach(key => {
     const chip = document.querySelector(`[data-project-lens="${key}"]`);
@@ -397,11 +443,21 @@ function updateLensChipCounts(repos, githubProjects) {
       countEl.textContent = String(value);
     }
 
+    const shouldHide = key !== 'all' && value === 0;
+    chip.hidden = shouldHide;
+    chip.disabled = shouldHide;
+
+    if (shouldHide && nextActiveLens === key) {
+      nextActiveLens = DEFAULT_PROJECT_LENS;
+    }
+
     const label = LENS_LABELS[key] || key;
     const hint = LENS_HINTS[key] || '';
     chip.title = hint ? `${label}: ${value} repos — ${hint}` : `${label}: ${value} repos`;
     chip.setAttribute('aria-label', `${label}, ${value} repositories`);
   });
+
+  return nextActiveLens;
 }
 
 function updateLensButtons(buttons, activeLens) {
@@ -499,8 +555,10 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         .join('');
 
       applyTiltEffects(container);
+      revealRenderedProjectCards(container);
       updateActivityStats(allRepos, displayRepos, githubProjects);
-      updateLensChipCounts(allShowcaseRepos, githubProjects);
+      activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+      updateLensButtons(lensButtons, activeLens);
 
       const reposToHydrate = displayRepos.filter(repo => !repo.__activityLoaded);
       if (reposToHydrate.length === 0) return;
@@ -518,8 +576,10 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
           .join('');
 
         applyTiltEffects(container);
+        revealRenderedProjectCards(container);
         updateActivityStats(allRepos, rerenderRepos, githubProjects);
-        updateLensChipCounts(allShowcaseRepos, githubProjects);
+        activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+        updateLensButtons(lensButtons, activeLens);
       }
     };
 
@@ -544,6 +604,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     lensButtons.forEach(button => {
       button.addEventListener('click', () => {
+        if (button.disabled || button.hidden) return;
         activeLens = normalizeLens(button.dataset.projectLens);
         updateLensButtons(lensButtons, activeLens);
         renderProjects().catch(error => {
@@ -552,7 +613,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       });
     });
     updateLensButtons(lensButtons, activeLens);
-    updateLensChipCounts(allShowcaseRepos, githubProjects);
+    activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+    updateLensButtons(lensButtons, activeLens);
 
     document.addEventListener('input', event => {
       const target = event.target;
@@ -590,7 +652,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       .then(() => {
         if (renderToken === 0) return;
         updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
-        updateLensChipCounts(allShowcaseRepos, githubProjects);
+        activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+        updateLensButtons(lensButtons, activeLens);
       })
       .catch(() => {
         // Non-blocking enhancement; UI already rendered with fallback stats.

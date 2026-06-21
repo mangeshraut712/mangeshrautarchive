@@ -668,7 +668,7 @@
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260423a" data-lazy-style-key="education" />
   <link rel="stylesheet" data-href="assets/css/skills.css?v=20260525a" data-lazy-style-key="skills" />
   <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260423a" data-lazy-style-key="certifications" />
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260622a" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=20260622c" />
   <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260423a" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260617c" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260617c" data-lazy-style-key="assistant" />
@@ -1113,7 +1113,7 @@
                           <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                       </span>
-                      <span class="reach-count" id="reach-count" aria-live="polite">Syncing</span>
+                      <span class="reach-count" id="reach-count" aria-live="polite">Live</span>
                     </button>
                   </div>
 
@@ -1199,6 +1199,10 @@
                   </div>
                 </div>
 
+                <script defer src="js/modules/hero-flyout-position.js?v=20260622c"></script>
+                <script defer src="js/modules/vibe-stack.js?v=20260622c"></script>
+                <script defer src="js/modules/analytics.js?v=20260622c"></script>
+
                 <!-- Apple Music Style - Last.fm Now Playing Card -->
                 <div class="music-card" id="music-card">
                   <div class="music-card-inner">
@@ -1242,59 +1246,6 @@
                   <span>I turn product ideas into dependable full-stack systems.</span>
                   <span>I care about clean architecture, fast interfaces, and measurable impact.</span>
                 </p>
-              </div>
-
-              <aside id="visitor-start-panel" class="visitor-start-panel lg-glass-card" hidden
-                aria-label="Start here guide for new visitors">
-                <div class="visitor-start-header">
-                  <div>
-                    <p class="visitor-start-eyebrow">New here?</p>
-                    <h2 class="visitor-start-title">Start with these highlights</h2>
-                  </div>
-                  <button type="button" class="visitor-start-dismiss premium-close-btn" aria-label="Dismiss start guide">
-                    <i class="fas fa-times" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <p class="visitor-start-message">
-                  Read two fresh June field notes, skim my project showcase, then subscribe for monthly engineering notes.
-                  Bookmark the archive — new essays land regularly.
-                </p>
-                <ul class="visitor-start-links">
-                  <li>
-                    <a href="#blog" data-visitor-blog="wwdc-2026-apple-intelligence-siri-ai">
-                      <i class="fas fa-book-open" aria-hidden="true"></i>
-                      WWDC 2026 · Apple Intelligence
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#blog" data-visitor-blog="notebooklm-2026-ai-research-agent">
-                      <i class="fas fa-book-open" aria-hidden="true"></i>
-                      NotebookLM · Research workflow
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#about">
-                      <i class="fas fa-user" aria-hidden="true"></i>
-                      About me &amp; experience
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#projects">
-                      <i class="fas fa-code-branch" aria-hidden="true"></i>
-                      Release-aware project showcase
-                    </a>
-                  </li>
-                </ul>
-              </aside>
-
-              <div id="visitor-welcome-back" class="visitor-welcome-back" hidden role="status" aria-live="polite">
-                <p class="visitor-welcome-text">
-                  Welcome back — two June field notes are waiting in the blog.
-                  <a href="#blog" data-visitor-blog="wwdc-2026-apple-intelligence-siri-ai">Read the latest</a>
-                </p>
-                <button type="button" class="visitor-welcome-dismiss premium-close-btn" aria-label="Dismiss welcome message">
-                  <i class="fas fa-times" aria-hidden="true"></i>
-                </button>
               </div>
 
               <div class="hero-footer">
@@ -1898,10 +1849,6 @@
                 <span class="activity-stat-label">Since Release</span>
               </div>
               <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-attention">--</span>
-                <span class="activity-stat-label">Need Attention</span>
-              </div>
-              <div class="activity-stat-item skeleton">
                 <span class="activity-stat-value" id="stat-languages">--</span>
                 <span class="activity-stat-label">Languages</span>
               </div>
@@ -2178,21 +2125,13 @@
               title="All showcase repositories">
               All <span class="project-lens-count" data-lens-count="all">—</span>
             </button>
-            <button type="button" class="project-lens-chip" data-project-lens="attention" aria-pressed="false"
-              title="Stale releases or heavy commit drift since last tag">
-              Need attention <span class="project-lens-count" data-lens-count="attention">—</span>
-            </button>
             <button type="button" class="project-lens-chip" data-project-lens="hot" aria-pressed="false"
-              title="Active in the last 14 days">
+              title="Primary signal: active in the last 14 days">
               Hot <span class="project-lens-count" data-lens-count="hot">—</span>
             </button>
             <button type="button" class="project-lens-chip" data-project-lens="busy" aria-pressed="false"
-              title="10 or more commits since the latest release">
+              title="Primary signal: 10 or more commits since the latest release">
               Busy <span class="project-lens-count" data-lens-count="busy">—</span>
-            </button>
-            <button type="button" class="project-lens-chip" data-project-lens="fresh" aria-pressed="false"
-              title="Released within the last 45 days">
-              Fresh <span class="project-lens-count" data-lens-count="fresh">—</span>
             </button>
             <button type="button" class="project-lens-chip" data-project-lens="released" aria-pressed="false"
               title="Has at least one GitHub release">
@@ -2213,15 +2152,16 @@
               <select id="project-sort-select"
                 class="proj-filter-select rounded-full px-5 py-3 outline-none cursor-pointer font-medium appearance-none min-w-[180px]"
                 aria-label="Sort projects">
-                <option value="popularity">Sort by Popularity</option>
-                <option value="date">Sort by Date</option>
-                <option value="name">Sort by Name</option>
-                <option value="language">Sort by Language</option>
+                <option value="popularity">Featured</option>
+                <option value="stars">Most stars</option>
+                <option value="date">Recently pushed</option>
+                <option value="name">Name (A–Z)</option>
+                <option value="language">Primary language</option>
               </select>
               <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
                 class="projects-view-all-btn flex items-center justify-center gap-2 font-medium"
                 aria-label="Visit GitHub profile">
-                <i class="fab fa-github text-lg"></i> Visit GitHub Profile
+                <i class="fab fa-github text-lg" aria-hidden="true"></i><span>Visit GitHub Profile</span>
               </a>
             </div>
           </div>
@@ -2365,37 +2305,61 @@
         <div class="publications-grid">
           <!-- Publication Card -->
           <article class="publication-card">
-            <div class="publication-header">
-              <div class="publication-meta">
-                <span class="publication-category">Methods and Algorithms</span>
-                <span class="publication-separator">|</span>
-                <span class="publication-venue">IJFGCN 2020</span>
+            <div class="publication-body">
+              <div class="publication-header">
+                <div class="publication-meta">
+                  <span class="publication-category">Methods and Algorithms</span>
+                  <span class="publication-separator">|</span>
+                  <span class="publication-venue">IJFGCN 2020</span>
+                </div>
+              </div>
+
+              <h3 class="publication-title">
+                Real-Time Face Emotion Recognition System
+              </h3>
+
+              <div class="publication-authors">
+                Mangesh Raut*, Research Team
+              </div>
+
+              <div class="publication-footer">
+                <div class="publication-info">
+                  <p class="publication-journal">
+                    International Journal of Future Generation Communication and Networking
+                  </p>
+                  <p class="publication-details">
+                    Vol. 13, No. 3, (2020), pp. 3306-3313 • ISSN • Jun 15, 2020
+                  </p>
+                </div>
+                <a href="assets/files/RTFERS paper.pdf" target="_blank" rel="noopener noreferrer"
+                  class="publication-read-btn">
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                  <span>Read paper</span>
+                </a>
               </div>
             </div>
 
-            <h3 class="publication-title">
-              Real-Time Face Emotion Recognition System
-            </h3>
-
-            <div class="publication-authors">
-              Mangesh Raut*, Research Team
-            </div>
-
-            <div class="publication-footer">
-              <div class="publication-info">
-                <p class="publication-journal">
-                  International Journal of Future Generation Communication and Networking
-                </p>
-                <p class="publication-details">
-                  Vol. 13, No. 3, (2020), pp. 3306-3313 • ISSN • Jun 15, 2020
-                </p>
-              </div>
+            <aside class="publication-preview" aria-label="Paper preview">
               <a href="assets/files/RTFERS paper.pdf" target="_blank" rel="noopener noreferrer"
-                class="publication-read-btn" style="color: #fff !important; -webkit-text-fill-color: #fff !important;">
-                <i class="fas fa-file-pdf"></i>
-                Read paper
+                class="publication-preview-link">
+                <div class="publication-preview-sheet">
+                  <span class="publication-preview-badge">IJFGCN 2020</span>
+                  <p class="publication-preview-kicker">Research paper</p>
+                  <h4 class="publication-preview-title">Real-Time Face Emotion Recognition System</h4>
+                  <p class="publication-preview-abstract">
+                    CNN-based pipeline for live facial affect detection with a real-time dashboard and deployment notes.
+                  </p>
+                  <div class="publication-preview-meta">
+                    <span>Vol. 13 · pp. 3306–3313</span>
+                    <span>PDF</span>
+                  </div>
+                </div>
+                <span class="publication-preview-cta">
+                  <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  Open preview
+                </span>
               </a>
-            </div>
+            </aside>
           </article>
         </div>
       </div>
@@ -2768,10 +2732,9 @@
     <section id="blog" class="fade-in py-12">
       <div class="container">
         <h2>Technical Writings <span id="blog-post-count" class="section-count">(12)</span></h2>
-        <p class="text-center text-secondary max-w-2xl mx-auto mb-8">
+        <p class="text-center text-secondary max-w-2xl mx-auto mb-12">
           Sharing insights on cloud architecture, full-stack development, and machine learning.
         </p>
-        <div id="blog-month-picks" class="blog-month-picks" hidden aria-label="This month's recommended field notes"></div>
         <div id="blog-posts-container">
           <!-- Blog posts injected by blog-loader.js -->
           <div class="flex justify-center p-12">
@@ -3586,16 +3549,16 @@
               <!-- Currently Section (Bottom) -->
               <div class="currently-header">
                 <h3><i class="fas fa-bookmark"></i> Currently</h3>
-                <div class="currently-tabs">
-                  <button class="currently-tab active" data-tab="shows" aria-label="Shows and Movies">
+                <div class="currently-tabs" role="tablist" aria-label="Currently categories">
+                  <button class="currently-tab active" data-tab="shows" aria-label="Shows and Movies" aria-selected="true">
                     <i class="fas fa-tv"></i>
                     <span>Shows & Movies</span>
                   </button>
-                  <button class="currently-tab" data-tab="music" aria-label="Music">
+                  <button class="currently-tab" data-tab="music" aria-label="Music" aria-selected="false">
                     <i class="fas fa-music"></i>
                     <span>Music</span>
                   </button>
-                  <button class="currently-tab" data-tab="books" aria-label="Books">
+                  <button class="currently-tab" data-tab="books" aria-label="Books" aria-selected="false">
                     <i class="fas fa-book"></i>
                     <span>Books</span>
                   </button>
@@ -3614,7 +3577,7 @@
               </div>
 
               <!-- Music Section - Last.fm Now Playing -->
-              <div class="currently-content" id="music-content">
+              <div class="currently-content" id="music-content" hidden>
                 <div class="media-grid music-shelf-grid" id="music-grid">
                   <!-- Featured / now playing card -->
                   <div class="media-card currently-music-card currently-music-state now-playing" id="now-playing-card" hidden>
@@ -3666,7 +3629,7 @@
               </div>
 
               <!-- Books Section -->
-              <div class="currently-content" id="books-content">
+              <div class="currently-content" id="books-content" hidden>
                 <div class="media-grid" id="books-grid">
                   <!-- Will be populated by real-media-loader.js with verified Open Library covers -->
                   <div class="text-center py-8">
@@ -3958,9 +3921,6 @@
       (function () {
         var audit = window.__PERF_AUDIT__ === true;
         var scripts = [
-          { src: 'js/modules/hero-flyout-position.js?v=20260621d', defer: true },
-          { src: 'js/modules/analytics.js?v=20260621d', defer: true },
-          { src: 'js/modules/vibe-stack.js?v=20260621d', defer: true },
           { src: 'js/utils/smart-navbar.js?v=20260423a', module: true },
           { src: 'js/utils/theme.js?v=20260423a', module: true },
           { src: 'js/utils/go-to-top.js?v=20260423a', defer: true },

@@ -1174,11 +1174,12 @@ html.dark .support-donation-card cite {
   display: flex !important;
   flex-direction: column !important;
   justify-content: flex-start !important;
-  width: 184px;
-  min-width: 184px;
-  max-width: 184px;
-  border-radius: 20px;
+  width: 148px;
+  min-width: 148px;
+  max-width: 148px;
+  border-radius: 14px;
   padding: 0;
+  overflow: hidden;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -1199,69 +1200,60 @@ html.dark .support-donation-card cite {
   width: 100%;
   min-width: 100%;
   aspect-ratio: 1/1 !important;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f5f5f7;
+  border: none;
   box-sizing: border-box;
-  box-shadow:
-    0 12px 28px rgba(15, 23, 42, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: none;
   transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
+    transform 0.25s ease,
+    filter 0.25s ease;
 }
 
 #music-content .currently-music-card:hover .media-poster,
 #music-content .recent-track-card:hover .media-poster {
-  border: 1px solid #0071e3 !important;
-  box-shadow:
-    0 14px 30px rgba(15, 23, 42, 0.14),
-    0 0 0 1px rgba(0, 113, 227, 0.35) !important;
+  transform: scale(1.02);
+  filter: brightness(1.03);
 }
 
 html.dark #music-content .currently-music-card .media-poster {
-  background: #000000;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  background: #1c1c1e;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 html.dark #music-content .currently-music-card:hover .media-poster,
 html.dark #music-content .recent-track-card:hover .media-poster {
-  border: 1px solid #0a84ff !important;
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(10, 132, 255, 0.4) !important;
+  filter: brightness(1.08);
 }
 
 #music-content .currently-music-card .media-poster img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  border-radius: 19px;
+  border-radius: 0;
 }
 
 #music-content .currently-music-card .media-info {
-  min-height: 136px;
-  height: 136px;
-  max-height: 136px;
-  padding: 0 0.15rem;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  padding: 0.55rem 0.65rem 0.65rem;
   text-align: center;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: stretch;
+  gap: 0.3rem;
   justify-content: flex-start;
-  overflow: visible;
+  overflow: hidden;
+  flex: 1;
 }
 
 #music-content .currently-music-card .media-info h4 {
-  font-size: 0.94rem !important;
-  font-weight: 700 !important;
-  line-height: 1.22;
-  min-height: 2.3em;
-  max-height: 2.3em;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  line-height: 1.25;
+  min-height: 0;
+  max-height: none;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -1275,17 +1267,16 @@ html.dark #music-content .currently-music-card .media-info h4 {
 }
 
 #music-content .currently-music-card .media-info p {
-  font-size: 0.72rem !important;
-  line-height: 1.4;
-  min-height: 2.8em;
-  max-height: 2.8em;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: 0.68rem !important;
+  line-height: 1.3;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  white-space: nowrap;
   overflow: hidden;
-  color: #6e6e73 !important;
+  text-overflow: ellipsis;
+  display: block;
+  color: #86868b !important;
 }
 
 html.dark #music-content .currently-music-card .media-info p {
@@ -1294,51 +1285,56 @@ html.dark #music-content .currently-music-card .media-info p {
 
 #music-content .currently-music-card .watch-btn {
   width: 100%;
-  min-height: 44px;
-  max-height: 44px;
+  min-height: 32px;
+  max-height: none;
   justify-content: center;
   align-self: stretch;
-  padding: 0.7rem 1rem;
-  border-radius: 999px;
-  background: rgba(29, 185, 84, 0.08);
-  border: 1.5px solid rgba(29, 185, 84, 0.45);
-  color: #15803d !important;
+  margin-top: 0.2rem;
+  padding: 0.42rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(0, 113, 227, 0.08);
+  border: none;
+  color: #0071e3 !important;
   box-shadow: none;
   font-weight: 600;
+  font-size: 0.68rem;
+  text-transform: none;
+  letter-spacing: -0.01em;
 }
 
 #music-content .currently-music-card .watch-btn:hover {
-  background: rgba(29, 185, 84, 0.14);
-  border-color: rgba(29, 185, 84, 0.65);
-  transform: translateY(-1px);
+  background: rgba(0, 113, 227, 0.14);
+  transform: none;
 }
 
 html.dark #music-content .currently-music-card .watch-btn {
-  border-color: rgba(30, 215, 96, 0.45);
-  color: #1ed760 !important;
-  background: rgba(30, 215, 96, 0.1);
+  border: none;
+  color: #0a84ff !important;
+  background: rgba(10, 132, 255, 0.12);
 }
 
 html.dark #music-content .currently-music-card .watch-btn:hover {
-  background: rgba(30, 215, 96, 0.18);
-  border-color: rgba(30, 215, 96, 0.65);
+  background: rgba(10, 132, 255, 0.2);
 }
 
 #music-content .currently-music-card .media-badge.playing {
-  top: 10px;
-  right: 10px;
-  padding: 0.46rem 0.72rem;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.88) !important;
+  top: 8px;
+  right: 8px;
+  padding: 0.22rem 0.48rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55) !important;
   color: #fff !important;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  font-size: 0.58rem;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 #music-content .currently-music-card.is-now-playing .media-badge.playing,
 #music-content .currently-music-card.now-playing .media-badge.playing {
-  background: linear-gradient(135deg, #1db954 0%, #1ed760 100%) !important;
-  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.35);
+  background: rgba(29, 185, 84, 0.88) !important;
+  box-shadow: 0 2px 8px rgba(29, 185, 84, 0.35);
 }
 
 #music-content .currently-music-card.loading,
@@ -1386,27 +1382,17 @@ html.dark #music-content .currently-music-card .watch-btn:hover {
 
 @media (max-width: 768px) {
   #music-content .currently-music-card {
-    width: 152px;
-    min-width: 152px;
-    max-width: 152px;
-  }
-
-  #music-content .currently-music-card .media-info {
-    min-height: 124px;
-    height: 124px;
-    max-height: 124px;
+    width: 132px;
+    min-width: 132px;
+    max-width: 132px;
   }
 
   #music-content .currently-music-card .media-info h4 {
-    font-size: 0.88rem !important;
-    min-height: 2.25em;
-    max-height: 2.25em;
+    font-size: 0.74rem !important;
   }
 
   #music-content .currently-music-card .media-info p {
-    font-size: 0.7rem !important;
-    min-height: 2.7em;
-    max-height: 2.7em;
+    font-size: 0.64rem !important;
   }
 }
 
@@ -1881,35 +1867,45 @@ html.dark #contact .contact-link-item {
 }
 
 .currently-tabs {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  padding: 0.25rem;
-  display: flex;
-  gap: 0.5rem;
-  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(118, 118, 128, 0.12);
+  flex-shrink: 0;
 }
 
 html.dark .currently-tabs {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: #000000;
+  border: none;
+  background: rgba(118, 118, 128, 0.24);
 }
 
 .currently-tab {
-  border-radius: 10px;
-  flex: 1;
-  display: flex;
+  border-radius: 8px;
+  flex: 0 1 auto;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.6rem 0.75rem;
-  font-size: 0.85rem;
+  gap: 0.35rem;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.76rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: #ffffff;
-  color: #1d1d1f;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+  background: transparent;
+  color: #6e6e73;
+  border: none;
   box-shadow: none;
+  white-space: nowrap;
+}
+
+#currently-section .currently-content[hidden] {
+  display: none !important;
 }
 
 .currently-content.active {
@@ -1930,26 +1926,29 @@ html.dark .currently-tabs {
 }
 
 .media-card {
-  width: 140px;
-  border-radius: 12px;
+  width: 148px;
+  min-width: 148px;
+  max-width: 148px;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0;
   padding: 0;
+  overflow: hidden;
   background: transparent;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
   border: none;
   flex: 0 0 auto;
   scroll-snap-align: start;
 }
 
 .media-card:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-3px);
 }
 
 .media-poster {
-  border-radius: 10px;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  border-radius: 0;
+  box-shadow: none;
   width: 100%;
   aspect-ratio: 2/3;
   display: flex;
@@ -1974,15 +1973,20 @@ html.dark .media-poster {
   }
 
   .currently-tabs {
-    gap: 0.35rem;
+    gap: 2px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
   .currently-tab {
-    padding: 0.58rem 0.7rem;
+    padding: 0.42rem 0.55rem;
   }
 
   .media-card {
     width: 132px;
+    min-width: 132px;
+    max-width: 132px;
   }
 }
 
@@ -2630,24 +2634,25 @@ html.dark .currently-card {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgb(0 0 0 / 6%);
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 html.dark .currently-header {
-  border-bottom-color: rgb(255 255 255 / 10%);
+  border-bottom-color: transparent;
 }
 
 .currently-header h3 {
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
   font-weight: 700 !important;
   color: #1d1d1f !important;
   margin: 0 !important;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
+  flex-shrink: 0;
 }
 
 html.dark .currently-header h3 {
@@ -2664,38 +2669,46 @@ html.dark .currently-header h3 i {
 
 .currently-tab:hover {
   color: #1d1d1f;
-  background: #f5f5f7;
+  background: rgba(255, 255, 255, 0.45);
 }
 
 html.dark .currently-tab:hover {
   color: #f5f5f7;
-  background: #111111;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .currently-tab.active {
-  background: #0071e3;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 html.dark .currently-tab.active {
-  background: #0a84ff;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgb(10 132 255 / 40%);
+  background: rgba(255, 255, 255, 0.16);
+  color: #f5f5f7;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 html.dark .currently-tab {
-  background: #000000;
-  color: #f5f5f7;
-  border-color: rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #98989d;
+  border: none;
 }
 
 .currently-tab i {
-  font-size: 0.9rem;
+  font-size: 0.72rem;
 }
 
 .currently-content {
   display: none;
+}
+
+#currently-section .currently-content:not(.active) {
+  display: none !important;
 }
 
 @keyframes fadeIn {
@@ -2715,10 +2728,10 @@ html.dark .currently-tab {
 .media-grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: 0.75rem;
+  gap: 0.65rem;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0.5rem 0.25rem;
+  padding: 0.35rem 0.15rem 0.5rem;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -2778,9 +2791,9 @@ html.dark .media-poster::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
-  transition: all 0.3s ease;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform 0.3s ease;
   background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
 }
 
@@ -2801,20 +2814,21 @@ html.dark .media-poster img {
 
 .media-badge {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  padding: 3px 6px;
-  background: rgba(0 0 0 / 0.85);
+  top: 8px;
+  right: 8px;
+  padding: 0.22rem 0.48rem;
+  background: rgba(0 0 0 / 0.55);
   color: #ffffff !important;
-  font-size: 0.6rem;
-  font-weight: 700;
-  border-radius: 4px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  border-radius: 999px;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  text-shadow: 0 1px 2px rgba(0 0 0 / 0.5);
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-shadow: none;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 /* Media Info - Compact */
@@ -2822,21 +2836,26 @@ html.dark .media-poster img {
 .media-info {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
-  padding: 0 0.25rem;
+  gap: 0.3rem;
+  padding: 0.55rem 0.65rem 0.65rem;
   text-align: center;
-  min-height: 70px;
+  min-height: 0;
+  flex: 1;
+  align-items: stretch;
 }
 
 .media-info h4 {
-  font-size: 0.8rem !important;
+  font-size: 0.78rem !important;
   font-weight: 600 !important;
   color: #1d1d1f !important;
   margin: 0 !important;
   line-height: 1.25;
-  white-space: nowrap;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 100%;
 }
 
@@ -2846,15 +2865,30 @@ html.dark .media-info h4 {
 
 .media-info p {
   display: none;
+  margin: 0;
+}
+
+.book-card .media-info p {
+  display: block;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: #86868b !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.dark .book-card .media-info p {
+  color: #98989d !important;
 }
 
 .recent-track-img {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 8px 18px rgb(15 23 42 / 10%);
-  transition: all 0.3s ease;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform 0.3s ease;
   background: #f5f5f7;
 }
 
@@ -2869,24 +2903,25 @@ html.dark .recent-track-img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.5rem 0.85rem;
-  background: #f0f0f2;
-  color: #0056cc !important;
-  /* darker blue for better contrast (6.2: 1 ratio) */
-  font-size: 0.7rem;
-  font-weight: 700;
-  border-radius: 100px;
+  gap: 0.3rem;
+  padding: 0.42rem 0.5rem;
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3 !important;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: 8px;
   text-decoration: none !important;
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
   border: none;
   cursor: pointer;
-  margin-top: auto;
-  width: auto;
+  margin-top: 0.15rem;
+  width: 100%;
   max-width: 100%;
-  align-self: center;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  align-self: stretch;
+  text-transform: none;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2894,49 +2929,48 @@ html.dark .recent-track-img {
 }
 
 .watch-btn:hover {
-  background: #e5e5ea;
-  color: #004499 !important;
-  /* even darker on hover for maintained contrast */
-  transform: scale(1.05);
+  background: rgba(0, 113, 227, 0.14);
+  color: #0071e3 !important;
+  transform: none;
 }
 
 .watch-btn:active {
   transform: scale(0.98);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .watch-btn.book-btn {
-  color: #ff9500 !important;
-  background: rgba(255, 149, 0, 0.1);
+  color: #0071e3 !important;
+  background: rgba(0, 113, 227, 0.08);
 }
 
 .watch-btn.book-btn:hover {
-  background: rgba(255, 149, 0, 0.15);
+  background: rgba(0, 113, 227, 0.14);
 }
 
 .watch-btn i {
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   flex-shrink: 0;
 }
 
-/* Shorten long button text */
-
 .watch-btn span {
   display: inline;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 html.dark .watch-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(10, 132, 255, 0.12);
   color: #0a84ff !important;
 }
 
 html.dark .watch-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(10, 132, 255, 0.2);
 }
 
 html.dark .watch-btn.book-btn {
-  color: #ff9f0a !important;
-  background: rgba(255, 159, 10, 0.15);
+  color: #0a84ff !important;
+  background: rgba(10, 132, 255, 0.12);
 }
 
 /* Contact link rows stay solid; card-level liquid glass lives in wwdc26 section 17. */
@@ -2969,45 +3003,66 @@ html.dark #contact .music-poster-empty {
   background: #000000 !important;
 }
 
-#contact .currently-tabs,
-#contact .currently-tab:not(.active),
-#contact .ios-btn,
-#contact .today-btn {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  color: #1d1d1f !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+#contact .currently-tabs {
+  background: rgba(118, 118, 128, 0.12) !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
-html.dark #contact .currently-tabs,
+#contact .currently-tab:not(.active),
+#contact .ios-btn,
+#contact .today-btn {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #6e6e73 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+html.dark #contact .currently-tabs {
+  background: rgba(118, 118, 128, 0.24) !important;
+  border: none !important;
+}
+
 html.dark #contact .currently-tab:not(.active),
 html.dark #contact .ios-btn,
 html.dark #contact .today-btn {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  color: #f5f5f7 !important;
-  border-color: rgba(255, 255, 255, 0.14) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #98989d !important;
+  border: none !important;
 }
 
 #contact .currently-tab.active,
 html.dark #contact .currently-tab.active {
-  color: #ffffff !important;
-  background: #0071e3 !important;
-  border-color: #0071e3 !important;
-  box-shadow: none !important;
+  color: #1d1d1f !important;
+  background: #ffffff !important;
+  border: none !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.dark #contact .currently-tab.active {
+  color: #f5f5f7 !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
 }
 
 #contact .ios-btn:hover,
 #contact .today-btn:hover,
 #contact .currently-tab:not(.active):hover {
-  background: #f5f5f7 !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+  color: #1d1d1f !important;
 }
 
 html.dark #contact .ios-btn:hover,
 html.dark #contact .today-btn:hover,
 html.dark #contact .currently-tab:not(.active):hover {
-  background: #111111 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f5f5f7 !important;
 }
 
 /* Final target-size guardrails */
@@ -3107,11 +3162,23 @@ html.dark body #blog .newsletter-card .newsletter-form input.apple-input {
   }
 
   .currently-tab span {
-    display: none;
+    display: inline;
+  }
+
+  .currently-header {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .currently-tabs {
+    width: 100%;
+    justify-content: stretch;
   }
 
   .currently-tab {
-    padding: 0.6rem;
+    flex: 1;
+    padding: 0.42rem 0.35rem;
+    font-size: 0.72rem;
   }
 
   .media-info h4 {
@@ -3122,4 +3189,32 @@ html.dark body #blog .newsletter-card .newsletter-form input.apple-input {
     padding: 0.4rem 0.75rem;
     font-size: 0.75rem;
   }
+}
+
+/* Currently shelf — layout guardrails over global card tokens */
+
+#currently-section .media-card,
+#currently-section #music-content .currently-music-card {
+  border-radius: 14px !important;
+  overflow: hidden;
+  gap: 0;
+}
+
+#currently-section .media-card .media-poster,
+#currently-section .media-card .media-poster img,
+#currently-section #music-content .currently-music-card .media-poster,
+#currently-section #music-content .currently-music-card .media-poster img {
+  border-radius: 0 !important;
+}
+
+#currently-section .media-info,
+#currently-section #music-content .currently-music-card .media-info {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+#currently-section .media-card:hover,
+#currently-section #music-content .currently-music-card:hover {
+  transform: translateY(-3px) !important;
 }

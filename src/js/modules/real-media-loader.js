@@ -24,9 +24,8 @@ class RealMediaLoader {
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNDAgMjQwJz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9J2cnIHgxPScwJyB5MT0nMCcgeDI9JzEnIHkyPScxJz48c3RvcCBzdG9wLWNvbG9yPScjMWRiOTU0Jy8+PHN0b3Agb2Zmc2V0PScxJyBzdG9wLWNvbG9yPScjMTkxNDE0Jy8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgZmlsbD0ndXJsKCNnKScgd2lkdGg9JzI0MCcgaGVpZ2h0PScyNDAnIHJ4PScyOCcvPjxjaXJjbGUgY3g9JzEyMCcgY3k9JzEyMCcgcj0nNTAnIGZpbGw9J3JnYmEoMjU1LDI1NSwyNTUsMC4xKScvPjxwYXRoIGZpbGw9J3doaXRlJyBkPSdNMTU3IDgzYTY3IDY3IDAgMCAwLTc0IDkgNiA2IDAgMSAwIDcgMTAgNTUgNTUgMCAwIDEgNjAtNyA2IDYgMCAxIDAgNy0xMlptLTggMjhhNDMgNDMgMCAwIDAtNDYgNiA2IDYgMCAwIDAgOCA5IDMxIDMxIDAgMCAxIDMzLTQgNiA2IDAgMCAwIDUtMTBabS05IDI1YTE5IDE5IDAgMCAwLTE5IDIgNiA2IDAgMSAwIDcgOSA3IDcgMCAwIDEgOC0xIDYgNiAwIDEgMCA0LTEwWicgb3BhY2l0eT0nMC45Jy8+PC9zdmc+';
   }
 
-  getShortTitle(title, maxLength = 15) {
-    if (!title || title.length <= maxLength) return title || '';
-    return `${title.slice(0, maxLength - 3)}...`;
+  getShortTitle(title) {
+    return title || '';
   }
 
   getUniqueItems(items = [], keySelector = item => item.title) {
@@ -66,7 +65,7 @@ class RealMediaLoader {
           <div class="media-info">
             <h4>${this.getShortTitle(item.title)}</h4>
             <a href="${item.link}" target="_blank" rel="noopener" class="watch-btn" onclick="try { window.analyticsTracker.track('media_click', { title: '${item.title.replace(/'/g, "\\'")}', type: '${item.type}' }) } catch(e){}">
-              <i class="fas fa-play"></i> ${item.platform}
+              <i class="fas fa-play" aria-hidden="true"></i><span>${item.platform}</span>
             </a>
           </div>
         </div>
@@ -118,7 +117,7 @@ class RealMediaLoader {
             <h4>${this.getShortTitle(book.title)}</h4>
             <p class="text-xs text-gray-500">${book.author}</p>
             <a href="${book.link}" target="_blank" rel="noopener" class="watch-btn book-btn" onclick="try { window.analyticsTracker.track('media_click', { title: '${book.title.replace(/'/g, "\\'")}', type: '${book.type}' }) } catch(e){}">
-              <i class="fas fa-book-open"></i> Read
+              <i class="fas fa-book-open" aria-hidden="true"></i><span>Read</span>
             </a>
           </div>
         </div>

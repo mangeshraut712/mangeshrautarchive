@@ -24,6 +24,9 @@
     action: document.getElementById('reach-panel-action'),
   };
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v1';
+  const REACH_CACHE_TTL_MS = 5 * 60 * 1000;
+  const API_TIMEOUT_MS = 5000;
   const STORAGE_KEYS = {
     SESSION_ID: 'portfolio_shared_session_id_v1',
     LAST_VISIT: 'portfolio_shared_last_visit_v1',
@@ -80,6 +83,64 @@
     const sessionId = `portfolio_${now}_${Math.random().toString(36).slice(2, 10)}`;
     localStorage.setItem(STORAGE_KEYS.SESSION_ID, sessionId);
     return sessionId;
+  }
+
+  function readReachCache() {
+    try {
+      const raw = sessionStorage.getItem(REACH_CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed?.data || Date.now() - Number(parsed.ts || 0) > REACH_CACHE_TTL_MS) {
+        return null;
+      }
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeReachCache(payload, type) {
+    try {
+      sessionStorage.setItem(
+        REACH_CACHE_KEY,
+        JSON.stringify({
+          ts: Date.now(),
+          type,
+          data: payload,
+        })
+      );
+    } catch {
+      // Optional cache.
+    }
+  }
+
+  function hydrateReachFromCache() {
+    const cached = readReachCache();
+    if (!cached?.type || !cached?.data) return false;
+
+    if (cached.type === 'reach') {
+      updateDisplayFromReach(cached.data);
+    } else if (cached.type === 'views') {
+      updateDisplayFromViews(cached.data);
+    } else {
+      return false;
+    }
+
+    return true;
+  }
+
+  async function fetchWithTimeout(url, options = {}, timeoutMs = API_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      return await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+    } finally {
+      window.clearTimeout(timer);
+    }
   }
 
   function formatNumber(value) {
@@ -353,16 +414,15 @@
     if (!apiBase) return null;
 
     try {
-      const res = await fetch(`${apiBase}/analytics/reach`, {
+      const res = await fetchWithTimeout(`${apiBase}/analytics/reach`, {
         headers: { Accept: 'application/json' },
         cache: 'no-store',
       });
       if (!res.ok) throw new Error(`Reach fetch failed: ${res.status}`);
       return { type: 'reach', data: await res.json() };
     } catch {
-      // Fallback to legacy views endpoint
       try {
-        const res = await fetch(`${apiBase}/analytics/views`, {
+        const res = await fetchWithTimeout(`${apiBase}/analytics/views`, {
           headers: { Accept: 'application/json' },
           cache: 'no-store',
         });
@@ -378,7 +438,7 @@
     const apiBase = getApiBase();
     if (!apiBase) return null;
 
-    const response = await fetch(`${apiBase}/analytics/track`, {
+    const response = await fetchWithTimeout(`${apiBase}/analytics/track`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -403,21 +463,20 @@
 
   async function refreshReach({ track = false } = {}) {
     try {
-      // Step 1: Track visit (fire-and-forget if it fails)
-      if (track) {
-        try {
-          await trackSharedVisit();
-        } catch {
-          /* noop */
-        }
-      }
+      const trackPromise = track
+        ? trackSharedVisit().catch(() => null)
+        : Promise.resolve(null);
+      const fetchPromise = fetchReach();
+      const [, result] = await Promise.all([trackPromise, fetchPromise]);
 
-      // Step 2: Fetch the authoritative reach metric
-      const result = await fetchReach();
       if (!result) {
-        setUnavailableState();
+        if (!hydrateReachFromCache()) {
+          setUnavailableState();
+        }
         return;
       }
+
+      writeReachCache(result.data, result.type);
 
       if (result.type === 'reach') {
         updateDisplayFromReach(result.data);
@@ -426,7 +485,9 @@
       }
     } catch (error) {
       console.warn('[Portfolio Reach]', error.message);
-      setUnavailableState();
+      if (!hydrateReachFromCache()) {
+        setUnavailableState();
+      }
     }
   }
 
@@ -471,9 +532,9 @@
       }
     });
 
-    setTimeout(() => {
-      refreshReach({ track: true });
-    }, 50);
+    hydrateReachFromCache();
+
+    refreshReach({ track: true });
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {

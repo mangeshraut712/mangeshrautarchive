@@ -726,15 +726,15 @@ class GitHubProjects {
         label = 'Hot';
       } else if (activeAgeDays > 120) {
         key = 'attention';
-        label = 'Need attention';
+        label = 'Stale';
       }
     } else if (commitsSinceRelease !== null && commitsSinceRelease >= 25) {
       key = 'attention';
-      label = 'Need attention';
+      label = 'Stale';
       meta = `${this.formatCompactNumber(commitsSinceRelease)} commits since ${latestRelease.tagName}`;
     } else if (releaseAgeDays > 180) {
       key = 'attention';
-      label = 'Need attention';
+      label = 'Stale';
       meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
     } else if (commitsSinceRelease !== null && commitsSinceRelease >= 10) {
       key = 'busy';

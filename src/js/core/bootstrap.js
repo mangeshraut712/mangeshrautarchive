@@ -15,6 +15,7 @@ const INTERACTION_MODULES = [
 ];
 
 const SECTION_MODULES = [
+  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '400px 0px' },
   {
     sectionId: 'about',
     modulePath: '../modules/card-content-accessibility.js',
@@ -1031,7 +1032,33 @@ async function initBootstrap() {
     return;
   }
 
+  function initHeroInsightsPrefetch() {
+    if (isPerformanceAudit()) return;
+
+    const apiBase =
+      globalThis.APP_CONFIG?.apiBaseUrl ||
+      (window.location.hostname.endsWith('github.io') ? 'https://mangeshraut.pro' : '');
+
+    const hostname = window.location.hostname;
+    const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(hostname);
+
+    if (!apiBase || isLocalHost) {
+      return;
+    }
+
+    runWhenIdle(() => {
+      const prefetchUrl = `${String(apiBase).replace(/\/$/, '')}/api/github/repos/public?username=mangeshraut712`;
+      fetch(prefetchUrl, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        priority: 'low',
+        cache: 'force-cache',
+      }).catch(() => {});
+    }, 1500);
+  }
+
   hydrateHeroImages();
+  initHeroInsightsPrefetch();
   initGlobalErrorHandlers();
   initContactDeferredImages();
   initCertificationDeferredImages();

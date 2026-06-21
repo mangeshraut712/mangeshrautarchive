@@ -3278,7 +3278,7 @@ html.dark .media-poster img.error {
 
 /* Currently content sections - improved visibility */
 .currently-content {
-  min-height: 200px;
+  min-height: 0;
 }
 
 .currently-content.active {
@@ -3299,7 +3299,7 @@ html.dark .media-poster img.error {
 
 /* Media info styling improvements */
 .media-info {
-  min-height: 60px;
+  min-height: 0;
 }
 
 /* Empty/error state styling */

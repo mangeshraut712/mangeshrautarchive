@@ -17,16 +17,32 @@ export function initCurrentlySection() {
       const tabName = tab.dataset.tab;
 
       // Update tabs
-      tabs.forEach(t => t.classList.remove('active'));
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
       tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
 
       // Update content
-      contents.forEach(c => c.classList.remove('active'));
+      contents.forEach(c => {
+        c.classList.remove('active');
+        c.hidden = true;
+      });
       const targetContent = document.getElementById(`${tabName}-content`);
       if (targetContent) {
         targetContent.classList.add('active');
+        targetContent.hidden = false;
       }
     });
+
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
+  });
+
+  contents.forEach(content => {
+    content.hidden = !content.classList.contains('active');
+    content.setAttribute('role', 'tabpanel');
   });
 }
 

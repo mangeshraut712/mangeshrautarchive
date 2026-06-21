@@ -384,7 +384,7 @@ class LastFmService {
                 class="watch-btn"
                 aria-label="Open ${this.escapeHtml(trackName)} by ${this.escapeHtml(artistName)} in Spotify"
               >
-                <i class="fas ${actionIcon}"></i> ${actionText}
+                <i class="fas ${actionIcon}" aria-hidden="true"></i><span>${actionText}</span>
               </a>
             </div>
           </div>

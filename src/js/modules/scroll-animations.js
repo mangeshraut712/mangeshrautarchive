@@ -73,8 +73,6 @@ class ScrollAnimations {
       'section h2',
       '.skill-category',
       '.stat-card',
-      '.portfolio-reach-badge',
-      '.vibe-coder-badge',
       '.contact-card',
       '.travel-stop',
       '.overview-card',
