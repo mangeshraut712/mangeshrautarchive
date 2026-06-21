@@ -1070,7 +1070,9 @@ class AppleIntelligenceChatbot {
         const offline = this.chatAPI.basicQueryProcessing(userMessage);
         const offlineText = offline?.answer || offline?.text || '';
         if (offlineText) {
-          this.updateStatusIndicator(typeof navigator !== 'undefined' && navigator.onLine === false ? 'offline' : 'local');
+          this.updateStatusIndicator(
+            typeof navigator !== 'undefined' && navigator.onLine === false ? 'offline' : 'local'
+          );
           this.addMessage(offlineText, 'assistant', { forceScroll: true });
           this.showFollowupChips(offlineText);
           return;

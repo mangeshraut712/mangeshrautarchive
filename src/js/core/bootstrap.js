@@ -1,9 +1,12 @@
 const EAGER_MODULES = ['../modules/accessibility.js'];
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
+import { initScrollLockRecovery } from '../utils/scroll-lock.js';
 import '../modules/apple-haptics.js';
 import '../utils/view-transitions-nav.js';
 import '../modules/aod-dim-mode.js';
+
+initScrollLockRecovery();
 
 const DELAYED_MODULES = [];
 
@@ -33,6 +36,12 @@ const SECTION_MODULES = [
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '120px 0px' },
   { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '120px 0px' },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '120px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/currently.js', rootMargin: '200px 0px' },
+  {
+    sectionId: 'currently-section',
+    modulePath: '../modules/currently.js',
+    rootMargin: '120px 0px',
+  },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/real-media-loader.js',
@@ -90,6 +99,7 @@ const MODULE_IMPORTERS = {
   '../modules/blog-loader.js': () => import('../modules/blog-loader.js'),
   '../modules/newsletter.js': () => import('../modules/newsletter.js'),
   '../modules/calendar.js': () => import('../modules/calendar.js'),
+  '../modules/currently.js': () => import('../modules/currently.js'),
   '../modules/real-media-loader.js': () => import('../modules/real-media-loader.js'),
   '../modules/lastfm.js': () => import('../modules/lastfm.js'),
   '../modules/health-widget.js': () => import('../modules/health-widget.js'),

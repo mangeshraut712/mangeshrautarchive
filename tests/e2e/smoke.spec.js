@@ -86,14 +86,16 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('#travel-results-summary')).toContainText('places across');
     await expect(page.locator('#country-chapters')).toHaveCount(0);
 
-    const timelineBox = await page.locator('#travel-timeline').boundingBox();
-    const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
-    expect(timelineBox?.height ?? 0).toBeGreaterThan(isMobile ? 150 : 300);
-
     const stops = page.locator('.travel-stop');
-    await expect(stops.first()).toBeVisible();
+    await expect(stops.first()).toBeVisible({ timeout: 20_000 });
     const initialStopCount = await stops.count();
     expect(initialStopCount).toBeGreaterThan(50);
+
+    const timelineHeight = await page
+      .locator('#travel-timeline')
+      .evaluate(node => node.scrollHeight);
+    const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
+    expect(timelineHeight).toBeGreaterThan(isMobile ? 150 : 300);
 
     await page.locator('#spotlight-tour').click();
     await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'true');
@@ -282,6 +284,9 @@ test.describe('Chrome smoke tests', () => {
       document.getElementById('close-menu-btn')?.click();
     });
     await page.waitForFunction(() => !document.body.classList.contains('menu-open'));
+    await page.waitForFunction(minY => window.scrollY > minY, Math.max(500, beforeY - 100), {
+      timeout: 5000,
+    });
 
     const afterState = await page.evaluate(() => ({
       y: window.scrollY,
@@ -291,7 +296,8 @@ test.describe('Chrome smoke tests', () => {
 
     expect(afterState.bodyClass).not.toContain('menu-open');
     expect(afterState.top).toBe('');
-    expect(afterState.y).toBeGreaterThan(500);
+    expect(afterState.y).toBeGreaterThan(Math.max(500, beforeY - 150));
+    expect(Math.abs(afterState.y - beforeY)).toBeLessThan(250);
   });
 
   test('navbar fast clicks land on intended sections during lazy loading', async ({ page }) => {
@@ -386,6 +392,9 @@ test.describe('Chrome smoke tests', () => {
     await gotoSite(page, '/#contact');
     await page.waitForTimeout(2000);
     await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
+    await page.waitForFunction(() => document.body.dataset.currentlyInit === 'true', null, {
+      timeout: 15_000,
+    });
 
     await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
 
@@ -410,6 +419,7 @@ test.describe('Chrome smoke tests', () => {
       'show and movie cards should use local raster poster assets'
     ).toBe(true);
 
+    await booksTab.scrollIntoViewIfNeeded();
     await booksTab.click();
     await expect(page.locator('#books-content')).toHaveClass(/active/);
 

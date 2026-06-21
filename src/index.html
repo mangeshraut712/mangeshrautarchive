@@ -951,6 +951,7 @@
         if (!parts.body || !parts.menuButton || !parts.overlay || parts.body.classList.contains('menu-open')) return;
         var scrollY = window.scrollY || window.pageYOffset || 0;
         parts.body.dataset.overlayScrollY = String(scrollY);
+        parts.body.dataset.scrollLocked = 'true';
         parts.body.classList.add('menu-open');
         Object.assign(parts.body.style, {
           position: 'fixed',
@@ -969,21 +970,80 @@
         var parts = getParts();
         if (!parts.body || !parts.menuButton || !parts.overlay || !parts.body.classList.contains('menu-open')) return;
         var scrollY = Number.parseInt(parts.body.dataset.overlayScrollY || '0', 10) || 0;
-        parts.body.classList.remove('menu-open');
-        Object.assign(parts.body.style, {
-          position: '',
-          top: '',
-          left: '',
-          right: '',
-          width: ''
-        });
+        parts.body.style.removeProperty('position');
+        parts.body.style.removeProperty('top');
+        parts.body.style.removeProperty('left');
+        parts.body.style.removeProperty('right');
+        parts.body.style.removeProperty('width');
         delete parts.body.dataset.overlayScrollY;
+        delete parts.body.dataset.scrollLocked;
+        parts.body.classList.remove('menu-open');
         parts.overlay.style.setProperty('display', 'none', 'important');
         parts.overlay.setAttribute('aria-hidden', 'true');
         parts.overlay.setAttribute('inert', '');
         parts.menuButton.setAttribute('aria-expanded', 'false');
+        var restore = function () {
+          window.scrollTo(0, scrollY);
+          if (Math.abs(window.scrollY - scrollY) > 2) {
+            document.documentElement.scrollTop = scrollY;
+          }
+        };
+        restore();
+        requestAnimationFrame(function () {
+          if (Math.abs(window.scrollY - scrollY) > 2) {
+            requestAnimationFrame(restore);
+          }
+        });
+      }
+
+      function unlockScrollIfOrphaned() {
+        var body = document.body;
+        if (!body) return;
+        var locked =
+          body.classList.contains('menu-open') ||
+          body.classList.contains('chatbot-open') ||
+          body.classList.contains('share-dialog-open');
+        if (locked) return;
+        if (body.style.position !== 'fixed' && body.dataset.scrollLocked !== 'true') return;
+        var scrollY = Number.parseInt(body.dataset.overlayScrollY || '0', 10) || 0;
+        body.style.removeProperty('position');
+        body.style.removeProperty('top');
+        body.style.removeProperty('left');
+        body.style.removeProperty('right');
+        body.style.removeProperty('width');
+        delete body.dataset.overlayScrollY;
+        delete body.dataset.scrollLocked;
         window.scrollTo(0, scrollY);
       }
+
+      function recoverStuckScroll() {
+        var body = document.body;
+        var html = document.documentElement;
+        if (!body || !html) return;
+        var intro = document.getElementById('launch-intro');
+        var introDone =
+          (intro && intro.dataset && intro.dataset.launchIntroComplete === 'true') ||
+          (intro && (intro.hidden || intro.getAttribute('aria-hidden') === 'true'));
+        if (introDone && html.classList.contains('launch-intro-active')) {
+          html.classList.remove('launch-intro-active');
+          body.style.removeProperty('overflow');
+        }
+        unlockScrollIfOrphaned();
+        if (
+          !body.classList.contains('chatbot-open') &&
+          !body.classList.contains('share-dialog-open') &&
+          body.style.overflow === 'hidden'
+        ) {
+          body.style.removeProperty('overflow');
+        }
+      }
+
+      window.addEventListener('pageshow', recoverStuckScroll);
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+          recoverStuckScroll();
+        }
+      });
 
       document.addEventListener('click', function (event) {
         var menuButton = event.target.closest && event.target.closest('#menu-btn');

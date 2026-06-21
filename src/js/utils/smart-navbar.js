@@ -175,26 +175,15 @@ function scrollToSection(sectionId) {
   stabilizeScrollToSection(sectionId);
 }
 
-function restoreOverlayScrollLock() {
-  const scrollY = Number.parseInt(document.body.dataset.overlayScrollY || '0', 10) || 0;
-  const anchorId = document.body.dataset.overlayAnchorId;
-  const anchorTop = Number.parseFloat(document.body.dataset.overlayAnchorTop || '');
-  document.body.style.cssText = 'position: ; top: ; left: ; right: ; width: ;';
-  delete document.body.dataset.overlayScrollY;
-  delete document.body.dataset.overlayAnchorId;
-  delete document.body.dataset.overlayAnchorTop;
-
-  const anchor = anchorId ? document.getElementById(anchorId) : null;
-  const restoredY =
-    anchor && Number.isFinite(anchorTop)
-      ? anchor.getBoundingClientRect().top + window.scrollY - anchorTop
-      : scrollY;
-  window.scrollTo(0, Math.max(0, restoredY));
-}
+import { releaseBodyScrollStyles, restoreBodyScrollPosition } from './scroll-lock.js';
 
 function closeOverlayMenu() {
+  const released = releaseBodyScrollStyles(document.body);
   document.body.classList.remove('menu-open');
-  restoreOverlayScrollLock();
+  restoreBodyScrollPosition(released.scrollY, {
+    anchorId: released.anchorId,
+    anchorTop: released.anchorTop,
+  });
   const overlayMenu = document.getElementById('overlay-menu');
   overlayMenu?.style.setProperty('display', 'none', 'important');
   overlayMenu?.setAttribute('aria-hidden', 'true');

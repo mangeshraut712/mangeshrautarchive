@@ -516,7 +516,11 @@ function countLensDistribution(repos, githubProjects) {
     const age = githubProjects.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
     if (Number.isFinite(age) && age <= 14) counts.active += 1;
     const commits30d = toFiniteMetric(repo.__activity?.commits30d);
-    if ((commits30d !== null && commits30d >= 10) || signal.filters?.has('busy') || signal.key === 'busy') {
+    if (
+      (commits30d !== null && commits30d >= 10) ||
+      signal.filters?.has('busy') ||
+      signal.key === 'busy'
+    ) {
       counts.busy += 1;
     }
   });

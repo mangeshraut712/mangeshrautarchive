@@ -1,57 +1,17 @@
 const DEFAULT_NAV_OFFSET_SELECTOR = 'nav';
 
-function lockBodyScroll(body, windowRef = window) {
-  const scrollY = windowRef.scrollY || windowRef.pageYOffset || 0;
-  const anchor = Array.from(document.querySelectorAll('section[id]')).reduce((closest, section) => {
-    const current = { id: section.id, rect: section.getBoundingClientRect() };
-    if (current.rect.bottom <= 80 || current.rect.top >= windowRef.innerHeight - 80) {
-      return closest;
-    }
-    if (!closest) {
-      return current;
-    }
-    const closestDist = Math.abs(closest.rect.top - 80);
-    const currentDist = Math.abs(current.rect.top - 80);
-    return currentDist < closestDist ? current : closest;
-  }, null);
+import {
+  lockBodyScroll,
+  releaseBodyScrollStyles,
+  restoreBodyScrollPosition,
+} from '../utils/scroll-lock.js';
 
-  if (anchor) {
-    body.dataset.overlayAnchorId = anchor.id;
-    body.dataset.overlayAnchorTop = String(anchor.rect.top);
-  }
-
-  body.dataset.overlayScrollY = String(scrollY);
-  Object.assign(body.style, {
-    position: 'fixed',
-    top: `-${scrollY}px`,
-    left: '0',
-    right: '0',
-    width: '100%',
-  });
-}
-
-function unlockBodyScroll(body, windowRef = window) {
-  const scrollY = Number.parseInt(body.dataset.overlayScrollY || '0', 10) || 0;
-  const anchorId = body.dataset.overlayAnchorId;
-  const anchorTop = Number.parseFloat(body.dataset.overlayAnchorTop || '');
-  Object.assign(body.style, {
-    position: '',
-    top: '',
-    left: '',
-    right: '',
-    width: '',
-  });
-  delete body.dataset.overlayScrollY;
-  delete body.dataset.overlayAnchorId;
-  delete body.dataset.overlayAnchorTop;
-
-  const anchor = anchorId ? document.getElementById(anchorId) : null;
-  const restoredY =
-    anchor && Number.isFinite(anchorTop)
-      ? anchor.getBoundingClientRect().top + windowRef.scrollY - anchorTop
-      : scrollY;
-  windowRef.scrollTo(0, Math.max(0, restoredY));
-}
+export {
+  lockBodyScroll,
+  releaseBodyScrollStyles,
+  restoreBodyScrollPosition,
+  unlockBodyScroll,
+} from '../utils/scroll-lock.js';
 
 export function initOverlayMenu(options = {}) {
   const {
@@ -85,8 +45,12 @@ export function initOverlayMenu(options = {}) {
 
   const closeMenu = () => {
     if (!body.classList.contains('menu-open')) return;
+    const released = releaseBodyScrollStyles(body);
     body.classList.remove('menu-open');
-    unlockBodyScroll(body);
+    restoreBodyScrollPosition(released.scrollY, {
+      anchorId: released.anchorId,
+      anchorTop: released.anchorTop,
+    });
     menuToggle.setAttribute('aria-expanded', 'false');
     if (typeof menuToggle.focus === 'function') {
       try {
@@ -155,7 +119,12 @@ export function initOverlayNavigation(options = {}) {
       if (!targetElement) return;
 
       if (body && closeClass) {
+        const released = releaseBodyScrollStyles(body);
         body.classList.remove(closeClass);
+        restoreBodyScrollPosition(released.scrollY, {
+          anchorId: released.anchorId,
+          anchorTop: released.anchorTop,
+        });
       }
       const menuToggle = documentRef.getElementById('menu-btn');
       if (menuToggle) {

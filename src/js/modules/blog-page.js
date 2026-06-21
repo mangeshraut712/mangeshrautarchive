@@ -1,4 +1,7 @@
-import { initCardContentAccessibility, rescanCardContentAccessibility } from './card-content-accessibility.js';
+import {
+  initCardContentAccessibility,
+  rescanCardContentAccessibility,
+} from './card-content-accessibility.js';
 
 function initBlogFilters() {
   const container = document.getElementById('blog-posts-container');

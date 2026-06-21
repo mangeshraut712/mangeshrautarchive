@@ -602,8 +602,7 @@ html:not(.dark) #projects .github-graph-svg {
 
 html.dark #projects .github-graph-scroll {
   border-color: rgb(255 255 255 / 10%);
-  background:
-    linear-gradient(180deg, rgb(12 18 28 / 96%) 0%, rgb(6 10 18 / 98%) 100%);
+  background: linear-gradient(180deg, rgb(12 18 28 / 96%) 0%, rgb(6 10 18 / 98%) 100%);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
 }
 

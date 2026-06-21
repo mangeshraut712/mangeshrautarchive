@@ -67,7 +67,7 @@
     "qa:visual:update": "VISUAL_TESTING=1 UPDATE_SNAPSHOTS=1 npm run test:e2e:chrome",
     "qa:chrome": "npm run qa:browser:ci && npm run qa:lighthouse:ci",
     "qa:prod-ready": "npm run security-check && npm run lint && npm run lint:css && npm test && npm run test:api && npm run qa:chrome",
-    "check": "npm run lint && npm run lint:css && npm test && npm run test:api",
+    "check": "npm run lint && npm run lint:css && npm run format:check && npm test && npm run test:api",
     "integrations:sync-env": "VERCEL_ENV_TARGETS=production node scripts/integrations/sync-vercel-integration-env.mjs",
     "integrations:set-whoop-withings": "node scripts/integrations/set-whoop-withings-env.mjs",
     "integrations:create-withings-local": "node scripts/integrations/create-withings-app.mjs",
