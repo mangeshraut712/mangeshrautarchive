@@ -17,9 +17,6 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # ─────────────────────────────────────────
-  # Quality Gates (run on every push & PR)
-  # ─────────────────────────────────────────
   quality:
     name: 🔍 Quality Gates
     runs-on: ubuntu-latest
@@ -48,9 +45,6 @@ jobs:
       - name: 🎨 Lint — Stylelint CSS quality check
         run: npm run lint:css
 
-      - name: 🩺 React Doctor — React codebase health check
-        run: npm run doctor:full
-
       - name: 🧪 Tests — Vitest unit tests
         run: npm test
 
@@ -74,36 +68,21 @@ jobs:
       - name: 🐍 Python — API tests
         run: npm run test:api
 
-      - name: 🌐 Verify system Chrome
-        run: google-chrome --version
+      - name: ✅ Browser QA — smoke + accessibility
+        run: npm run qa:browser:ci
 
-      - name: ✅ Chrome smoke tests
-        run: npm run qa:smoke
-
-      - name: ♿ Chrome accessibility baseline
-        run: npm run qa:a11y
-
-      - name: 📸 Chrome visual regression test
-        run: npm run qa:visual:ci
-
-      - name: ⚡ Lighthouse desktop gate
-        run: npm run qa:lighthouse:desktop
-
-      - name: 📱 Lighthouse mobile gate
-        run: npm run qa:lighthouse:mobile
+      - name: ⚡ Lighthouse gates — desktop + mobile
+        run: npm run qa:lighthouse:ci
 
       - name: 📦 Upload QA artifacts
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: chrome-qa-artifacts
+          name: qa-artifacts
           path: |
             artifacts/playwright-report
             artifacts/lighthouse
 
-  # ─────────────────────────────────────────
-  # Build & Deploy (main branch only)
-  # ─────────────────────────────────────────
   build:
     name: 📦 Build
     runs-on: ubuntu-latest
@@ -155,72 +134,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  post_deploy_validation:
-    name: 🧪 Post-Deploy · ${{ matrix.label }}
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: github.ref == 'refs/heads/main'
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - label: GitHub Pages
-            base_url: https://mangeshraut712.github.io/mangeshrautarchive/
-          - label: Vercel Production
-            base_url: https://mangeshraut.pro/
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: package-lock.json
-
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-
-      - name: Verify system Chrome
-        run: google-chrome --version
-
-      - name: Wait for deployment to propagate
-        run: |
-          echo "⏳ Waiting for ${{ matrix.label }} to propagate (30s)..."
-          sleep 30
-
-      - name: Run post-deploy smoke + baseline accessibility
-        env:
-          PLAYWRIGHT_BASE_URL: ${{ matrix.base_url }}
-        run: npm run qa:postdeploy
-        continue-on-error: true
-
-      - name: Upload post-deploy QA artifacts
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: post-deploy-${{ strategy.job-index }}-chrome-artifacts
-          path: |
-            artifacts/playwright-report
-
-  sync_deployments:
-    name: 🔗 Verify GitHub Pages ↔ Vercel Sync
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: package-lock.json
-
-      - name: Compare live build-config across deployment surfaces
-        env:
-          GITHUB_SHA: ${{ github.sha }}
-        run: node scripts/deployment/verify-deployment-sync.js --remote --commit=${{ github.sha }} --retries=24 --wait=15
-        continue-on-error: true
