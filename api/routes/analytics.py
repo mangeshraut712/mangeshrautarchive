@@ -120,7 +120,7 @@ async def get_portfolio_reach():
         if google_analytics_client.enabled:
             ga_snapshot = await google_analytics_client.get_reach_snapshot()
     except Exception as e:
-        print(f"Google Analytics reach error: {type(e).__name__}")
+        print(f"Google Analytics reach error: {type(e).__name__}: {e}")
 
     source = ga_snapshot.get("source") or "portfolio_store"
     ga_enabled = source == "google_analytics"
@@ -181,16 +181,11 @@ async def get_portfolio_reach():
                 "this_week": _safe_int(views_data.get("this_week"), total_week_views),
                 "this_month": _safe_int(views_data.get("this_month")),
             },
-            "github": {
-                "stars": 0,
-                "forks": 0,
-                "watchers": 0,
-                "repos_counted": 0,
-                "status": "disabled",
-            },
         },
         "storage": analytics.get("storage", {"backend": "unknown", "persistent": False}),
-        "formula": "total_reach = GA4 screenPageViews when configured, otherwise portfolio_store.views.total",
+        "formula": (
+            "total_reach = GA4 activeUsers when configured, otherwise portfolio_store.views.total"
+        ),
         "cache_ttl_seconds": 60 if source == "google_analytics" else 0,
         "timestamp": timestamp,
     }

@@ -73,6 +73,7 @@
     "integrations:create-withings-local": "node scripts/integrations/create-withings-app.mjs",
     "clean": "node scripts/build/clean.js",
     "verify:deploy-sync": "node scripts/deployment/verify-deployment-sync.js",
+    "sync:analytics-env": "node scripts/deployment/sync-analytics-env.mjs",
     "verify:deploy-sync:remote": "node scripts/deployment/verify-deployment-sync.js --remote",
     "verify:env-parity": "node scripts/deployment/verify-env-parity.mjs",
     "open": "open src/index.html",

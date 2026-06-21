@@ -277,7 +277,9 @@
         gaEnabled && insights.total_views_all_time
           ? ` · ${formatNumber(insights.total_views_all_time)} page views`
           : '';
-      reachPanelEls.note.textContent = `${formatDateLabel(payload?.timestamp)}${countryText}${viewsText}`;
+      const gaHint =
+        !payload?.ga_configured && !gaEnabled ? ' · GA4 pending server setup' : '';
+      reachPanelEls.note.textContent = `${formatDateLabel(payload?.timestamp)}${countryText}${viewsText}${gaHint}`;
     }
 
     updateAnalyticsAction(payload);

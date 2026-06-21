@@ -86,13 +86,38 @@ class PortfolioAnalyticsStore:
             )
         return trend
 
+    def _week_views_from_daily(self, daily_views: Dict[str, Any]) -> int:
+        today = datetime.now(timezone.utc).date()
+        return sum(
+            int(daily_views.get((today - timedelta(days=offset)).isoformat(), 0) or 0)
+            for offset in range(7)
+        )
+
+    def _resolve_first_seen(self, data: Dict[str, Any], daily_views: Dict[str, Any]) -> int:
+        first_seen = int(data.get("first_seen") or int(time.time()))
+        if not daily_views:
+            return first_seen
+
+        try:
+            oldest_key = min(daily_views.keys())
+            oldest_ts = int(
+                datetime.fromisoformat(oldest_key)
+                .replace(tzinfo=timezone.utc)
+                .timestamp()
+            )
+            return min(first_seen, oldest_ts)
+        except ValueError:
+            return first_seen
+
     def _metrics_from_data(self, data: Dict[str, Any], *, persistent: bool) -> Dict[str, Any]:
         today_key = self._today_key()
         week_key = self._week_key()
         month_key = self._month_key()
-        first_seen = int(data.get("first_seen") or int(time.time()))
-        total_views = int(data.get("total_views", 0))
         daily_views = data.get("daily_views", {})
+        total_views = int(data.get("total_views", 0))
+        first_seen = self._resolve_first_seen(data, daily_views)
+        this_week_stored = int(data.get("weekly_views", {}).get(week_key, 0))
+        this_week = this_week_stored if this_week_stored > 0 else self._week_views_from_daily(daily_views)
         age_days = max(1, int((time.time() - first_seen) // 86400) + 1)
         return {
             "success": True,
@@ -101,7 +126,7 @@ class PortfolioAnalyticsStore:
                 "homepage_total": int(data.get("homepage_views", 0)),
                 "unique_visitors": int(data.get("unique_visitors", 0)),
                 "today": int(daily_views.get(today_key, 0)),
-                "this_week": int(data.get("weekly_views", {}).get(week_key, 0)),
+                "this_week": this_week,
                 "this_month": int(data.get("monthly_views", {}).get(month_key, 0)),
             },
             "daily_trend": self._daily_trend(daily_views),

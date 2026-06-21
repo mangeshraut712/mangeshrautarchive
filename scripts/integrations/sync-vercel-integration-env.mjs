@@ -8,7 +8,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const ENV_FILE = resolve(ROOT, '.env');
+const ENV_FILES = ['.env', '.env.local'];
 const TARGETS = (process.env.VERCEL_ENV_TARGETS || 'production')
   .split(',')
   .map(s => s.trim())
@@ -33,6 +33,11 @@ const KEYS = [
   'WITHINGS_CLIENT_ID',
   'WITHINGS_CLIENT_SECRET',
   'WITHINGS_REDIRECT_URI',
+  'GA4_ACCOUNT_ID',
+  'GA4_PROPERTY_ID',
+  'GOOGLE_ANALYTICS_CLIENT_EMAIL',
+  'GOOGLE_ANALYTICS_PRIVATE_KEY',
+  'GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON',
 ];
 
 function parseEnv(content) {
@@ -74,12 +79,22 @@ function upsertEnv(name, value, target) {
   console.log(`[ok] ${name} → ${target}`);
 }
 
-if (!existsSync(ENV_FILE)) {
-  console.error('Missing .env');
+function loadEnvFiles() {
+  const merged = {};
+  for (const file of ENV_FILES) {
+    const path = resolve(ROOT, file);
+    if (!existsSync(path)) continue;
+    Object.assign(merged, parseEnv(readFileSync(path, 'utf8')));
+  }
+  return merged;
+}
+
+if (!ENV_FILES.some(file => existsSync(resolve(ROOT, file)))) {
+  console.error('Missing .env or .env.local');
   process.exit(1);
 }
 
-const env = parseEnv(readFileSync(ENV_FILE, 'utf8'));
+const env = loadEnvFiles();
 let synced = 0;
 
 for (const key of KEYS) {
