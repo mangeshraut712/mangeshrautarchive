@@ -719,9 +719,17 @@ class AppleIntelligenceChatbot {
 
   // ── Enhanced Welcome Message ──────────────────────
 
+  shouldShowWelcomeMessage() {
+    const messages = this.elements.messages;
+    if (!messages) return false;
+    if (messages.querySelector('.welcome-message, .welcome-message-simplified')) return false;
+    if (messages.querySelector('.user-message')) return false;
+    return !messages.querySelector('.assistant-message:not(.welcome-message):not(.welcome-message-simplified)');
+  }
+
   addWelcomeMessage() {
     setTimeout(() => {
-      if (this.elements.messages && this.elements.messages.children.length === 0) {
+      if (this.shouldShowWelcomeMessage()) {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
           'message assistant-message welcome-message welcome-message-simplified';

@@ -86,4 +86,21 @@ test.describe('Chatbot message scroll', () => {
     const gap = await distanceFromBottom(page);
     expect(gap).toBeLessThan(96);
   });
+
+  test('restores the welcome message after clear chat', async ({ page }) => {
+    await gotoSite(page);
+    await openChatbot(page);
+
+    await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible();
+
+    await page.locator('#chatbot-input').fill('Quick test');
+    await page.locator('.chatbot-send-btn').click();
+    await expect(page.locator('#chatbot-messages .message.user-message')).toBeVisible({
+      timeout: 15_000,
+    });
+
+    await page.locator('#chatbot-clear-btn').click();
+    await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible({ timeout: 2_000 });
+    await expect(page.locator('#chatbot-messages .message.user-message')).toHaveCount(0);
+  });
 });
