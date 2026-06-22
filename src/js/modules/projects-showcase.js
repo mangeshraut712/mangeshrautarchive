@@ -47,7 +47,11 @@ function initProjectSortMenu(onChange) {
   const trigger = document.getElementById('project-sort-trigger');
   const menu = document.getElementById('project-sort-menu');
   const labelEl = trigger?.querySelector('.proj-sort-trigger-label');
-  if (!root || !select || !trigger || !menu || !labelEl) return;
+  if (!root || !select) return;
+
+  if (!trigger || !menu || !labelEl) {
+    return;
+  }
 
   const options = Array.from(menu.querySelectorAll('[data-sort-value]'));
 

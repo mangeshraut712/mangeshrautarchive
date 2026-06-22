@@ -57,7 +57,7 @@ class BlogLoader {
         post => `
             <article class="blog-card apple-3d-project" data-id="${post.id}">
                 <div class="blog-card-content">
-                    <div class="blog-card-actions" aria-label="Read and translate"></div>
+                    <div class="blog-card-actions" aria-label="Listen and translate article card"></div>
                     <div class="blog-kicker-row">
                         <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
                         <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>

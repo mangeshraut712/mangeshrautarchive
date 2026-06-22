@@ -189,139 +189,52 @@ html.dark #projects #projects-stats .stat-label {
   display: inline-flex;
   align-items: stretch;
   min-width: 0;
-  flex: 0 1 220px;
+  flex: 0 1 190px;
   max-width: 100%;
   z-index: 30;
 }
 
 #projects .proj-sort-native {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-#projects .proj-sort-trigger {
-  position: relative;
   width: 100%;
   min-width: 0;
-  max-width: 220px;
   min-height: 48px;
   height: 48px;
-  padding: 0 2.85rem 0 1rem;
-  border-radius: 980px;
+  padding: 0 2.4rem 0 1rem;
+  border-radius: 999px;
   border: 1px solid rgb(0 0 0 / 10%);
-  background: #fff;
+  background-color: #fff;
   color: var(--project-text-light);
   box-shadow: 0 8px 20px rgb(15 23 42 / 6%);
   font-size: 0.92rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   line-height: 1.2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
-  text-align: left;
-}
-
-#projects .proj-sort-trigger-icon {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-right: 2px solid #7d8aa2;
-  border-bottom: 2px solid #7d8aa2;
-  transform: translateY(-65%) rotate(45deg);
-  pointer-events: none;
-}
-
-#projects .proj-sort-trigger-label {
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #7d8aa2 50%),
+    linear-gradient(135deg, #7d8aa2 50%, transparent 50%) !important;
+  background-position:
+    calc(100% - 1.05rem) calc(50% + 1px),
+    calc(100% - 0.55rem) calc(50% + 1px) !important;
+  background-size:
+    6px 6px,
+    6px 6px !important;
+  background-repeat: no-repeat !important;
 }
 
-#projects .proj-sort-menu {
-  position: absolute;
-  top: calc(100% + 0.45rem);
-  left: 0;
-  right: 0;
-  z-index: 80;
-  margin: 0;
-  padding: 0.35rem;
-  list-style: none;
-  border-radius: 16px;
-  border: 1px solid rgb(0 0 0 / 10%);
-  background: rgb(255 255 255 / 98%);
-  box-shadow: 0 18px 40px rgb(15 23 42 / 16%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-#projects .proj-sort-menu[hidden] {
-  display: none !important;
-}
-
-#projects .proj-sort-menu li {
-  margin: 0;
-  padding: 0;
-}
-
-#projects .proj-sort-menu button {
-  width: 100%;
-  min-height: 42px;
-  padding: 0.55rem 0.75rem;
-  border: none;
-  border-radius: 11px;
-  background: transparent;
-  color: var(--project-text-light);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-}
-
-#projects .proj-sort-menu button:hover,
-#projects .proj-sort-menu button:focus-visible {
-  background: rgb(0 113 227 / 10%);
+#projects .proj-sort-native:hover,
+#projects .proj-sort-native:focus-visible {
+  border-color: rgb(0 113 227 / 30%);
   outline: none;
-}
-
-#projects .proj-sort-menu button.is-active,
-#projects .proj-sort-menu button[aria-selected='true'] {
-  background: rgb(0 113 227 / 12%);
-  color: var(--project-accent);
-}
-
-html.dark #projects .proj-sort-trigger {
-  background: #000;
-  border-color: var(--project-border-dark);
-  color: var(--project-text-dark);
-  box-shadow: 0 14px 24px rgb(0 0 0 / 52%);
-}
-
-html.dark #projects .proj-sort-trigger-icon {
-  border-right-color: #9aa7bc;
-  border-bottom-color: #9aa7bc;
-}
-
-html.dark #projects .proj-sort-menu {
-  border-color: rgb(255 255 255 / 12%);
-  background: rgb(8 10 16 / 96%);
-  box-shadow: 0 22px 44px rgb(0 0 0 / 58%);
-}
-
-html.dark #projects .proj-sort-menu button {
-  color: var(--project-text-dark);
+  box-shadow:
+    0 8px 20px rgb(15 23 42 / 6%),
+    0 0 0 3px rgb(0 113 227 / 10%);
 }
 
 #projects .proj-filter-select,
@@ -363,10 +276,10 @@ html.dark #projects .proj-sort-menu button {
 
 #projects .projects-view-all-btn {
   padding: 0 1.35rem !important;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  border: none !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 35%) !important;
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  color: #0071e3 !important;
+  box-shadow: 0 8px 20px rgb(15 23 42 / 6%) !important;
   gap: 0.5rem !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -381,29 +294,29 @@ html.dark #projects .proj-sort-menu button {
 
 #projects .projects-view-all-btn i,
 #projects .projects-view-all-btn span {
-  color: #ffffff !important;
+  color: currentColor !important;
 }
 
 #projects .projects-view-all-btn:hover {
-  transform: translateY(-2px) scale(1.01) !important;
-  border: none !important;
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 8px 24px rgb(0 113 227 / 45%) !important;
+  transform: translateY(-1px) !important;
+  border-color: #0071e3 !important;
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  box-shadow: 0 10px 24px rgb(0 113 227 / 12%) !important;
 }
 
 html.dark #projects .projects-view-all-btn {
-  background: linear-gradient(135deg, #0a84ff 0%, #2997ff 100%) !important;
-  border: none !important;
-  color: #ffffff !important;
-  box-shadow: 0 6px 20px rgb(10 132 255 / 35%) !important;
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  color: #2997ff !important;
+  box-shadow: 0 14px 24px rgb(0 0 0 / 52%) !important;
 }
 
 html.dark #projects .projects-view-all-btn:hover {
-  border: none !important;
-  background: linear-gradient(135deg, #2997ff 0%, #64b5ff 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 10px 28px rgb(41 151 255 / 40%) !important;
+  border-color: #2997ff !important;
+  background: #000000 !important;
+  color: #2997ff !important;
+  box-shadow: 0 12px 28px rgb(41 151 255 / 16%) !important;
 }
 
 html.dark #projects .proj-input-group,
@@ -424,6 +337,32 @@ html.dark #projects .proj-search-input {
 
 html.dark #projects .proj-search-input::placeholder {
   color: #76849a !important;
+}
+
+html.dark #projects .proj-sort-native {
+  background: #000 !important;
+  background-color: #000 !important;
+  border-color: var(--project-border-dark) !important;
+  color: var(--project-text-dark) !important;
+  box-shadow: 0 14px 24px rgb(0 0 0 / 52%) !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9aa7bc 50%),
+    linear-gradient(135deg, #9aa7bc 50%, transparent 50%) !important;
+  background-position:
+    calc(100% - 1.05rem) calc(50% + 1px),
+    calc(100% - 0.55rem) calc(50% + 1px) !important;
+  background-size:
+    6px 6px,
+    6px 6px !important;
+  background-repeat: no-repeat !important;
+}
+
+html.dark #projects .proj-sort-native:hover,
+html.dark #projects .proj-sort-native:focus-visible {
+  border-color: rgb(41 151 255 / 36%) !important;
+  box-shadow:
+    0 14px 24px rgb(0 0 0 / 52%),
+    0 0 0 3px rgb(41 151 255 / 13%) !important;
 }
 
 html.dark #projects .proj-filter-select {
@@ -2140,9 +2079,10 @@ html.dark .project-xr-status {
     flex-wrap: wrap !important;
   }
 
-  #projects .proj-controls-group .proj-sort-trigger,
+  #projects .proj-controls-group .proj-sort-native,
   #projects .proj-controls-group .projects-view-all-btn {
     width: 100% !important;
+    max-width: none !important;
   }
 
   #projects #github-projects-container {

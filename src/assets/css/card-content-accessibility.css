@@ -18,7 +18,7 @@
 .card-read-toolbar {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.32rem;
   flex-shrink: 0;
 }
 
@@ -36,15 +36,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border-radius: 999px;
   border: 1px solid rgb(0 0 0 / 10%);
   background: rgb(255 255 255 / 88%) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 5%) !important;
   cursor: pointer;
   transition:
     transform 0.22s cubic-bezier(0.25, 0.1, 0.25, 1),
@@ -91,9 +91,9 @@ html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
 
 .card-read-toolbar svg,
 .card-read-toolbar i {
-  width: 16px;
-  height: 16px;
-  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  font-size: 14px;
   line-height: 1;
   pointer-events: none;
 }
@@ -260,6 +260,8 @@ html.dark .card-translate-option__label {
 
 .blog-card-actions > .card-read-toolbar--inline {
   margin-bottom: 0;
+  width: auto;
+  justify-content: flex-end;
 }
 
 .blog-article > .card-read-toolbar--inline {

@@ -19,8 +19,9 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .menu-toggle-button
   ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
     .profile-image-toggle
-  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.travel-action):not(
-    .travel-nav__projection
+  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(
+    .travel-action
+  ):not(.travel-nav__projection
   ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
     .travel-advanced-toggle
   ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(
@@ -57,8 +58,9 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .menu-toggle-button
   ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
     .profile-image-toggle
-  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.travel-action):not(
-    .travel-nav__projection
+  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(
+    .travel-action
+  ):not(.travel-nav__projection
   ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
     .travel-advanced-toggle
   ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(
@@ -597,7 +599,7 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .profile-image-toggle
   ):not(.proj-filter-btn):not(.project-lens-chip):not(.projects-view-all-btn):not(
     .project-action-btn
-  ):not(.a11y-toolbar button):not(.portfolio-reach-badge):not(.hero-pill-badge),
+  ):not(.blog-read-btn):not(.a11y-toolbar button):not(.portfolio-reach-badge):not(.hero-pill-badge),
 .project-tag,
 .badge {
   color: #fff !important;

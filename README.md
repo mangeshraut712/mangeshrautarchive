@@ -57,8 +57,8 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 - **AssistMe AI Chat** — streaming Markdown, Siri-style voice dictation, writing tools, and contextual follow-up chips
 - **12 Technical Writings** — deep-dive blogs covering AI Code Editors, WWDC 2026/Apple Intelligence, NotebookLM 2026, WebMCP tool design, and agentic workflows
-- **Card Listen + Translate** — 16-language read-aloud and translation toolbars on narrative cards (About, Experience, Awards, Blog, Travel)
-- **Project Showcase Lenses** — All · Hot · Busy · Released with live counts; empty lenses auto-hide; GitHub Operating View caption omits zero buckets
+- **Card Listen + Translate** — compact 16-language read-aloud and translation toolbars on narrative cards (About, Experience, Awards, Blog, Travel)
+- **Project Showcase Lenses** — All · Active · Busy with live counts, plus a native Apple-style sort menu and neutral GitHub CTA
 - **Currently Shelf** — Apple-style segmented tabs plus compact media cards for Shows, Music, and Books
 - **Publication Preview** — two-column paper card with inline PDF preview panel and Apple-style Read paper CTA
 - **9 WebMCP Tools** registered with `navigator.modelContext` for native AI agent compatibility
@@ -454,7 +454,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### June 2026 (latest)
 
 - **Currently Shelf Redesign** — iOS segmented tabs, compact media cards, unified Apple-blue actions, full titles with line-clamp, and accessible `tablist`/`tabpanel` wiring.
-- **Project Showcase Polish** — simplified lenses (All · Hot · Busy · Released), hide empty filters, non-zero GitHub Operating View caption, dynamic card reveal fix, Apple-style Visit GitHub Profile button.
+- **Project Showcase Polish** — simplified lenses (All · Active · Busy), native Apple-style sort dropdown, neutral GitHub profile CTA, non-zero GitHub Operating View caption, and dynamic card reveal fix.
 - **Publication Preview** — two-column layout with mini paper preview card on the right and gradient Read paper CTA.
 - **Performance** — parallel hero analytics fetch, deferred card-a11y/Last.fm, hero badges stay visible outside scroll-hide targets.
 - **CI / QA** — axe tablist fix for Currently section; Lighthouse dist gate at 100/100 mobile + desktop locally; nightly monitoring uses cross-surface commit parity; React Doctor tracked in deploy workflow.
@@ -462,8 +462,8 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### June 2026 (earlier)
 
 - **First-Visit & Return UX** — removed ephemeral toast experiment; blog remains cards-only grid with deep-link support via `#blog-read-<id>`.
-- **Card Listen + Translate** — Site-wide narrative card toolbars with 16 languages, scrollable popover, TTS in translated locale, MyMemory + `/api/chat` AI fallback.
-- **Release-Aware Project Lenses** — GitHub release/activity signals with live chip counts (later simplified to Hot · Busy · Released).
+- **Card Listen + Translate** — Site-wide narrative card toolbars with 16 languages, compact top-right placement, scrollable popover, TTS in translated locale, MyMemory + `/api/chat` AI fallback.
+- **Release-Aware Project Lenses** — GitHub release/activity signals with live chip counts, later simplified to Active · Busy for clearer scanning.
 - **Performance** — Card accessibility deferred until About is near viewport; GitHub contribution graph + Last.fm art lazy-loaded via `requestIdleCallback`.
 - **Design & Assets** — WWDC26 liquid glass on vibe stack + portfolio reach panels; company/car logos; navbar aux links with tooltips.
 - **Cross-Surface QA** — Mobile/tablet/desktop viewport audit; `qa:vercel:*` and `qa:github:*` smoke targets; deploy pipeline verifies GitHub Pages live commit after every release.
