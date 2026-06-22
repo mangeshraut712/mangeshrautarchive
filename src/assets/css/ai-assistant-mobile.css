@@ -64,6 +64,7 @@
     /* Forces flex scrolling */
     padding: 12px 14px !important;
     overflow-y: auto !important;
+    overflow-anchor: none !important;
     -webkit-overflow-scrolling: touch !important;
   }
 

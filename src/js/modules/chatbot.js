@@ -177,8 +177,11 @@ class AppleIntelligenceChatbot {
     this.messageCount = 0;
     this.retryCount = 0;
     this.textareaWidth = 0;
-    this.autoScrollLocked = true;
+    this.stickToBottom = true;
     this.lastProgrammaticScrollAt = 0;
+    this.pinScrollFrame = 0;
+    this.messageResizeObserver = null;
+    this.touchScrollStartY = 0;
 
     // Local rate-limit visibility mirrors the backend throttle before requests are sent.
     this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
@@ -571,13 +574,43 @@ class AppleIntelligenceChatbot {
     });
 
     this.elements.messages?.addEventListener(
-      'scroll',
-      () => {
-        if (Date.now() - this.lastProgrammaticScrollAt < 420) return;
-        this.autoScrollLocked = this.isNearMessageBottom();
+      'wheel',
+      event => {
+        if (event.deltaY < -2) {
+          this.stickToBottom = false;
+          return;
+        }
+        if (event.deltaY > 2 && this.isNearMessageBottom()) {
+          this.stickToBottom = true;
+        }
       },
       { passive: true }
     );
+
+    this.elements.messages?.addEventListener(
+      'touchstart',
+      () => {
+        this.touchScrollStartY = this.elements.messages?.scrollTop || 0;
+      },
+      { passive: true }
+    );
+
+    this.elements.messages?.addEventListener(
+      'touchmove',
+      () => {
+        const messages = this.elements.messages;
+        if (!messages) return;
+        if (messages.scrollTop < this.touchScrollStartY - 8) {
+          this.stickToBottom = false;
+        }
+        if (this.isNearMessageBottom()) {
+          this.stickToBottom = true;
+        }
+      },
+      { passive: true }
+    );
+
+    this.initMessageScrollObserver();
 
     this.elements.voiceBtn?.addEventListener('click', () => {
       this.handleVoiceInput();
@@ -669,8 +702,9 @@ class AppleIntelligenceChatbot {
   clearChat() {
     if (this.elements.messages) {
       this.elements.messages.innerHTML = '';
+      this.ensureScrollAnchor();
     }
-    this.autoScrollLocked = true;
+    this.stickToBottom = true;
     if (this.chatAPI?.conversation) {
       this.chatAPI.conversation = [];
     }
@@ -714,7 +748,7 @@ class AppleIntelligenceChatbot {
         ].forEach(([iconClass, label, prompt]) => {
           chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
         });
-        this.elements.messages.appendChild(welcomeDiv);
+        this.appendToMessages(welcomeDiv);
       }
     }, 600);
   }
@@ -750,8 +784,7 @@ class AppleIntelligenceChatbot {
             <span class="agentic-label">Agent: ${action.label}</span>
             <span class="agentic-pulse"></span>
         `;
-    this.elements.messages?.appendChild(chipEl);
-    this.scrollToBottom({ force: true });
+    this.appendToMessages(chipEl, { pin: true });
 
     // Remove after a few seconds
     setTimeout(() => chipEl.classList.add('fade-out'), 3000);
@@ -791,6 +824,7 @@ class AppleIntelligenceChatbot {
     appleSounds.playClick();
 
     // Add user message
+    this.stickToBottom = true;
     this.addMessage(text, 'user', { forceScroll: true });
 
     // Clear input
@@ -879,15 +913,16 @@ class AppleIntelligenceChatbot {
     const useMarkdown = markdownService.containsMarkdown(fullText) || fullText.length >= 48;
     if (useMarkdown) {
       contentDiv.innerHTML = `${markdownService.render(fullText)}<span class="siri-stream-caret" aria-hidden="true"></span>`;
-      return;
+    } else {
+      contentDiv.replaceChildren();
+      contentDiv.append(document.createTextNode(fullText));
+      const caret = document.createElement('span');
+      caret.className = 'siri-stream-caret';
+      caret.setAttribute('aria-hidden', 'true');
+      contentDiv.appendChild(caret);
     }
 
-    contentDiv.replaceChildren();
-    contentDiv.append(document.createTextNode(fullText));
-    const caret = document.createElement('span');
-    caret.className = 'siri-stream-caret';
-    caret.setAttribute('aria-hidden', 'true');
-    contentDiv.appendChild(caret);
+    this.schedulePinToBottom();
   }
 
   finalizeStreamingContent(contentDiv, fullText, response) {
@@ -918,6 +953,8 @@ class AppleIntelligenceChatbot {
         window.hljs.highlightElement(block);
       });
     }
+
+    this.schedulePinToBottom({ force: true });
   }
 
   // ── Streaming AI Response ──────────────────────
@@ -937,9 +974,8 @@ class AppleIntelligenceChatbot {
       contentDiv = document.createElement('div');
       contentDiv.className = 'message-content siri-intelligence-text';
       messageDiv.appendChild(contentDiv);
-      this.elements.messages?.appendChild(messageDiv);
       this.hideTypingIndicator();
-      this.scrollToBottom();
+      this.appendToMessages(messageDiv, { pin: true });
     };
 
     try {
@@ -955,8 +991,9 @@ class AppleIntelligenceChatbot {
           if (now - lastRender >= 72 || /[\n.!?]$/.test(chunk)) {
             lastRender = now;
             this.paintStreamingContent(contentDiv, fullText);
+          } else {
+            this.schedulePinToBottom();
           }
-          this.scrollToBottom();
         },
       });
 
@@ -1057,7 +1094,7 @@ class AppleIntelligenceChatbot {
         this.decrementRemainingQueries();
       }
 
-      this.scrollToBottom({ force: true });
+      this.schedulePinToBottom({ force: true });
     } catch (error) {
       if (error?.code === 'RATE_LIMITED') {
         throw error;
@@ -1091,7 +1128,7 @@ class AppleIntelligenceChatbot {
         contentDiv = document.createElement('div');
         contentDiv.className = 'message-content siri-intelligence-text';
         messageDiv.appendChild(contentDiv);
-        this.elements.messages?.appendChild(messageDiv);
+        this.appendToMessages(messageDiv, { pin: true });
       }
 
       contentDiv.textContent = fullText;
@@ -1236,14 +1273,14 @@ class AppleIntelligenceChatbot {
     contentDiv.className = 'message-content';
 
     messageDiv.appendChild(contentDiv);
-    this.elements.messages?.appendChild(messageDiv);
+    this.appendToMessages(messageDiv, { pin: true });
 
     await new Promise(resolve => {
       let index = 0;
       const tick = () => {
         index += 1;
         contentDiv.textContent = text.substring(0, index) + '▊';
-        this.scrollToBottom();
+        this.schedulePinToBottom();
 
         if (index >= text.length) {
           resolve();
@@ -1404,9 +1441,9 @@ class AppleIntelligenceChatbot {
     contentDiv.textContent = text;
 
     messageDiv.appendChild(contentDiv);
-    this.elements.messages?.appendChild(messageDiv);
-
-    this.scrollToBottom({ force: options.forceScroll || role === 'user' });
+    this.appendToMessages(messageDiv, {
+      pin: options.forceScroll || role === 'user' ? true : 'if-stuck',
+    });
   }
 
   addErrorMessage(text) {
@@ -1434,8 +1471,7 @@ class AppleIntelligenceChatbot {
     };
     messageDiv.appendChild(retryBtn);
 
-    this.elements.messages?.appendChild(messageDiv);
-    this.scrollToBottom({ force: true });
+    this.appendToMessages(messageDiv, { pin: true });
   }
 
   // ── Follow-Up Suggestion Chips ─────────────────────────
@@ -1464,8 +1500,7 @@ class AppleIntelligenceChatbot {
       container.appendChild(btn);
     });
 
-    this.elements.messages?.appendChild(container);
-    this.scrollToBottom();
+    this.appendToMessages(container);
   }
 
   removeFollowupChips() {
@@ -1495,8 +1530,7 @@ class AppleIntelligenceChatbot {
                 </div>
             </div>
         `;
-    this.elements.messages?.appendChild(indicator);
-    this.scrollToBottom({ force: true });
+    this.appendToMessages(indicator, { pin: true });
   }
 
   updateThinkingStage(stage) {
@@ -1520,7 +1554,108 @@ class AppleIntelligenceChatbot {
 
   hideTypingIndicator() {
     const indicator = document.getElementById('chatbot-typing-indicator');
-    indicator?.remove();
+    if (!indicator) return;
+    const shouldPin = this.stickToBottom;
+    indicator.remove();
+    if (shouldPin) {
+      this.schedulePinToBottom({ force: true });
+    }
+  }
+
+  ensureScrollAnchor() {
+    const messages = this.elements.messages;
+    if (!messages) return null;
+
+    let anchor = messages.querySelector('#chatbot-scroll-anchor');
+    if (!anchor) {
+      anchor = document.createElement('div');
+      anchor.id = 'chatbot-scroll-anchor';
+      anchor.className = 'chatbot-scroll-anchor';
+      anchor.setAttribute('aria-hidden', 'true');
+      messages.appendChild(anchor);
+    } else if (anchor.parentElement !== messages || anchor !== messages.lastElementChild) {
+      messages.appendChild(anchor);
+    }
+
+    return anchor;
+  }
+
+  appendToMessages(node, { pin = 'if-stuck' } = {}) {
+    const messages = this.elements.messages;
+    if (!messages || !node) return;
+
+    const anchor = messages.querySelector('#chatbot-scroll-anchor');
+    if (anchor) {
+      messages.insertBefore(node, anchor);
+    } else {
+      messages.appendChild(node);
+    }
+    this.ensureScrollAnchor();
+
+    if (pin === true || (pin === 'if-stuck' && this.stickToBottom)) {
+      this.schedulePinToBottom({ force: pin === true });
+    }
+  }
+
+  initMessageScrollObserver() {
+    const messages = this.elements.messages;
+    if (!messages || this.messageResizeObserver || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
+    this.ensureScrollAnchor();
+    this.messageResizeObserver = new ResizeObserver(() => {
+      if (this.stickToBottom) {
+        this.applyPinToBottom();
+      }
+    });
+    this.messageResizeObserver.observe(messages);
+  }
+
+  applyPinToBottom() {
+    const messages = this.elements.messages;
+    if (!messages) return;
+
+    this.lastProgrammaticScrollAt = Date.now();
+    const anchor = this.ensureScrollAnchor();
+    const targetTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
+
+    messages.scrollTop = targetTop;
+
+    if (anchor && typeof anchor.scrollIntoView === 'function') {
+      try {
+        anchor.scrollIntoView({ block: 'end', inline: 'nearest' });
+      } catch {
+        // scrollIntoView options unsupported in legacy WebKit
+        anchor.scrollIntoView(false);
+      }
+    }
+
+    messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
+  }
+
+  schedulePinToBottom({ force = false } = {}) {
+    const messages = this.elements.messages;
+    if (!messages) return;
+
+    if (!force && !this.stickToBottom && !this.isNearMessageBottom()) {
+      return;
+    }
+
+    if (force) {
+      this.stickToBottom = true;
+    }
+
+    if (this.pinScrollFrame) {
+      cancelAnimationFrame(this.pinScrollFrame);
+    }
+
+    this.pinScrollFrame = requestAnimationFrame(() => {
+      this.pinScrollFrame = requestAnimationFrame(() => {
+        this.pinScrollFrame = 0;
+        this.applyPinToBottom();
+      });
+    });
   }
 
   isNearMessageBottom(threshold = 72) {
@@ -1529,33 +1664,8 @@ class AppleIntelligenceChatbot {
     return messages.scrollHeight - messages.scrollTop - messages.clientHeight <= threshold;
   }
 
-  scrollToBottom({ force = false, behavior = 'auto' } = {}) {
-    const messages = this.elements.messages;
-    if (!messages) return;
-
-    if (!force && !this.autoScrollLocked && !this.isNearMessageBottom()) {
-      return;
-    }
-
-    this.lastProgrammaticScrollAt = Date.now();
-    this.autoScrollLocked = true;
-
-    const snap = () => {
-      messages.scrollTop = messages.scrollHeight;
-    };
-
-    snap();
-    requestAnimationFrame(() => {
-      snap();
-      requestAnimationFrame(snap);
-    });
-
-    if (behavior === 'smooth' && typeof messages.scrollTo === 'function') {
-      messages.scrollTo({
-        top: messages.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
+  scrollToBottom({ force = false } = {}) {
+    this.schedulePinToBottom({ force });
   }
 
   handleVoiceInput() {
@@ -1728,8 +1838,7 @@ class AppleIntelligenceChatbot {
       this.ask(context.prompt);
     });
 
-    this.elements.messages?.appendChild(chip);
-    this.scrollToBottom();
+    this.appendToMessages(chip);
   }
 
   /**
