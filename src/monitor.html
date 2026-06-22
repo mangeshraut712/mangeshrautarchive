@@ -60,7 +60,7 @@
           apiBaseUrl,
           siteUrl: window.location.origin,
           appTitle: 'AssistMe Portfolio Assistant',
-          selectedModel: 'x-ai/grok-4.1-fast',
+          selectedModel: 'x-ai/grok-4.3',
           lastfmApiKey: window.APP_CONFIG?.lastfmApiKey || '',
           musicDirectFallback: true,
         });
@@ -837,7 +837,7 @@
       globalThis.MonitorMetrics = MonitorMetrics;
     </script>
     <script>
-      const REMOTE_API_FALLBACK_ORIGIN = 'https://mangeshrautarchive.vercel.app';
+      const REMOTE_API_FALLBACK_ORIGIN = 'https://mraut.vercel.app';
       const REMOTE_API_SECONDARY_ORIGIN = 'https://mangeshraut.pro';
       const MONITOR_API_PROBE_PATH = '/api/monitor/status';
       const MONITOR_API_TIMEOUT_MS = 8000;
@@ -2871,7 +2871,7 @@
         },
         {
           name: 'Vercel App',
-          url: 'https://mangeshrautarchive.vercel.app/api/health',
+          url: 'https://mraut.vercel.app/api/health',
           type: 'api',
         },
         {

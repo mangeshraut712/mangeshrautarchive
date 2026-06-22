@@ -445,7 +445,7 @@ class SystemMonitor:
         )
         vercel_origin = self._normalize_public_origin(
             os.getenv("NEXT_PUBLIC_API_BASE") or os.getenv("VERCEL_PUBLIC_URL"),
-            "https://mangeshrautarchive.vercel.app",
+            "https://mraut.vercel.app",
         )
         github_pages = self._normalize_public_origin(
             os.getenv("GITHUB_PAGES_URL"),

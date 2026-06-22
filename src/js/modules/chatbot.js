@@ -1023,7 +1023,7 @@ class AppleIntelligenceChatbot {
       const runtimeSeconds = Math.max(runtime / 1000, 0.001);
       metadata = {
         source: response?.metadata?.source || response?.source || 'Neural API',
-        model: response?.metadata?.model || response?.model || 'x-ai/grok-4.1-fast',
+        model: response?.metadata?.model || response?.model || 'x-ai/grok-4.3',
         category: response?.metadata?.category || 'General',
         runtime: runtime,
         tokens: tokenEstimate,

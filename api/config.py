@@ -22,7 +22,8 @@ LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "").strip()
 LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-2.5-flash").strip()
+FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", FALLBACK_OPENROUTER_MODEL).strip()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
 SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
@@ -67,8 +68,8 @@ MODELS = [
         "streaming": True,
     },
     {
-        "id": "x-ai/grok-4.1-fast",
-        "name": "Grok 4.1 Fast",
+        "id": "x-ai/grok-4.3",
+        "name": "Grok 4.3",
         "priority": 3,
         "streaming": True,
     },
@@ -79,7 +80,25 @@ MODELS = [
         "streaming": True,
     },
 ]
-DEFAULT_MODEL = OPENROUTER_MODEL or "google/gemini-2.5-flash"
+OPENROUTER_MODEL_ALIASES = {
+    "x-ai/grok-4.1-fast": "x-ai/grok-4.3",
+    "x-ai/grok-4-fast": "x-ai/grok-4.3",
+}
+SUPPORTED_OPENROUTER_MODELS = {model["id"] for model in MODELS}
+
+
+def normalize_openrouter_model(model: str) -> str:
+    """Return a current, supported OpenRouter model ID."""
+    requested = (model or "").strip()
+    if not requested:
+        return FALLBACK_OPENROUTER_MODEL
+    requested = OPENROUTER_MODEL_ALIASES.get(requested, requested)
+    if requested in SUPPORTED_OPENROUTER_MODELS:
+        return requested
+    return FALLBACK_OPENROUTER_MODEL
+
+
+DEFAULT_MODEL = normalize_openrouter_model(OPENROUTER_MODEL)
 
 # Poster cache
 poster_cache = {}

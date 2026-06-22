@@ -7,6 +7,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
+from api.config import DEFAULT_MODEL
+
 # Monitoring
 from api.monitoring import (
     system_monitor,
@@ -71,6 +73,7 @@ origins = [
     # Production domains
     "https://mangeshraut712.github.io",
     "https://mangeshraut.pro",
+    "https://mraut.vercel.app",
     "https://mangeshrautarchive.vercel.app",
     # Development
     "http://localhost:4000",
@@ -131,7 +134,7 @@ print("🚀 AssistMe API Starting (Modular Edition)...")
 print(f"   Environment: {os.getenv('VERCEL_ENV', 'local')}")
 if os.getenv("OPENROUTER_API_KEY"):
     print("   API Key: ✅ Configured (OpenRouter)")
-    print(f"   Model: {os.getenv('OPENROUTER_MODEL', 'x-ai/grok-4.1-fast')}")
+    print(f"   Model: {DEFAULT_MODEL}")
 else:
     print("   API Key: ⚠️  Not configured")
     print("   Mode: 🧠 Local Intelligence (Offline Fallback Active)")

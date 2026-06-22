@@ -38,7 +38,7 @@ const chat = {
   welcomeDelay: 400,
   suggestionsLimit: 6,
   historyRetentionHours: 168, // 7 days for better context
-  model: 'x-ai/grok-4.1-fast', // Premium model via OpenRouter
+  model: 'x-ai/grok-4.3', // Premium model via OpenRouter
   streaming: true,
   temperature: 0.7,
   maxTokens: 2500,

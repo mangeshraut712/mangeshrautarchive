@@ -182,7 +182,7 @@ const monitorMockPayloads = {
       },
       public_origins: {
         production: 'https://mangeshraut.pro',
-        preview: 'https://mangeshrautarchive.vercel.app',
+        preview: 'https://mraut.vercel.app',
       },
     },
     docs: {
@@ -289,7 +289,7 @@ const monitorMockPayloads = {
         name: 'Preview Deployment',
         status: 'healthy',
         message: 'Vercel preview surface is reachable',
-        url: 'https://mangeshrautarchive.vercel.app',
+        url: 'https://mraut.vercel.app',
         metric_value: '200',
         metric_label: 'HTTP',
       },
@@ -392,13 +392,13 @@ const monitorMockPayloads = {
     openrouter_errors: 0,
     ai_response_times: [420, 510, 480, 455],
     model_usage: {
-      'x-ai/grok-4.1-fast': 128,
+      'x-ai/grok-4.3': 128,
     },
     token_usage: { input: 28000, output: 14000 },
     models: [
       {
-        name: 'Grok 4.1 Fast',
-        model: 'x-ai/grok-4.1-fast',
+        name: 'Grok 4.3',
+        model: 'x-ai/grok-4.3',
         provider: 'OpenRouter',
         total_requests: 128,
         avg_latency_ms: 466,

@@ -2,12 +2,14 @@
 
 import os
 
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 
 os.environ.setdefault("VERCEL_ENV", "production")
 
 from api.config import rate_limit_store
+from api.config import normalize_openrouter_model
 from api.index import app
 from api.routes.chat import openrouter_request_body
 from api.site_knowledge import (
@@ -72,6 +74,37 @@ def test_openrouter_body_adds_parallel_web_tools_only_when_enabled():
     assert with_tools["tools"][0]["type"] == "openrouter:web_search"
     assert with_tools["tools"][0]["parameters"]["engine"] == "parallel"
     assert with_tools["tools"][1]["type"] == "openrouter:web_fetch"
+
+
+def test_deprecated_openrouter_model_maps_to_current_supported_model():
+    assert normalize_openrouter_model("x-ai/grok-4.1-fast") == "x-ai/grok-4.3"
+    assert normalize_openrouter_model("missing/provider-model") == "google/gemini-2.5-flash"
+
+
+def test_chat_upstream_http_error_returns_local_fallback(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "configured")
+
+    async def fail_model_call(*_args, **_kwargs):
+        request = httpx.Request("POST", "https://openrouter.ai/api/v1/chat/completions")
+        response = httpx.Response(
+            404,
+            request=request,
+            text='{"error":{"message":"model deprecated","code":404}}',
+        )
+        raise httpx.HTTPStatusError("model deprecated", request=request, response=response)
+
+    monkeypatch.setattr("api.routes.chat.call_openrouter", fail_model_call)
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "hello", "stream": False},
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["source"] == "Local Intelligence"
+    assert payload["model"] == "Local-FastAPI"
+    assert "Hello" in payload["answer"]
 
 
 def test_chat_local_mode_uses_public_site_knowledge(client, monkeypatch):

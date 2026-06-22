@@ -11,7 +11,7 @@ import { agenticActions } from '../modules/agentic-actions.js';
 let API_BASE = '';
 
 // Primary Backend: Vercel (has OPENROUTER_API_KEY configured)
-const VERCEL_BACKEND = 'https://mangeshrautarchive.vercel.app';
+const VERCEL_BACKEND = 'https://mraut.vercel.app';
 const PRIMARY_CUSTOM_DOMAIN = 'mangeshraut.pro';
 const MAX_SERVER_MESSAGE_LENGTH = 1800;
 const MAX_SERVER_HISTORY_MESSAGES = 12;

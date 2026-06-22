@@ -39,7 +39,7 @@ const GA_REDUNDANT_KEYS = new Set([
 const CONFIG_DEFAULTS = {
   OPENROUTER_SITE_URL: 'https://mangeshraut.pro',
   OPENROUTER_SITE_TITLE: 'AssistMe AI Assistant',
-  OPENROUTER_MODEL: 'x-ai/grok-4.1-fast',
+  OPENROUTER_MODEL: 'x-ai/grok-4.3',
   NEXT_PUBLIC_API_BASE: 'https://mangeshraut.pro',
 };
 

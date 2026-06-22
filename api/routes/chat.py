@@ -15,7 +15,6 @@ from api.config import (
     check_rate_limit,
     api_error,
     OPENROUTER_API_KEY,
-    OPENROUTER_MODEL,
     is_prompt_injection,
     sanitize_chat_text,
     sanitize_session_id,
@@ -37,6 +36,7 @@ from api.config import (
     SITE_TITLE,
     adaptive_llm_params,
     RATE_LIMIT_WINDOW,
+    normalize_openrouter_model,
 )
 from api.site_knowledge import (
     build_site_knowledge_prompt,
@@ -465,6 +465,29 @@ async def stream_static_chat_response(payload: Dict, start_time: float) -> Async
     )
 
 
+def build_local_chat_payload(
+    message: str,
+    site_context: str,
+    start_time: float,
+    *,
+    reason: str = "Local Intelligence",
+) -> Dict:
+    """Build the same local answer shape for offline and upstream-fallback modes."""
+    fallback = generate_local_response(message, site_context)
+    elapsed = int((time.time() - start_time) * 1000)
+    return {
+        "answer": fallback["answer"],
+        "source": reason,
+        "model": "Local-FastAPI",
+        "category": fallback.get("category", "General"),
+        "confidence": 1.0,
+        "runtime": f"{elapsed}ms",
+        "type": "local",
+        "knowledge_context": bool(site_context),
+        "web_tools": False,
+    }
+
+
 async def stream_openrouter_response(
     model: str,
     messages: List[Dict],
@@ -477,16 +500,13 @@ async def stream_openrouter_response(
         f"🔄 Streaming from OpenRouter: {model} "
         f"(site_context={knowledge_context_enabled}, web_tools={web_tools_enabled})"
     )
+    user_msg = next(
+        (m.get("content", "") for m in reversed(messages) if m.get("role") == "user"),
+        "",
+    )
 
     if not OPENROUTER_API_KEY:
         print("⚠️ No API Key found - activating Local Intelligence Fallback")
-
-        # Determine user message
-        user_msg = ""
-        for m in reversed(messages):
-            if m.get("role") == "user":
-                user_msg = m.get("content", "")
-                break
 
         # Generate local response
         fallback = generate_local_response(user_msg)
@@ -575,15 +595,14 @@ async def stream_openrouter_response(
                     if response.status_code != 200:
                         await response.aread()
                         print(f"❌ OpenRouter API error: status={response.status_code}")
-                        yield (
-                            json.dumps(
-                                {
-                                    "error": "AI service is temporarily unavailable. Please try again in a moment.",
-                                    "type": "error",
-                                }
-                            )
-                            + "\n"
+                        fallback = build_local_chat_payload(
+                            user_msg,
+                            "",
+                            start_time,
+                            reason="Local Intelligence",
                         )
+                        async for item in stream_static_chat_response(fallback, start_time):
+                            yield item
                         return
 
                     if retry_count == 0:
@@ -661,52 +680,48 @@ async def stream_openrouter_response(
             print(f"⚠️ Stream connection error: {type(e).__name__}")
             retry_count += 1
             if retry_count > max_retries:
-                yield (
-                    json.dumps(
-                        {
-                            "error": "The neural link was interrupted. Please try rephrasing or refreshing.",
-                            "type": "error",
-                        }
-                    )
-                    + "\n"
+                fallback = build_local_chat_payload(
+                    user_msg,
+                    "",
+                    start_time,
+                    reason="Local Intelligence",
                 )
+                async for item in stream_static_chat_response(fallback, start_time):
+                    yield item
             else:
                 await asyncio.sleep(1)
         except httpx.HTTPStatusError as e:
-            print(f"❌ OpenRouter HTTP error: {e.response.status_code} - {e.response.text}")
-            yield (
-                json.dumps(
-                    {
-                        "error": f"AI service returned HTTP {e.response.status_code}. Please try again later.",
-                        "type": "error",
-                    }
-                )
-                + "\n"
+            print(f"❌ OpenRouter HTTP error: {e.response.status_code}")
+            fallback = build_local_chat_payload(
+                user_msg,
+                "",
+                start_time,
+                reason="Local Intelligence",
             )
+            async for item in stream_static_chat_response(fallback, start_time):
+                yield item
             return
         except httpx.RequestError as e:
             print(f"❌ Request error during AI stream: {str(e)}")
-            yield (
-                json.dumps(
-                    {
-                        "error": "Failed to connect to the AI service. Check your connection.",
-                        "type": "error",
-                    }
-                )
-                + "\n"
+            fallback = build_local_chat_payload(
+                user_msg,
+                "",
+                start_time,
+                reason="Local Intelligence",
             )
+            async for item in stream_static_chat_response(fallback, start_time):
+                yield item
             return
         except asyncio.TimeoutError:
             print("❌ AI stream timed out")
-            yield (
-                json.dumps(
-                    {
-                        "error": "AI response timed out. The model is currently under high load.",
-                        "type": "error",
-                    }
-                )
-                + "\n"
+            fallback = build_local_chat_payload(
+                user_msg,
+                "",
+                start_time,
+                reason="Local Intelligence",
             )
+            async for item in stream_static_chat_response(fallback, start_time):
+                yield item
             return
         except Exception as e:
             print(f"❌ Critical stream error: {type(e).__name__} - {str(e)}")
@@ -864,9 +879,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         conversation = [system_message] + history + [user_message]
 
         # Select model
-        selected_model = request.model or DEFAULT_MODEL
-        if selected_model not in [m["id"] for m in MODELS]:
-            selected_model = DEFAULT_MODEL
+        selected_model = normalize_openrouter_model(request.model or DEFAULT_MODEL)
 
         # Streaming response
         if request.stream:
@@ -932,25 +945,28 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     except HTTPException:
         raise
     except httpx.HTTPStatusError as e:
-        print(f"❌ Chat endpoint HTTP status error: {e.response.status_code} - {e.response.text}")
-        raise api_error(
-            code="UPSTREAM_HTTP_ERROR",
-            message="The AI service returned an error status. Please try again.",
-            status=502,
+        print(f"❌ Chat endpoint HTTP status error: {e.response.status_code}")
+        return build_local_chat_payload(
+            message,
+            site_context,
+            start_time,
+            reason="Local Intelligence",
         )
     except httpx.RequestError as e:
         print(f"❌ Chat endpoint connection/request error: {str(e)}")
-        raise api_error(
-            code="UPSTREAM_CONNECTION_ERROR",
-            message="Could not connect to the AI service. Please check your internet and try again.",
-            status=503,
+        return build_local_chat_payload(
+            message,
+            site_context,
+            start_time,
+            reason="Local Intelligence",
         )
     except asyncio.TimeoutError:
         print("❌ Chat endpoint request timed out")
-        raise api_error(
-            code="UPSTREAM_TIMEOUT",
-            message="The AI response timed out. Please try a simpler prompt.",
-            status=504,
+        return build_local_chat_payload(
+            message,
+            site_context,
+            start_time,
+            reason="Local Intelligence",
         )
     except Exception as e:
         print(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}")
@@ -967,7 +983,7 @@ async def get_models():
     return {
         "models": MODELS,
         "default": DEFAULT_MODEL,
-        "current": OPENROUTER_MODEL or DEFAULT_MODEL,
+        "current": DEFAULT_MODEL,
     }
 
 
