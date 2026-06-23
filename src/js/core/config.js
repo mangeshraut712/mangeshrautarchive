@@ -38,7 +38,7 @@ const chat = {
   welcomeDelay: 400,
   suggestionsLimit: 6,
   historyRetentionHours: 168, // 7 days for better context
-  model: 'google/gemini-2.5-flash', // Reliable OpenRouter default (grok falls back server-side)
+  model: 'openrouter/auto', // Server-side router picks Grok, Fusion, or Flash per query
   streaming: true,
   temperature: 0.7,
   maxTokens: 2500,

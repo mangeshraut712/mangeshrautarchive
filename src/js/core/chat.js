@@ -1,4 +1,4 @@
-import { api, chat as chatConfig } from './config.js';
+import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
 
 // ============================================================================
@@ -387,11 +387,7 @@ class IntelligentAssistant {
           messages: this._getConversationForServer(),
           context: options.context || {},
           stream: isStreaming,
-          model:
-            options.model ||
-            window.APP_CONFIG?.selectedModel ||
-            chatConfig.model ||
-            undefined,
+          ...(options.model ? { model: options.model } : {}),
         }),
         signal: AbortSignal.timeout(30000),
       });

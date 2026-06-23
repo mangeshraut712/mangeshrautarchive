@@ -20,6 +20,8 @@ from api.config import (
     get_site_url,
     get_site_title,
     FALLBACK_OPENROUTER_MODEL,
+    PRIMARY_OPENROUTER_MODEL,
+    FUSION_MODEL,
     is_prompt_injection,
     sanitize_chat_text,
     sanitize_session_id,
@@ -38,7 +40,12 @@ from api.config import (
     API_URL,
     adaptive_llm_params,
     RATE_LIMIT_WINDOW,
-    normalize_openrouter_model,
+)
+from api.model_router import (
+    AUTO_ROUTER_ALLOWED,
+    AUTO_ROUTER_MODEL,
+    build_model_fallback_chain,
+    resolve_chat_model,
 )
 from api.site_knowledge import (
     build_site_knowledge_prompt,
@@ -84,6 +91,7 @@ def openrouter_request_body(
     *,
     stream: bool = False,
     web_tools_enabled: bool = False,
+    session_id: Optional[str] = None,
 ) -> Dict:
     """Build a bounded OpenRouter request body with optional 2026 web tools."""
     user_message = next(
@@ -98,6 +106,17 @@ def openrouter_request_body(
     }
     if not stream:
         body.pop("stream", None)
+
+    if model == AUTO_ROUTER_MODEL:
+        body["plugins"] = [
+            {
+                "id": "auto-router",
+                "cost_quality_tradeoff": 2,
+                "allowed_models": AUTO_ROUTER_ALLOWED,
+            }
+        ]
+        if session_id:
+            body["session_id"] = session_id
 
     if web_tools_enabled:
         body["tools"] = [
@@ -499,12 +518,7 @@ def build_local_chat_payload(
 
 
 def _fallback_models(model: str) -> List[str]:
-    """Try the requested model first, then the configured flash fallback."""
-    candidates = [normalize_openrouter_model(model)]
-    flash = normalize_openrouter_model(FALLBACK_OPENROUTER_MODEL)
-    if flash not in candidates:
-        candidates.append(flash)
-    return candidates
+    return build_model_fallback_chain(model)
 
 
 async def stream_openrouter_response(
@@ -513,10 +527,11 @@ async def stream_openrouter_response(
     session_id: Optional[str] = None,
     web_tools_enabled: bool = False,
     knowledge_context_enabled: bool = False,
+    routing_tier: str = "auto",
 ) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
     print(
-        f"🔄 Streaming from OpenRouter: {model} "
+        f"🔄 Streaming from OpenRouter: {model} tier={routing_tier} "
         f"(site_context={knowledge_context_enabled}, web_tools={web_tools_enabled})"
     )
     user_msg = next(
@@ -610,6 +625,7 @@ async def stream_openrouter_response(
                             messages,
                             stream=True,
                             web_tools_enabled=web_tools_enabled,
+                            session_id=session_id,
                         ),
                     ) as response:
                         if response.status_code != 200:
@@ -653,6 +669,7 @@ async def stream_openrouter_response(
                                                 "knowledge_context": knowledge_context_enabled,
                                                 "web_tools": web_tools_enabled,
                                                 "web_engine": "parallel" if web_tools_enabled else None,
+                                                "routing_tier": routing_tier,
                                                 "char_count": len(full_content),
                                                 "tokens_estimate": tokens_estimate,
                                                 "elapsed_ms": int(elapsed * 1000),
@@ -714,7 +731,10 @@ async def stream_openrouter_response(
 
 
 async def call_openrouter(
-    model: str, messages: List[Dict], web_tools_enabled: bool = False
+    model: str,
+    messages: List[Dict],
+    web_tools_enabled: bool = False,
+    session_id: Optional[str] = None,
 ) -> Dict:
     """Non-streaming API call with model fallback."""
     if not get_openrouter_api_key():
@@ -736,6 +756,7 @@ async def call_openrouter(
                         candidate_model,
                         messages,
                         web_tools_enabled=web_tools_enabled,
+                        session_id=session_id,
                     ),
                 )
                 response.raise_for_status()
@@ -863,8 +884,14 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
         conversation = [system_message] + history + [user_message]
 
-        # Select model
-        selected_model = normalize_openrouter_model(request.model or get_default_model())
+        selected_model, routed_web, routing_tier = resolve_chat_model(
+            message,
+            requested_model=request.model,
+            site_context=site_context,
+            stream=bool(request.stream),
+        )
+        if routed_web:
+            web_tools_enabled = True
 
         # Streaming response
         if request.stream:
@@ -877,6 +904,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                     session_id,
                     web_tools_enabled,
                     bool(site_context),
+                    routing_tier,
                 ):
                     yield chunk
                     try:
@@ -905,7 +933,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
         # Non-streaming response
         response = await call_openrouter(
-            selected_model, conversation, web_tools_enabled
+            selected_model, conversation, web_tools_enabled, session_id
         )
         runtime = int((time.time() - start_time) * 1000)
 
@@ -913,6 +941,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "answer": response["answer"],
             "source": "OpenRouter",
             "model": response["model"],
+            "routing_tier": routing_tier,
             "session_id": session_id,
             "session_token": create_session_token(session_id) if session_id else None,
             "category": "General",
@@ -1018,6 +1047,12 @@ async def get_models():
         "default": current,
         "current": current,
         "ai_configured": bool(get_openrouter_api_key()),
+        "routing": {
+            "portfolio": PRIMARY_OPENROUTER_MODEL,
+            "auto": AUTO_ROUTER_MODEL,
+            "fusion": FUSION_MODEL,
+            "fallback": FALLBACK_OPENROUTER_MODEL,
+        },
     }
 
 

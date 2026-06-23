@@ -442,8 +442,22 @@ def should_use_web_tools(query: str, site_context: str = "") -> bool:
     """Gate live web access to questions that need fresh or external data."""
     if not WEB_FRESHNESS_RE.search(query):
         return False
-    if site_context and not any(
-        marker in query.lower()
+    # Portfolio pages with site context — only search when freshness is explicit
+    if site_context and is_portfolio_context_query(query):
+        return bool(
+            re.search(
+                r"\b(latest|current|today|now|news|recent|2026|search|browse)\b",
+                query,
+                re.I,
+            )
+        )
+    return True
+
+
+def is_portfolio_context_query(query: str) -> bool:
+    lower = query.lower()
+    return not any(
+        marker in lower
         for marker in (
             "latest",
             "current",
@@ -451,16 +465,12 @@ def should_use_web_tools(query: str, site_context: str = "") -> bool:
             "now",
             "news",
             "recent",
-            "2026",
-            "www",
             "openrouter",
             "parallel",
             "search",
             "browse",
         )
-    ):
-        return False
-    return True
+    )
 
 
 def build_site_knowledge_prompt(site_context: str, web_enabled: bool) -> str:

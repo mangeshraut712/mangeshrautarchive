@@ -22,6 +22,9 @@ LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "").strip()
 LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
 FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
+PRIMARY_OPENROUTER_MODEL = "x-ai/grok-4.3"
+AUTO_ROUTER_MODEL = "openrouter/auto"
+FUSION_MODEL = "openrouter/fusion"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 
@@ -74,53 +77,82 @@ MAX_CHAT_MESSAGE_CHARS = 2000
 MAX_CONTEXT_CHARS = 4000
 SESSION_ID_PATTERN = re.compile(r"^[a-f0-9]{16,64}$", re.I)
 
-# Models - Support multiple models
+# Models exposed to the frontend / monitor
 MODELS = [
+    {
+        "id": AUTO_ROUTER_MODEL,
+        "name": "OpenRouter Auto (best fit)",
+        "priority": 0,
+        "streaming": True,
+        "routing": "auto",
+    },
+    {
+        "id": FUSION_MODEL,
+        "name": "OpenRouter Fusion (multi-model)",
+        "priority": 1,
+        "streaming": False,
+        "routing": "fusion",
+    },
+    {
+        "id": PRIMARY_OPENROUTER_MODEL,
+        "name": "Grok 4.3 (real-time)",
+        "priority": 2,
+        "streaming": True,
+        "routing": "portfolio",
+    },
     {
         "id": "google/gemini-2.5-flash",
         "name": "Gemini 2.5 Flash",
-        "priority": 1,
+        "priority": 3,
         "streaming": True,
+        "routing": "fast",
     },
     {
         "id": "google/gemini-2.5-pro",
         "name": "Gemini 2.5 Pro",
-        "priority": 2,
+        "priority": 4,
         "streaming": True,
-    },
-    {
-        "id": "x-ai/grok-4.3",
-        "name": "Grok 4.3",
-        "priority": 3,
-        "streaming": True,
+        "routing": "quality",
     },
     {
         "id": "anthropic/claude-3.5-sonnet",
         "name": "Claude 3.5 Sonnet",
-        "priority": 4,
+        "priority": 5,
         "streaming": True,
+        "routing": "quality",
     },
 ]
 OPENROUTER_MODEL_ALIASES = {
-    "x-ai/grok-4.1-fast": "x-ai/grok-4.3",
-    "x-ai/grok-4-fast": "x-ai/grok-4.3",
+    "x-ai/grok-4.1-fast": PRIMARY_OPENROUTER_MODEL,
+    "x-ai/grok-4-fast": PRIMARY_OPENROUTER_MODEL,
+    "openrouter/auto-router": AUTO_ROUTER_MODEL,
 }
+ROUTER_MODEL_IDS = {AUTO_ROUTER_MODEL, FUSION_MODEL}
 SUPPORTED_OPENROUTER_MODELS = {model["id"] for model in MODELS}
 
 
 def normalize_openrouter_model(model: str) -> str:
-    """Return a current, supported OpenRouter model ID."""
+    """Return a supported OpenRouter model ID or router alias."""
     requested = (model or "").strip()
     if not requested:
-        return FALLBACK_OPENROUTER_MODEL
+        return PRIMARY_OPENROUTER_MODEL
     requested = OPENROUTER_MODEL_ALIASES.get(requested, requested)
+    if requested in ROUTER_MODEL_IDS or requested.startswith("openrouter/"):
+        return requested
     if requested in SUPPORTED_OPENROUTER_MODELS:
         return requested
     return FALLBACK_OPENROUTER_MODEL
 
 
 def get_default_model() -> str:
-    return normalize_openrouter_model(get_openrouter_model_raw())
+    """Env default, falling back to Grok then Auto Router."""
+    raw = get_openrouter_model_raw()
+    if raw in ROUTER_MODEL_IDS or raw.startswith("openrouter/"):
+        return raw
+    normalized = normalize_openrouter_model(raw)
+    if normalized != FALLBACK_OPENROUTER_MODEL or raw == FALLBACK_OPENROUTER_MODEL:
+        return normalized
+    return PRIMARY_OPENROUTER_MODEL
 
 
 DEFAULT_MODEL = get_default_model()
