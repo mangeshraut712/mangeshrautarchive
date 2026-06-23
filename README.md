@@ -98,14 +98,14 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 
 ## 🚀 Live Demos
 
-| Experience     | Link                                                                                                | Highlights                                                           |
-| -------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Main Portfolio | [mangeshraut.pro](https://mangeshraut.pro)                                                          | AssistMe chat, liquid glass UI, spatial projects                     |
-| GitHub Pages   | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks             |
-| System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Real-time latency, service health, deploy status                     |
-| Travel Atlas   | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre-powered visited places with narrative AI                    |
-| Engineering Evidence | [mangeshraut.pro/systems](https://mangeshraut.pro/systems)                                    | CI-verified metrics, architecture diagrams, live `/api/monitor/engineering` |
-| AI Assistant   | Open chat on any page                                                                               | Try: _"download resume"_, _"go to projects"_, _"schedule a meeting"_ |
+| Experience           | Link                                                                                                | Highlights                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Main Portfolio       | [mangeshraut.pro](https://mangeshraut.pro)                                                          | AssistMe chat, liquid glass UI, spatial projects                            |
+| GitHub Pages         | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks                    |
+| System Monitor       | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Real-time latency, service health, deploy status                            |
+| Travel Atlas         | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre-powered visited places with narrative AI                           |
+| Engineering Evidence | [mangeshraut.pro/systems](https://mangeshraut.pro/systems)                                          | CI-verified metrics, architecture diagrams, live `/api/monitor/engineering` |
+| AI Assistant         | Open chat on any page                                                                               | Try: _"download resume"_, _"go to projects"_, _"schedule a meeting"_        |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
 
