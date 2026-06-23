@@ -7,10 +7,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
-# Load env before any config imports so serverless runtimes see Vercel secrets.
-load_dotenv(".env.local")
-load_dotenv()
-
 from api.config import get_default_model, get_openrouter_api_key
 
 # Monitoring
@@ -31,6 +27,10 @@ from api.routes import (
     personalization,
     integrations,
 )
+
+# Load environment variables (.env.local overrides .env).
+load_dotenv(".env.local")
+load_dotenv()
 
 OPENAPI_TAGS = [
     {
