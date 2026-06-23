@@ -279,8 +279,9 @@
     const peak = trend.reduce((max, point) => Math.max(max, point[trendMetric] || 0), 0);
     const topCountries = Array.isArray(insights.top_countries) ? insights.top_countries : [];
     const gaEnabled = Boolean(payload?.ga_enabled);
-    const weeklyLabel = insights.metric_weekly_label || (gaEnabled ? 'Active users' : 'Page views');
-    const totalLabel = insights.metric_primary_label || (gaEnabled ? 'Active Users' : 'Page Views');
+    const weeklyLabel =
+      insights.metric_weekly_label || (gaEnabled ? 'Active Users' : 'Weekly Views');
+    const totalLabel = insights.metric_primary_label || (gaEnabled ? 'Total Reach' : 'Total Views');
     const totalValue = gaEnabled
       ? insights.active_users_all_time || insights.unique_visitors || 0
       : insights.total_views_all_time || 0;
@@ -394,8 +395,8 @@
         countries_this_week: 0,
         total_views_all_time: displayValue,
         active_users_all_time: 0,
-        metric_primary_label: 'Page Views',
-        metric_weekly_label: 'Page views',
+        metric_primary_label: 'Total Views',
+        metric_weekly_label: 'Weekly Views',
         trend_metric: 'views',
         trend: payload?.daily_trend || [],
       },

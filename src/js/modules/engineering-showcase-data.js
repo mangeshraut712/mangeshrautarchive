@@ -173,52 +173,7 @@ export const engineeringTimeline = [
   },
 ];
 
-export const nowBuilding = [
-  {
-    id: 'portfolio',
-    title: 'Agentic Portfolio',
-    status: 'Shipping',
-    progress: 95,
-    updated: 'Today',
-    href: 'case-studies/portfolio.html',
-  },
-  {
-    id: 'hindai',
-    title: 'HindAI',
-    status: 'Research',
-    milestone: 'Fine-tuning',
-    href: 'case-studies/hindai.html',
-  },
-  {
-    id: 'github-intel',
-    title: 'Project Intelligence',
-    status: 'Production',
-    users: 'Public',
-    href: 'index.html#projects',
-  },
-];
-
 export const buildingItems = [
-  {
-    id: 'assistme',
-    title: 'AssistMe Agentic Portfolio',
-    status: 'Shipping',
-    summary:
-      'Local-first WebMCP tools + OpenRouter streaming — navigate, filter, download resume, toggle theme without reloads.',
-    stack: ['FastAPI', 'OpenRouter', 'WebMCP'],
-    href: 'case-studies/portfolio.html',
-    signal: '9 tools',
-  },
-  {
-    id: 'hindai',
-    title: 'HindAI',
-    status: 'Research',
-    summary:
-      'Gemma-powered assistant for Indian philosophy with grounded retrieval and safety boundaries.',
-    stack: ['Gemma', 'RAG', 'Python'],
-    href: 'case-studies/hindai.html',
-    signal: 'LLM',
-  },
   {
     id: 'monitor',
     title: 'Public System Monitor',
@@ -237,39 +192,6 @@ export const buildingItems = [
     stack: ['GitHub API', 'WebXR'],
     href: 'index.html#projects',
     signal: 'Public',
-  },
-];
-
-export const learnedHighlights = [
-  {
-    id: 'architecture',
-    lesson: 'The model is not the architecture.',
-    tag: 'Systems',
-  },
-  {
-    id: 'retrieval',
-    lesson: 'Retrieval determines quality.',
-    tag: 'RAG',
-  },
-  {
-    id: 'local',
-    lesson: 'Local actions beat cloud round trips.',
-    tag: 'Agentic',
-  },
-  {
-    id: 'measure',
-    lesson: 'Measure every stage.',
-    tag: 'Ops',
-  },
-  {
-    id: 'optimize',
-    lesson: 'Optimize systems, not components.',
-    tag: 'Performance',
-  },
-  {
-    id: 'design',
-    lesson: 'Good design reduces complexity.',
-    tag: 'Product',
   },
 ];
 

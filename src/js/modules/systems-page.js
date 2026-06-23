@@ -4,8 +4,6 @@ import {
   engineeringTimeline,
   evidenceCards,
   heroStats,
-  learnedHighlights,
-  nowBuilding,
   systemDesignTopics,
 } from './engineering-showcase-data.js';
 import { caseStudies } from './case-studies-data.js';
@@ -30,7 +28,7 @@ function escapeHtml(value) {
 function bindCardPress() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const selector =
-    '.eng-showcase-card, .systems-bento-tile, .systems-bench-row, .systems-arch-tab, .systems-metric-panel, .systems-now-card, .systems-case-flow, .systems-principle-card';
+    '.eng-showcase-card, .systems-bento-tile, .systems-bench-row, .systems-arch-tab, .systems-metric-panel, .systems-case-flow, .systems-principle-card';
   document.querySelectorAll(selector).forEach(card => {
     if (card.dataset.pressBound === 'true') return;
     card.dataset.pressBound = 'true';
@@ -215,30 +213,6 @@ function renderTimeline() {
     .join('');
 }
 
-function renderNowBuilding() {
-  const root = document.getElementById('systems-now-grid');
-  if (!root) return;
-  root.innerHTML = nowBuilding
-    .map(item => {
-      const meta = item.progress
-        ? `<div class="systems-now-meta"><span>Progress</span><strong>${item.progress}%</strong></div>
-           <div class="systems-now-progress" aria-hidden="true"><span style="width:${item.progress}%"></span></div>
-           <div class="systems-now-meta"><span>Updated</span><strong>${escapeHtml(item.updated)}</strong></div>`
-        : item.milestone
-          ? `<div class="systems-now-meta"><span>Next milestone</span><strong>${escapeHtml(item.milestone)}</strong></div>`
-          : `<div class="systems-now-meta"><span>Users</span><strong>${escapeHtml(item.users)}</strong></div>`;
-      return `<a class="systems-now-card lg-glass-card" href="${escapeHtml(item.href)}">
-        <div class="systems-now-head">
-          <span class="eng-building-status">${escapeHtml(item.status)}</span>
-          <span class="systems-now-label">Now</span>
-        </div>
-        <h3 class="eng-building-title">${escapeHtml(item.title)}</h3>
-        ${meta}
-      </a>`;
-    })
-    .join('');
-}
-
 function renderBuilding() {
   const root = document.getElementById('systems-building-grid');
   if (!root) return;
@@ -253,19 +227,6 @@ function renderBuilding() {
         <p class="eng-building-summary">${escapeHtml(item.summary)}</p>
         <div class="eng-building-stack">${item.stack.map(s => `<span>${escapeHtml(s)}</span>`).join('')}</div>
       </a>`
-    )
-    .join('');
-}
-
-function renderLearned() {
-  const root = document.getElementById('systems-learned-grid');
-  if (!root) return;
-  root.innerHTML = learnedHighlights
-    .map(
-      item => `<div class="eng-showcase-card eng-learned-card lg-glass-card">
-        <span class="eng-learned-tag">${escapeHtml(item.tag)}</span>
-        <p class="eng-learned-lesson">${escapeHtml(item.lesson)}</p>
-      </div>`
     )
     .join('');
 }
@@ -476,9 +437,7 @@ export function initSystemsPage() {
   renderOpenSource();
   renderPrinciples();
   renderTimeline();
-  renderNowBuilding();
   renderBuilding();
-  renderLearned();
   renderBenchmarks();
   renderSystemDesign();
   renderCaseStudyFlows();
@@ -496,7 +455,6 @@ export function initSystemsPage() {
     '.systems-bento-tile',
     '.systems-metric-panel',
     '.systems-case-flow',
-    '.systems-now-card',
     '.systems-principle-card',
     '.systems-timeline-block',
   ]);

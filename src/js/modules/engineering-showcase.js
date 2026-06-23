@@ -1,9 +1,4 @@
-import {
-  buildingItems,
-  evidenceCards,
-  learnedHighlights,
-  staticBenchmarks,
-} from './engineering-showcase-data.js';
+import { evidenceCards, staticBenchmarks } from './engineering-showcase-data.js';
 import { observeScrollAnimations } from './scroll-animations.js';
 
 function escapeHtml(value) {
@@ -48,32 +43,6 @@ function renderEvidenceTeaserCards() {
     .join('');
 }
 
-function renderBuildingTeaser() {
-  return buildingItems
-    .slice(0, 2)
-    .map(
-      item => `<a class="eng-showcase-card eng-building-mini lg-glass-card" href="${escapeHtml(item.href)}">
-        <span class="eng-building-status">${escapeHtml(item.status)}</span>
-        <h3 class="eng-building-title">${escapeHtml(item.title)}</h3>
-        <p class="eng-building-summary">${escapeHtml(item.summary)}</p>
-      </a>`
-    )
-    .join('');
-}
-
-function renderLearnedTeaser() {
-  return learnedHighlights
-    .slice(0, 2)
-    .map(item => {
-      const href = item.blogId ? `index.html#blog-read-${item.blogId}` : 'systems.html#writing';
-      return `<a class="eng-showcase-card eng-learned-mini lg-glass-card" href="${escapeHtml(href)}">
-        <span class="eng-learned-tag">${escapeHtml(item.tag)}</span>
-        <p class="eng-learned-lesson">${escapeHtml(item.lesson)}</p>
-      </a>`;
-    })
-    .join('');
-}
-
 function renderMetricsTeaser() {
   const picks = staticBenchmarks.filter(b => !b.liveKey).slice(0, 3);
   return picks
@@ -100,16 +69,6 @@ export function renderEngineeringTeaser(root = document.getElementById('engineer
     </div>
     <div class="eng-teaser-evidence" aria-label="Portfolio evidence at a glance">
       ${renderEvidenceTeaserCards()}
-    </div>
-    <div class="eng-teaser-secondary">
-      <div class="eng-teaser-col">
-        <p class="eng-teaser-eyebrow">Now building</p>
-        <div class="eng-teaser-building">${renderBuildingTeaser()}</div>
-      </div>
-      <div class="eng-teaser-col">
-        <p class="eng-teaser-eyebrow">What changed my thinking</p>
-        <div class="eng-teaser-learned">${renderLearnedTeaser()}</div>
-      </div>
     </div>
     <div class="eng-teaser-cta-wrap">
       <a class="eng-teaser-cta btn hero-cta" href="systems.html">

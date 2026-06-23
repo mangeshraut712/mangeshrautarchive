@@ -12,7 +12,6 @@ const sectionIds = [
   'systems',
   'case-studies',
   'open-source',
-  'writing',
   'timeline',
 ];
 
