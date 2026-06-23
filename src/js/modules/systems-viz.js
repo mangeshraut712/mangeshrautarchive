@@ -101,10 +101,13 @@ export function renderDonutSvg(metrics, { size = 120 } = {}) {
 }
 
 function benchmarkBarWidth(b) {
-  if (b.id === 'lighthouse') return 95;
+  if (b.id === 'lighthouse') return 100;
   if (b.id === 'local-actions') return 92;
-  if (b.id === 'dashboard-cut') return 40;
   if (b.id === 'chat-ttft') return 72;
+  if (b.id === 'react-doctor') return 100;
+  if (b.id === 'prompt-cache') return 95;
+  if (b.id === 'webmcp-mcp') return 90;
+  if (b.id === 'dashboard-cut') return 40;
   const raw = String(b.value).replace(/[^0-9.]/g, '');
   const n = Number(raw);
   if (Number.isFinite(n) && n > 0 && n <= 100) return n;

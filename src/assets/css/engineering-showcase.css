@@ -294,9 +294,12 @@ html.dark .eng-teaser-hero-band {
 
 @media (width <= 640px) {
   .eng-teaser-evidence,
-  .eng-teaser-metrics,
   .eng-teaser-secondary {
     grid-template-columns: 1fr;
+  }
+  .eng-teaser-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
   }
 }
 

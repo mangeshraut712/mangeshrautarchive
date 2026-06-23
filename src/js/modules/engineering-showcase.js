@@ -44,7 +44,7 @@ function renderEvidenceTeaserCards() {
 }
 
 function renderMetricsTeaser() {
-  const picks = staticBenchmarks.filter(b => !b.liveKey).slice(0, 3);
+  const picks = staticBenchmarks.filter(b => !b.liveKey).slice(0, 6);
   return picks
     .map(
       b => `<div class="eng-metric-tile lg-glass-card">
