@@ -383,3 +383,47 @@ img {
     padding: 1.25rem;
   }
 }
+
+/* ========================================
+   ACCESSIBILITY & MOTION POLISH
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .icon:hover,
+  i:hover,
+  .logo:hover,
+  .company-logo:hover,
+  .certification-logo:hover {
+    transform: none;
+  }
+
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .hero-cta:hover,
+  .cta-button:hover {
+    transform: none;
+  }
+}
+
+:where(a, button, input, textarea, select, summary, [role='button']):focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
+}
+
+html.dark :where(a, button, input, textarea, select, summary, [role='button']):focus-visible {
+  outline-color: #0a84ff;
+}
+
+#currently-section {
+  scroll-margin-top: 130px;
+  scroll-margin-bottom: 2rem;
+}

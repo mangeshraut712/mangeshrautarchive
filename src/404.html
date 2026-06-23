@@ -1,37 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) — load only after user interaction to protect LCP -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        window.dataLayer.push(arguments);
-      }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', 'G-HVKF4N150Y');
-
-      (function initDeferredAnalytics() {
-        let loaded = false;
-        const loadGtag = () => {
-          if (loaded) return;
-          loaded = true;
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HVKF4N150Y';
-          document.head.appendChild(script);
-        };
-
-        ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(eventName => {
-          window.addEventListener(eventName, loadGtag, {
-            once: true,
-            passive: true,
-            capture: true,
-          });
-        });
-      })();
-    </script>
-
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -48,26 +17,20 @@
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
-    <link
-      rel="apple-touch-startup-image"
-      href="assets/images/pwa-splash-iphone-17-pro-max.png"
-      media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
-    />
-    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260610a" />
-    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260610a" />
-    <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260423a" />
-    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260617d" />
-    <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
-    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260610a" />
+    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260623a" />
     <link
       rel="stylesheet"
-      href="assets/css/wwdc26-liquid-glass.css?v=20260611b"
+      href="assets/css/wwdc26-liquid-glass.css?v=20260623a"
       media="print"
       onload="this.media = 'all'"
     />
-    <noscript
-      ><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260611b"
-    /></noscript>
+    <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a" /></noscript>
     <script src="js/utils/theme-head.js"></script>
     <style>
       body {
@@ -88,29 +51,8 @@
       .error-container {
         text-align: center;
         max-width: 480px;
-        padding: 2.5rem 2rem;
-        border: 1px solid var(--theme-card-border, rgba(0, 0, 0, 0.08));
-        border-radius: 24px;
-        background: var(--theme-card-surface, #ffffff);
-        transition:
-          border-color 0.25s ease,
-          box-shadow 0.25s ease;
-      }
-
-      .error-container:hover {
-        border: 1px solid var(--theme-card-border-hover, #0071e3);
-        box-shadow: 0 0 0 1px
-          color-mix(in srgb, var(--theme-card-border-hover, #0071e3) 24%, transparent);
-      }
-
-      html.dark .error-container {
-        border-color: var(--theme-card-border, rgba(255, 255, 255, 0.12));
-      }
-
-      html.dark .error-container:hover {
-        border: 1px solid var(--theme-card-border-hover, #0a84ff);
-        box-shadow: 0 0 0 1px
-          color-mix(in srgb, var(--theme-card-border-hover, #0a84ff) 24%, transparent);
+        padding: 2.75rem 2rem;
+        border-radius: 28px;
       }
 
       .error-code {
@@ -147,25 +89,36 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.95rem 1.75rem;
-        background: #0071e3;
+        background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
         color: #ffffff;
         text-decoration: none;
-        border-radius: 12px;
+        border-radius: 999px;
         font-weight: 600;
         font-size: 1rem;
+        box-shadow:
+          0 4px 14px rgb(0 122 255 / 32%),
+          inset 0 1px 0 rgb(255 255 255 / 24%);
         transition:
-          background 0.2s ease,
-          transform 0.2s ease;
+          transform 0.32s var(--lg-spring, cubic-bezier(0.34, 1.56, 0.64, 1)),
+          box-shadow 0.28s ease;
       }
 
       .home-link:hover {
-        background: #0077ed;
-        transform: translateY(-1px);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow:
+          0 8px 22px rgb(0 122 255 / 38%),
+          inset 0 1px 0 rgb(255 255 255 / 28%);
       }
 
       .home-link:focus-visible {
-        outline: 3px solid #ffcc00;
+        outline: 2px solid #0071e3;
         outline-offset: 3px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .home-link:hover {
+          transform: none;
+        }
       }
     </style>
   </head>
@@ -174,7 +127,7 @@
       <a href="#main-content" class="skip-link">Skip to main content</a>
     </div>
 
-    <main class="error-container" id="main-content">
+    <main class="error-container lg-glass-card" id="main-content">
       <div class="error-code" aria-hidden="true">404</div>
       <h1 class="error-title">Page Not Found</h1>
       <p class="error-message">
@@ -200,6 +153,6 @@
       </a>
     </main>
 
-    <script type="module" src="js/utils/theme.js?v=20260423a"></script>
+    <script type="module" src="js/utils/theme.js?v=20260623a"></script>
   </body>
 </html>

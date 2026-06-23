@@ -78,7 +78,7 @@ const SECTION_STYLE_GROUPS = [
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
 /** Styles to prefetch after first paint — keep small to protect LCP on Chrome/Safari */
-const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about', 'currently'];
+const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about'];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 const DEFERRED_IMAGE_PLACEHOLDER =
@@ -600,6 +600,24 @@ function initOnDemandModules() {
   bindInteractionStyleLoader('menu-btn', ['interactive']);
   bindInteractionStyleLoader('website-share-toggle', ['share']);
   bindSearchShortcutLoader(searchLoader, document, ['interactive']);
+  initChatbotWarmPrefetch();
+}
+
+function initChatbotWarmPrefetch() {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  observeSectionTask(
+    'contact',
+    () => {
+      runWhenIdle(() => {
+        loadDeferredStyles(['assistant']).catch(() => {});
+        chatbotLoader.load().catch(() => {});
+      }, 600);
+    },
+    '320px 0px'
+  );
 }
 
 function initDeferredStyles() {

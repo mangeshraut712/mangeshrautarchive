@@ -106,14 +106,13 @@ body.monitor-page {
   padding: 8px 16px;
   border: 1px solid var(--border-color);
   border-radius: 999px;
-  background: #ffffff;
   box-shadow: var(--shadow-md);
   transform: translateX(-50%);
 }
 
 html.dark .monitor-page-nav,
 [data-theme='dark'] .monitor-page-nav {
-  background: #000000;
+  border-color: var(--border-color);
 }
 
 .monitor-page-nav__left,
@@ -463,13 +462,12 @@ body.monitor-page #main-content.monitor-container {
   padding: 22px 26px;
   margin-bottom: 20px;
   border-radius: 24px;
-  background: #ffffff;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
 }
 
 html.dark .monitor-summary-card {
-  background: #000000;
+  border-color: var(--border-color);
 }
 
 body.monitor-page main > section.monitor-summary-card {
@@ -892,7 +890,6 @@ body.monitor-page main > section.section:not(#home) {
 .doc-card {
   padding: 16px 18px;
   border-radius: 16px;
-  background: var(--bg-primary);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
 }
@@ -2337,11 +2334,6 @@ body.monitor-page main .monitor-summary-panel {
 body.monitor-page main > section.section,
 body.monitor-page main > section.monitor-summary-panel,
 body.monitor-page main > section#monitor-summary-section {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
   border: 1px solid var(--border-color) !important;
   box-shadow: var(--shadow-sm) !important;
 }
@@ -2349,11 +2341,6 @@ body.monitor-page main > section#monitor-summary-section {
 html.dark body.monitor-page main > section.section,
 html.dark body.monitor-page main > section.monitor-summary-panel,
 html.dark body.monitor-page main > section#monitor-summary-section {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
   border: 1px solid var(--border-color) !important;
   box-shadow: var(--shadow-sm) !important;
 }
@@ -2400,7 +2387,7 @@ html.dark body.monitor-page .ops-card:hover {
     0 1px 0 rgba(255, 255, 255, 0.05) inset !important;
 }
 
-/* Cohesive styling for all monitor cards & sections (solid background, theme-aware, 1px border) */
+/* Monitor card surfaces use wwdc26 liquid glass — typography and borders only */
 body.monitor-page .monitor-summary-card,
 body.monitor-page .monitor-summary-panel,
 body.monitor-page .doc-card,
@@ -2409,7 +2396,6 @@ body.monitor-page .health-item,
 body.monitor-page .endpoint-card,
 body.monitor-page .section,
 body.monitor-page article {
-  background: #ffffff !important;
   color: var(--text-primary) !important;
   border: 1px solid var(--border-color) !important;
   box-shadow: var(--shadow-sm) !important;
@@ -2423,7 +2409,6 @@ html.dark body.monitor-page .health-item,
 html.dark body.monitor-page .endpoint-card,
 html.dark body.monitor-page .section,
 html.dark body.monitor-page article {
-  background: #000000 !important;
   border: 1px solid var(--border-color) !important;
 }
 

@@ -106,6 +106,24 @@ test.describe('Mobile viewport fit', () => {
     expect(metrics.layoutWidth).toBeLessThanOrEqual(metrics.innerW + 1);
   });
 
+  test('projects view-all button stays within mobile viewport', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForSelector('#projects', { state: 'visible', timeout: 20_000 });
+    await page.locator('#projects').scrollIntoViewIfNeeded();
+
+    const btn = page.locator('.projects-view-all-btn');
+    await expect(btn).toBeVisible();
+
+    const box = await btn.boundingBox();
+    expect(box).not.toBeNull();
+    if (box) {
+      expect(box.x).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width).toBeLessThanOrEqual(390);
+      expect(box.width).toBeGreaterThan(0);
+      expect(box.height).toBeGreaterThan(0);
+    }
+  });
+
   test('chatbot shows blurred backdrop and opaque panel on mobile', async ({ page }) => {
     await gotoSite(page);
     await page.locator('#chatbot-toggle').click();

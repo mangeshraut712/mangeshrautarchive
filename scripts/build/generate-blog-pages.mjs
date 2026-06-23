@@ -14,6 +14,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://mangeshraut.pro';
 const ASSET_PREFIX = '..';
+const ASSET_VER = '20260623a';
 
 function sortedPosts() {
   return blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
@@ -55,16 +56,20 @@ function pageShell({
     <link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="${SITE_URL}/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-2026-design-system.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/typography-system.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/accessibility-contrast-fixes.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/card-content-accessibility.css?v=20260621b" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" /></noscript>
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-2026-design-system.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/typography-system.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/global-improvements.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/accessibility-contrast-fixes.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" /></noscript>
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/card-content-accessibility.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-super-retina-display.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css?v=${ASSET_VER}" />
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
     ${extraHead}
     ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
@@ -80,7 +85,7 @@ function renderBlogIndex(posts, tags) {
   const cards = posts
     .map(
       post => `
-    <article class="blog-card apple-3d-project" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
+    <article class="blog-card apple-3d-project lg-glass-card" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
       <div class="blog-card-content">
         <div class="blog-kicker-row">
           <span class="blog-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
@@ -106,7 +111,7 @@ function renderBlogIndex(posts, tags) {
   const body = `
     <a href="${ASSET_PREFIX}/" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
     <main id="main-content" class="blog-index-main">
-      <header class="blog-index-header">
+      <header class="blog-index-header lg-glass-card">
         <p class="blog-index-kicker">Technical Writings</p>
         <h1 class="blog-index-title">Field notes on AI, systems, and product engineering</h1>
         <p class="blog-index-lede">Long-form articles with reader promises, practical workflows, and honest tradeoffs — built for engineers who want signal, not hype.</p>
@@ -162,7 +167,7 @@ function renderBlogPost(post, posts) {
         <div class="article-related-grid">
           ${related
             .map(
-              r => `<a href="/blog/${r.id}" class="article-related-card">
+              r => `<a href="/blog/${r.id}" class="article-related-card lg-glass-card">
               <span class="article-related-kicker">${escapeHTML(r.kicker || 'Field notes')}</span>
               <span class="article-related-heading">${escapeHTML(r.title)}</span>
             </a>`
@@ -177,7 +182,7 @@ function renderBlogPost(post, posts) {
     <a href="/blog" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
     <main id="main-content" class="blog-article-main">
       <article class="blog-article">
-        <header class="article-header">
+        <header class="article-header lg-glass-card">
           <span class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
           <div class="article-meta">
             <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
@@ -189,7 +194,7 @@ function renderBlogPost(post, posts) {
           <div class="article-tags">${(post.tags || []).map(tag => `<span class="blog-tag">${escapeHTML(tag)}</span>`).join('')}</div>
         </header>
         <div class="blog-article-layout">
-          ${toc ? `<aside class="blog-article-sidebar">${toc}</aside>` : ''}
+          ${toc ? `<aside class="blog-article-sidebar lg-glass-card">${toc}</aside>` : ''}
           <div class="article-body">${html}</div>
         </div>
         ${relatedHtml}

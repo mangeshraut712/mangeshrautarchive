@@ -188,10 +188,34 @@ function applyTiltEffects(container) {
   });
 }
 
+function bindProjectCardPressFeedback(container) {
+  if (!container || container.dataset.pressBound === 'true') {
+    return;
+  }
+
+  container.dataset.pressBound = 'true';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  container.querySelectorAll('.showcase-project-card').forEach(card => {
+    const pressOn = () => {
+      if (!reducedMotion) {
+        card.classList.add('is-pressed');
+      }
+    };
+    const pressOff = () => card.classList.remove('is-pressed');
+
+    card.addEventListener('pointerdown', pressOn);
+    card.addEventListener('pointerup', pressOff);
+    card.addEventListener('pointerleave', pressOff);
+    card.addEventListener('pointercancel', pressOff);
+  });
+}
+
 function revealRenderedProjectCards(container) {
   if (!container) return;
 
   observeScrollAnimations(['.showcase-project-card']);
+  bindProjectCardPressFeedback(container);
 
   const cards = container.querySelectorAll('.showcase-project-card');
   if (!cards.length) return;

@@ -85,7 +85,6 @@ html.dark {
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
   border: 1px solid var(--theme-card-border, var(--separator));
-  background: #ffffff;
   box-shadow: var(--shadow-md);
 }
 
@@ -252,7 +251,6 @@ html.dark {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #ffffff;
   border: 1px solid var(--theme-card-border, var(--separator));
   box-shadow: var(--shadow-md);
   transition:
@@ -263,7 +261,6 @@ html.dark {
 }
 
 html.dark .travel-sidebar {
-  background: #000000;
   border-color: var(--theme-card-border, rgba(255, 255, 255, 0.12));
   box-shadow: var(--shadow-md);
 }
