@@ -163,7 +163,7 @@ html.dark .systems-eyebrow {
 /* Hero proof strip — Apple product page stats */
 .systems-hero-stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.65rem;
   margin: 1.75rem auto 0;
   max-width: 720px;
@@ -2700,6 +2700,12 @@ html.dark .systems-public-statement {
   gap: 0.85rem;
 }
 
+@media (width <= 768px) {
+  .systems-hiring-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .systems-decision-grid {
   display: grid;
   gap: 0.55rem;
@@ -2728,6 +2734,17 @@ html.dark .systems-public-statement {
 .systems-decision-why {
   color: var(--systems-text);
   line-height: 1.45;
+}
+
+@media (width <= 768px) {
+  .systems-decision-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .systems-decision-divider {
+    display: none;
+  }
 }
 
 .systems-failure-grid {
@@ -2845,38 +2862,4 @@ html.dark .systems-public-statement {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--systems-accent);
-}
-
-.systems-footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.45rem 0.85rem;
-}
-
-.systems-footer-links a {
-  font-size: 0.84rem;
-  font-weight: 600;
-  color: var(--systems-accent);
-  text-decoration: none;
-}
-
-.systems-hero-stats {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-@media (width <= 768px) {
-  .systems-hiring-grid,
-  .systems-hero-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .systems-decision-row {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-  }
-
-  .systems-decision-divider {
-    display: none;
-  }
 }
