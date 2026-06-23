@@ -430,6 +430,45 @@ async function hydrateTelemetry({ initial = false } = {}) {
   }
 }
 
+function initCaseStudyRails() {
+  const caseStudies = document.querySelectorAll('.systems-case-flow');
+  caseStudies.forEach(cs => {
+    const railSteps = cs.querySelectorAll('.systems-flow-rail-step');
+    const flowSteps = cs.querySelectorAll('.systems-flow-step');
+
+    railSteps.forEach((railStep, index) => {
+      railStep.style.cursor = 'pointer';
+      railStep.addEventListener('click', () => {
+        flowSteps[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = Array.from(flowSteps).indexOf(entry.target);
+            if (index !== -1) {
+              railSteps.forEach((rs, i) => {
+                rs.classList.toggle('is-active', i === index);
+              });
+            }
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '-30% 0px -30% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    flowSteps.forEach(step => observer.observe(step));
+  });
+}
+
 export function initSystemsPage() {
   renderHeroStats();
   renderEvidence();
@@ -446,6 +485,7 @@ export function initSystemsPage() {
   mountArchitectureDiagrams();
   initArchitectureTabs();
   initSectionRail();
+  initCaseStudyRails();
   bindCardPress();
   hydrateTelemetry({ initial: true });
 

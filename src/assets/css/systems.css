@@ -1131,6 +1131,9 @@ html.dark .systems-timeline-block {
   border-radius: 999px;
   background: rgb(0 0 0 / 8%);
   position: relative;
+  font-size: 0;
+  color: transparent;
+  overflow: hidden;
 }
 
 html.dark .systems-flow-rail-step {
@@ -1155,33 +1158,47 @@ html.dark .systems-flow-rail-step {
   grid-template-columns: 2rem 1fr;
   gap: 0.75rem;
   align-items: start;
+  position: relative;
+  --marker-size: 2rem;
+  --marker-center: 1rem;
+}
+
+.systems-flow-step::before {
+  content: '';
+  position: absolute;
+  top: var(--marker-size);
+  bottom: 0;
+  left: var(--marker-center);
+  width: 2px;
+  background: rgb(0 113 227 / 18%);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+html.dark .systems-flow-step::before {
+  background: rgb(41 151 255 / 22%);
+}
+
+.systems-flow-step:last-child::before {
+  display: none;
 }
 
 .systems-flow-step-marker {
-  width: 2rem;
-  height: 2rem;
+  width: var(--marker-size);
+  height: var(--marker-size);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.85rem;
   color: var(--systems-accent);
   font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
 .systems-flow-step-body {
   padding-bottom: 1rem;
-  border-left: 2px solid rgb(0 113 227 / 18%);
-  margin-left: -1px;
   padding-left: 0.85rem;
-}
-
-html.dark .systems-flow-step-body {
-  border-left-color: rgb(41 151 255 / 22%);
-}
-
-.systems-flow-step:last-child .systems-flow-step-body {
-  border-left-color: transparent;
-  padding-bottom: 0;
 }
 
 .systems-flow-step-body h4 {
@@ -2035,7 +2052,7 @@ html.dark .case-study-evidence-bar a {
   .systems-bento-tile--status,
   .systems-bento-tile--donut,
   .systems-bento-tile--services {
-    grid-column: span 3;
+    grid-column: span 2;
   }
 
   .systems-bento-tile--chart {
@@ -2074,6 +2091,8 @@ html.dark .case-study-evidence-bar a {
 
   .systems-flow-step {
     grid-template-columns: 1.5rem 1fr;
+    --marker-size: 1.5rem;
+    --marker-center: 0.75rem;
   }
 
   .systems-bento-tile--status,
@@ -2129,12 +2148,6 @@ html.dark .case-study-evidence-bar a {
 /* ─── Engineering page: unified surfaces & monitor.css overrides ─── */
 body.systems-page .lg-glass-card,
 body.systems-page .systems-shell article:not(.systems-arch-panel) {
-  background: var(--systems-card-bg) !important;
-  background-color: var(--systems-card-bg) !important;
-  backdrop-filter: saturate(180%) blur(20px) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
-  border: 1px solid var(--systems-card-border) !important;
-  box-shadow: var(--systems-card-shadow) !important;
   color: var(--systems-text) !important;
 }
 
@@ -2142,10 +2155,6 @@ body.systems-page .systems-arch-panel {
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
-}
-
-body.systems-page .systems-hero-stat.lg-glass-card {
-  background: var(--systems-card-bg) !important;
 }
 
 body.systems-page .systems-evidence-card--featured.lg-glass-card {
