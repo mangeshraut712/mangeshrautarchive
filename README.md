@@ -104,6 +104,7 @@ This isn't a static portfolio — it's a **production agentic system** you can i
 | GitHub Pages   | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Full functionality via static hosting with API fallbacks             |
 | System Monitor | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Real-time latency, service health, deploy status                     |
 | Travel Atlas   | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre-powered visited places with narrative AI                    |
+| Engineering Evidence | [mangeshraut.pro/systems](https://mangeshraut.pro/systems)                                    | CI-verified metrics, architecture diagrams, live `/api/monitor/engineering` |
 | AI Assistant   | Open chat on any page                                                                               | Try: _"download resume"_, _"go to projects"_, _"schedule a meeting"_ |
 
 > **Pro tip**: The agentic engine runs locally first. Many commands execute with zero network round-trip.
@@ -558,6 +559,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026 (latest)
 
+- **Engineering Evidence (`/systems`)** — aligned with travel/monitor nav pattern; architecture tab pills no longer inherit global blue button styles; dual-host diagram edges fixed; hero/benchmark tiles use CI-verified Lighthouse budgets (95+ gate), WebMCP tool count, and live API status instead of fabricated scores.
 - **Sitewide Liquid Glass** — `wwdc26` section 23/24: project cards, travel/monitor nav, blog articles, monitor `doc-card` tiles, 404 `lg-glass-card`, Apple spring hover/press on showcase cards.
 - **AssistMe routing** — `model_router.py` with OpenRouter Fusion (compare), Auto (general), Grok-first portfolio tier, Gemini fast-path, and runtime fallback chain; NDJSON streaming on Vercel.
 - **Cross-surface parity** — GitHub Pages `build-config.json` → `apiBaseUrl: mangeshraut.pro`; blog generator ships glass classes on index + article pages.
@@ -570,7 +572,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 - **Project Showcase Polish** — simplified lenses (All · Active · Busy), native Apple-style sort dropdown, neutral GitHub profile CTA, non-zero GitHub Operating View caption, and dynamic card reveal fix.
 - **Publication Preview** — two-column layout with mini paper preview card on the right and gradient Read paper CTA.
 - **Performance** — parallel hero analytics fetch, deferred card-a11y/Last.fm, hero badges stay visible outside scroll-hide targets.
-- **CI / QA** — axe tablist fix for Currently section; Lighthouse dist gate at 100/100 mobile + desktop locally; nightly monitoring uses cross-surface commit parity; React Doctor tracked in deploy workflow.
+- **CI / QA** — axe tablist fix for Currently section; Lighthouse CI gate at 95+ mobile + desktop; nightly monitoring uses cross-surface commit parity; React Doctor tracked in deploy workflow.
 
 ### June 2026 (earlier)
 

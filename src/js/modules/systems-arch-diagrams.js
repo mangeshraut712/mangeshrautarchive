@@ -23,7 +23,7 @@ export function renderDualHostDiagram(gradId) {
         <stop offset="100%" stop-color="rgb(90 200 250 / 12%)" />
       </linearGradient>
     </defs>
-    <path class="arch-edge arch-edge--glow" d="M120 140 H200 M320 90 H400 M320 190 H400 M480 140 H520" />
+    <path class="arch-edge arch-edge--glow" d="M116 140 C 142 140 142 82 168 82 M116 140 C 142 140 142 198 168 198 M272 82 C 336 82 336 140 400 140 M272 198 C 336 198 336 140 400 140" />
     <circle class="arch-node-port" cx="80" cy="140" r="36" />
     <text class="arch-node-text" x="80" y="145" text-anchor="middle">Client</text>
     <rect class="arch-node arch-node--cdn" x="168" y="58" width="104" height="48" rx="14" />

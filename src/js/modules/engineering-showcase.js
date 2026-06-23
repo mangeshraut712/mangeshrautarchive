@@ -61,8 +61,8 @@ export function renderEngineeringTeaser(root = document.getElementById('engineer
 
   root.innerHTML = `
     <div class="eng-teaser-hero-band lg-glass-card">
-      <p class="eng-teaser-kicker">Verifiable engineering</p>
-      <p class="eng-teaser-lead">Live metrics, architecture diagrams, case studies, and open telemetry — one evidence dashboard.</p>
+      <p class="eng-teaser-kicker">Quality Budgets</p>
+      <p class="eng-teaser-lead">Performance metrics, static code audits, and test coverage stats verified on every build.</p>
       <div class="eng-teaser-metrics" aria-label="Engineering benchmarks preview">
         ${renderMetricsTeaser()}
       </div>

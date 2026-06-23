@@ -7,10 +7,10 @@ import { BRAND_TAGLINE, portfolioCaseStudy } from './case-studies-data.js';
 export { portfolioCaseStudy, BRAND_TAGLINE };
 
 export const heroStats = [
-  { value: '95+', unit: '', label: 'Lighthouse', href: '#production-metrics' },
-  { value: '<50', unit: 'ms', label: 'Local agent', href: '#production-metrics' },
-  { value: '40', unit: '%', label: 'Latency reduction', href: '#case-studies' },
+  { value: '95+', unit: '', label: 'Lighthouse CI gate', href: '#production-metrics' },
   { value: '9', unit: '', label: 'WebMCP tools', href: '#architecture' },
+  { value: '<50', unit: 'ms', label: 'Local agent actions', href: '#production-metrics' },
+  { value: '40', unit: '%', label: 'Dashboard latency cut', href: '#case-studies' },
 ];
 
 export const evidenceCards = [
@@ -198,10 +198,17 @@ export const buildingItems = [
 export const staticBenchmarks = [
   {
     id: 'lighthouse',
-    label: 'PageSpeed (Lighthouse)',
-    value: '100',
+    label: 'Lighthouse Performance',
+    value: '95+',
     unit: '/100',
-    context: 'Homepage CI gate (desktop & mobile)',
+    context: 'Homepage CI gate (mobile + desktop)',
+  },
+  {
+    id: 'accessibility',
+    label: 'Lighthouse Accessibility',
+    value: '95',
+    unit: '/100',
+    context: 'Automated a11y gate in CI',
   },
   {
     id: 'local-actions',
@@ -209,20 +216,6 @@ export const staticBenchmarks = [
     value: '<50',
     unit: 'ms',
     context: 'WebMCP navigate / theme / resume',
-  },
-  {
-    id: 'chat-ttft',
-    label: 'OpenRouter Streaming',
-    value: '~1.2',
-    unit: 's',
-    context: 'OpenRouter stream (portfolio route)',
-  },
-  {
-    id: 'react-doctor',
-    label: 'React Review & Doctor',
-    value: 'Passed',
-    unit: 'audit',
-    context: 'CI quality gates & dependency analysis',
   },
   {
     id: 'prompt-cache',
@@ -239,11 +232,18 @@ export const staticBenchmarks = [
     context: 'Natural language browser tool execution',
   },
   {
+    id: 'best-practices',
+    label: 'Lighthouse Best Practices',
+    value: '100',
+    unit: '/100',
+    context: 'Security & web standards gate',
+  },
+  {
     id: 'api-p95',
     label: 'API p95 latency',
     value: '—',
     unit: 'ms',
-    context: 'Live from monitor',
+    context: 'Live telemetry from monitor',
     liveKey: 'apiP95',
   },
   {

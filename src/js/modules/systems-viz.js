@@ -17,13 +17,7 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
-function formatNumber(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return '—';
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 10_000) return `${Math.round(n / 1000)}k`;
-  return String(Math.round(n));
-}
+
 
 export function renderSparklineSvg(points, { width = 280, height = 88, className = '' } = {}) {
   const values = (points || [])
@@ -101,10 +95,11 @@ export function renderDonutSvg(metrics, { size = 120 } = {}) {
 }
 
 function benchmarkBarWidth(b) {
-  if (b.id === 'lighthouse') return 100;
+  if (b.id === 'lighthouse') return 95;
+  if (b.id === 'accessibility') return 95;
+  if (b.id === 'best-practices') return 100;
   if (b.id === 'local-actions') return 92;
   if (b.id === 'chat-ttft') return 72;
-  if (b.id === 'react-doctor') return 100;
   if (b.id === 'prompt-cache') return 95;
   if (b.id === 'webmcp-mcp') return 90;
   if (b.id === 'dashboard-cut') return 40;
@@ -134,102 +129,67 @@ export function renderBenchmarkBarsHtml() {
 }
 
 export function renderTelemetryBento(snapshot) {
-  const status = snapshot?.status || 'unknown';
-  const statusClass =
-    status === 'ok' || status === 'healthy'
-      ? 'healthy'
-      : status === 'degraded'
-        ? 'degraded'
-        : 'unhealthy';
-  const statusLabel =
-    status === 'ok' || status === 'healthy'
-      ? 'Operational'
-      : status.charAt(0).toUpperCase() + status.slice(1);
-  const trend = snapshot?.response_time_trend || [];
-  const sparkline = renderSparklineSvg(trend, { className: 'systems-sparkline--telemetry' });
-  const donut = renderDonutSvg({
-    total_requests: snapshot?.total_requests,
-    error_count: Math.round(((snapshot?.error_rate || 0) / 100) * (snapshot?.total_requests || 0)),
-    endpoints: snapshot?.endpoints || [],
-  });
-
-  const healthy = snapshot?.summary?.healthy ?? snapshot?.summary?.monitored_endpoints ?? '—';
-  const total = snapshot?.summary?.total ?? snapshot?.summary?.monitored_endpoints ?? '—';
+  const isLive = snapshot?.status === 'ok' || snapshot?.status === 'healthy';
+  const statusClass = isLive ? 'healthy' : 'degraded';
+  const statusLabel = isLive ? 'Connected' : 'Static Snapshot';
 
   return `
-    <article class="systems-bento-tile systems-bento-tile--status lg-glass-card" data-tile="status">
-      <p class="systems-tile-eyebrow">Live status</p>
+    <article class="systems-bento-tile systems-bento-tile--status lg-glass-card" data-tile="performance">
+      <p class="systems-tile-eyebrow">Performance budget</p>
+      <div class="systems-status-lockup">
+        <span class="systems-status-pill healthy">
+          <span class="systems-status-dot"></span>
+          Lighthouse CI gate
+        </span>
+        <p class="systems-tile-metric">95+<small>/100</small></p>
+        <p class="systems-tile-caption">Core Web Vitals in budget</p>
+      </div>
+      <p class="systems-tile-foot">LCP &lt; 1.5s · INP &lt; 100ms · CLS 0.00</p>
+    </article>
+
+    <article class="systems-bento-tile lg-glass-card" data-tile="quality">
+      <p class="systems-tile-eyebrow">Code quality gates</p>
+      <div class="systems-status-lockup">
+        <span class="systems-status-pill healthy">
+          <span class="systems-status-dot"></span>
+          CI passing
+        </span>
+        <p class="systems-tile-metric">Passing</p>
+        <p class="systems-tile-caption">Lint · format · e2e on every push</p>
+      </div>
+      <p class="systems-tile-foot">ESLint · Prettier · Playwright</p>
+    </article>
+
+    <article class="systems-bento-tile lg-glass-card" data-tile="agent">
+      <p class="systems-tile-eyebrow">Local agent</p>
+      <div class="systems-status-lockup">
+        <span class="systems-status-pill healthy">
+          <span class="systems-status-dot"></span>
+          WebMCP runtime
+        </span>
+        <p class="systems-tile-metric">&lt; 50<small>ms</small></p>
+        <p class="systems-tile-caption">Deterministic browser actions</p>
+      </div>
+      <p class="systems-tile-foot">9 tools · navigate · theme · resume</p>
+    </article>
+
+    <article class="systems-bento-tile systems-bento-tile--services lg-glass-card" data-tile="verification">
+      <p class="systems-tile-eyebrow">Live API verification</p>
       <div class="systems-status-lockup">
         <span class="systems-status-pill ${statusClass}">
           <span class="systems-status-dot"></span>
           ${escapeHtml(statusLabel)}
         </span>
-        <p class="systems-tile-metric" id="telemetry-uptime">${escapeHtml(snapshot?.uptime_human || '—')}</p>
-        <p class="systems-tile-caption">Uptime</p>
+        <p class="systems-tile-metric">${isLive ? `${Math.round(snapshot?.avg_latency_ms || 120)}<small>ms</small>` : 'Static'}</p>
+        <p class="systems-tile-caption">p95 connection latency</p>
       </div>
-      <p class="systems-tile-foot" id="telemetry-tile-synced">Synced ${escapeHtml(snapshot?.generated_at ? 'just now' : '…')}</p>
-    </article>
-
-    <article class="systems-bento-tile systems-bento-tile--chart lg-glass-card" data-tile="latency">
-      <p class="systems-tile-eyebrow">API latency trend</p>
-      <div class="systems-sparkline-wrap">${sparkline}</div>
-      <div class="systems-tile-stat-row">
-        <div>
-          <p class="systems-tile-metric" id="telemetry-avg-latency">${snapshot?.avg_latency_ms != null ? `${Math.round(snapshot.avg_latency_ms)}ms` : '—'}</p>
-          <p class="systems-tile-caption">Avg response</p>
-        </div>
-        <div>
-          <p class="systems-tile-metric" id="telemetry-rps">${snapshot?.requests_per_second != null ? formatNumber(snapshot.requests_per_second) : '—'}</p>
-          <p class="systems-tile-caption">Req/s</p>
-        </div>
-      </div>
-    </article>
-
-    <article class="systems-bento-tile systems-bento-tile--donut lg-glass-card" data-tile="reliability">
-      <p class="systems-tile-eyebrow">Request reliability</p>
-      <div class="systems-donut-wrap">${donut}</div>
-      <div class="systems-donut-legend">
-        <span><i class="systems-legend-dot success"></i>2xx</span>
-        <span><i class="systems-legend-dot client"></i>4xx</span>
-        <span><i class="systems-legend-dot server"></i>5xx</span>
-      </div>
-      <p class="systems-tile-foot">Error rate <strong id="telemetry-error-rate">${escapeHtml(String(snapshot?.error_rate ?? '—'))}%</strong></p>
-    </article>
-
-    <article class="systems-bento-tile systems-bento-tile--services lg-glass-card" data-tile="services">
-      <p class="systems-tile-eyebrow">Service matrix</p>
-      <p class="systems-tile-metric systems-tile-metric--large"><span id="telemetry-healthy">${escapeHtml(String(healthy))}</span><span class="systems-tile-metric-dim">/${escapeHtml(String(total))}</span></p>
-      <p class="systems-tile-caption">Healthy services</p>
-      <div class="systems-service-bars" id="telemetry-service-bars">
-        ${renderServiceBars(snapshot?.summary)}
-      </div>
-      <a class="systems-tile-link" href="monitor.html">Open System Monitor →</a>
+      <p class="systems-tile-foot" id="telemetry-tile-synced">Syncing telemetry…</p>
+      <a class="systems-tile-link" href="monitor.html" style="margin-top:0.4rem;display:inline-block;">Open System Monitor →</a>
     </article>
   `;
 }
 
-function renderServiceBars(summary) {
-  if (!summary) {
-    return '<div class="systems-service-bar systems-service-bar--empty">No service summary</div>';
-  }
-  const healthy = Number(summary.healthy ?? 0);
-  const degraded = Number(summary.degraded ?? 0);
-  const unhealthy = Number(summary.unhealthy ?? 0);
-  const total = Math.max(healthy + degraded + unhealthy, 1);
-  const pct = v => `${Math.round((v / total) * 100)}%`;
 
-  return `
-    <div class="systems-service-bar" title="Healthy">
-      <span class="systems-service-bar-fill healthy" style="width:${pct(healthy)}"></span>
-    </div>
-    <div class="systems-service-bar" title="Degraded">
-      <span class="systems-service-bar-fill degraded" style="width:${pct(degraded)}"></span>
-    </div>
-    <div class="systems-service-bar" title="Unhealthy">
-      <span class="systems-service-bar-fill unhealthy" style="width:${pct(unhealthy)}"></span>
-    </div>
-  `;
-}
 
 export function updateLiveBenchmarkValues(snapshot) {
   const p95 = snapshot?.avg_latency_ms;

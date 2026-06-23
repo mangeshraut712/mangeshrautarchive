@@ -7,12 +7,18 @@
   --eng-text: #1d1d1f;
   --eng-muted: #6e6e73;
   --eng-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --eng-card-bg: #ffffff;
+  --eng-card-border: #e5e5ea;
+  --eng-card-shadow: 0 4px 12px rgb(0 0 0 / 4%);
 }
 
 html.dark {
   --eng-accent: #2997ff;
   --eng-text: #f5f5f7;
   --eng-muted: #a1a1a6;
+  --eng-card-bg: #000000;
+  --eng-card-border: #2c2c2e;
+  --eng-card-shadow: 0 4px 12px rgb(0 0 0 / 60%);
 }
 
 #engineering {
@@ -308,4 +314,29 @@ html.dark .eng-teaser-hero-band {
   .eng-teaser-card {
     transition: none;
   }
+}
+
+/* ─── Engineering teaser: unified surfaces & hover states ─── */
+.eng-teaser-hero-band,
+.eng-teaser-card,
+.eng-metric-tile,
+.eng-building-mini,
+.eng-learned-mini {
+  color: var(--eng-text) !important;
+  background: var(--eng-card-bg) !important;
+  background-color: var(--eng-card-bg) !important;
+  border: 1px solid var(--eng-card-border) !important;
+  box-shadow: var(--eng-card-shadow) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.35s var(--eng-spring) !important;
+}
+
+.eng-teaser-hero-band:hover,
+.eng-teaser-card:hover,
+.eng-metric-tile:hover,
+.eng-building-mini:hover,
+.eng-learned-mini:hover {
+  border-color: var(--eng-accent) !important;
+  box-shadow: 0 0 0 1px var(--eng-accent), var(--eng-card-shadow) !important;
 }

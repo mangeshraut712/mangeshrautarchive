@@ -74,8 +74,7 @@ html.dark body.systems-evidence-page::before {
   display: none !important;
 }
 
-body.systems-evidence-page .systems-shell,
-body.systems-evidence-page .monitor-page-nav {
+body.systems-evidence-page .systems-shell {
   position: relative;
   z-index: 1;
 }
@@ -1408,6 +1407,39 @@ html.dark .systems-arch-tab.is-active {
   box-shadow: 0 2px 12px rgb(0 0 0 / 40%);
 }
 
+/* Neutralize the sitewide forced-blue button rule for architecture tabs */
+body.systems-page .systems-arch-tab {
+  background: transparent !important;
+  color: var(--systems-muted) !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 999px !important;
+  padding: 0.5rem 1.1rem !important;
+  font-weight: 560 !important;
+  transform: none !important;
+}
+
+body.systems-page .systems-arch-tab.is-active {
+  background: var(--systems-bg-elevated) !important;
+  color: var(--systems-text) !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%) !important;
+}
+
+html.dark body.systems-page .systems-arch-tab.is-active {
+  background: rgb(255 255 255 / 14%) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 40%) !important;
+}
+
+body.systems-page .systems-arch-tab:hover {
+  color: var(--systems-text) !important;
+  background: rgb(0 0 0 / 4%) !important;
+}
+
+html.dark body.systems-page .systems-arch-tab:hover {
+  background: rgb(255 255 255 / 8%) !important;
+}
+
 .systems-arch-panel {
   display: none;
 }
@@ -1742,22 +1774,31 @@ body.systems-page .eng-learned-lesson {
 /* Footer */
 .systems-footer {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 1rem 1.75rem;
-  padding-top: 1rem;
+  gap: 0.4rem;
+  padding: 2.5rem 0 calc(3.5rem + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid rgb(0 0 0 / 6%);
+  color: var(--systems-muted);
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 html.dark .systems-footer {
   border-top-color: rgb(255 255 255 / 10%);
 }
 
-.systems-footer a {
-  font-size: 0.9rem;
-  font-weight: 560;
-  color: var(--systems-accent);
-  text-decoration: none;
+.systems-footer .footer-copy {
+  font-weight: 550;
+  color: var(--systems-text);
+  margin: 0;
+}
+
+.systems-footer .footer-tagline {
+  font-size: 0.72rem;
+  color: var(--systems-muted);
+  margin: 0;
 }
 
 /* Shell alias for generated case study pages */
