@@ -3,7 +3,7 @@
  */
 
 :root {
-  --systems-bg: #fbfbfd;
+  --systems-bg: #ffffff;
   --systems-bg-elevated: #ffffff;
   --systems-text: #1d1d1f;
   --systems-muted: #6e6e73;
@@ -14,25 +14,25 @@
   --systems-section-gap: clamp(3rem, 6vw, 4.5rem);
   --systems-shell-width: min(1120px, calc(100% - 2.5rem));
   --systems-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --systems-card-bg: rgb(255 255 255 / 82%);
-  --systems-card-border: rgb(0 0 0 / 8%);
-  --systems-card-shadow: inset 0 1px 0 rgb(255 255 255 / 90%), 0 4px 20px rgb(0 0 0 / 5%);
-  --systems-diagram-bg: rgb(0 0 0 / 2.5%);
+  --systems-card-bg: #ffffff;
+  --systems-card-border: #e5e5ea;
+  --systems-card-shadow: 0 4px 12px rgb(0 0 0 / 4%);
+  --systems-diagram-bg: #fbfbfd;
   --systems-diagram-border: rgb(0 0 0 / 6%);
 }
 
 html.dark {
   --systems-bg: #000000;
-  --systems-bg-elevated: #1c1c1e;
+  --systems-bg-elevated: #000000;
   --systems-text: #f5f5f7;
   --systems-muted: #a1a1a6;
   --systems-accent: #2997ff;
   --systems-accent-soft: rgb(41 151 255 / 16%);
-  --systems-card-bg: rgb(28 28 30 / 88%);
-  --systems-card-border: rgb(255 255 255 / 11%);
-  --systems-card-shadow: inset 0 1px 0 rgb(255 255 255 / 7%), 0 10px 36px rgb(0 0 0 / 38%);
-  --systems-diagram-bg: rgb(255 255 255 / 4%);
-  --systems-diagram-border: rgb(255 255 255 / 9%);
+  --systems-card-bg: #000000;
+  --systems-card-border: #2c2c2e;
+  --systems-card-shadow: 0 4px 12px rgb(0 0 0 / 60%);
+  --systems-diagram-bg: #1c1c1e;
+  --systems-diagram-border: rgb(255 255 255 / 10%);
 }
 
 html:has(body.systems-page),
@@ -59,31 +59,19 @@ body.systems-page {
 
 body.systems-evidence-page {
   position: relative;
-  background:
-    linear-gradient(180deg, var(--systems-bg) 0%, rgb(0 113 227 / 3%) 18%, var(--systems-bg) 42%),
-    var(--systems-bg) !important;
+  background: var(--systems-bg) !important;
 }
 
 body.systems-evidence-page::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 70% 40% at 50% -5%, rgb(0 113 227 / 10%), transparent 55%),
-    radial-gradient(ellipse 45% 30% at 100% 25%, rgb(94 92 230 / 8%), transparent 50%),
-    radial-gradient(ellipse 40% 28% at 0% 60%, rgb(90 200 250 / 6%), transparent 45%);
+  display: none !important;
 }
 
 html.dark body.systems-evidence-page {
-  background: linear-gradient(180deg, #000 0%, rgb(41 151 255 / 6%) 20%, #000 50%), #000 !important;
+  background: var(--systems-bg) !important;
 }
 
 html.dark body.systems-evidence-page::before {
-  background:
-    radial-gradient(ellipse 70% 40% at 50% -5%, rgb(41 151 255 / 14%), transparent 55%),
-    radial-gradient(ellipse 45% 30% at 0% 30%, rgb(94 92 230 / 10%), transparent 50%);
+  display: none !important;
 }
 
 body.systems-evidence-page .systems-shell,
@@ -118,21 +106,11 @@ body.systems-page .monitor-page-nav {
 }
 
 .systems-keynote-hero::before {
-  content: '';
-  position: absolute;
-  inset: -2rem -10% auto;
-  height: 280px;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgb(0 113 227 / 14%), transparent 70%),
-    radial-gradient(ellipse 40% 30% at 80% 20%, rgb(94 92 230 / 10%), transparent 60%);
-  pointer-events: none;
-  z-index: 0;
+  display: none !important;
 }
 
 html.dark .systems-keynote-hero::before {
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 0%, rgb(41 151 255 / 18%), transparent 70%),
-    radial-gradient(ellipse 40% 30% at 20% 30%, rgb(94 92 230 / 12%), transparent 60%);
+  display: none !important;
 }
 
 .systems-keynote-hero > * {
@@ -2147,8 +2125,41 @@ html.dark .case-study-evidence-bar a {
 
 /* ─── Engineering page: unified surfaces & monitor.css overrides ─── */
 body.systems-page .lg-glass-card,
-body.systems-page .systems-shell article:not(.systems-arch-panel) {
+body.systems-page .eng-showcase-card,
+body.systems-page .systems-evidence-card,
+body.systems-page .systems-principle-card,
+body.systems-page .systems-hero-stat,
+body.systems-page .systems-bento-tile,
+body.systems-page .systems-arch-stage,
+body.systems-page .systems-timeline-block,
+body.systems-page .systems-flow-step,
+body.systems-page .systems-flow-metrics,
+body.systems-page .systems-evidence-grid article,
+body.systems-page .systems-shell article:not(.systems-arch-panel),
+body.systems-page .systems-metric-panel,
+body.systems-page .systems-bench-row {
   color: var(--systems-text) !important;
+  background: var(--systems-card-bg) !important;
+  background-color: var(--systems-card-bg) !important;
+  border: 1px solid var(--systems-card-border) !important;
+  box-shadow: var(--systems-card-shadow) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+}
+
+body.systems-page .eng-showcase-card:hover,
+body.systems-page .systems-evidence-card:hover,
+body.systems-page .systems-principle-card:hover,
+body.systems-page .systems-hero-stat:hover,
+body.systems-page .systems-bento-tile:hover,
+body.systems-page .systems-arch-stage:hover,
+body.systems-page .systems-flow-step:hover,
+body.systems-page .systems-evidence-grid article:hover,
+body.systems-page .systems-metric-panel:hover,
+body.systems-page .systems-bench-row:hover {
+  border-color: var(--systems-accent) !important;
+  box-shadow: 0 0 0 1px var(--systems-accent), var(--systems-card-shadow) !important;
 }
 
 body.systems-page .systems-arch-panel {
@@ -2158,13 +2169,11 @@ body.systems-page .systems-arch-panel {
 }
 
 body.systems-page .systems-evidence-card--featured.lg-glass-card {
-  background:
-    linear-gradient(145deg, rgb(0 113 227 / 7%), transparent 52%), var(--systems-card-bg) !important;
+  background: var(--systems-card-bg) !important;
 }
 
 html.dark body.systems-page .systems-evidence-card--featured.lg-glass-card {
-  background:
-    linear-gradient(145deg, rgb(41 151 255 / 12%), transparent 52%), var(--systems-card-bg) !important;
+  background: var(--systems-card-bg) !important;
 }
 
 body.systems-page .systems-metric-panel::before {

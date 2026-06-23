@@ -58,8 +58,11 @@ function initSectionRail() {
       const active = link.getAttribute('href') === `#${id}`;
       link.classList.toggle('is-active', active);
       link.setAttribute('aria-current', active ? 'true' : 'false');
-      if (active) {
-        link.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      if (active && rail) {
+        const railRect = rail.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        const offset = linkRect.left - railRect.left - (railRect.width / 2) + (linkRect.width / 2);
+        rail.scrollTo({ left: rail.scrollLeft + offset, behavior: 'smooth' });
       }
     });
   };
@@ -92,9 +95,12 @@ function initSectionRail() {
   sections.forEach(section => observer.observe(section));
 
   const initialActive = rail.querySelector('a.is-active');
-  if (initialActive) {
+  if (initialActive && rail) {
     requestAnimationFrame(() => {
-      initialActive.scrollIntoView({ inline: 'center', block: 'nearest' });
+      const railRect = rail.getBoundingClientRect();
+      const linkRect = initialActive.getBoundingClientRect();
+      const offset = linkRect.left - railRect.left - (railRect.width / 2) + (linkRect.width / 2);
+      rail.scrollLeft = rail.scrollLeft + offset;
     });
   }
 }
