@@ -217,7 +217,13 @@ class GoogleAnalyticsDataClient:
                 "sessions": self._metric_value(row, 2),
             }
 
-        today = datetime.now(timezone.utc).date()
+        from zoneinfo import ZoneInfo
+        time_zone_str = total_report.get("metadata", {}).get("timeZone", "UTC")
+        try:
+            tz = ZoneInfo(time_zone_str)
+        except Exception:
+            tz = ZoneInfo("UTC")
+        today = datetime.now(tz).date()
         trend = []
         for offset in range(6, -1, -1):
             date_key = (today - timedelta(days=offset)).isoformat()
