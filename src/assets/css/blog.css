@@ -676,8 +676,14 @@ html.dark .blog-modal-close:hover::after {
 /* Article Styles */
 .article-header {
   margin-bottom: 2rem;
-  padding-bottom: 2rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
+  border-radius: 28px;
   border-bottom: 1px solid var(--border-color);
+}
+
+body.blog-standalone-page .article-header {
+  border-bottom: none;
 }
 
 .article-kicker {
@@ -1132,13 +1138,6 @@ html.dark .blog-filter-chip {
 
 html.dark .blog-article-sidebar a {
   color: #0a84ff;
-}
-
-.article-header {
-  margin-bottom: 2rem;
-  padding: clamp(1.5rem, 4vw, 2.25rem);
-  border-radius: 28px;
-  border-bottom: none;
 }
 
 .article-related {
