@@ -407,9 +407,30 @@ const monitorMockPayloads = {
     summary: { total_requests: 128, total_tokens: 42000 },
     timestamp: monitorMockTimestamp(),
   },
+  engineering: {
+    generated_at: monitorMockTimestamp(),
+    status: 'healthy',
+    uptime_human: '1h',
+    uptime_seconds: 3600,
+    summary: { healthy: 4, degraded: 0, unhealthy: 0, total: 4 },
+    total_requests: 216,
+    error_rate: 0,
+    avg_latency_ms: 188,
+    requests_per_second: 0.12,
+    response_time_trend: [
+      { value: 42, path: '/api/monitor/status', timestamp: monitorMockTimestamp() },
+      { value: 51, path: '/api/monitor/health', timestamp: monitorMockTimestamp() },
+    ],
+    cpu_trend: [12, 14, 13, 15],
+    endpoints: [
+      { path: '/api/monitor/health', avg_response_time_ms: 51, last_status_code: 200 },
+      { path: '/api/monitor/engineering', avg_response_time_ms: 42, last_status_code: 200 },
+    ],
+  },
 };
 
 function resolveMonitorMock(path, method) {
+  if (path.includes('/api/monitor/engineering')) return monitorMockPayloads.engineering;
   if (path.includes('/api/monitor/status')) return monitorMockPayloads.status;
   if (path.includes('/api/monitor/health')) return monitorMockPayloads.health;
   if (path.includes('/api/monitor/metrics')) return monitorMockPayloads.metrics;

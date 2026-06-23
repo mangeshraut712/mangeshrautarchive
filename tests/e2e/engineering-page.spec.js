@@ -41,6 +41,7 @@ test.describe('Engineering evidence dashboard', () => {
 
     await expect(page.locator('#systems-metrics-grid .systems-metric-panel')).toHaveCount(4);
     await expect(page.locator('#systems-case-flows .systems-case-flow').first()).toBeVisible();
+    await expect(page.locator('.systems-footer-links a[href="uses.html"]')).toBeVisible();
     await assertNoHorizontalOverflow(page);
   });
 
@@ -57,5 +58,6 @@ test.describe('Engineering evidence dashboard', () => {
     await gotoPage(page, '/uses.html');
     await page.waitForSelector('#uses-grid .uses-section', { timeout: 15_000 });
     await expect(page.locator('#uses-grid .uses-section')).toHaveCount(8);
+    await expect(page.locator('.systems-footer-links a[href="systems.html"]')).toBeVisible();
   });
 });

@@ -363,4 +363,3 @@ class GoogleAnalyticsDataClient:
 
 
 google_analytics_client = GoogleAnalyticsDataClient()
-
