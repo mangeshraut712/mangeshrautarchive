@@ -38,7 +38,7 @@ const chat = {
   welcomeDelay: 400,
   suggestionsLimit: 6,
   historyRetentionHours: 168, // 7 days for better context
-  model: 'x-ai/grok-4.3', // Premium model via OpenRouter
+  model: 'google/gemini-2.5-flash', // Reliable OpenRouter default (grok falls back server-side)
   streaming: true,
   temperature: 0.7,
   maxTokens: 2500,

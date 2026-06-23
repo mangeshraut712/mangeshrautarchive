@@ -19,6 +19,7 @@ from api.config import (
     get_default_model,
     get_site_url,
     get_site_title,
+    FALLBACK_OPENROUTER_MODEL,
     is_prompt_injection,
     sanitize_chat_text,
     sanitize_session_id,
@@ -497,6 +498,15 @@ def build_local_chat_payload(
     }
 
 
+def _fallback_models(model: str) -> List[str]:
+    """Try the requested model first, then the configured flash fallback."""
+    candidates = [normalize_openrouter_model(model)]
+    flash = normalize_openrouter_model(FALLBACK_OPENROUTER_MODEL)
+    if flash not in candidates:
+        candidates.append(flash)
+    return candidates
+
+
 async def stream_openrouter_response(
     model: str,
     messages: List[Dict],
@@ -581,12 +591,140 @@ async def stream_openrouter_response(
             full_content = ""
             chunk_count = 0
 
-        try:
-            async with httpx.AsyncClient(
-                timeout=httpx.Timeout(60.0, connect=10.0)
-            ) as client:
-                async with client.stream(
-                    "POST",
+        for candidate_model in _fallback_models(model):
+            try:
+                async with httpx.AsyncClient(
+                    timeout=httpx.Timeout(60.0, connect=10.0)
+                ) as client:
+                    async with client.stream(
+                        "POST",
+                        API_URL,
+                        headers={
+                            "Authorization": f"Bearer {get_openrouter_api_key()}",
+                            "Content-Type": "application/json",
+                            "HTTP-Referer": get_site_url(),
+                            "X-Title": get_site_title(),
+                        },
+                        json=openrouter_request_body(
+                            candidate_model,
+                            messages,
+                            stream=True,
+                            web_tools_enabled=web_tools_enabled,
+                        ),
+                    ) as response:
+                        if response.status_code != 200:
+                            await response.aread()
+                            print(
+                                f"❌ OpenRouter API error for {candidate_model}: "
+                                f"status={response.status_code}"
+                            )
+                            continue
+
+                        model = candidate_model
+                        if retry_count == 0:
+                            yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
+
+                        async for line in response.aiter_lines():
+                            if not line or not line.startswith("data: "):
+                                continue
+
+                            data = line[6:]
+                            if data == "[DONE]":
+                                elapsed = time.time() - start_time
+                                tokens_estimate = len(full_content) // 4
+                                tokens_per_sec = (
+                                    tokens_estimate / elapsed if elapsed > 0 else 0
+                                )
+
+                                yield (
+                                    json.dumps(
+                                        {
+                                            "type": "done",
+                                            "full_content": full_content,
+                                            "metadata": {
+                                                "model": model,
+                                                "source": "OpenRouter",
+                                                "sourceLabel": (
+                                                    f"OpenRouter + Web ({model.split('/')[-1]})"
+                                                    if web_tools_enabled
+                                                    else f"OpenRouter ({model.split('/')[-1]})"
+                                                ),
+                                                "category": "AI Response",
+                                                "knowledge_context": knowledge_context_enabled,
+                                                "web_tools": web_tools_enabled,
+                                                "web_engine": "parallel" if web_tools_enabled else None,
+                                                "char_count": len(full_content),
+                                                "tokens_estimate": tokens_estimate,
+                                                "elapsed_ms": int(elapsed * 1000),
+                                                "tokens_per_sec": round(tokens_per_sec, 2),
+                                                "chunks": chunk_count,
+                                            },
+                                        }
+                                    )
+                                    + "\n"
+                                )
+                                return
+
+                            try:
+                                json_data = json.loads(data)
+                                content = (
+                                    json_data.get("choices", [{}])[0]
+                                    .get("delta", {})
+                                    .get("content", "")
+                                )
+
+                                if content:
+                                    full_content += content
+                                    chunk_count += 1
+                                    yield (
+                                        json.dumps(
+                                            {
+                                                "type": "chunk",
+                                                "content": content,
+                                                "chunk_id": chunk_count,
+                                            }
+                                        )
+                                        + "\n"
+                                    )
+                            except BaseException:
+                                continue
+
+                        return
+            except (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) as e:
+                print(f"⚠️ Stream connection error for {candidate_model}: {type(e).__name__}")
+                continue
+            except httpx.HTTPStatusError as e:
+                print(f"❌ OpenRouter HTTP error for {candidate_model}: {e.response.status_code}")
+                continue
+            except httpx.RequestError as e:
+                print(f"❌ Request error for {candidate_model}: {str(e)}")
+                continue
+
+        retry_count += 1
+        await asyncio.sleep(0.5)
+
+    fallback = build_local_chat_payload(
+        user_msg,
+        "",
+        start_time,
+        reason="Local Intelligence",
+    )
+    async for item in stream_static_chat_response(fallback, start_time):
+        yield item
+
+
+async def call_openrouter(
+    model: str, messages: List[Dict], web_tools_enabled: bool = False
+) -> Dict:
+    """Non-streaming API call with model fallback."""
+    if not get_openrouter_api_key():
+        raise Exception("API key not configured")
+
+    last_error: Optional[Exception] = None
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        for candidate_model in _fallback_models(model):
+            try:
+                response = await client.post(
                     API_URL,
                     headers={
                         "Authorization": f"Bearer {get_openrouter_api_key()}",
@@ -595,190 +733,28 @@ async def stream_openrouter_response(
                         "X-Title": get_site_title(),
                     },
                     json=openrouter_request_body(
-                        model,
+                        candidate_model,
                         messages,
-                        stream=True,
                         web_tools_enabled=web_tools_enabled,
                     ),
-                ) as response:
-                    if response.status_code != 200:
-                        await response.aread()
-                        print(f"❌ OpenRouter API error: status={response.status_code}")
-                        fallback = build_local_chat_payload(
-                            user_msg,
-                            "",
-                            start_time,
-                            reason="Local Intelligence",
-                        )
-                        async for item in stream_static_chat_response(fallback, start_time):
-                            yield item
-                        return
-
-                    if retry_count == 0:
-                        yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
-
-                    async for line in response.aiter_lines():
-                        if not line or not line.startswith("data: "):
-                            continue
-
-                        data = line[6:]
-                        if data == "[DONE]":
-                            elapsed = time.time() - start_time
-                            tokens_estimate = len(full_content) // 4
-                            tokens_per_sec = (
-                                tokens_estimate / elapsed if elapsed > 0 else 0
-                            )
-
-                            yield (
-                                json.dumps(
-                                    {
-                                        "type": "done",
-                                        "full_content": full_content,
-                                        "metadata": {
-                                            "model": model,
-                                            "source": "OpenRouter",
-                                            "sourceLabel": (
-                                                f"OpenRouter + Web ({model.split('/')[-1]})"
-                                                if web_tools_enabled
-                                                else f"OpenRouter ({model.split('/')[-1]})"
-                                            ),
-                                            "category": "AI Response",
-                                            "knowledge_context": knowledge_context_enabled,
-                                            "web_tools": web_tools_enabled,
-                                            "web_engine": "parallel" if web_tools_enabled else None,
-                                            "char_count": len(full_content),
-                                            "tokens_estimate": tokens_estimate,
-                                            "elapsed_ms": int(elapsed * 1000),
-                                            "tokens_per_sec": round(tokens_per_sec, 2),
-                                            "chunks": chunk_count,
-                                        },
-                                    }
-                                )
-                                + "\n"
-                            )
-                            return
-
-                        try:
-                            json_data = json.loads(data)
-                            content = (
-                                json_data.get("choices", [{}])[0]
-                                .get("delta", {})
-                                .get("content", "")
-                            )
-
-                            if content:
-                                full_content += content
-                                chunk_count += 1
-                                yield (
-                                    json.dumps(
-                                        {
-                                            "type": "chunk",
-                                            "content": content,
-                                            "chunk_id": chunk_count,
-                                        }
-                                    )
-                                    + "\n"
-                                )
-                        except BaseException:
-                            continue
-
-            retry_count += 1
-            await asyncio.sleep(0.5)
-
-        except (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) as e:
-            print(f"⚠️ Stream connection error: {type(e).__name__}")
-            retry_count += 1
-            if retry_count > max_retries:
-                fallback = build_local_chat_payload(
-                    user_msg,
-                    "",
-                    start_time,
-                    reason="Local Intelligence",
                 )
-                async for item in stream_static_chat_response(fallback, start_time):
-                    yield item
-            else:
-                await asyncio.sleep(1)
-        except httpx.HTTPStatusError as e:
-            print(f"❌ OpenRouter HTTP error: {e.response.status_code}")
-            fallback = build_local_chat_payload(
-                user_msg,
-                "",
-                start_time,
-                reason="Local Intelligence",
-            )
-            async for item in stream_static_chat_response(fallback, start_time):
-                yield item
-            return
-        except httpx.RequestError as e:
-            print(f"❌ Request error during AI stream: {str(e)}")
-            fallback = build_local_chat_payload(
-                user_msg,
-                "",
-                start_time,
-                reason="Local Intelligence",
-            )
-            async for item in stream_static_chat_response(fallback, start_time):
-                yield item
-            return
-        except asyncio.TimeoutError:
-            print("❌ AI stream timed out")
-            fallback = build_local_chat_payload(
-                user_msg,
-                "",
-                start_time,
-                reason="Local Intelligence",
-            )
-            async for item in stream_static_chat_response(fallback, start_time):
-                yield item
-            return
-        except Exception as e:
-            print(f"❌ Critical stream error: {type(e).__name__} - {str(e)}")
-            yield (
-                json.dumps(
-                    {
-                        "error": "An unexpected error occurred during the AI stream.",
-                        "type": "error",
-                    }
-                )
-                + "\n"
-            )
-            return
+                response.raise_for_status()
+                data = response.json()
 
+                if not data.get("choices"):
+                    raise Exception("Invalid response")
 
-async def call_openrouter(
-    model: str, messages: List[Dict], web_tools_enabled: bool = False
-) -> Dict:
-    """Non-streaming API call"""
-    if not get_openrouter_api_key():
-        raise Exception("API key not configured")
+                return {
+                    "answer": data["choices"][0]["message"]["content"].strip(),
+                    "usage": data.get("usage"),
+                    "model": data.get("model", candidate_model),
+                }
+            except Exception as exc:
+                last_error = exc
+                print(f"❌ OpenRouter non-stream error for {candidate_model}: {exc}")
+                continue
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        response = await client.post(
-            API_URL,
-            headers={
-                "Authorization": f"Bearer {get_openrouter_api_key()}",
-                "Content-Type": "application/json",
-                "HTTP-Referer": get_site_url(),
-                "X-Title": get_site_title(),
-            },
-            json=openrouter_request_body(
-                model,
-                messages,
-                web_tools_enabled=web_tools_enabled,
-            ),
-        )
-        response.raise_for_status()
-        data = response.json()
-
-        if not data.get("choices"):
-            raise Exception("Invalid response")
-
-        return {
-            "answer": data["choices"][0]["message"]["content"].strip(),
-            "usage": data.get("usage"),
-            "model": data.get("model", model),
-        }
+    raise last_error or Exception("OpenRouter request failed")
 
 
 @router.post("/chat")
