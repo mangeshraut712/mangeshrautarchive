@@ -111,7 +111,7 @@
     "esbuild": "^0.28.0",
     "express": "^5.2.1",
     "isomorphic-dompurify": "^3.17.0",
-    "katex": "^0.16.11",
+    "katex": "^0.17.0",
     "marked": "^18.0.5",
     "marked-footnote": "^1.2.2"
   },
