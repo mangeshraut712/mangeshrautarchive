@@ -134,10 +134,10 @@ How the key systems actually work — implementation details, not buzzwords.
 
 **How it works**:
 
-- `wwdc26-liquid-glass.css` and `liquid-glass-tokens.js` centralize blur, tint, specular, and elevation tokens with **clear / tinted / balanced** modes.
-- Theme-aware CSS custom properties sync with light/dark/system modes via `bootstrap.js`; card surfaces fall back to solid `#fff` / `#000` where readability matters.
-- `prefers-reduced-transparency` and `prefers-reduced-motion` degrade to solid surfaces automatically.
-- QA matrix scripts (`scripts/qa/glass-theme-matrix.mjs`) validate contrast and interactivity across pages.
+- `wwdc26-liquid-glass.css` and `liquid-glass-tokens.js` centralize blur, tint (`--lg-tint`), specular edges, and spring motion tokens sitewide.
+- Surfaces: Dynamic Island nav, project/blog/monitor cards, travel sidebar, 404 panel, contact/currently cards — all use `backdrop-filter` with `prefers-reduced-transparency` solid fallbacks.
+- Home production build **inlines** glass CSS into `hero-critical.bundle.css`; satellite pages load `wwdc26-liquid-glass.css` directly.
+- Theme-aware sync via `bootstrap.js` + accessibility toolbar glass tint slider (`localStorage`: `wwdc26-liquid-glass-tint`).
 
 ### 3. GitHub Projects Intelligence System
 
@@ -267,7 +267,7 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 | ------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | **Frontend**        | Vanilla ES2024, Tailwind CSS v4.0.9, WWDC26 Liquid Glass Design System                                               |
 | **Agentic Runtime** | AssistMe + WebMCP + Custom Action Handler with priority execution                                                    |
-| **AI**              | OpenRouter (Grok 4.1 Fast / Gemini) + local deterministic actions                                                    |
+| **AI**              | OpenRouter Fusion / Auto / Grok-first routing (`model_router.py`) + NDJSON streaming + site-knowledge fallback |
 | **Backend**         | FastAPI v0.136.1 + Pydantic v2 (v2.13.4) (Vercel Serverless)                                                         |
 | **Data**            | Cloud Firestore, Supabase (health vitals), GitHub REST, Last.fm, Upstash Redis (optional)                            |
 | **Build**           | esbuild v0.28.0 + Sharp v0.34.5 + custom Node pipeline                                                               |
@@ -281,38 +281,140 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 
 ## 🏗 Architecture
 
+High-level view of pages, build output, dual hosting, and how AssistMe reaches OpenRouter only when local/site knowledge cannot answer.
+
 ```mermaid
-flowchart TD
-    subgraph Browser
-        UI[WWDC26 Liquid Glass UI + Sound Engine]
-        AssistMe[AssistMe + Agentic Action Engine + WebMCP]
-        Chat[Streaming Chat + Voice Dictation]
+flowchart TB
+    subgraph Pages["Static pages (src/ → dist/)"]
+        HOME["index.html<br/>Portfolio SPA"]
+        TRAVEL["travel.html<br/>MapLibre Atlas"]
+        MON["monitor.html<br/>Ops dashboard"]
+        BLOG["blog/*.html<br/>12 articles + index"]
+        ERR["404.html"]
     end
 
-    subgraph Vercel
-        FastAPI[FastAPI Router]
-        ChatAPI[/chat → OpenRouter/]
-        Analytics[/analytics → Firestore/]
-        GitHub[/github → Live Intel/]
-        Monitor[/monitor → Health/]
-        Media[/media → Last.fm/]
+    subgraph Design["WWDC26 Liquid Glass"]
+        LG["wwdc26-liquid-glass.css<br/>+ liquid-glass-tokens.js"]
+        LG --> HOME
+        LG --> TRAVEL
+        LG --> MON
+        LG --> BLOG
+        LG --> ERR
+        BUNDLE["hero-critical.bundle.css<br/>(home: inlined glass)"]
+        BUNDLE --> HOME
     end
 
-    AssistMe --> UI
-    Chat --> AssistMe
-    Chat -- only if needed --> ChatAPI
-    Analytics --> Firestore
-    GitHub --> GitHubAPI
-    Monitor --> OpenRouter & GitHub & Firestore
-    Media --> LastFM
+    subgraph Browser["Browser runtime"]
+        BOOT["bootstrap.js<br/>lazy modules + deferred CSS"]
+        A11Y["accessibility.js<br/>glass tint slider"]
+        AGENT["agentic-actions.js<br/>9 WebMCP tools"]
+        CHAT_UI["chatbot.js + chat.js<br/>NDJSON stream UI"]
+        BOOT --> CHAT_UI
+        CHAT_UI --> AGENT
+        A11Y --> LG
+    end
+
+    HOME --> BOOT
+    TRAVEL --> BOOT
+    MON --> BOOT
+    BLOG --> BOOT
+
+    subgraph LocalFirst["Local-first paths (&lt;50ms)"]
+        TOOLS["WebMCP / regex agentic actions"]
+        SITE["site_knowledge.py patterns<br/>travel, blog, portfolio facts"]
+        OFFLINE["generate_local_response()"]
+    end
+
+    AGENT --> TOOLS
+    CHAT_UI --> TOOLS
+
+    subgraph HostPrimary["Primary: Vercel (mangeshraut.pro)"]
+        VERCEL_FE["Static dist/ + CDN"]
+        FASTAPI["FastAPI api/index.py<br/>serverless"]
+        ROUTER["model_router.py<br/>portfolio · fusion · auto · fast"]
+        CHAT_API["POST /api/chat<br/>application/x-ndjson"]
+        FASTAPI --> ROUTER --> CHAT_API
+        VERCEL_FE --> FASTAPI
+    end
+
+    subgraph HostMirror["Mirror: GitHub Pages"]
+        GHP["mangeshraut712.github.io/mangeshrautarchive"]
+        GHP_CFG["build-config.json<br/>apiBaseUrl → mangeshraut.pro"]
+        GHP --> GHP_CFG
+    end
+
+    subgraph External["External services"]
+        OR["OpenRouter<br/>Grok · Gemini · Fusion · Auto"]
+        GH["GitHub API"]
+        LF["Last.fm"]
+        FS["Firestore analytics"]
+        SB["Supabase health vitals"]
+        WHOOP["WHOOP / Withings OAuth"]
+    end
+
+    CHAT_UI -->|"same-origin /api/*"| VERCEL_FE
+    GHP_CFG -->|"cross-origin API"| VERCEL_FE
+    CHAT_UI -->|"GH Pages visitors"| GHP_CFG
+
+    CHAT_API -->|"after local + site checks"| OR
+    CHAT_API --> SITE
+    CHAT_API --> OFFLINE
+    TOOLS --> HOME
+
+    FASTAPI --> GH
+    FASTAPI --> LF
+    FASTAPI --> FS
+    FASTAPI --> SB
+    FASTAPI --> WHOOP
+
+    subgraph Build["CI build (deploy.yml)"]
+        NPM["npm run build<br/>esbuild · Sharp · blog generator"]
+        QA["ESLint · Stylelint · Vitest · pytest<br/>Playwright · Lighthouse"]
+        NPM --> QA
+        QA --> VERCEL_FE
+        QA --> GHP
+    end
 ```
 
-**Guiding Principles**:
+### AssistMe chat request flow
 
-- Local-first for speed and privacy
-- Cloud LLM only for deep reasoning
-- Dual deployment surface with absolute fallbacks
-- Every change must pass the full quality gate
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as chat.js / chatbot.js
+    participant AG as Agentic engine
+    participant API as FastAPI /api/chat
+    participant MR as model_router.py
+    participant SK as Site knowledge
+    participant OR as OpenRouter
+
+    U->>UI: Message (optional stream)
+    UI->>AG: detectAndExecute()
+    alt Confident local action
+        AG-->>UI: Action result (&lt;50ms)
+    else Needs LLM
+        UI->>API: POST /api/chat (NDJSON if stream)
+        API->>SK: Direct facts? (travel, etc.)
+        alt Site knowledge hit
+            SK-->>UI: Deterministic answer
+        else OpenRouter configured
+            API->>MR: resolve_chat_model()
+            Note over MR: portfolio→Grok<br/>fusion→compare<br/>fast→Gemini<br/>general→Auto
+            MR->>OR: Chat completions + fallback chain
+            OR-->>UI: Tokens (stream or JSON)
+        else Offline
+            API-->>UI: Local Mode fallback
+        end
+    end
+```
+
+**Guiding principles**
+
+- **Local-first** — agentic tools and site knowledge before any LLM call
+- **Liquid glass everywhere** — shared `wwdc26` tokens on home (bundled), travel, monitor, blog, and 404; tint slider in the a11y toolbar
+- **Dual surface** — Vercel serves API + static; GitHub Pages serves static with `apiBaseUrl` pointing at production
+- **Resilient routing** — Grok-first with Gemini / Auto fallbacks when a model is unavailable
+- **Quality gate** — every `main` push runs the full CI matrix before deploy
 
 ---
 
@@ -392,13 +494,16 @@ PORT=4174 npm run serve:dist
 mangeshrautarchive/
 ├── api/
 │   ├── routes/             # chat, github, media, analytics, monitor, integrations
+│   ├── model_router.py     # OpenRouter Fusion / Auto / portfolio / fast tiers
+│   ├── site_knowledge.py   # Deterministic travel, blog, portfolio answers
 │   ├── integrations/       # WHOOP, Withings, Supabase sync, OAuth token manager
-│   └── config.py           # Centralised config + cache TTLs
+│   └── config.py           # Runtime OpenRouter env + model constants
 ├── src/
 │   ├── index.html          # Main portfolio experience
 │   ├── monitor.html        # Public operations dashboard
 │   ├── travel.html         # MapLibre travel atlas
-│   ├── assets/css/         # Modular CSS (liquid glass + solid theme surfaces)
+│   ├── 404.html            # Liquid glass error page
+│   ├── assets/css/         # wwdc26 liquid glass + section modules
 │   ├── assets/images/      # Responsive WebP assets (home, avatar, graduation, …)
 │   └── js/
 │       ├── core/           # Bootstrap, chat, config
@@ -406,7 +511,7 @@ mangeshrautarchive/
 │       ├── services/       # Analytics, Markdown, Streaming, Voice
 │       └── utils/          # Theme, liquid-glass tokens, navbar, calendly
 ├── scripts/
-│   ├── build/              # esbuild pipeline, image optimization, clean
+│   ├── build/              # esbuild pipeline, blog page generator, image optimization
 │   ├── deployment/         # Lighthouse gates, env parity, deploy sync
 │   ├── integrations/       # OAuth helpers + Vercel env sync
 │   ├── qa/                 # Liquid glass theme matrix + cross-viewport Chrome QA
@@ -452,6 +557,14 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ## 📅 Recent Updates
 
 ### June 2026 (latest)
+
+- **Sitewide Liquid Glass** — `wwdc26` section 23/24: project cards, travel/monitor nav, blog articles, monitor `doc-card` tiles, 404 `lg-glass-card`, Apple spring hover/press on showcase cards.
+- **AssistMe routing** — `model_router.py` with OpenRouter Fusion (compare), Auto (general), Grok-first portfolio tier, Gemini fast-path, and runtime fallback chain; NDJSON streaming on Vercel.
+- **Cross-surface parity** — GitHub Pages `build-config.json` → `apiBaseUrl: mangeshraut.pro`; blog generator ships glass classes on index + article pages.
+- **UX / a11y** — `Currently` in main nav; `aria-labelledby` on all sections; monitor `noscript` CSS version aligned with production bundle.
+- **README** — expanded architecture diagrams (pages, build, dual host, chat sequence).
+
+### June 2026 (mid-month)
 
 - **Currently Shelf Redesign** — iOS segmented tabs, compact media cards, unified Apple-blue actions, full titles with line-clamp, and accessible `tablist`/`tabpanel` wiring.
 - **Project Showcase Polish** — simplified lenses (All · Active · Busy), native Apple-style sort dropdown, neutral GitHub profile CTA, non-zero GitHub Operating View caption, and dynamic card reveal fix.
