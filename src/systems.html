@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
-    <title>Engineering Evidence | Mangesh Raut</title>
+    <title>Engineering | Mangesh Raut</title>
     <meta
       name="description"
       content="Engineering evidence — production metrics, architecture decisions, case studies, failures, and live telemetry. Proof over bullet points."
@@ -140,7 +140,7 @@
       </div>
       <div class="monitor-page-nav__brand" aria-label="Current page">
         <span class="monitor-page-nav__kicker">Notebook</span>
-        <span class="monitor-page-nav__label">Engineering Evidence</span>
+        <span class="monitor-page-nav__label">Engineering</span>
       </div>
       <div class="monitor-page-nav__actions">
         <button
@@ -158,7 +158,7 @@
       <section class="systems-keynote-section systems-keynote-section--hero" id="overview">
         <header class="systems-keynote-hero">
           <p class="systems-public-statement" id="systems-public-statement"></p>
-          <p class="systems-eyebrow">Engineering Evidence</p>
+          <p class="systems-eyebrow">Engineering</p>
           <h1>Proof you can build, ship, think, and trust.</h1>
           <p class="systems-hero-lead systems-hero-lead--stack" id="systems-hero-lead"></p>
           <div
@@ -193,7 +193,7 @@
             <span id="telemetry-refreshed" class="systems-sync-note"></span>
           </p>
         </div>
-        <div class="systems-production-snapshot" id="systems-production-snapshot"></div>
+
         <div
           class="systems-bento systems-bento--telemetry"
           id="systems-telemetry-bento"
@@ -250,6 +250,24 @@
             >
               CI pipeline
             </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              data-arch-tab="reach"
+              role="tab"
+              aria-selected="false"
+            >
+              Portfolio reach
+            </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              data-arch-tab="countries"
+              role="tab"
+              aria-selected="false"
+            >
+              Active countries
+            </button>
           </div>
           <div class="systems-arch-panels">
             <article
@@ -277,6 +295,24 @@
               hidden
             >
               <div class="systems-arch-diagram-host" data-arch-diagram="build"></div>
+            </article>
+            <article
+              class="systems-arch-panel"
+              data-arch-panel="reach"
+              id="architecture-reach"
+              role="tabpanel"
+              hidden
+            >
+              <div class="systems-arch-diagram-host" data-arch-diagram="reach"></div>
+            </article>
+            <article
+              class="systems-arch-panel"
+              data-arch-panel="countries"
+              id="architecture-countries"
+              role="tabpanel"
+              hidden
+            >
+              <div class="systems-arch-diagram-host" data-arch-diagram="countries"></div>
             </article>
           </div>
         </div>

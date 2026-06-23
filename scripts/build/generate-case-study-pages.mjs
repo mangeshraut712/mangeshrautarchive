@@ -47,7 +47,7 @@ function renderCaseStudyBody(cs) {
         <a class="monitor-page-nav__home" href="${ASSET_PREFIX}/index.html#home" aria-label="Home">
           <img src="${ASSET_PREFIX}/assets/images/profile-icon.png" alt="" width="28" height="28" />
         </a>
-        <a class="monitor-page-nav__back" href="${ASSET_PREFIX}/systems.html#case-studies">
+        <a class="monitor-page-nav__back" href="${ASSET_PREFIX}/systems.html#projects">
           <i class="fas fa-chevron-left" aria-hidden="true"></i>
           <span>Notebook</span>
         </a>
@@ -90,9 +90,8 @@ function renderCaseStudyBody(cs) {
       </article>
 
       <footer class="systems-footer-links">
-        <a href="${ASSET_PREFIX}/systems.html">Engineering notebook</a>
         <a href="${ASSET_PREFIX}/index.html#projects">All projects</a>
-        <a href="${ASSET_PREFIX}/monitor.html">System Monitor</a>
+        <a href="${ASSET_PREFIX}/index.html#home">Portfolio home</a>
       </footer>
     </main>
   `;

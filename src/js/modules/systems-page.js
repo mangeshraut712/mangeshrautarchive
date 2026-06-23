@@ -22,7 +22,6 @@ import {
   renderBenchmarkBarsHtml,
   renderOpenSourcePanel,
   renderProductionMetricsGrid,
-  renderProductionSnapshot,
   renderTelemetryBento,
   updateLiveBenchmarkValues,
 } from './systems-viz.js';
@@ -78,6 +77,9 @@ function initSectionRail() {
     });
   };
 
+  let isScrollingTo = null;
+  let scrollTimeout = null;
+
   links.forEach(link => {
     link.addEventListener('click', event => {
       const href = link.getAttribute('href');
@@ -85,8 +87,13 @@ function initSectionRail() {
       const target = document.querySelector(href);
       if (!target) return;
       event.preventDefault();
+      isScrollingTo = href.slice(1);
+      setActive(isScrollingTo);
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setActive(href.slice(1));
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrollingTo = null;
+      }, 1000);
     });
   });
 
@@ -102,6 +109,13 @@ function initSectionRail() {
           null
         );
       if (!visible) return;
+      if (isScrollingTo) {
+        if (visible.target.id === isScrollingTo) {
+          isScrollingTo = null;
+        } else {
+          return;
+        }
+      }
       setActive(visible.target.id);
     },
     { rootMargin: '-22% 0px -58% 0px', threshold: [0, 0.15, 0.35, 0.55, 0.75] }
@@ -120,6 +134,8 @@ function initSectionRail() {
   }
 }
 
+let cachedReachData = null;
+
 function initArchitectureTabs() {
   const root = document.getElementById('systems-arch-stage');
   const tabs = document.querySelectorAll('[data-arch-tab]');
@@ -136,7 +152,7 @@ function initArchitectureTabs() {
       const active = panel.dataset.archPanel === id;
       panel.classList.toggle('is-active', active);
       panel.hidden = !active;
-      if (active) remountArchPanel(id);
+      if (active) remountArchPanel(id, cachedReachData);
     });
   };
 
@@ -274,11 +290,7 @@ function renderTokenization() {
     .join('');
 }
 
-function renderProductionSnapshotPanel() {
-  const root = document.getElementById('systems-production-snapshot');
-  if (!root) return;
-  root.innerHTML = renderProductionSnapshot();
-}
+
 
 function renderProductionMetrics() {
   const root = document.getElementById('systems-metrics-grid');
@@ -412,6 +424,29 @@ async function fetchEngineeringSnapshot() {
   return null;
 }
 
+async function fetchAnalyticsReach() {
+  if (isPerformanceAudit()) {
+    return null;
+  }
+
+  const base = getApiBase();
+  const origins = [base, 'https://mangeshraut.pro', 'https://mraut.vercel.app'].filter(
+    (v, i, a) => a.indexOf(v) === i
+  );
+
+  for (const origin of origins) {
+    try {
+      const res = await fetch(`${origin}/api/analytics/reach`, {
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) return res.json();
+    } catch {
+      // try next origin
+    }
+  }
+  return null;
+}
+
 function renderTelemetry(snapshot) {
   const root = document.getElementById('systems-telemetry-bento');
   if (!root) return;
@@ -422,9 +457,15 @@ function renderTelemetry(snapshot) {
 let telemetryTimer = null;
 
 async function hydrateTelemetry({ initial = false } = {}) {
-  const snapshot = await fetchEngineeringSnapshot();
+  const [snapshot, reachData] = await Promise.all([
+    fetchEngineeringSnapshot(),
+    fetchAnalyticsReach(),
+  ]);
+  cachedReachData = reachData;
+
   renderTelemetry(snapshot);
   updateLiveBenchmarkValues(snapshot || {});
+  mountArchitectureDiagrams(reachData);
   bindCardPress();
 
   const note = document.getElementById('telemetry-refreshed');
@@ -489,7 +530,7 @@ function initCaseStudyRails() {
 export function initSystemsPage() {
   renderHero();
   renderOverview();
-  renderProductionSnapshotPanel();
+
   renderProductionMetrics();
   renderHiringEvidence();
   renderDecisionGrid('systems-arch-decisions', architectureDecisions);
