@@ -7028,7 +7028,8 @@ var boldSymbol = function boldSymbol2(value, mode, type) {
     };
   }
 };
-var makeOrd = function makeOrd2(group, options, type) {
+var makeOrd = function makeOrd2(group, options) {
+  var type = group.type === "mathord" ? "mathord" : "textord";
   var mode = group.mode;
   var text3 = group.text;
   var classes = ["mord"];
@@ -7491,27 +7492,13 @@ var tightSpacings = {
 var _functions = {};
 var _htmlGroupBuilders = {};
 var _mathmlGroupBuilders = {};
-function defineFunction(_ref2) {
+function defineFunction(data) {
   var {
     type,
     names,
-    props,
-    handler,
     htmlBuilder: htmlBuilder3,
     mathmlBuilder: mathmlBuilder3
-  } = _ref2;
-  var data = {
-    type,
-    numArgs: props.numArgs,
-    argTypes: props.argTypes,
-    allowedInArgument: !!props.allowedInArgument,
-    allowedInText: !!props.allowedInText,
-    allowedInMath: props.allowedInMath === void 0 ? true : props.allowedInMath,
-    numOptionalArgs: props.numOptionalArgs || 0,
-    infix: !!props.infix,
-    primitive: !!props.primitive,
-    handler
-  };
+  } = data;
   for (var i2 = 0; i2 < names.length; ++i2) {
     _functions[names[i2]] = data;
   }
@@ -7530,18 +7517,12 @@ function defineFunctionBuilders(_ref2) {
     htmlBuilder: htmlBuilder3,
     mathmlBuilder: mathmlBuilder3
   } = _ref2;
-  defineFunction({
-    type,
-    names: [],
-    props: {
-      numArgs: 0
-    },
-    handler() {
-      throw new Error("Should never be called.");
-    },
-    htmlBuilder: htmlBuilder3,
-    mathmlBuilder: mathmlBuilder3
-  });
+  if (htmlBuilder3) {
+    _htmlGroupBuilders[type] = htmlBuilder3;
+  }
+  if (mathmlBuilder3) {
+    _mathmlGroupBuilders[type] = mathmlBuilder3;
+  }
 }
 var normalizeArgument = function normalizeArgument2(arg) {
   return arg.type === "ordgroup" && arg.body.length === 1 ? arg.body[0] : arg;
@@ -8759,7 +8740,7 @@ var htmlBuilder$a = (grp, options) => {
         type: "textord",
         mode: group.mode,
         text: group.label
-      }, options, "textord");
+      }, options);
       accent2 = assertSymbolDomNode(accent2);
       accent2.italic = 0;
       width = accent2.width;
@@ -8832,9 +8813,7 @@ var NON_STRETCHY_ACCENT_REGEX = new RegExp(["\\acute", "\\grave", "\\ddot", "\\t
 defineFunction({
   type: "accent",
   names: ["\\acute", "\\grave", "\\ddot", "\\tilde", "\\bar", "\\breve", "\\check", "\\hat", "\\vec", "\\dot", "\\mathring", "\\widecheck", "\\widehat", "\\widetilde", "\\overrightarrow", "\\overleftarrow", "\\Overrightarrow", "\\overleftrightarrow", "\\overgroup", "\\overlinesegment", "\\overleftharpoon", "\\overrightharpoon"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler: (context, args) => {
     var base = normalizeArgument(args[0]);
     var isStretchy = !NON_STRETCHY_ACCENT_REGEX.test(context.funcName);
@@ -8854,13 +8833,11 @@ defineFunction({
 defineFunction({
   type: "accent",
   names: ["\\'", "\\`", "\\^", "\\~", "\\=", "\\u", "\\.", '\\"', "\\c", "\\r", "\\H", "\\v", "\\textcircled"],
-  props: {
-    numArgs: 1,
-    allowedInText: true,
-    allowedInMath: true,
-    // unless in strict mode
-    argTypes: ["primitive"]
-  },
+  numArgs: 1,
+  allowedInText: true,
+  allowedInMath: true,
+  // unless in strict mode
+  argTypes: ["primitive"],
   handler: (context, args) => {
     var base = args[0];
     var mode = context.parser.mode;
@@ -8876,16 +8853,12 @@ defineFunction({
       isShifty: true,
       base
     };
-  },
-  htmlBuilder: htmlBuilder$a,
-  mathmlBuilder: mathmlBuilder$9
+  }
 });
 defineFunction({
   type: "accentUnder",
   names: ["\\underleftarrow", "\\underrightarrow", "\\underleftrightarrow", "\\undergroup", "\\underlinesegment", "\\utilde"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler: (_ref2, args) => {
     var {
       parser,
@@ -8965,10 +8938,8 @@ defineFunction({
     "\\\\cdleftarrow",
     "\\\\cdlongequal"
   ],
-  props: {
-    numArgs: 1,
-    numOptionalArgs: 1
-  },
+  numArgs: 1,
+  numOptionalArgs: 1,
   handler(_ref2, args, optArgs) {
     var {
       parser,
@@ -9091,9 +9062,6 @@ function mathmlBuilder$8(group, options) {
     } else if (group.mclass === "mopen" || group.mclass === "mclose") {
       node.attributes.lspace = "0em";
       node.attributes.rspace = "0em";
-    } else if (group.mclass === "minner") {
-      node.attributes.lspace = "0.0556em";
-      node.attributes.width = "+0.1111em";
     }
   }
   return node;
@@ -9101,10 +9069,8 @@ function mathmlBuilder$8(group, options) {
 defineFunction({
   type: "mclass",
   names: ["\\mathord", "\\mathbin", "\\mathrel", "\\mathopen", "\\mathclose", "\\mathpunct", "\\mathinner"],
-  props: {
-    numArgs: 1,
-    primitive: true
-  },
+  numArgs: 1,
+  primitive: true,
   handler(_ref2, args) {
     var {
       parser,
@@ -9115,7 +9081,6 @@ defineFunction({
       type: "mclass",
       mode: parser.mode,
       mclass: "m" + funcName.slice(5),
-      // TODO(kevinb): don't prefix with 'm'
       body: ordargument(body),
       isCharacterBox: isCharacterBox(body)
     };
@@ -9134,9 +9099,7 @@ var binrelClass = (arg) => {
 defineFunction({
   type: "mclass",
   names: ["\\@binrel"],
-  props: {
-    numArgs: 2
-  },
+  numArgs: 2,
   handler(_ref2, args) {
     var {
       parser
@@ -9153,9 +9116,7 @@ defineFunction({
 defineFunction({
   type: "mclass",
   names: ["\\stackrel", "\\overset", "\\underset"],
-  props: {
-    numArgs: 2
-  },
+  numArgs: 2,
   handler(_ref3, args) {
     var {
       parser,
@@ -9179,12 +9140,16 @@ defineFunction({
       suppressBaseShift: funcName !== "\\stackrel",
       body: ordargument(baseArg)
     };
-    var supsub = {
+    var supsub = funcName === "\\underset" ? {
       type: "supsub",
       mode: shiftedArg.mode,
       base: baseOp,
-      sup: funcName === "\\underset" ? null : shiftedArg,
-      sub: funcName === "\\underset" ? shiftedArg : null
+      sub: shiftedArg
+    } : {
+      type: "supsub",
+      mode: shiftedArg.mode,
+      base: baseOp,
+      sup: shiftedArg
     };
     return {
       type: "mclass",
@@ -9193,17 +9158,13 @@ defineFunction({
       body: [supsub],
       isCharacterBox: isCharacterBox(supsub)
     };
-  },
-  htmlBuilder: htmlBuilder$9,
-  mathmlBuilder: mathmlBuilder$8
+  }
 });
 defineFunction({
   type: "pmb",
   names: ["\\pmb"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler(_ref2, args) {
     var {
       parser
@@ -9406,9 +9367,7 @@ function parseCD(parser) {
 defineFunction({
   type: "cdlabel",
   names: ["\\\\cdleft", "\\\\cdright"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler(_ref2, args) {
     var {
       parser,
@@ -9447,9 +9406,7 @@ defineFunction({
 defineFunction({
   type: "cdlabelparent",
   names: ["\\\\cdparent"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler(_ref2, args) {
     var {
       parser
@@ -9472,10 +9429,8 @@ defineFunction({
 defineFunction({
   type: "textord",
   names: ["\\@char"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler(_ref2, args) {
     var {
       parser
@@ -9519,11 +9474,9 @@ var mathmlBuilder$7 = (group, options) => {
 defineFunction({
   type: "color",
   names: ["\\textcolor"],
-  props: {
-    numArgs: 2,
-    allowedInText: true,
-    argTypes: ["color", "original"]
-  },
+  numArgs: 2,
+  allowedInText: true,
+  argTypes: ["color", "original"],
   handler(_ref2, args) {
     var {
       parser
@@ -9543,11 +9496,9 @@ defineFunction({
 defineFunction({
   type: "color",
   names: ["\\color"],
-  props: {
-    numArgs: 1,
-    allowedInText: true,
-    argTypes: ["color"]
-  },
+  numArgs: 1,
+  allowedInText: true,
+  argTypes: ["color"],
   handler(_ref2, args) {
     var {
       parser,
@@ -9562,18 +9513,14 @@ defineFunction({
       color,
       body
     };
-  },
-  htmlBuilder: htmlBuilder$8,
-  mathmlBuilder: mathmlBuilder$7
+  }
 });
 defineFunction({
   type: "cr",
   names: ["\\\\"],
-  props: {
-    numArgs: 0,
-    numOptionalArgs: 0,
-    allowedInText: true
-  },
+  numArgs: 0,
+  numOptionalArgs: 0,
+  allowedInText: true,
   handler(_ref2, args, optArgs) {
     var {
       parser
@@ -9659,10 +9606,8 @@ defineFunction({
     "\\\\globallong"
     // can’t be entered directly
   ],
-  props: {
-    numArgs: 0,
-    allowedInText: true
-  },
+  numArgs: 0,
+  allowedInText: true,
   handler(_ref2) {
     var {
       parser,
@@ -9682,11 +9627,9 @@ defineFunction({
 defineFunction({
   type: "internal",
   names: ["\\def", "\\gdef", "\\edef", "\\xdef"],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    primitive: true
-  },
+  numArgs: 0,
+  allowedInText: true,
+  primitive: true,
   handler(_ref2) {
     var {
       parser,
@@ -9751,11 +9694,9 @@ defineFunction({
     "\\\\globallet"
     // can’t be entered directly
   ],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    primitive: true
-  },
+  numArgs: 0,
+  allowedInText: true,
+  primitive: true,
   handler(_ref3) {
     var {
       parser,
@@ -9778,11 +9719,9 @@ defineFunction({
     "\\\\globalfuture"
     // can’t be entered directly
   ],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    primitive: true
-  },
+  numArgs: 0,
+  allowedInText: true,
+  primitive: true,
   handler(_ref4) {
     var {
       parser,
@@ -10366,10 +10305,8 @@ function checkDelimiter(delim, context) {
 defineFunction({
   type: "delimsizing",
   names: ["\\bigl", "\\Bigl", "\\biggl", "\\Biggl", "\\bigr", "\\Bigr", "\\biggr", "\\Biggr", "\\bigm", "\\Bigm", "\\biggm", "\\Biggm", "\\big", "\\Big", "\\bigg", "\\Bigg"],
-  props: {
-    numArgs: 1,
-    argTypes: ["primitive"]
-  },
+  numArgs: 1,
+  argTypes: ["primitive"],
   handler: (context, args) => {
     var delim = checkDelimiter(args[0], context);
     return {
@@ -10412,10 +10349,8 @@ function assertParsed(group) {
 defineFunction({
   type: "leftright-right",
   names: ["\\right"],
-  props: {
-    numArgs: 1,
-    primitive: true
-  },
+  numArgs: 1,
+  primitive: true,
   handler: (context, args) => {
     var color = context.parser.gullet.macros.get("\\current@color");
     if (color && typeof color !== "string") {
@@ -10433,10 +10368,8 @@ defineFunction({
 defineFunction({
   type: "leftright",
   names: ["\\left"],
-  props: {
-    numArgs: 1,
-    primitive: true
-  },
+  numArgs: 1,
+  primitive: true,
   handler: (context, args) => {
     var delim = checkDelimiter(args[0], context);
     var parser = context.parser;
@@ -10519,10 +10452,8 @@ defineFunction({
 defineFunction({
   type: "middle",
   names: ["\\middle"],
-  props: {
-    numArgs: 1,
-    primitive: true
-  },
+  numArgs: 1,
+  primitive: true,
   handler: (context, args) => {
     var delim = checkDelimiter(args[0], context);
     if (!context.parser.leftrightDepth) {
@@ -10734,11 +10665,9 @@ var mathmlBuilder$6 = (group, options) => {
 defineFunction({
   type: "enclose",
   names: ["\\colorbox"],
-  props: {
-    numArgs: 2,
-    allowedInText: true,
-    argTypes: ["color", "hbox"]
-  },
+  numArgs: 2,
+  allowedInText: true,
+  argTypes: ["color", "hbox"],
   handler(_ref2, args, optArgs) {
     var {
       parser,
@@ -10760,11 +10689,9 @@ defineFunction({
 defineFunction({
   type: "enclose",
   names: ["\\fcolorbox"],
-  props: {
-    numArgs: 3,
-    allowedInText: true,
-    argTypes: ["color", "color", "hbox"]
-  },
+  numArgs: 3,
+  allowedInText: true,
+  argTypes: ["color", "color", "hbox"],
   handler(_ref2, args, optArgs) {
     var {
       parser,
@@ -10781,18 +10708,14 @@ defineFunction({
       borderColor,
       body
     };
-  },
-  htmlBuilder: htmlBuilder$7,
-  mathmlBuilder: mathmlBuilder$6
+  }
 });
 defineFunction({
   type: "enclose",
   names: ["\\fbox"],
-  props: {
-    numArgs: 1,
-    argTypes: ["hbox"],
-    allowedInText: true
-  },
+  numArgs: 1,
+  argTypes: ["hbox"],
+  allowedInText: true,
   handler(_ref3, args) {
     var {
       parser
@@ -10808,9 +10731,7 @@ defineFunction({
 defineFunction({
   type: "enclose",
   names: ["\\cancel", "\\bcancel", "\\xcancel", "\\phase"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler(_ref4, args) {
     var {
       parser,
@@ -10823,17 +10744,13 @@ defineFunction({
       label: funcName,
       body
     };
-  },
-  htmlBuilder: htmlBuilder$7,
-  mathmlBuilder: mathmlBuilder$6
+  }
 });
 defineFunction({
   type: "enclose",
   names: ["\\sout"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler(_ref5, args) {
     var {
       parser,
@@ -10849,18 +10766,14 @@ defineFunction({
       label: funcName,
       body
     };
-  },
-  htmlBuilder: htmlBuilder$7,
-  mathmlBuilder: mathmlBuilder$6
+  }
 });
 defineFunction({
   type: "enclose",
   names: ["\\angl"],
-  props: {
-    numArgs: 1,
-    argTypes: ["hbox"],
-    allowedInText: false
-  },
+  numArgs: 1,
+  argTypes: ["hbox"],
+  allowedInText: false,
   handler(_ref6, args) {
     var {
       parser
@@ -11451,14 +11364,13 @@ var alignedHandler = function alignedHandler2(context, args) {
     validateAmsEnvironmentContext(context);
   }
   var cols = [];
-  var separationType = context.envName.includes("at") ? "alignat" : "align";
   var isSplit = context.envName === "split";
   var res = parseArray(context.parser, {
     cols,
     addJot: true,
     autoTag: isSplit ? void 0 : getAutoTag(context.envName),
     emptySingleRow: true,
-    colSeparationType: separationType,
+    colSeparationType: context.envName.includes("at") ? "alignat" : "align",
     maxNumCols: isSplit ? 2 : void 0,
     leqno: context.parser.settings.leqno
   }, "display");
@@ -11793,11 +11705,9 @@ defineFunction({
   type: "text",
   // Doesn't matter what this is.
   names: ["\\hline", "\\hdashline"],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    allowedInMath: true
-  },
+  numArgs: 0,
+  allowedInText: true,
+  allowedInMath: true,
   handler(context, args) {
     throw new ParseError(context.funcName + " valid only within array environment");
   }
@@ -11806,10 +11716,8 @@ var environments = _environments;
 defineFunction({
   type: "environment",
   names: ["\\begin", "\\end"],
-  props: {
-    numArgs: 1,
-    argTypes: ["text"]
-  },
+  numArgs: 1,
+  argTypes: ["text"],
   handler(_ref2, args) {
     var {
       parser,
@@ -11890,20 +11798,15 @@ defineFunction({
     "\\bold",
     "\\frak"
   ],
-  props: {
-    numArgs: 1,
-    allowedInArgument: true
-  },
+  numArgs: 1,
+  allowedInArgument: true,
   handler: (_ref2, args) => {
     var {
       parser,
       funcName
     } = _ref2;
     var body = normalizeArgument(args[0]);
-    var func = funcName;
-    if (func in fontAliases) {
-      func = fontAliases[func];
-    }
+    var func = funcName in fontAliases ? fontAliases[funcName] : funcName;
     return {
       type: "font",
       mode: parser.mode,
@@ -11917,9 +11820,7 @@ defineFunction({
 defineFunction({
   type: "mclass",
   names: ["\\boldsymbol", "\\bm"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler: (_ref2, args) => {
     var {
       parser
@@ -11942,10 +11843,8 @@ defineFunction({
 defineFunction({
   type: "font",
   names: ["\\rm", "\\sf", "\\tt", "\\bf", "\\it", "\\cal"],
-  props: {
-    numArgs: 0,
-    allowedInText: true
-  },
+  numArgs: 0,
+  allowedInText: true,
   handler: (_ref3, args) => {
     var {
       parser,
@@ -11966,9 +11865,7 @@ defineFunction({
         body
       }
     };
-  },
-  htmlBuilder: htmlBuilder$5,
-  mathmlBuilder: mathmlBuilder$4
+  }
 });
 var htmlBuilder$4 = (group, options) => {
   var style = options.style;
@@ -12148,10 +12045,8 @@ defineFunction({
     "\\\\brackfrac"
     // ditto
   ],
-  props: {
-    numArgs: 2,
-    allowedInArgument: true
-  },
+  numArgs: 2,
+  allowedInArgument: true,
   handler: (_ref2, args) => {
     var {
       parser,
@@ -12217,10 +12112,8 @@ defineFunction({
 defineFunction({
   type: "infix",
   names: ["\\over", "\\choose", "\\atop", "\\brace", "\\brack"],
-  props: {
-    numArgs: 0,
-    infix: true
-  },
+  numArgs: 0,
+  infix: true,
   handler(_ref2) {
     var {
       parser,
@@ -12267,11 +12160,9 @@ var delimFromValue = function delimFromValue2(delimString) {
 defineFunction({
   type: "genfrac",
   names: ["\\genfrac"],
-  props: {
-    numArgs: 6,
-    allowedInArgument: true,
-    argTypes: ["math", "math", "size", "text", "math", "math"]
-  },
+  numArgs: 6,
+  allowedInArgument: true,
+  argTypes: ["math", "math", "size", "text", "math", "math"],
   handler(_ref3, args) {
     var {
       parser
@@ -12318,11 +12209,9 @@ defineFunction({
 defineFunction({
   type: "infix",
   names: ["\\above"],
-  props: {
-    numArgs: 1,
-    argTypes: ["size"],
-    infix: true
-  },
+  numArgs: 1,
+  argTypes: ["size"],
+  infix: true,
   handler(_ref4, args) {
     var {
       parser,
@@ -12341,10 +12230,8 @@ defineFunction({
 defineFunction({
   type: "genfrac",
   names: ["\\\\abovefrac"],
-  props: {
-    numArgs: 3,
-    argTypes: ["math", "size", "math"]
-  },
+  numArgs: 3,
+  argTypes: ["math", "size", "math"],
   handler: (_ref5, args) => {
     var {
       parser,
@@ -12457,9 +12344,7 @@ var mathmlBuilder$2 = (group, options) => {
 defineFunction({
   type: "horizBrace",
   names: ["\\overbrace", "\\underbrace", "\\overbracket", "\\underbracket"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler(_ref2, args) {
     var {
       parser,
@@ -12479,11 +12364,9 @@ defineFunction({
 defineFunction({
   type: "href",
   names: ["\\href"],
-  props: {
-    numArgs: 2,
-    argTypes: ["url", "original"],
-    allowedInText: true
-  },
+  numArgs: 2,
+  argTypes: ["url", "original"],
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -12519,11 +12402,9 @@ defineFunction({
 defineFunction({
   type: "href",
   names: ["\\url"],
-  props: {
-    numArgs: 1,
-    argTypes: ["url"],
-    allowedInText: true
-  },
+  numArgs: 1,
+  argTypes: ["url"],
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -12564,12 +12445,10 @@ defineFunction({
 defineFunction({
   type: "hbox",
   names: ["\\hbox"],
-  props: {
-    numArgs: 1,
-    argTypes: ["text"],
-    allowedInText: true,
-    primitive: true
-  },
+  numArgs: 1,
+  argTypes: ["text"],
+  allowedInText: true,
+  primitive: true,
   handler(_ref2, args) {
     var {
       parser
@@ -12591,11 +12470,9 @@ defineFunction({
 defineFunction({
   type: "html",
   names: ["\\htmlClass", "\\htmlId", "\\htmlStyle", "\\htmlData"],
-  props: {
-    numArgs: 2,
-    argTypes: ["raw", "original"],
-    allowedInText: true
-  },
+  numArgs: 2,
+  argTypes: ["raw", "original"],
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser,
@@ -12683,11 +12560,9 @@ defineFunction({
 defineFunction({
   type: "htmlmathml",
   names: ["\\html@mathml"],
-  props: {
-    numArgs: 2,
-    allowedInArgument: true,
-    allowedInText: true
-  },
+  numArgs: 2,
+  allowedInArgument: true,
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -12732,12 +12607,10 @@ var sizeData = function sizeData2(str) {
 defineFunction({
   type: "includegraphics",
   names: ["\\includegraphics"],
-  props: {
-    numArgs: 1,
-    numOptionalArgs: 1,
-    argTypes: ["raw", "url"],
-    allowedInText: false
-  },
+  numArgs: 1,
+  numOptionalArgs: 1,
+  argTypes: ["raw", "url"],
+  allowedInText: false,
   handler: (_ref2, args, optArgs) => {
     var {
       parser
@@ -12848,12 +12721,10 @@ defineFunction({
 defineFunction({
   type: "kern",
   names: ["\\kern", "\\mkern", "\\hskip", "\\mskip"],
-  props: {
-    numArgs: 1,
-    argTypes: ["size"],
-    primitive: true,
-    allowedInText: true
-  },
+  numArgs: 1,
+  argTypes: ["size"],
+  primitive: true,
+  allowedInText: true,
   handler(_ref2, args) {
     var {
       parser,
@@ -12893,10 +12764,8 @@ defineFunction({
 defineFunction({
   type: "lap",
   names: ["\\mathllap", "\\mathrlap", "\\mathclap"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser,
@@ -12942,11 +12811,9 @@ defineFunction({
 defineFunction({
   type: "styling",
   names: ["\\(", "$"],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    allowedInMath: false
-  },
+  numArgs: 0,
+  allowedInText: true,
+  allowedInMath: false,
   handler(_ref2, args) {
     var {
       funcName,
@@ -12971,11 +12838,9 @@ defineFunction({
   type: "text",
   // Doesn't matter what this is.
   names: ["\\)", "\\]"],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    allowedInMath: false
-  },
+  numArgs: 0,
+  allowedInText: true,
+  allowedInMath: false,
   handler(context, args) {
     throw new ParseError("Mismatched " + context.funcName);
   }
@@ -12997,10 +12862,8 @@ var chooseMathStyle = (group, options) => {
 defineFunction({
   type: "mathchoice",
   names: ["\\mathchoice"],
-  props: {
-    numArgs: 4,
-    primitive: true
-  },
+  numArgs: 4,
+  primitive: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -13242,9 +13105,7 @@ var singleCharBigOps = {
 defineFunction({
   type: "op",
   names: ["\\coprod", "\\bigvee", "\\bigwedge", "\\biguplus", "\\bigcap", "\\bigcup", "\\intop", "\\prod", "\\sum", "\\bigotimes", "\\bigoplus", "\\bigodot", "\\bigsqcup", "\\smallint", "\u220F", "\u2210", "\u2211", "\u22C0", "\u22C1", "\u22C2", "\u22C3", "\u2A00", "\u2A01", "\u2A02", "\u2A04", "\u2A06"],
-  props: {
-    numArgs: 0
-  },
+  numArgs: 0,
   handler: (_ref2, args) => {
     var {
       parser,
@@ -13269,10 +13130,8 @@ defineFunction({
 defineFunction({
   type: "op",
   names: ["\\mathop"],
-  props: {
-    numArgs: 1,
-    primitive: true
-  },
+  numArgs: 1,
+  primitive: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -13286,9 +13145,7 @@ defineFunction({
       symbol: false,
       body: ordargument(body)
     };
-  },
-  htmlBuilder: htmlBuilder$2,
-  mathmlBuilder: mathmlBuilder$1
+  }
 });
 var singleCharIntegrals = {
   "\u222B": "\\int",
@@ -13301,9 +13158,7 @@ var singleCharIntegrals = {
 defineFunction({
   type: "op",
   names: ["\\arcsin", "\\arccos", "\\arctan", "\\arctg", "\\arcctg", "\\arg", "\\ch", "\\cos", "\\cosec", "\\cosh", "\\cot", "\\cotg", "\\coth", "\\csc", "\\ctg", "\\cth", "\\deg", "\\dim", "\\exp", "\\hom", "\\ker", "\\lg", "\\ln", "\\log", "\\sec", "\\sin", "\\sinh", "\\sh", "\\tan", "\\tanh", "\\tg", "\\th"],
-  props: {
-    numArgs: 0
-  },
+  numArgs: 0,
   handler(_ref3) {
     var {
       parser,
@@ -13317,16 +13172,12 @@ defineFunction({
       symbol: false,
       name: funcName
     };
-  },
-  htmlBuilder: htmlBuilder$2,
-  mathmlBuilder: mathmlBuilder$1
+  }
 });
 defineFunction({
   type: "op",
   names: ["\\det", "\\gcd", "\\inf", "\\lim", "\\max", "\\min", "\\Pr", "\\sup"],
-  props: {
-    numArgs: 0
-  },
+  numArgs: 0,
   handler(_ref4) {
     var {
       parser,
@@ -13340,17 +13191,13 @@ defineFunction({
       symbol: false,
       name: funcName
     };
-  },
-  htmlBuilder: htmlBuilder$2,
-  mathmlBuilder: mathmlBuilder$1
+  }
 });
 defineFunction({
   type: "op",
   names: ["\\int", "\\iint", "\\iiint", "\\oint", "\\oiint", "\\oiiint", "\u222B", "\u222C", "\u222D", "\u222E", "\u222F", "\u2230"],
-  props: {
-    numArgs: 0,
-    allowedInArgument: true
-  },
+  numArgs: 0,
+  allowedInArgument: true,
   handler(_ref5) {
     var {
       parser,
@@ -13368,9 +13215,7 @@ defineFunction({
       symbol: true,
       name: fName
     };
-  },
-  htmlBuilder: htmlBuilder$2,
-  mathmlBuilder: mathmlBuilder$1
+  }
 });
 var htmlBuilder$1 = (grp, options) => {
   var supGroup;
@@ -13462,9 +13307,7 @@ var mathmlBuilder2 = (group, options) => {
 defineFunction({
   type: "operatorname",
   names: ["\\operatorname@", "\\operatornamewithlimits"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler: (_ref2, args) => {
     var {
       parser,
@@ -13499,9 +13342,7 @@ defineFunctionBuilders({
 defineFunction({
   type: "overline",
   names: ["\\overline"],
-  props: {
-    numArgs: 1
-  },
+  numArgs: 1,
   handler(_ref2, args) {
     var {
       parser
@@ -13546,10 +13387,8 @@ defineFunction({
 defineFunction({
   type: "phantom",
   names: ["\\phantom"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -13574,10 +13413,8 @@ defineMacro("\\hphantom", "\\smash{\\phantom{#1}}");
 defineFunction({
   type: "vphantom",
   names: ["\\vphantom"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       parser
@@ -13605,11 +13442,9 @@ defineFunction({
 defineFunction({
   type: "raisebox",
   names: ["\\raisebox"],
-  props: {
-    numArgs: 2,
-    argTypes: ["size", "hbox"],
-    allowedInText: true
-  },
+  numArgs: 2,
+  argTypes: ["size", "hbox"],
+  allowedInText: true,
   handler(_ref2, args) {
     var {
       parser
@@ -13645,11 +13480,9 @@ defineFunction({
 defineFunction({
   type: "internal",
   names: ["\\relax"],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    allowedInArgument: true
-  },
+  numArgs: 0,
+  allowedInText: true,
+  allowedInArgument: true,
   handler(_ref2) {
     var {
       parser
@@ -13663,13 +13496,11 @@ defineFunction({
 defineFunction({
   type: "rule",
   names: ["\\rule"],
-  props: {
-    numArgs: 2,
-    numOptionalArgs: 1,
-    allowedInText: true,
-    allowedInMath: true,
-    argTypes: ["size", "size", "size"]
-  },
+  numArgs: 2,
+  numOptionalArgs: 1,
+  allowedInText: true,
+  allowedInMath: true,
+  argTypes: ["size", "size", "size"],
   handler(_ref2, args, optArgs) {
     var {
       parser
@@ -13742,10 +13573,8 @@ var htmlBuilder2 = (group, options) => {
 defineFunction({
   type: "sizing",
   names: sizeFuncs,
-  props: {
-    numArgs: 0,
-    allowedInText: true
-  },
+  numArgs: 0,
+  allowedInText: true,
   handler: (_ref2, args) => {
     var {
       breakOnTokenText,
@@ -13773,11 +13602,9 @@ defineFunction({
 defineFunction({
   type: "smash",
   names: ["\\smash"],
-  props: {
-    numArgs: 1,
-    numOptionalArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  numOptionalArgs: 1,
+  allowedInText: true,
   handler: (_ref2, args, optArgs) => {
     var {
       parser
@@ -13860,10 +13687,8 @@ defineFunction({
 defineFunction({
   type: "sqrt",
   names: ["\\sqrt"],
-  props: {
-    numArgs: 1,
-    numOptionalArgs: 1
-  },
+  numArgs: 1,
+  numOptionalArgs: 1,
   handler(_ref2, args, optArgs) {
     var {
       parser
@@ -13957,11 +13782,9 @@ function isStyleStr(s) {
 defineFunction({
   type: "styling",
   names: ["\\displaystyle", "\\textstyle", "\\scriptstyle", "\\scriptscriptstyle"],
-  props: {
-    numArgs: 0,
-    allowedInText: true,
-    primitive: true
-  },
+  numArgs: 0,
+  allowedInText: true,
+  primitive: true,
   handler(_ref2, args) {
     var {
       breakOnTokenText,
@@ -14223,7 +14046,7 @@ var defaultVariant = {
 defineFunctionBuilders({
   type: "mathord",
   htmlBuilder(group, options) {
-    return makeOrd(group, options, "mathord");
+    return makeOrd(group, options);
   },
   mathmlBuilder(group, options) {
     var node = new MathNode("mi", [makeText(group.text, group.mode, options)]);
@@ -14237,7 +14060,7 @@ defineFunctionBuilders({
 defineFunctionBuilders({
   type: "textord",
   htmlBuilder(group, options) {
-    return makeOrd(group, options, "textord");
+    return makeOrd(group, options);
   },
   mathmlBuilder(group, options) {
     var text3 = makeText(group.text, group.mode, options);
@@ -14279,7 +14102,7 @@ defineFunctionBuilders({
     if (regularSpace.hasOwnProperty(group.text)) {
       var className = regularSpace[group.text].className || "";
       if (group.mode === "text") {
-        var ord = makeOrd(group, options, "textord");
+        var ord = makeOrd(group, options);
         ord.classes.push(className);
         return ord;
       } else {
@@ -14361,12 +14184,10 @@ defineFunction({
     "\\textup",
     "\\emph"
   ],
-  props: {
-    numArgs: 1,
-    argTypes: ["text"],
-    allowedInArgument: true,
-    allowedInText: true
-  },
+  numArgs: 1,
+  argTypes: ["text"],
+  allowedInArgument: true,
+  allowedInText: true,
   handler(_ref2, args) {
     var {
       parser,
@@ -14393,10 +14214,8 @@ defineFunction({
 defineFunction({
   type: "underline",
   names: ["\\underline"],
-  props: {
-    numArgs: 1,
-    allowedInText: true
-  },
+  numArgs: 1,
+  allowedInText: true,
   handler(_ref2, args) {
     var {
       parser
@@ -14441,12 +14260,10 @@ defineFunction({
 defineFunction({
   type: "vcenter",
   names: ["\\vcenter"],
-  props: {
-    numArgs: 1,
-    argTypes: ["original"],
-    // In LaTeX, \vcenter can act only on a box.
-    allowedInText: false
-  },
+  numArgs: 1,
+  argTypes: ["original"],
+  // In LaTeX, \vcenter can act only on a box.
+  allowedInText: false,
   handler(_ref2, args) {
     var {
       parser
@@ -14478,10 +14295,8 @@ defineFunction({
 defineFunction({
   type: "verb",
   names: ["\\verb"],
-  props: {
-    numArgs: 0,
-    allowedInText: true
-  },
+  numArgs: 0,
+  allowedInText: true,
   handler(context, args, optArgs) {
     throw new ParseError("\\verb ended by end of line instead of matching delimiter");
   },
@@ -16471,8 +16286,7 @@ var Parser = class _Parser {
       var lex = this.fetch();
       if (lex.text === "\\limits" || lex.text === "\\nolimits") {
         if (base && base.type === "op") {
-          var limits = lex.text === "\\limits";
-          base.limits = limits;
+          base.limits = lex.text === "\\limits";
           base.alwaysHandleSupSub = true;
         } else if (base && base.type === "operatorname") {
           if (base.alwaysHandleSupSub) {
@@ -16549,12 +16363,26 @@ var Parser = class _Parser {
         break;
       }
     }
-    if (superscript || subscript) {
+    if (superscript && subscript) {
       return {
         type: "supsub",
         mode: this.mode,
         base,
         sup: superscript,
+        sub: subscript
+      };
+    } else if (superscript) {
+      return {
+        type: "supsub",
+        mode: this.mode,
+        base,
+        sup: superscript
+      };
+    } else if (subscript) {
+      return {
+        type: "supsub",
+        mode: this.mode,
+        base,
         sub: subscript
       };
     } else {
@@ -16606,7 +16434,9 @@ var Parser = class _Parser {
    * Parses the arguments of a function or environment
    */
   parseArguments(func, funcData) {
-    var totalArgs = funcData.numArgs + funcData.numOptionalArgs;
+    var _funcData$numOptional;
+    var numOptionalArgs = (_funcData$numOptional = funcData.numOptionalArgs) != null ? _funcData$numOptional : 0;
+    var totalArgs = funcData.numArgs + numOptionalArgs;
     if (totalArgs === 0) {
       return {
         args: [],
@@ -16616,8 +16446,9 @@ var Parser = class _Parser {
     var args = [];
     var optArgs = [];
     for (var i2 = 0; i2 < totalArgs; i2++) {
-      var argType = funcData.argTypes && funcData.argTypes[i2];
-      var isOptional = i2 < funcData.numOptionalArgs;
+      var _funcData$argTypes;
+      var argType = (_funcData$argTypes = funcData.argTypes) == null ? void 0 : _funcData$argTypes[i2];
+      var isOptional = i2 < numOptionalArgs;
       if ("primitive" in funcData && funcData.primitive && argType == null || // \sqrt expands into primitive if optional argument doesn't exist
       funcData.type === "sqrt" && i2 === 1 && optArgs[0] == null) {
         argType = "primitive";
@@ -16662,7 +16493,7 @@ var Parser = class _Parser {
         } : null;
       }
       case "raw": {
-        var token = this.parseStringGroup("raw", optional);
+        var token = this.parseStringGroup(optional);
         return token != null ? {
           type: "raw",
           mode: "text",
@@ -16680,7 +16511,6 @@ var Parser = class _Parser {
         return _group2;
       }
       case "original":
-      case null:
       case void 0:
         return this.parseArgumentGroup(optional);
       default:
@@ -16699,7 +16529,7 @@ var Parser = class _Parser {
    * Parses a group, essentially returning the string formed by the
    * brace-enclosed tokens plus some position information.
    */
-  parseStringGroup(modeName, optional) {
+  parseStringGroup(optional) {
     var argToken = this.gullet.scanArgument(optional);
     if (argToken == null) {
       return null;
@@ -16738,7 +16568,7 @@ var Parser = class _Parser {
    * Parses a color description.
    */
   parseColorGroup(optional) {
-    var res = this.parseStringGroup("color", optional);
+    var res = this.parseStringGroup(optional);
     if (res == null) {
       return null;
     }
@@ -16766,7 +16596,7 @@ var Parser = class _Parser {
     if (!optional && this.gullet.future().text !== "{") {
       res = this.parseRegexGroup(/^[-+]? *(?:$|\d+|\d+\.\d*|\.\d*) *[a-z]{0,2} *$/, "size");
     } else {
-      res = this.parseStringGroup("size", optional);
+      res = this.parseStringGroup(optional);
     }
     if (!res) {
       return null;
@@ -16801,7 +16631,7 @@ var Parser = class _Parser {
   parseUrlGroup(optional) {
     this.gullet.lexer.setCatcode("%", 13);
     this.gullet.lexer.setCatcode("~", 12);
-    var res = this.parseStringGroup("url", optional);
+    var res = this.parseStringGroup(optional);
     this.gullet.lexer.setCatcode("%", 14);
     this.gullet.lexer.setCatcode("~", 13);
     if (res == null) {
@@ -17111,7 +16941,7 @@ var renderToHTMLTree = function renderToHTMLTree2(expression, options) {
     return renderError(error, expression, settings);
   }
 };
-var version2 = "0.16.47";
+var version2 = "0.17.0";
 var __domTree = {
   Span,
   Anchor,
