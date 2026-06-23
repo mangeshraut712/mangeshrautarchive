@@ -7,7 +7,7 @@
   --systems-shell-max: 1120px;
   --systems-shell-gutter: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --border-color: rgb(0 0 0 / 10%);
-  --bg-secondary: #f5f5f7;
+  --bg-secondary: #ffffff;
   --text-primary: #1d1d1f;
   --accent-blue: #0071e3;
   --shadow-md: 0 4px 12px rgb(0 0 0 / 8%);
@@ -18,7 +18,7 @@ html.dark {
   --systems-text: #f5f5f7;
   --systems-muted: #a1a1a6;
   --border-color: rgb(255 255 255 / 14%);
-  --bg-secondary: #1c1c1e;
+  --bg-secondary: #000000;
   --text-primary: #f5f5f7;
 }
 

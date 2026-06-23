@@ -19,8 +19,8 @@
   --lg-nav-dark-fill: calc(8% + var(--lg-tint) * 76%);
   --lg-card-light-fill: calc(18% + var(--lg-tint) * 76%);
   --lg-card-dark-fill: calc(24% + var(--lg-tint) * 68%);
-  --lg-card-light-alpha: calc(18% + var(--lg-tint) * 76%);
-  --lg-card-dark-alpha: calc(24% + var(--lg-tint) * 68%);
+  --lg-card-light-alpha: 100%;
+  --lg-card-dark-alpha: 100%;
   --lg-card-border-light-alpha: calc(28% + var(--lg-tint) * 38%);
   --lg-card-border-dark-alpha: calc(8% + var(--lg-tint) * 10%);
   --lg-card-highlight-light: calc(42% + var(--lg-tint) * 48%);
@@ -44,14 +44,14 @@
   --chatbot-widget-top: calc(var(--island-height, 52px) + 12px);
   --chatbot-widget-bottom: calc(96px + 60px + 14px);
   /* Theme-tuned Liquid Glass surfaces */
-  --lg-nav-surface-light: rgb(255 255 255 / 68%);
-  --lg-nav-surface-dark: rgb(14 14 16 / 74%);
-  --lg-panel-surface-light: rgb(255 255 255 / 74%);
-  --lg-panel-surface-dark: rgb(10 10 12 / 78%);
-  --lg-control-surface-light: rgb(255 255 255 / 70%);
-  --lg-control-surface-dark: rgb(16 16 18 / 74%);
-  --lg-popover-surface-light: rgb(255 255 255 / 84%);
-  --lg-popover-surface-dark: rgb(18 18 20 / 88%);
+  --lg-nav-surface-light: #ffffff;
+  --lg-nav-surface-dark: #000000;
+  --lg-panel-surface-light: #ffffff;
+  --lg-panel-surface-dark: #000000;
+  --lg-control-surface-light: #ffffff;
+  --lg-control-surface-dark: #000000;
+  --lg-popover-surface-light: #ffffff;
+  --lg-popover-surface-dark: #000000;
   --lg-edge-light: rgb(255 255 255 / 44%);
   --lg-edge-dark: rgb(255 255 255 / 12%);
   --lg-shadow-light: rgb(0 0 0 / 12%);

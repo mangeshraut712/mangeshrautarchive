@@ -1,0 +1,556 @@
+/* ════════════════════════════════════════════════════════════════
+   Solid theme surfaces — sitewide white (light) / black (dark)
+   Loaded last to override liquid-glass translucency and grey fills.
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #ffffff;
+  --bg-elevated: #ffffff;
+  --lg-panel-surface-light: #ffffff;
+  --lg-control-surface-light: #ffffff;
+  --lg-nav-surface-light: #ffffff;
+  --lg-popover-surface-light: #ffffff;
+  --lg-card-light-alpha: 100%;
+  --lg-card-dark-alpha: 100%;
+}
+
+html.dark,
+html[data-theme='dark'] {
+  --bg-secondary: #000000;
+  --bg-tertiary: #000000;
+  --bg-elevated: #000000;
+  --lg-panel-surface-dark: #000000;
+  --lg-control-surface-dark: #000000;
+  --lg-nav-surface-dark: #000000;
+  --lg-popover-surface-dark: #000000;
+}
+
+html,
+body {
+  background-color: var(--theme-page-bg, #ffffff) !important;
+}
+
+html.dark,
+html.dark body {
+  background-color: var(--theme-page-bg, #000000) !important;
+}
+
+/* ─── Card & panel surfaces ─── */
+:is(
+  .card,
+  .experience-card,
+  .experience-content,
+  .education-card,
+  .education-content,
+  .stat-card,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .showcase-project-card,
+  .about-highlight-card,
+  .about-text-card,
+  .about-card,
+  .contact-card,
+  .contact-form-card,
+  .newsletter-card,
+  .support-donation-card,
+  .media-card,
+  .currently-card,
+  .calendar-card,
+  .ios-widget-wrapper,
+  .legend-card,
+  .music-card-inner,
+  .reminder-card,
+  .overview-card,
+  .doc-card,
+  .health-item,
+  .game-stat-card,
+  .game-info-card,
+  .skill-card,
+  .skill-badge,
+  .timeline-content,
+  .service-card,
+  .feature-card,
+  .testimonial-card,
+  .pricing-card,
+  .team-card,
+  .info-card,
+  .detail-card,
+  .summary-card,
+  .glass-card,
+  .overlay-card,
+  .panel,
+  .health-widget-container,
+  .monitor-summary-card,
+  .monitor-summary-panel,
+  .integration-owner-auth,
+  .ops-card,
+  .endpoint-card,
+  .travel-sidebar,
+  .travel-stop,
+  .place-guide-card,
+  .travel-stat,
+  .travel-filter-panel,
+  .travel-advanced-search,
+  .travel-results-summary,
+  .travel-timeline__country-header,
+  .sub-card,
+  .nested-card,
+  .vibe-stack-card,
+  .lg-glass-card,
+  .engineering-quality-overview,
+  .projects-activity-overview,
+  .project-xr-dialog,
+  .systems-evidence-card,
+  .systems-principle-card,
+  .eng-building-card,
+  .eng-design-card,
+  .systems-case-flow,
+  .systems-bench-row,
+  .systems-bento-tile,
+  .systems-metric-panel,
+  .systems-arch-stage,
+  .systems-flow-step,
+  .systems-hero-stat,
+  .eng-showcase-card,
+  .systems-timeline-block,
+  .systems-now-card,
+  .case-study-preview-card,
+  .reach-realtime-section,
+  .error-container
+) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark)
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .music-card-inner,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header,
+    .sub-card,
+    .nested-card,
+    .vibe-stack-card,
+    .lg-glass-card,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .project-xr-dialog,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-case-flow,
+    .systems-bench-row,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-arch-stage,
+    .systems-flow-step,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-timeline-block,
+    .systems-now-card,
+    .case-study-preview-card,
+    .reach-realtime-section,
+    .error-container,
+    #blog .blog-card,
+    body.blog-standalone-page .blog-card,
+    body.blog-standalone-page .blog-index-header,
+    body.blog-standalone-page .article-header,
+    body.blog-standalone-page .blog-article-sidebar,
+    body.blog-standalone-page .article-related-card,
+    #blog .newsletter-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .health-item,
+    body.monitor-page .endpoint-card,
+    body.monitor-page .ops-card,
+    body.monitor-page main > section.section,
+    body.monitor-page main > section.monitor-summary-panel,
+    body.monitor-page main > section#monitor-summary-section,
+    body.monitor-page .doc-link-tile,
+    #projects .proj-input-group,
+    #projects .proj-sort-native,
+    #projects #github-projects-container .showcase-project-card
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: var(--theme-card-border, rgb(0 0 0 / 8%)) !important;
+}
+
+html.dark
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .music-card-inner,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header,
+    .sub-card,
+    .nested-card,
+    .vibe-stack-card,
+    .lg-glass-card,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .project-xr-dialog,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-case-flow,
+    .systems-bench-row,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-arch-stage,
+    .systems-flow-step,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-timeline-block,
+    .systems-now-card,
+    .case-study-preview-card,
+    .reach-realtime-section,
+    .error-container,
+    #blog .blog-card,
+    body.blog-standalone-page .blog-card,
+    body.blog-standalone-page .blog-index-header,
+    body.blog-standalone-page .article-header,
+    body.blog-standalone-page .blog-article-sidebar,
+    body.blog-standalone-page .article-related-card,
+    #blog .newsletter-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .health-item,
+    body.monitor-page .endpoint-card,
+    body.monitor-page .ops-card,
+    body.monitor-page main > section.section,
+    body.monitor-page main > section.monitor-summary-panel,
+    body.monitor-page main > section#monitor-summary-section,
+    body.monitor-page .doc-link-tile,
+    #projects .proj-input-group,
+    #projects .proj-sort-native,
+    #projects #github-projects-container .showcase-project-card
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border-color: var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+}
+
+/* ─── Floating chrome (nav, chatbot, toolbars) ─── */
+:is(
+  .global-nav.dynamic-island,
+  #chatbot-widget,
+  .a11y-toolbar,
+  .a11y-glass-popover,
+  .website-share-dialog.active,
+  #go-to-top.visible,
+  .travel-nav,
+  .monitor-page-nav
+) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark)
+  :is(
+    .global-nav.dynamic-island,
+    #chatbot-widget,
+    .a11y-toolbar,
+    .a11y-glass-popover,
+    .website-share-dialog.active,
+    #go-to-top.visible,
+    .travel-nav,
+    .monitor-page-nav
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark
+  :is(
+    .global-nav.dynamic-island,
+    #chatbot-widget,
+    .a11y-toolbar,
+    .a11y-glass-popover,
+    .website-share-dialog.active,
+    #go-to-top.visible,
+    .travel-nav,
+    .monitor-page-nav
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* ─── Section shells ─── */
+:is(
+  section,
+  .section,
+  #about,
+  #skills,
+  #experience,
+  #projects,
+  #engineering,
+  #education,
+  #publications,
+  #awards,
+  #recommendations,
+  #certifications,
+  #blog,
+  #contact,
+  #home,
+  #game,
+  #debug-runner-section,
+  body.monitor-page main,
+  body.systems-page .systems-shell,
+  body.travel-page .travel-shell
+) {
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
+  background-image: none !important;
+}
+
+html.dark
+  :is(
+    section,
+    .section,
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #home,
+    #game,
+    #debug-runner-section,
+    body.monitor-page main,
+    body.systems-page .systems-shell,
+    body.travel-page .travel-shell
+  ) {
+  background: var(--theme-page-bg, #000000) !important;
+  background-color: var(--theme-page-bg, #000000) !important;
+}
+
+/* ─── Systems rails / tabs (were semi-transparent grey) ─── */
+html:not(.dark) body.systems-page :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark body.systems-page :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+html:not(.dark) body.systems-page .systems-arch-tab.is-active {
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
+}
+
+html.dark body.systems-page .systems-arch-tab.is-active {
+  background: #000000 !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 40%) !important;
+}
+
+/* ─── Card hover: blue border (preserve interaction affordance) ─── */
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark)
+    :is(
+      .card,
+      .experience-content,
+      .education-content,
+      .stat-card,
+      .blog-card,
+      .publication-card,
+      .award-card,
+      .recommendation-card,
+      .certification-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .about-text-card,
+      .contact-card,
+      .currently-card,
+      .calendar-card,
+      .vibe-stack-card,
+      .lg-glass-card,
+      .engineering-quality-overview,
+      .projects-activity-overview,
+      .systems-evidence-card,
+      .systems-case-flow,
+      .systems-bento-tile,
+      .systems-metric-panel,
+      .systems-arch-stage,
+      .eng-showcase-card,
+      #blog .blog-card,
+      body.blog-standalone-page .blog-card,
+      body.monitor-page .doc-card,
+      body.monitor-page .overview-card
+    ):hover {
+    border-color: #0071e3 !important;
+  }
+
+  html.dark
+    :is(
+      .card,
+      .experience-content,
+      .education-content,
+      .stat-card,
+      .blog-card,
+      .publication-card,
+      .award-card,
+      .recommendation-card,
+      .certification-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .about-text-card,
+      .contact-card,
+      .currently-card,
+      .calendar-card,
+      .vibe-stack-card,
+      .lg-glass-card,
+      .engineering-quality-overview,
+      .projects-activity-overview,
+      .systems-evidence-card,
+      .systems-case-flow,
+      .systems-bento-tile,
+      .systems-metric-panel,
+      .systems-arch-stage,
+      .eng-showcase-card,
+      #blog .blog-card,
+      body.blog-standalone-page .blog-card,
+      body.monitor-page .doc-card,
+      body.monitor-page .overview-card
+    ):hover {
+    border-color: #0a84ff !important;
+  }
+}
+
+/* ─── Blog / contact code & tag chips ─── */
+html:not(.dark) :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 8%);
+}
+
+html.dark :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
+  background: #000000 !important;
+  border: 1px solid rgb(255 255 255 / 12%);
+}

@@ -361,7 +361,7 @@ html:not(.dark) .blog-summary {
 
 .blog-promise {
   padding: 1rem;
-  background: #f5f5f7;
+  background: #ffffff;
   border: 1px solid rgb(0 0 0 / 6%);
   border-radius: 16px;
 }
@@ -655,7 +655,7 @@ html.dark .blog-modal-close {
 
 html.dark .blog-modal-close::before,
 html.dark .blog-modal-close::after {
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 html.dark .blog-modal-close:hover {
@@ -791,7 +791,7 @@ html.dark .article-inline-code {
 }
 
 .article-code-block {
-  background: var(--bg-secondary, #f5f5f7);
+  background: #ffffff;
   padding: 1.5rem;
   border-radius: 12px;
   overflow-x: auto;
@@ -801,7 +801,7 @@ html.dark .article-inline-code {
 }
 
 html.dark .article-code-block {
-  background: #1c1c1e;
+  background: #000000;
   border-color: rgba(255, 255, 255, 0.1);
 }
 

@@ -68,7 +68,7 @@ html.dark #engineering {
   padding: clamp(0.95rem, 1.6vw, 1.25rem);
   border-radius: 20px;
   border: 1px solid var(--eng-border-light);
-  background: linear-gradient(165deg, #fff 0%, #f8fbff 100%);
+  background: #ffffff;
   box-shadow: var(--eng-shadow-light);
   transition:
     border-color 0.25s ease,
@@ -78,7 +78,7 @@ html.dark #engineering {
 
 html.dark .engineering-quality-overview {
   border-color: var(--eng-border-dark);
-  background: linear-gradient(165deg, #000 0%, #050a12 100%);
+  background: #000000;
   box-shadow: var(--eng-shadow-dark);
 }
 
@@ -319,7 +319,7 @@ html.dark .eng-card-a {
 
 html.dark .engineering-open-btn {
   color: #000 !important;
-  background: linear-gradient(135deg, #f5f5f7, #e8e8ed) !important;
+  background: #000000 !important;
   box-shadow: 0 12px 28px rgb(0 0 0 / 45%) !important;
 }
 

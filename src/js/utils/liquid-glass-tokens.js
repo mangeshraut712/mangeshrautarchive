@@ -24,8 +24,14 @@ export function syncLiquidGlassTokens(tintRatio, { instant = false } = {}) {
   style.setProperty('--lg-nav-dark-fill', `${8 + t * 76}%`);
   style.setProperty('--lg-card-light-fill', `${18 + t * 76}%`);
   style.setProperty('--lg-card-dark-fill', `${24 + t * 68}%`);
-  style.setProperty('--lg-card-light-alpha', `${18 + t * 76}%`);
-  style.setProperty('--lg-card-dark-alpha', `${24 + t * 68}%`);
+  style.setProperty('--lg-card-light-alpha', '100%');
+  style.setProperty('--lg-card-dark-alpha', '100%');
+  style.setProperty('--lg-panel-surface-light', '#ffffff');
+  style.setProperty('--lg-panel-surface-dark', '#000000');
+  style.setProperty('--lg-control-surface-light', '#ffffff');
+  style.setProperty('--lg-control-surface-dark', '#000000');
+  style.setProperty('--lg-nav-surface-light', '#ffffff');
+  style.setProperty('--lg-nav-surface-dark', '#000000');
   style.setProperty('--lg-specular-light', `${58 + clear * 38}%`);
   style.setProperty('--lg-specular-dark', `${6 + clear * 14}%`);
   style.setProperty('--lg-border-light', `${18 + clear * 28 + t * 12}%`);

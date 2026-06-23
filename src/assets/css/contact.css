@@ -1202,7 +1202,7 @@ html.dark .support-donation-card cite {
   aspect-ratio: 1/1 !important;
   border-radius: 0;
   overflow: hidden;
-  background: #f5f5f7;
+  background: #ffffff;
   border: none;
   box-sizing: border-box;
   box-shadow: none;
@@ -1957,7 +1957,7 @@ html.dark .currently-tabs {
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 html.dark .media-poster {
@@ -2793,7 +2793,7 @@ html.dark .media-poster::after {
   border-radius: 0;
   box-shadow: none;
   transition: transform 0.3s ease;
-  background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+  background: #ffffff;
 }
 
 .media-poster img::before {
@@ -2888,7 +2888,7 @@ html.dark .book-card .media-info p {
   border-radius: 0;
   box-shadow: none;
   transition: transform 0.3s ease;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 html.dark .recent-track-img {

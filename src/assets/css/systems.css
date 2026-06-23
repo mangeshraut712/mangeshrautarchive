@@ -32,7 +32,7 @@ html.dark {
   --systems-card-bg: #000000;
   --systems-card-border: #2c2c2e;
   --systems-card-shadow: 0 4px 12px rgb(0 0 0 / 60%);
-  --systems-diagram-bg: #1c1c1e;
+  --systems-diagram-bg: #000000;
   --systems-diagram-border: rgb(255 255 255 / 10%);
 }
 
@@ -225,16 +225,16 @@ html.dark .systems-eyebrow {
   color: var(--systems-accent);
   text-decoration: none;
   border: 1px solid rgb(0 113 227 / 22%);
-  background: rgb(255 255 255 / 60%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   transition:
     background 0.2s ease,
     transform 0.25s var(--systems-spring);
 }
 
 html.dark .systems-hero-action {
-  background: rgb(255 255 255 / 6%);
+  background: #000000;
   border-color: rgb(41 151 255 / 28%);
 }
 
@@ -251,7 +251,7 @@ html.dark .systems-hero-action {
 
 html.dark .systems-hero-action--primary {
   color: #000 !important;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 .systems-hero-action--primary:hover {
@@ -260,7 +260,7 @@ html.dark .systems-hero-action--primary {
 }
 
 html.dark .systems-hero-action--primary:hover {
-  background: #e8e8ed;
+  background: #ffffff;
   color: #000 !important;
 }
 
@@ -313,9 +313,9 @@ html.dark .systems-hero-action--primary:hover {
   min-width: 0;
   border-radius: 999px;
   border: 1px solid rgb(0 0 0 / 6%);
-  background: rgb(255 255 255 / 72%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   position: sticky;
   top: calc(72px + env(safe-area-inset-top, 0px));
   z-index: 50;
@@ -329,7 +329,7 @@ html.dark .systems-hero-action--primary:hover {
 
 html.dark .systems-section-rail {
   border-color: rgb(255 255 255 / 10%);
-  background: rgb(0 0 0 / 55%);
+  background: #000000;
 }
 
 .systems-section-rail::-webkit-scrollbar {
@@ -371,7 +371,7 @@ html.dark .systems-section-rail a:hover {
 
 html.dark .systems-section-rail a.is-active {
   color: #000 !important;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 /* Section headers */
@@ -385,13 +385,13 @@ html.dark .systems-section-rail a.is-active {
 }
 
 .systems-keynote-section:nth-of-type(even) {
-  background: rgb(255 255 255 / 62%);
+  background: #ffffff;
   border: 1px solid var(--systems-card-border);
   box-shadow: var(--systems-card-shadow);
 }
 
 html.dark .systems-keynote-section:nth-of-type(even) {
-  background: rgb(255 255 255 / 5%);
+  background: #000000;
   border-color: var(--systems-card-border);
 }
 
@@ -2534,11 +2534,11 @@ html.dark body.systems-page .systems-arch-svg .arch-stack-item {
 body.systems-page .systems-arch-stage.lg-glass-card {
   padding: 1.25rem;
   border-radius: 20px !important;
-  background: linear-gradient(165deg, #fff 0%, #f8fbff 100%) !important;
+  background: #ffffff !important;
 }
 
 html.dark body.systems-page .systems-arch-stage.lg-glass-card {
-  background: linear-gradient(165deg, #000 0%, #050a12 100%) !important;
+  background: #000000 !important;
 }
 
 /* Project evidence row — matches projects-showcase-2026 */

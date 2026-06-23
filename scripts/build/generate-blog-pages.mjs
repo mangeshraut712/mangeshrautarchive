@@ -69,6 +69,7 @@ function pageShell({
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/card-content-accessibility.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-super-retina-display.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css?v=${ASSET_VER}" />
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
     ${extraHead}

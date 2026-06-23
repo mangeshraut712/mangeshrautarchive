@@ -114,6 +114,7 @@ function pageShell({ title, description, canonical, body }) {
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/monitor.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/systems.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" />
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
   </head>
