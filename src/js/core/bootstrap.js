@@ -884,7 +884,10 @@ function initServiceWorker() {
 function applyStoredLiquidGlassTint() {
   try {
     const raw = localStorage.getItem('wwdc26-liquid-glass-tint');
-    if (raw === null) return;
+    if (raw === null) {
+      syncLiquidGlassTokens(0, { instant: true });
+      return;
+    }
     const stored = Number(raw);
     if (Number.isFinite(stored) && stored >= 0 && stored <= 100) {
       syncLiquidGlassTokens(stored / 100, { instant: true });

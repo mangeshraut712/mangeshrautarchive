@@ -610,6 +610,11 @@ html.dark #projects .github-graph-scroll {
   height: 11px;
   border-radius: 3px;
   display: inline-block;
+  border: 1px solid transparent;
+}
+
+html:not(.dark) #projects .github-graph-legend span[data-level='0'] {
+  border-color: #d0d7de;
 }
 
 html.dark #projects .github-graph-legend {

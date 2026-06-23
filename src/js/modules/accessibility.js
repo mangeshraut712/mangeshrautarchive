@@ -1037,7 +1037,7 @@ export class AccessibilityEnhancer {
     } catch (_error) {
       // Storage unavailable — fall through to default.
     }
-    return 55;
+    return 0;
   }
 
   applyGlassTint(value, { instant = false } = {}) {

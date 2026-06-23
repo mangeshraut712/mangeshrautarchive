@@ -6,13 +6,13 @@ import {
   currentWork,
   engineeringDecisions,
   engineeringTimeline,
-  evidenceFooterLinks,
   failedExperiments,
   heroLead,
   heroStats,
   hiringEvidence,
   lessonsLearned,
   publicEvidenceStatement,
+  tokenizationStack,
   writingTopics,
 } from './engineering-showcase-data.js';
 import { caseStudies, renderCaseStudyEvidenceRow } from './case-studies-data.js';
@@ -261,14 +261,16 @@ function renderWriting() {
     .join('');
 }
 
-function renderFooter() {
-  const root = document.getElementById('systems-footer-links');
+function renderTokenization() {
+  const root = document.getElementById('systems-token-grid');
   if (!root) return;
-  root.innerHTML = evidenceFooterLinks
-    .map(link => {
-      const external = Boolean(link.external);
-      return `<a href="${escapeHtml(link.href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(link.label)}</a>`;
-    })
+  root.innerHTML = tokenizationStack
+    .map(
+      tool => `<div class="systems-token-card">
+        <span class="systems-token-name">${escapeHtml(tool.name)}</span>
+        ${tool.tokens ? `<span class="systems-token-count">${escapeHtml(tool.tokens)}</span>` : ''}
+      </div>`
+    )
     .join('');
 }
 
@@ -498,7 +500,7 @@ export function initSystemsPage() {
   renderWriting();
   renderOpenSource();
   renderTimeline();
-  renderFooter();
+  renderTokenization();
   renderBenchmarks();
   renderCaseStudyFlows();
   mountArchitectureDiagrams();
@@ -523,6 +525,7 @@ export function initSystemsPage() {
       '.systems-decision-row',
       '.systems-failure-row',
       '.systems-writing-chip',
+      '.systems-token-card',
     ]);
   }
 }

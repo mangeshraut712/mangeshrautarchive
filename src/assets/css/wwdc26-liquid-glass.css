@@ -5,7 +5,7 @@
    ════════════════════════════════════════════════════════════════ */
 
 :root {
-  --lg-tint: 0.55;
+  --lg-tint: 0;
   --lg-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --lg-spring-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
   --lg-blur-nav: calc(10px + (1 - var(--lg-tint)) * 38px);

@@ -24,7 +24,7 @@ export const heroStats = [
 
 export const builderProfile = {
   title: 'Builder Profile',
-  lead: 'AI Engineer',
+  lead: 'Software Developer · Software Engineer',
   bullets: [
     'MS Computer Science — Drexel University',
     'Building production AI products, agentic workflows, developer infrastructure, and modern web systems.',
@@ -241,6 +241,22 @@ export const evidenceFooterLinks = [
   { label: 'RSS', href: 'rss.xml' },
 ];
 
+/** AI tooling tokenization — public build stack transparency */
+export const tokenizationStack = [
+  { name: 'Cursor', tokens: '1B' },
+  { name: 'Codex', tokens: '5B' },
+  { name: 'KiloChat', tokens: '5B' },
+  { name: 'Cline', tokens: '2B' },
+  { name: 'OpenRouter', tokens: '1B' },
+  { name: 'Antigravity', tokens: '5B' },
+  { name: 'Droid', tokens: '1B' },
+  { name: 'OpenClaw', tokens: null },
+  { name: 'OpenCode', tokens: null },
+  { name: 'Hermes Agent', tokens: '1B' },
+  { name: 'VS Code', tokens: '1B' },
+  { name: 'Claude', tokens: '1B' },
+];
+
 /** @deprecated use lessonsLearned */
 export const engineeringPrinciples = lessonsLearned;
 
@@ -373,19 +389,34 @@ export const usesStack = {
   reading: ['Technical blogs', 'Apple HIG', 'AI papers & field notes'],
 };
 
-/** @deprecated — use builderProfile + buildCapabilities + hiringEvidence */
+/** Homepage engineering evidence Q&A cards (outside the metrics overview) */
 export const evidenceCards = [
   {
     id: 'who',
-    question: builderProfile.title,
-    lead: builderProfile.lead,
-    bullets: builderProfile.bullets,
-    anchor: builderProfile.anchor,
+    question: 'Who are you?',
+    answer:
+      'Software developer and engineer — MS Computer Science at Drexel, building production AI products, agentic workflows, and modern web systems.',
+    href: 'systems.html#builder-profile',
   },
   {
-    id: 'what',
-    question: buildCapabilities.title,
-    bullets: buildCapabilities.items,
-    anchor: buildCapabilities.anchor,
+    id: 'built',
+    question: 'What have you built?',
+    answer:
+      'AI products, agentic systems, full-stack apps, RAG pipelines, developer tools, system monitors, production APIs, and design systems — all with public case studies.',
+    href: 'systems.html#projects',
+  },
+  {
+    id: 'exceptional',
+    question: 'Why are you exceptional?',
+    answer:
+      'Evidence over claims: measured benchmarks, documented tradeoffs, rejected architectures, and production telemetry — not template portfolios or generated descriptions.',
+    href: 'systems.html#evidence',
+  },
+  {
+    id: 'proof',
+    question: 'Where is the proof?',
+    answer:
+      'Open the engineering notebook — architecture diagrams, live monitor, open source, failures, and technical writing with links to repos and demos.',
+    href: 'systems.html',
   },
 ];
