@@ -143,6 +143,8 @@ app.use((req, res, next) => {
 });
 
 const staticPath = join(projectRoot, 'src');
+const distPath = join(projectRoot, 'dist');
+app.use('/case-studies', express.static(join(distPath, 'case-studies'), { extensions: ['html'] }));
 app.use(express.static(staticPath, { extensions: ['html'] }));
 
 const chatbotPath = join(projectRoot, 'chatbot');

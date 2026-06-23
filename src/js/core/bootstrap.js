@@ -64,6 +64,7 @@ const SECTION_STYLE_GROUPS = [
   { sectionId: 'about', styleKeys: ['about'], rootMargin: '120px 0px' },
   { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '120px 0px' },
   { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '120px 0px' },
+  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '120px 0px' },
   { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '120px 0px' },
   { sectionId: 'education', styleKeys: ['education'], rootMargin: '120px 0px' },
   { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '120px 0px' },
@@ -808,6 +809,37 @@ function initProjectShowcaseOnDemand() {
   observeSectionTask('projects', start, '120px 0px');
 }
 
+function initEngineeringTeaserOnDemand() {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  const section = document.getElementById('engineering');
+  if (!section) {
+    return;
+  }
+
+  let pending = null;
+
+  const start = () => {
+    if (pending) return pending;
+
+    pending = Promise.all([
+      loadDeferredStyles(['engineering']),
+      import('../modules/engineering-showcase.js'),
+    ])
+      .then(([, module]) => module.initEngineeringTeaser())
+      .catch(error => {
+        console.error('Engineering teaser init failed:', error);
+        pending = null;
+      });
+
+    return pending;
+  };
+
+  observeSectionTask('engineering', start, '120px 0px');
+}
+
 function initServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     return;
@@ -921,6 +953,7 @@ async function loadDeferredBootstrapModules() {
   initPortfolioFeatureUpgrades();
   initContactChatbotCTA(chatbotLoader);
   initProjectShowcaseOnDemand();
+  initEngineeringTeaserOnDemand();
 
   initializeVercelAnalytics().catch(error => {
     console.warn('Vercel analytics init skipped:', error);

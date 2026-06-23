@@ -2381,7 +2381,12 @@ html.dark #projects .proj-sort-native {
    ──────────────────────────────────────────────────────────────── */
 
 .lg-glass-card,
-:is(.travel-sidebar, .monitor-summary-card, .monitor-summary-panel, .error-container.lg-glass-card) {
+:is(
+  .travel-sidebar,
+  .monitor-summary-card,
+  .monitor-summary-panel,
+  .error-container.lg-glass-card
+) {
   background:
     linear-gradient(
       165deg,
@@ -2404,7 +2409,12 @@ html.dark #projects .proj-sort-native {
 
 html.dark .lg-glass-card,
 html.dark
-  :is(.travel-sidebar, .monitor-summary-card, .monitor-summary-panel, .error-container.lg-glass-card) {
+  :is(
+    .travel-sidebar,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .error-container.lg-glass-card
+  ) {
   background:
     linear-gradient(
       165deg,

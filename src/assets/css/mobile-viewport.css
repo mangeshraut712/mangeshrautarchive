@@ -64,8 +64,8 @@ body {
   }
 
   /* Right FAB stack — go-to-top lowest, chatbot above with explicit gap */
-  #go-to-top,
-  #go-to-top.visible {
+  body #go-to-top,
+  body #go-to-top.visible {
     right: var(--mobile-edge-inset) !important;
     bottom: var(--mobile-bottom-inset) !important;
     width: var(--mobile-fab-size) !important;
@@ -75,7 +75,7 @@ body {
     z-index: 9999 !important;
   }
 
-  #chatbot-toggle {
+  body #chatbot-toggle {
     right: var(--mobile-edge-inset) !important;
     bottom: calc(
       var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
@@ -147,19 +147,15 @@ body {
   }
 
   #home .hero-description {
-    max-width: min(32rem, calc(100vw - 2.75rem)) !important;
-    font-size: clamp(0.92rem, 3.65vw, 0.98rem) !important;
-    line-height: 1.48 !important;
-    margin-bottom: 0.9rem !important;
+    max-width: min(100%, calc(100vw - 2.75rem)) !important;
+    font-size: clamp(0.86rem, 2.8vw, 0.94rem) !important;
+    line-height: 1.42 !important;
+    margin-bottom: 0.75rem !important;
     text-wrap: balance;
   }
 
-  #home .hero-description span {
-    display: inline !important;
-  }
-
-  #home .hero-description span + span::before {
-    content: ' ';
+  #home .hero-description-line {
+    display: block !important;
   }
 
   body.has-a11y-toolbar #home .hero-actions {
@@ -267,15 +263,15 @@ body {
 
   body #home.hero-section .hero-description {
     max-width: min(86ch, calc(100vw - 6rem)) !important;
-    font-size: 0.96rem !important;
+    font-size: 0.9rem !important;
     line-height: 1.46 !important;
   }
 
-  body #home.hero-section .hero-description span {
-    display: inline !important;
+  body #home.hero-section .hero-description-line {
+    display: block !important;
   }
 
-  body #home.hero-section .hero-description span + span::before {
-    content: ' ';
+  body #home.hero-section .hero-description-line + .hero-description-line {
+    margin-top: 0.32rem;
   }
 }

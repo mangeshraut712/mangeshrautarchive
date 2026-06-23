@@ -267,7 +267,7 @@ All tools are functional via natural language in AssistMe **and** exposed via We
 | ------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | **Frontend**        | Vanilla ES2024, Tailwind CSS v4.0.9, WWDC26 Liquid Glass Design System                                               |
 | **Agentic Runtime** | AssistMe + WebMCP + Custom Action Handler with priority execution                                                    |
-| **AI**              | OpenRouter Fusion / Auto / Grok-first routing (`model_router.py`) + NDJSON streaming + site-knowledge fallback |
+| **AI**              | OpenRouter Fusion / Auto / Grok-first routing (`model_router.py`) + NDJSON streaming + site-knowledge fallback       |
 | **Backend**         | FastAPI v0.136.1 + Pydantic v2 (v2.13.4) (Vercel Serverless)                                                         |
 | **Data**            | Cloud Firestore, Supabase (health vitals), GitHub REST, Last.fm, Upstash Redis (optional)                            |
 | **Build**           | esbuild v0.28.0 + Sharp v0.34.5 + custom Node pipeline                                                               |

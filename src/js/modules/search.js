@@ -1,4 +1,5 @@
 import { blogPosts } from './blog-data.js';
+import { caseStudies } from './case-studies-data.js';
 
 /**
  * Search Functionality Module - Apple Inspired
@@ -74,6 +75,7 @@ class PortfolioSearch {
   indexContent() {
     this.indexStaticCommands();
     this.indexBlogPosts();
+    this.indexCaseStudies();
 
     // Index all searchable content from the page
     const sections = [
@@ -297,6 +299,22 @@ class PortfolioSearch {
         tags: 'game interactive debug runner',
       },
       {
+        title: 'Engineering Evidence',
+        description: 'Architecture, benchmarks, case studies, and portfolio proof',
+        icon: 'fa-diagram-project',
+        sectionId: 'engineering',
+        type: 'Portfolio',
+        tags: 'engineering architecture benchmarks evidence building learned',
+      },
+      {
+        title: 'Engineering Evidence',
+        description: 'Full architecture diagrams, system design, and case studies',
+        icon: 'fa-book-open',
+        url: 'systems.html',
+        type: 'Page',
+        tags: 'systems architecture design benchmarks notebook',
+      },
+      {
         title: 'System Monitor',
         description: 'Open the system monitor page',
         icon: 'fa-heart-pulse',
@@ -342,6 +360,19 @@ class PortfolioSearch {
         type: 'Blog',
         icon: 'fa-rss',
         sectionId: 'blog',
+      });
+    });
+  }
+
+  indexCaseStudies() {
+    caseStudies.forEach(cs => {
+      this.addSearchableEntry({
+        title: `Case study: ${cs.title}`,
+        description: cs.tagline,
+        tags: `${cs.slug} case study architecture demo ${(cs.stack || []).join(' ')}`,
+        type: 'Case Study',
+        icon: 'fa-book-open',
+        url: `case-studies/${cs.slug}.html`,
       });
     });
   }

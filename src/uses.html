@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Uses | Mangesh Raut</title>
+    <meta
+      name="description"
+      content="Hardware, software, AI stack, and tools Mangesh Raut uses to build AI-native products."
+    />
+    <link rel="canonical" href="https://mangeshraut.pro/uses" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
+    <script src="js/utils/theme-head.js"></script>
+    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260613b" />
+    <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260613c" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a" />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260625a" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="systems-page monitor-page">
+    <nav class="monitor-page-nav" aria-label="Uses navigation">
+      <div class="monitor-page-nav__left">
+        <a class="monitor-page-nav__home" href="index.html#home" aria-label="Home">
+          <img src="assets/images/profile-icon.png" alt="" width="28" height="28" />
+        </a>
+        <a class="monitor-page-nav__back" href="systems.html"
+          ><i class="fas fa-chevron-left" aria-hidden="true"></i><span>Evidence</span></a
+        >
+      </div>
+      <div class="monitor-page-nav__brand">
+        <span class="monitor-page-nav__kicker">Setup</span>
+        <span class="monitor-page-nav__label">Uses</span>
+      </div>
+      <div class="monitor-page-nav__actions">
+        <button
+          id="theme-toggle"
+          class="monitor-page-nav__theme"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          <span id="theme-toggle-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="systems-shell uses-page" id="main-content">
+      <header class="systems-keynote-hero">
+        <p class="systems-eyebrow">Colophon</p>
+        <h1>What I use to build.</h1>
+        <p class="systems-hero-lead">
+          Hardware, software, and AI stack — the tools behind this portfolio and production systems.
+        </p>
+      </header>
+      <div class="uses-grid" id="uses-grid"></div>
+      <footer class="systems-footer systems-footer--expanded">
+        <a href="systems.html">Engineering Evidence</a>
+        <a href="index.html#home">Home</a>
+        <a href="monitor.html">System Monitor</a>
+      </footer>
+    </main>
+
+    <script type="module" src="js/modules/uses-page.js"></script>
+    <script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        html.dataset.theme = isDark ? 'dark' : 'light';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script>
+  </body>
+</html>

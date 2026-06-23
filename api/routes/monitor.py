@@ -533,6 +533,67 @@ async def get_real_time_metrics():
     return metrics
 
 
+@router.get("/monitor/engineering", tags=["system-monitor"], summary="Engineering notebook telemetry")
+@router.get("/api/monitor/engineering", tags=["system-monitor"], summary="Engineering notebook telemetry")
+async def get_engineering_snapshot():
+    """Bundled live telemetry for the Engineering Notebook page."""
+    generated_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+    if system_monitor is None:
+        return {
+            "generated_at": generated_at,
+            "status": "degraded",
+            "uptime_human": "unknown",
+            "uptime_seconds": 0,
+            "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0, "total": 0},
+            "total_requests": 0,
+            "error_rate": 0,
+            "avg_latency_ms": None,
+            "requests_per_second": 0,
+            "response_time_trend": [],
+            "cpu_trend": [],
+            "note": "System monitor not initialized",
+        }
+
+    metrics = system_monitor.get_metrics()
+    realtime = dict(system_monitor.real_time_metrics)
+    health = await system_monitor.check_health()
+    endpoints = metrics.get("endpoints") or []
+    latencies = [
+        float(ep.get("avg_response_time_ms") or ep.get("avg_response_ms") or 0)
+        for ep in endpoints
+        if float(ep.get("avg_response_time_ms") or ep.get("avg_response_ms") or 0) > 0
+    ]
+    avg_latency = round(sum(latencies) / len(latencies)) if latencies else None
+
+    summary = metrics.get("summary") or {}
+    checks = health.get("checks") or []
+    healthy = sum(1 for c in checks if c.get("status") == "healthy")
+    degraded = sum(1 for c in checks if c.get("status") == "degraded")
+    unhealthy = sum(1 for c in checks if c.get("status") == "unhealthy")
+    service_summary = {
+        "healthy": healthy,
+        "degraded": degraded,
+        "unhealthy": unhealthy,
+        "total": len(checks) or summary.get("monitored_endpoints", 0),
+    }
+
+    return {
+        "generated_at": generated_at,
+        "status": health.get("status", "ok"),
+        "uptime_human": metrics.get("uptime_human"),
+        "uptime_seconds": metrics.get("uptime_seconds"),
+        "summary": service_summary,
+        "total_requests": metrics.get("total_requests", 0),
+        "error_rate": metrics.get("error_rate", 0),
+        "avg_latency_ms": avg_latency,
+        "requests_per_second": realtime.get("requests_per_second", 0),
+        "response_time_trend": list(realtime.get("response_time_trend") or []),
+        "cpu_trend": list(realtime.get("cpu_trend") or []),
+        "endpoints": endpoints,
+    }
+
+
 @router.get("/api/monitor/deployments")
 async def get_deployment_history():
     """Get deployment history and change tracking"""

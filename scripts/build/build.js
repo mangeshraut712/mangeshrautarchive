@@ -5,6 +5,8 @@ import { execSync } from 'child_process';
 import { transform } from 'esbuild';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
 import { generateBlogPages } from './generate-blog-pages.mjs';
+import { generateCaseStudyPages } from './generate-case-study-pages.mjs';
+import { caseStudies } from '../../src/js/modules/case-studies-data.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -245,13 +247,14 @@ async function inlineThemeHead(distDir) {
   const indexPath = resolve(distDir, 'index.html');
   const travelPath = resolve(distDir, 'travel.html');
   const monitorPath = resolve(distDir, 'monitor.html');
+  const systemsPath = resolve(distDir, 'systems.html');
   const errorPath = resolve(distDir, '404.html');
   const themeHeadPath = resolve(distDir, 'js/utils/theme-head.js');
 
   if (await pathExists(themeHeadPath)) {
     const themeHeadContent = await readFile(themeHeadPath, 'utf8');
 
-    for (const pagePath of [indexPath, travelPath, monitorPath, errorPath]) {
+    for (const pagePath of [indexPath, travelPath, monitorPath, systemsPath, errorPath]) {
       if (await pathExists(pagePath)) {
         let html = await readFile(pagePath, 'utf8');
         html = html.replace(
@@ -313,6 +316,7 @@ async function build() {
     addCacheBusting(distDir, version),
     minifyHtmlFiles(distDir),
     generateBlogPages(distDir),
+    generateCaseStudyPages(distDir),
     generateSitemap(distDir),
     generateFeeds(distDir),
   ]);
@@ -414,6 +418,15 @@ async function generateSitemap(distDir) {
     { loc: `${siteUrl}/`, lastmod: today, changefreq: 'weekly', priority: '1.0' },
     { loc: `${siteUrl}/travel`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
     { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'monthly', priority: '0.6' },
+    { loc: `${siteUrl}/systems`, lastmod: today, changefreq: 'weekly', priority: '0.75' },
+    { loc: `${siteUrl}/uses`, lastmod: today, changefreq: 'monthly', priority: '0.5' },
+    { loc: `${siteUrl}/#engineering`, lastmod: today, changefreq: 'weekly', priority: '0.8' },
+    ...caseStudies.map(cs => ({
+      loc: `${siteUrl}/case-studies/${cs.slug}`,
+      lastmod: today,
+      changefreq: 'monthly',
+      priority: '0.7',
+    })),
     { loc: `${siteUrl}/blog/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
     { loc: `${siteUrl}/#blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
     ...posts.map(post => ({
@@ -489,6 +502,7 @@ async function addCacheBusting(distDir, version) {
   const htmlPath = resolve(distDir, 'index.html');
   const monitorPath = resolve(distDir, 'monitor.html');
   const travelPath = resolve(distDir, 'travel.html');
+  const systemsPath = resolve(distDir, 'systems.html');
 
   const appendVersion = rawPath => {
     if (!rawPath) return rawPath;
@@ -516,26 +530,28 @@ async function addCacheBusting(distDir, version) {
   };
 
   await Promise.all(
-    [htmlPath, monitorPath, travelPath].map(async htmlFile => {
-      if (await pathExists(htmlFile)) {
-        let content = await readFile(htmlFile, 'utf8');
+    [htmlPath, monitorPath, travelPath, systemsPath, resolve(distDir, 'uses.html')].map(
+      async htmlFile => {
+        if (await pathExists(htmlFile)) {
+          let content = await readFile(htmlFile, 'utf8');
 
-        // Add cache busting to CSS, JS, and data-href lazy styles
-        content = content.replace(
-          /(href|src|data-href)="([^"]+)"/g,
-          (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
-        );
+          // Add cache busting to CSS, JS, and data-href lazy styles
+          content = content.replace(
+            /(href|src|data-href)="([^"]+)"/g,
+            (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
+          );
 
-        // Keep static asset paths repo-relative for GitHub Pages deployments.
-        content = content.replace(
-          /(href|src|data-href)="\/(assets|js)\//g,
-          (match, attr, folder) => `${attr}="${folder}/`
-        );
+          // Keep static asset paths repo-relative for GitHub Pages deployments.
+          content = content.replace(
+            /(href|src|data-href)="\/(assets|js)\//g,
+            (match, attr, folder) => `${attr}="${folder}/`
+          );
 
-        await writeFile(htmlFile, content);
-        console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
+          await writeFile(htmlFile, content);
+          console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
+        }
       }
-    })
+    )
   );
 }
 

@@ -26,6 +26,56 @@
   --project-accent-soft-border: rgb(0 113 227 / 15%);
 }
 
+.project-evidence-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  margin: 0.65rem 0 0;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--project-border-light);
+}
+
+html.dark .project-evidence-row {
+  border-top-color: var(--project-border-dark);
+}
+
+.project-evidence-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--project-accent);
+  background: var(--project-accent-soft);
+  border: 1px solid var(--project-accent-soft-border);
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.2s ease;
+}
+
+.project-evidence-link:hover,
+.project-evidence-link:focus-visible {
+  background: rgb(0 113 227 / 18%);
+}
+
+.project-evidence-link.is-unavailable {
+  color: var(--project-muted-light);
+  background: rgb(0 0 0 / 4%);
+  border-color: var(--project-border-light);
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+html.dark .project-evidence-link.is-unavailable {
+  color: var(--project-muted-dark);
+  background: rgb(255 255 255 / 4%);
+  border-color: var(--project-border-dark);
+}
+
 /* Projects grid baseline - Compact 3-column layout */
 #projects .projects-grid-shell,
 #projects #github-projects-container {

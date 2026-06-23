@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Engineering Evidence | Mangesh Raut</title>
+    <meta
+      name="description"
+      content="Verifiable engineering evidence — production metrics, architecture, case studies, open source, and a living record of what I build and measure."
+    />
+    <link rel="canonical" href="https://mangeshraut.pro/systems" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
+    <script src="build-config.js"></script>
+    <script>
+      (function () {
+        const isGitHubPages = window.location.hostname.endsWith('github.io');
+        const apiBaseUrl = isGitHubPages ? 'https://mangeshraut.pro' : window.location.origin;
+        window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, { apiBaseUrl });
+      })();
+    </script>
+    <script src="js/utils/theme-head.js"></script>
+    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260613b" />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260613b" />
+    <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260613c" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" />
+    <link
+      rel="stylesheet"
+      href="assets/css/wwdc26-liquid-glass.css?v=20260623a"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a"
+    /></noscript>
+    <link rel="stylesheet" href="assets/css/engineering-showcase.css?v=20260626b" />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260626b" />
+    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" />
+    <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="systems-page monitor-page systems-evidence-page">
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+    </div>
+
+    <nav id="global-nav" class="monitor-page-nav" aria-label="Engineering evidence navigation">
+      <div class="monitor-page-nav__left">
+        <a class="monitor-page-nav__home" href="index.html#home" aria-label="Mangesh Raut home">
+          <img src="assets/images/profile-icon.png" alt="" width="28" height="28" />
+        </a>
+        <a
+          class="monitor-page-nav__back"
+          href="index.html#engineering"
+          aria-label="Back to portfolio"
+        >
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+          <span>Portfolio</span>
+        </a>
+      </div>
+      <div class="monitor-page-nav__brand" aria-label="Current page">
+        <span class="monitor-page-nav__kicker">Evidence</span>
+        <span class="monitor-page-nav__label">Engineering</span>
+      </div>
+      <div class="monitor-page-nav__actions">
+        <button
+          id="theme-toggle"
+          class="monitor-page-nav__theme"
+          aria-label="Toggle theme"
+          type="button"
+        >
+          <span id="theme-toggle-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="systems-shell" id="main-content">
+      <header class="systems-keynote-hero" id="overview">
+        <p class="systems-eyebrow">Engineering Evidence</p>
+        <h1>Building AI-native products with production-grade engineering.</h1>
+        <p class="systems-hero-lead systems-hero-lead--stack">
+          <span>Thoughtful design and measurable outcomes.</span>
+          <span
+            >Every metric, architecture diagram, benchmark, and case study on this page is
+            verifiable.</span
+          >
+        </p>
+        <div
+          class="systems-hero-stats"
+          id="systems-hero-stats"
+          aria-label="Key engineering metrics"
+        ></div>
+        <div class="systems-hero-actions">
+          <a class="systems-hero-action" href="#production-metrics">Live metrics</a>
+          <a class="systems-hero-action" href="#architecture">Architecture</a>
+          <a class="systems-hero-action" href="#case-studies">Case studies</a>
+          <a class="systems-hero-action systems-hero-action--primary" href="monitor.html"
+            >System monitor</a
+          >
+        </div>
+      </header>
+
+      <nav class="systems-section-rail" id="systems-section-rail" aria-label="Page sections">
+        <a href="#overview" data-section-link class="is-active" aria-current="true">Overview</a>
+        <a href="#production-metrics" data-section-link>Metrics</a>
+        <a href="#architecture" data-section-link>Architecture</a>
+        <a href="#systems" data-section-link>Systems</a>
+        <a href="#case-studies" data-section-link>Case studies</a>
+        <a href="#open-source" data-section-link>Open source</a>
+        <a href="#writing" data-section-link>Writing</a>
+        <a href="#timeline" data-section-link>Timeline</a>
+      </nav>
+
+      <section
+        class="systems-keynote-section systems-keynote-section--evidence"
+        id="evidence"
+        aria-labelledby="evidence-heading"
+      >
+        <div class="systems-section-head systems-section-head--center">
+          <h2 id="evidence-heading">Overview</h2>
+          <p class="systems-section-desc">
+            Who I am, what I've shipped, and the proof — answerable in 30 seconds.
+          </p>
+        </div>
+        <div class="systems-evidence-grid" id="systems-evidence-grid"></div>
+      </section>
+
+      <section
+        class="systems-keynote-section"
+        id="production-metrics"
+        aria-labelledby="metrics-heading"
+      >
+        <div class="systems-section-head">
+          <h2 id="metrics-heading">Live metrics</h2>
+          <p class="systems-section-desc">
+            Live telemetry from <code>/api/monitor/engineering</code> plus measured AI, frontend,
+            backend, and agent performance.
+            <span id="telemetry-refreshed" class="systems-sync-note"></span>
+          </p>
+        </div>
+        <div
+          class="systems-bento systems-bento--telemetry"
+          id="systems-telemetry-bento"
+          aria-live="polite"
+          data-state="loading"
+        >
+          <p class="systems-bento-loading">Syncing telemetry…</p>
+        </div>
+        <div class="systems-metrics-grid" id="systems-metrics-grid"></div>
+        <div class="systems-section-subhead">
+          <h3>CI &amp; historical benchmarks</h3>
+        </div>
+        <div class="systems-benchmarks-viz" id="systems-benchmarks-viz"></div>
+      </section>
+
+      <section
+        class="systems-keynote-section"
+        id="architecture"
+        aria-labelledby="architecture-heading"
+      >
+        <div class="systems-section-head">
+          <h2 id="architecture-heading">Architecture</h2>
+          <p class="systems-section-desc">
+            How systems are built, deployed, and reasoned about — diagrams you can inspect.
+          </p>
+        </div>
+        <div class="systems-arch-stage lg-glass-card" id="systems-arch-stage">
+          <div class="systems-arch-tabs" role="tablist" aria-label="Architecture diagrams">
+            <button
+              type="button"
+              class="systems-arch-tab is-active"
+              data-arch-tab="dual-host"
+              role="tab"
+              aria-selected="true"
+            >
+              Dual host
+            </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              data-arch-tab="assistme"
+              role="tab"
+              aria-selected="false"
+            >
+              AssistMe flow
+            </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              data-arch-tab="build"
+              role="tab"
+              aria-selected="false"
+            >
+              CI pipeline
+            </button>
+          </div>
+          <div class="systems-arch-panels">
+            <article
+              class="systems-arch-panel is-active"
+              data-arch-panel="dual-host"
+              id="architecture-dual-host"
+              role="tabpanel"
+            >
+              <h3>Dual-host portfolio</h3>
+              <div class="systems-arch-diagram-host" data-arch-diagram="dual-host"></div>
+            </article>
+            <article
+              class="systems-arch-panel"
+              data-arch-panel="assistme"
+              id="architecture-assistme"
+              role="tabpanel"
+              hidden
+            >
+              <h3>AssistMe request flow</h3>
+              <div class="systems-arch-diagram-host" data-arch-diagram="assistme"></div>
+            </article>
+            <article
+              class="systems-arch-panel"
+              data-arch-panel="build"
+              id="architecture-build"
+              role="tabpanel"
+              hidden
+            >
+              <h3>CI build pipeline</h3>
+              <div class="systems-arch-diagram-host" data-arch-diagram="build"></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="systems-keynote-section" id="systems" aria-labelledby="systems-heading">
+        <div class="systems-section-head">
+          <h2 id="systems-heading">Systems</h2>
+          <p class="systems-section-desc">
+            What I'm shipping now, system design framing, and production surfaces.
+          </p>
+        </div>
+        <div class="systems-section-subhead">
+          <h3>Now building</h3>
+        </div>
+        <div class="systems-now-grid" id="systems-now-grid"></div>
+        <div class="systems-section-subhead">
+          <h3>Production surfaces</h3>
+        </div>
+        <div class="systems-building-grid" id="systems-building-grid"></div>
+        <div class="systems-section-subhead">
+          <h3>System design</h3>
+        </div>
+        <div class="systems-design-grid" id="systems-design-grid"></div>
+        <div class="systems-section-subhead">
+          <h3>Engineering principles</h3>
+        </div>
+        <div class="systems-principles-grid" id="systems-principles-grid"></div>
+      </section>
+
+      <section
+        class="systems-keynote-section"
+        id="case-studies"
+        aria-labelledby="case-studies-heading"
+      >
+        <div class="systems-section-head">
+          <h2 id="case-studies-heading">Case studies</h2>
+          <p class="systems-section-desc">
+            Problem → constraints → architecture → tradeoffs → benchmarks → failures → lessons →
+            result.
+          </p>
+        </div>
+        <div class="systems-case-flows" id="systems-case-flows"></div>
+      </section>
+
+      <section class="systems-keynote-section" id="open-source" aria-labelledby="oss-heading">
+        <div class="systems-section-head">
+          <h2 id="oss-heading">Open source</h2>
+          <p class="systems-section-desc">
+            Public GitHub activity — commits, repos, and contributions.
+          </p>
+        </div>
+        <div id="systems-oss-panel"></div>
+      </section>
+
+      <section class="systems-keynote-section" id="writing" aria-labelledby="writing-heading">
+        <div class="systems-section-head">
+          <h2 id="writing-heading">What changed my thinking</h2>
+          <p class="systems-section-desc">
+            Distilled lessons from shipping — not conference recap cards.
+          </p>
+        </div>
+        <div class="systems-learned-grid" id="systems-learned-grid"></div>
+      </section>
+
+      <section class="systems-keynote-section" id="timeline" aria-labelledby="timeline-heading">
+        <div class="systems-section-head">
+          <h2 id="timeline-heading">Timeline</h2>
+          <p class="systems-section-desc">
+            A public record of what I've built, measured, and shipped.
+          </p>
+        </div>
+        <div class="systems-timeline" id="systems-timeline"></div>
+      </section>
+
+      <footer class="systems-footer systems-footer--expanded">
+        <a href="#systems">Now building</a>
+        <a href="#open-source">Open source</a>
+        <a href="monitor.html">System Monitor</a>
+        <a href="systems.html">Engineering Evidence</a>
+        <a href="assets/files/Mangesh_Raut_Resume.pdf">Resume</a>
+        <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
+          >GitHub</a
+        >
+        <a
+          href="https://www.linkedin.com/in/mangeshraut712/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >LinkedIn</a
+        >
+        <a href="rss.xml">RSS</a>
+        <a href="uses.html">Uses</a>
+        <a href="index.html#contact">Contact</a>
+      </footer>
+    </main>
+
+    <script type="module" src="js/modules/accessibility.js"></script>
+    <script type="module" src="js/modules/systems-page.js"></script>
+    <script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        html.dataset.theme = isDark ? 'dark' : 'light';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        const icon = document.getElementById('theme-toggle-icon');
+        if (icon)
+          icon.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      });
+      (function syncThemeIcon() {
+        const isDark = document.documentElement.classList.contains('dark');
+        const icon = document.getElementById('theme-toggle-icon');
+        if (icon)
+          icon.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      })();
+    </script>
+  </body>
+</html>

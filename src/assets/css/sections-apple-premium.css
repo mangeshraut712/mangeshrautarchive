@@ -501,10 +501,10 @@ html.dark #home .music-card:hover .music-card-inner {
 
 /* Hero Description */
 #home .hero-description {
-  font-size: 1.125rem;
-  line-height: 1.7;
+  font-size: clamp(0.9rem, 0.95vw, 0.98rem) !important;
+  line-height: 1.45 !important;
   color: var(--apple-gray-400);
-  max-width: 50ch;
+  max-width: min(100%, 76ch) !important;
   margin: 0 auto 1rem;
 }
 

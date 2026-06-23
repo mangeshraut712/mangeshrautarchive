@@ -8,6 +8,8 @@
  * 3) direct GitHub API fallback
  */
 
+import { getProjectEvidenceLinks } from './case-studies-data.js';
+
 // Hoisted Intl formatters for performance
 const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
@@ -1170,6 +1172,31 @@ class GitHubProjects {
     return repos;
   }
 
+  buildProjectEvidenceRow(repo) {
+    const links = getProjectEvidenceLinks(repo);
+    const items = [
+      { label: 'Repo', href: links.repo },
+      { label: 'Demo', href: links.demo },
+      { label: 'Architecture', href: links.architecture },
+      { label: 'Story', href: links.story },
+    ];
+
+    const renderLink = (label, href) => {
+      if (!href) {
+        return `<span class="project-evidence-link is-unavailable" aria-disabled="true">${label}</span>`;
+      }
+      const safeHref = this.escapeHtml(href);
+      const external = /^https?:\/\//i.test(href);
+      return `<a class="project-evidence-link" href="${safeHref}"${
+        external ? ' target="_blank" rel="noopener noreferrer"' : ''
+      }>${label}</a>`;
+    };
+
+    return `<div class="project-evidence-row" role="navigation" aria-label="Project evidence for ${this.escapeHtml(repo.name)}">
+      ${items.map(item => renderLink(item.label, item.href)).join('')}
+    </div>`;
+  }
+
   createProjectCard(repo, _index) {
     const showcase = repo.__showcase || this.getShowcaseScore(repo);
     const language = repo.language || 'Unknown';
@@ -1320,6 +1347,8 @@ class GitHubProjects {
             }
           </div>
         </div>
+
+        ${this.buildProjectEvidenceRow(repo)}
 
         <div class="project-footer">
           <button

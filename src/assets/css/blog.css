@@ -1002,7 +1002,8 @@ html.dark body.blog-standalone-page {
   font-weight: 600;
   color: var(--text-primary, #1d1d1f);
   background: var(--lg-control-surface-light, rgb(255 255 255 / 70%));
-  border: 1px solid color-mix(in srgb, var(--lg-edge-light, rgb(255 255 255 / 44%)) 60%, rgb(0 0 0 / 8%) 40%);
+  border: 1px solid
+    color-mix(in srgb, var(--lg-edge-light, rgb(255 255 255 / 44%)) 60%, rgb(0 0 0 / 8%) 40%);
   backdrop-filter: saturate(140%) blur(12px);
   -webkit-backdrop-filter: saturate(140%) blur(12px);
   box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
