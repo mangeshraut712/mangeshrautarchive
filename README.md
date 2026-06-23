@@ -288,6 +288,7 @@ High-level view of pages, build output, dual hosting, and how AssistMe reaches O
 flowchart TB
     subgraph Pages["Static pages (src/ → dist/)"]
         HOME["index.html<br/>Portfolio SPA"]
+        SYS["systems.html<br/>Engineering Evidence"]
         TRAVEL["travel.html<br/>MapLibre Atlas"]
         MON["monitor.html<br/>Ops dashboard"]
         BLOG["blog/*.html<br/>12 articles + index"]
@@ -297,6 +298,7 @@ flowchart TB
     subgraph Design["WWDC26 Liquid Glass"]
         LG["wwdc26-liquid-glass.css<br/>+ liquid-glass-tokens.js"]
         LG --> HOME
+        LG --> SYS
         LG --> TRAVEL
         LG --> MON
         LG --> BLOG
@@ -316,11 +318,12 @@ flowchart TB
     end
 
     HOME --> BOOT
+    SYS --> BOOT
     TRAVEL --> BOOT
     MON --> BOOT
     BLOG --> BOOT
 
-    subgraph LocalFirst["Local-first paths (&lt;50ms)"]
+    subgraph LocalFirst["Local-first paths (under 50ms)"]
         TOOLS["WebMCP / regex agentic actions"]
         SITE["site_knowledge.py patterns<br/>travel, blog, portfolio facts"]
         OFFLINE["generate_local_response()"]
@@ -382,7 +385,7 @@ flowchart TB
 ```mermaid
 sequenceDiagram
     participant U as User
-    participant UI as chat.js / chatbot.js
+    participant UI as Chat UI
     participant AG as Agentic engine
     participant API as FastAPI /api/chat
     participant MR as model_router.py
@@ -392,7 +395,7 @@ sequenceDiagram
     U->>UI: Message (optional stream)
     UI->>AG: detectAndExecute()
     alt Confident local action
-        AG-->>UI: Action result (&lt;50ms)
+        AG-->>UI: Action result (under 50ms)
     else Needs LLM
         UI->>API: POST /api/chat (NDJSON if stream)
         API->>SK: Direct facts? (travel, etc.)
@@ -400,7 +403,7 @@ sequenceDiagram
             SK-->>UI: Deterministic answer
         else OpenRouter configured
             API->>MR: resolve_chat_model()
-            Note over MR: portfolio→Grok<br/>fusion→compare<br/>fast→Gemini<br/>general→Auto
+            Note over MR: portfolio Grok, fusion compare, fast Gemini, general Auto
             MR->>OR: Chat completions + fallback chain
             OR-->>UI: Tokens (stream or JSON)
         else Offline
@@ -412,7 +415,7 @@ sequenceDiagram
 **Guiding principles**
 
 - **Local-first** — agentic tools and site knowledge before any LLM call
-- **Liquid glass everywhere** — shared `wwdc26` tokens on home (bundled), travel, monitor, blog, and 404; tint slider in the a11y toolbar
+- **Liquid glass everywhere** — shared `wwdc26` tokens on home (bundled), travel, monitor, systems, blog, and 404; default **clear** tint with slider in the a11y toolbar
 - **Dual surface** — Vercel serves API + static; GitHub Pages serves static with `apiBaseUrl` pointing at production
 - **Resilient routing** — Grok-first with Gemini / Auto fallbacks when a model is unavailable
 - **Quality gate** — every `main` push runs the full CI matrix before deploy
@@ -457,7 +460,7 @@ sequenceDiagram
 
 ## ⚡ Quick Start
 
-**Requirements:** Node.js 22.x, Python 3.11+ (for the API), optional `uv` for faster pytest runs.
+**Requirements:** Node.js 22.x, Python 3.12+ (for the API), optional `uv` for faster pytest runs.
 
 ```bash
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
@@ -501,6 +504,8 @@ mangeshrautarchive/
 │   └── config.py           # Runtime OpenRouter env + model constants
 ├── src/
 │   ├── index.html          # Main portfolio experience
+│   ├── systems.html        # Engineering Evidence notebook
+│   ├── uses.html           # Now / tooling stack page
 │   ├── monitor.html        # Public operations dashboard
 │   ├── travel.html         # MapLibre travel atlas
 │   ├── 404.html            # Liquid glass error page
@@ -559,8 +564,9 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026 (latest)
 
+- **Engineering Evidence polish** — homepage hero restored to Software Developer / Engineer; four evidence Q&A cards outside the metrics overview; `/systems` tokenization card (AI tooling transparency); footer link strip removed; sitewide hover uses blue borders instead of blue glows; go-to-top and GitHub graph legend fixed in light mode; Liquid Glass defaults to clear.
+- **CI recovery** — removed duplicate `systems.css` selectors that blocked Stylelint; GitHub Pages deploy sync restored for nightly monitoring.
 - **Engineering Evidence (`/systems`)** — aligned with travel/monitor nav pattern; architecture tab pills no longer inherit global blue button styles; dual-host diagram edges fixed; hero/benchmark tiles use CI-verified Lighthouse budgets (95+ gate), WebMCP tool count, and live API status instead of fabricated scores.
-- **CI recovery** — fixed flake8 EOF on `google_analytics.py`; added `npm run lint:python` to mirror deploy workflow; serve-dist now mocks NDJSON `/api/chat` streaming for local dist previews.
 - **Sitewide Liquid Glass** — `wwdc26` section 23/24: project cards, travel/monitor nav, blog articles, monitor `doc-card` tiles, 404 `lg-glass-card`, Apple spring hover/press on showcase cards.
 - **AssistMe routing** — `model_router.py` with OpenRouter Fusion (compare), Auto (general), Grok-first portfolio tier, Gemini fast-path, and runtime fallback chain; NDJSON streaming on Vercel.
 - **Cross-surface parity** — GitHub Pages `build-config.json` → `apiBaseUrl: mangeshraut.pro`; blog generator ships glass classes on index + article pages.
