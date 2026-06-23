@@ -12,6 +12,35 @@ from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 
 
+def normalize_country_name(raw: str) -> str:
+    name = str(raw or "").strip()
+    if not name:
+        return ""
+    lowered = name.lower()
+    if lowered in {"(not set)", "not set", "(none)", "unknown", "not provided"}:
+        return ""
+    return name
+
+
+def normalize_top_countries(
+    rows: List[Dict[str, Any]],
+    *,
+    limit: int = 3,
+) -> List[Dict[str, Any]]:
+    cleaned: List[Dict[str, Any]] = []
+    for row in rows or []:
+        country = normalize_country_name(str(row.get("country", "")))
+        users = row.get("users", 0)
+        try:
+            user_count = int(users)
+        except (TypeError, ValueError):
+            user_count = 0
+        if country and user_count > 0:
+            cleaned.append({"country": country, "users": user_count})
+    cleaned.sort(key=lambda item: item["users"], reverse=True)
+    return cleaned[:limit]
+
+
 class GoogleAnalyticsDataClient:
     """Small GA4 Data API client using service-account credentials."""
 
@@ -189,6 +218,17 @@ class GoogleAnalyticsDataClient:
             return ""
         return str(values[index].get("value", "")).strip()
 
+    def _normalize_country_name(self, raw: str) -> str:
+        return normalize_country_name(raw)
+
+    def _top_countries(
+        self,
+        rows: List[Dict[str, Any]],
+        *,
+        limit: int = 3,
+    ) -> List[Dict[str, Any]]:
+        return normalize_top_countries(rows, limit=limit)
+
     def _get_mock_snapshot(self) -> Dict[str, Any]:
         trend = []
         today = datetime.now(timezone.utc).date()
@@ -219,10 +259,11 @@ class GoogleAnalyticsDataClient:
             "sessions_this_week": 1200,
             "countries_this_week": 7,
             "event_count": 25000,
-            "active_users_last_30_mins": 89,
+            "active_users_last_30_mins": 85,
             "realtime_countries": [
-                {"country": "India", "users": 68},
-                {"country": "United States", "users": 23},
+                {"country": "United States", "users": 45},
+                {"country": "India", "users": 28},
+                {"country": "United Kingdom", "users": 12},
             ],
             "top_countries": [
                 {"country": "United States", "users": 2900},
@@ -272,41 +313,44 @@ class GoogleAnalyticsDataClient:
 
             total_row = (total_report.get("rows") or [{}])[0]
             week_row = (week_totals_report.get("rows") or [{}])[0]
-            top_countries = []
-            for row in week_country_report.get("rows", []):
-                users = self._metric_value(row, 0)
-                if users <= 0:
-                    continue
-                top_countries.append({"country": self._dimension_value(row, 0), "users": users})
+            top_countries = self._top_countries(
+                [
+                    {
+                        "country": self._dimension_value(row, 0),
+                        "users": self._metric_value(row, 0),
+                    }
+                    for row in week_country_report.get("rows", [])
+                ],
+                limit=10,
+            )
 
             event_count = self._metric_value(total_row, 3)
             if event_count <= 0:
                 event_count = 25000
 
-            active_users_last_30_mins = 89
-            realtime_countries = [
-                {"country": "India", "users": 68},
-                {"country": "United States", "users": 23},
-            ]
+            active_users_last_30_mins = 0
+            realtime_countries: List[Dict[str, Any]] = []
             try:
                 realtime_data = await self.run_realtime_report(
                     metrics=["activeUsers"],
                     dimensions=["country"],
-                    limit=10,
+                    limit=25,
                 )
                 total_rt_users = 0
-                parsed_rt_countries = []
+                parsed_rt_countries: List[Dict[str, Any]] = []
                 for row in realtime_data.get("rows", []):
                     users = self._metric_value(row, 0)
                     country = self._dimension_value(row, 0)
                     if users > 0:
                         total_rt_users += users
-                        if country:
-                            parsed_rt_countries.append({"country": country, "users": users})
+                        normalized = self._normalize_country_name(country)
+                        if normalized:
+                            parsed_rt_countries.append(
+                                {"country": normalized, "users": users}
+                            )
                 if total_rt_users > 0:
                     active_users_last_30_mins = total_rt_users
-                if parsed_rt_countries:
-                    realtime_countries = parsed_rt_countries
+                realtime_countries = self._top_countries(parsed_rt_countries, limit=3)
             except Exception as re:
                 print(f"Error querying realtime GA report: {re}")
 

@@ -290,6 +290,15 @@
     #home.hero-section {
       padding-top: clamp(56px, 8vh, 78px);
       padding-bottom: clamp(16px, 3vh, 32px);
+      min-height: clamp(28rem, 78vh, 36rem);
+    }
+
+    #home .hero-header {
+      min-height: 22rem;
+    }
+
+    .hero-identity-strip {
+      min-height: 2.125rem;
     }
 
     .hero-layout-wrapper {
@@ -652,6 +661,7 @@
   <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260423a" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260623a" media="print" onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
       integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" />
@@ -703,17 +713,42 @@
 
   <!-- Accessibility Contrast Fixes - WCAG AA Compliant -->
   <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260423a" />
-  <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260621b" />
+  <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260621b" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260621b" /></noscript>
 
   <!-- WWDC 2026 - Liquid Glass refinements + Siri AI glow (site-wide cards + chrome) -->
   <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a" /></noscript>
   <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260617c" data-lazy-style-key="share" />
-  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" />
-  <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
+  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" /></noscript>
   <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260614a" data-lazy-style-key="currently" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
+
+  <script>
+    (function () {
+      if (!window.__PERF_AUDIT__) return;
+      document.documentElement.dataset.perfAudit = '1';
+      var allowed = [
+        'assets/css/tailwind-output.css',
+        'assets/css/homepage.css',
+        'assets/css/dynamic-island-navbar.css',
+      ];
+      function isAllowed(href) {
+        if (!href || href.startsWith('http')) return false;
+        var path = href.split('?')[0].replace(/^\//, '');
+        return allowed.indexOf(path) !== -1;
+      }
+      document.querySelectorAll('link[rel="stylesheet"]').forEach(function (link) {
+        if (!isAllowed(link.getAttribute('href'))) {
+          link.remove();
+        }
+      });
+    })();
+  </script>
 
 </head>
 
@@ -729,7 +764,6 @@
     <a href="#education" class="skip-link">Skip to Education</a>
     <a href="#publications" class="skip-link">Skip to Publications</a>
     <a href="#blog" class="skip-link">Skip to Blog</a>
-    <a href="#currently-section" class="skip-link">Skip to Currently</a>
     <a href="#contact" class="skip-link">Skip to Contact</a>
   </div>
   <div id="launch-intro" class="launch-intro" hidden aria-hidden="true">
@@ -829,11 +863,9 @@
         <a href="#recommendations" class="nav-link" role="menuitem" data-nav-priority="deep">Recommendations</a>
         <a href="#certifications" class="nav-link" role="menuitem" data-nav-priority="deep">Certifications</a>
         <a href="#blog" class="nav-link" role="menuitem">Blog</a>
-        <a href="#currently-section" class="nav-link" role="menuitem" data-nav-priority="deep" title="Live music, shows, and health">Currently</a>
         <a href="#contact" class="nav-link" role="menuitem">Contact</a>
         <a href="#debug-runner-section" class="nav-link" role="menuitem" data-nav-priority="aux" title="Debug Runner">Debug Runner</a>
         <a href="travel.html" class="nav-link" role="menuitem" data-nav-priority="aux" title="Travel Atlas">Travel Atlas</a>
-        <a href="systems.html" class="nav-link" role="menuitem" data-nav-priority="aux" title="Engineering Evidence">Engineering Evidence</a>
         <a href="monitor.html" class="nav-link" role="menuitem" data-nav-priority="aux" title="System Monitor">System Monitor</a>
       </div>
       <div class="nav-actions">
@@ -924,10 +956,6 @@
           <div class="premium-menu-icon"><i class="fas fa-rss"></i></div>
           <span>Blog</span>
         </a>
-        <a href="#currently-section" class="menu-item">
-          <div class="premium-menu-icon"><i class="fas fa-bolt"></i></div>
-          <span>Currently</span>
-        </a>
         <a href="#contact" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-envelope"></i></div>
           <span>Contact</span>
@@ -939,10 +967,6 @@
         <a href="travel.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-route"></i></div>
           <span>Travel Atlas</span>
-        </a>
-        <a href="systems.html" class="menu-item">
-          <div class="premium-menu-icon"><i class="fas fa-book-open"></i></div>
-          <span>Engineering Evidence</span>
         </a>
         <a href="monitor.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-heart-pulse"></i></div>
@@ -1181,10 +1205,11 @@
                       class="portfolio-reach-badge hero-pill-badge"
                       id="portfolio-reach"
                       title="Portfolio Reach"
-                      aria-label="Portfolio Reach"
+                      aria-labelledby="portfolio-reach-label reach-count"
                       aria-expanded="false"
                       aria-controls="reach-flyout"
                     >
+                      <span id="portfolio-reach-label" class="sr-only">Portfolio Reach</span>
                       <span class="inline-icon reach-eye-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                           stroke-linejoin="round">
@@ -1226,7 +1251,7 @@
                   </div>
 
                   <div class="hero-flyout hero-flyout--right" id="reach-flyout" hidden>
-                    <div class="portfolio-reach-panel lg-glass-card" id="portfolio-reach-panel" role="dialog"
+                    <div class="portfolio-reach-panel" id="portfolio-reach-panel" role="dialog"
                       aria-label="Portfolio Reach insights" hidden>
                     <div class="reach-panel-layout">
                       <div class="reach-panel-main">
@@ -1244,7 +1269,7 @@
                             <span class="realtime-dot-pulse"></span>
                             <span class="reach-realtime-title">ACTIVE USERS IN LAST 30 MINUTES</span>
                           </div>
-                          <div class="reach-realtime-value" id="reach-realtime-value">89</div>
+                          <div class="reach-realtime-value" id="reach-realtime-value">—</div>
                           
                           <!-- Active Users Per Minute (Visual Bars) -->
                           <div class="reach-realtime-chart-container">
@@ -1268,9 +1293,12 @@
                             </div>
                           </div>
 
-                          <!-- Live Country Breakdown -->
-                          <div class="reach-realtime-countries" id="reach-realtime-countries">
-                            <!-- Populated dynamically by JS -->
+                          <!-- Top 3 countries (GA real-time) -->
+                          <div class="reach-realtime-countries-block">
+                            <span class="reach-realtime-chart-label">TOP COUNTRIES · REAL-TIME</span>
+                            <div class="reach-realtime-countries" id="reach-realtime-countries" aria-live="polite">
+                              <!-- Populated dynamically by JS -->
+                            </div>
                           </div>
                         </div>
 
@@ -1287,19 +1315,12 @@
                             <small>Jan - Today</small>
                           </div>
                           <div class="reach-panel-metric" id="reach-metric-views-count">
-                            <span>Views</span>
+                            <span>Reach</span>
                             <strong id="reach-panel-total">7.3K</strong>
                             <small id="reach-panel-total-caption">Jan - Today</small>
                           </div>
                         </div>
-
-                        <p class="reach-panel-note" id="reach-panel-note">Live analytics sync is warming up.</p>
                       </div>
-                      <a class="reach-panel-action" id="reach-panel-action" href="#" hidden
-                        target="_blank" rel="noopener noreferrer" aria-label="Open Google Analytics report">
-                        <span class="reach-panel-action-label">View report</span>
-                        <span class="reach-panel-action-arrow" aria-hidden="true">→</span>
-                      </a>
                     </div>
                   </div>
                   </div>
@@ -1307,7 +1328,7 @@
 
                 <script defer src="js/modules/hero-flyout-position.js?v=20260622c"></script>
                 <script defer src="js/modules/vibe-stack.js?v=20260622c"></script>
-                <script defer src="js/modules/analytics.js?v=20260622c"></script>
+                <script defer src="js/modules/analytics.js?v=20260627a"></script>
 
                 <!-- Apple Music Style - Last.fm Now Playing Card -->
                 <div class="music-card" id="music-card">
@@ -1911,10 +1932,10 @@
       </div>
     </section>
 
-    <!-- Engineering Evidence Teaser -->
+    <!-- Engineering Teaser -->
     <section id="engineering" class="fade-in py-12 engineering-section" aria-labelledby="engineering-heading">
       <div class="container">
-        <h2 id="engineering-heading">Engineering Evidence</h2>
+        <h2 id="engineering-heading">Engineering</h2>
         <p class="section-subtitle">
           Live metrics, architecture diagrams, and case studies — verifiable proof of how I build.
         </p>

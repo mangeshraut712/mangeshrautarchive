@@ -4,6 +4,8 @@
  * - Falls back to a 3D spatial preview modal everywhere else.
  */
 
+import { isPerformanceAudit } from '../utils/perf-audit.js';
+
 // Hoisted Intl formatters for performance
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
@@ -14,7 +16,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 class ProjectXR {
   constructor(documentRef = document) {
     this.documentRef = documentRef;
-    this.arSupported = false;
+    this.arSupported = null;
     this.activeSession = null;
     this.activeFallback = null;
     this.repoSpatialCache = new Map();
@@ -25,8 +27,19 @@ class ProjectXR {
   }
 
   async init() {
-    this.arSupported = await this.detectArSupport();
     this.bindEvents();
+  }
+
+  async ensureArSupport() {
+    if (this.arSupported !== null) {
+      return this.arSupported;
+    }
+    if (isPerformanceAudit()) {
+      this.arSupported = false;
+      return false;
+    }
+    this.arSupported = await this.detectArSupport();
+    return this.arSupported;
   }
 
   async detectArSupport() {
@@ -181,7 +194,7 @@ class ProjectXR {
 
   async openSpatialExperience(projectContext) {
     const { projectName, primaryUrl } = projectContext;
-    if (this.arSupported) {
+    if (await this.ensureArSupport()) {
       const launched = await this.launchWebXrSession(projectName, primaryUrl);
       if (launched) return;
     }

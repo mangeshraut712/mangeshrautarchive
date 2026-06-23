@@ -134,7 +134,7 @@ export function renderTelemetryBento(snapshot) {
   const statusLabel = isLive ? 'Connected' : 'Static Snapshot';
 
   return `
-    <article class="systems-bento-tile systems-bento-tile--status lg-glass-card" data-tile="performance">
+    <article class="systems-bento-tile systems-bento-tile--budget lg-glass-card" data-tile="performance">
       <p class="systems-tile-eyebrow">Performance budget</p>
       <div class="systems-status-lockup">
         <span class="systems-status-pill healthy">
@@ -147,7 +147,7 @@ export function renderTelemetryBento(snapshot) {
       <p class="systems-tile-foot">LCP &lt; 1.5s · INP &lt; 100ms · CLS 0.00</p>
     </article>
 
-    <article class="systems-bento-tile lg-glass-card" data-tile="quality">
+    <article class="systems-bento-tile systems-bento-tile--budget lg-glass-card" data-tile="quality">
       <p class="systems-tile-eyebrow">Code quality gates</p>
       <div class="systems-status-lockup">
         <span class="systems-status-pill healthy">
@@ -160,7 +160,7 @@ export function renderTelemetryBento(snapshot) {
       <p class="systems-tile-foot">ESLint · Prettier · Playwright</p>
     </article>
 
-    <article class="systems-bento-tile lg-glass-card" data-tile="agent">
+    <article class="systems-bento-tile systems-bento-tile--budget lg-glass-card" data-tile="agent">
       <p class="systems-tile-eyebrow">Local agent</p>
       <div class="systems-status-lockup">
         <span class="systems-status-pill healthy">
@@ -173,7 +173,7 @@ export function renderTelemetryBento(snapshot) {
       <p class="systems-tile-foot">9 tools · navigate · theme · resume</p>
     </article>
 
-    <article class="systems-bento-tile systems-bento-tile--services lg-glass-card" data-tile="verification">
+    <article class="systems-bento-tile systems-bento-tile--budget lg-glass-card" data-tile="verification">
       <p class="systems-tile-eyebrow">Live API verification</p>
       <div class="systems-status-lockup">
         <span class="systems-status-pill ${statusClass}">

@@ -56,7 +56,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com https://www.googletagmanager.com https://ws.audioscrobbler.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://mangeshraut.pro https://mraut.vercel.app https://mangeshrautarchive.vercel.app https://mangeshraut712.github.io https://mangeshraut712.github.io/mangeshrautarchive https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com wss:; worker-src 'self' blob:; frame-ancestors 'none'; report-to csp-endpoint; report-uri https://mangeshraut.pro/api/csp-report;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com https://www.googletagmanager.com https://ws.audioscrobbler.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://mangeshraut.pro https://mraut.vercel.app https://mangeshrautarchive.vercel.app https://mangeshraut712.github.io https://mangeshraut712.github.io/mangeshrautarchive https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://itunes.apple.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com wss:; worker-src 'self' blob:; frame-ancestors 'none'; report-to csp-endpoint; report-uri https://mangeshraut.pro/api/csp-report;"
         },
         {
           "key": "Strict-Transport-Security",
@@ -69,7 +69,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+          "value": "private, max-age=0, must-revalidate"
         }
       ]
     },
@@ -78,7 +78,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+          "value": "private, max-age=0, must-revalidate"
         }
       ]
     },
@@ -87,7 +87,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+          "value": "private, max-age=0, must-revalidate"
         }
       ]
     },
@@ -114,7 +114,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
+          "value": "private, max-age=0, must-revalidate"
         }
       ]
     },

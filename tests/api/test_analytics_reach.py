@@ -64,6 +64,67 @@ def test_portfolio_reach_prefers_google_analytics_snapshot(monkeypatch):
     assert payload["insights"]["top_countries"][0]["country"] == "United States"
 
 
+def test_portfolio_reach_realtime_countries_limited_to_top_three(monkeypatch):
+    class FakeGoogleAnalyticsClient:
+        enabled = True
+
+        async def get_reach_snapshot(self):
+            return {
+                "source": "google_analytics",
+                "total_views": 7300,
+                "unique_visitors": 6100,
+                "event_count": 25000,
+                "active_users_last_30_mins": 120,
+                "realtime_countries": [
+                    {"country": "Germany", "users": 12},
+                    {"country": "United States", "users": 55},
+                    {"country": "(not set)", "users": 8},
+                    {"country": "India", "users": 40},
+                    {"country": "Canada", "users": 13},
+                ],
+                "top_countries": [],
+                "trend": [],
+                "analytics_url": "https://analytics.google.com/",
+                "timestamp": "2026-06-21T12:00:00Z",
+            }
+
+    monkeypatch.setattr("api.routes.analytics.google_analytics_client", FakeGoogleAnalyticsClient())
+    client = TestClient(app)
+
+    response = client.get("/api/analytics/reach")
+
+    assert response.status_code == 200
+    countries = response.json()["insights"]["realtime_countries"]
+    assert len(countries) == 3
+    assert [entry["country"] for entry in countries] == [
+        "United States",
+        "India",
+        "Canada",
+    ]
+    assert countries[0]["users"] == 55
+
+
+def test_google_analytics_top_countries_helper():
+    from api.google_analytics import normalize_top_countries
+
+    result = normalize_top_countries(
+        [
+            {"country": "Germany", "users": 4},
+            {"country": "United States", "users": 90},
+            {"country": "(not set)", "users": 12},
+            {"country": "India", "users": 35},
+            {"country": "France", "users": 18},
+        ],
+        limit=3,
+    )
+
+    assert result == [
+        {"country": "United States", "users": 90},
+        {"country": "India", "users": 35},
+        {"country": "France", "users": 18},
+    ]
+
+
 def test_portfolio_reach_does_not_conflate_zero_visitors_with_page_views(monkeypatch):
     class DisabledGoogleAnalyticsClient:
         enabled = False

@@ -55,9 +55,7 @@ function setAssetHeaders(res, filePath) {
   const extension = extname(filePath).toLowerCase();
 
   if (extension === '.html') {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+    res.setHeader('Cache-Control', 'private, max-age=0, must-revalidate');
     return;
   }
 
@@ -76,9 +74,7 @@ function setAssetHeaders(res, filePath) {
   }
 
   if (filePath.endsWith('service-worker.js') || filePath.endsWith('manifest.json')) {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+    res.setHeader('Cache-Control', 'private, max-age=0, must-revalidate');
   }
 }
 
@@ -454,7 +450,41 @@ function resolveMonitorMock(path, method) {
   if (path.includes('/api/chat/health')) {
     return { status: 'healthy', success: true, mode: 'preview' };
   }
-  if (path.includes('/api/analytics/reach')) return { success: true, total_reach: 120 };
+  if (path.includes('/api/analytics/reach')) {
+    return {
+      success: true,
+      total_reach: 6100,
+      source: 'google_analytics',
+      ga_enabled: true,
+      ga_configured: true,
+      analytics_url:
+        'https://analytics.google.com/analytics/web/#/a394742220p537627192/reports/intelligenthome',
+      insights: {
+        unique_visitors: 6100,
+        unique_visitors_this_week: 1100,
+        countries_this_week: 7,
+        sessions_this_week: 1200,
+        total_views_all_time: 7300,
+        active_users_all_time: 6100,
+        event_count_all_time: 25000,
+        active_users_last_30_mins: 85,
+        realtime_countries: [
+          { country: 'United States', users: 45 },
+          { country: 'India', users: 28 },
+          { country: 'United Kingdom', users: 12 },
+        ],
+        top_countries: [
+          { country: 'United States', users: 2900 },
+          { country: 'India', users: 1500 },
+          { country: 'Singapore', users: 5 },
+        ],
+        trend: [],
+        trend_metric: 'visitors',
+      },
+      breakdown: { page_views: { total: 7300 } },
+      timestamp: monitorMockTimestamp(),
+    };
+  }
   if (path.includes('/api/music/recent')) return { recenttracks: { track: [] } };
   if (path.includes('/api/personalization/export')) {
     return {

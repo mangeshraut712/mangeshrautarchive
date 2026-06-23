@@ -333,6 +333,7 @@ html.dark .hero-description {
 
   #home .hero-header {
     margin-bottom: 0.5rem !important;
+    min-height: 20rem;
   }
 
   #home .hero-description {
@@ -424,7 +425,7 @@ html.dark .hero-social-link:hover {
 #home.hero-section {
   padding-top: clamp(56px, 8vh, 78px) !important;
   padding-bottom: clamp(16px, 3vh, 32px) !important;
-  min-height: auto !important;
+  min-height: clamp(28rem, 78vh, 36rem) !important;
 }
 
 .hero-section {
@@ -517,7 +518,7 @@ html.dark .profile-image-wrapper {
   justify-content: center;
   width: 100%;
   margin: 0.45rem auto 0.35rem;
-  min-height: 2.5rem;
+  min-height: 3rem;
 }
 
 .hero-badge-cluster {
@@ -751,9 +752,7 @@ html.dark .vibe-tool-chip:focus-visible {
 .portfolio-reach-badge.is-active {
   transform: translateY(-2px) scale(1.02);
   border-color: #0071e3 !important;
-  box-shadow:
-    0 2px 8px rgb(0 0 0 / 6%),
-    0 0 0 1px rgb(0 113 227 / 40%);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
 }
 
 html.dark .portfolio-reach-badge .inline-icon svg,
@@ -782,9 +781,7 @@ html.dark .portfolio-reach-badge:focus-visible,
 html.dark .vibe-coder-badge.is-active,
 html.dark .portfolio-reach-badge.is-active {
   border-color: #2997ff !important;
-  box-shadow:
-    0 2px 8px rgb(0 0 0 / 30%),
-    0 0 0 1px rgb(41 151 255 / 45%);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
 }
 
 .vibe-coder-badge-wrapper .vibe-coder-badge,
@@ -826,6 +823,13 @@ html.dark .portfolio-reach-badge i {
   padding: 0.9rem;
   border-radius: 22px;
   color: #1d1d1f;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -841,55 +845,11 @@ html.dark .portfolio-reach-badge i {
 }
 
 .reach-panel-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: stretch;
-  gap: 0.35rem;
+  display: block;
 }
 
 .reach-panel-main {
   min-width: 0;
-}
-
-.reach-panel-action {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.35rem;
-  min-width: 3.4rem;
-  padding: 0.35rem 0.55rem;
-  border-left: 1px solid rgb(0 0 0 / 8%);
-  border-radius: 0 14px 14px 0;
-  color: #0071e3;
-  font-size: 0.72rem;
-  font-weight: 700;
-  line-height: 1.15;
-  text-align: center;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.reach-panel-action:hover,
-.reach-panel-action:focus-visible {
-  background: rgb(0 113 227 / 8%);
-  color: #005bb5;
-  transform: translateX(1px);
-}
-
-.reach-panel-action-label {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  letter-spacing: 0.01em;
-}
-
-.reach-panel-action-arrow {
-  font-size: 1.35rem;
-  line-height: 1;
-  font-weight: 500;
 }
 
 .reach-panel-header,
@@ -902,7 +862,6 @@ html.dark .portfolio-reach-badge i {
 
 .reach-panel-eyebrow,
 .reach-panel-range,
-.reach-panel-note,
 .reach-panel-metric small,
 .reach-panel-chart-meta {
   color: #6e6e73;
@@ -999,19 +958,11 @@ html.dark .portfolio-reach-badge i {
   font-weight: 650;
 }
 
-.portfolio-reach-panel .reach-panel-note {
-  margin: 0.45rem 0 0 !important;
-  font-size: 0.76rem !important;
-  line-height: 1.25 !important;
-  letter-spacing: 0 !important;
-  text-align: left;
-}
-
 .portfolio-reach-badge .reach-count {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  min-width: 3.25rem;
-  text-align: left;
+  min-width: 4.5ch;
+  text-align: center;
   display: inline-block;
   transition:
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -1063,17 +1014,10 @@ html.dark .portfolio-reach-badge {
 
 html.dark .portfolio-reach-panel {
   color: #f5f5f7;
-}
-
-html.dark .reach-panel-action {
-  border-left-color: rgb(255 255 255 / 14%);
-  color: #2997ff;
-}
-
-html.dark .reach-panel-action:hover,
-html.dark .reach-panel-action:focus-visible {
-  background: rgb(41 151 255 / 12%);
-  color: #7dc4ff;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%) !important;
 }
 
 html.dark .reach-panel-metrics,
@@ -1083,7 +1027,6 @@ html.dark .reach-panel-metric {
 
 html.dark .reach-panel-eyebrow,
 html.dark .reach-panel-range,
-html.dark .reach-panel-note,
 html.dark .reach-panel-metric small,
 html.dark .reach-panel-chart-meta {
   color: #a1a1a6;
@@ -1109,15 +1052,15 @@ html.dark .portfolio-reach-badge .reach-count.is-updating {
 .reach-realtime-section {
   margin-top: 0.65rem;
   padding: 0.75rem 0.85rem;
-  background: rgb(0 113 227 / 3.5%);
-  border: 1px solid rgb(0 113 227 / 10%);
+  background: #f5f5f7;
+  border: 1px solid rgb(0 0 0 / 8%);
   border-radius: 16px;
   text-align: left;
 }
 
 html.dark .reach-realtime-section {
-  background: rgb(41 151 255 / 4%);
-  border-color: rgb(41 151 255 / 12%);
+  background: #1c1c1e;
+  border-color: rgb(255 255 255 / 12%);
 }
 
 .reach-realtime-header {
@@ -1232,12 +1175,30 @@ html.dark .reach-realtime-chart-bars span {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  margin-top: 0.45rem;
-  border-top: 1px solid rgb(0 0 0 / 5%);
-  padding-top: 0.45rem;
 }
 
-html.dark .reach-realtime-countries {
+.reach-realtime-countries-block {
+  margin-top: 0.55rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgb(0 0 0 / 5%);
+}
+
+.reach-realtime-countries-block .reach-realtime-chart-label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.reach-country-empty {
+  font-size: 0.7rem;
+  color: #86868b;
+  padding: 0.2rem 0;
+}
+
+html.dark .reach-country-empty {
+  color: #a1a1a6;
+}
+
+html.dark .reach-realtime-countries-block {
   border-top-color: rgb(255 255 255 / 8%);
 }
 
@@ -1310,17 +1271,24 @@ html.dark .reach-country-row .country-users {
 
 .ga-metrics-grid .reach-panel-metric {
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  background: #ffffff;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .ga-metrics-grid .reach-panel-metric.active {
-  background: rgb(0 113 227 / 5%);
-  border-bottom: 2px solid #0071e3;
+  background: #f5f5f7;
+  border-bottom: 2px solid #1d1d1f;
+}
+
+html.dark .ga-metrics-grid .reach-panel-metric {
+  background: #000000;
 }
 
 html.dark .ga-metrics-grid .reach-panel-metric.active {
-  background: rgb(41 151 255 / 7%);
-  border-bottom-color: #2997ff;
+  background: #1c1c1e;
+  border-bottom-color: #f5f5f7;
 }
 
 .reach-panel-chart-header,
@@ -1422,8 +1390,7 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
   }
 
   .hero-flyout--music-slot .reach-panel-layout {
-    grid-template-columns: 1fr auto;
-    gap: 0.25rem;
+    display: block;
   }
 
   .hero-flyout--music-slot .reach-panel-header h2 {
@@ -1470,28 +1437,6 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
   .hero-flyout--music-slot .reach-panel-chart-meta {
     margin-top: 0.1rem;
     font-size: 0.6rem;
-  }
-
-  .hero-flyout--music-slot .reach-panel-note {
-    margin-top: 0.3rem !important;
-    font-size: 0.58rem !important;
-    line-height: 1.2 !important;
-  }
-
-  .hero-flyout--music-slot .reach-panel-action {
-    min-width: 2.4rem;
-    padding: 0.25rem 0.35rem;
-    border-left-width: 1px;
-  }
-
-  .hero-flyout--music-slot .reach-panel-action-label {
-    font-size: 0.58rem;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-  }
-
-  .hero-flyout--music-slot .reach-panel-action-arrow {
-    font-size: 1rem;
   }
 
   html.dark .hero-flyout--music-slot .portfolio-reach-panel {

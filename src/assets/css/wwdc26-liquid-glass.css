@@ -1640,8 +1640,7 @@ footer .wrapper {
   .travel-timeline__country-header,
   .sub-card,
   .nested-card,
-  .vibe-stack-card,
-  .portfolio-reach-panel
+  .vibe-stack-card
 ) {
   background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
@@ -1723,8 +1722,7 @@ html.dark
     .travel-timeline__country-header,
     .sub-card,
     .nested-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel
+    .vibe-stack-card
   ) {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
@@ -1840,8 +1838,7 @@ html body #blog div.newsletter-card,
 html body #contact div.contact-card,
 html body #contact div.support-donation-card,
 html body #contact div.media-card,
-.vibe-stack-card,
-.portfolio-reach-panel {
+.vibe-stack-card {
   background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-image: none !important;
@@ -1868,8 +1865,7 @@ html.dark body #blog div.newsletter-card,
 html.dark body #contact div.contact-card,
 html.dark body #contact div.support-donation-card,
 html.dark body #contact div.media-card,
-html.dark .vibe-stack-card,
-html.dark .portfolio-reach-panel {
+html.dark .vibe-stack-card {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-image: none !important;
@@ -1910,8 +1906,7 @@ html.dark .portfolio-reach-panel {
   .skill-card:hover,
   .skill-badge:hover,
   .timeline-content:hover,
-  .vibe-stack-card:hover,
-  .portfolio-reach-panel:hover
+  .vibe-stack-card:hover
 ) {
   border: 1px solid var(--theme-card-border-hover) !important;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover) 24%, transparent) !important;
@@ -2198,8 +2193,7 @@ html[data-lg-mode='clear']
     .contact-card,
     .calendar-card,
     .currently-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel
+    .vibe-stack-card
   ) {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
@@ -2215,8 +2209,7 @@ html[data-lg-mode='tinted']
     .contact-card,
     .calendar-card,
     .currently-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel
+    .vibe-stack-card
   ) {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
@@ -2232,8 +2225,7 @@ html[data-lg-mode='tinted']:not(.dark)
     .contact-card,
     .calendar-card,
     .currently-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel
+    .vibe-stack-card
   ) {
   background: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
   background-color: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
@@ -2249,8 +2241,7 @@ html.dark[data-lg-mode='tinted']
     .contact-card,
     .calendar-card,
     .currently-card,
-    .vibe-stack-card,
-    .portfolio-reach-panel
+    .vibe-stack-card
   ) {
   background: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
   background-color: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
@@ -2298,7 +2289,6 @@ html.dark[data-lg-mode='tinted']
     .calendar-card,
     .currently-card,
     .vibe-stack-card,
-    .portfolio-reach-panel,
     .lg-glass-card
   ) {
     backdrop-filter: none !important;
@@ -2312,7 +2302,6 @@ html.dark[data-lg-mode='tinted']
       .calendar-card,
       .currently-card,
       .vibe-stack-card,
-      .portfolio-reach-panel,
       .lg-glass-card
     ) {
     background: #ffffff !important;
@@ -2326,7 +2315,6 @@ html.dark[data-lg-mode='tinted']
       .calendar-card,
       .currently-card,
       .vibe-stack-card,
-      .portfolio-reach-panel,
       .lg-glass-card
     ) {
     background: #000000 !important;

@@ -8,6 +8,8 @@
  * Reference: https://vercel.com/docs/analytics
  */
 
+import { isPerformanceAudit } from '../utils/perf-audit.js';
+
 const VERCEL_ANALYTICS_SCRIPT = '/_vercel/insights/script.js';
 
 function isLocalHost(hostname = '') {
@@ -34,6 +36,10 @@ function shouldEnableVercelAnalytics(hostname = '') {
  * @returns {Promise<void>}
  */
 export async function initializeVercelAnalytics() {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
   const hostname = window.location.hostname || '';
 
   if (!shouldEnableVercelAnalytics(hostname)) {

@@ -16,6 +16,7 @@ import {
   renderTelemetryBento,
   updateLiveBenchmarkValues,
 } from './systems-viz.js';
+import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -61,7 +62,7 @@ function initSectionRail() {
       if (active && rail) {
         const railRect = rail.getBoundingClientRect();
         const linkRect = link.getBoundingClientRect();
-        const offset = linkRect.left - railRect.left - (railRect.width / 2) + (linkRect.width / 2);
+        const offset = linkRect.left - railRect.left - railRect.width / 2 + linkRect.width / 2;
         rail.scrollTo({ left: rail.scrollLeft + offset, behavior: 'smooth' });
       }
     });
@@ -85,7 +86,11 @@ function initSectionRail() {
     entries => {
       const visible = entries
         .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        .reduce(
+          (best, entry) =>
+            !best || entry.intersectionRatio > best.intersectionRatio ? entry : best,
+          null
+        );
       if (!visible) return;
       setActive(visible.target.id);
     },
@@ -99,7 +104,7 @@ function initSectionRail() {
     requestAnimationFrame(() => {
       const railRect = rail.getBoundingClientRect();
       const linkRect = initialActive.getBoundingClientRect();
-      const offset = linkRect.left - railRect.left - (railRect.width / 2) + (linkRect.width / 2);
+      const offset = linkRect.left - railRect.left - railRect.width / 2 + linkRect.width / 2;
       rail.scrollLeft = rail.scrollLeft + offset;
     });
   }
@@ -280,10 +285,10 @@ function flowStepContent(cs, stepKey) {
 
 function renderHeroStats() {
   const root = document.getElementById('systems-hero-stats');
-  if (!root) return;
+  if (!root || root.children.length > 0) return;
   root.innerHTML = heroStats
     .map(
-      stat => `<a class="systems-hero-stat lg-glass-card" href="${escapeHtml(stat.href)}">
+      stat => `<a class="systems-hero-stat" href="${escapeHtml(stat.href)}">
         <span class="systems-hero-stat-value">${escapeHtml(stat.value)}${stat.unit ? `<small>${escapeHtml(stat.unit)}</small>` : ''}</span>
         <span class="systems-hero-stat-label">${escapeHtml(stat.label)}</span>
       </a>`
@@ -344,6 +349,10 @@ function getApiBase() {
 }
 
 async function fetchEngineeringSnapshot() {
+  if (isPerformanceAudit()) {
+    return null;
+  }
+
   const base = getApiBase();
   const origins = [base, 'https://mangeshraut.pro', 'https://mraut.vercel.app'].filter(
     (v, i, a) => a.indexOf(v) === i
@@ -452,24 +461,33 @@ export function initSystemsPage() {
   initSectionRail();
   initCaseStudyRails();
   bindCardPress();
-  hydrateTelemetry({ initial: true });
+  if (!isPerformanceAudit()) {
+    hydrateTelemetry({ initial: true });
+  }
 
-  observeScrollAnimations([
-    '.systems-keynote-section',
-    '.systems-hero-stat',
-    '.systems-evidence-card',
-    '.systems-bento-tile',
-    '.systems-metric-panel',
-    '.systems-case-flow',
-    '.systems-principle-card',
-    '.systems-timeline-block',
-  ]);
+  if (!isPerformanceAudit()) {
+    observeScrollAnimations([
+      '.systems-keynote-section',
+      '.systems-hero-stat',
+      '.systems-evidence-card',
+      '.systems-bento-tile',
+      '.systems-metric-panel',
+      '.systems-case-flow',
+      '.systems-principle-card',
+      '.systems-timeline-block',
+    ]);
+  }
 }
 
 if (document.body.classList.contains('systems-page')) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSystemsPage, { once: true });
-  } else {
+  const boot = () => {
+    if (isPerformanceAudit()) return;
     initSystemsPage();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
   }
 }

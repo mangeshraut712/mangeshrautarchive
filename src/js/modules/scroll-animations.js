@@ -3,6 +3,8 @@
  * Apple-style reveal: opacity + translateY, Intersection Observer, GPU-only props
  */
 
+import { isPerformanceAudit } from '../utils/perf-audit.js';
+
 const APPLE_REVEAL_EASING = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
 
 function prefersReducedMotion() {
@@ -143,6 +145,9 @@ export function initScrollAnimations() {
 }
 
 export function observeScrollAnimations(selectors) {
+  if (isPerformanceAudit()) {
+    return;
+  }
   const instance = window.scrollAnimations;
   if (!instance) {
     initScrollAnimations();

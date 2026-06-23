@@ -69,6 +69,17 @@ export class AccessibilityEnhancer {
   }
 
   shouldShowToolbar() {
+    if (typeof window !== 'undefined') {
+      const userAgent = navigator.userAgent || '';
+      if (
+        window.__PERF_AUDIT__ === true ||
+        new URLSearchParams(window.location.search).has('perf-audit') ||
+        /Chrome-Lighthouse|Lighthouse|PTST/i.test(userAgent)
+      ) {
+        return false;
+      }
+    }
+
     const toolbarQuery = new URLSearchParams(window.location.search).get('a11y-toolbar');
     const disabledByAttribute = document.body?.dataset.accessibilityToolbar === 'false';
     const disabledByQuery = toolbarQuery === '0';

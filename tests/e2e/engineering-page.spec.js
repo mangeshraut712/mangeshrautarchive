@@ -32,7 +32,7 @@ test.describe('Engineering evidence dashboard', () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await waitForSystemsReady(page);
 
-    await expect(page).toHaveTitle(/Engineering Evidence/i);
+    await expect(page).toHaveTitle(/Engineering/i);
     await expect(page.locator('h1')).toContainText(/AI-native products/i);
 
     for (const id of sectionIds) {
@@ -41,7 +41,7 @@ test.describe('Engineering evidence dashboard', () => {
 
     await expect(page.locator('#systems-metrics-grid .systems-metric-panel')).toHaveCount(4);
     await expect(page.locator('#systems-case-flows .systems-case-flow').first()).toBeVisible();
-    await expect(page.locator('.systems-footer-links a[href="uses.html"]')).toBeVisible();
+    await expect(page.locator('.systems-footer')).toHaveCount(0);
     await assertNoHorizontalOverflow(page);
   });
 
@@ -51,6 +51,60 @@ test.describe('Engineering evidence dashboard', () => {
       waitUntil: 'domcontentloaded',
     });
     expect(res?.status()).toBeLessThan(400);
+  });
+
+  test('mobile engineering page has no horizontal overflow', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForSystemsReady(page);
+    await expect(page.locator('.systems-footer')).toHaveCount(0);
+    await assertNoHorizontalOverflow(page);
+
+    const shellBox = await page.locator('.systems-shell').boundingBox();
+    const viewport = page.viewportSize();
+    if (shellBox && viewport) {
+      const leftGap = shellBox.x;
+      const rightGap = viewport.width - (shellBox.x + shellBox.width);
+      expect(Math.abs(leftGap - rightGap)).toBeLessThanOrEqual(4);
+    }
+  });
+
+  test('quality budgets bento tiles are full width on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForSystemsReady(page);
+    await page.waitForSelector('#systems-telemetry-bento .systems-bento-tile', { timeout: 30_000 });
+
+    const tileWidths = await page
+      .locator('#systems-telemetry-bento .systems-bento-tile')
+      .evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().width));
+
+    expect(tileWidths).toHaveLength(4);
+    tileWidths.forEach(width => {
+      expect(width).toBeGreaterThan(280);
+    });
+  });
+
+  test('quality budgets cards render on desktop', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await waitForSystemsReady(page);
+    await page.waitForSelector('#systems-telemetry-bento .systems-bento-tile', { timeout: 30_000 });
+
+    const bentoWidths = await page
+      .locator('#systems-telemetry-bento .systems-bento-tile')
+      .evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().width));
+
+    expect(bentoWidths).toHaveLength(4);
+    bentoWidths.forEach(width => {
+      expect(width).toBeGreaterThan(180);
+    });
+
+    const metricWidths = await page
+      .locator('#systems-metrics-grid .systems-metric-panel')
+      .evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().width));
+
+    expect(metricWidths).toHaveLength(4);
+    metricWidths.forEach(width => {
+      expect(width).toBeGreaterThan(200);
+    });
   });
 
   test('uses page renders stack sections', async ({ page }) => {

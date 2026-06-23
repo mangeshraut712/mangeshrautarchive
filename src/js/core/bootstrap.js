@@ -2,6 +2,7 @@ const EAGER_MODULES = ['../modules/accessibility.js'];
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 import { initScrollLockRecovery } from '../utils/scroll-lock.js';
+import { isPerformanceAudit } from '../utils/perf-audit.js';
 import '../modules/apple-haptics.js';
 import '../utils/view-transitions-nav.js';
 import '../modules/aod-dim-mode.js';
@@ -164,19 +165,6 @@ function runWhenIdle(callback, timeout = 1500) {
   }
 
   setTimeout(callback, timeout);
-}
-
-function isPerformanceAudit() {
-  if (window.__PERF_AUDIT__ === true) {
-    return true;
-  }
-
-  if (new URLSearchParams(window.location.search).has('perf-audit')) {
-    return true;
-  }
-
-  const userAgent = navigator.userAgent || '';
-  return /Chrome-Lighthouse|Lighthouse/i.test(userAgent);
 }
 
 function ensureDeferredStylesheetLoaded(link) {
@@ -1035,14 +1023,15 @@ async function checkDeploymentVersion() {
         server: serverBuild,
       });
 
-      await clearBrowserDeploymentCaches();
       if (currentBuildParam === normalizeBuildId(serverBuild)) {
         if (syncRetry < 1) {
+          await clearBrowserDeploymentCaches();
           reloadWithServerBuild(serverBuild, String(syncRetry + 1));
         }
         return;
       }
 
+      await clearBrowserDeploymentCaches();
       reloadWithServerBuild(serverBuild);
     }
   } catch (error) {

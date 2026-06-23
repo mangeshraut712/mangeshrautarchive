@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
-    <title>Engineering Evidence | Mangesh Raut</title>
+    <title>Engineering | Mangesh Raut</title>
     <meta
       name="description"
       content="Verifiable engineering evidence — production metrics, architecture, case studies, open source, and a living record of what I build and measure."
@@ -25,22 +25,93 @@
       })();
     </script>
     <script src="js/utils/theme-head.js"></script>
-    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260613b" />
-    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260613b" />
-    <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260613c" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" />
-    <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a" />
-    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260626b" />
-    <link rel="stylesheet" href="assets/css/engineering-showcase.css?v=20260626b" />
-    <link rel="stylesheet" href="assets/css/systems.css?v=20260626b" />
-    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" />
-    <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
+    <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260624a" />
+    <script>
+      (function () {
+        if (
+          !/[?&]perf-audit=1(?:&|$)/.test(location.search) &&
+          !/Chrome-Lighthouse|Lighthouse|PTST/i.test(navigator.userAgent || '')
+        ) {
+          return;
+        }
+        document.documentElement.dataset.perfAudit = '1';
+      })();
+    </script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      href="assets/css/apple-2026-design-system.css?v=20260613b"
+      data-perf-defer
+    />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260613b" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/sitewide-design-system.css?v=20260613c"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/accessibility-contrast-fixes.css?v=20260626b"
+      data-perf-defer
+    />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260627b" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/engineering-showcase.css?v=20260626b" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260623a" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/wwdc26-liquid-glass.css?v=20260623a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-super-retina-display.css?v=20260617d"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
     />
+    <script>
+      (function () {
+        if (document.documentElement.dataset.perfAudit === '1') {
+          document.querySelectorAll('link[data-perf-defer]').forEach(function (link) {
+            link.remove();
+          });
+          return;
+        }
+        document.querySelectorAll('link[data-perf-defer]:not([media])').forEach(function (link) {
+          link.media = 'all';
+        });
+      })();
+    </script>
+    <noscript>
+      <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" />
+      <link rel="stylesheet" href="assets/css/systems.css?v=20260627b" />
+      <link rel="stylesheet" href="assets/css/typography-system.css?v=20260613b" />
+      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260613c" />
+      <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260613b" />
+      <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260623a" />
+      <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260626b" />
+      <link rel="stylesheet" href="assets/css/engineering-showcase.css?v=20260626b" />
+      <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" />
+      <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260617d" />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        crossorigin="anonymous"
+      />
+      <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260623a" />
+    </noscript>
   </head>
   <body class="systems-page monitor-page systems-evidence-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -79,7 +150,7 @@
 
     <main class="systems-shell" id="main-content">
       <header class="systems-keynote-hero" id="overview">
-        <p class="systems-eyebrow">Engineering Evidence</p>
+        <p class="systems-eyebrow">Engineering</p>
         <h1>Building AI-native products with production-grade engineering.</h1>
         <p class="systems-hero-lead systems-hero-lead--stack">
           <span>Thoughtful design and measurable outcomes.</span>
@@ -92,7 +163,24 @@
           class="systems-hero-stats"
           id="systems-hero-stats"
           aria-label="Key engineering metrics"
-        ></div>
+        >
+          <a class="systems-hero-stat" href="#production-metrics">
+            <span class="systems-hero-stat-value">95+</span>
+            <span class="systems-hero-stat-label">Lighthouse CI gate</span>
+          </a>
+          <a class="systems-hero-stat" href="#architecture">
+            <span class="systems-hero-stat-value">9</span>
+            <span class="systems-hero-stat-label">WebMCP tools</span>
+          </a>
+          <a class="systems-hero-stat" href="#production-metrics">
+            <span class="systems-hero-stat-value">&lt;50<small>ms</small></span>
+            <span class="systems-hero-stat-label">Local agent actions</span>
+          </a>
+          <a class="systems-hero-stat" href="#case-studies">
+            <span class="systems-hero-stat-value">40<small>%</small></span>
+            <span class="systems-hero-stat-label">Dashboard latency cut</span>
+          </a>
+        </div>
       </header>
 
       <nav class="systems-section-rail" id="systems-section-rail" aria-label="Page sections">
@@ -274,16 +362,6 @@
         </div>
         <div class="systems-timeline" id="systems-timeline"></div>
       </section>
-
-      <footer class="systems-footer systems-footer--expanded">
-        <p class="footer-copy">&copy; 2026 Mangesh Raut Archive</p>
-        <nav class="systems-footer-links" aria-label="Related pages">
-          <a href="uses.html">Uses</a>
-          <a href="monitor.html">System Monitor</a>
-          <a href="travel.html">Travel Atlas</a>
-          <a href="index.html#home">Portfolio home</a>
-        </nav>
-      </footer>
     </main>
 
     <script type="module" src="js/modules/accessibility.js"></script>

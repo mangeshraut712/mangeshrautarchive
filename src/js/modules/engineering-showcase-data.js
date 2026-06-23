@@ -156,7 +156,7 @@ export const engineeringTimeline = [
       'OpenRouter + WebMCP',
       'System Monitor',
       'GitHub Intelligence',
-      'Engineering Evidence dashboard',
+      'Engineering dashboard',
     ],
   },
   {

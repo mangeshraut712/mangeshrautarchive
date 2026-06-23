@@ -303,10 +303,18 @@ html.dark #home .hero-role-flip strong {
   font-size: 0.875rem;
   font-weight: 600;
   transition: all var(--duration-fast) var(--apple-ease);
-  background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
+}
+
+#home .portfolio-reach-badge,
+#home .hero-pill-badge {
+  background: #ffffff !important;
+}
+
+#home .vibe-coder-badge {
+  background: var(--bg-primary);
 }
 
 #home .portfolio-reach-badge,
@@ -322,9 +330,7 @@ html.dark #home .hero-role-flip strong {
 #home .portfolio-reach-badge.is-active {
   transform: translateY(-2px);
   border-color: #0071e3 !important;
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px rgb(0 113 227 / 35%);
+  box-shadow: var(--shadow-md);
 }
 
 html.dark #home .vibe-coder-badge:hover,
@@ -334,15 +340,18 @@ html.dark #home .portfolio-reach-badge:focus-visible,
 html.dark #home .vibe-coder-badge.is-active,
 html.dark #home .portfolio-reach-badge.is-active {
   border-color: #2997ff !important;
-  box-shadow:
-    var(--shadow-md),
-    0 0 0 1px rgb(41 151 255 / 40%);
+  box-shadow: var(--shadow-md);
 }
 
-html.dark #home .vibe-coder-badge,
+html.dark #home .vibe-coder-badge {
+  background: var(--bg-primary-dark);
+  border-color: var(--border-subtle-dark);
+  color: var(--text-primary-dark);
+}
+
 html.dark #home .portfolio-reach-badge,
 html.dark #home .hero-pill-badge {
-  background: var(--bg-primary-dark);
+  background: #000000 !important;
   border-color: var(--border-subtle-dark);
   color: var(--text-primary-dark);
 }

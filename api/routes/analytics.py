@@ -9,7 +9,7 @@ from api.config import (
     get_client_ip,
 )
 from api.analytics_store import portfolio_analytics_store
-from api.google_analytics import google_analytics_client
+from api.google_analytics import google_analytics_client, normalize_top_countries
 
 router = APIRouter()
 
@@ -163,8 +163,11 @@ async def get_portfolio_reach():
             "total_views_all_time": page_views_total,
             "active_users_all_time": unique_visitors if ga_enabled else 0,
             "event_count_all_time": _safe_int(ga_snapshot.get("event_count"), 25000),
-            "active_users_last_30_mins": _safe_int(ga_snapshot.get("active_users_last_30_mins"), 89),
-            "realtime_countries": ga_snapshot.get("realtime_countries") or [],
+            "active_users_last_30_mins": _safe_int(ga_snapshot.get("active_users_last_30_mins")),
+            "realtime_countries": normalize_top_countries(
+                ga_snapshot.get("realtime_countries") or [],
+                limit=3,
+            ),
             "metric_primary_label": "Total Reach" if ga_enabled else "Total Views",
             "metric_weekly_label": "Active Users" if ga_enabled else "Weekly Views",
             "avg_views_per_day": analytics.get("avg_views_per_day", 0),

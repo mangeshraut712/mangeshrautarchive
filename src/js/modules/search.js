@@ -299,7 +299,7 @@ class PortfolioSearch {
         tags: 'game interactive debug runner',
       },
       {
-        title: 'Engineering Evidence',
+        title: 'Engineering',
         description: 'Architecture, benchmarks, case studies, and portfolio proof',
         icon: 'fa-diagram-project',
         sectionId: 'engineering',
@@ -307,7 +307,7 @@ class PortfolioSearch {
         tags: 'engineering architecture benchmarks evidence building learned',
       },
       {
-        title: 'Engineering Evidence',
+        title: 'Engineering',
         description: 'Full architecture diagrams, system design, and case studies',
         icon: 'fa-book-open',
         url: 'systems.html',

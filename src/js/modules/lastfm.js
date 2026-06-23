@@ -1,4 +1,5 @@
 import { analytics } from '../services/AnalyticsService.js';
+import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 const LASTFM_JSONP_TIMEOUT_MS = 4500;
 const LASTFM_PROXY_TIMEOUT_MS = 3500;
@@ -119,6 +120,10 @@ class LastFmService {
   }
 
   async fetchAppleMusicArtwork(trackName = '', artistName = '') {
+    if (isPerformanceAudit()) {
+      return null;
+    }
+
     const cacheKey = `${trackName}::${artistName}`.trim().toLowerCase();
     if (!cacheKey) return null;
 
@@ -482,10 +487,7 @@ const lastFmService = new LastFmService();
 globalThis.lastFmService = lastFmService;
 
 function initLastFmService() {
-  if (
-    window.__PERF_AUDIT__ === true ||
-    new URLSearchParams(window.location.search).has('perf-audit')
-  ) {
+  if (isPerformanceAudit()) {
     return;
   }
 

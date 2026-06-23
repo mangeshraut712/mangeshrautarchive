@@ -72,7 +72,7 @@ export function renderEngineeringTeaser(root = document.getElementById('engineer
     </div>
     <div class="eng-teaser-cta-wrap">
       <a class="eng-teaser-cta btn hero-cta" href="systems.html">
-        Open engineering evidence
+        Open engineering
         <span aria-hidden="true">→</span>
       </a>
     </div>
