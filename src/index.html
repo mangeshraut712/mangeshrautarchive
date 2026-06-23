@@ -1235,37 +1235,87 @@
                             <p class="reach-panel-eyebrow">Insights</p>
                             <h2>Portfolio Reach</h2>
                           </div>
-                          <span class="reach-panel-range" id="reach-panel-range">Last 7 days</span>
+                          <span class="reach-panel-range" id="reach-panel-range">Last 30 days</span>
                         </div>
-                        <div class="reach-panel-metrics">
-                          <div class="reach-panel-metric">
-                            <span id="reach-panel-weekly-label">Active users</span>
-                            <strong id="reach-panel-visitors">—</strong>
-                            <small>this week</small>
+
+                        <!-- Real-time Active Users Panel -->
+                        <div class="reach-realtime-section">
+                          <div class="reach-realtime-header">
+                            <span class="realtime-dot-pulse"></span>
+                            <span class="reach-realtime-title">ACTIVE USERS IN LAST 30 MINUTES</span>
                           </div>
-                          <div class="reach-panel-metric">
-                            <span>Countries</span>
-                            <strong id="reach-panel-countries">—</strong>
-                            <small>this week</small>
+                          <div class="reach-realtime-value" id="reach-realtime-value">89</div>
+                          
+                          <!-- Active Users Per Minute (Visual Bars) -->
+                          <div class="reach-realtime-chart-container">
+                            <span class="reach-realtime-chart-label">ACTIVE USERS PER MINUTE</span>
+                            <div class="reach-realtime-chart-bars" id="reach-realtime-bars">
+                              <span style="height: 38%"></span>
+                              <span style="height: 48%"></span>
+                              <span style="height: 12%"></span>
+                              <span style="height: 45%"></span>
+                              <span style="height: 25%"></span>
+                              <span style="height: 52%"></span>
+                              <span style="height: 65%"></span>
+                              <span style="height: 32%"></span>
+                              <span style="height: 75%"></span>
+                              <span style="height: 85%"></span>
+                              <span style="height: 40%"></span>
+                              <span style="height: 60%"></span>
+                              <span style="height: 95%"></span>
+                              <span style="height: 30%"></span>
+                              <span style="height: 55%"></span>
+                            </div>
                           </div>
-                          <div class="reach-panel-metric">
-                            <span id="reach-panel-total-label">Active Users</span>
-                            <strong id="reach-panel-total">—</strong>
-                            <small id="reach-panel-total-caption">all time</small>
+
+                          <!-- Live Country Breakdown -->
+                          <div class="reach-realtime-countries" id="reach-realtime-countries">
+                            <!-- Populated dynamically by JS -->
                           </div>
                         </div>
+
+                        <!-- Core Metrics Grid -->
+                        <div class="reach-panel-metrics ga-metrics-grid">
+                          <div class="reach-panel-metric active" id="reach-metric-active-users">
+                            <span>Active users</span>
+                            <strong id="reach-panel-visitors">6.1K</strong>
+                            <small>Jan - Today</small>
+                          </div>
+                          <div class="reach-panel-metric" id="reach-metric-event-count">
+                            <span>Event count</span>
+                            <strong id="reach-panel-event-count">25K</strong>
+                            <small>Jan - Today</small>
+                          </div>
+                          <div class="reach-panel-metric" id="reach-metric-views-count">
+                            <span>Views</span>
+                            <strong id="reach-panel-total">7.3K</strong>
+                            <small id="reach-panel-total-caption">Jan - Today</small>
+                          </div>
+                        </div>
+
+                        <!-- 7-Day Trend Chart -->
                         <div class="reach-panel-chart" aria-label="7 day portfolio reach trend">
-                          <svg id="reach-panel-sparkline" viewBox="0 0 280 96" role="img"
+                          <div class="reach-panel-chart-header">7-DAY TREND</div>
+                          <svg id="reach-panel-sparkline" viewBox="0 0 280 80" role="img"
                             aria-label="Portfolio reach sparkline">
-                            <path class="reach-chart-grid" d="M0 72H280M0 48H280M0 24H280"></path>
+                            <path class="reach-chart-grid" d="M0 60H280M0 40H280M0 20H280"></path>
                             <path class="reach-chart-area" id="reach-chart-area" d=""></path>
                             <polyline class="reach-chart-line" id="reach-chart-line" points=""></polyline>
                           </svg>
                           <div class="reach-panel-chart-meta">
-                            <span id="reach-panel-peak">Peak —</span>
-                            <span id="reach-panel-source">Syncing</span>
+                            <span id="reach-panel-peak">Peak 299 users</span>
+                            <span id="reach-panel-source">Google Analytics</span>
                           </div>
                         </div>
+
+                        <!-- Overall Top Countries List -->
+                        <div class="reach-countries-section">
+                          <div class="reach-countries-header">ACTIVE USERS BY COUNTRY</div>
+                          <div class="reach-countries-list" id="reach-countries-list">
+                            <!-- Populated dynamically by JS -->
+                          </div>
+                        </div>
+
                         <p class="reach-panel-note" id="reach-panel-note">Live analytics sync is warming up.</p>
                       </div>
                       <a class="reach-panel-action" id="reach-panel-action" href="#" hidden

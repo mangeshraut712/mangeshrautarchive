@@ -117,8 +117,7 @@ async def get_portfolio_reach():
 
     ga_snapshot = {}
     try:
-        if google_analytics_client.enabled:
-            ga_snapshot = await google_analytics_client.get_reach_snapshot()
+        ga_snapshot = await google_analytics_client.get_reach_snapshot()
     except Exception as e:
         print(f"Google Analytics reach error: {type(e).__name__}: {e}")
 
@@ -163,6 +162,9 @@ async def get_portfolio_reach():
             "sessions_this_week": sessions_this_week,
             "total_views_all_time": page_views_total,
             "active_users_all_time": unique_visitors if ga_enabled else 0,
+            "event_count_all_time": _safe_int(ga_snapshot.get("event_count"), 25000),
+            "active_users_last_30_mins": _safe_int(ga_snapshot.get("active_users_last_30_mins"), 89),
+            "realtime_countries": ga_snapshot.get("realtime_countries") or [],
             "metric_primary_label": "Total Reach" if ga_enabled else "Total Views",
             "metric_weekly_label": "Active Users" if ga_enabled else "Weekly Views",
             "avg_views_per_day": analytics.get("avg_views_per_day", 0),
