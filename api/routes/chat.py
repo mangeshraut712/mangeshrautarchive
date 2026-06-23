@@ -1,6 +1,7 @@
 import json
 import time
 import asyncio
+import re
 from datetime import datetime
 from typing import List, Dict, AsyncGenerator, Optional
 from fastapi import APIRouter, Request, HTTPException
@@ -14,7 +15,10 @@ from api.config import (
     get_client_ip,
     check_rate_limit,
     api_error,
-    OPENROUTER_API_KEY,
+    get_openrouter_api_key,
+    get_default_model,
+    get_site_url,
+    get_site_title,
     is_prompt_injection,
     sanitize_chat_text,
     sanitize_session_id,
@@ -26,14 +30,11 @@ from api.config import (
     SECURITY_SYSTEM_PROMPT,
     sanitize_context,
     build_context_prompt,
-    DEFAULT_MODEL,
     MODELS,
     update_session_memory,
     is_resume_query,
     PORTFOLIO_DATA,
     API_URL,
-    SITE_URL,
-    SITE_TITLE,
     adaptive_llm_params,
     RATE_LIMIT_WINDOW,
     normalize_openrouter_model,
@@ -47,6 +48,14 @@ from api.site_knowledge import (
 )
 
 router = APIRouter()
+
+
+def _query_has_word(query: str, word: str) -> bool:
+    return re.search(rf"\b{re.escape(word)}\b", query) is not None
+
+
+def _query_has_any_word(query: str, words: List[str]) -> bool:
+    return any(_query_has_word(query, word) for word in words)
 
 
 def is_usa_state_travel_query(query: str) -> bool:
@@ -150,7 +159,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         }
 
     # Skills
-    if "skill" in query or "stack" in query or "tech" in query or "language" in query:
+    if _query_has_any_word(query, ["skill", "stack", "tech"]) or _query_has_word(query, "language"):
         langs = ", ".join(PORTFOLIO_DATA["skills"]["languages"])
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
@@ -165,7 +174,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         }
 
     # Blogs
-    if "blog" in query or "write" in query or "google i/o" in query or "open x" in query:
+    if _query_has_word(query, "blog") or _query_has_any_word(query, ["write", "google i/o", "open x"]):
         return {
             "answer": "✍️ **Recent Technical Writing** (Apple-style Dev Newsletter):\n• **Google I/O 2026: The Rise of Agentic Web, Gemini 2.5, Gemma 3, and WebNN** (May 2026)\n• **Inside the Open X Algorithm** (May 2026)\n• **Decentralized AI Agents and WebGPU** (April 2026)\n\nYou can read all these blogs in the 'Technical Writings' section of the homepage!",
             "category": "Blogs",
@@ -196,7 +205,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         }
 
     # Experience
-    if "experience" in query or "job" in query or "work" in query:
+    if _query_has_any_word(query, ["experience", "job", "work"]):
         exp_list = "\n".join(
             [
                 f"• **{e['title']}** at {e['company']} ({e['period']})"
@@ -313,9 +322,9 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Travel",
         }
 
-    if site_context and any(
-        k in query
-        for k in [
+    if site_context and _query_has_any_word(
+        query,
+        [
             "travel",
             "atlas",
             "city",
@@ -327,7 +336,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "blog",
             "website",
             "page",
-        ]
+        ],
     ):
         excerpt = site_context[:1800].rsplit(" ", 1)[0]
         return {
@@ -505,7 +514,7 @@ async def stream_openrouter_response(
         "",
     )
 
-    if not OPENROUTER_API_KEY:
+    if not get_openrouter_api_key():
         print("⚠️ No API Key found - activating Local Intelligence Fallback")
 
         # Generate local response
@@ -580,10 +589,10 @@ async def stream_openrouter_response(
                     "POST",
                     API_URL,
                     headers={
-                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Authorization": f"Bearer {get_openrouter_api_key()}",
                         "Content-Type": "application/json",
-                        "HTTP-Referer": SITE_URL,
-                        "X-Title": SITE_TITLE,
+                        "HTTP-Referer": get_site_url(),
+                        "X-Title": get_site_title(),
                     },
                     json=openrouter_request_body(
                         model,
@@ -741,17 +750,17 @@ async def call_openrouter(
     model: str, messages: List[Dict], web_tools_enabled: bool = False
 ) -> Dict:
     """Non-streaming API call"""
-    if not OPENROUTER_API_KEY:
+    if not get_openrouter_api_key():
         raise Exception("API key not configured")
 
     async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             API_URL,
             headers={
-                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "Authorization": f"Bearer {get_openrouter_api_key()}",
                 "Content-Type": "application/json",
-                "HTTP-Referer": SITE_URL,
-                "X-Title": SITE_TITLE,
+                "HTTP-Referer": get_site_url(),
+                "X-Title": get_site_title(),
             },
             json=openrouter_request_body(
                 model,
@@ -826,7 +835,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             )
         return direct_response
 
-    if not OPENROUTER_API_KEY:
+    if not get_openrouter_api_key():
         print("⚠️ No API key - using Local Intelligence fallback")
         fallback = generate_local_response(message, site_context)
         elapsed = time.time() - start_time
@@ -879,7 +888,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         conversation = [system_message] + history + [user_message]
 
         # Select model
-        selected_model = normalize_openrouter_model(request.model or DEFAULT_MODEL)
+        selected_model = normalize_openrouter_model(request.model or get_default_model())
 
         # Streaming response
         if request.stream:
@@ -895,10 +904,13 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                 ):
                     yield chunk
                     try:
-                        data = json.loads(chunk)
+                        # NDJSON chunks have trailing \n — strip before parsing
+                        data = json.loads(chunk.rstrip())
                         if data.get("type") == "done":
                             full_response = data.get("full_content", "")
-                    except BaseException:
+                    except json.JSONDecodeError:
+                        pass
+                    except Exception:
                         pass
 
                 if full_response and session_id:
@@ -977,13 +989,59 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         )
 
 
+@router.get("/api/chat/health", tags=["core"], summary="Chatbot AI health")
+async def chat_health():
+    """Report whether OpenRouter-backed chat is configured and reachable."""
+    api_key = get_openrouter_api_key()
+    model = get_default_model()
+    status = "degraded"
+    provider_status = "local_only"
+    message = "OpenRouter API key is not configured; chat runs in local intelligence mode."
+
+    if api_key:
+        provider_status = "configured"
+        message = "OpenRouter API key is configured."
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    "https://openrouter.ai/api/v1/models",
+                    headers={"Authorization": f"Bearer {api_key}"},
+                    timeout=5.0,
+                )
+            if response.status_code == 200:
+                status = "healthy"
+                provider_status = "online"
+                message = "OpenRouter model catalog is reachable."
+            else:
+                status = "unhealthy"
+                provider_status = "error"
+                message = f"OpenRouter returned HTTP {response.status_code}."
+        except Exception as exc:
+            status = "unhealthy"
+            provider_status = "error"
+            message = f"OpenRouter health check failed: {exc}"
+
+    return {
+        "success": True,
+        "status": status,
+        "provider": "openrouter",
+        "provider_status": provider_status,
+        "streaming": "ndjson",
+        "model": model,
+        "message": message,
+        "timestamp": datetime.now().isoformat(),
+    }
+
+
 @router.get("/api/models")
 async def get_models():
     """Get available AI models"""
+    current = get_default_model()
     return {
         "models": MODELS,
-        "default": DEFAULT_MODEL,
-        "current": DEFAULT_MODEL,
+        "default": current,
+        "current": current,
+        "ai_configured": bool(get_openrouter_api_key()),
     }
 
 

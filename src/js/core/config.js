@@ -61,6 +61,7 @@ const api = {
   baseUrl: '', // Set dynamically
   endpoints: {
     chat: '/api/chat',
+    chatHealth: '/api/chat/health',
     models: '/api/models',
     health: '/api/health',
     contact: '/api/contact',

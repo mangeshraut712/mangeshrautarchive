@@ -10,8 +10,8 @@ import { agenticActions } from '../modules/agentic-actions.js';
 
 let API_BASE = '';
 
-// Primary Backend: Vercel (has OPENROUTER_API_KEY configured)
-const VERCEL_BACKEND = 'https://mraut.vercel.app';
+// Primary Backend: custom domain (OpenRouter key configured on Vercel)
+const VERCEL_BACKEND = 'https://mangeshraut.pro';
 const PRIMARY_CUSTOM_DOMAIN = 'mangeshraut.pro';
 const MAX_SERVER_MESSAGE_LENGTH = 1800;
 const MAX_SERVER_HISTORY_MESSAGES = 12;
@@ -71,7 +71,7 @@ if (typeof window !== 'undefined') {
     else if (hostname.includes('vercel.app') || hostname === PRIMARY_CUSTOM_DOMAIN) {
       API_BASE = '';
     }
-    // GitHub Pages or Custom Domain - use Vercel backend
+    // GitHub Pages or other static hosts — use configured API base when available
     else {
       API_BASE = VERCEL_BACKEND;
     }
@@ -206,6 +206,7 @@ class IntelligentAssistant {
       };
 
       const healthy =
+        (await tryEndpoint('/api/chat/health', 15000).catch(() => false)) ||
         (await tryEndpoint('/api/health', 15000).catch(() => false)) ||
         (await tryEndpoint('/api/status', 15000).catch(() => false));
 
@@ -506,8 +507,8 @@ class IntelligentAssistant {
         this.isReadyState = true;
         return {
           answer: fullText,
-          source: 'OpenRouter',
-          model: metadata.model || 'Gemini 2.0 Flash',
+          source: metadata.source || 'OpenRouter',
+          model: metadata.model || 'OpenRouter',
           type: 'general',
           confidence: 0.9,
           ...metadata,

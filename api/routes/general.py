@@ -28,6 +28,7 @@ async def api_root():
             "newsletter_subscribe": "/api/newsletter/subscribe",
             "resume": "/api/resume",
             "health": "/api/health",
+            "chat_health": "/api/chat/health",
             "github_repos": "/api/github/repos/public",
             "integrations_status": "/api/integrations/status",
             "health_vitals_summary": "/api/health-vitals/summary",
@@ -215,10 +216,20 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
 
 @router.get("/api/health", tags=["core"], summary="General health check")
 async def health_check():
+    from api.config import get_default_model, get_openrouter_api_key
+
+    api_key = get_openrouter_api_key()
     return {
         "status": "healthy",
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "success": True
+        "success": True,
+        "ai": {
+            "configured": bool(api_key),
+            "provider": "openrouter" if api_key else "local",
+            "model": get_default_model(),
+            "streaming": "ndjson",
+            "health_path": "/api/chat/health",
+        },
     }
 
 

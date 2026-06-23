@@ -82,7 +82,7 @@ def test_deprecated_openrouter_model_maps_to_current_supported_model():
 
 
 def test_chat_upstream_http_error_returns_local_fallback(client, monkeypatch):
-    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "configured")
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "configured")
 
     async def fail_model_call(*_args, **_kwargs):
         request = httpx.Request("POST", "https://openrouter.ai/api/v1/chat/completions")
@@ -108,7 +108,7 @@ def test_chat_upstream_http_error_returns_local_fallback(client, monkeypatch):
 
 
 def test_chat_local_mode_uses_public_site_knowledge(client, monkeypatch):
-    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "")
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "")
 
     response = client.post(
         "/api/chat",
@@ -139,7 +139,7 @@ def test_blog_release_summary_finds_june_2026_titles():
 
 
 def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client, monkeypatch):
-    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "")
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "")
 
     states = client.post(
         "/api/chat",
@@ -157,7 +157,7 @@ def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client,
 
 
 def test_chat_direct_travel_answer_bypasses_model_when_key_exists(client, monkeypatch):
-    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "configured")
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "configured")
 
     async def fail_model_call(*_args, **_kwargs):
         raise AssertionError("Direct site-data answers should not call OpenRouter")
@@ -178,7 +178,7 @@ def test_chat_direct_travel_answer_bypasses_model_when_key_exists(client, monkey
 
 
 def test_chat_local_stream_returns_ndjson_site_answer(client, monkeypatch):
-    monkeypatch.setattr("api.routes.chat.OPENROUTER_API_KEY", "")
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "")
 
     with client.stream(
         "POST",
@@ -191,3 +191,32 @@ def test_chat_local_stream_returns_ndjson_site_answer(client, monkeypatch):
     assert response.headers["content-type"].startswith("application/x-ndjson")
     assert '"type": "chunk"' in body
     assert "18 states/districts" in body
+
+
+def test_local_mode_does_not_match_work_inside_networking(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "")
+
+    response = client.post(
+        "/api/chat",
+        json={
+            "message": "Explain the difference between TCP and UDP in networking.",
+            "stream": False,
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["category"] != "Experience"
+    assert "Professional Experience" not in payload["answer"]
+
+
+def test_chat_health_reports_provider_status(client, monkeypatch):
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "")
+
+    response = client.get("/api/chat/health")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["provider"] == "openrouter"
+    assert payload["provider_status"] == "local_only"
+    assert payload["streaming"] == "ndjson"

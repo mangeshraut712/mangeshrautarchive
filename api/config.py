@@ -21,12 +21,32 @@ GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
 LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "").strip()
 LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
 FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", FALLBACK_OPENROUTER_MODEL).strip()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
-SITE_URL = os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
-SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
+
+
+def get_openrouter_api_key() -> str:
+    """Read OpenRouter key at request time (Vercel injects env vars at runtime)."""
+    return os.getenv("OPENROUTER_API_KEY", "").strip()
+
+
+def get_openrouter_model_raw() -> str:
+    return os.getenv("OPENROUTER_MODEL", FALLBACK_OPENROUTER_MODEL).strip()
+
+
+def get_site_url() -> str:
+    return os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro")
+
+
+def get_site_title() -> str:
+    return os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
+
+
+# Back-compat aliases for imports/tests; prefer runtime getters in request paths.
+OPENROUTER_API_KEY = get_openrouter_api_key()
+OPENROUTER_MODEL = get_openrouter_model_raw()
+SITE_URL = get_site_url()
+SITE_TITLE = get_site_title()
 
 # Rate Limiting Store and Rules
 rate_limit_store = defaultdict(list)
@@ -99,7 +119,11 @@ def normalize_openrouter_model(model: str) -> str:
     return FALLBACK_OPENROUTER_MODEL
 
 
-DEFAULT_MODEL = normalize_openrouter_model(OPENROUTER_MODEL)
+def get_default_model() -> str:
+    return normalize_openrouter_model(get_openrouter_model_raw())
+
+
+DEFAULT_MODEL = get_default_model()
 
 # Poster cache
 poster_cache = {}
