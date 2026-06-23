@@ -724,7 +724,9 @@ class AppleIntelligenceChatbot {
     if (!messages) return false;
     if (messages.querySelector('.welcome-message, .welcome-message-simplified')) return false;
     if (messages.querySelector('.user-message')) return false;
-    return !messages.querySelector('.assistant-message:not(.welcome-message):not(.welcome-message-simplified)');
+    return !messages.querySelector(
+      '.assistant-message:not(.welcome-message):not(.welcome-message-simplified)'
+    );
   }
 
   addWelcomeMessage() {

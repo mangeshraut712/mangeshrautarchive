@@ -32,6 +32,7 @@ SITE_TITLE = os.getenv("OPENROUTER_SITE_TITLE", "AssistMe AI Assistant")
 rate_limit_store = defaultdict(list)
 RATE_LIMIT_REQUESTS = 20  # requests per window
 RATE_LIMIT_WINDOW = 60  # seconds
+_EPHEMERAL_SESSION_AUTH_SECRET = secrets.token_urlsafe(48)
 
 # Last.fm Cache and Config
 # 25s TTL ensures "Now Playing" refreshes faster than the 30s frontend poll interval
@@ -617,7 +618,7 @@ def _session_auth_secret() -> bytes:
     )
     if not material:
         material = (
-            "production-session-auth-unconfigured"
+            _EPHEMERAL_SESSION_AUTH_SECRET
             if os.getenv("VERCEL_ENV") == "production"
             else "local-dev-session-auth"
         )

@@ -100,7 +100,9 @@ test.describe('Chatbot message scroll', () => {
     });
 
     await page.locator('#chatbot-clear-btn').click();
-    await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible({ timeout: 2_000 });
+    await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible({
+      timeout: 2_000,
+    });
     await expect(page.locator('#chatbot-messages .message.user-message')).toHaveCount(0);
   });
 });

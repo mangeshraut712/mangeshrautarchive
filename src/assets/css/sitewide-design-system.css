@@ -21,12 +21,11 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .profile-image-toggle
   ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(
     .travel-action
-  ):not(.travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(
-    .portfolio-reach-badge
-  ):not(.hero-pill-badge),
+  ):not(.travel-nav__projection):not(.travel-nav__theme):not(.travel-nav__panel):not(
+    .travel-filter-chip
+  ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
+    .a11y-toolbar button
+  ):not([class*='maplibregl-ctrl']):not(.portfolio-reach-badge):not(.hero-pill-badge),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -60,12 +59,11 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .profile-image-toggle
   ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(
     .travel-action
-  ):not(.travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not([class*='maplibregl-ctrl']):not(
-    .portfolio-reach-badge
-  ):not(.hero-pill-badge):hover,
+  ):not(.travel-nav__projection):not(.travel-nav__theme):not(.travel-nav__panel):not(
+    .travel-filter-chip
+  ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
+    .a11y-toolbar button
+  ):not([class*='maplibregl-ctrl']):not(.portfolio-reach-badge):not(.hero-pill-badge):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,

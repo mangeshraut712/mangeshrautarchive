@@ -1,5 +1,7 @@
 """Security hardening regression tests."""
 
+import hashlib
+import hmac
 import os
 
 import pytest
@@ -83,6 +85,25 @@ def test_conversation_reads_with_valid_session_token(client):
         headers={"x-session-token": token},
     )
     assert response.status_code == 200
+
+
+def test_production_session_token_rejects_public_fallback_secret(monkeypatch):
+    monkeypatch.setenv("VERCEL_ENV", "production")
+    for name in (
+        "SESSION_AUTH_SECRET",
+        "INTEGRATION_ENCRYPTION_KEY",
+        "INTEGRATION_SYNC_ADMIN_TOKEN",
+    ):
+        monkeypatch.delenv(name, raising=False)
+
+    session_id = "c" * 32
+    public_fallback_token = hmac.new(
+        hashlib.sha256(b"production-session-auth-unconfigured").digest(),
+        session_id.encode("utf-8"),
+        hashlib.sha256,
+    ).hexdigest()
+
+    assert create_session_token(session_id) != public_fallback_token
 
 
 def test_calendar_webhook_rejects_unknown_channel(client, monkeypatch):

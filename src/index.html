@@ -14,9 +14,10 @@
   <!-- Google tag (gtag.js) — load only after user interaction to protect LCP -->
   <script>
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
+    function gtag() {
       window.dataLayer.push(arguments);
-    };
+    }
+    window.gtag = gtag;
     gtag('js', new Date());
     gtag('config', 'G-HVKF4N150Y');
 
