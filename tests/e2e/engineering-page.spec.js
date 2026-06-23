@@ -6,18 +6,19 @@ const gotoPage = (page, path) =>
 
 const sectionIds = [
   'overview',
-  'evidence',
-  'production-metrics',
+  'production',
   'architecture',
-  'systems',
-  'case-studies',
+  'projects',
+  'evidence',
+  'experiments',
   'open-source',
+  'writing',
   'timeline',
 ];
 
 async function waitForSystemsReady(page) {
   await gotoPage(page, '/systems.html');
-  await page.waitForSelector('#systems-evidence-grid .eng-showcase-card', { timeout: 30_000 });
+  await page.waitForSelector('#systems-overview-grid .eng-showcase-card', { timeout: 30_000 });
 }
 
 async function assertNoHorizontalOverflow(page) {
@@ -32,8 +33,8 @@ test.describe('Engineering evidence dashboard', () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await waitForSystemsReady(page);
 
-    await expect(page).toHaveTitle(/Engineering/i);
-    await expect(page.locator('h1')).toContainText(/AI-native products/i);
+    await expect(page).toHaveTitle(/Engineering Evidence/i);
+    await expect(page.locator('h1')).toContainText(/build, ship, think/i);
 
     for (const id of sectionIds) {
       await expect(page.locator(`#${id}`)).toBeAttached();
@@ -41,7 +42,8 @@ test.describe('Engineering evidence dashboard', () => {
 
     await expect(page.locator('#systems-metrics-grid .systems-metric-panel')).toHaveCount(4);
     await expect(page.locator('#systems-case-flows .systems-case-flow').first()).toBeVisible();
-    await expect(page.locator('.systems-footer')).toHaveCount(0);
+    await expect(page.locator('#systems-hiring-grid .systems-hiring-card')).toHaveCount(4);
+    await expect(page.locator('#systems-footer-links a')).toHaveCount(8);
     await assertNoHorizontalOverflow(page);
   });
 
@@ -56,7 +58,8 @@ test.describe('Engineering evidence dashboard', () => {
   test('mobile engineering page has no horizontal overflow', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForSystemsReady(page);
-    await expect(page.locator('.systems-footer')).toHaveCount(0);
+    await expect(page.locator('#systems-hiring-grid .systems-hiring-card')).toHaveCount(4);
+    await expect(page.locator('#systems-footer-links a')).toHaveCount(8);
     await assertNoHorizontalOverflow(page);
 
     const shellBox = await page.locator('.systems-shell').boundingBox();

@@ -1,90 +1,120 @@
 /**
- * Engineering evidence dashboard — data for systems.html
+ * Engineering Evidence — data for systems.html & homepage teaser
+ * Inspired by evidence-first hiring: build, ship, think, taste.
  */
 
 import { BRAND_TAGLINE, portfolioCaseStudy } from './case-studies-data.js';
 
 export { portfolioCaseStudy, BRAND_TAGLINE };
 
+export const publicEvidenceStatement =
+  'This page is intentionally public. Every architecture decision, benchmark, tradeoff, failure, and production metric exists because I believe engineering ability should be demonstrated through evidence rather than claimed through bullet points.';
+
+export const heroLead =
+  'Every claim on this portfolio is backed by code, benchmarks, architecture, or production telemetry. No stock templates. No generated project descriptions. Only things I\'ve built, measured, shipped, and learned.';
+
 export const heroStats = [
-  { value: '95+', unit: '', label: 'Lighthouse CI gate', href: '#production-metrics' },
+  { value: '95+', unit: '', label: 'Lighthouse', href: '#production' },
   { value: '9', unit: '', label: 'WebMCP tools', href: '#architecture' },
-  { value: '<50', unit: 'ms', label: 'Local agent actions', href: '#production-metrics' },
-  { value: '40', unit: '%', label: 'Dashboard latency cut', href: '#case-studies' },
+  { value: '40', unit: '%', label: 'Dashboard improvement', href: '#projects' },
+  { value: '12', unit: '', label: 'Technical articles', href: '#writing' },
+  { value: '40+', unit: '', label: 'Repositories', href: '#open-source' },
+  { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
 ];
 
-export const evidenceCards = [
+export const builderProfile = {
+  title: 'Builder Profile',
+  lead: 'AI Engineer',
+  bullets: [
+    'MS Computer Science — Drexel University',
+    'Building production AI products, agentic workflows, developer infrastructure, and modern web systems.',
+  ],
+  anchor: 'builder-profile',
+};
+
+export const buildCapabilities = {
+  title: 'What I Actually Build',
+  items: [
+    'AI Products',
+    'Agentic Systems',
+    'Full Stack Applications',
+    'RAG Pipelines',
+    'Developer Tools',
+    'System Monitors',
+    'Production APIs',
+    'Design Systems',
+  ],
+  anchor: 'build-capabilities',
+};
+
+export const hiringEvidence = [
   {
-    id: 'who',
-    question: 'Who are you?',
-    lead: 'AI Engineer & Product Builder',
-    bullets: [
-      'MS Computer Science — Drexel University',
-      'Building production AI systems, agentic workflows, retrieval pipelines, developer infrastructure, and modern full-stack applications.',
-      'Focused on reliability, developer experience, and thoughtful product design.',
-    ],
-    anchor: 'evidence-who',
+    id: 'build',
+    question: 'Can this person build?',
+    answer:
+      '9 WebMCP tools, dual-host portfolio, public monitor, and case studies with architecture diagrams — all in production.',
+    href: '#projects',
+    anchor: 'evidence-build',
   },
   {
-    id: 'what',
-    question: 'What have you built?',
-    bullets: [
-      'Production AI portfolio with local agentic actions, OpenRouter streaming, and 9 WebMCP tools',
-      'Live GitHub intelligence and public operations monitor',
-      'Enterprise analytics platform reducing dashboard latency by 40%',
-      'Gemma-powered HindAI with grounded retrieval and citations',
-      'Multi-modal AssistMe — voice, research, and tool orchestration',
-      'Production bug tracking platform — Django, React, PostgreSQL',
-    ],
-    anchor: 'evidence-what',
-    link: { href: 'index.html#projects', label: 'All projects' },
+    id: 'ship',
+    question: 'Can this person ship?',
+    answer:
+      '95+ Lighthouse CI gate, automatic deployments, live telemetry, and enterprise analytics with measured 40% latency reduction.',
+    href: '#production',
+    anchor: 'evidence-ship',
   },
   {
-    id: 'why',
-    question: 'Why are you exceptional?',
-    lead: 'I optimize entire systems instead of individual components.',
-    bullets: [
-      '40% reduction in enterprise dashboard latency',
-      '35% faster deployment workflows',
-      '25% improvement in ML forecasting accuracy',
-      '95+ Lighthouse production CI gate',
-      '<50ms local agentic interactions',
-      'Apple-inspired product design across every shipped interface',
-    ],
-    anchor: 'evidence-why',
-    link: { href: 'index.html#experience', label: 'Experience' },
+    id: 'think',
+    question: 'Can this person think?',
+    answer:
+      'Documented tradeoffs, rejected architectures, and failures — not just shipped features.',
+    href: '#experiments',
+    anchor: 'evidence-think',
   },
   {
-    id: 'proof',
-    question: 'Where is the proof?',
-    lead: 'Everything on this page is public.',
-    checklist: [
-      { label: 'Live demos', href: 'https://mangeshraut.pro/', external: true },
-      { label: 'Source code', href: 'https://github.com/mangeshraut712', external: true },
-      { label: 'Architecture diagrams', href: '#architecture' },
-      { label: 'Production telemetry', href: '#production-metrics' },
-      { label: 'Performance benchmarks', href: '#production-metrics' },
-      { label: 'Case studies', href: '#case-studies' },
-      { label: 'Resume', href: 'assets/files/Mangesh_Raut_Resume.pdf' },
-      { label: 'Recommendations', href: 'index.html#recommendations' },
-      { label: 'Certifications', href: 'index.html#certifications' },
-      { label: 'Public GitHub activity', href: '#open-source' },
-    ],
-    anchor: 'evidence-proof',
+    id: 'taste',
+    question: 'Can I trust their engineering taste?',
+    answer:
+      'Local-first actions, model routing over lock-in, and reliability gates before novelty.',
+    href: '#architecture',
+    anchor: 'evidence-taste',
   },
+];
+
+export const productionSnapshot = [
+  { label: 'Current deployment', value: 'Operational', liveKey: 'health' },
+  { label: 'Response time', value: '—', unit: 'ms', liveKey: 'apiP95' },
+  { label: 'Lighthouse', value: '95+' },
+  { label: 'Deployments', value: 'Automatic' },
+  { label: 'AI streaming', value: 'Enabled' },
+  { label: 'Provider', value: 'OpenRouter' },
+  { label: 'Models', value: 'Claude · Gemma · Grok' },
+  { label: 'Tool calls', value: 'Enabled' },
 ];
 
 export const productionMetricGroups = [
   {
+    id: 'deploy',
+    title: 'Production',
+    rows: [
+      { label: 'Status', value: 'Operational', liveKey: 'health' },
+      { label: 'Response time', value: '—', unit: 'ms', liveKey: 'apiP95' },
+      { label: 'Lighthouse', value: '95+' },
+      { label: 'Deployments', value: 'Automatic' },
+      { label: 'Uptime', value: '—', liveKey: 'uptime' },
+    ],
+  },
+  {
     id: 'ai',
     title: 'AI',
     rows: [
-      { label: 'OpenRouter streaming', value: 'Enabled' },
+      { label: 'Streaming', value: 'Enabled' },
+      { label: 'Provider', value: 'OpenRouter' },
+      { label: 'Models', value: 'Claude · Gemma · Grok' },
+      { label: 'Tool calls', value: 'Enabled' },
       { label: 'First token', value: '~1.2s', liveKey: 'chatTtft' },
-      { label: 'Avg completion', value: '~2.8s' },
       { label: 'Context window', value: '128k' },
-      { label: 'Prompt cache', value: 'Enabled' },
-      { label: 'Provider failover', value: 'Automatic' },
     ],
   },
   {
@@ -97,81 +127,122 @@ export const productionMetricGroups = [
       { label: 'SEO', value: '100' },
       { label: 'CLS', value: '0.00' },
       { label: 'INP', value: '<100ms' },
-      { label: 'LCP', value: '<1.5s' },
-    ],
-  },
-  {
-    id: 'backend',
-    title: 'Backend',
-    rows: [
-      { label: 'p95 latency', value: '—', unit: 'ms', liveKey: 'apiP95' },
-      { label: 'Availability', value: '99.9%' },
-      { label: 'Streaming', value: 'NDJSON' },
-      { label: 'Health', value: 'Operational', liveKey: 'health' },
-      { label: 'Deployments', value: 'Auto' },
     ],
   },
   {
     id: 'agent',
     title: 'Local agent',
     rows: [
-      { label: 'Navigate', value: '28ms' },
-      { label: 'Theme toggle', value: '12ms' },
-      { label: 'Resume download', value: '9ms' },
-      { label: 'Search', value: '31ms' },
-      { label: 'Project filter', value: '18ms' },
+      { label: 'WebMCP tools', value: '9' },
+      { label: 'Navigate', value: '<30ms' },
+      { label: 'Theme toggle', value: '<15ms' },
+      { label: 'Resume download', value: '<10ms' },
+      { label: 'Search / filter', value: '<35ms' },
     ],
   },
+];
+
+export const architectureDecisions = [
+  { decision: 'Why FastAPI?', why: 'Because streaming and async matter.' },
+  { decision: 'Why OpenRouter?', why: 'Model routing > provider lock-in.' },
+  { decision: 'Why WebMCP?', why: 'Instant browser actions without LLM latency.' },
+  { decision: 'Why Vercel + GH Pages?', why: 'Static delivery + cheap API hosting.' },
+  { decision: 'Why local-first?', why: 'Navigation should never wait for an LLM.' },
+];
+
+export const engineeringDecisions = [
+  { decision: 'Rejected microservices', why: 'Complexity' },
+  { decision: 'Rejected vector DB', why: 'Simple search was enough' },
+  { decision: 'Rejected AI navigation', why: 'Regex is 20× faster' },
+  { decision: 'Rejected animation library', why: 'Native browser APIs' },
+];
+
+export const failedExperiments = [
+  { name: 'Prompt-only navigation', status: 'Failed', reason: 'Unreliable' },
+  { name: 'SSR hydration', status: 'Failed', reason: 'Complexity > value' },
+  { name: 'Large context RAG', status: 'Failed', reason: 'Retrieval quality matters more than context size' },
+];
+
+export const currentWork = [
+  { phase: 'Shipping', title: 'Agentic Portfolio', progress: '95%', href: 'case-studies/portfolio.html' },
+  { phase: 'Research', title: 'HindAI RAG evaluation', progress: 'Active', href: '#projects' },
+  { phase: 'Experiment', title: 'WebXR project previews', progress: 'Active', href: 'index.html#projects' },
+  { phase: 'Writing', title: 'Context Engineering', progress: 'In progress', href: '#writing' },
+  { phase: 'Learning', title: 'RL Environments', progress: 'Ongoing', href: 'index.html#blog' },
+];
+
+export const lessonsLearned = [
+  'The model is not the architecture.',
+  'Retrieval determines quality.',
+  'Measure everything.',
+  'Architecture is UX.',
+  'Reliability beats novelty.',
+  'AI should augment, not obscure.',
 ];
 
 export const openSourceActivity = {
   label: 'Open source',
   rows: [
-    { label: 'GitHub commits', value: '1.2k+', liveKey: 'commits' },
+    { label: 'Latest release', value: '—', liveKey: 'latestRelease' },
+    { label: 'Latest commit', value: '—', liveKey: 'latestCommit' },
+    { label: 'Current branch', value: 'main', liveKey: 'currentBranch' },
+    { label: 'Recent PR', value: '—', liveKey: 'recentPr' },
+    { label: 'Recent issue', value: '—', liveKey: 'recentIssue' },
+    { label: 'Most active repo', value: 'mangeshrautarchive', liveKey: 'activeRepo' },
     { label: 'Repositories', value: '40+' },
-    { label: 'Stars', value: '120+', liveKey: 'stars' },
-    { label: 'Pull requests', value: '85+' },
-    { label: 'Issues', value: '60+' },
-    { label: 'Contributions', value: 'Active' },
-    { label: 'Current streak', value: 'Live', liveKey: 'streak' },
+    { label: 'Contributions', value: 'Active', liveKey: 'streak' },
   ],
   repoUrl: 'https://github.com/mangeshraut712',
 };
 
-export const engineeringPrinciples = [
-  'Build once.',
-  'Measure everything.',
-  'Reliability over novelty.',
-  'Local-first when possible.',
-  'Architecture is a product feature.',
-  'AI should augment, not obscure.',
-  'Design is engineering.',
+export const writingTopics = [
+  { label: 'Field Notes', href: 'blog/index.html' },
+  { label: 'Google I/O', href: 'index.html#blog' },
+  { label: 'WWDC', href: 'index.html#blog' },
+  { label: 'Context Engineering', href: 'index.html#blog' },
+  { label: 'RAG', href: 'index.html#blog' },
+  { label: 'System Design', href: 'index.html#blog' },
+  { label: 'AI Products', href: 'index.html#blog' },
+  { label: 'Developer Experience', href: 'index.html#blog' },
 ];
 
 export const engineeringTimeline = [
   {
     year: '2026',
     items: [
-      'Agentic Portfolio',
-      'OpenRouter + WebMCP',
+      'Engineering Dashboard',
+      'WebMCP',
       'System Monitor',
-      'GitHub Intelligence',
-      'Engineering dashboard',
+      'Agentic Portfolio',
     ],
   },
   {
     year: '2025',
-    items: ['CES AI Analytics', 'Faster deployments', 'Marketing redesign'],
+    items: ['Enterprise Analytics', 'AI Products'],
   },
   {
     year: '2024',
-    items: ['AssistMe VA', 'Voice + FastAPI', 'Multi-modal tools'],
+    items: ['AssistMe', 'Voice AI'],
   },
   {
     year: '2023',
     items: ['MS Computer Science', 'Drexel University'],
   },
 ];
+
+export const evidenceFooterLinks = [
+  { label: 'Currently Building', href: '#experiments' },
+  { label: 'Open Source', href: '#open-source' },
+  { label: 'Engineering Notebook', href: 'systems.html' },
+  { label: 'System Monitor', href: 'monitor.html' },
+  { label: 'Resume', href: 'assets/files/Mangesh_Raut_Resume.pdf' },
+  { label: 'GitHub', href: 'https://github.com/mangeshraut712', external: true },
+  { label: 'Now', href: 'uses.html' },
+  { label: 'RSS', href: 'rss.xml' },
+];
+
+/** @deprecated use lessonsLearned */
+export const engineeringPrinciples = lessonsLearned;
 
 export const buildingItems = [
   {
@@ -218,18 +289,11 @@ export const staticBenchmarks = [
     context: 'WebMCP navigate / theme / resume',
   },
   {
-    id: 'prompt-cache',
-    label: 'Prompt Cache & Context',
-    value: '128K',
-    unit: 'tokens',
-    context: 'OpenRouter prompt caching enabled',
-  },
-  {
     id: 'webmcp-mcp',
     label: 'WebMCP Client & Tools',
     value: '9',
     unit: 'tools',
-    context: 'Natural language browser tool execution',
+    context: 'Deterministic browser tool execution',
   },
   {
     id: 'best-practices',
@@ -293,7 +357,7 @@ export const caseStudyFlowSteps = [
   { key: 'approach', label: 'Architecture' },
   { key: 'tradeoffs', label: 'Tradeoffs' },
   { key: 'metrics', label: 'Benchmarks' },
-  { key: 'improvements', label: 'Failures & gaps' },
+  { key: 'improvements', label: 'Failures' },
   { key: 'results', label: 'Lessons' },
   { key: 'resultSummary', label: 'Result' },
 ];
@@ -304,7 +368,24 @@ export const usesStack = {
   aiStack: ['Cursor', 'Claude Code', 'OpenRouter', 'Codex'],
   engineering: ['FastAPI', 'React', 'Next.js', 'Vercel', 'GitHub Actions', 'Playwright'],
   fonts: ['SF Pro', 'Inter (fallback)'],
-  theme: ['WWDC26 liquid glass', 'Apple 2026 design tokens', 'Dark / light sync'],
+  theme: ['Solid white/black surfaces', 'Apple 2026 design tokens', 'Dark / light sync'],
   productivity: ['Notion', 'Linear-style task lists', 'GitHub Projects'],
   reading: ['Technical blogs', 'Apple HIG', 'AI papers & field notes'],
 };
+
+/** @deprecated — use builderProfile + buildCapabilities + hiringEvidence */
+export const evidenceCards = [
+  {
+    id: 'who',
+    question: builderProfile.title,
+    lead: builderProfile.lead,
+    bullets: builderProfile.bullets,
+    anchor: builderProfile.anchor,
+  },
+  {
+    id: 'what',
+    question: buildCapabilities.title,
+    bullets: buildCapabilities.items,
+    anchor: buildCapabilities.anchor,
+  },
+];

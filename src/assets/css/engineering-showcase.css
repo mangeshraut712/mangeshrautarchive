@@ -143,7 +143,7 @@ html.dark .engineering-overview-caption {
   padding-top: 0.95rem;
   border-top: 1px solid var(--eng-border-light);
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.65rem;
 }
 
@@ -333,17 +333,37 @@ html.dark .engineering-open-btn:hover {
   }
 }
 
+.engineering-public-statement {
+  margin: 0 0 0.85rem !important;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--eng-border-light);
+  background: #ffffff;
+  color: var(--eng-muted-light) !important;
+  font-size: 0.88rem !important;
+  line-height: 1.55 !important;
+  font-style: italic;
+}
+
+html.dark .engineering-public-statement {
+  border-color: var(--eng-border-dark);
+  background: #000000;
+  color: var(--eng-muted-dark) !important;
+}
+
+.engineering-overview-lead {
+  margin: 0.35rem 0 0 !important;
+  color: var(--eng-muted-light) !important;
+  font-size: 0.92rem !important;
+  line-height: 1.55 !important;
+  max-width: 62ch;
+}
+
+html.dark .engineering-overview-lead {
+  color: var(--eng-muted-dark) !important;
+}
+
 @media (width <= 768px) {
-  .engineering-overview-head {
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-
-  .engineering-overview-caption {
-    max-width: none;
-    text-align: left;
-  }
-
   .engineering-metrics-inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

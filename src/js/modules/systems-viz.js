@@ -6,6 +6,7 @@ import { buildDonutSegments } from '../utils/monitor-metrics.js';
 import {
   productionMetricGroups,
   openSourceActivity,
+  productionSnapshot,
   staticBenchmarks,
 } from './engineering-showcase-data.js';
 
@@ -224,6 +225,14 @@ function metricRowHtml(row) {
     <span class="systems-metric-label">${escapeHtml(row.label)}</span>
     <strong class="systems-metric-value"${live}>${escapeHtml(row.value)}${unit}</strong>
   </div>`;
+}
+
+export function renderProductionSnapshot() {
+  const rows = productionSnapshot.map(metricRowHtml).join('');
+  return `<article class="systems-metric-panel systems-metric-panel--snapshot lg-glass-card">
+    <h3 class="systems-metric-panel-title">Current deployment</h3>
+    <div class="systems-metric-rows">${rows}</div>
+  </article>`;
 }
 
 export function renderProductionMetricsGrid() {

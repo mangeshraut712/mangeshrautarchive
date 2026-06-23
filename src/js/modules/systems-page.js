@@ -1,10 +1,19 @@
 import {
-  buildingItems,
-  engineeringPrinciples,
+  architectureDecisions,
+  builderProfile,
+  buildCapabilities,
+  caseStudyFlowSteps,
+  currentWork,
+  engineeringDecisions,
   engineeringTimeline,
-  evidenceCards,
+  evidenceFooterLinks,
+  failedExperiments,
+  heroLead,
   heroStats,
-  systemDesignTopics,
+  hiringEvidence,
+  lessonsLearned,
+  publicEvidenceStatement,
+  writingTopics,
 } from './engineering-showcase-data.js';
 import { caseStudies, renderCaseStudyEvidenceRow } from './case-studies-data.js';
 import { mountArchitectureDiagrams, remountArchPanel } from './systems-arch-diagrams.js';
@@ -13,6 +22,7 @@ import {
   renderBenchmarkBarsHtml,
   renderOpenSourcePanel,
   renderProductionMetricsGrid,
+  renderProductionSnapshot,
   renderTelemetryBento,
   updateLiveBenchmarkValues,
 } from './systems-viz.js';
@@ -137,53 +147,135 @@ function initArchitectureTabs() {
   activate(tabs[0]?.dataset.archTab || 'dual-host');
 }
 
-function renderEvidence() {
-  const root = document.getElementById('systems-evidence-grid');
+function renderHero() {
+  const statement = document.getElementById('systems-public-statement');
+  const lead = document.getElementById('systems-hero-lead');
+  if (statement) statement.textContent = publicEvidenceStatement;
+  if (lead) lead.textContent = heroLead;
+
+  const root = document.getElementById('systems-hero-stats');
   if (!root) return;
-
-  root.innerHTML = evidenceCards
-    .map((card, index) => {
-      const links = card.links || (card.link ? [card.link] : []);
-      const linksHtml = links.length
-        ? `<div class="eng-card-links">${links
-            .map(
-              l =>
-                `<a href="${escapeHtml(l.href)}"${l.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(l.label)}</a>`
-            )
-            .join('')}</div>`
-        : '';
-
-      let body = '';
-      if (card.lead) {
-        body += `<p class="eng-card-lead">${escapeHtml(card.lead)}</p>`;
-      }
-      if (card.bullets?.length) {
-        body += `<ul class="eng-card-bullets">${card.bullets
-          .map(b => `<li>${escapeHtml(b)}</li>`)
-          .join('')}</ul>`;
-      }
-      if (card.checklist?.length) {
-        body += `<ul class="systems-proof-checklist">${card.checklist
-          .map(
-            item =>
-              `<li><a href="${escapeHtml(item.href)}"${item.external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(item.label)}</a></li>`
-          )
-          .join('')}</ul>`;
-      }
-      if (!body && card.answer) {
-        body = `<p class="eng-card-a">${escapeHtml(card.answer)}</p>`;
-      }
-
-      const featured = index === 0 ? ' systems-evidence-card--featured' : '';
-      const proof = card.id === 'proof' ? ' systems-evidence-card--proof' : '';
-      const span = card.id === 'what' || card.id === 'why' ? ' systems-evidence-card--half' : '';
-      return `<article class="eng-showcase-card systems-evidence-card lg-glass-card systems-evidence-card--${escapeHtml(card.id)}${featured}${proof}${span}" id="${escapeHtml(card.anchor)}">
-        <h2 class="eng-card-q">${escapeHtml(card.question)}</h2>
-        ${body}
-        ${linksHtml}
-      </article>`;
+  root.innerHTML = heroStats
+    .map(stat => {
+      const external = /^https?:\/\//i.test(stat.href);
+      const href = stat.href.startsWith('#') ? stat.href : stat.href;
+      return `<a class="systems-hero-stat" href="${escapeHtml(href)}"${
+        external ? ' target="_blank" rel="noopener noreferrer"' : ''
+      }>
+        <span class="systems-hero-stat-value">${escapeHtml(stat.value)}${stat.unit ? `<small>${escapeHtml(stat.unit)}</small>` : ''}</span>
+        <span class="systems-hero-stat-label">${escapeHtml(stat.label)}</span>
+      </a>`;
     })
     .join('');
+}
+
+function renderOverview() {
+  const root = document.getElementById('systems-overview-grid');
+  if (!root) return;
+
+  const capabilityList = buildCapabilities.items
+    .map(item => `<li class="systems-capability-item">✓ ${escapeHtml(item)}</li>`)
+    .join('');
+
+  root.innerHTML = `
+    <article class="eng-showcase-card systems-evidence-card lg-glass-card systems-evidence-card--featured" id="${escapeHtml(builderProfile.anchor)}">
+      <h2 class="eng-card-q">${escapeHtml(builderProfile.title)}</h2>
+      <p class="eng-card-lead">${escapeHtml(builderProfile.lead)}</p>
+      <ul class="eng-card-bullets">${builderProfile.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>
+    </article>
+    <article class="eng-showcase-card systems-evidence-card lg-glass-card" id="${escapeHtml(buildCapabilities.anchor)}">
+      <h2 class="eng-card-q">${escapeHtml(buildCapabilities.title)}</h2>
+      <ul class="systems-capability-list">${capabilityList}</ul>
+    </article>
+  `;
+}
+
+function renderHiringEvidence() {
+  const root = document.getElementById('systems-hiring-grid');
+  if (!root) return;
+
+  root.innerHTML = hiringEvidence
+    .map(
+      card => `<article class="eng-showcase-card systems-evidence-card lg-glass-card systems-hiring-card" id="${escapeHtml(card.anchor)}">
+        <h2 class="eng-card-q">${escapeHtml(card.question)}</h2>
+        <p class="eng-card-a">${escapeHtml(card.answer)}</p>
+        <a class="systems-tile-link" href="${escapeHtml(card.href)}">See proof →</a>
+      </article>`
+    )
+    .join('');
+}
+
+function renderDecisionGrid(rootId, decisions) {
+  const root = document.getElementById(rootId);
+  if (!root) return;
+  root.innerHTML = decisions
+    .map(
+      item => `<div class="systems-decision-row lg-glass-card">
+        <span class="systems-decision-label">${escapeHtml(item.decision)}</span>
+        <span class="systems-decision-divider" aria-hidden="true">—</span>
+        <span class="systems-decision-why">${escapeHtml(item.why)}</span>
+      </div>`
+    )
+    .join('');
+}
+
+function renderFailures() {
+  const root = document.getElementById('systems-failure-grid');
+  if (!root) return;
+  root.innerHTML = failedExperiments
+    .map(
+      item => `<div class="systems-failure-row lg-glass-card">
+        <div class="systems-failure-head">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span class="systems-failure-status">${escapeHtml(item.status)}</span>
+        </div>
+        <p class="systems-failure-reason">${escapeHtml(item.reason)}</p>
+      </div>`
+    )
+    .join('');
+}
+
+function renderCurrentWork() {
+  const root = document.getElementById('systems-current-work');
+  if (!root) return;
+  root.innerHTML = currentWork
+    .map(
+      item => `<a class="eng-showcase-card eng-building-card lg-glass-card" href="${escapeHtml(item.href)}">
+        <div class="eng-building-head">
+          <span class="eng-building-status">${escapeHtml(item.phase)}</span>
+          <span class="eng-building-signal">${escapeHtml(item.progress)}</span>
+        </div>
+        <h3 class="eng-building-title">${escapeHtml(item.title)}</h3>
+      </a>`
+    )
+    .join('');
+}
+
+function renderWriting() {
+  const root = document.getElementById('systems-writing-grid');
+  if (!root) return;
+  root.innerHTML = writingTopics
+    .map(
+      topic => `<a class="systems-writing-chip lg-glass-card" href="${escapeHtml(topic.href)}">${escapeHtml(topic.label)}</a>`
+    )
+    .join('');
+}
+
+function renderFooter() {
+  const root = document.getElementById('systems-footer-links');
+  if (!root) return;
+  root.innerHTML = evidenceFooterLinks
+    .map(link => {
+      const external = Boolean(link.external);
+      return `<a href="${escapeHtml(link.href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(link.label)}</a>`;
+    })
+    .join('');
+}
+
+function renderProductionSnapshotPanel() {
+  const root = document.getElementById('systems-production-snapshot');
+  if (!root) return;
+  root.innerHTML = renderProductionSnapshot();
 }
 
 function renderProductionMetrics() {
@@ -201,7 +293,7 @@ function renderOpenSource() {
 function renderPrinciples() {
   const root = document.getElementById('systems-principles-grid');
   if (!root) return;
-  root.innerHTML = engineeringPrinciples
+  root.innerHTML = lessonsLearned
     .map(
       (p, i) => `<div class="systems-principle-card lg-glass-card" style="--principle-i:${i}">
         <span class="systems-principle-num">${String(i + 1).padStart(2, '0')}</span>
@@ -220,44 +312,6 @@ function renderTimeline() {
         <span class="systems-timeline-year">${escapeHtml(block.year)}</span>
         <ul class="systems-timeline-items">${block.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
       </div>`
-    )
-    .join('');
-}
-
-function renderBuilding() {
-  const root = document.getElementById('systems-building-grid');
-  if (!root) return;
-  root.innerHTML = buildingItems
-    .map(
-      item => `<a class="eng-showcase-card eng-building-card lg-glass-card" href="${escapeHtml(item.href)}">
-        <div class="eng-building-head">
-          <span class="eng-building-status">${escapeHtml(item.status)}</span>
-          <span class="eng-building-signal">${escapeHtml(item.signal)}</span>
-        </div>
-        <h3 class="eng-building-title">${escapeHtml(item.title)}</h3>
-        <p class="eng-building-summary">${escapeHtml(item.summary)}</p>
-        <div class="eng-building-stack">${item.stack.map(s => `<span>${escapeHtml(s)}</span>`).join('')}</div>
-      </a>`
-    )
-    .join('');
-}
-
-function renderBenchmarks() {
-  const root = document.getElementById('systems-benchmarks-viz');
-  if (!root) return;
-  root.innerHTML = renderBenchmarkBarsHtml();
-}
-
-function renderSystemDesign() {
-  const root = document.getElementById('systems-design-grid');
-  if (!root) return;
-  root.innerHTML = systemDesignTopics
-    .map(
-      t => `<a class="eng-showcase-card eng-design-card lg-glass-card" href="${escapeHtml(t.href)}">
-        <h3 class="eng-design-title">${escapeHtml(t.title)}</h3>
-        <p class="eng-design-problem">${escapeHtml(t.problem)}</p>
-        <div class="eng-design-components">${t.components.map(c => `<span>${escapeHtml(c)}</span>`).join('')}</div>
-      </a>`
     )
     .join('');
 }
@@ -283,33 +337,17 @@ function flowStepContent(cs, stepKey) {
   return `<p>${escapeHtml(text || '')}</p>`;
 }
 
-function renderHeroStats() {
-  const root = document.getElementById('systems-hero-stats');
-  if (!root || root.children.length > 0) return;
-  root.innerHTML = heroStats
-    .map(
-      stat => `<a class="systems-hero-stat" href="${escapeHtml(stat.href)}">
-        <span class="systems-hero-stat-value">${escapeHtml(stat.value)}${stat.unit ? `<small>${escapeHtml(stat.unit)}</small>` : ''}</span>
-        <span class="systems-hero-stat-label">${escapeHtml(stat.label)}</span>
-      </a>`
-    )
-    .join('');
+function renderBenchmarks() {
+  const root = document.getElementById('systems-benchmarks-viz');
+  if (!root) return;
+  root.innerHTML = renderBenchmarkBarsHtml();
 }
 
 function renderCaseStudyFlows() {
   const root = document.getElementById('systems-case-flows');
   if (!root) return;
 
-  const steps = [
-    { key: 'problem', label: 'Problem' },
-    { key: 'whyExistingFail', label: 'Constraints' },
-    { key: 'approach', label: 'Architecture' },
-    { key: 'tradeoffs', label: 'Tradeoffs' },
-    { key: 'metrics', label: 'Benchmarks' },
-    { key: 'improvements', label: 'Failures & gaps' },
-    { key: 'results', label: 'Lessons' },
-    { key: 'resultSummary', label: 'Result' },
-  ];
+  const steps = caseStudyFlowSteps;
 
   root.innerHTML = caseStudies
     .map(cs => {
@@ -447,15 +485,21 @@ function initCaseStudyRails() {
 }
 
 export function initSystemsPage() {
-  renderHeroStats();
-  renderEvidence();
+  renderHero();
+  renderOverview();
+  renderProductionSnapshotPanel();
   renderProductionMetrics();
-  renderOpenSource();
+  renderHiringEvidence();
+  renderDecisionGrid('systems-arch-decisions', architectureDecisions);
+  renderDecisionGrid('systems-eng-decisions', engineeringDecisions);
+  renderFailures();
+  renderCurrentWork();
   renderPrinciples();
+  renderWriting();
+  renderOpenSource();
   renderTimeline();
-  renderBuilding();
+  renderFooter();
   renderBenchmarks();
-  renderSystemDesign();
   renderCaseStudyFlows();
   mountArchitectureDiagrams();
   initArchitectureTabs();
@@ -476,6 +520,9 @@ export function initSystemsPage() {
       '.systems-case-flow',
       '.systems-principle-card',
       '.systems-timeline-block',
+      '.systems-decision-row',
+      '.systems-failure-row',
+      '.systems-writing-chip',
     ]);
   }
 }

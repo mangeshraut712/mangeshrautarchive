@@ -16,7 +16,7 @@ test.describe('Systems Page (Engineering Evidence) Audit', () => {
     // 1. Desktop Audit
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/systems.html');
-    await page.waitForSelector('#systems-evidence-grid .eng-showcase-card', { timeout: 15000 });
+    await page.waitForSelector('#systems-overview-grid .eng-showcase-card', { timeout: 15000 });
 
     console.log('--- Desktop Console Errors:', consoleErrors);
     console.log('--- Desktop Console Warnings:', consoleWarnings);
@@ -83,12 +83,12 @@ test.describe('Systems Page (Engineering Evidence) Audit', () => {
     // 3. Mobile Viewport Audit
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/systems.html');
-    await page.waitForSelector('#systems-evidence-grid .eng-showcase-card', { timeout: 15000 });
+    await page.waitForSelector('#systems-overview-grid .eng-showcase-card', { timeout: 15000 });
 
     const mobileLayout = await page.evaluate(() => {
       const rail = document.getElementById('systems-section-rail');
       const railStyle = rail ? window.getComputedStyle(rail) : null;
-      const evidenceGrid = document.getElementById('systems-evidence-grid');
+      const evidenceGrid = document.getElementById('systems-overview-grid');
       const gridStyle = evidenceGrid ? window.getComputedStyle(evidenceGrid) : null;
       return {
         railDisplay: railStyle?.display,

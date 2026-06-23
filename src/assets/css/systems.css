@@ -2668,3 +2668,177 @@ html.dark body.systems-page .systems-status-pill.degraded {
 html.dark body.systems-page .systems-status-pill.unhealthy {
   background: rgb(255 69 58 / 16%);
 }
+
+/* ─── Engineering Evidence notebook sections ─── */
+.systems-public-statement {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--systems-card-border);
+  background: #ffffff;
+  color: var(--systems-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+html.dark .systems-public-statement {
+  background: #000000;
+}
+
+.systems-keynote-section--hero {
+  padding-top: 0.5rem;
+}
+
+.systems-keynote-section--hero .systems-keynote-hero {
+  margin-bottom: 1.25rem;
+}
+
+.systems-hiring-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.systems-decision-grid {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.systems-decision-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) auto minmax(160px, 1.4fr);
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.75rem 0.95rem;
+  border-radius: 14px;
+}
+
+.systems-decision-label {
+  font-weight: 650;
+  color: var(--systems-accent);
+}
+
+.systems-decision-divider {
+  color: var(--systems-muted);
+  opacity: 0.5;
+}
+
+.systems-decision-why {
+  color: var(--systems-text);
+  line-height: 1.45;
+}
+
+.systems-failure-grid {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.systems-failure-row {
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+}
+
+.systems-failure-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.systems-failure-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ff3b30;
+}
+
+.systems-failure-reason {
+  margin: 0;
+  color: var(--systems-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.systems-capability-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.systems-capability-item {
+  font-size: 0.88rem;
+  color: var(--systems-text);
+}
+
+.systems-writing-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.systems-writing-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--systems-accent);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.systems-production-snapshot {
+  margin-bottom: 1rem;
+}
+
+.systems-metric-panel--snapshot {
+  max-width: 640px;
+}
+
+.systems-evidence-footer {
+  margin-top: 1.5rem;
+  padding: 1.25rem 0 2rem;
+  border-top: 1px solid var(--systems-card-border);
+}
+
+.systems-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem 0.85rem;
+}
+
+.systems-footer-links a {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--systems-accent);
+  text-decoration: none;
+}
+
+.systems-hero-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (width <= 768px) {
+  .systems-hiring-grid,
+  .systems-hero-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .systems-decision-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .systems-decision-divider {
+    display: none;
+  }
+}

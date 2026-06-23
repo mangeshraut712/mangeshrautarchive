@@ -9,10 +9,10 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
-    <title>Engineering | Mangesh Raut</title>
+    <title>Engineering Evidence | Mangesh Raut</title>
     <meta
       name="description"
-      content="Verifiable engineering evidence — production metrics, architecture, case studies, open source, and a living record of what I build and measure."
+      content="Engineering evidence — production metrics, architecture decisions, case studies, failures, and live telemetry. Proof over bullet points."
     />
     <link rel="canonical" href="https://mangeshraut.pro/systems" />
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
@@ -54,7 +54,7 @@
       data-perf-defer
     />
     <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/systems.css?v=20260627c" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260628b" data-perf-defer />
     <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260619a" data-perf-defer />
     <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260623a" data-perf-defer />
     <link
@@ -102,7 +102,7 @@
     </script>
     <noscript>
       <link rel="stylesheet" href="assets/css/monitor.css?v=20260623a" />
-      <link rel="stylesheet" href="assets/css/systems.css?v=20260627c" />
+      <link rel="stylesheet" href="assets/css/systems.css?v=20260628b" />
       <link rel="stylesheet" href="assets/css/typography-system.css?v=20260613b" />
       <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260613c" />
       <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260613b" />
@@ -139,8 +139,8 @@
         </a>
       </div>
       <div class="monitor-page-nav__brand" aria-label="Current page">
-        <span class="monitor-page-nav__kicker">Evidence</span>
-        <span class="monitor-page-nav__label">Engineering</span>
+        <span class="monitor-page-nav__kicker">Notebook</span>
+        <span class="monitor-page-nav__label">Engineering Evidence</span>
       </div>
       <div class="monitor-page-nav__actions">
         <button
@@ -155,76 +155,44 @@
     </nav>
 
     <main class="systems-shell" id="main-content">
-      <header class="systems-keynote-hero" id="overview">
-        <p class="systems-eyebrow">Engineering</p>
-        <h1>Building AI-native products with production-grade engineering.</h1>
-        <p class="systems-hero-lead systems-hero-lead--stack">
-          <span>Thoughtful design and measurable outcomes.</span>
-          <span
-            >Every metric, architecture diagram, benchmark, and case study on this page is
-            verifiable.</span
-          >
-        </p>
-        <div
-          class="systems-hero-stats"
-          id="systems-hero-stats"
-          aria-label="Key engineering metrics"
-        >
-          <a class="systems-hero-stat" href="#production-metrics">
-            <span class="systems-hero-stat-value">95+</span>
-            <span class="systems-hero-stat-label">Lighthouse CI gate</span>
-          </a>
-          <a class="systems-hero-stat" href="#architecture">
-            <span class="systems-hero-stat-value">9</span>
-            <span class="systems-hero-stat-label">WebMCP tools</span>
-          </a>
-          <a class="systems-hero-stat" href="#production-metrics">
-            <span class="systems-hero-stat-value">&lt;50<small>ms</small></span>
-            <span class="systems-hero-stat-label">Local agent actions</span>
-          </a>
-          <a class="systems-hero-stat" href="#case-studies">
-            <span class="systems-hero-stat-value">40<small>%</small></span>
-            <span class="systems-hero-stat-label">Dashboard latency cut</span>
-          </a>
+      <section class="systems-keynote-section systems-keynote-section--hero" id="overview">
+        <header class="systems-keynote-hero">
+          <p class="systems-public-statement" id="systems-public-statement"></p>
+          <p class="systems-eyebrow">Engineering Evidence</p>
+          <h1>Proof you can build, ship, think, and trust.</h1>
+          <p class="systems-hero-lead systems-hero-lead--stack" id="systems-hero-lead"></p>
+          <div
+            class="systems-hero-stats"
+            id="systems-hero-stats"
+            aria-label="Key engineering metrics"
+          ></div>
+        </header>
+        <div class="systems-section-head systems-section-head--center">
+          <h2 id="overview-heading">Builder profile</h2>
         </div>
-      </header>
+        <div class="systems-evidence-grid" id="systems-overview-grid"></div>
+      </section>
 
       <nav class="systems-section-rail" id="systems-section-rail" aria-label="Page sections">
         <a href="#overview" data-section-link class="is-active" aria-current="true">Overview</a>
-        <a href="#production-metrics" data-section-link>Metrics</a>
+        <a href="#production" data-section-link>Production</a>
         <a href="#architecture" data-section-link>Architecture</a>
-        <a href="#systems" data-section-link>Systems</a>
-        <a href="#case-studies" data-section-link>Case studies</a>
-        <a href="#open-source" data-section-link>Open source</a>
+        <a href="#projects" data-section-link>Projects</a>
+        <a href="#evidence" data-section-link>Evidence</a>
+        <a href="#experiments" data-section-link>Experiments</a>
+        <a href="#writing" data-section-link>Writing</a>
         <a href="#timeline" data-section-link>Timeline</a>
       </nav>
 
-      <section
-        class="systems-keynote-section systems-keynote-section--evidence"
-        id="evidence"
-        aria-labelledby="evidence-heading"
-      >
-        <div class="systems-section-head systems-section-head--center">
-          <h2 id="evidence-heading">Overview</h2>
-          <p class="systems-section-desc">
-            Who I am, what I've shipped, and the proof — answerable in 30 seconds.
-          </p>
-        </div>
-        <div class="systems-evidence-grid" id="systems-evidence-grid"></div>
-      </section>
-
-      <section
-        class="systems-keynote-section"
-        id="production-metrics"
-        aria-labelledby="metrics-heading"
-      >
+      <section class="systems-keynote-section" id="production" aria-labelledby="production-heading">
         <div class="systems-section-head">
-          <h2 id="metrics-heading">Quality &amp; performance budgets</h2>
+          <h2 id="production-heading">Production</h2>
           <p class="systems-section-desc">
-            CI-verified Lighthouse budgets, quality gates, local agent latency, and live API status.
+            Live deployment proof — status, latency, Lighthouse, and AI stack.
             <span id="telemetry-refreshed" class="systems-sync-note"></span>
           </p>
         </div>
+        <div class="systems-production-snapshot" id="systems-production-snapshot"></div>
         <div
           class="systems-bento systems-bento--telemetry"
           id="systems-telemetry-bento"
@@ -248,9 +216,10 @@
         <div class="systems-section-head">
           <h2 id="architecture-heading">Architecture</h2>
           <p class="systems-section-desc">
-            How systems are built, deployed, and reasoned about — diagrams you can inspect.
+            Decisions, not technologies — why each choice was made.
           </p>
         </div>
+        <div class="systems-decision-grid" id="systems-arch-decisions"></div>
         <div class="systems-arch-stage lg-glass-card" id="systems-arch-stage">
           <div class="systems-arch-tabs" role="tablist" aria-label="Architecture diagrams">
             <button
@@ -312,35 +281,9 @@
         </div>
       </section>
 
-      <section class="systems-keynote-section" id="systems" aria-labelledby="systems-heading">
+      <section class="systems-keynote-section" id="projects" aria-labelledby="projects-heading">
         <div class="systems-section-head">
-          <h2 id="systems-heading">Systems</h2>
-          <p class="systems-section-desc">
-            What I'm shipping now, system design framing, and production surfaces.
-          </p>
-        </div>
-
-        <div class="systems-section-subhead">
-          <h3>Production surfaces</h3>
-        </div>
-        <div class="systems-building-grid" id="systems-building-grid"></div>
-        <div class="systems-section-subhead">
-          <h3>System design</h3>
-        </div>
-        <div class="systems-design-grid" id="systems-design-grid"></div>
-        <div class="systems-section-subhead">
-          <h3>Engineering principles</h3>
-        </div>
-        <div class="systems-principles-grid" id="systems-principles-grid"></div>
-      </section>
-
-      <section
-        class="systems-keynote-section"
-        id="case-studies"
-        aria-labelledby="case-studies-heading"
-      >
-        <div class="systems-section-head">
-          <h2 id="case-studies-heading">Case studies</h2>
+          <h2 id="projects-heading">Projects</h2>
           <p class="systems-section-desc">
             Problem → constraints → architecture → tradeoffs → benchmarks → failures → lessons →
             result.
@@ -349,14 +292,56 @@
         <div class="systems-case-flows" id="systems-case-flows"></div>
       </section>
 
+      <section
+        class="systems-keynote-section"
+        id="evidence"
+        aria-labelledby="hiring-evidence-heading"
+      >
+        <div class="systems-section-head systems-section-head--center">
+          <h2 id="hiring-evidence-heading">Evidence</h2>
+          <p class="systems-section-desc">Four questions every hiring manager asks — answered in 30 seconds.</p>
+        </div>
+        <div class="systems-hiring-grid" id="systems-hiring-grid"></div>
+      </section>
+
+      <section class="systems-keynote-section" id="experiments" aria-labelledby="experiments-heading">
+        <div class="systems-section-head">
+          <h2 id="experiments-heading">Experiments</h2>
+          <p class="systems-section-desc">Decisions, failures, and what I'm building now.</p>
+        </div>
+        <div class="systems-section-subhead">
+          <h3>Engineering decisions</h3>
+          <p class="systems-section-desc">The most important code is the code I didn't write.</p>
+        </div>
+        <div class="systems-decision-grid" id="systems-eng-decisions"></div>
+        <div class="systems-section-subhead">
+          <h3>Things that failed</h3>
+        </div>
+        <div class="systems-failure-grid" id="systems-failure-grid"></div>
+        <div class="systems-section-subhead">
+          <h3>Things I'm building</h3>
+        </div>
+        <div class="systems-building-grid systems-building-grid--work" id="systems-current-work"></div>
+        <div class="systems-section-subhead">
+          <h3>Things I learned</h3>
+        </div>
+        <div class="systems-principles-grid" id="systems-principles-grid"></div>
+      </section>
+
       <section class="systems-keynote-section" id="open-source" aria-labelledby="oss-heading">
         <div class="systems-section-head">
           <h2 id="oss-heading">Open source</h2>
-          <p class="systems-section-desc">
-            Public GitHub activity — commits, repos, and contributions.
-          </p>
+          <p class="systems-section-desc">Latest release, commit, branch, and public activity — live.</p>
         </div>
         <div id="systems-oss-panel"></div>
+      </section>
+
+      <section class="systems-keynote-section" id="writing" aria-labelledby="writing-heading">
+        <div class="systems-section-head">
+          <h2 id="writing-heading">Writing</h2>
+          <p class="systems-section-desc">Field notes — short, technical, opinionated.</p>
+        </div>
+        <div class="systems-writing-grid" id="systems-writing-grid"></div>
       </section>
 
       <section class="systems-keynote-section" id="timeline" aria-labelledby="timeline-heading">
@@ -368,6 +353,10 @@
         </div>
         <div class="systems-timeline" id="systems-timeline"></div>
       </section>
+
+      <footer class="systems-evidence-footer" id="systems-footer" aria-label="Engineering evidence footer">
+        <div class="systems-footer-links" id="systems-footer-links"></div>
+      </footer>
     </main>
 
     <script type="module" src="js/modules/accessibility.js"></script>
