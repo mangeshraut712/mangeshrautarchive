@@ -560,6 +560,7 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 ### June 2026 (latest)
 
 - **Engineering Evidence (`/systems`)** — aligned with travel/monitor nav pattern; architecture tab pills no longer inherit global blue button styles; dual-host diagram edges fixed; hero/benchmark tiles use CI-verified Lighthouse budgets (95+ gate), WebMCP tool count, and live API status instead of fabricated scores.
+- **CI recovery** — fixed flake8 EOF on `google_analytics.py`; added `npm run lint:python` to mirror deploy workflow; serve-dist now mocks NDJSON `/api/chat` streaming for local dist previews.
 - **Sitewide Liquid Glass** — `wwdc26` section 23/24: project cards, travel/monitor nav, blog articles, monitor `doc-card` tiles, 404 `lg-glass-card`, Apple spring hover/press on showcase cards.
 - **AssistMe routing** — `model_router.py` with OpenRouter Fusion (compare), Auto (general), Grok-first portfolio tier, Gemini fast-path, and runtime fallback chain; NDJSON streaming on Vercel.
 - **Cross-surface parity** — GitHub Pages `build-config.json` → `apiBaseUrl: mangeshraut.pro`; blog generator ships glass classes on index + article pages.

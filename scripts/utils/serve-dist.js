@@ -451,6 +451,9 @@ function resolveMonitorMock(path, method) {
   if (path.includes('/api/health') || path.includes('/api/status')) {
     return { status: 'healthy', success: true };
   }
+  if (path.includes('/api/chat/health')) {
+    return { status: 'healthy', success: true, mode: 'preview' };
+  }
   if (path.includes('/api/analytics/reach')) return { success: true, total_reach: 120 };
   if (path.includes('/api/music/recent')) return { recenttracks: { track: [] } };
   if (path.includes('/api/personalization/export')) {
@@ -500,6 +503,32 @@ app.all(/^\/api\/.*$/, (req, res) => {
     req.path.endsWith('/resolve')
   ) {
     res.json({ success: true, timestamp: monitorMockTimestamp() });
+    return;
+  }
+
+  if (req.method === 'POST' && req.path.includes('/api/chat')) {
+    res.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
+    const previewReply =
+      'Preview-mode AssistMe response from serve-dist — streaming NDJSON mock for local dist audits.';
+    const lines = [
+      JSON.stringify({ type: 'typing', status: 'start' }),
+      JSON.stringify({ type: 'typing', status: 'stop' }),
+      JSON.stringify({ type: 'chunk', content: previewReply, chunk_id: 1 }),
+      JSON.stringify({
+        type: 'done',
+        full_content: previewReply,
+        metadata: {
+          model: 'preview/local',
+          source: 'serve-dist',
+          sourceLabel: 'Local preview',
+          category: 'AI Response',
+          knowledge_context: true,
+          routing_tier: 'preview',
+          elapsed_ms: 12,
+        },
+      }),
+    ];
+    res.status(200).send(`${lines.join('\n')}\n`);
     return;
   }
 

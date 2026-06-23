@@ -18,6 +18,7 @@
     "lint:fix": "eslint . --fix",
     "lint:css": "stylelint \"src/assets/css/**/*.css\"",
     "lint:dead-code": "node scripts/utils/run-python-dead-code.js",
+    "lint:python": "python -m flake8 api/ --max-line-length=120 --ignore=E501,W503,W291,W293",
     "test": "vitest --passWithNoTests --run",
     "test:api": "uv run --with pytest --with fastapi --with httpx python -m pytest tests/api -q",
     "test:e2e:chrome": "node scripts/utils/run-playwright.js test tests/e2e/smoke.spec.js --project=\"Desktop Chrome\"",
