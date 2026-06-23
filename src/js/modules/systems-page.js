@@ -6,7 +6,7 @@ import {
   heroStats,
   systemDesignTopics,
 } from './engineering-showcase-data.js';
-import { caseStudies } from './case-studies-data.js';
+import { caseStudies, renderCaseStudyEvidenceRow } from './case-studies-data.js';
 import { mountArchitectureDiagrams, remountArchPanel } from './systems-arch-diagrams.js';
 import { observeScrollAnimations } from './scroll-animations.js';
 import {
@@ -334,6 +334,7 @@ function renderCaseStudyFlows() {
         <header class="systems-case-flow-header">
           <h3>${escapeHtml(cs.title)}</h3>
           <p>${escapeHtml(cs.tagline)}</p>
+          ${renderCaseStudyEvidenceRow(cs)}
           <div class="systems-flow-rail" aria-hidden="true">${stepRail}</div>
         </header>
         <div class="systems-flow-pipeline">${flowSteps}</div>

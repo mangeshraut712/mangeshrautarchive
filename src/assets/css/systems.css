@@ -2387,7 +2387,6 @@ body.systems-page .systems-evidence-card:hover,
 body.systems-page .systems-principle-card:hover,
 body.systems-page .systems-hero-stat:hover,
 body.systems-page .systems-bento-tile:hover,
-body.systems-page .systems-arch-stage:hover,
 body.systems-page .systems-flow-step:hover,
 body.systems-page .systems-evidence-grid article:hover,
 body.systems-page .systems-metric-panel:hover,
@@ -2408,7 +2407,6 @@ html.dark body.systems-page .systems-evidence-card:hover,
 html.dark body.systems-page .systems-principle-card:hover,
 html.dark body.systems-page .systems-hero-stat:hover,
 html.dark body.systems-page .systems-bento-tile:hover,
-html.dark body.systems-page .systems-arch-stage:hover,
 html.dark body.systems-page .systems-flow-step:hover,
 html.dark body.systems-page .systems-evidence-grid article:hover,
 html.dark body.systems-page .systems-metric-panel:hover,
@@ -2535,6 +2533,108 @@ html.dark body.systems-page .systems-arch-svg .arch-stack-item {
 
 body.systems-page .systems-arch-stage.lg-glass-card {
   padding: 1.25rem;
+  border-radius: 20px !important;
+  background: linear-gradient(165deg, #fff 0%, #f8fbff 100%) !important;
+}
+
+html.dark body.systems-page .systems-arch-stage.lg-glass-card {
+  background: linear-gradient(165deg, #000 0%, #050a12 100%) !important;
+}
+
+/* Project evidence row — matches projects-showcase-2026 */
+body.systems-page .project-evidence-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  margin: 0.65rem 0 0;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--systems-card-border);
+}
+
+body.systems-page .project-evidence-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--systems-accent);
+  background: rgb(0 113 227 / 10%);
+  border: 1px solid rgb(0 113 227 / 15%);
+  transition:
+    transform 0.3s var(--systems-spring),
+    background 0.2s ease;
+}
+
+body.systems-page .project-evidence-link:hover,
+body.systems-page .project-evidence-link:focus-visible {
+  background: rgb(0 113 227 / 18%);
+}
+
+body.systems-page .project-evidence-link.is-unavailable {
+  color: var(--systems-muted);
+  background: rgb(0 0 0 / 4%);
+  border-color: var(--systems-card-border);
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+html.dark body.systems-page .project-evidence-link.is-unavailable {
+  background: rgb(255 255 255 / 4%);
+}
+
+@media (width <= 768px) {
+  body.systems-page .systems-arch-stage,
+  body.systems-page .systems-arch-stage.lg-glass-card {
+    padding: 0.85rem !important;
+    overflow: hidden;
+  }
+
+  body.systems-page .systems-arch-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: 12px;
+    margin-bottom: 0.85rem;
+    padding: 0.2rem;
+  }
+
+  body.systems-page .systems-arch-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.systems-page .systems-arch-tab {
+    flex: 0 0 auto !important;
+    font-size: 0.76rem !important;
+    padding: 0.4rem 0.75rem !important;
+    white-space: nowrap;
+  }
+
+  body.systems-page .systems-arch-diagram-host {
+    padding: 0.65rem 0.5rem;
+    margin-inline: 0;
+  }
+
+  .systems-arch-diagram-host .systems-arch-svg {
+    min-width: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  body.systems-page .systems-arch-caption {
+    font-size: 0.8rem;
+    max-width: none;
+  }
+}
+
+@media (width <= 480px) {
+  body.systems-page .systems-arch-panel h3 {
+    font-size: 0.95rem;
+  }
 }
 
 body.systems-page .eng-card-bullets li {

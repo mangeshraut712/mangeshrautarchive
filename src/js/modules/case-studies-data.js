@@ -84,7 +84,7 @@ export const caseStudies = [
       'Expand OSS line to MCP server + eval harness repos',
     ],
     stack: ['FastAPI', 'OpenRouter', 'esbuild', 'Playwright', 'WebMCP', 'Vercel', 'GitHub Pages'],
-    architectureAnchor: 'systems.html#architecture-assistme',
+    architectureAnchor: 'systems.html#architecture-dual-host',
   },
   {
     slug: 'hindai',
@@ -92,7 +92,7 @@ export const caseStudies = [
     title: 'HindAI — Grounded Philosophy Assistant',
     tagline: 'Show RAG, don’t claim RAG.',
     demoUrl: null,
-    repoUrl: 'https://github.com/mangeshraut712',
+    repoUrl: null,
     blogId: 'google-io-2026-developer-insights',
     blogHref: 'index.html#blog-read-google-io-2026-developer-insights',
     videoUrl: 'https://www.youtube.com/@mangeshraut71298',
@@ -259,26 +259,101 @@ export function getCaseStudyPageHref(slug) {
   return `case-studies/${slug}.html`;
 }
 
+export function normalizeExternalUrl(raw) {
+  if (!raw) return null;
+  const value = String(raw).trim();
+  if (!value) return null;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(value) && !/^https?:\/\//i.test(value)) return null;
+  const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  try {
+    const parsed = new URL(withProtocol);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function sanitizeArchitectureHref(raw) {
+  const fallback = 'systems.html#architecture';
+  if (!raw) return fallback;
+  const value = String(raw).trim();
+  if (!/^systems\.html#[a-z0-9-]+$/i.test(value)) return fallback;
+  return value;
+}
+
+export function getCaseStudyEvidenceLinks(cs) {
+  if (!cs) return [];
+  return [
+    { label: 'Repo', href: normalizeExternalUrl(cs.repoUrl) },
+    { label: 'Demo', href: normalizeExternalUrl(cs.demoUrl) },
+    { label: 'Architecture', href: sanitizeArchitectureHref(cs.architectureAnchor) },
+    { label: 'Story', href: cs.slug ? getCaseStudyPageHref(cs.slug) : null },
+  ];
+}
+
+export function renderEvidenceRowHtml(items, ariaLabel) {
+  const renderLink = (label, href) => {
+    if (!href) {
+      return `<span class="project-evidence-link is-unavailable" aria-disabled="true">${escapeHtml(label)}</span>`;
+    }
+    const external = /^https?:\/\//i.test(href);
+    return `<a class="project-evidence-link" href="${escapeHtml(href)}"${
+      external ? ' target="_blank" rel="noopener noreferrer"' : ''
+    }>${escapeHtml(label)}</a>`;
+  };
+  return `<div class="project-evidence-row" role="navigation" aria-label="${escapeHtml(ariaLabel)}">
+    ${items.map(item => renderLink(item.label, item.href)).join('')}
+  </div>`;
+}
+
+export function renderCaseStudyEvidenceRow(cs) {
+  return renderEvidenceRowHtml(
+    getCaseStudyEvidenceLinks(cs),
+    `Project evidence for ${cs?.title || 'case study'}`
+  );
+}
+
+export function renderRepoEvidenceRow(repo) {
+  const links = getProjectEvidenceLinks(repo);
+  const items = [
+    { label: 'Repo', href: links.repo },
+    { label: 'Demo', href: links.demo },
+    { label: 'Architecture', href: links.architecture },
+    { label: 'Story', href: links.story },
+  ];
+  return renderEvidenceRowHtml(items, `Project evidence for ${repo?.name || 'repository'}`);
+}
+
 export function getProjectEvidenceLinks(repo) {
   const name = repo?.name || '';
   const cs = getCaseStudyByRepo(name);
-  const repoUrl = repo?.html_url || '';
-  const demoUrl = repo?.homepage || '';
+  const repoUrl = normalizeExternalUrl(repo?.html_url);
+  const demoUrl = normalizeExternalUrl(repo?.homepage);
 
   if (!cs) {
     return {
-      repo: repoUrl || null,
-      demo: demoUrl || null,
-      architecture: null,
+      repo: repoUrl,
+      demo: demoUrl,
+      architecture: 'systems.html#architecture',
       story: null,
     };
   }
 
+  const [repoLink, demoLink, archLink, storyLink] = getCaseStudyEvidenceLinks(cs);
   return {
-    repo: cs.repoUrl || repoUrl || null,
-    demo: cs.demoUrl || demoUrl || null,
-    architecture: cs.architectureAnchor || 'systems.html#architecture',
-    story: getCaseStudyPageHref(cs.slug),
+    repo: repoLink.href || repoUrl,
+    demo: demoLink.href || demoUrl,
+    architecture: archLink.href,
+    story: storyLink.href,
     blog: cs.blogHref || null,
     video: cs.videoUrl || null,
   };

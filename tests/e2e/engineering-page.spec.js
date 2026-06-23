@@ -114,4 +114,41 @@ test.describe('Engineering evidence dashboard', () => {
     await expect(page.locator('#uses-grid .uses-section')).toHaveCount(8);
     await expect(page.locator('.systems-footer-links a[href="systems.html"]')).toBeVisible();
   });
+
+  test('case study flows expose Repo/Demo/Architecture/Story evidence links', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await waitForSystemsReady(page);
+
+    const portfolioRow = page.locator('#case-study-portfolio .project-evidence-row');
+    await expect(portfolioRow).toBeVisible();
+    await expect(portfolioRow.locator('a.project-evidence-link', { hasText: 'Repo' })).toHaveAttribute(
+      'href',
+      'https://github.com/mangeshraut712/mangeshrautarchive'
+    );
+    await expect(
+      portfolioRow.locator('a.project-evidence-link', { hasText: 'Architecture' })
+    ).toHaveAttribute('href', 'systems.html#architecture-dual-host');
+    await expect(portfolioRow.locator('a.project-evidence-link', { hasText: 'Story' })).toHaveAttribute(
+      'href',
+      'case-studies/portfolio.html'
+    );
+  });
+
+  test('architecture section stays within viewport on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForSystemsReady(page);
+    await page.locator('#architecture').scrollIntoViewIfNeeded();
+
+    const stage = page.locator('.systems-arch-stage');
+    await expect(stage).toBeVisible();
+
+    const stageBox = await stage.boundingBox();
+    const viewport = page.viewportSize();
+    if (stageBox && viewport) {
+      expect(stageBox.x).toBeGreaterThanOrEqual(-1);
+      expect(stageBox.x + stageBox.width).toBeLessThanOrEqual(viewport.width + 1);
+    }
+
+    await assertNoHorizontalOverflow(page);
+  });
 });

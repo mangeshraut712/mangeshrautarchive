@@ -8,7 +8,7 @@
  * 3) direct GitHub API fallback
  */
 
-import { getProjectEvidenceLinks } from './case-studies-data.js';
+import { renderRepoEvidenceRow } from './case-studies-data.js';
 
 // Hoisted Intl formatters for performance
 const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -1173,28 +1173,7 @@ class GitHubProjects {
   }
 
   buildProjectEvidenceRow(repo) {
-    const links = getProjectEvidenceLinks(repo);
-    const items = [
-      { label: 'Repo', href: links.repo },
-      { label: 'Demo', href: links.demo },
-      { label: 'Architecture', href: links.architecture },
-      { label: 'Story', href: links.story },
-    ];
-
-    const renderLink = (label, href) => {
-      if (!href) {
-        return `<span class="project-evidence-link is-unavailable" aria-disabled="true">${label}</span>`;
-      }
-      const safeHref = this.escapeHtml(href);
-      const external = /^https?:\/\//i.test(href);
-      return `<a class="project-evidence-link" href="${safeHref}"${
-        external ? ' target="_blank" rel="noopener noreferrer"' : ''
-      }>${label}</a>`;
-    };
-
-    return `<div class="project-evidence-row" role="navigation" aria-label="Project evidence for ${this.escapeHtml(repo.name)}">
-      ${items.map(item => renderLink(item.label, item.href)).join('')}
-    </div>`;
+    return renderRepoEvidenceRow(repo);
   }
 
   createProjectCard(repo, _index) {
