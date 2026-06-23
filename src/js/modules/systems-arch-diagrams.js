@@ -254,7 +254,7 @@ export function renderReachByCountryDiagram(analyticsData) {
         <text class="arch-node-text" x="60" y="22" text-anchor="start" style="font-size: 13px; font-weight: 600;">${c.country}</text>
         <rect class="arch-bar-track" x="180" y="8" width="${maxBarW}" height="16" rx="4" />
         <rect class="arch-bar-fill arch-bar-fill--a is-animated" x="180" y="8" width="0" height="16" rx="4" data-target-w="${barW}" />
-        <text class="arch-node-text" x="520" y="22" text-anchor="start" style="font-size: 13px; font-weight: 700; fill: var(--systems-blue);">${fmtNum(c.users)}</text>
+        <text class="arch-node-text" x="520" y="22" text-anchor="start" style="font-size: 13px; font-weight: 700; fill: var(--systems-accent);">${fmtNum(c.users)}</text>
       </g>
     `;
   });

@@ -119,14 +119,7 @@ function pageShell({ title, description, canonical, body }) {
   </head>
   <body class="systems-page case-study-standalone">
     ${body}
-    <script>
-      document.getElementById('theme-toggle')?.addEventListener('click', () => {
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        html.dataset.theme = isDark ? 'dark' : 'light';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-    </script>
+    <script type="module" src="${ASSET_PREFIX}/js/utils/theme.js"></script>
   </body>
 </html>`;
 }

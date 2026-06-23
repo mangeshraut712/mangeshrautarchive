@@ -511,7 +511,23 @@ html.dark body.systems-page .systems-arch-tab.is-active {
       body.monitor-page .overview-card,
       body.uses-page .uses-section,
       #skills-container .skill-card,
-      .skill-category-card
+      .skill-category-card,
+      .systems-flow-step,
+      .systems-timeline-block,
+      .systems-now-card,
+      .case-study-preview-card,
+      .systems-principle-card,
+      .eng-building-card,
+      .eng-design-card,
+      .systems-bench-row,
+      .systems-hero-stat,
+      body.monitor-page .health-item,
+      body.monitor-page .endpoint-card,
+      body.monitor-page .ops-card,
+      body.monitor-page .doc-link-tile,
+      body.monitor-page .monitor-summary-card,
+      .sub-card,
+      .nested-card
     ):hover {
     border-color: #0071e3 !important;
     box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
@@ -558,7 +574,23 @@ html.dark body.systems-page .systems-arch-tab.is-active {
       body.monitor-page .overview-card,
       body.uses-page .uses-section,
       #skills-container .skill-card,
-      .skill-category-card
+      .skill-category-card,
+      .systems-flow-step,
+      .systems-timeline-block,
+      .systems-now-card,
+      .case-study-preview-card,
+      .systems-principle-card,
+      .eng-building-card,
+      .eng-design-card,
+      .systems-bench-row,
+      .systems-hero-stat,
+      body.monitor-page .health-item,
+      body.monitor-page .endpoint-card,
+      body.monitor-page .ops-card,
+      body.monitor-page .doc-link-tile,
+      body.monitor-page .monitor-summary-card,
+      .sub-card,
+      .nested-card
     ):hover {
     border-color: #0a84ff !important;
     box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
