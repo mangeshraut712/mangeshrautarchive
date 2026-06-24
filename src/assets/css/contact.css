@@ -301,6 +301,14 @@ html.dark .icon-box.location {
    AssistMe Contact CTA
    ---------------------------------------- */
 
+.calendar-wrapper-clean .contact-assistme-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  min-height: auto;
+  padding: 0 1.75rem 1.75rem !important;
+}
+
 .contact-assistme-card {
   min-height: 100%;
   display: flex;

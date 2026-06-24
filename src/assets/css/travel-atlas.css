@@ -617,6 +617,8 @@ html.dark .travel-sidebar {
 /* Hover — border glow in wwdc26 §15 */
 .travel-stop:hover {
   transform: translateY(-1px);
+  border-color: #0071e3;
+  box-shadow: none;
 }
 
 /* Active state — selected stop keeps blue accent */
@@ -630,7 +632,7 @@ html.dark .travel-sidebar {
 .travel-stop.active .travel-stop__dot {
   background: var(--stop-color, var(--apple-blue));
   transform: scale(1.25);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--stop-color, var(--apple-blue)) 20%, transparent);
+  box-shadow: none;
 }
 
 /* Place content */
@@ -1562,12 +1564,12 @@ html.dark .place-guide-card p {
 .travel-stop.active,
 html.dark .travel-stop.active {
   border-color: #0071e3 !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .travel-stop.active {
   border-color: #0a84ff !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .travel-search {

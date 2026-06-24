@@ -735,12 +735,6 @@ html.dark .env-pill {
   opacity: 1;
 }
 
-.overview-card:hover {
-  transform: translateY(-3px) scale(1.01);
-  border: 1px solid #0071e3;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 6%);
-}
-
 .overview-card-header {
   display: flex;
   align-items: center;
@@ -1074,10 +1068,6 @@ body.monitor-page main > section.section:not(#home) {
   letter-spacing: 0.06em;
   line-height: 1;
   text-transform: uppercase;
-}
-
-.health-item:hover {
-  transform: translateY(-1px);
 }
 
 .health-item.unhealthy {
@@ -2345,45 +2335,15 @@ html.dark body.monitor-page main > section#monitor-summary-section {
   box-shadow: var(--shadow-sm) !important;
 }
 
-/* Ensure inner cards (.overview-card, .doc-card, .health-item) have correct borders and look cohesive */
+/* Ensure inner cards have correct resting borders — hover owned by theme-solid-surfaces.css */
 body.monitor-page .overview-card,
 body.monitor-page .doc-card,
 body.monitor-page .health-item {
   border: 1px solid var(--border-color) !important;
-  box-shadow: var(--shadow-sm) !important;
+  box-shadow: none !important;
 }
 
-/* Unified transitions for monitor cards hover state */
-body.monitor-page .monitor-summary-panel,
-body.monitor-page .doc-card,
-body.monitor-page .overview-card,
-body.monitor-page .ops-card {
-  transition:
-    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.25s ease,
-    box-shadow 0.25s ease !important;
-}
-
-/* Light mode hover state */
-body.monitor-page .monitor-summary-panel:hover,
-body.monitor-page .doc-card:hover,
-body.monitor-page .overview-card:hover,
-body.monitor-page .ops-card:hover {
-  transform: translateY(-3px) !important;
-  border-color: #0071e3 !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
-}
-
-/* Dark mode hover state */
-html.dark body.monitor-page .monitor-summary-panel:hover,
-html.dark body.monitor-page .doc-card:hover,
-html.dark body.monitor-page .overview-card:hover,
-html.dark body.monitor-page .ops-card:hover {
-  border-color: #0a84ff !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
-}
-
-/* Monitor card surfaces use wwdc26 liquid glass — typography and borders only */
+/* Monitor card surfaces — typography and borders only (theme-solid-surfaces owns hover) */
 body.monitor-page .monitor-summary-card,
 body.monitor-page .monitor-summary-panel,
 body.monitor-page .doc-card,
@@ -2394,7 +2354,7 @@ body.monitor-page .section,
 body.monitor-page article {
   color: var(--text-primary) !important;
   border: 1px solid var(--border-color) !important;
-  box-shadow: var(--shadow-sm) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.monitor-page .monitor-summary-card,
@@ -3400,48 +3360,4 @@ html.dark .ops-card,
   .endpoint-volume-chart {
     grid-template-columns: repeat(4, minmax(34px, 1fr));
   }
-}
-
-/* Sub-Cards / List Items Hover Effects (Apple Premium Style, blue hover border, light translateY) */
-body.monitor-page .health-item,
-body.monitor-page .overview-item,
-body.monitor-page .meta-stat-row,
-body.monitor-page .doc-endpoint-row,
-body.monitor-page .legend-row,
-body.monitor-page .ops-list-row,
-body.monitor-page .ops-bar-row,
-body.monitor-page .ops-stat-grid div,
-body.monitor-page .doc-link-tile {
-  transition:
-    transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.22s ease,
-    background-color 0.22s ease,
-    box-shadow 0.22s ease !important;
-}
-
-body.monitor-page .health-item:hover,
-body.monitor-page .overview-item:hover,
-body.monitor-page .meta-stat-row:hover,
-body.monitor-page .doc-endpoint-row:hover,
-body.monitor-page .legend-row:hover,
-body.monitor-page .ops-list-row:hover,
-body.monitor-page .ops-bar-row:hover,
-body.monitor-page .ops-stat-grid div:hover,
-body.monitor-page .doc-link-tile:hover {
-  transform: translateY(-2px) !important;
-  border-color: #0071e3 !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
-}
-
-html.dark body.monitor-page .health-item:hover,
-html.dark body.monitor-page .overview-item:hover,
-html.dark body.monitor-page .meta-stat-row:hover,
-html.dark body.monitor-page .doc-endpoint-row:hover,
-html.dark body.monitor-page .legend-row:hover,
-html.dark body.monitor-page .ops-list-row:hover,
-html.dark body.monitor-page .ops-bar-row:hover,
-html.dark body.monitor-page .ops-stat-grid div:hover,
-html.dark body.monitor-page .doc-link-tile:hover {
-  border-color: #0a84ff !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }

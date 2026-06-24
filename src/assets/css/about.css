@@ -40,11 +40,12 @@ html:not(.dark) #about {
   height: 480px;
   object-fit: cover;
   border-radius: 20px;
-  box-shadow: 0 12px 40px rgb(0 0 0 / 10%);
+  box-shadow: none;
+  border: 1px solid var(--border-color);
 }
 
 html.dark .about-image {
-  box-shadow: 0 12px 40px rgb(0 0 0 / 35%);
+  box-shadow: none;
 }
 
 .about-image-badge {
@@ -100,7 +101,7 @@ html.dark .about-image-badge i {
   gap: 2rem;
   transition:
     transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Hover overrides removed — unified card hover in wwdc26 §15 */
@@ -222,10 +223,10 @@ html:not(.dark) .about-description strong {
   border-radius: 20px;
   padding: 2rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
+  box-shadow: none;
   transition:
     transform 0.3s ease,
-    box-shadow 0.3s ease;
+    border-color 0.3s ease;
 }
 
 /* Hover overrides removed — unified card hover in apple-premium-overrides.css */
