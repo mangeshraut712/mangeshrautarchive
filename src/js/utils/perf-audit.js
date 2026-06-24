@@ -12,16 +12,17 @@ function matchesPerfAuditSignals() {
   }
 
   const userAgent = navigator.userAgent || '';
-  if (/Chrome-Lighthouse|Lighthouse|PTST|HeadlessChrome/i.test(userAgent)) {
+  // Lighthouse-specific UA tokens only — not generic HeadlessChrome (Playwright E2E).
+  if (/Chrome-Lighthouse|Lighthouse|PTST/i.test(userAgent)) {
     return true;
   }
 
-  // Lighthouse mobile preset (webdriver is often hidden in modern headless Chrome).
+  // Lighthouse mobile preset.
   if (/moto g power \(2022\)/i.test(userAgent)) {
     return true;
   }
 
-  return navigator.webdriver === true;
+  return false;
 }
 
 /** True during Lighthouse runs, local perf-audit query, or explicit CI perf gates. */

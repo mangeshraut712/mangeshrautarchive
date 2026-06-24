@@ -15,7 +15,7 @@ export const heroLead =
 
 export const heroStats = [
   { value: '95+', unit: '', label: 'Lighthouse', href: '#production' },
-  { value: '9', unit: '', label: 'WebMCP tools', href: '#architecture' },
+  { value: '10', unit: '', label: 'WebMCP tools', href: '#architecture' },
   { value: '40', unit: '%', label: 'Dashboard improvement', href: '#projects' },
   { value: '12', unit: '', label: 'Technical articles', href: '#writing' },
   { value: '40+', unit: '', label: 'Repositories', href: '#open-source' },
@@ -133,7 +133,7 @@ export const productionMetricGroups = [
     id: 'agent',
     title: 'Local agent',
     rows: [
-      { label: 'WebMCP tools', value: '9' },
+      { label: 'WebMCP tools', value: '10' },
       { label: 'Navigate', value: '<30ms' },
       { label: 'Theme toggle', value: '<15ms' },
       { label: 'Resume download', value: '<10ms' },
@@ -316,7 +316,7 @@ export const staticBenchmarks = [
   {
     id: 'webmcp-mcp',
     label: 'WebMCP Client & Tools',
-    value: '9',
+    value: '10',
     unit: 'tools',
     context: 'Deterministic browser tool execution',
   },
