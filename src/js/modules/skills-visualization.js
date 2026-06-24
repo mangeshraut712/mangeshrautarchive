@@ -182,10 +182,11 @@ class SkillsVisualization {
       .join('');
 
     return `
-      <div class="skill-category mb-8">
-        <h3 class="text-xl font-bold mb-4 pb-2">
-          ${category}
-        </h3>
+      <div class="skill-category" role="region" aria-label="${category} skills">
+        <div class="skill-category-header">
+          <h3 class="skill-category-title">${category}</h3>
+          <span class="skill-category-count" aria-hidden="true">${skills.length} skills</span>
+        </div>
         <div class="skill-scroll-container">
           <div class="skill-scroll-wrapper">
             ${skillsHTML}

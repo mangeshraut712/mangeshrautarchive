@@ -169,7 +169,7 @@ html.dark .experience-icon {
 #experience .experience-content {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 22px !important;
   background: #ffffff !important;
   box-shadow: none !important;
@@ -183,7 +183,7 @@ html.dark .experience-icon {
 #experience .experience-content:hover {
   border: 1px solid #0071e3 !important;
   transform: translateY(-5px) !important;
-  box-shadow: 0 0 0 1px rgb(0 113 227 / 24%) !important;
+  box-shadow: none !important;
 }
 
 #experience .experience-content::after {
@@ -199,7 +199,7 @@ html.dark .experience-icon {
 }
 
 #experience .experience-content:hover::after {
-  opacity: 1;
+  opacity: 0 !important;
 }
 
 html.dark #experience .experience-content {
@@ -210,7 +210,7 @@ html.dark #experience .experience-content {
 
 html.dark #experience .experience-content:hover {
   border: 1px solid #0a84ff !important;
-  box-shadow: 0 0 0 1px rgb(10 132 255 / 28%) !important;
+  box-shadow: none !important;
 }
 
 html.dark #experience .experience-content::after {

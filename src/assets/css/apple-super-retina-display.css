@@ -132,11 +132,15 @@ html.dark.aod-dim .a11y-toolbar {
   }
 
   html.dark .hero-section h1,
-  html.dark .hero-section .hero-name,
-  html.dark .hero-section .xdr-highlight,
+  html.dark .hero-section .hero-name:not(.xdr-highlight),
   html.dark .section-title.xdr-highlight {
     color: color(display-p3 1.15 1.15 1.18);
     text-shadow: 0 0 1px color(display-p3 1.25 1.25 1.3 / 35%);
+  }
+
+  html.dark .hero-section .hero-name.xdr-highlight,
+  html.dark .hero-section .hero-name.xdr-highlight .hero-name-text {
+    text-shadow: none;
   }
 
   html.dark .hero-actions .btn-primary,

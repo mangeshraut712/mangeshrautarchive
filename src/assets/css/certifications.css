@@ -33,7 +33,7 @@ html.dark #certifications {
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   position: relative !important;
   overflow: hidden !important;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 5%) !important;
+  box-shadow: none !important;
   height: auto !important;
   min-height: 200px !important;
 
@@ -44,7 +44,7 @@ html.dark #certifications {
 html.dark .certification-card {
   background: #000 !important;
   border-color: rgb(255 255 255 / 8%) !important;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 40%) !important;
+  box-shadow: none !important;
 }
 
 /* Hover Effect */
@@ -78,7 +78,7 @@ html.dark .certification-card:hover {
 }
 
 .certification-card:hover::before {
-  opacity: 1 !important;
+  opacity: 0 !important;
 }
 
 /* Category Badge - Compact */

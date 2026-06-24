@@ -172,7 +172,7 @@ html.dark .skill-progress-value.counting {
 .experience-content:hover::before,
 .education-card:hover::before,
 .blog-card:hover::before {
-  opacity: 1;
+  opacity: 0;
 }
 
 html.dark .showcase-project-card::before,
@@ -366,12 +366,12 @@ html.dark .blog-card:hover {
 .experience-tag:hover {
   transform: translateY(-2px);
   border-color: #0071e3 !important;
-  box-shadow: 0 4px 12px rgb(0 113 227 / 16%);
+  box-shadow: none;
 }
 
 html.dark .experience-tag:hover {
   border-color: #2997ff !important;
-  box-shadow: 0 4px 14px rgb(41 151 255 / 22%);
+  box-shadow: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

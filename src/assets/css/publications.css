@@ -67,18 +67,18 @@ html.dark .publications-divider {
 html.dark .publication-card {
   background: #000 !important;
   border-color: rgb(255 255 255 / 8%) !important;
-  box-shadow: 0 4px 24px rgb(0 0 0 / 40%) !important;
+  box-shadow: none !important;
 }
 
 .publication-card:hover {
   transform: translateY(-6px) !important;
-  box-shadow: 0 16px 48px rgb(0 0 0 / 10%) !important;
-  border-color: rgb(0 113 227 / 15%) !important;
+  box-shadow: none !important;
+  border-color: #0071e3 !important;
 }
 
 html.dark .publication-card:hover {
-  box-shadow: 0 20px 60px rgb(0 0 0 / 60%) !important;
-  border-color: rgb(41 151 255 / 20%) !important;
+  box-shadow: none !important;
+  border-color: #0a84ff !important;
 }
 
 /* ========================================

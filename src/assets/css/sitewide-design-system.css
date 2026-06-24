@@ -207,7 +207,7 @@ html.dark [contenteditable] {
 .panel {
   background: #ffffff !important;
   color: #000 !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: none !important;
   border-radius: 20px !important;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
@@ -281,7 +281,7 @@ html.dark .panel {
 .about-card:hover,
 .timeline-content:hover {
   transform: translateY(-3px) !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  box-shadow: none !important;
   border-color: #0071e3 !important;
 }
 
@@ -303,7 +303,7 @@ html.dark .skill-card:hover,
 html.dark .about-card:hover,
 html.dark .timeline-content:hover {
   transform: translateY(-3px) !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  box-shadow: none !important;
   border-color: #0a84ff !important;
 }
 
@@ -634,7 +634,7 @@ html.dark .meta {
 .about-highlight-card,
 .stat-card {
   background-color: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -646,7 +646,7 @@ html.dark .skill-badge,
 html.dark .about-highlight-card,
 html.dark .stat-card {
   background-color: #000000 !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -695,7 +695,7 @@ html:not(.dark) .monitor-summary-card:hover,
 html:not(.dark) .overview-card:hover,
 html:not(.dark) .health-item:hover {
   border: 1px solid #0071e3 !important;
-  box-shadow: 0 0 0 1px color-mix(in srgb, #0071e3 24%, transparent) !important;
+  box-shadow: none !important;
 }
 
 /* ========================================

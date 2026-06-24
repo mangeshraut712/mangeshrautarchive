@@ -624,7 +624,7 @@ html.dark .travel-sidebar {
   content-visibility: visible;
   contain-intrinsic-size: auto;
   border-color: var(--theme-card-border-hover, #0071e3);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-card-border-hover, #0071e3) 28%, transparent);
+  box-shadow: none;
   transform: translateY(-1px);
 }
 .travel-stop.active .travel-stop__dot {

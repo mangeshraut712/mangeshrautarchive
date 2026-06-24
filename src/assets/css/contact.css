@@ -598,12 +598,12 @@ html.dark .support-donation-card {
 .support-donation-card:hover {
   transform: translateY(-4px);
   border-color: #0071e3 !important;
-  box-shadow: 0 0 0 1px color-mix(in srgb, #0071e3 24%, transparent) !important;
+  box-shadow: none !important;
 }
 
 html.dark .support-donation-card:hover {
   border-color: #0a84ff !important;
-  box-shadow: 0 0 0 1px color-mix(in srgb, #0a84ff 28%, transparent) !important;
+  box-shadow: none !important;
 }
 
 /* Compact Header - Horizontal Layout with 3 columns */

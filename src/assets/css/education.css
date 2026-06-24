@@ -100,59 +100,37 @@ html.dark .education-icon {
 
 .education-content {
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 6%) !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
   border-radius: 24px !important;
   padding: 2.5rem !important;
-  box-shadow:
-    0 4px 24px rgb(0 0 0 / 4%),
-    0 1px 2px rgb(0 0 0 / 2%) !important;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) !important;
+  box-shadow: none !important;
+  transition:
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s ease !important;
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle Top Border Glow */
+/* Remove top glow stripe on education cards */
 .education-content::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, rgb(0 113 227 / 15%), transparent);
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  display: none !important;
 }
 
 html.dark .education-content {
   background: #000 !important;
-  border-color: rgb(255 255 255 / 8%) !important;
-  box-shadow: 0 10px 40px rgb(0 0 0 / 60%) !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  box-shadow: none !important;
 }
 
-html.dark .education-content::after {
-  background: linear-gradient(90deg, transparent, rgb(41 151 255 / 20%), transparent);
-}
-
-/* Hover overrides removed — unified card hover in apple-premium-overrides.css */
-/*
-.education-content:hover {
-  transform: translateY(-8px) scale(1.005) !important;
-  box-shadow: 0 24px 60px rgb(0 0 0 / 12%) !important;
-  border-color: rgb(0 113 227 / 15%) !important;
-}
-*/
-
-.education-content:hover::after {
-  opacity: 1;
-}
-
-/*
+.education-content:hover,
 html.dark .education-content:hover {
-  box-shadow: 0 30px 80px rgb(0 0 0 / 80%) !important;
-  border-color: rgb(41 151 255 / 20%) !important;
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
 }
-*/
+
+html.dark .education-content:hover {
+  border-color: #0a84ff !important;
+}
 
 /* ========================================
    TYPOGRAPHY & VISIBILITY
