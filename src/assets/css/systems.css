@@ -2476,11 +2476,9 @@ body.systems-page .systems-token-row:hover,
 body.systems-page .systems-decision-row:hover,
 body.systems-page .systems-failure-row:hover,
 body.systems-page .systems-writing-card:hover {
-  transform: translateY(-4px) !important;
+  transform: translateY(-3px) !important;
   border-color: #0071e3 !important;
-  box-shadow:
-    0 12px 30px rgb(0 113 227 / 8%),
-    0 1px 0 rgb(255 255 255 / 50%) inset !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
 }
 
 html.dark body.systems-page .eng-showcase-card:hover,
@@ -2501,9 +2499,7 @@ html.dark body.systems-page .systems-decision-row:hover,
 html.dark body.systems-page .systems-failure-row:hover,
 html.dark body.systems-page .systems-writing-card:hover {
   border-color: #0a84ff !important;
-  box-shadow:
-    0 12px 36px rgb(10 132 255 / 16%),
-    0 1px 0 rgb(255 255 255 / 5%) inset !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }
 
 body.systems-page .systems-metric-panel:hover::before,

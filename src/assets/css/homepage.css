@@ -112,8 +112,8 @@ html:not(.dark) .home-hero {
   display: inline-flex;
   text-align: center;
   letter-spacing: -0.04em !important;
-  text-transform: uppercase;
-  color: #0071e3 !important;
+  text-transform: none;
+  color: #1d1d1f !important;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -236,9 +236,9 @@ html.dark .availability-dot {
 /* DARK MODE OVERRIDES */
 
 html.dark .hero-name {
-  color: #2997ff !important;
+  color: #f5f5f7 !important;
   background: none;
-  -webkit-text-fill-color: #2997ff !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 html.dark .hero-title {
@@ -404,8 +404,8 @@ html.dark .hero-description {
   background: #0071e3;
   color: #fff;
   border-color: #0071e3;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgb(0 113 227 / 40%);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 10%);
 }
 
 html.dark .hero-social-link {
@@ -660,9 +660,9 @@ html.dark .profile-image-wrapper {
 .vibe-tool-chip:hover,
 .vibe-tool-chip:focus-visible {
   transform: translateY(-2px);
-  border-color: rgb(0 113 227 / 42%);
+  border-color: #0071e3;
   background: rgb(0 113 227 / 7%);
-  box-shadow: 0 6px 16px rgb(0 113 227 / 12%);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 6%);
 }
 
 html.dark .vibe-tool-chip {
@@ -677,8 +677,9 @@ html.dark .vibe-tool-icon {
 
 html.dark .vibe-tool-chip:hover,
 html.dark .vibe-tool-chip:focus-visible {
-  border-color: rgb(41 151 255 / 45%);
-  background: rgb(41 151 255 / 12%);
+  border-color: #0a84ff;
+  background: rgb(10 132 255 / 12%);
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%);
 }
 
 @media (prefers-reduced-motion: reduce) {

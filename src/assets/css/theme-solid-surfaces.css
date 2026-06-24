@@ -13,6 +13,13 @@
   --lg-popover-surface-light: #ffffff;
   --lg-card-light-alpha: 100%;
   --lg-card-dark-alpha: 100%;
+  --theme-shell-max: 1120px;
+  --theme-shell-gutter: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --theme-card-radius: 20px;
+  --theme-fab-edge: max(1.5rem, env(safe-area-inset-right, 0px));
+  --theme-fab-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
+  --theme-fab-size: 3.75rem;
+  --theme-fab-gap: 0.85rem;
 }
 
 html.dark,
@@ -683,4 +690,108 @@ html:not(.dark) :is(#blog pre, #blog code, body.blog-standalone-page pre, body.b
 html.dark :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
   background: #000000 !important;
   border: 1px solid rgb(255 255 255 / 12%);
+}
+
+/* ─── Apple layout tokens + FAB alignment ─── */
+:is(.systems-shell, body.uses-page .systems-shell, .travel-layout, body.monitor-page .monitor-container) {
+  width: min(100%, var(--theme-shell-max));
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+@media (width >= 769px) {
+  body #go-to-top,
+  body #go-to-top.visible {
+    right: var(--theme-fab-edge) !important;
+    bottom: var(--theme-fab-bottom) !important;
+    width: var(--theme-fab-size) !important;
+    height: var(--theme-fab-size) !important;
+    min-width: var(--theme-fab-size) !important;
+    min-height: var(--theme-fab-size) !important;
+  }
+
+  body #chatbot-toggle {
+    right: var(--theme-fab-edge) !important;
+    bottom: calc(var(--theme-fab-bottom) + var(--theme-fab-size) + var(--theme-fab-gap)) !important;
+    width: var(--theme-fab-size) !important;
+    height: var(--theme-fab-size) !important;
+    min-width: var(--theme-fab-size) !important;
+    min-height: var(--theme-fab-size) !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark)
+    :is(
+      #skills-container .skill-badge,
+      #projects .activity-stat-item,
+      #experience .experience-tag,
+      .travel-stop,
+      .place-guide-card,
+      .travel-stat,
+      .travel-sidebar,
+      .article-related-card,
+      .education-card,
+      .experience-card,
+      .contact-form-card,
+      .newsletter-card,
+      .media-card,
+      .hero-social-link,
+      .vibe-tool-chip,
+      .portfolio-reach-panel,
+      .systems-token-card
+    ):hover {
+    border-color: #0071e3 !important;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  }
+
+  html.dark
+    :is(
+      #skills-container .skill-badge,
+      #projects .activity-stat-item,
+      #experience .experience-tag,
+      .travel-stop,
+      .place-guide-card,
+      .travel-stat,
+      .travel-sidebar,
+      .article-related-card,
+      .education-card,
+      .experience-card,
+      .contact-form-card,
+      .newsletter-card,
+      .media-card,
+      .hero-social-link,
+      .vibe-tool-chip,
+      .portfolio-reach-panel,
+      .systems-token-card
+    ):hover {
+    border-color: #0a84ff !important;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  }
+
+  html:not(.dark) #projects #github-projects-container .showcase-project-card:hover {
+    border-color: #0071e3 !important;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  }
+
+  html.dark #projects #github-projects-container .showcase-project-card:hover {
+    border-color: #0a84ff !important;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  }
+}
+
+/* Interactive cards — unified radius for Apple-like rhythm */
+:is(
+  .card,
+  .blog-card,
+  .showcase-project-card,
+  .eng-showcase-card,
+  .systems-evidence-card,
+  .uses-section,
+  .doc-card,
+  .overview-card,
+  .engineering-evidence-card,
+  .engineering-quality-overview
+) {
+  border-radius: var(--theme-card-radius);
 }

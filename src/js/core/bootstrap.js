@@ -211,7 +211,7 @@ function areStyleKeysLoaded(styleKeys = [], documentRef = document) {
   );
 }
 
-const CRITICAL_STYLE_PATTERN = /accessibility-contrast-fixes|wwdc26-liquid-glass/;
+const CRITICAL_STYLE_PATTERN = /accessibility-contrast-fixes|wwdc26-liquid-glass|theme-solid-surfaces/;
 
 /** Keep WCAG + liquid-glass layers last so lazy section CSS cannot override them. */
 function pinCriticalStylesheetsLast(documentRef = document) {

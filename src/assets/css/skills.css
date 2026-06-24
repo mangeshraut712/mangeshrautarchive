@@ -157,16 +157,16 @@ html.dark .skill-category h3.text-xl {
 
 #skills-container .skill-badge:hover,
 .skill-badge:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 36px rgb(0 113 227 / 16%);
+  transform: translateY(-3px);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 6%);
   border-color: #0071e3;
   z-index: 10;
 }
 
 html.dark #skills-container .skill-badge:hover,
 html.dark .skill-badge:hover {
-  box-shadow: 0 16px 36px rgb(41 151 255 / 30%);
-  border-color: #2997ff;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%);
+  border-color: #0a84ff;
 }
 
 @keyframes gentleFloat {

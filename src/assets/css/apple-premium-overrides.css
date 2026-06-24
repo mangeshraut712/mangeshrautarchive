@@ -2017,7 +2017,7 @@ html.dark .vibe-coder-badge:hover {
   margin-bottom: 0.4rem !important;
   line-height: 1.1 !important;
   background: none;
-  color: #0071e3 !important;
+  color: #1d1d1f !important;
   -webkit-text-fill-color: currentColor;
 }
 
@@ -2036,7 +2036,7 @@ html.dark .hero-title {
 
 html.dark .hero-name {
   background: none;
-  color: #2997ff !important;
+  color: #f5f5f7 !important;
   -webkit-text-fill-color: currentColor;
 }
 
@@ -2499,11 +2499,11 @@ html.dark #home.hero-section.home-hero {
   line-height: 1.3 !important;
   letter-spacing: -0.015em !important;
   max-width: min(100%, 40rem);
-  color: #1d1d1f !important;
+  color: #515154 !important;
 }
 
 html.dark #home.hero-section .hero-title {
-  color: #f5f5f7 !important;
+  color: #a1a1a6 !important;
 }
 
 #home.hero-section .hero-insights-band {
@@ -3435,14 +3435,29 @@ html.dark #home.hero-section #profile-image {
   align-items: center !important;
   justify-content: center !important;
   gap: 0.36rem !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #1d1d1f !important;
+  text-transform: none !important;
 }
 
-html.dark #home.hero-section .hero-name,
+#home.hero-section .hero-name-text {
+  background: linear-gradient(135deg, #1d1d1f 30%, #434343 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-transform: none !important;
+}
+
+html.dark #home.hero-section .hero-name {
+  color: #f5f5f7 !important;
+  text-transform: none !important;
+}
+
 html.dark #home.hero-section .hero-name-text {
-  color: #2997ff !important;
-  -webkit-text-fill-color: #2997ff !important;
+  background: linear-gradient(135deg, #ffffff 30%, #a1a1a6 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-transform: none !important;
 }
 
 #home.hero-section .hero-name-text {
@@ -3505,3 +3520,136 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   border: 2px solid transparent !important;
   background-clip: padding-box !important;
 }
+
+/* 15. Homepage Apple Styling Refinements */
+
+/* Primary Button (Download Resume) */
+#home .hero-actions .hero-cta:nth-child(1) {
+  background: linear-gradient(135deg, #0071e3 0%, #0051a8 100%) !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+  padding: 0.8rem 1.8rem !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.24) !important;
+}
+
+#home .hero-actions .hero-cta:nth-child(1):hover {
+  background: linear-gradient(135deg, #0077ed 0%, #005bbd 100%) !important;
+  box-shadow: 0 6px 20px rgba(0, 113, 227, 0.36) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+/* Secondary Button (View Projects) */
+#home .hero-actions .hero-cta:nth-child(2) {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 9999px !important;
+  padding: 0.8rem 1.8rem !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+#home .hero-actions .hero-cta:nth-child(2):hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 113, 227, 0.3) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+/* Dark mode overrides for CTAs */
+html.dark #home .hero-actions .hero-cta:nth-child(1) {
+  background: linear-gradient(135deg, #0071e3 0%, #0077ed 100%) !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4) !important;
+}
+
+html.dark #home .hero-actions .hero-cta:nth-child(2) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark #home .hero-actions .hero-cta:nth-child(2):hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+/* Premium Frosted Glass Badges */
+#home .vibe-coder-badge,
+#home .portfolio-reach-badge {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+#home .vibe-coder-badge:hover,
+#home .portfolio-reach-badge:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: #0071e3 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.12) !important;
+}
+
+/* Dark Mode Badges */
+html.dark #home .vibe-coder-badge,
+html.dark #home .portfolio-reach-badge {
+  background: rgba(22, 22, 23, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark #home .vibe-coder-badge:hover,
+html.dark #home .portfolio-reach-badge:hover {
+  background: rgba(30, 30, 32, 0.8) !important;
+  border-color: #0a84ff !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+}
+
+/* 16. Homepage Apple Styling hierarchy & visibility tweaks */
+
+/* Pronouns badge frosted glassmorphism styling */
+#home .hero-identity-item {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #515154 !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+html.dark #home .hero-identity-item {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #a1a1a6 !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Verified badge vertical alignment */
+#home .hero-verified-badge {
+  vertical-align: middle !important;
+  position: relative !important;
+  top: -3px !important;
+  color: #0071e3 !important;
+}
+html.dark #home .hero-verified-badge {
+  color: #0a84ff !important;
+}
+
+/* Accessibility focus visible states for badge interactive pills */
+#home .vibe-coder-badge:focus-visible,
+#home .portfolio-reach-badge:focus-visible {
+  outline: 2.5px solid var(--apple-blue, #0071e3) !important;
+  outline-offset: 3px !important;
+}
+html.dark #home .vibe-coder-badge:focus-visible,
+html.dark #home .portfolio-reach-badge:focus-visible {
+  outline: 2.5px solid var(--apple-blue-dark, #0a84ff) !important;
+  outline-offset: 3px !important;
+}
+
