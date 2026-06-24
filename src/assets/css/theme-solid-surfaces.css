@@ -507,6 +507,7 @@ html.dark body.systems-page .systems-arch-tab.is-active {
       .systems-metric-panel,
       .systems-arch-stage,
       .systems-token-panel,
+      .systems-token-row,
       .systems-token-card,
       .systems-token-row,
       .systems-decision-row,
@@ -572,6 +573,7 @@ html.dark body.systems-page .systems-arch-tab.is-active {
       .systems-metric-panel,
       .systems-arch-stage,
       .systems-token-panel,
+      .systems-token-row,
       .systems-token-card,
       .systems-token-row,
       .systems-decision-row,
@@ -693,7 +695,7 @@ html.dark :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-st
 }
 
 /* ─── Apple layout tokens + FAB alignment ─── */
-:is(.systems-shell, body.uses-page .systems-shell, .travel-layout, body.monitor-page .monitor-container) {
+:is(.systems-shell, body.uses-page .systems-shell, body.monitor-page .monitor-container) {
   width: min(100%, var(--theme-shell-max));
   margin-inline: auto;
   box-sizing: border-box;
@@ -794,4 +796,157 @@ html.dark :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-st
   .engineering-quality-overview
 ) {
   border-radius: var(--theme-card-radius);
+}
+
+/* ─── Standalone pages: Engineering / Travel / Monitor ─── */
+body.systems-page .systems-section-rail a:not(.is-active):hover {
+  background: transparent !important;
+  border: 1px solid #0071e3 !important;
+  color: var(--systems-text) !important;
+  box-shadow: none !important;
+}
+
+html.dark body.systems-page .systems-section-rail a:not(.is-active):hover {
+  border-color: #0a84ff !important;
+  color: #f5f5f7 !important;
+}
+
+body.systems-page .systems-arch-tab:not(.is-active):hover {
+  border-color: #0071e3 !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+}
+
+html.dark body.systems-page .systems-arch-tab:not(.is-active):hover {
+  border-color: #0a84ff !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+}
+
+body.systems-page .systems-hero-action:not(.systems-hero-action--primary):hover {
+  background: #ffffff !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+}
+
+html.dark body.systems-page .systems-hero-action:not(.systems-hero-action--primary):hover {
+  background: #000000 !important;
+  border-color: #0a84ff !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+}
+
+body.monitor-page .monitor-container {
+  max-width: var(--theme-shell-max) !important;
+  padding-inline: var(--theme-shell-gutter) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark) body.travel-body
+    :is(
+      .travel-stop,
+      .place-guide-card,
+      .travel-stat,
+      .travel-sidebar,
+      #travel-sidebar,
+      .country-pill,
+      .travel-filter-chip,
+      .travel-action
+    ):hover {
+    border-color: #0071e3 !important;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  }
+
+  html.dark body.travel-body
+    :is(
+      .travel-stop,
+      .place-guide-card,
+      .travel-stat,
+      .travel-sidebar,
+      #travel-sidebar,
+      .country-pill,
+      .travel-filter-chip,
+      .travel-action
+    ):hover {
+    border-color: #0a84ff !important;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  }
+
+  html:not(.dark)
+    body.systems-page
+    :is(
+      .systems-arch-stage,
+      .systems-hiring-card,
+      .systems-token-row,
+      .systems-token-card,
+      .systems-writing-chip,
+      .systems-case-flow
+    ):hover {
+    border-color: #0071e3 !important;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  }
+
+  html.dark
+    body.systems-page
+    :is(
+      .systems-arch-stage,
+      .systems-hiring-card,
+      .systems-token-row,
+      .systems-token-card,
+      .systems-writing-chip,
+      .systems-case-flow
+    ):hover {
+    border-color: #0a84ff !important;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  }
+
+  html:not(.dark)
+    body.monitor-page
+    :is(
+      .health-item,
+      .overview-item,
+      .meta-stat-row,
+      .doc-endpoint-row,
+      .legend-row,
+      .ops-list-row,
+      .ops-bar-row,
+      .ops-stat-grid > div,
+      .doc-link-tile,
+      .monitor-summary-card,
+      .endpoint-card,
+      .env-pill
+    ):hover {
+    border-color: #0071e3 !important;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+    background-color: inherit !important;
+  }
+
+  html.dark
+    body.monitor-page
+    :is(
+      .health-item,
+      .overview-item,
+      .meta-stat-row,
+      .doc-endpoint-row,
+      .legend-row,
+      .ops-list-row,
+      .ops-bar-row,
+      .ops-stat-grid > div,
+      .doc-link-tile,
+      .monitor-summary-card,
+      .endpoint-card,
+      .env-pill
+    ):hover {
+    border-color: #0a84ff !important;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+    background-color: inherit !important;
+  }
+}
+
+body.travel-body .travel-stop.active,
+html.dark body.travel-body .travel-stop.active {
+  border-color: #0071e3 !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+}
+
+html.dark body.travel-body .travel-stop.active {
+  border-color: #0a84ff !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }

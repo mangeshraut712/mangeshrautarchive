@@ -346,6 +346,21 @@
     return 'Dark';
   }
 
+  function pinThemeSolidStylesheet() {
+    var links = Array.prototype.slice.call(
+      document.querySelectorAll('link[rel="stylesheet"]')
+    );
+    links
+      .filter(function (link) {
+        return /theme-solid-surfaces/.test(link.getAttribute('href') || '');
+      })
+      .forEach(function (link) {
+        if (link.parentNode) {
+          document.head.appendChild(link);
+        }
+      });
+  }
+
   window.__portfolioTheme = {
     MODE_KEY: MODE_KEY,
     getThemeMode: getThemeMode,
@@ -364,6 +379,8 @@
     init: function () {
       syncTheme();
       bindSystemListener();
+      pinThemeSolidStylesheet();
+      window.addEventListener('load', pinThemeSolidStylesheet, { once: true });
       // Only schedule solar-based auto-updates if explicitly in 'auto' mode.
       // Default 'system' mode relies on prefers-color-scheme listener instead.
       if (getThemeMode() === 'auto') {
