@@ -9,7 +9,6 @@ import {
   failedExperiments,
   heroLead,
   heroStats,
-  hiringEvidence,
   lessonsLearned,
   publicEvidenceStatement,
   tokenizationStack,
@@ -26,6 +25,7 @@ import {
   updateLiveBenchmarkValues,
 } from './systems-viz.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
+import { blogPosts } from './blog-data.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -206,21 +206,6 @@ function renderOverview() {
   `;
 }
 
-function renderHiringEvidence() {
-  const root = document.getElementById('systems-hiring-grid');
-  if (!root) return;
-
-  root.innerHTML = hiringEvidence
-    .map(
-      card => `<article class="eng-showcase-card systems-evidence-card lg-glass-card systems-hiring-card" id="${escapeHtml(card.anchor)}">
-        <h2 class="eng-card-q">${escapeHtml(card.question)}</h2>
-        <p class="eng-card-a">${escapeHtml(card.answer)}</p>
-        <a class="systems-tile-link" href="${escapeHtml(card.href)}">See proof →</a>
-      </article>`
-    )
-    .join('');
-}
-
 function renderDecisionGrid(rootId, decisions) {
   const root = document.getElementById(rootId);
   if (!root) return;
@@ -300,11 +285,57 @@ function renderCurrentWork() {
 function renderWriting() {
   const root = document.getElementById('systems-writing-grid');
   if (!root) return;
-  root.innerHTML = writingTopics
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
+  // Grab the top 3 most recent posts for showcase
+  const recentPosts = blogPosts
+    .toSorted((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3);
+
+  const articlesHtml = recentPosts
+    .map(
+      post => `
+        <article class="systems-writing-card lg-glass-card">
+          <div class="systems-writing-card-header">
+            <span class="systems-writing-kicker">${escapeHtml(post.kicker || 'Field Notes')}</span>
+            <span class="systems-writing-time">${escapeHtml(post.readTime)}</span>
+          </div>
+          <h3 class="systems-writing-title">
+            <a href="blog/${escapeHtml(post.id)}.html">${escapeHtml(post.title)}</a>
+          </h3>
+          <p class="systems-writing-summary">${escapeHtml(post.summary)}</p>
+          <div class="systems-writing-footer">
+            <span class="systems-writing-date">${formatDate(post.date)}</span>
+            <a class="systems-writing-link" href="blog/${escapeHtml(post.id)}.html">Read article →</a>
+          </div>
+        </article>
+      `
+    )
+    .join('');
+
+  const topicsHtml = writingTopics
     .map(
       topic => `<a class="systems-writing-chip lg-glass-card" href="${escapeHtml(topic.href)}">${escapeHtml(topic.label)}</a>`
     )
     .join('');
+
+  root.innerHTML = `
+    <div class="systems-writing-container">
+      <div class="systems-writing-articles">
+        ${articlesHtml}
+      </div>
+      <div class="systems-writing-topics-section">
+        <span class="systems-writing-topics-title">Explore more topics</span>
+        <div class="systems-writing-topics-grid">
+          ${topicsHtml}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderTokenization() {
@@ -627,7 +658,6 @@ export function initSystemsPage() {
   renderOverview();
 
   renderProductionMetrics();
-  renderHiringEvidence();
   renderDecisionGrid('systems-arch-decisions', architectureDecisions);
   renderDecisionGrid('systems-eng-decisions', engineeringDecisions);
   renderFailures();

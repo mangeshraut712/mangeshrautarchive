@@ -1,0 +1,45 @@
+# Mangesh Raut - Portfolio & Archive
+
+This is the official archive, portfolio, and engineering dashboard of Mangesh Raut, an expert Software Engineer specializing in production-ready AI systems, full-stack development, and cloud systems engineering (MS CS from Drexel University).
+
+## Overview
+
+The site is built as a high-performance, accessibility-first vanilla HTML/CSS/JS application with Apple-inspired design patterns, micro-animations, and full offline service worker caching support. It scores 100/100 across all Lighthouse categories.
+
+- **URL**: [https://mangeshraut.pro](https://mangeshraut.pro)
+- **GitHub**: [https://github.com/mangeshraut712](https://github.com/mangeshraut712)
+- **LinkedIn**: [https://www.linkedin.com/in/mangeshraut71298/](https://www.linkedin.com/in/mangeshraut71298/)
+
+---
+
+## Directory of Pages
+
+### 1. Main Landing Page (`/index.html` or `/`)
+- **Purpose**: Interactive portfolio, career timeline, key highlights, case studies, and resume downloadable options.
+- **Sections**:
+  - **About**: Summary of technical experience (6+ years full-stack, cloud, and agentic systems).
+  - **Work Experience**: Dynamic timeline tracking software engineering roles, key contributions, and accomplishments.
+  - **Projects & Research**: Spotlights on production AI tools, LLM fine-tuning, and open-source contributions.
+
+### 2. Engineering Notebook (`/systems.html`)
+- **Purpose**: Concrete proof and telemetry of systems built. Focuses on metrics, architecture decisions, system performance, failures, and live status instead of raw claims.
+- **Sub-pages/links**:
+  - Links to uses/colophon and travel mapping.
+  - Interactive telemetry controls for reviewing site latency, bundle size, and build artifacts.
+
+### 3. Travel Atlas (`/travel.html`)
+- **Purpose**: Geolocation mapping, personal travel logs, and interactive photography mapping of visited locations. Includes geographic SEO structure.
+
+### 4. Setup & Tools (`/uses.html`)
+- **Purpose**: Comprehensive list of hardware, development software, and AI stack utilized for engineering work.
+
+### 5. Telemetry & Analytics Dashboard (`/monitor.html`)
+- **Purpose**: Live dashboard showcasing analytics, Google Analytics metrics, and system response latencies.
+
+---
+
+## Technical Context for AI Agents
+
+- **Semantic Navigation**: The page utilizes standard skip-links (`#main-content`) and HTML5 navigation landmarks (`<nav>`, `<main>`, `<header>`, `<footer>`).
+- **A11y Compliance**: Strong keyboard tab focus navigation, ARIA roles, and high color-contrast ratio themes.
+- **Local Dev Server**: Served locally on `http://127.0.0.1:4000` for sandbox testing.

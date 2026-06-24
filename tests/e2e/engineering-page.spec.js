@@ -9,7 +9,6 @@ const sectionIds = [
   'production',
   'architecture',
   'projects',
-  'evidence',
   'experiments',
   'open-source',
   'writing',
@@ -43,8 +42,7 @@ test.describe('Engineering evidence dashboard', () => {
 
     await expect(page.locator('#systems-metrics-grid .systems-metric-panel')).toHaveCount(4);
     await expect(page.locator('#systems-case-flows .systems-case-flow').first()).toBeVisible();
-    await expect(page.locator('#systems-hiring-grid .systems-hiring-card')).toHaveCount(4);
-    await expect(page.locator('#systems-token-grid .systems-token-card')).toHaveCount(12);
+    await expect(page.locator('#systems-token-grid .systems-token-row')).toHaveCount(12);
     await assertNoHorizontalOverflow(page);
   });
 
@@ -59,8 +57,7 @@ test.describe('Engineering evidence dashboard', () => {
   test('mobile engineering page has no horizontal overflow', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForSystemsReady(page);
-    await expect(page.locator('#systems-hiring-grid .systems-hiring-card')).toHaveCount(4);
-    await expect(page.locator('#systems-token-grid .systems-token-card')).toHaveCount(12);
+    await expect(page.locator('#systems-token-grid .systems-token-row')).toHaveCount(12);
     await assertNoHorizontalOverflow(page);
 
     const shellBox = await page.locator('.systems-shell').boundingBox();

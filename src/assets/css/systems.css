@@ -2443,7 +2443,9 @@ body.systems-page .systems-now-card,
 body.systems-page .case-study-preview-card,
 body.systems-page .systems-token-row,
 body.systems-page .systems-decision-row,
-body.systems-page .systems-failure-row {
+body.systems-page .systems-failure-row,
+body.systems-page .systems-writing-card,
+body.systems-page .systems-writing-chip {
   color: var(--systems-text) !important;
   background: var(--systems-card-bg) !important;
   background-color: var(--systems-card-bg) !important;
@@ -2472,7 +2474,8 @@ body.systems-page .systems-now-card:hover,
 body.systems-page .case-study-preview-card:hover,
 body.systems-page .systems-token-row:hover,
 body.systems-page .systems-decision-row:hover,
-body.systems-page .systems-failure-row:hover {
+body.systems-page .systems-failure-row:hover,
+body.systems-page .systems-writing-card:hover {
   transform: translateY(-4px) !important;
   border-color: #0071e3 !important;
   box-shadow:
@@ -2495,7 +2498,8 @@ html.dark body.systems-page .systems-now-card:hover,
 html.dark body.systems-page .case-study-preview-card:hover,
 html.dark body.systems-page .systems-token-row:hover,
 html.dark body.systems-page .systems-decision-row:hover,
-html.dark body.systems-page .systems-failure-row:hover {
+html.dark body.systems-page .systems-failure-row:hover,
+html.dark body.systems-page .systems-writing-card:hover {
   border-color: #0a84ff !important;
   box-shadow:
     0 12px 36px rgb(10 132 255 / 16%),
@@ -3021,7 +3025,128 @@ html.dark .failure-icon-container {
   color: var(--systems-text);
 }
 
-.systems-writing-grid {
+.systems-writing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.systems-writing-articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.systems-writing-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  border: 1px solid var(--systems-card-border);
+  background: var(--systems-card-bg);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+}
+
+.systems-writing-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.systems-writing-kicker {
+  color: var(--systems-accent);
+}
+
+html.dark .systems-writing-kicker {
+  color: #0a84ff;
+}
+
+.systems-writing-time {
+  color: var(--systems-text-secondary);
+  opacity: 0.7;
+}
+
+.systems-writing-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.systems-writing-title a {
+  color: var(--systems-text);
+  text-decoration: none;
+}
+
+.systems-writing-title a:hover {
+  color: var(--systems-accent);
+}
+
+html.dark .systems-writing-title a:hover {
+  color: #0a84ff;
+}
+
+.systems-writing-summary {
+  font-size: 0.86rem;
+  color: var(--systems-text-secondary);
+  line-height: 1.45;
+  margin: 0;
+  flex: 1;
+}
+
+.systems-writing-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--systems-card-border);
+  padding-top: 0.75rem;
+}
+
+.systems-writing-date {
+  font-size: 0.76rem;
+  color: var(--systems-text-secondary);
+  opacity: 0.7;
+}
+
+.systems-writing-link {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--systems-accent);
+  text-decoration: none;
+}
+
+html.dark .systems-writing-link {
+  color: #0a84ff;
+}
+
+.systems-writing-link:hover {
+  text-decoration: underline;
+}
+
+.systems-writing-topics-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.systems-writing-topics-title {
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  color: var(--systems-text-secondary);
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+.systems-writing-topics-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -3030,13 +3155,16 @@ html.dark .failure-icon-container {
 .systems-writing-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
-  padding: 0.35rem 0.85rem;
+  min-height: 32px;
+  padding: 0.25rem 0.75rem;
   border-radius: 999px;
   text-decoration: none;
-  color: var(--systems-accent);
-  font-size: 0.84rem;
+  color: var(--systems-text);
+  font-size: 0.8rem;
   font-weight: 600;
+  border: 1px solid var(--systems-card-border);
+  background: var(--systems-card-bg);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-production-snapshot {
