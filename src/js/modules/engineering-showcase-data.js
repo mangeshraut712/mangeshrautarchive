@@ -24,7 +24,7 @@ export const heroStats = [
 
 export const builderProfile = {
   title: 'Builder Profile',
-  lead: 'Software Developer · Software Engineer',
+  lead: 'Software Development Engineer',
   bullets: [
     'MS Computer Science — Drexel University',
     'Building production AI products, agentic workflows, developer infrastructure, and modern web systems.',
