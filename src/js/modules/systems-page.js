@@ -224,14 +224,34 @@ function renderHiringEvidence() {
 function renderDecisionGrid(rootId, decisions) {
   const root = document.getElementById(rootId);
   if (!root) return;
+
+  const isArchitecture = rootId === 'systems-arch-decisions';
+
   root.innerHTML = decisions
-    .map(
-      item => `<div class="systems-decision-row lg-glass-card">
-        <span class="systems-decision-label">${escapeHtml(item.decision)}</span>
-        <span class="systems-decision-divider" aria-hidden="true">—</span>
-        <span class="systems-decision-why">${escapeHtml(item.why)}</span>
-      </div>`
-    )
+    .map((item, idx) => {
+      const badgeIcon = isArchitecture ? 'fa-square-check' : 'fa-circle-xmark';
+      const badgeClass = isArchitecture ? 'decision-badge--arch' : 'decision-badge--eng';
+      const badgeLabel = isArchitecture ? 'ADOPTED' : 'REJECTED';
+
+      return `
+        <div class="systems-decision-row lg-glass-card">
+          <div class="systems-decision-meta">
+            <span class="decision-number">${String(idx + 1).padStart(2, '0')}</span>
+            <span class="decision-badge ${badgeClass}">
+              <i class="fa-solid ${badgeIcon}" aria-hidden="true"></i>
+              <span>${badgeLabel}</span>
+            </span>
+          </div>
+          <div class="systems-decision-content">
+            <h4 class="systems-decision-label">${escapeHtml(item.decision)}</h4>
+            <div class="systems-decision-why-container">
+              <span class="why-kicker">Rationale</span>
+              <p class="systems-decision-why">${escapeHtml(item.why)}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    })
     .join('');
 }
 
@@ -240,13 +260,23 @@ function renderFailures() {
   if (!root) return;
   root.innerHTML = failedExperiments
     .map(
-      item => `<div class="systems-failure-row lg-glass-card">
-        <div class="systems-failure-head">
-          <strong>${escapeHtml(item.name)}</strong>
-          <span class="systems-failure-status">${escapeHtml(item.status)}</span>
+      item => `
+        <div class="systems-failure-row lg-glass-card">
+          <div class="systems-failure-header">
+            <span class="failure-icon-container">
+              <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+            </span>
+            <div class="systems-failure-title-block">
+              <h4 class="systems-failure-name">${escapeHtml(item.name)}</h4>
+              <span class="systems-failure-status-badge">${escapeHtml(item.status)}</span>
+            </div>
+          </div>
+          <div class="systems-failure-body">
+            <span class="failure-kicker">Root Cause / Retrospective</span>
+            <p class="systems-failure-reason">${escapeHtml(item.reason)}</p>
+          </div>
         </div>
-        <p class="systems-failure-reason">${escapeHtml(item.reason)}</p>
-      </div>`
+      `
     )
     .join('');
 }
@@ -280,13 +310,64 @@ function renderWriting() {
 function renderTokenization() {
   const root = document.getElementById('systems-token-grid');
   if (!root) return;
-  root.innerHTML = tokenizationStack
-    .map(
-      tool => `<div class="systems-token-card">
-        <span class="systems-token-name">${escapeHtml(tool.name)}</span>
-        ${tool.tokens ? `<span class="systems-token-count">${escapeHtml(tool.tokens)}</span>` : ''}
-      </div>`
-    )
+
+  const parseTokens = (t) => {
+    if (!t) return 0;
+    if (t.endsWith('B')) return parseFloat(t) * 1e9;
+    if (t.endsWith('M')) return parseFloat(t) * 1e6;
+    return parseFloat(t);
+  };
+
+  const getTokenWidth = (tokens) => {
+    if (!tokens) return 10;
+    if (tokens === '5B') return 100;
+    if (tokens === '2B') return 40;
+    if (tokens === '1B') return 20;
+    return 15;
+  };
+
+  const toolContexts = {
+    'Cursor': 'Primary IDE environment & context orchestration',
+    'Codex': 'Generative codebase translation & autocomplete',
+    'KiloChat': 'Chat interface & human-in-the-loop coordination',
+    'Cline': 'Agentic file-editing & browser automation',
+    'OpenRouter': 'Unified API gateway & smart model routing',
+    'Antigravity': 'Autonomous multi-agent pair programming',
+    'Droid': 'Background validation & unit testing companion',
+    'OpenClaw': 'Dynamic execution environment',
+    'OpenCode': 'Secondary fallback code generation agent',
+    'Hermes Agent': 'System-level shell tool invocation specialist',
+    'VS Code': 'Secondary code viewing & workspace management',
+    'Claude': 'Direct chat model interaction & conceptual modeling'
+  };
+
+  const sortedStack = [...tokenizationStack].sort((a, b) => {
+    const valA = parseTokens(a.tokens);
+    const valB = parseTokens(b.tokens);
+    if (valB !== valA) return valB - valA;
+    return a.name.localeCompare(b.name);
+  });
+
+  root.innerHTML = sortedStack
+    .map(tool => {
+      const width = getTokenWidth(tool.tokens);
+      const isLive = !tool.tokens;
+      const contextText = toolContexts[tool.name] || 'AI utility tool integration';
+
+      return `<div class="systems-token-row lg-glass-card">
+        <div class="systems-token-row-head">
+          <span class="systems-token-label">${escapeHtml(tool.name)}</span>
+          ${tool.tokens
+            ? `<strong class="systems-token-value">${escapeHtml(tool.tokens)}<small> tokens</small></strong>`
+            : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Active</strong>`
+          }
+        </div>
+        <div class="systems-token-bar-track" aria-hidden="true">
+          <div class="systems-token-bar-fill ${isLive ? 'is-active' : ''}" style="width: ${width}%"></div>
+        </div>
+        <span class="systems-token-context">${escapeHtml(contextText)}</span>
+      </div>`;
+    })
     .join('');
 }
 
@@ -320,14 +401,28 @@ function renderPrinciples() {
 function renderTimeline() {
   const root = document.getElementById('systems-timeline');
   if (!root) return;
-  root.innerHTML = engineeringTimeline
-    .map(
-      block => `<div class="systems-timeline-block">
-        <span class="systems-timeline-year">${escapeHtml(block.year)}</span>
-        <ul class="systems-timeline-items">${block.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
-      </div>`
-    )
-    .join('');
+  root.innerHTML = `
+    <div class="systems-timeline-rail"></div>
+    <div class="systems-timeline-container">
+      ${engineeringTimeline
+        .map(
+          block => `
+            <div class="systems-timeline-node">
+              <div class="systems-timeline-marker">
+                <span class="systems-timeline-dot"></span>
+              </div>
+              <div class="systems-timeline-block lg-glass-card">
+                <span class="systems-timeline-year">${escapeHtml(block.year)}</span>
+                <ul class="systems-timeline-items">
+                  ${block.items.map(item => `<li><i class="fa-solid fa-cube timeline-bullet-icon" aria-hidden="true"></i><span>${escapeHtml(item)}</span></li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          `
+        )
+        .join('')}
+    </div>
+  `;
 }
 
 function flowStepContent(cs, stepKey) {
