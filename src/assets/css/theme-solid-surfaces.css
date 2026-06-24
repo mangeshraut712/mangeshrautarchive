@@ -7,6 +7,12 @@
   --bg-secondary: #ffffff;
   --bg-tertiary: #ffffff;
   --bg-elevated: #ffffff;
+  --bg-primary: #ffffff;
+  --fill: #ffffff;
+  --fill-secondary: #ffffff;
+  --fill-tertiary: #ffffff;
+  --apple-gray-6: #ffffff;
+  --apple-gray-5: #ffffff;
   --lg-panel-surface-light: #ffffff;
   --lg-control-surface-light: #ffffff;
   --lg-nav-surface-light: #ffffff;
@@ -27,6 +33,12 @@ html[data-theme='dark'] {
   --bg-secondary: #000000;
   --bg-tertiary: #000000;
   --bg-elevated: #000000;
+  --bg-primary: #000000;
+  --fill: #000000;
+  --fill-secondary: #000000;
+  --fill-tertiary: #000000;
+  --apple-gray-6: #000000;
+  --apple-gray-5: #000000;
   --lg-panel-surface-dark: #000000;
   --lg-control-surface-dark: #000000;
   --lg-nav-surface-dark: #000000;
@@ -949,4 +961,122 @@ html.dark body.travel-body .travel-stop.active {
 html.dark body.travel-body .travel-stop.active {
   border-color: #0a84ff !important;
   box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+}
+
+/* ─── Hero chrome: blue name, solid pronoun pill ─── */
+#home .hero-name-text,
+#home.hero-section .hero-name-text {
+  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #0071e3 !important;
+}
+
+html.dark #home .hero-name-text,
+html.dark #home.hero-section .hero-name-text {
+  background: linear-gradient(135deg, #2997ff 0%, #0a84ff 100%) !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #2997ff !important;
+}
+
+#home .hero-identity-item,
+#home .vibe-coder-badge,
+#home .portfolio-reach-badge {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark) #home .hero-identity-item,
+html:not(.dark) #home .vibe-coder-badge,
+html:not(.dark) #home .portfolio-reach-badge {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark #home .hero-identity-item,
+html.dark #home .vibe-coder-badge,
+html.dark #home .portfolio-reach-badge {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+/* ─── Skills categories: solid panels, border hover ─── */
+html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border, rgb(0 0 0 / 8%)) !important;
+}
+
+html.dark :is(#skills .skill-category, #skills-container .skill-category) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):hover {
+    border-color: #0071e3 !important;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  }
+
+  html.dark :is(#skills .skill-category, #skills-container .skill-category):hover {
+    border-color: #0a84ff !important;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
+  }
+}
+
+/* ─── Blue shine buttons (no grey secondary fills) ─── */
+:is(
+  .btn-secondary,
+  .apple-btn-secondary,
+  #projects .projects-view-all-btn,
+  #projects #github-projects-container .btn-demo,
+  #home .hero-actions .hero-cta
+) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark)
+  :is(.btn-secondary, .apple-btn-secondary):not(.is-disabled):not(:disabled) {
+  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 14px rgb(0 113 227 / 24%) !important;
+}
+
+html.dark :is(.btn-secondary, .apple-btn-secondary):not(.is-disabled):not(:disabled) {
+  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 14px rgb(10 132 255 / 28%) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark) :is(.btn-secondary, .apple-btn-secondary):hover:not(:disabled) {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    border-color: transparent !important;
+    box-shadow: 0 6px 20px rgb(0 113 227 / 32%) !important;
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  html.dark :is(.btn-secondary, .apple-btn-secondary):hover:not(:disabled) {
+    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+    box-shadow: 0 6px 20px rgb(10 132 255 / 36%) !important;
+    transform: translateY(-2px) scale(1.02);
+  }
+}
+
+/* Project card footer — flat, not grey gradient */
+html:not(.dark) #projects .project-footer,
+html.dark #projects .project-footer {
+  background: transparent !important;
+  background-image: none !important;
 }

@@ -564,7 +564,11 @@ Full OpenAPI spec available at `/docs` when running the backend locally.
 
 ### June 2026 (latest)
 
-- **Engineering Evidence polish** — homepage hero restored to Software Developer / Engineer; four evidence Q&A cards outside the metrics overview; `/systems` tokenization card (AI tooling transparency); footer link strip removed; sitewide hover uses blue borders instead of blue glows; go-to-top and GitHub graph legend fixed in light mode; Liquid Glass defaults to clear.
+- **Solid white/black theme audit** — sitewide `#ffffff` / `#000000` surfaces via `theme-solid-surfaces.css`; grey translucent fills (`--fill`, frosted pills) removed from hero pronoun badge, vibe/reach pills, and skills categories; card hovers stay blue-border with neutral shadow (no glow).
+- **Hero & buttons** — “Mangesh Raut” heading uses high-visibility blue gradient in light and dark mode; View Projects, Live Demo, and secondary CTAs use blue gradient shine with motion (no grey button backgrounds).
+- **Skills polish** — tighter category spacing, solid category panels, progress-bar glow removed, badge hovers border-only.
+- **Micro motion** — faster Framer-style scroll reveals (`microReveal` / `microScaleIn`) on headings, cards, hero chrome, about media, and engineering tiles; GPU-only transforms with reduced-motion fallbacks.
+- **Engineering Evidence polish** — homepage hero restored to Software Developer / Engineer; four evidence Q&A cards outside the metrics overview; `/systems` tokenization card (AI tooling transparency); footer link strip removed; go-to-top and GitHub graph legend fixed in light mode; Liquid Glass defaults to clear.
 - **CI recovery** — removed duplicate `systems.css` selectors that blocked Stylelint; GitHub Pages deploy sync restored for nightly monitoring.
 - **Engineering Evidence (`/systems`)** — aligned with travel/monitor nav pattern; architecture tab pills no longer inherit global blue button styles; dual-host diagram edges fixed; hero/benchmark tiles use CI-verified Lighthouse budgets (95+ gate), WebMCP tool count, and live API status instead of fabricated scores.
 - **Sitewide Liquid Glass** — `wwdc26` section 23/24: project cards, travel/monitor nav, blog articles, monitor `doc-card` tiles, 404 `lg-glass-card`, Apple spring hover/press on showcase cards.

@@ -78,6 +78,17 @@ class ScrollAnimations {
       '.contact-card',
       '.travel-stop',
       '.overview-card',
+      '.about-highlight-card',
+      '.about-text-card',
+      '.about-image',
+      '.profile-image-wrapper',
+      '.eng-showcase-card',
+      '.engineering-evidence-card',
+      '.hero-cta',
+      '.hero-identity-item',
+      '#about .about-intro-title',
+      '.engineering-metric-item',
+      '.case-study-preview-card',
     ];
 
     targetSelectors.forEach(selector => {

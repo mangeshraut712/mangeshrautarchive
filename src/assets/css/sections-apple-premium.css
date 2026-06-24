@@ -212,17 +212,19 @@ html.dark #home .name-pronounce-btn:hover {
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #1d1d1f 30%, #434343 100%);
+  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: #0071e3;
 }
 
 html.dark #home .hero-name-text {
-  background: linear-gradient(135deg, #ffffff 30%, #a1a1a6 100%);
+  background: linear-gradient(135deg, #2997ff 0%, #0a84ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: #2997ff;
 }
 
 /* Verified Badge — inline with name */

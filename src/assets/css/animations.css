@@ -56,6 +56,42 @@
   }
 }
 
+@keyframes skillBadgeEntrance {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes microReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes microScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -145,7 +181,7 @@
 }
 
 .animate-on-scroll.animate-in {
-  animation: fadeInUp 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation: microReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Cards - Projects, Experience, Education, etc. */
@@ -161,13 +197,25 @@
 .skill-category.animate-in,
 .contact-card.animate-in,
 .travel-stop.animate-in,
-.overview-card.animate-in {
-  animation: fadeInUp 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+.overview-card.animate-in,
+.about-highlight-card.animate-in,
+.about-text-card.animate-in,
+.eng-showcase-card.animate-in,
+.engineering-evidence-card.animate-in,
+.hero-cta.animate-in,
+.hero-identity-item.animate-in {
+  animation: microReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.about-image.animate-in,
+.profile-image-wrapper.animate-in,
+img.about-image.animate-in {
+  animation: microScaleIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Section Headings */
 section h2.animate-in {
-  animation: headingReveal 0.75s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  animation: headingReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Stagger delays for cards */
@@ -260,8 +308,8 @@ a.btn,
 .btn:hover,
 .project-action-btn:hover,
 .cta-button:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 24px rgb(0 113 227 / 25%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgb(0 113 227 / 28%);
 }
 
 .projects-view-all-btn:hover {
@@ -281,7 +329,7 @@ a.btn,
 html.dark .btn:hover,
 html.dark .project-action-btn:hover,
 html.dark .cta-button:hover {
-  box-shadow: 0 12px 24px rgb(10 132 255 / 30%);
+  box-shadow: 0 6px 20px rgb(10 132 255 / 32%);
 }
 
 html.dark .projects-view-all-btn:hover {

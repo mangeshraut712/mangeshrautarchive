@@ -30,12 +30,10 @@ html.dark #skills {
 /* Skills Container - Inside the section */
 #skills-container {
   padding: 0;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   background-color: transparent !important;
   overflow: hidden;
-  /* Contain the marquee scroll wrappers */
   max-width: 100%;
-  /* Ensure it doesn't exceed container */
 }
 
 html.dark #skills-container {
@@ -43,9 +41,10 @@ html.dark #skills-container {
 }
 
 .skill-category {
-  margin-bottom: 1.5rem;
-  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem 1.75rem;
   border-radius: 24px;
+  border: 1px solid var(--theme-card-border, rgb(0 0 0 / 8%));
 }
 
 .skill-category:last-child {
@@ -56,9 +55,9 @@ html.dark #skills-container {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.875rem;
   padding-left: 0;
 }
 
@@ -214,8 +213,8 @@ html.dark .skill-badge:hover {
 }
 
 .skill-badge:hover .skill-badge-icon {
-  transform: scale(1.15) rotate(8deg);
-  box-shadow: 0 6px 20px rgb(0 0 0 / 20%);
+  transform: scale(1.08) rotate(4deg);
+  box-shadow: none;
 }
 
 @keyframes iconFloat {
@@ -301,31 +300,11 @@ html.dark .skill-badge-bar {
 }
 
 .skill-badge-progress::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgb(255 255 255 / 60%) 20%,
-    rgb(255 255 255 / 80%) 50%,
-    rgb(255 255 255 / 60%) 80%,
-    transparent
-  );
-  animation: progressShine 3s ease-in-out infinite;
-}
-
-.skill-badge-progress::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgb(255 255 255 / 20%) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  display: none;
 }
 
 .skill-badge:hover .skill-badge-progress::after {
-  opacity: 0.6;
+  opacity: 0;
 }
 
 @keyframes progressShine {
@@ -359,8 +338,8 @@ html.dark .skill-badge-percentage {
 }
 
 .skill-badge:hover .skill-badge-icon i {
-  transform: scale(1.1);
-  filter: drop-shadow(0 0 8px currentcolor);
+  transform: scale(1.05);
+  filter: none;
 }
 
 /* Reduce motion for accessibility */

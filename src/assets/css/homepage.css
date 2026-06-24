@@ -1779,8 +1779,8 @@ html.dark .launch-intro-label {
   min-height: 24px;
   position: relative;
   top: -2px;
-  color: #0a84ff !important;
-  filter: drop-shadow(0 4px 10px rgb(10 132 255 / 22%));
+  color: #0071e3 !important;
+  filter: none;
   flex: 0 0 auto;
 }
 
@@ -1791,11 +1791,15 @@ html.dark .launch-intro-label {
 }
 
 html.dark .hero-verified-badge {
-  color: #2997ff !important;
-  filter: drop-shadow(0 4px 12px rgb(41 151 255 / 28%));
+  color: #0a84ff !important;
+  filter: none;
 }
 
 html.dark .hero-name-text {
+  background: linear-gradient(135deg, #2997ff 0%, #0a84ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: #2997ff !important;
 }
 
