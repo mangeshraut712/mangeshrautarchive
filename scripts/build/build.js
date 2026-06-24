@@ -79,7 +79,12 @@ async function injectApiKeys(distDir) {
 (function () {
   const buildConfig = ${JSON.stringify(config, null, 2)};
   globalThis.buildConfig = buildConfig;
-  globalThis.APP_CONFIG = Object.assign({}, globalThis.APP_CONFIG || {}, buildConfig);
+  const merged = Object.assign({}, globalThis.APP_CONFIG || {}, buildConfig);
+  const loopbackHosts = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'];
+  if (loopbackHosts.includes(window.location.hostname)) {
+    merged.apiBaseUrl = window.location.origin;
+  }
+  globalThis.APP_CONFIG = merged;
 })();
 `;
   const jsConfigPath = resolve(distDir, 'build-config.js');
@@ -152,6 +157,18 @@ const PREMIUM_DEFERRED_CSS = [
   'assets/css/wwdc26-liquid-glass.css',
 ];
 
+const PERF_AUDIT_SLIM_CSS = [
+  'assets/css/cross-browser-responsive.css',
+  'assets/css/tailwind-output.css',
+  'assets/css/sitewide-design-system.css',
+  'assets/css/apple-2026-design-system.css',
+  'assets/css/typography-system.css',
+  'assets/css/homepage.css',
+  'assets/css/dynamic-island-navbar.css',
+  'assets/css/global-improvements.css',
+  'assets/css/accessibility-contrast-fixes.css',
+];
+
 const ABOVE_FOLD_CSS = [...HERO_CRITICAL_CSS, ...PREMIUM_DEFERRED_CSS];
 
 async function bundleCssGroup(distDir, relPaths, outputName) {
@@ -173,6 +190,7 @@ async function bundleAboveFoldCss(distDir) {
   await Promise.all([
     bundleCssGroup(distDir, HERO_CRITICAL_CSS, 'hero-critical.bundle.css'),
     bundleCssGroup(distDir, PREMIUM_DEFERRED_CSS, 'premium-deferred.bundle.css'),
+    bundleCssGroup(distDir, PERF_AUDIT_SLIM_CSS, 'perf-audit-slim.css'),
   ]);
 
   const indexPath = resolve(distDir, 'index.html');

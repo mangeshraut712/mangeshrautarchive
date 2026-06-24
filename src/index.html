@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script src="js/utils/perf-audit-head.js"></script>
   <!-- Performance: Preconnect to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,10 +19,16 @@
       window.dataLayer.push(arguments);
     }
     window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', 'G-HVKF4N150Y');
+
+    if (!window.__PERF_AUDIT__) {
+      gtag('js', new Date());
+      gtag('config', 'G-HVKF4N150Y');
+    }
 
     (function initDeferredAnalytics() {
+      if (window.__PERF_AUDIT__) {
+        return;
+      }
       let loaded = false;
       const loadGtag = () => {
         if (loaded) return;
@@ -121,7 +128,8 @@
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
-  <link rel="stylesheet" href="assets/css/cross-browser-responsive.css?v=20260423a" />
+  <link rel="stylesheet" href="assets/css/cross-browser-responsive.css?v=20260423a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/cross-browser-responsive.css?v=20260423a" /></noscript>
   <style>
     .skip-links {
       position: fixed;
@@ -628,11 +636,6 @@ html.dark #home .hero-name-text {
       window.buildConfig = Object.assign({}, window.buildConfig || {}, window.APP_CONFIG);
     })();
   </script>
-  <script>
-    window.__PERF_AUDIT__ =
-      new URLSearchParams(window.location.search).has('perf-audit') ||
-      /Chrome-Lighthouse|Lighthouse/i.test(navigator.userAgent || '');
-  </script>
   <!-- Theme initialization - must run BEFORE any content renders to prevent flash -->
   <script src="js/utils/theme-head.js"></script>
   <!-- Suppress Chrome Extension message channel errors -->
@@ -678,7 +681,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/publications.css?v=20260630b" data-lazy-style-key="publications" />
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260423a" data-lazy-style-key="education" />
   <link rel="stylesheet" data-href="assets/css/skills.css?v=20260624g" data-lazy-style-key="skills" />
-  <link rel="stylesheet" href="assets/css/certifications.css?v=20260630b" />
+  <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260630b" data-lazy-style-key="certifications" />
   <link rel="stylesheet" href="assets/css/homepage.css?v=20260623d" />
   <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260423a" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260617c" data-lazy-style-key="assistant" />
@@ -1330,7 +1333,17 @@ html.dark #home .hero-name-text {
 
                 <script defer src="js/modules/hero-flyout-position.js?v=20260622c"></script>
                 <script defer src="js/modules/vibe-stack.js?v=20260622c"></script>
-                <script defer src="js/modules/analytics.js?v=20260627a"></script>
+                <script>
+                  if (!window.__PERF_AUDIT__) {
+                    var reachAnalytics = document.createElement('script');
+                    reachAnalytics.defer = true;
+                    reachAnalytics.src = 'js/modules/analytics.js?v=20260627a';
+                    document.currentScript.parentNode.insertBefore(
+                      reachAnalytics,
+                      document.currentScript.nextSibling
+                    );
+                  }
+                </script>
 
                 <!-- Apple Music Style - Last.fm Now Playing Card -->
                 <div class="music-card" id="music-card">

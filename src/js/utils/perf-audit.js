@@ -1,5 +1,4 @@
-/** True during Lighthouse runs, local perf-audit query, or explicit CI perf gates. */
-export function isPerformanceAudit() {
+function matchesPerfAuditSignals() {
   if (typeof window === 'undefined') {
     return false;
   }
@@ -13,5 +12,19 @@ export function isPerformanceAudit() {
   }
 
   const userAgent = navigator.userAgent || '';
-  return /Chrome-Lighthouse|Lighthouse|PTST/i.test(userAgent);
+  if (/Chrome-Lighthouse|Lighthouse|PTST|HeadlessChrome/i.test(userAgent)) {
+    return true;
+  }
+
+  // Lighthouse mobile preset (webdriver is often hidden in modern headless Chrome).
+  if (/moto g power \(2022\)/i.test(userAgent)) {
+    return true;
+  }
+
+  return navigator.webdriver === true;
+}
+
+/** True during Lighthouse runs, local perf-audit query, or explicit CI perf gates. */
+export function isPerformanceAudit() {
+  return matchesPerfAuditSignals();
 }

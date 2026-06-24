@@ -486,6 +486,9 @@ function resolveMonitorMock(path, method) {
     };
   }
   if (path.includes('/api/music/recent')) return { recenttracks: { track: [] } };
+  if (path.includes('/api/music/artwork')) {
+    return { artwork_url: '', source: 'itunes', cached: false, term: '' };
+  }
   if (path.includes('/api/personalization/export')) {
     return {
       success: true,

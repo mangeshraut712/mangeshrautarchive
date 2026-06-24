@@ -1,6 +1,7 @@
 import time
 import json
 from typing import Optional
+from urllib.parse import quote
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 
@@ -16,6 +17,8 @@ from api.config import (
     lastfm_recent_cache,
     poster_cache,
     POSTER_CACHE_DURATION,
+    artwork_cache,
+    ARTWORK_CACHE_DURATION,
 )
 from api.monitoring import system_monitor
 
@@ -285,6 +288,62 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
             system_monitor.record_poster_request(False)
 
     return ""
+
+
+async def fetch_itunes_artwork(search_term: str) -> str:
+    """Fetch album artwork from iTunes Search API (server-side to avoid browser CORS)."""
+    cache_key = search_term.strip().lower()
+    if not cache_key:
+        return ""
+
+    cached = artwork_cache.get(cache_key)
+    if cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION:
+        return cached["url"]
+
+    search_url = (
+        "https://itunes.apple.com/search?"
+        f"term={quote(search_term)}&media=music&entity=song&limit=1"
+    )
+    headers = {
+        "User-Agent": "AssistMe-Portfolio/3.0.0",
+        "Accept": "application/json",
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=3.2, follow_redirects=True) as client:
+            response = await client.get(search_url, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+
+        artwork = data.get("results", [{}])[0].get("artworkUrl100", "")
+        if artwork:
+            artwork = artwork.replace("/100x100bb.", "/600x600bb.")
+            artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
+            return artwork
+    except Exception as e:
+        print(f"iTunes artwork fetch failed for {search_term}: {type(e).__name__} - {str(e)}")
+
+    return ""
+
+
+@router.get("/api/music/artwork")
+async def get_music_artwork(track: str = "", artist: str = "", term: str = ""):
+    """Proxy iTunes artwork lookup for the Last.fm hero card."""
+    search_term = term.strip() or f"{track.strip()} {artist.strip()}".strip()
+    if not search_term:
+        raise HTTPException(status_code=400, detail="track/artist or term is required")
+
+    cache_key = search_term.lower()
+    cached = artwork_cache.get(cache_key)
+    served_from_cache = bool(cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION)
+    artwork_url = await fetch_itunes_artwork(search_term)
+
+    return {
+        "artwork_url": artwork_url,
+        "source": "itunes",
+        "cached": served_from_cache,
+        "term": search_term,
+    }
 
 
 @router.get("/api/music/recent")

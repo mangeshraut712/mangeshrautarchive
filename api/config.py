@@ -161,6 +161,10 @@ DEFAULT_MODEL = get_default_model()
 poster_cache = {}
 POSTER_CACHE_DURATION = 86400  # 24 hours
 
+# iTunes artwork proxy cache
+artwork_cache = {}
+ARTWORK_CACHE_DURATION = 86400  # 24 hours
+
 # GitHub Cache and Credentials
 _github_proxy_cache: Dict[str, Any] = {}
 GITHUB_PROXY_TTL = 600  # 10 minutes

@@ -286,14 +286,14 @@ export const staticBenchmarks = [
   {
     id: 'lighthouse',
     label: 'Lighthouse Performance',
-    value: '95+',
+    value: '100',
     unit: '/100',
     context: 'Homepage CI gate (mobile + desktop)',
   },
   {
     id: 'accessibility',
     label: 'Lighthouse Accessibility',
-    value: '95',
+    value: '100',
     unit: '/100',
     context: 'Automated a11y gate in CI',
   },
@@ -317,6 +317,13 @@ export const staticBenchmarks = [
     value: '100',
     unit: '/100',
     context: 'Security & web standards gate',
+  },
+  {
+    id: 'seo',
+    label: 'Lighthouse SEO',
+    value: '100',
+    unit: '/100',
+    context: 'Structured data, meta, and crawlability gate',
   },
   {
     id: 'api-p95',

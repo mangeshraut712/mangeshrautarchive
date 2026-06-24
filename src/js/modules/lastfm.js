@@ -18,19 +18,12 @@ class LastFmService {
     this.intervalId = null;
     this._currentTrackId = null; // track identity for change detection
 
-    let apiBaseUrl =
-      globalThis.APP_CONFIG?.apiBaseUrl ||
-      (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
-      '';
-    if (
-      !apiBaseUrl &&
-      typeof window !== 'undefined' &&
-      window.location.hostname.endsWith('github.io')
-    ) {
-      apiBaseUrl = 'https://mangeshraut.pro';
-    }
+    const apiBaseUrl = this.resolveMusicApiBase();
     const apiBaseNormalized = apiBaseUrl ? apiBaseUrl.replace(/\/$/, '') : '';
     this.apiUrl = apiBaseNormalized ? `${apiBaseNormalized}/api/music/recent` : '/api/music/recent';
+    this.artworkApiUrl = apiBaseNormalized
+      ? `${apiBaseNormalized}/api/music/artwork`
+      : '/api/music/artwork';
     this.publicApiKey =
       globalThis.APP_CONFIG?.lastfmApiKey ||
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.lastfmApiKey) ||
@@ -46,6 +39,32 @@ class LastFmService {
 
   initCurrently(elements) {
     this.currently = elements;
+  }
+
+  resolveMusicApiBase() {
+    if (typeof window === 'undefined') {
+      return (
+        globalThis.APP_CONFIG?.apiBaseUrl ||
+        globalThis.buildConfig?.apiBaseUrl ||
+        ''
+      );
+    }
+
+    const host = window.location.hostname;
+    const loopback = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'].includes(host);
+    if (loopback) {
+      return window.location.origin;
+    }
+
+    if (host.endsWith('github.io')) {
+      return 'https://mangeshraut.pro';
+    }
+
+    return (
+      globalThis.APP_CONFIG?.apiBaseUrl ||
+      globalThis.buildConfig?.apiBaseUrl ||
+      window.location.origin
+    );
   }
 
   escapeHtml(value = '') {
@@ -134,13 +153,17 @@ class LastFmService {
     }
 
     const pending = fetch(
-      `https://itunes.apple.com/search?term=${encodeURIComponent(`${trackName} ${artistName}`)}&media=music&entity=song&limit=1`
+      `${this.artworkApiUrl}?${new URLSearchParams({
+        track: trackName,
+        artist: artistName,
+      })}`,
+      {
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout?.(3500),
+      }
     )
       .then(response => (response.ok ? response.json() : null))
-      .then(data => {
-        const artwork = data?.results?.[0]?.artworkUrl100 || '';
-        return artwork ? artwork.replace('/100x100bb.', '/600x600bb.') : null;
-      })
+      .then(data => data?.artwork_url || null)
       .catch(() => null);
 
     this.artworkCache.set(cacheKey, { promise: pending, ts: Date.now() });
