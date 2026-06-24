@@ -15,6 +15,9 @@ const generatedDirs = [
   'test-results',
   'playwright-report',
   '.playwright-mcp',
+  '.playwright-cli',
+  '.pytest_cache',
+  '.gitnexus',
   'scratch',
   '.ruff_cache',
 ];

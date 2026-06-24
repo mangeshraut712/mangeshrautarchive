@@ -515,7 +515,7 @@ mangeshrautarchive/
 ├── tests/
 │   ├── api/                  # pytest (70 tests)
 │   └── e2e/                  # Playwright smoke, a11y, post-deploy, visual
-├── docs/                     # Integration playbooks, CI notes, archived HTML snapshots
+├── docs/                     # Integration playbooks and CI notes
 ├── config/                   # Tooling config fragments
 └── .github/workflows/        # deploy.yml, post-deploy-monitoring.yml
 ```
