@@ -135,6 +135,9 @@ const HERO_CRITICAL_CSS = [
   'assets/css/tailwind-output.css',
   'assets/css/style.css',
   'assets/css/sitewide-design-system.css',
+  'assets/css/apple-2026-design-system.css',
+  'assets/css/typography-system.css',
+  'assets/css/apple-premium-system.css',
   'assets/css/homepage.css',
   'assets/css/dynamic-island-navbar.css',
   'assets/css/global-improvements.css',
@@ -143,9 +146,6 @@ const HERO_CRITICAL_CSS = [
 ];
 
 const PREMIUM_DEFERRED_CSS = [
-  'assets/css/apple-2026-design-system.css',
-  'assets/css/typography-system.css',
-  'assets/css/apple-premium-system.css',
   'assets/css/sections-apple-premium.css',
   'assets/css/unified-mobile-buttons.css',
   'assets/css/contact.css',
