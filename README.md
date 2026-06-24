@@ -14,6 +14,7 @@
   <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white" alt="CI status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/mangeshraut712/mangeshrautarchive?style=for-the-badge" alt="MIT License"></a>
   <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node 22"></a>
+  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"></a>
 </p>
 
 <p align="center">
@@ -41,8 +42,7 @@
 - [About the builder](#about-the-builder)
 - [Live surfaces](#live-surfaces)
 - [Homepage sections](#homepage-sections)
-- [What is shipped](#what-is-shipped)
-- [Portfolio features in depth](#portfolio-features-in-depth)
+- [Features](#features)
 - [Blog & case studies](#blog--case-studies)
 - [Tech stack](#tech-stack)
 - [Architecture](#architecture)
@@ -59,6 +59,7 @@
 - [Deployment & CI/CD](#deployment--cicd)
 - [Documentation](#documentation)
 - [Changelog highlights](#changelog-highlights)
+- [Sponsors](#sponsors)
 - [Contributing](#contributing)
 - [License & contact](#license--contact)
 
@@ -86,33 +87,22 @@ The same `dist/` output is deployed to **Vercel** (primary + API) and **GitHub P
 | **Focus**     | Production AI products, agentic workflows, developer infrastructure, modern web systems                                       |
 | **Site**      | [mangeshraut.pro](https://mangeshraut.pro) — evidence-first portfolio (code, benchmarks, telemetry — not bullet-point claims) |
 
-**What I build:** AI products · agentic systems · full-stack applications · RAG pipelines · developer tools · system monitors · production APIs · design systems.
-
-**Engineering philosophy (from `/systems`):** local-first actions before LLM calls · model routing over provider lock-in · measure everything · ship evidence, not templates.
+**What I build:** AI products · agentic systems · full-stack applications · RAG pipelines · developer tools · system monitors · production APIs · design systems. See [Architecture](#architecture) for engineering decisions documented on `/systems`.
 
 ---
 
 ## Live surfaces
 
-| Surface                  | URL                                                                                                 | What you get                                                  |
-| ------------------------ | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| **Portfolio**            | [mangeshraut.pro](https://mangeshraut.pro)                                                          | AssistMe, projects, blog, health widget, PWA                  |
-| **GitHub Pages mirror**  | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Same static build; API calls go to `mangeshraut.pro`          |
-| **Engineering evidence** | [mangeshraut.pro/systems](https://mangeshraut.pro/systems)                                          | CI-verified benchmarks, architecture tabs, live monitor hooks |
-| **System monitor**       | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Public ops dashboard, integration status, probes              |
-| **Travel atlas**         | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre map of visited places + narratives                   |
-| **Uses / stack**         | [mangeshraut.pro/uses](https://mangeshraut.pro/uses)                                                | Current tooling and vibe-stack snapshot                       |
-| **Blog**                 | [mangeshraut.pro/blog](https://mangeshraut.pro/blog)                                                | 12 generated technical articles (2026 topics)                 |
-| **404**                  | [mangeshraut.pro/404](https://mangeshraut.pro/404.html)                                             | Branded not-found page with navigation recovery               |
-
-### Page guides
-
-| Page           | Highlights                                                                                                                                                                                                                        |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`/systems`** | Public engineering notebook — CI-backed Lighthouse tiles, architecture decision log, failed experiments, open-source activity, hiring evidence Q&A, system-design topic tabs (AssistMe, dual hosting, WebMCP), live monitor hooks |
-| **`/monitor`** | Public ops dashboard — backend health probes, platform distribution chart, uptime matrix, integration status, CSP reports, AI service metrics, deployment surfaces, engineering telemetry                                         |
-| **`/travel`**  | MapLibre GL atlas — visited places, route playback, location gallery, searchable narratives                                                                                                                                       |
-| **`/uses`**    | Hardware / software / AI stack snapshot rendered from `usesStack` in `engineering-showcase-data.js`                                                                                                                               |
+| Surface          | URL                                                                                                 | Highlights                                                                 |
+| ---------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Portfolio**    | [mangeshraut.pro](https://mangeshraut.pro)                                                          | AssistMe, 13 homepage sections, projects, blog, health widget, PWA         |
+| **GitHub Pages** | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Same `dist/` build; `apiBaseUrl` → production API                          |
+| **Engineering**  | [mangeshraut.pro/systems](https://mangeshraut.pro/systems)                                          | CI benchmarks, architecture log, failed experiments, hiring evidence Q&A   |
+| **Monitor**      | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Health probes, uptime matrix, CSP reports, AI metrics, deployment surfaces |
+| **Travel**       | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre GL atlas — routes, location gallery, searchable narratives        |
+| **Uses**         | [mangeshraut.pro/uses](https://mangeshraut.pro/uses)                                                | Hardware / software / AI stack from `usesStack`                            |
+| **Blog**         | [mangeshraut.pro/blog](https://mangeshraut.pro/blog)                                                | 12 build-generated Field Notes articles                                    |
+| **404**          | [mangeshraut.pro/404](https://mangeshraut.pro/404.html)                                             | Branded not-found with navigation recovery                                 |
 
 ---
 
@@ -140,42 +130,23 @@ The main portfolio (`index.html`) is a single-page app with **13 primary nav lan
 
 ---
 
-## What is shipped
+## Features
 
-| Area                | Implementation                                                                                        |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Agentic runtime** | `agentic-actions.js` — 10 WebMCP tools + regex fast-path in `chat.js` before any LLM call             |
-| **AI chat**         | `api/routes/chat.py` — site knowledge, local fallback, OpenRouter Fusion / Auto / Grok-first routing  |
-| **Design system**   | WWDC26 liquid glass (`wwdc26-liquid-glass.css`), solid light/dark surfaces, Apple-premium card system |
-| **Projects**        | `github-projects.js` — proxy + multi-origin fallback chain, XR detail modal                           |
-| **Media shelf**     | Last.fm now-playing via `/api/music/recent` + iTunes artwork proxy `/api/music/artwork`               |
-| **Health**          | WHOOP + Withings OAuth, Supabase daily snapshots, `/api/health-vitals/summary` widget                 |
-| **Analytics**       | GA4 reach panel + `@vercel/analytics` (production only)                                               |
-| **Accessibility**   | Toolbar (font scale, contrast, reduced motion, glass tint), axe-core CI gate                          |
-| **Build**           | `scripts/build/build.js` — esbuild, Sharp, hero-critical CSS bundle, blog/case-study generators       |
-| **Testing**         | 15 Playwright projects, 70 pytest API tests, Lighthouse **100/100** CI gate on `dist/`                |
-
----
-
-## Portfolio features in depth
-
-| Feature                   | Details                                                                                                                                                            |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **AssistMe chatbot**      | Floating `#chatbot-toggle` · NDJSON streaming · KaTeX + DOMPurify markdown · conversation session persistence · typing indicators                                  |
-| **Command palette**       | `#search-overlay` — indexes all homepage sections, blog posts, case studies, travel page, debug runner; `⌘K` / `Ctrl+K` shortcut; lazy-loaded on first interaction |
-| **Dynamic Island nav**    | Compact global nav (`#global-nav`) with search, theme toggle, mobile overlay menu, view-transition navigation                                                      |
-| **Theme system**          | Light / dark / system via `data-theme` + `html.dark` · solid `#ffffff` / `#000000` surfaces · WWDC26 liquid glass tint popover on a11y toolbar                     |
-| **Accessibility toolbar** | Share, keyboard shortcuts, font scale ±, liquid-glass transparency — WCAG 2.2 focus rings, skip links, ARIA live regions                                           |
-| **Portfolio reach**       | GA4 Data API panel in hero (`#portfolio-reach-panel`) — realtime users, event counts, page views, country breakdown                                                |
-| **Currently shelf**       | Curated shows, books, and Last.fm listening — local raster posters in `assets/images/currently/`; music artwork via `/api/music/artwork` proxy                     |
-| **Health widget**         | WHOOP recovery / strain + Withings body metrics when OAuth connected; Supabase daily snapshots                                                                     |
-| **Projects showcase**     | Live GitHub repos via multi-origin proxy fallback · release strips · signal pills · technology lens chips · project XR modal                                       |
-| **Newsletter**            | `POST /api/newsletter/subscribe` with rate limiting                                                                                                                |
-| **Contact form**          | `POST /api/contact` — server-validated with honeypot                                                                                                               |
-| **Birthday celebration**  | Seasonal easter-egg module (first-interaction lazy load)                                                                                                           |
-| **Apple haptics**         | `apple-haptics.js` — subtle feedback on primary interactive elements (supported devices)                                                                           |
-| **View Transitions API**  | `view-transitions-nav.js` — same-origin page transitions on supported browsers                                                                                     |
-| **AOD dim mode**          | `aod-dim-mode.js` — reduced luminance for OLED / always-on contexts                                                                                                |
+| Area                | What it does                                                                                            | Key files / endpoints                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **AssistMe**        | 10 WebMCP tools + regex fast-path before LLM; NDJSON streaming chat with KaTeX + DOMPurify markdown     | `agentic-actions.js`, `chat.js`, `POST /api/chat`     |
+| **Command palette** | Indexes sections, blog, case studies, travel, debug runner; `⌘K` / `Ctrl+K`; lazy-loaded on first click | `#search-overlay`, `search.js`                        |
+| **Projects**        | Live GitHub grid, lens filters, XR detail modal, multi-origin proxy fallback                            | `github-projects.js`, `/api/github/*`                 |
+| **Currently shelf** | Shows / books / music tabs; local posters; Last.fm via `/api/music/recent` + `/api/music/artwork`       | `currently.js`, `lastfm.js`                           |
+| **Health widget**   | WHOOP + Withings metrics when OAuth connected; Supabase snapshots                                       | `/api/health-vitals/summary`                          |
+| **Portfolio reach** | GA4 Data API hero panel — realtime users, events, views, countries                                      | `#portfolio-reach-panel`                              |
+| **Design system**   | WWDC26 liquid glass, solid light/dark surfaces, dynamic island nav, view transitions                    | `wwdc26-liquid-glass.css`, `view-transitions-nav.js`  |
+| **Accessibility**   | Toolbar (share, shortcuts, font scale, glass tint), skip links, axe-core CI gate                        | `accessibility.js`                                    |
+| **Forms**           | Contact + newsletter with server validation and rate limiting                                           | `POST /api/contact`, `POST /api/newsletter/subscribe` |
+| **Analytics**       | `@vercel/analytics` + deferred GA4 gtag (interaction-triggered)                                         | `analytics.js`, `vercel-analytics.js`                 |
+| **Build**           | esbuild, Sharp, hero-critical CSS, blog/case-study generators                                           | `scripts/build/build.js`                              |
+| **Polish**          | Apple haptics, AOD dim mode, birthday easter-egg, share widget                                          | `apple-haptics.js`, `share-widget.js`                 |
+| **Testing**         | 15 Playwright projects, 70 pytest tests, Lighthouse **100/100** CI on `dist/`                           | `tests/`                                              |
 
 ---
 
@@ -212,9 +183,7 @@ Defined in `case-studies-data.js` — searchable in the command palette and link
 | **AssistMe Virtual Assistant**             | Multi-surface AI assistant product            |
 | **Bug Reporting System**                   | Full-stack defect tracking workflow           |
 
-### Flagship open-source repos
-
-`mangeshrautarchive` · `HindAI` · `AssistMe Virtual Assistant` · `CES Energy Platform` · `Bug Reporting System`
+Flagship repos: `mangeshrautarchive` · `HindAI` · `AssistMe Virtual Assistant` · `CES Energy Platform` · `Bug Reporting System`
 
 ---
 
@@ -385,7 +354,7 @@ sequenceDiagram
 | **Auto router**       | `openrouter/auto`         | General open-domain queries (allowed families: Grok, Gemini, Claude, GPT-5) |
 | **Fast fallback**     | `google/gemini-2.5-flash` | Default when `OPENROUTER_MODEL` unset or as lightweight path                |
 
-**Before any LLM call:** `site_knowledge.py` answers deterministic portfolio facts · regex agentic actions run in the browser · rate limit enforced at **20 requests / 60 seconds** per client.
+**Before any LLM call:** `site_knowledge.py` answers deterministic portfolio facts · regex agentic actions run in the browser. Rate limits and input sanitization are documented in [Security](#security).
 
 **Optional web tools:** `should_use_web_tools()` can augment answers for time-sensitive queries when configured.
 
@@ -427,11 +396,7 @@ Server-side OAuth flows in `api/integrations/` — tokens never exposed to the b
 | **Health summary**  | `GET /api/health-vitals/summary` · `POST /api/health-vitals/sync`          | Sanitized widget data for homepage     |
 | **Cron sync**       | `POST /api/cron/health-vitals-sync`                                        | Scheduled provider refresh             |
 
-**Optional analytics persistence:** Upstash Redis (`UPSTASH_REDIS_REST_URL`) for shared reach counters across Vercel instances.
-
-**Optional GA4 Data API:** Service account with Viewer on property `537627192` powers the detailed Portfolio Reach hero panel.
-
-See [docs/integration-auth-playbook.md](docs/integration-auth-playbook.md) and [.env.example](.env.example) for full configuration.
+Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537627192`) for the hero reach panel. See [docs/integration-auth-playbook.md](docs/integration-auth-playbook.md) and [.env.example](.env.example).
 
 ---
 
@@ -516,11 +481,13 @@ Nightly **[post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.
 
 | Command                             | Purpose                                                 |
 | ----------------------------------- | ------------------------------------------------------- |
-| `npm run check`                     | ESLint + Stylelint + Prettier check + Vitest + pytest   |
+| `npm run check`                     | ESLint + Stylelint + Prettier + Vitest + pytest         |
 | `npm run qa:prod-ready`             | Security + full lint/test + browser + Lighthouse        |
 | `npm run qa:lighthouse:ci`          | Build `dist/` and run desktop + mobile Lighthouse gates |
-| `npm run qa:browser:ci`             | Playwright smoke + accessibility on dev server          |
+| `npm run qa:browser:ci`             | Playwright smoke + axe-core on dev server               |
 | `npm run verify:deploy-sync:remote` | Compare deploy commit on Vercel vs GitHub Pages         |
+
+Dev server commands (`npm run dev`, `npm run build`, etc.) are listed in [Local development](#local-development).
 
 ---
 
@@ -698,27 +665,38 @@ PORT=4174 npm run serve:dist
 
 ## Changelog highlights
 
-**June 2026 (latest)**
+**June 2026**
 
-- Lighthouse CI gate raised to **100/100** on all four categories (desktop + mobile on `dist/`)
-- iTunes artwork proxied through `/api/music/artwork` (fixes CORS + Best Practices on production audits)
-- Perf-audit head script for Lighthouse / CI runs; loopback `apiBaseUrl` fix for local audits
-- Perf-audit detection narrowed — Playwright E2E no longer misclassified as Lighthouse
-- Sitewide card audit: unified CSS cache versions, section subtitles, border-only blue hovers
-- Solid `#ffffff` / `#000000` theme surfaces; hero name blue gradient; skills category panels
-- Engineering evidence page (`/systems`) with CI-backed benchmark tiles and architecture tabs
-- README homepage screenshots for light and dark mode
-- README expanded with homepage sections, blog index, integrations, PWA, and security documentation
+- Lighthouse CI **100/100** (desktop + mobile on `dist/`)
+- iTunes artwork proxy (`/api/music/artwork`) — CORS + Best Practices fix
+- Perf-audit detection narrowed for Playwright E2E
+- Engineering evidence page (`/systems`), solid theme surfaces, sitewide card audit
+- README reorganized — deduplicated sections, sponsors restored
 
 **Earlier 2026**
 
-- AssistMe WebMCP tools expanded to 10 (added `update_health_metric`)
-- Public system monitor (`/monitor`) with live probes and engineering telemetry
-- Travel atlas (`/travel`) with MapLibre GL
-- Dual-host deploy: Vercel primary + GitHub Pages mirror
-- WHOOP / Withings / Google Calendar OAuth integrations
-- 12 technical Field Notes articles (build-time generated)
-- Command palette search across sections, blog, and case studies
+- AssistMe WebMCP (10 tools) · public monitor · travel atlas · dual-host deploy
+- WHOOP / Withings / Google Calendar OAuth · 12 Field Notes articles · command palette
+
+---
+
+## Sponsors
+
+If this project helps your own agentic apps or portfolio work, you can support development through:
+
+<p align="center">
+  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/GitHub_Sponsors-Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"></a>
+  <a href="https://buy.stripe.com/14A3cufGUgcV5ePfuA14401"><img src="https://img.shields.io/badge/Stripe-Sponsor-635bff?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe"></a>
+  <a href="https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82"><img src="https://img.shields.io/badge/PayPal-Sponsor-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
+</p>
+
+| Method              | Link                                                                                     |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| **GitHub Sponsors** | [github.com/sponsors/mangeshraut712](https://github.com/sponsors/mangeshraut712)         |
+| **Stripe**          | [buy.stripe.com/14A3cufGUgcV5ePfuA14401](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401) |
+| **PayPal**          | [paypal.com/ncp/payment/LXNHJ5SUGNP82](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82) |
+
+Configured in [.github/FUNDING.yml](.github/FUNDING.yml) for the GitHub **Sponsor** button on the repository.
 
 ---
 
