@@ -2,9 +2,11 @@
 
 <p align="center">
   <a href="https://mangeshraut.pro">
-    <img src="src/assets/images/home-hd.webp" alt="Mangesh Raut — Agentic Portfolio home hero" width="720">
+    <img src="src/assets/images/homepage-light.png" alt="Mangesh Raut portfolio homepage — light mode" width="360">
+    <img src="src/assets/images/homepage-dark.png" alt="Mangesh Raut portfolio homepage — dark mode" width="360">
   </a>
 </p>
+<p align="center"><sub>Homepage · Light mode (left) · Dark mode (right)</sub></p>
 
 <p align="center">
   <a href="https://mangeshraut.pro">
@@ -510,7 +512,7 @@ mangeshrautarchive/
 │   ├── travel.html         # MapLibre travel atlas
 │   ├── 404.html            # Liquid glass error page
 │   ├── assets/css/         # wwdc26 liquid glass + section modules
-│   ├── assets/images/      # Responsive WebP assets (home, avatar, graduation, …)
+│   ├── assets/images/      # Homepage light/dark screenshots, WebP assets, icons
 │   └── js/
 │       ├── core/           # Bootstrap, chat, config
 │       ├── modules/        # Agentic engine, health widget, share sheet, Last.fm, …

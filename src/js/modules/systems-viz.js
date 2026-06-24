@@ -18,8 +18,6 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
-
-
 export function renderSparklineSvg(points, { width = 280, height = 88, className = '' } = {}) {
   const values = (points || [])
     .map(p => Number(p?.value ?? p?.latency ?? p))
@@ -189,8 +187,6 @@ export function renderTelemetryBento(snapshot) {
     </article>
   `;
 }
-
-
 
 export function updateLiveBenchmarkValues(snapshot) {
   const p95 = snapshot?.avg_latency_ms;

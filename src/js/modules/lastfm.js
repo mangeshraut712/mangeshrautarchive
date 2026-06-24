@@ -43,11 +43,7 @@ class LastFmService {
 
   resolveMusicApiBase() {
     if (typeof window === 'undefined') {
-      return (
-        globalThis.APP_CONFIG?.apiBaseUrl ||
-        globalThis.buildConfig?.apiBaseUrl ||
-        ''
-      );
+      return globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl || '';
     }
 
     const host = window.location.hostname;

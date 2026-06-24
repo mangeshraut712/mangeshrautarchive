@@ -2,15 +2,43 @@ import { expect, test } from '@playwright/test';
 
 const INDEX_CARD_CHECKS = [
   { section: '#about', selector: '#about .about-text-card', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#experience', selector: '#experience .experience-content', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#skills', selector: '#skills-container .skill-badge', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#projects', selector: '#github-projects-container .showcase-project-card', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#education', selector: '#education .education-content', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#publications', selector: '#publications .publication-card', lightBorder: 'rgb(0, 113, 227)' },
+  {
+    section: '#experience',
+    selector: '#experience .experience-content',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
+  {
+    section: '#skills',
+    selector: '#skills-container .skill-badge',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
+  {
+    section: '#projects',
+    selector: '#github-projects-container .showcase-project-card',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
+  {
+    section: '#education',
+    selector: '#education .education-content',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
+  {
+    section: '#publications',
+    selector: '#publications .publication-card',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
   { section: '#awards', selector: '#awards .award-card', lightBorder: 'rgb(0, 113, 227)' },
   { section: '#blog', selector: '#blog .blog-card', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#recommendations', selector: '#recommendations .recommendation-card', lightBorder: 'rgb(0, 113, 227)' },
-  { section: '#certifications', selector: '#certifications .certification-card', lightBorder: 'rgb(0, 113, 227)' },
+  {
+    section: '#recommendations',
+    selector: '#recommendations .recommendation-card',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
+  {
+    section: '#certifications',
+    selector: '#certifications .certification-card',
+    lightBorder: 'rgb(0, 113, 227)',
+  },
   { section: '#contact', selector: '#contact .contact-card', lightBorder: 'rgb(0, 113, 227)' },
 ];
 
@@ -38,7 +66,7 @@ const STANDALONE_CARD_CHECKS = [
 async function hoverAndReadCardMetrics(
   page,
   locator,
-  { checkAppleBlueBorder = false, dark = false, scrollCard = true } = {},
+  { checkAppleBlueBorder = false, dark = false, scrollCard = true } = {}
 ) {
   if (scrollCard) {
     try {
@@ -56,7 +84,7 @@ async function hoverAndReadCardMetrics(
   }
   await page.waitForTimeout(200);
   return locator.evaluate(
-    (node, { checkBlue, isDark }) => {
+    (node, { checkBlue, isDark: _isDark }) => {
       const style = getComputedStyle(node);
       let isAppleBlueBorder = false;
       if (checkBlue) {
@@ -68,8 +96,7 @@ async function hoverAndReadCardMetrics(
           return { r: 0, g: 0, b: 0 };
         })();
         isAppleBlueBorder =
-          style.borderTopColor.startsWith('oklab(') ||
-          (r <= 25 && b >= 200 && b > g && g >= 95);
+          style.borderTopColor.startsWith('oklab(') || (r <= 25 && b >= 200 && b > g && g >= 95);
       }
       return {
         boxShadow: style.boxShadow,
@@ -79,13 +106,13 @@ async function hoverAndReadCardMetrics(
         isAppleBlueBorder,
       };
     },
-    { checkBlue: checkAppleBlueBorder, isDark: dark },
+    { checkBlue: checkAppleBlueBorder, isDark: dark }
   );
 }
 
 async function readCardMetrics(locator, { checkAppleBlueBorder = false, dark = false } = {}) {
   return locator.evaluate(
-    (node, { checkBlue, isDark }) => {
+    (node, { checkBlue, isDark: _isDark }) => {
       const style = getComputedStyle(node);
       let isAppleBlueBorder = false;
       if (checkBlue) {
@@ -97,8 +124,7 @@ async function readCardMetrics(locator, { checkAppleBlueBorder = false, dark = f
           return { r: 0, g: 0, b: 0 };
         })();
         isAppleBlueBorder =
-          style.borderTopColor.startsWith('oklab(') ||
-          (r <= 25 && b >= 200 && b > g && g >= 95);
+          style.borderTopColor.startsWith('oklab(') || (r <= 25 && b >= 200 && b > g && g >= 95);
       }
       return {
         boxShadow: style.boxShadow,
@@ -108,7 +134,7 @@ async function readCardMetrics(locator, { checkAppleBlueBorder = false, dark = f
         isAppleBlueBorder,
       };
     },
-    { checkBlue: checkAppleBlueBorder, isDark: dark },
+    { checkBlue: checkAppleBlueBorder, isDark: dark }
   );
 }
 
@@ -146,14 +172,18 @@ test.describe('Sitewide card hover audit', () => {
   });
 
   for (const check of INDEX_CARD_CHECKS) {
-    test(`${check.section} cards: rounded corners, no glow, blue border on hover`, async ({ page }) => {
+    test(`${check.section} cards: rounded corners, no glow, blue border on hover`, async ({
+      page,
+    }) => {
       await assertCardHover(page, check);
     });
   }
 
   test('skills section uses solid white page background', async ({ page }) => {
     await page.locator('#skills').scrollIntoViewIfNeeded();
-    const skillsBg = await page.locator('#skills').evaluate(node => getComputedStyle(node).backgroundColor);
+    const skillsBg = await page
+      .locator('#skills')
+      .evaluate(node => getComputedStyle(node).backgroundColor);
     expect(skillsBg).toBe('rgb(255, 255, 255)');
   });
 
@@ -185,7 +215,9 @@ test.describe('Sitewide card hover audit', () => {
 
 test.describe('Standalone page card hover audit', () => {
   for (const check of STANDALONE_CARD_CHECKS) {
-    test(`${check.name} cards: rounded corners, no glow, blue border on hover`, async ({ page }) => {
+    test(`${check.name} cards: rounded corners, no glow, blue border on hover`, async ({
+      page,
+    }) => {
       await page.goto(check.path, { waitUntil: 'domcontentloaded' });
       await page.waitForSelector(check.waitFor, { timeout: 30_000 });
       await page.waitForLoadState('load');

@@ -6,7 +6,11 @@
   --systems-accent: #0071e3;
   --systems-section-gap: clamp(3rem, 6vw, 4.5rem);
   --systems-shell-max: 1120px;
-  --systems-shell-gutter: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --systems-shell-gutter: max(
+    1.25rem,
+    env(safe-area-inset-left, 0px),
+    env(safe-area-inset-right, 0px)
+  );
   --border-color: rgb(0 0 0 / 10%);
   --bg-secondary: #ffffff;
   --text-primary: #1d1d1f;

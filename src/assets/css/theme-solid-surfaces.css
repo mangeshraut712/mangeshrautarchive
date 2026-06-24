@@ -20,7 +20,11 @@
   --lg-card-light-alpha: 100%;
   --lg-card-dark-alpha: 100%;
   --theme-shell-max: 1120px;
-  --theme-shell-gutter: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --theme-shell-gutter: max(
+    1.25rem,
+    env(safe-area-inset-left, 0px),
+    env(safe-area-inset-right, 0px)
+  );
   --theme-card-radius: 20px;
   --theme-fab-edge: max(1.5rem, env(safe-area-inset-right, 0px));
   --theme-fab-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
@@ -466,7 +470,9 @@ html.dark
 }
 
 /* ─── Systems rails / tabs (were semi-transparent grey) ─── */
-html:not(.dark) body.systems-page :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
+html:not(.dark)
+  body.systems-page
+  :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
@@ -695,12 +701,14 @@ html.dark #projects .github-graph-legend span[data-level='4'] {
 }
 
 /* ─── Blog / contact code & tag chips ─── */
-html:not(.dark) :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
+html:not(.dark)
+  :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
   background: #ffffff !important;
   border: 1px solid rgb(0 0 0 / 8%);
 }
 
-html.dark :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
+html.dark
+  :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
   background: #000000 !important;
   border: 1px solid rgb(255 255 255 / 12%);
 }
@@ -892,7 +900,8 @@ body.monitor-page .monitor-container {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html:not(.dark) body.travel-body
+  html:not(.dark)
+    body.travel-body
     :is(
       .travel-stop,
       .place-guide-card,
@@ -907,7 +916,8 @@ body.monitor-page .monitor-container {
     box-shadow: none !important;
   }
 
-  html.dark body.travel-body
+  html.dark
+    body.travel-body
     :is(
       .travel-stop,
       .place-guide-card,
@@ -1083,7 +1093,8 @@ html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) 
   isolation: isolate;
 }
 
-html:not(.dark) :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
+html:not(.dark)
+  :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -1104,7 +1115,8 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category) {
   isolation: isolate;
 }
 
-html.dark :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
+html.dark
+  :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -1113,7 +1125,7 @@ html.dark :is(#skills-container .skill-badge, #skills-container .skill-scroll-wr
   box-shadow: none !important;
 }
 
-  @media (hover: hover) and (pointer: fine) {
+@media (hover: hover) and (pointer: fine) {
   html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):hover,
   html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):focus-within {
     border: 1px solid rgb(0 0 0 / 8%) !important;
@@ -1145,8 +1157,7 @@ html.dark :is(#skills-container .skill-badge, #skills-container .skill-scroll-wr
   -webkit-backdrop-filter: none !important;
 }
 
-html:not(.dark)
-  :is(.btn-secondary, .apple-btn-secondary):not(.is-disabled):not(:disabled) {
+html:not(.dark) :is(.btn-secondary, .apple-btn-secondary):not(.is-disabled):not(:disabled) {
   background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
   color: #ffffff !important;
   border: 1px solid transparent !important;
@@ -1511,14 +1522,14 @@ html:not(.dark) #projects .github-graph-legend {
   .recommendation-card
 )::before,
 :is(
-  .showcase-project-card,
-  .experience-content,
-  .education-card,
-  .education-content,
-  .blog-card,
-  .publication-card,
-  .certification-card
-):hover::before {
+    .showcase-project-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .blog-card,
+    .publication-card,
+    .certification-card
+  ):hover::before {
   opacity: 0 !important;
   display: none !important;
 }
@@ -1532,17 +1543,18 @@ html:not(.dark) #projects .github-graph-legend {
 }
 
 /* ─── Final hover enforcement (no @media) — beats resting !important borders ─── */
-html:not(.dark) :is(
-  #experience .experience-content,
-  #education .education-content,
-  #education .education-card,
-  #publications .publication-card,
-  #blog .blog-card,
-  #recommendations .recommendation-card,
-  #certifications .certification-card,
-  #projects #github-projects-container .showcase-project-card,
-  #skills-container .skill-badge
-):hover {
+html:not(.dark)
+  :is(
+    #experience .experience-content,
+    #education .education-content,
+    #education .education-card,
+    #publications .publication-card,
+    #blog .blog-card,
+    #recommendations .recommendation-card,
+    #certifications .certification-card,
+    #projects #github-projects-container .showcase-project-card,
+    #skills-container .skill-badge
+  ):hover {
   border: 1px solid #0071e3 !important;
   border-width: 1px !important;
   border-color: #0071e3 !important;
@@ -1550,17 +1562,18 @@ html:not(.dark) :is(
   outline: none !important;
 }
 
-html.dark :is(
-  #experience .experience-content,
-  #education .education-content,
-  #education .education-card,
-  #publications .publication-card,
-  #blog .blog-card,
-  #recommendations .recommendation-card,
-  #certifications .certification-card,
-  #projects #github-projects-container .showcase-project-card,
-  #skills-container .skill-badge
-):hover {
+html.dark
+  :is(
+    #experience .experience-content,
+    #education .education-content,
+    #education .education-card,
+    #publications .publication-card,
+    #blog .blog-card,
+    #recommendations .recommendation-card,
+    #certifications .certification-card,
+    #projects #github-projects-container .showcase-project-card,
+    #skills-container .skill-badge
+  ):hover {
   border: 1px solid #0a84ff !important;
   border-width: 1px !important;
   border-color: #0a84ff !important;

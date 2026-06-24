@@ -13,7 +13,11 @@
   --systems-radius-sm: 14px;
   --systems-section-gap: clamp(3rem, 6vw, 4.5rem);
   --systems-shell-max: 1120px;
-  --systems-shell-gutter: max(1.25rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --systems-shell-gutter: max(
+    1.25rem,
+    env(safe-area-inset-left, 0px),
+    env(safe-area-inset-right, 0px)
+  );
   --systems-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --systems-card-bg: #ffffff;
   --systems-card-border: #e5e5ea;
@@ -1164,7 +1168,9 @@ html.dark .systems-now-progress {
   background: var(--systems-accent);
   border: 2px solid var(--theme-page-bg, #ffffff);
   box-shadow: 0 0 0 2px var(--systems-card-border);
-  transition: transform 0.25s ease, background-color 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease;
 }
 
 html.dark .systems-timeline-dot {
@@ -1188,7 +1194,10 @@ html.dark .systems-timeline-node:hover .systems-timeline-dot {
   background: var(--systems-card-bg);
   margin: 0;
   box-shadow: var(--systems-card-shadow);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-timeline-year {
@@ -2251,7 +2260,11 @@ html.dark .case-study-evidence-bar a {
 /* Mobile */
 @media (width <= 640px) {
   :root {
-    --systems-shell-gutter: max(1rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+    --systems-shell-gutter: max(
+      1rem,
+      env(safe-area-inset-left, 0px),
+      env(safe-area-inset-right, 0px)
+    );
   }
 
   .systems-shell {
@@ -2821,7 +2834,10 @@ html.dark .systems-public-statement {
   margin-bottom: 0.75rem;
   border: 1px solid var(--systems-card-border);
   background: var(--systems-card-bg);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-decision-meta {
@@ -2951,7 +2967,10 @@ html.dark .decision-badge--eng {
   border-radius: 14px;
   border: 1px solid var(--systems-card-border);
   background: var(--systems-card-bg);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-failure-header {
@@ -3061,7 +3080,10 @@ html.dark .failure-icon-container {
   border-radius: 14px;
   border: 1px solid var(--systems-card-border);
   background: var(--systems-card-bg);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-writing-card-header {
@@ -3179,7 +3201,10 @@ html.dark .systems-writing-link {
   font-weight: 600;
   border: 1px solid var(--systems-card-border);
   background: var(--systems-card-bg);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-production-snapshot {
@@ -3219,7 +3244,10 @@ html.dark .systems-writing-link {
   border: 1px solid var(--systems-card-border);
   background: var(--systems-card-bg);
   box-shadow: var(--systems-card-shadow);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--systems-spring) !important;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s var(--systems-spring) !important;
 }
 
 .systems-token-row-head {
@@ -3305,13 +3333,7 @@ html.dark .systems-token-bar-fill {
 }
 
 .systems-token-bar-fill.is-active {
-  background: repeating-linear-gradient(
-    -45deg,
-    #34c759,
-    #34c759 4px,
-    #30d158 4px,
-    #30d158 8px
-  );
+  background: repeating-linear-gradient(-45deg, #34c759, #34c759 4px, #30d158 4px, #30d158 8px);
   opacity: 0.7;
 }
 

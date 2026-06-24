@@ -9,10 +9,8 @@ const DIAGRAM_CAPTIONS = {
     'Local WebMCP stack handles sub-50ms actions; intent router branches to site facts or OpenRouter for LLM paths.',
   build:
     'src → build → QA gates (Lighthouse, a11y, E2E) → dual deploy to Vercel preview and GitHub Pages.',
-  reach:
-    'Live portfolio reach and real-time active users synced with Google Analytics (GA4).',
-  countries:
-    'Top active countries and views distribution from production telemetry.',
+  reach: 'Live portfolio reach and real-time active users synced with Google Analytics (GA4).',
+  countries: 'Top active countries and views distribution from production telemetry.',
 };
 
 function uid(prefix) {
@@ -181,7 +179,7 @@ export function renderPortfolioReachDiagram(analyticsData) {
   const startX = 320 - (barCount * (barWidth + barGap)) / 2;
   const seed = Number(activeUsers30m) || 85;
   for (let i = 0; i < barCount; i++) {
-    const h = Math.round(15 + ((seed * (i + 3) + (i * 7)) % 75));
+    const h = Math.round(15 + ((seed * (i + 3) + i * 7) % 75));
     const y = 190 - h;
     barsHtml += `<rect class="arch-bar-fill arch-bar-fill--a" x="${startX + i * (barWidth + barGap)}" y="${y}" width="${barWidth}" height="${h}" rx="3" style="opacity: 0.85;" />`;
   }
@@ -236,7 +234,7 @@ export function renderReachByCountryDiagram(analyticsData) {
       { country: 'Singapore', users: 80 },
     ];
   }
-  
+
   const top5 = [...countries]
     .map(c => ({ country: c.country, users: Number(c.users || 0) }))
     .sort((a, b) => b.users - a.users)
@@ -248,7 +246,7 @@ export function renderReachByCountryDiagram(analyticsData) {
     const y = 60 + idx * 44;
     const maxBarW = 320;
     const barW = Math.max(10, Math.round((c.users / maxUsers) * maxBarW));
-    
+
     rowsHtml += `
       <g transform="translate(0 ${y})">
         <text class="arch-node-text" x="60" y="22" text-anchor="start" style="font-size: 13px; font-weight: 600;">${c.country}</text>
@@ -270,7 +268,7 @@ export function renderReachByCountryDiagram(analyticsData) {
 export function remountArchPanel(panelId, analyticsData) {
   const host = document.querySelector(`[data-arch-diagram="${panelId}"]`);
   if (!host) return;
-  
+
   if (panelId === 'reach' || panelId === 'countries') {
     const map = {
       reach: () => renderPortfolioReachDiagram(analyticsData),

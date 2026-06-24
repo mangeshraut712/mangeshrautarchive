@@ -347,9 +347,7 @@
   }
 
   function pinThemeSolidStylesheet() {
-    var links = Array.prototype.slice.call(
-      document.querySelectorAll('link[rel="stylesheet"]')
-    );
+    var links = Array.prototype.slice.call(document.querySelectorAll('link[rel="stylesheet"]'));
     links
       .filter(function (link) {
         return /theme-solid-surfaces/.test(link.getAttribute('href') || '');

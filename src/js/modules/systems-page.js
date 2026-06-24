@@ -286,15 +286,13 @@ function renderWriting() {
   const root = document.getElementById('systems-writing-grid');
   if (!root) return;
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
   // Grab the top 3 most recent posts for showcase
-  const recentPosts = blogPosts
-    .toSorted((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 3);
+  const recentPosts = blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
 
   const articlesHtml = recentPosts
     .map(
@@ -319,7 +317,8 @@ function renderWriting() {
 
   const topicsHtml = writingTopics
     .map(
-      topic => `<a class="systems-writing-chip lg-glass-card" href="${escapeHtml(topic.href)}">${escapeHtml(topic.label)}</a>`
+      topic =>
+        `<a class="systems-writing-chip lg-glass-card" href="${escapeHtml(topic.href)}">${escapeHtml(topic.label)}</a>`
     )
     .join('');
 
@@ -342,14 +341,14 @@ function renderTokenization() {
   const root = document.getElementById('systems-token-grid');
   if (!root) return;
 
-  const parseTokens = (t) => {
+  const parseTokens = t => {
     if (!t) return 0;
     if (t.endsWith('B')) return parseFloat(t) * 1e9;
     if (t.endsWith('M')) return parseFloat(t) * 1e6;
     return parseFloat(t);
   };
 
-  const getTokenWidth = (tokens) => {
+  const getTokenWidth = tokens => {
     if (!tokens) return 10;
     if (tokens === '5B') return 100;
     if (tokens === '2B') return 40;
@@ -358,18 +357,18 @@ function renderTokenization() {
   };
 
   const toolContexts = {
-    'Cursor': 'Primary IDE environment & context orchestration',
-    'Codex': 'Generative codebase translation & autocomplete',
-    'KiloChat': 'Chat interface & human-in-the-loop coordination',
-    'Cline': 'Agentic file-editing & browser automation',
-    'OpenRouter': 'Unified API gateway & smart model routing',
-    'Antigravity': 'Autonomous multi-agent pair programming',
-    'Droid': 'Background validation & unit testing companion',
-    'OpenClaw': 'Dynamic execution environment',
-    'OpenCode': 'Secondary fallback code generation agent',
+    Cursor: 'Primary IDE environment & context orchestration',
+    Codex: 'Generative codebase translation & autocomplete',
+    KiloChat: 'Chat interface & human-in-the-loop coordination',
+    Cline: 'Agentic file-editing & browser automation',
+    OpenRouter: 'Unified API gateway & smart model routing',
+    Antigravity: 'Autonomous multi-agent pair programming',
+    Droid: 'Background validation & unit testing companion',
+    OpenClaw: 'Dynamic execution environment',
+    OpenCode: 'Secondary fallback code generation agent',
     'Hermes Agent': 'System-level shell tool invocation specialist',
     'VS Code': 'Secondary code viewing & workspace management',
-    'Claude': 'Direct chat model interaction & conceptual modeling'
+    Claude: 'Direct chat model interaction & conceptual modeling',
   };
 
   const sortedStack = [...tokenizationStack].sort((a, b) => {
@@ -388,9 +387,10 @@ function renderTokenization() {
       return `<div class="systems-token-row lg-glass-card">
         <div class="systems-token-row-head">
           <span class="systems-token-label">${escapeHtml(tool.name)}</span>
-          ${tool.tokens
-            ? `<strong class="systems-token-value">${escapeHtml(tool.tokens)}<small> tokens</small></strong>`
-            : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Active</strong>`
+          ${
+            tool.tokens
+              ? `<strong class="systems-token-value">${escapeHtml(tool.tokens)}<small> tokens</small></strong>`
+              : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Active</strong>`
           }
         </div>
         <div class="systems-token-bar-track" aria-hidden="true">
@@ -401,8 +401,6 @@ function renderTokenization() {
     })
     .join('');
 }
-
-
 
 function renderProductionMetrics() {
   const root = document.getElementById('systems-metrics-grid');

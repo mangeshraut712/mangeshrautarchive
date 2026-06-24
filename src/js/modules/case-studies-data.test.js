@@ -64,7 +64,9 @@ describe('getCaseStudyEvidenceLinks', () => {
       architectureAnchor: 'javascript:alert(1)',
     });
 
-    expect(links.find(item => item.label === 'Architecture')?.href).toBe('systems.html#architecture');
+    expect(links.find(item => item.label === 'Architecture')?.href).toBe(
+      'systems.html#architecture'
+    );
   });
 });
 
@@ -77,7 +79,9 @@ describe('renderRepoEvidenceRow', () => {
     });
 
     expect(html).toContain('aria-label="Project evidence for repo&lt;script&gt;"');
-    expect(html).toContain('class="project-evidence-link is-unavailable" aria-disabled="true">Demo</span>');
+    expect(html).toContain(
+      'class="project-evidence-link is-unavailable" aria-disabled="true">Demo</span>'
+    );
     expect(html).toContain('href="systems.html#architecture"');
   });
 });

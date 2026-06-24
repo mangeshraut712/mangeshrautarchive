@@ -404,10 +404,7 @@
 
     // 30-day country breakdown (when a secondary list is present)
     if (reachPanelEls.countriesList) {
-      reachPanelEls.countriesList.innerHTML = renderCountryRows(
-        topCountries,
-        'No country data'
-      );
+      reachPanelEls.countriesList.innerHTML = renderCountryRows(topCountries, 'No country data');
     }
 
     if (reachPanelEls.peak) {

@@ -11,7 +11,7 @@ export const publicEvidenceStatement =
   'This page is intentionally public. Every architecture decision, benchmark, tradeoff, failure, and production metric exists because I believe engineering ability should be demonstrated through evidence rather than claimed through bullet points.';
 
 export const heroLead =
-  'Every claim on this portfolio is backed by code, benchmarks, architecture, or production telemetry. No stock templates. No generated project descriptions. Only things I\'ve built, measured, shipped, and learned.';
+  "Every claim on this portfolio is backed by code, benchmarks, architecture, or production telemetry. No stock templates. No generated project descriptions. Only things I've built, measured, shipped, and learned.";
 
 export const heroStats = [
   { value: '95+', unit: '', label: 'Lighthouse', href: '#production' },
@@ -160,13 +160,27 @@ export const engineeringDecisions = [
 export const failedExperiments = [
   { name: 'Prompt-only navigation', status: 'Failed', reason: 'Unreliable' },
   { name: 'SSR hydration', status: 'Failed', reason: 'Complexity > value' },
-  { name: 'Large context RAG', status: 'Failed', reason: 'Retrieval quality matters more than context size' },
+  {
+    name: 'Large context RAG',
+    status: 'Failed',
+    reason: 'Retrieval quality matters more than context size',
+  },
 ];
 
 export const currentWork = [
-  { phase: 'Shipping', title: 'Agentic Portfolio', progress: '95%', href: 'case-studies/portfolio.html' },
+  {
+    phase: 'Shipping',
+    title: 'Agentic Portfolio',
+    progress: '95%',
+    href: 'case-studies/portfolio.html',
+  },
   { phase: 'Research', title: 'HindAI RAG evaluation', progress: 'Active', href: '#projects' },
-  { phase: 'Experiment', title: 'WebXR project previews', progress: 'Active', href: 'index.html#projects' },
+  {
+    phase: 'Experiment',
+    title: 'WebXR project previews',
+    progress: 'Active',
+    href: 'index.html#projects',
+  },
   { phase: 'Writing', title: 'Context Engineering', progress: 'In progress', href: '#writing' },
   { phase: 'Learning', title: 'RL Environments', progress: 'Ongoing', href: 'index.html#blog' },
 ];
@@ -209,12 +223,7 @@ export const writingTopics = [
 export const engineeringTimeline = [
   {
     year: '2026',
-    items: [
-      'Engineering Dashboard',
-      'WebMCP',
-      'System Monitor',
-      'Agentic Portfolio',
-    ],
+    items: ['Engineering Dashboard', 'WebMCP', 'System Monitor', 'Agentic Portfolio'],
   },
   {
     year: '2025',

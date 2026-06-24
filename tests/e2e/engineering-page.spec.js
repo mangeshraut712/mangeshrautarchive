@@ -122,17 +122,15 @@ test.describe('Engineering evidence dashboard', () => {
 
     const portfolioRow = page.locator('#case-study-portfolio .project-evidence-row');
     await expect(portfolioRow).toBeVisible();
-    await expect(portfolioRow.locator('a.project-evidence-link', { hasText: 'Repo' })).toHaveAttribute(
-      'href',
-      'https://github.com/mangeshraut712/mangeshrautarchive'
-    );
+    await expect(
+      portfolioRow.locator('a.project-evidence-link', { hasText: 'Repo' })
+    ).toHaveAttribute('href', 'https://github.com/mangeshraut712/mangeshrautarchive');
     await expect(
       portfolioRow.locator('a.project-evidence-link', { hasText: 'Architecture' })
     ).toHaveAttribute('href', 'systems.html#architecture-dual-host');
-    await expect(portfolioRow.locator('a.project-evidence-link', { hasText: 'Story' })).toHaveAttribute(
-      'href',
-      'case-studies/portfolio.html'
-    );
+    await expect(
+      portfolioRow.locator('a.project-evidence-link', { hasText: 'Story' })
+    ).toHaveAttribute('href', 'case-studies/portfolio.html');
   });
 
   test('architecture section stays within viewport on mobile', async ({ page }) => {

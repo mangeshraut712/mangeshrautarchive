@@ -140,6 +140,7 @@ function categoryScore(report, key) {
     return null;
   }
 
+  const percent = raw * 100;
   const rounded = Math.round(percent);
   if (isLoopbackUrl(rawUrl) && rounded === 99) {
     return 100;
@@ -180,7 +181,9 @@ let scores = extractScores(report);
 const maxAttempts = thresholds.performance === 100 ? 5 : 1;
 
 for (let attempt = 2; attempt <= maxAttempts && !isPerfect(scores, thresholds); attempt += 1) {
-  console.log(`[lighthouse:${formFactor}] Retrying audit (${attempt}/${maxAttempts}) to clear borderline scores...`);
+  console.log(
+    `[lighthouse:${formFactor}] Retrying audit (${attempt}/${maxAttempts}) to clear borderline scores...`
+  );
   const retryReport = normalizeLoopbackReport(runLighthouseAudit());
   const retryScores = extractScores(retryReport);
 
