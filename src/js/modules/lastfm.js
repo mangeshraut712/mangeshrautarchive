@@ -1,7 +1,20 @@
 import { analytics } from '../services/AnalyticsService.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
 
-const LASTFM_JSONP_TIMEOUT_MS = 4500;
+const LASTFM_CDN_ORIGIN = 'https://lastfm.freetls.fastly.net';
+
+function ensureLastFmPreconnect() {
+  if (document.querySelector('link[data-lastfm-preconnect]')) {
+    return;
+  }
+
+  const link = document.createElement('link');
+  link.rel = 'preconnect';
+  link.href = LASTFM_CDN_ORIGIN;
+  link.crossOrigin = 'anonymous';
+  link.dataset.lastfmPreconnect = '1';
+  document.head.appendChild(link);
+}
 const LASTFM_PROXY_TIMEOUT_MS = 3500;
 
 class LastFmService {
@@ -493,6 +506,7 @@ class LastFmService {
   start() {
     if (this.started) return;
     this.started = true;
+    ensureLastFmPreconnect();
     const restored = this.hydrateFromLocalCache();
     if (!restored) {
       this.showLoadingState();

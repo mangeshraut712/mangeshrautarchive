@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap';
+/* Inter loads via optional self-hosted subset in production; system stack paints first. */
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TYPOGRAPHY SYSTEM 2026 - PREMIUM RESPONSIVE DESIGN
@@ -11,10 +11,10 @@
 :root {
   /* === FONT FAMILIES === */
   --font-primary:
-    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Oxygen,
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, Oxygen,
     Ubuntu, sans-serif;
   --font-display:
-    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   --font-mono:
     'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
 

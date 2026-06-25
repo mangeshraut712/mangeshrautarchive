@@ -137,28 +137,30 @@ async function copyDirContent(src, dest, depth = 0) {
 
 const HERO_CRITICAL_CSS = [
   'assets/css/cross-browser-responsive.css',
+  'assets/css/critical-tokens.css',
   'assets/css/tailwind-output.css',
-  'assets/css/style.css',
   'assets/css/sitewide-design-system.css',
   'assets/css/apple-2026-design-system.css',
   'assets/css/typography-system.css',
-  'assets/css/apple-premium-system.css',
   'assets/css/homepage.css',
   'assets/css/dynamic-island-navbar.css',
   'assets/css/global-improvements.css',
   'assets/css/accessibility-contrast-fixes.css',
-  'assets/css/apple-premium-overrides.css',
 ];
 
 const PREMIUM_DEFERRED_CSS = [
+  'assets/css/style.css',
+  'assets/css/apple-premium-system.css',
   'assets/css/sections-apple-premium.css',
   'assets/css/unified-mobile-buttons.css',
   'assets/css/contact.css',
   'assets/css/wwdc26-liquid-glass.css',
+  'assets/css/apple-premium-overrides.css',
 ];
 
 const PERF_AUDIT_SLIM_CSS = [
   'assets/css/cross-browser-responsive.css',
+  'assets/css/critical-tokens.css',
   'assets/css/tailwind-output.css',
   'assets/css/sitewide-design-system.css',
   'assets/css/apple-2026-design-system.css',

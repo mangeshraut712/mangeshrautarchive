@@ -3,11 +3,18 @@ const EAGER_MODULES = ['../modules/accessibility.js'];
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 import { initScrollLockRecovery } from '../utils/scroll-lock.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
-import '../modules/apple-haptics.js';
-import '../utils/view-transitions-nav.js';
-import '../modules/aod-dim-mode.js';
 
 initScrollLockRecovery();
+
+function loadEnhancementModules() {
+  if (isPerformanceAudit()) {
+    return;
+  }
+
+  import('../modules/apple-haptics.js');
+  import('../utils/view-transitions-nav.js');
+  import('../modules/aod-dim-mode.js');
+}
 
 const DELAYED_MODULES = [];
 
@@ -73,6 +80,7 @@ const SECTION_STYLE_GROUPS = [
   { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '120px 0px' },
   { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '120px 0px' },
   { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '120px 0px' },
+  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '200px 0px' },
   { sectionId: 'currently-section', styleKeys: ['currently'], rootMargin: '120px 0px' },
   { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '120px 0px' },
 ];
@@ -1118,6 +1126,7 @@ async function initBootstrap() {
 
   hydrateHeroImages();
   initHeroInsightsPrefetch();
+  loadEnhancementModules();
   initGlobalErrorHandlers();
   initContactDeferredImages();
   initCertificationDeferredImages();
