@@ -495,30 +495,33 @@ Dev server commands (`npm run dev`, `npm run build`, etc.) are listed in [Local 
 
 ```
 mangeshrautarchive/
-├── api/                      # FastAPI app (Vercel serverless entry: api/index.py)
-│   ├── routes/               # chat, github, media, analytics, monitor, integrations
-│   ├── integrations/         # WHOOP, Withings, Supabase sync
-│   ├── model_router.py       # OpenRouter model selection
-│   └── site_knowledge.py     # Deterministic portfolio answers
-├── src/                      # Source of truth for static site
-│   ├── index.html            # Main portfolio
-│   ├── systems.html          # Engineering evidence
-│   ├── uses.html             # Tooling / vibe stack
-│   ├── monitor.html          # Public ops dashboard
-│   ├── travel.html           # MapLibre atlas
-│   ├── assets/               # CSS, images (incl. homepage light/dark screenshots)
-│   └── js/                   # core/, modules/, services/, utils/
+├── api/                          # FastAPI (Vercel entry: api/index.py)
+│   ├── routes/                   # chat, github, media, analytics, monitor, integrations
+│   ├── integrations/             # WHOOP, Withings, Google Calendar, Supabase
+│   ├── model_router.py           # OpenRouter model selection
+│   └── site_knowledge.py         # Deterministic portfolio answers
+├── src/                          # Static site source → dist/
+│   ├── *.html                    # index, systems, uses, monitor, travel, 404
+│   ├── assets/                   # css/, images/, files/
+│   └── js/                       # core/, modules/, services/, utils/, data/
 ├── scripts/
-│   ├── build/                # build.js, blog generator, image optimization
-│   ├── deployment/           # Lighthouse gate, env parity, deploy sync
-│   └── utils/                # dev server, serve-dist, Playwright runner
+│   ├── build/                    # build.js, generators, clean.js
+│   ├── deployment/               # Lighthouse, security-check, deploy sync (CI)
+│   ├── utils/                    # dev-all, local-server, serve-dist
+│   ├── integrations/             # Vercel env sync (manual/ for one-off setup)
+│   ├── qa/                       # CI: iphone-17-pro-max, promotion-fps; manual/ for audits
+│   └── offline/travel-data/      # Optional travel atlas data generators (not in build)
 ├── tests/
-│   ├── api/                  # pytest (70 tests)
-│   └── e2e/                  # Playwright smoke, a11y, post-deploy, visual
-├── docs/                     # Integration playbooks and CI notes
-├── config/                   # Tooling config fragments
-└── .github/workflows/        # deploy.yml, post-deploy-monitoring.yml
+│   ├── api/                      # pytest (70 tests)
+│   └── e2e/                      # Playwright smoke + a11y (CI)
+├── docs/                         # Playbooks, CI notes, ai-stack-roadmap.md
+├── config/                       # pyright, vulture
+├── index.js                      # react-doctor entry shim → src/js/entry.js
+├── vercel.json                   # dist/ + FastAPI rewrites + cron
+└── .github/workflows/            # deploy.yml, post-deploy-monitoring.yml
 ```
+
+See [docs/ai-stack-roadmap.md](docs/ai-stack-roadmap.md) for OpenRouter MCP (dev) vs Vercel AI SDK 7 (future Node chat) placement.
 
 ---
 
@@ -658,6 +661,7 @@ PORT=4174 npm run serve:dist
 | Doc                                                                        | Contents                                            |
 | -------------------------------------------------------------------------- | --------------------------------------------------- |
 | [docs/ci-quality-gates-june-2026.md](docs/ci-quality-gates-june-2026.md)   | CI order, Lighthouse thresholds, React Doctor notes |
+| [docs/ai-stack-roadmap.md](docs/ai-stack-roadmap.md)                       | OpenRouter MCP (dev) vs Vercel AI SDK 7 placement   |
 | [docs/integration-auth-playbook.md](docs/integration-auth-playbook.md)     | OAuth flows for integrations                        |
 | [docs/google-calendar-oauth-setup.md](docs/google-calendar-oauth-setup.md) | Calendar OAuth setup                                |
 
