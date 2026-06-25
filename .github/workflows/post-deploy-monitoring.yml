@@ -37,7 +37,10 @@ jobs:
             echo "✅ $url"
           done
 
-      - name: Lighthouse — GitHub Pages deploy target
+      - name: Lighthouse CI parity (built artifact)
+        run: npm run qa:lighthouse:ci
+
+      - name: Lighthouse — live GitHub Pages + Vercel quality floor
         run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
@@ -55,9 +58,6 @@ jobs:
             --min-best-practices=90 \
             --min-seo=90 \
             --max-attempts=3
-
-      - name: Lighthouse — Vercel production (reachability + quality floor)
-        run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=https://mangeshraut.pro/ \
             --form-factor=desktop \

@@ -264,9 +264,9 @@ function logAccessibilityAuditFailures(report) {
 const failures = [];
 
 if (scores.performance == null) {
-  if (forcePerfAudit && !isLoopbackUrl(rawUrl)) {
+  if (!isLoopbackUrl(rawUrl)) {
     console.log(
-      `[lighthouse:${formFactor}] Performance unavailable on remote perf-audit URL; skipping performance gate.`
+      `[lighthouse:${formFactor}] Performance unavailable on remote audit; skipping performance gate.`
     );
   } else {
     failures.push('Performance score unavailable (audit trace failed)');
