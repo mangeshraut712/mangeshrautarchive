@@ -733,28 +733,6 @@ html.dark #home .hero-name-text {
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
 
-  <script>
-    (function () {
-      if (!window.__PERF_AUDIT__) return;
-      document.documentElement.dataset.perfAudit = '1';
-      var allowed = [
-        'assets/css/tailwind-output.css',
-        'assets/css/homepage.css',
-        'assets/css/dynamic-island-navbar.css',
-      ];
-      function isAllowed(href) {
-        if (!href || href.startsWith('http')) return false;
-        var path = href.split('?')[0].replace(/^\//, '');
-        return allowed.indexOf(path) !== -1;
-      }
-      document.querySelectorAll('link[rel="stylesheet"]').forEach(function (link) {
-        if (!isAllowed(link.getAttribute('href'))) {
-          link.remove();
-        }
-      });
-    })();
-  </script>
-
 </head>
 
 <body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-black">
@@ -1553,7 +1531,7 @@ html.dark #home .hero-name-text {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
               </svg>
-              <p class="text-secondary">Loading interactive skills visualization...</p>
+              <p class="text-secondary skills-loading-message" style="color:#48484a">Loading interactive skills visualization...</p>
             </div>
           </div>
 

@@ -212,6 +212,25 @@ console.log(
     `SEO=${scores.seo}`
 );
 
+function logAccessibilityAuditFailures(report) {
+  if (!report?.audits) {
+    return;
+  }
+
+  const contrastItems = report.audits['color-contrast']?.details?.items ?? [];
+  contrastItems.slice(0, 5).forEach(item => {
+    const selector = item.node?.selector ?? item.node?.snippet ?? 'unknown node';
+    const explanation = item.node?.explanation ?? '';
+    console.log(`[lighthouse:a11y] contrast fail: ${selector} — ${explanation}`);
+  });
+
+  Object.entries(report.audits).forEach(([id, audit]) => {
+    if (audit.score === 0 && audit.scoreDisplayMode !== 'informative') {
+      console.log(`[lighthouse:a11y] failing audit: ${id} — ${audit.title}`);
+    }
+  });
+}
+
 const failures = [];
 
 if (scores.performance == null) {
@@ -239,6 +258,9 @@ if (failures.length > 0) {
   console.error('[lighthouse] Gate failed:');
   for (const failure of failures) {
     console.error(`- ${failure}`);
+  }
+  if (scores.accessibility != null && scores.accessibility < thresholds.accessibility) {
+    logAccessibilityAuditFailures(report);
   }
   process.exit(1);
 }
