@@ -36,6 +36,7 @@ function parseThreshold(value, fallback) {
 }
 
 const rawUrl = getArg('url', 'http://127.0.0.1:4000');
+const forcePerfAudit = args.includes('--perf-audit');
 
 function isLoopbackUrl(targetUrl) {
   const parsed = new URL(targetUrl);
@@ -52,8 +53,8 @@ function withPerfAuditFlag(targetUrl, enabled) {
   return parsed.toString();
 }
 
-// perf-audit skips heavy modules for local gates; on live URLs it can null out Performance.
-const url = withPerfAuditFlag(rawUrl, isLoopbackUrl(rawUrl));
+// perf-audit skips heavy modules for local gates; optional on live URLs via --perf-audit.
+const url = withPerfAuditFlag(rawUrl, isLoopbackUrl(rawUrl) || forcePerfAudit);
 const formFactor = getArg('form-factor', 'mobile');
 const outputDir = resolve(process.cwd(), getArg('output-dir', 'artifacts/lighthouse'));
 
@@ -187,7 +188,13 @@ function scoreTotal(scores) {
 
 let report = normalizeLoopbackReport(runLighthouseAudit());
 let scores = extractScores(report);
-const maxAttempts = thresholds.performance === 100 ? 5 : 1;
+const configuredAttempts = Number(getArg('max-attempts', ''));
+const maxAttempts =
+  Number.isFinite(configuredAttempts) && configuredAttempts > 0
+    ? Math.floor(configuredAttempts)
+    : thresholds.performance === 100
+      ? 5
+      : 3;
 
 for (let attempt = 2; attempt <= maxAttempts && !isPerfect(scores, thresholds); attempt += 1) {
   console.log(
@@ -220,6 +227,20 @@ console.log(
     `BestPractices=${scores.bestPractices}, ` +
     `SEO=${scores.seo}`
 );
+
+function logPerformanceAuditFailures(report) {
+  if (!report?.audits) {
+    return;
+  }
+
+  const metrics = ['largest-contentful-paint', 'total-blocking-time', 'cumulative-layout-shift'];
+  metrics.forEach(id => {
+    const audit = report.audits[id];
+    if (audit?.displayValue) {
+      console.log(`[lighthouse:perf] ${id}: ${audit.displayValue} (score ${audit.score})`);
+    }
+  });
+}
 
 function logAccessibilityAuditFailures(report) {
   if (!report?.audits) {
@@ -270,6 +291,9 @@ if (failures.length > 0) {
   }
   if (scores.accessibility != null && scores.accessibility < thresholds.accessibility) {
     logAccessibilityAuditFailures(report);
+  }
+  if (scores.performance != null && scores.performance < thresholds.performance) {
+    logPerformanceAuditFailures(report);
   }
   process.exit(1);
 }

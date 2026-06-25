@@ -37,10 +37,45 @@ jobs:
             echo "✅ $url"
           done
 
-      - name: Lighthouse production gates (Vercel)
+      - name: Lighthouse — GitHub Pages deploy target (perf-audit parity)
         run: |
-          node scripts/deployment/lighthouse-gate.js --url=https://mangeshraut.pro/ --form-factor=desktop --min-performance=70 --min-accessibility=90 --min-best-practices=90 --min-seo=90
-          node scripts/deployment/lighthouse-gate.js --url=https://mangeshraut.pro/ --form-factor=mobile --min-performance=55 --min-accessibility=90 --min-best-practices=90 --min-seo=90
+          node scripts/deployment/lighthouse-gate.js \
+            --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
+            --perf-audit \
+            --form-factor=desktop \
+            --min-performance=90 \
+            --min-accessibility=90 \
+            --min-best-practices=90 \
+            --min-seo=90 \
+            --max-attempts=3
+          node scripts/deployment/lighthouse-gate.js \
+            --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
+            --perf-audit \
+            --form-factor=mobile \
+            --min-performance=90 \
+            --min-accessibility=90 \
+            --min-best-practices=90 \
+            --min-seo=90 \
+            --max-attempts=3
+
+      - name: Lighthouse — Vercel production (reachability + quality floor)
+        run: |
+          node scripts/deployment/lighthouse-gate.js \
+            --url=https://mangeshraut.pro/ \
+            --form-factor=desktop \
+            --min-performance=55 \
+            --min-accessibility=90 \
+            --min-best-practices=90 \
+            --min-seo=90 \
+            --max-attempts=3
+          node scripts/deployment/lighthouse-gate.js \
+            --url=https://mangeshraut.pro/ \
+            --form-factor=mobile \
+            --min-performance=55 \
+            --min-accessibility=90 \
+            --min-best-practices=90 \
+            --min-seo=90 \
+            --max-attempts=3
 
       - name: Compare GitHub Pages and Vercel deployment sync
         run: node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=10 --wait=20

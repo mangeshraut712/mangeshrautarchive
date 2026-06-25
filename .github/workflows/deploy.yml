@@ -49,7 +49,6 @@ jobs:
         run: npm test
 
       - name: 🩺 React Doctor — static React graph audit
-        continue-on-error: true
         run: npm run doctor:full
 
       - name: 🐍 Python — setup and lint
