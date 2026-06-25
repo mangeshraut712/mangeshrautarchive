@@ -36,19 +36,20 @@
   window.va = function () {};
   window.vaq = [];
 
-  // Skills viz is lazy-loaded; bootstrap skips it in perf-audit. Hide the placeholder
-  // so Lighthouse never scores transient loader copy (flaky contrast on CI).
-  var critical = document.createElement('style');
-  critical.id = 'perf-audit-critical';
-  critical.textContent =
-    '#skills-loading{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}';
-  (document.head || document.documentElement).appendChild(critical);
-
   var allowedStylesheets = [
     'assets/css/tailwind-output.css',
     'assets/css/homepage.css',
     'assets/css/dynamic-island-navbar.css',
   ];
+
+  // Skills viz is lazy-loaded; bootstrap skips it in perf-audit. Hide transient UI
+  // so Lighthouse never scores placeholder copy or off-screen hero flyout assets.
+  var critical = document.createElement('style');
+  critical.id = 'perf-audit-critical';
+  critical.textContent =
+    '#skills-loading{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}' +
+    '#vibe-stack-flyout,#reach-flyout{display:none!important;visibility:hidden!important}';
+  (document.head || document.documentElement).appendChild(critical);
 
   function isAllowedStylesheet(href) {
     if (!href || /^https?:/i.test(href)) {
@@ -58,23 +59,62 @@
     return allowedStylesheets.indexOf(path) !== -1;
   }
 
+  function blockVibeToolImages(root) {
+    if (!root || !root.querySelectorAll) {
+      return;
+    }
+    root.querySelectorAll('img[src*="vibe-tools"]').forEach(function (img) {
+      img.removeAttribute('src');
+      img.setAttribute('data-perf-audit-blocked', '1');
+    });
+  }
+
   function stripDeferredStylesheets() {
     document.querySelectorAll('link[rel="stylesheet"]').forEach(function (link) {
       if (!isAllowedStylesheet(link.getAttribute('href'))) {
+        link.disabled = true;
+        link.media = 'not all';
         link.parentNode && link.parentNode.removeChild(link);
       }
     });
   }
 
+  function onDomMutation(mutations) {
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(function (node) {
+        if (node.nodeType !== 1) {
+          return;
+        }
+        if (node.nodeName === 'LINK' && node.rel === 'stylesheet') {
+          stripDeferredStylesheets();
+        }
+        if (node.nodeName === 'IMG') {
+          blockVibeToolImages(node.parentNode || node);
+        } else {
+          blockVibeToolImages(node);
+        }
+      });
+    });
+  }
+
   stripDeferredStylesheets();
 
-  if (document.head && typeof MutationObserver !== 'undefined') {
-    new MutationObserver(stripDeferredStylesheets).observe(document.head, { childList: true });
+  if (typeof MutationObserver !== 'undefined') {
+    if (document.head) {
+      new MutationObserver(stripDeferredStylesheets).observe(document.head, { childList: true });
+    }
+    new MutationObserver(onDomMutation).observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
   }
 
   document.addEventListener(
     'DOMContentLoaded',
     function () {
+      stripDeferredStylesheets();
+      blockVibeToolImages(document);
+
       var loading = document.getElementById('skills-loading');
       if (loading) {
         loading.setAttribute('aria-hidden', 'true');

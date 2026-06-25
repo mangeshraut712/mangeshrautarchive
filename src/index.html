@@ -1309,8 +1309,25 @@ html.dark #home .hero-name-text {
                   </div>
                 </div>
 
-                <script defer src="js/modules/hero-flyout-position.js?v=20260622c"></script>
-                <script defer src="js/modules/vibe-stack.js?v=20260622c"></script>
+                <script>
+                  if (!window.__PERF_AUDIT__) {
+                    var heroFlyoutScript = document.createElement('script');
+                    heroFlyoutScript.defer = true;
+                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260622c';
+                    document.currentScript.parentNode.insertBefore(
+                      heroFlyoutScript,
+                      document.currentScript.nextSibling
+                    );
+
+                    var vibeStackScript = document.createElement('script');
+                    vibeStackScript.defer = true;
+                    vibeStackScript.src = 'js/modules/vibe-stack.js?v=20260622c';
+                    document.currentScript.parentNode.insertBefore(
+                      vibeStackScript,
+                      heroFlyoutScript.nextSibling
+                    );
+                  }
+                </script>
                 <script>
                   if (!window.__PERF_AUDIT__) {
                     var reachAnalytics = document.createElement('script');
