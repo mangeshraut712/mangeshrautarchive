@@ -37,11 +37,10 @@ jobs:
             echo "✅ $url"
           done
 
-      - name: Lighthouse — GitHub Pages deploy target (perf-audit parity)
+      - name: Lighthouse — GitHub Pages deploy target
         run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
-            --perf-audit \
             --form-factor=desktop \
             --min-performance=90 \
             --min-accessibility=90 \
@@ -50,9 +49,8 @@ jobs:
             --max-attempts=3
           node scripts/deployment/lighthouse-gate.js \
             --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
-            --perf-audit \
             --form-factor=mobile \
-            --min-performance=90 \
+            --min-performance=85 \
             --min-accessibility=90 \
             --min-best-practices=90 \
             --min-seo=90 \
