@@ -5,21 +5,21 @@
 
 :root {
   --eng-bg-light: #fff;
-  --eng-text-light: #111827;
-  --eng-muted-light: #48484a;
-  --eng-border-light: rgb(0 0 0 / 6%);
-  --eng-shadow-light: 0 14px 30px rgb(15 23 42 / 8%);
-  --eng-shadow-light-hover: 0 18px 38px rgb(15 23 42 / 12%);
+  --eng-text-light: var(--text-primary-light, #1d1d1f);
+  --eng-muted-light: var(--text-secondary-light, #424245);
+  --eng-border-light: rgb(0 0 0 / 12%);
+  --eng-shadow-light: 0 14px 30px rgb(0 0 0 / 4%);
+  --eng-shadow-light-hover: 0 18px 38px rgb(0 0 0 / 8%);
 
   --eng-bg-dark: #000;
-  --eng-text-dark: #f5f7ff;
-  --eng-muted-dark: #9aa5b5;
-  --eng-border-dark: rgb(255 255 255 / 8%);
-  --eng-shadow-dark: 0 18px 34px rgb(0 0 0 / 58%);
+  --eng-text-dark: var(--text-primary-dark, #f5f5f7);
+  --eng-muted-dark: var(--text-secondary-dark, #a1a1a6);
+  --eng-border-dark: rgb(255 255 255 / 14%);
+  --eng-shadow-dark: 0 18px 34px rgb(0 0 0 / 60%);
   --eng-shadow-dark-hover: 0 22px 46px rgb(0 0 0 / 70%);
 
-  --eng-accent: #005bb5;
-  --eng-accent-soft: rgb(10 111 239 / 12%);
+  --eng-accent: var(--systems-accent, #0071e3);
+  --eng-accent-soft: var(--systems-accent-soft, rgb(0 113 227 / 12%));
   --eng-accent-soft-border: rgb(0 113 227 / 15%);
   --eng-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -65,8 +65,8 @@ html.dark #engineering {
 .engineering-quality-overview {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(0.95rem, 1.6vw, 1.25rem);
-  border-radius: 20px;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border-radius: var(--systems-radius, 20px);
   border: 1px solid var(--eng-border-light);
   background: #ffffff;
   box-shadow: var(--eng-shadow-light);
@@ -83,12 +83,12 @@ html.dark .engineering-quality-overview {
 }
 
 .engineering-quality-overview:hover {
-  border-color: #0071e3;
+  border-color: var(--eng-accent, #0071e3);
   box-shadow: var(--eng-shadow-light-hover);
 }
 
 html.dark .engineering-quality-overview:hover {
-  border-color: #2997ff;
+  border-color: var(--eng-accent, #2997ff);
   box-shadow: var(--eng-shadow-dark-hover);
 }
 
@@ -106,10 +106,10 @@ html.dark .engineering-quality-overview:hover {
 .engineering-eyebrow {
   margin: 0 !important;
   color: var(--eng-accent) !important;
-  font-size: 0.76rem !important;
-  font-weight: 700 !important;
+  font-size: var(--fs-caption, 0.6875rem) !important;
+  font-weight: var(--fw-bold, 700) !important;
   text-transform: uppercase;
-  letter-spacing: 0.08em !important;
+  letter-spacing: var(--ls-wider, 0.05em) !important;
 }
 
 .engineering-overview-title {
@@ -154,8 +154,8 @@ html.dark .engineering-metrics-inner {
 .engineering-metric-item {
   display: grid;
   gap: 0.2rem;
-  padding: 0.55rem 0.45rem;
-  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  border-radius: var(--systems-radius-sm, 14px);
   text-align: center;
   text-decoration: none;
   color: inherit;
@@ -232,8 +232,8 @@ html.dark .engineering-metric-label {
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding: 0.95rem 1.05rem;
-  border-radius: 18px;
+  padding: 1.25rem;
+  border-radius: var(--systems-radius, 20px);
   text-decoration: none;
   color: inherit;
   border: 1px solid var(--eng-border-light);
@@ -268,17 +268,17 @@ html.dark .engineering-evidence-card:hover {
 
 .eng-card-q {
   margin: 0 0 0.45rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-size: var(--fs-caption, 0.6875rem);
+  font-weight: var(--fw-bold, 700);
+  letter-spacing: var(--ls-wider, 0.05em);
   text-transform: uppercase;
   color: var(--eng-accent);
 }
 
 .eng-card-a {
   margin: 0;
-  font-size: 0.84rem;
-  line-height: 1.48;
+  font-size: var(--fs-body-sm, 0.8125rem);
+  line-height: var(--lh-normal, 1.5);
   color: var(--eng-text-light);
   flex: 1;
 }
@@ -301,12 +301,12 @@ html.dark .eng-card-a {
   min-height: 48px;
   padding: 0.85rem 1.65rem;
   border-radius: 999px;
-  font-size: 1rem;
-  font-weight: 650;
+  font-size: var(--fs-btn, 0.875rem);
+  font-weight: var(--fw-semibold, 600);
   text-decoration: none;
   color: #fff !important;
-  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
-  border: 2px solid transparent !important;
+  background: var(--systems-accent, #0071e3) !important;
+  border: 1px solid transparent !important;
   box-shadow: 0 2px 10px rgb(0 0 0 / 8%) !important;
   transition:
     transform 0.25s var(--eng-spring),
@@ -316,19 +316,24 @@ html.dark .eng-card-a {
 
 .engineering-open-btn:hover {
   transform: translateY(-2px) !important;
-  border-color: #0071e3 !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 10%) !important;
+  border-color: var(--systems-accent, #0071e3) !important;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 12%) !important;
+}
+
+.engineering-open-btn:focus-visible {
+  outline: 2px solid var(--systems-accent, #0071e3);
+  outline-offset: 2px;
 }
 
 html.dark .engineering-open-btn {
   color: #fff !important;
-  background: linear-gradient(135deg, #0a84ff, #0066cc) !important;
+  background: var(--systems-accent, #2997ff) !important;
   box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }
 
 html.dark .engineering-open-btn:hover {
-  border-color: #0a84ff !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 40%) !important;
+  border-color: var(--systems-accent, #2997ff) !important;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 40%) !important;
 }
 
 @media (width <= 1024px) {

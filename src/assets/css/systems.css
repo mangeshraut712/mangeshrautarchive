@@ -40,23 +40,10 @@ html.dark {
   --systems-diagram-border: rgb(255 255 255 / 10%);
 }
 
-html:has(body.systems-page),
 body.systems-page {
-  background: var(--systems-bg) !important;
-  background-color: var(--systems-bg) !important;
+  background: var(--systems-bg);
   color: var(--systems-text);
   overflow-x: clip;
-}
-
-/* Override monitor.css flat white/black main shell */
-html:has(body.systems-evidence-page) body.systems-evidence-page,
-html:has(body.systems-evidence-page) body.systems-evidence-page main.systems-shell {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-}
-
-body.systems-page {
   font-family: var(--font-text, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif);
   -webkit-font-smoothing: antialiased;
   padding-top: calc(84px + env(safe-area-inset-top, 0px));
@@ -64,18 +51,9 @@ body.systems-page {
 
 body.systems-evidence-page {
   position: relative;
-  background: var(--systems-bg) !important;
 }
 
 body.systems-evidence-page::before {
-  display: none !important;
-}
-
-html.dark body.systems-evidence-page {
-  background: var(--systems-bg) !important;
-}
-
-html.dark body.systems-evidence-page::before {
   display: none !important;
 }
 
@@ -2491,6 +2469,29 @@ body.systems-page .systems-writing-chip {
     transform 0.25s var(--systems-spring) !important;
 }
 
+/* Unified card spacing and border-radii */
+body.systems-page .eng-showcase-card,
+body.systems-page .systems-evidence-card,
+body.systems-page .systems-principle-card,
+body.systems-page .systems-bento-tile,
+body.systems-page .systems-metric-panel,
+body.systems-page .case-study-preview-card,
+body.systems-page .systems-writing-card,
+body.systems-page .systems-timeline-block {
+  padding: 1.25rem !important;
+  border-radius: var(--systems-radius, 20px) !important;
+}
+
+/* Architecture stage equal horizontal padding */
+body.systems-page .systems-arch-stage {
+  padding: 1.25rem !important;
+}
+
+/* Unified section head spacing */
+body.systems-page .systems-section-head {
+  margin-bottom: 1.25rem !important;
+}
+
 body.systems-page .eng-showcase-card:hover,
 body.systems-page .systems-evidence-card:hover,
 body.systems-page .systems-principle-card:hover,
@@ -2543,6 +2544,7 @@ body.systems-page .systems-arch-panel {
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
+  padding: 0.25rem 0 0 !important;
 }
 
 body.systems-page .systems-evidence-card--featured.lg-glass-card {

@@ -69,20 +69,20 @@ html {
   background-color: var(--bg-primary);
 }
 
-html:has(body.monitor-page),
-body.monitor-page,
-body.monitor-page main {
+html:has(body.monitor-page:not(.systems-evidence-page)),
+body.monitor-page:not(.systems-evidence-page),
+body.monitor-page:not(.systems-evidence-page) main {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
 }
 
-html.dark:has(body.monitor-page),
-html.dark body.monitor-page,
-html.dark body.monitor-page main,
-[data-theme='dark']:has(body.monitor-page),
-[data-theme='dark'] body.monitor-page,
-[data-theme='dark'] body.monitor-page main {
+html.dark:has(body.monitor-page:not(.systems-evidence-page)),
+html.dark body.monitor-page:not(.systems-evidence-page),
+html.dark body.monitor-page:not(.systems-evidence-page) main,
+[data-theme='dark']:has(body.monitor-page:not(.systems-evidence-page)),
+[data-theme='dark'] body.monitor-page:not(.systems-evidence-page),
+[data-theme='dark'] body.monitor-page:not(.systems-evidence-page) main {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -264,11 +264,11 @@ html.dark .monitor-page-nav__label {
 [data-theme='dark'] .header-content,
 html.dark .header-content {
   background: #000000;
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.4),
     0 8px 16px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .header-title {
@@ -667,19 +667,19 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
 [data-theme='dark'] .summary-chip,
 html.dark .summary-chip {
   background: #000000;
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 [data-theme='dark'] .monitor-summary-panel,
 html.dark .monitor-summary-panel {
   background: #000000;
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 [data-theme='dark'] .env-pill,
 html.dark .env-pill {
   background: #000000;
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* ========================================
@@ -1345,6 +1345,27 @@ body.monitor-page main > section.section:not(#home) {
   padding: 11px 14px;
   text-align: left;
   font-size: 13px;
+}
+
+@media (width > 640px) {
+  .metrics-table th:nth-child(2),
+  .metrics-table td:nth-child(2) {
+    text-align: center;
+  }
+
+  .metrics-table th:nth-child(3),
+  .metrics-table td:nth-child(3),
+  .metrics-table th:nth-child(4),
+  .metrics-table td:nth-child(4),
+  .metrics-table th:nth-child(5),
+  .metrics-table td:nth-child(5) {
+    text-align: right;
+  }
+
+  .metrics-table th:nth-child(6),
+  .metrics-table td:nth-child(6) {
+    text-align: center;
+  }
 }
 
 .metrics-table th {
@@ -3359,5 +3380,16 @@ html.dark .ops-card,
 
   .endpoint-volume-chart {
     grid-template-columns: repeat(4, minmax(34px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .event-item {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+  }
+  .log-filter-bar {
+    gap: 8px !important;
+    margin-bottom: 14px !important;
   }
 }

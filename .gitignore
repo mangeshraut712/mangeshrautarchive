@@ -35,6 +35,8 @@ CLAUDE.md
 .vscode/
 .idea/
 .cursor/
+.clinerules
+.codex/
 .agents/
 .claude/
 .factory/

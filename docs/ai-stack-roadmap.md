@@ -28,6 +28,22 @@ June 2026 · maps to current `api/routes/chat.py` + `agentic-actions.js`
 
 **Do not:** copy local MCP JSON (machine paths, API keys) into `dist/` or commit them — removed from `build.js` `staticExtras`.
 
+### Setup (this repo)
+
+```bash
+npm run setup:openrouter-mcp          # global ~/.cursor/mcp.json (Home → MCP)
+npm run setup:openrouter-mcp -- --with-chat   # + openrouter-chat via ~/.cursor/openrouter.env
+npm run test:openrouter
+```
+
+1. **Global only** — `npm run setup:openrouter-mcp` writes **`~/.cursor/mcp.json`** (Cursor Home → MCP). It removes project `.cursor/mcp.json` to avoid duplicates after you delete a server in settings.
+2. **openrouter (remote)** — `Authorization: Bearer ${env:OPENROUTER_API_KEY}` in `~/.cursor/mcp.json` (never paste the key). `npm run setup:openrouter-mcp` writes the key only to `~/.cursor/openrouter.env` (chmod 600) and runs `launchctl setenv` on macOS.
+3. **openrouter-chat** (`--with-chat`) — `envFile: ~/.cursor/openrouter.env` (key not in JSON).
+4. **Never commit** `.env`, `~/.cursor/openrouter.env`, or `mcp.json` with raw keys. Rotate at [openrouter.ai/keys](https://openrouter.ai/keys) if a key was ever pasted in chat or config.
+5. **AssistMe backend** — `npm run dev:backend` then `npm run test:openrouter` for `POST /api/chat`.
+
+Production chat stays on FastAPI; MCP is for development in Cursor only. **Vercel AI SDK 7 is unchanged** — not adopted.
+
 ---
 
 ## Vercel AI SDK 7 — where it fits
