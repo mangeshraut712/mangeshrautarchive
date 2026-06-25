@@ -159,7 +159,7 @@ mangeshrautarchive/
 │   ├── api/                # pytest API tests
 │   ├── e2e/                # Playwright E2E specs
 │   └── config/             # Test configuration
-├── docs/                   # Project documentation
+├── config/                 # pyright + vulture (CI dead-code scan)
 ├── dist/                   # Build output (git-ignored)
 ├── vercel.json             # Vercel deployment config
 ├── playwright.config.js    # Playwright multi-browser config

@@ -20,8 +20,11 @@ const generatedDirs = [
   '.gitnexus',
   'scratch',
   '.ruff_cache',
+  '.codex',
+  '.windsurf',
+  '.vercel',
 ];
-const generatedFiles = ['backend_test.log', 'dev_server.log'];
+const generatedFiles = ['backend_test.log', 'dev_server.log', '.clinerules', '.windsurfrules'];
 const generatedFileNames = new Set(['.DS_Store']);
 
 async function removeDirectory(relativePath) {

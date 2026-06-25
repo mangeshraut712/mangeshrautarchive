@@ -15,6 +15,8 @@ function ensureLastFmPreconnect() {
   link.dataset.lastfmPreconnect = '1';
   document.head.appendChild(link);
 }
+
+const LASTFM_JSONP_TIMEOUT_MS = 4500;
 const LASTFM_PROXY_TIMEOUT_MS = 3500;
 
 class LastFmService {

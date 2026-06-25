@@ -396,7 +396,7 @@ Server-side OAuth flows in `api/integrations/` — tokens never exposed to the b
 | **Health summary**  | `GET /api/health-vitals/summary` · `POST /api/health-vitals/sync`          | Sanitized widget data for homepage     |
 | **Cron sync**       | `POST /api/cron/health-vitals-sync`                                        | Scheduled provider refresh             |
 
-Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537627192`) for the hero reach panel. See [docs/integration-auth-playbook.md](docs/integration-auth-playbook.md) and [.env.example](.env.example).
+Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537627192`) for the hero reach panel. See [.env.example](.env.example) and `scripts/integrations/`.
 
 ---
 
@@ -514,14 +514,13 @@ mangeshrautarchive/
 ├── tests/
 │   ├── api/                      # pytest (70 tests)
 │   └── e2e/                      # Playwright smoke + a11y (CI)
-├── docs/                         # Playbooks, CI notes, ai-stack-roadmap.md
-├── config/                       # pyright, vulture
+├── config/                       # pyright, vulture (CI dead-code scan)
 ├── index.js                      # react-doctor entry shim → src/js/entry.js
 ├── vercel.json                   # dist/ + FastAPI rewrites + cron
 └── .github/workflows/            # deploy.yml, post-deploy-monitoring.yml
 ```
 
-See [docs/ai-stack-roadmap.md](docs/ai-stack-roadmap.md) for OpenRouter MCP (dev) vs Vercel AI SDK 7 (future Node chat) placement.
+OpenRouter MCP (dev): `npm run setup:openrouter-mcp` — template at `scripts/integrations/cursor-openrouter-mcp.example.json`.
 
 ---
 
@@ -658,12 +657,12 @@ PORT=4174 npm run serve:dist
 
 ## Documentation
 
-| Doc                                                                        | Contents                                            |
-| -------------------------------------------------------------------------- | --------------------------------------------------- |
-| [docs/ci-quality-gates-june-2026.md](docs/ci-quality-gates-june-2026.md)   | CI order, Lighthouse thresholds, React Doctor notes |
-| [docs/ai-stack-roadmap.md](docs/ai-stack-roadmap.md)                       | OpenRouter MCP (dev) vs Vercel AI SDK 7 placement   |
-| [docs/integration-auth-playbook.md](docs/integration-auth-playbook.md)     | OAuth flows for integrations                        |
-| [docs/google-calendar-oauth-setup.md](docs/google-calendar-oauth-setup.md) | Calendar OAuth setup                                |
+| Doc                                                                | Contents                                   |
+| ------------------------------------------------------------------ | ------------------------------------------ |
+| [README.md](README.md)                                             | Setup, CI, API reference, deployment       |
+| [AGENTS.md](AGENTS.md)                                             | AI agent briefing for contributors         |
+| [.env.example](.env.example)                                       | Environment variables and integration keys |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project rules               |
 
 ---
 
