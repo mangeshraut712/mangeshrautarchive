@@ -50,102 +50,15 @@ html.dark #debug-runner-container {
   height: auto !important;
   border-radius: 16px !important;
   /* PURE WHITE - not gray, not off-white */
-  background: var(--card-surface-light) !important;
-  background-color: var(--card-surface-light) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   /* Crisp rendering */
   image-rendering: crisp-edges;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   3.5 GAME CONTROL CARDS - Premium Design
-   ═══════════════════════════════════════════════════════════ */
-
-/* Game Control Card */
-.game-control-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 24px;
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-html.dark .game-control-card {
-  background: #000000;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.game-control-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.15);
-  border-color: rgba(0, 113, 227, 0.3);
-}
-
-html.dark .game-control-card:hover {
-  box-shadow: 0 8px 24px rgba(41, 151, 255, 0.2);
-  border-color: rgba(41, 151, 255, 0.4);
-}
-
-/* Game Key (Keyboard Key) */
-.game-key {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 48px;
-  height: 40px;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
-}
-
-/* Game Key Label */
-.game-key-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #6e6e73;
-}
-
-html.dark .game-key-label {
-  color: #98989d;
-}
-
-/* Game Wrapper - Clean Container for Canvas */
-.game-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 24px;
-  background: #fff;
-  border-radius: 24px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-html.dark .game-wrapper {
-  background: #000;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Game Container inside wrapper */
-.game-container {
-  max-width: 800px;
-  width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-}
-
-html.dark .game-container {
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+html.dark #debug-runner-canvas {
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════

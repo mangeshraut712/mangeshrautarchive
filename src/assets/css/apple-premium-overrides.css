@@ -2991,23 +2991,19 @@ html.dark .theme-toggle:hover {
   gap: 1rem;
   padding: 0.75rem 1.25rem 0.75rem 0.75rem;
   border-radius: 100px;
-  border: 1px solid rgb(0 0 0 / 8%);
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  transition:
-    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-    border-color 0.28s ease !important;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 #home .music-card:hover .music-card-inner {
   transform: translateY(-2px) !important;
-  border-color: #0071e3 !important;
   box-shadow: none !important;
 }
 
 html.dark #home .music-card:hover .music-card-inner {
-  border-color: #0a84ff !important;
+  transform: translateY(-2px) !important;
   box-shadow: none !important;
 }
 
@@ -3176,15 +3172,6 @@ html.dark .artist-name {
     background: none !important;
     border: none !important;
     box-shadow: none !important;
-  }
-
-  .music-card-inner {
-    padding: 6px 14px 6px 6px !important;
-    gap: 12px !important;
-    max-width: none !important;
-    width: fit-content !important;
-    border-radius: 100px !important;
-    min-width: 200px !important;
   }
 
   .album-art-container {

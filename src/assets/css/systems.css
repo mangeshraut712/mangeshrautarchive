@@ -47,6 +47,7 @@ body.systems-page {
   font-family: var(--font-text, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif);
   -webkit-font-smoothing: antialiased;
   padding-top: calc(84px + env(safe-area-inset-top, 0px));
+  scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px));
 }
 
 body.systems-evidence-page {
@@ -1413,23 +1414,56 @@ html.dark .systems-flow-step::before {
 }
 
 /* Uses page */
+body.uses-page .systems-shell {
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
 .uses-page .uses-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.85rem;
+  scroll-margin-top: calc(84px + env(safe-area-inset-top, 0px));
+}
+
+#uses-control-center {
+  scroll-margin-top: calc(84px + env(safe-area-inset-top, 0px));
+}
+
+.uses-control-center__header {
+  margin-bottom: 0.85rem;
+}
+
+.uses-control-center__eyebrow {
+  margin: 0 0 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--systems-accent);
+}
+
+.uses-control-center__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--systems-text);
+  text-align: left;
 }
 
 .uses-section {
   padding: 1.1rem 1.2rem;
   border-radius: var(--systems-radius);
+  scroll-margin-top: calc(84px + env(safe-area-inset-top, 0px));
 }
 
 .uses-section h2 {
   margin: 0 0 0.65rem;
-  font-size: 0.72rem;
+  font-size: 0.72rem !important;
   font-weight: 650;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  text-align: left !important;
   color: var(--systems-accent);
 }
 
@@ -2485,7 +2519,9 @@ body.systems-page .systems-token-row,
 body.systems-page .systems-decision-row,
 body.systems-page .systems-failure-row,
 body.systems-page .systems-writing-card,
-body.systems-page .systems-writing-chip {
+body.systems-page .systems-writing-chip,
+body.systems-page .uses-control-center,
+body.systems-page .uses-section {
   color: var(--systems-text) !important;
   background: var(--systems-card-bg) !important;
   background-color: var(--systems-card-bg) !important;
@@ -2508,6 +2544,12 @@ body.systems-page .systems-metric-panel,
 body.systems-page .case-study-preview-card,
 body.systems-page .systems-writing-card,
 body.systems-page .systems-timeline-block {
+  padding: 1.25rem !important;
+  border-radius: var(--systems-radius, 20px) !important;
+}
+
+body.systems-page .uses-control-center,
+body.systems-page .uses-section {
   padding: 1.25rem !important;
   border-radius: var(--systems-radius, 20px) !important;
 }

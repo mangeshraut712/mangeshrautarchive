@@ -123,7 +123,11 @@ html[data-theme='dark'] {
    ──────────────────────────────────────────────────────────────── */
 
 .global-nav.dynamic-island.scrolled {
-  border-bottom-color: color-mix(in srgb, var(--lg-edge-light) 65%, rgb(0 0 0 / 10%) 35%) !important;
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--lg-edge-light) 65%,
+    rgb(0 0 0 / 10%) 35%
+  ) !important;
 }
 
 html.dark .global-nav.dynamic-island.scrolled {
@@ -1088,6 +1092,7 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
 /* Desktop/tablet: stretch between navbar and toggle — no dead gap above */
 @media (min-width: 769px) {
   #chatbot-widget {
+    position: fixed !important;
     top: var(--chatbot-widget-top) !important;
     bottom: var(--chatbot-widget-bottom) !important;
     height: auto !important;
@@ -1099,6 +1104,7 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
 
   @supports (position-anchor: --chatbot-toggle) {
     #chatbot-widget {
+      position: fixed !important;
       position-anchor: --chatbot-toggle;
       bottom: anchor(--chatbot-toggle top) !important;
       margin-bottom: 14px !important;
@@ -2628,30 +2634,4 @@ html.dark body.monitor-page .doc-link-tile {
   }
 }
 
-/* Hero music card — pill border matches sitewide cards */
-#home .music-card {
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-#home .music-card-inner {
-  border: 1px solid var(--card-border-rest) !important;
-  border-width: 1px !important;
-  box-shadow: none !important;
-  outline: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html.dark #home .music-card-inner {
-  border-color: var(--card-border-rest) !important;
-}
-
-#home .music-card:hover .music-card-inner,
-html.dark #home .music-card:hover .music-card-inner {
-  box-shadow: none !important;
-  outline: none !important;
-}
+/* Hero music card — owned by chrome-surfaces.css */

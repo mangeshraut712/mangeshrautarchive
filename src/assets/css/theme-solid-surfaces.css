@@ -1210,7 +1210,7 @@ html.dark #projects .project-footer {
   background-image: none !important;
 }
 
-/* ─── Hero music card: border/hover only — background in chrome-surfaces.css ─── */
+/* Hero music card — surfaces/borders in chrome-surfaces.css (loaded last) */
 #home .music-card,
 #home .music-card:hover {
   background: transparent !important;
@@ -1218,31 +1218,6 @@ html.dark #projects .project-footer {
   box-shadow: none !important;
   filter: none !important;
   outline: none !important;
-}
-
-#home .music-card-inner {
-  border-width: 1px !important;
-  box-shadow: none !important;
-  filter: none !important;
-  outline: none !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  html:not(.dark) #home .music-card:hover .music-card-inner {
-    border: 1px solid #0071e3 !important;
-    border-width: 1px !important;
-    border-color: #0071e3 !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-
-  html.dark #home .music-card:hover .music-card-inner {
-    border: 1px solid #0a84ff !important;
-    border-width: 1px !important;
-    border-color: #0a84ff !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
 }
 
 /* Education cards: blue border hover, no glow stripe */
@@ -1733,8 +1708,7 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
   body.monitor-page .ops-card,
   #projects #github-projects-container .showcase-project-card,
   #skills .skill-category,
-  #skills-container .skill-category,
-  #home .music-card-inner
+  #skills-container .skill-category
 ):where(:not(:hover), :not(:focus-within)) {
   border-color: var(--card-border-rest) !important;
 }
@@ -1787,8 +1761,7 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
       #blog .newsletter-card,
       #projects #github-projects-container .showcase-project-card,
       #skills .skill-category,
-      #skills-container .skill-category,
-      #home .music-card-inner
+      #skills-container .skill-category
     ):is(:hover, :focus-within) {
     border-color: var(--card-border-hover) !important;
   }
@@ -1840,8 +1813,7 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
       #blog .newsletter-card,
       #projects #github-projects-container .showcase-project-card,
       #skills .skill-category,
-      #skills-container .skill-category,
-      #home .music-card-inner
+      #skills-container .skill-category
     ):is(:hover, :focus-within) {
     border-color: var(--card-border-hover) !important;
   }

@@ -320,6 +320,17 @@ section h2 {
   margin-bottom: 2rem;
 }
 
+/* Subpage cards — not homepage section titles */
+section.uses-section h2 {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  margin-bottom: 0.65rem;
+  color: var(--systems-accent, #0071e3);
+}
+
 section p {
   font-size: var(--fs-body-lg);
   color: var(--text-color-secondary);

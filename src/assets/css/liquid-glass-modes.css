@@ -454,7 +454,7 @@ html.dark[data-lg-mode='tinted'] body {
 html[data-lg-mode='tinted'] .a11y-toolbar,
 html[data-lg-mode='tinted'] .a11y-glass-popover,
 html[data-lg-mode='tinted'] #chatbot-widget,
-html[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
+html[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -462,7 +462,7 @@ html[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(.music-card-inne
 html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar,
 html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
 html[data-lg-mode='tinted']:not(.dark) #chatbot-widget,
-html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
+html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
@@ -470,7 +470,7 @@ html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host:not(#global-nav):not(.musi
 html.dark[data-lg-mode='tinted'] .a11y-toolbar,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget,
-html.dark[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
+html.dark[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
   background: #000000 !important;
   background-color: #000000 !important;
 }

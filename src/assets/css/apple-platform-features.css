@@ -416,7 +416,18 @@ html.dark .uses-control-tile {
   background: rgb(0 0 0 / 55%);
 }
 
-.uses-control-tile.is-active {
+body.systems-page .uses-control-tile {
+  border: 1px solid var(--systems-card-border);
+  background: var(--systems-diagram-bg);
+  color: var(--systems-text);
+}
+
+html.dark body.systems-page .uses-control-tile {
+  border-color: var(--systems-card-border);
+  background: var(--systems-diagram-bg);
+}
+
+body.systems-page .uses-control-tile.is-active {
   border-color: #0071e3;
   color: #0071e3;
 }

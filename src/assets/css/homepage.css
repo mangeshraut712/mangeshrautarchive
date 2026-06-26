@@ -275,12 +275,6 @@ html.dark .hero-description {
     -webkit-backdrop-filter: none !important;
   }
 
-  #home .music-card-inner {
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-
   .profile-ring {
     filter: blur(10px);
     opacity: 0.45;
@@ -350,11 +344,6 @@ html.dark .hero-description {
   #home .music-card {
     margin-top: 0.25rem !important;
     margin-bottom: 0 !important;
-  }
-
-  #home .music-card-inner {
-    min-height: 68px !important;
-    padding: 0.65rem 0.9rem !important;
   }
 
   #home .album-art-container {
@@ -2534,10 +2523,6 @@ html:not(.dark) .hero-stat-label {
     border-radius: 25%;
     aspect-ratio: 1 / 1;
     overflow: visible !important;
-  }
-
-  .music-card {
-    display: none;
   }
 
   .profile-image {

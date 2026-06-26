@@ -56,7 +56,7 @@
    WIDGET CONTAINER - PREMIUM GLASSMORPHISM
    ═══════════════════════════════════════════════════════════ */
 #chatbot-widget {
-  position: fixed;
+  position: fixed !important;
   bottom: 120px;
   right: 24px;
 
@@ -81,8 +81,14 @@
   transform-origin: bottom right;
 }
 
+#chatbot-widget.lg-webgl-host {
+  position: fixed !important;
+  overflow: hidden;
+}
+
 @supports (position-anchor: --chatbot-toggle) {
   #chatbot-widget {
+    position: fixed !important;
     position-anchor: --chatbot-toggle;
     bottom: anchor(--chatbot-toggle top);
     right: anchor(--chatbot-toggle right);
@@ -2615,6 +2621,7 @@ html.dark .message-content .footnotes {
 /* Tablet & Desktop Adjustments */
 @media (min-width: 769px) {
   #chatbot-widget {
+    position: fixed !important;
     width: 400px !important;
     top: calc(var(--island-height, 52px) + 12px) !important;
     bottom: calc(96px + 60px + 14px) !important;
@@ -2628,6 +2635,7 @@ html.dark .message-content .footnotes {
 
   @supports (position-anchor: --chatbot-toggle) {
     #chatbot-widget {
+      position: fixed !important;
       position-anchor: --chatbot-toggle;
       bottom: anchor(--chatbot-toggle top) !important;
       right: anchor(--chatbot-toggle right) !important;

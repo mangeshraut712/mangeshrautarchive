@@ -1,16 +1,15 @@
 import { getLiquidGlassEngine } from './liquid-glass-engine.js';
 
-/* Nav + hero music card use solid surfaces in chrome-surfaces.css — no WebGL. */
+/* Nav + music card + chatbot: solid/fixed surfaces — no WebGL host */
 const CHROME_SELECTORS = [
   '.monitor-page-nav',
   '.travel-nav',
-  '#chatbot-widget',
   '.hero-glass-card',
   '#projects #github-projects-container .showcase-project-card',
 ];
 
 const CHROME_MATCH =
-  '.monitor-page-nav, .travel-nav, #chatbot-widget, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #projects #github-projects-container .showcase-project-card';
+  '.monitor-page-nav, .travel-nav, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #projects #github-projects-container .showcase-project-card';
 
 function isGlassModeActive() {
   const mode = document.documentElement.dataset.lgMode;
@@ -67,7 +66,20 @@ function releaseWebGLChrome() {
   });
 }
 
+function releaseChatbotWebGL() {
+  const widget = document.getElementById('chatbot-widget');
+  if (!widget?.classList.contains('lg-webgl-host')) return;
+  const engine = getLiquidGlassEngine();
+  if (!engine?.surfaces?.size) return;
+  [...engine.surfaces].forEach(surface => {
+    if (surface.element === widget) {
+      engine.detach(surface);
+    }
+  });
+}
+
 export function syncLiquidGlassChrome() {
+  releaseChatbotWebGL();
   if (isGlassModeActive()) {
     attachChrome();
     return;

@@ -112,6 +112,7 @@ body {
   /* Keep readable clearance above bottom floating chrome in key sections */
   body.has-a11y-toolbar #about,
   body.has-a11y-toolbar #currently-section,
+  body.has-a11y-toolbar #debug-runner-section,
   body.has-a11y-toolbar #contact {
     scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
     padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
