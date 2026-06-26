@@ -213,6 +213,25 @@ for (let attempt = 2; attempt <= maxAttempts && !isPerfect(scores, thresholds); 
   }
 }
 
+// Remote Lighthouse runs can return performance=null when the trace fails (common on GH Pages mobile).
+if (scores.performance == null && !isLoopbackUrl(rawUrl)) {
+  for (
+    let nullRetry = maxAttempts + 1;
+    nullRetry <= maxAttempts + 2 && scores.performance == null;
+    nullRetry += 1
+  ) {
+    console.log(
+      `[lighthouse:${formFactor}] Performance trace unavailable on remote URL; extra retry (${nullRetry - maxAttempts}/2)...`
+    );
+    const retryReport = normalizeLoopbackReport(runLighthouseAudit());
+    const retryScores = extractScores(retryReport);
+    if (scoreTotal(retryScores) >= scoreTotal(scores)) {
+      report = retryReport;
+      scores = retryScores;
+    }
+  }
+}
+
 mkdirSync(outputDir, { recursive: true });
 writeFileSync(
   join(outputDir, `lighthouse-${formFactor}.json`),

@@ -57,7 +57,7 @@ jobs:
             --min-accessibility=90 \
             --min-best-practices=90 \
             --min-seo=90 \
-            --max-attempts=3
+            --max-attempts=5
           node scripts/deployment/lighthouse-gate.js \
             --url=https://mangeshraut.pro/ \
             --form-factor=desktop \

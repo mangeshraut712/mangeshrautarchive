@@ -112,12 +112,11 @@ jobs:
         env:
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
-          OPENROUTER_MODEL: x-ai/grok-4.1-fast
+          OPENROUTER_MODEL: x-ai/grok-4.3
           NEXT_PUBLIC_API_BASE: https://mangeshraut.pro
           NODE_ENV: production
           GITHUB_PAGES: true
           GITHUB_SHA: ${{ github.sha }}
-          NEXT_PUBLIC_LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5

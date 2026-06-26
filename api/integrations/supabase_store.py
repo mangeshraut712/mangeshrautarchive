@@ -111,6 +111,29 @@ def sanitize_health_summary(row: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _health_summary_has_metrics(data: Dict[str, Any]) -> bool:
+    return any(
+        data.get(key) is not None
+        for key in (
+            "sleepScore",
+            "recoveryScore",
+            "strain",
+            "restingHeartRate",
+            "hrvTrend",
+            "weightTrend",
+        )
+    )
+
+
+def _resolve_health_summary_status(data: Dict[str, Any]) -> str:
+    source_status = data.get("sourceStatus")
+    if source_status == "partial" and not _health_summary_has_metrics(data):
+        return "partial"
+    if source_status in {"not_configured", "partial"} and not _health_summary_has_metrics(data):
+        return source_status
+    return "live"
+
+
 async def fetch_latest_health_summary() -> Dict[str, Any]:
     if not supabase_is_configured():
         return {
@@ -156,10 +179,12 @@ async def fetch_latest_health_summary() -> Dict[str, Any]:
             "message": "Health summary storage is configured but has no public rows.",
         }
 
+    row_data = rows[0] if isinstance(rows[0], dict) else {}
+    data = sanitize_health_summary(row_data)
     return {
-        "status": "live",
+        "status": _resolve_health_summary_status(data),
         "source": "supabase",
-        "data": sanitize_health_summary(rows[0] if isinstance(rows[0], dict) else {}),
+        "data": data,
         "fetchedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
     }
 

@@ -39,6 +39,16 @@ const srcDir = resolve(projectRoot, 'src');
 
 const staticExtras = ['CNAME'];
 
+const OPENROUTER_MODEL_ALIASES = {
+  'x-ai/grok-4.1-fast': 'x-ai/grok-4.3',
+  'x-ai/grok-4-fast': 'x-ai/grok-4.3',
+};
+
+function normalizeSelectedModel(rawModel) {
+  const requested = (rawModel || 'x-ai/grok-4.3').trim();
+  return OPENROUTER_MODEL_ALIASES[requested] || requested;
+}
+
 // Build-time public config injection for GitHub Pages
 // SECURITY: API keys must NEVER be written here — they live in backend env vars only.
 async function injectApiKeys(distDir) {
@@ -56,8 +66,9 @@ async function injectApiKeys(distDir) {
     apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshraut.pro',
     siteUrl: process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
-    selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.3',
-    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || '',
+    selectedModel: normalizeSelectedModel(process.env.OPENROUTER_MODEL),
+    // Music uses /api/music/* on the backend — never ship Last.fm keys to browsers.
+    lastfmApiKey: '',
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `v${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,

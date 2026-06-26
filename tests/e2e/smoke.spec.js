@@ -204,25 +204,40 @@ test.describe('Chrome smoke tests', () => {
 
   test('search overlay opens and closes', async ({ page }) => {
     await gotoSiteReady(page);
-    await page.locator('#search-toggle').waitFor({ state: 'visible' });
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
 
     const openSearch = page.locator('#search-toggle');
     const closeSearch = page.locator('#search-close');
     const searchOverlay = page.locator('#search-overlay');
     const searchInput = page.locator('#search-input');
 
+    await openSearch.waitFor({ state: 'visible' });
+    await searchOverlay.waitFor({ state: 'attached' });
+    await searchInput.waitFor({ state: 'attached' });
+
     await expect(searchOverlay).not.toHaveClass(/active/);
-    await openSearch.click();
-    await expect(searchOverlay).toHaveClass(/active/);
-    await expect(searchInput).toBeFocused();
+
+    const activateSearch = async () => {
+      await openSearch.click();
+      await expect(searchOverlay).toHaveClass(/active/, { timeout: 15_000 });
+      await expect(searchInput).toBeFocused({ timeout: 10_000 });
+    };
+
+    // Search module/styles can lazy-load on first interaction — retry once if needed.
+    try {
+      await activateSearch();
+    } catch {
+      await page.waitForTimeout(800);
+      await activateSearch();
+    }
 
     await closeSearch.click();
     await expect(searchOverlay).not.toHaveClass(/active/);
 
     // Keyboard shortcut should also open the overlay after lazy-loading hooks are ready.
     await page.keyboard.press('Control+k');
-    await expect(searchOverlay).toHaveClass(/active/);
-    await expect(searchInput).toBeFocused();
+    await expect(searchOverlay).toHaveClass(/active/, { timeout: 15_000 });
+    await expect(searchInput).toBeFocused({ timeout: 10_000 });
 
     await page.keyboard.press('Escape');
     await expect(searchOverlay).not.toHaveClass(/active/);

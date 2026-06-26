@@ -4,8 +4,7 @@
 // Set up global APP_CONFIG for services that expect it (like Last.fm)
 window.APP_CONFIG = window.APP_CONFIG || {};
 
-// Last.fm API Configuration
-// Get from environment or set empty (user needs to add their own API key)
+// Last.fm: use /api/music/* on the backend — do not embed LASTFM_API_KEY in build-config.
 window.APP_CONFIG.lastfmApiKey = window.APP_CONFIG.lastfmApiKey || '';
 window.APP_CONFIG.apiBaseUrl = window.APP_CONFIG.apiBaseUrl || '';
 

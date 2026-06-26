@@ -94,6 +94,8 @@ export function initLiquidGlassChrome() {
   engine.init();
   syncLiquidGlassChrome();
 
+  window.addEventListener('liquid-glass:sync-chrome', syncLiquidGlassChrome);
+
   document.addEventListener(
     'click',
     event => {

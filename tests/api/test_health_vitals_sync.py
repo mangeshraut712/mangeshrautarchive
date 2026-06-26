@@ -1,6 +1,10 @@
 """Tests for health vitals sync helpers."""
 
-from api.integrations.supabase_store import _merge_health_row
+from api.integrations.supabase_store import (
+    _merge_health_row,
+    _resolve_health_summary_status,
+    sanitize_health_summary,
+)
 from api.integrations.whoop import _pick_active_cycle_record, _pick_scored_record
 
 
@@ -69,3 +73,20 @@ def test_merge_health_row_preserves_existing_non_null_fields():
     assert merged["recovery_score"] == 47
     assert merged["strain"] == 5.2
     assert merged["weight_trend"] == "103.8 kg · 78.2% muscle · 18.2% fat"
+
+
+def test_resolve_health_summary_status_marks_empty_partial_rows():
+    data = sanitize_health_summary(
+        {
+            "date": "2026-06-26",
+            "sleep_score": None,
+            "recovery_score": None,
+            "strain": None,
+            "resting_heart_rate": None,
+            "hrv_trend": None,
+            "weight_trend": None,
+            "last_synced_at": "2026-06-26T14:31:41.959397+00:00",
+            "source_status": "partial",
+        }
+    )
+    assert _resolve_health_summary_status(data) == "partial"

@@ -113,9 +113,7 @@ class LiquidGlassEngine {
     this.surfaces.forEach(surface => surface.setTintRatio(this.tintRatio));
 
     if (typeof window !== 'undefined') {
-      import('./liquid-glass-chrome.js')
-        .then(module => module.syncLiquidGlassChrome?.())
-        .catch(() => {});
+      window.dispatchEvent(new CustomEvent('liquid-glass:sync-chrome'));
     }
   }
 
