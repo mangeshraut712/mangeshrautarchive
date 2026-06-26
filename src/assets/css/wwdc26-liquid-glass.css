@@ -19,10 +19,10 @@
   --lg-nav-dark-fill: calc(8% + var(--lg-tint) * 76%);
   --lg-card-light-fill: calc(18% + var(--lg-tint) * 76%);
   --lg-card-dark-fill: calc(24% + var(--lg-tint) * 68%);
-  --lg-card-light-alpha: 100%;
-  --lg-card-dark-alpha: 100%;
-  --lg-card-border-light-alpha: calc(28% + var(--lg-tint) * 38%);
-  --lg-card-border-dark-alpha: calc(8% + var(--lg-tint) * 10%);
+  --lg-card-light-alpha: calc(12% + var(--lg-tint) * 86%);
+  --lg-card-dark-alpha: calc(16% + var(--lg-tint) * 82%);
+  --lg-card-border-light-alpha: 0%;
+  --lg-card-border-dark-alpha: 0%;
   --lg-card-highlight-light: calc(42% + var(--lg-tint) * 48%);
   --lg-card-highlight-dark: calc(8% + var(--lg-tint) * 10%);
   --lg-card-shadow-light: calc(8% + (1 - var(--lg-tint)) * 10%);
@@ -33,7 +33,7 @@
   --lg-border-dark: calc(6% + (1 - var(--lg-tint)) * 10% + var(--lg-tint) * 8%);
   --theme-page-bg: #ffffff;
   --theme-card-surface: #ffffff;
-  --theme-card-border: rgba(0, 0, 0, 0.08);
+  --theme-card-border: #e5e5ea;
   --theme-card-border-hover: #0071e3;
   --siri-c1: #0a84ff;
   --siri-c2: #5e5ce6;
@@ -66,7 +66,7 @@
 
 @property --lg-tint {
   syntax: '<number>';
-  initial-value: 0.55;
+  initial-value: 0;
   inherits: true;
 }
 
@@ -95,7 +95,7 @@ html.dark,
 html[data-theme='dark'] {
   --theme-page-bg: #000000;
   --theme-card-surface: #000000;
-  --theme-card-border: rgba(255, 255, 255, 0.12);
+  --theme-card-border: #2c2c2e;
   --theme-card-border-hover: #0a84ff;
 }
 
@@ -1433,7 +1433,7 @@ html.dark body #github-projects-container .text-secondary {
   -webkit-backdrop-filter: none !important;
   background: rgb(255 255 255 / var(--lg-card-light-alpha, 88%)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 88%)) !important;
-  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha, 8%)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
 }
 
@@ -1441,7 +1441,7 @@ html.dark .skill-scroll-wrapper .skill-badge,
 html.dark #skills-container .skill-scroll-wrapper .skill-badge {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha, 88%)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 88%)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha, 12%)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
 }
 
@@ -1522,7 +1522,7 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
     .travel-stop
   ) {
     background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid var(--card-border-rest) !important;
   }
 
   html.dark
@@ -1539,7 +1539,7 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
       .travel-stop
     ) {
     background: #000000 !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid var(--card-border-rest) !important;
   }
 }
 
@@ -1644,7 +1644,7 @@ footer .wrapper {
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
@@ -1723,7 +1723,7 @@ html.dark
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
 }
 
@@ -1835,7 +1835,7 @@ html body #contact div.media-card,
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
@@ -1860,7 +1860,7 @@ html.dark .vibe-stack-card {
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
 }
 
@@ -1968,29 +1968,30 @@ html:not(.dark) .monitor-summary-card:hover {
   box-shadow: none !important;
 }
 
-/* Skills — solid surfaces; rounded corners only (no glass shadow frame) */
-html:not(.dark) :is(#skills, #skills > .container, #skills-container) {
+/* Skills — tinted = solid; clear/balanced use liquid glass above */
+html[data-lg-mode='tinted']:not(.dark) :is(#skills, #skills > .container, #skills-container) {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
 
-html.dark :is(#skills, #skills > .container, #skills-container) {
+html.dark[data-lg-mode='tinted'] :is(#skills, #skills > .container, #skills-container) {
   background: #000000 !important;
   background-color: #000000 !important;
 }
 
-html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) {
+html[data-lg-mode='tinted']:not(.dark)
+  :is(#skills .skill-category, #skills-container .skill-category) {
   background: #ffffff !important;
   background-color: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   border-width: 1px !important;
   border-radius: 20px !important;
   box-shadow: none !important;
 }
 
-html:not(.dark)
+html[data-lg-mode='tinted']:not(.dark)
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -1999,7 +2000,7 @@ html:not(.dark)
   box-shadow: none !important;
 }
 
-html.dark :is(#skills .skill-category, #skills-container .skill-category) {
+html.dark[data-lg-mode='tinted'] :is(#skills .skill-category, #skills-container .skill-category) {
   background: #000000 !important;
   background-color: #000000 !important;
   backdrop-filter: none !important;
@@ -2007,7 +2008,7 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category) {
   box-shadow: none !important;
 }
 
-html.dark
+html.dark[data-lg-mode='tinted']
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #000000 !important;
   background-color: #000000 !important;
@@ -2110,7 +2111,7 @@ body.monitor-page article {
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light)),
     0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
@@ -2131,7 +2132,7 @@ html.dark body.monitor-page article {
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
 }
 
@@ -2149,7 +2150,7 @@ body.travel-body .travel-timeline__country-header {
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(0 0 0 / var(--lg-card-border-light-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-card-highlight-light)),
     0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
@@ -2169,7 +2170,7 @@ html.dark body.travel-body .travel-timeline__country-header {
   background-image: none !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-card-border-dark-alpha)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
 }
 
@@ -2205,9 +2206,26 @@ html.dark[data-lg-mode='clear'] #chatbot-widget {
 
 html[data-lg-mode='tinted'] .global-nav.dynamic-island,
 html[data-lg-mode='tinted'] .a11y-toolbar,
+html[data-lg-mode='tinted'] .a11y-glass-popover,
 html[data-lg-mode='tinted'] #chatbot-widget {
-  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) - 2px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) - 2px)) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) .global-nav.dynamic-island,
+html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar,
+html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
+html[data-lg-mode='tinted']:not(.dark) #chatbot-widget {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark[data-lg-mode='tinted'] .global-nav.dynamic-island,
+html.dark[data-lg-mode='tinted'] .a11y-toolbar,
+html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
+html.dark[data-lg-mode='tinted'] #chatbot-widget {
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 html[data-lg-mode='clear'] .global-nav.dynamic-island {
@@ -2244,8 +2262,8 @@ html[data-lg-mode='tinted']
     .currently-card,
     .vibe-stack-card
   ) {
-  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) - 6px)) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 html[data-lg-mode='tinted']:not(.dark)
@@ -2260,8 +2278,8 @@ html[data-lg-mode='tinted']:not(.dark)
     .currently-card,
     .vibe-stack-card
   ) {
-  background: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
-  background-color: rgb(255 255 255 / calc(var(--lg-card-light-alpha) + 4%)) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 html.dark[data-lg-mode='tinted']
@@ -2276,8 +2294,8 @@ html.dark[data-lg-mode='tinted']
     .currently-card,
     .vibe-stack-card
   ) {
-  background: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
-  background-color: rgb(0 0 0 / calc(var(--lg-card-dark-alpha) + 6%)) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -2471,7 +2489,7 @@ html.dark :is(.travel-nav, .monitor-page-nav) {
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
   transition:
     transform 0.42s var(--lg-spring),
@@ -2484,7 +2502,7 @@ html.dark #projects #github-projects-container .showcase-project-card {
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border-color: rgb(255 255 255 / 12%) !important;
+  border-color: transparent !important;
   box-shadow: none !important;
 }
 
@@ -2587,7 +2605,7 @@ html.dark #projects .projects-activity-overview {
   background-color: var(--lg-panel-surface-light) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  border: 1px solid color-mix(in srgb, var(--lg-edge-light) 58%, rgb(0 0 0 / 8%) 42%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
     0 16px 40px rgb(0 0 0 / calc(6% + (1 - var(--lg-tint)) * 8%)) !important;
@@ -2619,7 +2637,7 @@ html.dark
     ),
     var(--lg-panel-surface-dark) !important;
   background-color: var(--lg-panel-surface-dark) !important;
-  border-color: color-mix(in srgb, var(--lg-edge-dark) 72%, rgb(0 0 0 / 28%) 28%) !important;
+  border-color: transparent !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
     0 18px 44px rgb(0 0 0 / 42%) !important;
@@ -2685,7 +2703,7 @@ html.dark body.monitor-page .doc-link-tile {
 }
 
 #home .music-card-inner {
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   border-width: 1px !important;
   box-shadow: none !important;
   outline: none !important;
@@ -2694,7 +2712,7 @@ html.dark body.monitor-page .doc-link-tile {
 }
 
 html.dark #home .music-card-inner {
-  border-color: rgb(255 255 255 / 12%) !important;
+  border-color: var(--card-border-rest) !important;
 }
 
 #home .music-card:hover .music-card-inner,

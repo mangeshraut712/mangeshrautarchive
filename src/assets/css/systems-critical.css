@@ -15,7 +15,7 @@
   --bg-secondary: #ffffff;
   --text-primary: #1d1d1f;
   --accent-blue: #0071e3;
-  --shadow-md: 0 4px 12px rgb(0 0 0 / 8%);
+  --shadow-md: 0 8px 28px rgb(0 0 0 / 10%), 0 2px 8px rgb(0 0 0 / 6%);
 }
 
 html.dark {
@@ -50,13 +50,20 @@ body.systems-page {
   padding: 8px 16px;
   border: 1px solid var(--border-color);
   border-radius: 999px;
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 1px 0 rgb(255 255 255 / 55%);
   transform: translateX(-50%);
   background: rgb(255 255 255 / 88%);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 
 html.dark .monitor-page-nav {
   background: rgb(0 0 0 / 82%);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
 }
 
 .monitor-page-nav__left,
@@ -192,9 +199,10 @@ html.dark .systems-section-rail a {
   align-items: center;
   gap: 10px;
   margin: 0;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-size: clamp(1.3rem, 2.6vw, 1.5rem);
+  font-weight: 750;
+  letter-spacing: -0.02em;
   color: var(--text-primary, var(--systems-text));
 }
 
@@ -235,10 +243,11 @@ html.dark .systems-eyebrow {
 .systems-keynote-hero h1 {
   margin: 0 auto;
   max-width: 22ch;
-  font-size: clamp(2rem, 5.5vw, 3.25rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-size: clamp(2.15rem, 5.8vw, 3.35rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
 }
 
 .systems-hero-lead {

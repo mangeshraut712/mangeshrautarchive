@@ -3,6 +3,7 @@ import { Readable } from 'node:stream';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import dotenv from 'dotenv';
+import { generateCaseStudyPages } from '../build/generate-case-study-pages.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -179,4 +180,18 @@ function startServer(listenPort) {
   });
 }
 
-startServer(port);
+async function prepareDevAssets() {
+  try {
+    await generateCaseStudyPages(distPath);
+  } catch (error) {
+    console.error('Failed to generate case study pages for local dev:', error.message);
+    process.exit(1);
+  }
+}
+
+prepareDevAssets()
+  .then(() => startServer(port))
+  .catch(error => {
+    console.error('Failed to prepare local dev assets:', error.message);
+    process.exit(1);
+  });

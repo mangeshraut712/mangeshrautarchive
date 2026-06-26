@@ -127,8 +127,10 @@
   --whoop-color: #000000;
   --card-surface-light: #fff;
   --card-surface-dark: #000;
-  --card-border-light: #e5e7eb;
-  --card-border-dark: rgb(255 255 255 / 8%);
+  --card-border-light: #e5e5ea;
+  --card-border-dark: #2c2c2e;
+  --card-border-rest: #e5e5ea;
+  --card-border-hover: #0071e3;
   --button-blue-start: #0a7bff;
   --button-blue-end: #0059ff;
   --button-blue-shadow: 0 14px 30px rgb(10 123 255 / 28%);
@@ -257,7 +259,8 @@ html.dark {
   scroll-behavior: auto;
   scroll-padding-top: 80px;
   --card-surface-light: #000;
-  --card-border-light: #000000;
+  --card-border-rest: #2c2c2e;
+  --card-border-hover: #0a84ff;
 }
 
 /* Dark Mode Body Enhancement - Using Modern CSS Selectors */
@@ -1383,7 +1386,7 @@ html.dark .skills-section {
 .game-card,
 .gemini-flashlight-card {
   background: var(--card-surface-light);
-  border: 1px solid var(--card-border-light);
+  border: 1px solid var(--card-border-rest);
   color: var(--text-primary);
   box-shadow: var(--shadow-md);
 }
@@ -1401,7 +1404,7 @@ html.dark .experience-card,
 html.dark .game-card,
 html.dark .gemini-flashlight-card {
   background: var(--card-surface-dark);
-  border: 1px solid var(--card-border-dark);
+  border: 1px solid var(--card-border-rest);
   color: var(--text-primary-dark);
   box-shadow: var(--shadow-dark-md);
 }
@@ -1959,7 +1962,7 @@ footer {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   background-color: #ffffff !important;
   border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
-  padding: 80px 0 40px !important;
+  padding: 0.75rem 0 0.625rem !important;
 }
 
 /* Light mode - Solid white footer */
@@ -2603,8 +2606,8 @@ html.dark .project-card a.text-accent:hover {
   /* Mobile Footer */
 
   footer {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     text-align: center;
   }
 
@@ -4904,11 +4907,13 @@ footer .max-w-6xl {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 0.5rem;
+  width: 100%;
+  margin-inline: auto;
 }
 
 #debug-runner-section {
-  padding-bottom: 60px !important;
+  padding-bottom: 1rem !important;
 }
 
 .debug-instruction-card {

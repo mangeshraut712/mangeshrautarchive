@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script src="js/utils/liquid-glass-boot.js?v=20260701a"></script>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -9,6 +10,7 @@
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="view-transition" content="same-origin" />
     <title>Engineering Evidence | Mangesh Raut</title>
     <meta
       name="description"
@@ -37,7 +39,11 @@
     />
     <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
     <meta name="twitter:image:alt" content="Engineering Evidence for Mangesh Raut's portfolio" />
-    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260701a" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Mangesh Raut" />
     <script src="build-config.js"></script>
     <script>
       (function () {
@@ -47,67 +53,77 @@
       })();
     </script>
     <script src="js/utils/theme-head.js"></script>
-    <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260624a" />
-    <script>
-      (function () {
-        if (
-          !/[?&]perf-audit=1(?:&|$)/.test(location.search) &&
-          !/Chrome-Lighthouse|Lighthouse|PTST/i.test(navigator.userAgent || '')
-        ) {
-          return;
-        }
-        document.documentElement.dataset.perfAudit = '1';
-      })();
-    </script>
+    <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260701a" />
+    <script src="js/utils/perf-audit-flag.js"></script>
     <link
       rel="stylesheet"
-      href="assets/css/apple-2026-design-system.css?v=20260630b"
+      href="assets/css/apple-2026-design-system.css?v=20260701a"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260630b" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260701a" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/css/sitewide-design-system.css?v=20260630b"
+      href="assets/css/sitewide-design-system.css?v=20260701a"
       data-perf-defer
     />
     <link
       rel="stylesheet"
-      href="assets/css/accessibility-contrast-fixes.css?v=20260630b"
+      href="assets/css/accessibility-contrast-fixes.css?v=20260701a"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260630c" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/systems.css?v=20260630a" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260630b" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260630b" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260701a" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260701a" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701a" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260701a" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/css/sections-apple-premium.css?v=20260630b"
-      data-perf-defer
-    />
-    <link
-      rel="stylesheet"
-      href="assets/css/apple-premium-overrides.css?v=20260630b"
+      href="assets/css/sections-apple-premium.css?v=20260701a"
       data-perf-defer
     />
     <link
       rel="stylesheet"
-      href="assets/css/wwdc26-liquid-glass.css?v=20260630b"
+      href="assets/css/apple-premium-overrides.css?v=20260701a"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/wwdc26-liquid-glass.css?v=20260701a"
       media="print"
       onload="this.media = 'all'"
       data-perf-defer
     />
     <link
       rel="stylesheet"
-      href="assets/css/apple-super-retina-display.css?v=20260630b"
+      href="assets/css/apple-super-retina-display.css?v=20260701a"
       media="print"
       onload="this.media = 'all'"
       data-perf-defer
     />
     <link
       rel="stylesheet"
-      href="assets/css/theme-solid-surfaces.css?v=20260630b"
+      href="assets/css/theme-solid-surfaces.css?v=20260701a"
       media="print"
       onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/liquid-glass-modes.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/liquid-glass-webgl.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link rel="stylesheet" href="assets/css/high-contrast.css?v=20260701a" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-platform-features.css?v=20260701a"
       data-perf-defer
     />
     <link
@@ -119,39 +135,49 @@
       onload="this.media = 'all'"
       data-perf-defer
     />
-    <script>
-      (function () {
-        if (document.documentElement.dataset.perfAudit === '1') {
-          document.querySelectorAll('link[data-perf-defer]').forEach(function (link) {
-            link.remove();
-          });
-          return;
-        }
-        document.querySelectorAll('link[data-perf-defer]:not([media])').forEach(function (link) {
-          link.media = 'all';
-        });
-      })();
-    </script>
+    <script src="js/utils/perf-defer-css.js"></script>
     <noscript>
-      <link rel="stylesheet" href="assets/css/monitor.css?v=20260630c" />
-      <link rel="stylesheet" href="assets/css/systems.css?v=20260630a" />
-      <link rel="stylesheet" href="assets/css/typography-system.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260630b" />
-      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260630b" />
+      <link rel="stylesheet" href="assets/css/monitor.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/systems.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/typography-system.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/liquid-glass-webgl.css?v=20260701a" />
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         crossorigin="anonymous"
       />
-      <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260630b" />
+      <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260701a" />
     </noscript>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Engineering Evidence | Mangesh Raut",
+        "description": "Engineering evidence dashboard — production telemetry, architecture decisions, case studies, and quality benchmarks.",
+        "url": "https://mangeshraut.pro/systems",
+        "author": {
+          "@type": "Person",
+          "name": "Mangesh Raut",
+          "url": "https://mangeshraut.pro"
+        },
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Mangesh Raut Portfolio",
+          "url": "https://mangeshraut.pro"
+        }
+      }
+    </script>
+    <script src="js/utils/deferred-analytics.js"></script>
   </head>
   <body class="systems-page monitor-page systems-evidence-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -442,7 +468,7 @@
       </section>
     </main>
 
-    <script type="module" src="js/modules/accessibility.js"></script>
+    <script type="module" src="js/core/subpage-chrome.js?v=20260701a"></script>
     <script type="module" src="js/modules/systems-page.js"></script>
     <script type="module" src="js/utils/theme.js"></script>
   </body>

@@ -43,6 +43,7 @@
 - [Live surfaces](#live-surfaces)
 - [Homepage sections](#homepage-sections)
 - [Features](#features)
+- [Apple Platform 2026 (WWDC26) audit — 100% coverage](#apple-platform-2026-wwdc26-audit--100-coverage)
 - [Blog & case studies](#blog--case-studies)
 - [Tech stack](#tech-stack)
 - [Architecture](#architecture)
@@ -149,6 +150,34 @@ The main portfolio (`index.html`) is a single-page app with **13 primary nav lan
 | **Testing**         | 15 Playwright projects, 70 pytest tests, Lighthouse **100/100** CI on `dist/`                           | `tests/`                                              |
 
 ---
+
+## Apple Platform 2026 (WWDC26) audit — 100% coverage
+
+Sitewide parity with Apple’s 2026 design language: **Liquid Glass** (clear / balanced / tinted), **WebGL refraction** on nav + chatbot + hero/projects, **Dynamic Island** (home), **command palette** on all pages, **share sheet**, **accessibility toolbar**, **high contrast**, **reduce-transparency sync**, and **solid `#FFFFFF` / `#000000`** page shells.
+
+| Phase  | Delivered                                                                                                                                   | Key paths                                                      |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **P0** | Unified asset version `20260701a`, `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
+| **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                      | `src/js/core/subpage-chrome.js`                                |
+| **P2** | Experience disclosure, awards shelf, skills filter, education glass tokens, health widget alignment                                         | `experience-interactivity.js`, `awards-shelf.js`               |
+| **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                           | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
+
+**Verify locally:**
+
+```bash
+npm run check
+npm run qa:apple-platform   # 10 Playwright audit specs (glass, a11y, ⌘K, control center, skills)
+```
+
+| Page                        | Glass boot | A11y toolbar | ⌘K search | Share | WebGL chrome        |
+| --------------------------- | ---------- | ------------ | --------- | ----- | ------------------- |
+| `index.html`                | ✅         | ✅           | ✅        | ✅    | ✅                  |
+| `systems.html`              | ✅         | ✅           | ✅        | ✅    | ✅ nav              |
+| `uses.html`                 | ✅         | ✅           | ✅        | ✅    | ✅ + Control Center |
+| `travel.html`               | ✅         | ✅           | ✅        | ✅    | ✅ nav              |
+| `monitor.html`              | ✅         | ✅           | ✅        | ✅    | ✅ nav              |
+| `404.html`                  | ✅         | ✅           | ✅        | ✅    | —                   |
+| Blog / case studies (build) | ✅         | ✅           | ✅        | ✅    | ✅ CSS              |
 
 ## Blog & case studies
 
@@ -458,7 +487,7 @@ Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537
 
 1. `npm audit --audit-level=high` + `npm run security-check`
 2. ESLint + Stylelint
-3. Vitest (29 unit tests)
+3. Vitest (29 unit tests) + Apple Platform audit (10 Playwright specs via `npm run qa:apple-platform`)
 4. React Doctor (`doctor:full`, non-blocking)
 5. Python flake8 + dead-code scan + **70** API tests (pytest)
 6. Playwright smoke + axe-core (`qa:browser:ci`)

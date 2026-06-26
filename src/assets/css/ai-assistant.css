@@ -407,6 +407,55 @@ html.dark .suggested-prompt-btn:hover {
   pointer-events: none;
 }
 
+.chatbot-jump-latest {
+  position: absolute;
+  left: 50%;
+  bottom: 78px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgb(0 122 255 / 28%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 92%);
+  color: #007aff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgb(15 23 42 / 14%);
+  transform: translateX(-50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.chatbot-jump-latest.is-streaming {
+  border-color: rgb(52 199 89 / 35%);
+  color: #248a3d;
+}
+
+.chatbot-jump-latest__icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+html.dark .chatbot-jump-latest {
+  background: rgb(28 28 30 / 94%);
+  color: #64d2ff;
+  border-color: rgb(100 210 255 / 30%);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 42%);
+}
+
+html.dark .chatbot-jump-latest.is-streaming {
+  color: #30d158;
+  border-color: rgb(48 209 88 / 34%);
+}
+
+.chatbot-jump-latest:focus-visible {
+  outline: 2px solid #007aff;
+  outline-offset: 2px;
+}
+
 /* Custom Scrollbar Styling */
 #chatbot-messages::-webkit-scrollbar {
   width: 6px;

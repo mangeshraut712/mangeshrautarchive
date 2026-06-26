@@ -1,8 +1,13 @@
-const EAGER_MODULES = ['../modules/accessibility.js'];
+const EAGER_MODULES = [
+  '../modules/accessibility.js',
+  '../modules/liquid-glass-engine.js',
+  '../modules/liquid-glass-chrome.js',
+];
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 import { initScrollLockRecovery } from '../utils/scroll-lock.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
+import '../utils/reduced-transparency-sync.js';
 
 initScrollLockRecovery();
 
@@ -34,6 +39,26 @@ const SECTION_MODULES = [
   {
     sectionId: 'about',
     modulePath: '../modules/about-interactivity.js',
+    rootMargin: '120px 0px',
+  },
+  {
+    sectionId: 'experience',
+    modulePath: '../modules/experience-interactivity.js',
+    rootMargin: '120px 0px',
+  },
+  {
+    sectionId: 'awards',
+    modulePath: '../modules/awards-shelf.js',
+    rootMargin: '120px 0px',
+  },
+  {
+    sectionId: 'home',
+    modulePath: '../modules/live-activity-strip.js',
+    rootMargin: '400px 0px',
+  },
+  {
+    sectionId: 'projects',
+    modulePath: '../modules/quick-look.js',
     rootMargin: '120px 0px',
   },
   {
@@ -98,6 +123,8 @@ const deferredStyleLoads = new Map();
 
 const MODULE_IMPORTERS = {
   '../modules/accessibility.js': () => import('../modules/accessibility.js'),
+  '../modules/liquid-glass-engine.js': () => import('../modules/liquid-glass-engine.js'),
+  '../modules/liquid-glass-chrome.js': () => import('../modules/liquid-glass-chrome.js'),
   '../modules/card-content-accessibility.js': () =>
     import('../modules/card-content-accessibility.js').then(module => {
       module.initCardContentAccessibility?.();
@@ -115,6 +142,10 @@ const MODULE_IMPORTERS = {
   '../modules/health-widget.js': () => import('../modules/health-widget.js'),
   '../modules/debug-runner.js': () => import('../modules/debug-runner.js'),
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
+  '../modules/quick-look.js': () => import('../modules/quick-look.js'),
+  '../modules/live-activity-strip.js': () => import('../modules/live-activity-strip.js'),
+  '../modules/experience-interactivity.js': () => import('../modules/experience-interactivity.js'),
+  '../modules/awards-shelf.js': () => import('../modules/awards-shelf.js'),
   '../modules/search.js': () => import('../modules/search.js'),
   '../modules/about-interactivity.js': () => import('../modules/about-interactivity.js'),
   '../modules/scroll-animations.js': () =>
@@ -220,7 +251,7 @@ function areStyleKeysLoaded(styleKeys = [], documentRef = document) {
 }
 
 const CRITICAL_STYLE_PATTERN =
-  /accessibility-contrast-fixes|wwdc26-liquid-glass|theme-solid-surfaces/;
+  /accessibility-contrast-fixes|wwdc26-liquid-glass|theme-solid-surfaces|liquid-glass-modes|liquid-glass-webgl/;
 
 /** Keep WCAG + liquid-glass layers last so lazy section CSS cannot override them. */
 function pinCriticalStylesheetsLast(documentRef = document) {
@@ -682,6 +713,10 @@ function initLazyModules() {
       EAGER_MODULES.forEach(path => {
         loadModule(path);
       });
+
+      if (new URLSearchParams(window.location.search).has('birthday-test')) {
+        loadModule('../modules/birthday-celebration.js');
+      }
 
       DELAYED_MODULES.forEach(({ modulePath, delay }) => {
         window.setTimeout(() => {

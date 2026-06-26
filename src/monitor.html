@@ -1,36 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) — load only after user interaction to protect LCP -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        window.dataLayer.push(arguments);
-      }
-      window.gtag = gtag;
-      gtag('js', new Date());
-      gtag('config', 'G-HVKF4N150Y');
-
-      (function initDeferredAnalytics() {
-        let loaded = false;
-        const loadGtag = () => {
-          if (loaded) return;
-          loaded = true;
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HVKF4N150Y';
-          document.head.appendChild(script);
-        };
-
-        ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(eventName => {
-          window.addEventListener(eventName, loadGtag, {
-            once: true,
-            passive: true,
-            capture: true,
-          });
-        });
-      })();
-    </script>
+    <script src="js/utils/liquid-glass-boot.js?v=20260701a"></script>
+    <script src="js/utils/deferred-analytics.js"></script>
 
     <meta charset="UTF-8" />
     <meta
@@ -72,7 +44,7 @@
     />
     <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
     <meta name="twitter:image:alt" content="System Monitor dashboard for Mangesh Raut portfolio" />
-    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260423a" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260701a" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
     <link
@@ -100,25 +72,112 @@
       })();
     </script>
     <script src="js/utils/theme-head.js"></script>
-    <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260621b" />
-    <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260630c" />
-    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260630b" />
-    <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260630b" />
+    <script src="js/utils/perf-audit-flag.js"></script>
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260701a" />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-2026-design-system.css?v=20260701a"
+      data-perf-defer
+    />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260701a" data-perf-defer />
+    <link rel="stylesheet" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/sitewide-design-system.css?v=20260701a"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/accessibility-contrast-fixes.css?v=20260701a"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/card-content-accessibility.css?v=20260701a"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/wwdc26-liquid-glass.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701a" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-super-retina-display.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/sections-apple-premium.css?v=20260701a"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-premium-overrides.css?v=20260701a"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/theme-solid-surfaces.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/liquid-glass-modes.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/liquid-glass-webgl.css?v=20260701a"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link rel="stylesheet" href="assets/css/high-contrast.css?v=20260701a" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-platform-features.css?v=20260701a"
+      data-perf-defer
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
       integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
       crossorigin="anonymous"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
     />
+    <script src="js/utils/perf-defer-css.js"></script>
+    <noscript>
+      <link rel="stylesheet" href="assets/css/apple-2026-design-system.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/typography-system.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/accessibility-contrast-fixes.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260701a" />
+      <link rel="stylesheet" href="assets/css/liquid-glass-webgl.css?v=20260701a" />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        crossorigin="anonymous"
+      />
+    </noscript>
     <script type="application/ld+json">
       [
         {
@@ -371,7 +430,7 @@
         <div class="section-header">
           <h2 class="section-title">Real-Time Performance</h2>
           <div class="section-actions">
-            <span class="status-badge healthy" style="text-transform: none; font-weight: 500">
+            <span class="status-badge healthy status-badge--live-feed">
               <span class="status-dot"></span> Live Feed
             </span>
           </div>
@@ -404,7 +463,7 @@
           <!-- System Resource Progress Bars -->
           <div class="doc-card">
             <p class="doc-card-kicker">Environment Resource Load</p>
-            <p class="doc-card-description" style="margin-bottom: 24px">
+            <p class="doc-card-description doc-card-description--spaced">
               Serverless ephemeral container capacity indicator.
             </p>
 
@@ -414,39 +473,27 @@
                 <span id="resource-cpu-value">--%</span>
               </div>
               <div class="resource-bar-track">
-                <div
-                  id="resource-cpu-fill"
-                  class="resource-bar-fill normal"
-                  style="width: 0%"
-                ></div>
+                <div id="resource-cpu-fill" class="resource-bar-fill normal"></div>
               </div>
             </div>
 
-            <div class="resource-bar-wrapper" style="margin-top: 24px">
+            <div class="resource-bar-wrapper">
               <div class="resource-bar-header">
                 <span>Memory Allocation</span>
                 <span id="resource-memory-value">--%</span>
               </div>
               <div class="resource-bar-track">
-                <div
-                  id="resource-memory-fill"
-                  class="resource-bar-fill normal"
-                  style="width: 0%"
-                ></div>
+                <div id="resource-memory-fill" class="resource-bar-fill normal"></div>
               </div>
             </div>
 
-            <div class="resource-bar-wrapper" style="margin-top: 24px">
+            <div class="resource-bar-wrapper">
               <div class="resource-bar-header">
                 <span>API Traffic Rate</span>
                 <span id="resource-traffic-value">-- req/sec</span>
               </div>
               <div class="resource-bar-track">
-                <div
-                  id="resource-traffic-fill"
-                  class="resource-bar-fill normal"
-                  style="width: 0%"
-                ></div>
+                <div id="resource-traffic-fill" class="resource-bar-fill normal"></div>
               </div>
             </div>
           </div>
@@ -499,7 +546,7 @@
             </button>
           </div>
         </div>
-        <div style="overflow-x: auto">
+        <div class="monitor-table-scroll">
           <table class="metrics-table">
             <thead>
               <tr>
@@ -699,18 +746,7 @@
         </div>
 
         <!-- Hidden legacy filter element to keep backward compatibility -->
-        <select
-          id="event-filter"
-          style="
-            position: absolute;
-            opacity: 0;
-            width: 1px;
-            height: 1px;
-            pointer-events: none;
-            overflow: hidden;
-          "
-          onchange="filterEvents()"
-        >
+        <select id="event-filter" class="event-filter-sr-only" onchange="filterEvents()">
           <option value="">All Events</option>
           <option value="critical">Critical</option>
           <option value="error">Errors</option>
@@ -738,7 +774,7 @@
             </button>
           </div>
         </div>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px">
+        <p class="monitor-section-lead">
           Live latency probes from your browser to all deployment surfaces. Works on GitHub Pages,
           Vercel, and localhost.
         </p>
@@ -765,12 +801,12 @@
 
         <div class="security-summary">
           <!-- Left Column: Active Threat Intrusion Logs -->
-          <div class="doc-card" style="display: flex; flex-direction: column">
+          <div class="doc-card doc-card--column">
             <p class="doc-card-kicker">Suspicious Intrusion Events</p>
             <p class="doc-card-description">Scans for pattern traversal or unauthorized headers.</p>
             <div id="security-threats-log" class="security-log-container">
-              <div class="empty-state compact" style="padding: 20px">
-                <i class="fas fa-shield-check" style="color: var(--accent-green)"></i>
+              <div class="empty-state compact empty-state--compact-pad">
+                <i class="fas fa-shield-check icon-accent-green"></i>
                 <h3>No security threats detected</h3>
                 <p>Environment is safe</p>
               </div>
@@ -784,7 +820,7 @@
               Tracks request volume per-IP and flagged suspicious nodes.
             </p>
             <div id="rate-limits-container">
-              <div class="empty-state compact" style="padding: 20px">
+              <div class="empty-state compact empty-state--compact-pad">
                 <i class="fas fa-gauge"></i>
                 <h3>No active rate limit pressure</h3>
               </div>
@@ -792,7 +828,7 @@
           </div>
         </div>
 
-        <div class="health-grid" id="security-checks" style="display: none">
+        <div class="health-grid security-checks-hidden" id="security-checks">
           <!-- Fallback checks container to keep compatibility -->
         </div>
       </section>
@@ -819,9 +855,10 @@
 
     <div class="toast-container" id="toast-container"></div>
 
-    <script type="module" src="js/utils/theme.js?v=20260423a"></script>
+    <script type="module" src="js/core/subpage-chrome.js?v=20260701a"></script>
+    <script type="module" src="js/utils/theme.js?v=20260701a"></script>
     <script type="module">
-      import * as MonitorMetrics from './js/utils/monitor-metrics.js?v=20260612a';
+      import * as MonitorMetrics from './js/utils/monitor-metrics.js?v=20260701a';
       globalThis.MonitorMetrics = MonitorMetrics;
     </script>
     <script>
@@ -1133,7 +1170,7 @@
 
       async function ensureMonitorMetricsModule() {
         if (monitorMetricsModule) return monitorMetricsModule;
-        monitorMetricsModule = await import('./js/utils/monitor-metrics.js?v=20260612a');
+        monitorMetricsModule = await import('./js/utils/monitor-metrics.js?v=20260701a');
         globalThis.MonitorMetrics = monitorMetricsModule;
         return monitorMetricsModule;
       }

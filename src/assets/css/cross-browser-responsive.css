@@ -16,8 +16,25 @@
   -moz-box-sizing: border-box;
 }
 
-/* Remove default margins and padding */
-* {
+/* Remove default margins/padding on semantic blocks — avoid `*` so utility classes like .mx-auto keep working */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol,
+fieldset,
+legend,
+button {
   margin: 0;
   padding: 0;
 }

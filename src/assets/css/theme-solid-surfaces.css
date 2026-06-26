@@ -1,6 +1,8 @@
 /* ════════════════════════════════════════════════════════════════
-   Solid theme surfaces — sitewide white (light) / black (dark)
-   Loaded last to override liquid-glass translucency and grey fills.
+   Solid theme surfaces — sitewide white (light) / black (dark).
+   When accessibility Liquid Glass is set to Tinted (data-lg-mode="tinted"),
+   these rules provide frosted opaque materials. Clear/Balanced modes are
+   restored by liquid-glass-modes.css (loaded after this file).
    ════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -11,6 +13,7 @@
   --fill: #ffffff;
   --fill-secondary: #ffffff;
   --fill-tertiary: #ffffff;
+  --theme-page-bg: #ffffff;
   --apple-gray-6: #ffffff;
   --apple-gray-5: #ffffff;
   --lg-panel-surface-light: #ffffff;
@@ -30,10 +33,15 @@
   --theme-fab-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
   --theme-fab-size: 3.75rem;
   --theme-fab-gap: 0.85rem;
+  --card-border-rest: #e5e5ea;
+  --card-border-hover: #0071e3;
 }
 
 html.dark,
 html[data-theme='dark'] {
+  --card-border-rest: #2c2c2e;
+  --card-border-hover: #0a84ff;
+  --theme-page-bg: #000000;
   --bg-secondary: #000000;
   --bg-tertiary: #000000;
   --bg-elevated: #000000;
@@ -50,13 +58,17 @@ html[data-theme='dark'] {
 }
 
 html,
-body {
-  background-color: var(--theme-page-bg, #ffffff) !important;
+html:not(.dark) body {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
 }
 
 html.dark,
 html.dark body {
-  background-color: var(--theme-page-bg, #000000) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
 }
 
 /* ─── Card & panel surfaces ─── */
@@ -257,6 +269,8 @@ html:not(.dark)
   background-image: none !important;
   box-shadow: none !important;
   border-radius: var(--theme-card-radius) !important;
+  border-width: 1px;
+  border-style: solid;
 }
 
 html.dark
@@ -368,28 +382,33 @@ html.dark
   background-image: none !important;
   box-shadow: none !important;
   border-radius: var(--theme-card-radius) !important;
+  border-width: 1px;
+  border-style: solid;
 }
 
-/* ─── Floating chrome (nav, chatbot, toolbars) — keep go-to-top / chatbot off solid fill ─── */
-:is(
-  .global-nav.dynamic-island,
-  #chatbot-widget,
-  .a11y-toolbar,
-  .a11y-glass-popover,
-  .website-share-dialog.active,
-  .travel-nav,
-  .monitor-page-nav
-) {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html:not(.dark)
+/* ─── Floating chrome — solid only in tinted mode; clear/balanced use liquid glass ─── */
+html[data-lg-mode='tinted']
   :is(
     .global-nav.dynamic-island,
     #chatbot-widget,
     .a11y-toolbar,
     .a11y-glass-popover,
+    .a11y-toolbar button,
+    .website-share-dialog.active,
+    .travel-nav,
+    .monitor-page-nav
+  ) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark)
+  :is(
+    .global-nav.dynamic-island,
+    #chatbot-widget,
+    .a11y-toolbar,
+    .a11y-glass-popover,
+    .a11y-toolbar button,
     .website-share-dialog.active,
     .travel-nav,
     .monitor-page-nav
@@ -399,12 +418,13 @@ html:not(.dark)
   background-image: none !important;
 }
 
-html.dark
+html.dark[data-lg-mode='tinted']
   :is(
     .global-nav.dynamic-island,
     #chatbot-widget,
     .a11y-toolbar,
     .a11y-glass-popover,
+    .a11y-toolbar button,
     .website-share-dialog.active,
     .travel-nav,
     .monitor-page-nav
@@ -1066,7 +1086,7 @@ html.dark #home .portfolio-reach-badge {
   background-color: #000000 !important;
 }
 
-/* ─── Skills section + categories: solid fill, rounded only (no square shadow frame) ─── */
+/* ─── Skills section shell: always solid; categories/badges solid only in tinted ─── */
 html:not(.dark) :is(#skills, #skills > .container, #skills-container) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -1079,13 +1099,14 @@ html.dark :is(#skills, #skills > .container, #skills-container) {
   background-image: none !important;
 }
 
-html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) {
+html[data-lg-mode='tinted']:not(.dark)
+  :is(#skills .skill-category, #skills-container .skill-category) {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   border-width: 1px !important;
   border-radius: 20px !important;
   box-shadow: none !important;
@@ -1093,7 +1114,7 @@ html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) 
   isolation: isolate;
 }
 
-html:not(.dark)
+html[data-lg-mode='tinted']:not(.dark)
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -1103,19 +1124,19 @@ html:not(.dark)
   box-shadow: none !important;
 }
 
-html.dark :is(#skills .skill-category, #skills-container .skill-category) {
+html.dark[data-lg-mode='tinted'] :is(#skills .skill-category, #skills-container .skill-category) {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+  border: 1px solid var(--card-border-rest) !important;
   box-shadow: none !important;
   overflow: hidden;
   isolation: isolate;
 }
 
-html.dark
+html.dark[data-lg-mode='tinted']
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #000000 !important;
   background-color: #000000 !important;
@@ -1128,18 +1149,18 @@ html.dark
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):hover,
   html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):focus-within {
-    border: 1px solid rgb(0 0 0 / 8%) !important;
+    border: 1px solid #0071e3 !important;
     border-width: 1px !important;
-    border-color: rgb(0 0 0 / 8%) !important;
+    border-color: #0071e3 !important;
     box-shadow: none !important;
     outline: none !important;
   }
 
   html.dark :is(#skills .skill-category, #skills-container .skill-category):hover,
   html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-within {
-    border: 1px solid var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+    border: 1px solid #0a84ff !important;
     border-width: 1px !important;
-    border-color: var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+    border-color: #0a84ff !important;
     box-shadow: none !important;
     outline: none !important;
   }
@@ -1204,7 +1225,7 @@ html.dark #projects .project-footer {
 }
 
 #home .music-card-inner {
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   border-width: 1px !important;
   box-shadow: none !important;
   filter: none !important;
@@ -1258,16 +1279,37 @@ html.dark .education-card {
   box-shadow: none !important;
 }
 
-/* Projects activity + graph: solid surfaces in light mode */
+/* Projects activity + graph: solid surfaces in both themes */
 html:not(.dark) #projects .projects-activity-overview,
-html:not(.dark) #projects .activity-stat-item,
-html:not(.dark) #projects .github-graph-scroll {
+html:not(.dark) #projects .activity-stat-item {
   background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html:not(.dark) #projects .github-graph-scroll,
+html:not(.dark) #projects .graph-loading {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.dark #projects .projects-activity-overview,
+html.dark #projects .activity-stat-item {
+  background: #000000 !important;
+  box-shadow: none !important;
+}
+
+html.dark #projects .github-graph-scroll,
+html.dark #projects .graph-loading {
+  background: #0d1117 !important;
   box-shadow: none !important;
 }
 
 html:not(.dark) #projects .github-graph-legend {
   color: #57606a !important;
+}
+
+html.dark #projects .github-graph-legend {
+  color: #8b949e !important;
 }
 
 /* ─── Sitewide card + sub-card hover: blue border line only (no glow) ─── */
@@ -1584,18 +1626,18 @@ html.dark
 /* Category panels keep resting border — only badges get blue hover */
 html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):hover,
 html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):focus-within {
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid #0071e3 !important;
   border-width: 1px !important;
-  border-color: rgb(0 0 0 / 8%) !important;
+  border-color: #0071e3 !important;
   box-shadow: none !important;
   outline: none !important;
 }
 
 html.dark :is(#skills .skill-category, #skills-container .skill-category):hover,
 html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-within {
-  border: 1px solid var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+  border: 1px solid #0a84ff !important;
   border-width: 1px !important;
-  border-color: var(--theme-card-border, rgb(255 255 255 / 12%)) !important;
+  border-color: #0a84ff !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -1613,4 +1655,248 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
 ) {
   box-shadow: none !important;
   border-radius: 16px;
+}
+
+/* ─── Resting + hover card borders (both themes) ─── */
+:is(
+  .card,
+  .experience-card,
+  .experience-content,
+  .education-card,
+  .education-content,
+  .stat-card,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .showcase-project-card,
+  .about-highlight-card,
+  .about-text-card,
+  .about-card,
+  .contact-card,
+  .contact-form-card,
+  .newsletter-card,
+  .support-donation-card,
+  .media-card,
+  .currently-card,
+  .calendar-card,
+  .ios-widget-wrapper,
+  .legend-card,
+  .reminder-card,
+  .overview-card,
+  .doc-card,
+  .health-item,
+  .game-stat-card,
+  .game-info-card,
+  .skill-card,
+  .skill-badge,
+  .timeline-content,
+  .service-card,
+  .feature-card,
+  .testimonial-card,
+  .pricing-card,
+  .team-card,
+  .info-card,
+  .detail-card,
+  .summary-card,
+  .glass-card,
+  .overlay-card,
+  .panel,
+  .health-widget-container,
+  .monitor-summary-card,
+  .monitor-summary-panel,
+  .integration-owner-auth,
+  .ops-card,
+  .endpoint-card,
+  .travel-sidebar,
+  .travel-stop,
+  .place-guide-card,
+  .travel-stat,
+  .travel-filter-panel,
+  .travel-advanced-search,
+  .travel-results-summary,
+  .travel-timeline__country-header,
+  .sub-card,
+  .nested-card,
+  .vibe-stack-card,
+  .lg-glass-card,
+  .engineering-quality-overview,
+  .projects-activity-overview,
+  .project-xr-dialog,
+  .systems-evidence-card,
+  .systems-principle-card,
+  .eng-building-card,
+  .eng-design-card,
+  .systems-case-flow,
+  .systems-bench-row,
+  .systems-bento-tile,
+  .systems-metric-panel,
+  .systems-arch-stage,
+  .systems-flow-step,
+  .systems-hero-stat,
+  .eng-showcase-card,
+  .systems-timeline-block,
+  .systems-now-card,
+  .case-study-preview-card,
+  .reach-realtime-section,
+  .error-container,
+  #blog .blog-card,
+  body.blog-standalone-page .blog-card,
+  #blog .newsletter-card,
+  body.monitor-page .doc-card,
+  body.monitor-page .overview-card,
+  body.monitor-page .health-item,
+  body.monitor-page .endpoint-card,
+  body.monitor-page .ops-card,
+  #projects #github-projects-container .showcase-project-card,
+  #skills .skill-category,
+  #skills-container .skill-category,
+  #home .music-card-inner
+):where(:not(:hover), :not(:focus-within)) {
+  border-color: var(--card-border-rest) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark)
+    :is(
+      .card,
+      .experience-card,
+      .experience-content,
+      .education-card,
+      .education-content,
+      .stat-card,
+      .blog-card,
+      .publication-card,
+      .award-card,
+      .recommendation-card,
+      .certification-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .about-text-card,
+      .about-card,
+      .contact-card,
+      .contact-form-card,
+      .newsletter-card,
+      .support-donation-card,
+      .media-card,
+      .currently-card,
+      .calendar-card,
+      .timeline-content,
+      .skill-card,
+      .glass-card,
+      .panel,
+      .monitor-summary-card,
+      .monitor-summary-panel,
+      .doc-card,
+      .overview-card,
+      .health-item,
+      .endpoint-card,
+      .ops-card,
+      .eng-showcase-card,
+      .systems-evidence-card,
+      .systems-principle-card,
+      .systems-bento-tile,
+      .systems-metric-panel,
+      .case-study-preview-card,
+      .systems-timeline-block,
+      .systems-now-card,
+      #blog .blog-card,
+      #blog .newsletter-card,
+      #projects #github-projects-container .showcase-project-card,
+      #skills .skill-category,
+      #skills-container .skill-category,
+      #home .music-card-inner
+    ):is(:hover, :focus-within) {
+    border-color: var(--card-border-hover) !important;
+  }
+
+  html.dark
+    :is(
+      .card,
+      .experience-card,
+      .experience-content,
+      .education-card,
+      .education-content,
+      .stat-card,
+      .blog-card,
+      .publication-card,
+      .award-card,
+      .recommendation-card,
+      .certification-card,
+      .showcase-project-card,
+      .about-highlight-card,
+      .about-text-card,
+      .about-card,
+      .contact-card,
+      .contact-form-card,
+      .newsletter-card,
+      .support-donation-card,
+      .media-card,
+      .currently-card,
+      .calendar-card,
+      .timeline-content,
+      .skill-card,
+      .glass-card,
+      .panel,
+      .monitor-summary-card,
+      .monitor-summary-panel,
+      .doc-card,
+      .overview-card,
+      .health-item,
+      .endpoint-card,
+      .ops-card,
+      .eng-showcase-card,
+      .systems-evidence-card,
+      .systems-principle-card,
+      .systems-bento-tile,
+      .systems-metric-panel,
+      .case-study-preview-card,
+      .systems-timeline-block,
+      .systems-now-card,
+      #blog .blog-card,
+      #blog .newsletter-card,
+      #projects #github-projects-container .showcase-project-card,
+      #skills .skill-category,
+      #skills-container .skill-category,
+      #home .music-card-inner
+    ):is(:hover, :focus-within) {
+    border-color: var(--card-border-hover) !important;
+  }
+}
+
+/* ─── Compact site footer (social + copy only, no extra vertical air) ─── */
+footer {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.375rem !important;
+}
+
+footer .max-w-6xl {
+  gap: 0.5rem !important;
+  padding-top: 0.375rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+footer .wrapper {
+  margin: 0 !important;
+  padding: 0 !important;
+  row-gap: 0 !important;
+}
+
+footer .border-t {
+  padding-top: 0.5rem !important;
+  margin-top: 0 !important;
+}
+
+footer .footer-tagline {
+  margin-bottom: 0 !important;
+}
+
+#debug-runner-section {
+  padding-bottom: 1rem !important;
+}
+
+#debug-runner-section.py-12 {
+  padding-top: 2.5rem !important;
+  padding-bottom: 1rem !important;
 }

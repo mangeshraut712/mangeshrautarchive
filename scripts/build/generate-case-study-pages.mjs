@@ -2,11 +2,11 @@ import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
+import { ASSET_VER } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://mangeshraut.pro';
 const ASSET_PREFIX = '..';
-const ASSET_VER = '20260623d';
 
 function escapeHTML(value) {
   return String(value ?? '')
@@ -114,11 +114,17 @@ function pageShell({ title, description, canonical, body }) {
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/systems.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-modes.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-webgl.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/high-contrast.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" />
+    <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
   </head>
   <body class="systems-page case-study-standalone">
     ${body}
+    <script type="module" src="${ASSET_PREFIX}/js/core/subpage-chrome.js?v=${ASSET_VER}"></script>
     <script type="module" src="${ASSET_PREFIX}/js/utils/theme.js"></script>
   </body>
 </html>`;

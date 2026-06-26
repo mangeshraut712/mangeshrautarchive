@@ -24,6 +24,16 @@
   --project-accent-strong: #0059d7;
   --project-accent-soft: rgb(10 111 239 / 12%);
   --project-accent-soft-border: rgb(0 113 227 / 15%);
+
+  --github-graph-canvas: #ffffff;
+  --github-graph-canvas-border: #d0d7de;
+  --github-graph-label: #57606a;
+}
+
+html.dark {
+  --github-graph-canvas: #0d1117;
+  --github-graph-canvas-border: #30363d;
+  --github-graph-label: #8b949e;
 }
 
 .project-evidence-row {
@@ -587,28 +597,33 @@ html.dark #projects .graph-title {
 
 #projects .github-graph-scroll {
   overflow-x: auto;
-  border: 1px solid #d0d7de;
+  border: 1px solid var(--github-graph-canvas-border);
   border-radius: 16px;
-  background: #ffffff;
+  background: var(--github-graph-canvas);
   padding: 0.85rem 0.75rem 0.65rem;
   box-shadow: none;
 }
 
 html:not(.dark) #projects .github-graph-scroll {
-  border-color: #d0d7de;
-  background: #ffffff;
+  border-color: var(--github-graph-canvas-border);
+  background: var(--github-graph-canvas);
 }
 
 html:not(.dark) #projects .github-graph-svg,
 html:not(.dark) #projects #github-chart-img {
-  background: #ffffff;
+  background: transparent;
   filter: none;
 }
 
 html.dark #projects .github-graph-scroll {
-  border-color: rgb(255 255 255 / 10%);
-  background: linear-gradient(180deg, rgb(12 18 28 / 96%) 0%, rgb(6 10 18 / 98%) 100%);
+  border-color: var(--github-graph-canvas-border);
+  background: var(--github-graph-canvas);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+}
+
+html.dark #projects .github-graph-svg,
+html.dark #projects #github-chart-img {
+  background: transparent;
 }
 
 #projects .github-graph-legend {
@@ -788,10 +803,13 @@ html.dark .graph-refresh-btn:hover {
   color: var(--project-muted-light);
   font-size: 0.9rem;
   min-height: 120px;
+  background: var(--github-graph-canvas);
+  border-radius: 12px;
 }
 
 html.dark #projects .graph-loading {
   color: var(--project-muted-dark);
+  background: var(--github-graph-canvas);
 }
 
 /* Skeleton Loading States for Stats */

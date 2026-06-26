@@ -22,7 +22,7 @@ html.dark #certifications {
 /* Card Design - Compact */
 .certification-card {
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 6%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   border-radius: 20px !important;
   padding: 2rem !important;
 
@@ -118,7 +118,7 @@ html.dark .certification-category {
   height: 40px !important;
   border-radius: 10px !important;
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 6%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;

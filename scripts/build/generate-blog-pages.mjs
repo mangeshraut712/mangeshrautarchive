@@ -10,11 +10,11 @@ import {
   getRelatedPosts,
   parseBlogContent,
 } from '../../src/js/modules/blog-markdown.js';
+import { ASSET_VER } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://mangeshraut.pro';
 const ASSET_PREFIX = '..';
-const ASSET_VER = '20260623a';
 
 function sortedPosts() {
   return blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
@@ -70,13 +70,19 @@ function pageShell({
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-super-retina-display.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-modes.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-webgl.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/high-contrast.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css?v=${ASSET_VER}" />
+    <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
     ${extraHead}
     ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
   </head>
   <body class="blog-standalone-page">
     ${body}
+    <script type="module" src="${ASSET_PREFIX}/js/core/subpage-chrome.js?v=${ASSET_VER}"></script>
     <script type="module" src="${ASSET_PREFIX}/js/modules/blog-page.js"></script>
   </body>
 </html>`;

@@ -1,0 +1,135 @@
+/* WebGL Liquid Glass surfaces (liquidglass-oss) */
+
+.lg-webgl-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.lg-webgl-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.lg-webgl-content {
+  position: relative;
+  z-index: 1;
+}
+
+.lg-webgl-fallback {
+  /* CSS glass from wwdc26-liquid-glass.css remains active */
+}
+
+/* WebGL refraction only in clear / balanced — tinted uses solid CSS surfaces */
+html[data-lg-mode='tinted'] .lg-webgl-canvas {
+  display: none !important;
+}
+
+html[data-lg-mode='tinted'] .lg-webgl-host {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host.a11y-glass-popover,
+html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host.a11y-toolbar,
+html[data-lg-mode='tinted']:not(.dark) #global-nav.lg-webgl-host {
+  background: #ffffff !important;
+}
+
+html.dark[data-lg-mode='tinted'] .lg-webgl-host.a11y-glass-popover,
+html.dark[data-lg-mode='tinted'] .lg-webgl-host.a11y-toolbar,
+html.dark[data-lg-mode='tinted'] #global-nav.lg-webgl-host {
+  background: #000000 !important;
+}
+
+/* Birthday notification — WebGL replaces CSS backdrop */
+.birthday-notification.lg-webgl-host {
+  border: 1px solid rgb(255 255 255 / 22%);
+  box-shadow:
+    0 22px 44px rgb(15 23 42 / 16%),
+    inset 0 1px 0 rgb(255 255 255 / 35%);
+}
+
+html.dark .birthday-notification.lg-webgl-host {
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow:
+    0 24px 52px rgb(0 0 0 / 50%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+}
+
+.birthday-celebration .glass-btn.lg-webgl-host,
+.birthday-celebration .hero-badge.lg-webgl-host {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* iOS 27 Clear ↔ Tinted slider affordance */
+.a11y-glass-popover__icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 2px 6px;
+  color: rgb(100 116 139);
+}
+
+html.dark .a11y-glass-popover__icons {
+  color: rgb(148 163 184);
+}
+
+.a11y-glass-icon {
+  width: 28px;
+  height: 20px;
+  opacity: 0.72;
+}
+
+.a11y-glass-icon.is-active {
+  opacity: 1;
+  color: rgb(0 122 255);
+}
+
+html.dark .a11y-glass-icon.is-active {
+  color: rgb(96 165 250);
+}
+
+html:not([data-lg-mode='tinted']) .a11y-glass-popover.lg-webgl-host {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not([data-lg-mode='tinted']) #global-nav.global-nav.dynamic-island.lg-webgl-host {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.a11y-glass-popover__hint {
+  margin: 8px 2px 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgb(100 116 139);
+}
+
+html.dark .a11y-glass-popover__hint {
+  color: rgb(148 163 184);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lg-webgl-host {
+    background: inherit !important;
+  }
+
+  .lg-webgl-canvas {
+    display: none !important;
+  }
+}

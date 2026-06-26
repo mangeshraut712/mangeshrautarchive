@@ -1,4 +1,5 @@
 import { usesStack } from './engineering-showcase-data.js';
+import './control-center.js';
 
 function escapeHtml(value) {
   return String(value ?? '')

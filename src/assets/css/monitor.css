@@ -1822,6 +1822,10 @@ body.monitor-page main > section.section:not(#home) {
   margin-top: 12px;
 }
 
+.resource-bar-wrapper + .resource-bar-wrapper {
+  margin-top: 24px;
+}
+
 .resource-bar-header {
   display: flex;
   justify-content: space-between;
@@ -1843,6 +1847,7 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 .resource-bar-fill {
+  width: 0;
   height: 100%;
   border-radius: 99px;
   transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -3392,4 +3397,50 @@ html.dark .ops-card,
     gap: 8px !important;
     margin-bottom: 14px !important;
   }
+}
+
+/* Static markup utilities — no inline styles in monitor.html */
+.status-badge--live-feed {
+  text-transform: none;
+  font-weight: 500;
+}
+
+.doc-card-description--spaced {
+  margin-bottom: 24px;
+}
+
+.monitor-table-scroll {
+  overflow-x: auto;
+}
+
+.event-filter-sr-only {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.monitor-section-lead {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.doc-card--column {
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state--compact-pad {
+  padding: 20px;
+}
+
+.icon-accent-green {
+  color: var(--accent-green);
+}
+
+.security-checks-hidden {
+  display: none;
 }

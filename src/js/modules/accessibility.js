@@ -14,6 +14,7 @@
  */
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
+import { syncLiquidGlassChrome } from './liquid-glass-chrome.js';
 
 export class AccessibilityEnhancer {
   constructor() {
@@ -728,9 +729,12 @@ export class AccessibilityEnhancer {
     }
 
     // High contrast
-    if (window.matchMedia('(prefers-contrast: high)').matches) {
-      document.documentElement.classList.add('high-contrast');
-    }
+    const contrastMedia = window.matchMedia('(prefers-contrast: more), (prefers-contrast: high)');
+    const syncContrast = () => {
+      document.documentElement.classList.toggle('high-contrast', contrastMedia.matches);
+    };
+    syncContrast();
+    contrastMedia.addEventListener('change', syncContrast);
 
     // Listen for changes
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
@@ -881,6 +885,48 @@ export class AccessibilityEnhancer {
           color: #86868b;
         }
 
+        .a11y-glass-popover__presets {
+          display: flex;
+          gap: 8px;
+        }
+
+        .a11y-glass-popover__presets button {
+          flex: 1;
+          min-height: 34px;
+          padding: 0.45rem 0.65rem;
+          border-radius: 10px;
+          border: 1px solid rgb(0 0 0 / 10%);
+          background: rgb(255 255 255 / 72%);
+          color: #1d1d1f;
+          font-size: 0.72rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .a11y-glass-popover__presets button:hover {
+          transform: translateY(-1px);
+          border-color: rgb(0 113 227 / 28%);
+        }
+
+        .a11y-glass-popover__presets button.is-active {
+          background: linear-gradient(135deg, rgb(0 113 227 / 14%), rgb(94 92 230 / 18%));
+          border-color: rgb(0 113 227 / 32%);
+          color: #0071e3;
+        }
+
+        html.dark .a11y-glass-popover__presets button {
+          background: rgb(255 255 255 / 8%);
+          border-color: rgb(255 255 255 / 12%);
+          color: #f5f5f7;
+        }
+
+        html.dark .a11y-glass-popover__presets button.is-active {
+          background: linear-gradient(135deg, rgb(10 132 255 / 18%), rgb(191 90 242 / 16%));
+          border-color: rgb(10 132 255 / 34%);
+          color: #4ea1ff;
+        }
+
         html.dark .a11y-glass-popover__title {
           color: #f5f5f7;
         }
@@ -965,6 +1011,18 @@ export class AccessibilityEnhancer {
     if (readout) {
       readout.textContent = this.formatGlassTintLabel(value);
     }
+    const clamped = Math.min(100, Math.max(0, value));
+    root.querySelectorAll('.a11y-glass-preset').forEach(button => {
+      const preset = button.getAttribute('data-glass-preset');
+      const isActive =
+        (preset === 'clear' && clamped <= 12) || (preset === 'tinted' && clamped >= 88);
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+    const clearIcon = root.querySelector('.a11y-glass-icon--clear');
+    const tintedIcon = root.querySelector('.a11y-glass-icon--tinted');
+    clearIcon?.classList.toggle('is-active', clamped <= 12);
+    tintedIcon?.classList.toggle('is-active', clamped >= 88);
   }
 
   /**
@@ -992,6 +1050,24 @@ export class AccessibilityEnhancer {
       readout.className = 'a11y-glass-popover__value';
       readout.setAttribute('aria-live', 'polite');
 
+      const icons = document.createElement('div');
+      icons.className = 'a11y-glass-popover__icons';
+      icons.setAttribute('aria-hidden', 'true');
+      icons.innerHTML = `
+        <svg class="a11y-glass-icon a11y-glass-icon--clear" viewBox="0 0 32 22" fill="none">
+          <rect x="1.5" y="4.5" width="19" height="13" rx="3.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="11.5" y="1.5" width="19" height="13" rx="3.5" stroke="currentColor" stroke-width="1.5" opacity="0.55"/>
+        </svg>
+        <svg class="a11y-glass-icon a11y-glass-icon--tinted" viewBox="0 0 32 22" fill="none">
+          <rect x="1.5" y="4.5" width="19" height="13" rx="3.5" stroke="currentColor" stroke-width="1.5" opacity="0.55"/>
+          <rect x="11.5" y="1.5" width="19" height="13" rx="3.5" fill="currentColor" opacity="0.82"/>
+        </svg>`;
+
+      const hint = document.createElement('p');
+      hint.className = 'a11y-glass-popover__hint';
+      hint.textContent =
+        'Clear is more transparent; tinted increases opacity and contrast for controls.';
+
       const slider = document.createElement('input');
       slider.type = 'range';
       slider.min = '0';
@@ -1005,13 +1081,44 @@ export class AccessibilityEnhancer {
       scale.className = 'a11y-glass-popover__scale';
       scale.innerHTML = '<span>Clear</span><span>Tinted</span>';
 
+      const presets = document.createElement('div');
+      presets.className = 'a11y-glass-popover__presets';
+      presets.setAttribute('role', 'group');
+      presets.setAttribute('aria-label', 'Glass material presets');
+
+      const clearPreset = document.createElement('button');
+      clearPreset.type = 'button';
+      clearPreset.className = 'a11y-glass-preset';
+      clearPreset.dataset.glassPreset = 'clear';
+      clearPreset.textContent = 'Clear glass';
+      clearPreset.setAttribute('aria-label', 'Clear glass — maximum transparency');
+
+      const tintedPreset = document.createElement('button');
+      tintedPreset.type = 'button';
+      tintedPreset.className = 'a11y-glass-preset';
+      tintedPreset.dataset.glassPreset = 'tinted';
+      tintedPreset.textContent = 'Tinted glass';
+      tintedPreset.setAttribute('aria-label', 'Tinted glass — frosted material');
+
+      presets.append(clearPreset, tintedPreset);
+
       slider.addEventListener('input', () => {
         const nextValue = Number(slider.value);
         this.applyGlassTint(nextValue);
         this.updateGlassTintReadout(nextValue);
       });
 
-      popover.append(title, readout, slider, scale);
+      clearPreset.addEventListener('click', () => {
+        this.applyGlassTint(0);
+        this.announce('Liquid Glass set to clear');
+      });
+
+      tintedPreset.addEventListener('click', () => {
+        this.applyGlassTint(100);
+        this.announce('Liquid Glass set to tinted');
+      });
+
+      popover.append(title, readout, icons, slider, scale, hint, presets);
       document.body.appendChild(popover);
     }
 
@@ -1043,6 +1150,7 @@ export class AccessibilityEnhancer {
   applyGlassTint(value, { instant = false } = {}) {
     const clamped = Math.min(100, Math.max(0, value));
     syncLiquidGlassTokens(clamped / 100, { instant });
+    syncLiquidGlassChrome();
     this.updateGlassTintReadout(clamped);
     const slider = document.querySelector('.a11y-glass-popover input[type="range"]');
     if (slider && Number(slider.value) !== clamped) {

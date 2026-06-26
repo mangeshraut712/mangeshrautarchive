@@ -296,9 +296,29 @@ window.SkillsVisualization = SkillsVisualization;
 
 // Auto-initialize if container exists
 const initSkillsVisualization = () => {
-  if (document.getElementById('skills-container')) {
-    new SkillsVisualization().render('skills-container');
+  const section = document.getElementById('skills');
+  const container = document.getElementById('skills-container');
+  if (!container) return;
+
+  if (!document.getElementById('skills-filter-input')) {
+    const bar = document.createElement('div');
+    bar.className = 'skills-filter-bar';
+    bar.innerHTML =
+      '<input id="skills-filter-input" class="skills-filter-input" type="search" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" />';
+    section?.querySelector('.container')?.insertBefore(bar, container);
+
+    bar.querySelector('#skills-filter-input')?.addEventListener('input', event => {
+      const query = String(event.target.value || '')
+        .trim()
+        .toLowerCase();
+      container.querySelectorAll('.skill-category').forEach(category => {
+        const text = category.textContent?.toLowerCase() || '';
+        category.hidden = query.length > 0 && !text.includes(query);
+      });
+    });
   }
+
+  new SkillsVisualization().render('skills-container');
 };
 
 if (document.readyState === 'loading') {

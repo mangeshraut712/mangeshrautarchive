@@ -19,7 +19,7 @@ input[type='submit'] {
   padding: 1rem 2rem;
   background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
   color: #fff !important;
-  border: 2px solid transparent;
+  border: 2px solid var(--card-border-rest);
   border-radius: 16px;
   font-size: 1rem;
   font-weight: 600;
@@ -114,7 +114,7 @@ html.dark .cta-button:hover {
 .blog-card {
   padding: 2rem;
   border-radius: 20px;
-  border: 2px solid rgb(0 0 0 / 6%);
+  border: 2px solid var(--card-border-rest);
   background: #fff;
   box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -164,7 +164,7 @@ html.dark .publication-card,
 html.dark .recommendation-card,
 html.dark .blog-card {
   background: #000;
-  border-color: rgb(255 255 255 / 10%);
+  border-color: var(--card-border-rest);
   box-shadow: 0 12px 40px rgb(0 0 0 / 50%);
 }
 
@@ -192,7 +192,7 @@ textarea,
 select {
   padding: 1rem 1.25rem;
   border-radius: 12px;
-  border: 2px solid transparent;
+  border: 2px solid var(--card-border-rest);
   background: var(--bg-secondary);
   color: var(--text-primary);
   font-size: 1rem;

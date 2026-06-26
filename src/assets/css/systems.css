@@ -18,7 +18,7 @@
     env(safe-area-inset-left, 0px),
     env(safe-area-inset-right, 0px)
   );
-  --systems-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --systems-spring: cubic-bezier(0.22, 1, 0.36, 1);
   --systems-card-bg: #ffffff;
   --systems-card-border: #e5e5ea;
   --systems-card-shadow: 0 4px 12px rgb(0 0 0 / 4%);
@@ -117,10 +117,11 @@ html.dark .systems-eyebrow {
 .systems-keynote-hero h1 {
   margin: 0 auto;
   max-width: 22ch;
-  font-size: clamp(2rem, 5.5vw, 3.25rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-size: clamp(2.15rem, 5.8vw, 3.35rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
 }
 
 .systems-br-desktop {
@@ -309,6 +310,14 @@ html.dark .systems-hero-action--primary:hover {
   position: sticky;
   top: calc(72px + env(safe-area-inset-top, 0px));
   z-index: 50;
+  mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12px,
+    #000 calc(100% - 12px),
+    transparent
+  );
 }
 
 @media (width >= 900px) {
@@ -379,6 +388,23 @@ html.dark .systems-section-rail a.is-active {
   padding: clamp(1.25rem, 3vw, 2rem);
   border-radius: calc(var(--systems-radius) + 6px);
   min-width: 0;
+  position: relative;
+}
+
+.systems-keynote-section + .systems-keynote-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--systems-accent) 28%, transparent),
+    transparent
+  );
+  pointer-events: none;
 }
 
 .systems-keynote-section:nth-of-type(even) {
@@ -418,10 +444,11 @@ html.dark .systems-keynote-section:nth-of-type(even) {
   align-items: center;
   gap: 10px;
   margin: 0;
-  font-size: clamp(1.25rem, 2.5vw, 1.3125rem);
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.25;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-size: clamp(1.35rem, 2.8vw, 1.5625rem);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   color: var(--text-primary, var(--systems-text));
 }
 
@@ -464,7 +491,7 @@ html.dark .systems-section-desc code {
 /* Telemetry bento — Control Center grid */
 .systems-bento {
   display: grid;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 /* Telemetry bento — four equal budget cards */
@@ -498,13 +525,16 @@ html.dark .systems-section-desc code {
 }
 
 .systems-bento-tile {
-  padding: 1.1rem 1.15rem;
+  padding: 1.2rem 1.25rem;
   border-radius: var(--systems-radius);
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.7rem;
   min-height: 0;
-  transition: transform 0.35s var(--systems-spring);
+  transition:
+    transform 0.4s var(--systems-spring),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .systems-bento-tile.is-pressed {

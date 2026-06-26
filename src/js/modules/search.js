@@ -323,6 +323,14 @@ class PortfolioSearch {
         tags: 'monitor system status health',
       },
       {
+        title: 'Uses / Setup',
+        description: 'Hardware, software, AI stack, and engineering tools',
+        icon: 'fa-desktop',
+        url: 'uses.html',
+        type: 'Page',
+        tags: 'uses setup stack tools hardware software',
+      },
+      {
         title: 'Download Resume',
         description: 'Open Mangesh Raut resume PDF',
         icon: 'fa-file-arrow-down',
@@ -667,11 +675,15 @@ class PortfolioSearch {
   }
 }
 
-// Initialize search when DOM is ready
+export { PortfolioSearch };
+
+function autoInitSearch() {
+  if (!document.getElementById('search-overlay') || window.portfolioSearch) return;
+  window.portfolioSearch = new PortfolioSearch();
+}
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    new PortfolioSearch();
-  });
+  document.addEventListener('DOMContentLoaded', autoInitSearch, { once: true });
 } else {
-  new PortfolioSearch();
+  autoInitSearch();
 }

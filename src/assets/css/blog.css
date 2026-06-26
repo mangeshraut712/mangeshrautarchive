@@ -175,7 +175,7 @@ html.dark .newsletter-status.is-error {
 .blog-card {
   position: relative;
   border-radius: 20px;
-  border: 1px solid rgb(0 0 0 / 6%);
+  border: 1px solid var(--card-border-rest);
   overflow: hidden;
   transition:
     transform 0.3s ease,

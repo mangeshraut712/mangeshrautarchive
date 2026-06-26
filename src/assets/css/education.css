@@ -85,7 +85,7 @@ html.dark .education-timeline::before {
 }
 
 html.dark .education-icon {
-  border-color: #000;
+  border-color: transparent;
   box-shadow: 0 8px 20px rgb(0 0 0 / 40%);
 }
 
@@ -100,7 +100,7 @@ html.dark .education-icon {
 
 .education-content {
   background: #fff !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   border-radius: 24px !important;
   padding: 2.5rem !important;
   box-shadow: none !important;
@@ -118,7 +118,7 @@ html.dark .education-icon {
 
 html.dark .education-content {
   background: #000 !important;
-  border-color: rgb(255 255 255 / 12%) !important;
+  border-color: transparent !important;
   box-shadow: none !important;
 }
 
@@ -149,34 +149,180 @@ html.dark .education-degree {
   color: #fff !important;
 }
 
-/* Institution Name */
-.education-institution {
+/* Institution name — opens Google */
+a.education-institution {
   color: #0051a8 !important;
   font-weight: 600 !important;
   font-size: 1.1rem !important;
-  margin-bottom: 1rem !important;
-  display: block !important;
+  margin: 0 0 0.35rem !important;
+  display: inline-block !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
 }
 
-html.dark .education-institution {
+a.education-institution:hover {
+  color: #0071e3 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 0.14em;
+}
+
+html.dark a.education-institution {
   color: #58a6ff !important;
 }
 
-/* Location */
-.education-location {
-  font-size: 0.875rem !important;
-  color: #4a4a4f !important;
-  margin: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.5rem !important;
+html.dark a.education-institution:hover {
+  color: #79c0ff !important;
 }
 
-html.dark .education-location {
+/* Board / university affiliation — Google search */
+a.education-board {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #6e6e73;
+  display: inline-block;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a.education-board:hover {
+  color: #0071e3;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+html.dark a.education-board {
+  color: #a1a1a6;
+}
+
+html.dark a.education-board:hover {
+  color: #0a84ff;
+}
+
+/* Location / maps link */
+.education-map-link {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.5rem !important;
+  margin: 0.35rem 0 0 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.45 !important;
+  color: #4a4a4f !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.education-map-link:hover {
+  color: #0071e3 !important;
+}
+
+.education-map-link i {
+  color: #ff3b30 !important;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+html.dark .education-map-link {
   color: #a1a1a6 !important;
 }
 
-/* Tick Icons - if added in future */
+html.dark .education-map-link:hover {
+  color: #0a84ff !important;
+}
+
+html.dark .education-map-link i {
+  color: #ff453a !important;
+}
+
+/* Transcript proof row — opens PDF in new tab */
+.education-proof {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1.15rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--card-border-rest, #e5e5ea);
+  border-radius: 14px;
+  background: #fbfbfd;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.education-proof:hover {
+  border-color: #0071e3;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.education-proof-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 59 48 / 10%);
+  color: #ff3b30;
+  flex-shrink: 0;
+}
+
+.education-proof-icon i {
+  font-size: 1.2rem;
+}
+
+.education-proof-copy {
+  display: grid;
+  gap: 0.1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.education-proof-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #86868b;
+}
+
+.education-proof-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.education-proof-open {
+  color: #0071e3;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+html.dark .education-proof {
+  background: #111111;
+  border-color: #2c2c2e;
+}
+
+html.dark .education-proof:hover {
+  border-color: #0a84ff;
+  background: #000000;
+}
+
+html.dark .education-proof-icon {
+  background: rgb(255 69 58 / 14%);
+  color: #ff453a;
+}
+
+html.dark .education-proof-name {
+  color: #f5f5f7;
+}
+
+html.dark .education-proof-open {
+  color: #0a84ff;
+}
 
 /* Period */
 .education-period {
@@ -209,6 +355,7 @@ html.dark .education-period {
   color: #fff !important;
   box-shadow: 0 4px 12px rgb(48 209 88 / 40%) !important;
   border: 1px solid rgb(255 255 255 / 20%) !important;
+  cursor: default !important;
 }
 
 html.dark .education-badge.completed {
@@ -277,7 +424,15 @@ html.dark .education-badge.completed {
     font-size: 1.25rem !important;
   }
 
-  .education-institution {
+  .education-map-link {
+    font-size: 0.82rem !important;
+  }
+
+  a.education-institution {
     font-size: 1rem !important;
+  }
+
+  .education-proof {
+    padding: 0.75rem 0.85rem;
   }
 }

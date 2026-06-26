@@ -32,6 +32,8 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
+  --container-5xl: 64rem;
+  --container-6xl: 72rem;
   --shadow-sm: 0 1px 2px 0 hsl(0deg 0% 0% / 5%);
   --shadow-md: 0 4px 6px -1px hsl(0deg 0% 0% / 10%);
   --shadow-lg: 0 10px 15px -3px hsl(0deg 0% 0% / 10%);
@@ -56,9 +58,12 @@
   --footer-link: #1d1d1f;
   --footer-link-hover: #0071e3;
   --card-surface-light: #fff;
+  --theme-page-bg: #ffffff;
   --card-surface-dark: #000;
-  --card-border-light: #e5e7eb;
-  --card-border-dark: rgb(255 255 255 / 8%);
+  --card-border-light: #e5e5ea;
+  --card-border-dark: #2c2c2e;
+  --card-border-rest: #e5e5ea;
+  --card-border-hover: #0071e3;
 }
 
 html.dark {
@@ -81,6 +86,8 @@ html.dark {
   --footer-link: #d2d2d7;
   --footer-link-hover: #2997ff;
   --card-surface-light: #000;
-  --card-border-light: #000;
+  --theme-page-bg: #000000;
+  --card-border-rest: #2c2c2e;
+  --card-border-hover: #0a84ff;
   color-scheme: dark;
 }

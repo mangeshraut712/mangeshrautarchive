@@ -2462,7 +2462,9 @@ html.dark #home.hero-section.home-hero {
 }
 
 #home.hero-section .max-w-5xl {
+  width: 100%;
   max-width: min(980px, 100%) !important;
+  margin-inline: auto;
 }
 
 #home.hero-section .hero-layout-wrapper {
@@ -2740,7 +2742,7 @@ html.dark .section-subtitle {
 html.dark .experience-icon,
 html.dark .education-icon {
   background: linear-gradient(135deg, #0a84ff, #5e5ce6) !important;
-  border-color: #000 !important;
+  border-color: transparent !important;
   box-shadow: 0 8px 20px rgb(10 132 255 / 40%) !important;
 }
 
@@ -3583,7 +3585,7 @@ html.dark #home .hero-actions .hero-cta:nth-child(2):hover {
   background: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   color: #1d1d1f !important;
   box-shadow: none !important;
   transition:
@@ -3604,7 +3606,7 @@ html.dark #home .hero-actions .hero-cta:nth-child(2):hover {
 html.dark #home .vibe-coder-badge,
 html.dark #home .portfolio-reach-badge {
   background: #000000 !important;
-  border: 1px solid rgb(255 255 255 / 12%) !important;
+  border: 1px solid var(--card-border-rest) !important;
   color: #f5f5f7 !important;
   box-shadow: none !important;
 }

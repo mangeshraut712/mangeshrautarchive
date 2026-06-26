@@ -35,7 +35,7 @@ html.dark #awards {
   background: #fff !important;
   border-radius: 20px;
   padding: 2rem;
-  border: 1px solid rgb(0 0 0 / 6%);
+  border: 1px solid var(--card-border-rest);
   box-shadow: none;
   transition:
     transform 0.3s ease,

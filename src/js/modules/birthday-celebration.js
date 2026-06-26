@@ -1,9 +1,11 @@
 /**
  *  MANGESH'S BIRTHDAY SYSTEM 2026
  * Engine: Canvas Physics Particle System
- * Design: Apple Design 2026
+ * Design: Apple Design 2026 + WebGL Liquid Glass
  */
 import appleSounds from './apple-sounds.js';
+import { attachLiquidGlass, getLiquidGlassEngine } from './liquid-glass-engine.js';
+import { createProceduralBackground } from '../utils/liquid-glass-background.js';
 
 class BirthdayCelebration {
   constructor(testMode = false) {
@@ -12,6 +14,7 @@ class BirthdayCelebration {
     this.birthYear = 1998;
     this.name = 'Mangesh Raut';
     this.testMode = testMode;
+    this.glassSurfaces = [];
 
     this.canvas = null;
     this.ctx = null;
@@ -28,7 +31,19 @@ class BirthdayCelebration {
   }
 
   init() {
-    if (this.testMode) {
+    const mode = this.resolveTestMode();
+
+    if (mode === 'celebration') {
+      setTimeout(() => this.showBirthdayCelebration(), 500);
+      return;
+    }
+
+    if (mode === 'notification') {
+      setTimeout(() => this.showBirthdayNotification(true), 500);
+      return;
+    }
+
+    if (this.testMode === true) {
       setTimeout(() => this.showBirthdayCelebration(), 500);
       return;
     }
@@ -39,6 +54,62 @@ class BirthdayCelebration {
 
     if (month === this.birthMonth && day === this.birthDay - 1) this.showBirthdayNotification();
     if (month === this.birthMonth && day === this.birthDay) this.showBirthdayCelebration();
+  }
+
+  resolveTestMode() {
+    if (typeof this.testMode === 'string') return this.testMode;
+    if (typeof window === 'undefined') return null;
+    const param = new URLSearchParams(window.location.search).get('birthday-test');
+    if (param === 'notification' || param === 'celebration') return param;
+    return null;
+  }
+
+  createCelebrationGlassBackground() {
+    const canvas = createProceduralBackground(window.innerWidth, window.innerHeight, {
+      dark: true,
+    });
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return canvas;
+
+    const w = canvas.width;
+    const h = canvas.height;
+    const blobs = [
+      ['#7c3aed', w * 0.2, h * 0.25, w * 0.35],
+      ['#ec4899', w * 0.72, h * 0.3, w * 0.28],
+      ['#06b6d4', w * 0.45, h * 0.72, w * 0.32],
+      ['#f59e0b', w * 0.82, h * 0.78, w * 0.22],
+    ];
+    blobs.forEach(([color, x, y, r]) => {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, color);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    });
+    return canvas;
+  }
+
+  mountLiquidGlass(element, options = {}) {
+    const surface = attachLiquidGlass(element, options);
+    if (surface) this.glassSurfaces.push(surface);
+    return surface;
+  }
+
+  refreshCelebrationGlassBackground() {
+    const engine = getLiquidGlassEngine();
+    const bg = this.createCelebrationGlassBackground();
+    if (this.canvas) {
+      const ctx = bg.getContext('2d');
+      ctx?.drawImage(this.canvas, 0, 0, bg.width, bg.height);
+    }
+    engine.backgroundCanvas = bg;
+    this.glassSurfaces.forEach(surface => surface.setBackgroundSource(bg));
+  }
+
+  disposeGlass() {
+    const engine = getLiquidGlassEngine();
+    this.glassSurfaces.forEach(surface => engine.detach(surface));
+    this.glassSurfaces = [];
   }
 
   calculateAge() {
@@ -62,10 +133,10 @@ class BirthdayCelebration {
   /* ═══════════════════════════════════════════════════════════
        NOTIFICATION SYSTEM (Maintains the approved design)
        ═══════════════════════════════════════════════════════════ */
-  showBirthdayNotification() {
+  showBirthdayNotification(force = false) {
     const dismissed = localStorage.getItem('birthday-notification-dismissed');
     const today = new Date().toDateString();
-    if (dismissed === today) return;
+    if (!force && dismissed === today) return;
 
     const age = this.calculateAge() + 1;
     const notification = document.createElement('div');
@@ -90,6 +161,18 @@ class BirthdayCelebration {
 
     document.body.appendChild(notification);
 
+    requestAnimationFrame(() => {
+      this.mountLiquidGlass(notification, {
+        settings: {
+          radius: 22,
+          depth: 20,
+          refraction: 1.1,
+          chromaticAberration: 0.02,
+        },
+      });
+      getLiquidGlassEngine().scheduleCapture(true);
+    });
+
     const close = () => {
       // Adaptive Exit Animation
       if (window.innerWidth >= 769) {
@@ -101,7 +184,10 @@ class BirthdayCelebration {
       }
 
       notification.style.transition = 'transform 0.5s cubic-bezier(0.32, 0, 0.67, 0)';
-      setTimeout(() => notification.remove(), 500);
+      setTimeout(() => {
+        this.disposeGlass();
+        notification.remove();
+      }, 500);
       localStorage.setItem('birthday-notification-dismissed', today);
     };
 
@@ -123,7 +209,8 @@ class BirthdayCelebration {
   showBirthdayCelebration() {
     const celebrated = sessionStorage.getItem('birthday-celebrated');
     const today = new Date().toDateString();
-    if (celebrated === today && !this.testMode) return;
+    const testMode = this.resolveTestMode();
+    if (celebrated === today && !testMode && this.testMode !== true) return;
 
     const age = this.calculateAge();
 
@@ -159,6 +246,23 @@ class BirthdayCelebration {
 
     document.body.appendChild(overlay);
 
+    requestAnimationFrame(() => {
+      const badge = overlay.querySelector('.hero-badge');
+      const enterBtn = overlay.querySelector('.glass-btn');
+      [badge, enterBtn].forEach(node => {
+        if (!node) return;
+        this.mountLiquidGlass(node, {
+          settings: {
+            radius: 18,
+            depth: 24,
+            refraction: 1.05,
+            chromaticAberration: 0.028,
+          },
+        });
+      });
+      this.refreshCelebrationGlassBackground();
+    });
+
     // Initialize Canvas
     this.canvas = document.getElementById('celebration-canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -178,7 +282,10 @@ class BirthdayCelebration {
       overlay.style.cssText = 'opacity: 0; transition: opacity 0.8s ease; pointer-events: none;';
       cancelAnimationFrame(this.animationId);
       window.removeEventListener('resize', this._resizeHandler);
-      setTimeout(() => overlay.remove(), 800);
+      setTimeout(() => {
+        this.disposeGlass();
+        overlay.remove();
+      }, 800);
       sessionStorage.setItem('birthday-celebrated', today);
     });
 
@@ -227,10 +334,15 @@ class BirthdayCelebration {
   }
 
   startLoop() {
+    let frame = 0;
     const loop = () => {
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.updateParticles();
       this.updateBalloons();
+      frame += 1;
+      if (frame % 12 === 0 && this.glassSurfaces.length) {
+        this.refreshCelebrationGlassBackground();
+      }
       this.animationId = requestAnimationFrame(loop);
     };
     loop();

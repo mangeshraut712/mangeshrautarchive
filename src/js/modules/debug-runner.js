@@ -124,6 +124,50 @@ class DebugRunner {
     }
   }
 
+  recordLeaderboardEntry() {
+    const entry = { score: Math.floor(this.score / 10), at: Date.now() };
+    let board = [];
+    try {
+      board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
+      if (!Array.isArray(board)) board = [];
+    } catch (_error) {
+      board = [];
+    }
+    board.push(entry);
+    board.sort((a, b) => b.score - a.score);
+    board = board.slice(0, 5);
+    localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(board));
+    this.renderLeaderboard(board);
+  }
+
+  renderLeaderboard(board = null) {
+    if (!board) {
+      try {
+        board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
+        if (!Array.isArray(board)) board = [];
+      } catch (_error) {
+        board = [];
+      }
+    }
+
+    let panel = document.getElementById('game-leaderboard');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'game-leaderboard';
+      panel.className = 'game-leaderboard';
+      document.querySelector('.game-stats-panel')?.appendChild(panel);
+    }
+
+    if (!board.length) {
+      panel.innerHTML = '<strong>Leaderboard</strong><p>No runs yet</p>';
+      return;
+    }
+
+    panel.innerHTML = `<strong>Leaderboard</strong><ol>${board
+      .map(entry => `<li>${entry.score} pts</li>`)
+      .join('')}</ol>`;
+  }
+
   init() {
     this.canvas = document.createElement('canvas');
     this.canvas.id = 'debug-runner-canvas';
@@ -182,6 +226,7 @@ class DebugRunner {
     this.drawStartScreen();
     this.updateSideStats();
 
+    this.renderLeaderboard();
     return this.canvas;
   }
 
@@ -830,6 +875,7 @@ class DebugRunner {
           this.gameOver = true;
           this.createParticles(this.dev.x + 20, this.dev.y + 20, 35, this.colors.bug);
           this.stop();
+          this.recordLeaderboardEntry();
           return;
         }
       }

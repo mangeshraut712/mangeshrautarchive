@@ -41,6 +41,8 @@
     "test:e2e:mobile-viewport": "node scripts/utils/run-playwright.js test tests/e2e/mobile-viewport.spec.js --project=\"Pixel 7 Chrome\"",
     "test:e2e:apple-display": "node scripts/utils/run-playwright.js test tests/e2e/apple-display-compat.spec.js --project=\"iPhone 17 Pro Max Chrome\"",
     "test:e2e:apple-display:safari": "node scripts/utils/run-playwright.js test tests/e2e/apple-display-compat.spec.js --project=\"iPhone 17 Pro Max Safari\"",
+    "test:e2e:apple-platform": "node scripts/utils/run-playwright.js test tests/e2e/apple-platform-audit.spec.js --project=\"Desktop Chrome\"",
+    "qa:apple-platform": "start-server-and-test \"STRICT_PORT=1 PORT=4000 npm run dev\" http://127.0.0.1:4000 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 npm run test:e2e:apple-platform -- --workers=1\"",
     "qa:iphone-17-pro-max": "node scripts/qa/iphone-17-pro-max-display-compat.mjs",
     "qa:promotion-fps": "node scripts/qa/promotion-fps-audit.mjs",
     "qa:smoke": "start-server-and-test \"STRICT_PORT=1 PORT=4000 npm run dev\" http://127.0.0.1:4000 \"CI=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 npm run test:e2e:chrome -- --workers=1\"",
@@ -110,9 +112,11 @@
     "vitest": "^4.1.6"
   },
   "dependencies": {
+    "@ogtirth/liquid-glass-oss": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
     "esbuild": "^0.28.0",
     "express": "^5.2.1",
+    "html-to-image": "^1.11.13",
     "isomorphic-dompurify": "^3.17.0",
     "katex": "^0.17.0",
     "marked": "^18.0.5",
