@@ -42,16 +42,6 @@ const SECTION_MODULES = [
     rootMargin: '120px 0px',
   },
   {
-    sectionId: 'experience',
-    modulePath: '../modules/experience-interactivity.js',
-    rootMargin: '120px 0px',
-  },
-  {
-    sectionId: 'awards',
-    modulePath: '../modules/awards-shelf.js',
-    rootMargin: '120px 0px',
-  },
-  {
     sectionId: 'home',
     modulePath: '../modules/live-activity-strip.js',
     rootMargin: '400px 0px',

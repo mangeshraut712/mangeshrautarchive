@@ -72,7 +72,7 @@ html.dark .experience-timeline::before {
   border: 4px solid #ffffff;
   border-radius: 50%;
   background: #0071e3;
-  box-shadow: 0 10px 22px rgb(0 113 227 / 20%);
+  box-shadow: none;
   transform: translateY(-50%);
   z-index: 2;
 }
@@ -91,7 +91,7 @@ html.dark .experience-timeline::before {
 html.dark #experience .timeline-section-header::before {
   border-color: var(--card-border-rest);
   background: #0a84ff;
-  box-shadow: 0 10px 24px rgb(10 132 255 / 28%);
+  box-shadow: none;
 }
 
 html.dark #experience .timeline-section-header::after {
@@ -102,7 +102,7 @@ html.dark #experience .timeline-section-header::after {
   border: 1px solid var(--card-border-rest);
   border-radius: 999px;
   background: #ffffff;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 5%);
+  box-shadow: none;
   margin: 0;
   padding: 0.55rem 1rem;
   color: #0071e3;
@@ -116,7 +116,7 @@ html.dark #experience .timeline-section-header::after {
 html.dark #experience .timeline-section-header h3 {
   border-color: var(--card-border-rest);
   background: #000000;
-  box-shadow: 0 10px 26px rgb(0 0 0 / 45%);
+  box-shadow: none;
   color: #58a6ff;
 }
 
@@ -147,14 +147,14 @@ html.dark #experience .timeline-section-header h3 {
   border: 4px solid #ffffff;
   border-radius: 50%;
   background: linear-gradient(135deg, #0071e3, #2997ff);
-  box-shadow: 0 8px 20px rgb(0 113 227 / 40%);
+  box-shadow: none !important;
   color: #ffffff;
 }
 
 html.dark .experience-icon {
   border-color: transparent;
   background: linear-gradient(135deg, #0a84ff, #5e5ce6);
-  box-shadow: 0 8px 20px rgb(10 132 255 / 40%);
+  box-shadow: none !important;
 }
 
 .experience-icon i {

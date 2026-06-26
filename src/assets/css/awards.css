@@ -76,7 +76,7 @@ html.dark .award-card:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgb(255 215 0 / 30%);
+  box-shadow: none;
 }
 
 .award-icon i {

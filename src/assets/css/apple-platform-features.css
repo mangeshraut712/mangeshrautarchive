@@ -1,44 +1,228 @@
 /* Apple Platform 2026 — feature modules (audit P2/P3) */
 
-/* Experience disclosure */
-.experience-disclosure {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.5rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid rgb(0 0 0 / 10%);
-  background: rgb(255 255 255 / 72%);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #0071e3;
-  cursor: pointer;
+/* ─── Clear glass: no drop shadows (specular inset only) ─── */
+html[data-lg-mode='clear']
+  :is(
+    .card,
+    .experience-content,
+    .education-content,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .contact-card,
+    .currently-card,
+    .media-card,
+    .skill-category,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .live-activity-strip,
+    .lg-glass-card,
+    .vibe-stack-card,
+    #home .music-card-inner
+  ) {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 0.42)) !important;
 }
 
-html.dark .experience-disclosure {
-  border-color: rgb(255 255 255 / 12%);
-  background: rgb(0 0 0 / 72%);
-  color: #0a84ff;
+html.dark[data-lg-mode='clear']
+  :is(
+    .card,
+    .experience-content,
+    .education-content,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .contact-card,
+    .currently-card,
+    .media-card,
+    .skill-category,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .live-activity-strip,
+    .lg-glass-card,
+    .vibe-stack-card,
+    #home .music-card-inner
+  ) {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 0.1)) !important;
 }
 
-.experience-item.is-expanded .experience-disclosure i {
-  transform: rotate(180deg);
+html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html[data-lg-mode='clear'] .a11y-toolbar,
+html[data-lg-mode='clear'] .a11y-glass-popover,
+html[data-lg-mode='clear'] #chatbot-widget,
+html[data-lg-mode='clear'] .live-activity-strip {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.44) !important;
 }
 
-/* Awards shelf */
-.awards-shelf__track {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;
-  -webkit-overflow-scrolling: touch;
+html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html.dark[data-lg-mode='clear'] .a11y-toolbar,
+html.dark[data-lg-mode='clear'] .a11y-glass-popover,
+html.dark[data-lg-mode='clear'] #chatbot-widget,
+html.dark[data-lg-mode='clear'] .live-activity-strip {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1) !important;
 }
 
-.awards-shelf__card {
-  flex: 0 0 min(320px, 85vw);
-  scroll-snap-align: start;
+html[data-lg-mode='clear'] .experience-icon,
+html[data-lg-mode='clear'] .education-icon,
+html[data-lg-mode='clear'] .award-icon,
+html[data-lg-mode='clear'] #experience .timeline-section-header::before,
+html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
+  box-shadow: none !important;
+}
+
+/* ─── Hero music card — horizontal pill (WebGL-safe) ─── */
+#home .music-card {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 360px !important;
+  margin-inline: auto !important;
+}
+
+#home .music-card-inner {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  width: 100% !important;
+  min-height: 72px !important;
+  padding: 0.65rem 1rem 0.65rem 0.65rem !important;
+  border-radius: 999px !important;
+}
+
+#home .music-card-inner .lg-webgl-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#home .music-card-inner .album-art-container {
+  width: 52px !important;
+  height: 52px !important;
+  flex-shrink: 0 !important;
+}
+
+#home .music-card-inner .album-art {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+#home .music-card-inner .track-info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#home .music-card-spotify-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  flex-shrink: 0 !important;
+  margin-left: 0.15rem !important;
+  border-radius: 50% !important;
+  color: #1db954 !important;
+  font-size: 1.1rem !important;
+  opacity: 0.88;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+#home .music-card-spotify-link:hover {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* ─── Experience cards ─── */
+#experience .experience-content {
+  border-radius: 22px !important;
+}
+
+#experience .experience-header {
+  align-items: flex-start !important;
+  gap: 1rem !important;
+}
+
+#experience .experience-meta {
+  align-items: flex-end !important;
+  min-width: 9.5rem !important;
+}
+
+#experience .timeline-section-header h3 {
+  box-shadow: none !important;
+}
+
+#experience .timeline-section-header::before {
+  box-shadow: none !important;
+}
+
+/* ─── Awards grid cards ─── */
+.awards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 1.5rem !important;
+  align-items: stretch !important;
+}
+
+.award-card {
+  height: 100% !important;
+  align-items: flex-start !important;
+  border-radius: 22px !important;
+  box-shadow: none !important;
+}
+
+.award-icon {
+  box-shadow: none !important;
+}
+
+.award-content {
+  gap: 0.75rem !important;
+}
+
+.award-title {
+  font-size: 1.25rem !important;
+  line-height: 1.25 !important;
+}
+
+/* ─── Chatbot — calmer clear glass panel ─── */
+html[data-lg-mode='clear'] #chatbot-widget {
+  border: 1px solid var(--card-border-rest) !important;
+}
+
+html[data-lg-mode='clear'] .chatbot-title {
+  background: none !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  color: #0071e3 !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+html.dark[data-lg-mode='clear'] .chatbot-title {
+  -webkit-text-fill-color: #0a84ff !important;
+  color: #0a84ff !important;
+}
+
+#chatbot-widget .lg-webgl-content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+}
+
+#chatbot-widget.lg-webgl-host {
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 /* Quick Look */
@@ -173,27 +357,6 @@ html.dark .uses-control-tile {
 .uses-control-tile.is-active {
   border-color: #0071e3;
   color: #0071e3;
-}
-
-/* Skills filter */
-.skills-filter-bar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.skills-filter-input {
-  width: min(420px, 100%);
-  padding: 0.65rem 1rem;
-  border-radius: 999px;
-  border: 1px solid rgb(0 0 0 / 10%);
-  background: rgb(255 255 255 / 72%);
-}
-
-html.dark .skills-filter-input {
-  border-color: rgb(255 255 255 / 12%);
-  background: rgb(0 0 0 / 55%);
-  color: #fff;
 }
 
 /* Game leaderboard */

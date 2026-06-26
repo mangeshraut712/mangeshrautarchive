@@ -159,7 +159,7 @@ Sitewide parity with Apple’s 2026 design language: **Liquid Glass** (clear / b
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **P0** | Unified asset version `20260701a`, `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
 | **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                      | `src/js/core/subpage-chrome.js`                                |
-| **P2** | Experience disclosure, awards shelf, skills filter, education glass tokens, health widget alignment                                         | `experience-interactivity.js`, `awards-shelf.js`               |
+| **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                              | `experience.css`, `awards.css`, `skills-visualization.js`      |
 | **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                           | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
 
 **Verify locally:**

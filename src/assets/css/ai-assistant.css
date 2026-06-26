@@ -69,11 +69,9 @@
   background: var(--ai-bg-light);
   backdrop-filter: blur(50px) saturate(220%);
   -webkit-backdrop-filter: blur(50px) saturate(220%);
-  border-radius: 32px;
-  border: 1.5px solid var(--ai-border-light);
-  box-shadow:
-    var(--ai-shadow-premium),
-    0 0 0 1px rgb(255 255 255 / 40%) inset;
+  border-radius: 28px;
+  border: 1px solid var(--ai-border-light);
+  box-shadow: none;
   overflow: hidden;
   opacity: 0;
   transform: scale(0.92) translateY(30px) rotate(-2deg);
@@ -96,10 +94,7 @@
 html.dark #chatbot-widget {
   background: var(--ai-bg-dark);
   border-color: var(--ai-border-dark);
-  box-shadow:
-    0 30px 60px rgb(0 0 0 / 60%),
-    0 8px 32px rgb(0 0 0 / 40%),
-    0 0 0 1px rgb(255 255 255 / 8%) inset;
+  box-shadow: none;
 }
 
 #chatbot-widget.visible {
@@ -170,34 +165,29 @@ body.chatbot-open .a11y-toolbar {
    HEADER - GEMINI INTELLIGENCE GLOW (ENHANCED)
    ═══════════════════════════════════════════════════════════ */
 .chatbot-header {
-  padding: 20px 24px;
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgb(0 0 0 / 6%);
-  background:
-    linear-gradient(to bottom, rgb(255 255 255 / 60%), transparent),
-    linear-gradient(135deg, rgba(0, 113, 227, 0.03), rgba(41, 151, 255, 0.03));
+  background: rgb(255 255 255 / 72%);
   backdrop-filter: blur(20px);
 }
 
 html.dark .chatbot-header {
   border-bottom: 1px solid rgb(255 255 255 / 8%);
-  background:
-    linear-gradient(to bottom, rgb(0 0 0 / 30%), transparent),
-    linear-gradient(135deg, rgba(10, 132, 255, 0.08), rgba(41, 151, 255, 0.05));
+  background: rgb(0 0 0 / 72%);
 }
 
 .chatbot-title {
-  font-size: 22px;
+  font-size: 1.15rem;
   font-weight: 700;
-  background: var(--ai-glow);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0071e3;
   letter-spacing: -0.02em;
-  filter: drop-shadow(0 0 12px rgb(46 136 249 / 25%));
-  animation: shimmer 3s ease-in-out infinite;
+}
+
+html.dark .chatbot-title {
+  color: #0a84ff;
 }
 
 @keyframes shimmer {

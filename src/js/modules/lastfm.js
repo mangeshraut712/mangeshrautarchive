@@ -533,7 +533,7 @@ function initLastFmService() {
     statusText: document.getElementById('status-text'),
     playingIndicator: document.getElementById('playing-indicator'),
     musicCard: document.getElementById('music-card'),
-    lastfmLink: document.querySelector('#home .lastfm-link'),
+    lastfmLink: document.querySelector('#home .music-card-spotify-link'),
   };
 
   if (heroElements.trackName && heroElements.albumArt) {

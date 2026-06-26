@@ -342,6 +342,26 @@ html[data-lg-mode='clear']
   ) {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)) !important;
+}
+
+html.dark[data-lg-mode='clear']
+  :is(
+    .card,
+    .experience-content,
+    .education-content,
+    .contact-card,
+    .currently-card,
+    .vibe-stack-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    #skills-container .skill-scroll-wrapper .skill-badge,
+    .skill-badge,
+    #projects #github-projects-container .showcase-project-card,
+    .award-card
+  ) {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)) !important;
 }
 
 /* ─── Floating chrome: nav, a11y toolbar, chatbot, popover ─── */
@@ -397,6 +417,25 @@ html[data-lg-mode='clear'] body .monitor-page-nav,
 html[data-lg-mode='clear'] body .travel-nav {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)) !important;
+}
+
+html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html.dark[data-lg-mode='clear'] body .monitor-page-nav,
+html.dark[data-lg-mode='clear'] body .travel-nav {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)) !important;
+}
+
+html[data-lg-mode='clear'] .a11y-toolbar,
+html[data-lg-mode='clear'] .a11y-glass-popover,
+html[data-lg-mode='clear'] #chatbot-widget {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)) !important;
+}
+
+html.dark[data-lg-mode='clear'] .a11y-toolbar,
+html.dark[data-lg-mode='clear'] .a11y-glass-popover,
+html.dark[data-lg-mode='clear'] #chatbot-widget {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)) !important;
 }
 
 html:not([data-lg-mode='tinted']) .a11y-toolbar,

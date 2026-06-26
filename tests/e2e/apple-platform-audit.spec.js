@@ -41,18 +41,18 @@ test.describe('Apple Platform 2026 audit', () => {
       .toBe('clear');
   });
 
-  test('skills filter hides categories', async ({ page }) => {
-    await page.goto('/#skills');
-    await page.waitForSelector('#skills-filter-input', { timeout: 20000 });
-    await page.fill('#skills-filter-input', 'zzznomatch');
-    const visible = await page.locator('#skills-container .skill-category:not([hidden])').count();
-    expect(visible).toBe(0);
-  });
-
   test('command palette works on systems page', async ({ page }) => {
     await page.goto('/systems.html');
     await page.waitForTimeout(1000);
     await page.keyboard.press('ControlOrMeta+KeyK');
     await expect(page.locator('#search-overlay.active')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('skills section renders categories without filter bar', async ({ page }) => {
+    await page.goto('/#skills');
+    await page.waitForSelector('#skills-container .skill-category', { timeout: 20000 });
+    await expect(page.locator('#skills-filter-input')).toHaveCount(0);
+    const categories = await page.locator('#skills-container .skill-category').count();
+    expect(categories).toBeGreaterThan(0);
   });
 });
