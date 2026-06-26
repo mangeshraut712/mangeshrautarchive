@@ -157,7 +157,7 @@ Sitewide parity with Apple’s 2026 design language: **Liquid Glass** (clear / b
 
 | Phase  | Delivered                                                                                                                                   | Key paths                                                      |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| **P0** | Unified asset version `20260701a`, `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
+| **P0** | Unified asset version `20260701q` (single source in `asset-version.mjs`), `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
 | **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                      | `src/js/core/subpage-chrome.js`                                |
 | **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                              | `experience.css`, `awards.css`, `skills-visualization.js`      |
 | **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                           | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
@@ -501,6 +501,7 @@ Nightly **[post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.
 | Gate                                          | Target                                                                                     |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | **Lighthouse CI** (`dist/`, desktop + mobile) | **100** Performance · **100** Accessibility · **100** Best Practices · **100** SEO         |
+| **React Doctor** (`doctor:full`)              | **97+/100** (static graph audit via `index.js` → `entry.js`; non-blocking in CI)           |
 | **axe-core** (homepage)                       | Zero critical / serious violations                                                         |
 | **Playwright**                                | 15 named browser projects (Chrome, Safari, Firefox, Edge, Pixel, iPhone, iPad, responsive) |
 | **Vitest**                                    | 29 tests across 4 files                                                                    |
@@ -512,8 +513,10 @@ Nightly **[post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.
 | ----------------------------------- | ------------------------------------------------------- |
 | `npm run check`                     | ESLint + Stylelint + Prettier + Vitest + pytest         |
 | `npm run qa:prod-ready`             | Security + full lint/test + browser + Lighthouse        |
+| `npm run doctor:full`               | React Doctor static graph audit (97+/100 target)        |
 | `npm run qa:lighthouse:ci`          | Build `dist/` and run desktop + mobile Lighthouse gates |
 | `npm run qa:browser:ci`             | Playwright smoke + axe-core on dev server               |
+| `npm run verify:deploy-sync`        | Compare local `dist/` build commit vs live surfaces     |
 | `npm run verify:deploy-sync:remote` | Compare deploy commit on Vercel vs GitHub Pages         |
 
 Dev server commands (`npm run dev`, `npm run build`, etc.) are listed in [Local development](#local-development).
@@ -682,6 +685,24 @@ PORT=4174 npm run serve:dist
 
 **Dual hosting:** CI deploys GitHub Pages from `dist/`. Vercel production deploys via the repo integration on the same `main` commits. `build-config.json` stores `gitCommit` for cross-surface parity checks.
 
+### Keeping local, Vercel, and GitHub Pages in sync
+
+All three surfaces serve the same `dist/` output from `main`. After any change:
+
+```bash
+npm run build                              # produces dist/ with build-config.json gitCommit
+npm run verify:deploy-sync                 # local dist vs live (optional)
+npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same commit
+```
+
+| Surface        | URL                                                          | How it updates                          |
+| -------------- | ------------------------------------------------------------ | --------------------------------------- |
+| **Local dev**  | http://127.0.0.1:4000 (`npm run dev`) or `:4174` (`serve:dist`) | Serves `src/` or built `dist/` directly |
+| **Vercel**     | https://mangeshraut.pro                                      | Auto-deploy on push to `main`           |
+| **GitHub Pages** | https://mangeshraut712.github.io/mangeshrautarchive/       | `deploy.yml` uploads `dist/` on CI pass |
+
+**Cache busting:** Static HTML in `src/*.html` uses `?v=20260701q` query strings. Blog and case-study pages read `ASSET_VER` from `scripts/build/asset-version.mjs`. The build step also stamps a timestamp version on `dist/` JS module imports. Bump `ASSET_VER` and run `sed` across `src/*.html` when shipping CSS/JS changes that must invalidate browser caches immediately.
+
 ---
 
 ## Documentation
@@ -699,11 +720,15 @@ PORT=4174 npm run serve:dist
 
 **June 2026**
 
-- Lighthouse CI **100/100** (desktop + mobile on `dist/`)
+- **Deploy sync:** Vercel + GitHub Pages parity verified via `verify:deploy-sync:remote --parity`
+- **Debug Runner:** Restored classic layout; fixed game-section footer spacing (`chrome-surfaces.css` wins over platform overrides)
+- **Responsive audit:** Mobile/tablet/desktop alignment fixes across navbar, hero, engineering showcase, travel atlas, FAB stack
+- **Cache bust:** Unified asset version `20260701q` across all `src/*.html` + `asset-version.mjs`
+- Lighthouse CI **100/100** (desktop + mobile on `dist/`) · React Doctor **97/100**
 - iTunes artwork proxy (`/api/music/artwork`) — CORS + Best Practices fix
 - Perf-audit detection narrowed for Playwright E2E
 - Engineering evidence page (`/systems`), solid theme surfaces, sitewide card audit
-- README reorganized — deduplicated sections, sponsors restored
+- README reorganized — deduplicated sections, sponsors restored, deploy-sync docs added
 
 **Earlier 2026**
 
