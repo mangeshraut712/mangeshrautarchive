@@ -42,99 +42,8 @@ html.dark .game-stage {
   border-color: transparent;
 }
 
-.game-controls-heading {
-  margin: 0;
-  text-align: center;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary, #6e6e73);
-  white-space: nowrap;
-}
-
-.game-controls-bar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-@media (min-width: 640px) {
-  .game-controls-bar {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.45rem 0.65rem;
-  }
-}
-
 /* ═══════════════════════════════════════════════════════════
-   3. GAME CONTROLS - Premium Keyboard Style
-   ═══════════════════════════════════════════════════════════ */
-.game-controls-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-  margin-bottom: 0;
-  flex-wrap: wrap;
-}
-
-.game-control-item {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.55rem;
-  background: #fff;
-  border: 1px solid var(--card-border-rest, #e5e5ea);
-  border-radius: 10px;
-  box-shadow: none;
-  transition:
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.3s ease;
-}
-
-html.dark .game-control-item {
-  background: #000;
-  border-color: var(--card-border-rest, #2c2c2e);
-  box-shadow: none;
-}
-
-.game-control-item:hover {
-  transform: translateY(-2px);
-  border-color: rgb(0 113 227 / 15%);
-}
-
-html.dark .game-control-item:hover {
-  border-color: rgb(41 151 255 / 20%);
-}
-
-.game-kbd {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.65rem;
-  height: 1.65rem;
-  padding: 0 0.45rem;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  border-radius: 6px;
-  box-shadow: none;
-}
-
-.game-kbd-action {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   4. GAME AREA - Canvas + Stats Layout
+   3. GAME AREA - Canvas + Stats Layout
    ═══════════════════════════════════════════════════════════ */
 .game-area {
   display: grid;
@@ -226,10 +135,6 @@ html.dark #debug-runner-container {
 
 html.dark #debug-runner-canvas {
   background: #000 !important;
-}
-
-html.dark .game-controls-heading {
-  color: #a1a1a6;
 }
 
 #debug-runner-canvas:focus-visible {
@@ -436,119 +341,7 @@ html.dark .game-stat-box {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   4. GAME LEGEND - Power-ups Guide
-   ═══════════════════════════════════════════════════════════ */
-.game-legend-block {
-  border-top: 1px solid var(--card-border-rest, #e5e5ea);
-  padding-top: 0.45rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-html.dark .game-legend-block {
-  border-top-color: var(--card-border-rest, #2c2c2e);
-}
-
-.game-legend-heading {
-  margin: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary, #6e6e73);
-}
-
-html.dark .game-legend-heading {
-  color: #a1a1a6;
-}
-
-.game-legend-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.35rem;
-  width: 100%;
-  margin: 0;
-}
-
-@media (min-width: 768px) {
-  .game-legend-row {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.legend-card {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.45rem;
-  background: #fff;
-  border: 1px solid var(--card-border-rest, #e5e5ea);
-  border-radius: 10px;
-  transition:
-    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 0;
-  box-shadow: none;
-}
-
-html.dark .legend-card {
-  background: #000;
-  border-color: var(--card-border-rest, #2c2c2e);
-}
-
-.legend-card:hover {
-  transform: translateY(-2px);
-  border-color: rgb(0 113 227 / 15%);
-}
-
-html.dark .legend-card:hover {
-  border-color: rgb(41 151 255 / 20%);
-}
-
-.legend-emoji {
-  font-size: 1rem;
-  width: 1.65rem;
-  height: 1.65rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid var(--card-border-rest, #e5e5ea);
-  flex-shrink: 0;
-}
-
-html.dark .legend-emoji {
-  background: #000;
-  border-color: var(--card-border-rest, #2c2c2e);
-}
-
-.legend-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  min-width: 0;
-}
-
-.legend-info strong {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-
-.legend-info span {
-  font-size: 0.58rem;
-  color: var(--text-secondary);
-  line-height: 1.2;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   5. RESPONSIVE DESIGN
+   4. RESPONSIVE DESIGN
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .game-area {
