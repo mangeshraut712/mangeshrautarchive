@@ -48,7 +48,10 @@
   critical.id = 'perf-audit-critical';
   critical.textContent =
     '#skills-loading{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}' +
-    '#vibe-stack-flyout,#reach-flyout{display:none!important;visibility:hidden!important}';
+    '#vibe-stack-flyout,#reach-flyout{display:none!important;visibility:hidden!important}' +
+    '.education-title-group{display:flex!important;flex-direction:column!important;gap:0.5rem!important}' +
+    'a.education-institution,a.education-board,.education-map-link{display:flex!important;align-items:center!important;min-height:44px!important;padding-block:0.45rem!important}' +
+    'a.education-proof{min-height:44px!important}';
   (document.head || document.documentElement).appendChild(critical);
 
   function isAllowedStylesheet(href) {

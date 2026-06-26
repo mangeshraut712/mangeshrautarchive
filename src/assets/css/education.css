@@ -155,7 +155,10 @@ a.education-institution {
   font-weight: 600 !important;
   font-size: 1.1rem !important;
   margin: 0 0 0.35rem !important;
-  display: inline-block !important;
+  padding-block: 0.25rem;
+  min-height: 44px;
+  display: inline-flex !important;
+  align-items: center;
   text-decoration: none !important;
   transition: color 0.2s ease !important;
 }
@@ -176,11 +179,14 @@ html.dark a.education-institution:hover {
 
 /* Board / university affiliation — Google search */
 a.education-board {
-  margin: 0.5rem 0 0;
+  margin: 0.65rem 0 0;
+  padding-block: 0.35rem;
+  min-height: 44px;
   font-size: 0.875rem;
   line-height: 1.45;
   color: #6e6e73;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -204,7 +210,9 @@ html.dark a.education-board:hover {
   display: flex !important;
   align-items: flex-start !important;
   gap: 0.5rem !important;
-  margin: 0.35rem 0 0 !important;
+  margin: 0.65rem 0 0.35rem !important;
+  padding-block: 0.45rem !important;
+  min-height: 44px !important;
   font-size: 0.875rem !important;
   line-height: 1.45 !important;
   color: #4a4a4f !important;
