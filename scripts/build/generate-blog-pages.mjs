@@ -74,6 +74,7 @@ function pageShell({
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-webgl.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/high-contrast.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css?v=${ASSET_VER}" />
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>

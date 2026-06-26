@@ -28,8 +28,8 @@ function initLiveActivityStrip() {
   };
 
   render();
-  const hero = home.querySelector('.hero-layout-wrapper, .max-w-5xl, .container');
-  hero?.insertAdjacentElement('afterend', strip);
+  const anchor = home.querySelector('.hero-actions') || home.querySelector('.hero-footer');
+  anchor?.insertAdjacentElement('afterend', strip);
   window.setInterval(render, 12000);
 }
 

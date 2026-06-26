@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════
-   1. GAME SECTION - PURE WHITE BACKGROUND (Light Mode)
+   1. GAME SECTION - PURE WHITE/BLACK BACKGROUND
    ═══════════════════════════════════════════════════════════ */
 #debug-runner-section,
 #debug-runner-section.bg-gray-50,
@@ -13,6 +13,13 @@ section#debug-runner-section {
   background-color: #ffffff !important;
   background-image: none !important;
   background-blend-mode: normal !important;
+}
+
+html.dark #debug-runner-section,
+html.dark #debug-runner-section.bg-gray-50,
+html.dark section#debug-runner-section {
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -25,12 +32,12 @@ section#debug-runner-section {
   border-radius: 20px !important;
   overflow: hidden !important;
   border: 2px solid var(--card-border-rest) !important;
-  box-shadow: var(--shadow-lg) !important;
+  box-shadow: none !important;
 }
 
 html.dark #debug-runner-container {
   border: 2px solid var(--card-border-rest) !important;
-  box-shadow: var(--shadow-dark-lg) !important;
+  box-shadow: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -147,7 +154,7 @@ html.dark .game-container {
 footer {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  padding: 0.75rem 0 0.625rem !important;
+  padding: clamp(1.25rem, 2.5vh, 1.75rem) 0 clamp(1rem, 2vh, 1.25rem) !important;
 }
 
 html.dark footer {
@@ -160,12 +167,144 @@ footer .wrapper {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   padding: 0 !important;
-  row-gap: 0.75rem !important;
+  row-gap: 0.85rem !important;
 }
 
 footer .max-w-6xl {
-  padding-top: 0.5rem !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+#debug-runner-section {
+  padding-top: 1.25rem !important;
   padding-bottom: 0.5rem !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3.6 GAME SECTION — compact single-page layout
+   ═══════════════════════════════════════════════════════════ */
+#debug-runner-section .container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+#debug-runner-section h2 {
+  margin-bottom: 0.25rem !important;
+  font-size: clamp(1.65rem, 3.5vw, 2.25rem) !important;
+}
+
+#debug-runner-section .section-subtitle {
+  margin: -1rem auto 0 !important;
+  max-width: 36rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Game leaderboard */
+.game-leaderboard.game-stat-box {
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.15rem;
+  min-height: 0;
+}
+
+.game-leaderboard-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.game-leaderboard-empty {
+  margin: 0;
+  font-size: 0.62rem;
+  line-height: 1.3;
+  color: var(--text-secondary, #6e6e73);
+  text-align: center;
+}
+
+html.dark .game-leaderboard-empty {
+  color: #a1a1a6;
+}
+
+.game-leaderboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.game-leaderboard-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  font-size: 0.62rem;
+  line-height: 1.2;
+}
+
+.game-leaderboard-rank {
+  flex-shrink: 0;
+  width: 1rem;
+  text-align: center;
+  font-size: 0.72rem;
+}
+
+.game-leaderboard-score {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-primary, #1d1d1f);
+  letter-spacing: -0.02em;
+}
+
+html.dark .game-leaderboard-score {
+  color: #f5f5f7;
+}
+
+@media (max-width: 767px) {
+  .game-stats-panel .game-leaderboard {
+    grid-column: 1 / -1;
+  }
+
+  .game-leaderboard-list {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    gap: 0.5rem;
+  }
+
+  .game-leaderboard-list li {
+    flex: 1;
+    min-width: 0;
+    max-width: 5.5rem;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+}
+
+#debug-runner-section .game-legend-heading {
+  margin: 0 !important;
+  padding-top: 0;
+}
+
+#debug-runner-section .game-legend-row {
+  margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  #debug-runner-section .container {
+    gap: 0.45rem;
+  }
+
+  #debug-runner-section {
+    padding-top: 1rem !important;
+  }
 }
 
 /* Footer border separator */
@@ -204,10 +343,11 @@ html.dark #contact .contact-section[style*='border-top'] {
   z-index: 100000 !important;
 }
 
-/* Prevent debug-runner canvas from becoming too squished/unplayable on mobile */
+/* Mobile canvas — larger playfield; controls sit below stats */
 @media (max-width: 480px) {
-  #debug-runner-canvas {
-    height: 180px !important;
-    object-fit: fill;
+  #debug-runner-canvas,
+  #debug-runner-container {
+    max-height: clamp(210px, 40vh, 320px);
+    min-height: clamp(190px, 34vh, 260px);
   }
 }

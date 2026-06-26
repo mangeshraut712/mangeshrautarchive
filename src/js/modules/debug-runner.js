@@ -135,7 +135,7 @@ class DebugRunner {
     }
     board.push(entry);
     board.sort((a, b) => b.score - a.score);
-    board = board.slice(0, 5);
+    board = board.slice(0, 3);
     localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(board));
     this.renderLeaderboard(board);
   }
@@ -150,21 +150,22 @@ class DebugRunner {
       }
     }
 
-    let panel = document.getElementById('game-leaderboard');
-    if (!panel) {
-      panel = document.createElement('div');
-      panel.id = 'game-leaderboard';
-      panel.className = 'game-leaderboard';
-      document.querySelector('.game-stats-panel')?.appendChild(panel);
-    }
+    const body = document.getElementById('game-leaderboard-body');
+    if (!body) return;
 
-    if (!board.length) {
-      panel.innerHTML = '<strong>Leaderboard</strong><p>No runs yet</p>';
+    const topThree = board.slice(0, 3);
+
+    if (!topThree.length) {
+      body.innerHTML = '<p class="game-leaderboard-empty">No runs yet</p>';
       return;
     }
 
-    panel.innerHTML = `<strong>Leaderboard</strong><ol>${board
-      .map(entry => `<li>${entry.score} pts</li>`)
+    const rankLabels = ['🥇', '🥈', '🥉'];
+    body.innerHTML = `<ol class="game-leaderboard-list">${topThree
+      .map(
+        (entry, index) =>
+          `<li><span class="game-leaderboard-rank" aria-hidden="true">${rankLabels[index] || `${index + 1}.`}</span><span class="game-leaderboard-score">${entry.score}</span></li>`
+      )
       .join('')}</ol>`;
   }
 
@@ -398,7 +399,7 @@ class DebugRunner {
     if (!container || !container.parentElement) return;
 
     // Check if controls already exist
-    const existing = container.parentElement.querySelector('.debug-runner-mobile-controls');
+    const existing = document.querySelector('#debug-runner-section .debug-runner-mobile-controls');
     if (existing) {
       existing.remove();
     }
@@ -443,7 +444,9 @@ class DebugRunner {
     wrapper.appendChild(jumpBtn);
     wrapper.appendChild(duckBtn);
 
-    container.parentElement.appendChild(wrapper);
+    const gameArea = container.closest('.game-area');
+    const mount = gameArea || container.closest('.game-play-zone') || container.parentElement;
+    mount.appendChild(wrapper);
     this.mobileControls = wrapper;
   }
 

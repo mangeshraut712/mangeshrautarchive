@@ -81,8 +81,9 @@ class BlogLoader {
                     <div class="blog-tags">
                         ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHTML(tag)}</span>`).join('')}
                     </div>
-                    <button class="blog-read-btn" type="button" data-blog-open="${post.id}">
-                        Read Article <i class="fas fa-arrow-right"></i>
+                    <button class="blog-read-btn publication-read-btn" type="button" data-blog-open="${post.id}">
+                        <i class="fas fa-book-open" aria-hidden="true"></i>
+                        <span>Read Article</span>
                     </button>
                 </div>
             </article>

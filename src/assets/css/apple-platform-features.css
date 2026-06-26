@@ -1,7 +1,8 @@
 /* Apple Platform 2026 — feature modules (audit P2/P3) */
+/* Nav + hero music card backgrounds: chrome-surfaces.css (load last) */
 
-/* ─── Clear glass: no drop shadows (specular inset only) ─── */
-html[data-lg-mode='clear']
+/* ─── Solid surfaces: no drop shadows on cards (all glass modes) ─── */
+html
   :is(
     .card,
     .experience-content,
@@ -11,42 +12,28 @@ html[data-lg-mode='clear']
     .certification-card,
     .showcase-project-card,
     .contact-card,
+    .contact-form-card,
     .currently-card,
     .media-card,
+    .calendar-card,
     .skill-category,
     #skills .skill-category,
     #skills-container .skill-category,
     #skills-container .skill-badge,
+    #skills-container .skill-scroll-wrapper .skill-badge,
+    .skill-badge,
     .live-activity-strip,
     .lg-glass-card,
     .vibe-stack-card,
-    #home .music-card-inner
+    #home .music-card-inner,
+    .about-highlight-card,
+    .about-text-card,
+    .publication-card,
+    .blog-card,
+    .game-stat-card,
+    .game-info-card
   ) {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 0.42)) !important;
-}
-
-html.dark[data-lg-mode='clear']
-  :is(
-    .card,
-    .experience-content,
-    .education-content,
-    .award-card,
-    .recommendation-card,
-    .certification-card,
-    .showcase-project-card,
-    .contact-card,
-    .currently-card,
-    .media-card,
-    .skill-category,
-    #skills .skill-category,
-    #skills-container .skill-category,
-    #skills-container .skill-badge,
-    .live-activity-strip,
-    .lg-glass-card,
-    .vibe-stack-card,
-    #home .music-card-inner
-  ) {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 0.1)) !important;
+  box-shadow: none !important;
 }
 
 html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
@@ -54,7 +41,7 @@ html[data-lg-mode='clear'] .a11y-toolbar,
 html[data-lg-mode='clear'] .a11y-glass-popover,
 html[data-lg-mode='clear'] #chatbot-widget,
 html[data-lg-mode='clear'] .live-activity-strip {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.44) !important;
+  box-shadow: none !important;
 }
 
 html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
@@ -62,7 +49,7 @@ html.dark[data-lg-mode='clear'] .a11y-toolbar,
 html.dark[data-lg-mode='clear'] .a11y-glass-popover,
 html.dark[data-lg-mode='clear'] #chatbot-widget,
 html.dark[data-lg-mode='clear'] .live-activity-strip {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1) !important;
+  box-shadow: none !important;
 }
 
 html[data-lg-mode='clear'] .experience-icon,
@@ -73,12 +60,12 @@ html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
   box-shadow: none !important;
 }
 
-/* ─── Hero music card — horizontal pill (WebGL-safe) ─── */
+/* ─── Hero music card — compact horizontal pill (WebGL-safe) ─── */
 #home .music-card {
   display: flex !important;
   justify-content: center !important;
-  width: 100% !important;
-  max-width: 360px !important;
+  width: fit-content !important;
+  max-width: min(100%, 300px) !important;
   margin-inline: auto !important;
 }
 
@@ -86,10 +73,11 @@ html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  gap: 0.85rem !important;
-  width: 100% !important;
-  min-height: 72px !important;
-  padding: 0.65rem 1rem 0.65rem 0.65rem !important;
+  gap: 0.75rem !important;
+  width: auto !important;
+  max-width: 300px !important;
+  min-height: 64px !important;
+  padding: 0.5rem 0.85rem 0.5rem 0.5rem !important;
   border-radius: 999px !important;
 }
 
@@ -103,16 +91,24 @@ html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
 }
 
 #home .music-card-inner .album-art-container {
-  width: 52px !important;
-  height: 52px !important;
+  width: 48px !important;
+  height: 48px !important;
   flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
 }
 
 #home .music-card-inner .album-art {
-  width: 52px !important;
-  height: 52px !important;
-  border-radius: 10px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
   box-shadow: none !important;
+}
+
+#home .music-card-inner .track-name,
+#home .music-card-inner .artist-name {
+  max-width: 9.5rem !important;
 }
 
 #home .music-card-inner .track-info {
@@ -225,7 +221,109 @@ html.dark[data-lg-mode='clear'] .chatbot-title {
   flex-direction: column !important;
 }
 
-/* Quick Look */
+/* ─── Light mode: solid #ffffff shell (body + sections) ─── */
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) main,
+html:not(.dark) #main-content,
+html:not(.dark) #home,
+html:not(.dark) .home-hero {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Nav + music card backgrounds: chrome-surfaces.css (loaded last) */
+
+/* ─── Dark mode: solid #000000 shell (body + sections) ─── */
+html.dark,
+html.dark body,
+html.dark main,
+html.dark #main-content,
+html.dark #home,
+html.dark .home-hero {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Nav + music card backgrounds: chrome-surfaces.css (loaded last) */
+
+/* ─── Footer + last section spacing ─── */
+#debug-runner-section,
+#debug-runner-section.py-12 {
+  padding-top: 1.25rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+#debug-runner-section .game-legend-row {
+  margin-bottom: 0 !important;
+}
+
+footer {
+  margin-top: 0 !important;
+  padding-top: clamp(1.25rem, 2.5vh, 1.75rem) !important;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+footer .max-w-6xl {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+footer .flex.justify-center.mb-2 {
+  margin-bottom: 1rem !important;
+}
+
+footer .footer-tagline {
+  margin-top: 0.35rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Live Activity strip — below hero CTAs */
+#home .hero-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.85rem;
+}
+
+.live-activity-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: min(100%, 22rem);
+  max-width: min(100%, 22rem);
+  margin: 0 auto !important;
+  margin-bottom: 0 !important;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  #home .hero-footer {
+    padding-inline: 0.25rem;
+    gap: 1rem;
+  }
+
+  #home .live-activity-strip {
+    width: min(100%, calc(100vw - 2.5rem));
+    max-width: min(100%, calc(100vw - 2.5rem));
+    margin-top: 0.15rem !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .live-activity-strip__detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+}
 .quick-look-dialog {
   border: none;
   padding: 0;
@@ -280,16 +378,8 @@ html.dark[data-lg-mode='clear'] .chatbot-title {
   font-size: 0.85rem;
 }
 
-/* Live Activity strip */
-.live-activity-strip {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  max-width: 42rem;
-  margin: 0.75rem auto 0;
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  font-size: 0.82rem;
+main > section#debug-runner-section {
+  padding-bottom: 0.5rem !important;
 }
 
 .live-activity-strip__pulse {
@@ -359,16 +449,10 @@ html.dark .uses-control-tile {
   color: #0071e3;
 }
 
-/* Game leaderboard */
-.game-leaderboard {
-  margin-top: 0.75rem;
-  font-size: 0.78rem;
-  opacity: 0.85;
-}
-
+/* Game leaderboard — body/list styled in game-section-fix.css */
 .game-leaderboard ol {
-  margin: 0.25rem 0 0;
-  padding-left: 1.1rem;
+  margin: 0;
+  padding: 0;
 }
 
 /* Global search overlay (subpages) */
@@ -418,4 +502,151 @@ html.dark .uses-control-tile {
   .live-activity-strip__pulse {
     animation: none;
   }
+}
+
+/* ─── Sitewide solid theme: cards/panels match page fill (no grey shadow halos) ─── */
+html:not(.dark)
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark)
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ):is(:hover, :focus-within) {
+  box-shadow: none !important;
+}
+
+html.dark
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ):is(:hover, :focus-within) {
+  box-shadow: none !important;
 }

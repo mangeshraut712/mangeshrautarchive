@@ -42,8 +42,7 @@ html.dark body {
   }
 }
 
-/* Reduce backdrop blur while scrolling for ProMotion frame budget */
-html.is-scrolling .global-nav.dynamic-island,
+/* Reduce motion cost while scrolling — nav background stays solid (chrome-surfaces.css) */
 html.is-scrolling #chatbot-toggle,
 html.is-scrolling .a11y-toolbar {
   backdrop-filter: blur(8px);

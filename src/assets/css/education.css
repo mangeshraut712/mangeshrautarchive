@@ -12,15 +12,33 @@ html.dark #education {
   background: #000 !important;
 }
 
+#education .container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vh, 2rem);
+}
+
 /* Section Title */
 #education h2 {
   font-size: clamp(2rem, 4vw, 3rem) !important;
   font-weight: 800 !important;
   text-align: center !important;
-  margin-bottom: 3rem !important;
+  margin-bottom: 0.5rem !important;
   background: linear-gradient(135deg, #0071e3, #2997ff) !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
+}
+
+#education .section-subtitle {
+  margin: -1.75rem auto 0 !important;
+  max-width: 42rem;
+  text-align: center;
+  line-height: 1.55;
+  color: #6e6e73;
+}
+
+html.dark #education .section-subtitle {
+  color: #a1a1a6;
 }
 
 html.dark #education h2 {
@@ -37,7 +55,7 @@ html.dark #education h2 {
   max-width: 1000px;
   margin: 0 auto;
   position: relative;
-  padding-left: 0;
+  padding: 0.5rem 0 0;
 }
 
 /* Timeline Vertical Line */
@@ -48,19 +66,20 @@ html.dark #education h2 {
   top: 0;
   bottom: 0;
   width: 2px;
+  border-radius: 999px;
   background: linear-gradient(to bottom, #0071e3, #2997ff);
   z-index: 0;
 }
 
 html.dark .education-timeline::before {
-  background: linear-gradient(to bottom, #2997ff, #0071e3);
+  background: linear-gradient(to bottom, #2997ff, #0a84ff);
 }
 
 /* Timeline Item Container */
 .education-item {
   position: relative;
   padding-left: 90px;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .education-item:last-child {
@@ -79,18 +98,19 @@ html.dark .education-timeline::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgb(0 113 227 / 40%);
+  box-shadow: none;
   z-index: 2;
   border: 4px solid #fff;
 }
 
 html.dark .education-icon {
   border-color: transparent;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 40%);
+  background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+  box-shadow: none;
 }
 
 .education-icon i {
-  font-size: 1.75rem;
+  font-size: 1.45rem;
   color: #fff;
 }
 
@@ -100,15 +120,18 @@ html.dark .education-icon {
 
 .education-content {
   background: #fff !important;
-  border: 1px solid var(--card-border-rest) !important;
-  border-radius: 24px !important;
-  padding: 2.5rem !important;
+  border: 1px solid var(--card-border-rest, #e5e5ea) !important;
+  border-radius: 22px !important;
+  padding: 2rem !important;
   box-shadow: none !important;
   transition:
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.3s ease !important;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 /* Remove top glow stripe on education cards */
@@ -118,13 +141,13 @@ html.dark .education-icon {
 
 html.dark .education-content {
   background: #000 !important;
-  border-color: transparent !important;
+  border-color: var(--card-border-rest, #2c2c2e) !important;
   box-shadow: none !important;
 }
 
-.education-content:hover,
-html.dark .education-content:hover {
+.education-content:hover {
   border-color: #0071e3 !important;
+  transform: translateY(-5px) !important;
   box-shadow: none !important;
 }
 
@@ -138,25 +161,24 @@ html.dark .education-content:hover {
 
 /* Degree Title */
 .education-degree {
-  color: #000 !important;
-  font-size: 1.5rem !important;
-  margin-bottom: 0.25rem !important;
-  font-weight: 700 !important;
+  color: #1d1d1f !important;
+  font-size: clamp(1.18rem, 2vw, 1.45rem) !important;
+  margin: 0 0 0.25rem !important;
+  font-weight: 750 !important;
   line-height: 1.3 !important;
 }
 
 html.dark .education-degree {
-  color: #fff !important;
+  color: #f5f5f7 !important;
 }
 
 /* Institution name — opens Google */
 a.education-institution {
   color: #0051a8 !important;
   font-weight: 600 !important;
-  font-size: 1.1rem !important;
-  margin: 0 0 0.35rem !important;
-  padding-block: 0.25rem;
-  min-height: 44px;
+  font-size: 1.05rem !important;
+  margin: 0 !important;
+  padding-block: 0.15rem;
   display: inline-flex !important;
   align-items: center;
   text-decoration: none !important;
@@ -179,9 +201,8 @@ html.dark a.education-institution:hover {
 
 /* Board / university affiliation — Google search */
 a.education-board {
-  margin: 0.65rem 0 0;
-  padding-block: 0.35rem;
-  min-height: 44px;
+  margin: 0.5rem 0 0;
+  padding-block: 0.2rem;
   font-size: 0.875rem;
   line-height: 1.45;
   color: #6e6e73;
@@ -210,9 +231,8 @@ html.dark a.education-board:hover {
   display: flex !important;
   align-items: flex-start !important;
   gap: 0.5rem !important;
-  margin: 0.65rem 0 0.35rem !important;
-  padding-block: 0.45rem !important;
-  min-height: 44px !important;
+  margin: 0.45rem 0 0 !important;
+  padding-block: 0.25rem !important;
   font-size: 0.875rem !important;
   line-height: 1.45 !important;
   color: #4a4a4f !important;
@@ -247,11 +267,11 @@ html.dark .education-map-link i {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  margin-top: 1.15rem;
-  padding: 0.85rem 1rem;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
   border: 1px solid var(--card-border-rest, #e5e5ea);
   border-radius: 14px;
-  background: #fbfbfd;
+  background: #ffffff;
   color: inherit;
   text-decoration: none;
   transition:
@@ -310,7 +330,7 @@ html.dark .education-map-link i {
 }
 
 html.dark .education-proof {
-  background: #111111;
+  background: #000000;
   border-color: #2c2c2e;
 }
 
@@ -361,7 +381,7 @@ html.dark .education-period {
 .education-badge.completed {
   background: linear-gradient(135deg, #30d158, #28cd41) !important;
   color: #fff !important;
-  box-shadow: 0 4px 12px rgb(48 209 88 / 40%) !important;
+  box-shadow: none !important;
   border: 1px solid rgb(255 255 255 / 20%) !important;
   cursor: default !important;
 }
@@ -369,7 +389,7 @@ html.dark .education-period {
 html.dark .education-badge.completed {
   background: linear-gradient(135deg, #34c759, #30d158) !important;
   color: #fff !important;
-  box-shadow: 0 4px 12px rgb(52 199 89 / 40%) !important;
+  box-shadow: none !important;
   border: 1px solid rgb(255 255 255 / 10%) !important;
 }
 
@@ -378,18 +398,34 @@ html.dark .education-badge.completed {
   display: flex !important;
   justify-content: space-between !important;
   align-items: flex-start !important;
-  gap: 2rem !important;
+  gap: 1.5rem !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--card-border-rest, #e5e5ea);
+}
+
+html.dark .education-header {
+  border-bottom-color: var(--card-border-rest, #2c2c2e);
 }
 
 .education-title-group {
   flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.education-map-link span {
+  text-wrap: pretty;
 }
 
 .education-meta {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-end !important;
-  gap: 0.75rem !important;
+  gap: 0.65rem !important;
+  flex-shrink: 0;
 }
 
 /* ========================================
@@ -397,30 +433,37 @@ html.dark .education-badge.completed {
    ======================================== */
 
 @media (width <=768px) {
+  #education {
+    padding: 3rem 0 !important;
+  }
+
   .education-timeline::before {
     left: 24px !important;
   }
 
   .education-item {
     padding-left: 70px !important;
+    margin-bottom: 1.75rem !important;
   }
 
   .education-icon {
     width: 48px !important;
     height: 48px !important;
+    border-width: 3px !important;
   }
 
   .education-icon i {
-    font-size: 1.25rem !important;
+    font-size: 1.2rem !important;
   }
 
   .education-content {
-    padding: 1.5rem !important;
+    padding: 1.35rem 1.25rem !important;
   }
 
   .education-header {
     flex-direction: column !important;
     gap: 1rem !important;
+    padding-bottom: 1rem;
   }
 
   .education-meta {
@@ -429,7 +472,7 @@ html.dark .education-badge.completed {
   }
 
   .education-degree {
-    font-size: 1.25rem !important;
+    font-size: 1.2rem !important;
   }
 
   .education-map-link {
@@ -442,5 +485,6 @@ html.dark .education-badge.completed {
 
   .education-proof {
     padding: 0.75rem 0.85rem;
+    margin-top: 1rem;
   }
 }

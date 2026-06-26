@@ -1,0 +1,117 @@
+/* ════════════════════════════════════════════════════════════════
+   CHROME SURFACES — single source of truth (load last)
+   Navbar (#global-nav) + hero music card (#home .music-card-inner)
+   Solid #ffffff / #000000 — no glass, no scroll/mode/slider drift.
+   Do NOT set background or backdrop-filter on these elsewhere.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Navbar ─── */
+body #global-nav.global-nav.dynamic-island,
+body #global-nav.global-nav.dynamic-island.scrolled,
+body #global-nav.global-nav.dynamic-island.is-compact,
+body #global-nav.global-nav.dynamic-island.lg-webgl-host,
+html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
+html[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
+html.is-scrolling body #global-nav.global-nav.dynamic-island,
+html.dark body #global-nav.global-nav.dynamic-island,
+html.dark body #global-nav.global-nav.dynamic-island.scrolled,
+html.dark body #global-nav.global-nav.dynamic-island.is-compact,
+html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host,
+html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html.dark[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
+html.dark[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
+html.dark.is-scrolling body #global-nav.global-nav.dynamic-island,
+html.dark.aod-dim body #global-nav.global-nav.dynamic-island {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition:
+    border-color 0.2s ease,
+    opacity 0.2s ease !important;
+}
+
+html:not(.dark) body #global-nav.global-nav.dynamic-island,
+html:not(.dark) body #global-nav.global-nav.dynamic-island.scrolled,
+html:not(.dark) body #global-nav.global-nav.dynamic-island.lg-webgl-host {
+  border-bottom: 1px solid #e5e5ea !important;
+}
+
+html.dark body #global-nav.global-nav.dynamic-island,
+html.dark body #global-nav.global-nav.dynamic-island.scrolled,
+html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-bottom: 1px solid #2c2c2e !important;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body #global-nav.global-nav.dynamic-island,
+  html.dark body #global-nav.global-nav.dynamic-island {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html.dark body #global-nav.global-nav.dynamic-island {
+    background: #000000 !important;
+    background-color: #000000 !important;
+  }
+}
+
+/* ─── Hero music card ─── */
+#home .music-card {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+#home .music-card-inner,
+#home .music-card-inner.lg-webgl-host,
+#home .music-card.is-playing .music-card-inner,
+html[data-lg-mode='clear'] #home .music-card-inner,
+html[data-lg-mode='balanced'] #home .music-card-inner,
+html[data-lg-mode='tinted'] #home .music-card-inner {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: 1px solid #e5e5ea !important;
+  transition:
+    border-color 0.2s ease,
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+html.dark #home .music-card-inner,
+html.dark #home .music-card-inner.lg-webgl-host,
+html.dark #home .music-card.is-playing .music-card-inner,
+html.dark[data-lg-mode='clear'] #home .music-card-inner,
+html.dark[data-lg-mode='balanced'] #home .music-card-inner,
+html.dark[data-lg-mode='tinted'] #home .music-card-inner {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark) #home .music-card:hover .music-card-inner,
+  html:not(.dark) #home .music-card:hover .music-card-inner.lg-webgl-host {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-color: #0071e3 !important;
+  }
+
+  html.dark #home .music-card:hover .music-card-inner,
+  html.dark #home .music-card:hover .music-card-inner.lg-webgl-host {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    border-color: #0a84ff !important;
+  }
+}

@@ -389,7 +389,6 @@ html.dark
 /* ─── Floating chrome — solid only in tinted mode; clear/balanced use liquid glass ─── */
 html[data-lg-mode='tinted']
   :is(
-    .global-nav.dynamic-island,
     #chatbot-widget,
     .a11y-toolbar,
     .a11y-glass-popover,
@@ -404,7 +403,6 @@ html[data-lg-mode='tinted']
 
 html[data-lg-mode='tinted']:not(.dark)
   :is(
-    .global-nav.dynamic-island,
     #chatbot-widget,
     .a11y-toolbar,
     .a11y-glass-popover,
@@ -420,7 +418,6 @@ html[data-lg-mode='tinted']:not(.dark)
 
 html.dark[data-lg-mode='tinted']
   :is(
-    .global-nav.dynamic-island,
     #chatbot-widget,
     .a11y-toolbar,
     .a11y-glass-popover,
@@ -1099,8 +1096,7 @@ html.dark :is(#skills, #skills > .container, #skills-container) {
   background-image: none !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark)
-  :is(#skills .skill-category, #skills-container .skill-category) {
+html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -1114,7 +1110,7 @@ html[data-lg-mode='tinted']:not(.dark)
   isolation: isolate;
 }
 
-html[data-lg-mode='tinted']:not(.dark)
+html:not(.dark)
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -1124,7 +1120,7 @@ html[data-lg-mode='tinted']:not(.dark)
   box-shadow: none !important;
 }
 
-html.dark[data-lg-mode='tinted'] :is(#skills .skill-category, #skills-container .skill-category) {
+html.dark :is(#skills .skill-category, #skills-container .skill-category) {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -1136,7 +1132,7 @@ html.dark[data-lg-mode='tinted'] :is(#skills .skill-category, #skills-container 
   isolation: isolate;
 }
 
-html.dark[data-lg-mode='tinted']
+html.dark
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #000000 !important;
   background-color: #000000 !important;
@@ -1214,7 +1210,7 @@ html.dark #projects .project-footer {
   background-image: none !important;
 }
 
-/* ─── Hero music card: hairline border, blue on hover ─── */
+/* ─── Hero music card: border/hover only — background in chrome-surfaces.css ─── */
 #home .music-card,
 #home .music-card:hover {
   background: transparent !important;
@@ -1225,24 +1221,10 @@ html.dark #projects .project-footer {
 }
 
 #home .music-card-inner {
-  border: 1px solid var(--card-border-rest) !important;
   border-width: 1px !important;
   box-shadow: none !important;
   filter: none !important;
   outline: none !important;
-}
-
-html:not(.dark) #home .music-card-inner,
-html:not(.dark) #home .music-card:hover .music-card-inner {
-  background: #ffffff !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html.dark #home .music-card-inner,
-html.dark #home .music-card:hover .music-card-inner {
-  background: #000000 !important;
-  border-color: rgb(255 255 255 / 12%) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1865,27 +1847,27 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
   }
 }
 
-/* ─── Compact site footer (social + copy only, no extra vertical air) ─── */
+/* ─── Site footer — balanced breathing room above social + copy ─── */
 footer {
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.375rem !important;
+  padding-top: clamp(1.25rem, 2.5vh, 1.75rem) !important;
+  padding-bottom: clamp(1rem, 2vh, 1.25rem) !important;
 }
 
 footer .max-w-6xl {
-  gap: 0.5rem !important;
-  padding-top: 0.375rem !important;
-  padding-bottom: 0.25rem !important;
+  gap: 0.75rem !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
 }
 
 footer .wrapper {
   margin: 0 !important;
   padding: 0 !important;
-  row-gap: 0 !important;
+  row-gap: 0.85rem !important;
 }
 
 footer .border-t {
-  padding-top: 0.5rem !important;
-  margin-top: 0 !important;
+  padding-top: 0.75rem !important;
+  margin-top: 0.25rem !important;
 }
 
 footer .footer-tagline {
@@ -1893,10 +1875,14 @@ footer .footer-tagline {
 }
 
 #debug-runner-section {
-  padding-bottom: 1rem !important;
+  padding-bottom: 0.5rem !important;
 }
 
 #debug-runner-section.py-12 {
-  padding-top: 2.5rem !important;
-  padding-bottom: 1rem !important;
+  padding-top: 1.25rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+#debug-runner-section .game-legend-row {
+  margin-bottom: 0 !important;
 }

@@ -4,7 +4,7 @@
    Clear / Balanced: restore WWDC26 liquid glass (blur + translucency).
    ════════════════════════════════════════════════════════════════ */
 
-/* Shared card / panel selectors (matches theme-solid + wwdc26) */
+/* Shared card / panel selectors — solid surfaces (no blur halos on rounded corners) */
 html:not([data-lg-mode='tinted'])
   :is(
     .card,
@@ -104,14 +104,12 @@ html:not([data-lg-mode='tinted'])
     #skills .skill-category,
     #skills-container .skill-category
   ) {
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
-    box-shadow 0.32s ease,
     border-color 0.32s ease,
-    background 0.32s ease,
-    backdrop-filter 0.32s ease !important;
+    background 0.32s ease !important;
 }
 
 html:not([data-lg-mode='tinted']):not(.dark)
@@ -210,13 +208,15 @@ html:not([data-lg-mode='tinted']):not(.dark)
     #skills-container .skill-category,
     #skills-container .skill-scroll-wrapper .skill-badge
   ) {
-  background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
-  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   background-image: none !important;
   border: 1px solid var(--card-border-rest) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
-    0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 html.dark:not([data-lg-mode='tinted'])
@@ -315,127 +315,29 @@ html.dark:not([data-lg-mode='tinted'])
     #skills-container .skill-category,
     #skills-container .skill-scroll-wrapper .skill-badge
   ) {
-  background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
-  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   background-image: none !important;
   border: 1px solid var(--card-border-rest) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
-    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* Clear glass — Apple-style extra blur + lower fill (see-through) */
-html[data-lg-mode='clear']
-  :is(
-    .card,
-    .experience-content,
-    .education-content,
-    .contact-card,
-    .currently-card,
-    .vibe-stack-card,
-    #skills .skill-category,
-    #skills-container .skill-category,
-    #skills-container .skill-badge,
-    #skills-container .skill-scroll-wrapper .skill-badge,
-    .skill-badge,
-    #projects #github-projects-container .showcase-project-card
-  ) {
-  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)) !important;
-}
+/* ─── Floating chrome: nav backgrounds owned by chrome-surfaces.css ─── */
 
-html.dark[data-lg-mode='clear']
-  :is(
-    .card,
-    .experience-content,
-    .education-content,
-    .contact-card,
-    .currently-card,
-    .vibe-stack-card,
-    #skills .skill-category,
-    #skills-container .skill-category,
-    #skills-container .skill-badge,
-    #skills-container .skill-scroll-wrapper .skill-badge,
-    .skill-badge,
-    #projects #github-projects-container .showcase-project-card,
-    .award-card
-  ) {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)) !important;
-}
-
-/* ─── Floating chrome: nav, a11y toolbar, chatbot, popover ─── */
-html:not([data-lg-mode='tinted']) body #global-nav.global-nav.dynamic-island,
-html:not([data-lg-mode='tinted']) body .monitor-page-nav,
-html:not([data-lg-mode='tinted']) body .travel-nav {
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-nav)) !important;
-}
-
-html:not([data-lg-mode='tinted']):not(.dark) body #global-nav.global-nav.dynamic-island,
-html:not([data-lg-mode='tinted']):not(.dark) body .monitor-page-nav,
-html:not([data-lg-mode='tinted']):not(.dark) body .travel-nav {
-  background: color-mix(
-    in srgb,
-    #ffffff 72%,
-    rgb(255 255 255 / var(--lg-nav-light-fill)) 28%
-  ) !important;
-  background-color: color-mix(
-    in srgb,
-    #ffffff 72%,
-    rgb(255 255 255 / var(--lg-nav-light-fill)) 28%
-  ) !important;
-  border-bottom: 1px solid color-mix(in srgb, rgb(255 255 255 / 44%) 65%, rgb(0 0 0 / 10%) 35%) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
-    0 8px 24px rgb(0 0 0 / 12%),
-    0 0.5px 0 rgb(0 0 0 / calc(2% + (1 - var(--lg-tint)) * 5%)) !important;
-}
-
-html.dark:not([data-lg-mode='tinted']) body #global-nav.global-nav.dynamic-island,
-html.dark:not([data-lg-mode='tinted']) body .monitor-page-nav,
-html.dark:not([data-lg-mode='tinted']) body .travel-nav {
-  background: color-mix(in srgb, #000000 72%, rgb(0 0 0 / var(--lg-nav-dark-fill)) 28%) !important;
-  background-color: color-mix(
-    in srgb,
-    #000000 72%,
-    rgb(0 0 0 / var(--lg-nav-dark-fill)) 28%
-  ) !important;
-  border-bottom-color: color-mix(
-    in srgb,
-    rgb(255 255 255 / 12%) 72%,
-    rgb(0 0 0 / 24%) 28%
-  ) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
-    0 10px 26px rgb(0 0 0 / 44%),
-    0 0.5px 0 rgb(255 255 255 / calc(2% + (1 - var(--lg-tint)) * 4%)) !important;
-}
-
-html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
-html[data-lg-mode='clear'] body .monitor-page-nav,
-html[data-lg-mode='clear'] body .travel-nav {
-  backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-nav) + 6px)) !important;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)) !important;
-}
-
-html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
-html.dark[data-lg-mode='clear'] body .monitor-page-nav,
-html.dark[data-lg-mode='clear'] body .travel-nav {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)) !important;
-}
-
-html[data-lg-mode='clear'] .a11y-toolbar,
+html:not([data-lg-mode='tinted']) .a11y-toolbar,
 html[data-lg-mode='clear'] .a11y-glass-popover,
 html[data-lg-mode='clear'] #chatbot-widget {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)) !important;
+  box-shadow: none !important;
 }
 
 html.dark[data-lg-mode='clear'] .a11y-toolbar,
 html.dark[data-lg-mode='clear'] .a11y-glass-popover,
 html.dark[data-lg-mode='clear'] #chatbot-widget {
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)) !important;
+  box-shadow: none !important;
 }
 
 html:not([data-lg-mode='tinted']) .a11y-toolbar,
@@ -526,9 +428,6 @@ html.dark[data-lg-mode='tinted'] body {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  html:not([data-lg-mode='tinted']) body #global-nav.global-nav.dynamic-island,
-  html:not([data-lg-mode='tinted']) body .monitor-page-nav,
-  html:not([data-lg-mode='tinted']) body .travel-nav,
   html:not([data-lg-mode='tinted']) .a11y-toolbar,
   html:not([data-lg-mode='tinted']) .a11y-glass-popover,
   html:not([data-lg-mode='tinted']) #chatbot-widget {
@@ -536,9 +435,6 @@ html.dark[data-lg-mode='tinted'] body {
     -webkit-backdrop-filter: none !important;
   }
 
-  html:not([data-lg-mode='tinted']):not(.dark) body #global-nav.global-nav.dynamic-island,
-  html:not([data-lg-mode='tinted']):not(.dark) body .monitor-page-nav,
-  html:not([data-lg-mode='tinted']):not(.dark) body .travel-nav,
   html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar,
   html:not([data-lg-mode='tinted']):not(.dark) .a11y-glass-popover,
   html:not([data-lg-mode='tinted']):not(.dark) #chatbot-widget {
@@ -546,9 +442,6 @@ html.dark[data-lg-mode='tinted'] body {
     background-color: rgb(255 255 255 / 96%) !important;
   }
 
-  html.dark:not([data-lg-mode='tinted']) body #global-nav.global-nav.dynamic-island,
-  html.dark:not([data-lg-mode='tinted']) body .monitor-page-nav,
-  html.dark:not([data-lg-mode='tinted']) body .travel-nav,
   html.dark:not([data-lg-mode='tinted']) .a11y-toolbar,
   html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover,
   html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
@@ -558,29 +451,26 @@ html.dark[data-lg-mode='tinted'] body {
 }
 
 /* ─── Tinted endpoint: solid chrome, zero glass (wins over wwdc26 + WebGL hosts) ─── */
-html[data-lg-mode='tinted'] .global-nav.dynamic-island,
 html[data-lg-mode='tinted'] .a11y-toolbar,
 html[data-lg-mode='tinted'] .a11y-glass-popover,
 html[data-lg-mode='tinted'] #chatbot-widget,
-html[data-lg-mode='tinted'] .lg-webgl-host {
+html[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark) .global-nav.dynamic-island,
 html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar,
 html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
 html[data-lg-mode='tinted']:not(.dark) #chatbot-widget,
-html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host {
+html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
 
-html.dark[data-lg-mode='tinted'] .global-nav.dynamic-island,
 html.dark[data-lg-mode='tinted'] .a11y-toolbar,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget,
-html.dark[data-lg-mode='tinted'] .lg-webgl-host {
+html.dark[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
   background: #000000 !important;
   background-color: #000000 !important;
 }

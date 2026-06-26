@@ -1,6 +1,6 @@
 /* WebGL Liquid Glass surfaces (liquidglass-oss) */
 
-.lg-webgl-host {
+.lg-webgl-host:not(#global-nav):not(.music-card-inner) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -33,23 +33,13 @@ html[data-lg-mode='tinted'] .lg-webgl-canvas {
   display: none !important;
 }
 
-html[data-lg-mode='tinted'] .lg-webgl-host {
+html[data-lg-mode='tinted'] .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
   background: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host.a11y-glass-popover,
-html[data-lg-mode='tinted']:not(.dark) .lg-webgl-host.a11y-toolbar,
-html[data-lg-mode='tinted']:not(.dark) #global-nav.lg-webgl-host {
-  background: #ffffff !important;
-}
-
-html.dark[data-lg-mode='tinted'] .lg-webgl-host.a11y-glass-popover,
-html.dark[data-lg-mode='tinted'] .lg-webgl-host.a11y-toolbar,
-html.dark[data-lg-mode='tinted'] #global-nav.lg-webgl-host {
-  background: #000000 !important;
-}
+/* Nav + music card: chrome-surfaces.css */
 
 /* Birthday notification — WebGL replaces CSS backdrop */
 .birthday-notification.lg-webgl-host {
@@ -107,11 +97,7 @@ html:not([data-lg-mode='tinted']) .a11y-glass-popover.lg-webgl-host {
   -webkit-backdrop-filter: none !important;
 }
 
-html:not([data-lg-mode='tinted']) #global-nav.global-nav.dynamic-island.lg-webgl-host {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
+/* Nav background: chrome-surfaces.css */
 
 .a11y-glass-popover__hint {
   margin: 8px 2px 0;
@@ -125,7 +111,7 @@ html.dark .a11y-glass-popover__hint {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .lg-webgl-host {
+  .lg-webgl-host:not(#global-nav):not(.music-card-inner) {
     background: inherit !important;
   }
 

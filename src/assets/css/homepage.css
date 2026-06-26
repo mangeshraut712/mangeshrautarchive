@@ -2075,11 +2075,13 @@ html.dark .hero-2026-item::before {
 }
 
 @media (max-width: 768px) {
-  .album-art {
-    border-radius: 12px;
+  .album-art,
+  #home .music-card-inner .album-art {
+    border-radius: 50% !important;
   }
+
   .music-card.is-playing .album-art {
-    animation: none; /* Disable spin for square/rounded-corner art on mobile */
+    animation: none;
   }
 }
 
