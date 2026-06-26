@@ -373,6 +373,17 @@ html.dark .engineering-overview-lead {
 }
 
 @media (width <= 768px) {
+  .engineering-overview-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .engineering-overview-caption {
+    max-width: none;
+    text-align: left;
+  }
+
   .engineering-metrics-inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

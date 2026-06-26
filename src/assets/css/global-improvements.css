@@ -424,6 +424,6 @@ html.dark :where(a, button, input, textarea, select, summary, [role='button']):f
 }
 
 #currently-section {
-  scroll-margin-top: 130px;
+  scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 20px);
   scroll-margin-bottom: 2rem;
 }

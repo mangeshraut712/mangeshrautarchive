@@ -4913,7 +4913,7 @@ footer .max-w-6xl {
 }
 
 #debug-runner-section {
-  padding-bottom: 1rem !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
 }
 
 .debug-instruction-card {

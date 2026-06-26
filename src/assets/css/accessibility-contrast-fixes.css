@@ -597,8 +597,8 @@ html.dark .footer-tagline {
     outline-offset: 3px !important;
   }
 
-  /* Ensure game controls and keycaps have borders */
-  .game-kbd,
+  /* Ensure game hints and keycaps have borders */
+  .game-hint kbd,
   kbd {
     border: 1px solid ButtonText !important;
   }

@@ -1113,12 +1113,12 @@ html.dark .travel-map-status span {
 
   .travel-sidebar {
     top: auto;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
+    left: max(8px, env(safe-area-inset-left));
+    right: max(8px, env(safe-area-inset-right));
+    bottom: calc(var(--mobile-content-chrome-pad, 7.5rem) + env(safe-area-inset-bottom, 0px) + 8px);
     width: auto;
     max-width: none;
-    height: min(68dvh, 640px);
+    height: min(58dvh, 560px);
     border-radius: var(--radius-2xl) var(--radius-2xl) var(--radius-lg) var(--radius-lg);
   }
 

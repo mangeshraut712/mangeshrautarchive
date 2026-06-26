@@ -30,8 +30,10 @@ class DebugRunner {
     this.mobileControls = null;
     this.frame = 0;
     this.highScoreDisplay = document.getElementById('game-high-score');
+    this.scoreDisplay = document.getElementById('game-current-score');
     this.speedDisplay = document.getElementById('game-speed');
     this.lastUiHighScore = null;
+    this.lastUiScore = null;
     this.lastUiSpeed = null;
     this.floatingTexts = [];
     this.nextNoteTime = 0;
@@ -479,6 +481,12 @@ class DebugRunner {
   }
 
   updateSideStats() {
+    const scoreValue = Math.floor(this.score / 10);
+    if (this.scoreDisplay && this.lastUiScore !== scoreValue) {
+      this.scoreDisplay.textContent = scoreValue;
+      this.lastUiScore = scoreValue;
+    }
+
     const highScoreValue = Math.floor(this.highScore / 10);
     if (this.highScoreDisplay && this.lastUiHighScore !== highScoreValue) {
       this.highScoreDisplay.textContent = highScoreValue;

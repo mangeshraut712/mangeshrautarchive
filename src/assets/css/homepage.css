@@ -328,7 +328,6 @@ html.dark .hero-description {
 
   #home .hero-header {
     margin-bottom: 0.5rem !important;
-    min-height: 20rem;
   }
 
   #home .hero-description {
@@ -413,9 +412,9 @@ html.dark .hero-social-link:hover {
 /* Premium above-the-fold hero refinements kept eager to avoid loading the full overrides file */
 
 #home.hero-section {
-  padding-top: clamp(56px, 8vh, 78px) !important;
+  padding-top: clamp(12px, 2.5vh, 24px) !important;
   padding-bottom: clamp(16px, 3vh, 32px) !important;
-  min-height: clamp(28rem, 78vh, 36rem) !important;
+  min-height: auto !important;
 }
 
 .hero-section {

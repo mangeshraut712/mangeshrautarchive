@@ -1847,14 +1847,10 @@ footer .footer-tagline {
 }
 
 #debug-runner-section {
-  padding-bottom: 0.5rem !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
 }
 
 #debug-runner-section.py-12 {
   padding-top: 1.25rem !important;
-  padding-bottom: 0.5rem !important;
-}
-
-#debug-runner-section .game-legend-row {
-  margin-bottom: 0 !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
 }

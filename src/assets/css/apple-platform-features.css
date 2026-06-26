@@ -229,7 +229,7 @@ html.dark .home-hero {
 #debug-runner-section,
 #debug-runner-section.py-12 {
   padding-top: 1.25rem !important;
-  padding-bottom: 0.5rem !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
 }
 
 footer {
@@ -348,10 +348,6 @@ footer .footer-tagline {
   color: #fff;
   text-decoration: none;
   font-size: 0.85rem;
-}
-
-main > section#debug-runner-section {
-  padding-bottom: 0.5rem !important;
 }
 
 .live-activity-strip__pulse {

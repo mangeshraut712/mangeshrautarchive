@@ -622,7 +622,7 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
 
 /* Push main content down to account for fixed navbar */
 #main-content {
-  padding-top: 110px !important;
+  padding-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 16px) !important;
 }
 
 section,
@@ -631,7 +631,7 @@ header.hero-section,
 #books-content,
 #shows-content,
 #currently-section {
-  scroll-margin-top: 130px !important;
+  scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 20px) !important;
 }
 
 /* Theme Icon Original Colors */

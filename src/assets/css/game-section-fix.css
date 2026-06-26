@@ -23,7 +23,7 @@ html.dark section#debug-runner-section {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   2. GAME CONTAINER - Clean Border, No Gray 
+   2. GAME CONTAINER - Clean Border, No Gray
    ═══════════════════════════════════════════════════════════ */
 #debug-runner-container {
   max-width: 100% !important;
@@ -41,25 +41,18 @@ html.dark #debug-runner-container {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   3. GAME CANVAS - PURE WHITE Background in Light Mode
+   3. GAME CANVAS
    ═══════════════════════════════════════════════════════════ */
 #debug-runner-canvas {
   display: block !important;
   width: 100% !important;
-  max-width: 800px !important;
+  max-width: 100% !important;
   height: auto !important;
-  border-radius: 16px !important;
-  /* PURE WHITE - not gray, not off-white */
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  /* Crisp rendering */
+  border-radius: 10px !important;
   image-rendering: crisp-edges;
 }
 
-html.dark #debug-runner-canvas {
-  background: #000000 !important;
-  background-color: #000000 !important;
-}
+/* Canvas theme colors live in game-2026.css */
 
 /* ═══════════════════════════════════════════════════════════
    4. FOOTER - SOLID WHITE/BLACK (No Gray)
@@ -75,7 +68,6 @@ html.dark footer {
   background-color: #000000 !important;
 }
 
-/* Footer wrapper styling */
 footer .wrapper {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
@@ -89,29 +81,38 @@ footer .max-w-6xl {
 }
 
 #debug-runner-section {
-  padding-top: 1.25rem !important;
-  padding-bottom: 0.5rem !important;
+  padding-top: clamp(2rem, 4vh, 2.75rem) !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
+  scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 20px);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   3.6 GAME SECTION — compact single-page layout
-   ═══════════════════════════════════════════════════════════ */
 #debug-runner-section .container {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
+  align-items: center;
 }
 
 #debug-runner-section h2 {
   margin-bottom: 0.25rem !important;
   font-size: clamp(1.65rem, 3.5vw, 2.25rem) !important;
+  text-align: center !important;
+  width: 100%;
 }
 
 #debug-runner-section .section-subtitle {
-  margin: -1rem auto 0.35rem !important;
+  margin: 0 auto 0.35rem !important;
   max-width: 36rem;
   font-size: 0.9rem;
   line-height: 1.4;
+  text-align: center !important;
+}
+
+#debug-runner-section .game-stage {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  margin-bottom: clamp(1rem, 2vh, 1.5rem);
 }
 
 /* Game leaderboard */
@@ -179,7 +180,7 @@ html.dark .game-leaderboard-score {
   color: #f5f5f7;
 }
 
-@media (max-width: 767px) {
+@media (width <= 768px) {
   .game-stats-panel .game-leaderboard {
     grid-column: 1 / -1;
   }
@@ -204,44 +205,28 @@ html.dark .game-leaderboard-score {
     margin-top: 0.1rem;
     padding-bottom: max(0.25rem, env(safe-area-inset-bottom, 0px));
   }
+
+  #debug-runner-section .container {
+    gap: 0.45rem;
+  }
 }
 
 #debug-runner-section .game-area {
   align-items: stretch;
+  width: 100%;
 }
 
-@media (max-width: 768px) {
-  #debug-runner-section .container {
-    gap: 0.45rem;
+@media (min-width: 768px) {
+  #debug-runner-section .game-area {
+    align-items: start !important;
   }
 
-  #debug-runner-section {
-    padding-top: 1rem !important;
-    padding-bottom: max(5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem)) !important;
-  }
-
-  .debug-runner-mobile-controls-slot:not([hidden]) {
-    display: block;
-    grid-column: 1 / -1;
-    width: 100%;
-  }
-
-  .debug-runner-mobile-controls {
-    display: flex !important;
-    justify-content: center;
-    gap: 0.65rem;
-    width: 100%;
-  }
-
-  .debug-runner-mobile-controls button {
-    flex: 1 1 0;
-    min-width: 0;
-    height: 54px;
-    border-radius: 16px !important;
+  #debug-runner-section .game-stats-panel {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 }
 
-/* Footer border separator */
 footer .border-t {
   border-color: rgba(0, 0, 0, 0.1) !important;
 }
@@ -250,34 +235,25 @@ html.dark footer .border-t {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   5. SOCIAL MEDIA ICONS - Proper Spacing (Keep Original Style)
-   ═══════════════════════════════════════════════════════════ */
-
-/* Contact section social icons — good spacing after description */
 #contact .wrapper {
   margin-top: 8px !important;
   margin-bottom: 28px !important;
 }
 
-/* Follow Me section border in dark mode */
 html.dark #contact .contact-section[style*='border-top'] {
   border-top-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Ensure tooltip z-index is correct */
 .wrapper .tooltip {
   z-index: 1001 !important;
 }
 
-/* Floating elements stay on top */
 #chatbot-toggle,
 #chatbot-widget,
 #go-to-top {
   z-index: 100000 !important;
 }
 
-/* Mobile canvas — larger playfield; controls sit below stats */
 @media (max-width: 480px) {
   #debug-runner-canvas,
   #debug-runner-container {

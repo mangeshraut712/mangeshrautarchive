@@ -88,19 +88,6 @@ body {
     z-index: 9999 !important;
   }
 
-  body.has-a11y-toolbar #go-to-top,
-  body.has-a11y-toolbar #go-to-top.visible {
-    right: var(--mobile-edge-inset) !important;
-    bottom: var(--mobile-bottom-inset) !important;
-  }
-
-  body.has-a11y-toolbar #chatbot-toggle {
-    right: var(--mobile-edge-inset) !important;
-    bottom: calc(
-      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
-    ) !important;
-  }
-
   html {
     scroll-padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
   }
@@ -113,9 +100,17 @@ body {
   body.has-a11y-toolbar #about,
   body.has-a11y-toolbar #currently-section,
   body.has-a11y-toolbar #debug-runner-section,
-  body.has-a11y-toolbar #contact {
+  body.has-a11y-toolbar #contact,
+  body.has-a11y-toolbar #engineering,
+  body.has-a11y-toolbar #projects,
+  body.has-a11y-toolbar footer {
     scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
-    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
+  }
+
+  body.has-a11y-toolbar .systems-shell,
+  body.has-a11y-toolbar .monitor-container {
+    padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
   }
 
   body.has-a11y-toolbar .about-content,
@@ -133,18 +128,6 @@ body {
     scroll-margin-bottom: calc(
       var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom)
     );
-  }
-
-  /*
-   * Final mobile chrome contract. Some deferred liquid-glass rules load after
-   * the base page CSS, so these selectors intentionally carry body specificity.
-   */
-  html body.has-a11y-toolbar .a11y-toolbar {
-    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-  }
-
-  html body.has-a11y-toolbar #chatbot-toggle {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4.25rem) !important;
   }
 
   #home .hero-description {
