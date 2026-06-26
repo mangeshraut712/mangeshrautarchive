@@ -1,17 +1,16 @@
 import { getLiquidGlassEngine } from './liquid-glass-engine.js';
 
+/* Nav + hero music card use solid surfaces in chrome-surfaces.css — no WebGL. */
 const CHROME_SELECTORS = [
-  '#global-nav.global-nav.dynamic-island',
   '.monitor-page-nav',
   '.travel-nav',
   '#chatbot-widget',
   '.hero-glass-card',
-  '#home .music-card-inner',
   '#projects #github-projects-container .showcase-project-card',
 ];
 
 const CHROME_MATCH =
-  '#global-nav.global-nav.dynamic-island, .monitor-page-nav, .travel-nav, #chatbot-widget, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #home .music-card-inner, #projects #github-projects-container .showcase-project-card';
+  '.monitor-page-nav, .travel-nav, #chatbot-widget, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #projects #github-projects-container .showcase-project-card';
 
 function isGlassModeActive() {
   const mode = document.documentElement.dataset.lgMode;

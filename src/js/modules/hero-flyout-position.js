@@ -159,6 +159,9 @@
     flyout.style.maxWidth = '';
     flyout.style.maxHeight = '';
     flyout.style.overflow = '';
+    flyout.style.left = '';
+    flyout.style.top = '';
+    flyout.style.position = '';
     flyout.classList.remove('hero-flyout--music-slot');
     setMusicSlotHidden(false);
   }

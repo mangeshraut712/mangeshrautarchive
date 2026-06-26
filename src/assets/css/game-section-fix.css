@@ -26,17 +26,17 @@ html.dark section#debug-runner-section {
    2. GAME CONTAINER - Clean Border, No Gray 
    ═══════════════════════════════════════════════════════════ */
 #debug-runner-container {
-  max-width: 800px !important;
+  max-width: 100% !important;
   margin: 0 auto !important;
   background: transparent !important;
-  border-radius: 20px !important;
+  border-radius: 12px !important;
   overflow: hidden !important;
-  border: 2px solid var(--card-border-rest) !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
 html.dark #debug-runner-container {
-  border: 2px solid var(--card-border-rest) !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
@@ -195,7 +195,7 @@ footer .max-w-6xl {
 }
 
 #debug-runner-section .section-subtitle {
-  margin: -1rem auto 0 !important;
+  margin: -1rem auto 0.35rem !important;
   max-width: 36rem;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -286,15 +286,15 @@ html.dark .game-leaderboard-score {
     flex-direction: column;
     gap: 0.05rem;
   }
+
+  .debug-runner-mobile-controls-slot:not([hidden]) {
+    margin-top: 0.1rem;
+    padding-bottom: max(0.25rem, env(safe-area-inset-bottom, 0px));
+  }
 }
 
-#debug-runner-section .game-legend-heading {
-  margin: 0 !important;
-  padding-top: 0;
-}
-
-#debug-runner-section .game-legend-row {
-  margin: 0 !important;
+#debug-runner-section .game-area {
+  align-items: stretch;
 }
 
 @media (max-width: 768px) {
@@ -304,6 +304,27 @@ html.dark .game-leaderboard-score {
 
   #debug-runner-section {
     padding-top: 1rem !important;
+    padding-bottom: max(5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem)) !important;
+  }
+
+  .debug-runner-mobile-controls-slot:not([hidden]) {
+    display: block;
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .debug-runner-mobile-controls {
+    display: flex !important;
+    justify-content: center;
+    gap: 0.65rem;
+    width: 100%;
+  }
+
+  .debug-runner-mobile-controls button {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 54px;
+    border-radius: 16px !important;
   }
 }
 

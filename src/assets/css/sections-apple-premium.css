@@ -352,9 +352,8 @@ html.dark #home .hero-pill-badge {
   color: var(--text-primary-dark);
 }
 
-/* Music Card - Apple Style */
+/* Music Card - layout in chrome-surfaces.css */
 #home .music-card {
-  max-width: 300px;
   margin: 0 auto 0.75rem;
   background: transparent !important;
   border: none !important;

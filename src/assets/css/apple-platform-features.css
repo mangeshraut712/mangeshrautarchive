@@ -60,59 +60,35 @@ html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
   box-shadow: none !important;
 }
 
-/* ─── Hero music card — compact horizontal pill (WebGL-safe) ─── */
-#home .music-card {
-  display: flex !important;
-  justify-content: center !important;
-  width: fit-content !important;
-  max-width: min(100%, 300px) !important;
-  margin-inline: auto !important;
-}
-
-#home .music-card-inner {
+/* Hero music card layout — width/surfaces in chrome-surfaces.css */
+#home .music-card-inner .lg-webgl-content {
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
   gap: 0.75rem !important;
+  flex: 0 1 auto !important;
   width: auto !important;
-  max-width: 300px !important;
-  min-height: 64px !important;
-  padding: 0.5rem 0.85rem 0.5rem 0.5rem !important;
-  border-radius: 999px !important;
-}
-
-#home .music-card-inner .lg-webgl-content {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 0.85rem !important;
-  flex: 1 1 auto !important;
   min-width: 0 !important;
 }
 
 #home .music-card-inner .album-art-container {
-  width: 48px !important;
-  height: 48px !important;
+  width: 52px !important;
+  height: 52px !important;
   flex-shrink: 0 !important;
   border-radius: 50% !important;
   overflow: hidden !important;
 }
 
 #home .music-card-inner .album-art {
-  width: 48px !important;
-  height: 48px !important;
+  width: 52px !important;
+  height: 52px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
   box-shadow: none !important;
 }
 
-#home .music-card-inner .track-name,
-#home .music-card-inner .artist-name {
-  max-width: 9.5rem !important;
-}
-
 #home .music-card-inner .track-info {
-  flex: 1 1 auto !important;
+  flex: 0 1 auto !important;
   min-width: 0 !important;
   text-align: left !important;
 }
@@ -254,10 +230,6 @@ html.dark .home-hero {
 #debug-runner-section.py-12 {
   padding-top: 1.25rem !important;
   padding-bottom: 0.5rem !important;
-}
-
-#debug-runner-section .game-legend-row {
-  margin-bottom: 0 !important;
 }
 
 footer {

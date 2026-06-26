@@ -14,6 +14,26 @@ html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
 html[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
 html[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
 html.is-scrolling body #global-nav.global-nav.dynamic-island,
+html:not(.dark) body #global-nav.global-nav.dynamic-island,
+html:not(.dark) body #global-nav.global-nav.dynamic-island.scrolled,
+html:not(.dark) body #global-nav.global-nav.dynamic-island.is-compact,
+html:not(.dark) body #global-nav.global-nav.dynamic-island.lg-webgl-host,
+html:not(.dark)[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html:not(.dark)[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
+html:not(.dark)[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
+html:not(.dark).is-scrolling body #global-nav.global-nav.dynamic-island,
+html:not(.dark).aod-dim body #global-nav.global-nav.dynamic-island {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition:
+    border-color 0.2s ease,
+    opacity 0.2s ease !important;
+}
+
 html.dark body #global-nav.global-nav.dynamic-island,
 html.dark body #global-nav.global-nav.dynamic-island.scrolled,
 html.dark body #global-nav.global-nav.dynamic-island.is-compact,
@@ -23,12 +43,13 @@ html.dark[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
 html.dark[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
 html.dark.is-scrolling body #global-nav.global-nav.dynamic-island,
 html.dark.aod-dim body #global-nav.global-nav.dynamic-island {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
+  border-bottom: 1px solid #2c2c2e !important;
   transition:
     border-color 0.2s ease,
     opacity 0.2s ease !important;
@@ -43,14 +64,17 @@ html:not(.dark) body #global-nav.global-nav.dynamic-island.lg-webgl-host {
 html.dark body #global-nav.global-nav.dynamic-island,
 html.dark body #global-nav.global-nav.dynamic-island.scrolled,
 html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host {
-  background: #000000 !important;
-  background-color: #000000 !important;
   border-bottom: 1px solid #2c2c2e !important;
 }
 
+/* WebGL must not paint over solid chrome */
+#global-nav.lg-webgl-host .lg-webgl-canvas,
+#home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
+  display: none !important;
+}
+
 @media (prefers-reduced-transparency: reduce) {
-  body #global-nav.global-nav.dynamic-island,
-  html.dark body #global-nav.global-nav.dynamic-island {
+  html:not(.dark) body #global-nav.global-nav.dynamic-island {
     background: #ffffff !important;
     background-color: #ffffff !important;
     backdrop-filter: none !important;
@@ -60,11 +84,18 @@ html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host {
   html.dark body #global-nav.global-nav.dynamic-island {
     background: #000000 !important;
     background-color: #000000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
-/* ─── Hero music card ─── */
+/* ─── Hero music card — width + surfaces (single source of truth) ─── */
 #home .music-card {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0.35rem auto 0.5rem !important;
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -77,6 +108,15 @@ html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host {
 html[data-lg-mode='clear'] #home .music-card-inner,
 html[data-lg-mode='balanced'] #home .music-card-inner,
 html[data-lg-mode='tinted'] #home .music-card-inner {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  width: fit-content !important;
+  max-width: min(100%, calc(100vw - 2.5rem), 26rem) !important;
+  min-height: 64px !important;
+  padding: 0.5rem 0.85rem 0.5rem 0.5rem !important;
+  border-radius: 999px !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -87,6 +127,16 @@ html[data-lg-mode='tinted'] #home .music-card-inner {
   transition:
     border-color 0.2s ease,
     transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+#home .music-card-inner .lg-webgl-content {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
 }
 
 html.dark #home .music-card-inner,
@@ -113,5 +163,64 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner {
     background: #000000 !important;
     background-color: #000000 !important;
     border-color: #0a84ff !important;
+  }
+}
+
+#home .music-card-inner .track-info {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  max-width: min(18rem, 52vw) !important;
+  text-align: left !important;
+}
+
+#home .music-card-inner .track-name,
+#home .music-card-inner .artist-name {
+  max-width: min(18rem, 52vw) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+#home .music-card-inner .album-art-container {
+  width: 48px !important;
+  height: 48px !important;
+  flex-shrink: 0 !important;
+}
+
+#home .music-card-inner .album-art {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+#home .music-card-spotify-link {
+  flex-shrink: 0 !important;
+  margin-left: 0 !important;
+}
+
+@media (max-width: 768px) {
+  #home .music-card {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #home .music-card-inner,
+  #home .music-card-inner.lg-webgl-host {
+    max-width: min(100%, calc(100vw - 2rem)) !important;
+    min-height: 60px !important;
+    padding: 0.45rem 0.75rem 0.45rem 0.45rem !important;
+    gap: 0.65rem !important;
+  }
+
+  #home .music-card-inner .track-info,
+  #home .music-card-inner .track-name,
+  #home .music-card-inner .artist-name {
+    max-width: min(14rem, 46vw) !important;
+  }
+
+  #home .music-card-inner .album-art-container,
+  #home .music-card-inner .album-art {
+    width: 42px !important;
+    height: 42px !important;
   }
 }

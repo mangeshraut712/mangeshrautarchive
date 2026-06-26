@@ -541,6 +541,12 @@ html.dark .profile-image-wrapper {
     transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.hero-flyout:not(.is-open),
+.hero-flyout[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 .hero-flyout.is-open {
   opacity: 1;
   pointer-events: auto;

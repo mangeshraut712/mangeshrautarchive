@@ -290,6 +290,8 @@
 
     html.dark .global-nav.dynamic-island {
       border-bottom-color: rgb(255 255 255 / 10%);
+      background: #000 !important;
+      background-color: #000 !important;
     }
 
     #home.hero-section {
@@ -685,7 +687,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260701c" data-lazy-style-key="education" />
   <link rel="stylesheet" data-href="assets/css/skills.css?v=20260701c" data-lazy-style-key="skills" />
   <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260701c" data-lazy-style-key="certifications" />
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260701c" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=20260701e" />
   <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260701c" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260701c" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260701c" data-lazy-style-key="assistant" />
@@ -698,9 +700,9 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/recommendations.css?v=20260701c" data-lazy-style-key="recommendations" />
   <link rel="stylesheet" data-href="assets/css/awards.css?v=20260701c" data-lazy-style-key="awards" />
   <link rel="stylesheet" href="assets/css/typography-system.css?v=20260701c" />
-  <link rel="stylesheet" href="assets/css/game-section-fix.css?v=20260701c" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/game-section-fix.css?v=20260701c" /></noscript>
-  <link rel="stylesheet" data-href="assets/css/game-2026.css?v=20260701c" data-lazy-style-key="game" />
+  <link rel="stylesheet" href="assets/css/game-section-fix.css?v=20260701g" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/game-section-fix.css?v=20260701g" /></noscript>
+  <link rel="stylesheet" data-href="assets/css/game-2026.css?v=20260701g" data-lazy-style-key="game" />
   <link rel="stylesheet" data-href="assets/css/premium-enhancements.css?v=20260701c" data-lazy-style-key="motion" />
   <link rel="stylesheet" data-href="assets/css/birthday-celebration.css?v=20260701c" data-lazy-style-key="birthday" />
   <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260701c" data-lazy-style-key="projects" />
@@ -711,8 +713,8 @@ html.dark #home .hero-name-text {
   <noscript><link rel="stylesheet" href="assets/css/apple-premium-system.css?v=20260525b" /></noscript>
 
   <!-- Sections Apple Premium Upgrade - All Sections Enhanced -->
-  <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260701c" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260701c" /></noscript>
+  <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260701f" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260701f" /></noscript>
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260701c" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260701c" /></noscript>
 
@@ -740,9 +742,11 @@ html.dark #home .hero-name-text {
   <noscript><link rel="stylesheet" href="assets/css/liquid-glass-webgl.css?v=20260701c" /></noscript>
   <link rel="stylesheet" href="assets/css/high-contrast.css?v=20260701c" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/high-contrast.css?v=20260701c" /></noscript>
-  <link rel="stylesheet" href="assets/css/apple-platform-features.css?v=20260701d" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/apple-platform-features.css?v=20260701d" /></noscript>
-  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701d" />
+  <link rel="stylesheet" href="assets/css/apple-platform-features.css?v=20260701f" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/apple-platform-features.css?v=20260701f" /></noscript>
+  <!-- Must load after all deferred glass/theme sheets -->
+  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701h" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701h" /></noscript>
   <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260701c" data-lazy-style-key="currently" />
 
   <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260701c" />
@@ -1327,7 +1331,7 @@ html.dark #home .hero-name-text {
                   if (!window.__PERF_AUDIT__) {
                     var heroFlyoutScript = document.createElement('script');
                     heroFlyoutScript.defer = true;
-                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260701c';
+                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260701e';
                     document.currentScript.parentNode.insertBefore(
                       heroFlyoutScript,
                       document.currentScript.nextSibling
@@ -4011,24 +4015,6 @@ html.dark #home .hero-name-text {
         <p class="section-subtitle">The Developer's Challenge - Navigate through the chaos of production!</p>
 
         <div class="game-stage">
-          <div class="game-controls-bar">
-            <p class="game-controls-heading" id="game-controls-heading">Keyboard controls</p>
-            <div class="game-controls-wrapper" aria-labelledby="game-controls-heading">
-              <div class="game-control-item">
-                <kbd class="game-kbd">SPACE</kbd>
-                <span class="game-kbd-action">Start</span>
-              </div>
-              <div class="game-control-item">
-                <kbd class="game-kbd">↑</kbd>
-                <span class="game-kbd-action">Jump</span>
-              </div>
-              <div class="game-control-item">
-                <kbd class="game-kbd">↓</kbd>
-                <span class="game-kbd-action">Duck</span>
-              </div>
-            </div>
-          </div>
-
           <div class="game-area">
             <div class="game-play-zone">
               <div class="game-canvas-wrapper">
@@ -4055,40 +4041,8 @@ html.dark #home .hero-name-text {
                 </div>
               </div>
             </aside>
-          </div>
 
-          <div class="game-legend-block">
-            <p class="game-legend-heading" id="game-legend-heading">Obstacles &amp; power-ups</p>
-            <div class="game-legend-row" aria-labelledby="game-legend-heading">
-              <div class="legend-card">
-                <span class="legend-emoji">🐛</span>
-                <div class="legend-info">
-                  <strong>Bugs</strong>
-                  <span>Jump to avoid</span>
-                </div>
-              </div>
-              <div class="legend-card">
-                <span class="legend-emoji">⚔️</span>
-                <div class="legend-info">
-                  <strong>Merge Conflicts</strong>
-                  <span>Duck to dodge</span>
-                </div>
-              </div>
-              <div class="legend-card">
-                <span class="legend-emoji">☕</span>
-                <div class="legend-info">
-                  <strong>Coffee</strong>
-                  <span>Speed boost</span>
-                </div>
-              </div>
-              <div class="legend-card">
-                <span class="legend-emoji">🔥</span>
-                <div class="legend-info">
-                  <strong>Prod Fire</strong>
-                  <span>Game over</span>
-                </div>
-              </div>
-            </div>
+            <div id="debug-runner-mobile-controls-slot" class="debug-runner-mobile-controls-slot" hidden></div>
           </div>
         </div>
       </div>

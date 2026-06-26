@@ -444,9 +444,19 @@ class DebugRunner {
     wrapper.appendChild(jumpBtn);
     wrapper.appendChild(duckBtn);
 
-    const gameArea = container.closest('.game-area');
-    const mount = gameArea || container.closest('.game-play-zone') || container.parentElement;
-    mount.appendChild(wrapper);
+    const slot = document.getElementById('debug-runner-mobile-controls-slot');
+    if (slot) {
+      slot.hidden = false;
+      slot.replaceChildren(wrapper);
+    } else {
+      const statsPanel = container.closest('.game-area')?.querySelector('.game-stats-panel');
+      if (statsPanel) {
+        statsPanel.insertAdjacentElement('afterend', wrapper);
+      } else {
+        const gameArea = container.closest('.game-area');
+        (gameArea || container.parentElement)?.appendChild(wrapper);
+      }
+    }
     this.mobileControls = wrapper;
   }
 
