@@ -1,8 +1,8 @@
-import { cloneNode } from './clone-node';
-import { embedImages } from './embed-images';
-import { applyStyle } from './apply-style';
-import { embedWebFonts, getWebFontCSS } from './embed-webfonts';
-import { getImageSize, getPixelRatio, createImage, canvasToBlob, nodeToDataURL, checkCanvasDimensions, } from './util';
+import { cloneNode } from './clone-node.js';
+import { embedImages } from './embed-images.js';
+import { applyStyle } from './apply-style.js';
+import { embedWebFonts, getWebFontCSS } from './embed-webfonts.js';
+import { getImageSize, getPixelRatio, createImage, canvasToBlob, nodeToDataURL, checkCanvasDimensions, } from './util.js';
 export async function toSvg(node, options = {}) {
     const { width, height } = getImageSize(node, options);
     const clonedNode = (await cloneNode(node, options, true));

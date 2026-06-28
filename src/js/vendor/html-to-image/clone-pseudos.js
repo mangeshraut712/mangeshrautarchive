@@ -1,4 +1,4 @@
-import { uuid, getStyleProperties } from './util';
+import { uuid, getStyleProperties } from './util.js';
 function formatCSSText(style) {
     const content = style.getPropertyValue('content');
     return `${style.cssText} content: '${content.replace(/'|"/g, '')}';`;

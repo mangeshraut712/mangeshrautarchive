@@ -1929,17 +1929,18 @@ html.dark #name-pronounce-btn.name-pronounce-btn.is-playing {
 
 @media (width <= 768px) {
   #name-pronounce-btn.name-pronounce-btn {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    min-height: 24px !important;
-    max-width: 24px !important;
-    max-height: 24px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    background: rgb(0 113 227 / 7%) !important;
   }
 
   #name-pronounce-btn.name-pronounce-btn svg {
-    width: 15px !important;
-    height: 15px !important;
+    width: 17px !important;
+    height: 17px !important;
   }
 }
 

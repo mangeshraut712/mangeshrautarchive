@@ -92,6 +92,7 @@ html.dark {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  min-height: 36px;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-full);
   color: var(--apple-blue);
@@ -366,7 +367,7 @@ html.dark .travel-sidebar {
 /* ─── Search and Controls ─── */
 .travel-search {
   display: grid;
-  grid-template-columns: 18px 1fr 28px;
+  grid-template-columns: 18px 1fr 36px;
   align-items: center;
   gap: var(--space-2);
   min-height: 42px;
@@ -401,8 +402,8 @@ html.dark .travel-sidebar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border: 0;
   border-radius: var(--radius-full);
   background: transparent;
@@ -502,7 +503,8 @@ html.dark .travel-sidebar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  min-height: 32px;
+  padding: 7px 12px;
   border-radius: var(--radius-full);
   background: var(--fill-secondary);
   border: 1px solid transparent;
@@ -1124,6 +1126,9 @@ html.dark .travel-map-status span {
 
   .travel-sidebar__handle {
     display: block;
+    min-height: 36px;
+    padding: 12px 0 8px;
+    touch-action: manipulation;
   }
 
   .travel-sidebar.is-collapsed {
@@ -1299,9 +1304,9 @@ html.dark .maplibregl-ctrl-group {
   border-radius: 0 !important;
   box-shadow: none !important;
   padding: 0 !important;
-  min-height: 0 !important;
-  width: 29px !important;
-  height: 29px !important;
+  min-height: 36px !important;
+  width: 36px !important;
+  height: 36px !important;
   color: inherit !important;
   -webkit-text-fill-color: unset !important;
   transform: none !important;

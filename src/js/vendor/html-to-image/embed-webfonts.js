@@ -1,6 +1,6 @@
-import { toArray } from './util';
-import { fetchAsDataURL } from './dataurl';
-import { shouldEmbed, embedResources } from './embed-resources';
+import { toArray } from './util.js';
+import { fetchAsDataURL } from './dataurl.js';
+import { shouldEmbed, embedResources } from './embed-resources.js';
 const cssFetchCache = {};
 async function fetchCSS(url) {
     let cache = cssFetchCache[url];

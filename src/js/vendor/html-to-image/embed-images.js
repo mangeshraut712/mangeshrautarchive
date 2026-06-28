@@ -1,7 +1,7 @@
-import { embedResources } from './embed-resources';
-import { toArray, isInstanceOfElement } from './util';
-import { isDataUrl, resourceToDataURL } from './dataurl';
-import { getMimeType } from './mimes';
+import { embedResources } from './embed-resources.js';
+import { toArray, isInstanceOfElement } from './util.js';
+import { isDataUrl, resourceToDataURL } from './dataurl.js';
+import { getMimeType } from './mimes.js';
 async function embedProp(propName, node, options) {
     var _a;
     const propValue = (_a = node.style) === null || _a === void 0 ? void 0 : _a.getPropertyValue(propName);

@@ -52,8 +52,8 @@ html.dark .project-evidence-row {
 .project-evidence-link {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0.2rem 0.55rem;
+  min-height: 32px;
+  padding: 0.3rem 0.7rem;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 600;

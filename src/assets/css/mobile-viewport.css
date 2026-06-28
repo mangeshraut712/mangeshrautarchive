@@ -37,12 +37,13 @@ body {
 
 @media (width <=768px) {
   :root {
-    --mobile-fab-size: 3.5rem;
-    --mobile-fab-gap: 0.875rem;
+    --mobile-fab-size: 3rem;
+    --mobile-fab-gap: 0.625rem;
     --mobile-edge-inset: max(1rem, env(safe-area-inset-right));
-    --mobile-bottom-inset: calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
-    --mobile-a11y-toolbar-lift: 3.75rem;
+    --mobile-bottom-inset: calc(env(safe-area-inset-bottom, 0px) + 0.875rem);
+    --mobile-a11y-toolbar-lift: 3.25rem;
     --mobile-content-chrome-pad: 7.5rem;
+    --mobile-anchor-offset: calc(5.75rem + env(safe-area-inset-top, 0px));
   }
 
   /* Accessibility toolbar — above Safari home indicator, clear of page edge */
@@ -53,6 +54,11 @@ body {
     top: auto !important;
     transform: none !important;
     z-index: 9998 !important;
+  }
+
+  body.monitor-page .a11y-toolbar,
+  body.systems-page .a11y-toolbar {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.625rem) !important;
   }
 
   .a11y-glass-popover {
@@ -89,6 +95,7 @@ body {
   }
 
   html {
+    scroll-padding-top: var(--mobile-anchor-offset);
     scroll-padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
   }
 
@@ -98,6 +105,14 @@ body {
 
   /* Keep readable clearance above bottom floating chrome in key sections */
   body.has-a11y-toolbar #about,
+  body.has-a11y-toolbar #skills,
+  body.has-a11y-toolbar #experience,
+  body.has-a11y-toolbar #education,
+  body.has-a11y-toolbar #publications,
+  body.has-a11y-toolbar #awards,
+  body.has-a11y-toolbar #recommendations,
+  body.has-a11y-toolbar #certifications,
+  body.has-a11y-toolbar #blog,
   body.has-a11y-toolbar #currently-section,
   body.has-a11y-toolbar #debug-runner-section,
   body.has-a11y-toolbar #contact,
@@ -109,8 +124,42 @@ body {
   }
 
   body.has-a11y-toolbar .systems-shell,
-  body.has-a11y-toolbar .monitor-container {
+  body.has-a11y-toolbar .monitor-container,
+  body.has-a11y-toolbar .travel-sidebar,
+  body.has-a11y-toolbar .uses-section,
+  body.has-a11y-toolbar .uses-control-center {
     padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
+  }
+
+  #home,
+  #about,
+  #skills,
+  #experience,
+  #engineering,
+  #projects,
+  #education,
+  #publications,
+  #awards,
+  #recommendations,
+  #certifications,
+  #blog,
+  #contact,
+  .section {
+    scroll-margin-top: var(--mobile-anchor-offset);
+  }
+
+  a.education-institution,
+  a.education-proof,
+  .watch-btn,
+  #recommendations .author-company-link,
+  #recommendations .linkedin-verify {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 2.5rem !important;
+  }
+
+  a.education-proof {
+    min-height: 3.25rem !important;
   }
 
   body.has-a11y-toolbar .about-content,
@@ -143,10 +192,21 @@ body {
   }
 
   body.has-a11y-toolbar #home .hero-actions {
-    width: min(100%, 17.5rem) !important;
-    max-width: min(17.5rem, calc(100vw - 7rem - env(safe-area-inset-right))) !important;
+    flex-direction: row !important;
+    width: min(100%, 22rem) !important;
+    max-width: min(22rem, calc(100vw - 2rem - env(safe-area-inset-right))) !important;
     padding-right: 0 !important;
-    gap: 0.65rem !important;
+    gap: 0.55rem !important;
+  }
+
+  body.has-a11y-toolbar #home .hero-actions .hero-cta {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    min-height: 2.75rem !important;
+    padding-inline: 0.75rem !important;
+    font-size: clamp(0.78rem, 3.2vw, 0.9rem) !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
   }
 
   .website-share-dialog {

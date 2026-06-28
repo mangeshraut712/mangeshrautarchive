@@ -1,7 +1,7 @@
-import { clonePseudoElements } from './clone-pseudos';
-import { createImage, toArray, isInstanceOfElement, getStyleProperties, } from './util';
-import { getMimeType } from './mimes';
-import { resourceToDataURL } from './dataurl';
+import { clonePseudoElements } from './clone-pseudos.js';
+import { createImage, toArray, isInstanceOfElement, getStyleProperties, } from './util.js';
+import { getMimeType } from './mimes.js';
+import { resourceToDataURL } from './dataurl.js';
 async function cloneCanvasElement(canvas) {
     const dataURL = canvas.toDataURL();
     if (dataURL === 'data:,') {

@@ -25,9 +25,9 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .travel-filter-chip
   ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
     .a11y-toolbar button
-  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ),
+  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.uses-control-tile):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -65,9 +65,9 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .travel-filter-chip
   ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
     .a11y-toolbar button
-  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ):hover,
+  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.uses-control-tile):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,
@@ -603,8 +603,8 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
   ):not(.proj-filter-btn):not(.project-lens-chip):not(.projects-view-all-btn):not(
     .project-action-btn
   ):not(.blog-read-btn):not(.a11y-toolbar button):not(.systems-arch-tab):not(
-    .portfolio-reach-badge
-  ):not(.hero-pill-badge),
+    .uses-control-tile
+  ):not(.portfolio-reach-badge):not(.hero-pill-badge),
 .project-tag,
 .badge {
   color: #fff !important;
