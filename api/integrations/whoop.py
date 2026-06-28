@@ -1,4 +1,5 @@
 import os
+import asyncio
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlencode
@@ -143,6 +144,16 @@ async def _get_json(access_token: str, path: str) -> Dict[str, Any]:
     return response.json()
 
 
+def _record_date(record: Optional[Dict[str, Any]]) -> Optional[str]:
+    if not record:
+        return None
+    for key in ("end", "start", "updated_at", "created_at"):
+        value = record.get(key)
+        if isinstance(value, str) and len(value) >= 10:
+            return value[:10]
+    return None
+
+
 async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
     today = datetime.now(timezone.utc).date().isoformat()
     query = _recent_query()
@@ -157,11 +168,24 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         "source_status": "synced",
     }
     partial = False
+    record_dates: List[str] = []
+
+    recovery_result, cycles_result, sleep_result = await asyncio.gather(
+        _get_json(access_token, f"/recovery{query}"),
+        _get_json(access_token, f"/cycle{query}"),
+        _get_json(access_token, f"/activity/sleep{query}"),
+        return_exceptions=True,
+    )
 
     try:
-        recovery = await _get_json(access_token, f"/recovery{query}")
+        if isinstance(recovery_result, Exception):
+            raise recovery_result
+        recovery = recovery_result
         record = _pick_scored_record(recovery.get("records") or [])
         if record:
+            record_date = _record_date(record)
+            if record_date:
+                record_dates.append(record_date)
             score = record.get("score") or {}
             summary["recovery_score"] = score.get("recovery_score")
             summary["resting_heart_rate"] = score.get("resting_heart_rate")
@@ -174,9 +198,14 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         partial = True
 
     try:
-        cycles = await _get_json(access_token, f"/cycle{query}")
+        if isinstance(cycles_result, Exception):
+            raise cycles_result
+        cycles = cycles_result
         record = _pick_active_cycle_record(cycles.get("records") or [])
         if record:
+            record_date = _record_date(record)
+            if record_date:
+                record_dates.append(record_date)
             strain = (record.get("score") or {}).get("strain")
             if strain is not None:
                 summary["strain"] = round(float(strain), 1)
@@ -186,9 +215,14 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         partial = True
 
     try:
-        sleep = await _get_json(access_token, f"/activity/sleep{query}")
+        if isinstance(sleep_result, Exception):
+            raise sleep_result
+        sleep = sleep_result
         record = _pick_scored_record(sleep.get("records") or [])
         if record:
+            record_date = _record_date(record)
+            if record_date:
+                record_dates.append(record_date)
             performance = (record.get("score") or {}).get("sleep_performance_percentage")
             if performance is not None:
                 summary["sleep_score"] = int(round(float(performance)))
@@ -202,5 +236,8 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate", "hrv_trend")
     ):
         summary["source_status"] = "partial"
+
+    if record_dates:
+        summary["date"] = max(record_dates)
 
     return summary

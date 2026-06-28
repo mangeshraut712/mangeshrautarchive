@@ -22,6 +22,14 @@ PUBLIC_HEALTH_FIELDS = (
     "source_status",
 )
 
+WHOOP_HEALTH_FIELDS = (
+    "sleepScore",
+    "recoveryScore",
+    "strain",
+    "restingHeartRate",
+    "hrvTrend",
+)
+
 
 def _supabase_url() -> str:
     return os.getenv("SUPABASE_URL", "").strip().rstrip("/")
@@ -125,6 +133,10 @@ def _health_summary_has_metrics(data: Dict[str, Any]) -> bool:
     )
 
 
+def _health_summary_has_whoop_metrics(data: Dict[str, Any]) -> bool:
+    return any(data.get(key) is not None for key in WHOOP_HEALTH_FIELDS)
+
+
 def _resolve_health_summary_status(data: Dict[str, Any]) -> str:
     source_status = data.get("sourceStatus")
     if source_status == "partial" and not _health_summary_has_metrics(data):
@@ -132,6 +144,49 @@ def _resolve_health_summary_status(data: Dict[str, Any]) -> str:
     if source_status in {"not_configured", "partial"} and not _health_summary_has_metrics(data):
         return source_status
     return "live"
+
+
+def _coalesce_latest_health_rows(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    sanitized_rows = [sanitize_health_summary(row) for row in rows if isinstance(row, dict)]
+    if not sanitized_rows:
+        return empty_health_summary()
+
+    latest_row = sanitized_rows[0]
+    merged = dict(latest_row)
+
+    whoop_row = next((_row for _row in sanitized_rows if _health_summary_has_whoop_metrics(_row)), None)
+    if whoop_row:
+        for field in WHOOP_HEALTH_FIELDS:
+            merged[field] = whoop_row.get(field)
+
+    weight_row = next((_row for _row in sanitized_rows if _row.get("weightTrend") is not None), None)
+    if weight_row:
+        merged["weightTrend"] = weight_row.get("weightTrend")
+
+    synced_candidates = [
+        _row.get("lastSyncedAt")
+        for _row in (whoop_row, weight_row, latest_row)
+        if _row and _row.get("lastSyncedAt")
+    ]
+    if synced_candidates:
+        merged["lastSyncedAt"] = max(synced_candidates)
+
+    date_candidates = [
+        _row.get("date")
+        for _row in (whoop_row, weight_row, latest_row)
+        if _row and _row.get("date")
+    ]
+    if date_candidates:
+        merged["date"] = max(date_candidates)
+
+    has_whoop = _health_summary_has_whoop_metrics(merged)
+    has_weight = merged.get("weightTrend") is not None
+    if has_whoop and has_weight:
+        merged["sourceStatus"] = "synced"
+    elif has_whoop or has_weight:
+        merged["sourceStatus"] = "partial"
+
+    return merged
 
 
 async def fetch_latest_health_summary() -> Dict[str, Any]:
@@ -155,7 +210,7 @@ async def fetch_latest_health_summary() -> Dict[str, Any]:
     params = {
         "select": ",".join(PUBLIC_HEALTH_FIELDS),
         "order": "date.desc",
-        "limit": "1",
+        "limit": "14",
     }
 
     try:
@@ -179,8 +234,7 @@ async def fetch_latest_health_summary() -> Dict[str, Any]:
             "message": "Health summary storage is configured but has no public rows.",
         }
 
-    row_data = rows[0] if isinstance(rows[0], dict) else {}
-    data = sanitize_health_summary(row_data)
+    data = _coalesce_latest_health_rows(rows)
     return {
         "status": _resolve_health_summary_status(data),
         "source": "supabase",

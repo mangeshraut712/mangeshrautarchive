@@ -1,8 +1,10 @@
 import hashlib
 import os
+import time
 from datetime import datetime, timezone
-from typing import Optional, Dict
+from typing import Any, Awaitable, Callable, Optional, Dict
 from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import JSONResponse
 
 from api.monitoring import system_monitor, EventType
 from api.platform_health import collect_platform_health
@@ -11,6 +13,32 @@ router = APIRouter()
 
 MAX_CSP_REPORT_BYTES = 16 * 1024
 MAX_MONITOR_EVENTS_LIMIT = 100
+PUBLIC_MONITOR_CACHE_HEADERS = {
+    "Cache-Control": "public, max-age=0, s-maxage=30, stale-while-revalidate=120",
+    "CDN-Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
+    "Vercel-CDN-Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
+}
+PUBLIC_MONITOR_MEMORY_TTL_SECONDS = 30
+_public_monitor_memory_cache: Dict[str, tuple[float, Dict[str, Any]]] = {}
+
+
+def _public_monitor_response(payload: Dict) -> JSONResponse:
+    return JSONResponse(payload, headers=PUBLIC_MONITOR_CACHE_HEADERS)
+
+
+async def _cached_public_monitor_response(
+    key: str,
+    loader: Callable[[], Awaitable[Dict[str, Any]]],
+    ttl_seconds: int = PUBLIC_MONITOR_MEMORY_TTL_SECONDS,
+) -> JSONResponse:
+    now = time.monotonic()
+    cached = _public_monitor_memory_cache.get(key)
+    if cached and now - cached[0] < ttl_seconds:
+        return _public_monitor_response(cached[1])
+
+    payload = await loader()
+    _public_monitor_memory_cache[key] = (now, payload)
+    return _public_monitor_response(payload)
 
 
 def _is_production_runtime() -> bool:
@@ -109,8 +137,11 @@ async def get_monitor_health():
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "note": "System monitor not initialized - using fallback",
         }
-    health = await system_monitor.check_health()
-    return health
+    return await _cached_public_monitor_response(
+        "monitor_health",
+        system_monitor.check_health,
+        ttl_seconds=15,
+    )
 
 
 @router.get("/monitor/metrics", tags=["system-monitor"], summary="Monitor metrics")
@@ -368,7 +399,10 @@ async def get_monitor_external_services():
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "note": "System monitor not initialized - using fallback",
         }
-    return await system_monitor.get_external_services_status()
+    return await _cached_public_monitor_response(
+        "monitor_external_services",
+        system_monitor.get_external_services_status,
+    )
 
 
 @router.get(
@@ -391,7 +425,10 @@ async def get_monitor_hosting_surfaces():
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "note": "System monitor not initialized - using fallback",
         }
-    return await system_monitor.get_hosting_surfaces_status()
+    return await _cached_public_monitor_response(
+        "monitor_hosting_surfaces",
+        system_monitor.get_hosting_surfaces_status,
+    )
 
 
 @router.get("/monitor/events", tags=["system-monitor"], summary="Monitor event stream")
@@ -483,7 +520,7 @@ async def get_monitor_status():
         }
 
     metrics = system_monitor.get_metrics()
-    return {
+    return _public_monitor_response({
         "status": "ok",
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "version": "3.0.0",
@@ -499,7 +536,7 @@ async def get_monitor_status():
             "hosting_surfaces": "/api/monitor/hosting-surfaces",
             "platform_health": "/api/monitor/platform-health",
         },
-    }
+    })
 
 
 @router.get(
@@ -509,7 +546,10 @@ async def get_monitor_status():
 )
 async def get_monitor_platform_health():
     """Safe cross-check of core APIs, OAuth readiness, and integration env presence."""
-    return await collect_platform_health()
+    return await _cached_public_monitor_response(
+        "monitor_platform_health",
+        collect_platform_health,
+    )
 
 
 @router.get("/api/monitor/real-time")

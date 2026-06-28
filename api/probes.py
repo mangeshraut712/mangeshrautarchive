@@ -562,7 +562,13 @@ async def probe_analytics_reach(monitor) -> Dict[str, Any]:
     start = time.time()
     try:
         from api.routes.analytics import get_portfolio_reach
-        payload = await get_portfolio_reach()
+
+        response = await get_portfolio_reach()
+        payload = (
+            json.loads(response.body.decode("utf-8"))
+            if hasattr(response, "body")
+            else response
+        )
         latency = round((time.time() - start) * 1000)
         
         reach = payload.get("total_reach", 0)

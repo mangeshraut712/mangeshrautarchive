@@ -49,6 +49,9 @@ HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES = int(
 HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS = float(
     os.getenv("HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS", "25")
 )
+HEALTH_SUMMARY_AUTO_REFRESH_ON_READ = os.getenv(
+    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "false"
+).lower() in {"1", "true", "yes"}
 HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
 
 
@@ -123,7 +126,11 @@ def _sync_state_is_recent(sync_state: Dict[str, Any]) -> bool:
 
 
 async def _connected_health_provider_available() -> bool:
-    return await integration_is_connected("whoop") or await integration_is_connected("withings")
+    whoop_connected, withings_connected = await asyncio.gather(
+        integration_is_connected("whoop"),
+        integration_is_connected("withings"),
+    )
+    return whoop_connected or withings_connected
 
 
 async def _maybe_refresh_health_summary(summary: Dict[str, Any]) -> tuple[Dict[str, Any], Dict[str, Any]]:
@@ -139,6 +146,9 @@ async def _maybe_refresh_health_summary(summary: Dict[str, Any]) -> tuple[Dict[s
         "automaticCronUtc": "13:00",
     }
     if not refresh["stale"]:
+        return summary, refresh
+    if not HEALTH_SUMMARY_AUTO_REFRESH_ON_READ:
+        refresh["reason"] = "cron_refresh_pending"
         return summary, refresh
 
     sync_state = await fetch_sync_state(HEALTH_SUMMARY_SYNC_STATE_PROVIDER)
@@ -203,20 +213,22 @@ def _health_summary_response(payload: Dict[str, Any]) -> JSONResponse:
     return JSONResponse(
         payload,
         headers={
-            "Cache-Control": "no-store, max-age=0, must-revalidate",
-            "CDN-Cache-Control": "no-store",
-            "Vercel-CDN-Cache-Control": "no-store",
-            "Pragma": "no-cache",
-            "Expires": "0",
+            "Cache-Control": "public, max-age=0, s-maxage=30, stale-while-revalidate=120",
+            "CDN-Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
+            "Vercel-CDN-Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
         },
     )
 
 
 async def _provider_status() -> Dict[str, Dict[str, Any]]:
     google_configured = google_calendar.is_configured()
-    google_connected = await integration_is_connected("google_calendar")
     whoop_configured = _oauth_ready("WHOOP_CLIENT_ID", "WHOOP_CLIENT_SECRET")
     withings_configured = _oauth_ready("WITHINGS_CLIENT_ID", "WITHINGS_CLIENT_SECRET")
+    google_connected, whoop_connected, withings_connected = await asyncio.gather(
+        integration_is_connected("google_calendar"),
+        integration_is_connected("whoop"),
+        integration_is_connected("withings"),
+    )
 
     return {
         "supabase": {
@@ -227,7 +239,7 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
         },
         "whoop": {
             "configured": whoop_configured,
-            "connected": await integration_is_connected("whoop"),
+            "connected": whoop_connected,
             "purpose": "Sleep, recovery, strain, resting heart rate, and HRV trends.",
             "scopes": [
                 "read:recovery",
@@ -242,7 +254,7 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
         },
         "withings": {
             "configured": withings_configured,
-            "connected": await integration_is_connected("withings"),
+            "connected": withings_connected,
             "purpose": "Weight and body composition trends from Withings devices.",
             "scopes": ["user.metrics", "user.activity"],
             "connectUrl": None,
@@ -291,15 +303,22 @@ async def get_admin_connect_url(provider: str, request: Request):
 )
 async def get_integrations_status():
     providers = await _provider_status()
-    return {
-        "success": True,
-        "timestamp": _utc_now(),
-        "providers": providers,
-        "privacy": {
-            "publicPayloads": "Only sanitized summaries should be exposed to the portfolio UI.",
-            "tokenStorage": "OAuth tokens must stay server-side and encrypted before provider sync is enabled.",
+    return JSONResponse(
+        {
+            "success": True,
+            "timestamp": _utc_now(),
+            "providers": providers,
+            "privacy": {
+                "publicPayloads": "Only sanitized summaries should be exposed to the portfolio UI.",
+                "tokenStorage": "OAuth tokens must stay server-side and encrypted before provider sync is enabled.",
+            },
         },
-    }
+        headers={
+            "Cache-Control": "public, max-age=0, s-maxage=60, stale-while-revalidate=300",
+            "CDN-Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+            "Vercel-CDN-Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+        },
+    )
 
 
 @router.get(
@@ -377,7 +396,7 @@ async def sync_health_vitals(request: Request, payload: Optional[HealthVitalsUps
             "data": summary.get("data") or empty_health_summary(),
         }
 
-    if await integration_is_connected("whoop") or await integration_is_connected("withings"):
+    if await _connected_health_provider_available():
         health_payload = await sync_connected_health_providers()
         summary = await fetch_latest_health_summary()
         return {
@@ -623,7 +642,7 @@ async def cron_health_vitals_sync(request: Request):
     if not cron_secret or auth != f"Bearer {cron_secret}":
         raise HTTPException(status_code=401, detail="Unauthorized cron request.")
 
-    if not await integration_is_connected("whoop") and not await integration_is_connected("withings"):
+    if not await _connected_health_provider_available():
         return {
             "success": True,
             "timestamp": _utc_now(),

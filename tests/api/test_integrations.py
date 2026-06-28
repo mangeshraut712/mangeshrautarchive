@@ -47,8 +47,12 @@ def test_health_vitals_summary_uses_sanitized_fallback(client):
     response = client.get("/api/health-vitals/summary")
 
     assert response.status_code == 200
-    assert response.headers["cache-control"] == "no-store, max-age=0, must-revalidate"
-    assert response.headers["vercel-cdn-cache-control"] == "no-store"
+    assert response.headers["cache-control"] == (
+        "public, max-age=0, s-maxage=30, stale-while-revalidate=120"
+    )
+    assert response.headers["vercel-cdn-cache-control"] == (
+        "public, s-maxage=30, stale-while-revalidate=120"
+    )
     payload = response.json()
     assert payload["success"] is True
     assert payload["status"] == "not_configured"
@@ -127,6 +131,7 @@ def test_health_vitals_summary_refreshes_stale_provider_data(client, monkeypatch
         fake_sync_connected_health_providers,
     )
     monkeypatch.setattr(integrations_route, "update_sync_state", fake_update_sync_state)
+    monkeypatch.setattr(integrations_route, "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", True)
 
     response = client.get("/api/health-vitals/summary")
 

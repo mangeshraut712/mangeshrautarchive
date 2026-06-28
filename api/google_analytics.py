@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import asyncio
 from base64 import urlsafe_b64encode
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
@@ -288,28 +289,46 @@ class GoogleAnalyticsDataClient:
             return self._snapshot
 
         try:
-            total_report = await self.run_report(
-                start_date="2020-01-01",
-                metrics=["screenPageViews", "activeUsers", "sessions", "eventCount"],
-                limit=1,
+            await self._access_token()
+            (
+                total_report,
+                week_country_report,
+                week_totals_report,
+                daily_report,
+                realtime_result,
+            ) = await asyncio.gather(
+                self.run_report(
+                    start_date="2020-01-01",
+                    metrics=["screenPageViews", "activeUsers", "sessions", "eventCount"],
+                    limit=1,
+                ),
+                self.run_report(
+                    start_date="30daysAgo",
+                    metrics=["activeUsers"],
+                    dimensions=["country"],
+                    limit=100,
+                ),
+                self.run_report(
+                    start_date="7daysAgo",
+                    metrics=["activeUsers", "sessions"],
+                    limit=1,
+                ),
+                self.run_report(
+                    start_date="6daysAgo",
+                    metrics=["screenPageViews", "activeUsers", "sessions"],
+                    dimensions=["date"],
+                    limit=10,
+                ),
+                self.run_realtime_report(
+                    metrics=["activeUsers"],
+                    dimensions=["country"],
+                    limit=25,
+                ),
+                return_exceptions=True,
             )
-            week_country_report = await self.run_report(
-                start_date="30daysAgo",
-                metrics=["activeUsers"],
-                dimensions=["country"],
-                limit=100,
-            )
-            week_totals_report = await self.run_report(
-                start_date="7daysAgo",
-                metrics=["activeUsers", "sessions"],
-                limit=1,
-            )
-            daily_report = await self.run_report(
-                start_date="6daysAgo",
-                metrics=["screenPageViews", "activeUsers", "sessions"],
-                dimensions=["date"],
-                limit=10,
-            )
+            for report in (total_report, week_country_report, week_totals_report, daily_report):
+                if isinstance(report, Exception):
+                    raise report
 
             total_row = (total_report.get("rows") or [{}])[0]
             week_row = (week_totals_report.get("rows") or [{}])[0]
@@ -331,11 +350,9 @@ class GoogleAnalyticsDataClient:
             active_users_last_30_mins = 0
             realtime_countries: List[Dict[str, Any]] = []
             try:
-                realtime_data = await self.run_realtime_report(
-                    metrics=["activeUsers"],
-                    dimensions=["country"],
-                    limit=25,
-                )
+                if isinstance(realtime_result, Exception):
+                    raise realtime_result
+                realtime_data = realtime_result
                 total_rt_users = 0
                 parsed_rt_countries: List[Dict[str, Any]] = []
                 for row in realtime_data.get("rows", []):

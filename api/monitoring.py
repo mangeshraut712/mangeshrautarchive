@@ -707,7 +707,10 @@ class SystemMonitor:
         timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         checks: List[HealthCheckResult] = []
 
-        openrouter_ok = await self._check_openrouter()
+        openrouter_ok, github_ok = await asyncio.gather(
+            self._check_openrouter(),
+            self._check_github(),
+        )
         checks.append(
             HealthCheckResult(
                 name="OpenRouter API",
@@ -746,7 +749,6 @@ class SystemMonitor:
             )
         )
 
-        github_ok = await self._check_github()
         checks.append(
             HealthCheckResult(
                 name="GitHub API",

@@ -1,6 +1,7 @@
 """Tests for health vitals sync helpers."""
 
 from api.integrations.supabase_store import (
+    _coalesce_latest_health_rows,
     _merge_health_row,
     _resolve_health_summary_status,
     sanitize_health_summary,
@@ -90,3 +91,39 @@ def test_resolve_health_summary_status_marks_empty_partial_rows():
         }
     )
     assert _resolve_health_summary_status(data) == "partial"
+
+
+def test_coalesce_latest_health_rows_keeps_recent_whoop_metrics_with_weight():
+    rows = [
+        {
+            "date": "2026-06-28",
+            "sleep_score": None,
+            "recovery_score": None,
+            "strain": None,
+            "resting_heart_rate": None,
+            "hrv_trend": None,
+            "weight_trend": "102.5 kg",
+            "last_synced_at": "2026-06-28T19:27:53Z",
+            "source_status": "partial",
+        },
+        {
+            "date": "2026-06-27",
+            "sleep_score": 86,
+            "recovery_score": 72,
+            "strain": 8.4,
+            "resting_heart_rate": 53,
+            "hrv_trend": "stable",
+            "weight_trend": None,
+            "last_synced_at": "2026-06-27T13:00:00Z",
+            "source_status": "synced",
+        },
+    ]
+
+    merged = _coalesce_latest_health_rows(rows)
+
+    assert merged["sleepScore"] == 86
+    assert merged["recoveryScore"] == 72
+    assert merged["strain"] == 8.4
+    assert merged["restingHeartRate"] == 53
+    assert merged["weightTrend"] == "102.5 kg"
+    assert merged["sourceStatus"] == "synced"

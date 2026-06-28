@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import JSONResponse
 
 from api.config import (
     AnalyticsTrackRequest,
@@ -148,7 +149,7 @@ async def get_portfolio_reach():
         or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     )
 
-    return {
+    payload = {
         "success": True,
         "total_reach": total_reach,
         "source": source,
@@ -194,3 +195,12 @@ async def get_portfolio_reach():
         "cache_ttl_seconds": 60 if source == "google_analytics" else 0,
         "timestamp": timestamp,
     }
+    cache_ttl = 60 if source == "google_analytics" else 15
+    return JSONResponse(
+        payload,
+        headers={
+            "Cache-Control": f"public, max-age=0, s-maxage={cache_ttl}, stale-while-revalidate=300",
+            "CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
+            "Vercel-CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
+        },
+    )

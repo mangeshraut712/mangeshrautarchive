@@ -1130,6 +1130,25 @@ async function initMap() {
   });
 }
 
+function scheduleMapInit() {
+  const start = () => {
+    initMap().catch(error => {
+      const message = error?.message || 'Map initialization failed';
+      if (!mapWarningMessages.has(message)) {
+        mapWarningMessages.add(message);
+        console.warn(`Travel map unavailable: ${message}`);
+      }
+    });
+  };
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(start, { timeout: 900 });
+    return;
+  }
+
+  window.setTimeout(start, 240);
+}
+
 function addMapSources() {
   if (state.map.getSource('all-stops')) return;
 
@@ -1521,7 +1540,7 @@ function init() {
   renderCountryPills();
   bindFilters();
   renderTimeline();
-  initMap();
+  scheduleMapInit();
 }
 
 if (document.readyState === 'loading') {
