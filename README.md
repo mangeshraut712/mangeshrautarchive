@@ -155,12 +155,12 @@ The main portfolio (`index.html`) is a single-page app with **13 primary nav lan
 
 Sitewide parity with Apple’s 2026 design language: **Liquid Glass** (clear / balanced / tinted), **WebGL refraction** on nav + chatbot + hero/projects, **Dynamic Island** (home), **command palette** on all pages, **share sheet**, **accessibility toolbar**, **high contrast**, **reduce-transparency sync**, and **solid `#FFFFFF` / `#000000`** page shells.
 
-| Phase  | Delivered                                                                                                                                   | Key paths                                                      |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Phase  | Delivered                                                                                                                                                                          | Key paths                                                      |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | **P0** | Unified asset version `20260701q` (single source in `asset-version.mjs`), `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
-| **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                      | `src/js/core/subpage-chrome.js`                                |
-| **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                              | `experience.css`, `awards.css`, `skills-visualization.js`      |
-| **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                           | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
+| **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                                                             | `src/js/core/subpage-chrome.js`                                |
+| **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                                                                  | `experience.css`, `awards.css`, `skills-visualization.js`      |
+| **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                                                                  | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
 
 **Verify locally:**
 
@@ -695,11 +695,11 @@ npm run verify:deploy-sync                 # local dist vs live (optional)
 npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same commit
 ```
 
-| Surface        | URL                                                          | How it updates                          |
-| -------------- | ------------------------------------------------------------ | --------------------------------------- |
-| **Local dev**  | http://127.0.0.1:4000 (`npm run dev`) or `:4174` (`serve:dist`) | Serves `src/` or built `dist/` directly |
-| **Vercel**     | https://mangeshraut.pro                                      | Auto-deploy on push to `main`           |
-| **GitHub Pages** | https://mangeshraut712.github.io/mangeshrautarchive/       | `deploy.yml` uploads `dist/` on CI pass |
+| Surface          | URL                                                             | How it updates                          |
+| ---------------- | --------------------------------------------------------------- | --------------------------------------- |
+| **Local dev**    | http://127.0.0.1:4000 (`npm run dev`) or `:4174` (`serve:dist`) | Serves `src/` or built `dist/` directly |
+| **Vercel**       | https://mangeshraut.pro                                         | Auto-deploy on push to `main`           |
+| **GitHub Pages** | https://mangeshraut712.github.io/mangeshrautarchive/            | `deploy.yml` uploads `dist/` on CI pass |
 
 **Cache busting:** Static HTML in `src/*.html` uses `?v=20260701q` query strings. Blog and case-study pages read `ASSET_VER` from `scripts/build/asset-version.mjs`. The build step also stamps a timestamp version on `dist/` JS module imports. Bump `ASSET_VER` and run `sed` across `src/*.html` when shipping CSS/JS changes that must invalidate browser caches immediately.
 

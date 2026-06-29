@@ -631,7 +631,9 @@ header.hero-section,
 #books-content,
 #shows-content,
 #currently-section {
-  scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 20px) !important;
+  scroll-margin-top: calc(
+    var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 20px
+  ) !important;
 }
 
 /* Theme Icon Original Colors */

@@ -1066,17 +1066,35 @@ function stopTour() {
 
 function loadMapLibre() {
   if (window.maplibregl) return Promise.resolve();
+  const existing = document.querySelector('script[data-maplibre-loader]');
+  if (existing) {
+    return new Promise((resolve, reject) => {
+      if (window.maplibregl) {
+        resolve();
+        return;
+      }
+      existing.addEventListener('load', () => resolve(), { once: true });
+      existing.addEventListener('error', () => reject(new Error('MapLibre failed to load')), {
+        once: true,
+      });
+    });
+  }
+
   return new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = MAPLIBRE_CSS;
-    document.head.appendChild(link);
+    if (!document.querySelector('link[data-maplibre-css]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = MAPLIBRE_CSS;
+      link.dataset.maplibreCss = '1';
+      document.head.appendChild(link);
+    }
 
     const script = document.createElement('script');
     script.src = MAPLIBRE_JS;
     script.async = true;
+    script.dataset.maplibreLoader = '1';
     script.onload = resolve;
-    script.onerror = reject;
+    script.onerror = () => reject(new Error('MapLibre failed to load'));
     document.head.appendChild(script);
   });
 }
@@ -1133,6 +1151,7 @@ async function initMap() {
 
   state.map.on('load', () => {
     state.ready = true;
+    document.getElementById('map-container')?.setAttribute('data-map-ready', 'true');
     setMapProjection();
     restoreMapDataLayers();
     fitMapToVisiblePlaces();
@@ -1146,6 +1165,7 @@ function scheduleMapInit() {
   const start = () => {
     initMap().catch(error => {
       const message = error?.message || 'Map initialization failed';
+      document.getElementById('map-container')?.setAttribute('data-map-error', message);
       if (!mapWarningMessages.has(message)) {
         mapWarningMessages.add(message);
         console.warn(`Travel map unavailable: ${message}`);
