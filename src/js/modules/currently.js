@@ -6,9 +6,13 @@
 export function initCurrentlySection() {
   const tabs = document.querySelectorAll('.currently-tab');
   const contents = document.querySelectorAll('.currently-content');
+  const section = document.getElementById('currently-section');
 
   if (!tabs.length || !contents.length) return;
-  if (document.body.dataset.currentlyInit === 'true') return;
+  if (document.body.dataset.currentlyInit === 'true') {
+    if (section) section.dataset.currentlyInit = 'true';
+    return;
+  }
   document.body.dataset.currentlyInit = 'true';
 
   // Tab switching logic
@@ -44,6 +48,8 @@ export function initCurrentlySection() {
     content.hidden = !content.classList.contains('active');
     content.setAttribute('role', 'tabpanel');
   });
+
+  if (section) section.dataset.currentlyInit = 'true';
 }
 
 function shouldSkipPerfAutoInit() {

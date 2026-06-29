@@ -34,6 +34,18 @@ const gotoSiteReady = async (page, path = '/') => {
   await page.waitForTimeout(1200);
 };
 
+const waitForCurrentlyReady = async page => {
+  const currentlySection = page.locator('#currently-section');
+  await expect(currentlySection).toBeAttached({ timeout: 30_000 });
+  await currentlySection.scrollIntoViewIfNeeded();
+  await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
+  await page.waitForFunction(
+    () => document.getElementById('currently-section')?.dataset.currentlyInit === 'true',
+    null,
+    { timeout: 20_000 }
+  );
+};
+
 const criticalLayoutChecks = [
   {
     name: 'projects grid',
@@ -406,11 +418,7 @@ test.describe('Chrome smoke tests', () => {
     page,
   }) => {
     await gotoSite(page, '/#contact');
-    await page.waitForTimeout(2000);
-    await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
-    await page.waitForFunction(() => document.body.dataset.currentlyInit === 'true', null, {
-      timeout: 15_000,
-    });
+    await waitForCurrentlyReady(page);
 
     await expect(page.locator('.contact-label', { hasText: 'Portfolio Reach' })).toHaveCount(0);
 
@@ -455,9 +463,7 @@ test.describe('Chrome smoke tests', () => {
 
   test('music tab renders featured listening state with high-quality artwork', async ({ page }) => {
     await gotoSite(page, '/#contact');
-    await page.waitForTimeout(2000);
-    await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
-    await page.waitForFunction(() => document.body.dataset.currentlyInit === 'true');
+    await waitForCurrentlyReady(page);
     const musicTab = page.locator('.currently-tab[data-tab="music"]');
     await musicTab.scrollIntoViewIfNeeded();
     await musicTab.click();
