@@ -320,13 +320,19 @@ function withTravelViewTransition(callback) {
   callback();
 }
 
-function applyFilterChange({ focusSearch = false } = {}) {
+function applyFilterChange({ focusSearch = false, animate = true } = {}) {
   stopTour();
-  withTravelViewTransition(() => {
+  const update = () => {
     syncFilterControls();
     renderTimeline();
     fitMapToVisiblePlaces();
-  });
+  };
+
+  if (animate) {
+    withTravelViewTransition(update);
+  } else {
+    update();
+  }
 
   if (focusSearch) {
     document.getElementById('place-search')?.focus();
@@ -399,7 +405,7 @@ function resetFilters({ focusSearch = false } = {}) {
   state.featuredOnly = false;
   state.activeCategories.clear();
   state.advancedSearchExpanded = false;
-  applyFilterChange({ focusSearch });
+  applyFilterChange({ focusSearch, animate: false });
 }
 
 function renderCountryPills() {
@@ -640,13 +646,13 @@ function bindFilters() {
 
   search?.addEventListener('input', event => {
     state.searchTerm = event.target.value;
-    applyFilterChange();
+    applyFilterChange({ animate: false });
   });
 
   clear?.addEventListener('click', () => {
     state.searchTerm = '';
     search.value = '';
-    applyFilterChange({ focusSearch: true });
+    applyFilterChange({ focusSearch: true, animate: false });
   });
 
   featured?.addEventListener('click', () => {
