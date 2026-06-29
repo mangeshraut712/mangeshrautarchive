@@ -141,6 +141,7 @@ def test_health_vitals_summary_refreshes_stale_provider_data(client, monkeypatch
     assert payload["data"]["sleepScore"] == 88
     assert payload["refresh"]["attempted"] is True
     assert payload["refresh"]["refreshed"] is True
+    assert payload["refresh"]["stale"] is False
     assert payload["refresh"]["reason"] == "provider_refresh_completed"
     assert calls["sync"] == 1
     assert calls["state_updates"][0]["provider"] == "health_vitals"

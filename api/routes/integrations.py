@@ -194,6 +194,7 @@ async def _maybe_refresh_health_summary(summary: Dict[str, Any]) -> tuple[Dict[s
         refreshed_summary = await fetch_latest_health_summary()
         refresh.update(
             {
+                "stale": _health_summary_is_stale(refreshed_summary),
                 "refreshed": True,
                 "reason": "provider_refresh_completed",
                 "ageMinutes": _health_summary_age_minutes(refreshed_summary),
