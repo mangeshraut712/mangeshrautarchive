@@ -1525,6 +1525,7 @@ body.monitor-page main > section.section:not(#home) {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  pointer-events: none;
 }
 
 .toast {
@@ -1538,6 +1539,7 @@ body.monitor-page main > section.section:not(#home) {
   gap: 12px;
   min-width: 300px;
   animation: slide-in 0.3s ease;
+  pointer-events: none;
 }
 
 @media (max-width: 1024px) {
