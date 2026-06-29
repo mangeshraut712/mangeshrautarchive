@@ -1141,12 +1141,7 @@ function scheduleMapInit() {
     });
   };
 
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(start, { timeout: 900 });
-    return;
-  }
-
-  window.setTimeout(start, 240);
+  window.setTimeout(start, 0);
 }
 
 function addMapSources() {
