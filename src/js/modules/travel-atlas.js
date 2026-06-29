@@ -320,8 +320,14 @@ function withTravelViewTransition(callback) {
   callback();
 }
 
+function stopMapMotion() {
+  if (!state.ready || typeof state.map?.stop !== 'function') return;
+  state.map.stop();
+}
+
 function applyFilterChange({ focusSearch = false, animate = true } = {}) {
   stopTour();
+  stopMapMotion();
   const update = () => {
     syncFilterControls();
     renderTimeline();
