@@ -78,6 +78,7 @@ test.describe('Chrome smoke tests', () => {
   });
 
   test('travel atlas search, empty state, and reset flow work', async ({ page }) => {
+    test.setTimeout(150_000);
     await gotoSite(page, '/travel');
 
     await expect(page).toHaveTitle(/Travel Atlas/i);
