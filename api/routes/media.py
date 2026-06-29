@@ -47,6 +47,9 @@ def build_lastfm_unconfigured_response(user: str):
 def build_lastfm_headers(cache_state: str, started_at: float, extra: Optional[dict] = None):
     headers = {
         **LASTFM_CACHE_HEADERS,
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Accept, Content-Type, Origin",
         "X-Lastfm-Cache": cache_state,
         "X-Lastfm-Latency-Ms": str(round((time.perf_counter() - started_at) * 1000)),
     }

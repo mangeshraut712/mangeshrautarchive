@@ -38,6 +38,8 @@ export async function capturePageBackground({ target = document.documentElement 
   return toCanvas(target, {
     pixelRatio,
     cacheBust: true,
+    skipFonts: true,
+    fontEmbedCSS: '',
     skipAutoScale: true,
     backgroundColor: null,
     filter: node => !shouldExcludeNode(node),

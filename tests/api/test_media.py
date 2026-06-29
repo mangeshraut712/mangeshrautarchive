@@ -48,6 +48,7 @@ def test_music_recent_serves_stale_cache_before_refresh(monkeypatch):
     assert response.status_code == 200
     assert response.headers["X-Lastfm-Cache"] == "STALE"
     assert response.headers["X-Lastfm-Stale"] == "1"
+    assert response.headers["Access-Control-Allow-Origin"] == "*"
     assert int(response.headers["X-Lastfm-Latency-Ms"]) >= 0
     assert response.json()["recenttracks"]["track"][0]["name"] == "Cached Track"
 
