@@ -20,11 +20,6 @@ export function getGithubProjectsPrefetchUrl(context = globalThis) {
   return `${resolveGithubApiBase(context)}/api/github/repos/public?username=mangeshraut712`;
 }
 
-/** Static HTML prefetch hint that also works from the GitHub Pages mirror. */
-export function getGithubProjectsPrefetchPath() {
-  return 'https://mangeshraut.pro/api/github/repos/public?username=mangeshraut712';
-}
-
 export function shouldDeferCriticalWarmup(context = globalThis) {
   const connection = context.navigator?.connection;
   if (connection?.saveData) {

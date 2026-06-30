@@ -2,19 +2,12 @@ import { describe, expect, it } from 'vitest';
 import {
   WARM_SECTION_PRELOAD_DELAY_MS,
   WARM_SECTION_START_DELAY_MS,
-  getGithubProjectsPrefetchPath,
   getGithubProjectsPrefetchUrl,
   resolveGithubApiBase,
   shouldDeferCriticalWarmup,
 } from './section-preload.js';
 
 describe('section-preload', () => {
-  it('uses the production API origin for static HTML prefetch hints', () => {
-    expect(getGithubProjectsPrefetchPath()).toBe(
-      'https://mangeshraut.pro/api/github/repos/public?username=mangeshraut712'
-    );
-  });
-
   it('resolves github API base from configured app config', () => {
     const context = {
       APP_CONFIG: { apiBaseUrl: 'https://preview.example.com/' },

@@ -33,7 +33,10 @@ class AnalyticsService {
         window.va('event', { name, data });
       };
       this._initialized = true;
-    } else if (typeof window !== 'undefined' && typeof window.__vercel_insights_track === 'function') {
+    } else if (
+      typeof window !== 'undefined' &&
+      typeof window.__vercel_insights_track === 'function'
+    ) {
       this._track = window.__vercel_insights_track;
       this._initialized = true;
     }
