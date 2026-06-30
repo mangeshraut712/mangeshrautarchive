@@ -4,6 +4,20 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    ignore:
+      # @eslint/js v10 requires eslint v10; repo stays on eslint 9 until a coordinated upgrade.
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      # stylelint v17 needs stylelint-config-standard v37+.
+      - dependency-name: 'stylelint'
+        update-types: ['version-update:semver-major']
+      # react-dom v19 requires react v19; liquid-glass-oss still targets react 18.
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
