@@ -411,11 +411,13 @@ html.dark body section .section-subtitle {
 }
 
 /* Transient skills loader — must pass 4.5:1 before JS replaces the container */
-#skills-loading .text-secondary {
-  color: #48484a !important;
+#skills-loading .text-secondary,
+#skills-loading .skills-loading-message {
+  color: #3a3a3c !important;
 }
 
-html.dark #skills-loading .text-secondary {
+html.dark #skills-loading .text-secondary,
+html.dark #skills-loading .skills-loading-message {
   color: #d2d2d7 !important;
 }
 

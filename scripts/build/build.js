@@ -301,29 +301,56 @@ async function optimizeCopiedAssets(dir) {
 }
 
 async function inlineThemeHead(distDir) {
-  const indexPath = resolve(distDir, 'index.html');
-  const travelPath = resolve(distDir, 'travel.html');
-  const monitorPath = resolve(distDir, 'monitor.html');
-  const systemsPath = resolve(distDir, 'systems.html');
-  const errorPath = resolve(distDir, '404.html');
-  const themeHeadPath = resolve(distDir, 'js/utils/theme-head.js');
+  const pages = [
+    resolve(distDir, 'index.html'),
+    resolve(distDir, 'travel.html'),
+    resolve(distDir, 'monitor.html'),
+    resolve(distDir, 'systems.html'),
+    resolve(distDir, 'uses.html'),
+    resolve(distDir, '404.html'),
+  ];
 
-  if (await pathExists(themeHeadPath)) {
-    const themeHeadContent = await readFile(themeHeadPath, 'utf8');
-
-    for (const pagePath of [indexPath, travelPath, monitorPath, systemsPath, errorPath]) {
-      if (await pathExists(pagePath)) {
-        let html = await readFile(pagePath, 'utf8');
-        html = html.replace(
-          /<script\s+src="js\/utils\/theme-head\.js[^"]*"[^>]*><\/script>/g,
-          `<script>${themeHeadContent}</script>`
-        );
-        await writeFile(pagePath, html, 'utf8');
-      }
+  const scriptsToInline = [
+    {
+      srcPattern: /<script\s+src="js\/utils\/theme-head\.js[^"]*"[^>]*><\/script>/g,
+      fileName: 'js/utils/theme-head.js',
+    },
+    {
+      srcPattern: /<script\s+src="js\/utils\/liquid-glass-boot\.js[^"]*"[^>]*><\/script>/g,
+      fileName: 'js/utils/liquid-glass-boot.js',
+    },
+    {
+      srcPattern: /<script\s+src="js\/utils\/perf-audit-head\.js[^"]*"[^>]*><\/script>/g,
+      fileName: 'js/utils/perf-audit-head.js',
+    },
+    {
+      srcPattern: /<script\s+src="js\/utils\/perf-audit-flag\.js[^"]*"[^>]*><\/script>/g,
+      fileName: 'js/utils/perf-audit-flag.js',
     }
-    // Delete the original file from dist to save request space
-    await rm(themeHeadPath, { force: true });
-    console.log('📥 Inlined minified theme-head.js into HTML pages and removed original file');
+  ];
+
+  for (const script of scriptsToInline) {
+    const scriptPath = resolve(distDir, script.fileName);
+    if (await pathExists(scriptPath)) {
+      let content = await readFile(scriptPath, 'utf8');
+      try {
+        const minified = await transform(content, { minify: true });
+        content = minified.code.trim();
+      } catch (err) {
+        console.warn(`⚠️ Failed to minify ${script.fileName}:`, err);
+      }
+
+      for (const pagePath of pages) {
+        if (await pathExists(pagePath)) {
+          let html = await readFile(pagePath, 'utf8');
+          html = html.replace(script.srcPattern, `<script>${content}</script>`);
+          await writeFile(pagePath, html, 'utf8');
+        }
+      }
+      // Delete the original file from dist to save request space
+      await rm(scriptPath, { force: true });
+      console.log(`📥 Inlined minified ${script.fileName} into HTML pages and removed original file`);
+    }
   }
 }
 

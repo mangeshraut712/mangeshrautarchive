@@ -13,12 +13,30 @@ class LiquidGlassEngine {
     this.backgroundCanvas = null;
     this.capturePending = false;
     this.captureTimer = 0;
+    this.heavyCaptureEnabled = false;
+    this.heavyCaptureScheduled = false;
     this.resizeObserver = null;
     this._onScroll = () => this.scheduleCapture();
     this._onResize = () => {
       this.scheduleCapture();
       this.surfaces.forEach(surface => surface.resize());
     };
+  }
+
+  scheduleHeavyCapture() {
+    if (this.heavyCaptureScheduled || !this.enabled) return;
+    this.heavyCaptureScheduled = true;
+
+    const enable = () => {
+      this.heavyCaptureEnabled = true;
+      this.scheduleCapture(true);
+    };
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(enable, { timeout: 8000 });
+    } else {
+      window.setTimeout(enable, 8000);
+    }
   }
 
   init() {
@@ -33,7 +51,8 @@ class LiquidGlassEngine {
       this.surfaces.forEach(surface => surface.resize());
     });
 
-    this.scheduleCapture(true);
+    void this.refreshBackground();
+    this.scheduleHeavyCapture();
   }
 
   readTintRatio() {
@@ -62,9 +81,11 @@ class LiquidGlassEngine {
       let canvas = null;
       try {
         const captureTarget = document.querySelector('[data-liquid-glass-background]');
-        canvas = captureTarget
-          ? await capturePageBackground({ target: captureTarget })
-          : createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
+        if (this.heavyCaptureEnabled && captureTarget) {
+          canvas = await capturePageBackground({ target: captureTarget });
+        } else {
+          canvas = createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
+        }
       } catch (error) {
         console.warn('Liquid glass background capture failed, using procedural fallback:', error);
         canvas = createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
@@ -87,7 +108,8 @@ class LiquidGlassEngine {
         if (this.backgroundCanvas) {
           s.setBackgroundSource(this.backgroundCanvas);
         } else {
-          this.scheduleCapture(true);
+          void this.refreshBackground();
+          this.scheduleHeavyCapture();
         }
         options.onReady?.(s);
       },

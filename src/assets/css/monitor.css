@@ -3512,3 +3512,274 @@ html.dark .ops-card,
 .security-checks-hidden {
   display: none;
 }
+
+/* Inline styles replacement classes for glossary and doc links */
+.doc-card--span-2 {
+  grid-column: span 2;
+}
+@media (max-width: 1024px) {
+  .doc-card--span-2 {
+    grid-column: auto;
+  }
+}
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 12px;
+}
+.glossary-header-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.doc-card-description--margin-bottom-20 {
+  margin-bottom: 20px;
+}
+.health-metric-value--uppercase {
+  text-transform: uppercase;
+}
+.endpoint-sparkline-svg {
+  width: 80px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: visible;
+}
+.response-time-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+.response-time-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 80px;
+}
+.endpoint-sparkline {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* Inline styles replacement classes for rate limits / security */
+.icon-accent-yellow {
+  color: var(--accent-yellow);
+}
+.icon-accent-red {
+  color: var(--accent-red);
+}
+.rate-limit-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.rate-limit-title--spaced {
+  margin-top: 16px;
+}
+.rate-limit-body {
+  flex: 1;
+  min-width: 0;
+}
+.rate-limit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.rate-limit-usage-label {
+  font-weight: 700;
+  font-size: 11px;
+}
+.rate-limit-bar-track {
+  height: 6px;
+  margin-bottom: 6px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+html.dark .rate-limit-bar-track {
+  background: rgba(255, 255, 255, 0.08);
+}
+.rate-limit-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.rate-limit-footer {
+  font-size: 10px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+.rate-limit-item--flagged {
+  border-color: rgba(255, 59, 48, 0.25);
+  background: rgba(255, 59, 48, 0.05);
+}
+.rate-limit-flagged-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rate-limit-flagged-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-red);
+}
+
+/* AI Metrics Clean Styling */
+.ai-metrics-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+.ai-metric-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  padding: 18px 20px;
+}
+.ai-metric-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.ai-metric-kicker {
+  margin-bottom: 2px;
+}
+.ai-metric-val-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.ai-metric-sparkline-container {
+  height: 100px;
+  width: 100%;
+  position: relative;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.ai-metric-footer-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.ai-metric-footer-text--spaced {
+  margin-top: 8px;
+}
+.ai-metric-tokens-container {
+  margin-top: 8px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.ai-metric-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.ai-metric-row--spaced {
+  margin-top: 8px;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-bold {
+  font-weight: 700;
+}
+.text-accent-blue {
+  color: var(--accent-blue);
+}
+.ai-token-bar-track {
+  height: 6px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+html.dark .ai-token-bar-track {
+  background: rgba(255, 255, 255, 0.08);
+}
+.ai-token-bar-fill-input {
+  height: 100%;
+  background: var(--accent-blue) !important;
+  border-radius: 99px;
+}
+.ai-token-bar-fill-output {
+  height: 100%;
+  background: var(--accent-green) !important;
+  border-radius: 99px;
+}
+.ai-metric-registry-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.ai-registry-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+.ai-model-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+html.dark .ai-model-row {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.ai-model-name {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--text-primary);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 190px;
+}
+.ai-sparkline-empty-state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.ai-sparkline-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.ai-metric-label-suffix {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}

@@ -67,6 +67,18 @@ html.dark .project-evidence-row {
     background 0.2s ease;
 }
 
+#projects #github-projects-container .project-evidence-link {
+  color: #004494 !important;
+  background: rgb(0 74 148 / 11%) !important;
+  border-color: rgb(0 74 148 / 22%) !important;
+}
+
+html.dark #projects #github-projects-container .project-evidence-link {
+  color: #9ed0ff !important;
+  background: rgb(88 166 255 / 14%) !important;
+  border-color: rgb(88 166 255 / 28%) !important;
+}
+
 .project-evidence-link:hover,
 .project-evidence-link:focus-visible {
   background: rgb(0 113 227 / 18%);
@@ -95,6 +107,8 @@ html.dark .project-evidence-link.is-unavailable {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 520px;
+  overflow-x: clip;
 }
 
 /* Section and global nav alignment */
@@ -596,6 +610,7 @@ html.dark #projects .graph-title {
 }
 
 #projects .github-graph-scroll {
+  min-height: 132px;
   overflow-x: auto;
   border: 1px solid var(--github-graph-canvas-border);
   border-radius: 16px;
@@ -613,6 +628,10 @@ html:not(.dark) #projects .github-graph-svg,
 html:not(.dark) #projects #github-chart-img {
   background: transparent;
   filter: none;
+  aspect-ratio: 660 / 110;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 html.dark #projects .github-graph-scroll {
@@ -624,6 +643,10 @@ html.dark #projects .github-graph-scroll {
 html.dark #projects .github-graph-svg,
 html.dark #projects #github-chart-img {
   background: transparent;
+  aspect-ratio: 660 / 110;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 #projects .github-graph-legend {

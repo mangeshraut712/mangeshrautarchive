@@ -9,8 +9,13 @@
 
 /* Hero Section - Full Viewport Height */
 
+#home > .container-fluid {
+  width: 100%;
+  min-height: clamp(340px, 52vh, 620px);
+}
+
 .home-hero {
-  min-height: auto !important;
+  min-height: clamp(380px, 58vh, 680px) !important;
   /* dynamic viewport height for mobile */
   display: flex;
   align-items: center;
@@ -1520,11 +1525,12 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
 
 .hero-role-flip {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: center;
   gap: 0.4rem;
   width: min(100%, 680px);
-  min-height: 1.75rem;
+  min-height: 2.75rem;
   margin: 0 auto 0.55rem;
   color: #515154;
   font-size: clamp(0.95rem, 1vw, 1.05rem);
@@ -1533,12 +1539,15 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
   text-wrap: balance;
 }
 
-.hero-role-flip span,
-.hero-role-flip strong {
+.hero-role-flip span {
   white-space: nowrap;
 }
 
 .hero-role-flip strong {
+  display: inline-block;
+  min-height: 1.2em;
+  white-space: normal;
+  text-align: center;
   color: #0071e3 !important;
   font-weight: 800;
   background: linear-gradient(135deg, #0071e3, #2997ff);

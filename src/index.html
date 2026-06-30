@@ -122,9 +122,6 @@
   <link rel="apple-touch-startup-image" href="assets/images/pwa-splash-iphone-17-pro-max.png"
     media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
   <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
-  <link rel="modulepreload" href="js/modules/projects-showcase.js?v=20260701q" />
-  <link rel="modulepreload" href="js/modules/github-projects.js?v=20260701q" />
-  <link rel="modulepreload" href="js/modules/skills-visualization.js?v=20260701q" />
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
@@ -978,6 +975,7 @@ html.dark #home .hero-name-text {
       </div>
     </div>
   </div>
+  <script type="module" src="js/utils/smart-navbar.js?v=20260701q"></script>
   <script>
     (function () {
       if (window.__earlyOverlayMenuBound) return;
@@ -1137,10 +1135,16 @@ html.dark #home .hero-name-text {
             <div class="hero-image-block mb-8">
               <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)">
-                <img id="profile-image" src="assets/images/profile.webp" alt="Mangesh Raut photo" class="profile-image xdr-media"
+                <img id="profile-image" src="assets/images/profile.webp"
+                  srcset="assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w"
+                  sizes="(max-width: 640px) 160px, 320px"
+                  alt="Mangesh Raut photo" class="profile-image xdr-media"
                   width="160" height="160" loading="eager" decoding="async" fetchpriority="high"
                   onclick="window.__toggleHeroAvatar?.(event)"
-                  data-photo-src="assets/images/profile.webp" data-avatar-src="assets/images/avtar.webp"
+                  data-photo-src="assets/images/profile.webp"
+                  data-photo-srcset="assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w"
+                  data-avatar-src="assets/images/avtar.webp"
+                  data-avatar-srcset="assets/images/avtar-mobile.webp 160w, assets/images/avtar.webp 642w"
                   style="width: 100% !important; height: 100% !important; object-fit: cover !important;" />
               </button>
             </div>
@@ -1560,12 +1564,12 @@ html.dark #home .hero-name-text {
         <div id="skills-container" class="max-w-6xl mx-auto">
           <!-- Skills will be dynamically rendered here by skills-visualization.js -->
           <div class="text-center py-12" id="skills-loading">
-            <div class="inline-block animate-pulse">
-              <svg class="w-12 h-12 text-accent mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="inline-block">
+              <svg class="w-12 h-12 text-accent mx-auto mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
               </svg>
-              <p class="text-secondary skills-loading-message" style="color:#48484a">Loading interactive skills visualization...</p>
+              <p class="text-secondary skills-loading-message">Loading interactive skills visualization...</p>
             </div>
           </div>
 
@@ -2048,7 +2052,7 @@ html.dark #home .hero-name-text {
                 </div>
                 <img id="github-chart-img" src="" alt="Mangesh Raut's Github contribution chart"
                   class="github-graph-svg" width="660" height="110" loading="lazy" decoding="async"
-                  fetchpriority="low" hidden
+                  fetchpriority="low" referrerpolicy="no-referrer" hidden
                   onload="window.handleGraphLoadSuccess?.()" onerror="window.handleGraphLoadError?.()">
               </div>
               <div class="github-graph-legend" aria-hidden="true">
@@ -2274,10 +2278,27 @@ html.dark #home .hero-name-text {
                   }
                 }
 
+                function setGraphImageSrc(imgEl) {
+                  if (!imgEl) return;
+                  var baseUrl = getGraphChartUrl();
+                  var separator = baseUrl.indexOf('?') === -1 ? '?' : '&';
+                  imgEl.src = baseUrl + separator + 't=' + Date.now();
+                }
+
+                function showOfflineGraphPreview() {
+                  retryCount = 0;
+                  clearTimeout(graphLoadTimeout);
+                  document.getElementById('graph-loading').style.display = 'none';
+                  document.getElementById('graph-error').style.display = 'none';
+                  document.getElementById('graph-retry-btn').style.display = 'none';
+                  renderFallbackGraph();
+                }
+
                 window.loadGitHubGraph = function () {
                   if (retryCount >= MAX_RETRIES) {
                     document.getElementById('graph-loading-text').textContent = 'Service temporarily unavailable';
                     document.getElementById('graph-retry-btn').style.display = 'inline-flex';
+                    showOfflineGraphPreview();
                     return;
                   }
 
@@ -2308,9 +2329,9 @@ html.dark #home .hero-name-text {
                     }
                   }, GRAPH_TIMEOUT);
 
-                  // Reload image with cache-busting using site theme (not OS preference alone)
+                  // External chart is opt-in via refresh only; img load avoids fetch/CORS console noise.
                   if (imgEl) {
-                    imgEl.src = getGraphChartUrl() + '?t=' + Date.now();
+                    setGraphImageSrc(imgEl);
                   }
                 };
 
@@ -2323,17 +2344,12 @@ html.dark #home .hero-name-text {
                       setTimeout(fn, 1200);
                     }
                   };
-                  scheduleGraph(window.loadGitHubGraph);
+                  scheduleGraph(showOfflineGraphPreview);
                   syncGraphLegendTheme();
 
                   document.addEventListener('portfolio-theme-change', function () {
                     syncGraphLegendTheme();
-                    if (document.getElementById('github-fallback-svg')) {
-                      renderFallbackGraph();
-                      return;
-                    }
-                    retryCount = 0;
-                    window.loadGitHubGraph();
+                    showOfflineGraphPreview();
                   });
 
                   // Refresh button handler
@@ -4221,7 +4237,6 @@ html.dark #home .hero-name-text {
       (function () {
         var audit = window.__PERF_AUDIT__ === true;
         var scripts = [
-          { src: 'js/utils/smart-navbar.js?v=20260701q', module: true },
           { src: 'js/utils/theme.js?v=20260701q', module: true },
           { src: 'js/utils/go-to-top.js?v=20260701q', defer: true },
           { src: 'js/core/bootstrap.js?v=20260701q', module: true },

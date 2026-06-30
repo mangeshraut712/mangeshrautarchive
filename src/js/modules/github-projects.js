@@ -1268,7 +1268,7 @@ class GitHubProjects {
               <h3 class="project-title">
                 <span class="project-title-text">${safeName}</span>
               </h3>
-              <a class="project-repo-link" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" aria-label="Open ${safeName} repository on GitHub">
+              <a class="project-repo-link" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer">
                 ${safeRepoPath}
               </a>
             </div>
@@ -1370,7 +1370,7 @@ class GitHubProjects {
             data-project-language="${safeLanguage}"
             data-project-topics="${topicsJson}"
             data-project-ai-insight="${safeInsight}"
-            aria-label="Open ${safeName} spatial detail card"
+            aria-label="${safeName}: Spatial View"
           >
             <i class="fas fa-cube"></i>
             <span>Spatial View</span>
@@ -1378,11 +1378,11 @@ class GitHubProjects {
 
           ${
             hasDemo
-              ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open demo website for ${safeName}">
+              ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="${safeName}: Demo Website">
                 <i class="fas fa-arrow-up-right-from-square"></i>
                 <span>Demo Website</span>
               </a>`
-              : `<button type="button" class="project-action-btn btn-demo is-disabled" disabled aria-disabled="true" aria-label="Demo unavailable for ${safeName}">
+              : `<button type="button" class="project-action-btn btn-demo is-disabled" disabled aria-disabled="true" aria-label="Demo unavailable">
                 <i class="fas fa-link-slash"></i>
                 <span>Demo Unavailable</span>
               </button>`

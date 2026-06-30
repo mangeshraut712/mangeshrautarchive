@@ -1618,7 +1618,7 @@
         container.innerHTML = `
                 <article class="doc-card doc-card-links">
                     <p class="doc-card-kicker">Documentation Links</p>
-                    <p class="doc-card-description" style="margin-bottom: 20px;">${escapeHtml(data.description || '')}</p>
+                    <p class="doc-card-description doc-card-description--margin-bottom-20">${escapeHtml(data.description || '')}</p>
                     <div class="doc-link-tile-grid">
                         <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.openapi || '/api/docs'))}" target="_blank" rel="noopener">
                             <div class="tile-icon"><i class="fas fa-file-code"></i></div>
@@ -1658,15 +1658,15 @@
                     </div>
                 </article>
                 ${groups}
-                <article class="doc-card" style="grid-column: span 2;">
+                <article class="doc-card doc-card--span-2">
                     <p class="doc-card-kicker">Status & Event Glossary</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 12px;">
+                    <div class="glossary-grid">
                         <div>
-                            <p style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">System Statuses</p>
+                            <p class="glossary-header-text">System Statuses</p>
                             <div class="glossary-list">${statusLegend}</div>
                         </div>
                         <div>
-                            <p style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Audit Log Event Levels</p>
+                            <p class="glossary-header-text">Audit Log Event Levels</p>
                             <div class="glossary-list">${eventLegend}</div>
                         </div>
                     </div>
@@ -1745,7 +1745,7 @@
                             <div class="health-metric-label">Response</div>
                         </div>
                         <div class="health-metric">
-                            <div class="health-metric-value" style="text-transform: uppercase;">${check.status}</div>
+                            <div class="health-metric-value health-metric-value--uppercase">${check.status}</div>
                             <div class="health-metric-label">Status</div>
                         </div>
                     </div>
@@ -1807,7 +1807,7 @@
         const pathData = `M ${coords.join(' L ')}`;
 
         return `
-          <svg viewBox="0 0 ${width} ${height}" style="width: 80px; height: 24px; display: inline-block; vertical-align: middle; overflow: visible;">
+          <svg viewBox="0 0 ${width} ${height}" class="endpoint-sparkline-svg">
             <path d="${pathData}" fill="none" stroke="var(--accent-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
             <circle cx="${coords[coords.length - 1].split(',')[0]}" cy="${coords[coords.length - 1].split(',')[1]}" r="2" fill="var(--accent-blue)"></circle>
           </svg>
@@ -1868,14 +1868,14 @@
                         <td>${formatNumber(totalRequests)}</td>
                         <td>${successRate}%</td>
                         <td>
-                            <div class="response-time" style="display: flex; align-items: center; gap: 12px; justify-content: space-between;">
-                                <div style="display: flex; flex-direction: column; flex-grow: 1; min-width: 80px;">
+                            <div class="response-time response-time-row">
+                                <div class="response-time-bar-wrapper">
                                     <span>${avgResponseMs.toFixed(0)}ms</span>
                                     <div class="response-time-bar">
                                         <div class="response-time-fill ${responseClass}" style="width: ${responsePercent}%"></div>
                                     </div>
                                 </div>
-                                <div class="endpoint-sparkline" style="flex-shrink: 0; opacity: 0.85;">
+                                <div class="endpoint-sparkline">
                                     ${sparklineSvg}
                                 </div>
                             </div>
@@ -1926,7 +1926,7 @@
                     </div>
                     <div class="health-metrics">
                         <div class="health-metric">
-                            <div class="health-metric-value" style="text-transform: uppercase;">${service.metric_value}</div>
+                            <div class="health-metric-value health-metric-value--uppercase">${service.metric_value}</div>
                             <div class="health-metric-label">${service.metric_label}</div>
                         </div>
                     </div>
@@ -3016,8 +3016,8 @@
 
         if (!secData) {
           threatsLog.innerHTML = `
-            <div class="empty-state compact" style="padding: 20px;">
-              <i class="fas fa-shield-halved" style="color: var(--accent-yellow);"></i>
+            <div class="empty-state compact empty-state--compact-pad">
+              <i class="fas fa-shield-halved icon-accent-yellow"></i>
               <h3>Security audit unavailable</h3>
               <p>Check backend API connectivity.</p>
             </div>`;
@@ -3029,8 +3029,8 @@
         const events = secData.security_events || [];
         if (events.length === 0) {
           threatsLog.innerHTML = `
-            <div class="empty-state compact" style="padding: 20px;">
-              <i class="fas fa-shield-check" style="color: var(--accent-green);"></i>
+            <div class="empty-state compact empty-state--compact-pad">
+              <i class="fas fa-shield-check icon-accent-green"></i>
               <h3>No security threats detected</h3>
               <p>Environment is safe</p>
             </div>`;
@@ -3060,7 +3060,7 @@
 
         if (Object.keys(rateLimits).length === 0 && suspiciousIps.length === 0) {
           limitsContainer.innerHTML = `
-            <div class="empty-state compact" style="padding: 20px;">
+            <div class="empty-state compact empty-state--compact-pad">
               <i class="fas fa-gauge"></i>
               <h3>No active rate limit pressure</h3>
               <p>All client IP budgets are clear.</p>
@@ -3070,23 +3070,23 @@
 
         if (Object.keys(rateLimits).length > 0) {
           limitHtml +=
-            '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-bottom:8px;">Active IP Request Budgets</p>';
+            '<p class="rate-limit-title">Active IP Request Budgets</p>';
           for (const [ip, data] of Object.entries(rateLimits)) {
             const isCritical = data.remaining === 0;
             const percent = Math.min((data.count / data.limit) * 100, 100);
             limitHtml += `
               <div class="rate-limit-item">
-                <div style="flex: 1; min-width: 0;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div class="rate-limit-body">
+                  <div class="rate-limit-header">
                     <span class="rate-limit-ip">${escapeHtml(ip)}</span>
-                    <span class="rate-limit-usage ${isCritical ? 'critical' : ''}" style="font-weight: 700; font-size: 11px;">
+                    <span class="rate-limit-usage ${isCritical ? 'critical' : ''} rate-limit-usage-label">
                       ${data.count}/${data.limit} req
                     </span>
                   </div>
-                  <div class="resource-bar-track" style="height: 6px; margin-bottom: 6px; background: rgba(0,0,0,0.06); border-radius: 99px; overflow: hidden;">
-                    <div class="resource-bar-fill ${percent > 85 ? 'error' : percent > 55 ? 'warning' : 'normal'}" style="width: ${percent}%; height: 100%; transition: width 0.3s ease;"></div>
+                  <div class="resource-bar-track rate-limit-bar-track">
+                    <div class="resource-bar-fill ${percent > 85 ? 'error' : percent > 55 ? 'warning' : 'normal'} rate-limit-bar-fill" style="width: ${percent}%;"></div>
                   </div>
-                  <div style="font-size: 10px; color: var(--text-secondary); display: flex; justify-content: space-between;">
+                  <div class="rate-limit-footer">
                     <span>Budget Consumed</span>
                     <span>Resets in ${data.reset_seconds}s</span>
                   </div>
@@ -3098,15 +3098,15 @@
 
         if (suspiciousIps.length > 0) {
           limitHtml +=
-            '<p style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin-top:16px; margin-bottom:8px;">Blocked / Suspicious Hosts</p>';
+            '<p class="rate-limit-title rate-limit-title--spaced">Blocked / Suspicious Hosts</p>';
           suspiciousIps.forEach(ip => {
             limitHtml += `
-              <div class="rate-limit-item" style="border-color: rgba(255, 59, 48, 0.25); background: rgba(255, 59, 48, 0.05);">
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <i class="fas fa-ban" style="color:var(--accent-red);"></i>
-                  <span class="rate-limit-ip" style="color:var(--accent-red);">${escapeHtml(ip)}</span>
+              <div class="rate-limit-item rate-limit-item--flagged">
+                <div class="rate-limit-flagged-row">
+                  <i class="fas fa-ban icon-accent-red"></i>
+                  <span class="rate-limit-ip icon-accent-red">${escapeHtml(ip)}</span>
                 </div>
-                <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--accent-red);">Flagged</span>
+                <span class="rate-limit-flagged-badge">Flagged</span>
               </div>
             `;
           });
@@ -3305,7 +3305,7 @@
       function renderAiLatencySparkline(samples) {
         if (!Array.isArray(samples) || samples.length === 0) {
           return `
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 12px;">
+            <div class="ai-sparkline-empty-state">
               No latency metrics recorded yet.
             </div>`;
         }
@@ -3328,7 +3328,7 @@
         const areaData = `${pathData} L ${width},${height} L 0,${height} Z`;
 
         return `
-          <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: 100%; display: block; overflow: visible;">
+          <svg viewBox="0 0 ${width} ${height}" class="ai-sparkline-svg">
             <defs>
               <linearGradient id="ai-spark-gradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="var(--accent-blue)" stop-opacity="0.3"></stop>
@@ -3378,86 +3378,86 @@
         const tokenUsage = data.token_usage || {};
 
         container.innerHTML = `
-          <div class="ai-metrics-dashboard" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; width: 100%;">
+          <div class="ai-metrics-dashboard">
             <!-- Latency Chart & History -->
-            <div class="doc-card" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; padding: 18px 20px;">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div class="doc-card ai-metric-card">
+              <div class="ai-metric-card-header">
                 <div>
-                  <p class="doc-card-kicker" style="margin-bottom: 2px;">AI Inference Latency</p>
-                  <h3 style="font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.02em;">${avgLatency == null ? 'No samples' : `${avgLatency}ms`} <span style="font-size: 13px; font-weight: 500; color: var(--text-secondary);">avg</span></h3>
+                  <p class="doc-card-kicker ai-metric-kicker">AI Inference Latency</p>
+                  <h3 class="ai-metric-val-title">${avgLatency == null ? 'No samples' : `${avgLatency}ms`} <span class="ai-metric-label-suffix">avg</span></h3>
                 </div>
                 <div class="health-status-icon healthy"><i class="fas fa-gauge-high"></i></div>
               </div>
-              <div style="height: 100px; width: 100%; position: relative; margin-top: 8px; margin-bottom: 8px;">
+              <div class="ai-metric-sparkline-container">
                  ${renderAiLatencySparkline(responseTimes)}
               </div>
-              <p style="font-size: 11px; color: var(--text-secondary); margin: 0;">${responseTimes.length} samples tracked (100 max queue)</p>
+              <p class="ai-metric-footer-text">${responseTimes.length} samples tracked (100 max queue)</p>
             </div>
 
             <!-- Token Allocation & Usage -->
-            <div class="doc-card" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; padding: 18px 20px;">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div class="doc-card ai-metric-card">
+              <div class="ai-metric-card-header">
                 <div>
-                  <p class="doc-card-kicker" style="margin-bottom: 2px;">Token Allocations</p>
-                  <h3 style="font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.02em;">${formatNumber(tokenUsage.input + tokenUsage.output)} <span style="font-size: 13px; font-weight: 500; color: var(--text-secondary);">total</span></h3>
+                  <p class="doc-card-kicker ai-metric-kicker">Token Allocations</p>
+                  <h3 class="ai-metric-val-title">${formatNumber(tokenUsage.input + tokenUsage.output)} <span class="ai-metric-label-suffix">total</span></h3>
                 </div>
                 <div class="health-status-icon healthy"><i class="fas fa-coins"></i></div>
               </div>
               
-              <div style="margin-top: 8px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+              <div class="ai-metric-tokens-container">
                 <!-- Input Tokens Progress -->
                 <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
-                    <span style="font-weight: 500;">Input Tokens</span>
-                    <span style="font-weight: 700;">${formatNumber(tokenUsage.input)}</span>
+                  <div class="ai-metric-row">
+                    <span class="font-medium">Input Tokens</span>
+                    <span class="font-bold">${formatNumber(tokenUsage.input)}</span>
                   </div>
-                  <div class="resource-bar-track" style="height: 6px; background: rgba(0,0,0,0.06); border-radius: 99px; overflow: hidden; position: relative;">
-                    <div class="resource-bar-fill normal" style="width: ${Math.min((tokenUsage.input / 500000) * 100, 100)}%; height: 100%; background: var(--accent-blue) !important; border-radius: 99px;"></div>
+                  <div class="resource-bar-track ai-token-bar-track">
+                    <div class="resource-bar-fill normal ai-token-bar-fill-input" style="width: ${Math.min((tokenUsage.input / 500000) * 100, 100)}%;"></div>
                   </div>
                 </div>
                 <!-- Output Tokens Progress -->
                 <div>
-                  <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
-                    <span style="font-weight: 500;">Output Tokens</span>
-                    <span style="font-weight: 700;">${formatNumber(tokenUsage.output)}</span>
+                  <div class="ai-metric-row">
+                    <span class="font-medium">Output Tokens</span>
+                    <span class="font-bold">${formatNumber(tokenUsage.output)}</span>
                   </div>
-                  <div class="resource-bar-track" style="height: 6px; background: rgba(0,0,0,0.06); border-radius: 99px; overflow: hidden; position: relative;">
-                    <div class="resource-bar-fill normal" style="width: ${Math.min((tokenUsage.output / 500000) * 100, 100)}%; height: 100%; background: var(--accent-green) !important; border-radius: 99px;"></div>
+                  <div class="resource-bar-track ai-token-bar-track">
+                    <div class="resource-bar-fill normal ai-token-bar-fill-output" style="width: ${Math.min((tokenUsage.output / 500000) * 100, 100)}%;"></div>
                   </div>
                 </div>
               </div>
-              <p style="font-size: 11px; color: var(--text-secondary); margin: 0; margin-top: 8px;">Budget utilization against 500K token threshold</p>
+              <p class="ai-metric-footer-text ai-metric-footer-text--spaced">Budget utilization against 500K token threshold</p>
             </div>
 
             <!-- Model & Provider Registry -->
-            <div class="doc-card" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; padding: 18px 20px;">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div class="doc-card ai-metric-card">
+              <div class="ai-metric-card-header">
                 <div>
-                  <p class="doc-card-kicker" style="margin-bottom: 2px;">Active model registry</p>
-                  <h3 style="font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.02em;">${modelCount === 0 ? 'No models active' : `${modelCount} model${modelCount === 1 ? '' : 's'}`}</h3>
+                  <p class="doc-card-kicker ai-metric-kicker">Active model registry</p>
+                  <h3 class="ai-metric-val-title">${modelCount === 0 ? 'No models active' : `${modelCount} model${modelCount === 1 ? '' : 's'}`}</h3>
                 </div>
                 <div class="health-status-icon healthy"><i class="fas fa-robot"></i></div>
               </div>
               
-              <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; margin-top: 8px; margin-bottom: 8px;">
+              <div class="ai-metric-registry-container">
                 ${
                   modelCount === 0
-                    ? `<div style="text-align: center; color: var(--text-secondary); font-size: 13px;">Waiting for conversation traffic...</div>`
+                    ? `<div class="ai-registry-empty">Waiting for conversation traffic...</div>`
                     : Object.entries(modelUsage)
                         .map(
                           ([model, count]) => `
-                      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 6px 10px; background: rgba(0,0,0,0.02); border-radius: 8px; border: 1px solid rgba(0,0,0,0.04);">
-                        <span style="font-family: monospace; font-size: 11px; color: var(--text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap; max-width: 190px;">${escapeHtml(model)}</span>
-                        <span style="font-weight: 700; color: var(--accent-blue);">${count} requests</span>
+                      <div class="ai-model-row">
+                        <span class="ai-model-name">${escapeHtml(model)}</span>
+                        <span class="font-bold text-accent-blue">${count} requests</span>
                       </div>
                     `
                         )
                         .join('')
                 }
               </div>
-              <div style="font-size: 11px; color: var(--text-secondary); display: flex; justify-content: space-between; margin-top: 8px;">
+              <div class="ai-metric-row ai-metric-row--spaced">
                 <span>Total Provider Requests</span>
-                <span style="font-weight: 700;">${formatNumber(data.openrouter_requests)}</span>
+                <span class="font-bold">${formatNumber(data.openrouter_requests)}</span>
               </div>
             </div>
           </div>

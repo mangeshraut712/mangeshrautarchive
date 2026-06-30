@@ -1,5 +1,6 @@
-const EAGER_MODULES = [
-  '../modules/accessibility.js',
+const EAGER_MODULES = ['../modules/accessibility.js'];
+
+const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
   '../modules/liquid-glass-chrome.js',
 ];
@@ -9,7 +10,6 @@ import { initScrollLockRecovery } from '../utils/scroll-lock.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
 import {
   WARM_SECTION_PRELOAD_DELAY_MS,
-  WARM_SECTION_START_DELAY_MS,
   getGithubProjectsPrefetchUrl,
   shouldDeferCriticalWarmup,
 } from '../utils/section-preload.js';
@@ -234,9 +234,7 @@ function warmCriticalSectionPreloads() {
 
   scheduleSoon(() => {
     prefetchGithubProjectsCatalog();
-    loadDeferredStyles(['projects', 'skills']).catch(() => {});
-    import('../modules/projects-showcase.js').catch(() => {});
-    loadModule('../modules/skills-visualization.js');
+    loadDeferredStyles(['projects']).catch(() => {});
   }, WARM_SECTION_PRELOAD_DELAY_MS);
 }
 
@@ -748,6 +746,12 @@ function initLazyModules() {
         loadModule(path);
       });
 
+      runWhenIdle(() => {
+        IDLE_EAGER_MODULES.forEach(path => {
+          loadModule(path);
+        });
+      }, 3500);
+
       if (new URLSearchParams(window.location.search).has('birthday-test')) {
         loadModule('../modules/birthday-celebration.js');
       }
@@ -879,7 +883,6 @@ function initProjectShowcaseOnDemand() {
   };
 
   observeSectionTask('projects', start, '500px 0px');
-  scheduleSoon(() => start(), WARM_SECTION_START_DELAY_MS);
 }
 
 function initEngineeringTeaserOnDemand() {
@@ -911,7 +914,6 @@ function initEngineeringTeaserOnDemand() {
   };
 
   observeSectionTask('engineering', start, '500px 0px');
-  scheduleSoon(() => start(), WARM_SECTION_START_DELAY_MS);
 }
 
 function initServiceWorker() {

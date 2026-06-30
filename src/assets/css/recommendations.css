@@ -19,6 +19,8 @@ html.dark #recommendations {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
   margin-top: 2rem;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 @media (width >=1024px) {

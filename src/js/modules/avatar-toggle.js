@@ -9,14 +9,26 @@ function applyAvatarMode(mode) {
   const isAvatar = mode === 'avatar';
   const photoSrc = image.dataset.photoSrc || image.getAttribute('src') || '';
   const avatarSrc = image.dataset.avatarSrc || '';
+  const photoSrcset = image.dataset.photoSrcset || '';
+  const avatarSrcset = image.dataset.avatarSrcset || '';
 
   if (isAvatar) {
     image.src = avatarSrc || photoSrc;
+    if (avatarSrcset) {
+      image.srcset = avatarSrcset;
+    } else {
+      image.removeAttribute('srcset');
+    }
     image.alt = 'Mangesh Raut avatar';
     toggle.dataset.mode = 'avatar';
     toggle.setAttribute('aria-pressed', 'true');
   } else {
     image.src = photoSrc;
+    if (photoSrcset) {
+      image.srcset = photoSrcset;
+    } else {
+      image.removeAttribute('srcset');
+    }
     image.alt = 'Mangesh Raut photo';
     toggle.dataset.mode = 'photo';
     toggle.setAttribute('aria-pressed', 'false');

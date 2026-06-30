@@ -17,6 +17,8 @@ html.dark #certifications {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
   gap: 1.5rem !important;
   margin-top: 2rem !important;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* Card Design - Compact */

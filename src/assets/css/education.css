@@ -52,10 +52,11 @@ html.dark #education h2 {
    ======================================== */
 
 .education-timeline {
-  max-width: 1000px;
+  max-width: min(1000px, 100%);
   margin: 0 auto;
   position: relative;
   padding: 0.5rem 0 0;
+  overflow-x: clip;
 }
 
 /* Timeline Vertical Line */

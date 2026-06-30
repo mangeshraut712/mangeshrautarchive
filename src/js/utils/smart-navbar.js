@@ -159,6 +159,21 @@ function stabilizeScrollToSection(sectionId) {
   });
 }
 
+function syncSectionHash(sectionId) {
+  const href = `#${sectionId}`;
+  if (window.location.hash === href) {
+    return;
+  }
+
+  try {
+    window.history.pushState(null, '', href);
+  } catch (_error) {
+    window.location.hash = sectionId;
+  }
+
+  window.dispatchEvent(new HashChangeEvent('hashchange'));
+}
+
 function scrollToSection(sectionId) {
   const target = document.getElementById(sectionId);
   if (!target || !state.nav) return;
@@ -205,9 +220,7 @@ function bindNavLinks() {
       event.preventDefault();
       setActiveLinkBySectionId(sectionId);
       scrollToSection(sectionId);
-      if (window.location.hash !== href) {
-        history.replaceState(null, '', href);
-      }
+      syncSectionHash(sectionId);
     });
   });
 }
@@ -228,9 +241,7 @@ function bindOverlayLinks() {
       closeOverlayMenu();
       setActiveLinkBySectionId(sectionId);
       scrollToSection(sectionId);
-      if (window.location.hash !== href) {
-        history.replaceState(null, '', href);
-      }
+      syncSectionHash(sectionId);
     });
   });
 }
@@ -430,8 +441,14 @@ function onResize() {
 }
 
 function initSmartNavbar() {
+  if (window.__smartNavbarInitialized) {
+    return;
+  }
+
   state.nav = document.querySelector('.global-nav.dynamic-island');
   if (!state.nav) return;
+
+  window.__smartNavbarInitialized = true;
 
   state.navLinks = Array.from(state.nav.querySelectorAll('.nav-link[href^="#"]'));
   state.overlayLinks = Array.from(document.querySelectorAll('.menu-item[href^="#"]'));

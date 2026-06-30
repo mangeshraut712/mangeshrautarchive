@@ -43,7 +43,12 @@ function initHeroRoleFlip() {
 
   setRole();
   if (!prefersReducedMotion) {
-    window.setInterval(setRole, 2400);
+    const startRotation = () => window.setInterval(setRole, 2400);
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(startRotation, { timeout: 5000 });
+    } else {
+      window.setTimeout(startRotation, 5000);
+    }
   }
 }
 
