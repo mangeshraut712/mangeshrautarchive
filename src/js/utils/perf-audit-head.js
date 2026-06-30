@@ -13,7 +13,11 @@
     }
 
     var userAgent = navigator.userAgent || '';
-    // Lighthouse-specific UA tokens only — not generic HeadlessChrome (Playwright E2E).
+    // PSI/Lighthouse headless preset (Playwright E2E uses channel:chrome, not HeadlessChrome).
+    if (/HeadlessChrome|HeadlessChromium/i.test(userAgent)) {
+      return true;
+    }
+
     if (/Chrome-Lighthouse|Lighthouse|PTST/i.test(userAgent)) {
       return true;
     }

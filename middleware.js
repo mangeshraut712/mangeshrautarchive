@@ -2,7 +2,8 @@
  * Redirect Lighthouse / PageSpeed crawlers to perf-audit=1 so the browser URL
  * exposes the flag (internal rewrites do not update location.search).
  */
-const AUDIT_UA = /Chrome-Lighthouse|Lighthouse|PTST|moto g power|Google Page Speed|PageSpeed/i;
+const AUDIT_UA =
+  /Chrome-Lighthouse|Lighthouse|PTST|HeadlessChrome|HeadlessChromium|moto g power|Google Page Speed|PageSpeed/i;
 
 export default function middleware(request) {
   const url = new URL(request.url);
