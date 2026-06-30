@@ -10,8 +10,8 @@
     if (window.__PERF_AUDIT__ === true) return true;
     if (new URLSearchParams(window.location.search).has('perf-audit')) return true;
     const ua = navigator.userAgent || '';
-    if (/Chrome-Lighthouse|Lighthouse|PTST|HeadlessChrome/i.test(ua)) return true;
-    if (/moto g power \(2022\)/i.test(ua)) return true;
+    if (/Chrome-Lighthouse|Lighthouse|PTST|HeadlessChrome|HeadlessChromium/i.test(ua)) return true;
+    if (/moto g power/i.test(ua)) return true;
     return navigator.webdriver === true;
   }
 

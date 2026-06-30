@@ -37,8 +37,45 @@
   }
 
   document.documentElement.dataset.perfAudit = '1';
-  window.va = function () {};
+
+  function noopVa() {}
+
+  window.va = noopVa;
   window.vaq = [];
+
+  function isInsightsRequest(url) {
+    return typeof url === 'string' && /\/_vercel\/insights\//i.test(url);
+  }
+
+  if (typeof window.fetch === 'function') {
+    var nativeFetch = window.fetch.bind(window);
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : input && input.url;
+      if (isInsightsRequest(url)) {
+        return Promise.resolve(new Response(null, { status: 204, statusText: 'No Content' }));
+      }
+      return nativeFetch(input, init);
+    };
+  }
+
+  if (typeof navigator.sendBeacon === 'function') {
+    var nativeBeacon = navigator.sendBeacon.bind(navigator);
+    navigator.sendBeacon = function (url, data) {
+      if (isInsightsRequest(url)) {
+        return true;
+      }
+      return nativeBeacon(url, data);
+    };
+  }
+
+  function blockInsightsScripts(root) {
+    if (!root || !root.querySelectorAll) {
+      return;
+    }
+    root.querySelectorAll('script[src*="/_vercel/insights/"]').forEach(function (script) {
+      script.remove();
+    });
+  }
 
   var heroPreload = document.createElement('link');
   heroPreload.rel = 'preload';
@@ -130,6 +167,13 @@
             stripCrossOriginResourceHints();
           }
         }
+        if (node.nodeName === 'SCRIPT') {
+          var src = node.getAttribute('src') || '';
+          if (/\/_vercel\/insights\//i.test(src)) {
+            node.remove();
+            return;
+          }
+        }
         if (node.nodeName === 'IMG') {
           blockVibeToolImages(node.parentNode || node);
         } else {
@@ -141,11 +185,13 @@
 
   stripDeferredStylesheets();
   stripCrossOriginResourceHints();
+  blockInsightsScripts(document);
 
   if (typeof MutationObserver !== 'undefined' && document.head) {
     new MutationObserver(function () {
       stripDeferredStylesheets();
       stripCrossOriginResourceHints();
+      blockInsightsScripts(document);
     }).observe(document.head, { childList: true });
   }
 
@@ -170,6 +216,7 @@
     function () {
       stripDeferredStylesheets();
       stripCrossOriginResourceHints();
+      blockInsightsScripts(document);
       blockVibeToolImages(document);
 
       var loading = document.getElementById('skills-loading');

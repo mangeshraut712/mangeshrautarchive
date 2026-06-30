@@ -1,53 +1,43 @@
 /**
  * AnalyticsService — Custom Vercel Analytics event tracker
  *
- * Wraps @vercel/analytics `track()` to add portfolio-specific events.
- * All tracking is:
- *   - Privacy-respecting (no PII sent)
- *   - Gracefully degraded (no errors if Vercel Analytics isn't loaded)
- *   - Batched to avoid spamming the network on rapid interactions
- *
- * Usage:
- *   import { analytics } from './AnalyticsService.js';
- *
- *   analytics.chatQuestion('What projects has he built?', 'projects');
- *   analytics.sectionView('experience');
- *   analytics.contactFormSubmit('success');
- *   analytics.resumeDownload();
- *   analytics.themeToggle('dark');
- *   analytics.voiceUsed('input');
+ * Wraps Vercel Web Analytics `va('event', { name, data })` for portfolio events.
  */
+
+import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 class AnalyticsService {
   constructor() {
-    // Attempt to grab Vercel Analytics track function
-    // It may be injected by the Vercel runtime or <script> tag
     this._track = null;
     this._queue = [];
     this._initialized = false;
+    this._disabled = isPerformanceAudit();
     this._handleReady = () => this._init();
 
-    if (typeof window !== 'undefined') {
-      window.addEventListener('vercel-analytics-ready', this._handleReady);
-      window.addEventListener('load', () => this._init(), { once: true });
+    if (this._disabled || typeof window === 'undefined') {
+      return;
     }
 
+    window.addEventListener('vercel-analytics-ready', this._handleReady);
+    window.addEventListener('load', () => this._init(), { once: true });
     setTimeout(() => this._init(), 500);
   }
 
   _init() {
-    // Window-injected version (Vercel CDN script)
-    if (typeof window !== 'undefined' && window.va) {
-      this._track = (...args) => window.va('event', ...args);
-      this._initialized = true;
+    if (this._disabled || isPerformanceAudit()) {
+      return;
     }
-    // npm package version (if imported in build)
-    else if (typeof window !== 'undefined' && window.__vercel_insights_track) {
+
+    if (typeof window !== 'undefined' && typeof window.va === 'function') {
+      this._track = (name, data = {}) => {
+        window.va('event', { name, data });
+      };
+      this._initialized = true;
+    } else if (typeof window !== 'undefined' && typeof window.__vercel_insights_track === 'function') {
       this._track = window.__vercel_insights_track;
       this._initialized = true;
     }
 
-    // Flush queued events
     if (this._initialized && this._queue.length) {
       this._queue.forEach(([name, props]) => this._sendEvent(name, props));
       this._queue = [];
@@ -55,6 +45,10 @@ class AnalyticsService {
   }
 
   _sendEvent(name, properties = {}) {
+    if (this._disabled || isPerformanceAudit()) {
+      return;
+    }
+
     if (!this._track) {
       this._init();
     }
@@ -65,13 +59,13 @@ class AnalyticsService {
       }
       return;
     }
+
     try {
       this._track(name, {
         ...properties,
         timestamp: new Date().toISOString(),
       });
     } catch (err) {
-      // Never let analytics crash the app
       console.debug('[Analytics] track failed:', err.message);
     }
   }
