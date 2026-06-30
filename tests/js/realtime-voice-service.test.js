@@ -15,9 +15,9 @@ function resolveRealtimeWsUrl(sessionPayload, apiBase = 'http://127.0.0.1:4000')
 
 describe('realtime voice helpers', () => {
   it('uses session wsUrl when provided', () => {
-    expect(
-      resolveRealtimeWsUrl({ wsUrl: 'wss://example.com/api/realtime/ws' })
-    ).toBe('wss://example.com/api/realtime/ws');
+    expect(resolveRealtimeWsUrl({ wsUrl: 'wss://example.com/api/realtime/ws' })).toBe(
+      'wss://example.com/api/realtime/ws'
+    );
   });
 
   it('derives ws url from api base for local dev', () => {

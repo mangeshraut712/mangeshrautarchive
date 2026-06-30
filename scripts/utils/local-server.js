@@ -206,7 +206,9 @@ function startServer(listenPort) {
     console.log('\n🚀 Local development server running!');
     console.log(`   - Frontend: ${origin}`);
     console.log(`   - API proxy: ${origin}/api/* → ${apiTarget}`);
-    console.log(`   - Realtime WS: ${origin.replace(/^http/, 'ws')}/api/realtime/ws → ${apiTarget.replace(/^http/, 'ws')}/api/realtime/ws`);
+    console.log(
+      `   - Realtime WS: ${origin.replace(/^http/, 'ws')}/api/realtime/ws → ${apiTarget.replace(/^http/, 'ws')}/api/realtime/ws`
+    );
     console.log(`   - apiBaseUrl: ${getPublicBuildConfig(listenPort).apiBaseUrl}`);
     if (listenPort !== port) {
       console.warn(`   ⚠️  Port ${port} was busy; using ${listenPort} instead.`);

@@ -6,10 +6,7 @@
 const TARGET_SAMPLE_RATE = 24000;
 
 function resolveApiBase() {
-  const base =
-    globalThis.APP_CONFIG?.apiBaseUrl ||
-    globalThis.buildConfig?.apiBaseUrl ||
-    '';
+  const base = globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl || '';
   if (base) return base.replace(/\/$/, '');
   return window.location.origin;
 }

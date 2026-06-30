@@ -9,9 +9,7 @@ const DEFAULT_REALTIME_MODEL = 'openai/gpt-realtime-2';
 
 function getApiKey() {
   return (
-    process.env.AI_GATEWAY_API_KEY?.trim() ||
-    process.env.VERCEL_AI_GATEWAY_API_KEY?.trim() ||
-    ''
+    process.env.AI_GATEWAY_API_KEY?.trim() || process.env.VERCEL_AI_GATEWAY_API_KEY?.trim() || ''
   );
 }
 

@@ -45,6 +45,9 @@ jobs:
       - name: 🎨 Lint — Stylelint CSS quality check
         run: npm run lint:css
 
+      - name: 📝 Format — Prettier check
+        run: npm run format:check
+
       - name: 🧪 Tests — Vitest unit tests
         run: npm test
 
@@ -66,7 +69,7 @@ jobs:
       - name: 🐍 Python — lint and dead-code scan
         run: |
           npm run lint:dead-code
-          python -m flake8 api/ --max-line-length=120 --ignore=E501,W503,W291,W293
+          npm run lint:python
 
       - name: 🐍 Python — API tests
         run: npm run test:api

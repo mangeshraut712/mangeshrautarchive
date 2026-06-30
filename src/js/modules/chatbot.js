@@ -399,7 +399,9 @@ class AppleIntelligenceChatbot {
       await this.realtimeVoice.toggleLiveSession();
     } catch (error) {
       console.error('Failed to start realtime voice:', error);
-      this.addErrorMessage('Live voice could not start. Falling back to dictation is still available.');
+      this.addErrorMessage(
+        'Live voice could not start. Falling back to dictation is still available.'
+      );
     }
   }
 

@@ -36,15 +36,13 @@ describe('section-preload', () => {
   });
 
   it('defers warmup on save-data and very slow connections', () => {
-    expect(shouldDeferCriticalWarmup({ navigator: { connection: { saveData: true } } })).toBe(
+    expect(shouldDeferCriticalWarmup({ navigator: { connection: { saveData: true } } })).toBe(true);
+    expect(shouldDeferCriticalWarmup({ navigator: { connection: { effectiveType: '2g' } } })).toBe(
       true
     );
-    expect(
-      shouldDeferCriticalWarmup({ navigator: { connection: { effectiveType: '2g' } } })
-    ).toBe(true);
-    expect(
-      shouldDeferCriticalWarmup({ navigator: { connection: { effectiveType: '4g' } } })
-    ).toBe(false);
+    expect(shouldDeferCriticalWarmup({ navigator: { connection: { effectiveType: '4g' } } })).toBe(
+      false
+    );
   });
 
   it('exposes conservative warm delays for lighthouse budgets', () => {

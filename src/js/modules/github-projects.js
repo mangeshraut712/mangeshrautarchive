@@ -1100,7 +1100,9 @@ class GitHubProjects {
     const latestReleasePayload = Array.isArray(releaseMeta.data)
       ? releaseMeta.data[0]
       : releaseMeta.data;
-    const latestRelease = releaseMeta.ok ? this.normalizeReleasePayload(latestReleasePayload) : null;
+    const latestRelease = releaseMeta.ok
+      ? this.normalizeReleasePayload(latestReleasePayload)
+      : null;
     const releaseChecked = !shouldFetchRelease || releaseMeta.ok || releaseMeta.status === 404;
 
     let commits30d = null;
