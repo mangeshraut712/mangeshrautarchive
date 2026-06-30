@@ -85,12 +85,14 @@
   // Cross-origin prefetch/preconnect hints (e.g. GitHub API warm) fail CORS on loopback
   // Lighthouse hosts and surface as console errors, tanking Best Practices.
   function stripCrossOriginResourceHints() {
-    document.querySelectorAll('link[rel="prefetch"], link[rel="preconnect"]').forEach(function (link) {
-      var href = link.getAttribute('href') || '';
-      if (/^https?:\/\//i.test(href)) {
-        link.parentNode && link.parentNode.removeChild(link);
-      }
-    });
+    document
+      .querySelectorAll('link[rel="prefetch"], link[rel="preconnect"]')
+      .forEach(function (link) {
+        var href = link.getAttribute('href') || '';
+        if (/^https?:\/\//i.test(href)) {
+          link.parentNode && link.parentNode.removeChild(link);
+        }
+      });
   }
 
   function onDomMutation(mutations) {
