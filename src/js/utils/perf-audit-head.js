@@ -101,8 +101,13 @@
         if (node.nodeType !== 1) {
           return;
         }
-        if (node.nodeName === 'LINK' && node.rel === 'stylesheet') {
-          stripDeferredStylesheets();
+        if (node.nodeName === 'LINK') {
+          if (node.rel === 'stylesheet') {
+            stripDeferredStylesheets();
+          }
+          if (node.rel === 'prefetch' || node.rel === 'preconnect') {
+            stripCrossOriginResourceHints();
+          }
         }
         if (node.nodeName === 'IMG') {
           blockVibeToolImages(node.parentNode || node);
@@ -118,7 +123,10 @@
 
   if (typeof MutationObserver !== 'undefined') {
     if (document.head) {
-      new MutationObserver(stripDeferredStylesheets).observe(document.head, { childList: true });
+      new MutationObserver(function () {
+        stripDeferredStylesheets();
+        stripCrossOriginResourceHints();
+      }).observe(document.head, { childList: true });
     }
     new MutationObserver(onDomMutation).observe(document.documentElement, {
       childList: true,
