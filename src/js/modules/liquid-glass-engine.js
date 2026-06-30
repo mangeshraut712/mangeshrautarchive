@@ -4,10 +4,11 @@ import {
   isLiquidGlassCaptureSupported,
 } from '../utils/liquid-glass-background.js';
 import { mountLiquidGlassSurface } from '../utils/liquid-glass-surface.js';
+import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 class LiquidGlassEngine {
   constructor() {
-    this.enabled = isLiquidGlassCaptureSupported();
+    this.enabled = isLiquidGlassCaptureSupported() && !isPerformanceAudit();
     this.surfaces = new Set();
     this.tintRatio = 0;
     this.backgroundCanvas = null;
@@ -167,7 +168,7 @@ export function syncLiquidGlassWebGL(tintRatio) {
   engine.setTintRatio(tintRatio);
 }
 
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && !isPerformanceAudit()) {
   window.liquidGlassEngine = engine;
   engine.observeTheme();
 

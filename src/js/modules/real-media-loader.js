@@ -1,5 +1,6 @@
 import { BOOKS, SHOWS_AND_MOVIES } from '../data/media-data.js';
 import { analytics } from '../services/AnalyticsService.js';
+import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 class RealMediaLoader {
   getMediaPlaceholder(title, type, _meta = '') {
@@ -160,10 +161,7 @@ class RealMediaLoader {
 }
 
 function initRealMediaLoader() {
-  if (
-    window.__PERF_AUDIT__ === true ||
-    new URLSearchParams(window.location.search).has('perf-audit')
-  ) {
+  if (isPerformanceAudit()) {
     return;
   }
 
