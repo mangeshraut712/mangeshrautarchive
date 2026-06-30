@@ -3,8 +3,15 @@
 
 <head>
   <script src="js/utils/perf-audit-head.js"></script>
-  <script src="js/utils/liquid-glass-boot.js?v=20260701q"></script>
-  <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
+  <script>
+    if (!window.__PERF_AUDIT__) {
+      var lgBoot = document.createElement('script');
+      lgBoot.src = 'js/utils/liquid-glass-boot.js?v=20260701q';
+      document.head.appendChild(lgBoot);
+    }
+  </script>
+  <link rel="preload" as="image" href="assets/images/profile-mobile.webp" media="(max-width: 768px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/images/profile.webp" media="(min-width: 769px)" fetchpriority="high" />
   <!-- Performance: Preconnect to external domains -->
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
   <link rel="preconnect" href="https://mangeshraut.pro" crossorigin />

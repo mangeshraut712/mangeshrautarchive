@@ -39,7 +39,10 @@
   var heroPreload = document.createElement('link');
   heroPreload.rel = 'preload';
   heroPreload.as = 'image';
-  heroPreload.href = 'assets/images/profile.webp';
+  heroPreload.href =
+    window.matchMedia && window.matchMedia('(max-width: 768px)').matches
+      ? 'assets/images/profile-mobile.webp'
+      : 'assets/images/profile.webp';
   heroPreload.setAttribute('fetchpriority', 'high');
   (document.head || document.documentElement).appendChild(heroPreload);
 
@@ -135,17 +138,27 @@
   stripDeferredStylesheets();
   stripCrossOriginResourceHints();
 
-  if (typeof MutationObserver !== 'undefined') {
-    if (document.head) {
-      new MutationObserver(function () {
-        stripDeferredStylesheets();
-        stripCrossOriginResourceHints();
-      }).observe(document.head, { childList: true });
+  if (typeof MutationObserver !== 'undefined' && document.head) {
+    new MutationObserver(function () {
+      stripDeferredStylesheets();
+      stripCrossOriginResourceHints();
+    }).observe(document.head, { childList: true });
+  }
+
+  var installSubtreeObserver = function () {
+    if (typeof MutationObserver === 'undefined') {
+      return;
     }
     new MutationObserver(onDomMutation).observe(document.documentElement, {
       childList: true,
       subtree: true,
     });
+  };
+
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(installSubtreeObserver, { timeout: 1500 });
+  } else {
+    setTimeout(installSubtreeObserver, 0);
   }
 
   document.addEventListener(
