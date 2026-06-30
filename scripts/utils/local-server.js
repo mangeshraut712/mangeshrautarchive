@@ -1,8 +1,10 @@
 import express from 'express';
+import http from 'node:http';
 import { Readable } from 'node:stream';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import dotenv from 'dotenv';
+import { WebSocket, WebSocketServer } from 'ws';
 import { generateCaseStudyPages } from '../build/generate-case-study-pages.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,7 +51,7 @@ function getPublicBuildConfig(activePort = port) {
     siteUrl: process.env.OPENROUTER_SITE_URL || origin,
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: process.env.OPENROUTER_MODEL || 'x-ai/grok-4.3',
-    lastfmApiKey: process.env.NEXT_PUBLIC_LASTFM_API_KEY || '',
+    lastfmApiKey: '',
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
     version: `dev-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
@@ -110,6 +112,49 @@ async function proxyApiRequest(req, res) {
 
 app.use('/api', proxyApiRequest);
 
+function attachRealtimeWsProxy(server) {
+  const wss = new WebSocketServer({ noServer: true });
+
+  server.on('upgrade', (req, socket, head) => {
+    const pathname = req.url?.split('?')[0] || '';
+    if (pathname !== '/api/realtime/ws') {
+      socket.destroy();
+      return;
+    }
+
+    wss.handleUpgrade(req, socket, head, clientWs => {
+      const targetUrl = new URL(req.url, apiTarget);
+      targetUrl.protocol = targetUrl.protocol === 'https:' ? 'wss:' : 'ws:';
+
+      const headers = {};
+      for (const [key, value] of Object.entries(req.headers)) {
+        if (hopByHopHeaders.has(key.toLowerCase()) || value == null) continue;
+        headers[key] = Array.isArray(value) ? value.join(', ') : value;
+      }
+
+      const upstream = new WebSocket(targetUrl.toString(), { headers });
+
+      upstream.on('open', () => {
+        clientWs.on('message', data => {
+          if (upstream.readyState === WebSocket.OPEN) {
+            upstream.send(data);
+          }
+        });
+        upstream.on('message', data => {
+          if (clientWs.readyState === WebSocket.OPEN) {
+            clientWs.send(data);
+          }
+        });
+      });
+
+      clientWs.on('close', () => upstream.close());
+      upstream.on('close', () => clientWs.close());
+      clientWs.on('error', () => upstream.close());
+      upstream.on('error', () => clientWs.close());
+    });
+  });
+}
+
 app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.setHeader('Pragma', 'no-cache');
@@ -152,13 +197,16 @@ const chatbotPath = join(projectRoot, 'chatbot');
 app.use('/chatbot', express.static(chatbotPath));
 
 function startServer(listenPort) {
-  const server = app.listen(listenPort, host);
+  const server = http.createServer(app);
+  attachRealtimeWsProxy(server);
+  server.listen(listenPort, host);
 
   server.on('listening', () => {
     const origin = `http://${host}:${listenPort}`;
     console.log('\n🚀 Local development server running!');
     console.log(`   - Frontend: ${origin}`);
     console.log(`   - API proxy: ${origin}/api/* → ${apiTarget}`);
+    console.log(`   - Realtime WS: ${origin.replace(/^http/, 'ws')}/api/realtime/ws → ${apiTarget.replace(/^http/, 'ws')}/api/realtime/ws`);
     console.log(`   - apiBaseUrl: ${getPublicBuildConfig(listenPort).apiBaseUrl}`);
     if (listenPort !== port) {
       console.warn(`   ⚠️  Port ${port} was busy; using ${listenPort} instead.`);

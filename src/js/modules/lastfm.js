@@ -181,12 +181,12 @@ class LastFmService {
     return pending;
   }
 
-  hydrateFallbackArtwork(imageNode, track) {
+  hydrateFallbackArtwork(imageNode, track, { fallbackUrl = '' } = {}) {
     if (!imageNode || !track) return;
-    // Always attempt iTunes artwork — it's the highest-quality source
     this.fetchAppleMusicArtwork(track.name || '', this.getArtistName(track)).then(artworkUrl => {
-      if (artworkUrl && imageNode.src !== artworkUrl) {
-        imageNode.src = artworkUrl;
+      const nextUrl = artworkUrl || fallbackUrl;
+      if (nextUrl && imageNode.src !== nextUrl) {
+        imageNode.src = nextUrl;
       }
     });
   }
@@ -366,15 +366,12 @@ class LastFmService {
     this.hero.artistName.textContent = artistName;
     this.hero.statusText.textContent = isNowPlaying ? 'Now playing' : 'Recently played';
     this.hero.albumArt.alt = `${trackName} by ${artistName}`;
-    // Only update src if we have a real (non-placeholder) Last.fm image
-    if (this.isUsableArtwork(artwork)) {
-      this.hero.albumArt.src = artwork;
-    }
     this.hero.lastfmLink.href = this.buildSpotifySearchUrl(trackName, artistName);
     this.hero.playingIndicator.classList.toggle('active', isNowPlaying);
     this.hero.musicCard.classList.toggle('is-playing', isNowPlaying);
-    // Always attempt iTunes high-res artwork hydration
-    this.hydrateFallbackArtwork(this.hero.albumArt, track);
+    this.hydrateFallbackArtwork(this.hero.albumArt, track, {
+      fallbackUrl: this.isUsableArtwork(artwork) ? artwork : '',
+    });
   }
 
   populateFeaturedTrack(_track, _isNowPlaying) {
@@ -431,12 +428,7 @@ class LastFmService {
       })
       .join('');
 
-    const imageNodes = this.currently.recentContainer.querySelectorAll('.recent-track-img');
-    tracks.forEach((item, index) => {
-      const track = item.track || item;
-      const imageNode = imageNodes[index];
-      this.hydrateFallbackArtwork(imageNode, track);
-    });
+    // Shelf cards keep Last.fm artwork on initial load; the hero card hydrates high-res art.
   }
 
   updateCurrently(tracks) {

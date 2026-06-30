@@ -7,6 +7,12 @@ const EAGER_MODULES = [
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 import { initScrollLockRecovery } from '../utils/scroll-lock.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
+import {
+  WARM_SECTION_PRELOAD_DELAY_MS,
+  WARM_SECTION_START_DELAY_MS,
+  getGithubProjectsPrefetchUrl,
+  shouldDeferCriticalWarmup,
+} from '../utils/section-preload.js';
 import '../utils/reduced-transparency-sync.js';
 
 initScrollLockRecovery();
@@ -49,12 +55,12 @@ const SECTION_MODULES = [
   {
     sectionId: 'projects',
     modulePath: '../modules/quick-look.js',
-    rootMargin: '120px 0px',
+    rootMargin: '500px 0px',
   },
   {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
-    rootMargin: '120px 0px',
+    rootMargin: '500px 0px',
   },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '120px 0px' },
   { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '120px 0px' },
@@ -85,10 +91,10 @@ const SECTION_MODULES = [
 
 const SECTION_STYLE_GROUPS = [
   { sectionId: 'about', styleKeys: ['about'], rootMargin: '120px 0px' },
-  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '120px 0px' },
+  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '500px 0px' },
   { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '120px 0px' },
-  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '120px 0px' },
-  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '120px 0px' },
+  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '500px 0px' },
+  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '500px 0px' },
   { sectionId: 'education', styleKeys: ['education'], rootMargin: '120px 0px' },
   { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '120px 0px' },
   { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '120px 0px' },
@@ -194,6 +200,44 @@ function runWhenIdle(callback, timeout = 1500) {
   }
 
   setTimeout(callback, timeout);
+}
+
+/** Fixed-delay scheduler for user-visible below-fold content (fires after DOM, not full load). */
+function scheduleSoon(callback, delayMs = 0) {
+  const run = () => window.setTimeout(callback, delayMs);
+
+  if (document.readyState !== 'loading') {
+    run();
+    return;
+  }
+
+  document.addEventListener('DOMContentLoaded', run, { once: true });
+}
+
+function prefetchGithubProjectsCatalog() {
+  if (isPerformanceAudit() || shouldDeferCriticalWarmup()) {
+    return;
+  }
+
+  fetch(getGithubProjectsPrefetchUrl(), {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+    priority: 'low',
+    cache: 'force-cache',
+  }).catch(() => {});
+}
+
+function warmCriticalSectionPreloads() {
+  if (isPerformanceAudit() || shouldDeferCriticalWarmup()) {
+    return;
+  }
+
+  scheduleSoon(() => {
+    prefetchGithubProjectsCatalog();
+    loadDeferredStyles(['projects', 'skills']).catch(() => {});
+    import('../modules/projects-showcase.js').catch(() => {});
+    loadModule('../modules/skills-visualization.js');
+  }, WARM_SECTION_PRELOAD_DELAY_MS);
 }
 
 function ensureDeferredStylesheetLoaded(link) {
@@ -801,9 +845,15 @@ function initAboutDeferredImages(documentRef = document) {
 }
 
 function initProjectShowcaseOnDemand() {
+  if (document.documentElement.dataset.projectShowcaseBound === 'true') {
+    return;
+  }
+
   if (isPerformanceAudit()) {
     return;
   }
+
+  document.documentElement.dataset.projectShowcaseBound = 'true';
 
   const projectsSection = document.getElementById('projects');
   if (!projectsSection) {
@@ -828,7 +878,8 @@ function initProjectShowcaseOnDemand() {
     return pending;
   };
 
-  observeSectionTask('projects', start, '120px 0px');
+  observeSectionTask('projects', start, '500px 0px');
+  scheduleSoon(() => start(), WARM_SECTION_START_DELAY_MS);
 }
 
 function initEngineeringTeaserOnDemand() {
@@ -859,7 +910,8 @@ function initEngineeringTeaserOnDemand() {
     return pending;
   };
 
-  observeSectionTask('engineering', start, '120px 0px');
+  observeSectionTask('engineering', start, '500px 0px');
+  scheduleSoon(() => start(), WARM_SECTION_START_DELAY_MS);
 }
 
 function initServiceWorker() {
@@ -977,8 +1029,6 @@ async function loadDeferredBootstrapModules() {
   initAvatarToggle();
   initPortfolioFeatureUpgrades();
   initContactChatbotCTA(chatbotLoader);
-  initProjectShowcaseOnDemand();
-  initEngineeringTeaserOnDemand();
 
   initializeVercelAnalytics().catch(error => {
     console.warn('Vercel analytics init skipped:', error);
@@ -1124,33 +1174,7 @@ async function initBootstrap() {
     return;
   }
 
-  function initHeroInsightsPrefetch() {
-    if (isPerformanceAudit()) return;
-
-    const apiBase =
-      globalThis.APP_CONFIG?.apiBaseUrl ||
-      (window.location.hostname.endsWith('github.io') ? 'https://mangeshraut.pro' : '');
-
-    const hostname = window.location.hostname;
-    const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(hostname);
-
-    if (!apiBase || isLocalHost) {
-      return;
-    }
-
-    runWhenIdle(() => {
-      const prefetchUrl = `${String(apiBase).replace(/\/$/, '')}/api/github/repos/public?username=mangeshraut712`;
-      fetch(prefetchUrl, {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-        priority: 'low',
-        cache: 'force-cache',
-      }).catch(() => {});
-    }, 1500);
-  }
-
   hydrateHeroImages();
-  initHeroInsightsPrefetch();
   loadEnhancementModules();
   initGlobalErrorHandlers();
   initContactDeferredImages();
@@ -1160,6 +1184,10 @@ async function initBootstrap() {
   initDeferredStyles();
   initOnDemandModules();
   initLazyModules();
+  initProjectShowcaseOnDemand();
+  initEngineeringTeaserOnDemand();
+  warmCriticalSectionPreloads();
+
   initServiceWorker();
   initLaunchIntro();
   initAppleDisplayEnhancements();
@@ -1179,12 +1207,12 @@ async function initBootstrap() {
     }
   });
 
-  runWhenIdle(() => {
+  scheduleSoon(() => {
     loadDeferredBootstrapModules().catch(error => {
       console.warn('Deferred bootstrap modules skipped:', error);
     });
     pinCriticalStylesheetsLast();
-  }, 3500);
+  }, 400);
 }
 
 if (document.readyState === 'loading') {

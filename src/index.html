@@ -122,6 +122,11 @@
   <link rel="apple-touch-startup-image" href="assets/images/pwa-splash-iphone-17-pro-max.png"
     media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
   <link rel="preload" as="image" href="assets/images/profile.webp" fetchpriority="high" />
+  <link rel="prefetch" href="https://mangeshraut.pro/api/github/repos/public?username=mangeshraut712" as="fetch"
+    crossorigin="anonymous" />
+  <link rel="modulepreload" href="js/modules/projects-showcase.js?v=20260701q" />
+  <link rel="modulepreload" href="js/modules/github-projects.js?v=20260701q" />
+  <link rel="modulepreload" href="js/modules/skills-visualization.js?v=20260701q" />
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
@@ -667,12 +672,11 @@ html.dark #home .hero-name-text {
   <!-- Google Fonts preconnect moved to head top for performance -->
 
   <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260701q" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260701q"
+    media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260701q" media="print" onload="this.media='all'" />
   <noscript>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260701q" />
   </noscript>
   <link rel="stylesheet" href="assets/css/style.css?v=20260701q" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260701q" /></noscript>
@@ -2316,9 +2320,9 @@ html.dark #home .hero-name-text {
                 document.addEventListener('DOMContentLoaded', function () {
                   var scheduleGraph = function (fn) {
                     if ('requestIdleCallback' in window) {
-                      requestIdleCallback(fn, { timeout: 3500 });
+                      requestIdleCallback(fn, { timeout: 1600 });
                     } else {
-                      setTimeout(fn, 2800);
+                      setTimeout(fn, 1200);
                     }
                   };
                   scheduleGraph(window.loadGitHubGraph);

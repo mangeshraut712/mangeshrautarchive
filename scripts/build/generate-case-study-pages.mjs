@@ -2,7 +2,7 @@ import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
-import { ASSET_VER } from './asset-version.mjs';
+import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://mangeshraut.pro';
@@ -119,7 +119,7 @@ function pageShell({ title, description, canonical, body }) {
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/high-contrast.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" />
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
   </head>

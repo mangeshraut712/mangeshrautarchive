@@ -25,10 +25,6 @@ class LiquidGlassEngine {
     if (!this.enabled || this._initialized) return;
     this._initialized = true;
 
-    if (!document.querySelector('[data-liquid-glass-background]')) {
-      document.body.setAttribute('data-liquid-glass-background', '');
-    }
-
     this.tintRatio = this.readTintRatio();
     window.addEventListener('scroll', this._onScroll, { passive: true });
     window.addEventListener('resize', this._onResize, { passive: true });
@@ -65,7 +61,10 @@ class LiquidGlassEngine {
       const dark = document.documentElement.classList.contains('dark');
       let canvas = null;
       try {
-        canvas = await capturePageBackground();
+        const captureTarget = document.querySelector('[data-liquid-glass-background]');
+        canvas = captureTarget
+          ? await capturePageBackground({ target: captureTarget })
+          : createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
       } catch (error) {
         console.warn('Liquid glass background capture failed, using procedural fallback:', error);
         canvas = createProceduralBackground(window.innerWidth, window.innerHeight, { dark });

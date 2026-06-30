@@ -37,6 +37,32 @@ async function resolveDistDir() {
 
 const srcDir = resolve(projectRoot, 'src');
 
+const REQUIRED_VENDOR_ASSETS = [
+  'assets/vendor/fontawesome/css/all.min.css',
+  'assets/vendor/fontawesome/webfonts/fa-solid-900.woff2',
+  'assets/vendor/fontawesome/webfonts/fa-regular-400.woff2',
+  'assets/vendor/fontawesome/webfonts/fa-brands-400.woff2',
+  'assets/vendor/fontawesome/LICENSE.txt',
+];
+
+async function assertVendorAssets() {
+  const missing = [];
+  for (const relativePath of REQUIRED_VENDOR_ASSETS) {
+    const absolutePath = resolve(srcDir, relativePath);
+    try {
+      await stat(absolutePath);
+    } catch {
+      missing.push(relativePath);
+    }
+  }
+
+  if (missing.length > 0) {
+    throw new Error(
+      `Missing self-hosted vendor assets:\n${missing.map(item => `  - src/${item}`).join('\n')}\nCommit src/assets/vendor/fontawesome before building.`
+    );
+  }
+}
+
 const staticExtras = ['CNAME'];
 
 const OPENROUTER_MODEL_ALIASES = {
@@ -311,6 +337,8 @@ async function build() {
   if (!sourceExists) {
     throw new Error('Source directory "src/" not found.');
   }
+
+  await assertVendorAssets();
 
   await mkdir(distDir, { recursive: true });
 

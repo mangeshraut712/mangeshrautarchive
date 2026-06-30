@@ -19,6 +19,7 @@ import { intelligentAssistant as chatAssistant } from '../core/chat.js';
 import { limits } from '../core/config.js';
 import { markdownService } from '../services/MarkdownService.js';
 import { ChatScrollEngine } from '../utils/chat-scroll-engine.js';
+import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
 import appleSounds from './apple-sounds.js';
 
 const MAX_CHAT_INPUT_LENGTH = 1800;
@@ -179,6 +180,9 @@ class AppleIntelligenceChatbot {
     this.retryCount = 0;
     this.textareaWidth = 0;
     this.scrollEngine = null;
+    this.realtimeVoice = realtimeVoiceService;
+    this.realtimeAvailable = false;
+    this.realtimeTranscriptEls = { user: null, assistant: null };
 
     // Local rate-limit visibility mirrors the backend throttle before requests are sent.
     this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
@@ -198,6 +202,7 @@ class AppleIntelligenceChatbot {
     // Wait for chat API to be available
     this.waitForChatAPI();
     this.initVoiceRecognition();
+    this.initRealtimeVoice();
     this.bindEvents();
     this.addWelcomeMessage();
     this.preloadSpeechVoices();
@@ -304,6 +309,98 @@ class AppleIntelligenceChatbot {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.getVoices();
     window.speechSynthesis.addEventListener('voiceschanged', () => {}, { once: true });
+  }
+
+  initRealtimeVoice() {
+    this.realtimeVoice.onStatusChange = status => {
+      this.updateVoiceButtonState(status);
+      if (status === 'listening') {
+        this.setDictationStatus('Live voice — speak naturally');
+      } else if (status === 'speaking') {
+        this.setDictationStatus('AssistMe is responding…');
+      } else if (status === 'connecting') {
+        this.setDictationStatus('Starting live voice session…');
+      } else if (!this.isListening) {
+        this.setDictationStatus('');
+      }
+    };
+
+    this.realtimeVoice.onTranscript = ({ role, text, final }) => {
+      this.updateRealtimeTranscript(role, text, final);
+    };
+
+    this.realtimeVoice.onError = error => {
+      console.error('Realtime voice error:', error);
+      this.addErrorMessage(
+        error?.message || 'Live voice is temporarily unavailable. Try typing instead.'
+      );
+      this.setDictationStatus('');
+    };
+
+    this.realtimeVoice.checkAvailability().then(available => {
+      this.realtimeAvailable = available;
+      if (available && this.elements.voiceBtn) {
+        this.elements.voiceBtn.title = 'Live voice via AI Gateway (tap). Hold Shift for dictation.';
+        this.elements.voiceBtn.setAttribute(
+          'aria-label',
+          'Start live voice conversation with AssistMe'
+        );
+      }
+    });
+  }
+
+  updateRealtimeTranscript(role, text, isFinal = false) {
+    if (!text?.trim()) {
+      return;
+    }
+
+    const key = role === 'user' ? 'user' : 'assistant';
+    let messageDiv = this.realtimeTranscriptEls[key];
+
+    if (!messageDiv) {
+      messageDiv = this.addMessage(text.trim(), key, { forceScroll: true });
+      messageDiv.classList.add('realtime-voice-message');
+      this.realtimeTranscriptEls[key] = messageDiv;
+    } else {
+      const contentDiv = messageDiv.querySelector('.message-content');
+      if (contentDiv) {
+        contentDiv.textContent = text.trim();
+      }
+      this.scrollEngine?.followLiveContent(messageDiv);
+    }
+
+    if (isFinal) {
+      this.realtimeTranscriptEls[key] = null;
+      if (role === 'user') {
+        this.messageCount += 1;
+      }
+    }
+  }
+
+  isRealtimeVoiceActive() {
+    return ['connecting', 'connected', 'listening', 'speaking'].includes(this.realtimeVoice.status);
+  }
+
+  async toggleRealtimeVoice() {
+    if (this.isProcessing) {
+      return;
+    }
+
+    if (this.isRealtimeVoiceActive()) {
+      await this.realtimeVoice.disconnect();
+      this.realtimeTranscriptEls = { user: null, assistant: null };
+      this.updateVoiceButtonState();
+      this.setDictationStatus('');
+      return;
+    }
+
+    this.stopDictation(false);
+    try {
+      await this.realtimeVoice.toggleLiveSession();
+    } catch (error) {
+      console.error('Failed to start realtime voice:', error);
+      this.addErrorMessage('Live voice could not start. Falling back to dictation is still available.');
+    }
   }
 
   initVoiceRecognition() {
@@ -461,8 +558,23 @@ class AppleIntelligenceChatbot {
     }
   }
 
-  updateVoiceButtonState() {
+  updateVoiceButtonState(realtimeStatus = this.realtimeVoice?.status) {
     if (this.elements.voiceBtn) {
+      const realtimeActive = ['connecting', 'connected', 'listening', 'speaking'].includes(
+        realtimeStatus
+      );
+
+      if (realtimeActive) {
+        this.elements.voiceBtn.classList.add('listening', 'realtime-active');
+        this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
+        this.elements.voiceBtn.setAttribute('aria-label', 'Stop live voice conversation');
+        this.elements.voiceBtn.innerHTML =
+          '<i class="fas fa-wave-square" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
+        return;
+      }
+
+      this.elements.voiceBtn.classList.remove('realtime-active');
+
       if (this.isListening) {
         this.elements.voiceBtn.classList.add('listening');
         this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
@@ -473,8 +585,17 @@ class AppleIntelligenceChatbot {
       } else {
         this.elements.voiceBtn.classList.remove('listening');
         this.elements.voiceBtn.setAttribute('aria-pressed', 'false');
-        this.elements.voiceBtn.setAttribute('aria-label', 'Dictate with Siri');
-        this.elements.voiceBtn.title = 'Apple Intelligence: Voice dictation';
+        if (this.realtimeAvailable) {
+          this.elements.voiceBtn.title =
+            'Live voice via AI Gateway (tap). Hold Shift for dictation.';
+          this.elements.voiceBtn.setAttribute(
+            'aria-label',
+            'Start live voice conversation with AssistMe'
+          );
+        } else {
+          this.elements.voiceBtn.setAttribute('aria-label', 'Dictate with Siri');
+          this.elements.voiceBtn.title = 'Apple Intelligence: Voice dictation';
+        }
         this.elements.voiceBtn.innerHTML =
           '<i class="fas fa-microphone" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
       }
@@ -576,8 +697,8 @@ class AppleIntelligenceChatbot {
       }
     });
 
-    this.elements.voiceBtn?.addEventListener('click', () => {
-      this.handleVoiceInput();
+    this.elements.voiceBtn?.addEventListener('click', event => {
+      this.handleVoiceInput(event);
     });
 
     document.addEventListener('click', e => {
@@ -661,6 +782,10 @@ class AppleIntelligenceChatbot {
     this.scrollEngine?.saveSession();
     this.closeWritingTools();
     this.stopDictation(false);
+    if (this.isRealtimeVoiceActive()) {
+      this.realtimeVoice.disconnect().catch(() => {});
+      this.realtimeTranscriptEls = { user: null, assistant: null };
+    }
     document.body.classList.remove('chatbot-open');
     if (this.elements.backdrop) {
       this.elements.backdrop.classList.remove('active');
@@ -1583,7 +1708,18 @@ class AppleIntelligenceChatbot {
     this.scrollEngine?.jumpToLatest({ announce: false, ...options });
   }
 
-  handleVoiceInput() {
+  async handleVoiceInput(event) {
+    if (this.isRealtimeVoiceActive()) {
+      await this.toggleRealtimeVoice();
+      return;
+    }
+
+    const preferDictation = event?.shiftKey === true;
+    if (!preferDictation && this.realtimeAvailable) {
+      await this.toggleRealtimeVoice();
+      return;
+    }
+
     if (this.isListening) {
       this.stopDictation(false);
       return;

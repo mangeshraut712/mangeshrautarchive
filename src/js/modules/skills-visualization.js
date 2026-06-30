@@ -297,8 +297,11 @@ window.SkillsVisualization = SkillsVisualization;
 // Auto-initialize if container exists
 const initSkillsVisualization = () => {
   const container = document.getElementById('skills-container');
-  if (!container) return;
+  if (!container || container.dataset.skillsVizReady === 'true') {
+    return;
+  }
 
+  container.dataset.skillsVizReady = 'true';
   new SkillsVisualization().render('skills-container');
 };
 

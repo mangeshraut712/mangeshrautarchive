@@ -1,0 +1,9 @@
+Font Awesome Free 6.6.0
+
+Icons: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+Fonts: SIL OFL 1.1 — https://scripts.sil.org/OFL
+Code: MIT — https://opensource.org/licenses/MIT
+
+Full license: https://fontawesome.com/license/free
+
+Self-hosted from @fortawesome/fontawesome-free@6.6.0 for supply-chain and performance consistency.

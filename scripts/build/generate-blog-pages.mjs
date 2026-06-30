@@ -10,7 +10,7 @@ import {
   getRelatedPosts,
   parseBlogContent,
 } from '../../src/js/modules/blog-markdown.js';
-import { ASSET_VER } from './asset-version.mjs';
+import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = 'https://mangeshraut.pro';
@@ -56,8 +56,8 @@ function pageShell({
     <link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="${SITE_URL}/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" /></noscript>
+    <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" /></noscript>
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-2026-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/typography-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />

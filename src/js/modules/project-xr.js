@@ -641,6 +641,7 @@ class ProjectXR {
 
     const defaultBranch = repoData.default_branch || 'main';
     const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const shouldFetchRelease = repoData.has_releases !== false;
     const [commitsData, contributorsData, languagesData, treeData, latestReleaseData] =
       await Promise.all([
         this.fetchJson(
@@ -653,14 +654,17 @@ class ProjectXR {
           `${baseUrl}/git/trees/${encodeURIComponent(defaultBranch)}?recursive=1`,
           headers
         ),
-        this.fetchJson(`${baseUrl}/releases/latest`, headers),
+        shouldFetchRelease ? this.fetchJson(`${baseUrl}/releases?per_page=1`, headers) : null,
       ]);
 
     const commits = Array.isArray(commitsData) ? commitsData : [];
     const contributors = Array.isArray(contributorsData) ? contributorsData : [];
     const languages = languagesData && typeof languagesData === 'object' ? languagesData : {};
     const treeEntries = Array.isArray(treeData?.tree) ? treeData.tree.slice(0, 800) : [];
-    const latestRelease = this.normalizeReleasePayload(latestReleaseData);
+    const latestReleasePayload = Array.isArray(latestReleaseData)
+      ? latestReleaseData[0]
+      : latestReleaseData;
+    const latestRelease = this.normalizeReleasePayload(latestReleasePayload);
     const latestCommitDate = this.extractCommitDate(commits[0]) || '';
     const activity = this.buildActivityOverview(commits, contributors);
     let commitsSinceRelease = projectContext.commitsSinceRelease ?? null;

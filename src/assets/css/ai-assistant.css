@@ -1449,6 +1449,28 @@ html.dark .welcome-message .welcome-subtitle {
   animation: voicePulse 1s ease-in-out infinite;
 }
 
+.chatbot-voice-btn.realtime-active {
+  background: linear-gradient(135deg, #0071e3 0%, #5856d6 100%) !important;
+  animation: realtimeVoicePulse 1.2s ease-in-out infinite;
+}
+
+.message.realtime-voice-message .message-content {
+  opacity: 0.92;
+}
+
+@keyframes realtimeVoicePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.45);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 12px rgba(88, 86, 214, 0);
+  }
+}
+
 @keyframes voicePulse {
   0%,
   100% {

@@ -1082,6 +1082,7 @@ class GitHubProjects {
     const headers = { Accept: 'application/vnd.github+json' };
     const baseUrl = `https://api.github.com/repos/${identity.owner}/${identity.name}`;
     const since30d = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const shouldFetchRelease = repo?.has_releases !== false;
 
     const [commitsMeta, contributorsMeta, releaseMeta] = await Promise.all([
       this.fetchJsonWithMeta(
@@ -1089,13 +1090,18 @@ class GitHubProjects {
         headers
       ),
       this.fetchJsonWithMeta(`${baseUrl}/contributors?per_page=1&anon=1`, headers),
-      this.fetchJsonWithMeta(`${baseUrl}/releases/latest`, headers),
+      shouldFetchRelease
+        ? this.fetchJsonWithMeta(`${baseUrl}/releases?per_page=1`, headers)
+        : Promise.resolve({ ok: false, status: 204, link: '', data: null }),
     ]);
 
     const commitsPayload = Array.isArray(commitsMeta.data) ? commitsMeta.data : null;
     const contributorsPayload = Array.isArray(contributorsMeta.data) ? contributorsMeta.data : null;
-    const latestRelease = releaseMeta.ok ? this.normalizeReleasePayload(releaseMeta.data) : null;
-    const releaseChecked = releaseMeta.ok || releaseMeta.status === 404;
+    const latestReleasePayload = Array.isArray(releaseMeta.data)
+      ? releaseMeta.data[0]
+      : releaseMeta.data;
+    const latestRelease = releaseMeta.ok ? this.normalizeReleasePayload(latestReleasePayload) : null;
+    const releaseChecked = !shouldFetchRelease || releaseMeta.ok || releaseMeta.status === 404;
 
     let commits30d = null;
     let latestCommitAt = repo?.pushed_at || repo?.updated_at || '';
