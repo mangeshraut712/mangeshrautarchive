@@ -22,6 +22,7 @@
     "test": "vitest --passWithNoTests --run",
     "test:api": "uv run --with pytest --with fastapi --with httpx python -m pytest tests/api -q",
     "test:openrouter": "node scripts/integrations/test-openrouter.mjs",
+    "test:realtime-ws": "node scripts/integrations/test-realtime-ws.mjs",
     "setup:openrouter-mcp": "node scripts/integrations/setup-openrouter-mcp.mjs",
     "test:e2e:chrome": "node scripts/utils/run-playwright.js test tests/e2e/smoke.spec.js --project=\"Desktop Chrome\"",
     "test:e2e:safari": "node scripts/utils/run-playwright.js test tests/e2e/smoke.spec.js --project=\"Desktop Safari\"",

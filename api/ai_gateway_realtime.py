@@ -1,10 +1,15 @@
 import os
+from typing import Any
 from urllib.parse import quote
+
+import httpx
 
 GATEWAY_REALTIME_SUBPROTOCOL = "ai-gateway-realtime.v1"
 GATEWAY_AUTH_SUBPROTOCOL_PREFIX = "ai-gateway-auth."
 DEFAULT_GATEWAY_BASE_URL = "https://ai-gateway.vercel.sh/v4/ai"
+DEFAULT_GATEWAY_API_BASE = "https://ai-gateway.vercel.sh"
 DEFAULT_REALTIME_MODEL = "openai/gpt-realtime-2"
+CLIENT_SECRETS_PATH = "/v1/realtime/client-secrets"
 
 
 def get_ai_gateway_api_key() -> str:
@@ -44,3 +49,44 @@ def build_realtime_session_instructions() -> str:
         "skills, projects, education, and how to contact him. If asked something outside "
         "the portfolio, politely steer back to Mangesh's work."
     )
+
+
+def build_realtime_session_config() -> dict[str, Any]:
+    return {
+        "instructions": build_realtime_session_instructions(),
+        "voice": os.getenv("AI_GATEWAY_REALTIME_VOICE", "alloy"),
+        "turn_detection": {"type": "server_vad"},
+        "input_audio_transcription": {},
+    }
+
+
+async def mint_gateway_realtime_client_secret(
+    model_id: str | None = None,
+    session: dict[str, Any] | None = None,
+) -> str:
+    api_key = get_ai_gateway_api_key()
+    if not api_key:
+        raise RuntimeError("AI Gateway realtime is not configured.")
+
+    model = model_id or get_realtime_model()
+    payload: dict[str, Any] = {"model": model}
+    if session:
+        payload["session"] = session
+
+    api_base = os.getenv("AI_GATEWAY_API_BASE", DEFAULT_GATEWAY_API_BASE).strip().rstrip("/")
+    async with httpx.AsyncClient(timeout=15.0) as client:
+        response = await client.post(
+            f"{api_base}{CLIENT_SECRETS_PATH}",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+        )
+        response.raise_for_status()
+        data = response.json()
+
+    token = str(data.get("token", "")).strip()
+    if not token:
+        raise RuntimeError("AI Gateway did not return a realtime client secret.")
+    return token

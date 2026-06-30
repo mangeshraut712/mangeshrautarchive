@@ -65,3 +65,38 @@ def test_realtime_session_configured(client, monkeypatch):
     assert payload["wsUrl"].endswith("/api/realtime/ws")
     assert payload["sessionDefaults"]["voice"] == "verse"
     assert "AssistMe" in payload["sessionDefaults"]["instructions"]
+
+
+def test_mint_gateway_realtime_client_secret(monkeypatch):
+    monkeypatch.setenv("AI_GATEWAY_API_KEY", "gateway-test-key")
+
+    class FakeResponse:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"token": "vcst_test_token"}
+
+    class FakeClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def post(self, url, headers=None, json=None):
+            assert url.endswith("/v1/realtime/client-secrets")
+            assert headers["Authorization"] == "Bearer gateway-test-key"
+            assert json["model"] == "openai/gpt-realtime-2"
+            assert "instructions" in json["session"]
+            return FakeResponse()
+
+    monkeypatch.setattr("api.ai_gateway_realtime.httpx.AsyncClient", lambda **kwargs: FakeClient())
+
+    import asyncio
+    from api.ai_gateway_realtime import mint_gateway_realtime_client_secret
+
+    token = asyncio.run(
+        mint_gateway_realtime_client_secret(session={"instructions": "AssistMe test"})
+    )
+    assert token == "vcst_test_token"

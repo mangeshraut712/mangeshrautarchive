@@ -139,15 +139,6 @@ class RealtimeVoiceService {
       this.ws = ws;
 
       ws.onopen = () => {
-        this._send({
-          type: 'session-update',
-          session: {
-            instructions: this.sessionDefaults.instructions,
-            voice: this.sessionDefaults.voice || 'alloy',
-            turnDetection: this.sessionDefaults.turnDetection || { type: 'server-vad' },
-            inputAudioTranscription: this.sessionDefaults.inputAudioTranscription || {},
-          },
-        });
         this._setStatus('connected');
         resolve();
       };
@@ -299,6 +290,10 @@ class RealtimeVoiceService {
     }
 
     switch (event.type) {
+      case 'session-created':
+      case 'session-updated':
+        this._setStatus(this.mediaStream ? 'listening' : 'connected');
+        break;
       case 'input-audio-transcript-delta':
       case 'conversation-item-input-audio-transcription-delta':
         this.userTranscript += event.delta || '';

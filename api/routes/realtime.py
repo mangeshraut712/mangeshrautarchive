@@ -11,10 +11,12 @@ from fastapi.responses import JSONResponse
 from api.ai_gateway_realtime import (
     build_gateway_realtime_protocols,
     build_gateway_realtime_url,
+    build_realtime_session_config,
     build_realtime_session_instructions,
     get_ai_gateway_api_key,
     get_realtime_model,
     is_realtime_configured,
+    mint_gateway_realtime_client_secret,
 )
 
 router = APIRouter()
@@ -80,8 +82,16 @@ async def realtime_voice_proxy(client_ws: WebSocket):
         await client_ws.close(code=1013, reason="Realtime unavailable")
         return
 
-    upstream_url = build_gateway_realtime_url()
-    protocols = build_gateway_realtime_protocols(api_key)
+    try:
+        client_secret = await mint_gateway_realtime_client_secret(
+            session=build_realtime_session_config(),
+        )
+        upstream_url = build_gateway_realtime_url()
+        protocols = build_gateway_realtime_protocols(client_secret)
+    except Exception as error:
+        logger.warning("Realtime client secret mint failed: %s", error)
+        await client_ws.close(code=1013, reason="Realtime unavailable")
+        return
 
     try:
         async with websockets.connect(
@@ -101,6 +111,16 @@ async def realtime_voice_proxy(client_ws: WebSocket):
                         data = message.get("text")
                         if data is None:
                             continue
+                        try:
+                            payload = json.loads(data)
+                            events = payload if isinstance(payload, list) else [payload]
+                            if any(
+                                isinstance(event, dict) and event.get("type") == "session-update"
+                                for event in events
+                            ):
+                                continue
+                        except json.JSONDecodeError:
+                            pass
                         await upstream.send(data)
                 except WebSocketDisconnect:
                     pass

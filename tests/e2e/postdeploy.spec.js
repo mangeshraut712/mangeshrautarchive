@@ -31,6 +31,19 @@ test.describe('Post-deploy Chrome checks', () => {
     await expect(page.locator('#reach-count')).not.toHaveText(/^Unavailable$/);
   });
 
+  test('deployed realtime health endpoint responds', async ({ request }, testInfo) => {
+    const targetUrl = resolveTargetUrl(testInfo);
+    const response = await request.get(resolveApiUrl(targetUrl, '/api/realtime/health'));
+    expect(response.ok()).toBeTruthy();
+    const payload = await response.json();
+    expect(payload.success).toBe(true);
+    if (!payload.available) {
+      console.warn(
+        'Realtime voice is not configured in production (set AI_GATEWAY_API_KEY and redeploy).'
+      );
+    }
+  });
+
   test('deployed monitor and reach APIs are available', async ({ request }, testInfo) => {
     const targetUrl = resolveTargetUrl(testInfo);
     expect(targetUrl, 'A base URL is required for post-deploy checks').toBeTruthy();
