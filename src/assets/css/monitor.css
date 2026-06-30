@@ -1542,6 +1542,18 @@ body.monitor-page main > section.section:not(#home) {
   pointer-events: none;
 }
 
+.toast-icon--success {
+  color: var(--accent-green);
+}
+
+.toast-icon--error {
+  color: var(--accent-red);
+}
+
+.toast-icon--info {
+  color: var(--accent-blue);
+}
+
 @media (max-width: 1024px) {
   .header-content,
   .monitor-summary-card {
@@ -3517,6 +3529,7 @@ html.dark .ops-card,
 .doc-card--span-2 {
   grid-column: span 2;
 }
+
 @media (max-width: 1024px) {
   .doc-card--span-2 {
     grid-column: auto;

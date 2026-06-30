@@ -326,7 +326,7 @@ async function inlineThemeHead(distDir) {
     {
       srcPattern: /<script\s+src="js\/utils\/perf-audit-flag\.js[^"]*"[^>]*><\/script>/g,
       fileName: 'js/utils/perf-audit-flag.js',
-    }
+    },
   ];
 
   for (const script of scriptsToInline) {
@@ -349,7 +349,9 @@ async function inlineThemeHead(distDir) {
       }
       // Delete the original file from dist to save request space
       await rm(scriptPath, { force: true });
-      console.log(`📥 Inlined minified ${script.fileName} into HTML pages and removed original file`);
+      console.log(
+        `📥 Inlined minified ${script.fileName} into HTML pages and removed original file`
+      );
     }
   }
 }

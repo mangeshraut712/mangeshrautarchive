@@ -3069,8 +3069,7 @@
         }
 
         if (Object.keys(rateLimits).length > 0) {
-          limitHtml +=
-            '<p class="rate-limit-title">Active IP Request Budgets</p>';
+          limitHtml += '<p class="rate-limit-title">Active IP Request Budgets</p>';
           for (const [ip, data] of Object.entries(rateLimits)) {
             const isCritical = data.remaining === 0;
             const percent = Math.min((data.count / data.limit) * 100, 100);
@@ -3482,9 +3481,16 @@
         if (!container) return;
         const toast = document.createElement('div');
         toast.className = 'toast';
+        const iconClass =
+          type === 'success'
+            ? 'toast-icon--success'
+            : type === 'error'
+              ? 'toast-icon--error'
+              : 'toast-icon--info';
+        const iconName =
+          type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle';
         toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle'}"
-                   style="color: var(--accent-${type === 'success' ? 'green' : type === 'error' ? 'red' : 'blue'});"></i>
+                <i class="fas fa-${iconName} ${iconClass}" aria-hidden="true"></i>
                 <span>${message}</span>
             `;
         container.appendChild(toast);
