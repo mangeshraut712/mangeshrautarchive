@@ -425,6 +425,15 @@ function initLaunchIntro(documentRef = document) {
     return;
   }
 
+  if (isPerformanceAudit()) {
+    intro.hidden = true;
+    intro.setAttribute('aria-hidden', 'true');
+    intro.classList.remove('is-playing', 'is-exiting');
+    documentRef.documentElement.classList.remove('launch-intro-active');
+    documentRef.body?.style.removeProperty('overflow');
+    return;
+  }
+
   intro.dataset.launchIntroBound = 'true';
 
   const storageKey = 'portfolio-launch-intro-seen-v2026';

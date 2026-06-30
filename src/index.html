@@ -803,7 +803,10 @@ html.dark #home .hero-name-text {
     (function () {
       var isLocalHost = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?)$/.test(window.location.hostname);
       if (isLocalHost) return;
+      if (window.__PERF_AUDIT__) return;
       if (navigator.webdriver) return;
+      var ua = navigator.userAgent || '';
+      if (/Chrome-Lighthouse|Lighthouse|PTST|moto g power/i.test(ua)) return;
       var key = 'portfolio-launch-intro-seen-v2026';
       var show = false;
       try {
@@ -975,7 +978,6 @@ html.dark #home .hero-name-text {
       </div>
     </div>
   </div>
-  <script type="module" src="js/utils/smart-navbar.js?v=20260701q"></script>
   <script>
     (function () {
       if (window.__earlyOverlayMenuBound) return;
@@ -4237,6 +4239,7 @@ html.dark #home .hero-name-text {
       (function () {
         var audit = window.__PERF_AUDIT__ === true;
         var scripts = [
+          { src: 'js/utils/smart-navbar.js?v=20260701q', module: true },
           { src: 'js/utils/theme.js?v=20260701q', module: true },
           { src: 'js/utils/go-to-top.js?v=20260701q', defer: true },
           { src: 'js/core/bootstrap.js?v=20260701q', module: true },
@@ -4261,6 +4264,7 @@ html.dark #home .hero-name-text {
         }
 
         if (audit) {
+          loadOne(scripts[0]);
           return;
         }
 

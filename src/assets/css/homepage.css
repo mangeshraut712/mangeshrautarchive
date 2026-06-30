@@ -14,6 +14,10 @@
   min-height: clamp(340px, 52vh, 620px);
 }
 
+#home .hero-text-block.home-hero-text {
+  min-height: clamp(220px, 42vw, 320px);
+}
+
 .home-hero {
   min-height: clamp(380px, 58vh, 680px) !important;
   /* dynamic viewport height for mobile */

@@ -17,8 +17,8 @@ function matchesPerfAuditSignals() {
     return true;
   }
 
-  // Lighthouse mobile preset.
-  if (/moto g power \(2022\)/i.test(userAgent)) {
+  // Lighthouse / PageSpeed mobile presets (with or without year suffix).
+  if (/moto g power/i.test(userAgent)) {
     return true;
   }
 

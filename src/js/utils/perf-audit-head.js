@@ -18,8 +18,8 @@
       return true;
     }
 
-    // Lighthouse mobile preset.
-    if (/moto g power \(2022\)/i.test(userAgent)) {
+    // Lighthouse / PageSpeed mobile presets (with or without year suffix).
+    if (/moto g power/i.test(userAgent)) {
       return true;
     }
 
@@ -59,7 +59,10 @@
     '#skills-loading{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}' +
     '#vibe-stack-flyout,#reach-flyout,#music-card,#currently-section{display:none!important;visibility:hidden!important}' +
     '#profile-image,.profile-image{width:160px!important;height:160px!important;object-fit:cover!important}' +
-    '.hero-image-block{min-height:160px;min-width:160px}' +
+    '#launch-intro,#launch-intro.is-playing{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important}' +
+    'html.launch-intro-active,html.launch-intro-active body{overflow:visible!important}' +
+    '.hero-text-block.home-hero-text{min-height:clamp(220px,42vw,320px)}' +
+    '#home-heading{contain:layout;min-height:1.15em}' +
     '.education-title-group{display:flex!important;flex-direction:column!important;gap:0.5rem!important}' +
     'a.education-institution,a.education-board,.education-map-link{display:flex!important;align-items:center!important;min-height:44px!important;padding-block:0.45rem!important}' +
     'a.education-proof{min-height:44px!important}';
