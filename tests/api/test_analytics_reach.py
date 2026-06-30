@@ -64,6 +64,33 @@ def test_portfolio_reach_prefers_google_analytics_snapshot(monkeypatch):
     assert payload["insights"]["top_countries"][0]["country"] == "United States"
 
 
+def test_portfolio_reach_keeps_github_pages_cors_with_cdn_cache(monkeypatch):
+    class FakeGoogleAnalyticsClient:
+        enabled = True
+
+        async def get_reach_snapshot(self):
+            return {
+                "source": "google_analytics",
+                "total_views": 9132,
+                "unique_visitors": 7611,
+                "trend": [],
+                "timestamp": "2026-06-30T15:28:42Z",
+            }
+
+    monkeypatch.setattr("api.routes.analytics.google_analytics_client", FakeGoogleAnalyticsClient())
+    client = TestClient(app)
+
+    response = client.get(
+        "/api/analytics/reach",
+        headers={"Origin": "https://mangeshraut712.github.io"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "https://mangeshraut712.github.io"
+    assert "Origin" in response.headers["vary"]
+    assert "s-maxage=60" in response.headers["cache-control"]
+
+
 def test_portfolio_reach_realtime_countries_limited_to_top_three(monkeypatch):
     class FakeGoogleAnalyticsClient:
         enabled = True

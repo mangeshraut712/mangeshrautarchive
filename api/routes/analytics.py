@@ -14,6 +14,13 @@ from api.google_analytics import google_analytics_client, normalize_top_countrie
 
 router = APIRouter()
 
+_REACH_CORS_ORIGINS = {
+    "https://mangeshraut712.github.io",
+    "https://mangeshraut.pro",
+    "https://mraut.vercel.app",
+    "https://mangeshrautarchive.vercel.app",
+}
+
 
 def _safe_int(value, default: int = 0) -> int:
     if value is None:
@@ -41,6 +48,19 @@ def _store_trend(analytics):
     if trend:
         return trend[-7:]
     return []
+
+
+def _reach_cache_headers(request: Request, cache_ttl: int) -> dict[str, str]:
+    headers = {
+        "Cache-Control": f"public, max-age=0, s-maxage={cache_ttl}, stale-while-revalidate=300",
+        "CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
+        "Vercel-CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
+        "Vary": "Origin, Accept-Encoding",
+    }
+    origin = request.headers.get("origin")
+    if origin in _REACH_CORS_ORIGINS:
+        headers["Access-Control-Allow-Origin"] = origin
+    return headers
 
 
 @router.get("/api/analytics/views")
@@ -100,7 +120,7 @@ async def get_analytics_views_alias():
 
 @router.get("/api/analytics/reach")
 @router.get("/analytics/reach")
-async def get_portfolio_reach():
+async def get_portfolio_reach(request: Request):
     """
     Single authoritative Portfolio Reach metric.
     Returns real-time reach plus compact insight-card metrics.
@@ -198,9 +218,5 @@ async def get_portfolio_reach():
     cache_ttl = 60 if source == "google_analytics" else 15
     return JSONResponse(
         payload,
-        headers={
-            "Cache-Control": f"public, max-age=0, s-maxage={cache_ttl}, stale-while-revalidate=300",
-            "CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
-            "Vercel-CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
-        },
+        headers=_reach_cache_headers(request, cache_ttl),
     )

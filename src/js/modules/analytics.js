@@ -42,8 +42,8 @@
     realtimeBars: document.getElementById('reach-realtime-bars'),
   };
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
-  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v1';
-  const REACH_CACHE_TTL_MS = 5 * 60 * 1000;
+  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v2';
+  const REACH_CACHE_TTL_MS = 60 * 1000;
   const API_TIMEOUT_MS = 5000;
   const STORAGE_KEYS = {
     SESSION_ID: 'portfolio_shared_session_id_v1',
