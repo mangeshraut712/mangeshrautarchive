@@ -744,59 +744,61 @@ function initLazyModules() {
   }
   window.__portfolioLazyModulesBound = true;
 
-  window.addEventListener(
-    'load',
-    () => {
-      if (isPerformanceAudit()) {
-        return;
-      }
+  const run = () => {
+    if (isPerformanceAudit()) {
+      return;
+    }
 
-      EAGER_MODULES.forEach(path => {
+    EAGER_MODULES.forEach(path => {
+      loadModule(path);
+    });
+
+    runWhenIdle(() => {
+      IDLE_EAGER_MODULES.forEach(path => {
         loadModule(path);
       });
+    }, 3500);
+
+    if (new URLSearchParams(window.location.search).has('birthday-test')) {
+      loadModule('../modules/birthday-celebration.js');
+    }
+
+    DELAYED_MODULES.forEach(({ modulePath, delay }) => {
+      window.setTimeout(() => {
+        loadModule(modulePath);
+      }, delay);
+    });
+
+    let interactionModulesScheduled = false;
+    const scheduleInteractionModules = () => {
+      if (interactionModulesScheduled) return;
+      interactionModulesScheduled = true;
 
       runWhenIdle(() => {
-        IDLE_EAGER_MODULES.forEach(path => {
+        INTERACTION_MODULES.forEach(path => {
           loadModule(path);
         });
-      }, 3500);
+      }, 600);
+    };
 
-      if (new URLSearchParams(window.location.search).has('birthday-test')) {
-        loadModule('../modules/birthday-celebration.js');
-      }
-
-      DELAYED_MODULES.forEach(({ modulePath, delay }) => {
-        window.setTimeout(() => {
-          loadModule(modulePath);
-        }, delay);
+    USER_INTERACTION_EVENTS.forEach(eventName => {
+      window.addEventListener(eventName, scheduleInteractionModules, {
+        once: true,
+        passive: eventName !== 'keydown',
+        capture: true,
       });
+    });
 
-      let interactionModulesScheduled = false;
-      const scheduleInteractionModules = () => {
-        if (interactionModulesScheduled) return;
-        interactionModulesScheduled = true;
+    SECTION_MODULES.forEach(({ sectionId, modulePath, rootMargin }) => {
+      observeSectionTask(sectionId, () => loadModule(modulePath), rootMargin);
+    });
+  };
 
-        runWhenIdle(() => {
-          INTERACTION_MODULES.forEach(path => {
-            loadModule(path);
-          });
-        }, 600);
-      };
-
-      USER_INTERACTION_EVENTS.forEach(eventName => {
-        window.addEventListener(eventName, scheduleInteractionModules, {
-          once: true,
-          passive: eventName !== 'keydown',
-          capture: true,
-        });
-      });
-
-      SECTION_MODULES.forEach(({ sectionId, modulePath, rootMargin }) => {
-        observeSectionTask(sectionId, () => loadModule(modulePath), rootMargin);
-      });
-    },
-    { once: true }
-  );
+  if (document.readyState === 'complete') {
+    run();
+  } else {
+    window.addEventListener('load', run, { once: true });
+  }
 }
 
 function initSectionDeferredImages(sectionId, rootMargin = '0px 0px', documentRef = document) {
