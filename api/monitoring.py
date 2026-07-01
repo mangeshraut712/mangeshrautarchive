@@ -613,7 +613,7 @@ class SystemMonitor:
             }
 
         try:
-            cpu_percent = psutil.cpu_percent(interval=0.1)  # type: ignore
+            cpu_percent = psutil.cpu_percent(interval=None)  # type: ignore
             memory = psutil.virtual_memory()  # type: ignore
             disk = psutil.disk_usage("/")  # type: ignore
             is_vercel_runtime = bool(os.getenv("VERCEL") or os.getenv("VERCEL_ENV"))
