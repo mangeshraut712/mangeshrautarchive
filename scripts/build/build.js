@@ -347,11 +347,7 @@ async function inlineThemeHead(distDir) {
           await writeFile(pagePath, html, 'utf8');
         }
       }
-      // Delete the original file from dist to save request space
-      await rm(scriptPath, { force: true });
-      console.log(
-        `📥 Inlined minified ${script.fileName} into HTML pages and removed original file`
-      );
+      console.log(`📥 Inlined minified ${script.fileName} into shell HTML pages`);
     }
   }
 }
