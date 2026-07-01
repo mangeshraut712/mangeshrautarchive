@@ -36,74 +36,74 @@ const INTERACTION_MODULES = [
 ];
 
 const SECTION_MODULES = [
-  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '400px 0px' },
+  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '800px 0px' },
   {
     sectionId: 'about',
     modulePath: '../modules/card-content-accessibility.js',
-    rootMargin: '160px 0px',
+    rootMargin: '800px 0px',
   },
   {
     sectionId: 'about',
     modulePath: '../modules/about-interactivity.js',
-    rootMargin: '120px 0px',
+    rootMargin: '800px 0px',
   },
   {
     sectionId: 'home',
     modulePath: '../modules/live-activity-strip.js',
-    rootMargin: '400px 0px',
+    rootMargin: '800px 0px',
   },
   {
     sectionId: 'projects',
     modulePath: '../modules/quick-look.js',
-    rootMargin: '500px 0px',
+    rootMargin: '800px 0px',
   },
   {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
-    rootMargin: '500px 0px',
+    rootMargin: '800px 0px',
   },
-  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '120px 0px' },
-  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '120px 0px' },
-  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '120px 0px' },
-  { sectionId: 'contact', modulePath: '../modules/currently.js', rootMargin: '200px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '800px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '800px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '800px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/currently.js', rootMargin: '800px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/currently.js',
-    rootMargin: '120px 0px',
+    rootMargin: '800px 0px',
   },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/real-media-loader.js',
-    rootMargin: '120px 0px',
+    rootMargin: '800px 0px',
   },
-  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '120px 0px' },
+  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '800px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/health-widget.js',
-    rootMargin: '120px 0px',
+    rootMargin: '800px 0px',
   },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
-    rootMargin: '120px 0px',
+    rootMargin: '800px 0px',
   },
 ];
 
 const SECTION_STYLE_GROUPS = [
-  { sectionId: 'about', styleKeys: ['about'], rootMargin: '120px 0px' },
-  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '500px 0px' },
-  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '120px 0px' },
-  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '500px 0px' },
-  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '500px 0px' },
-  { sectionId: 'education', styleKeys: ['education'], rootMargin: '120px 0px' },
-  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '120px 0px' },
-  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '120px 0px' },
-  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '120px 0px' },
-  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '120px 0px' },
-  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '120px 0px' },
-  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '200px 0px' },
-  { sectionId: 'currently-section', styleKeys: ['currently'], rootMargin: '120px 0px' },
-  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '120px 0px' },
+  { sectionId: 'about', styleKeys: ['about'], rootMargin: '800px 0px' },
+  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '800px 0px' },
+  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '800px 0px' },
+  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '800px 0px' },
+  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '800px 0px' },
+  { sectionId: 'education', styleKeys: ['education'], rootMargin: '800px 0px' },
+  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '800px 0px' },
+  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '800px 0px' },
+  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '800px 0px' },
+  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '800px 0px' },
+  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '800px 0px' },
+  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '800px 0px' },
+  { sectionId: 'currently-section', styleKeys: ['currently'], rootMargin: '800px 0px' },
+  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '800px 0px' },
 ];
 
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
@@ -253,6 +253,46 @@ function warmCriticalSectionPreloads() {
   scheduleSoon(() => {
     prefetchGithubProjectsCatalog();
     warmProjectShowcaseAssets();
+
+    // Idle/background pre-warming of all deferred styles and modules to prevent blank spaces on scroll
+    runWhenIdle(() => {
+      // 1. Preheat all deferred CSS
+      const allStyleKeys = [
+        'about',
+        'skills',
+        'experience',
+        'engineering',
+        'projects',
+        'education',
+        'publications',
+        'awards',
+        'recommendations',
+        'certifications',
+        'blog',
+        'currently',
+        'share',
+      ];
+      loadDeferredStyles(allStyleKeys).catch(() => {});
+
+      // 2. Preheat secondary JS modules after page load settles
+      runWhenIdle(() => {
+        const modulesToPreload = [
+          '../modules/about-interactivity.js',
+          '../modules/card-content-accessibility.js',
+          '../modules/skills-visualization.js',
+          '../modules/blog-loader.js',
+          '../modules/newsletter.js',
+          '../modules/calendar.js',
+          '../modules/currently.js',
+          '../modules/real-media-loader.js',
+          '../modules/lastfm.js',
+          '../modules/health-widget.js',
+        ];
+        modulesToPreload.forEach(path => {
+          loadModule(path).catch(() => {});
+        });
+      }, 1500);
+    }, 1000);
   }, WARM_SECTION_PRELOAD_DELAY_MS);
 }
 
@@ -858,7 +898,7 @@ function initContactDeferredImages(documentRef = document) {
     return;
   }
 
-  initSectionDeferredImages('contact', '-40px 0px', documentRef);
+  initSectionDeferredImages('contact', '800px 0px', documentRef);
 }
 
 function initCertificationDeferredImages(documentRef = document) {
@@ -866,7 +906,7 @@ function initCertificationDeferredImages(documentRef = document) {
     return;
   }
 
-  initSectionDeferredImages('certifications', '120px 0px', documentRef);
+  initSectionDeferredImages('certifications', '800px 0px', documentRef);
 }
 
 function initAboutDeferredImages(documentRef = document) {
@@ -874,7 +914,7 @@ function initAboutDeferredImages(documentRef = document) {
     return;
   }
 
-  initSectionDeferredImages('about', '120px 0px', documentRef);
+  initSectionDeferredImages('about', '800px 0px', documentRef);
 }
 
 function initProjectShowcaseOnDemand() {
