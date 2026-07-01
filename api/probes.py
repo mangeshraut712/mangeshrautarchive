@@ -561,9 +561,11 @@ async def probe_analytics_reach(monitor) -> Dict[str, Any]:
     """Verify the single authoritative Reach API returns statistics."""
     start = time.time()
     try:
+        from fastapi import Request
         from api.routes.analytics import get_portfolio_reach
 
-        response = await get_portfolio_reach()
+        mock_request = Request(scope={"type": "http", "headers": []})
+        response = await get_portfolio_reach(mock_request)
         payload = (
             json.loads(response.body.decode("utf-8"))
             if hasattr(response, "body")
