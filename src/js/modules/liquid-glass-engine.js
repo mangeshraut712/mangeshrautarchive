@@ -17,6 +17,7 @@ class LiquidGlassEngine {
     this.heavyCaptureEnabled = false;
     this.heavyCaptureScheduled = false;
     this.resizeObserver = null;
+    this.captureFallbackReported = false;
     this._onScroll = () => this.scheduleCapture();
     this._onResize = () => {
       this.scheduleCapture();
@@ -88,7 +89,10 @@ class LiquidGlassEngine {
           canvas = createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
         }
       } catch (error) {
-        console.warn('Liquid glass background capture failed, using procedural fallback:', error);
+        if (!this.captureFallbackReported) {
+          this.captureFallbackReported = true;
+          console.debug('Liquid glass background capture using procedural fallback:', error);
+        }
         canvas = createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
       }
       this.backgroundCanvas = canvas;

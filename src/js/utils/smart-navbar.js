@@ -181,10 +181,12 @@ function scrollToSection(sectionId) {
   const navOffset = getSectionOffset();
   const top = target.getBoundingClientRect().top + window.scrollY - navOffset;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const distance = Math.abs((window.scrollY || window.pageYOffset || 0) - top);
+  const useSmoothScroll = !prefersReducedMotion && distance <= window.innerHeight * 3;
 
   window.scrollTo({
     top: Math.max(0, top),
-    behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    behavior: useSmoothScroll ? 'smooth' : 'auto',
   });
 
   stabilizeScrollToSection(sectionId);
