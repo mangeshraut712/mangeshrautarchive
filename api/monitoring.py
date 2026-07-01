@@ -133,6 +133,19 @@ class SystemMonitor:
             return
         self._initialized = True
 
+        # SWR health checks cache variables
+        self._health_cache = None
+        self._health_cache_expires_at = 0.0
+        self._health_is_refreshing = False
+
+        self._services_cache = None
+        self._services_cache_expires_at = 0.0
+        self._services_is_refreshing = False
+
+        self._hosting_cache = None
+        self._hosting_cache_expires_at = 0.0
+        self._hosting_is_refreshing = False
+
         # Core metrics storage
         self.request_counts = {}
         self.response_times = deque(maxlen=1000)
@@ -701,8 +714,7 @@ class SystemMonitor:
         except Exception:
             return False
 
-    async def check_health(self) -> Dict[str, Any]:
-        """Return monitor health payload for the frontend dashboard and health endpoint."""
+    async def _fetch_health_data(self) -> Dict[str, Any]:
         self.update_resource_trends()
         timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         checks: List[HealthCheckResult] = []
@@ -785,8 +797,42 @@ class SystemMonitor:
             "checks": [check.to_dict() for check in checks],
         }
 
-    async def get_external_services_status(self) -> Dict[str, Any]:
-        """Get live status information for key third-party and analytics integrations."""
+    async def _refresh_health_background(self) -> None:
+        try:
+            data = await self._fetch_health_data()
+            self._health_cache = data
+            self._health_cache_expires_at = time.time() + 60.0
+        except Exception as e:
+            print(f"Error refreshing health check in background: {e}")
+        finally:
+            self._health_is_refreshing = False
+
+    async def check_health(self) -> Dict[str, Any]:
+        """Return monitor health payload with SWR caching to prevent main-thread latency."""
+        now = time.time()
+        if self._health_cache and now < self._health_cache_expires_at:
+            return self._health_cache
+
+        if self._health_cache:
+            if not getattr(self, "_health_is_refreshing", False):
+                self._health_is_refreshing = True
+                asyncio.create_task(self._refresh_health_background())
+            return self._health_cache
+
+        try:
+            self._health_cache = await self._fetch_health_data()
+            self._health_cache_expires_at = now + 60.0
+            return self._health_cache
+        except Exception as e:
+            print(f"Error executing health check, returning fallback: {e}")
+            return {
+                "status": "degraded",
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "uptime_seconds": round(time.time() - self.start_time, 2),
+                "checks": [],
+            }
+
+    async def _fetch_external_services_status(self) -> Dict[str, Any]:
         from api.probes import (
             probe_openrouter_service,
             probe_github_service,
@@ -815,8 +861,41 @@ class SystemMonitor:
             "services": list(services),
         }
 
-    async def get_hosting_surfaces_status(self) -> Dict[str, Any]:
-        """Get live status for public hosting surfaces and runtime configuration."""
+    async def _refresh_services_background(self) -> None:
+        try:
+            data = await self._fetch_external_services_status()
+            self._services_cache = data
+            self._services_cache_expires_at = time.time() + 120.0
+        except Exception as e:
+            print(f"Error refreshing external services in background: {e}")
+        finally:
+            self._services_is_refreshing = False
+
+    async def get_external_services_status(self) -> Dict[str, Any]:
+        """Get live status information with SWR caching to prevent slow requests."""
+        now = time.time()
+        if self._services_cache and now < self._services_cache_expires_at:
+            return self._services_cache
+
+        if self._services_cache:
+            if not getattr(self, "_services_is_refreshing", False):
+                self._services_is_refreshing = True
+                asyncio.create_task(self._refresh_services_background())
+            return self._services_cache
+
+        try:
+            self._services_cache = await self._fetch_external_services_status()
+            self._services_cache_expires_at = now + 120.0
+            return self._services_cache
+        except Exception as e:
+            print(f"Error fetching external services status: {e}")
+            return {
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0},
+                "services": [],
+            }
+
+    async def _fetch_hosting_surfaces_status(self) -> Dict[str, Any]:
         from api.probes import (
             probe_monitor_surface,
             probe_github_pages_surface,
@@ -843,6 +922,41 @@ class SystemMonitor:
             "runtime": self.get_runtime_environment(),
             "surfaces": list(surfaces),
         }
+
+    async def _refresh_hosting_background(self) -> None:
+        try:
+            data = await self._fetch_hosting_surfaces_status()
+            self._hosting_cache = data
+            self._hosting_cache_expires_at = time.time() + 120.0
+        except Exception as e:
+            print(f"Error refreshing hosting surfaces in background: {e}")
+        finally:
+            self._hosting_is_refreshing = False
+
+    async def get_hosting_surfaces_status(self) -> Dict[str, Any]:
+        """Get live status for public hosting surfaces with SWR caching."""
+        now = time.time()
+        if self._hosting_cache and now < self._hosting_cache_expires_at:
+            return self._hosting_cache
+
+        if self._hosting_cache:
+            if not getattr(self, "_hosting_is_refreshing", False):
+                self._hosting_is_refreshing = True
+                asyncio.create_task(self._refresh_hosting_background())
+            return self._hosting_cache
+
+        try:
+            self._hosting_cache = await self._fetch_hosting_surfaces_status()
+            self._hosting_cache_expires_at = now + 120.0
+            return self._hosting_cache
+        except Exception as e:
+            print(f"Error fetching hosting surfaces status: {e}")
+            return {
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0},
+                "runtime": {},
+                "surfaces": [],
+            }
 
     def get_metrics(self) -> Dict[str, Any]:
         """Get comprehensive system metrics."""

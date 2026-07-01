@@ -65,18 +65,20 @@ class LiquidGlassEngine {
 
   scheduleCapture(force = false) {
     if (!this.enabled) return;
+    if (this.surfaces.size === 0 && !force) return;
     if (this.capturePending && !force) return;
     clearTimeout(this.captureTimer);
     this.captureTimer = window.setTimeout(
       () => {
-        void this.refreshBackground();
+        void this.refreshBackground(force);
       },
       force ? 0 : 180
     );
   }
 
-  async refreshBackground() {
+  async refreshBackground(force = false) {
     if (!this.enabled || this.capturePending) return;
+    if (this.surfaces.size === 0 && !force) return;
     this.capturePending = true;
     try {
       const dark = document.documentElement.classList.contains('dark');
@@ -113,7 +115,7 @@ class LiquidGlassEngine {
         if (this.backgroundCanvas) {
           s.setBackgroundSource(this.backgroundCanvas);
         } else {
-          void this.refreshBackground();
+          void this.refreshBackground(true);
           this.scheduleHeavyCapture();
         }
         options.onReady?.(s);
