@@ -24,6 +24,10 @@ INTEGRATION_ENV_KEYS = (
     "WITHINGS_CLIENT_SECRET",
 )
 
+HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES = int(
+    os.getenv("HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES", "60")
+)
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -39,6 +43,31 @@ def _status_from_flags(*, ok: bool, warn: bool = False) -> str:
     if warn:
         return "degraded"
     return "unhealthy"
+
+
+def _parse_utc_datetime(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    normalized = value.strip()
+    if normalized.endswith("Z"):
+        normalized = normalized[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _health_summary_stale(summary: Dict[str, Any]) -> bool:
+    if summary.get("status") == "not_configured":
+        return False
+    synced_at = _parse_utc_datetime((summary.get("data") or {}).get("lastSyncedAt"))
+    if synced_at is None:
+        return True
+    age_minutes = int(max(0, (datetime.now(timezone.utc) - synced_at).total_seconds()) // 60)
+    return age_minutes >= HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES
 
 
 def integration_env_presence() -> Dict[str, bool]:
@@ -110,16 +139,20 @@ async def collect_platform_health() -> Dict[str, Any]:
 
     health_summary = await fetch_latest_health_summary()
     health_status = str(health_summary.get("status") or "unknown")
+    health_stale = _health_summary_stale(health_summary)
     checks.append(
         {
             "id": "health_vitals_summary",
             "label": "Health Vitals Summary",
             "path": "/api/health-vitals/summary",
             "status": _status_from_flags(
-                ok=health_status == "live",
-                warn=health_status in ("empty", "degraded"),
+                ok=health_status == "live" and not health_stale,
+                warn=health_status in ("empty", "degraded") or health_stale,
             ),
-            "detail": f"source={health_summary.get('source')} status={health_status}",
+            "detail": (
+                f"source={health_summary.get('source')} "
+                f"status={'stale' if health_stale else health_status}"
+            ),
         }
     )
 

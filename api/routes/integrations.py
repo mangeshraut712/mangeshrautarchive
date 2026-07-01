@@ -142,6 +142,13 @@ def _health_summary_refresh_metadata(
     }
 
 
+def _health_summary_public_status(summary: Dict[str, Any], refresh: Dict[str, Any]) -> str:
+    status = str(summary.get("status") or "unknown")
+    if status not in {"not_configured", "empty"} and refresh.get("stale"):
+        return "stale"
+    return status
+
+
 async def _connected_health_provider_available() -> bool:
     whoop_connected, withings_connected = await asyncio.gather(
         integration_is_connected("whoop"),
@@ -340,10 +347,13 @@ async def get_health_vitals_summary():
     summary = await fetch_latest_health_summary()
     refresh = _health_summary_refresh_metadata(summary)
     data = summary.get("data") or empty_health_summary()
+    status = _health_summary_public_status(summary, refresh)
+    if status == "stale":
+        data = {**data, "sourceStatus": "stale"}
     return _health_summary_response({
         "success": True,
         "timestamp": _utc_now(),
-        "status": summary.get("status", "unknown"),
+        "status": status,
         "source": summary.get("source", "fallback"),
         "sourceStatus": data.get("sourceStatus"),
         "lastSyncedAt": data.get("lastSyncedAt"),

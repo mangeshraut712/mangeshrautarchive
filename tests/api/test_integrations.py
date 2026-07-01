@@ -137,8 +137,9 @@ def test_health_vitals_summary_serves_stale_cache_without_provider_refresh(clien
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["status"] == "live"
+    assert payload["status"] == "stale"
     assert payload["data"]["sleepScore"] == 81
+    assert payload["data"]["sourceStatus"] == "stale"
     assert payload["refresh"]["attempted"] is False
     assert payload["refresh"]["refreshed"] is False
     assert payload["refresh"]["stale"] is True
