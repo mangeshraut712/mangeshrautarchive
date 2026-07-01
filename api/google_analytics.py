@@ -60,6 +60,7 @@ class GoogleAnalyticsDataClient:
         self._token_expires_at = 0.0
         self._snapshot: Optional[Dict[str, Any]] = None
         self._snapshot_expires_at = 0.0
+        self._is_refreshing = False
 
     @property
     def enabled(self) -> bool:
@@ -280,6 +281,145 @@ class GoogleAnalyticsDataClient:
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
 
+    async def _fetch_reach_snapshot_data(self) -> Dict[str, Any]:
+        await self._access_token()
+        (
+            total_report,
+            week_country_report,
+            week_totals_report,
+            daily_report,
+            realtime_result,
+        ) = await asyncio.gather(
+            self.run_report(
+                start_date="2020-01-01",
+                metrics=["screenPageViews", "activeUsers", "sessions", "eventCount"],
+                limit=1,
+            ),
+            self.run_report(
+                start_date="30daysAgo",
+                metrics=["activeUsers"],
+                dimensions=["country"],
+                limit=100,
+            ),
+            self.run_report(
+                start_date="7daysAgo",
+                metrics=["activeUsers", "sessions"],
+                limit=1,
+            ),
+            self.run_report(
+                start_date="6daysAgo",
+                metrics=["screenPageViews", "activeUsers", "sessions"],
+                dimensions=["date"],
+                limit=10,
+            ),
+            self.run_realtime_report(
+                metrics=["activeUsers"],
+                dimensions=["country"],
+                limit=25,
+            ),
+            return_exceptions=True,
+        )
+        for report in (total_report, week_country_report, week_totals_report, daily_report):
+            if isinstance(report, Exception):
+                raise report
+
+        total_row = (total_report.get("rows") or [{}])[0]
+        week_row = (week_totals_report.get("rows") or [{}])[0]
+        top_countries = self._top_countries(
+            [
+                {
+                    "country": self._dimension_value(row, 0),
+                    "users": self._metric_value(row, 0),
+                }
+                for row in week_country_report.get("rows", [])
+            ],
+            limit=10,
+        )
+
+        event_count = self._metric_value(total_row, 3)
+        if event_count <= 0:
+            event_count = 25000
+
+        active_users_last_30_mins = 0
+        realtime_countries: List[Dict[str, Any]] = []
+        try:
+            if isinstance(realtime_result, Exception):
+                raise realtime_result
+            realtime_data = realtime_result
+            total_rt_users = 0
+            parsed_rt_countries: List[Dict[str, Any]] = []
+            for row in realtime_data.get("rows", []):
+                users = self._metric_value(row, 0)
+                country = self._dimension_value(row, 0)
+                if users > 0:
+                    total_rt_users += users
+                    normalized = self._normalize_country_name(country)
+                    if normalized:
+                        parsed_rt_countries.append(
+                            {"country": normalized, "users": users}
+                        )
+            if total_rt_users > 0:
+                active_users_last_30_mins = total_rt_users
+            realtime_countries = self._top_countries(parsed_rt_countries, limit=3)
+        except Exception as re:
+            print(f"Error querying realtime GA report: {re}")
+
+        trend_by_date = {}
+        for row in daily_report.get("rows", []):
+            date_key = self._dimension_value(row, 0)
+            if len(date_key) == 8:
+                date_key = f"{date_key[:4]}-{date_key[4:6]}-{date_key[6:]}"
+            trend_by_date[date_key] = {
+                "date": date_key,
+                "views": self._metric_value(row, 0),
+                "visitors": self._metric_value(row, 1),
+                "sessions": self._metric_value(row, 2),
+            }
+
+        from zoneinfo import ZoneInfo
+        time_zone_str = total_report.get("metadata", {}).get("timeZone", "UTC")
+        try:
+            tz = ZoneInfo(time_zone_str)
+        except Exception:
+            tz = ZoneInfo("UTC")
+        today = datetime.now(tz).date()
+        trend = []
+        for offset in range(6, -1, -1):
+            date_key = (today - timedelta(days=offset)).isoformat()
+            trend.append(
+                trend_by_date.get(
+                    date_key,
+                    {"date": date_key, "views": 0, "visitors": 0, "sessions": 0},
+                )
+            )
+
+        return {
+            "source": "google_analytics",
+            "total_views": self._metric_value(total_row, 0),
+            "unique_visitors": self._metric_value(total_row, 1),
+            "sessions": self._metric_value(total_row, 2),
+            "event_count": event_count,
+            "active_users_last_30_mins": active_users_last_30_mins,
+            "realtime_countries": realtime_countries,
+            "unique_visitors_this_week": self._metric_value(week_row, 0),
+            "sessions_this_week": self._metric_value(week_row, 1),
+            "countries_this_week": len(top_countries),
+            "top_countries": top_countries,
+            "trend": trend,
+            "analytics_url": self.report_url,
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+
+    async def _refresh_snapshot_background(self) -> None:
+        try:
+            data = await self._fetch_reach_snapshot_data()
+            self._snapshot = data
+            self._snapshot_expires_at = time.time() + 180
+        except Exception as e:
+            print(f"Error refreshing GA reach snapshot in background: {e}")
+        finally:
+            self._is_refreshing = False
+
     async def get_reach_snapshot(self) -> Dict[str, Any]:
         if not self.enabled:
             return self._get_mock_snapshot()
@@ -288,135 +428,15 @@ class GoogleAnalyticsDataClient:
         if self._snapshot and now < self._snapshot_expires_at:
             return self._snapshot
 
+        if self._snapshot:
+            if not getattr(self, "_is_refreshing", False):
+                self._is_refreshing = True
+                asyncio.create_task(self._refresh_snapshot_background())
+            return self._snapshot
+
         try:
-            await self._access_token()
-            (
-                total_report,
-                week_country_report,
-                week_totals_report,
-                daily_report,
-                realtime_result,
-            ) = await asyncio.gather(
-                self.run_report(
-                    start_date="2020-01-01",
-                    metrics=["screenPageViews", "activeUsers", "sessions", "eventCount"],
-                    limit=1,
-                ),
-                self.run_report(
-                    start_date="30daysAgo",
-                    metrics=["activeUsers"],
-                    dimensions=["country"],
-                    limit=100,
-                ),
-                self.run_report(
-                    start_date="7daysAgo",
-                    metrics=["activeUsers", "sessions"],
-                    limit=1,
-                ),
-                self.run_report(
-                    start_date="6daysAgo",
-                    metrics=["screenPageViews", "activeUsers", "sessions"],
-                    dimensions=["date"],
-                    limit=10,
-                ),
-                self.run_realtime_report(
-                    metrics=["activeUsers"],
-                    dimensions=["country"],
-                    limit=25,
-                ),
-                return_exceptions=True,
-            )
-            for report in (total_report, week_country_report, week_totals_report, daily_report):
-                if isinstance(report, Exception):
-                    raise report
-
-            total_row = (total_report.get("rows") or [{}])[0]
-            week_row = (week_totals_report.get("rows") or [{}])[0]
-            top_countries = self._top_countries(
-                [
-                    {
-                        "country": self._dimension_value(row, 0),
-                        "users": self._metric_value(row, 0),
-                    }
-                    for row in week_country_report.get("rows", [])
-                ],
-                limit=10,
-            )
-
-            event_count = self._metric_value(total_row, 3)
-            if event_count <= 0:
-                event_count = 25000
-
-            active_users_last_30_mins = 0
-            realtime_countries: List[Dict[str, Any]] = []
-            try:
-                if isinstance(realtime_result, Exception):
-                    raise realtime_result
-                realtime_data = realtime_result
-                total_rt_users = 0
-                parsed_rt_countries: List[Dict[str, Any]] = []
-                for row in realtime_data.get("rows", []):
-                    users = self._metric_value(row, 0)
-                    country = self._dimension_value(row, 0)
-                    if users > 0:
-                        total_rt_users += users
-                        normalized = self._normalize_country_name(country)
-                        if normalized:
-                            parsed_rt_countries.append(
-                                {"country": normalized, "users": users}
-                            )
-                if total_rt_users > 0:
-                    active_users_last_30_mins = total_rt_users
-                realtime_countries = self._top_countries(parsed_rt_countries, limit=3)
-            except Exception as re:
-                print(f"Error querying realtime GA report: {re}")
-
-            trend_by_date = {}
-            for row in daily_report.get("rows", []):
-                date_key = self._dimension_value(row, 0)
-                if len(date_key) == 8:
-                    date_key = f"{date_key[:4]}-{date_key[4:6]}-{date_key[6:]}"
-                trend_by_date[date_key] = {
-                    "date": date_key,
-                    "views": self._metric_value(row, 0),
-                    "visitors": self._metric_value(row, 1),
-                    "sessions": self._metric_value(row, 2),
-                }
-
-            from zoneinfo import ZoneInfo
-            time_zone_str = total_report.get("metadata", {}).get("timeZone", "UTC")
-            try:
-                tz = ZoneInfo(time_zone_str)
-            except Exception:
-                tz = ZoneInfo("UTC")
-            today = datetime.now(tz).date()
-            trend = []
-            for offset in range(6, -1, -1):
-                date_key = (today - timedelta(days=offset)).isoformat()
-                trend.append(
-                    trend_by_date.get(
-                        date_key,
-                        {"date": date_key, "views": 0, "visitors": 0, "sessions": 0},
-                    )
-                )
-
-            self._snapshot = {
-                "source": "google_analytics",
-                "total_views": self._metric_value(total_row, 0),
-                "unique_visitors": self._metric_value(total_row, 1),
-                "sessions": self._metric_value(total_row, 2),
-                "event_count": event_count,
-                "active_users_last_30_mins": active_users_last_30_mins,
-                "realtime_countries": realtime_countries,
-                "unique_visitors_this_week": self._metric_value(week_row, 0),
-                "sessions_this_week": self._metric_value(week_row, 1),
-                "countries_this_week": len(top_countries),
-                "top_countries": top_countries,
-                "trend": trend,
-                "analytics_url": self.report_url,
-                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            }
-            self._snapshot_expires_at = now + 60
+            self._snapshot = await self._fetch_reach_snapshot_data()
+            self._snapshot_expires_at = now + 180
             return self._snapshot
         except Exception as e:
             print(f"Error querying Google Analytics API, falling back to mock snapshot: {e}")
