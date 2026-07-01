@@ -217,6 +217,20 @@ class HealthWidget {
       'whoop-recovery-val',
       this.metrics.recovery === null ? '--%' : `${Math.round(this.metrics.recovery)}%`
     );
+
+    const recoveryCard = document.getElementById('whoop-recovery-card');
+    if (recoveryCard) {
+      recoveryCard.classList.remove('recovery-green', 'recovery-yellow', 'recovery-red');
+      if (this.metrics.recovery !== null) {
+        if (this.metrics.recovery >= 67) {
+          recoveryCard.classList.add('recovery-green');
+        } else if (this.metrics.recovery >= 34) {
+          recoveryCard.classList.add('recovery-yellow');
+        } else {
+          recoveryCard.classList.add('recovery-red');
+        }
+      }
+    }
     this.setTextContent(
       'whoop-strain-val',
       this.metrics.strain === null ? '--' : this.metrics.strain.toFixed(1)

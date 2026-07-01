@@ -356,3 +356,18 @@ html.dark .health-widget-container {
     font-size: 1.05rem;
   }
 }
+
+/* WHOOP Recovery Score Color Themes */
+.whoop-metric.recovery-green .metric-value,
+.whoop-metric.recovery-green .metric-icon {
+  color: #30d158 !important; /* iOS system green */
+}
+.whoop-metric.recovery-yellow .metric-value,
+.whoop-metric.recovery-yellow .metric-icon {
+  color: #ff9f0a !important; /* iOS system orange */
+}
+.whoop-metric.recovery-red .metric-value,
+.whoop-metric.recovery-red .metric-icon {
+  color: #ff453a !important; /* iOS system red */
+}
+
