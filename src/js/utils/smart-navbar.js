@@ -125,6 +125,27 @@ function getSectionOffset() {
   return (state.nav?.offsetHeight || 60) + 12;
 }
 
+function withNativeScrollJump(callback) {
+  const root = document.documentElement;
+  const body = document.body;
+  const previousRootBehavior = root.style.scrollBehavior;
+  const previousBodyBehavior = body?.style.scrollBehavior || '';
+
+  root.classList.add('native-scroll-jump');
+  root.style.scrollBehavior = 'auto';
+  if (body) body.style.scrollBehavior = 'auto';
+
+  try {
+    callback();
+  } finally {
+    window.setTimeout(() => {
+      root.classList.remove('native-scroll-jump');
+      root.style.scrollBehavior = previousRootBehavior;
+      if (body) body.style.scrollBehavior = previousBodyBehavior;
+    }, 160);
+  }
+}
+
 function stabilizeScrollToSection(sectionId) {
   clearStabilizeTimers();
 
@@ -149,9 +170,11 @@ function stabilizeScrollToSection(sectionId) {
       const delta = target.getBoundingClientRect().top - expectedTop;
       if (Math.abs(delta) <= 18) return;
 
-      window.scrollBy({
-        top: delta,
-        behavior: 'auto',
+      withNativeScrollJump(() => {
+        window.scrollBy({
+          top: delta,
+          behavior: 'auto',
+        });
       });
     }, delay);
 
@@ -184,10 +207,20 @@ function scrollToSection(sectionId) {
   const distance = Math.abs((window.scrollY || window.pageYOffset || 0) - top);
   const useSmoothScroll = !prefersReducedMotion && distance <= window.innerHeight * 3;
 
-  window.scrollTo({
-    top: Math.max(0, top),
-    behavior: useSmoothScroll ? 'smooth' : 'auto',
-  });
+  const targetTop = Math.max(0, top);
+  if (useSmoothScroll) {
+    window.scrollTo({
+      top: targetTop,
+      behavior: 'smooth',
+    });
+  } else {
+    withNativeScrollJump(() => {
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'auto',
+      });
+    });
+  }
 
   stabilizeScrollToSection(sectionId);
 }
@@ -220,6 +253,9 @@ function bindNavLinks() {
 
       const sectionId = href.slice(1);
       event.preventDefault();
+      if (sectionId === 'projects') {
+        window.__ensureProjectsShowcase?.();
+      }
       setActiveLinkBySectionId(sectionId);
       scrollToSection(sectionId);
       syncSectionHash(sectionId);
@@ -241,6 +277,9 @@ function bindOverlayLinks() {
 
       event.preventDefault();
       closeOverlayMenu();
+      if (sectionId === 'projects') {
+        window.__ensureProjectsShowcase?.();
+      }
       setActiveLinkBySectionId(sectionId);
       scrollToSection(sectionId);
       syncSectionHash(sectionId);
@@ -447,7 +486,7 @@ function initSmartNavbar() {
     return;
   }
 
-  state.nav = document.querySelector('.global-nav.dynamic-island');
+  state.nav = document.querySelector('.global-nav.dynamic-island, .global-nav');
   if (!state.nav) return;
 
   window.__smartNavbarInitialized = true;

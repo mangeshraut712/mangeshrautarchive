@@ -54,6 +54,15 @@ html {
   -webkit-touch-action: manipulation;
 }
 
+html.native-scroll-jump,
+html.native-scroll-jump body {
+  scroll-behavior: auto !important;
+  -webkit-scroll-behavior: auto !important;
+  -moz-scroll-behavior: auto !important;
+  -ms-scroll-behavior: auto !important;
+  -o-scroll-behavior: auto !important;
+}
+
 /* ============================================
    VIEWPORT & RESPONSIVE BASE
    ============================================ */

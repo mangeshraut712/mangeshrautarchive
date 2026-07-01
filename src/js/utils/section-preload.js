@@ -17,7 +17,7 @@ export function resolveGithubApiBase(context = globalThis) {
 }
 
 export function getGithubProjectsPrefetchUrl(context = globalThis) {
-  return `${resolveGithubApiBase(context)}/api/github/repos/public?username=mangeshraut712`;
+  return `${resolveGithubApiBase(context)}/api/github/repos/public?username=mangeshraut712&limit=100&no_forks=false`;
 }
 
 export function shouldDeferCriticalWarmup(context = globalThis) {

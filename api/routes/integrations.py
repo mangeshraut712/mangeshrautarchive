@@ -50,7 +50,7 @@ HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS = float(
     os.getenv("HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS", "8")
 )
 HEALTH_SUMMARY_AUTO_REFRESH_ON_READ = os.getenv(
-    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "true"
+    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "false"
 ).lower() in {"1", "true", "yes"}
 HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
 
@@ -125,6 +125,23 @@ def _sync_state_is_recent(sync_state: Dict[str, Any]) -> bool:
     )
 
 
+def _health_summary_refresh_metadata(
+    summary: Dict[str, Any],
+    *,
+    reason: str = "scheduled_or_admin_sync",
+) -> Dict[str, Any]:
+    return {
+        "stale": _health_summary_is_stale(summary),
+        "attempted": False,
+        "refreshed": False,
+        "reason": reason,
+        "ageMinutes": _health_summary_age_minutes(summary),
+        "maxAgeMinutes": HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES,
+        "cooldownMinutes": HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES,
+        "automaticCronUtc": "13:00",
+    }
+
+
 async def _connected_health_provider_available() -> bool:
     whoop_connected, withings_connected = await asyncio.gather(
         integration_is_connected("whoop"),
@@ -135,16 +152,8 @@ async def _connected_health_provider_available() -> bool:
 
 async def _maybe_refresh_health_summary(summary: Dict[str, Any]) -> tuple[Dict[str, Any], Dict[str, Any]]:
     age_minutes = _health_summary_age_minutes(summary)
-    refresh = {
-        "stale": _health_summary_is_stale(summary),
-        "attempted": False,
-        "refreshed": False,
-        "reason": "fresh",
-        "ageMinutes": age_minutes,
-        "maxAgeMinutes": HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES,
-        "cooldownMinutes": HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES,
-        "automaticCronUtc": "13:00",
-    }
+    refresh = _health_summary_refresh_metadata(summary, reason="fresh")
+    refresh["ageMinutes"] = age_minutes
     if not refresh["stale"]:
         return summary, refresh
     if not HEALTH_SUMMARY_AUTO_REFRESH_ON_READ:
@@ -329,7 +338,7 @@ async def get_integrations_status():
 )
 async def get_health_vitals_summary():
     summary = await fetch_latest_health_summary()
-    summary, refresh = await _maybe_refresh_health_summary(summary)
+    refresh = _health_summary_refresh_metadata(summary)
     data = summary.get("data") or empty_health_summary()
     return _health_summary_response({
         "success": True,

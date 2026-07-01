@@ -178,6 +178,21 @@ function debounce(callback, delay = 150) {
   };
 }
 
+function runWhenIdle(callback, timeout = 700) {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => callback(), { timeout });
+    return;
+  }
+
+  window.setTimeout(callback, timeout);
+}
+
+function waitForIdle(timeout = 350) {
+  return new Promise(resolve => {
+    runWhenIdle(resolve, timeout);
+  });
+}
+
 function applyTiltEffects(container) {
   if (!window.PremiumEnhancements || !window.PremiumEnhancements.applyTiltToElement) {
     return;
@@ -189,14 +204,18 @@ function applyTiltEffects(container) {
 }
 
 function bindProjectCardPressFeedback(container) {
-  if (!container || container.dataset.pressBound === 'true') {
+  if (!container) {
     return;
   }
 
-  container.dataset.pressBound = 'true';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   container.querySelectorAll('.showcase-project-card').forEach(card => {
+    if (card.dataset.pressBound === 'true') {
+      return;
+    }
+
+    card.dataset.pressBound = 'true';
     const pressOn = () => {
       if (!reducedMotion) {
         card.classList.add('is-pressed');
@@ -614,27 +633,28 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
   try {
     const githubProjects = new GitHubProjects(username);
-    const repos = await githubProjects.fetchRepositories();
-    const allRepos = repos.map((repo, index) => ({
-      ...repo,
-      originalCatalogIndex: index,
-      __activityLoaded: false,
-    }));
+    let allRepos = [];
+    let allShowcaseRepos = [];
 
-    const allReposByFullName = new Map(
-      allRepos.map(repo => [
-        String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`),
-        repo,
-      ])
-    );
+    const repoKey = repo => String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`);
 
-    const allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 60).map((repo, index) => {
-      const key = String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`);
-      const baseRepo = allReposByFullName.get(key) || repo;
-      baseRepo.__showcase = repo.__showcase || baseRepo.__showcase;
-      baseRepo.originalIndex = index;
-      return baseRepo;
-    });
+    const setRepoCatalog = repos => {
+      allRepos = repos.map((repo, index) => ({
+        ...githubProjects.normalizeRepoShape(repo),
+        originalCatalogIndex: index,
+        __activityLoaded: false,
+      }));
+
+      const allReposByFullName = new Map(allRepos.map(repo => [repoKey(repo), repo]));
+      allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 60).map((repo, index) => {
+        const baseRepo = allReposByFullName.get(repoKey(repo)) || repo;
+        baseRepo.__showcase = repo.__showcase || baseRepo.__showcase;
+        baseRepo.originalIndex = index;
+        return baseRepo;
+      });
+    };
+
+    setRepoCatalog(githubProjects.fallbackRepos);
 
     if (allShowcaseRepos.length === 0) {
       renderNoResults(container);
@@ -669,10 +689,141 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       return sorted.slice(0, maxItems);
     };
 
-    let renderToken = 0;
+    const hydrationQueue = new Set();
+    let hydrationRunning = false;
+    let hydrationRenderTimer = 0;
 
-    const renderProjects = async () => {
-      const currentToken = ++renderToken;
+    const scheduleHydrationRender = () => {
+      if (hydrationRenderTimer) {
+        window.clearTimeout(hydrationRenderTimer);
+      }
+
+      hydrationRenderTimer = window.setTimeout(() => {
+        hydrationRenderTimer = 0;
+        renderProjects({ queueHydration: false }).catch(error => {
+          console.error('Project showcase activity render failed:', error);
+        });
+      }, 220);
+    };
+
+    const runActivityHydration = async () => {
+      if (hydrationRunning) return;
+      hydrationRunning = true;
+
+      try {
+        while (hydrationQueue.size > 0) {
+          const iterator = hydrationQueue.values().next();
+          const repo = iterator.value;
+          hydrationQueue.delete(repo);
+          if (!repo || repo.__activityLoaded) continue;
+
+          repo.__activityQueued = false;
+          repo.__activityLoading = true;
+          try {
+            await waitForIdle();
+            await githubProjects.hydrateReposWithActivity([repo]);
+          } catch (error) {
+            repo.__activityLoaded = true;
+            console.warn(`Project activity unavailable for ${repo.full_name || repo.name}:`, error);
+          } finally {
+            repo.__activityLoading = false;
+          }
+
+          const visibleKeys = new Set(
+            getDisplayRepos().map(displayRepo =>
+              String(
+                displayRepo.full_name ||
+                  `${displayRepo.owner?.login || ''}/${displayRepo.name || ''}`
+              )
+            )
+          );
+          const repoKey = String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`);
+          if (visibleKeys.has(repoKey)) {
+            scheduleHydrationRender();
+          } else {
+            updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
+          }
+        }
+      } finally {
+        hydrationRunning = false;
+      }
+    };
+
+    const queueActivityHydration = reposToHydrate => {
+      let queued = false;
+      reposToHydrate.forEach(repo => {
+        if (!repo || repo.__activityLoaded || repo.__activityLoading || repo.__activityQueued) {
+          return;
+        }
+
+        repo.__activityQueued = true;
+        hydrationQueue.add(repo);
+        queued = true;
+      });
+
+      if (queued) {
+        runWhenIdle(runActivityHydration, 600);
+      }
+    };
+
+    const queueTopActivityHydration = () => {
+      const topReposForActivity = allShowcaseRepos
+        .toSorted(createSortComparator('popularity', githubProjects))
+        .slice(0, 8);
+
+      queueActivityHydration(topReposForActivity);
+    };
+
+    const realignProjectsSection = () => {
+      if (window.location.hash !== '#projects') return;
+
+      const section = document.getElementById('projects');
+      if (!section) return;
+
+      const nav = document.getElementById('global-nav') || document.querySelector('.global-nav');
+      const expectedTop = (nav?.offsetHeight || 60) + 12;
+      const delta = section.getBoundingClientRect().top - expectedTop;
+      if (Math.abs(delta) <= 18) return;
+
+      const root = document.documentElement;
+      const body = document.body;
+      const previousRootBehavior = root.style.scrollBehavior;
+      const previousBodyBehavior = body?.style.scrollBehavior || '';
+
+      root.classList.add('native-scroll-jump');
+      root.style.scrollBehavior = 'auto';
+      if (body) body.style.scrollBehavior = 'auto';
+      window.scrollTo(0, Math.max(0, window.scrollY + delta));
+
+      window.setTimeout(() => {
+        root.classList.remove('native-scroll-jump');
+        root.style.scrollBehavior = previousRootBehavior;
+        if (body) body.style.scrollBehavior = previousBodyBehavior;
+      }, 160);
+    };
+
+    const scheduleProjectsRealignment = () => {
+      let cancelled = false;
+      const cancelAlignment = () => {
+        cancelled = true;
+      };
+      const runRealignment = () => {
+        if (!cancelled) {
+          realignProjectsSection();
+        }
+      };
+
+      window.addEventListener('wheel', cancelAlignment, { passive: true, once: true });
+      window.addEventListener('touchstart', cancelAlignment, { passive: true, once: true });
+      window.addEventListener('keydown', cancelAlignment, { passive: true, once: true });
+
+      requestAnimationFrame(runRealignment);
+      [220, 700, 1400, 2400, 4200, 6600, 9000].forEach(delay => {
+        window.setTimeout(runRealignment, delay);
+      });
+    };
+
+    const renderProjects = async ({ queueHydration = true } = {}) => {
       const query = getCurrentQuery();
       const lens = getCurrentLens();
       const displayRepos = getDisplayRepos();
@@ -693,27 +844,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
       updateLensButtons(lensButtons, activeLens);
 
-      const reposToHydrate = displayRepos.filter(repo => !repo.__activityLoaded);
-      if (reposToHydrate.length === 0) return;
-
-      if (currentToken !== renderToken) {
-        return;
+      if (queueHydration) {
+        queueActivityHydration(displayRepos);
       }
 
-      await githubProjects.hydrateReposWithActivity(reposToHydrate);
-
-      if (currentToken === renderToken) {
-        const rerenderRepos = getDisplayRepos();
-        container.innerHTML = rerenderRepos
-          .map((repo, index) => githubProjects.createProjectCard(repo, index))
-          .join('');
-
-        applyTiltEffects(container);
-        revealRenderedProjectCards(container);
-        updateActivityStats(allRepos, rerenderRepos, githubProjects);
-        activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
-        updateLensButtons(lensButtons, activeLens);
-      }
+      scheduleProjectsRealignment();
     };
 
     const debouncedRender = debounce(() => {
@@ -775,21 +910,21 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     );
 
     await renderProjects();
-
-    const topReposForActivity = allShowcaseRepos
-      .toSorted(createSortComparator('popularity', githubProjects))
-      .slice(0, 8);
+    queueTopActivityHydration();
 
     githubProjects
-      .hydrateReposWithActivity(topReposForActivity)
-      .then(() => {
-        if (renderToken === 0) return;
-        updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
-        activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
-        updateLensButtons(lensButtons, activeLens);
+      .fetchRepositories()
+      .then(repos => {
+        if (!Array.isArray(repos) || repos.length === 0) return;
+        hydrationQueue.clear();
+        setRepoCatalog(repos);
+        return renderProjects();
       })
-      .catch(() => {
-        // Non-blocking enhancement; UI already rendered with fallback stats.
+      .then(() => {
+        queueTopActivityHydration();
+      })
+      .catch(error => {
+        console.warn('Live GitHub catalog refresh failed; using bundled project catalog.', error);
       });
   } catch (error) {
     console.error('Failed to initialize project showcase:', error);

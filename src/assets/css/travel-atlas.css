@@ -76,7 +76,10 @@ html.dark {
 
 /* ─── Top Navigation Bar ─── */
 .travel-nav {
-  margin: max(14px, env(safe-area-inset-top)) auto 0;
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -85,7 +88,9 @@ html.dark {
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
   border: 1px solid var(--theme-card-border, var(--separator));
+  background: var(--theme-card-bg, #ffffff);
   box-shadow: var(--shadow-md);
+  transform: translateX(-50%);
 }
 
 .travel-nav__back {
@@ -94,15 +99,22 @@ html.dark {
   gap: var(--space-2);
   min-height: 36px;
   padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--separator);
   border-radius: var(--radius-full);
+  background: var(--fill-secondary);
   color: var(--apple-blue);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
-  transition: background var(--duration-fast) var(--ease-apple);
+  transition:
+    background var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    color var(--duration-fast) var(--ease-apple),
+    transform var(--duration-fast) var(--ease-apple);
 }
 .travel-nav__back:hover {
-  background: var(--fill);
+  background: color-mix(in srgb, var(--apple-blue) 10%, var(--fill-secondary));
+  transform: translateY(-1px);
 }
 
 .travel-nav__left {
@@ -1085,8 +1097,8 @@ html.dark .travel-map-status span {
 @media (max-width: 768px) {
   .travel-nav {
     width: calc(100% - 24px);
-    min-height: 44px;
-    padding: var(--space-1) var(--space-3);
+    min-height: 48px;
+    padding: 6px 10px;
   }
   .travel-nav__back span {
     display: none;

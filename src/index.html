@@ -1058,6 +1058,81 @@ html.dark #home .hero-name-text {
         });
       }
 
+      function jumpToSection(href) {
+        if (!href || href.length <= 1) return false;
+        var sectionId = href.slice(1);
+        var target = document.getElementById(sectionId);
+        if (!target) return false;
+
+        var html = document.documentElement;
+        var body = document.body;
+        var nav = document.getElementById('global-nav') || document.querySelector('.global-nav');
+        var previousHtmlScroll = html.style.scrollBehavior;
+        var previousBodyScroll = body ? body.style.scrollBehavior : '';
+
+        html.classList.add('native-scroll-jump');
+        html.style.scrollBehavior = 'auto';
+        if (body) body.style.scrollBehavior = 'auto';
+
+        var cancelled = false;
+        var cancelAlignment = function () {
+          cancelled = true;
+        };
+        window.addEventListener('wheel', cancelAlignment, { passive: true, once: true });
+        window.addEventListener('touchstart', cancelAlignment, { passive: true, once: true });
+        window.addEventListener('keydown', cancelAlignment, { passive: true, once: true });
+
+        function alignTarget() {
+          if (cancelled) return;
+          var offset = (nav ? nav.offsetHeight : 60) + 12;
+          var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+          window.scrollTo(0, top);
+        }
+
+        alignTarget();
+        [220, 700, 1400, 2400, 3600, 5200, 7600, 9800].forEach(function (delay) {
+          window.setTimeout(alignTarget, delay);
+        });
+
+        window.setTimeout(function () {
+          html.classList.remove('native-scroll-jump');
+          html.style.scrollBehavior = previousHtmlScroll;
+          if (body) body.style.scrollBehavior = previousBodyScroll;
+        }, 10100);
+
+        if (window.location.hash !== href) {
+          window.history.pushState(null, '', href);
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        }
+
+        return true;
+      }
+
+      function ensureProjectsShowcase() {
+        if (window.__projectsShowcaseEarlyStart) return;
+        window.__projectsShowcaseEarlyStart = true;
+
+        var projectStyle = document.querySelector('link[data-lazy-style-key="projects"]');
+        if (projectStyle && !projectStyle.getAttribute('href') && projectStyle.dataset.href) {
+          projectStyle.setAttribute('href', projectStyle.dataset.href);
+        }
+
+        import('./js/modules/projects-showcase.js?v=20260701q')
+          .then(function (module) {
+            var init = module.initProjectShowcase || module.default;
+            if (typeof init === 'function') {
+              return init();
+            }
+            return null;
+          })
+          .catch(function (error) {
+            console.warn('Project showcase early start skipped:', error);
+            window.__projectsShowcaseEarlyStart = false;
+          });
+      }
+
+      window.__ensureProjectsShowcase = ensureProjectsShowcase;
+
       function unlockScrollIfOrphaned() {
         var body = document.body;
         if (!body) return;
@@ -1131,6 +1206,19 @@ html.dark #home .hero-name-text {
           return;
         }
 
+        var navLink = event.target.closest && event.target.closest('#global-nav a.nav-link[href^="#"]');
+        if (navLink && !window.__smartNavbarHandlesDynamicIsland && navLink.dataset.navBound !== 'true') {
+          var navHref = navLink.getAttribute('href');
+          if (jumpToSection(navHref)) {
+            if (navHref === '#projects') {
+              ensureProjectsShowcase();
+            }
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          return;
+        }
+
         var menuLink = event.target.closest && event.target.closest('#overlay-menu a.menu-item[href^="#"]');
         if (!menuLink) return;
         if (window.__smartNavbarHandlesDynamicIsland || menuLink.dataset.navBound === 'true') return;
@@ -1139,7 +1227,7 @@ html.dark #home .hero-name-text {
         event.stopPropagation();
         closeMenu();
         if (href && href.length > 1) {
-          window.location.hash = href;
+          jumpToSection(href);
         }
       }, true);
     })();

@@ -192,6 +192,7 @@ function createModuleLoader(modulePath) {
 
 const chatbotLoader = createModuleLoader('../modules/chatbot.js');
 const searchLoader = createModuleLoader('../modules/search.js');
+let projectShowcaseModulePromise = null;
 
 function runWhenIdle(callback, timeout = 1500) {
   if ('requestIdleCallback' in window) {
@@ -227,6 +228,23 @@ function prefetchGithubProjectsCatalog() {
   }).catch(() => {});
 }
 
+function warmProjectShowcaseAssets() {
+  if (isPerformanceAudit() || shouldDeferCriticalWarmup()) {
+    return null;
+  }
+
+  loadDeferredStyles(['projects']).catch(() => {});
+  projectShowcaseModulePromise =
+    projectShowcaseModulePromise ||
+    import('../modules/projects-showcase.js').catch(error => {
+      projectShowcaseModulePromise = null;
+      console.warn('Project showcase warm preload skipped:', error);
+      return null;
+    });
+
+  return projectShowcaseModulePromise;
+}
+
 function warmCriticalSectionPreloads() {
   if (isPerformanceAudit() || shouldDeferCriticalWarmup()) {
     return;
@@ -234,7 +252,7 @@ function warmCriticalSectionPreloads() {
 
   scheduleSoon(() => {
     prefetchGithubProjectsCatalog();
-    loadDeferredStyles(['projects']).catch(() => {});
+    warmProjectShowcaseAssets();
   }, WARM_SECTION_PRELOAD_DELAY_MS);
 }
 
@@ -882,9 +900,16 @@ function initProjectShowcaseOnDemand() {
 
     pending = Promise.all([
       loadDeferredStyles(['projects']),
-      import('../modules/projects-showcase.js'),
+      warmProjectShowcaseAssets() || import('../modules/projects-showcase.js'),
     ])
-      .then(([, module]) => module.initProjectShowcase())
+      .then(([, module]) => {
+        if (module?.initProjectShowcase) {
+          return module.initProjectShowcase();
+        }
+        return import('../modules/projects-showcase.js').then(freshModule =>
+          freshModule.initProjectShowcase()
+        );
+      })
       .catch(error => {
         console.error('Project showcase init failed:', error);
         pending = null;

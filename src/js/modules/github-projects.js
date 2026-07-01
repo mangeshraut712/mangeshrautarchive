@@ -17,6 +17,9 @@ const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
 });
 
+const repoCatalogMemoryCache = new Map();
+const repoCatalogPendingRequests = new Map();
+
 class GitHubProjects {
   constructor(username = 'mangeshraut712') {
     this.username = username;
@@ -404,15 +407,38 @@ class GitHubProjects {
   }
 
   async fetchRepositories(forceRefresh = false) {
+    const sharedCacheKey = `${this.username}:${this.repoSchemaVersion}`;
+
     // Force refresh bypasses all caches
     if (forceRefresh) {
       this.cache = null;
       this.cacheTime = null;
       localStorage.removeItem(this.localCacheKey);
+      repoCatalogMemoryCache.delete(sharedCacheKey);
+      repoCatalogPendingRequests.delete(sharedCacheKey);
     }
 
     if (this.cache && this.cacheTime && Date.now() - this.cacheTime < this.cacheDuration) {
       return this.cache;
+    }
+
+    const sharedCache = repoCatalogMemoryCache.get(sharedCacheKey);
+    if (
+      !forceRefresh &&
+      sharedCache?.repos &&
+      sharedCache.timestamp &&
+      Date.now() - sharedCache.timestamp < this.cacheDuration
+    ) {
+      this.cache = sharedCache.repos;
+      this.cacheTime = sharedCache.timestamp;
+      return sharedCache.repos;
+    }
+
+    if (!forceRefresh && repoCatalogPendingRequests.has(sharedCacheKey)) {
+      const repos = await repoCatalogPendingRequests.get(sharedCacheKey);
+      this.cache = repos;
+      this.cacheTime = Date.now();
+      return repos;
     }
 
     try {
@@ -427,6 +453,7 @@ class GitHubProjects {
         ) {
           this.cache = repos;
           this.cacheTime = timestamp;
+          repoCatalogMemoryCache.set(sharedCacheKey, { repos, timestamp });
           return repos;
         }
       }
@@ -434,83 +461,99 @@ class GitHubProjects {
       console.warn('Local cache read failed:', err);
     }
 
-    let rawRepos = null;
+    const networkLoad = (async () => {
+      let rawRepos = null;
 
-    for (const proxyBase of this.proxyCandidates) {
-      try {
-        const proxyResp = await fetch(
-          `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
-          { headers: { Accept: 'application/json' } }
-        );
+      for (const proxyBase of this.proxyCandidates) {
+        try {
+          const proxyResp = await fetch(
+            `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
+            { headers: { Accept: 'application/json' } }
+          );
 
-        if (!proxyResp.ok) {
-          console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
-          continue;
-        }
-
-        const repoList = this.extractRepoList(await proxyResp.json());
-        if (repoList) {
-          rawRepos = repoList;
-          break;
-        }
-      } catch (err) {
-        console.warn(`Proxy ${proxyBase} failed:`, err.message);
-      }
-    }
-
-    if (!rawRepos) {
-      try {
-        const response = await fetch(`${this.directApiUrl}?per_page=100&sort=updated`, {
-          headers: { Accept: 'application/vnd.github.v3+json' },
-        });
-
-        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
-        rawRepos = await response.json();
-      } catch (err) {
-        console.error('Error fetching GitHub repositories:', err);
-        // If we have stale cache, return it with a warning
-        const staleCache = localStorage.getItem(this.localCacheKey);
-        if (staleCache) {
-          try {
-            const { repos } = JSON.parse(staleCache);
-            if (repos && repos.length > 0) {
-              console.warn('Using stale cache due to API error:', err.message);
-              return repos;
-            }
-          } catch {
-            // Ignore stale cache parse failure and return empty below.
+          if (!proxyResp.ok) {
+            console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
+            continue;
           }
+
+          const repoList = this.extractRepoList(await proxyResp.json());
+          if (repoList) {
+            rawRepos = repoList;
+            break;
+          }
+        } catch (err) {
+          console.warn(`Proxy ${proxyBase} failed:`, err.message);
         }
-        console.warn('Using bundled fallback GitHub repository catalog.');
-        return this.fallbackRepos.map(repo => this.normalizeRepoShape(repo));
       }
+
+      if (!rawRepos) {
+        try {
+          const response = await fetch(`${this.directApiUrl}?per_page=100&sort=updated`, {
+            headers: { Accept: 'application/vnd.github.v3+json' },
+          });
+
+          if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+          rawRepos = await response.json();
+        } catch (err) {
+          console.error('Error fetching GitHub repositories:', err);
+          // If we have stale cache, return it with a warning
+          const staleCache = localStorage.getItem(this.localCacheKey);
+          if (staleCache) {
+            try {
+              const { repos } = JSON.parse(staleCache);
+              if (repos && repos.length > 0) {
+                console.warn('Using stale cache due to API error:', err.message);
+                return repos;
+              }
+            } catch {
+              // Ignore stale cache parse failure and return empty below.
+            }
+          }
+          console.warn('Using bundled fallback GitHub repository catalog.');
+          return this.fallbackRepos.map(repo => this.normalizeRepoShape(repo));
+        }
+      }
+
+      const normalizedRepos = Array.isArray(rawRepos)
+        ? rawRepos.map(repo => this.normalizeRepoShape(repo))
+        : [];
+
+      const sortedRepos = normalizedRepos.toSorted(
+        (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+      );
+
+      this.cache = sortedRepos;
+      this.cacheTime = Date.now();
+      repoCatalogMemoryCache.set(sharedCacheKey, {
+        repos: sortedRepos,
+        timestamp: this.cacheTime,
+      });
+
+      try {
+        localStorage.setItem(
+          this.localCacheKey,
+          JSON.stringify({
+            version: this.repoSchemaVersion,
+            repos: sortedRepos,
+            timestamp: this.cacheTime,
+          })
+        );
+      } catch (err) {
+        console.warn('Local cache write failed:', err);
+      }
+
+      return sortedRepos;
+    })();
+
+    if (!forceRefresh) {
+      repoCatalogPendingRequests.set(sharedCacheKey, networkLoad);
     }
-
-    const normalizedRepos = Array.isArray(rawRepos)
-      ? rawRepos.map(repo => this.normalizeRepoShape(repo))
-      : [];
-
-    const sortedRepos = normalizedRepos.toSorted(
-      (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
-    );
-
-    this.cache = sortedRepos;
-    this.cacheTime = Date.now();
 
     try {
-      localStorage.setItem(
-        this.localCacheKey,
-        JSON.stringify({
-          version: this.repoSchemaVersion,
-          repos: sortedRepos,
-          timestamp: this.cacheTime,
-        })
-      );
-    } catch (err) {
-      console.warn('Local cache write failed:', err);
+      return await networkLoad;
+    } finally {
+      repoCatalogPendingRequests.delete(sharedCacheKey);
     }
-
-    return sortedRepos;
   }
 
   getLanguageColor(language) {

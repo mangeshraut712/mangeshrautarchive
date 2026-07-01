@@ -3,13 +3,12 @@ import { getLiquidGlassEngine } from './liquid-glass-engine.js';
 /* Nav + music card + chatbot: solid/fixed surfaces — no WebGL host */
 const CHROME_SELECTORS = [
   '.monitor-page-nav',
-  '.travel-nav',
   '.hero-glass-card',
   '#projects #github-projects-container .showcase-project-card',
 ];
 
 const CHROME_MATCH =
-  '.monitor-page-nav, .travel-nav, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #projects #github-projects-container .showcase-project-card';
+  '.monitor-page-nav, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #projects #github-projects-container .showcase-project-card';
 
 function isGlassModeActive() {
   const mode = document.documentElement.dataset.lgMode;

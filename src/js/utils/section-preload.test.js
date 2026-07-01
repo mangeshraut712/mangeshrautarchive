@@ -16,7 +16,7 @@ describe('section-preload', () => {
 
     expect(resolveGithubApiBase(context)).toBe('https://preview.example.com');
     expect(getGithubProjectsPrefetchUrl(context)).toBe(
-      'https://preview.example.com/api/github/repos/public?username=mangeshraut712'
+      'https://preview.example.com/api/github/repos/public?username=mangeshraut712&limit=100&no_forks=false'
     );
   });
 

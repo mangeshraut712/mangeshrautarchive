@@ -2080,7 +2080,6 @@ html.dark body.monitor-page article {
   box-shadow: none !important;
 }
 
-body.travel-body .travel-nav,
 body.travel-body .travel-sidebar,
 body.travel-body .travel-stop,
 body.travel-body .place-guide-card,
@@ -2100,7 +2099,6 @@ body.travel-body .travel-timeline__country-header {
     0 8px 24px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
 }
 
-html.dark body.travel-body .travel-nav,
 html.dark body.travel-body .travel-sidebar,
 html.dark body.travel-body .travel-stop,
 html.dark body.travel-body .place-guide-card,
@@ -2384,7 +2382,7 @@ html.dark
     0 18px 44px rgb(0 0 0 / 42%) !important;
 }
 
-:is(.travel-nav, .monitor-page-nav) {
+.monitor-page-nav {
   background: color-mix(
     in srgb,
     var(--lg-nav-surface-light) 76%,
@@ -2403,7 +2401,7 @@ html.dark
     0 10px 28px rgb(0 0 0 / calc(8% + (1 - var(--lg-tint)) * 6%)) !important;
 }
 
-html.dark :is(.travel-nav, .monitor-page-nav) {
+html.dark .monitor-page-nav {
   background: color-mix(
     in srgb,
     var(--lg-nav-surface-dark) 76%,
@@ -2489,7 +2487,7 @@ html.dark #projects .projects-activity-overview {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  :is(.travel-nav, .monitor-page-nav),
+  .monitor-page-nav,
   .lg-glass-card,
   :is(.travel-sidebar, .monitor-summary-card, .monitor-summary-panel),
   #projects #github-projects-container .showcase-project-card,
