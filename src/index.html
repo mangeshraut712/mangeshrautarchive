@@ -60,10 +60,14 @@
   <script>
     (function preloadHeroProfileImage() {
       var link = document.createElement('link');
-      var isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
       link.rel = 'preload';
       link.as = 'image';
-      link.href = isMobile ? 'assets/images/profile-mobile.webp' : 'assets/images/profile.webp';
+      link.href = 'assets/images/profile.webp';
+      link.setAttribute(
+        'imagesrcset',
+        'assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w'
+      );
+      link.setAttribute('imagesizes', '(max-width: 640px) 160px, 320px');
       link.setAttribute('fetchpriority', 'high');
       document.head.appendChild(link);
     })();

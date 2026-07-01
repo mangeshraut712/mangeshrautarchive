@@ -80,10 +80,12 @@
   var heroPreload = document.createElement('link');
   heroPreload.rel = 'preload';
   heroPreload.as = 'image';
-  heroPreload.href =
-    window.matchMedia && window.matchMedia('(max-width: 768px)').matches
-      ? 'assets/images/profile-mobile.webp'
-      : 'assets/images/profile.webp';
+  heroPreload.href = 'assets/images/profile.webp';
+  heroPreload.setAttribute(
+    'imagesrcset',
+    'assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w'
+  );
+  heroPreload.setAttribute('imagesizes', '(max-width: 640px) 160px, 320px');
   heroPreload.setAttribute('fetchpriority', 'high');
   (document.head || document.documentElement).appendChild(heroPreload);
 
