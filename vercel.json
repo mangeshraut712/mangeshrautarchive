@@ -16,7 +16,7 @@
   "crons": [
     {
       "path": "/api/cron/health-vitals-sync",
-      "schedule": "0 * * * *"
+      "schedule": "0 13 * * *"
     }
   ],
   "rewrites": [
