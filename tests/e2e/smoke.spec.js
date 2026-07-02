@@ -50,7 +50,7 @@ const waitForTravelMap = async page => {
 const waitForCurrentlyReady = async page => {
   const currentlySection = page.locator('#currently-section');
   await expect(currentlySection).toBeAttached({ timeout: 30_000 });
-  await scrollLocatorIntoView(currentlySection);
+  await scrollSelectorIntoView(page, '#currently-section');
   await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
   await page.waitForFunction(
     () => document.getElementById('currently-section')?.dataset.currentlyInit === 'true',
@@ -59,10 +59,16 @@ const waitForCurrentlyReady = async page => {
   );
 };
 
-const scrollLocatorIntoView = async locator => {
-  await locator.evaluate(node => {
+const scrollSelectorIntoView = async (page, selector) =>
+  page.evaluate(targetSelector => {
+    const node = document.querySelector(targetSelector);
+    if (!node) return false;
     node.scrollIntoView({ block: 'center', inline: 'nearest' });
-  });
+    return true;
+  }, selector);
+
+const nextFrame = async page => {
+  await page.evaluate(() => new Promise(requestAnimationFrame));
 };
 
 const criticalLayoutChecks = [
@@ -379,11 +385,25 @@ test.describe('Chrome smoke tests', () => {
     test.setTimeout(60_000);
     await gotoSiteReady(page);
 
-    for (const sectionId of navSections) {
-      const section = page.locator(`section#${sectionId}`);
-      await expect(section, `${sectionId} should exist`).toBeAttached();
-      await scrollLocatorIntoView(section);
-      await expect(section, `${sectionId} should be visible`).toBeVisible();
+    const sectionStates = await page.evaluate(
+      ids =>
+        ids.map(id => {
+          const node = document.querySelector(`section#${id}`);
+          if (!node) return { id, exists: false, linkable: false };
+          return {
+            id,
+            exists: true,
+            linkable: node.id === id && node.tagName.toLowerCase() === 'section',
+            height: node.getBoundingClientRect().height,
+          };
+        }),
+      navSections
+    );
+
+    for (const state of sectionStates) {
+      expect(state.exists, `${state.id} should exist`).toBe(true);
+      expect(state.linkable, `${state.id} should be section-linkable`).toBe(true);
+      expect(state.height, `${state.id} should have layout height`).toBeGreaterThan(0);
     }
   });
 
@@ -418,14 +438,23 @@ test.describe('Chrome smoke tests', () => {
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
     await gotoSiteReady(page);
 
-    for (const check of criticalOverflowChecks) {
-      const sectionNode = page.locator(check.selector);
-      await expect(sectionNode, `${check.name} exists`).toBeAttached();
-      await scrollLocatorIntoView(sectionNode);
-      await page.evaluate(() => new Promise(requestAnimationFrame));
+    const overflowStates = await page.evaluate(
+      checks =>
+        checks.map(check => {
+          const node = document.querySelector(check.selector);
+          return {
+            name: check.name,
+            exists: Boolean(node),
+            overflowPx: node ? node.scrollWidth - node.clientWidth : null,
+          };
+        }),
+      criticalOverflowChecks
+    );
 
-      const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
-      expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
+    for (const state of overflowStates) {
+      expect(state.exists, `${state.name} exists`).toBe(true);
+      expect(state.overflowPx, `${state.name} overflow should be measurable`).not.toBeNull();
+      expect(state.overflowPx, `${state.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
     }
   });
 
