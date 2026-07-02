@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "installCommand": "npm install --no-audit --no-fund",
+  "installCommand": "npm ci --no-audit --no-fund",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
@@ -16,7 +16,7 @@
   "crons": [
     {
       "path": "/api/cron/health-vitals-sync",
-      "schedule": "0 13 * * *"
+      "schedule": "0 * * * *"
     }
   ],
   "rewrites": [

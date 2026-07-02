@@ -138,7 +138,7 @@ def _health_summary_refresh_metadata(
         "ageMinutes": _health_summary_age_minutes(summary),
         "maxAgeMinutes": HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES,
         "cooldownMinutes": HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES,
-        "automaticCronUtc": "13:00",
+        "automaticCronUtc": "hourly",
     }
 
 

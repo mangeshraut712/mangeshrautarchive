@@ -231,26 +231,26 @@ var w = class {
         else break;
         n = n.slice(a);
         let c = u.join(`
-`), p2 = c.replace(this.rules.other.blockquoteSetextReplace, `
+`), p = c.replace(this.rules.other.blockquoteSetextReplace, `
     $1`).replace(this.rules.other.blockquoteSetextReplace2, "");
         s = s ? `${s}
 ${c}` : c, r = r ? `${r}
-${p2}` : p2;
+${p}` : p;
         let k = this.lexer.state.top;
-        if (this.lexer.state.top = true, this.lexer.blockTokens(p2, i2, true), this.lexer.state.top = k, n.length === 0) break;
+        if (this.lexer.state.top = true, this.lexer.blockTokens(p, i2, true), this.lexer.state.top = k, n.length === 0) break;
         let h = i2.at(-1);
         if (h?.type === "code") break;
         if (h?.type === "blockquote") {
-          let R = h, f = R.raw + `
+          let R2 = h, f = R2.raw + `
 ` + n.join(`
 `), S2 = this.blockquote(f);
-          i2[i2.length - 1] = S2, s = s.substring(0, s.length - R.raw.length) + S2.raw, r = r.substring(0, r.length - R.text.length) + S2.text;
+          i2[i2.length - 1] = S2, s = s.substring(0, s.length - R2.raw.length) + S2.raw, r = r.substring(0, r.length - R2.text.length) + S2.text;
           break;
         } else if (h?.type === "list") {
-          let R = h, f = R.raw + `
+          let R2 = h, f = R2.raw + `
 ` + n.join(`
 `), S2 = this.list(f);
-          i2[i2.length - 1] = S2, s = s.substring(0, s.length - h.raw.length) + S2.raw, r = r.substring(0, r.length - R.raw.length) + S2.raw, n = f.substring(i2.at(-1).raw.length).split(`
+          i2[i2.length - 1] = S2, s = s.substring(0, s.length - h.raw.length) + S2.raw, r = r.substring(0, r.length - R2.raw.length) + S2.raw, n = f.substring(i2.at(-1).raw.length).split(`
 `);
           continue;
         }
@@ -265,31 +265,31 @@ ${p2}` : p2;
       n = s ? `\\d{1,9}\\${n.slice(-1)}` : `\\${n}`, this.options.pedantic && (n = s ? n : "[*+-]");
       let i2 = this.rules.other.listItemRegex(n), o = false;
       for (; e; ) {
-        let a = false, c = "", p2 = "";
+        let a = false, c = "", p = "";
         if (!(t = i2.exec(e)) || this.rules.block.hr.test(e)) break;
         c = t[0], e = e.substring(c.length);
         let k = me(t[2].split(`
 `, 1)[0], t[1].length), h = e.split(`
-`, 1)[0], R = !k.trim(), f = 0;
-        if (this.options.pedantic ? (f = 2, p2 = k.trimStart()) : R ? f = t[1].length + 1 : (f = k.search(this.rules.other.nonSpaceChar), f = f > 4 ? 1 : f, p2 = k.slice(f), f += t[1].length), R && this.rules.other.blankLine.test(h) && (c += h + `
+`, 1)[0], R2 = !k.trim(), f = 0;
+        if (this.options.pedantic ? (f = 2, p = k.trimStart()) : R2 ? f = t[1].length + 1 : (f = k.search(this.rules.other.nonSpaceChar), f = f > 4 ? 1 : f, p = k.slice(f), f += t[1].length), R2 && this.rules.other.blankLine.test(h) && (c += h + `
 `, e = e.substring(h.length + 1), a = true), !a) {
           let S2 = this.rules.other.nextBulletRegex(f), te = this.rules.other.hrRegex(f), ne = this.rules.other.fencesBeginRegex(f), re = this.rules.other.headingBeginRegex(f), be = this.rules.other.htmlBeginRegex(f), Re = this.rules.other.blockquoteBeginRegex(f);
           for (; e; ) {
             let G = e.split(`
-`, 1)[0], C;
-            if (h = G, this.options.pedantic ? (h = h.replace(this.rules.other.listReplaceNesting, "  "), C = h) : C = h.replace(this.rules.other.tabCharGlobal, "    "), ne.test(h) || re.test(h) || be.test(h) || Re.test(h) || S2.test(h) || te.test(h)) break;
-            if (C.search(this.rules.other.nonSpaceChar) >= f || !h.trim()) p2 += `
-` + C.slice(f);
+`, 1)[0], C2;
+            if (h = G, this.options.pedantic ? (h = h.replace(this.rules.other.listReplaceNesting, "  "), C2 = h) : C2 = h.replace(this.rules.other.tabCharGlobal, "    "), ne.test(h) || re.test(h) || be.test(h) || Re.test(h) || S2.test(h) || te.test(h)) break;
+            if (C2.search(this.rules.other.nonSpaceChar) >= f || !h.trim()) p += `
+` + C2.slice(f);
             else {
-              if (R || k.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || ne.test(k) || re.test(k) || te.test(k)) break;
-              p2 += `
+              if (R2 || k.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || ne.test(k) || re.test(k) || te.test(k)) break;
+              p += `
 ` + h;
             }
-            R = !h.trim(), c += G + `
-`, e = e.substring(G.length + 1), k = C.slice(f);
+            R2 = !h.trim(), c += G + `
+`, e = e.substring(G.length + 1), k = C2.slice(f);
           }
         }
-        r.loose || (o ? r.loose = true : this.rules.other.doubleBlankLine.test(c) && (o = true)), r.items.push({ type: "list_item", raw: c, task: !!this.options.gfm && this.rules.other.listIsTask.test(p2), loose: false, text: p2, tokens: [] }), r.raw += c;
+        r.loose || (o ? r.loose = true : this.rules.other.doubleBlankLine.test(c) && (o = true)), r.items.push({ type: "list_item", raw: c, task: !!this.options.gfm && this.rules.other.listIsTask.test(p), loose: false, text: p, tokens: [] }), r.raw += c;
       }
       let u = r.items.at(-1);
       if (u) u.raw = u.raw.trimEnd(), u.text = u.text.trimEnd();
@@ -304,14 +304,14 @@ ${p2}` : p2;
             this.lexer.inlineQueue[k].src = this.lexer.inlineQueue[k].src.replace(this.rules.other.listReplaceTask, "");
             break;
           }
-          let p2 = this.rules.other.listTaskCheckbox.exec(a.raw);
-          if (p2) {
-            let k = { type: "checkbox", raw: p2[0] + " ", checked: p2[0] !== "[ ]" };
+          let p = this.rules.other.listTaskCheckbox.exec(a.raw);
+          if (p) {
+            let k = { type: "checkbox", raw: p[0] + " ", checked: p[0] !== "[ ]" };
             a.checked = k.checked, r.loose ? a.tokens[0] && ["paragraph", "text"].includes(a.tokens[0].type) && "tokens" in a.tokens[0] && a.tokens[0].tokens ? (a.tokens[0].raw = k.raw + a.tokens[0].raw, a.tokens[0].text = k.raw + a.tokens[0].text, a.tokens[0].tokens.unshift(k)) : a.tokens.unshift({ type: "paragraph", raw: k.raw, text: k.raw, tokens: [k] }) : a.tokens.unshift(k);
           }
         } else a.task && (a.task = false);
         if (!r.loose) {
-          let p2 = a.tokens.filter((h) => h.type === "space"), k = p2.length > 0 && p2.some((h) => this.rules.other.anyLine.test(h.raw));
+          let p = a.tokens.filter((h) => h.type === "space"), k = p.length > 0 && p.some((h) => this.rules.other.anyLine.test(h.raw));
           r.loose = k;
         }
       }
@@ -417,8 +417,8 @@ ${p2}` : p2;
     let s = this.rules.inline.emStrongLDelim.exec(e);
     if (!s || !s[1] && !s[2] && !s[3] && !s[4] || s[4] && n.match(this.rules.other.unicodeAlphaNumeric)) return;
     if (!(s[1] || s[3] || "") || !n || this.rules.inline.punctuation.exec(n)) {
-      let i2 = [...s[0]].length - 1, o, u, a = i2, c = 0, p2 = s[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
-      for (p2.lastIndex = 0, t = t.slice(-1 * e.length + i2); (s = p2.exec(t)) !== null; ) {
+      let i2 = [...s[0]].length - 1, o, u, a = i2, c = 0, p = s[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
+      for (p.lastIndex = 0, t = t.slice(-1 * e.length + i2); (s = p.exec(t)) !== null; ) {
         if (o = s[1] || s[2] || s[3] || s[4] || s[5] || s[6], !o) continue;
         if (u = [...o].length, s[3] || s[4]) {
           a += u;
@@ -434,8 +434,8 @@ ${p2}` : p2;
           let f = h.slice(1, -1);
           return { type: "em", raw: h, text: f, tokens: this.lexer.inlineTokens(f) };
         }
-        let R = h.slice(2, -2);
-        return { type: "strong", raw: h, text: R, tokens: this.lexer.inlineTokens(R) };
+        let R2 = h.slice(2, -2);
+        return { type: "strong", raw: h, text: R2, tokens: this.lexer.inlineTokens(R2) };
       }
     }
   }
@@ -463,7 +463,7 @@ ${p2}` : p2;
         }
         if (a -= u, a > 0) continue;
         u = Math.min(u, u + a);
-        let p2 = [...s[0]][0].length, k = e.slice(0, i2 + s.index + p2 + u), h = k.slice(i2, -i2);
+        let p = [...s[0]][0].length, k = e.slice(0, i2 + s.index + p + u), h = k.slice(i2, -i2);
         return { type: "del", raw: k, text: h, tokens: this.lexer.inlineTokens(h) };
       }
     }
@@ -649,7 +649,7 @@ var x = class l {
       }
       i2 || (o = ""), i2 = false;
       let a;
-      if (this.options.extensions?.inline?.some((p2) => (a = p2.call({ lexer: this }, e, t)) ? (e = e.substring(a.raw.length), t.push(a), true) : false)) continue;
+      if (this.options.extensions?.inline?.some((p) => (a = p.call({ lexer: this }, e, t)) ? (e = e.substring(a.raw.length), t.push(a), true) : false)) continue;
       if (a = this.tokenizer.escape(e)) {
         e = e.substring(a.raw.length), t.push(a);
         continue;
@@ -664,8 +664,8 @@ var x = class l {
       }
       if (a = this.tokenizer.reflink(e, this.tokens.links)) {
         e = e.substring(a.raw.length);
-        let p2 = t.at(-1);
-        a.type === "text" && p2?.type === "text" ? (p2.raw += a.raw, p2.text += a.text) : t.push(a);
+        let p = t.at(-1);
+        a.type === "text" && p?.type === "text" ? (p.raw += a.raw, p.text += a.text) : t.push(a);
         continue;
       }
       if (a = this.tokenizer.emStrong(e, n, o)) {
@@ -694,15 +694,15 @@ var x = class l {
       }
       let c = e;
       if (this.options.extensions?.startInline) {
-        let p2 = 1 / 0, k = e.slice(1), h;
-        this.options.extensions.startInline.forEach((R) => {
-          h = R.call({ lexer: this }, k), typeof h == "number" && h >= 0 && (p2 = Math.min(p2, h));
-        }), p2 < 1 / 0 && p2 >= 0 && (c = e.substring(0, p2 + 1));
+        let p = 1 / 0, k = e.slice(1), h;
+        this.options.extensions.startInline.forEach((R2) => {
+          h = R2.call({ lexer: this }, k), typeof h == "number" && h >= 0 && (p = Math.min(p, h));
+        }), p < 1 / 0 && p >= 0 && (c = e.substring(0, p + 1));
       }
       if (a = this.tokenizer.inlineText(c)) {
         e = e.substring(a.raw.length), a.raw.slice(-1) !== "_" && (o = a.raw.slice(-1)), i2 = true;
-        let p2 = t.at(-1);
-        p2?.type === "text" ? (p2.raw += a.raw, p2.text += a.text) : t.push(a);
+        let p = t.at(-1);
+        p?.type === "text" ? (p.raw += a.raw, p.text += a.text) : t.push(a);
         continue;
       }
       if (e) {
@@ -1110,8 +1110,8 @@ var q = class {
           if (["options", "parser"].includes(i2)) continue;
           let o = i2, u = n.renderer[o], a = r[o];
           r[o] = (...c) => {
-            let p2 = u.apply(r, c);
-            return p2 === false && (p2 = a.apply(r, c)), p2 || "";
+            let p = u.apply(r, c);
+            return p === false && (p = a.apply(r, c)), p || "";
           };
         }
         s.renderer = r;
@@ -1123,8 +1123,8 @@ var q = class {
           if (["options", "rules", "lexer"].includes(i2)) continue;
           let o = i2, u = n.tokenizer[o], a = r[o];
           r[o] = (...c) => {
-            let p2 = u.apply(r, c);
-            return p2 === false && (p2 = a.apply(r, c)), p2;
+            let p = u.apply(r, c);
+            return p === false && (p = a.apply(r, c)), p;
           };
         }
         s.tokenizer = r;
@@ -1140,15 +1140,15 @@ var q = class {
               let k = await u.call(r, c);
               return a.call(r, k);
             })();
-            let p2 = u.call(r, c);
-            return a.call(r, p2);
+            let p = u.call(r, c);
+            return a.call(r, p);
           } : r[o] = (...c) => {
             if (this.defaults.async) return (async () => {
               let k = await u.apply(r, c);
               return k === false && (k = await a.apply(r, c)), k;
             })();
-            let p2 = u.apply(r, c);
-            return p2 === false && (p2 = a.apply(r, c)), p2;
+            let p = u.apply(r, c);
+            return p === false && (p = a.apply(r, c)), p;
           };
         }
         s.hooks = r;
@@ -1179,17 +1179,17 @@ var q = class {
       if (typeof n > "u" || n === null) return o(new Error("marked(): input parameter is undefined or null"));
       if (typeof n != "string") return o(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(n) + ", string expected"));
       if (i2.hooks && (i2.hooks.options = i2, i2.hooks.block = e), i2.async) return (async () => {
-        let u = i2.hooks ? await i2.hooks.preprocess(n) : n, c = await (i2.hooks ? await i2.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(u, i2), p2 = i2.hooks ? await i2.hooks.processAllTokens(c) : c;
-        i2.walkTokens && await Promise.all(this.walkTokens(p2, i2.walkTokens));
-        let h = await (i2.hooks ? await i2.hooks.provideParser(e) : e ? b.parse : b.parseInline)(p2, i2);
+        let u = i2.hooks ? await i2.hooks.preprocess(n) : n, c = await (i2.hooks ? await i2.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(u, i2), p = i2.hooks ? await i2.hooks.processAllTokens(c) : c;
+        i2.walkTokens && await Promise.all(this.walkTokens(p, i2.walkTokens));
+        let h = await (i2.hooks ? await i2.hooks.provideParser(e) : e ? b.parse : b.parseInline)(p, i2);
         return i2.hooks ? await i2.hooks.postprocess(h) : h;
       })().catch(o);
       try {
         i2.hooks && (n = i2.hooks.preprocess(n));
         let a = (i2.hooks ? i2.hooks.provideLexer(e) : e ? x.lex : x.lexInline)(n, i2);
         i2.hooks && (a = i2.hooks.processAllTokens(a)), i2.walkTokens && this.walkTokens(a, i2.walkTokens);
-        let p2 = (i2.hooks ? i2.hooks.provideParser(e) : e ? b.parse : b.parseInline)(a, i2);
-        return i2.hooks && (p2 = i2.hooks.postprocess(p2)), p2;
+        let p = (i2.hooks ? i2.hooks.provideParser(e) : e ? b.parse : b.parseInline)(a, i2);
+        return i2.hooks && (p = i2.hooks.postprocess(p)), p;
       } catch (u) {
         return o(u);
       }
@@ -3152,7 +3152,7 @@ function scriptFromCodepoint(codepoint) {
   return null;
 }
 var allBlocks = [];
-scriptData.forEach((s) => s.blocks.forEach((b3) => allBlocks.push(...b3)));
+scriptData.forEach((s) => s.blocks.forEach((b2) => allBlocks.push(...b2)));
 function supportedCodepoint(codepoint) {
   for (var i2 = 0; i2 < allBlocks.length; i2 += 2) {
     if (codepoint >= allBlocks[i2] && codepoint <= allBlocks[i2 + 1]) {
@@ -17030,10 +17030,10 @@ var katex = {
 };
 
 // node_modules/marked-footnote/dist/index.js
-function p(t, l3) {
-  const o = {
+function R(e, d2) {
+  const l3 = {
     type: "footnotes",
-    raw: l3,
+    raw: d2,
     rawItems: [],
     items: []
   };
@@ -17041,32 +17041,30 @@ function p(t, l3) {
     name: "footnote",
     level: "block",
     childTokens: ["content"],
-    tokenizer(r) {
-      t.hasFootnotes || (this.lexer.tokens.push(o), t.tokens = this.lexer.tokens, t.hasFootnotes = true, o.rawItems = [], o.items = []);
-      const e = /^\[\^([^\]\n]+)\]:(?:[ \t]+|[\n]*?|$)([^\n]*?(?:\n|$)(?:\n*?[ ]{4,}[^\n]*)*)/.exec(
-        r
+    tokenizer(c) {
+      e.hasFootnotes || (this.lexer.tokens.push(l3), e.tokens = this.lexer.tokens, e.hasFootnotes = true, l3.rawItems = [], l3.items = []);
+      const a = /^\[\^([^\]\n]+)\]:(?:[ \t]+|[\n]*?|$)([^\n]*?(?:\n|$)(?:\n*?[ ]{4,}[^\n]*)*)/.exec(
+        c
       );
-      if (e) {
-        const [n, i2, h = ""] = e;
-        let f = h.split(`
-`).reduce((c, s) => c + `
-` + s.replace(/^(?:[ ]{4}|[\t])/, ""), "");
-        const u = f.trimEnd().split(`
+      if (a) {
+        const [i2, f, s = ""] = a;
+        let n = s.split(`
+`).reduce((r, p) => r + `
+` + p.replace(/^(?:[ ]{4}|[\t])/, ""), "");
+        const t = n.trimEnd().split(`
 `).pop();
-        f += // add lines after list, blockquote, codefence, and table
-        u && /^[ \t]*?[>\-\*][ ]|[`]{3,}$|^[ \t]*?[\|].+[\|]$/.test(
-          u
-        ) ? `
+        n += // add lines after list, blockquote, codefence, and table
+        t && /^[ \t]*?[>\-*][ ]|[`]{3,}$|^[ \t]*?[|].+[|]$/.test(t) ? `
 
 ` : "";
-        const a = {
+        const o = {
           type: "footnote",
-          raw: n,
-          label: i2,
+          raw: i2,
+          label: f,
           refs: [],
-          content: this.lexer.blockTokens(f)
+          content: this.lexer.blockTokens(n)
         };
-        return o.rawItems.push(a), a;
+        return l3.rawItems.push(o), o;
       }
     },
     renderer() {
@@ -17074,79 +17072,106 @@ function p(t, l3) {
     }
   };
 }
-function $2(t, l3 = false) {
-  let o = 0;
+function T3(e) {
+  return e.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+function A2(e, d2 = false, l3 = false) {
+  let c = 0;
   return {
     name: "footnoteRef",
     level: "inline",
-    tokenizer(r) {
-      const e = /^\[\^([^\]\n]+)\]/.exec(r);
-      if (e) {
-        const [n, i2] = e, h = this.lexer.tokens[0], f = h.rawItems.filter(
-          (s) => s.label === i2
+    tokenizer(a) {
+      const i2 = /^\[\^([^\]\n]+)\]/.exec(a);
+      if (i2) {
+        const [f, s] = i2, n = this.lexer.tokens[0], t = n.rawItems.filter(
+          (u) => u.label === s
         );
-        if (!f.length)
-          return;
-        const u = f[0], a = h.items.filter((s) => s.label === i2)[0], c = {
+        if (!t.length) return;
+        const o = t[0], r = n.items.filter((u) => u.label === s)[0], p = {
           type: "footnoteRef",
-          raw: n,
+          raw: f,
+          index: o.refs.length,
           id: "",
-          label: i2
+          label: s
         };
-        return a ? (c.id = `${o}:${a.refs.length + 1}`, a.refs.push(c)) : (o++, c.id = String(o), u.refs.push(c), h.items.push(u)), c;
+        return r ? (p.id = r.refs[0].id, r.refs.push(p)) : (c++, p.id = String(c), o.refs.push(p), n.items.push(o)), p;
       }
     },
-    renderer({ id: r, label: e }) {
-      o = 0;
-      const n = encodeURIComponent(e);
-      return `<sup><a id="${t}ref-${n}" href="#${t + n}" data-${t}ref aria-describedby="${t}label">${l3 ? `[${r}]` : r}</a></sup>`;
+    renderer({ index: a, id: i2, label: f }) {
+      c = 0;
+      const s = encodeURIComponent(f), n = l3 ? T3(f) : i2, t = a > 0 ? `-${a + 1}` : "";
+      return `<sup><a id="${e}ref-${s}${t}" href="#${e + s}" data-${e}ref aria-describedby="${e}label">${d2 ? `[${n}]` : n}</a></sup>`;
     }
   };
 }
-function m2(t) {
+function E2(e, d2, l3, c, a, i2) {
   return {
     name: "footnotes",
-    renderer({ raw: l3, items: o = [] }) {
-      if (o.length === 0)
-        return "";
-      const r = o.reduce(
-        (n, { label: i2, content: h, refs: f }) => {
-          const u = encodeURIComponent(i2), a = this.parser.parse(h).trimEnd(), c = a.endsWith("</p>");
-          let s = `<li id="${t + u}">
+    renderer({ raw: f, items: s = [] }) {
+      if (s.length === 0) return "";
+      const n = s.reduce(
+        (p, { label: u, content: x2, refs: y2 }) => {
+          const b2 = encodeURIComponent(u), $2 = this.parser.parse(x2).trimEnd(), w2 = $2.endsWith("</p>");
+          let h = `<li id="${e + b2}">
 `;
-          return s += c ? a.replace(/<\/p>$/, "") : a, f.forEach((k, d2) => {
-            s += ` <a href="#${t}ref-${u}" data-${t}backref aria-label="Back to reference ${i2}">${d2 > 0 ? `\u21A9<sup>${d2 + 1}</sup>` : "\u21A9"}</a>`;
-          }), s += c ? `</p>
+          return h += w2 ? $2.replace(/<\/p>$/, "") : $2, y2.forEach((I2, F2) => {
+            const g2 = i2.replace("{0}", u);
+            let m2, k;
+            if (F2 > 0) {
+              const L2 = F2 + 1;
+              m2 = `\u21A9<sup>${L2}</sup>`, k = `-${L2}`;
+            } else
+              m2 = "\u21A9", k = "";
+            h += ` <a href="#${e}ref-${b2}${k}" data-${e}backref aria-label="${g2}">${m2}</a>`;
+          }), h += w2 ? `</p>
 ` : `
-`, s += `</li>
-`, n + s;
+`, h += `</li>
+`, p + h;
         },
         ""
       );
-      let e = `<section class="footnotes" data-footnotes>
-`;
-      return e += `<h2 id="${t}label" class="sr-only">${l3.trimEnd()}</h2>
-`, e += `<ol>
-${r}</ol>
-`, e += `</section>
-`, e;
+      let t = "";
+      l3 && (t += `<hr data-${d2}footnotes>
+`);
+      let o = "";
+      c && (o = ` class="${c}"`);
+      let r = "";
+      return a && (r = ` class="${a}"`), t += `<section${o} data-${d2}footnotes>
+`, t += `<h2 id="${e}label"${r}>${f.trimEnd()}</h2>
+`, t += `<ol>
+${n}</ol>
+`, t += `</section>
+`, t;
     }
   };
 }
-function b2(t = {}) {
+function C(e = {}) {
   const {
-    prefixId: l3 = "footnote-",
-    description: o = "Footnotes",
-    refMarkers: r
-  } = t, e = { hasFootnotes: false, tokens: [] };
+    prefixId: d2 = "footnote-",
+    prefixData: l3 = "",
+    description: c = "Footnotes",
+    refMarkers: a = false,
+    footnoteDivider: i2 = false,
+    keepLabels: f = false,
+    sectionClass: s = "footnotes",
+    headingClass: n = "sr-only",
+    backRefLabel: t = "Back to reference {0}"
+  } = e, o = { hasFootnotes: false, tokens: [] };
   return {
     extensions: [
-      p(e, o),
-      $2(l3, r),
-      m2(l3)
+      R(o, c),
+      A2(d2, a, f),
+      E2(
+        d2,
+        l3,
+        i2,
+        s,
+        n,
+        t
+      )
     ],
-    walkTokens(n) {
-      n.type === "footnotes" && e.tokens.indexOf(n) === 0 && n.items.length && (e.tokens[0] = { type: "space", raw: "" }, e.tokens.push(n)), e.hasFootnotes && (e.hasFootnotes = false);
+    walkTokens(r) {
+      r.type === "footnotes" && o.tokens.indexOf(r) === 0 && r.items.length && (o.tokens[0] = { type: "space", raw: "" }, o.tokens.push(r)), o.hasFootnotes && (o.hasFootnotes = false);
     }
   };
 }
@@ -17154,5 +17179,5 @@ export {
   browser_default as DOMPurify,
   q as Marked,
   katex,
-  b2 as markedFootnote
+  C as markedFootnote
 };

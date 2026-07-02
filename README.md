@@ -423,7 +423,7 @@ Server-side OAuth flows in `api/integrations/` — tokens never exposed to the b
 | **Google Calendar** | `/api/integrations/google-calendar/connect` · `/api/calendar/availability` | Meeting availability for Calendly flow |
 | **Supabase**        | Internal store                                                             | Daily health summary snapshots         |
 | **Health summary**  | `GET /api/health-vitals/summary` · `POST /api/health-vitals/sync`          | Sanitized widget data for homepage     |
-| **Cron sync**       | `POST /api/cron/health-vitals-sync`                                        | Scheduled provider refresh             |
+| **Cron sync**       | `GET /api/cron/health-vitals-sync`                                         | Hourly scheduled provider refresh      |
 
 Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537627192`) for the hero reach panel. See [.env.example](.env.example) and `scripts/integrations/`.
 

@@ -78,6 +78,14 @@ class LastFmService {
     );
   }
 
+  isLoopbackHost() {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    return ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'].includes(window.location.hostname);
+  }
+
   escapeHtml(value = '') {
     return String(value)
       .replace(/&/g, '&amp;')
@@ -324,7 +332,20 @@ class LastFmService {
         return;
       }
     } catch (error) {
-      console.warn('Last.fm proxy fetch failed; trying direct fallback:', error);
+      if (!this.isLoopbackHost()) {
+        console.warn('Last.fm proxy fetch failed; trying direct fallback:', error);
+      }
+    }
+
+    if (!this.publicApiKey) {
+      if (this.cachedTracks?.length) {
+        this.updateHero(this.cachedTracks[0]);
+        this.updateCurrently(this.cachedTracks);
+        return;
+      }
+
+      this.showEmptyState();
+      return;
     }
 
     try {
@@ -333,7 +354,9 @@ class LastFmService {
         return;
       }
     } catch (error) {
-      console.warn('Last.fm direct fallback failed:', error);
+      if (!this.isLoopbackHost()) {
+        console.warn('Last.fm direct fallback failed:', error);
+      }
     }
 
     if (this.cachedTracks?.length) {
