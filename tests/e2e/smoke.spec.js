@@ -50,13 +50,19 @@ const waitForTravelMap = async page => {
 const waitForCurrentlyReady = async page => {
   const currentlySection = page.locator('#currently-section');
   await expect(currentlySection).toBeAttached({ timeout: 30_000 });
-  await currentlySection.scrollIntoViewIfNeeded();
+  await scrollLocatorIntoView(currentlySection);
   await page.waitForSelector('#shows-grid .media-card', { state: 'attached', timeout: 30_000 });
   await page.waitForFunction(
     () => document.getElementById('currently-section')?.dataset.currentlyInit === 'true',
     null,
     { timeout: 20_000 }
   );
+};
+
+const scrollLocatorIntoView = async locator => {
+  await locator.evaluate(node => {
+    node.scrollIntoView({ block: 'center', inline: 'nearest' });
+  });
 };
 
 const criticalLayoutChecks = [
@@ -373,14 +379,12 @@ test.describe('Chrome smoke tests', () => {
     test.setTimeout(60_000);
     await gotoSiteReady(page);
 
-    await Promise.all(
-      navSections.map(async sectionId => {
-        const section = page.locator(`section#${sectionId}`);
-        await expect(section, `${sectionId} should exist`).toBeAttached();
-        await section.scrollIntoViewIfNeeded();
-        await expect(section, `${sectionId} should be visible`).toBeVisible();
-      })
-    );
+    for (const sectionId of navSections) {
+      const section = page.locator(`section#${sectionId}`);
+      await expect(section, `${sectionId} should exist`).toBeAttached();
+      await scrollLocatorIntoView(section);
+      await expect(section, `${sectionId} should be visible`).toBeVisible();
+    }
   });
 
   test('critical section layouts remain consistent in light/dark themes', async ({ page }) => {
@@ -414,17 +418,15 @@ test.describe('Chrome smoke tests', () => {
   test('critical sections do not introduce horizontal overflow', async ({ page }) => {
     await gotoSiteReady(page);
 
-    await Promise.all(
-      criticalOverflowChecks.map(async check => {
-        const sectionNode = page.locator(check.selector);
-        await expect(sectionNode, `${check.name} exists`).toBeAttached();
-        await sectionNode.scrollIntoViewIfNeeded();
-        await page.evaluate(() => new Promise(requestAnimationFrame));
+    for (const check of criticalOverflowChecks) {
+      const sectionNode = page.locator(check.selector);
+      await expect(sectionNode, `${check.name} exists`).toBeAttached();
+      await scrollLocatorIntoView(sectionNode);
+      await page.evaluate(() => new Promise(requestAnimationFrame));
 
-        const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
-        expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
-      })
-    );
+      const overflowPx = await sectionNode.evaluate(node => node.scrollWidth - node.clientWidth);
+      expect(overflowPx, `${check.name} overflow should be <= 2px`).toBeLessThanOrEqual(2);
+    }
   });
 
   test('contact page removes portfolio reach and keeps currently media deduplicated', async ({
@@ -451,7 +453,7 @@ test.describe('Chrome smoke tests', () => {
       .evaluateAll(nodes => nodes.map(node => node.getAttribute('src') || ''));
     expect(
       showPosterSources.every(
-        src => src.includes('assets/images/currently/') && src.endsWith('.jpg')
+        src => src.includes('assets/images/currently/') && /\.(jpg|webp)$/.test(src)
       ),
       'show and movie cards should use local raster poster assets'
     ).toBe(true);
@@ -468,7 +470,7 @@ test.describe('Chrome smoke tests', () => {
       .evaluateAll(nodes => nodes.map(node => node.getAttribute('src') || ''));
     expect(
       bookCoverSources.every(
-        src => src.includes('assets/images/currently/') && src.endsWith('.jpg')
+        src => src.includes('assets/images/currently/') && /\.(jpg|webp)$/.test(src)
       ),
       'book cards should use local raster cover assets'
     ).toBe(true);
