@@ -616,11 +616,18 @@
       }
     });
 
+    let scrollTicking = false;
     window.addEventListener(
       'scroll',
       () => {
         if (reachFlyout?.classList.contains('is-open')) {
-          positionReachPanel();
+          if (!scrollTicking) {
+            scrollTicking = true;
+            requestAnimationFrame(() => {
+              positionReachPanel();
+              scrollTicking = false;
+            });
+          }
         }
       },
       { passive: true }

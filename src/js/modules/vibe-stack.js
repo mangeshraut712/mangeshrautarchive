@@ -77,11 +77,18 @@
     }
   });
 
+  let scrollTicking = false;
   window.addEventListener(
     'scroll',
     () => {
       if (vibeFlyout.classList.contains('is-open')) {
-        positionVibeFlyout();
+        if (!scrollTicking) {
+          scrollTicking = true;
+          requestAnimationFrame(() => {
+            positionVibeFlyout();
+            scrollTicking = false;
+          });
+        }
       }
     },
     { passive: true }

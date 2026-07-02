@@ -3225,3 +3225,71 @@ html.dark body #blog .newsletter-card .newsletter-form input.apple-input {
 #currently-section #music-content .currently-music-card:hover {
   transform: translateY(-3px) !important;
 }
+
+/* Currently / LastFM / Goodreads loading state styling */
+.currently-loading-container {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding-block: 2.5rem;
+}
+
+.currently-loading-message {
+  font-size: 0.875rem;
+  color: #6e6e73;
+  margin-top: 0.75rem;
+}
+
+html.dark .currently-loading-message {
+  color: #a1a1a6;
+}
+
+.currently-meta-subtitle {
+  font-size: 0.75rem;
+  color: #6e6e73;
+  margin-top: 0.25rem;
+}
+
+html.dark .currently-meta-subtitle {
+  color: #a1a1a6;
+}
+
+.currently-poster-loading {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.currently-poster-empty {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%) !important;
+}
+
+html.dark .currently-poster-empty {
+  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%) !important;
+}
+
+.currently-spotify-icon {
+  font-size: 2rem !important;
+  color: #1db954 !important;
+}
+
+.currently-tracks-display-contents {
+  display: contents !important;
+}
+
+.loading-spinner {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  border-bottom-color: var(--apple-blue, #0071e3);
+  margin-inline: auto;
+}
+
+html.dark .loading-spinner {
+  border-bottom-color: var(--apple-blue-dark, #0a84ff);
+}

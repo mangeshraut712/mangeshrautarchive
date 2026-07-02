@@ -639,3 +639,81 @@ html.dark .skill-badge-percentage {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+
+/* Skills dynamic loading and static fallback styling rules */
+.skills-loading-container {
+  text-align: center;
+  padding-block: 3rem;
+}
+
+.skills-loading-spinner-wrapper {
+  display: inline-block;
+}
+
+.skills-loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  color: var(--apple-blue, #0071e3);
+  margin-inline: auto;
+  margin-bottom: 1rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+html.dark .skills-loading-spinner {
+  color: var(--apple-blue-dark, #0a84ff);
+}
+
+.skills-loading-message {
+  color: #86868b;
+  font-size: 0.95rem;
+}
+
+html.dark .skills-loading-message {
+  color: #a1a1a6;
+}
+
+.skills-fallback-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding-block: 2rem;
+}
+
+@media (min-width: 768px) {
+  .skills-fallback-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .skills-fallback-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.fallback-card {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgb(0 0 0 / 8%);
+  background: #ffffff;
+}
+
+html.dark .fallback-card {
+  border-color: rgb(255 255 255 / 12%);
+  background: #000000;
+}
+
+.skill-fallback-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.skill-fallback-desc {
+  font-size: 0.875rem;
+  color: #6e6e73;
+}
+
+html.dark .skill-fallback-desc {
+  color: #a1a1a6;
+}

@@ -49,13 +49,22 @@ function initReadingProgress() {
   const article = document.querySelector('.blog-article-main');
   if (!bar || !article) return;
 
+  let offsetTop = article.offsetTop;
+  let scrollHeight = article.scrollHeight;
+
+  const updateOffsets = () => {
+    offsetTop = article.offsetTop;
+    scrollHeight = article.scrollHeight;
+  };
+
   const update = () => {
-    const total = Math.max(article.scrollHeight - window.innerHeight, 1);
-    const scrolled = Math.min(Math.max(window.scrollY - article.offsetTop, 0), total);
+    const total = Math.max(scrollHeight - window.innerHeight, 1);
+    const scrolled = Math.min(Math.max(window.scrollY - offsetTop, 0), total);
     bar.style.width = `${Math.round((scrolled / total) * 100)}%`;
   };
 
   window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', updateOffsets, { passive: true });
   update();
 }
 

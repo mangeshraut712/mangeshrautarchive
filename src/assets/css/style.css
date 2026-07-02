@@ -5268,3 +5268,20 @@ html.dark textarea,
 html.dark [contenteditable] {
   caret-color: #2997ff !important;
 }
+
+/* Footer Copyright & Tagline Layout styling rules */
+.footer-info-container {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--footer-border, rgba(0, 0, 0, 0.05));
+}
+
+html.dark .footer-info-container {
+  border-top-color: var(--footer-border, rgba(255, 255, 255, 0.05));
+}
+
+.footer-tagline {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  color: #86868b;
+}

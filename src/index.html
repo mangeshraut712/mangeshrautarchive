@@ -1673,58 +1673,58 @@ html.dark #home .hero-name-text {
         <!-- Interactive Skills Visualization Container -->
         <div id="skills-container" class="max-w-6xl mx-auto">
           <!-- Skills will be dynamically rendered here by skills-visualization.js -->
-          <div class="text-center py-12" id="skills-loading">
-            <div class="inline-block">
-              <svg class="w-12 h-12 text-accent mx-auto mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="skills-loading-container" id="skills-loading">
+            <div class="skills-loading-spinner-wrapper">
+              <svg class="skills-loading-spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
               </svg>
-              <p class="text-secondary skills-loading-message">Loading interactive skills visualization...</p>
+              <p class="skills-loading-message">Loading interactive skills visualization...</p>
             </div>
           </div>
 
           <!-- No-JS Fallback: Static Skills List -->
           <noscript>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-8">
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fab fa-java text-2xl mb-2"></i>
+            <div class="skills-fallback-grid">
+              <div class="skill-card fallback-card">
+                <i class="fab fa-java skill-fallback-icon"></i>
                 <h4>Java</h4>
-                <p class="text-sm text-gray-500">Spring Boot, Microservices</p>
+                <p class="skill-fallback-desc">Spring Boot, Microservices</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fab fa-python text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fab fa-python skill-fallback-icon"></i>
                 <h4>Python</h4>
-                <p class="text-sm text-gray-500">ML/AI, Data Processing</p>
+                <p class="skill-fallback-desc">ML/AI, Data Processing</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fab fa-aws text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fab fa-aws skill-fallback-icon"></i>
                 <h4>AWS</h4>
-                <p class="text-sm text-gray-500">Lambda, EC2, S3, RDS</p>
+                <p class="skill-fallback-desc">Lambda, EC2, S3, RDS</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fab fa-js text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fab fa-js skill-fallback-icon"></i>
                 <h4>JavaScript</h4>
-                <p class="text-sm text-gray-500">Angular, React, Node.js</p>
+                <p class="skill-fallback-desc">Angular, React, Node.js</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fas fa-database text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fas fa-database skill-fallback-icon"></i>
                 <h4>Databases</h4>
-                <p class="text-sm text-gray-500">MySQL, PostgreSQL, Redis</p>
+                <p class="skill-fallback-desc">MySQL, PostgreSQL, Redis</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fas fa-brain text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fas fa-brain skill-fallback-icon"></i>
                 <h4>Machine Learning</h4>
-                <p class="text-sm text-gray-500">TensorFlow, LSTM, NLP</p>
+                <p class="skill-fallback-desc">TensorFlow, LSTM, NLP</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fab fa-docker text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fab fa-docker skill-fallback-icon"></i>
                 <h4>Docker</h4>
-                <p class="text-sm text-gray-500">Containers, Kubernetes</p>
+                <p class="skill-fallback-desc">Containers, Kubernetes</p>
               </div>
-              <div class="skill-card p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <i class="fab fa-git-alt text-2xl mb-2"></i>
+              <div class="skill-card fallback-card">
+                <i class="fab fa-git-alt skill-fallback-icon"></i>
                 <h4>DevOps</h4>
-                <p class="text-sm text-gray-500">CI/CD, Terraform, Jenkins</p>
+                <p class="skill-fallback-desc">CI/CD, Terraform, Jenkins</p>
               </div>
             </div>
           </noscript>
@@ -4036,9 +4036,9 @@ html.dark #home .hero-name-text {
               <div class="currently-content active" id="shows-content" role="tabpanel" aria-labelledby="currently-tab-shows">
                 <div class="media-grid" id="shows-grid">
                   <!-- Will be populated by real-media-loader.js with verified TMDB posters -->
-                  <div class="text-center py-8">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent mx-auto"></div>
-                    <p class="text-sm text-gray-500 mt-2">Loading verified posters from TMDB...</p>
+                  <div class="currently-loading-container">
+                    <div class="loading-spinner animate-spin"></div>
+                    <p class="currently-loading-message">Loading verified posters from TMDB...</p>
                   </div>
                 </div>
               </div>
@@ -4054,7 +4054,7 @@ html.dark #home .hero-name-text {
                     </div>
                     <div class="media-info">
                       <h4 id="now-playing-track">Track Name</h4>
-                      <p id="now-playing-artist" class="text-xs text-gray-500">Artist</p>
+                      <p id="now-playing-artist" class="currently-meta-subtitle">Artist</p>
                       <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
                         <i class="fas fa-play"></i> Listen
                       </a>
@@ -4063,23 +4063,23 @@ html.dark #home .hero-name-text {
 
                   <!-- Loading State -->
                   <div class="media-card currently-music-card currently-music-state loading" id="music-loading">
-                    <div class="media-poster music-poster-loading" style="display: flex; align-items: center; justify-content: center;">
-                      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+                    <div class="media-poster music-poster-loading currently-poster-loading">
+                      <div class="loading-spinner animate-spin"></div>
                     </div>
                     <div class="media-info">
                       <h4>Syncing music…</h4>
-                      <p class="text-xs text-gray-500">Pulling recent listening from Last.fm</p>
+                      <p class="currently-meta-subtitle">Pulling recent listening from Last.fm</p>
                     </div>
                   </div>
 
                   <!-- Error/Empty State -->
                   <div class="media-card currently-music-card currently-music-state empty" id="music-empty" hidden>
-                    <div class="media-poster music-poster-empty" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
-                      <i class="fab fa-spotify" style="font-size: 2rem; color: #1db954;"></i>
+                    <div class="media-poster music-poster-empty currently-poster-empty">
+                      <i class="fab fa-spotify currently-spotify-icon"></i>
                     </div>
                     <div class="media-info">
                       <h4>No live playback</h4>
-                      <p class="text-xs text-gray-500">Open Spotify and keep scrobbling to refresh this shelf</p>
+                      <p class="currently-meta-subtitle">Open Spotify and keep scrobbling to refresh this shelf</p>
                       <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
                         <i class="fas fa-arrow-up-right-from-square"></i> View
                       </a>
@@ -4087,7 +4087,7 @@ html.dark #home .hero-name-text {
                   </div>
 
                   <!-- Recent tracks will be injected here as music cards -->
-                  <div id="recent-tracks-container" style="display: contents;"></div>
+                  <div id="recent-tracks-container" class="currently-tracks-display-contents"></div>
                 </div>
 
 
@@ -4097,9 +4097,9 @@ html.dark #home .hero-name-text {
               <div class="currently-content" id="books-content" role="tabpanel" aria-labelledby="currently-tab-books" hidden>
                 <div class="media-grid" id="books-grid">
                   <!-- Will be populated by real-media-loader.js with verified Open Library covers -->
-                  <div class="text-center py-8">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-accent mx-auto"></div>
-                    <p class="text-sm text-gray-500 mt-2">Loading verified book covers...</p>
+                  <div class="currently-loading-container">
+                    <div class="loading-spinner animate-spin"></div>
+                    <p class="currently-loading-message">Loading verified book covers...</p>
                   </div>
                 </div>
               </div>
@@ -4245,10 +4245,9 @@ html.dark #home .hero-name-text {
         </div>
 
         <!-- Copyright Below (Centered) -->
-        <div class="text-center pt-2 border-t border-gray-200 dark:border-gray-800">
-          <p class="footer-copy text-sm">&copy; 2026 Mangesh Raut Archive | All rights reserved.</p>
-          <p class="footer-tagline text-xs mt-1 text-gray-500 dark:text-gray-400">Designed by Mangesh in Pennsylvania,
-            Assembled in Maharashtra</p>
+        <div class="footer-info-container">
+          <p class="footer-copy">&copy; 2026 Mangesh Raut Archive | All rights reserved.</p>
+          <p class="footer-tagline">Designed by Mangesh in Pennsylvania, Assembled in Maharashtra</p>
         </div>
       </div>
     </footer>
