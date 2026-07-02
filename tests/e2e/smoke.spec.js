@@ -67,10 +67,6 @@ const scrollSelectorIntoView = async (page, selector) =>
     return true;
   }, selector);
 
-const nextFrame = async page => {
-  await page.evaluate(() => new Promise(requestAnimationFrame));
-};
-
 const criticalLayoutChecks = [
   {
     name: 'projects grid',
