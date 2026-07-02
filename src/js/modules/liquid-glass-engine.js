@@ -27,6 +27,9 @@ class LiquidGlassEngine {
 
   scheduleHeavyCapture() {
     if (this.heavyCaptureScheduled || !this.enabled) return;
+    if (typeof navigator !== 'undefined' && navigator.webdriver) {
+      return;
+    }
     this.heavyCaptureScheduled = true;
 
     const enable = () => {
