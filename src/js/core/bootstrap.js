@@ -289,7 +289,7 @@ function warmCriticalSectionPreloads() {
           '../modules/health-widget.js',
         ];
         modulesToPreload.forEach(path => {
-          loadModule(path).catch(() => {});
+          modulePreload(path);
         });
       }, 1500);
     }, 1000);
@@ -385,6 +385,17 @@ async function loadDeferredStyles(styleKeys = [], documentRef = document) {
   return loaded;
 }
 
+function modulePreload(path) {
+  const resolvedPath = path.replace(/^\.\.\//, 'js/');
+  if (document.querySelector(`link[rel="modulepreload"][href="${resolvedPath}"]`)) {
+    return;
+  }
+  const link = document.createElement('link');
+  link.rel = 'modulepreload';
+  link.href = resolvedPath;
+  document.head.appendChild(link);
+}
+
 async function loadModule(path) {
   const importer = getModuleImporter(path);
   if (!importer) {
@@ -412,9 +423,12 @@ function observeSectionTask(sectionId, task, rootMargin = '300px 0px') {
     started = true;
     observer?.disconnect();
     window.removeEventListener('hashchange', onHashChange);
-    Promise.resolve(task()).catch(error => {
-      console.warn(`Deferred section task failed for ${sectionId}`, error);
-    });
+    // Yield to the layout engine to ensure a smooth scroll frame before running the task
+    window.setTimeout(() => {
+      Promise.resolve(task()).catch(error => {
+        console.warn(`Deferred section task failed for ${sectionId}`, error);
+      });
+    }, 16);
   };
 
   const onHashChange = () => {

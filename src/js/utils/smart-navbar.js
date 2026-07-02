@@ -20,6 +20,8 @@ const state = {
   stabilizeTimers: [],
   hashSyncBound: false,
   isCompact: false,
+  sectionsCache: null,
+  currentActiveSectionId: '',
 };
 
 function isDesktop() {
@@ -100,20 +102,34 @@ function setActiveLinkBySectionId(sectionId) {
   revealActiveDesktopLink();
 }
 
+function cacheSectionOffsets() {
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  state.sectionsCache = sections
+    .filter(section => state.navLinks.some(link => link.getAttribute('href') === `#${section.id}`))
+    .map(section => ({
+      id: section.id,
+      offsetTop: section.offsetTop,
+    }))
+    .sort((a, b) => a.offsetTop - b.offsetTop);
+}
+
 function getVisibleSectionId() {
   const navHeight = state.nav?.offsetHeight || 0;
   const probe = navHeight + 120;
-  const sections = Array.from(document.querySelectorAll('section[id]'));
-  const topToBottom = sections
-    .filter(section => state.navLinks.some(link => link.getAttribute('href') === `#${section.id}`))
-    .sort((a, b) => a.offsetTop - b.offsetTop);
 
-  for (let i = topToBottom.length - 1; i >= 0; i -= 1) {
-    if (window.scrollY + probe >= topToBottom[i].offsetTop) {
-      return topToBottom[i].id;
+  if (!state.sectionsCache) {
+    cacheSectionOffsets();
+  }
+
+  const cache = state.sectionsCache || [];
+  const currentY = window.scrollY || window.pageYOffset || 0;
+
+  for (let i = cache.length - 1; i >= 0; i -= 1) {
+    if (currentY + probe >= cache[i].offsetTop) {
+      return cache[i].id;
     }
   }
-  return topToBottom[0]?.id || null;
+  return cache[0]?.id || null;
 }
 
 function clearStabilizeTimers() {
@@ -427,7 +443,8 @@ function updateSmartNavbar() {
 
   // Update active link based on visible section
   const visibleSectionId = getVisibleSectionId();
-  if (visibleSectionId) {
+  if (visibleSectionId && visibleSectionId !== state.currentActiveSectionId) {
+    state.currentActiveSectionId = visibleSectionId;
     setActiveLinkBySectionId(visibleSectionId);
   }
 
@@ -466,6 +483,7 @@ function onScroll() {
 
 function onResize() {
   if (!state.nav) return;
+  state.sectionsCache = null;
   const desktop = isDesktop();
 
   if (!desktop) {
