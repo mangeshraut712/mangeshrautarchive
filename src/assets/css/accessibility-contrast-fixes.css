@@ -681,8 +681,53 @@ html.dark .about-text-card.speech-active .highlight-target {
 }
 
 /* ==========================================================================
-   Touch Target Size Enhancements for Mobile (Lighthouse Compliance)
+   Touch Target Size Safeguards & Mobile Enhancements (Lighthouse Compliance)
    ========================================================================== */
+
+/* Eager safeguards applied globally before lazy-loaded stylesheets load */
+.projects-view-all-btn {
+  min-height: 48px !important;
+  padding: 0 1.5rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+.currently-tab {
+  min-height: 44px !important;
+  padding: 0.65rem 0.85rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+.about-tab-btn {
+  min-height: 44px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+#projects .project-lens-chip {
+  min-height: 44px !important;
+  padding: 0 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.premium-close-btn {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
 @media (max-width: 980px) {
   /* Expand the hit targets of compact Dynamic Island controls, close buttons, chatbot buttons, and name pronunciation to at least 48x48px */
   .global-nav.dynamic-island .theme-toggle-nav,
@@ -725,7 +770,6 @@ html.dark .about-text-card.speech-active .highlight-target {
   .currently-tab {
     padding: 0.65rem 0.85rem !important;
     font-size: 0.85rem !important;
-    min-height: 44px !important;
   }
 
   .currently-tabs {
@@ -734,15 +778,11 @@ html.dark .about-text-card.speech-active .highlight-target {
 
   /* Increase about section tabs touch targets */
   .about-tab-btn {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
     font-size: 0.9rem !important;
-    min-height: 44px !important;
   }
 
   /* Space out release freshness lens bar chips to prevent target size warning */
   #projects .project-lens-chip {
-    min-height: 44px !important;
     margin-right: 0.25rem !important;
   }
 }
