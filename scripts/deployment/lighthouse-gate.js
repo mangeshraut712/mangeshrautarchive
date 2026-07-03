@@ -273,16 +273,18 @@ function logAccessibilityAuditFailures(report) {
     return;
   }
 
-  const contrastItems = report.audits['color-contrast']?.details?.items ?? [];
-  contrastItems.slice(0, 5).forEach(item => {
-    const selector = item.node?.selector ?? item.node?.snippet ?? 'unknown node';
-    const explanation = item.node?.explanation ?? '';
-    console.log(`[lighthouse:a11y] contrast fail: ${selector} — ${explanation}`);
-  });
-
   Object.entries(report.audits).forEach(([id, audit]) => {
-    if (audit.score === 0 && audit.scoreDisplayMode !== 'informative') {
+    if (audit.score !== null && audit.score < 1 && audit.scoreDisplayMode !== 'informative') {
       console.log(`[lighthouse:a11y] failing audit: ${id} — ${audit.title}`);
+      if (audit.details?.items) {
+        audit.details.items.slice(0, 10).forEach(item => {
+          const selector = item.node?.selector ?? item.node?.snippet ?? 'unknown node';
+          const explanation = item.node?.explanation ?? item.explanation ?? '';
+          console.log(
+            `  - Node: ${selector} (size: ${item.width}x${item.height}, targetSize: ${item.targetSize}) ${explanation}`
+          );
+        });
+      }
     }
   });
 }

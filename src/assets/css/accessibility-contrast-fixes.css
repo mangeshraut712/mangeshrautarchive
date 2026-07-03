@@ -679,3 +679,70 @@ html.dark .about-tab-btn.active {
 html.dark .about-text-card.speech-active .highlight-target {
   color: #98989d !important;
 }
+
+/* ==========================================================================
+   Touch Target Size Enhancements for Mobile (Lighthouse Compliance)
+   ========================================================================== */
+@media (max-width: 980px) {
+  /* Expand the hit targets of compact Dynamic Island controls, close buttons, chatbot buttons, and name pronunciation to at least 48x48px */
+  .global-nav.dynamic-island .theme-toggle-nav,
+  .global-nav.dynamic-island .menu-toggle-button,
+  .global-nav.dynamic-island #search-toggle,
+  .global-nav.dynamic-island #theme-toggle,
+  .global-nav.dynamic-island #menu-btn,
+  .premium-close-btn,
+  .chatbot-settings-btn,
+  .chatbot-close-btn,
+  .chatbot-voice-btn,
+  .chatbot-send-btn,
+  #name-pronounce-btn.name-pronounce-btn {
+    position: relative !important;
+  }
+
+  .global-nav.dynamic-island .theme-toggle-nav::after,
+  .global-nav.dynamic-island .menu-toggle-button::after,
+  .global-nav.dynamic-island #search-toggle::after,
+  .global-nav.dynamic-island #theme-toggle::after,
+  .global-nav.dynamic-island #menu-btn::after,
+  .premium-close-btn::after,
+  .chatbot-settings-btn::after,
+  .chatbot-close-btn::after,
+  .chatbot-voice-btn::after,
+  .chatbot-send-btn::after,
+  #name-pronounce-btn.name-pronounce-btn::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 48px !important;
+    height: 48px !important;
+    pointer-events: auto !important;
+    z-index: 1000 !important;
+  }
+
+  /* Increase currently shelf tabs to prevent overlapping / small targets */
+  .currently-tab {
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.85rem !important;
+    min-height: 44px !important;
+  }
+
+  .currently-tabs {
+    gap: 8px !important;
+  }
+
+  /* Increase about section tabs touch targets */
+  .about-tab-btn {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    font-size: 0.9rem !important;
+    min-height: 44px !important;
+  }
+
+  /* Space out release freshness lens bar chips to prevent target size warning */
+  #projects .project-lens-chip {
+    min-height: 44px !important;
+    margin-right: 0.25rem !important;
+  }
+}

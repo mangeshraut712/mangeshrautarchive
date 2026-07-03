@@ -718,6 +718,14 @@ npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same com
 
 ## Changelog highlights
 
+**July 2026**
+
+- **Tailwind Refactoring:** Cleaned up 31+ Tailwind utility classes from `index.html` markup and migrated to semantic CSS rules (`.hero-intro-wrapper`, `.proj-search-container`, `.footer-wrapper`, etc.).
+- **Touch Target Compliance:** Expanded touch targets for compact Dynamic Island controls, Close buttons, Chatbot buttons, and Name Pronunciation controls on mobile to at least 48x48px using pure CSS pseudo-elements, achieving **100/100 Accessibility** score.
+- **SEO Schema:** Added `ProfilePage` + `Person` JSON-LD structured data to `index.html` for rich search engine snippets.
+- **React Cleanups:** Removed React phantom imports from `entry.js` to ensure compliance with the vanilla JS runtime constraint.
+- **Console Log Suppression:** Silenced debug logs in the vendored KaTeX `rich-markdown.js` build bundle.
+
 **June 2026**
 
 - **Deploy sync:** Vercel + GitHub Pages parity verified via `verify:deploy-sync:remote --parity`
