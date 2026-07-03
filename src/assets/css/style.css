@@ -1245,48 +1245,39 @@ html.dark .theme-toggle-nav:focus-visible {
   top: 6px;
 }
 
-/* Fix footer padding on mobile */
+/* Mobile Navbar Fixes */
 @media (width <=768px) {
-  footer .max-w-6xl {
-    /* Mobile Navbar Fixes */
-    @media (width <=768px) {
-      .global-nav {
-        padding: 0 16px;
-        height: 56px;
+  .global-nav {
+    padding: 0 16px;
+    height: 56px;
+  }
 
-        /* Taller navbar */
-      }
+  .nav-container {
+    grid-template-columns: auto 1fr auto;
+    padding: 0;
+    height: 100%;
+  }
 
-      .nav-container {
-        grid-template-columns: auto 1fr auto;
-        padding: 0;
-        height: 100%;
-      }
+  .nav-logo img {
+    height: 28px;
+  }
 
-      .nav-logo img {
-        height: 28px;
+  .menu-toggle-button {
+    display: inline-flex !important;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    color: var(--nav-text) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
 
-        /* Larger logo on mobile */
-      }
-
-      .menu-toggle-button {
-        display: inline-flex !important;
-        width: 44px;
-        height: 44px;
-        align-items: center;
-        justify-content: center;
-        margin-left: 8px;
-        color: var(--nav-text) !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-      }
-
-      .menu-icon,
-      .menu-icon::before,
-      .menu-icon::after {
-        background-color: currentcolor !important;
-      }
-    }
+  .menu-icon,
+  .menu-icon::before,
+  .menu-icon::after {
+    background-color: currentcolor !important;
   }
 }
 
@@ -1710,13 +1701,13 @@ html.dark .win-tag {
 }
 
 .project-card .project-tags .tag {
-  background: var(--project-card-tag-bg);
-  color: var(--project-card-tag-text);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   font-size: 0.875rem;
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  border: 1px solid var(--project-card-link-border);
+  border: 1px solid var(--border-color);
   transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   box-shadow: 0 1px 3px rgb(0 113 227 / 5%);
   display: inline-flex;
@@ -1729,16 +1720,6 @@ html.dark .win-tag {
   color: var(--project-card-link-hover-text);
   transform: translateY(-2px);
   box-shadow: var(--project-card-link-hover-shadow);
-}
-
-/* Override for maximum light mode visibility - solid black text */
-
-.project-card .project-tags .tag,
-.project-card .project-tags .tag[class*='text-accent'],
-.project-card .project-tags .text-accent.text-xs.rounded {
-  color: var(--text-primary);
-  background: var(--bg-secondary);
-  border-color: var(--border-color);
 }
 
 /* Navbar in Light Mode - Solid Black Text */
@@ -1797,13 +1778,6 @@ html.dark .global-nav .theme-toggle-nav:focus-visible {
 
 html.dark .global-nav .theme-toggle-nav i {
   color: currentcolor;
-}
-
-/* JavaScript override protection - catches the specific querySelector */
-
-.text-accent,
-.text-xs {
-  color: var(--text-accent);
 }
 
 /* Colorful project card links - blue by default and on hover */
@@ -4903,7 +4877,7 @@ html.dark .premium-badge {
    FOOTER ENHANCEMENTS
    ═══════════════════════════════════════════════════════════ */
 
-footer .max-w-6xl {
+footer .footer-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -5284,4 +5258,304 @@ html.dark .footer-info-container {
   font-size: 0.75rem;
   margin-top: 0.5rem;
   color: #86868b;
+}
+
+/* ═══ Body base styles — supplementary (font-smoothing already defined at line 288) ═══ */
+
+/* ═══ Hero intro wrapper ═══ */
+.hero-intro-wrapper {
+  max-width: 64rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.hero-image-block {
+  margin-bottom: 2rem;
+}
+
+.profile-image-toggle {
+  margin-inline: auto;
+}
+
+.profile-image-toggle .profile-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Section spacing that replaces Tailwind utility classes in source markup. */
+.section-standard {
+  padding-block: 3rem;
+}
+
+.certifications-grid-spaced {
+  margin-top: 3rem;
+}
+
+/* ═══ Section-level containers ═══ */
+.section-container-wide {
+  max-width: 72rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* ═══ Section loading containers ═══ */
+.section-loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.section-loading-container .loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  animation: spin 1s linear infinite;
+}
+
+/* ═══ Projects loading state ═══ */
+.projects-loading-container {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 3rem;
+}
+
+.projects-loading-inner {
+  text-align: center;
+}
+
+.projects-loading-inner .loading-spinner {
+  margin-bottom: 1rem;
+  margin-inline: auto;
+}
+
+.projects-loading-message {
+  color: #86868b;
+  font-size: 0.95rem;
+}
+
+html.dark .projects-loading-message {
+  color: #a1a1a6;
+}
+
+.projects-grid-full {
+  grid-column: 1 / -1;
+}
+
+.project-loading-state,
+.project-empty-state {
+  padding-block: 3rem;
+  text-align: center;
+}
+
+.project-loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-loading-inner .loading-spinner {
+  margin: 0 auto 1rem;
+}
+
+.project-state-icon {
+  margin-bottom: 1rem;
+  color: var(--apple-blue);
+  font-size: 3.75rem;
+  opacity: 0.2;
+}
+
+.project-state-icon-danger {
+  color: #ff3b30;
+}
+
+.book-author-text {
+  margin: 0.15rem 0 0;
+  color: #86868b;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+html.dark .book-author-text {
+  color: #a1a1a6;
+}
+
+/* .section-view-more-wrap already defined at line 1330 */
+
+.section-view-more-btn {
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 99px;
+}
+
+.blog-view-more-wrap {
+  margin-top: 2rem;
+}
+
+/* ═══ Blog section ═══ */
+.section-blog {
+  padding-block: 3rem;
+}
+
+/* ═══ Contact info group ═══ */
+.contact-info-group {
+  margin-top: 2rem;
+}
+
+/* ═══ Contact social wrapper ═══ */
+.contact-social-wrapper {
+  justify-content: flex-start;
+  padding-left: 0;
+  margin-left: 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-icon-snapchat {
+  font-size: 1.2em;
+}
+
+/* ═══ Footer layout (moved from Tailwind responsive utilities) ═══ */
+.footer-wrapper {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 0.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .footer-wrapper {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-wrapper {
+    padding-inline: 2rem;
+  }
+}
+
+.footer-social-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+/* ═══ Project search layout (moved from Tailwind flex utilities) ═══ */
+.proj-search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .proj-search-container {
+    flex-direction: row;
+  }
+}
+
+.proj-input-group {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border-radius: 9999px;
+  padding: 0.75rem 1.25rem;
+  width: 100%;
+  max-width: 42rem;
+}
+
+.proj-search-icon {
+  color: #86868b;
+  margin-right: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.proj-search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-weight: 500;
+}
+
+.proj-controls-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .proj-controls-group {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .proj-controls-group {
+    width: auto;
+  }
+}
+
+.projects-view-all-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.projects-view-all-btn .fab {
+  font-size: 1.125rem;
+}
+
+/* ═══ Hero header spacing ═══ */
+.hero-header {
+  margin-bottom: 1rem;
+}
+
+/* ═══ About section spacing ═══ */
+.section-about {
+  padding-block: 2rem;
+}
+
+/* Health and currently card spacing moved out of inline attributes. */
+.health-section-anchor {
+  scroll-margin-top: 100px;
+}
+
+.health-widget-header-compact {
+  padding-bottom: 0;
+  margin-bottom: 0.5rem;
+  border-bottom: none;
+}
+
+.health-widget-container-spaced {
+  margin-bottom: 1.5rem;
+}
+
+.withings-wordmark {
+  opacity: 0.85;
+}
+
+.currently-divider-section,
+.currently-divider-tight {
+  height: 1px;
+  background: var(--health-row-border);
+}
+
+.currently-divider-section {
+  margin: 1.5rem 0;
+}
+
+.currently-divider-tight {
+  margin: 0.5rem 0 1.5rem;
+}
+
+.health-spinner {
+  animation: spin 1s linear infinite;
 }

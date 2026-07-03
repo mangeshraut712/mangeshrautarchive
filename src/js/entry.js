@@ -51,7 +51,3 @@ import './utils/calendly.js';
 import './utils/go-to-top.js';
 import './utils/smart-navbar.js';
 import './utils/theme.js';
-
-// Register React usage for static dependency checks
-import 'react';
-import 'react-dom';

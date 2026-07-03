@@ -98,6 +98,7 @@
     "@tailwindcss/cli": "^4.3.2",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
+    "esbuild": "^0.28.0",
     "eslint": "^9.21.0",
     "globals": "^17.7.0",
     "jsdom": "^29.1.1",
@@ -115,7 +116,6 @@
   "dependencies": {
     "@ogtirth/liquid-glass-oss": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
-    "esbuild": "^0.28.0",
     "express": "^5.2.1",
     "html-to-image": "^1.11.13",
     "isomorphic-dompurify": "^3.17.0",

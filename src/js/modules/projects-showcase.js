@@ -297,7 +297,7 @@ function renderNoResults(container, query = '', lensLabel = '') {
   if (lensLabel) parts.push(lensLabel);
   const suffix = parts.length ? ` for ${parts.join(' and ')}` : '';
   container.innerHTML = `
-    <div class="col-span-full projects-empty-state">
+    <div class="projects-empty-state">
       <i class="fas fa-folder-open"></i>
       <h4>No matching repositories${suffix}</h4>
       <p>Try another project name, language, or tag.</p>

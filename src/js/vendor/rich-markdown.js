@@ -14657,7 +14657,6 @@ defineMacro("\\renewcommand", (context) => newcommand(context, true, false, fals
 defineMacro("\\providecommand", (context) => newcommand(context, true, true, true));
 defineMacro("\\message", (context) => {
   var arg = context.consumeArgs(1)[0];
-  console.log(arg.reverse().map((token) => token.text).join(""));
   return "";
 });
 defineMacro("\\errmessage", (context) => {
@@ -14668,7 +14667,6 @@ defineMacro("\\errmessage", (context) => {
 defineMacro("\\show", (context) => {
   var tok = context.popToken();
   var name = tok.text;
-  console.log(tok, context.macros.get(name), functions[name], symbols.math[name], symbols.text[name]);
   return "";
 });
 defineMacro("\\bgroup", "{");

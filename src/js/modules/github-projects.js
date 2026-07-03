@@ -1443,9 +1443,9 @@ class GitHubProjects {
     }
 
     container.innerHTML = `
-      <div class="col-span-full flex items-center justify-center py-12">
-        <div class="text-center">
-          <div class="loading-spinner mb-4 mx-auto"></div>
+      <div class="projects-grid-full project-loading-state">
+        <div class="project-loading-inner">
+          <div class="loading-spinner"></div>
           <p class="text-secondary">Loading projects from GitHub...</p>
         </div>
       </div>
@@ -1457,8 +1457,8 @@ class GitHubProjects {
 
       if (showcaseRepos.length === 0) {
         container.innerHTML = `
-          <div class="col-span-full text-center py-12">
-            <i class="fas fa-folder-open text-6xl text-accent opacity-20 mb-4"></i>
+          <div class="projects-grid-full project-empty-state">
+            <i class="fas fa-folder-open project-state-icon"></i>
             <p class="text-secondary">No showcase-ready repositories found</p>
           </div>
         `;
@@ -1477,10 +1477,11 @@ class GitHubProjects {
         const newCards = container.querySelectorAll('.apple-3d-project');
         newCards.forEach(card => window.PremiumEnhancements.applyTiltToElement(card));
       }
-    } catch {
+    } catch (error) {
+      console.warn('[GitHubProjects] Failed to render projects:', error);
       container.innerHTML = `
-        <div class="col-span-full text-center py-12">
-          <i class="fas fa-exclamation-triangle text-6xl text-red-500 opacity-20 mb-4"></i>
+        <div class="projects-grid-full project-empty-state">
+          <i class="fas fa-exclamation-triangle project-state-icon project-state-icon-danger"></i>
           <p class="text-secondary">Failed to load projects. Please try again later.</p>
         </div>
       `;

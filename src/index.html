@@ -335,12 +335,6 @@
       width: 100%;
     }
 
-    #home .max-w-5xl,
-    footer .max-w-6xl {
-      width: 100%;
-      margin-inline: auto;
-    }
-
     #home .hero-name-text {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
       font-size: clamp(2.5rem, 6vw, 4rem);
@@ -772,7 +766,7 @@ html.dark #home .hero-name-text {
 
 </head>
 
-<body class="antialiased font-sans text-black dark:text-white bg-white dark:bg-black" data-liquid-glass-background>
+<body data-liquid-glass-background>
   <div class="skip-links" role="navigation" aria-label="Skip links">
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <a href="#home" class="skip-link">Skip to Home</a>
@@ -1240,10 +1234,10 @@ html.dark #home .hero-name-text {
     <!-- Home Section -->
     <section id="home" class="hero-section home-hero" aria-labelledby="home-heading">
       <div class="container-fluid">
-        <div class="max-w-5xl mx-auto text-center">
+        <div class="hero-intro-wrapper">
           <div class="hero-layout-wrapper">
-            <div class="hero-image-block mb-8">
-              <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle mx-auto" type="button"
+            <div class="hero-image-block">
+              <button id="avatar-toggle" class="profile-image-wrapper profile-image-toggle" type="button"
                 aria-pressed="false" aria-label="Toggle avatar style" onclick="window.__toggleHeroAvatar?.(event)">
                 <img id="profile-image" src="assets/images/profile.webp"
                   srcset="assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w"
@@ -1254,13 +1248,12 @@ html.dark #home .hero-name-text {
                   data-photo-src="assets/images/profile.webp"
                   data-photo-srcset="assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w"
                   data-avatar-src="assets/images/avtar.webp"
-                  data-avatar-srcset="assets/images/avtar-mobile.webp 160w, assets/images/avtar.webp 642w"
-                  style="width: 100% !important; height: 100% !important; object-fit: cover !important;" />
+                  data-avatar-srcset="assets/images/avtar-mobile.webp 160w, assets/images/avtar.webp 642w" />
               </button>
             </div>
 
             <div class="hero-text-block home-hero-text">
-              <div class="hero-header mb-4">
+              <div class="hero-header">
                 <h1 id="home-heading" class="hero-name xdr-highlight">
                   <span class="hero-name-text">Mangesh Raut</span>
                   <span class="hero-verified-badge" role="img" aria-label="Verified profile">
@@ -1342,26 +1335,26 @@ html.dark #home .hero-name-text {
                     <div class="vibe-stack-card lg-glass-card" role="dialog" aria-label="Vibe coding tools I use">
                       <div class="vibe-stack-marquee" aria-hidden="true">
                         <div class="vibe-stack-marquee-track">
-                          <a class="vibe-tool-chip" href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" title="Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
-                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
-                          <a class="vibe-tool-chip" href="https://claude.ai" target="_blank" rel="noopener noreferrer" title="Claude"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
-                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://antigravity.google" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
-                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
-                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
-                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
-                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
-                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
-                          <a class="vibe-tool-chip" href="https://figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
-                          <a class="vibe-tool-chip" href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" title="Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
-                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
-                          <a class="vibe-tool-chip" href="https://claude.ai" target="_blank" rel="noopener noreferrer" title="Claude"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
-                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://antigravity.google" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
-                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
-                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
-                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
-                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
-                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
-                          <a class="vibe-tool-chip" href="https://figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
+                          <a class="vibe-tool-chip" href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" title="Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
+                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
+                          <a class="vibe-tool-chip" href="https://claude.ai" target="_blank" rel="noopener noreferrer" title="Claude"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://antigravity.google" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
+                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
+                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
+                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
+                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
+                          <a class="vibe-tool-chip" href="https://figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
+                          <a class="vibe-tool-chip" href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" title="Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
+                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
+                          <a class="vibe-tool-chip" href="https://claude.ai" target="_blank" rel="noopener noreferrer" title="Claude"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://antigravity.google" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
+                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
+                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
+                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
+                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
+                          <a class="vibe-tool-chip" href="https://figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
                         </div>
                       </div>
                     </div>
@@ -1549,7 +1542,7 @@ html.dark #home .hero-name-text {
       </div>
     </section>
     <!-- About Section - Reduced padding to peek below hero -->
-    <section id="about" class="fade-in py-8" aria-labelledby="about-heading">
+    <section id="about" class="section-about" aria-labelledby="about-heading">
       <div class="container">
         <h2 id="about-heading">About Me</h2>
         <p class="section-subtitle">Software engineer, product thinker, and builder of AI-native systems — from Philadelphia to production.</p>
@@ -1564,8 +1557,7 @@ html.dark #home .hero-name-text {
                   data-deferred-srcset="
                     assets/images/graduation-mobile.webp 320w,
                     assets/images/graduation-tablet.webp 768w,
-                    assets/images/graduation-desktop.webp 1200w,
-                    assets/images/graduation-hd.webp 1920w"
+                    assets/images/graduation-desktop.webp 1920w"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                 <img data-deferred-src="assets/images/graduation.jpg" alt="Mangesh Raut Graduation" class="about-image" width="1200"
                   height="1200" loading="lazy" decoding="async" fetchpriority="low" />
@@ -1663,7 +1655,7 @@ html.dark #home .hero-name-text {
       </div>
     </section>
     <!-- Skills Section -->
-    <section id="skills" class="fade-in py-12" aria-labelledby="skills-heading">
+    <section id="skills" class="fade-in section-standard" aria-labelledby="skills-heading">
       <div class="container">
         <h2 id="skills-heading">Skills & Technologies</h2>
         <p class="section-subtitle skills-section-subtitle">Languages, frameworks, and platforms I use to ship production software.</p>
@@ -1671,7 +1663,7 @@ html.dark #home .hero-name-text {
         <!-- Tech Stack Marquee -->
 
         <!-- Interactive Skills Visualization Container -->
-        <div id="skills-container" class="max-w-6xl mx-auto">
+        <div id="skills-container" class="section-container-wide">
           <!-- Skills will be dynamically rendered here by skills-visualization.js -->
           <div class="skills-loading-container" id="skills-loading">
             <div class="skills-loading-spinner-wrapper">
@@ -1733,7 +1725,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="fade-in py-12" aria-labelledby="experience-heading">
+    <section id="experience" class="fade-in section-standard" aria-labelledby="experience-heading">
       <div class="container">
         <h2 id="experience-heading">Professional Experience</h2>
         <p class="section-subtitle">Six+ years across full-stack engineering, cloud DevOps, and enterprise systems — from energy analytics to network infrastructure.</p>
@@ -2076,7 +2068,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Engineering Teaser -->
-    <section id="engineering" class="fade-in py-12" aria-labelledby="engineering-heading">
+    <section id="engineering" class="fade-in section-standard" aria-labelledby="engineering-heading">
       <div class="container">
         <h2 id="engineering-heading">Engineering Evidence</h2>
         <p class="section-subtitle">
@@ -2087,7 +2079,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Projects Section - Dynamic GitHub Integration -->
-    <section id="projects" class="fade-in py-12" aria-labelledby="projects-heading">
+    <section id="projects" class="fade-in section-standard" aria-labelledby="projects-heading">
       <div class="container">
         <h2 id="projects-heading">Project Showcase</h2>
         <p class="section-subtitle">Spatial software cards with live GitHub activity and release-freshness signals.</p>
@@ -2491,15 +2483,15 @@ html.dark #home .hero-name-text {
           </div>
 
           <!-- Project Search & Filter -->
-          <div class="proj-search-container flex flex-col md:flex-row gap-4 justify-between items-center mb-10 w-full">
-            <div class="proj-input-group flex items-center flex-1 rounded-full px-5 py-3 w-full max-w-2xl">
-              <i class="fas fa-search text-secondary mr-3 text-lg" aria-hidden="true"></i>
+          <div class="proj-search-container">
+            <div class="proj-input-group">
+              <i class="fas fa-search proj-search-icon" aria-hidden="true"></i>
               <input type="text" id="project-search-input"
-                class="proj-search-input w-full bg-transparent border-none outline-none font-medium"
+                class="proj-search-input"
                 placeholder="Search projects by name, tag, or language (supports close matches)..."
                 aria-label="Search projects">
             </div>
-            <div class="proj-controls-group flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <div class="proj-controls-group">
               <div class="proj-sort-field" data-proj-sort-root>
                 <label class="sr-only" for="project-sort-select">Sort projects</label>
                 <select id="project-sort-select" class="proj-sort-native" aria-label="Sort projects">
@@ -2511,21 +2503,21 @@ html.dark #home .hero-name-text {
                 </select>
               </div>
               <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
-                class="projects-view-all-btn flex items-center justify-center gap-2 font-medium"
+                class="projects-view-all-btn"
                 aria-label="Visit GitHub profile">
-                <i class="fab fa-github text-lg" aria-hidden="true"></i><span>Visit GitHub Profile</span>
+                <i class="fab fa-github" aria-hidden="true"></i><span>Visit GitHub Profile</span>
               </a>
             </div>
           </div>
 
           <!-- Projects Grid -->
-          <div class="max-w-6xl mx-auto w-full">
+          <div class="section-container-wide">
             <div id="github-projects-container" class="projects-grid-shell">
               <!-- Projects will be dynamically loaded here -->
-              <div class="col-span-full flex items-center justify-center py-12">
-                <div class="text-center">
-                  <div class="loading-spinner mb-4 mx-auto"></div>
-                  <p class="text-secondary">Loading projects from GitHub...</p>
+              <div class="projects-loading-container">
+                <div class="projects-loading-inner">
+                  <div class="loading-spinner"></div>
+                  <p class="projects-loading-message">Loading projects from GitHub...</p>
                 </div>
               </div>
             </div>
@@ -2535,7 +2527,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="fade-in py-12" aria-labelledby="education-heading">
+    <section id="education" class="fade-in section-standard" aria-labelledby="education-heading">
       <div class="container">
         <h2 id="education-heading">Education</h2>
         <p class="section-subtitle">Graduate and undergraduate foundations in computer science, software engineering, and applied systems — with official transcripts available for each qualification.</p>
@@ -2759,7 +2751,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Publications Section -->
-    <section id="publications" class="fade-in py-12" aria-labelledby="publications-heading">
+    <section id="publications" class="fade-in section-standard" aria-labelledby="publications-heading">
       <div class="container">
         <h2 id="publications-heading">Recent Publications</h2>
         <p class="section-subtitle">Peer-reviewed research spanning machine learning, cloud systems, and applied computer science.</p>
@@ -2829,7 +2821,7 @@ html.dark #home .hero-name-text {
       </div>
     </section>
     <!-- Awards Section -->
-    <section id="awards" class="fade-in py-12" aria-labelledby="awards-heading">
+    <section id="awards" class="fade-in section-standard" aria-labelledby="awards-heading">
       <div class="container">
         <h2 id="awards-heading">Honors & Awards</h2>
         <p class="section-subtitle">Recognition for academic excellence, leadership, and technical achievement.</p>
@@ -2891,7 +2883,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Recommendations Section -->
-    <section id="recommendations" class="fade-in py-12" aria-labelledby="recommendations-heading">
+    <section id="recommendations" class="fade-in section-standard" aria-labelledby="recommendations-heading">
       <div class="container">
         <h2 id="recommendations-heading">Recommendations</h2>
         <p class="section-subtitle">What colleagues and mentors say about working together.</p>
@@ -3023,11 +3015,11 @@ html.dark #home .hero-name-text {
       </div>
     </section>
     <!-- Certifications Section -->
-    <section id="certifications" class="fade-in py-12" aria-labelledby="certifications-heading">
+    <section id="certifications" class="fade-in section-standard" aria-labelledby="certifications-heading">
       <div class="container">
         <h2 id="certifications-heading">Licenses & Certifications</h2>
         <p class="section-subtitle">Industry credentials across cloud, security, development, and platform engineering.</p>
-        <div id="certifications-grid" class="certifications-grid mt-12">
+        <div id="certifications-grid" class="certifications-grid certifications-grid-spaced">
           <div class="certification-card">
             <span class="certification-category">Programming</span>
             <div class="certification-header">
@@ -3186,32 +3178,30 @@ html.dark #home .hero-name-text {
           </div>
 
         </div>
-        <div class="section-view-more-wrap w-full">
-          <button type="button" class="btn button-secondary"
-            style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
-            onclick="document.getElementById('certifications-grid').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
-            More <i class="fas fa-chevron-down"></i></button>
+        <div class="section-view-more-wrap">
+          <button type="button" class="btn button-secondary section-view-more-btn"
+            onclick="document.getElementById('certifications-grid').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">
+            View More <i class="fas fa-chevron-down"></i></button>
         </div>
       </div>
     </section>
     <!-- Contact Section -->
     <!-- Blog Section -->
-    <section id="blog" class="fade-in py-12" aria-labelledby="blog-heading">
+    <section id="blog" class="section-blog">
       <div class="container">
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(12)</span></h2>
         <p class="section-subtitle">Sharing insights on cloud architecture, full-stack development, and machine learning.</p>
         <div id="blog-posts-container">
           <!-- Blog posts injected by blog-loader.js -->
-          <div class="flex justify-center p-12">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+          <div class="section-loading-container">
+            <div class="loading-spinner"></div>
           </div>
         </div>
 
-        <div class="section-view-more-wrap blog-view-more-wrap w-full mt-8">
-          <button type="button" class="btn button-secondary"
-            style="padding: 12px 24px; font-weight: 600; border-radius: 99px;"
-            onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">View
-            More <i class="fas fa-chevron-down"></i></button>
+        <div class="section-view-more-wrap blog-view-more-wrap">
+          <button type="button" class="btn button-secondary section-view-more-btn"
+            onclick="document.getElementById('blog-posts-container').classList.toggle('expanded'); this.innerHTML = this.innerHTML.includes('More') ? 'View Less <i class=\'fas fa-chevron-up\'></i>' : 'View More <i class=\'fas fa-chevron-down\'></i>';">
+            View More <i class="fas fa-chevron-down"></i></button>
         </div>
 
         <!-- Newsletter Subscription -->
@@ -3234,7 +3224,7 @@ html.dark #home .hero-name-text {
         </div>
       </div>
     </section>
-    <section id="contact" class="fade-in py-12" aria-labelledby="contact-heading">
+    <section id="contact" class="fade-in section-standard" aria-labelledby="contact-heading">
       <div class="container">
         <h2 id="contact-heading">Get In Touch</h2>
         <p class="section-subtitle">Open to engineering roles, collaborations, and conversations about building reliable software.</p>
@@ -3249,7 +3239,7 @@ html.dark #home .hero-name-text {
                   Available for freelance architecture consulting, technical auditing, and full-stack development projects.
                 </p>
 
-                <div class="contact-info-group mt-8">
+                <div class="contact-info-group">
                   <!-- Email -->
                   <div class="contact-item">
                     <span class="contact-label">Email</span>
@@ -3326,8 +3316,7 @@ html.dark #home .hero-name-text {
                           srcset="
                             assets/images/ganesh-mobile.webp 320w,
                             assets/images/ganesh-tablet.webp 768w,
-                            assets/images/ganesh-desktop.webp 1200w,
-                            assets/images/ganesh-hd.webp 1920w"
+                            assets/images/ganesh-desktop.webp 1920w"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                         <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
                           title="🕉️ Om Gan Ganapataye Namah" width="70" height="70" loading="lazy" decoding="async">
@@ -3347,8 +3336,7 @@ html.dark #home .hero-name-text {
                           srcset="
                             assets/images/hanuman-mobile.webp 320w,
                             assets/images/hanuman-tablet.webp 768w,
-                            assets/images/hanuman-desktop.webp 1200w,
-                            assets/images/hanuman-hd.webp 1920w"
+                            assets/images/hanuman-desktop.webp 1920w"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                         <img src="assets/images/hanuman.png" alt="Lord Hanuman" class="hanuman-blessing-img"
                           title="🙏 Jai Hanuman" width="70" height="70" loading="lazy" decoding="async">
@@ -3444,7 +3432,7 @@ html.dark #home .hero-name-text {
               <div class="contact-section follow-section">
                 <h3>Follow Me</h3>
                 <p class="contact-description">Connect with me on social media platforms.</p>
-                <ul class="wrapper contact-social-wrapper justify-start pl-0 ml-0 gap-4 flex-wrap">
+                <ul class="wrapper contact-social-wrapper">
                   <li class="icon facebook"><a href="https://www.facebook.com/mangesh.raut.9674/" target="_blank"
                       rel="noopener noreferrer" aria-label="Facebook">
                       <span class="tooltip">Facebook</span>
@@ -3516,7 +3504,7 @@ html.dark #home .hero-name-text {
                   <li class="icon snapchat"><a href="https://snapchat.com/t/nk1K673G" target="_blank"
                       rel="noopener noreferrer" aria-label="Snapchat">
                       <span class="tooltip">Snapchat</span>
-                      <i class="fab fa-snapchat" style="font-size: 1.2em;" aria-hidden="true"></i>
+                      <i class="fab fa-snapchat social-icon-snapchat" aria-hidden="true"></i>
                     </a></li>
                   <li class="icon telegram"><a href="https://t.me/mangesh71298" target="_blank"
                       rel="noopener noreferrer" aria-label="Telegram">
@@ -3886,11 +3874,11 @@ html.dark #home .hero-name-text {
             <div class="currently-card merged-health-currently-card" id="currently-section" role="region" aria-labelledby="currently-heading">
               <h2 id="currently-heading" class="sr-only">Currently — health, music, shows, and books</h2>
               <!-- Health Section (Top) -->
-              <div id="health-section" style="scroll-margin-top: 100px;">
-                <div class="currently-header health-widget-header" style="border-bottom: none; margin-bottom: 0.5rem; padding-bottom: 0;">
+              <div id="health-section" class="health-section-anchor">
+                <div class="currently-header health-widget-header health-widget-header-compact">
                   <h3><i class="fas fa-heartbeat"></i> Health Vitals</h3>
                 </div>
-                <div class="health-widget-container" style="margin-bottom: 1.5rem;">
+                <div class="health-widget-container health-widget-container-spaced">
                   <div class="health-widget-body">
                     <!-- Whoop Section (Left) -->
                     <div class="health-widget-section whoop-section">
@@ -3949,7 +3937,7 @@ html.dark #home .hero-name-text {
                     <!-- Withings Section (Right) -->
                     <div class="health-widget-section withings-section">
                       <div class="health-brand">
-                        <svg viewBox="0 69.3 493.6 62.4" width="95" height="12" fill="currentColor" aria-label="WITHINGS" style="opacity: 0.85;">
+                        <svg class="withings-wordmark" viewBox="0 69.3 493.6 62.4" width="95" height="12" fill="currentColor" aria-label="WITHINGS">
                           <g>
                             <path d="M0,69.3h11.7l14.6,45.5l15.1-45.7h9.1l15.1,45.7l14.6-45.5h11.3l-21.4,61.8h-9.3L45.8,87l-15.1,44.1h-9.3L0,69.3z" />
                             <path d="M107.6,69.3h10.7v61.4h-10.7V69.3z" />
@@ -4011,7 +3999,7 @@ html.dark #home .hero-name-text {
               </div>
 
               <!-- Divider -->
-              <div class="currently-divider" style="height: 1px; background: var(--health-row-border); margin: 1.5rem 0;"></div>
+              <div class="currently-divider currently-divider-section"></div>
 
               <!-- Currently Section (Bottom) -->
               <div class="currently-header">
@@ -4037,7 +4025,7 @@ html.dark #home .hero-name-text {
                 <div class="media-grid" id="shows-grid">
                   <!-- Will be populated by real-media-loader.js with verified TMDB posters -->
                   <div class="currently-loading-container">
-                    <div class="loading-spinner animate-spin"></div>
+                    <div class="loading-spinner health-spinner"></div>
                     <p class="currently-loading-message">Loading verified posters from TMDB...</p>
                   </div>
                 </div>
@@ -4064,7 +4052,7 @@ html.dark #home .hero-name-text {
                   <!-- Loading State -->
                   <div class="media-card currently-music-card currently-music-state loading" id="music-loading">
                     <div class="media-poster music-poster-loading currently-poster-loading">
-                      <div class="loading-spinner animate-spin"></div>
+                      <div class="loading-spinner health-spinner"></div>
                     </div>
                     <div class="media-info">
                       <h4>Syncing music…</h4>
@@ -4098,7 +4086,7 @@ html.dark #home .hero-name-text {
                 <div class="media-grid" id="books-grid">
                   <!-- Will be populated by real-media-loader.js with verified Open Library covers -->
                   <div class="currently-loading-container">
-                    <div class="loading-spinner animate-spin"></div>
+                    <div class="loading-spinner health-spinner"></div>
                     <p class="currently-loading-message">Loading verified book covers...</p>
                   </div>
                 </div>
@@ -4112,7 +4100,7 @@ html.dark #home .hero-name-text {
               <div id="calendar-widget"></div>
 
               <!-- Divider -->
-              <div class="currently-divider" style="height: 1px; background: var(--health-row-border); margin: 0.5rem 0 1.5rem;"></div>
+              <div class="currently-divider currently-divider-tight"></div>
 
               <!-- Let's Talk AI Assistant Section -->
               <div class="contact-assistme-card">
@@ -4177,9 +4165,9 @@ html.dark #home .hero-name-text {
     </section>
 
     <footer>
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+      <div class="footer-wrapper">
         <!-- Social Icons First (Centered) -->
-        <div class="flex justify-center mb-2">
+        <div class="footer-social-row">
           <ul class="wrapper">
             <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
                 rel="noopener noreferrer" aria-label="Linkedin">

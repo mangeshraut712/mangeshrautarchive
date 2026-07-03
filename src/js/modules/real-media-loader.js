@@ -29,6 +29,14 @@ class RealMediaLoader {
     return title || '';
   }
 
+  escapeAttribute(value = '') {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
   getUniqueItems(items = [], keySelector = item => item.title) {
     const seen = new Set();
     return items.filter(item => {
@@ -41,6 +49,25 @@ class RealMediaLoader {
     });
   }
 
+  trackMediaClick(event) {
+    const link = event.currentTarget;
+
+    try {
+      analytics.track('media_click', {
+        title: link.dataset.mediaTitle || '',
+        type: link.dataset.mediaType || '',
+      });
+    } catch (error) {
+      console.debug('[RealMediaLoader] media analytics unavailable:', error);
+    }
+  }
+
+  bindMediaTracking(container) {
+    container.querySelectorAll('[data-media-track]').forEach(link => {
+      link.addEventListener('click', event => this.trackMediaClick(event));
+    });
+  }
+
   renderShowsAndMovies(container) {
     const mediaItems = this.getUniqueItems(SHOWS_AND_MOVIES, item => `${item.type}:${item.title}`);
 
@@ -48,6 +75,8 @@ class RealMediaLoader {
       .map(item => {
         const fallbackSvg = this.getMediaPlaceholder(item.title, item.type, item.platform);
         const posterSrc = item.poster || fallbackSvg;
+        const mediaTitle = this.escapeAttribute(item.title);
+        const mediaType = this.escapeAttribute(item.type);
 
         return `
         <div class="media-card">
@@ -65,7 +94,7 @@ class RealMediaLoader {
           </div>
           <div class="media-info">
             <h4>${this.getShortTitle(item.title)}</h4>
-            <a href="${item.link}" target="_blank" rel="noopener" class="watch-btn" onclick="try { window.analyticsTracker.track('media_click', { title: '${item.title.replace(/'/g, "\\'")}', type: '${item.type}' }) } catch(e){}">
+            <a href="${item.link}" target="_blank" rel="noopener" class="watch-btn" data-media-track data-media-title="${mediaTitle}" data-media-type="${mediaType}">
               <i class="fas fa-play" aria-hidden="true"></i><span>${item.platform}</span>
             </a>
           </div>
@@ -73,6 +102,8 @@ class RealMediaLoader {
       `;
       })
       .join('');
+
+    this.bindMediaTracking(container);
   }
 
   async fetchBookCover(book) {
@@ -98,9 +129,11 @@ class RealMediaLoader {
       .map(book => {
         const fallbackSvg = this.getMediaPlaceholder(book.title, 'Book', book.author);
         const coverSrc = book.cover || fallbackSvg;
+        const mediaTitle = this.escapeAttribute(book.title);
+        const mediaType = this.escapeAttribute(book.type);
 
         return `
-        <div class="media-card book-card" data-title="${book.title.replace(/"/g, '&quot;')}" data-author="${book.author.replace(/"/g, '&quot;')}">
+        <div class="media-card book-card" data-title="${mediaTitle}" data-author="${this.escapeAttribute(book.author)}">
           <div class="media-poster">
               <img
                 src="${coverSrc}"
@@ -116,8 +149,8 @@ class RealMediaLoader {
           </div>
           <div class="media-info">
             <h4>${this.getShortTitle(book.title)}</h4>
-            <p class="text-xs text-gray-500">${book.author}</p>
-            <a href="${book.link}" target="_blank" rel="noopener" class="watch-btn book-btn" onclick="try { window.analyticsTracker.track('media_click', { title: '${book.title.replace(/'/g, "\\'")}', type: '${book.type}' }) } catch(e){}">
+            <p class="book-author-text">${book.author}</p>
+            <a href="${book.link}" target="_blank" rel="noopener" class="watch-btn book-btn" data-media-track data-media-title="${mediaTitle}" data-media-type="${mediaType}">
               <i class="fas fa-book-open" aria-hidden="true"></i><span>Read</span>
             </a>
           </div>
@@ -125,6 +158,8 @@ class RealMediaLoader {
       `;
       })
       .join('');
+
+    this.bindMediaTracking(container);
 
     // Hydrate covers
     container.querySelectorAll('.book-card').forEach(card => {
@@ -165,7 +200,6 @@ function initRealMediaLoader() {
     return;
   }
 
-  window.analyticsTracker = analytics;
   const loader = new RealMediaLoader();
   loader.init();
 }
