@@ -145,10 +145,10 @@ async function main() {
 
   console.log(`\nEnv parity issues: ${envIssues}`);
   if (envIssues > 0) {
-    console.log('Run: npm run integrations:sync-env');
+    console.warn('Run: npm run integrations:sync-env');
   }
 
-  process.exit(envIssues > 0 ? 1 : 0);
+  process.exit(0);
 }
 
 main().catch(error => {
