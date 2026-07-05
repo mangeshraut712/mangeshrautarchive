@@ -92,9 +92,8 @@ function setActiveLinkBySectionId(sectionId) {
   allLinks.forEach(link => {
     const isActive = link.getAttribute('href') === targetHref;
     link.classList.toggle('active', isActive);
-    if (isActive) {
-      link.setAttribute('aria-current', 'page');
-    } else {
+    link.setAttribute('aria-current', isActive ? 'page' : 'false');
+    if (!isActive) {
       link.removeAttribute('aria-current');
     }
   });

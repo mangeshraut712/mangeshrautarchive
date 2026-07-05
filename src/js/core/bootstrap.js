@@ -14,6 +14,7 @@ import {
   shouldDeferCriticalWarmup,
 } from '../utils/section-preload.js';
 import '../utils/reduced-transparency-sync.js';
+import { clearPortfolioStorage } from '../utils/storage-cleanup.js';
 
 initScrollLockRecovery();
 
@@ -340,8 +341,7 @@ function areStyleKeysLoaded(styleKeys = [], documentRef = document) {
   );
 }
 
-const CRITICAL_STYLE_PATTERN =
-  /accessibility-contrast-fixes|wwdc26-liquid-glass|theme-solid-surfaces|liquid-glass-modes|liquid-glass-webgl/;
+const CRITICAL_STYLE_PATTERN = /accessibility|liquid-glass|theme-solid-surfaces/;
 
 /** Keep WCAG + liquid-glass layers last so lazy section CSS cannot override them. */
 function pinCriticalStylesheetsLast(documentRef = document) {
@@ -497,7 +497,7 @@ function initLaunchIntro(documentRef = document) {
     return;
   }
 
-  if (isPerformanceAudit()) {
+  if (isPerformanceAudit() || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     intro.hidden = true;
     intro.setAttribute('aria-hidden', 'true');
     intro.classList.remove('is-playing', 'is-exiting');
@@ -588,6 +588,10 @@ function initGlobalErrorHandlers() {
   window.__portfolioErrorHandlersBound = true;
 
   window.addEventListener('error', event => {
+    if (event?.error?.name === 'AbortError') {
+      return;
+    }
+
     console.error('Global error caught:', {
       message: event.message,
       filename: event.filename,
@@ -598,6 +602,11 @@ function initGlobalErrorHandlers() {
   });
 
   window.addEventListener('unhandledrejection', event => {
+    if (event?.reason?.name === 'AbortError') {
+      event.preventDefault();
+      return;
+    }
+
     console.error('Unhandled Promise rejection:', {
       reason: event.reason,
       promise: event.promise,
@@ -1033,7 +1042,7 @@ function initServiceWorker() {
             await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
           }
 
-          localStorage.removeItem('portfolio-version');
+          clearPortfolioStorage();
           try {
             sessionStorage.setItem(cleanupKey, '1');
           } catch (_error) {
@@ -1047,7 +1056,7 @@ function initServiceWorker() {
               const cacheNames = await caches.keys();
               await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
             }
-            localStorage.removeItem('portfolio-version');
+            clearPortfolioStorage();
             sessionStorage.removeItem(cleanupKey);
           };
         } catch (_error) {
@@ -1266,35 +1275,44 @@ async function initBootstrap() {
     return;
   }
 
-  hydrateHeroImages();
-  loadEnhancementModules();
   initGlobalErrorHandlers();
+  hydrateHeroImages();
   initContactDeferredImages();
   initCertificationDeferredImages();
   initAboutDeferredImages();
 
-  initDeferredStyles();
-  initOnDemandModules();
-  initLazyModules();
-  initProjectShowcaseOnDemand();
-  initEngineeringTeaserOnDemand();
-  warmCriticalSectionPreloads();
+  try {
+    loadEnhancementModules();
+  } catch (error) {
+    console.warn('Enhanced modules skipped:', error);
+  }
+
+  try {
+    initDeferredStyles();
+    initOnDemandModules();
+    initLazyModules();
+    initProjectShowcaseOnDemand();
+    initEngineeringTeaserOnDemand();
+    warmCriticalSectionPreloads();
+  } catch (error) {
+    console.warn('Deferred UI setup skipped:', error);
+  }
 
   initServiceWorker();
   initLaunchIntro();
   initAppleDisplayEnhancements();
 
   runWhenIdle(() => {
-    loadModule('../modules/real-media-loader.js');
+    loadModule('../modules/real-media-loader.js').catch(() => {});
   }, 300);
 
   runWhenIdle(() => {
-    checkDeploymentVersion();
+    checkDeploymentVersion().catch(() => {});
   }, 5000);
   window.addEventListener('pageshow', event => {
     if (event.persisted) {
       runWhenIdle(() => {
-        checkDeploymentVersion();
+        checkDeploymentVersion().catch(() => {});
       }, 1500);
     }
   });
@@ -1303,7 +1321,11 @@ async function initBootstrap() {
     loadDeferredBootstrapModules().catch(error => {
       console.warn('Deferred bootstrap modules skipped:', error);
     });
-    pinCriticalStylesheetsLast();
+    try {
+      pinCriticalStylesheetsLast();
+    } catch (error) {
+      console.warn('Critical stylesheet pinning skipped:', error);
+    }
   }, 400);
 }
 

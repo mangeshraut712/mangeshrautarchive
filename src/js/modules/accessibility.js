@@ -752,7 +752,8 @@ export class AccessibilityEnhancer {
    * Create accessibility toolbar
    */
   createAccessibilityToolbar() {
-    if (document.querySelector('.a11y-toolbar')) return;
+    let toolbar = document.querySelector('.a11y-toolbar');
+    const hasExistingToolbar = !!toolbar;
 
     if (!document.getElementById('a11y-toolbar-styles')) {
       const style = document.createElement('style');
@@ -849,82 +850,46 @@ export class AccessibilityEnhancer {
         .a11y-glass-popover {
           position: fixed;
           left: 20px;
-          bottom: calc(max(24px, env(safe-area-inset-bottom)) + 70px);
-          z-index: 9998;
-          display: none;
-          flex-direction: column;
-          gap: 10px;
-          width: 240px;
-          padding: 16px 18px;
+          bottom: max(84px, calc(env(safe-area-inset-bottom) + 60px));
+          width: 310px;
+          padding: 1.25rem;
           border-radius: 20px;
+          z-index: 9998;
+          opacity: 0;
+          transform: scale(0.96) translateY(8px);
+          pointer-events: none;
+          box-shadow: 0 10px 40px rgb(0 0 0 / 10%), 0 1px 3px rgb(0 0 0 / 5%);
+          transition: opacity 0.25s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .a11y-glass-popover.is-open {
-          display: flex;
+          opacity: 1;
+          transform: scale(1) translateY(0);
+          pointer-events: auto;
         }
 
         .a11y-glass-popover__title {
-          margin: 0;
-          font-size: 0.8rem;
+          font-size: 0.95rem;
           font-weight: 700;
+          margin-bottom: 0.85rem;
           color: #1d1d1f;
-          letter-spacing: -0.01em;
+          letter-spacing: -0.015em;
+        }
+
+        .a11y-glass-popover__value {
+          font-size: 0.8rem;
+          color: #86868b;
+          font-weight: 600;
+          margin-bottom: 0.85rem;
         }
 
         .a11y-glass-popover input[type='range'] {
           width: 100%;
+          height: 6px;
+          border-radius: 999px;
+          background: #e5e5ea;
+          outline: none;
           accent-color: #0071e3;
-          cursor: pointer;
-        }
-
-        .a11y-glass-popover__scale {
-          display: flex;
-          justify-content: space-between;
-          font-size: 0.68rem;
-          font-weight: 600;
-          color: #86868b;
-        }
-
-        .a11y-glass-popover__presets {
-          display: flex;
-          gap: 8px;
-        }
-
-        .a11y-glass-popover__presets button {
-          flex: 1;
-          min-height: 34px;
-          padding: 0.45rem 0.65rem;
-          border-radius: 10px;
-          border: 1px solid rgb(0 0 0 / 10%);
-          background: rgb(255 255 255 / 72%);
-          color: #1d1d1f;
-          font-size: 0.72rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-        }
-
-        .a11y-glass-popover__presets button:hover {
-          transform: translateY(-1px);
-          border-color: rgb(0 113 227 / 28%);
-        }
-
-        .a11y-glass-popover__presets button.is-active {
-          background: linear-gradient(135deg, rgb(0 113 227 / 14%), rgb(94 92 230 / 18%));
-          border-color: rgb(0 113 227 / 32%);
-          color: #0071e3;
-        }
-
-        html.dark .a11y-glass-popover__presets button {
-          background: rgb(255 255 255 / 8%);
-          border-color: rgb(255 255 255 / 12%);
-          color: #f5f5f7;
-        }
-
-        html.dark .a11y-glass-popover__presets button.is-active {
-          background: linear-gradient(135deg, rgb(10 132 255 / 18%), rgb(191 90 242 / 16%));
-          border-color: rgb(10 132 255 / 34%);
-          color: #4ea1ff;
         }
 
         html.dark .a11y-glass-popover__title {
@@ -938,10 +903,12 @@ export class AccessibilityEnhancer {
       document.head.appendChild(style);
     }
 
-    const toolbar = document.createElement('div');
-    toolbar.className = 'a11y-toolbar';
-    toolbar.setAttribute('role', 'toolbar');
-    toolbar.setAttribute('aria-label', 'Accessibility tools');
+    if (!toolbar) {
+      toolbar = document.createElement('div');
+      toolbar.className = 'a11y-toolbar';
+      toolbar.setAttribute('role', 'toolbar');
+      toolbar.setAttribute('aria-label', 'Accessibility tools');
+    }
 
     const buttons = [
       {
@@ -973,6 +940,11 @@ export class AccessibilityEnhancer {
     ];
 
     buttons.forEach(btn => {
+      // Check if button already exists in the toolbar by label
+      if (toolbar.querySelector(`button[aria-label="${btn.label}"]`)) {
+        return;
+      }
+
       const button = document.createElement('button');
       button.setAttribute('type', 'button');
       button.type = 'button';
@@ -995,8 +967,10 @@ export class AccessibilityEnhancer {
       toolbar.appendChild(button);
     });
 
-    document.body.appendChild(toolbar);
-    document.body.classList.add('has-a11y-toolbar');
+    if (!hasExistingToolbar) {
+      document.body.appendChild(toolbar);
+      document.body.classList.add('has-a11y-toolbar');
+    }
   }
 
   formatGlassTintLabel(value) {

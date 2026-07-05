@@ -11,11 +11,15 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     (async () => {
-      const [cacheNames] = await Promise.all([caches.keys()]);
+      const cacheNames = await caches.keys();
       await Promise.all([
-        ...cacheNames.map(cacheName => caches.delete(cacheName)),
+        ...cacheNames
+          .filter(
+            cacheName =>
+              cacheName.startsWith('portfolio-') || cacheName.startsWith('mangeshrautarchive')
+          )
+          .map(cacheName => caches.delete(cacheName)),
         self.clients.claim(),
-        self.registration.unregister(),
       ]);
     })()
   );
