@@ -4,6 +4,13 @@ const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' 
 const gotoSite = (page, path = '/') =>
   page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
 
+const gotoSiteReady = async (page, path = '/') => {
+  await gotoSite(page, path);
+  await page.waitForSelector('#main-content', { state: 'attached', timeout: 30_000 });
+  await page.waitForLoadState('load');
+  await page.waitForTimeout(1200);
+};
+
 function buildLongMockStream(lineCount = 24) {
   const chunks = Array.from({ length: lineCount }, (_, index) => {
     const words = Array.from({ length: 18 }, (__, wordIndex) => `word${wordIndex}`).join(' ');
@@ -49,7 +56,7 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('follows the live stream only while the reader is at the bottom edge', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
     const initialPageScroll = await page.evaluate(() => window.scrollY);
 
     await openChatbot(page);
@@ -75,7 +82,7 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('does not pull the reader when they scroll up during streaming', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
     await openChatbot(page);
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
@@ -104,7 +111,7 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('jump to latest resumes following and pins near the bottom', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
     await openChatbot(page);
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
@@ -129,8 +136,18 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('positions a new user turn near the top of the message viewport', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
     await openChatbot(page);
+
+    // Make the message viewport scrollable to allow positioning the user message near the top
+    await page.evaluate(() => {
+      const messages = document.getElementById('chatbot-messages');
+      if (messages) {
+        const spacer = document.createElement('div');
+        spacer.style.height = '1000px';
+        messages.prepend(spacer);
+      }
+    });
 
     await page.locator('#chatbot-input').fill('First question');
     await page.locator('.chatbot-send-btn').click();
@@ -152,7 +169,7 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('restores the welcome message after clear chat', async ({ page }) => {
-    await gotoSite(page);
+    await gotoSiteReady(page);
     await openChatbot(page);
 
     await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible();

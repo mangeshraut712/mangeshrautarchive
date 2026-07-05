@@ -1,0 +1,204 @@
+/**
+ * Liquid Glass Effects — Consolidated
+ * Merged from: liquid-glass-modes, liquid-glass-webgl, wwdc26-liquid-glass
+ *
+ * @version 2.0.0
+ */
+
+/* ==========================================================================
+   1. LIQUID GLASS BASE
+   ========================================================================== */
+
+.liquid-glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(40px) saturate(1.4);
+  -webkit-backdrop-filter: blur(40px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+html.dark .liquid-glass {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   2. LIQUID GLASS MODES
+   ========================================================================== */
+
+/* Aurora Mode */
+.liquid-glass-aurora {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 122, 255, 0.08) 0%,
+    rgba(90, 200, 250, 0.06) 25%,
+    rgba(175, 82, 222, 0.06) 50%,
+    rgba(255, 45, 85, 0.04) 75%,
+    rgba(255, 149, 0, 0.06) 100%
+  );
+  backdrop-filter: blur(40px) saturate(1.4);
+  -webkit-backdrop-filter: blur(40px) saturate(1.4);
+}
+
+html.dark .liquid-glass-aurora {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 122, 255, 0.12) 0%,
+    rgba(90, 200, 250, 0.08) 25%,
+    rgba(175, 82, 222, 0.08) 50%,
+    rgba(255, 45, 85, 0.06) 75%,
+    rgba(255, 149, 0, 0.08) 100%
+  );
+}
+
+/* Frost Mode */
+.liquid-glass-frost {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(60px) saturate(1.8);
+  -webkit-backdrop-filter: blur(60px) saturate(1.8);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+html.dark .liquid-glass-frost {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Vibrant Mode */
+.liquid-glass-vibrant {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+html.dark .liquid-glass-vibrant {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   3. SIRI AI GLOW
+   ========================================================================== */
+
+@keyframes siri-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(0, 122, 255, 0.3),
+      0 0 40px rgba(0, 122, 255, 0.15),
+      0 0 60px rgba(90, 200, 250, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(0, 122, 255, 0.4),
+      0 0 60px rgba(0, 122, 255, 0.2),
+      0 0 80px rgba(90, 200, 250, 0.15);
+  }
+}
+
+.siri-glow {
+  animation: siri-glow 3s ease-in-out infinite;
+}
+
+html.dark .siri-glow {
+  animation-name: siri-glow;
+}
+
+/* ==========================================================================
+   4. LIQUID GLASS CARD STYLES
+   ========================================================================== */
+
+.liquid-glass-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(40px) saturate(1.4);
+  -webkit-backdrop-filter: blur(40px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+}
+
+.liquid-glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+html.dark .liquid-glass-card {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+html.dark .liquid-glass-card:hover {
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   5. LIQUID GLASS NAVBAR
+   ========================================================================== */
+
+.liquid-glass-nav {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(40px) saturate(1.4);
+  -webkit-backdrop-filter: blur(40px) saturate(1.4);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.dark .liquid-glass-nav {
+  background: rgba(0, 0, 0, 0.72);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   6. WEBGL CANVAS
+   ========================================================================== */
+
+#liquid-glass-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   7. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass-card:hover {
+    transform: none;
+  }
+
+  .siri-glow {
+    animation: none;
+  }
+}

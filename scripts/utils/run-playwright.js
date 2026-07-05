@@ -9,6 +9,7 @@ const playwrightBin = resolve(projectRoot, 'node_modules/.bin/playwright');
 
 const env = { ...process.env };
 delete env.NO_COLOR;
+env.NO_RELOAD = '1';
 
 const nodeOptions = env.NODE_OPTIONS ? `${env.NODE_OPTIONS} ` : '';
 if (!nodeOptions.includes('--disable-warning=DEP0205')) {

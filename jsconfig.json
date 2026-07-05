@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "checkJs": false,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*.js",
+    "scripts/**/*.js",
+    "scripts/**/*.mjs",
+    "api/**/*.js",
+    "tests/**/*.js",
+    "*.d.ts",
+    "**/*.d.ts"
+  ]
+}

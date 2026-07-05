@@ -50,7 +50,9 @@ async function isAssistMeBackendRunning() {
 }
 
 async function runBackend() {
-  const shouldReload = !['1', 'true'].includes(String(process.env.CI || '').toLowerCase());
+  const shouldReload =
+    !['1', 'true'].includes(String(process.env.CI || '').toLowerCase()) &&
+    !['1', 'true'].includes(String(process.env.NO_RELOAD || '').toLowerCase());
   const fs = await import('fs');
   const useVenv = fs.existsSync('./venv/bin/python');
 

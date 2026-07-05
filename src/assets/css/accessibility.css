@@ -1,0 +1,205 @@
+/**
+ * Accessibility Styles — Consolidated
+ * Merged from: accessibility-contrast-fixes, card-content-accessibility, high-contrast
+ *
+ * @version 2.0.0
+ */
+
+/* ==========================================================================
+   1. WCAG AA CONTRAST FIXES
+   ========================================================================== */
+
+/* Ensure all text meets WCAG AA 4.5:1 contrast ratio */
+:root {
+  --a11y-text-primary: #1d1d1f;
+  --a11y-text-secondary: #6e6e73;
+  --a11y-text-link: #0066cc;
+  --a11y-text-link-visited: #4a0072;
+  --a11y-focus-ring: #0071e3;
+  --a11y-error: #d70015;
+  --a11y-success: #248a3d;
+}
+
+html.dark {
+  --a11y-text-primary: #f5f5f7;
+  --a11y-text-secondary: #a1a1a6;
+  --a11y-text-link: #64b5f6;
+  --a11y-text-link-visited: #ce93d8;
+  --a11y-focus-ring: #64b5f6;
+  --a11y-error: #ff6b6b;
+  --a11y-success: #69db7c;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: 3px solid var(--a11y-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip to main content */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--a11y-focus-ring);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  z-index: 10000;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ==========================================================================
+   2. CARD CONTENT ACCESSIBILITY
+   ========================================================================== */
+
+/* Ensure card content is readable */
+.card,
+.glass-card,
+.liquid-glass-card,
+.experience-card,
+.project-card,
+.blog-card,
+.education-card,
+.publication-card,
+.award-card,
+.recommendation-card,
+.certification-card {
+  color: var(--a11y-text-primary);
+}
+
+.card p,
+.glass-card p,
+.liquid-glass-card p {
+  color: var(--a11y-text-secondary);
+  line-height: 1.6;
+}
+
+/* Card interactive states */
+.card a,
+.glass-card a,
+.liquid-glass-card a {
+  color: var(--a11y-text-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.card a:hover,
+.glass-card a:hover,
+.liquid-glass-card a:hover {
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   3. HIGH CONTRAST MODE
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --a11y-text-primary: #000000;
+    --a11y-text-secondary: #333333;
+    --separator: rgba(0, 0, 0, 0.3);
+    --separator-strong: rgba(0, 0, 0, 0.5);
+  }
+
+  html.dark {
+    --a11y-text-primary: #ffffff;
+    --a11y-text-secondary: #cccccc;
+    --separator: rgba(255, 255, 255, 0.3);
+    --separator-strong: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Remove glass effects in high contrast */
+  .glass,
+  .glass-strong,
+  .glass-card,
+  .liquid-glass,
+  .liquid-glass-card,
+  .liquid-glass-nav {
+    background: var(--bg-primary) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: var(--separator-strong) !important;
+  }
+
+  /* Ensure all text has sufficient contrast */
+  body,
+  p,
+  span,
+  li,
+  .text-secondary,
+  .text-tertiary {
+    color: var(--a11y-text-primary) !important;
+  }
+
+  /* Stronger borders */
+  .card,
+  .glass-card,
+  .liquid-glass-card {
+    border-width: 2px !important;
+  }
+
+  /* More visible focus indicators */
+  :focus-visible {
+    outline: 3px solid var(--a11y-focus-ring) !important;
+    outline-offset: 3px !important;
+  }
+}
+
+/* ==========================================================================
+   4. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .card:hover,
+  .glass-card:hover,
+  .liquid-glass-card:hover {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   5. SCREEN READER UTILITIES
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced transparency preference */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
+  .glass-card,
+  .liquid-glass,
+  .liquid-glass-card,
+  .liquid-glass-nav {
+    background: var(--bg-primary) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}

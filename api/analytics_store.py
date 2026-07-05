@@ -380,7 +380,8 @@ class PortfolioAnalyticsStore:
         referrer: str = "",
         user_agent: str = "",
     ) -> Dict[str, Any]:
-        url = f"https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics?key={self._firebase_api_key}"
+        base_url = "https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics"
+        url = f"{base_url}?key={self._firebase_api_key}"
         async with httpx.AsyncClient(timeout=5.0) as client:
             data = await self._load_firestore_data(client, url)
             data["recent_sessions"] = self._prune_sessions(data.get("recent_sessions", {}))
@@ -420,7 +421,8 @@ class PortfolioAnalyticsStore:
         return self._metrics_from_data(data, persistent=True)
 
     async def _get_metrics_firestore(self) -> Dict[str, Any]:
-        url = f"https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics?key={self._firebase_api_key}"
+        base_url = "https://firestore.googleapis.com/v1/projects/mangeshrautarchive/databases/(default)/documents/analytics/metrics"
+        url = f"{base_url}?key={self._firebase_api_key}"
         async with httpx.AsyncClient(timeout=5.0) as client:
             data = await self._load_firestore_data(client, url)
 
