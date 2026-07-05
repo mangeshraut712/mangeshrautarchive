@@ -74,6 +74,9 @@ jobs:
       - name: 🐍 Python — API tests
         run: npm run test:api
 
+      - name: 🌐 Install Playwright browser runtime
+        run: npx playwright install --with-deps chromium
+
       - name: ✅ Browser QA — smoke + accessibility
         run: npm run qa:browser:ci
 
