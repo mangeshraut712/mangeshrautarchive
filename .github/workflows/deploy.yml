@@ -78,7 +78,14 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: ✅ Browser QA — smoke + accessibility
-        run: npm run qa:browser:ci
+        run: |
+          NO_RELOAD=1 npm run dev &
+          for i in {1..30}; do
+            curl -s http://127.0.0.1:4000 > /dev/null && break
+            echo "Waiting for dev server..."
+            sleep 1
+          done
+          npm run qa:browser:ci
 
       - name: ⚡ Lighthouse gates — desktop + mobile
         run: npm run qa:lighthouse:ci
