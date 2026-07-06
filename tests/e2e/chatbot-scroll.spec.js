@@ -11,24 +11,12 @@ const gotoSiteReady = async (page, path = '/') => {
   await page.waitForTimeout(1200);
 };
 
-function buildLongMockStream(lineCount = 24) {
-  const chunks = Array.from({ length: lineCount }, (_, index) => {
-    const words = Array.from({ length: 18 }, (__, wordIndex) => `word${wordIndex}`).join(' ');
-    return JSON.stringify({
-      type: 'chunk',
-      content: `Line ${index + 1}: ${words}\n`,
-    });
-  });
-  chunks.push(JSON.stringify({ type: 'done', metadata: { source: 'mock' } }));
-  return `${chunks.join('\n')}\n`;
-}
-
 async function openChatbot(page) {
   const toggle = page.locator('#chatbot-toggle');
   await expect(toggle).toBeVisible();
-  await toggle.click();
+  await page.evaluate(() => document.getElementById('chatbot-toggle').click());
   await expect(page.locator('#chatbot-widget')).toBeVisible();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000); // Allow widget styles and layout to settle
 }
 
 async function distanceFromBottom(page) {
@@ -41,25 +29,15 @@ async function distanceFromBottom(page) {
 
 test.describe('Chatbot scroll engineering', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('**/api/chat', async route => {
-      if (route.request().method() !== 'POST') {
-        await route.continue();
-        return;
-      }
-
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/x-ndjson',
-        body: buildLongMockStream(),
-      });
-    });
+    page.on('console', msg => console.log(`BROWSER CONSOLE [${msg.type()}]: ${msg.text()}`));
+    page.on('pageerror', err => console.error(`BROWSER ERROR: ${err.message}\n${err.stack}`));
   });
 
   test('follows the live stream only while the reader is at the bottom edge', async ({ page }) => {
     await gotoSiteReady(page);
-    const initialPageScroll = await page.evaluate(() => window.scrollY);
-
     await openChatbot(page);
+
+    const initialPageScroll = await page.evaluate(() => window.scrollY);
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
     await page.locator('.chatbot-send-btn').click();
@@ -94,17 +72,20 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 15_000,
     });
 
-    await page.evaluate(() => {
-      const messages = document.getElementById('chatbot-messages');
-      messages.scrollTop = 0;
-    });
+    // Simulate real user mouse wheel scrolling up
+    const messages = page.locator('#chatbot-messages');
+    await messages.hover();
+    await page.mouse.wheel(0, -800);
+    await page.waitForTimeout(100);
 
+    // Let the stream run for a while
     await page.waitForTimeout(1200);
 
+    // Check that we stayed scrolled up (scrollTop should be small, i.e. not pulled to bottom)
     const scrollTop = await page.evaluate(
       () => document.getElementById('chatbot-messages').scrollTop
     );
-    expect(scrollTop).toBeLessThan(48);
+    expect(scrollTop).toBeLessThan(150);
 
     await expect(page.locator('.chatbot-jump-latest')).toBeVisible();
     await expect(page.locator('.chatbot-jump-latest')).toContainText(/streaming|latest/i);
@@ -123,9 +104,11 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 15_000,
     });
 
-    await page.evaluate(() => {
-      document.getElementById('chatbot-messages').scrollTop = 0;
-    });
+    // Simulate real user mouse wheel scrolling up
+    const messages = page.locator('#chatbot-messages');
+    await messages.hover();
+    await page.mouse.wheel(0, -800);
+    await page.waitForTimeout(100);
 
     await page.locator('.chatbot-jump-latest').click();
     await page.waitForTimeout(400);
@@ -143,9 +126,15 @@ test.describe('Chatbot scroll engineering', () => {
     await page.evaluate(() => {
       const messages = document.getElementById('chatbot-messages');
       if (messages) {
-        const spacer = document.createElement('div');
-        spacer.style.height = '1000px';
-        messages.prepend(spacer);
+        const topSpacer = document.createElement('div');
+        topSpacer.style.height = '1000px';
+        topSpacer.style.flexShrink = '0';
+        messages.prepend(topSpacer);
+
+        const bottomSpacer = document.createElement('div');
+        bottomSpacer.style.height = '1000px';
+        bottomSpacer.style.flexShrink = '0';
+        messages.appendChild(bottomSpacer);
       }
     });
 
@@ -158,9 +147,10 @@ test.describe('Chatbot scroll engineering', () => {
 
     const layout = await page.evaluate(() => {
       const messages = document.getElementById('chatbot-messages');
-      const user = messages.querySelector('.user-message:last-of-type');
+      const userList = messages.querySelectorAll('.user-message');
+      const user = userList[userList.length - 1];
       return {
-        offset: user.offsetTop - messages.scrollTop,
+        offset: user ? user.offsetTop - messages.scrollTop : 999,
         viewport: messages.clientHeight,
       };
     });

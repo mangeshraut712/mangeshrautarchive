@@ -683,6 +683,7 @@ function bindInteractionModuleLoader(
   element.addEventListener(
     'click',
     async event => {
+      console.log(`[BOOTSTRAP] Click on ${elementId}, loaded: ${moduleLoader.isLoaded()}`);
       if (moduleLoader.isLoaded() && areStyleKeysLoaded(styleKeys, documentRef)) {
         return;
       }
@@ -691,13 +692,18 @@ function bindInteractionModuleLoader(
       event.stopImmediatePropagation();
       event.stopPropagation();
 
+      console.log(`[BOOTSTRAP] Loading styles:`, styleKeys);
       const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
+      console.log(`[BOOTSTRAP] Styles loaded: ${stylesLoaded}`);
       if (!stylesLoaded) return;
 
+      console.log(`[BOOTSTRAP] Loading module...`);
       const moduleLoaded = await moduleLoader.load();
+      console.log(`[BOOTSTRAP] Module loaded: ${moduleLoaded}`);
       if (!moduleLoaded) return;
 
       if (replay) {
+        console.log(`[BOOTSTRAP] Replaying click...`);
         setTimeout(() => {
           requestAnimationFrame(() => {
             element.click();

@@ -110,6 +110,61 @@ async function proxyApiRequest(req, res) {
   }
 }
 
+app.post('/api/chat', (req, res, next) => {
+  if (process.env.NO_RELOAD === '1') {
+    res.setHeader('Content-Type', 'application/x-ndjson');
+    res.setHeader('Transfer-Encoding', 'chunked');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    let aborted = false;
+    req.on('close', () => {
+      aborted = true;
+    });
+
+    const chunks = [];
+    for (let i = 0; i < 24; i++) {
+      const words = Array.from({ length: 18 }, (_, w) => `word${w}`).join(' ');
+      chunks.push(JSON.stringify({
+        type: 'chunk',
+        content: `Line ${i + 1}: ${words}\n`,
+      }) + '\n');
+    }
+    chunks.push(JSON.stringify({ type: 'done', metadata: { source: 'mock' } }) + '\n');
+
+    let chunkIndex = 0;
+    const sendNext = () => {
+      if (aborted) return;
+      if (chunkIndex < chunks.length) {
+        try {
+          res.write(chunks[chunkIndex]);
+          chunkIndex++;
+          setTimeout(sendNext, 85);
+        } catch {
+          aborted = true;
+        }
+      } else {
+        try {
+          res.end();
+        } catch {
+          // ignore
+        }
+      }
+    };
+    sendNext();
+    return;
+  }
+  next();
+});
+
+app.get(['/api/chat/health', '/api/health', '/api/status'], (req, res, next) => {
+  if (process.env.NO_RELOAD === '1') {
+    res.status(200).json({ status: 'healthy', ok: true });
+    return;
+  }
+  next();
+});
+
 app.use('/api', proxyApiRequest);
 
 function attachRealtimeWsProxy(server) {
