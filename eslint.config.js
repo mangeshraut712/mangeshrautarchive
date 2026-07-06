@@ -16,6 +16,8 @@ export default [
       'scratch/**',
       '.gitnexus/**',
       '.vercel/**',
+      '.venv/**',
+      'venv/**',
     ],
   },
   // Browser Code (src)
