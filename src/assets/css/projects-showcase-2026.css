@@ -1070,7 +1070,9 @@ html.dark #projects .projects-empty-state {
 /* Interactive hover glow & scale overrides */
 #projects #github-projects-container .showcase-project-card:hover {
   transform: translateY(-5px) scale(1.015) !important;
-  box-shadow: 0 20px 35px rgb(10 111 239 / 18%), 0 0 15px rgb(10 111 239 / 10%) !important;
+  box-shadow:
+    0 20px 35px rgb(10 111 239 / 18%),
+    0 0 15px rgb(10 111 239 / 10%) !important;
   border-color: rgba(10, 111, 239, 0.45) !important;
 }
 
@@ -1084,7 +1086,9 @@ html.dark #projects #github-projects-container .showcase-project-card {
 
 html.dark #projects #github-projects-container .showcase-project-card:hover {
   transform: translateY(-5px) scale(1.015) !important;
-  box-shadow: 0 20px 40px rgba(10, 132, 255, 0.25), 0 0 20px rgba(10, 132, 255, 0.15) !important;
+  box-shadow:
+    0 20px 40px rgba(10, 132, 255, 0.25),
+    0 0 20px rgba(10, 132, 255, 0.15) !important;
   border-color: rgba(10, 132, 255, 0.5) !important;
 }
 
