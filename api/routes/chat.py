@@ -41,6 +41,7 @@ from api.config import (
     adaptive_llm_params,
     RATE_LIMIT_WINDOW,
 )
+from api.monitoring import system_monitor, EventType
 from api.model_router import (
     AUTO_ROUTER_ALLOWED,
     AUTO_ROUTER_MODEL,
@@ -788,6 +789,13 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
     # Rate limiting
     if not check_rate_limit(client_ip):
+        if system_monitor is not None:
+            system_monitor.log_event(
+                f"Rate limit exceeded: {client_ip}",
+                EventType.WARNING,
+                {"client_ip": client_ip, "endpoint": "/api/chat"},
+                "rate_limit",
+            )
         raise api_error(
             code="RATE_LIMITED",
             message="You've sent too many requests. Please wait a moment before trying again.",

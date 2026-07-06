@@ -15,6 +15,7 @@ export default [
       'playwright-report/**',
       'scratch/**',
       '.gitnexus/**',
+      '.vercel/**',
     ],
   },
   // Browser Code (src)
