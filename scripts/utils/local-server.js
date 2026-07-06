@@ -125,10 +125,12 @@ app.post('/api/chat', (req, res, next) => {
     const chunks = [];
     for (let i = 0; i < 24; i++) {
       const words = Array.from({ length: 18 }, (_, w) => `word${w}`).join(' ');
-      chunks.push(JSON.stringify({
-        type: 'chunk',
-        content: `Line ${i + 1}: ${words}\n`,
-      }) + '\n');
+      chunks.push(
+        JSON.stringify({
+          type: 'chunk',
+          content: `Line ${i + 1}: ${words}\n`,
+        }) + '\n'
+      );
     }
     chunks.push(JSON.stringify({ type: 'done', metadata: { source: 'mock' } }) + '\n');
 
