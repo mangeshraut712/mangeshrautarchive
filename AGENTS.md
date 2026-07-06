@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-06-25
+> **Last updated:** 2026-07-06
 
 ---
 
